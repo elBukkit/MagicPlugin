@@ -6,6 +6,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class LavaSpell extends Spell
 {

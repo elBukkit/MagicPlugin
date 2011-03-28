@@ -5,6 +5,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class FlingSpell extends Spell
 {

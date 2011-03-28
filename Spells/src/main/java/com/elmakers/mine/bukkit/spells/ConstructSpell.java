@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class ConstructSpell extends Spell
 {
@@ -16,8 +17,7 @@ public class ConstructSpell extends Spell
     {
         CUBOID, SPHERE, UNKNOWN;
 
-        public static ConstructionType parseString(String s,
-                ConstructionType defaultType)
+        public static ConstructionType parseString(String s, ConstructionType defaultType)
         {
             ConstructionType construct = defaultType;
             for (ConstructionType t : ConstructionType.values())
@@ -47,9 +47,7 @@ public class ConstructSpell extends Spell
         addVariant("sandblast", Material.SANDSTONE, getCategory(), "Create a blob of sand to drop on an enemy", "cuboid 4 with sand");
     };
 
-    public void constructBlock(int dx, int dy, int dz, Block centerPoint,
-            int radius, Material material, byte data,
-            BlockList constructedBlocks)
+    public void constructBlock(int dx, int dy, int dz, Block centerPoint, int radius, Material material, byte data, BlockList constructedBlocks)
     {
         int x = centerPoint.getX() + dx - radius;
         int y = centerPoint.getY() + dy - radius;
@@ -64,20 +62,17 @@ public class ConstructSpell extends Spell
         block.setData(data);
     }
 
-    public void constructCuboid(Block target, int radius, Material material,
-            byte data, boolean fill)
+    public void constructCuboid(Block target, int radius, Material material, byte data, boolean fill)
     {
         fillArea(target, radius, material, data, fill, false);
     }
 
-    public void constructSphere(Block target, int radius, Material material,
-            byte data, boolean fill)
+    public void constructSphere(Block target, int radius, Material material, byte data, boolean fill)
     {
         fillArea(target, radius, material, data, fill, true);
     }
 
-    public void fillArea(Block target, int radius, Material material,
-            byte data, boolean fill, boolean sphere)
+    public void fillArea(Block target, int radius, Material material, byte data, boolean fill, boolean sphere)
     {
         BlockList constructedBlocks = new BlockList();
         int diameter = radius * 2;

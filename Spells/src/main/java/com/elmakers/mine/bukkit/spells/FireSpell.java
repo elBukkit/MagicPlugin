@@ -6,6 +6,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class FireSpell extends Spell
 {
@@ -22,8 +23,7 @@ public class FireSpell extends Spell
         addVariant("inferno", Material.FIRE, "combat", "Burn a wide area", "6");
     }
 
-    public void burnBlock(int dx, int dy, int dz, Block centerPoint,
-            int radius, BlockList burnedBlocks)
+    public void burnBlock(int dx, int dy, int dz, Block centerPoint, int radius, BlockList burnedBlocks)
     {
         int x = centerPoint.getX() + dx - radius;
         int y = centerPoint.getY() + dy - radius;

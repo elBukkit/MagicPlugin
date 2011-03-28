@@ -6,6 +6,7 @@ import java.util.Random;
 import org.bukkit.Material;
 
 import com.elmakers.mine.bukkit.magic.Spell;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class ManifestSpell extends Spell
 {

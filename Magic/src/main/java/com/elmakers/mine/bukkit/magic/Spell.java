@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.dao.SpellVariant;
 import com.elmakers.mine.bukkit.persistence.Persistence;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 import com.elmakers.mine.bukkit.persistence.dao.PlayerData;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
@@ -31,30 +33,20 @@ import com.elmakers.mine.bukkit.utilities.Targeting;
  */
 public abstract class Spell implements Comparable<Spell>
 {
-    static protected CSVParser csvParser = new CSVParser();
+    static protected CSVParser               csvParser            = new CSVParser();
 
-    public static byte getItemData(ItemStack stack)
-    {
-        if (stack == null)
-        {
-            return 0;
-        }
-        return (byte) stack.getDurability();
-    }
+    protected static HashMap<String, String> defaultMaterialLists = null;
+    protected Magic                          magic                = null;
 
-    protected Magic           magic       = null;
-
-    protected Persistence     persistence = null;
-
+    protected Persistence                    persistence          = null;
     /*
      * The player instance is set prior to onCast being called, so you can use
      * it to reference the current player.
      */
-    protected Player          player      = null;
+    protected Player                         player               = null;
+    protected Targeting                      targeting            = null;
 
-    protected Targeting       targeting   = null;
-
-    protected PluginUtilities utilities   = null;
+    protected PluginUtilities                utilities            = null;
 
     /**
      * Called by the Spells plugin to cancel this spell, do not call.
@@ -114,6 +106,11 @@ public abstract class Spell implements Comparable<Spell>
         return getName().compareTo(other.getName());
     }
 
+    /*
+     * Functions to send text to player- use these to respect "quiet" and
+     * "silent" modes.
+     */
+
     public ItemStack getBuildingMaterial()
     {
         ItemStack result = null;
@@ -153,11 +150,6 @@ public abstract class Spell implements Comparable<Spell>
         return result;
     }
 
-    /*
-     * Functions to send text to player- use these to respect "quiet" and
-     * "silent" modes.
-     */
-
     /**
      * A brief description of this spell.
      * 
@@ -182,6 +174,34 @@ public abstract class Spell implements Comparable<Spell>
             }
         }
         return material;
+    }
+
+    public void createDefaultMaterialLists()
+    {
+        defaultMaterialLists = new HashMap<String, String>();
+        
+        defaultMaterialLists.put("common", "1,2,3,10,11,12,13,87,88");
+    }
+
+    public MaterialList getMaterialList(String listName)
+    {
+        if (defaultMaterialLists == null)
+        {
+            createDefaultMaterialLists();
+        }
+        
+        MaterialList list = utilities.getMaterialList(listName);
+        if (list.size() == 0)
+        {
+            String defaultCSV = defaultMaterialLists.get(listName);
+            if (defaultCSV != null && defaultCSV.length() > 0)
+            {
+                list = csvParser.parseMaterials(listName, defaultCSV);
+                persistence.put(list);
+            }
+        }
+        
+        return list;
     }
 
     /*
@@ -218,8 +238,7 @@ public abstract class Spell implements Comparable<Spell>
         return player.getWorld().getTime();
     }
 
-    protected boolean giveMaterial(Material materialType, int amount,
-            short damage, byte data)
+    protected boolean giveMaterial(Material materialType, int amount, short damage, byte data)
     {
         ItemStack itemStack = new ItemStack(materialType, amount, damage, data);
         boolean active = false;
@@ -267,8 +286,7 @@ public abstract class Spell implements Comparable<Spell>
      * @param instance
      *            The spells instance
      */
-    public void initialize(Player player, Magic magic,
-            PluginUtilities utilities, Persistence persistence)
+    public void initialize(Player player, Magic magic, PluginUtilities utilities, Persistence persistence)
     {
         this.targeting = new Targeting(player);
         targeting.targetThrough(Material.AIR);

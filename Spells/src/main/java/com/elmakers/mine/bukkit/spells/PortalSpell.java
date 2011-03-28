@@ -8,6 +8,7 @@ import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class PortalSpell extends Spell
 {
@@ -107,8 +108,7 @@ public class PortalSpell extends Spell
         return true;
     }
 
-    protected void setBlock(BlockList blocks, Block baseBlock, int x, int y,
-            int z, Material material)
+    protected void setBlock(BlockList blocks, Block baseBlock, int x, int y, int z, Material material)
     {
         Block block = baseBlock.getRelative(x, y, z);
         if (block.getType() == Material.AIR)

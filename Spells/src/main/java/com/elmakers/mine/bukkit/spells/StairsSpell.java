@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class StairsSpell extends Spell
 {

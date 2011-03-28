@@ -25,8 +25,7 @@ public class AlterSpell extends Spell
 
     private final int          recurseDistance     = 32;
 
-    protected void adjust(Block block, byte dataValue,
-            BlockList adjustedBlocks, boolean recursive, int rDepth)
+    protected void adjust(Block block, byte dataValue, BlockList adjustedBlocks, boolean recursive, int rDepth)
     {
         adjustedBlocks.add(block);
         block.setData(dataValue);
@@ -97,8 +96,7 @@ public class AlterSpell extends Spell
         adjustableMaterials = csvParser.parseMaterials(DEFAULT_ADJUSTABLES);
     }
 
-    protected void tryAdjust(Block target, byte dataValue,
-            Material targetMaterial, BlockList adjustedBlocks, int rDepth)
+    protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, BlockList adjustedBlocks, int rDepth)
     {
         if (target.getType() != targetMaterial || adjustedBlocks.contains(target))
         {

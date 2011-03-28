@@ -32,7 +32,7 @@ public class ElevateSpell extends Spell
         }
         return false;
     }
-    
+
     @Override
     public String getDescription()
     {

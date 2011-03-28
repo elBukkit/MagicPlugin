@@ -6,6 +6,7 @@ import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class TreeSpell extends Spell
 {

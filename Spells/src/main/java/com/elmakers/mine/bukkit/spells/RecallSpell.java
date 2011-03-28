@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.magic.SpellEventType;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class RecallSpell extends Spell
 {

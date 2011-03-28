@@ -9,6 +9,7 @@ import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 import com.elmakers.mine.bukkit.utilities.BlockRequestListener;
 
 public class WindowSpell extends Spell implements BlockRequestListener
@@ -188,8 +189,7 @@ public class WindowSpell extends Spell implements BlockRequestListener
         return peekedBlocks;
     }
 
-    public void windowBlock(int dx, int dy, int dz, Block centerPoint,
-            int radius, BlockList blocks, Material mat)
+    public void windowBlock(int dx, int dy, int dz, Block centerPoint, int radius, BlockList blocks, Material mat)
     {
         int x = centerPoint.getX() + dx - radius;
         int y = centerPoint.getY() + dy - radius;

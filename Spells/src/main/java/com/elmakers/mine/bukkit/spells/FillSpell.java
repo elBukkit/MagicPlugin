@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 import com.elmakers.mine.bukkit.utilities.BlockRecurse;
 import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
 

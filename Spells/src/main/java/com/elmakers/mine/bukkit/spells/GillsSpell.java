@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.magic.SpellEventType;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class GillsSpell extends Spell
 {

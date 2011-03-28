@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class PeekSpell extends Spell
 {
@@ -18,8 +19,7 @@ public class PeekSpell extends Spell
     private int            maxRadius             = 32;
     private List<Material> peekableMaterials     = new ArrayList<Material>();
 
-    public void blastBlock(int dx, int dy, int dz, Block centerPoint,
-            int radius, BlockList blocks)
+    public void blastBlock(int dx, int dy, int dz, Block centerPoint, int radius, BlockList blocks)
     {
         int x = centerPoint.getX() + dx - radius;
         int y = centerPoint.getY() + dy - radius;

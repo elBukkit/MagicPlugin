@@ -6,6 +6,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class FrostSpell extends Spell
 {
@@ -19,8 +20,7 @@ public class FrostSpell extends Spell
         return x * x + z * z - R * R;
     }
 
-    public void frostBlock(int dx, int dy, int dz, Block centerPoint,
-            int radius, BlockList frostedBlocks)
+    public void frostBlock(int dx, int dy, int dz, Block centerPoint, int radius, BlockList frostedBlocks)
     {
         int x = centerPoint.getX() + dx - radius;
         int y = centerPoint.getY() + dy - radius;

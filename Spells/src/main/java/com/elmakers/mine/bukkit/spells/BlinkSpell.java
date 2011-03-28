@@ -12,9 +12,9 @@ import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class BlinkSpell extends Spell
 {
-    private boolean   autoPassthrough        = true;
-    private int       maxRange               = 0;
-    private final int verticalSearchDistance = 255;
+    private final boolean autoPassthrough        = true;
+    private final int     maxRange               = 0;
+    private final int     verticalSearchDistance = 255;
 
     @Override
     public String getDescription()
@@ -31,7 +31,7 @@ public class BlinkSpell extends Spell
     @Override
     public boolean onCast(List<ParameterData> parameters)
     {
-         if (autoPassthrough)
+        if (autoPassthrough)
         {
             Block firstBlock = targeting.getNextBlock();
             if (firstBlock.getType() != Material.AIR)
@@ -96,12 +96,7 @@ public class BlinkSpell extends Spell
                 ledge = ledge.getFace(BlockFace.UP);
                 distanceUp++;
             }
-            while 
-            (
-                    distanceUp < verticalSearchDistance 
-            &&      targeting.isOkToStandIn(inFront.getType()) 
-            &&      (!targeting.isOkToStandOn(groundBlock.getType()) || !targeting.isOkToStandIn(oneUp.getType()) || !targeting.isOkToStandIn(twoUp.getType()))
-            );
+            while (distanceUp < verticalSearchDistance && targeting.isOkToStandIn(inFront.getType()) && (!targeting.isOkToStandOn(groundBlock.getType()) || !targeting.isOkToStandIn(oneUp.getType()) || !targeting.isOkToStandIn(twoUp.getType())));
 
         }
 
@@ -125,7 +120,9 @@ public class BlinkSpell extends Spell
     @Override
     public void onLoad()
     {
-       // maxRange = properties.getInteger("spells-blink-range", maxRange);
-        //autoPassthrough = properties.getBoolean("spells-blink-auto-passthrough", autoPassthrough);
+        // maxRange = properties.getInteger("spells-blink-range", maxRange);
+        // autoPassthrough =
+        // properties.getBoolean("spells-blink-auto-passthrough",
+        // autoPassthrough);
     }
 }

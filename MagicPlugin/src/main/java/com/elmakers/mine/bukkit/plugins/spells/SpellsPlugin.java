@@ -196,8 +196,7 @@ public class SpellsPlugin extends JavaPlugin
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd,
-            String commandLabel, String[] args)
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
         return utilities.dispatch(this, sender, cmd.getName(), args);
     }

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spells;
 import org.bukkit.Material;
 
 import com.elmakers.mine.bukkit.magic.Spell;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class PhaseSpell extends Spell
 {

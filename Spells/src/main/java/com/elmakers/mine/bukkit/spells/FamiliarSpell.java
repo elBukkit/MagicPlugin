@@ -30,6 +30,7 @@ import org.bukkit.event.player.PlayerEvent;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.magic.SpellEventType;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class FamiliarSpell extends Spell
 {
@@ -45,8 +46,7 @@ public class FamiliarSpell extends Spell
             return parseString(s, UNKNOWN);
         }
 
-        public static FamiliarType parseString(String s,
-                FamiliarType defaultFamiliarType)
+        public static FamiliarType parseString(String s, FamiliarType defaultFamiliarType)
         {
             FamiliarType foundType = defaultFamiliarType;
             for (FamiliarType t : FamiliarType.values())

@@ -317,8 +317,7 @@ public class Magic
         return queue;
     }
 
-    public void initialize(Server server, Persistence persistence,
-            PluginUtilities utilities)
+    public void initialize(Server server, Persistence persistence, PluginUtilities utilities)
     {
         this.server = server;
         this.persistence = persistence;
@@ -493,8 +492,7 @@ public class Magic
         }
     }
 
-    public void setCurrentMaterialType(Player player, Material material,
-            byte data)
+    public void setCurrentMaterialType(Player player, Material material, byte data)
     {
         PlayerSpells spells = getPlayerSpells(player);
         if (spells.isUsingMaterial() && (spells.getMaterial() != material || spells.getData() != data))

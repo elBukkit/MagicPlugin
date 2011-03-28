@@ -7,6 +7,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class CushionSpell extends Spell
 {

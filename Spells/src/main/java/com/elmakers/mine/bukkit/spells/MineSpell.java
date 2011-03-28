@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class MineSpell extends Spell
 {
@@ -58,14 +59,12 @@ public class MineSpell extends Spell
         return mineableMaterials.contains(block.getType());
     }
 
-    protected void mine(Block block, Material fillMaterial,
-            BlockList minedBlocks)
+    protected void mine(Block block, Material fillMaterial, BlockList minedBlocks)
     {
         mine(block, fillMaterial, minedBlocks, 0);
     }
 
-    protected void mine(Block block, Material fillMaterial,
-            BlockList minedBlocks, int rDepth)
+    protected void mine(Block block, Material fillMaterial, BlockList minedBlocks, int rDepth)
     {
         minedBlocks.add(block);
         block.setType(Material.AIR);
@@ -126,8 +125,7 @@ public class MineSpell extends Spell
         maxRecursion = properties.getInteger("spells-mine-recursion", maxRecursion);
     }
 
-    protected void tryMine(Block target, Material fillMaterial,
-            BlockList minedBlocks, int rDepth)
+    protected void tryMine(Block target, Material fillMaterial, BlockList minedBlocks, int rDepth)
     {
         if (target.getType() != fillMaterial || minedBlocks.contains(target))
         {

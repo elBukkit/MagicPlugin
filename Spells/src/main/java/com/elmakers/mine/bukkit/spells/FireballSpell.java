@@ -13,6 +13,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.Spell;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class FireballSpell extends Spell
 {
@@ -81,7 +82,7 @@ public class FireballSpell extends Spell
 
         double dx = target.getX() - playerLoc.getX();
         double height = 1;
-        double dy = target.getY() + (height / 2.0F) - (playerLoc.getY() + (height / 2.0F));
+        double dy = target.getY() + height / 2.0F - (playerLoc.getY() + height / 2.0F);
         double dz = target.getZ() - playerLoc.getZ();
 
         castMessage(player, "FOOM!");
@@ -92,7 +93,7 @@ public class FireballSpell extends Spell
         double d8 = 4D;
         Vec3D vec3d = getLocation(player, 1.0F);
         fireball.locX = playerLoc.getX() + vec3d.xCoord * d8;
-        fireball.locY = playerLoc.getY() + (height / 2.0F) + 0.5D;
+        fireball.locY = playerLoc.getY() + height / 2.0F + 0.5D;
         fireball.locZ = playerLoc.getZ() + vec3d.zCoord * d8;
 
         ((CraftWorld) player.getWorld()).getHandle().a(fireball);
