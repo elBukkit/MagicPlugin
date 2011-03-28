@@ -1,103 +1,166 @@
 package com.elmakers.mine.bukkit.magic.dao;
 
-import org.bukkit.Material;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.Spell;
+import com.elmakers.mine.bukkit.persisted.PersistClass;
+import com.elmakers.mine.bukkit.persisted.PersistField;
+import com.elmakers.mine.bukkit.persisted.Persisted;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 import com.elmakers.mine.bukkit.persistence.dao.PlayerData;
 
-public class SpellVariant implements Comparable<SpellVariant>
+@PersistClass(schema = "magic", name = "spell")
+public class SpellVariant extends Persisted implements Comparable<SpellVariant>
 {
-	public SpellVariant(Spell spell)
-	{
-		this.spell = spell;
-		this.name = spell.getName();
-		this.category = spell.getCategory();
-		this.description = spell.getDescription();
-		this.parameters = new String[0];
-	}
-	
-	public SpellVariant(Spell spell, String name, Material material, String category, String description, String[] parameters)
-	{
-		this.spell = spell;
-		this.name = name;
-		this.category = category;
-		this.description = description;
-		this.parameters = parameters;
-	}
-	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public String getDescription()
-	{
-		return description;
-	}
-	
-	public String getCategory()
-	{
-		return category;
-	}
-	
-	public String[] getParameters()
-	{
-		return parameters;
-	}
-	
-	public boolean isMatch(String spell, String[] params)
-	{
-		if (params == null) params = new String[0];
-		return (name.equalsIgnoreCase(spell) && parameters.equals(params));
-	}
-	
-	public Spell getSpell()
-	{
-		return spell;
-	}
-	
-	public int compareTo(SpellVariant other)
-	{
-		return getName().compareTo(other.getName());
-	}
-	
-	public boolean cast(String[] extraParameters, Player player)
-	{
-    	String[] spellParameters = parameters;
-    	
-    	if (extraParameters.length > 0)
-    	{
-    		spellParameters = new String[extraParameters.length + parameters.length];
-	    	for (int i = 0; i < parameters.length; i++)
-	    	{
-	    		spellParameters[i] = parameters[i];
-	    	}
-	    	for (int i = 0; i < extraParameters.length; i++)
-	    	{
-	    		spellParameters[i + parameters.length] = extraParameters[i];
-	    	}
-    	}
- 
-		return spell.cast(spellParameters, player);
-	}
-	
-	public String getPermissionNode()
-	{
-		return "Spells.cast." + getName();
-	}
-	
-	public boolean hasSpellPermission(Player player)
-	{
-		if (player == null) return false;
-		PlayerData playerData = spell.getPersistence().get(player.getName(), PlayerData.class);
-		if (playerData == null) return false;
-		return playerData.isSet(getPermissionNode());
-	}
-	
-	private String name;
-	private String description;
-	private String category;
-	private String[] parameters;
-	private Spell spell;
+    private double              cooldown;
+    private String              description;
+    private String              name;
+    private List<ParameterData> parameters;
+    private String              spell;
+    private List<String>        tags;
+
+    public SpellVariant()
+    {
+    }
+
+    public SpellVariant(String name, String spellType)
+    {
+        this.name = name;
+        this.spell = spellType;
+        this.cooldown = 0;
+        this.parameters = new ArrayList<ParameterData>();
+        this.tags = new ArrayList<String>();
+        this.description = "";
+    }
+
+    public boolean cast(Spell playerSpell, String[] extraParameters)
+    {
+        String[] spellParameters = (String[]) parameters.toArray();
+
+        if (extraParameters.length > 0)
+        {
+            spellParameters = new String[extraParameters.length + parameters.size()];
+            parameters.toArray(extraParameters);
+            for (int i = 0; i < extraParameters.length; i++)
+            {
+                spellParameters[i + parameters.size()] = extraParameters[i];
+            }
+        }
+
+        return playerSpell.cast(spellParameters);
+    }
+
+    public int compareTo(SpellVariant other)
+    {
+        return getName().compareTo(other.getName());
+    }
+
+    public double getCooldown()
+    {
+        return cooldown;
+    }
+
+    @PersistField
+    public String getDescription()
+    {
+        return description;
+    }
+
+    @PersistField(id = true)
+    public String getName()
+    {
+        return name;
+    }
+
+    @PersistField
+    public List<ParameterData> getParameters()
+    {
+        return parameters;
+    }
+
+    public String getPermissionNode()
+    {
+        return "Magic.spells." + getName();
+    }
+
+    @PersistField
+    public String getSpell()
+    {
+        return spell;
+    }
+
+    @PersistField
+    public List<String> getTags()
+    {
+        return tags;
+    }
+
+    public boolean hasSpellPermission(Player player)
+    {
+        if (player == null)
+        {
+            return false;
+        }
+        PlayerData playerData = persistence.get(player.getName(), PlayerData.class);
+        if (playerData == null)
+        {
+            return false;
+        }
+        return playerData.isSet(getPermissionNode());
+    }
+
+    public boolean hasTag(String tag)
+    {
+        for (String checkTag : tags)
+        {
+            if (checkTag.equalsIgnoreCase(tag))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isMatch(String spell, String[] params)
+    {
+        if (params == null)
+        {
+            params = new String[0];
+        }
+        return name.equalsIgnoreCase(spell) && parameters.equals(params);
+    }
+
+    public void setCooldown(double cooldown)
+    {
+        this.cooldown = cooldown;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void setParameters(List<ParameterData> parameters)
+    {
+        this.parameters = parameters;
+    }
+
+    public void setSpell(String spell)
+    {
+        this.spell = spell;
+    }
+
+    public void setTags(List<String> tags)
+    {
+        this.tags = tags;
+    }
 }

@@ -6,28 +6,30 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.elmakers.mine.bukkit.magic.Magic;
 
-class SpellsPlayerListener extends PlayerListener 
+class SpellsPlayerListener extends PlayerListener
 {
-	private Magic master;
-	
-	public void setSpells(Magic master)
-	{
-		this.master = master;
-	}
-	
+    private Magic master;
+
     /**
      * Called when a player attempts to move location in a world
-     *
-     * @param event Relevant event details
+     * 
+     * @param event
+     *            Relevant event details
      */
-    public void onPlayerMove(PlayerMoveEvent event) 
+    @Override
+    public void onPlayerMove(PlayerMoveEvent event)
     {
-    	master.onPlayerMove(event);
+        master.onPlayerMove(event);
     }
 
-	@Override
-	public void onPlayerQuit(PlayerEvent event)
-	{
-		master.onPlayerQuit(event);
-	}
+    @Override
+    public void onPlayerQuit(PlayerEvent event)
+    {
+        master.onPlayerQuit(event);
+    }
+
+    public void setSpells(Magic master)
+    {
+        this.master = master;
+    }
 }
