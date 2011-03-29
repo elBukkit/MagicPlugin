@@ -21,6 +21,7 @@ public class SpellVariant extends Persisted implements Comparable<SpellVariant>
     private List<ParameterData> parameters;
     private String              spell;
     private List<String>        tags;
+    private List<CastingCost>   costs;
 
     public SpellVariant()
     {
@@ -162,5 +163,16 @@ public class SpellVariant extends Persisted implements Comparable<SpellVariant>
     public void setTags(List<String> tags)
     {
         this.tags = tags;
+    }
+
+    @PersistField
+    public void setCosts(List<CastingCost> costs)
+    {
+        this.costs = costs;
+    }
+
+    public List<CastingCost> getCosts()
+    {
+        return costs;
     }
 }

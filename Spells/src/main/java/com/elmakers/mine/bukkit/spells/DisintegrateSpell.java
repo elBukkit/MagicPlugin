@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.spells;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -12,25 +14,13 @@ public class DisintegrateSpell extends Spell
     private int defaultSearchDistance = 32;
 
     @Override
-    public String getCategory()
-    {
-        return "mining";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Destroy the target block";
     }
 
     @Override
-    public Material getMaterial()
-    {
-        return Material.BONE;
-    }
-
-    @Override
-    protected String getName()
+    public String getName()
     {
         return "disintegrate";
     }
@@ -38,13 +28,13 @@ public class DisintegrateSpell extends Spell
     @Override
     public boolean onCast(List<ParameterData> parameters)
     {
-        Block target = getTargetBlock();
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
             return false;
         }
-        if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
+        if (defaultSearchDistance > 0 && targeting.getDistance(player, target) > defaultSearchDistance)
         {
             castMessage(player, "Can't blast that far away");
             return false;
@@ -62,15 +52,15 @@ public class DisintegrateSpell extends Spell
             target.setType(Material.AIR);
         }
 
-        spells.addToUndoQueue(player, disintigrated);
+        magic.addToUndoQueue(player, disintigrated);
         castMessage(player, "ZAP!");
 
         return true;
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        defaultSearchDistance = properties.getInteger("spells-disintegrate-search-distance", defaultSearchDistance);
+        //defaultSearchDistance = properties.getInteger("spells-disintegrate-search-distance", defaultSearchDistance);
     }
 }

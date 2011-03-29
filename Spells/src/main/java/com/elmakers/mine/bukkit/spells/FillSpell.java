@@ -19,28 +19,10 @@ public class FillSpell extends Spell
     private int                          maxVolume     = 512;
     private final HashMap<String, Block> playerTargets = new HashMap<String, Block>();
 
-    public FillSpell()
-    {
-        addVariant("paint", Material.PAINTING, getCategory(), "Fill a single block", "single");
-        addVariant("recurse", Material.WOOD_SPADE, getCategory(), "Recursively fill blocks", "recurse");
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "construction";
-    }
-
     @Override
     public String getDescription()
     {
         return "Fills a selected area (2 clicks)";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.GOLD_SPADE;
     }
 
     @Override

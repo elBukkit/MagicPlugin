@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.persistence.dao.BlockList;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.utilities.BlockRecurse;
 
 public class ConstructSpell extends Spell
 {
@@ -32,13 +33,27 @@ public class ConstructSpell extends Spell
         }
     }
 
-    private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
-    private int              defaultRadius           = 2;
-    private int              defaultSearchDistance   = 32;
-    private MaterialList     destructibleMaterials   = new MaterialList();
+    private final BlockRecurse blockRecurse            = new BlockRecurse();
+    private ConstructionType   defaultConstructionType = ConstructionType.SPHERE;
+    private int                defaultRadius           = 2;
+    private int                defaultSearchDistance   = 32;
+    private MaterialList       destructibleMaterials   = new MaterialList();
+    private Block              selectionStart          = null;
 
-    private int              maxRadius               = 32;
+    private int                maxDimension            = 128;
+    private int                maxVolume               = 512;
+    private int                maxRadius               = 32;
 
+    @Override
+    public void onCancel()
+    {
+        if (selectionStart != null)
+        {
+            sendMessage(player, "Cancelled selection");
+            selectionStart = null;
+        }
+    }
+    
     public void constructBlock(int dx, int dy, int dz, Block centerPoint, int radius, Material material, byte data, BlockList constructedBlocks, MaterialList destructable)
     {
         int x = centerPoint.getX() + dx - radius;
@@ -179,6 +194,12 @@ public class ConstructSpell extends Spell
         for (ParameterData parameter : parameters)
         {
             if (parameter.isFlag("hollow"))
+            {
+                hollow = true;
+                continue;
+            }
+            
+            if (parameter.isFlag("selection"))
             {
                 hollow = true;
                 continue;
