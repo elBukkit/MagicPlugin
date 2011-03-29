@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -9,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class ConstructSpell extends Spell
@@ -31,29 +32,20 @@ public class ConstructSpell extends Spell
         }
     }
 
-    static final String      DEFAULT_DESTRUCTIBLES   = "1,2,3,8,9,10,11,12,13,87,88";
     private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
     private int              defaultRadius           = 2;
     private int              defaultSearchDistance   = 32;
-    private List<Material>   destructibleMaterials   = new ArrayList<Material>();
+    private MaterialList     destructibleMaterials   = new MaterialList();
 
     private int              maxRadius               = 32;
 
-    public ConstructSpell()
-    {
-        addVariant("shell", Material.BOWL, getCategory(), "Create a large shell using your selected material", "sphere hollow 10");
-        addVariant("box", Material.WOODEN_DOOR, getCategory(), "Create a large box using your selected material", "cuboid hollow 6");
-        addVariant("superblob", Material.CLAY_BRICK, getCategory(), "Create a large sphere at your target", "sphere 8");
-        addVariant("sandblast", Material.SANDSTONE, getCategory(), "Create a blob of sand to drop on an enemy", "cuboid 4 with sand");
-    };
-
-    public void constructBlock(int dx, int dy, int dz, Block centerPoint, int radius, Material material, byte data, BlockList constructedBlocks)
+    public void constructBlock(int dx, int dy, int dz, Block centerPoint, int radius, Material material, byte data, BlockList constructedBlocks, MaterialList destructable)
     {
         int x = centerPoint.getX() + dx - radius;
         int y = centerPoint.getY() + dy - radius;
         int z = centerPoint.getZ() + dz - radius;
         Block block = player.getWorld().getBlockAt(x, y, z);
-        if (!isDestructible(block))
+        if (!destructable.contains(block.getType()))
         {
             return;
         }
@@ -62,17 +54,17 @@ public class ConstructSpell extends Spell
         block.setData(data);
     }
 
-    public void constructCuboid(Block target, int radius, Material material, byte data, boolean fill)
+    public void constructCuboid(Block target, int radius, Material material, byte data, boolean fill, MaterialList destructable)
     {
-        fillArea(target, radius, material, data, fill, false);
+        fillArea(target, radius, material, data, fill, false, destructable);
     }
 
-    public void constructSphere(Block target, int radius, Material material, byte data, boolean fill)
+    public void constructSphere(Block target, int radius, Material material, byte data, boolean fill, MaterialList destructable)
     {
-        fillArea(target, radius, material, data, fill, true);
+        fillArea(target, radius, material, data, fill, true, destructable);
     }
 
-    public void fillArea(Block target, int radius, Material material, byte data, boolean fill, boolean sphere)
+    public void fillArea(Block target, int radius, Material material, byte data, boolean fill, boolean sphere, MaterialList destructable)
     {
         BlockList constructedBlocks = new BlockList();
         int diameter = radius * 2;
@@ -104,27 +96,21 @@ public class ConstructSpell extends Spell
                     }
                     if (fillBlock)
                     {
-                        constructBlock(x, y, z, target, radius, material, data, constructedBlocks);
-                        constructBlock(diameterOffset - x, y, z, target, radius, material, data, constructedBlocks);
-                        constructBlock(x, diameterOffset - y, z, target, radius, material, data, constructedBlocks);
-                        constructBlock(x, y, diameterOffset - z, target, radius, material, data, constructedBlocks);
-                        constructBlock(diameterOffset - x, diameterOffset - y, z, target, radius, material, data, constructedBlocks);
-                        constructBlock(x, diameterOffset - y, diameterOffset - z, target, radius, material, data, constructedBlocks);
-                        constructBlock(diameterOffset - x, y, diameterOffset - z, target, radius, material, data, constructedBlocks);
-                        constructBlock(diameterOffset - x, diameterOffset - y, diameterOffset - z, target, radius, material, data, constructedBlocks);
+                        constructBlock(x, y, z, target, radius, material, data, constructedBlocks, destructable);
+                        constructBlock(diameterOffset - x, y, z, target, radius, material, data, constructedBlocks, destructable);
+                        constructBlock(x, diameterOffset - y, z, target, radius, material, data, constructedBlocks, destructable);
+                        constructBlock(x, y, diameterOffset - z, target, radius, material, data, constructedBlocks, destructable);
+                        constructBlock(diameterOffset - x, diameterOffset - y, z, target, radius, material, data, constructedBlocks, destructable);
+                        constructBlock(x, diameterOffset - y, diameterOffset - z, target, radius, material, data, constructedBlocks, destructable);
+                        constructBlock(diameterOffset - x, y, diameterOffset - z, target, radius, material, data, constructedBlocks, destructable);
+                        constructBlock(diameterOffset - x, diameterOffset - y, diameterOffset - z, target, radius, material, data, constructedBlocks, destructable);
                     }
                 }
             }
         }
 
-        spells.addToUndoQueue(player, constructedBlocks);
+        magic.addToUndoQueue(player, constructedBlocks);
         castMessage(player, "Constructed " + constructedBlocks.size() + "blocks");
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "construction";
     }
 
     @Override
@@ -136,12 +122,6 @@ public class ConstructSpell extends Spell
     public int getDistance(int x, int y, int z)
     {
         return (int) (Math.sqrt(x * x + y * y + z * z) + 0.5);
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.CLAY_BALL;
     }
 
     @Override
@@ -163,14 +143,14 @@ public class ConstructSpell extends Spell
     @Override
     public boolean onCast(List<ParameterData> parameters)
     {
-        setMaxRange(defaultSearchDistance, true);
-        targetThrough(Material.GLASS);
-        Block target = getTargetBlock();
+        targeting.setMaxRange(defaultSearchDistance, true);
+        targeting.targetThrough(Material.GLASS);
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
-            initializeTargeting(player);
-            noTargetThrough(Material.GLASS);
-            target = getTargetBlock();
+            targeting.reset();
+            targeting.noTargetThrough(Material.GLASS);
+            target = targeting.getTargetBlock();
             if (target == null)
             {
                 castMessage(player, "No target");
@@ -184,66 +164,66 @@ public class ConstructSpell extends Spell
         ItemStack buildWith = getBuildingMaterial();
         if (buildWith != null)
         {
-            material = buildWith.getType();
-            data = getItemData(buildWith);
+            MaterialData md = new MaterialData(buildWith);
+            material = md.getType();
+            data = md.getData();
         }
 
         ConstructionType conType = defaultConstructionType;
+        MaterialList destructables = new MaterialList();
+        destructables.addAll(destructibleMaterials);
+        
         int radius = defaultRadius;
         boolean hollow = false;
 
-        for (int i = 0; i < parameters.length; i++)
+        for (ParameterData parameter : parameters)
         {
-            String parameter = parameters[i];
-
-            if (parameter.equalsIgnoreCase("hollow"))
+            if (parameter.isFlag("hollow"))
             {
                 hollow = true;
                 continue;
             }
 
-            if (parameter.equalsIgnoreCase("with") && i < parameters.length - 1)
+            if (parameter.isMatch("with"))
             {
-                String materialName = parameters[i + 1];
-                data = 0;
-                material = getMaterial(materialName, spells.getBuildingMaterials());
-                i++;
+                material = parameter.getMaterial();
                 continue;
             }
-
-            // try radius
-            try
+            
+            if (parameter.isMatch("radius"))
             {
-                radius = Integer.parseInt(parameter);
+                radius = parameter.getInteger();
                 if (radius > maxRadius && maxRadius > 0)
                 {
                     radius = maxRadius;
                 }
-
-                // Assume number, ok to continue
                 continue;
             }
-            catch (NumberFormatException ex)
-            {
-            }
 
-            // Try con type
+            if (parameter.isMatch("type"))
             {
-                ConstructionType testType = ConstructionType.parseString(parameter, ConstructionType.UNKNOWN);
+                ConstructionType testType = ConstructionType.parseString(parameter.getValue(), ConstructionType.UNKNOWN);
                 if (testType != ConstructionType.UNKNOWN)
                 {
                     conType = testType;
                 }
+                continue;
+            }
+
+            if (parameter.isMatch("destroy"))
+            {
+                destructables = parameter.getMaterialList();
+                continue;
             }
         }
 
         switch (conType)
         {
             case SPHERE:
-                constructSphere(target, radius, material, data, !hollow);
+                constructSphere(target, radius, material, data, !hollow, destructables);
                 break;
             case CUBOID:
-                constructCuboid(target, radius, material, data, !hollow);
+                constructCuboid(target, radius, material, data, !hollow, destructables);
                 break;
             default:
                 return false;
@@ -253,13 +233,13 @@ public class ConstructSpell extends Spell
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        destructibleMaterials = PluginProperties.parseMaterials(DEFAULT_DESTRUCTIBLES);
-        defaultConstructionType = ConstructionType.parseString(properties.getString("spells-construct-default", ""), defaultConstructionType);
-        defaultRadius = properties.getInteger("spells-construct-radius", defaultRadius);
-        maxRadius = properties.getInteger("spells-construct-max-radius", maxRadius);
-        defaultSearchDistance = properties.getInteger("spells-constructs-search-distance", defaultSearchDistance);
+        destructibleMaterials = getMaterialList("common");
+        //defaultConstructionType = ConstructionType.parseString(properties.getString("spells-construct-default", ""), defaultConstructionType);
+        //defaultRadius = properties.getInteger("spells-construct-radius", defaultRadius);
+        //maxRadius = properties.getInteger("spells-construct-max-radius", maxRadius);
+        //defaultSearchDistance = properties.getInteger("spells-constructs-search-distance", defaultSearchDistance);
     }
 
 }

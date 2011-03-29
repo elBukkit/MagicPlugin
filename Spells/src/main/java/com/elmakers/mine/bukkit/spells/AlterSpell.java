@@ -13,17 +13,13 @@ import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 public class AlterSpell extends Spell
 {
-    static final String        DEFAULT_ADJUSTABLES = "6, 8, 9, 10,11,17,18,23,35,50,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,71,75,76,77,81,83,85,86";
-    // static final String DEFAULT_ADJUST_MAX =
-    // "15,15,15,15,15,2 ,15,2 ,15,5 ,15,3 ,5 ,15,5 ,15,8 ,5 ,5 ,15,15,3 ,9 ,3 ,2 ,14,15,5 ,5 ,15,15,15,5 ,0 ";
-    // static final String DEFAULT_ADJUST_MIN =
-    // "0 ,0 ,0 ,0 ,0 ,0 ,0 ,5 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,3 ";
-    static final String        DEFAULT_RECURSABLES = "17,18,59";
+    static final String  DEFAULT_ADJUSTABLES = "6, 8, 9, 10,11,17,18,23,35,50,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,71,75,76,77,81,83,85,86";
+    static final String  DEFAULT_RECURSABLES = "17,18,59";
 
-    private MaterialList       adjustableMaterials = new MaterialList();
-    private final MaterialList recursableMaterials = new MaterialList();
+    private MaterialList adjustableMaterials = new MaterialList();
+    private MaterialList recursableMaterials = new MaterialList();
 
-    private final int          recurseDistance     = 32;
+    private final int    recurseDistance     = 32;
 
     protected void adjust(Block block, byte dataValue, BlockList adjustedBlocks, boolean recursive, int rDepth)
     {
@@ -93,7 +89,8 @@ public class AlterSpell extends Spell
     @Override
     public void onLoad()
     {
-        adjustableMaterials = csvParser.parseMaterials(DEFAULT_ADJUSTABLES);
+        adjustableMaterials = getMaterialList("adjustable", DEFAULT_ADJUSTABLES);
+        recursableMaterials = getMaterialList("adjustable-recurse", DEFAULT_RECURSABLES);
     }
 
     protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, BlockList adjustedBlocks, int rDepth)

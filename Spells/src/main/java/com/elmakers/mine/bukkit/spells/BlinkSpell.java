@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 public class BlinkSpell extends Spell
 {
     private final boolean autoPassthrough        = true;
-    private final int     maxRange               = 0;
+    private int           maxRange               = 0;
     private final int     verticalSearchDistance = 255;
 
     @Override

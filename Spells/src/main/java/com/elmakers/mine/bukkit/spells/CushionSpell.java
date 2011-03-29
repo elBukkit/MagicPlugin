@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.spells;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -16,21 +18,9 @@ public class CushionSpell extends Spell
     private int cushionWidth  = 3;
 
     @Override
-    public String getCategory()
-    {
-        return "help";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Create a safety bubble";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.SOUL_SAND;
     }
 
     @Override
@@ -44,7 +34,7 @@ public class CushionSpell extends Spell
     {
         World world = player.getWorld();
         CraftWorld craftWorld = (CraftWorld) world;
-        Block targetFace = getTargetBlock();
+        Block targetFace = targeting.getTargetBlock();
         if (targetFace == null)
         {
             castMessage(player, "No target");
@@ -89,23 +79,23 @@ public class CushionSpell extends Spell
             }
         }
 
-        spells.scheduleCleanup(cushionBlocks);
-        spells.scheduleCleanup(airBlocks);
+        magic.scheduleCleanup(cushionBlocks);
+        magic.scheduleCleanup(airBlocks);
 
         // Schedule an additional later cleanup, to cleanup water spillage
         BlockList delayedCleanup = new BlockList(cushionBlocks);
         delayedCleanup.setTimeToLive(15000);
 
-        spells.scheduleCleanup(delayedCleanup);
+        magic.scheduleCleanup(delayedCleanup);
 
         return true;
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        cushionWidth = properties.getInteger("spells-cushion-width", cushionWidth);
-        cushionHeight = properties.getInteger("spells-cushion-height", cushionHeight);
-        airBubble = properties.getInteger("spells-air-bubble-thickness", airBubble);
+        //cushionWidth = properties.getInteger("spells-cushion-width", cushionWidth);
+        //cushionHeight = properties.getInteger("spells-cushion-height", cushionHeight);
+        //airBubble = properties.getInteger("spells-air-bubble-thickness", airBubble);
     }
 }

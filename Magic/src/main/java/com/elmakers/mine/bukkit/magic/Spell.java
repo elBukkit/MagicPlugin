@@ -180,28 +180,30 @@ public abstract class Spell implements Comparable<Spell>
     {
         defaultMaterialLists = new HashMap<String, String>();
         
-        defaultMaterialLists.put("common", "1,2,3,10,11,12,13,87,88");
+        defaultMaterialLists.put("common", "0,1,2,3,10,11,12,13,87,88");
+  }
+    
+    public MaterialList getMaterialList(String listName, String defaultCSV)
+    {       
+        MaterialList list = utilities.getMaterialList(listName);
+        if (list.size() == 0 && defaultCSV != null && defaultCSV.length() > 0)
+        {
+            list = csvParser.parseMaterials(listName, defaultCSV);
+            persistence.put(list);
+        }
+        
+       return list;
     }
-
+    
     public MaterialList getMaterialList(String listName)
-    {
+    {       
         if (defaultMaterialLists == null)
         {
             createDefaultMaterialLists();
         }
-        
-        MaterialList list = utilities.getMaterialList(listName);
-        if (list.size() == 0)
-        {
-            String defaultCSV = defaultMaterialLists.get(listName);
-            if (defaultCSV != null && defaultCSV.length() > 0)
-            {
-                list = csvParser.parseMaterials(listName, defaultCSV);
-                persistence.put(list);
-            }
-        }
-        
-        return list;
+
+        String defaultCSV = defaultMaterialLists.get(listName);
+        return getMaterialList(listName, defaultCSV);
     }
 
     /*
