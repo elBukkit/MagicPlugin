@@ -1,16 +1,13 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.List;
-
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 import com.elmakers.mine.bukkit.utilities.BlockRecurse;
+import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
 
 public class RecurseSpell extends Spell
 {
@@ -41,26 +38,12 @@ public class RecurseSpell extends Spell
             return false;
         }
         
-        Material material = target.getType();
-        byte data = target.getData();
-
-        ItemStack buildWith = getBuildingMaterial();
-        if (buildWith != null)
-        {
-            MaterialData md = new MaterialData(buildWith);
-            material = md.getType();
-            data = md.getData();
-        }
-
-        for (ParameterData parameter : parameters)
-        {
-            if (parameter.isMatch("with"))
-            {
-                material = parameter.getMaterial();
-                data = 0;
-                continue;
-            }
-        }
+        MaterialData material = getBuildingMaterial(parameters, target);
+        
+        ReplaceMaterialAction action = new ReplaceMaterialAction(target, material);
+        blockRecurse.recurse(target, action);
+        magic.addToUndoQueue(player, action.getBlocks());
+        castMessage(player, "Filled " + action.getBlocks().size() + " blocks with " + material.getName()); 
         
         return true;
     }
