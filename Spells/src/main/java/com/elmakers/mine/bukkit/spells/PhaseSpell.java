@@ -1,9 +1,8 @@
 package com.elmakers.mine.bukkit.spells;
 
-import org.bukkit.Material;
-
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
+import com.elmakers.mine.bukkit.plugins.nether.NetherManager;
 
 public class PhaseSpell extends Spell
 {
@@ -15,42 +14,27 @@ public class PhaseSpell extends Spell
     }
 
     @Override
-    public String getCategory()
-    {
-        return "nether";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Phase between worlds";
     }
 
     @Override
-    public Material getMaterial()
-    {
-        return Material.GOLD_RECORD;
-    }
-
-    @Override
-    protected String getName()
+    public String getName()
     {
         return "phase";
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         if (nether == null)
         {
             return false;
         }
 
-        String worldName = null;
-        if (parameters.length > 0)
-        {
-            worldName = parameters[0];
-        }
+        String worldName = parameters.getString("world", null);
+        
         return nether.go(player, worldName) != null;
     }
 }

@@ -64,7 +64,7 @@ public class RecallSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         if (parameters.length > 0 && parameters[0].equalsIgnoreCase("spawn"))
         {

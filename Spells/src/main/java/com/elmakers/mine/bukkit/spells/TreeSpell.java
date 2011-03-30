@@ -66,7 +66,7 @@ public class TreeSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         Block target = getTargetBlock();
 

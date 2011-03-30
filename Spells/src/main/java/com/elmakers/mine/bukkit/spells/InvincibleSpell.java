@@ -1,18 +1,15 @@
 package com.elmakers.mine.bukkit.spells;
 
-import org.bukkit.Material;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.magic.SpellEventType;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class InvincibleSpell extends Spell
 {
-    @Override
-    public String getCategory()
-    {
-        return "help";
-    }
-
+    protected boolean isInvicible = false;
+    
     @Override
     public String getDescription()
     {
@@ -20,23 +17,37 @@ public class InvincibleSpell extends Spell
     }
 
     @Override
-    public Material getMaterial()
-    {
-        return Material.GOLDEN_APPLE;
-    }
-
-    @Override
     public String getName()
     {
         return "invincible";
     }
-
-    @Override
-    public boolean onCast(List<ParameterData> parameters)
+    
+    protected void checkListener()
     {
-        boolean invincible = !spells.isInvincible(player);
-        spells.setInvincible(player, invincible);
-        if (invincible)
+        if (isInvicible)
+        {
+            magic.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+        }
+        else
+        {
+            magic.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+        }
+    }
+    
+    @Override
+    public void onPlayerDamage(EntityDamageEvent event)
+    {
+        if (isInvicible)
+        {
+            event.setCancelled(true);
+        }
+    }
+ 
+    @Override
+    public boolean onCast(ParameterMap parameters)
+    {
+        isInvicible = !isInvicible;
+        if (isInvicible)
         {
             castMessage(player, "You feel invincible!");
         }
@@ -44,7 +55,7 @@ public class InvincibleSpell extends Spell
         {
             castMessage(player, "You feel ... normal.");
         }
+        checkListener();
         return true;
     }
-
 }

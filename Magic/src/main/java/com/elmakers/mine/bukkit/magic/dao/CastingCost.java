@@ -9,26 +9,29 @@ import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 @PersistClass(schema="magic", name="cost", contained=true)
 public class CastingCost
 {
-    protected float        health = 0;
-    protected float        mana   = 0;
-    protected MaterialData item   = null;
-    protected int          count  = 0;
+    protected CastingCostType type   = CastingCostType.REAGENT;
+    protected double          amount = 0;
+    protected MaterialData    item   = null;
     
-    public void addItem(Material material, int count)
+    public void setItem(Material material, int count)
     {
-        this.item = new MaterialData(material);
-        this.count = count;
+        type = CastingCostType.REAGENT;
+        item = new MaterialData(material);
+        amount = count;
     }
     
-    @PersistField
-    public float getHealth()
+    public void setMana(float amount)
     {
-        return health;
+        type = CastingCostType.MANA;
+        item = null;
+        this.amount = amount;
     }
     
-    public void setHealth(float health)
+    public void setHealth(float amount)
     {
-        this.health = health;
+        type = CastingCostType.HEALTH;
+        item = null;
+        this.amount = amount;
     }
     
     @PersistField
@@ -43,25 +46,13 @@ public class CastingCost
     }
     
     @PersistField
-    public int getCount()
+    public double getAmount()
     {
-        return count;
+        return amount;
     }
     
-    public void setCount(int count)
+    public void setAmount(double amount)
     {
-        this.count = count;
+        this.amount = amount;
     }
-    
-    @PersistField
-    public float getMana()
-    {
-        return mana;
-    }
-
-    public void setMana(float mana)
-    {
-        this.mana = mana;
-    }
-
 }

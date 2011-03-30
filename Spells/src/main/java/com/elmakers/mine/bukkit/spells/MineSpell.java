@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class MineSpell extends Spell
 {
@@ -20,27 +20,15 @@ public class MineSpell extends Spell
     static final String    DEFAULT_MINEABLE  = "14,15,16, 56, 73, 74, 21";
     static final String    DEFAULT_MINED     = "14,15,263,264,331,331,351";
 
-    private int            maxRecursion      = 16;
-    private List<Material> mineableMaterials = new ArrayList<Material>();
-    private List<Integer>  minedData         = new ArrayList<Integer>();
-    private List<Material> minedMaterials    = new ArrayList<Material>();
-
-    @Override
-    public String getCategory()
-    {
-        return "mining";
-    }
+    private int           maxRecursion      = 16;
+    private List<Integer> mineableMaterials = new ArrayList<Integer>();
+    private List<Integer> minedData         = new ArrayList<Integer>();
+    private List<Integer> minedMaterials    = new ArrayList<Integer>();
 
     @Override
     public String getDescription()
     {
         return "Mines and drops the targeted resources";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.GOLD_PICKAXE;
     }
 
     @Override
@@ -81,9 +69,9 @@ public class MineSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
-        Block target = getTargetBlock();
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
@@ -102,7 +90,7 @@ public class MineSpell extends Spell
         World world = player.getWorld();
 
         int index = mineableMaterials.indexOf(mineMaterial);
-        mineMaterial = minedMaterials.get(index);
+        mineMaterial = Material.values()[minedMaterials.get(index)];
         byte data = (byte) (int) minedData.get(index);
 
         Location itemDrop = new Location(world, target.getX(), target.getY(), target.getZ(), 0, 0);
@@ -117,12 +105,12 @@ public class MineSpell extends Spell
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        mineableMaterials = PluginProperties.parseMaterials(DEFAULT_MINEABLE);
-        minedMaterials = PluginProperties.parseMaterials(DEFAULT_MINED);
-        minedData = PluginProperties.parseIntegers(DEFAULT_DATA);
-        maxRecursion = properties.getInteger("spells-mine-recursion", maxRecursion);
+        mineableMaterials = csvParser.parseIntegers(DEFAULT_MINEABLE);
+        minedMaterials = csvParser.parseIntegers(DEFAULT_MINED);
+        minedData = csvParser.parseIntegers(DEFAULT_DATA);
+       // maxRecursion = properties.getInteger("spells-mine-recursion", maxRecursion);
     }
 
     protected void tryMine(Block target, Material fillMaterial, BlockList minedBlocks, int rDepth)

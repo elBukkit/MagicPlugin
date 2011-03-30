@@ -145,7 +145,7 @@ public class StairsSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         Block targetBlock = getTargetBlock();
         if (targetBlock == null)

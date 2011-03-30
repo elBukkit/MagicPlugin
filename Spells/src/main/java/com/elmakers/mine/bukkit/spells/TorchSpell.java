@@ -44,7 +44,7 @@ public class TorchSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         if (parameters.length > 0)
         {

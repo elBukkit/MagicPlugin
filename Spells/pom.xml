@@ -68,6 +68,13 @@
   		<type>jar</type>
   		<scope>provided</scope>
   	</dependency>
+  	<dependency>
+  		<groupId>com.elmakers.mine.bukkit.plugins.nether</groupId>
+  		<artifactId>NetherGate</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
   </dependencies>
   <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
   <scm>

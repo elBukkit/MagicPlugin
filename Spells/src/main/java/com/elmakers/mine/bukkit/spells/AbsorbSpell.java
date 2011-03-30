@@ -1,12 +1,10 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class AbsorbSpell extends Spell
 {
@@ -23,7 +21,7 @@ public class AbsorbSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         if (!isUnderwater())
         {

@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -16,8 +16,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.dao.SpellVariant;
 import com.elmakers.mine.bukkit.persistence.Persistence;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 import com.elmakers.mine.bukkit.persistence.dao.PlayerData;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.PluginUtilities;
@@ -49,6 +51,56 @@ public abstract class Spell implements Comparable<Spell>
     protected PluginUtilities                utilities            = null;
 
     /**
+     * A brief description of this spell.
+     * 
+     * This is displayed in the in-game help screen, so keep it short.
+     * 
+     * @return This spells' description.
+     */
+    public abstract String getDescription();
+
+    /**
+     * You must specify a unique name (id) for your spell.
+     * 
+     * This is also the name of the default variant, used for casting this
+     * spell's default behavior.
+     * 
+     * @return The name of this spell
+     */
+    public abstract String getName();
+    
+
+    /**
+     * Called when a material selection spell is cancelled mid-selection.
+     */
+    public void onCancel()
+    {
+
+    }
+
+    /**
+     * Called when this spell is cast.
+     * 
+     * This is where you do your work!
+     * 
+     * If parameters were passed to this spell, either via a variant or the
+     * command line, they will be passed in here.
+     * 
+     * @param parameters
+     *            Any parameters that were passed to this spell
+     * @return true if the spell worked, false if it failed
+     */
+    public abstract boolean onCast(ParameterMap parameters);
+
+    /**
+     * Called when a spell is first loaded.
+     */
+    public void onLoad()
+    {
+
+    }
+    
+    /**
      * Called by the Spells plugin to cancel this spell, do not call.
      */
     public void cancel()
@@ -67,7 +119,7 @@ public abstract class Spell implements Comparable<Spell>
     public boolean cast(String[] commandLine)
     {
         // TODO : Support command-line parameters!
-        List<ParameterData> parameters = new ArrayList<ParameterData>();
+        ParameterMap parameters = new ParameterMap();
         return onCast(parameters);
     }
 
@@ -106,12 +158,24 @@ public abstract class Spell implements Comparable<Spell>
         return getName().compareTo(other.getName());
     }
 
-    /*
-     * Functions to send text to player- use these to respect "quiet" and
-     * "silent" modes.
-     */
-
-    public ItemStack getBuildingMaterial()
+    public MaterialData getBuildingMaterial(ParameterMap parameters, Block target)
+    {
+        ParameterData withParam = parameters.get("with");
+        if (withParam != null)
+        {
+            return new MaterialData(withParam.getMaterial());
+        }
+        
+        ItemStack selected = getSelectedMaterial();
+        if (selected != null)
+        {
+            return new MaterialData(selected);
+        }
+        
+        return new MaterialData(target.getType(), target.getData());
+    }
+    
+    protected ItemStack getSelectedMaterial()
     {
         ItemStack result = null;
         List<Material> buildingMaterials = magic.getBuildingMaterials();
@@ -149,15 +213,6 @@ public abstract class Spell implements Comparable<Spell>
 
         return result;
     }
-
-    /**
-     * A brief description of this spell.
-     * 
-     * This is displayed in the in-game help screen, so keep it short.
-     * 
-     * @return This spells' description.
-     */
-    public abstract String getDescription();
 
     protected Material getMaterial(String matName, List<Material> materials)
     {
@@ -209,16 +264,6 @@ public abstract class Spell implements Comparable<Spell>
     /*
      * Time functions
      */
-
-    /**
-     * You must specify a unique name (id) for your spell.
-     * 
-     * This is also the name of the default variant, used for casting this
-     * spell's default behavior.
-     * 
-     * @return The name of this spell
-     */
-    public abstract String getName();
 
     public String getPermissionNode()
     {
@@ -315,36 +360,6 @@ public abstract class Spell implements Comparable<Spell>
     }
 
     /**
-     * Called when a material selection spell is cancelled mid-selection.
-     */
-    public void onCancel()
-    {
-
-    }
-
-    /**
-     * Called when this spell is cast.
-     * 
-     * This is where you do your work!
-     * 
-     * If parameters were passed to this spell, either via a variant or the
-     * command line, they will be passed in here.
-     * 
-     * @param parameters
-     *            Any parameters that were passed to this spell
-     * @return true if the spell worked, false if it failed
-     */
-    public abstract boolean onCast(List<ParameterData> parameters);
-
-    /**
-     * Called when a spell is first loaded.
-     */
-    public void onLoad()
-    {
-
-    }
-
-    /**
      * Listener method, called on player maerial selection for registered
      * spells.
      * 
@@ -358,19 +373,29 @@ public abstract class Spell implements Comparable<Spell>
     }
 
     /**
-     * Listener method, called on player move for registered spells.
+     * Listener method, called on player death for registered spells.
      * 
-     * @param player
-     *            The player that died
      * @param event
      *            The original entity death event
      * @see Magic#registerEvent(SpellEventType, Spell)
      */
-    public void onPlayerDeath(Player player, EntityDeathEvent event)
+    public void onPlayerDeath(EntityDeathEvent event)
     {
 
     }
 
+    /**
+     * Listener method, called on player damage for registered spells.
+     * 
+     * @param event
+     *            The original entity damage event
+     * @see Magic#registerEvent(SpellEventType, Spell)
+     */
+    public void onPlayerDamage(EntityDamageEvent event)
+    {
+
+    }
+    
     /**
      * Listener method, called on player move for registered spells.
      * 

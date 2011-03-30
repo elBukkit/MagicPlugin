@@ -6,22 +6,13 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class LavaSpell extends Spell
 {
-
-    private int defaultRadius         = 1;
-
     private int defaultSearchDistance = 64;
-
     private int maxRadius             = 6;
-
-    @Override
-    public String getCategory()
-    {
-        return "combat";
-    }
+    private int defaultRadius         = 1;
 
     @Override
     public String getDescription()
@@ -30,52 +21,34 @@ public class LavaSpell extends Spell
     }
 
     @Override
-    public Material getMaterial()
-    {
-        return Material.LAVA;
-    }
-
-    @Override
-    protected String getName()
+    public String getName()
     {
         return "lava";
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
-        Block target = getTargetBlock();
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
             return false;
         }
 
-        if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
+        if (defaultSearchDistance > 0 && targeting.getDistance(player, target) > defaultSearchDistance)
         {
             castMessage(player, "Can't fire that far away");
             return false;
         }
 
-        int radius = 1;
-        for (String parameter : parameters)
-        {
-            // try radius;
-            try
-            {
-                radius = Integer.parseInt(parameters[0]);
-            }
-            catch (NumberFormatException ex)
-            {
-            }
-        }
-
+        int radius = parameters.getInteger("radius", defaultRadius);
         if (radius > maxRadius && maxRadius > 0)
         {
             radius = maxRadius;
         }
 
-        int lavaBlocks = (int) getDistance(player, target);
+        int lavaBlocks = (int)targeting.getDistance(player, target);
         if (lavaBlocks <= 0)
         {
             return false;
@@ -114,7 +87,7 @@ public class LavaSpell extends Spell
         if (burnedBlocks.size() > 0)
         {
             burnedBlocks.setTimeToLive(2);
-            spells.addToUndoQueue(player, burnedBlocks);
+            magic.addToUndoQueue(player, burnedBlocks);
         }
 
         castMessage(player, "Blasted " + burnedBlocks.size() + " lava blocks");
@@ -123,10 +96,10 @@ public class LavaSpell extends Spell
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        defaultRadius = properties.getInteger("spells-lava-radius", defaultRadius);
-        maxRadius = properties.getInteger("spells-lava-max-radius", maxRadius);
-        defaultSearchDistance = properties.getInteger("spells-lava-search-distance", defaultSearchDistance);
+        // defaultRadius = properties.getInteger("spells-lava-radius", defaultRadius);
+        // maxRadius = properties.getInteger("spells-lava-max-radius", maxRadius);
+        // defaultSearchDistance = properties.getInteger("spells-lava-search-distance", defaultSearchDistance);
     }
 }

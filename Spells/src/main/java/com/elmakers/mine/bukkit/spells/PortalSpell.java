@@ -8,7 +8,9 @@ import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.BoundingBox;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
+import com.elmakers.mine.bukkit.plugins.nether.NetherManager;
 
 public class PortalSpell extends Spell
 {
@@ -22,39 +24,27 @@ public class PortalSpell extends Spell
     }
 
     @Override
-    public String getCategory()
-    {
-        return "nether";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Create a temporary portal";
     }
 
     @Override
-    public Material getMaterial()
-    {
-        return Material.PORTAL;
-    }
-
-    @Override
-    protected String getName()
+    public String getName()
     {
         return "portal";
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
-        Block target = getTargetBlock();
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
             return false;
         }
-        if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
+        if (defaultSearchDistance > 0 && targeting.getDistance(player, target) > defaultSearchDistance)
         {
             castMessage(player, "Can't create a portal that far away");
             return false;
@@ -65,7 +55,7 @@ public class PortalSpell extends Spell
         blockType = portalBase.getType();
         if (blockType != Material.AIR)
         {
-            portalBase = getFaceBlock();
+            portalBase = targeting.getFaceBlock();
         }
 
         blockType = portalBase.getType();

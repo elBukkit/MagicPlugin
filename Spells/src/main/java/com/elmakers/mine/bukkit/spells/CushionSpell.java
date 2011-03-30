@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -9,7 +7,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class CushionSpell extends Spell
 {
@@ -30,7 +28,7 @@ public class CushionSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         World world = player.getWorld();
         CraftWorld craftWorld = (CraftWorld) world;

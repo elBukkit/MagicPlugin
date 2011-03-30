@@ -33,7 +33,7 @@ public class UndoSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         for (int i = 0; i < parameters.length; i++)
         {

@@ -1,12 +1,10 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.List;
-
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class ArrowSpell extends Spell
 {
@@ -23,7 +21,7 @@ public class ArrowSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         CraftPlayer cp = (CraftPlayer) player;
         Arrow arrow = cp.shootArrow();

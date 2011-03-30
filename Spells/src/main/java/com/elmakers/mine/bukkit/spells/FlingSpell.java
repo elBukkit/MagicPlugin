@@ -1,32 +1,19 @@
 package com.elmakers.mine.bukkit.spells;
 
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class FlingSpell extends Spell
 {
     private final int magnitude = 20;
 
     @Override
-    public String getCategory()
-    {
-        return "wip";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Sends you flying in the target direction";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.LEATHER_BOOTS;
     }
 
     @Override
@@ -36,9 +23,9 @@ public class FlingSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
-        Vector velocity = getAimVector();
+        Vector velocity = targeting.getAimVector();
         velocity.multiply(magnitude);
         CraftPlayer craftPlayer = (CraftPlayer) player;
         craftPlayer.setVelocity(velocity);

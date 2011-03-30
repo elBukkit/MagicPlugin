@@ -6,7 +6,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class FrostSpell extends Spell
 {
@@ -77,21 +77,9 @@ public class FrostSpell extends Spell
     }
 
     @Override
-    public String getCategory()
-    {
-        return "nature";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Freeze water and create snow";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.SNOW_BALL;
     }
 
     @Override
@@ -101,35 +89,24 @@ public class FrostSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
-        Block target = getTargetBlock();
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
             return false;
         }
-        if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
+        if (defaultSearchDistance > 0 && targeting.getDistance(player, target) > defaultSearchDistance)
         {
             castMessage(player, "Can't frost that far away");
             return false;
         }
 
-        int radius = defaultRadius;
-        if (parameters.length > 0)
+        int radius = parameters.getInteger("radius", defaultRadius);
+        if (radius > maxRadius && maxRadius > 0)
         {
-            try
-            {
-                radius = Integer.parseInt(parameters[0]);
-                if (radius > maxRadius && maxRadius > 0)
-                {
-                    radius = maxRadius;
-                }
-            }
-            catch (NumberFormatException ex)
-            {
-                radius = defaultRadius;
-            }
+            radius = maxRadius;
         }
 
         BlockList frostedBlocks = new BlockList();
@@ -159,19 +136,19 @@ public class FrostSpell extends Spell
             }
         }
 
-        spells.addToUndoQueue(player, frostedBlocks);
+        magic.addToUndoQueue(player, frostedBlocks);
         castMessage(player, "Frosted " + frostedBlocks.size() + " blocks");
 
         return true;
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        defaultRadius = properties.getInteger("spells-frost-radius", defaultRadius);
-        maxRadius = properties.getInteger("spells-frost-max-radius", maxRadius);
-        defaultSearchDistance = properties.getInteger("spells-frost-search-distance", defaultSearchDistance);
-        verticalSearchDistance = properties.getInteger("spells-frost-vertical-search-distance", verticalSearchDistance);
+        //defaultRadius = properties.getInteger("spells-frost-radius", defaultRadius);
+        //maxRadius = properties.getInteger("spells-frost-max-radius", maxRadius);
+        //defaultSearchDistance = properties.getInteger("spells-frost-search-distance", defaultSearchDistance);
+        //verticalSearchDistance = properties.getInteger("spells-frost-vertical-search-distance", verticalSearchDistance);
     }
 
 }

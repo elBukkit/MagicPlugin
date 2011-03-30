@@ -37,7 +37,7 @@ public class TransmuteSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         BlockList transmuteAction = null;
 

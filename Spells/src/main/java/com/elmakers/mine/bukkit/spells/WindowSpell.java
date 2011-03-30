@@ -88,7 +88,7 @@ public class WindowSpell extends Spell implements BlockRequestListener
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         targetThrough(Material.GLASS);
         Block target = getTargetBlock();

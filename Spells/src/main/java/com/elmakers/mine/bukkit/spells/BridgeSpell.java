@@ -1,16 +1,12 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.List;
-
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class BridgeSpell extends Spell
 {
@@ -29,7 +25,7 @@ public class BridgeSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         Block playerBlock = targeting.getPlayerBlock();
         if (playerBlock == null)
@@ -43,17 +39,8 @@ public class BridgeSpell extends Spell
         Block attachBlock = playerBlock;
         Block targetBlock = attachBlock.getFace(direction);
 
-        Material material = targetBlock.getType();
-        byte data = targetBlock.getData();
-
-        ItemStack buildWith = getBuildingMaterial();
-        if (buildWith != null)
-        {
-            MaterialData md = new MaterialData(buildWith);
-            material = md.getType();
-            data = md.getData();
-        }
-
+        MaterialData material = getBuildingMaterial(parameters, playerBlock);
+        
         int distance = 0;
         while (targeting.isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
         {
@@ -68,8 +55,8 @@ public class BridgeSpell extends Spell
         }
         BlockList bridgeBlocks = new BlockList();
         bridgeBlocks.add(targetBlock);
-        targetBlock.setType(material);
-        targetBlock.setData(data);
+        targetBlock.setType(material.getType());
+        targetBlock.setData(material.getData());
 
         castMessage(player, "A bridge extends!");
         magic.addToUndoQueue(player, bridgeBlocks);

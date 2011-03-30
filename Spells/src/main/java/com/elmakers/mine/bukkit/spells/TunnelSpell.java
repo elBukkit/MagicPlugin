@@ -57,7 +57,7 @@ public class TunnelSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         Block playerBlock = getPlayerBlock();
         if (playerBlock == null)

@@ -1,14 +1,12 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class PeekSpell extends Spell
 {
@@ -17,7 +15,7 @@ public class PeekSpell extends Spell
     private int            defaultRadius         = 3;
     private int            defaultSearchDistance = 32;
     private int            maxRadius             = 32;
-    private List<Material> peekableMaterials     = new ArrayList<Material>();
+    private MaterialList   peekableMaterials     = new MaterialList();
 
     public void blastBlock(int dx, int dy, int dz, Block centerPoint, int radius, BlockList blocks)
     {
@@ -39,25 +37,13 @@ public class PeekSpell extends Spell
     }
 
     @Override
-    public String getCategory()
-    {
-        return "exploring";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Temporarily glass your target surface";
     }
 
     @Override
-    public Material getMaterial()
-    {
-        return Material.SUGAR_CANE;
-    }
-
-    @Override
-    protected String getName()
+    public String getName()
     {
         return "peek";
     }
@@ -78,36 +64,25 @@ public class PeekSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
-        targetThrough(Material.GLASS);
-        Block target = getTargetBlock();
+        targeting.targetThrough(Material.GLASS);
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
             return false;
         }
-        if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
+        if (defaultSearchDistance > 0 && targeting.getDistance(player, target) > defaultSearchDistance)
         {
             castMessage(player, "Can't peek that far away");
             return false;
         }
 
-        int radius = defaultRadius;
-        if (parameters.length > 0)
+        int radius = parameters.getInteger("radius", defaultRadius);
+        if (radius > maxRadius && maxRadius > 0)
         {
-            try
-            {
-                radius = Integer.parseInt(parameters[0]);
-                if (radius > maxRadius && maxRadius > 0)
-                {
-                    radius = maxRadius;
-                }
-            }
-            catch (NumberFormatException ex)
-            {
-                radius = defaultRadius;
-            }
+            radius = maxRadius;
         }
 
         BlockList peekedBlocks = new BlockList();
@@ -139,7 +114,7 @@ public class PeekSpell extends Spell
         }
 
         peekedBlocks.setTimeToLive(8000);
-        spells.scheduleCleanup(peekedBlocks);
+        magic.scheduleCleanup(peekedBlocks);
 
         castMessage(player, "Peeked through  " + peekedBlocks.size() + "blocks");
 
@@ -147,12 +122,12 @@ public class PeekSpell extends Spell
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        peekableMaterials = properties.getMaterials("spells-peek-peekable", DEFAULT_PEEKABLES);
-        defaultRadius = properties.getInteger("spells-peek-radius", defaultRadius);
-        maxRadius = properties.getInteger("spells-peek-max-radius", maxRadius);
-        defaultSearchDistance = properties.getInteger("spells-peek-search-distance", defaultSearchDistance);
+        peekableMaterials = csvParser.parseMaterials(DEFAULT_PEEKABLES);
+        //defaultRadius = properties.getInteger("spells-peek-radius", defaultRadius);
+        //maxRadius = properties.getInteger("spells-peek-max-radius", maxRadius);
+        //defaultSearchDistance = properties.getInteger("spells-peek-search-distance", defaultSearchDistance);
     }
 
 }

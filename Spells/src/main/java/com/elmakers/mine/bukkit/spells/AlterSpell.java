@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -9,7 +7,7 @@ import org.bukkit.block.BlockFace;
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class AlterSpell extends Spell
 {
@@ -51,7 +49,7 @@ public class AlterSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         Block targetBlock = targeting.getTargetBlock();
         if (targetBlock == null)

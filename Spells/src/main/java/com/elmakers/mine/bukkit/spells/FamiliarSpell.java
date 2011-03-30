@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.borrowed.CreatureType;
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.magic.SpellEventType;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class FamiliarSpell extends Spell
 {
@@ -64,7 +65,7 @@ public class FamiliarSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         if (familiars.size() == 1 && maxFamiliars == 1)
         {
@@ -92,24 +93,25 @@ public class FamiliarSpell extends Spell
         target = target.getFace(BlockFace.UP);
 
         CreatureType famType = CreatureType.UNKNOWN;
-        for (ParameterData parameter : parameters)
+        if (parameters.hasFlag("any"))
         {
-            if (parameter.isFlag("any"))
+            int randomFamiliar = rand.nextInt(allFamiliars.size());
+            famType = CreatureType.fromName(allFamiliars.get(randomFamiliar));
+        }
+        else if (parameters.hasFlag("monster"))
+        {
+            int randomFamiliar = rand.nextInt(defaultMonsters.size());
+            famType = CreatureType.fromName(defaultMonsters.get(randomFamiliar));
+        }
+        else 
+        {
+            ParameterData typeParameter = parameters.get("type");
+            if (typeParameter != null)
             {
-                int randomFamiliar = rand.nextInt(allFamiliars.size());
-                famType = CreatureType.fromName(allFamiliars.get(randomFamiliar));
-            }
-            else if (parameter.isFlag("monster"))
-            {
-                int randomFamiliar = rand.nextInt(defaultMonsters.size());
-                famType = CreatureType.fromName(defaultMonsters.get(randomFamiliar));
-            }
-            else if (parameter.isMatch("type"))
-            {
-                famType = CreatureType.fromName(parameter.getValue());
+                famType = CreatureType.fromName(typeParameter.getValue());
             }
         }
-
+    
         if (famType == CreatureType.UNKNOWN)
         {
             int randomFamiliar = rand.nextInt(defaultFamiliars.size());

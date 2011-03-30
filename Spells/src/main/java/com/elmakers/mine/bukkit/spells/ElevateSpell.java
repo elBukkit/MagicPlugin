@@ -1,11 +1,9 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.List;
-
 import org.bukkit.Location;
 
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class ElevateSpell extends Spell
 {
@@ -46,16 +44,9 @@ public class ElevateSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
-        boolean ascend = true;
-        for (ParameterData parameter : parameters)
-        {
-            if (parameter.isFlag("descend"))
-            {
-                ascend = false;
-            }
-        }
+        boolean ascend = !parameters.hasFlag("down");
         if (ascend)
         {
             if (ascend())

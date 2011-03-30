@@ -27,88 +27,44 @@ public class Magic
      */
 
     static final String                           DEFAULT_BUILDING_MATERIALS     = "1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,35,41,42,43,45,46,47,48,49,56,57,60,65,66,73,74,79,80,81,82,83,85,86,87,88,89,90,91";
-
     static final String                           STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
-
-    /*
-     * Material use system
-     */
-
     static final String                           STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
 
     private final boolean                         allowCommands                  = true;
-
     private final List<Material>                  buildingMaterials              = new ArrayList<Material>();
-
     private final List<BlockList>                 cleanupBlocks                  = new ArrayList<BlockList>();
-
     private final Object                          cleanupLock                    = new Object();
 
-    /*
-     * Undo system
-     */
-
     private final List<Spell>                     deathListeners                 = new ArrayList<Spell>();
-
-    private final HashMap<String, Boolean>        invinciblePlayers              = new HashMap<String, Boolean>();
-
-    private long                                  lastCleanupTime                = 0;
-
-    private final Logger                          log                            = Logger.getLogger("Minecraft");
-
+    private final List<Spell>                     damageListeners                = new ArrayList<Spell>();
     private final List<Spell>                     materialListeners              = new ArrayList<Spell>();
-
     private final List<Spell>                     movementListeners              = new ArrayList<Spell>();
-
-    protected Persistence                         persistence                    = null;
-
-    private final HashMap<String, PlayerSpells>   playerSpells                   = new HashMap<String, PlayerSpells>();
-
-    /*
-     * private boolean autoExpandUndo = true; private boolean autoPreventCaveIn
-     * = false; private int undoCaveInHeight = 32;
-     */
-    private final HashMap<String, UndoQueue>      playerUndoQueues               = new HashMap<String, UndoQueue>();
-
-    /*
-     * Event registration- call to listen for events
-     */
-
-    private final boolean                         quiet                          = true;
-
     private final List<Spell>                     quitListeners                  = new ArrayList<Spell>();
 
-    /*
-     * Random utility functions
-     */
+    private long                                  lastCleanupTime                = 0;
+    private final Logger                          log                            = Logger.getLogger("Minecraft");
 
+    protected Persistence                         persistence                    = null;
     protected Server                              server                         = null;
+    protected PluginUtilities                     utilities                      = null;
+    
+    private final HashMap<String, UndoQueue>      playerUndoQueues               = new HashMap<String, UndoQueue>();
 
+    private final boolean                         quiet                          = true;
     private final boolean                         silent                         = false;
 
     private final List<Spell>                     spells                         = new ArrayList<Spell>();
-
-    private final HashMap<Material, SpellVariant> spellsByMaterial               = new HashMap<Material, SpellVariant>();
-
     private final HashMap<String, SpellVariant>   spellVariants                  = new HashMap<String, SpellVariant>();
 
-    private final List<Material>                  stickyMaterials                = new ArrayList<Material>();
-
-    private final List<Material>                  stickyMaterialsDoubleHeight    = new ArrayList<Material>();
-    // private Material gravityFillMaterial = Material.DIRT;
-
     private final int                             undoQueueDepth                 = 256;
-
-    /*
-     * Internal functions - don't call these, or really anything below here.
-     */
-
-    /*
-     * Saving and loading
-     */
-
-    protected PluginUtilities                     utilities                      = null;
-
+      
+      /*
+       * private boolean autoExpandUndo = true; 
+       * private boolean autoPreventCaveIn = false; 
+       * private int undoCaveInHeight = 32;
+       // private Material gravityFillMaterial = Material.DIRT;
+      */
+    
     public void addToUndoQueue(Player player, BlockList blocks)
     {
         UndoQueue queue = getUndoQueue(player.getName());
@@ -194,7 +150,6 @@ public class Magic
         quitListeners.clear();
         spells.clear();
         spellVariants.clear();
-        spellsByMaterial.clear();
     }
 
     protected void findSpells()
@@ -221,12 +176,6 @@ public class Magic
          * PortalSpell(nether)); addSpell(new PhaseSpell(nether)); addSpell(new
          * WindowSpell(nether)); }
          */
-    }
-
-    public Material finishMaterialUse(Player player)
-    {
-        PlayerSpells spells = getPlayerSpells(player);
-        return spells.finishMaterialUse();
     }
 
     public void forceCleanup()
@@ -278,23 +227,6 @@ public class Magic
         return log;
     }
 
-    public byte getMaterialData(Player player)
-    {
-        PlayerSpells spells = getPlayerSpells(player);
-        return spells.getData();
-    }
-
-    public PlayerSpells getPlayerSpells(Player player)
-    {
-        PlayerSpells spells = playerSpells.get(player.getName());
-        if (spells == null)
-        {
-            spells = new PlayerSpells();
-            playerSpells.put(player.getName(), spells);
-        }
-        return spells;
-    }
-
     public SpellVariant getSpell(String name, Player player)
     {
         SpellVariant spell = spellVariants.get(name);
@@ -336,17 +268,6 @@ public class Magic
         return mat == Material.GRAVEL || mat == Material.SAND || mat == Material.WOOD_DOOR || mat == Material.IRON_DOOR;
     }
 
-    public boolean isInvincible(Player player)
-    {
-        Boolean isInvincible = invinciblePlayers.get(player.getName());
-        if (isInvincible == null)
-        {
-            return false;
-        }
-
-        return isInvincible;
-    }
-
     public boolean isQuiet()
     {
         return quiet;
@@ -360,16 +281,6 @@ public class Magic
     public boolean isSolid(Material mat)
     {
         return mat != Material.AIR && mat != Material.WATER && mat != Material.STATIONARY_WATER && mat != Material.LAVA && mat != Material.STATIONARY_LAVA;
-    }
-
-    public boolean isSticky(Material mat)
-    {
-        return stickyMaterials.contains(mat);
-    }
-
-    public boolean isStickyAndTall(Material mat)
-    {
-        return stickyMaterialsDoubleHeight.contains(mat);
     }
 
     protected void loadProperties()
@@ -408,20 +319,24 @@ public class Magic
 
     public void onPlayerDamage(Player player, EntityDamageEvent event)
     {
-        if (isInvincible(player))
+        // Must allow listeners to remove themselves during the event!
+        List<Spell> active = new ArrayList<Spell>();
+        active.addAll(damageListeners);
+        for (Spell listener : active)
         {
-            event.setCancelled(true);
+            listener.onPlayerDamage(event);
         }
     }
 
     public void onPlayerDeath(Player player, EntityDeathEvent event)
     {
         // Must allow listeners to remove themselves during the event!
-        /*
-         * Disabled for now- multi-world issues List<Spell> active = new
-         * ArrayList<Spell>(); active.addAll(deathListeners); for (Spell
-         * listener : active) { listener.onPlayerDeath(player, event); }
-         */
+        List<Spell> active = new ArrayList<Spell>();
+        active.addAll(deathListeners);
+        for (Spell listener : active)
+        {
+            listener.onPlayerDeath(event);
+        }
     }
 
     public void onPlayerMove(PlayerMoveEvent event)
@@ -453,6 +368,12 @@ public class Magic
     {
         switch (type)
         {
+            case PLAYER_DAMAGE:
+                if (!damageListeners.contains(spell))
+                {
+                    damageListeners.add(spell);
+                }
+                break;
             case PLAYER_MOVE:
                 if (!movementListeners.contains(spell))
                 {
@@ -492,36 +413,6 @@ public class Magic
         }
     }
 
-    public void setCurrentMaterialType(Player player, Material material, byte data)
-    {
-        PlayerSpells spells = getPlayerSpells(player);
-        if (spells.isUsingMaterial() && (spells.getMaterial() != material || spells.getData() != data))
-        {
-            spells.setMaterial(material);
-            spells.setData(data);
-            player.sendMessage("Now using " + material.name().toLowerCase());
-            // Must allow listeners to remove themselves during the event!
-            List<Spell> active = new ArrayList<Spell>();
-            active.addAll(materialListeners);
-            for (Spell listener : active)
-            {
-                listener.onMaterialChoose(player);
-            }
-        }
-
-    }
-
-    public void setInvincible(Player player, boolean invincible)
-    {
-        invinciblePlayers.put(player.getName(), invincible);
-    }
-
-    public void startMaterialUse(Player player, Material material, byte data)
-    {
-        PlayerSpells spells = getPlayerSpells(player);
-        spells.startMaterialUse(material, data);
-    }
-
     // private NetherManager nether = null;
 
     public boolean undo(String playerName)
@@ -552,6 +443,9 @@ public class Magic
             case PLAYER_DEATH:
                 deathListeners.remove(spell);
                 break;
-        }
+            case PLAYER_DAMAGE:
+                damageListeners.remove(spell);
+                break;
+         }
     }
 }

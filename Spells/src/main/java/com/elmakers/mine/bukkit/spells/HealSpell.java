@@ -1,28 +1,14 @@
 package com.elmakers.mine.bukkit.spells;
 
-import org.bukkit.Material;
-
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class HealSpell extends Spell
 {
     @Override
-    public String getCategory()
-    {
-        return "help";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Heal yourself";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.BREAD;
     }
 
     @Override
@@ -32,7 +18,7 @@ public class HealSpell extends Spell
     }
 
     @Override
-    public boolean onCast(List<ParameterData> parameters)
+    public boolean onCast(ParameterMap parameters)
     {
         castMessage(player, "You heal yourself");
         player.setHealth(20);
