@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.spells;
+package com.elmakers.mine.bukkit.plugins.magic;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -6,7 +6,7 @@ import org.bukkit.event.entity.EntityListener;
 
 import com.elmakers.mine.bukkit.magic.Magic;
 
-class SpellsEntityListener extends EntityListener
+class MagicEntityListener extends EntityListener
 {
     private Magic master;
 

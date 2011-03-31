@@ -2,32 +2,19 @@ package com.elmakers.mine.bukkit.spells;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockData;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class TransmuteSpell extends Spell
 {
-
-    @Override
-    public String getCategory()
-    {
-        return "construction";
-    }
-
     @Override
     public String getDescription()
     {
         return "Modify your last construction";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.GOLD_INGOT;
     }
 
     @Override
@@ -45,18 +32,18 @@ public class TransmuteSpell extends Spell
          * Use target if targeting
          */
         boolean usedTarget = false;
-        targetThrough(Material.GLASS);
-        Block target = getTargetBlock();
+        targeting.targetThrough(Material.GLASS);
+        Block target = targeting.getTargetBlock();
 
         if (target != null)
         {
-            transmuteAction = spells.getLastBlockList(player.getName(), target);
+            transmuteAction = magic.getLastBlockList(player.getName(), target);
             usedTarget = transmuteAction != null;
         }
 
         if (transmuteAction == null)
         {
-            transmuteAction = spells.getLastBlockList(player.getName());
+            transmuteAction = magic.getLastBlockList(player.getName());
         }
 
         if (transmuteAction == null)
@@ -65,30 +52,27 @@ public class TransmuteSpell extends Spell
             return false;
         }
 
-        ItemStack targetItem = getBuildingMaterial();
-        if (targetItem == null)
+        MaterialData material = getBuildingMaterial(parameters, null);
+        if (material == null)
         {
             sendMessage(player, "Nothing to transmute with");
             return false;
         }
 
-        Material material = targetItem.getType();
-        byte data = getItemData(targetItem);
-
         for (BlockData undoBlock : transmuteAction)
         {
             Block block = undoBlock.getBlock();
-            block.setType(material);
-            block.setData(data);
+            block.setType(material.getType());
+            block.setData(material.getData());
         }
 
         if (usedTarget)
         {
-            castMessage(player, "You transmute your target structure to " + material.name().toLowerCase());
+            castMessage(player, "You transmute your target structure to " + material.getName());
         }
         else
         {
-            castMessage(player, "You transmute your last structure to " + material.name().toLowerCase());
+            castMessage(player, "You transmute your last structure to " + material.getName());
         }
 
         return true;

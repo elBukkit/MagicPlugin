@@ -4,6 +4,8 @@ version: 1.00
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
+depend:
+ - Persistence
 commands:
   cast:
     description: Cast a spell

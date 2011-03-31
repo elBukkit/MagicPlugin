@@ -1,25 +1,21 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class StairsSpell extends Spell
 {
-    static final String    DEFAULT_DESTRUCTIBLES = "1,3,10,11,12,13";
-
-    private int            defaultDepth          = 4;
-    private int            defaultHeight         = 3;
-    private int            defaultWidth          = 3;
-    private List<Material> destructibleMaterials = new ArrayList<Material>();
-    private int            torchFrequency        = 4;
+    private int          defaultDepth          = 4;
+    private int          defaultHeight         = 3;
+    private int          defaultWidth          = 3;
+    private int          torchFrequency        = 4;
+    private MaterialList destructibleMaterials = null;
 
     protected void createSpiralStairs(Block targetBlock)
     {
@@ -29,7 +25,7 @@ public class StairsSpell extends Spell
     protected void createStairs(Block targetBlock)
     {
         BlockFace vertDirection = BlockFace.UP;
-        BlockFace horzDirection = getPlayerFacing();
+        BlockFace horzDirection = targeting.getPlayerFacing();
 
         int depth = defaultDepth;
         int height = defaultHeight;
@@ -39,8 +35,8 @@ public class StairsSpell extends Spell
         BlockList stairBlocks = new BlockList();
         Material fillMaterial = targetBlock.getType();
 
-        BlockFace toTheLeft = goLeft(horzDirection);
-        BlockFace toTheRight = goRight(horzDirection);
+        BlockFace toTheLeft = targeting.goLeft(horzDirection);
+        BlockFace toTheRight = targeting.goRight(horzDirection);
         Block bottomBlock = targetBlock;
         Block bottomLeftBlock = bottomBlock;
         for (int i = 0; i < width / 2; i++)
@@ -105,27 +101,15 @@ public class StairsSpell extends Spell
             bottomLeftBlock = bottomLeftBlock.getFace(vertDirection);
         }
 
-        spells.addToUndoQueue(player, tunneledBlocks);
-        spells.addToUndoQueue(player, stairBlocks);
+        magic.addToUndoQueue(player, tunneledBlocks);
+        magic.addToUndoQueue(player, stairBlocks);
         castMessage(player, "Tunneled through " + tunneledBlocks.size() + "blocks and created " + stairBlocks.size() + " stairs");
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "wip";
     }
 
     @Override
     public String getDescription()
     {
         return "Construct some stairs";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.COBBLESTONE_STAIRS;
     }
 
     @Override
@@ -147,7 +131,7 @@ public class StairsSpell extends Spell
     @Override
     public boolean onCast(ParameterMap parameters)
     {
-        Block targetBlock = getTargetBlock();
+        Block targetBlock = targeting.getTargetBlock();
         if (targetBlock == null)
         {
             castMessage(player, "No target");
@@ -160,13 +144,9 @@ public class StairsSpell extends Spell
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        destructibleMaterials = properties.getMaterials("spells-stairs-destructible", DEFAULT_DESTRUCTIBLES);
-        defaultDepth = properties.getInteger("spells-stairs-depth", defaultDepth);
-        defaultWidth = properties.getInteger("spells-stairs-width", defaultWidth);
-        defaultHeight = properties.getInteger("spells-stairs-height", defaultHeight);
-        torchFrequency = properties.getInteger("spells-stairs-torch-frequency", torchFrequency);
+        destructibleMaterials = getMaterialList("common");
     }
 
 }

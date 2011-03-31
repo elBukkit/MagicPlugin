@@ -5,36 +5,16 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class TorchSpell extends Spell
 {
-    private boolean allowDay        = true;
     private boolean allowLightstone = true;
-    private boolean allowNight      = true;
-
-    public TorchSpell()
-    {
-        addVariant("day", Material.FLINT, "help", "Change time time to day", "day");
-        addVariant("night", Material.COAL, "help", "Change time time to night", "night");
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "construction";
-    }
-
+ 
     @Override
     public String getDescription()
     {
         return "Place a torch at your target";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.TORCH;
     }
 
     @Override
@@ -46,49 +26,8 @@ public class TorchSpell extends Spell
     @Override
     public boolean onCast(ParameterMap parameters)
     {
-        if (parameters.length > 0)
-        {
-            long targetTime = 0;
-            String timeDescription = "day";
-            String param = parameters[0];
-            if (param.equalsIgnoreCase("night"))
-            {
-                targetTime = 13000;
-                timeDescription = "night";
-            }
-            else
-            {
-                try
-                {
-                    targetTime = Long.parseLong(param);
-                    timeDescription = "raw: " + targetTime;
-                }
-                catch (NumberFormatException ex)
-                {
-                    targetTime = 0;
-                }
-            }
-            setRelativeTime(targetTime);
-            castMessage(player, "Changed time to " + timeDescription);
-            return true;
-        }
-
-        if (getYRotation() > 80 && allowDay)
-        {
-            castMessage(player, "FLAME ON!");
-            setRelativeTime(0);
-            return true;
-        }
-
-        if (getYRotation() < -80 && allowNight)
-        {
-            castMessage(player, "FLAME OFF!");
-            setRelativeTime(13000);
-            return true;
-        }
-
-        Block target = getTargetBlock();
-        Block face = getLastBlock();
+        Block target = targeting.getTargetBlock();
+        Block face = targeting.getLastBlock();
 
         if (target == null || face == null)
         {
@@ -123,16 +62,14 @@ public class TorchSpell extends Spell
         BlockList torchBlock = new BlockList();
         target.setType(targetMaterial);
         torchBlock.add(target);
-        spells.addToUndoQueue(player, torchBlock);
+        magic.addToUndoQueue(player, torchBlock);
 
         return true;
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        allowNight = properties.getBoolean("spells-torch-allow-night", allowNight);
-        allowDay = properties.getBoolean("spells-torch-allow-day", allowDay);
-        allowLightstone = properties.getBoolean("spells-torch-allow-lightstone", allowLightstone);
+        //allowLightstone = properties.getBoolean("spells-torch-allow-lightstone", allowLightstone);
     }
 }

@@ -172,6 +172,11 @@ public abstract class Spell implements Comparable<Spell>
             return new MaterialData(selected);
         }
         
+        if (target == null)
+        {
+            return null;
+        }
+        
         return new MaterialData(target.getType(), target.getData());
     }
     

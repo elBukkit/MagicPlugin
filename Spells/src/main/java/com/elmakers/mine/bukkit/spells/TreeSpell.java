@@ -6,7 +6,7 @@ import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class TreeSpell extends Spell
 {
@@ -37,21 +37,9 @@ public class TreeSpell extends Spell
     private boolean        requireSapling  = false;
 
     @Override
-    public String getCategory()
-    {
-        return "farming";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Creates a tree, or a big tree";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.SAPLING;
     }
 
     @Override
@@ -68,7 +56,7 @@ public class TreeSpell extends Spell
     @Override
     public boolean onCast(ParameterMap parameters)
     {
-        Block target = getTargetBlock();
+        Block target = targeting.getTargetBlock();
 
         if (target == null)
         {
@@ -84,9 +72,10 @@ public class TreeSpell extends Spell
 
         Location treeLoc = new Location(player.getWorld(), target.getX(), target.getY() + 1, target.getZ(), 0, 0);
         TreeType treeType = defaultTreeType;
-        if (parameters.length > 0)
+        
+        if (parameters.hasParameter("type"))
         {
-            treeType = parseTreeString(parameters[0], defaultTreeType);
+            treeType = parseTreeString(parameters.getString("type", ""), defaultTreeType);
         }
 
         boolean result = player.getWorld().generateTree(treeLoc, treeType);
@@ -103,8 +92,8 @@ public class TreeSpell extends Spell
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        requireSapling = properties.getBoolean("spells-tree-require-sapling", requireSapling);
+        //requireSapling = properties.getBoolean("spells-tree-require-sapling", requireSapling);
     }
 }

@@ -5,27 +5,14 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class TowerSpell extends Spell
 {
-
-    @Override
-    public String getCategory()
-    {
-        return "wip";
-    }
-
     @Override
     public String getDescription()
     {
         return "Create a tower out of the specified material";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.LADDER;
     }
 
     @Override
@@ -37,7 +24,7 @@ public class TowerSpell extends Spell
     @Override
     public boolean onCast(ParameterMap parameters)
     {
-        Block target = getTargetBlock();
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
@@ -61,7 +48,7 @@ public class TowerSpell extends Spell
                 height = height > maxHeight ? maxHeight : height;
                 break;
             }
-            Block block = getBlockAt(midX, y, midZ);
+            Block block = targeting.getBlockAt(midX, y, midZ);
             if (block.getType() != Material.AIR)
             {
                 castMessage(player, "Found ceiling of " + block.getType().name().toLowerCase());
@@ -86,14 +73,14 @@ public class TowerSpell extends Spell
                     if (dx != 0 || dz != 0)
                     {
                         blocksCreated++;
-                        Block block = getBlockAt(x, y, z);
+                        Block block = targeting.getBlockAt(x, y, z);
                         towerBlocks.add(block);
                         block.setTypeId(material);
                     }
                 }
             }
         }
-        spells.addToUndoQueue(player, towerBlocks);
+        magic.addToUndoQueue(player, towerBlocks);
         castMessage(player, "Made tower " + height + " high with " + blocksCreated + " blocks");
         return true;
     }

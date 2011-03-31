@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.spells;
+package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +23,7 @@ import com.elmakers.mine.bukkit.persistence.dao.PluginCommand;
 import com.elmakers.mine.bukkit.plugins.persistence.PersistencePlugin;
 import com.elmakers.mine.bukkit.utilities.PluginUtilities;
 
-public class SpellsPlugin extends JavaPlugin
+public class MagicPlugin extends JavaPlugin
 {
     protected PluginCommand            castCommand;
 
@@ -31,7 +31,7 @@ public class SpellsPlugin extends JavaPlugin
      * Plugin interface
      */
 
-    private final SpellsEntityListener entityListener = new SpellsEntityListener();
+    private final MagicEntityListener entityListener = new MagicEntityListener();
 
     private final Logger               log            = Logger.getLogger("Minecraft");
 
@@ -40,7 +40,7 @@ public class SpellsPlugin extends JavaPlugin
      */
     protected Persistence              persistence    = null;
 
-    private final SpellsPlayerListener playerListener = new SpellsPlayerListener();
+    private final MagicPlayerListener playerListener = new MagicPlayerListener();
 
     private final Magic                spells         = new Magic();
 

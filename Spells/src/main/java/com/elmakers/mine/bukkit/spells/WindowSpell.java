@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -9,21 +8,21 @@ import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
+import com.elmakers.mine.bukkit.plugins.nether.NetherManager;
 import com.elmakers.mine.bukkit.utilities.BlockRequestListener;
 
 public class WindowSpell extends Spell implements BlockRequestListener
 {
-    static final String    DEFAULT_PEEKABLES     = "1,2,3,10,11,12,13";
+    private int           defaultRadius         = 3;
+    private int           defaultSearchDistance = 32;
+    private int           maxRadius             = 32;
+    private NetherManager nether                = null;
 
-    private int            defaultRadius         = 3;
-    private int            defaultSearchDistance = 32;
-    private int            maxRadius             = 32;
-    private NetherManager  nether                = null;
-
-    private List<Material> peekableMaterials     = new ArrayList<Material>();
-    private int            radius                = defaultRadius;
-    private Block          targetBlock           = null;
+    private MaterialList  peekableMaterials     = null;
+    private int           radius                = defaultRadius;
+    private Block         targetBlock           = null;
 
     public WindowSpell(NetherManager nether)
     {
@@ -36,25 +35,13 @@ public class WindowSpell extends Spell implements BlockRequestListener
     }
 
     @Override
-    public String getCategory()
-    {
-        return "nether";
-    }
-
-    @Override
     public String getDescription()
     {
         return "Create a temporary window into other worlds";
     }
 
     @Override
-    public Material getMaterial()
-    {
-        return Material.MOB_SPAWNER;
-    }
-
-    @Override
-    protected String getName()
+    public String getName()
     {
         return "window";
     }
@@ -82,7 +69,7 @@ public class WindowSpell extends Spell implements BlockRequestListener
         {
             return;
         }
-        spells.scheduleCleanup(peekedBlocks);
+        magic.scheduleCleanup(peekedBlocks);
 
         castMessage(player, "Windowed through  " + peekedBlocks.size() + "blocks");
     }
@@ -90,45 +77,24 @@ public class WindowSpell extends Spell implements BlockRequestListener
     @Override
     public boolean onCast(ParameterMap parameters)
     {
-        targetThrough(Material.GLASS);
-        Block target = getTargetBlock();
+        targeting.targetThrough(Material.GLASS);
+        Block target = targeting.getTargetBlock();
         if (target == null)
         {
             castMessage(player, "No target");
             return false;
         }
-        if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
+        if (defaultSearchDistance > 0 && targeting.getDistance(player, target) > defaultSearchDistance)
         {
             castMessage(player, "Can't peek that far away");
             return false;
         }
 
-        String worldName = null;
-        radius = defaultRadius;
-
-        for (int i = 0; i < parameters.length; i++)
+        String worldName = parameters.getString("world", null);;
+        radius = parameters.getInteger("radius", defaultRadius);
+        if (radius > maxRadius)
         {
-            String parameter = parameters[i];
-            if (parameter.equalsIgnoreCase("world"))
-            {
-                if (i < parameters.length - 1)
-                {
-                    worldName = parameters[i + 1];
-                }
-            }
-            // Try for number
-            try
-            {
-                int r = Integer.parseInt(parameter);
-                radius = r;
-                if (radius > maxRadius && maxRadius > 0)
-                {
-                    radius = maxRadius;
-                }
-            }
-            catch (NumberFormatException ex)
-            {
-            }
+            radius = maxRadius;
         }
 
         if (targetBlock == null)
@@ -147,12 +113,12 @@ public class WindowSpell extends Spell implements BlockRequestListener
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        peekableMaterials = properties.getMaterials("spells-peek-peekable", DEFAULT_PEEKABLES);
-        defaultRadius = properties.getInteger("spells-peek-radius", defaultRadius);
-        maxRadius = properties.getInteger("spells-peek-max-radius", maxRadius);
-        defaultSearchDistance = properties.getInteger("spells-peek-search-distance", defaultSearchDistance);
+        peekableMaterials = getMaterialList("common");
+        //defaultRadius = properties.getInteger("spells-peek-radius", defaultRadius);
+        //maxRadius = properties.getInteger("spells-peek-max-radius", maxRadius);
+        //defaultSearchDistance = properties.getInteger("spells-peek-search-distance", defaultSearchDistance);
     }
 
     protected BlockList peek(Block target, int radius, List<Block> blocks)

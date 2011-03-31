@@ -1,43 +1,27 @@
 package com.elmakers.mine.bukkit.spells;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
-import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 
 public class TunnelSpell extends Spell
 {
-    static final String    DEFAULT_DESTRUCTIBLES = "1,3,10,11,12,13,87,88";
-
-    private int            defaultDepth          = 8;
-    private int            defaultHeight         = 3;
-    private int            defaultSearchDistance = 32;
-    private int            defaultWidth          = 3;
-    private List<Material> destructibleMaterials = new ArrayList<Material>();
-    private int            torchFrequency        = 4;
-
-    @Override
-    public String getCategory()
-    {
-        return "mining";
-    }
+    private int          defaultDepth          = 8;
+    private int          defaultHeight         = 3;
+    private int          defaultSearchDistance = 32;
+    private int          defaultWidth          = 3;
+    //private int          torchFrequency        = 4;
+    private MaterialList destructibleMaterials = null;
 
     @Override
     public String getDescription()
     {
         return "Create a tunnel through common materials";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.STONE_PICKAXE;
     }
 
     @Override
@@ -59,7 +43,7 @@ public class TunnelSpell extends Spell
     @Override
     public boolean onCast(ParameterMap parameters)
     {
-        Block playerBlock = getPlayerBlock();
+        Block playerBlock = targeting.getPlayerBlock();
         if (playerBlock == null)
         {
             // no spot found to tunnel
@@ -67,7 +51,7 @@ public class TunnelSpell extends Spell
             return false;
         }
 
-        BlockFace direction = getPlayerFacing();
+        BlockFace direction = targeting.getPlayerFacing();
         Block searchBlock = playerBlock.getFace(BlockFace.UP).getFace(BlockFace.UP);
 
         int searchDistance = 0;
@@ -83,8 +67,8 @@ public class TunnelSpell extends Spell
 
         BlockList tunneledBlocks = new BlockList();
 
-        BlockFace toTheLeft = goLeft(direction);
-        BlockFace toTheRight = goRight(direction);
+        BlockFace toTheLeft = targeting.goLeft(direction);
+        BlockFace toTheRight = targeting.goRight(direction);
         Block bottomBlock = searchBlock.getFace(BlockFace.DOWN);
         Block bottomLeftBlock = bottomBlock;
         for (int i = 0; i < width / 2; i++)
@@ -147,21 +131,21 @@ public class TunnelSpell extends Spell
             bottomLeftBlock = bottomLeftBlock.getFace(direction);
         }
 
-        spells.addToUndoQueue(player, tunneledBlocks);
+        magic.addToUndoQueue(player, tunneledBlocks);
         castMessage(player, "Tunneled through " + tunneledBlocks.size() + "blocks");
 
         return true;
     }
 
     @Override
-    public void onLoad(PluginProperties properties)
+    public void onLoad()
     {
-        destructibleMaterials = properties.getMaterials("spells-tunnel-destructible", DEFAULT_DESTRUCTIBLES);
-        defaultDepth = properties.getInteger("spells-tunnel-depth", defaultDepth);
-        defaultWidth = properties.getInteger("spells-tunnel-width", defaultWidth);
-        defaultHeight = properties.getInteger("spells-tunnel-height", defaultHeight);
-        defaultSearchDistance = properties.getInteger("spells-tunnel-search-distance", defaultSearchDistance);
-        torchFrequency = properties.getInteger("spells-tunnel-torch-frequency", torchFrequency);
+        destructibleMaterials = getMaterialList("common");
+        //defaultDepth = properties.getInteger("spells-tunnel-depth", defaultDepth);
+        //defaultWidth = properties.getInteger("spells-tunnel-width", defaultWidth);
+        //defaultHeight = properties.getInteger("spells-tunnel-height", defaultHeight);
+        //defaultSearchDistance = properties.getInteger("spells-tunnel-search-distance", defaultSearchDistance);
+        //torchFrequency = properties.getInteger("spells-tunnel-torch-frequency", torchFrequency);
     }
 
 }

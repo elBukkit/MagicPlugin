@@ -4,7 +4,6 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
-import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 import com.elmakers.mine.bukkit.utilities.BlockRecurse;
 import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
@@ -12,7 +11,6 @@ import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
 public class RecurseSpell extends Spell
 {
     private final BlockRecurse blockRecurse            = new BlockRecurse();
-    private MaterialList       destructibleMaterials   = new MaterialList();
     private int                defaultSearchDistance   = 32;
     
     @Override
@@ -47,5 +45,4 @@ public class RecurseSpell extends Spell
         
         return true;
     }
-
 }

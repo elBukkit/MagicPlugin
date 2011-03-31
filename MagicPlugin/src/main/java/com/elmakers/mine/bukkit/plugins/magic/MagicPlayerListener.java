@@ -1,12 +1,12 @@
-package com.elmakers.mine.bukkit.plugins.spells;
+package com.elmakers.mine.bukkit.plugins.magic;
 
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.elmakers.mine.bukkit.magic.Magic;
 
-class SpellsPlayerListener extends PlayerListener
+class MagicPlayerListener extends PlayerListener
 {
     private Magic master;
 
@@ -23,7 +23,7 @@ class SpellsPlayerListener extends PlayerListener
     }
 
     @Override
-    public void onPlayerQuit(PlayerEvent event)
+    public void onPlayerQuit(PlayerQuitEvent event)
     {
         master.onPlayerQuit(event);
     }
