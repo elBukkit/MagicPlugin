@@ -4,10 +4,11 @@ import org.bukkit.Material;
 
 import com.elmakers.mine.bukkit.persisted.PersistClass;
 import com.elmakers.mine.bukkit.persisted.PersistField;
+import com.elmakers.mine.bukkit.persisted.Persisted;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 
 @PersistClass(schema="magic", name="cost", contained=true)
-public class CastingCost
+public class CastingCost extends Persisted
 {
     protected CastingCostType type   = CastingCostType.REAGENT;
     protected double          amount = 0;

@@ -2,9 +2,10 @@ package com.elmakers.mine.bukkit.wands.dao;
 
 import com.elmakers.mine.bukkit.persisted.PersistClass;
 import com.elmakers.mine.bukkit.persisted.PersistField;
+import com.elmakers.mine.bukkit.persisted.Persisted;
 
 @PersistClass(schema="magic", name="rule")
-public class WandRule
+public class WandRule extends Persisted
 {
     protected int           id;
     protected WandCondition condition;

@@ -5,10 +5,11 @@ import java.util.List;
 import com.elmakers.mine.bukkit.magic.dao.SpellVariant;
 import com.elmakers.mine.bukkit.persisted.PersistClass;
 import com.elmakers.mine.bukkit.persisted.PersistField;
+import com.elmakers.mine.bukkit.persisted.Persisted;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
 
 @PersistClass(schema="magic", name="command")
-public class WandCommand
+public class WandCommand extends Persisted
 {
     protected int id;
     protected List<WandRule> rules;

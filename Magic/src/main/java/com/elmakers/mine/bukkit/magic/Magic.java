@@ -63,6 +63,13 @@ public class Magic
        // private Material gravityFillMaterial = Material.DIRT;
       */
     
+    public Magic(Server server, Persistence persistence, PluginUtilities utilities)
+    {
+        this.server = server;
+        this.persistence = persistence;
+        this.utilities = utilities;
+    }
+    
     public boolean cast(Player player, SpellVariant spellVariant)
     {
         Spell base = null;
@@ -266,13 +273,6 @@ public class Magic
             return null;
         }
         return getPlayerSpells(player).getUndoQueue();
-    }
-
-    public void initialize(Server server, Persistence persistence, PluginUtilities utilities)
-    {
-        this.server = server;
-        this.persistence = persistence;
-        this.utilities = utilities;
     }
     
     public void addSpells(List<Spell> moreSpells)

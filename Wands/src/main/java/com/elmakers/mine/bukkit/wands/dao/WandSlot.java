@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.elmakers.mine.bukkit.persisted.PersistClass;
 import com.elmakers.mine.bukkit.persisted.PersistField;
+import com.elmakers.mine.bukkit.persisted.Persisted;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 
 @PersistClass(schema="magic", name="slot")
-public class WandSlot
+public class WandSlot extends Persisted
 {
     protected MaterialData      id;
     protected String            name;

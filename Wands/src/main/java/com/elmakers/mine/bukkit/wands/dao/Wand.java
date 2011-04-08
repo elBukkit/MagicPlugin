@@ -1,25 +1,41 @@
 package com.elmakers.mine.bukkit.wands.dao;
 
+import java.util.List;
+
+import org.bukkit.Material;
+
 import com.elmakers.mine.bukkit.persisted.PersistClass;
 import com.elmakers.mine.bukkit.persisted.PersistField;
+import com.elmakers.mine.bukkit.persisted.Persisted;
 import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 
 @PersistClass(schema="magic", name="wand")
-public class Wand
+public class Wand extends Persisted
 {
-    protected String       id;
-    protected String       description;
-    protected MaterialData item;
+    protected MaterialData   icon;
+    protected String         name;
+    protected String         description;
+    protected List<WandSlot> slots;
     
-    @PersistField(id=true)
-    public String getId()
+    public Wand()
     {
-        return id;
+        
     }
     
-    public void setId(String id)
+    public Wand(Material iconType)
     {
-        this.id = id;
+       icon = new MaterialData(iconType);
+    }
+    
+    @PersistField
+    public String getName()
+    {
+        return name;
+    }
+    
+    public void setName(String name)
+    {
+        this.name = name;
     }
     
     @PersistField
@@ -33,14 +49,25 @@ public class Wand
         this.description = description;
     }
     
-    @PersistField
-    public MaterialData getItem()
+    @PersistField(id=true)
+    public MaterialData getIcon()
     {
-        return item;
+        return icon;
     }
     
-    public void setItem(MaterialData item)
+    public void setIcon(MaterialData icon)
     {
-        this.item = item;
+        this.icon = icon;
+    }
+
+    @PersistField
+    public List<WandSlot> getSlots()
+    {
+        return slots;
+    }
+
+    public void setSlots(List<WandSlot> slots)
+    {
+        this.slots = slots;
     }
 }

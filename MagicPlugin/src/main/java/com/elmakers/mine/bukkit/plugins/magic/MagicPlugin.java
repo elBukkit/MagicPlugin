@@ -53,67 +53,28 @@ import com.elmakers.mine.bukkit.spells.Tree;
 import com.elmakers.mine.bukkit.spells.Tunnel;
 import com.elmakers.mine.bukkit.spells.Undo;
 import com.elmakers.mine.bukkit.utilities.PluginUtilities;
+import com.elmakers.mine.bukkit.wands.WandProvider;
+import com.elmakers.mine.bukkit.wands.Wands;
 
-public class MagicPlugin extends JavaPlugin implements SpellProvider
+public class MagicPlugin extends JavaPlugin implements SpellProvider, WandProvider
 {
-    protected PluginCommand           castCommand;
     private final MagicEntityListener entityListener = new MagicEntityListener();
-    private final Logger              log            = Logger.getLogger("Minecraft");
-    protected Persistence             persistence    = null;
     private final MagicPlayerListener playerListener = new MagicPlayerListener();
-    private final Magic               magic          = new Magic();
-    protected PluginCommand           spellsCommand;
+
+    private final Logger              log            = Logger.getLogger("Minecraft");
+    private Magic                     magic          = null;
+    private Wands                     wands          = null;
+
+    protected Persistence             persistence    = null;
     protected PluginUtilities         utilities      = null;
 
-    /*
-     * Public API
-     */
-    
-    public List<Spell> getSpells()
-    {
-        List<Spell> spells = new ArrayList<Spell>();
-
-        spells.add(new Absorb());
-        spells.add(new Alter());
-        spells.add(new Arrow());
-        spells.add(new Blink());
-        spells.add(new Bridge());
-        spells.add(new Construct());
-        spells.add(new Cushion());
-        spells.add(new Disintegrate());
-        spells.add(new Elevate());
-        spells.add(new Familiar());
-        spells.add(new Fireball());
-        spells.add(new Fire());
-        spells.add(new Frost());
-        spells.add(new Heal());
-        spells.add(new Invincible());
-        spells.add(new Lava());
-        spells.add(new Manifest());
-        spells.add(new Mine());
-        spells.add(new Peek());
-        spells.add(new Pillar());
-        spells.add(new Recall());
-        spells.add(new Recurse());
-        spells.add(new Time());
-        spells.add(new Torch());
-        spells.add(new Tower());
-        spells.add(new Transmute());
-        spells.add(new Tree());
-        spells.add(new Tunnel());
-        spells.add(new Undo());
-        
-        // WIP!
-        // spells.add(new FlingSpell());
-        // spells.add(new StairsSpell());
-        
-        
-        return spells;
-    }
+    protected PluginCommand           castCommand;
+    protected PluginCommand           spellsCommand;
 
     protected void initialize()
     {      
-        magic.initialize(getServer(), persistence, utilities);
+        magic = new Magic(getServer(), persistence, utilities);
+        wands = new Wands(getServer(), persistence, utilities, magic);
  
         // Search for Spell providers
         PluginManager pm = this.getServer().getPluginManager();
@@ -128,6 +89,11 @@ public class MagicPlugin extends JavaPlugin implements SpellProvider
                 {
                     magic.addSpells(provided);
                 }
+            }
+            if (plugin instanceof WandProvider)
+            {
+                WandProvider provider = (WandProvider)plugin;
+                provider.addDefaultWands(wands);
             }
         }
  
@@ -300,4 +266,55 @@ public class MagicPlugin extends JavaPlugin implements SpellProvider
         return true;
     }
 
+    public List<SpellVariant> getDefaultVariants(String spellSet)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void addDefaultWands(Wands wands)
+    {
+        // TODO Auto-generated method stub
+    }
+
+    public List<Spell> getSpells()
+    {
+        List<Spell> spells = new ArrayList<Spell>();
+
+        spells.add(new Absorb());
+        spells.add(new Alter());
+        spells.add(new Arrow());
+        spells.add(new Blink());
+        spells.add(new Bridge());
+        spells.add(new Construct());
+        spells.add(new Cushion());
+        spells.add(new Disintegrate());
+        spells.add(new Elevate());
+        spells.add(new Familiar());
+        spells.add(new Fireball());
+        spells.add(new Fire());
+        spells.add(new Frost());
+        spells.add(new Heal());
+        spells.add(new Invincible());
+        spells.add(new Lava());
+        spells.add(new Manifest());
+        spells.add(new Mine());
+        spells.add(new Peek());
+        spells.add(new Pillar());
+        spells.add(new Recall());
+        spells.add(new Recurse());
+        spells.add(new Time());
+        spells.add(new Torch());
+        spells.add(new Tower());
+        spells.add(new Transmute());
+        spells.add(new Tree());
+        spells.add(new Tunnel());
+        spells.add(new Undo());
+        
+        // WIP!
+        // spells.add(new FlingSpell());
+        // spells.add(new StairsSpell());
+           
+        return spells;
+    }
 }
