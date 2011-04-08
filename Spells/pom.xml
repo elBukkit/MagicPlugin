@@ -69,11 +69,11 @@
   		<scope>provided</scope>
   	</dependency>
   	<dependency>
-  		<groupId>com.elmakers.mine.bukkit.plugins.nether</groupId>
-  		<artifactId>NetherGate</artifactId>
+  		<groupId>com.elmakers.mine.bukkit.magic</groupId>
+  		<artifactId>Wands</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   		<type>jar</type>
-  		<scope>compile</scope>
+  		<scope>provided</scope>
   	</dependency>
   </dependencies>
   <!-- This builds a completely 'ready to start' jar with all dependencies inside -->

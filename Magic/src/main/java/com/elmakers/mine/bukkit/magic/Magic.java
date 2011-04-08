@@ -12,10 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.elmakers.mine.bukkit.magic.dao.SpellVariant;
-import com.elmakers.mine.bukkit.persistence.Persistence;
+import com.elmakers.mine.bukkit.persisted.Persistence;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
 import com.elmakers.mine.bukkit.utilities.PluginUtilities;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
@@ -355,6 +356,11 @@ public class Magic
         {
             listener.onPlayerDamage(event);
         }
+    }
+    
+    public void onPlayerInteract(PlayerInteractEvent event)
+    {
+        // TODO - Wands!
     }
 
     public void onPlayerDeath(Player player, EntityDeathEvent event)

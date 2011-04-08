@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -31,5 +32,11 @@ class MagicPlayerListener extends PlayerListener
     public void setMagic(Magic master)
     {
         this.master = master;
+    }
+
+    @Override
+    public void onPlayerInteract(PlayerInteractEvent event)
+    {
+        master.onPlayerInteract(event);
     }
 }
