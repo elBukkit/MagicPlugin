@@ -28,7 +28,7 @@ class MagicPlayerListener extends PlayerListener
         master.onPlayerQuit(event);
     }
 
-    public void setSpells(Magic master)
+    public void setMagic(Magic master)
     {
         this.master = master;
     }

@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.persisted.PersistClass;
 import com.elmakers.mine.bukkit.persisted.PersistField;
 import com.elmakers.mine.bukkit.persisted.Persisted;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
+import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
 import com.elmakers.mine.bukkit.persistence.dao.PlayerData;
 
 @PersistClass(schema = "magic", name = "spell")
@@ -37,21 +38,18 @@ public class SpellVariant extends Persisted implements Comparable<SpellVariant>
         this.description = "";
     }
 
+    public boolean cast(Spell playerSpell)
+    {
+        return cast(playerSpell, null);
+    }
+    
     public boolean cast(Spell playerSpell, String[] extraParameters)
     {
-        String[] spellParameters = (String[]) parameters.toArray();
+        // TODO: accept command-line parameters!
 
-        if (extraParameters.length > 0)
-        {
-            spellParameters = new String[extraParameters.length + parameters.size()];
-            parameters.toArray(extraParameters);
-            for (int i = 0; i < extraParameters.length; i++)
-            {
-                spellParameters[i + parameters.size()] = extraParameters[i];
-            }
-        }
-
-        return playerSpell.cast(spellParameters);
+        ParameterMap parameterMap = new ParameterMap();
+        parameterMap.addAll(parameters);
+        return playerSpell.cast(parameterMap);
     }
 
     public int compareTo(SpellVariant other)

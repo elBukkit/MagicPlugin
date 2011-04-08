@@ -20,7 +20,7 @@ class MagicEntityListener extends EntityListener
         }
     }
 
-    public void setSpells(Magic master)
+    public void setMagic(Magic master)
     {
         this.master = master;
     }

@@ -51,6 +51,26 @@ public abstract class Spell implements Comparable<Spell>
     protected PluginUtilities                utilities            = null;
 
     /**
+     * Used internally to initialize the Spell, do not call.
+     * 
+     * @param instance
+     *            The spells instance
+     */
+    public void initialize(Player player, Magic magic, PluginUtilities utilities, Persistence persistence)
+    {
+        this.targeting = new Targeting(player);
+        targeting.targetThrough(Material.AIR);
+        targeting.targetThrough(Material.WATER);
+        targeting.targetThrough(Material.STATIONARY_WATER);
+
+        this.persistence = persistence;
+        this.utilities = utilities;
+        this.magic = magic;
+        this.player = player;
+        onLoad();
+    }
+    
+    /**
      * A brief description of this spell.
      * 
      * This is displayed in the in-game help screen, so keep it short.
@@ -116,10 +136,9 @@ public abstract class Spell implements Comparable<Spell>
      * @return true if the spell succeed, false if failed
      * @see Magic#castSpell(SpellVariant, Player)
      */
-    public boolean cast(String[] commandLine)
+    public boolean cast(ParameterMap parameters)
     {
-        // TODO : Support command-line parameters!
-        ParameterMap parameters = new ParameterMap();
+        // TODO : Check reagents, cooldown, casting cost, etc
         return onCast(parameters);
     }
 
@@ -330,26 +349,6 @@ public abstract class Spell implements Comparable<Spell>
             return false;
         }
         return playerData.isSet(getPermissionNode());
-    }
-
-    /**
-     * Used internally to initialize the Spell, do not call.
-     * 
-     * @param instance
-     *            The spells instance
-     */
-    public void initialize(Player player, Magic magic, PluginUtilities utilities, Persistence persistence)
-    {
-        this.targeting = new Targeting(player);
-        targeting.targetThrough(Material.AIR);
-        targeting.targetThrough(Material.WATER);
-        targeting.targetThrough(Material.STATIONARY_WATER);
-
-        this.persistence = persistence;
-        this.utilities = utilities;
-        this.magic = magic;
-        this.player = player;
-        onLoad();
     }
 
     /**
