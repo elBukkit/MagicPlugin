@@ -53,10 +53,9 @@ import com.elmakers.mine.bukkit.spells.Tree;
 import com.elmakers.mine.bukkit.spells.Tunnel;
 import com.elmakers.mine.bukkit.spells.Undo;
 import com.elmakers.mine.bukkit.utilities.PluginUtilities;
-import com.elmakers.mine.bukkit.wands.WandProvider;
 import com.elmakers.mine.bukkit.wands.Wands;
 
-public class MagicPlugin extends JavaPlugin implements SpellProvider, WandProvider
+public class MagicPlugin extends JavaPlugin implements SpellProvider
 {
     private final MagicEntityListener entityListener = new MagicEntityListener();
     private final MagicPlayerListener playerListener = new MagicPlayerListener();
@@ -89,11 +88,6 @@ public class MagicPlugin extends JavaPlugin implements SpellProvider, WandProvid
                 {
                     magic.addSpells(provided);
                 }
-            }
-            if (plugin instanceof WandProvider)
-            {
-                WandProvider provider = (WandProvider)plugin;
-                provider.addDefaultWands(wands);
             }
         }
  
@@ -264,17 +258,6 @@ public class MagicPlugin extends JavaPlugin implements SpellProvider, WandProvid
         listSpells(player);
 
         return true;
-    }
-
-    public List<SpellVariant> getDefaultVariants(String spellSet)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public void addDefaultWands(Wands wands)
-    {
-        // TODO Auto-generated method stub
     }
 
     public List<Spell> getSpells()

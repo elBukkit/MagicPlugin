@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.persistence.dao.MaterialData;
 @PersistClass(schema="magic", name="wand")
 public class Wand extends Persisted
 {
-    protected MaterialData   icon;
+    protected MaterialData   item;
     protected String         name;
     protected String         description;
     protected List<WandSlot> slots;
@@ -22,9 +22,9 @@ public class Wand extends Persisted
         
     }
     
-    public Wand(Material iconType)
+    public Wand(Material itemType)
     {
-       icon = new MaterialData(iconType);
+       item = new MaterialData(itemType);
     }
     
     @PersistField
@@ -50,14 +50,14 @@ public class Wand extends Persisted
     }
     
     @PersistField(id=true)
-    public MaterialData getIcon()
+    public MaterialData getItem()
     {
-        return icon;
+        return item;
     }
     
-    public void setIcon(MaterialData icon)
+    public void setItem(MaterialData item)
     {
-        this.icon = icon;
+        this.item = item;
     }
 
     @PersistField

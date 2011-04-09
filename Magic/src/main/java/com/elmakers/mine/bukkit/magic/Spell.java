@@ -70,6 +70,16 @@ public abstract class Spell implements Comparable<Spell>
         onLoad();
     }
     
+    public void addDefaultVariants()
+    {
+        
+    }
+    
+    protected void addVariant(String name, String description, String parameters)
+    {
+        
+    }
+    
     /**
      * A brief description of this spell.
      * 

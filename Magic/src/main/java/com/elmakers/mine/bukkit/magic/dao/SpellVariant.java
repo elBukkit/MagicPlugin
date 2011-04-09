@@ -28,14 +28,24 @@ public class SpellVariant extends Persisted implements Comparable<SpellVariant>
     {
     }
 
-    public SpellVariant(String name, String spellType)
+    public SpellVariant(String spellType, String name, String description, String parameters)
     {
         this.name = name;
+        this.description = description;
         this.spell = spellType;
         this.cooldown = 0;
-        this.parameters = new ArrayList<ParameterData>();
+        this.parameters = parseParameters(parameters);
         this.tags = new ArrayList<String>();
-        this.description = "";
+    }
+
+    public SpellVariant(String spellType, String name, String description, String parameters, double cooldown)
+    {
+        this.name = name;
+        this.description = description;
+        this.spell = spellType;
+        this.cooldown = cooldown;
+        this.parameters = parseParameters(parameters);
+        this.tags = new ArrayList<String>();
     }
 
     public boolean cast(Spell playerSpell)
@@ -50,6 +60,15 @@ public class SpellVariant extends Persisted implements Comparable<SpellVariant>
         ParameterMap parameterMap = new ParameterMap();
         parameterMap.addAll(parameters);
         return playerSpell.cast(parameterMap);
+    }
+    
+    protected List<ParameterData> parseParameters(String paramString)
+    {
+        List<ParameterData> parameters = new ArrayList<ParameterData>();
+        
+        // TODO!
+        
+        return parameters;
     }
 
     public int compareTo(SpellVariant other)
