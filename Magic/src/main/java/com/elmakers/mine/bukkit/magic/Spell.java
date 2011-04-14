@@ -70,14 +70,19 @@ public abstract class Spell implements Comparable<Spell>
         onLoad();
     }
     
-    public void addDefaultVariants()
+    public void onAddDefaultVariants()
     {
-        
+        addVariant(getName(), getDescription(), null);
     }
     
     protected void addVariant(String name, String description, String parameters)
     {
-        
+        SpellVariant variant = magic.getSpellVariant(name);
+        if (variant == null)
+        {
+            variant = new SpellVariant(getName(), name, description, parameters);
+            persistence.put(variant);
+        }
     }
     
     /**

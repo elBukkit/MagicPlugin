@@ -53,9 +53,12 @@ import com.elmakers.mine.bukkit.spells.Tree;
 import com.elmakers.mine.bukkit.spells.Tunnel;
 import com.elmakers.mine.bukkit.spells.Undo;
 import com.elmakers.mine.bukkit.utilities.PluginUtilities;
+import com.elmakers.mine.bukkit.wands.WandProvider;
 import com.elmakers.mine.bukkit.wands.Wands;
+import com.elmakers.mine.bukkit.wands.spells.CycleMaterials;
+import com.elmakers.mine.bukkit.wands.spells.CycleSpells;
 
-public class MagicPlugin extends JavaPlugin implements SpellProvider
+public class MagicPlugin extends JavaPlugin implements SpellProvider, WandProvider
 {
     private final MagicEntityListener entityListener = new MagicEntityListener();
     private final MagicPlayerListener playerListener = new MagicPlayerListener();
@@ -88,6 +91,11 @@ public class MagicPlugin extends JavaPlugin implements SpellProvider
                 {
                     magic.addSpells(provided);
                 }
+            }
+            if (plugin instanceof WandProvider)
+            {
+                WandProvider provider = (WandProvider)plugin;
+                provider.addDefaultWands(wands);
             }
         }
  
@@ -189,27 +197,13 @@ public class MagicPlugin extends JavaPlugin implements SpellProvider
         }
 
         String spellName = castParameters[0];
- 
-        return magic.cast(player, spellName);
-        
-        // TODO: Parameters!
-        /*
-    
         String[] parameters = new String[castParameters.length - 1];
         for (int i = 1; i < castParameters.length; i++)
         {
             parameters[i - 1] = castParameters[i];
         }
-
-        SpellVariant spell = magic.getSpell(spellName, player);
-        if (spell == null)
-        {
-            return false;
-        }
-
-        spell.cast(null, parameters)
-        spells.castSpell(spell, parameters, player);
-        */
+        
+        return magic.cast(player, spellName, parameters);
     }
 
     @Override
@@ -294,10 +288,19 @@ public class MagicPlugin extends JavaPlugin implements SpellProvider
         spells.add(new Tunnel());
         spells.add(new Undo());
         
+        // Wand
+        spells.add(new CycleSpells(wands));
+        spells.add(new CycleMaterials(wands));
+        
         // WIP!
         // spells.add(new FlingSpell());
         // spells.add(new StairsSpell());
            
         return spells;
+    }
+
+    public void addDefaultWands(Wands wands)
+    {
+        
     }
 }

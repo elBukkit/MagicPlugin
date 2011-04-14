@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wands.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -16,6 +17,14 @@ public class Wand extends Persisted
     protected String         name;
     protected String         description;
     protected List<WandSlot> slots;
+    
+    // Transient
+    protected HashMap<Material, WandSlot> slotMap = new HashMap<Material, WandSlot>();
+    
+    public WandSlot getSlot(Material icon)
+    {
+        return slotMap.get(icon);
+    }
     
     public Wand()
     {
@@ -69,5 +78,13 @@ public class Wand extends Persisted
     public void setSlots(List<WandSlot> slots)
     {
         this.slots = slots;
+        slotMap.clear();
+        if (slots != null)
+        {
+            for (WandSlot slot : slots)
+            {
+                slotMap.put(slot.getId().getType(), slot);
+            }
+        }
     }
 }

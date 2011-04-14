@@ -1,19 +1,24 @@
-package com.elmakers.mine.bukkit.spells;
-
-import java.util.List;
+package com.elmakers.mine.bukkit.wands.spells;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Spell;
-import com.elmakers.mine.bukkit.magic.dao.SpellVariant;
-import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
+import com.elmakers.mine.bukkit.wands.Wands;
 import com.elmakers.mine.bukkit.wands.dao.Wand;
+import com.elmakers.mine.bukkit.wands.dao.WandSlot;
 
 public class CycleSpells extends Spell
 {
+    protected final Wands wands;
+    
+    public CycleSpells(Wands wands)
+    {
+        this.wands = wands;
+    }
+    
     @Override
     public String getDescription()
     {
@@ -29,15 +34,15 @@ public class CycleSpells extends Spell
     @Override
     public boolean onCast(ParameterMap parameters)
     {
+        Wand wand = wands.getActiveWand(player);
+        if (wand == null)
+        {
+            return false;
+        }
+        
         Inventory inventory = player.getInventory();
         ItemStack[] contents = inventory.getContents();
         ItemStack[] active = new ItemStack[9];
-        List<Wand> wands = persistence.getAll(Wand.class);
-        MaterialList wandItems = new MaterialList();
-        for (Wand wand : wands)
-        {
-            wandItems.add(wand.getItem());
-        }
         
         for (int i = 0; i < 9; i++)
         {
@@ -48,16 +53,15 @@ public class CycleSpells extends Spell
         int firstSpellSlot = -1;
         for (int i = 0; i < 9; i++)
         {
-            boolean isWand = wandItems.contains(active[i].getType());
-            boolean isSpell = false;
-            if (active[i].getType() != Material.AIR)
+            boolean isWand = player.getInventory().getHeldItemSlot() == i;
+            WandSlot slot = null;
+            Material item = active[i].getType();
+            if (item != Material.AIR)
             {
-                SpellVariant spell = null;// magic.getSpell(active[i].getType(),
-                                          // player);
-                isSpell = spell != null;
+                slot = wand.getSlot(item);
             }
 
-            if (isSpell)
+            if (slot != null)
             {
                 if (firstSpellSlot < 0)
                 {
@@ -85,13 +89,14 @@ public class CycleSpells extends Spell
         for (int ddi = 0; ddi < numSpellSlots; ddi++)
         {
             int i = ddi + firstSpellSlot;
-            if (!wandItems.contains(contents[i].getType()))
+            boolean isWand = player.getInventory().getHeldItemSlot() == i;
+            if (!isWand)
             {
                 for (int di = 1; di < numSpellSlots; di++)
                 {
                     int dni = (ddi + di) % numSpellSlots;
                     int ni = dni + firstSpellSlot;
-                    if (!wandItems.contains(active[ni].getType()))
+                    if (!isWand)
                     {
                         contents[i] = active[ni];
                         break;

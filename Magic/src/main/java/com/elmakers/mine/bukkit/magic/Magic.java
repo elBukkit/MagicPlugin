@@ -31,7 +31,6 @@ public class Magic
     static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
     static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
 
-    private final boolean                       allowCommands                  = true;
     private final List<Material>                buildingMaterials              = new ArrayList<Material>();
     private final List<BlockList>               cleanupBlocks                  = new ArrayList<BlockList>();
     private final Object                        cleanupLock                    = new Object();
@@ -55,13 +54,6 @@ public class Magic
     private final boolean                       silent                         = false;
 
     private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
-
-      /*
-       * private boolean autoExpandUndo = true; 
-       * private boolean autoPreventCaveIn = false; 
-       * private int undoCaveInHeight = 32;
-       // private Material gravityFillMaterial = Material.DIRT;
-      */
     
     public Magic(Server server, Persistence persistence, PluginUtilities utilities)
     {
@@ -70,104 +62,45 @@ public class Magic
         this.utilities = utilities;
     }
     
-    public boolean cast(Player player, SpellVariant spellVariant)
+    public boolean cast(Player player, SpellVariant spellVariant, String[] extraParameters)
     {
-        Spell base = null;
+        PlayerSpells playerSpells = getPlayerSpells(player);
+        Spell playerSpell = playerSpells.getSpell(spellVariant.getSpell());
+        if (playerSpell == null)
+        {
+            return false;
+        }
         
-        return spellVariant.cast(base);
+        // TODO - check cooldown, casting costs, etc
+        
+        return spellVariant.cast(playerSpell, extraParameters);
     }
     
-    public boolean cast(Player player, String spellName)
+    public boolean cast(Player player, SpellVariant spellVariant)
     {
-        SpellVariant spell = persistence.get(spellName, SpellVariant.class);
-        return cast(player, spell);
+        return cast(player, spellVariant, null);
+    }
+    
+    public boolean cast(Player player, String spellName,  String[] extraParameters)
+    {
+        SpellVariant spell = getSpellVariant(spellName);
+        return cast(player, spell, extraParameters);
+    }
+    
+    public SpellVariant getSpellVariant(String spellName)
+    {
+        return persistence.get(spellName, SpellVariant.class);
+    }
+    
+    public Spell getSpell(String spellName)
+    {
+        return spells.get(spellName);
     }
     
     public void addToUndoQueue(Player player, BlockList blocks)
     {
         UndoQueue queue = getUndoQueue(player.getName());
-
-        
-         // TODO: Get this working again! 
-        
-        /*
-        if (autoExpandUndo)
-        {
-            BlockList expandedBlocks = new BlockList(blocks);
-            for (UndoableBlock undoBlock : blocks.getBlocks())
-            {
-                Block block = undoBlock.getBlock();
-                Material newType = block.getType();
-                if (newType == undoBlock.getOriginalMaterial() || isSolid(newType))
-                {
-                    continue;
-                }
-
-                for (int side = 0; side < 4; side++)
-                {
-                    BlockFace sideFace = UndoableBlock.SIDES[side];
-                    Block sideBlock = block.getFace(sideFace);
-                    if (blocks.contains(sideBlock))
-                        continue;
-
-                    if (isSticky(undoBlock.getOriginalSideMaterial(side)))
-                    {
-                        UndoableBlock stickyBlock = expandedBlocks.addBlock(sideBlock);
-                        stickyBlock.setFromSide(undoBlock, side);
-                    }
-                }
-
-                Material topMaterial = undoBlock.getOriginalTopMaterial();
-                Block topBlock = block.getFace(BlockFace.UP);
-                if (!blocks.contains(topBlock))
-                {
-                    if (isAffectedByGravity(topMaterial))
-                    {
-                        expandedBlocks.addBlock(topBlock);
-                        if (autoPreventCaveIn)
-                        {
-                            topBlock.setType(gravityFillMaterial);
-                        }
-                        else
-                        {
-                            for (int dy = 0; dy < undoCaveInHeight; dy++)
-                            {
-                                topBlock = topBlock.getFace(BlockFace.UP);
-                                if (isAffectedByGravity(topBlock.getType()))
-                                {
-                                    expandedBlocks.addBlock(topBlock);
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else if (isStickyAndTall(topMaterial))
-                    {
-                        UndoableBlock stickyBlock = expandedBlocks.addBlock(topBlock);
-                        stickyBlock.setFromBottom(undoBlock);
-                        stickyBlock = expandedBlocks.addBlock(topBlock.getFace(BlockFace.UP));
-                        stickyBlock.setFromBottom(undoBlock);
-                    }
-                    else if (isSticky(topMaterial))
-                    {
-                        UndoableBlock stickyBlock = expandedBlocks.addBlock(topBlock);
-                        stickyBlock.setFromBottom(undoBlock);
-                    }
-                }
-            }
-            blocks = expandedBlocks;
-        }
-        */
-        
         queue.add(blocks);
-    }
-
-    public boolean allowCommandUse()
-    {
-        return allowCommands;
     }
 
     /*
@@ -311,40 +244,6 @@ public class Magic
     public boolean isSolid(Material mat)
     {
         return mat != Material.AIR && mat != Material.WATER && mat != Material.STATIONARY_WATER && mat != Material.LAVA && mat != Material.STATIONARY_LAVA;
-    }
-
-    protected void loadProperties()
-    {
-        /*
-         * PluginProperties properties = new PluginProperties(propertiesFile);
-         * properties.load();
-         * 
-         * undoQueueDepth = properties.getInteger("spells-general-undo-depth",
-         * undoQueueDepth); silent =
-         * properties.getBoolean("spells-general-silent", silent); quiet =
-         * properties.getBoolean("spells-general-quiet", quiet); autoExpandUndo
-         * = properties.getBoolean("spells-general-expand-undo",
-         * autoExpandUndo); allowCommands =
-         * properties.getBoolean("spells-general-allow-commands",
-         * allowCommands); stickyMaterials =
-         * PluginProperties.parseMaterials(STICKY_MATERIALS);
-         * stickyMaterialsDoubleHeight =
-         * PluginProperties.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
-         * autoPreventCaveIn =
-         * properties.getBoolean("spells-general-prevent-cavein",
-         * autoPreventCaveIn); undoCaveInHeight =
-         * properties.getInteger("spells-general-undo-cavein-height",
-         * undoCaveInHeight);
-         * 
-         * //buildingMaterials =
-         * properties.getMaterials("spells-general-building",
-         * DEFAULT_BUILDING_MATERIALS); buildingMaterials =
-         * PluginProperties.parseMaterials(DEFAULT_BUILDING_MATERIALS);
-         * 
-         * for (Spell spell : spells) { spell.onLoad(properties); }
-         * 
-         * properties.save();
-         */
     }
 
     public void onPlayerDamage(Player player, EntityDamageEvent event)

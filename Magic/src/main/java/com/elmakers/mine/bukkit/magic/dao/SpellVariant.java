@@ -55,18 +55,41 @@ public class SpellVariant extends Persisted implements Comparable<SpellVariant>
     
     public boolean cast(Spell playerSpell, String[] extraParameters)
     {
-        // TODO: accept command-line parameters!
-
         ParameterMap parameterMap = new ParameterMap();
         parameterMap.addAll(parameters);
+     
+        if (extraParameters != null && extraParameters.length > 0)
+        {
+            List<ParameterData> extras = parseParameters(extraParameters);
+            parameterMap.addAll(extras);
+        }
+        
         return playerSpell.cast(parameterMap);
     }
     
     protected List<ParameterData> parseParameters(String paramString)
-    {
+    {  
+        String[] paramPairs = paramString.split(" ");
+        return parseParameters(paramPairs);
+    }
+    
+    protected List<ParameterData> parseParameters(String[] paramPairs)
+    {  
         List<ParameterData> parameters = new ArrayList<ParameterData>();
-        
-        // TODO!
+        for (String paramPair : paramPairs)
+        {
+            String[] keyValue = paramPair.split("=");
+            if (keyValue.length == 1)
+            {
+                ParameterData flag = new ParameterData(keyValue[0], true);
+                parameters.add(flag);
+            }
+            else if (keyValue.length > 1)
+            {
+                ParameterData parameter = new ParameterData(keyValue[0], keyValue[1]);
+                parameters.add(parameter);
+            }
+        }
         
         return parameters;
     }

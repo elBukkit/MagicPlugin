@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.spells;
+package com.elmakers.mine.bukkit.wands.spells;
 
 import java.util.List;
 
@@ -8,9 +8,17 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterMap;
+import com.elmakers.mine.bukkit.wands.Wands;
 
 public class CycleMaterials extends Spell
 {
+    protected final Wands wands;
+    
+    public CycleMaterials(Wands wands)
+    {
+        this.wands = wands;
+    }
+    
     @Override
     public String getDescription()
     {

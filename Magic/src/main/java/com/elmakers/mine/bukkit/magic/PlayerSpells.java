@@ -60,7 +60,16 @@ public class PlayerSpells
         Spell spell = spells.get(spellName);
         if (spell == null)
         {
+            Spell template = magic.getSpell(spellName);
+            if (template == null)
+            {
+                return null;
+            }
             
+            // TODO: Figure out how to clone spells.
+            // Need default constructors? NG and Wand spells need modifying if so. Not sure how this is going
+            // to work, exactly.
+            spell = template.
         }
         
         return spell;

@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.wands;
 
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Magic;
 import com.elmakers.mine.bukkit.persisted.Persistence;
@@ -34,5 +36,16 @@ public class Wands
         }
         
         return wand;
+    }
+    
+    public Wand getActiveWand(Player player)
+    {
+        Material wandMaterial = Material.AIR;
+        ItemStack currentItem = player.getItemInHand();
+        if (currentItem != null)
+        {
+            wandMaterial = currentItem.getType();
+        }
+        return getWand(wandMaterial);
     }
 }
