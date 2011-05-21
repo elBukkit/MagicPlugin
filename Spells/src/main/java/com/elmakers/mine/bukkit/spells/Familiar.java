@@ -9,9 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.CreatureType;
 import org.bukkit.event.player.PlayerEvent;
 
-import com.elmakers.mine.bukkit.borrowed.CreatureType;
 import com.elmakers.mine.bukkit.magic.Spell;
 import com.elmakers.mine.bukkit.magic.SpellEventType;
 import com.elmakers.mine.bukkit.persistence.dao.ParameterData;
@@ -92,7 +92,7 @@ public class Familiar extends Spell
         }
         target = target.getFace(BlockFace.UP);
 
-        CreatureType famType = CreatureType.UNKNOWN;
+        CreatureType famType = CreatureType.CHICKEN;
         if (parameters.hasFlag("any"))
         {
             int randomFamiliar = rand.nextInt(allFamiliars.size());
@@ -112,7 +112,7 @@ public class Familiar extends Spell
             }
         }
     
-        if (famType == CreatureType.UNKNOWN)
+        if (famType == CreatureType.CHICKEN)
         {
             int randomFamiliar = rand.nextInt(defaultFamiliars.size());
             famType = CreatureType.fromName(defaultFamiliars.get(randomFamiliar));
@@ -123,7 +123,7 @@ public class Familiar extends Spell
             famType = CreatureType.SQUID;
         }
 
-        Creature entity = famType.spawn(target.getLocation());
+        Creature entity = (Creature)target.getLocation().getWorld().spawnCreature(target.getLocation(), famType);
         if (entity == null)
         {
             sendMessage(player, "Your familiar is DOA");
