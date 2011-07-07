@@ -1,0 +1,33 @@
+name: Spells
+main: com.elmakers.mine.bukkit.plugins.spells.SpellsPlugin
+version: 1.18
+website: http://mine.elmakers.com
+author: NathanWolf
+description : Mmmmmmaaaaagic!
+commands:
+  cast:
+    description: Cast a spell
+    usage: cast <spellname>
+  spells:
+    description: List all the spells you know
+    usage: spells [category]
+permissions:
+  Spells:
+    description: Spells permissions
+    type: map
+    map:
+      commands:
+        description: Spells console command permissions
+        type: map
+        map:
+          spells:
+            description: Player may list spells
+            type: boolean
+            default: true
+          cast:
+            description: Player may cast spells
+            type: boolean
+            default: false
+      cast:
+        description: The spells a player may cast
+        type: list
