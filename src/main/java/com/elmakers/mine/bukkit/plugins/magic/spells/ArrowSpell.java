@@ -47,7 +47,7 @@ public class ArrowSpell extends Spell
                 EntityArrow ea = (EntityArrow)ca.getHandle();
                 
                 // Make it so this arrow can't be picked up
-                // ea.a = false;
+                ea.fromPlayer = false;
                 
                 // Make it so it disappears very quickly after sticking
                 // ... inaccessible! >:(

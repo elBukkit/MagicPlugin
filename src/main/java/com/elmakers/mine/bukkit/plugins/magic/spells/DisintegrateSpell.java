@@ -15,11 +15,6 @@ public class DisintegrateSpell extends Spell
 {
 	private int				defaultSearchDistance	= 32;
 	
-	public DisintegrateSpell()
-    {
-	    setCooldown(5000);
-    }
-	
 	@Override
 	public boolean onCast(String[] parameters)
 	{
@@ -37,7 +32,7 @@ public class DisintegrateSpell extends Spell
 	            LivingEntity li = (LivingEntity)targetEntity;
 	            if (li instanceof Player)
 	            {
-	                li.damage(8);
+	                li.damage(1);
 	            }
 	            else
 	            {

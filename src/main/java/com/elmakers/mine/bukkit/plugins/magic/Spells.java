@@ -47,6 +47,7 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.GotoSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.GrenadeSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.HealSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.InvincibleSpell;
+import com.elmakers.mine.bukkit.plugins.magic.spells.InvisibilitySpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.LavaSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.LevitateSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.LightningSpell;
@@ -156,29 +157,6 @@ public class Spells
 	public List<Material> getBuildingMaterials()
 	{
 		return buildingMaterials;
-	}
-	
-	public void setCurrentMaterialType(Player player, Material material, byte data)
-	{
-		PlayerSpells spells = getPlayerSpells(player);
-		if 
-		(
-				spells.isUsingMaterial() 
-		&& 		(spells.getMaterial() != material || spells.getData() != data)
-		)
-		{
-			spells.setMaterial(material);
-			spells.setData(data);
-			player.sendMessage("Now using " + material.name().toLowerCase());
-			// Must allow listeners to remove themselves during the event!
-			List<Spell> active = new ArrayList<Spell>();
-			active.addAll(materialListeners);
-			for (Spell listener : active)
-			{
-				listener.onMaterialChoose(player);
-			}
-		}
-
 	}
 	
 	public void startMaterialUse(Player player, Material material, byte data)
@@ -357,15 +335,15 @@ public class Spells
 			case PLAYER_MOVE:
 				if (!movementListeners.contains(spell)) movementListeners.add(spell);
 				break;
-			case MATERIAL_CHANGE:
-				if (!materialListeners.contains(spell)) materialListeners.add(spell);
-				break;
 			case PLAYER_QUIT:
 				if (!quitListeners.contains(spell)) quitListeners.add(spell);
 				break;
-			case PLAYER_DEATH:
-				if (!deathListeners.contains(spell)) deathListeners.add(spell);
+			case PLAYER_DAMAGE:
+				if (!damageListeners.contains(spell)) damageListeners.add(spell);
 				break;
+	         case PLAYER_DEATH:
+                if (!deathListeners.contains(spell)) deathListeners.add(spell);
+                break;
 		}
 	}
 	
@@ -376,8 +354,8 @@ public class Spells
 			case PLAYER_MOVE:
 				movementListeners.remove(spell);
 				break;
-			case MATERIAL_CHANGE:
-				materialListeners.remove(spell);
+			case PLAYER_DAMAGE:
+			    damageListeners.remove(spell);
 				break;
 			case PLAYER_QUIT:
 				quitListeners.remove(spell);
@@ -511,7 +489,7 @@ public class Spells
 	public void clear()
 	{
 		movementListeners.clear();
-		materialListeners.clear();
+		damageListeners.clear();
 		quitListeners.clear();
 		spells.clear();
 		spellVariants.clear();
@@ -559,6 +537,13 @@ public class Spells
 	  
     public void onPlayerDamage(Player player, EntityDamageEvent event)
     {
+        List<Spell> active = new ArrayList<Spell>();
+        active.addAll(damageListeners);
+        for (Spell listener : active)
+        {
+            listener.onPlayerDamage(player, event);
+        }
+        
         Float amount = invincibleAmount(player);
     	if (amount != null && amount > 0)
     	{
@@ -829,6 +814,7 @@ public boolean cycleMaterials(Player player)
         addSpell(new ForceSpell());
         addSpell(new MapSpell());
         addSpell(new LevitateSpell());
+        addSpell(new InvisibilitySpell());
         
 		// wip
 		addSpell(new TowerSpell());
@@ -919,9 +905,9 @@ public boolean cycleMaterials(Player player)
 	private final List<Spell> spells = new ArrayList<Spell>();
 	private final HashMap<String, PlayerSpells> playerSpells = new HashMap<String, PlayerSpells>();
 	private final List<Spell> movementListeners = new ArrayList<Spell>();
-	private final List<Spell> materialListeners = new ArrayList<Spell>();
 	private final List<Spell> quitListeners = new ArrayList<Spell>();
 	private final List<Spell> deathListeners = new ArrayList<Spell>();
+    private final List<Spell> damageListeners = new ArrayList<Spell>();
 	private final HashMap<String, Float> invinciblePlayers = new HashMap<String, Float>();
 
 	private MagicPlugin plugin = null;

@@ -23,7 +23,6 @@ public class FrostSpell extends Spell
     {
         public boolean perform(Block block)
         {
-
             if (block.getType() == Material.AIR || block.getType() == Material.SNOW)
             {
                 return false;
@@ -73,7 +72,7 @@ public class FrostSpell extends Spell
                 LivingEntity li = (LivingEntity)targetEntity;
                 if (li instanceof Player)
                 {
-                    li.damage(4);
+                    li.damage(1);
                 }
                 else
                 {

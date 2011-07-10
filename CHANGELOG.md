@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2.0.3
+
+ - Add cloak spell (invisibility until you move).
+
+## 2.0.2
+
+ - Nerf frost and distegrate- not with cooldowns, but by making them "ping" spells (1/2 heart damage)
+ - ++ wolf spell - can now target people to sick wolves on them. nerf'd by capping number of wolves.
+ - fling (+leap) now protect from falling damage
+
 ## 2.0.1
 
  - Add kamikazee spell.

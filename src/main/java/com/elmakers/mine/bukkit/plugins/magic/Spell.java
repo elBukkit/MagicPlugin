@@ -13,6 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -157,6 +158,10 @@ public abstract class Spell implements Comparable<Spell>
 
 	}
 	
+	public void onPlayerDamage(Player player, EntityDamageEvent event)
+    {
+	    
+    }
 
 	/**
 	 * Default constructor, used to register spells.
