@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 
-import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
+import com.elmakers.mine.bukkit.dao.MaterialList;
 
 public class CSVParser
 {

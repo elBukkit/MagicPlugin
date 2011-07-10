@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.utilities;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.persistence.dao.MaterialList;
+import com.elmakers.mine.bukkit.dao.MaterialList;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {

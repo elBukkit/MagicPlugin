@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.utilities;
 
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.persistence.dao.BlockList;
+import com.elmakers.mine.bukkit.dao.BlockList;
 
 public class SimpleBlockAction implements BlockAction
 {
