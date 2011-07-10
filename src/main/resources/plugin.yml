@@ -1,6 +1,6 @@
-name: Spells
-main: com.elmakers.mine.bukkit.plugins.spells.SpellsPlugin
-version: 1.18
+name: Magic
+main: com.elmakers.mine.bukkit.plugins.spells.MagicPlugin
+version: 2.01
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
@@ -11,13 +11,16 @@ commands:
   spells:
     description: List all the spells you know
     usage: spells [category]
+  wand:
+    description: Get wand help, spawn wand/magic items
+    usage: /wand [spellname]
 permissions:
-  Spells:
-    description: Spells permissions
+  Magic:
+    description: Magic permissions
     type: map
     map:
       commands:
-        description: Spells console command permissions
+        description: Magic console command permissions
         type: map
         map:
           spells:
@@ -28,6 +31,18 @@ permissions:
             description: Player may cast spells
             type: boolean
             default: false
+          wand:
+            description: Player may spawn wands and items
+            type: boolean
+            default: false
       cast:
         description: The spells a player may cast
         type: list
+      wand:
+        description: Wand-related permissoins
+        type: map
+        map:
+          use:
+            description: Player may use a wand
+            type: boolean
+            default: true

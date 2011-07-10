@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.spells;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +19,11 @@ import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.elmakers.mine.bukkit.persisted.Persistence;
 import com.elmakers.mine.bukkit.persistence.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.spells.builtin.AbsorbSpell;
 import com.elmakers.mine.bukkit.plugins.spells.builtin.AlterSpell;
@@ -67,7 +69,7 @@ import com.elmakers.mine.bukkit.plugins.spells.builtin.WeatherSpell;
 import com.elmakers.mine.bukkit.plugins.spells.builtin.WolfSpell;
 import com.elmakers.mine.bukkit.plugins.spells.utilities.PluginProperties;
 import com.elmakers.mine.bukkit.plugins.spells.utilities.UndoQueue;
-import com.elmakers.mine.bukkit.utilities.PluginUtilities;
+import com.nijiko.permissions.PermissionHandler;
 
 public class Spells
 {
@@ -144,7 +146,7 @@ public class Spells
 		}
 		
 		spells.add(spell);
-		spell.initialize(this, utilities, persistence);
+		spell.initialize(this);
 	}
 	
 	/*
@@ -450,7 +452,7 @@ public class Spells
 		return log;
 	}
 	
-	public SpellsPlugin getPlugin()
+	public MagicPlugin getPlugin()
 	{
 		return plugin;
 	}
@@ -464,10 +466,8 @@ public class Spells
 	 * Saving and loading
 	 */
 	
-	public void initialize(SpellsPlugin plugin, Persistence persistence, PluginUtilities utilities)
+	public void initialize(MagicPlugin plugin)
 	{
-		this.persistence = persistence;
-		this.utilities = utilities;
 		this.plugin = plugin;
 		addBuiltinSpells();
 		load();
@@ -480,7 +480,10 @@ public class Spells
 
 	protected void loadProperties()
 	{
-		PluginProperties properties = new PluginProperties(propertiesFile);
+	    File dataFolder = plugin.getDataFolder();
+	    dataFolder.mkdirs();
+	    File pFile = new File(dataFolder, propertiesFile);
+		PluginProperties properties = new PluginProperties(pFile.getAbsolutePath());
 		properties.load();
 		
 		undoQueueDepth = properties.getInteger("spells-general-undo-depth", undoQueueDepth);
@@ -495,6 +498,7 @@ public class Spells
 		
 		//buildingMaterials = properties.getMaterials("spells-general-building", DEFAULT_BUILDING_MATERIALS);
 		buildingMaterials = PluginProperties.parseMaterials(DEFAULT_BUILDING_MATERIALS);
+        wandTypeId = properties.getInteger("wand-type-id", wandTypeId);
 		
 		for (Spell spell : spells)
 		{
@@ -502,15 +506,6 @@ public class Spells
 		}
 		
 		properties.save();
-		
-		// Load wand properties as well, in case that plugin exists.
-		properties = new PluginProperties(wandPropertiesFile);
-		properties.load();
-		
-		// Get and set all properties
-		wandTypeId = properties.getInteger("wand-type-id", wandTypeId);
-		
-		// Don't save the wand properties!!
 	}
 	
 	public void clear()
@@ -579,35 +574,6 @@ public class Spells
     	    }
     	}
     }
-    
-   
-    /**
-     * Called when a player performs an animation, such as the arm swing
-     * 
-     * @param event Relevant event details
-     */
-    public void onPlayerAnimation(PlayerAnimationEvent event) 
-	{
-		if (event.getAnimationType() != PlayerAnimationType.ARM_SWING)
-		{
-			return;
-		}
-		
-		ItemStack item = event.getPlayer().getInventory().getItemInHand();
-		Material material = Material.AIR;
-		byte data = 0;
-		if (item != null)
-		{
-			material = item.getType();
-			if (!buildingMaterials.contains(material))
-			{
-				return;
-			}
-			data = Spell.getItemData(item);
-		}
-		setCurrentMaterialType(event.getPlayer(), material, data);
-	
-    }
 
     public List<SpellVariant> getAllSpells()
     {
@@ -615,23 +581,211 @@ public class Spells
     	spells.addAll(spellVariants.values());
     	return spells;
     }
-    
+
     /**
-     * Called when a player uses an item
-     * 
-     * @param event Relevant event details
-     */
-    public void onPlayerInteract(PlayerInteractEvent event) 
-    {
-    	if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
-    	{
-	    	ItemStack item = event.getPlayer().getInventory().getItemInHand();
-	    	if (item != null && item.getTypeId() == getWandTypeId())
-	    	{
-	    		cancel(event.getPlayer());
-	    	}
-    	}
-    }
+    * Called when a player plays an animation, such as an arm swing
+    * 
+    * @param event Relevant event details
+    */
+   public void onPlayerAnimation(PlayerAnimationEvent event) 
+   {
+       Player player = event.getPlayer();
+       if (event.getAnimationType() == PlayerAnimationType.ARM_SWING)
+       {
+           if (event.getPlayer().getInventory().getItemInHand().getTypeId() == getWandTypeId())
+           {
+               if (!hasWandPermission(player))
+               {
+                   return;
+               }
+               
+               Inventory inventory = player.getInventory();
+               ItemStack[] contents = inventory.getContents();
+               
+               SpellVariant spell = null;
+               for (int i = 0; i < 9; i++)
+               {
+                   if (contents[i].getType() == Material.AIR || contents[i].getTypeId() == getWandTypeId())
+                   {
+                       continue;
+                   }
+                   spell = getSpell(contents[i].getType(), player);
+                   if (spell != null)
+                   {
+                       break;
+                   }
+               }
+               
+               if (spell != null)
+               {
+                   castSpell(spell, player);
+               }
+               
+           }
+       }
+   }
+   
+   @SuppressWarnings("deprecation")
+public boolean cycleMaterials(Player player)
+   {
+       List<Material> buildingMaterials = getBuildingMaterials();
+       PlayerInventory inventory = player.getInventory();
+       ItemStack[] contents = inventory.getContents();
+       int firstMaterialSlot = 8;
+       boolean foundAir = false;
+       
+       for (int i = 8; i >= 0; i--)
+       {
+           Material mat = contents[i] == null ? Material.AIR : contents[i].getType();
+           if (mat == Material.AIR)
+           {
+               if (foundAir)
+               {
+                   break;
+               }
+               else
+               {
+                   foundAir = true;
+                   firstMaterialSlot = i;
+                   continue;
+               }
+           }
+           else
+           {
+               if (buildingMaterials.contains(mat))
+               {
+                   firstMaterialSlot = i;
+                   continue;
+               }
+               else
+               {
+                   break;
+               }
+           }
+       }
+       
+       if (firstMaterialSlot == 8) return false;
+       
+       ItemStack lastSlot = contents[8];
+       for (int i = 7; i >= firstMaterialSlot; i--)
+       {
+           contents[i + 1] = contents[i];
+       }
+       contents[firstMaterialSlot] = lastSlot;
+
+       inventory.setContents(contents);
+       player.updateInventory();
+       
+       return true;
+   }
+  
+   @SuppressWarnings("deprecation")
+   public void cycleSpells(Player player)
+   {
+       Inventory inventory = player.getInventory();
+       ItemStack[] contents = inventory.getContents();
+       ItemStack[] active = new ItemStack[9];
+       
+       for (int i = 0; i < 9; i++) { active[i] = contents[i]; }
+       
+       int maxSpellSlot = 0;
+       int firstSpellSlot = -1;
+       for (int i = 0; i < 9; i++)
+       {
+           boolean isEmpty = active[i] == null;
+           Material activeType = isEmpty ? Material.AIR : active[i].getType();
+           boolean isWand = activeType.getId() == getWandTypeId();
+           boolean isSpell = false;
+           if (activeType != Material.AIR)
+           {
+               SpellVariant spell = getSpell(activeType, player);
+               isSpell = spell != null;
+           }
+           
+           if (isSpell)
+           {
+               if (firstSpellSlot < 0) firstSpellSlot = i;
+               maxSpellSlot = i;
+           }
+           else
+           {
+               if (!isWand && firstSpellSlot >= 0)
+               {
+                   break;
+               }
+           }
+           
+       }
+       
+       int numSpellSlots = firstSpellSlot < 0 ? 0 : maxSpellSlot - firstSpellSlot + 1;
+       
+       if (numSpellSlots < 2)
+       {
+           return;
+       }
+       
+       for (int ddi = 0; ddi < numSpellSlots; ddi++)
+       {
+           int i = ddi + firstSpellSlot;
+           Material contentsType = contents[i] == null ? Material.AIR : active[i].getType();
+           if (contentsType.getId() != getWandTypeId())
+           {
+               for (int di = 1; di < numSpellSlots; di++)
+               {
+                   int dni = (ddi + di) % numSpellSlots;
+                   int ni = dni + firstSpellSlot;
+                   Material activeType = active[ni]== null ? Material.AIR : active[ni].getType();
+                   if (activeType.getId() != getWandTypeId())
+                   {
+                       contents[i] = active[ni];
+                       break;
+                   }
+               }
+           }
+       }
+       
+       inventory.setContents(contents);
+       player.updateInventory();
+   }
+ 
+   /**
+    * Called when a player uses an item
+    * 
+    * @param event Relevant event details
+    */
+   public void onPlayerInteract(PlayerInteractEvent event) 
+   {
+       if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+       {
+           cancel(event.getPlayer());
+           
+           int materialId = event.getPlayer().getInventory().getItemInHand().getTypeId();
+           Player player = event.getPlayer();
+   
+           if (!hasWandPermission(player))
+           {
+               return;
+           }
+           
+           boolean cycleSpells = false;
+   
+           cycleSpells = player.isSneaking();
+           if (materialId == getWandTypeId())
+           {   
+               if (cycleSpells)
+               {
+                   if (!cycleMaterials(event.getPlayer()))
+                   {
+                       cycleSpells(event.getPlayer());
+                   }
+               }
+               else
+               {
+                   cycleSpells(event.getPlayer());
+               }
+           }
+       }
+   }
 	
 	protected void addBuiltinSpells()
 	{
@@ -680,6 +834,8 @@ public class Spells
 		addSpell(new TowerSpell());
 		// addSpell(new ExtendSpell());
 		addSpell(new StairsSpell());
+		
+		log.info("Magic: Loaded " + spellVariants.size() + " spells.");
 	}
 	
 	public Float invincibleAmount(Player player)
@@ -711,12 +867,31 @@ public class Spells
 	    physicsDisableTimeout = System.currentTimeMillis() + interval;
 	}
 	
+	public boolean hasWandPermission(Player player)
+	{
+	    return hasPermission(player, "Magic.wand.use");
+	}
+	
+	public boolean hasPermission(Player player, String pNode, boolean defaultValue)
+	{
+	    PermissionHandler permissions = MagicPlugin.getPermissionHandler();
+        if (permissions == null)
+        {
+            return defaultValue;
+        }
+        
+        return permissions.has(player, pNode);
+	}
+	
+    public boolean hasPermission(Player player, String pNode)
+    {
+        return hasPermission(player, pNode, true);
+    }
+    
 	/*
 	 * Private data
 	 */
-	private final String propertiesFile = "spells.properties";
-	
-	private final String wandPropertiesFile = "wand.properties";
+	private final String propertiesFile = "magic.properties";
 	private int wandTypeId = 280;
 	
 	static final String		DEFAULT_BUILDING_MATERIALS	= "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96";
@@ -749,8 +924,5 @@ public class Spells
 	private final List<Spell> deathListeners = new ArrayList<Spell>();
 	private final HashMap<String, Float> invinciblePlayers = new HashMap<String, Float>();
 
-	private SpellsPlugin plugin = null;
-	
-	protected Persistence persistence = null;
-	protected PluginUtilities utilities = null;
+	private MagicPlugin plugin = null;
 }

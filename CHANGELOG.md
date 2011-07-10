@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.1
+
+ - Add kamikazee spell.
+
 ## 2.0
 
  - Merge everything together, toss Persistence.

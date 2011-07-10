@@ -3,8 +3,6 @@ package com.elmakers.mine.bukkit.plugins.spells;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.persistence.dao.PlayerData;
-
 public class SpellVariant implements Comparable<SpellVariant>
 {
 	private String name;
@@ -97,14 +95,13 @@ public class SpellVariant implements Comparable<SpellVariant>
 	
 	public String getPermissionNode()
 	{
-		return "Spells.cast." + getName();
+		return "Magic.cast." + getName();
 	}
 	
 	public boolean hasSpellPermission(Player player)
 	{
 		if (player == null) return false;
-		PlayerData playerData = spell.getPersistence().get(player.getName(), PlayerData.class);
-		if (playerData == null) return false;
-		return playerData.isSet(getPermissionNode());
+	
+		return spell.spells.hasPermission(player, getPermissionNode());
 	}
 }

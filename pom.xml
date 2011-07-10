@@ -2,16 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
-	<artifactId>Spells</artifactId>
+	<artifactId>Magic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>elMakers - Bukkit Plugins : Spells</name>
+	<name>elMakers - Bukkit Plugins : Magic</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
 		<dependencies>
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<build.version>1.18</build.version>
+		<build.version>2.0.1</build.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,6 +26,12 @@
 			<artifactId>craftbukkit</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ninj.permissions</groupId>
+			<artifactId>Permissions</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

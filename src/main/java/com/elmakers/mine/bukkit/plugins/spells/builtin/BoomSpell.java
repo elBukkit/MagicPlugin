@@ -20,8 +20,8 @@ public class BoomSpell extends Spell {
 
 	public BoomSpell()
 	{
-	    setCooldown(5000);
 		addVariant("kaboom", Material.REDSTONE_WIRE, getCategory(), "Create a big explosion", "6");
+		addVariant("kamikazee", Material.DEAD_BUSH, getCategory(), "Kill yourself with an explosion", "6 here");
 		addVariant("nuke", Material.BED, getCategory(), "Create a huge explosion", "20");
 	}
 	
@@ -46,11 +46,17 @@ public class BoomSpell extends Spell {
 	public boolean onCast(String[] parameters) 
 	{
         float size = defaultSize;
-        if (parameters.length > 0)
+        for (String parameter : parameters)
         {
+            if (parameter.equalsIgnoreCase("here"))
+            {
+                player.damage(100);
+                return createExplosionAt(player.getLocation(), size);
+            }
+            
         	try
         	{
-        		size = Float.parseFloat(parameters[0]);
+        		size = Float.parseFloat(parameter);
         	}
         	catch (NumberFormatException ex)
         	{

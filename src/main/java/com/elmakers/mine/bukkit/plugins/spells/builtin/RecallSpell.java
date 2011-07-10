@@ -52,7 +52,7 @@ public class RecallSpell extends Spell
 		
 		if (getYRotation() > 80)
 		{
-			if (marker == null || !marker.isActive && otherSpellHasPermission("spawn") && autoSpawn)
+			if (marker == null || !marker.isActive && autoSpawn)
 			{
 				castMessage(player, "Returning you home");
 				player.teleport(player.getWorld().getSpawnLocation());
@@ -63,7 +63,7 @@ public class RecallSpell extends Spell
 				
 				double distance = getDistance(player.getLocation(), marker.location);
 
-				if (distance < disableDistance && otherSpellHasPermission("spawn") && autoSpawn)
+				if (distance < disableDistance && autoSpawn)
 				{
 					castMessage(player, "Returning you home");
 					player.teleport(player.getWorld().getSpawnLocation());
@@ -184,7 +184,7 @@ public class RecallSpell extends Spell
 	@Override
 	public void onPlayerDeath(Player player, EntityDeathEvent event)
 	{
-		if (autoDropOnDeath && hasSpellPermission(player))
+		if (autoDropOnDeath)
 		{
 			PlayerMarker marker = markers.get(player.getName());
 			if (marker == null || !marker.isActive)

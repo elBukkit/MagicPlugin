@@ -100,7 +100,7 @@ public class BlinkSpell extends Spell
 		
 		// Auto ascend + descend
 		
-		if (getYRotation() < -80 && otherSpellHasPermission("descend") && autoDescend)
+		if (getYRotation() < -80 && autoDescend)
 		{
 			if (descend())
 			{
@@ -108,7 +108,7 @@ public class BlinkSpell extends Spell
 			}
 		}
 		
-		if (getYRotation() > 80 && otherSpellHasPermission("ascend") && autoAscend)
+		if (getYRotation() > 80 && autoAscend)
 		{
 			if (ascend())
 			{

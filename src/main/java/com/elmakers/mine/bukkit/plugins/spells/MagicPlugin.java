@@ -6,22 +6,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.elmakers.mine.bukkit.persisted.Persistence;
-import com.elmakers.mine.bukkit.persistence.dao.PluginCommand;
-import com.elmakers.mine.bukkit.plugins.persistence.PersistencePlugin;
-import com.elmakers.mine.bukkit.utilities.PluginUtilities;
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
+import org.bukkit.plugin.Plugin;
 
-public class SpellsPlugin extends JavaPlugin
+public class MagicPlugin extends JavaPlugin
 {	
 	/*
 	 * Public API
@@ -37,20 +39,6 @@ public class SpellsPlugin extends JavaPlugin
 	
 	public void onEnable() 
 	{
-		Plugin checkForPersistence = this.getServer().getPluginManager().getPlugin("Persistence");
-	    if(checkForPersistence != null) 
-	    {
-	    	PersistencePlugin plugin = (PersistencePlugin)checkForPersistence;
-	    	persistence = plugin.getPersistence();
-	    	utilities = plugin.createUtilities(this);
-	    } 
-	    else 
-	    {
-	    	log.warning("The Spells plugin depends on Persistence");
-	    	this.getServer().getPluginManager().disablePlugin(this);
-	    	return;
-	    }
-
 	    initialize();
 		
         PluginManager pm = getServer().getPluginManager();
@@ -71,26 +59,124 @@ public class SpellsPlugin extends JavaPlugin
 	
 	protected void initialize()
 	{
-		spells.initialize(this, persistence, utilities);
+	    bindToPermissions();
+	    
+	    spells.initialize(this);
 
 		playerListener.setSpells(spells);
 		entityListener.setSpells(spells);
         blockListener.setSpells(spells);
-
-		// setup commands
-		castCommand = utilities.getPlayerCommand("cast", "Cast spells by name", "<spellname>");
-		spellsCommand = utilities.getPlayerCommand("spells", "List spells you know", null);
-
-		castCommand.bind("onCast");
-		spellsCommand.bind("onSpells");
 	}
 
+	private void bindToPermissions() 
+	{
+	    if (permissionHandler != null) 
+	    {
+	        return;
+	    }
+	    
+	    Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
+	    
+	    if (permissionsPlugin == null) 
+	    {
+	        log.info("Permissions plugin not found, everyone has full access!");
+	        return;
+	    }
+	    
+	    permissionHandler = ((Permissions) permissionsPlugin).getHandler();
+	    log.info("Magic: Using permissions plugin: " + ((Permissions)permissionsPlugin).getDescription().getFullName());
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
 	{
-		return utilities.dispatch(this, sender, cmd.getName(), args);
+	    String commandName = cmd.getName();
+	    
+	    // Everything beyond this point is is-game only
+	    if (!(sender instanceof Player)) return false;
+	    
+	    Player player = (Player)sender;
+
+        if (commandName.equalsIgnoreCase("wand"))
+        {
+            if (!spells.hasPermission(player, "Magic.commands.wand")) return false;
+            return onWand(player, args);
+        }
+	    
+	    if (commandName.equalsIgnoreCase("cast"))
+        {
+	        if (!spells.hasPermission(player, "Magic.commands.cast")) return false;
+            return onCast(player, args);
+        }
+
+        if (commandName.equalsIgnoreCase("spells"))
+        {
+            if (!spells.hasPermission(player, "Magic.commands.spells")) return false;
+            return onSpells(player, args);
+        }
+        
+	    return false;
 	}
 	
+    public boolean onWand(Player player, String[] parameters)
+    {
+        if (parameters.length < 1)
+        {
+            boolean gaveWand = false;
+  
+            Inventory inventory = player.getInventory();
+            if (!inventory.contains(spells.getWandTypeId()))
+            {
+                ItemStack itemStack = new ItemStack(Material.getMaterial(spells.getWandTypeId()), 1);
+                player.getInventory().addItem(itemStack);
+                gaveWand = true;
+                
+                CraftPlayer cPlayer = ((CraftPlayer)player);
+                cPlayer.getHandle().l();
+            }
+            
+            if (!gaveWand)
+            {
+                showWandHelp(player);
+            }
+            else
+            {
+                player.sendMessage("Use /wand again for help, /spells for spell list");
+            }
+            return true;
+        }
+        
+        String spellName = parameters[0];
+        SpellVariant spell = spells.getSpell(spellName, player);
+        if (spell == null)
+        {
+            player.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
+            return true;
+        }
+        
+        ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
+        player.getInventory().addItem(itemStack);
+        
+        CraftPlayer cPlayer = ((CraftPlayer)player);
+        cPlayer.getHandle().l();
+        
+        return true;
+    }
+    
+    private void showWandHelp(Player player)
+    {
+        player.sendMessage("How to use your wand:");
+        player.sendMessage(" Type /spells to see what spells you know");
+        player.sendMessage(" Place a spell item in your first inventory slot");
+        player.sendMessage(" Left-click your wand to cast!");
+        player.sendMessage(" Right-click to cycle spells in your inventory");
+
+        if (spells.hasPermission(player, "Magic.commands.wand"))
+        {
+            player.sendMessage("/wand <spellname> : Give the item necessary to cast a spell");
+        }
+    }
+    
 	public boolean onCast(Player player, String[] castParameters)
 	{
 		if (castParameters.length < 1) return false;
@@ -285,19 +371,21 @@ public class SpellsPlugin extends JavaPlugin
 		spells.clear();
 	}
 
+	public static PermissionHandler getPermissionHandler()
+	{
+	    return permissionHandler;
+	}
+	
 	/*
 	 * Private data
-	 */
-	protected Persistence persistence = null;
-	protected PluginUtilities utilities = null;
-
-	protected PluginCommand castCommand;
-	protected PluginCommand spellsCommand;	
-	
+	 */	
 	private final Spells spells = new Spells();
 	private final Logger log = Logger.getLogger("Minecraft");
 	private final SpellsPlayerListener playerListener = new SpellsPlayerListener();
 	private final SpellsEntityListener entityListener = new SpellsEntityListener();
     private final SpellsBlockListener blockListener = new SpellsBlockListener();
+    
+    // Permissions
+    public static PermissionHandler permissionHandler;
 	
 }
