@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.HashMap;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -16,15 +14,8 @@ public class FillSpell extends Spell
 {
 	private int defaultMaxDimension = 128;
 	private int defaultMaxVolume = 512;
-	private final HashMap<String, Block> playerTargets = new HashMap<String, Block>();
+	private Block targetBlock = null;
 	private final BlockRecurse blockRecurse = new BlockRecurse();
-	
-	public FillSpell()
-	{
-	    setCooldown(250);
-		addVariant("paint", Material.PAINTING, getCategory(), "Fill a single block", "single");
-		addVariant("recurse", Material.WOOD_SPADE, getCategory(), "Recursively fill blocks", "recurse");
-	}
 	
 	@Override
 	public boolean onCast(String[] parameters) 
@@ -65,6 +56,7 @@ public class FillSpell extends Spell
 				String materialName = parameters[i + 1];
 				data = 0;
 				material = getMaterial(materialName, spells.getBuildingMaterials());
+				overrideMaterial = true;
 				i++;
 				continue;
 			}
@@ -78,6 +70,8 @@ public class FillSpell extends Spell
 	
 		if (recurse)
 		{
+		    this.targetBlock = null;
+		    
 		    Material targetMaterial = targetBlock.getType();
 			ReplaceMaterialAction action = new ReplaceMaterialAction(targetBlock, material, data);
 			
@@ -105,6 +99,8 @@ public class FillSpell extends Spell
 		}
 		else if (singleBlock)
 		{
+		    this.targetBlock = null;
+        
 			BlockList filledBlocks = new BlockList();
 			
 			filledBlocks.add(targetBlock);
@@ -116,13 +112,11 @@ public class FillSpell extends Spell
 			return true;
 		}
 		
-		Block target = getPlayerTarget();
-		
-		if (target != null)
+		if (this.targetBlock != null)
 		{			
-			int deltax = targetBlock.getX() - target.getX();
-			int deltay = targetBlock.getY() - target.getY();
-			int deltaz = targetBlock.getZ() - target.getZ();
+			int deltax = targetBlock.getX() - this.targetBlock.getX();
+			int deltay = targetBlock.getY() - this.targetBlock.getY();
+			int deltaz = targetBlock.getZ() - this.targetBlock.getZ();
 			
 			int absx = Math.abs(deltax);
 			int absy = Math.abs(deltay);
@@ -151,11 +145,17 @@ public class FillSpell extends Spell
 			absy++;
 			absz++;
 			
+			if (!overrideMaterial)
+			{
+			    material = targetBlock.getType();
+			    data = targetBlock.getData();
+			}
+			
 			BlockList filledBlocks = new BlockList();
 			castMessage(player, "Filling " + absx + "x" + absy + "x" + absz + " area with " + material.name().toLowerCase());
-			int x = target.getX();
-			int y = target.getY();
-			int z = target.getZ();
+			int x = this.targetBlock.getX();
+			int y = this.targetBlock.getY();
+			int z = this.targetBlock.getZ();
 			for (int ix = 0; ix < absx; ix++)
 			{
 				for (int iy = 0; iy < absy; iy++)
@@ -171,60 +171,29 @@ public class FillSpell extends Spell
 			}
 			spells.addToUndoQueue(player, filledBlocks);
 			
-			setTarget(null);
+			this.targetBlock = null;
 			return true;
 		}
 		else
 		{
-			target = targetBlock;
-			setTarget(target);
-			spells.startMaterialUse(player, target.getType(), target.getData());
+		    this.targetBlock = targetBlock;
 			if (!overrideMaterial)
 			{
-				material = target.getType();
+				material = targetBlock.getType();
 			}
 			castMessage(player, "Cast again to fill with " + material.name().toLowerCase());
 			return true;
 		}
 	}
 	
-	protected Block getPlayerTarget()
-	{
-		return playerTargets.get(player.getName());
-	}
-	
-	protected void setTarget(Block target)
-	{
-		playerTargets.put(player.getName(), target);
-	}
-	
 	@Override
 	public void onCancel()
 	{
-		Block target = getPlayerTarget();
-		if (target != null)
+		if (targetBlock != null)
 		{
 			player.sendMessage("Cancelled fill");
-			setTarget(null);
+			targetBlock = null;
 		}
-	}
-
-	@Override
-	public String getName() 
-	{
-		return "fill";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Fills a selected area (2 clicks)";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "construction";
 	}
 
 	@Override
@@ -232,11 +201,5 @@ public class FillSpell extends Spell
 	{
 		defaultMaxDimension = properties.getInteger("spells-fill-max-dimension", defaultMaxDimension);
 		defaultMaxVolume = properties.getInteger("spells-fill-max-volume", defaultMaxVolume);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.GOLD_SPADE;
 	}
 }

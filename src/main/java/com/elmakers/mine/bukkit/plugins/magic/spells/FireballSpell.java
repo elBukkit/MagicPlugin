@@ -6,7 +6,6 @@ import net.minecraft.server.MathHelper;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.util.Vector;
@@ -15,11 +14,6 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class FireballSpell extends Spell 
 {
-    public FireballSpell()
-    {
-        setCooldown(1500);
-    }
-    
 	@Override
 	public boolean onCast(String[] parameters) 
 	{
@@ -48,29 +42,5 @@ public class FireballSpell extends Spell
         
         world.addEntity(fireball);
 		return true;
-	}
-
-	@Override
-	public String getName() 
-	{
-		return "fireball";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Cast an exploding fireball";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "combat";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.NETHERRACK;
 	}
 }

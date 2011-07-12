@@ -36,11 +36,6 @@ public class FireSpell extends Spell
             return true;
         }
     }
-    
-	public FireSpell()
-	{
-		addVariant("inferno", Material.FIRE, "combat", "Burn a wide area", "6");
-	}
 	
 	@Override
 	public boolean onCast(String[] parameters)
@@ -141,30 +136,6 @@ public class FireSpell extends Spell
 	public int checkPosition(int x, int z, int R)
 	{
 		return (x * x) +  (z * z) - (R * R);
-	}
-
-	@Override
-	public String getName()
-	{
-		return "fire";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "combat";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Light fires from a distance";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.FLINT_AND_STEEL;
 	}
 	
 	@Override

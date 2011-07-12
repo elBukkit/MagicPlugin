@@ -5,12 +5,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
 import org.bukkit.util.Vector;
 
 public class Target implements Comparable<Target>
 {
-
     protected int    maxDistance = 512;
     protected double maxAngle    = 0.3;
 
@@ -63,15 +61,11 @@ public class Target implements Comparable<Target>
         // Favor targeting monsters, a bit
         if (entity instanceof Player)
         {
+            score = score + 3;
+        }
+        else  if (entity instanceof LivingEntity)
+        {
             score = score + 5;
-        }
-        else if (entity instanceof Wolf)
-        {
-            score = score + 2;
-        }
-        else  if (!(entity instanceof LivingEntity))
-        {
-            score = score + 4;
         }
         else
         {

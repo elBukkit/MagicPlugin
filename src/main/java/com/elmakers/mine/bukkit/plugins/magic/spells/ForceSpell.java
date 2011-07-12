@@ -3,9 +3,9 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -13,14 +13,9 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 
 public class ForceSpell extends Spell
 {
-    int defaultMagnitude = 4;
-    int maxAllDistance = 50;
-    
-    public ForceSpell()
-    {
-        setCooldown(500);
-        addVariant("push", Material.RAILS, getCategory(), "Push things away from you", "push");
-    }
+    int itemMagnitude = 1;
+    int entityMagnitude = 3;
+    int maxAllDistance = 20;
     
     public void forceAll(int magnitude, boolean push)
     {
@@ -32,7 +27,7 @@ public class ForceSpell extends Spell
             
             if (getDistance(playerLocation, entity.getLocation()) > maxAllDistance) continue;
             
-            forceEntity(entity, magnitude, push);
+            forceEntity(entity, push);
             
         }
     }
@@ -41,7 +36,7 @@ public class ForceSpell extends Spell
     public boolean onCast(String[] parameters)
     {
         boolean push = false;
-        int magnitude = defaultMagnitude;
+        int magnitude = itemMagnitude;
         
         for (int i = 0; i < parameters.length; i++)
         {
@@ -66,28 +61,30 @@ public class ForceSpell extends Spell
             }
         }
         
-        if (getYRotation() < -80)
+        targetEntity(Entity.class);
+        Target target = getTarget();
+
+        if ((target == null || !target.isEntity() || target.isBlock()) && (getYRotation() < -60 || getYRotation() > 60))
         {
-            castMessage(player, "Get away!");
-            forceAll(magnitude, true);
+            if (push)
+            {
+                castMessage(player, "Get away!");
+                forceAll(magnitude, true);
+            }
+            else
+            {
+                castMessage(player, "Gimme!");
+                forceAll(magnitude, false);
+            }
             return true;
         }
         
-        if (getYRotation() > 80)
-        {
-           castMessage(player, "Gimme!");
-           forceAll(magnitude, false);
-           return true;
-        }
-        
-        targetEntity(Entity.class);
-        Target target = getTargetEntity();
         if (target == null || !target.hasTarget())
         {
             return false;
         }
            
-        forceEntity(target.getEntity(), magnitude, push);
+        forceEntity(target.getEntity(), push);
         
         if (push)
         {
@@ -100,8 +97,9 @@ public class ForceSpell extends Spell
         return true;
     }
     
-    protected void forceEntity(Entity target, int magnitude, boolean push)
+    protected void forceEntity(Entity target, boolean push)
     {
+        int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
         Location playerLocation = player.getLocation();
         Vector targetLoc = new Vector(target.getLocation().getBlockX(), target.getLocation().getBlockY(), target.getLocation().getBlockZ());
         Vector playerLoc = new Vector(playerLocation.getBlockX(), playerLocation.getBlockY(), playerLocation.getBlockZ());
@@ -120,29 +118,4 @@ public class ForceSpell extends Spell
         CraftEntity ce = (CraftEntity)target;
         ce.setVelocity(aimVector);
     }
-
-    @Override
-    public String getName()
-    {
-        return "pull";
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "help";
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return "Pull things toward you";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.FISHING_ROD;
-    }
-
 }

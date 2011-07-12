@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.HashMap;
 
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -18,11 +17,6 @@ public class FlingSpell extends Spell
 	private final long safetyLength = 20000;
 	private HashMap<String, Long> lastFling = new HashMap<String, Long>();
 
-   public FlingSpell()
-    {
-        addVariant("leap", Material.LEATHER_BOOTS, getCategory(), "Take a big leap", "2");
-    }
-    
 	@Override
 	public boolean onCast(String[] parameters)
 	{
@@ -48,30 +42,6 @@ public class FlingSpell extends Spell
         spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling.put(player.getName(), System.currentTimeMillis());
 		return true;
-	}
-
-	@Override
-	public String getName()
-	{
-		return "fling";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "wip";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Sends you flying in the target direction";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.IRON_BOOTS;
 	}
 	
     public void onPlayerDamage(Player player, EntityDamageEvent event)

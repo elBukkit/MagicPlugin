@@ -66,28 +66,4 @@ public class ExtendSpell extends Spell
 		
 		return true;
 	}
-
-	@Override
-	public String getName() 
-	{
-		return "extend";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Extends your target outward";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "wip";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.WOOD_SWORD;
-	}
 }

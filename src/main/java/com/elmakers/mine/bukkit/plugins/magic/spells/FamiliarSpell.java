@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -28,14 +27,7 @@ public class FamiliarSpell extends Spell
 	private List<String> defaultFamiliars = new ArrayList<String>();
 	private List<String> defaultMonsters = new ArrayList<String>();
 	private final Random rand = new Random();
-	private HashMap<String, PlayerFamiliar> familiars = new HashMap<String, PlayerFamiliar>();
-	   
-    public FamiliarSpell()
-    {
-        addVariant("monster", Material.PUMPKIN, "combat", "Call a monster to your side", "monster");
-        addVariant("mob", Material.JACK_O_LANTERN, "combat", "Call a monster to your side", "mob 20");
-        addVariant("farm", Material.WHEAT, "farming", "Create a herd", "30");
-    }
+	private PlayerFamiliar familiars = new PlayerFamiliar();
     
 	public enum FamiliarClass
 	{
@@ -101,13 +93,12 @@ public class FamiliarSpell extends Spell
 		LivingEntity targetEntity = null;
 		targetBlock = targetBlock.getFace(BlockFace.UP);
        
-		PlayerFamiliar fam = getFamiliar(player.getName());	
-		boolean hasFamiliar = fam.hasFamiliar();
+		boolean hasFamiliar = familiars.hasFamiliar();
 		
     	if (hasFamiliar)
         {   // Dispel familiars if you target them and cast
-    	    boolean isFamiliar = target.isEntity() && fam.isFamiliar(target.getEntity());
-            fam.releaseFamiliar();
+    	    boolean isFamiliar = target.isEntity() && familiars.isFamiliar(target.getEntity());
+    	    familiars.releaseFamiliar();
             if (isFamiliar)
             {
                 castMessage(player, "You release your familiar(s)");
@@ -167,7 +158,7 @@ public class FamiliarSpell extends Spell
 			famType = CreatureType.SQUID;
 		}
 		
-		List<Creature> familiars = new ArrayList<Creature>();
+		List<Creature> newFamiliars = new ArrayList<Creature>();
 		int spawnCount = 0;
 		for (int i = 0; i < famCount; i++)
 		{
@@ -199,7 +190,7 @@ public class FamiliarSpell extends Spell
 		    Creature entity =  spawnFamiliar(targetLoc, famType, targetEntity);
 		    if (entity != null)
 		    {
-		        familiars.add(entity);
+		        newFamiliars.add(entity);
 		        spawnCount++;
 		    }
 		}
@@ -214,7 +205,7 @@ public class FamiliarSpell extends Spell
 		    typeMessage = " " + famClass.name().toLowerCase();
 		}
 		castMessage(player, "You create " + famCount + typeMessage +" familiar(s)!");
-		fam.setFamiliars(familiars);
+		familiars.setFamiliars(newFamiliars);
 		checkListener();
 		return true;
 	
@@ -232,58 +223,19 @@ public class FamiliarSpell extends Spell
 	    }
 		return familiar;
 	}
-
-	protected PlayerFamiliar getFamiliar(String playerName)
-	{
-		PlayerFamiliar familiar = familiars.get(playerName);
-		if (familiar == null)
-		{
-			familiar = new PlayerFamiliar();
-			familiars.put(playerName, familiar);
-		}
-		return familiar;
-	}
-	
 	
 	protected void checkListener()
 	{
-		boolean anyFamiliars = false;
-		for (PlayerFamiliar familiar : familiars.values())
-		{
-			if (familiar.hasFamiliar())
-			{
-				anyFamiliars = true;
-				break;
-			}
-		}
-		if (anyFamiliars)
-		{
-			spells.registerEvent(SpellEventType.PLAYER_QUIT, this);
-		}
-		else
-		{
-			spells.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
-		}
+	    if (familiars.hasFamiliar())
+	    {
+	        spells.registerEvent(SpellEventType.PLAYER_QUIT, this);
+	    }
+	    else
+	    {
+	        spells.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
+	    }
 	}
 	
-	@Override
-	public String getName()
-	{
-		return "familiar";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "farming";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Create an animal familiar to follow you around";
-	}
-
 	@Override
 	public void onLoad(PluginProperties properties)
 	{
@@ -293,18 +245,10 @@ public class FamiliarSpell extends Spell
 	
 	public void onPlayerQuit(PlayerEvent event)
 	{
-		PlayerFamiliar fam = getFamiliar(event.getPlayer().getName());
-		if (fam.hasFamiliar())
+		if (familiars.hasFamiliar())
 		{
-			fam.releaseFamiliar();
+		    familiars.releaseFamiliar();
 			checkListener();
 		}
 	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.EGG;
-	}
-	
 }

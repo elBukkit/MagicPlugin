@@ -95,13 +95,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         this.player = null;
     }
     
-    public void load(String name, String description, String category, Material icon, String[] parameters)
+    public void load(String name, String description, String category, Material icon, String[] parameters, int cooldown)
     {
         this.name = name;
         this.description = description;
         this.category = category;
         this.parameters = parameters;
         this.material = icon;
+        this.cooldown = cooldown;
     }
     
     public void setPlayer(Player player)
@@ -1022,10 +1023,5 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
                 } 
             }
         }
-    }
-    
-    protected void setCooldown(int ms)
-    {
-        cooldown = ms;
     }
 }
