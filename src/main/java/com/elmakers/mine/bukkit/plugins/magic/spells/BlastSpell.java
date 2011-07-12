@@ -19,11 +19,6 @@ public class BlastSpell extends Spell
 	private int				maxRadius				= 32;
 	private int				defaultSearchDistance	= 32;
 	private int				torchFrequency			= 4;
-
-	public BlastSpell()
-	{
-	    addVariant("superblast", Material.SLIME_BALL, getCategory(), "Mine out a very large area", "16");
-	}
 	
 	@Override
 	public boolean onCast(String[] parameters)
@@ -119,24 +114,6 @@ public class BlastSpell extends Spell
 	}
 
 	@Override
-	public String getName()
-	{
-		return "blast";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "mining";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Mine out a large area at your target";
-	}
-
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		destructibleMaterials =  properties.getMaterials("spells-blast-destroy", DEFAULT_DESTRUCTIBLES);
@@ -144,11 +121,5 @@ public class BlastSpell extends Spell
 		maxRadius = properties.getInteger("spells-blast-max-radius", maxRadius);
 		defaultSearchDistance = properties.getInteger("spells-blast-search-distance", defaultSearchDistance);
 		torchFrequency = properties.getInteger("spells-blast-torch-frequency", torchFrequency);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-			return Material.SULPHUR;
 	}
 }

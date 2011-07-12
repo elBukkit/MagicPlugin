@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 
 public class ForceSpell extends Spell
 {
-    int defaultMagnitude = 3;
+    int defaultMagnitude = 4;
     int maxAllDistance = 50;
     
     public ForceSpell()
@@ -108,8 +108,7 @@ public class ForceSpell extends Spell
         Vector aimVector = playerLoc;
         if (push)
         {
-            aimVector = new Vector((0 - Math.sin(Math.toRadians(playerLocation.getYaw()))), (0 - Math.sin(Math
-                    .toRadians(playerLocation.getPitch() + 45))), Math.cos(Math.toRadians(playerLocation.getYaw())));
+            aimVector = getAimVector();
         }
         else
         {

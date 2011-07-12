@@ -29,34 +29,10 @@ public class AbsorbSpell extends Spell
 			
 		return giveMaterial(target.getType(), amount, (short)0 , target.getData());
 	}
-
-	@Override
-	public String getName() 
-	{
-		return "absorb";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Give yourself some of your target";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "construction";
-	}
 	
 	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		//defaultAmount = properties.getInteger("spells-absorb-amount", defaultAmount);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.BUCKET;
 	}
 }

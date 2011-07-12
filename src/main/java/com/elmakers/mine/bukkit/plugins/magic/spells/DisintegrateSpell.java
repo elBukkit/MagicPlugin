@@ -75,30 +75,6 @@ public class DisintegrateSpell extends Spell
 	}
 
 	@Override
-	public String getName()
-	{
-		return "disintegrate";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "mining";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Destroy the target block";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.BONE;
-	}
-
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		defaultSearchDistance = properties.getInteger("spells-disintegrate-search-distance", defaultSearchDistance);

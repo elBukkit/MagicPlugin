@@ -32,7 +32,7 @@ import com.elmakers.mine.bukkit.utilities.PluginProperties;
  * Original targeting code ported from: HitBlox.java, Ho0ber@gmail.com 
  *
  */
-public abstract class Spell implements Comparable<Spell>
+public abstract class Spell implements Comparable<Spell>, Cloneable
 {	    
 	/*
 	 * protected members that are helpful to use
@@ -40,6 +40,163 @@ public abstract class Spell implements Comparable<Spell>
 	protected Player						player;
 	protected Spells						spells;
 
+	/*
+	 * Variant properties
+	 */
+	private String name;
+    private String description;
+    private String category;
+    private String[] parameters;
+    private Material material;
+	
+    /*
+     * private data
+     */
+
+    private boolean                             allowMaxRange           = false;
+    private int                                 range                   = 200;
+    private double                              viewHeight              = 1.65;
+    private double                              step                    = 0.2;
+    
+    private int                                 cooldown                = 0;
+    private long                                lastCast                = 0;
+
+    private int                                 verticalSearchDistance  = 8;
+    private boolean                             targetingComplete;
+    private int                                 targetHeightRequired    = 1;
+    private Class<? extends Entity>             targetEntityType        = null;
+    private Location                            playerLocation;
+    private double                              xRotation, yRotation;
+    private double                              length, hLength;
+    private double                              xOffset, yOffset, zOffset;
+    private int                                 lastX, lastY, lastZ;
+    private int                                 targetX, targetY, targetZ;
+    private final HashMap<Material, Boolean>    targetThroughMaterials  = new HashMap<Material, Boolean>();
+    private boolean                             reverseTargeting        = false;
+
+    protected Object clone()
+    {
+        try
+        {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException ex)
+        {
+            return null;
+        }
+    }
+    
+    /**
+     * Default constructor, used to register spells.
+     * 
+     */
+    public Spell()
+    {
+        this.player = null;
+    }
+    
+    public void load(String name, String description, String category, Material icon, String[] parameters)
+    {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.parameters = parameters;
+        this.material = icon;
+    }
+    
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+
+    public final String getName()
+    {
+        return name;
+    }
+
+    public final Material getMaterial()
+    {
+        return material;
+    }
+    
+    public final String getDescription()
+    {
+        return description;
+    }
+    
+    public final String getCategory()
+    {
+        return category;
+    }
+    
+    public final String[] getParameters()
+    {
+        return parameters;
+    }
+    
+    public boolean isMatch(String spell, String[] params)
+    {
+        if (params == null) params = new String[0];
+        return (name.equalsIgnoreCase(spell) && parameters.equals(params));
+    }
+    
+    public int compareTo(Spell other)
+    {
+        return getName().compareTo(other.getName());
+    }
+    
+    public boolean cast()
+    {
+        return cast(new String[0]);
+    }
+    
+    public boolean cast(String[] extraParameters)
+    {
+        String[] spellParameters = parameters;
+        
+        if (extraParameters.length > 0)
+        {
+            spellParameters = new String[extraParameters.length + parameters.length];
+            for (int i = 0; i < parameters.length; i++)
+            {
+                spellParameters[i] = parameters[i];
+            }
+            for (int i = 0; i < extraParameters.length; i++)
+            {
+                spellParameters[i + parameters.length] = extraParameters[i];
+            }
+        }
+ 
+        long currentTime = System.currentTimeMillis();
+        if (lastCast != 0 && lastCast > currentTime - cooldown)
+        {
+            return false;
+        }
+        
+        lastCast = currentTime;
+
+        targetThrough(Material.AIR);
+        targetThrough(Material.WATER);
+        targetThrough(Material.STATIONARY_WATER);
+        targetThrough(Material.SNOW);
+
+        initializeTargeting(player);
+
+        return onCast(spellParameters);
+    }
+
+    public String getPermissionNode()
+    {
+        return "Magic.cast." + getName();
+    }
+    
+    public boolean hasSpellPermission(Player player)
+    {
+        if (player == null) return false;
+    
+        return spells.hasPermission(player, getPermissionNode());
+    }
+    
 	/**
 	 * Called when this spell is cast.
 	 * 
@@ -52,46 +209,6 @@ public abstract class Spell implements Comparable<Spell>
 	 * @return true if the spell worked, false if it failed
 	 */
 	public abstract boolean onCast(String[] parameters);
-
-	/**
-	 * You must specify a unique name (id) for your spell.
-	 * 
-	 * This is also the name of the default variant, used for casting this spell's default behavior.
-	 * 
-	 * @return The name of this spell
-	 */
-	public abstract String getName();
-
-	/**
-	 * You must specify a category for this spell.
-	 * 
-	 * This is used for grouping spells when displaying the in-game spell explorer, and can
-	 * be used for permissions as well.
-	 * 
-	 * Check the builtins spells for examples of common categories.
-	 * 
-	 * @return This spell's category.
-	 */
-	public abstract String getCategory();
-
-	/**
-	 * A brief description of this spell.
-	 * 
-	 * This is displayed in the in-game help screen, so keep it short.
-	 * 
-	 * @return This spells' description.
-	 */
-	public abstract String getDescription();
-	
-	/**
-	 * The material used to represent this spell.
-	 * 
-	 * This will probably be dropped from this interface and managed by Wand in the future.
-	 * 
-	 * @return The material used to represent this spell's icon in the Wand UI.
-	 */
-	public abstract Material getMaterial();
-
 
 	/**
 	 * Called on load, you can load data here and set defaults.
@@ -125,17 +242,6 @@ public abstract class Spell implements Comparable<Spell>
 	}
 	
 	/**
-	 * Listener method, called on player maerial selection for registered spells.
-	 * 
-	 * @param player The player that has chosen a material
-	 * @see Spells#registerEvent(SpellEventType, Spell)
-	 */
-	public void onMaterialChoose(Player player)
-	{
-		
-	}
-	
-	/**
 	 * Listener method, called on player quit for registered spells.
 	 * 
 	 * @param event The player who just quit
@@ -162,16 +268,6 @@ public abstract class Spell implements Comparable<Spell>
     {
 	    
     }
-
-	/**
-	 * Default constructor, used to register spells.
-	 * 
-	 * Override this constructor to add new default variants.
-	 */
-	public Spell()
-	{
-		variants.add(new SpellVariant(this));
-	}
 	
 	public static byte getItemData(ItemStack stack)
 	{
@@ -372,7 +468,6 @@ public abstract class Spell implements Comparable<Spell>
 		return playerBlock;
 	}
 
-	
 	/**
 	 * Get the direction the player is facing as a BlockFace.
 	 * 
@@ -402,7 +497,6 @@ public abstract class Spell implements Comparable<Spell>
 
 		return direction;
 	}
-	
 
 	/**
 	 * A helper function to go change a given direction to the direction "to the right".
@@ -492,7 +586,6 @@ public abstract class Spell implements Comparable<Spell>
 	        Math.cos(Math.toRadians(playerLocation.getYaw()))
 		);
 	}
-
 	
 	/**
 	 * Get the (simplified) player pitch.
@@ -771,45 +864,6 @@ public abstract class Spell implements Comparable<Spell>
 	}
 	
 	/**
-	 * Get all the registered variants of this spell.
-	 * 
-	 * @return This spells' variants
-	 */
-	public List<SpellVariant> getVariants()
-	{
-		return variants;
-	}
-	
-	/**
-	 * Register a variant of this spell.
-	 * 
-	 * @param name
-	 * @param material
-	 * @param category
-	 * @param description
-	 * @param parameters
-	 */
-	protected void addVariant(String name, Material material, String category, String description, String[] parameters)
-	{
-		variants.add(new SpellVariant(this, name, material, category, description, parameters));
-	}
-	
-	/**
-	 * Register a variant of this spell.
-	 * 
-	 * @param name
-	 * @param material
-	 * @param category
-	 * @param description
-	 * @param parameter
-	 */
-	protected void addVariant(String name, Material material, String category, String description, String parameter)
-	{
-		String[] parameters = parameter.split(" ");
-		variants.add(new SpellVariant(this, name, material, category, description, parameters));
-	}
-	
-	/**
 	 * Used internally to initialize the Spell, do not call.
 	 * 
 	 * @param instance The spells instance
@@ -818,36 +872,6 @@ public abstract class Spell implements Comparable<Spell>
 	{
 		this.spells = instance;
 	}
-	
-	/**
-	 * Called by Spells to cast this spell, do not call.
-	 * 
-	 * @param parameters
-	 * @param player
-	 * @return true if the spell succeed, false if failed
-	 * @see Spells#castSpell(SpellVariant, Player)
-	 */
-	public boolean cast(String[] parameters, Player player)
-	{
-		this.player = player;
-		
-		long currentTime = System.currentTimeMillis();
-		if (lastCast != 0 && lastCast > currentTime - cooldown)
-		{
-		    return false;
-		}
-		
-		lastCast = currentTime;
-
-		targetThrough(Material.AIR);
-		targetThrough(Material.WATER);
-		targetThrough(Material.STATIONARY_WATER);
-        targetThrough(Material.SNOW);
-
-		initializeTargeting(player);
-
-		return onCast(parameters);
-	}
 
 	/**
 	 * Called by the Spells plugin to cancel this spell, do not call.
@@ -855,11 +879,8 @@ public abstract class Spell implements Comparable<Spell>
 	 * @param plugin The Spells plugin instance
 	 * @param player The player cancelling selection
 	 */
-	public void cancel(Spells plugin, Player player)
+	public void cancel()
 	{
-		this.player = player;
-		this.spells = plugin;
-
 		onCancel();
 	}
 
@@ -908,14 +929,6 @@ public abstract class Spell implements Comparable<Spell>
 			}
 		}
 		targetingComplete = true;
-	}
-	
-	/* Used for sorting spells
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Spell other)
-	{
-		return getName().compareTo(other.getName());
 	}
 	
 	protected void setMaxRange(int range, boolean allow)
@@ -1015,30 +1028,4 @@ public abstract class Spell implements Comparable<Spell>
     {
         cooldown = ms;
     }
-	
-	/*
-	 * private data
-	 */
-
-	private boolean								allowMaxRange			= false;
-	private int									range					= 200;
-	private double								viewHeight				= 1.65;
-	private double								step					= 0.2;
-	
-	private int                                 cooldown                = 0;
-	private long                                lastCast                = 0;
-
-	private int                                 verticalSearchDistance  = 8;
-	private boolean								targetingComplete;
-	private int									targetHeightRequired	= 1;
-	private Class<? extends Entity>             targetEntityType        = null;
-	private Location							playerLocation;
-	private double								xRotation, yRotation;
-	private double								length, hLength;
-	private double								xOffset, yOffset, zOffset;
-	private int									lastX, lastY, lastZ;
-	private int									targetX, targetY, targetZ;
-	private final HashMap<Material, Boolean>	targetThroughMaterials	= new HashMap<Material, Boolean>();
-	private boolean								reverseTargeting		= false;
-	private final List<SpellVariant>			variants				= new ArrayList<SpellVariant>();
 }

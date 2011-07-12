@@ -89,24 +89,6 @@ public class AlterSpell extends Spell
 	}
 	
 	@Override
-	public String getName()
-	{
-		return "alter";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "construction";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Alter certain objects";
-	}
-	
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		recurseDistance = properties.getInteger("spells-alter-recursion-depth", recurseDistance);
@@ -122,11 +104,4 @@ public class AlterSpell extends Spell
 			spells.getLog().warning("Spells:Alter: Mis-match in adjustable material lists!");
 		}
 	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.REDSTONE_TORCH_ON;
-	}
-
 }

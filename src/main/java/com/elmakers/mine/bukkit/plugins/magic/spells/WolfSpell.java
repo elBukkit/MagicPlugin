@@ -16,11 +16,12 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 
 public class WolfSpell extends Spell
 {
-    private static final int maxWolves = 3;
+    private static final int maxWolves = 5;
     protected HashMap<String, ArrayList<CraftWolf> > playerWolves = new HashMap<String, ArrayList<CraftWolf> >();
     
 	public WolfSpell()
 	{
+	    setCooldown(5000);
 	}
 	
 	public CraftWolf newWolf(Target target)
@@ -38,7 +39,7 @@ public class WolfSpell extends Spell
             targetBlock = targetBlock.getFace(BlockFace.SOUTH);
         }
 		
-		CraftWolf entity = (CraftWolf)player.getWorld().spawnCreature(target.getLocation(), CreatureType.WOLF);
+		CraftWolf entity = (CraftWolf)player.getWorld().spawnCreature(targetBlock.getLocation(), CreatureType.WOLF);
 		if (entity == null)
 		{
 			sendMessage(player, "Your wolfie is DOA");
@@ -73,17 +74,20 @@ public class WolfSpell extends Spell
 		    }
 		}
 		
-		if (wolves.size() < maxWolves) 
+		if (wolves.size() >= maxWolves) 
 		{
-		    CraftWolf wolf = newWolf(target);
-		    if (wolf == null)
-		    {
-		        return false;
-		    }
-		    
-		    wolves.add(wolf);
-		    playerWolves.put(player.getName(), wolves);
+		   CraftWolf killWolf = wolves.remove(0);
+		   killWolf.damage(100);
 		}
+		
+    	CraftWolf wolf = newWolf(target);
+        if (wolf == null)
+        {
+            return false;
+        }
+         
+        wolves.add(wolf);
+        playerWolves.put(player.getName(), wolves);
 		
 		Entity e = target.getEntity();
         if (e != null && e instanceof LivingEntity)

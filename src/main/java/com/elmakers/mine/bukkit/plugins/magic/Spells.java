@@ -35,39 +35,6 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.BridgeSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.ConstructSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.CushionSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.DisintegrateSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FamiliarSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FillSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FireSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FireballSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FlingSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.ForceSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FrostSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.GillsSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.GotoSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.GrenadeSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.HealSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.InvincibleSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.InvisibilitySpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.LavaSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.LevitateSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.LightningSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.ManifestSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.MapSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.MineSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.PeekSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.PillarSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.PortalSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.RecallSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.SignSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.StairsSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.TorchSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.TowerSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.TransmuteSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.TreeSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.TunnelSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.UndoSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.WeatherSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.WolfSpell;
 import com.elmakers.mine.bukkit.utilities.PluginProperties;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.nijiko.permissions.PermissionHandler;
@@ -78,18 +45,29 @@ public class Spells
 	 * Public API - Use for hooking up a plugin, or calling a spell
 	 */
 		
-	public SpellVariant getSpell(Material material, Player player)
+	public Spell getSpell(Material material, Player player)
 	{
-		SpellVariant spell = spellsByMaterial.get(material);
-		if (spell != null && !spell.hasSpellPermission(player)) return null;
-		return spell;
+		Spell spell = spellsByMaterial.get(material);
+		if (spell == null || !spell.hasSpellPermission(player)) return null;
+		
+		return getSpell(spell.getName(), player);
 	}
 
-	public SpellVariant getSpell(String name, Player player)
+	public Spell getSpell(String name, Player player)
 	{
-		SpellVariant spell = spellVariants.get(name);
-		if (spell != null && !spell.hasSpellPermission(player)) return null;
-		return spell;
+	    Spell spell = spells.get(name);
+		if (spell == null || !spell.hasSpellPermission(player)) return null;
+
+        PlayerSpells playerSpells = getPlayerSpells(player);
+        Spell playerSpell = playerSpells.getSpell(spell.getName());
+        if (playerSpell == null)
+        {
+            playerSpell = (Spell)spell.clone();
+            playerSpell.setPlayer(player);
+            playerSpells.addSpell(playerSpell);
+        }
+        
+		return playerSpell;
 	}
 	
 	public PlayerSpells getPlayerSpells(Player player)
@@ -97,57 +75,75 @@ public class Spells
 		PlayerSpells spells = playerSpells.get(player.getName());
 		if (spells == null)
 		{
-			spells = new PlayerSpells();
+			spells = new PlayerSpells(player);
 			playerSpells.put(player.getName(), spells);
 		}
 		return spells;
 	}
+
+    protected void loadSpells()
+    {
+        loadSpell(new AbsorbSpell(), "absorb", Material.BUCKET, "Absorb some of the target", "construction", "");
+        loadSpell(new AlterSpell(), "alter", Material.REDSTONE_TORCH_ON, "Alter certain objects", "construction", "");
+        loadSpell(new ArrowSpell(), "arrow", Material.ARROW, "Fire a magic arrow", "combat", "");
+        loadSpell(new ArrowSpell(), "arrowrain", Material.BOW, "Fire a volley of arrows", "combat", "4");
+        loadSpell(new BlastSpell(), "blast", Material.SULPHUR, "Mine out a large area", "mining", "");
+        loadSpell(new BlastSpell(), "superblast", Material.SLIME_BALL, "Mine out a very large area", "mining", "16");
+        loadSpell(new BlinkSpell(), "blink", Material.FEATHER, "Teleport to your target", "exploration", "");
+        loadSpell(new BlinkSpell(), "ascend", Material.RED_MUSHROOM, "Go up to the nearest safe spot", "exploration", "ascend");
+        loadSpell(new BlinkSpell(), "descend", Material.BROWN_MUSHROOM, "Travel underground", "exploration", "descend");
+        loadSpell(new BlinkSpell(), "tesseract", Material.WEB, "Blink a short distance", "exploration", "8");
+        loadSpell(new BoomSpell(), "boom", Material.RED_ROSE, "Create an explosion", "combat", "");
+        loadSpell(new BoomSpell(), "kaboom", Material.REDSTONE_WIRE, "Create a big explosion", "combat", "6");
+        loadSpell(new BoomSpell(), "kamikazee", Material.DEAD_BUSH, "Kill yourself with an explosion", "combat", "8 here");
+        loadSpell(new BoomSpell(), "nuke", Material.BED, "Create a huge explosino", "combat", "20");
+        loadSpell(new BridgeSpell(), "bridge", Material.GOLD_HOE, "Extend the ground underneath you", "construction", "");
+        loadSpell(new ConstructSpell(), "blob", Material.CLAY_BALL, "Create a solid blob", "construction", "sphere 3");
+        loadSpell(new ConstructSpell(), "shell", Material.BOWL, "Create a large spherical shell", "construction", "sphere hollow 10");
+        loadSpell(new ConstructSpell(), "box", Material.GOLD_HELMET, "Create a large hollow box", "construction", "cuboid hollow 6");
+        loadSpell(new ConstructSpell(), "superblob", Material.CLAY_BRICK, "Create a large solid sphere", "construction", "sphere 8");
+        loadSpell(new ConstructSpell(), "sandblast", Material.SANDSTONE, "Drop a big block of sand", "combat", "cuboid 4 with sand");       
+        loadSpell(new CushionSpell(), "cushion", Material.SOUL_SAND, "Create a safety bubble", "help", "");
+        loadSpell(new DisintegrateSpell(), "disintegrate", Material.BONE, "Damage your target", "combat", "");         
+    }
 	
-	public boolean castSpell(SpellVariant spell, Player player)
+	public void loadSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
 	{
-		return castSpell(spell, new String[0], player);
+	    String[] parameters = parameterString.split(" ");
+	    template.load(name, description, category, icon, parameters);
+	    addSpell(template);
 	}
 	
-	public boolean castSpell(SpellVariant spell, String[] parameters, Player player)
+	public void addSpell(Spell variant)
 	{
-		return spell.cast(parameters, player);
-	}
-	
-	public void addSpell(Spell spell)
-	{
-		List<SpellVariant> variants = spell.getVariants();
-		for (SpellVariant variant : variants)
+	    Spell conflict = spells.get(variant.getName());
+		if (conflict != null)
 		{
-			SpellVariant conflict = spellVariants.get(variant.getName());
+			log.log(Level.WARNING, "Duplicate spell name: '" + conflict.getName() + "'");
+		}
+		else
+		{
+		    spells.put(variant.getName(), variant);
+		}
+		Material m = variant.getMaterial();
+		if (m != null && m != Material.AIR)
+		{
+			if (buildingMaterials.contains(m))
+			{
+				log.warning("Spell " + variant.getName() + " uses building material as icon: " + m.name().toLowerCase());
+			}
+			conflict = spellsByMaterial.get(m);
 			if (conflict != null)
 			{
-				log.log(Level.WARNING, "Duplicate spell name: '" + conflict.getName() + "'");
+				log.log(Level.WARNING, "Duplicate spell material: " + m.name() + " for " + conflict.getName() + " and " + variant.getName());
 			}
 			else
 			{
-				spellVariants.put(variant.getName(), variant);
-			}
-			Material m = variant.getMaterial();
-			if (m != null && m != Material.AIR)
-			{
-				if (buildingMaterials.contains(m))
-				{
-					log.warning("Spell " + variant.getName() + " uses building material as icon: " + m.name().toLowerCase());
-				}
-				conflict = spellsByMaterial.get(m);
-				if (conflict != null)
-				{
-					log.log(Level.WARNING, "Duplicate spell material: " + m.name() + " for " + conflict.getName() + " and " + variant.getName());
-				}
-				else
-				{
-					spellsByMaterial.put(variant.getMaterial(), variant);
-				}
+				spellsByMaterial.put(variant.getMaterial(), variant);
 			}
 		}
-		
-		spells.add(spell);
-		spell.initialize(this);
+	
+		variant.initialize(this);
 	}
 	
 	/*
@@ -157,24 +153,6 @@ public class Spells
 	public List<Material> getBuildingMaterials()
 	{
 		return buildingMaterials;
-	}
-	
-	public void startMaterialUse(Player player, Material material, byte data)
-	{
-		PlayerSpells spells = getPlayerSpells(player);
-		spells.startMaterialUse(material, data);
-	}
-	
-	public Material finishMaterialUse(Player player)
-	{
-		PlayerSpells spells = getPlayerSpells(player);
-		return spells.finishMaterialUse();
-	}
-	
-	public byte getMaterialData(Player player)
-	{
-		PlayerSpells spells = getPlayerSpells(player);
-		return spells.getData();
 	}
 	
 	/*
@@ -197,78 +175,6 @@ public class Spells
 	{
 		UndoQueue queue = getUndoQueue(player.getName());
 		
-		/* TODO: Get this working again!
-		if (autoExpandUndo)
-		{
-			BlockList expandedBlocks = new BlockList(blocks);
-			for (UndoableBlock undoBlock : blocks.getBlocks())
-			{
-				Block block = undoBlock.getBlock();
-				Material newType = block.getType();
-				if (newType == undoBlock.getOriginalMaterial() || isSolid(newType))
-				{
-					continue;
-				}
-				
-				for (int side = 0; side < 4; side++)
-				{
-					BlockFace sideFace = UndoableBlock.SIDES[side];
-					Block sideBlock = block.getFace(sideFace);
-					if (blocks.contains(sideBlock)) continue;
-					
-					if (isSticky(undoBlock.getOriginalSideMaterial(side)))
-					{
-						UndoableBlock stickyBlock = expandedBlocks.addBlock(sideBlock);
-						stickyBlock.setFromSide(undoBlock, side);
-					}
-				}
-				
-				Material topMaterial = undoBlock.getOriginalTopMaterial();
-				Block topBlock = block.getFace(BlockFace.UP);
-				if (!blocks.contains(topBlock))
-				{  
-					if (isAffectedByGravity(topMaterial))
-					{
-						expandedBlocks.addBlock(topBlock);
-						if (autoPreventCaveIn)
-						{
-							topBlock.setType(gravityFillMaterial);
-						}
-						else
-						{
-							for (int dy = 0; dy < undoCaveInHeight; dy++)
-							{
-								topBlock = topBlock.getFace(BlockFace.UP);
-								if (isAffectedByGravity(topBlock.getType()))
-								{
-									expandedBlocks.addBlock(topBlock);
-								}
-								else
-								{
-									break;
-								}
-							}
-						}
-					}
-					else
-					if (isStickyAndTall(topMaterial))
-					{
-						UndoableBlock stickyBlock = expandedBlocks.addBlock(topBlock);
-						stickyBlock.setFromBottom(undoBlock);
-						stickyBlock = expandedBlocks.addBlock(topBlock.getFace(BlockFace.UP));
-						stickyBlock.setFromBottom(undoBlock);
-					}
-					else
-					if (isSticky(topMaterial))
-					{
-						UndoableBlock stickyBlock = expandedBlocks.addBlock(topBlock);
-						stickyBlock.setFromBottom(undoBlock);
-					}
-				}
-			}
-			blocks = expandedBlocks;
-		}
-		*/
 		queue.add(blocks);
 	}
 	
@@ -377,16 +283,9 @@ public class Spells
 	
 	public void cancel(Player player)
 	{
-		for (Spell spell : spells)
-		{
-			spell.cancel(this, player);
-		}
+		PlayerSpells playerSpells = getPlayerSpells(player);
+		playerSpells.cancel();
 	}
-	
-	public boolean allowCommandUse()
-	{
-		return allowCommands;
-	}	
 	
 	public boolean isQuiet()
 	{
@@ -447,15 +346,17 @@ public class Spells
 	public void initialize(MagicPlugin plugin)
 	{
 		this.plugin = plugin;
-		addBuiltinSpells();
 		load();
+		
+		log.info("Magic: Loaded " + spells.size() + " spells.");
 	}
 	
 	public void load()
 	{
 		loadProperties();
+		loadSpells();
 	}
-
+	
 	protected void loadProperties()
 	{
 	    File dataFolder = plugin.getDataFolder();
@@ -467,18 +368,13 @@ public class Spells
 		undoQueueDepth = properties.getInteger("spells-general-undo-depth", undoQueueDepth);
 		silent = properties.getBoolean("spells-general-silent", silent);
 		quiet = properties.getBoolean("spells-general-quiet", quiet);
-		autoExpandUndo = properties.getBoolean("spells-general-expand-undo", autoExpandUndo);
-		allowCommands = properties.getBoolean("spells-general-allow-commands", allowCommands);
 		stickyMaterials = PluginProperties.parseMaterials(STICKY_MATERIALS);
 		stickyMaterialsDoubleHeight = PluginProperties.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
-		autoPreventCaveIn = properties.getBoolean("spells-general-prevent-cavein", autoPreventCaveIn);
-		undoCaveInHeight = properties.getInteger("spells-general-undo-cavein-height", undoCaveInHeight);
 		
-		//buildingMaterials = properties.getMaterials("spells-general-building", DEFAULT_BUILDING_MATERIALS);
-		buildingMaterials = PluginProperties.parseMaterials(DEFAULT_BUILDING_MATERIALS);
+		buildingMaterials = properties.getMaterials("spells-general-building", DEFAULT_BUILDING_MATERIALS);
         wandTypeId = properties.getInteger("wand-type-id", wandTypeId);
 		
-		for (Spell spell : spells)
+		for (Spell spell : spells.values())
 		{
 			spell.onLoad(properties);
 		}
@@ -492,7 +388,6 @@ public class Spells
 		damageListeners.clear();
 		quitListeners.clear();
 		spells.clear();
-		spellVariants.clear();
 		spellsByMaterial.clear();
 	}
 	
@@ -543,28 +438,13 @@ public class Spells
         {
             listener.onPlayerDamage(player, event);
         }
-        
-        Float amount = invincibleAmount(player);
-    	if (amount != null && amount > 0)
-    	{
-    	    if (amount >= 1)
-    	    {
-    	        event.setCancelled(true);
-    	    }
-    	    else
-    	    {
-    	        int newDamage = (int)Math.floor((1.0f - amount) * event.getDamage());
-    	        if (newDamage == 0) newDamage = 1;
-    	        event.setDamage(newDamage);
-    	    }
-    	}
     }
 
-    public List<SpellVariant> getAllSpells()
+    public List<Spell> getAllSpells()
     {
-    	List<SpellVariant> spells = new ArrayList<SpellVariant>();
-    	spells.addAll(spellVariants.values());
-    	return spells;
+    	List<Spell> allSpells = new ArrayList<Spell>();
+    	allSpells.addAll(spells.values());
+    	return allSpells;
     }
 
     /**
@@ -587,7 +467,7 @@ public class Spells
                Inventory inventory = player.getInventory();
                ItemStack[] contents = inventory.getContents();
                
-               SpellVariant spell = null;
+               Spell spell = null;
                for (int i = 0; i < 9; i++)
                {
                    if (contents[i].getType() == Material.AIR || contents[i].getTypeId() == getWandTypeId())
@@ -603,7 +483,7 @@ public class Spells
                
                if (spell != null)
                {
-                   castSpell(spell, player);
+                   spell.cast();
                }
                
            }
@@ -683,7 +563,7 @@ public boolean cycleMaterials(Player player)
            boolean isSpell = false;
            if (activeType != Material.AIR)
            {
-               SpellVariant spell = getSpell(activeType, player);
+               Spell spell = getSpell(activeType, player);
                isSpell = spell != null;
            }
            
@@ -772,75 +652,6 @@ public boolean cycleMaterials(Player player)
        }
    }
 	
-	protected void addBuiltinSpells()
-	{
-		addSpell(new HealSpell());
-		addSpell(new BlinkSpell());
-		addSpell(new TorchSpell());
-		addSpell(new BoomSpell());
-		addSpell(new PillarSpell());
-		addSpell(new BridgeSpell());
-		addSpell(new AbsorbSpell());
-		addSpell(new FillSpell());
-		addSpell(new CushionSpell());
-		addSpell(new UndoSpell());
-		addSpell(new AlterSpell());
-		addSpell(new BlastSpell());
-		addSpell(new MineSpell());
-		addSpell(new TreeSpell());
-		addSpell(new ArrowSpell());
-		addSpell(new FrostSpell());
-		addSpell(new GillsSpell());
-		addSpell(new FamiliarSpell());
-		addSpell(new ConstructSpell());
-		addSpell(new TransmuteSpell());
-		addSpell(new RecallSpell());
-		addSpell(new DisintegrateSpell());
-		addSpell(new ManifestSpell());
-		addSpell(new PeekSpell());
-		addSpell(new FireSpell());
-		addSpell(new LavaSpell());
-		addSpell(new InvincibleSpell());
-		addSpell(new TunnelSpell());
-		addSpell(new WolfSpell());
-        addSpell(new WeatherSpell());
-        addSpell(new LightningSpell());
-        addSpell(new GotoSpell());
-        addSpell(new SignSpell());
-        addSpell(new PortalSpell());
-        addSpell(new GrenadeSpell());
-        addSpell(new FireballSpell());
-        addSpell(new FlingSpell());
-        addSpell(new ForceSpell());
-        addSpell(new MapSpell());
-        addSpell(new LevitateSpell());
-        addSpell(new InvisibilitySpell());
-        
-		// wip
-		addSpell(new TowerSpell());
-		// addSpell(new ExtendSpell());
-		addSpell(new StairsSpell());
-		
-		log.info("Magic: Loaded " + spellVariants.size() + " spells.");
-	}
-	
-	public Float invincibleAmount(Player player)
-	{
-		return invinciblePlayers.get(player.getName());
-	}
-	
-	public void setInvincible(Player player, float invincible)
-	{
-	    if (invincible <= 0)
-	    {
-	        invinciblePlayers.remove(player.getName());
-	    }
-	    else
-	    {
-	        invinciblePlayers.put(player.getName(), invincible);
-	    }
-	}
-	
 	public boolean allowPhysics(Block block)
 	{
 	    if (physicsDisableTimeout == 0) return true;
@@ -887,28 +698,21 @@ public boolean cycleMaterials(Player player)
 	private List<Material>	buildingMaterials	= new ArrayList<Material>();
 	private List<Material>	stickyMaterials		= new ArrayList<Material>();
 	private List<Material>	stickyMaterialsDoubleHeight		= new ArrayList<Material>();
-	//private Material gravityFillMaterial = Material.DIRT;
 	
 	private long physicsDisableTimeout = 0;
 	private int undoQueueDepth = 256;
 	private boolean silent = false;
 	private boolean quiet = true;
-	private boolean allowCommands = true;
-	private boolean	autoExpandUndo = true;
-	private boolean autoPreventCaveIn = false;
-	private int undoCaveInHeight = 32;
 	private HashMap<String, UndoQueue> playerUndoQueues =  new HashMap<String, UndoQueue>();
 	
 	private final Logger log = Logger.getLogger("Minecraft");
-	private final HashMap<String, SpellVariant> spellVariants = new HashMap<String, SpellVariant>();
-	private final HashMap<Material, SpellVariant> spellsByMaterial = new HashMap<Material, SpellVariant>();
-	private final List<Spell> spells = new ArrayList<Spell>();
+	private final HashMap<String, Spell> spells = new HashMap<String, Spell>();
+	private final HashMap<Material, Spell> spellsByMaterial = new HashMap<Material, Spell>();
 	private final HashMap<String, PlayerSpells> playerSpells = new HashMap<String, PlayerSpells>();
 	private final List<Spell> movementListeners = new ArrayList<Spell>();
 	private final List<Spell> quitListeners = new ArrayList<Spell>();
 	private final List<Spell> deathListeners = new ArrayList<Spell>();
     private final List<Spell> damageListeners = new ArrayList<Spell>();
-	private final HashMap<String, Float> invinciblePlayers = new HashMap<String, Float>();
 
 	private MagicPlugin plugin = null;
 }

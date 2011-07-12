@@ -4,7 +4,6 @@ import net.minecraft.server.EntityLiving;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -17,13 +16,6 @@ import com.elmakers.mine.bukkit.utilities.Vec3D;
 public class BoomSpell extends Spell {
 
 	protected int defaultSize = 1;
-
-	public BoomSpell()
-	{
-		addVariant("kaboom", Material.REDSTONE_WIRE, getCategory(), "Create a big explosion", "6");
-		addVariant("kamikazee", Material.DEAD_BUSH, getCategory(), "Kill yourself with an explosion", "6 here");
-		addVariant("nuke", Material.BED, getCategory(), "Create a huge explosion", "20");
-	}
 	
 	public boolean createExplosionAt(Location target, float size)
 	{
@@ -72,18 +64,6 @@ public class BoomSpell extends Spell {
 		
 		return createExplosionAt(target.getLocation(), size);
 	}
-
-	@Override
-	public String getName() 
-	{
-		return "boom";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Cast an exploding fireball";
-	}
 	
 	public Vec3D getLocation(Player player, float f)
     {
@@ -110,16 +90,4 @@ public class BoomSpell extends Spell {
             return Vec3D.createVector(f8 * f9, f10, f6 * f9);
         }
     }
-
-	@Override
-	public String getCategory() 
-	{
-		return "combat";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.RED_ROSE;
-	}
 }

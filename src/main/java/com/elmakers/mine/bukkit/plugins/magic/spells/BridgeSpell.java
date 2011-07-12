@@ -61,28 +61,4 @@ public class BridgeSpell extends Spell
 		
 		return true;
 	}
-
-	@Override
-	public String getName() 
-	{
-		return "bridge";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Extends the ground underneath you";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "construction";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.GOLD_HOE;
-	}
 }

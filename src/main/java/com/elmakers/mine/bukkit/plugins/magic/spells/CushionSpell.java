@@ -58,35 +58,11 @@ public class CushionSpell extends Spell
 	
 		return true;
 	}
-
-	@Override
-	public String getName() 
-	{
-		return "cushion";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Create a safety bubble";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "help";
-	}
 	
 	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		cushionWidth = properties.getInteger("spells-cushion-width", cushionWidth);
 		cushionHeight = properties.getInteger("spells-cushion-height", cushionHeight);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.SOUL_SAND;
 	}
 }

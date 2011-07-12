@@ -46,6 +46,7 @@ public class GrenadeSpell extends Spell
         grenade.motX = aim.getX();
         grenade.motY = aim.getY();
         grenade.motZ = aim.getZ();
+        grenade.yield = 6;
         grenade.fuseTicks = 80;
         world.addEntity(grenade);
         

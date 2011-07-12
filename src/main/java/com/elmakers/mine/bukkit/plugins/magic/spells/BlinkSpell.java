@@ -17,23 +17,6 @@ public class BlinkSpell extends Spell
 	private boolean autoPassthrough = true;
 	private int verticalSearchDistance = 255;
 	
-	public BlinkSpell()
-	{
-		addVariant("ascend", Material.RED_MUSHROOM, getCategory(), "Go up to the nearest safe spot", "ascend");
-		addVariant("descend", Material.BROWN_MUSHROOM, getCategory(), "Travel underground", "descend");
-		addVariant("tesseract", Material.WEB, getCategory(), "Blink a short distance", "8");
-	}
-	
-	public String getName()
-	{
-		return "blink";
-	}
-	
-	public String getDescription()
-	{
-		return "Teleport to your target";
-	}
-	
 	protected boolean ascend()
 	{
 		Location location = findPlaceToStand(player.getLocation(), true);
@@ -219,12 +202,6 @@ public class BlinkSpell extends Spell
 		
 		return true;
 	}
-	
-	@Override
-	public String getCategory() 
-	{
-		return "exploration";
-	}
 
 	@Override
 	public void onLoad(PluginProperties properties)
@@ -233,11 +210,5 @@ public class BlinkSpell extends Spell
 		autoAscend = properties.getBoolean("spells-blink-auto-ascend", autoAscend);
 		autoDescend = properties.getBoolean("spells-blink-aauto-decend", autoDescend);
 		autoPassthrough = properties.getBoolean("spells-blink-auto-passthrough", autoPassthrough);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.FEATHER;
 	}
 }

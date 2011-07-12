@@ -1,49 +1,34 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
-import org.bukkit.Material;
+import java.util.HashMap;
+
+import org.bukkit.entity.Player;
 
 public class PlayerSpells 
 {
-	private Material material = Material.AIR;
-	private byte data = 0;
-	private boolean usingMaterial;
+    protected Player player;
+	protected HashMap<String, Spell> spells = new HashMap<String, Spell>();
 	
-	public byte getData()
+	public PlayerSpells(Player player)
 	{
-		return data;
+	    this.player = player;
 	}
 	
-	public Material getMaterial()
+	public Spell getSpell(String name)
 	{
-		return material;
+	    return spells.get(name);
 	}
 	
-	public boolean isUsingMaterial()
+	protected void addSpell(Spell spell)
 	{
-		return usingMaterial;
+	    spells.put(spell.getName(), spell);
 	}
 	
-	public void startMaterialUse(Material mat, byte data)
+	public void cancel()
 	{
-		setMaterial(mat);
-		setData(data);
-		usingMaterial = true;
+	    for (Spell spell : spells.values())
+        {
+            spell.cancel();
+        }
 	}
-
-	public Material finishMaterialUse()
-	{
-		usingMaterial = false;
-		return material;
-	}
-	
-	public void setData(byte d)
-	{
-		data = d;
-	}
-	
-	public void setMaterial(Material mat)
-	{
-		material = mat;
-	}
-	
 }

@@ -6,7 +6,7 @@ import java.util.List;
 public class SpellGroup implements Comparable<SpellGroup>
 {
 	public String groupName;
-	public List<SpellVariant> spells = new ArrayList<SpellVariant>();
+	public List<Spell> spells = new ArrayList<Spell>();
 	
 	public int compareTo(SpellGroup other) 
 	{

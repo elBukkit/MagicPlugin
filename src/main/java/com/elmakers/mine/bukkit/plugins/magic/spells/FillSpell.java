@@ -32,8 +32,8 @@ public class FillSpell extends Spell
 	    noTargetThrough(Material.STATIONARY_WATER);
 	    noTargetThrough(Material.WATER);
 		Block targetBlock = getTargetBlock();
-		Material material = spells.finishMaterialUse(player);
-		byte data = spells.getMaterialData(player);
+		Material material = Material.AIR;
+		byte data = 0;
 		boolean singleBlock = false;
 		boolean recurse = false;
 	

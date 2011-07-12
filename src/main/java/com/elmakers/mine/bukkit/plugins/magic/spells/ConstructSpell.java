@@ -20,14 +20,6 @@ public class ConstructSpell extends Spell
 	private int				defaultRadius			= 2;
 	private int				maxRadius				= 32;
 	private int				defaultSearchDistance	= 32;
-    
-	public ConstructSpell()
-	{
-		addVariant("shell", Material.BOWL, getCategory(), "Create a large spherical shell", "sphere hollow 10");
-		addVariant("box", Material.WOODEN_DOOR, getCategory(), "Create a large box", "cuboid hollow 6");
-		addVariant("superblob", Material.CLAY_BRICK, getCategory(), "Create a large solid sphere", "sphere 8");
-		addVariant("sandblast", Material.SANDSTONE, getCategory(), "Drop a big block of sand", "cuboid 4 with sand");
-	}
 	
 	public enum ConstructionType
 	{
@@ -172,7 +164,7 @@ public class ConstructSpell extends Spell
 						fillBlock = distanceSquared <= radiusSquared;
 						if (!fill)
 						{
-							fillBlock = fillBlock && distanceSquared >= radiusSquared - 1;
+							fillBlock = fillBlock && distanceSquared >= radiusSquared - 2;
 						}
 					}
 					else
@@ -225,24 +217,6 @@ public class ConstructSpell extends Spell
 
 		return destructibleMaterials.contains(block.getType());
 	}
-
-	@Override
-	public String getName()
-	{
-		return "blob";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "construction";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Create a solid blob";
-	}
 	
 	@Override
 	public void onLoad(PluginProperties properties)
@@ -253,11 +227,4 @@ public class ConstructSpell extends Spell
 		maxRadius = properties.getInteger("spells-construct-max-radius", maxRadius);
 		defaultSearchDistance = properties.getInteger("spells-constructs-search-distance", defaultSearchDistance);
 	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.CLAY_BALL;
-	}
-
 }

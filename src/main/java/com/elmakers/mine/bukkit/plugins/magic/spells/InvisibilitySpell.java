@@ -19,16 +19,10 @@ import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 
 public class InvisibilitySpell extends Spell
 {
-    public InvisibilitySpell()
-    {
-        addVariant("decoy", Material.CAKE, getCategory(), "Create a decoy of yourself", "decoy");
-    }
-    
     public class InvisiblePlayer
     {
         protected Player player;
         protected ArrayList<Player> cloaked = new ArrayList<Player>();
-        protected boolean decoy = false;
         protected Location location;
         
         public InvisiblePlayer(Player player)
@@ -47,7 +41,6 @@ public class InvisibilitySpell extends Spell
         public void decoy()
         {
             uncloak();
-            decoy = true;
             cloak();
         }
         
@@ -61,14 +54,7 @@ public class InvisibilitySpell extends Spell
                 if (other != player && inRange(other))
                 {
                     cloaked.add(other);
-                    if (decoy)
-                    {
-                        uncloakFrom(other);
-                    }
-                    else
-                    {
-                        cloakFrom(other);
-                    }
+                    cloakFrom(other);
                 }
             }
             
@@ -78,10 +64,7 @@ public class InvisibilitySpell extends Spell
         {
             for (Player other : cloaked)
             {
-                if (!decoy)
-                {
-                    uncloakFrom(other);
-                }
+                uncloakFrom(other); 
             }
             
             cloaked.clear();

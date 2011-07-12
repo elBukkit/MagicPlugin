@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import net.minecraft.server.EntityArrow;
 
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftArrow;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
@@ -10,12 +9,7 @@ import org.bukkit.entity.Arrow;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class ArrowSpell extends Spell
-{
-    public ArrowSpell()
-    {
-        addVariant("arrowrain", Material.BOW, getCategory(), "Fire a volley of arrows", "4");
-    }
-    
+{ 
 	@Override
 	public boolean onCast(String[] parameters)
 	{
@@ -69,29 +63,4 @@ public class ArrowSpell extends Spell
 		
 		return true;
 	}
-
-	@Override
-	public String getName()
-	{
-		return "arrow";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "combat";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Throws a magic arrow";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.ARROW;
-	}
-
 }

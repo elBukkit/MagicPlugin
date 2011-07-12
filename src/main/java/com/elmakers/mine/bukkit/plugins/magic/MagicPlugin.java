@@ -147,7 +147,7 @@ public class MagicPlugin extends JavaPlugin
         }
         
         String spellName = parameters[0];
-        SpellVariant spell = spells.getSpell(spellName, player);
+        Spell spell = spells.getSpell(spellName, player);
         if (spell == null)
         {
             player.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
@@ -188,13 +188,13 @@ public class MagicPlugin extends JavaPlugin
 			parameters[i - 1] = castParameters[i];
 		}
 		
-    	SpellVariant spell = spells.getSpell(spellName, player);
+		Spell spell = spells.getSpell(spellName, player);
     	if (spell == null)
     	{
     		return false;
     	}
     	
-    	spells.castSpell(spell, parameters, player);
+    	spell.cast(parameters);
 		
 		return true;
 	}
@@ -234,9 +234,9 @@ public class MagicPlugin extends JavaPlugin
 
 	public void listSpellsByCategory(Player player,String category)
 	{
-		List<SpellVariant> categorySpells = new ArrayList<SpellVariant>();
-		List<SpellVariant> spellVariants = spells.getAllSpells();
-		for (SpellVariant spell : spellVariants)
+		List<Spell> categorySpells = new ArrayList<Spell>();
+		List<Spell> spellVariants = spells.getAllSpells();
+		for (Spell spell : spellVariants)
 		{
 			if (spell.getCategory().equalsIgnoreCase(category) && spell.hasSpellPermission(player))
 			{
@@ -251,7 +251,7 @@ public class MagicPlugin extends JavaPlugin
 		}
 		
 		Collections.sort(categorySpells);
-		for (SpellVariant spell : categorySpells)
+		for (Spell spell : categorySpells)
 		{
 			player.sendMessage(spell.getName() + " [" + spell.getMaterial().name().toLowerCase() + "] : " + spell.getDescription());
 		}
@@ -261,9 +261,9 @@ public class MagicPlugin extends JavaPlugin
 	{
 		HashMap<String, Integer> spellCounts = new HashMap<String, Integer>();
 		List<String> spellGroups = new ArrayList<String>();
-		List<SpellVariant> spellVariants = spells.getAllSpells();
+		List<Spell> spellVariants = spells.getAllSpells();
 		
-		for (SpellVariant spell : spellVariants)
+		for (Spell spell : spellVariants)
 		{
 			if (!spell.hasSpellPermission(player)) continue;
 			
@@ -300,10 +300,10 @@ public class MagicPlugin extends JavaPlugin
 	    }
 	    
 		HashMap<String, SpellGroup> spellGroups = new HashMap<String, SpellGroup>();
-		List<SpellVariant> spellVariants = spells.getAllSpells();
+		List<Spell> spellVariants = spells.getAllSpells();
 		
 		int spellCount = 0;
-		for (SpellVariant spell : spellVariants)
+		for (Spell spell : spellVariants)
 		{
 		    if (!spell.hasSpellPermission(player))
             {
@@ -342,7 +342,7 @@ public class MagicPlugin extends JavaPlugin
             
 			boolean isFirst = true;
 			Collections.sort(group.spells);
-			for (SpellVariant spell : group.spells)
+			for (Spell spell : group.spells)
 			{
 			    if (printedCount > maxLines) break;
 			    
