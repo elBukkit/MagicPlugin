@@ -142,24 +142,6 @@ public class StairsSpell extends Spell
 	}
 	
 	@Override
-	public String getName()
-	{
-		return "stairs";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "wip";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Construct some stairs";
-	}
-	
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		destructibleMaterials = properties.getMaterials("spells-stairs-destructible", DEFAULT_DESTRUCTIBLES);
@@ -168,11 +150,4 @@ public class StairsSpell extends Spell
 		defaultHeight = properties.getInteger("spells-stairs-height", defaultHeight);
 		torchFrequency = properties.getInteger("spells-stairs-torch-frequency", torchFrequency);
 	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.COBBLESTONE_STAIRS;
-	}
-
 }

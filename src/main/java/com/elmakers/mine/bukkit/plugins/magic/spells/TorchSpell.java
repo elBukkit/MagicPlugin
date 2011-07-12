@@ -12,12 +12,6 @@ public class TorchSpell extends Spell
 	private boolean allowDay = true;
 	private boolean allowNight = true;
 	private boolean allowLightstone = true;
-
-	public TorchSpell()
-	{
-		addVariant("day", Material.FLINT, "help", "Change time time to day", "day");
-		addVariant("night", Material.COAL, "help", "Change time time to night", "night");
-	}
 	
 	@Override
 	public boolean onCast(String[] parameters) 
@@ -112,34 +106,10 @@ public class TorchSpell extends Spell
 	}
 
 	@Override
-	public String getName() 
-	{
-		return "torch";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Place a torch at your target";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "construction";
-	}
-
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		allowNight = properties.getBoolean("spells-torch-allow-night", allowNight);
 		allowDay = properties.getBoolean("spells-torch-allow-day", allowDay);
 		allowLightstone = properties.getBoolean("spells-torch-allow-lightstone", allowLightstone);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.TORCH;
 	}
 }

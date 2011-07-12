@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.utilities.PluginProperties;
 
 public class LavaSpell extends Spell
 {
-
 	@Override
 	public boolean onCast(String[] parameters)
 	{
@@ -86,30 +85,6 @@ public class LavaSpell extends Spell
 		castMessage(player, "Blasted " + burnedBlocks.size() + " lava blocks");
 		
 		return true;
-	}
-
-	@Override
-	public String getName()
-	{
-		return "lava";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "combat";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Fire a stream of lava";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.LAVA;
 	}
 
 	@Override

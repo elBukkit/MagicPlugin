@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.HashMap;
 
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
@@ -44,7 +43,8 @@ public class FlingSpell extends Spell
 		return true;
 	}
 	
-    public void onPlayerDamage(Player player, EntityDamageEvent event)
+	@Override
+    public void onPlayerDamage(EntityDamageEvent event)
     {
         if (event.getCause() != DamageCause.FALL) return;
         

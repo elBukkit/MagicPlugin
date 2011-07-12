@@ -4,7 +4,6 @@ import net.minecraft.server.EntityTNTPrimed;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.util.Vector;
@@ -13,23 +12,6 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class GrenadeSpell extends Spell
 {
-    public GrenadeSpell()
-    {
-       setCooldown(2000);
-    }
-    
-    @Override
-    public String getDescription()
-    {
-        return "Place a primed grenade";
-    }
-
-    @Override
-    public String getName()
-    {
-        return "grenade";
-    }
-
     @Override
     public boolean onCast(String[] parameters) 
     {
@@ -51,17 +33,5 @@ public class GrenadeSpell extends Spell
         world.addEntity(grenade);
         
         return true;
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "combat";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.TNT;
     }
 }

@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class MapSpell extends Spell
 {
-
     @Override
     public boolean onCast(String[] parameters)
     {
@@ -28,29 +27,4 @@ public class MapSpell extends Spell
                
         return false;
     }
-
-    @Override
-    public String getName()
-    {
-        return "map";
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "exploration";
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return "Produce a map";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.PAPER;
-    }
-
 }

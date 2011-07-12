@@ -76,32 +76,8 @@ public class TreeSpell extends Spell
 	}
 
 	@Override
-	public String getName()
-	{
-		return "tree";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "farming";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Creates a tree, or a big tree";
-	}
-
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		requireSapling = properties.getBoolean("spells-tree-require-sapling", requireSapling);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.SAPLING;
 	}
 }

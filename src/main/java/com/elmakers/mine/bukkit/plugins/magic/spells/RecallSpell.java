@@ -6,10 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.utilities.PluginProperties;
 
 public class RecallSpell extends Spell
@@ -33,14 +33,14 @@ public class RecallSpell extends Spell
 	private HashMap<String, PlayerMarker> markers = new HashMap<String, PlayerMarker>();
 	Material markerMaterial = Material.REDSTONE_TORCH_ON;
 	
-	public RecallSpell()
-	{
-		addVariant("spawn", Material.WOOD_DOOR, getCategory(), "Return to your home town", "spawn");
-	}
-	
 	@Override
 	public boolean onCast(String[] parameters)
 	{
+	    if (autoDropOnDeath)
+        {
+            spells.registerEvent(SpellEventType.PLAYER_DEATH, this);
+        }
+        
 		if (parameters.length > 0 && parameters[0].equalsIgnoreCase("spawn"))
 		{
 			castMessage(player, "Returning you home");
@@ -144,51 +144,23 @@ public class RecallSpell extends Spell
 	}
 
 	@Override
-	public String getName()
-	{
-		return "recall";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "exploration";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Marks locations and returns you to them";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.COMPASS;
-	}
-
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		autoDropOnDeath = properties.getBoolean("spells-recall-auto-resurrect", autoDropOnDeath);
 		autoDropIsInvisible = properties.getBoolean("spells-recall-auto-resurrect-invisible", autoDropIsInvisible);
 		autoSpawn = properties.getBoolean("spells-recall-auto-spawn", autoSpawn);
 		markerMaterial = properties.getMaterial("spells-recall-marker", markerMaterial);
-
-		if (autoDropOnDeath)
-		{
-			//spells.registerEvent(SpellEventType.PLAYER_DEATH, this);
-		}
 	}
 
 	@Override
-	public void onPlayerDeath(Player player, EntityDeathEvent event)
+	public void onPlayerDeath(EntityDeathEvent event)
 	{
 		if (autoDropOnDeath)
 		{
 			PlayerMarker marker = markers.get(player.getName());
 			if (marker == null || !marker.isActive)
 			{
+			    sendMessage(player, "Use recall to return to where you died");
 				placeMarker(getPlayerBlock());
 			}
 		}

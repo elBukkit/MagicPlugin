@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.HashMap;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -121,35 +120,10 @@ public class GillsSpell extends Spell
 	}
 
 	@Override
-	public String getName()
-	{
-		return "gills";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "help";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Restores health while moving underwater";
-	}
-	
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		gillDuration = properties.getInteger("spells-gills-duration", gillDuration);
 		healFrequency = properties.getInteger("spells-gills-heal-frequency", healFrequency);
 		healAmount = properties.getInteger("spells-gills-heal-amount", healAmount);
 	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.RAW_FISH;
-	}
-
 }

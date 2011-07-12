@@ -127,24 +127,6 @@ public class FrostSpell extends Spell
 	}	
 	
 	@Override
-	public String getName()
-	{
-		return "frost";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "combat";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Freeze water and create snow";
-	}
-	
-	@Override
 	public void onLoad(PluginProperties properties)
 	{
 		defaultRadius = properties.getInteger("spells-frost-radius", defaultRadius);
@@ -152,11 +134,4 @@ public class FrostSpell extends Spell
 		defaultSearchDistance = properties.getInteger("spells-frost-search-distance", defaultSearchDistance);
 		verticalSearchDistance = properties.getInteger("spells-frost-vertical-search-distance", verticalSearchDistance);
 	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.SNOW_BALL;
-	}
-
 }

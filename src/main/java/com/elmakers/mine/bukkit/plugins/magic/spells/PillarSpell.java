@@ -12,11 +12,6 @@ public class PillarSpell extends Spell
 {
 	int MAX_SEARCH_DISTANCE = 255;
 	
-	public PillarSpell()
-	{
-		addVariant("stalactite", Material.WOOD_AXE, "construction", "Create a downward pillar", "down");
-	}
-	
 	@Override
 	public boolean onCast(String[] parameters) 
 	{
@@ -68,29 +63,5 @@ public class PillarSpell extends Spell
 		spells.addToUndoQueue(player, pillarBlocks);
 		
 		return true;
-	}
-
-	@Override
-	public String getName() 
-	{
-		return "pillar";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Raises a pillar up (or down)";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "construction";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.GOLD_AXE;
 	}
 }

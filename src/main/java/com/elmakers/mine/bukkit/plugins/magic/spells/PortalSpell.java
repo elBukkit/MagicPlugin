@@ -265,30 +265,6 @@ public class PortalSpell extends Spell
 		
 		return true;
 	}
-
-	@Override
-	public String getName()
-	{
-		return "portal";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "nether";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Create a temporary portal";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.PORTAL;
-	}
 	
 	public void onLoad(PluginProperties properties)
     {

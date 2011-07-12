@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.entity.CraftWolf;
@@ -19,11 +18,6 @@ public class WolfSpell extends Spell
     private static final int maxWolves = 5;
     protected HashMap<String, ArrayList<CraftWolf> > playerWolves = new HashMap<String, ArrayList<CraftWolf> >();
     
-	public WolfSpell()
-	{
-	    setCooldown(5000);
-	}
-	
 	public CraftWolf newWolf(Target target)
 	{
 		if (target == null)
@@ -109,29 +103,4 @@ public class WolfSpell extends Spell
         wolfie.setTamed(true);
         wolfie.setOwner(player);
 	}
-	
-	@Override
-	public String getName()
-	{
-		return "wolf";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "combat";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Create a wolf familiar to follow you around";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.PORK;
-	}
-	
 }

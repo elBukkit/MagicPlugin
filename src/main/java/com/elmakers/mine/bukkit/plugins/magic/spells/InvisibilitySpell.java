@@ -9,7 +9,6 @@ import net.minecraft.server.Packet20NamedEntitySpawn;
 import net.minecraft.server.Packet29DestroyEntity;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -126,30 +125,6 @@ public class InvisibilitySpell extends Spell
         }
         checkListener();
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return "cloak";
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "stealth";
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return "Make yourself invisible until you move again";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.CHAINMAIL_CHESTPLATE;
     }
 
     protected void checkListener()

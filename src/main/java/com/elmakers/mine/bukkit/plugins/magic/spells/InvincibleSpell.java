@@ -1,18 +1,15 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Material;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 
 public class InvincibleSpell extends Spell 
 {
-    public InvincibleSpell()
-    {
-        addVariant("ironskin", Material.IRON_CHESTPLATE, getCategory(), "Protect you from damage", "99");
-        addVariant("leatherskin", Material.LEATHER_CHESTPLATE, getCategory(), "Protect you from some damage", "50");
-    }
+    protected float protectAmount = 100;
     
-	@Override
+ 	@Override
 	public boolean onCast(String[] parameters) 
 	{
 	    int amount = 100;
@@ -28,15 +25,15 @@ public class InvincibleSpell extends Spell
             }
         }
         
-        Float currentAmount = spells.invincibleAmount(player);
+        Float currentAmount = protectAmount;
         if (currentAmount != null)
         {
             sendMessage(player, "You feel ... normal.");
-            spells.setInvincible(player, 0);
+            spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
         }
         else
         {
-            spells.setInvincible(player, (float)amount / 100);
+            spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
             
             if (amount >= 100)
             {
@@ -47,32 +44,27 @@ public class InvincibleSpell extends Spell
                 sendMessage(player, "You feel strong!");
             }
         }
+        
+        protectAmount = (float)amount / 100;
        
 		return true;
 	}
 
-	@Override
-	public String getName() 
-	{
-		return "invincible";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "help";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Makes you impervious to damage";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.GOLDEN_APPLE;
-	}
-
+ 	@Override
+    public void onPlayerDamage(EntityDamageEvent event)
+    {
+        if (protectAmount > 0)
+        {
+            if (protectAmount >= 1)
+            {
+                event.setCancelled(true);
+            }
+            else
+            {
+                int newDamage = (int)Math.floor((1.0f - protectAmount) * event.getDamage());
+                if (newDamage == 0) newDamage = 1;
+                event.setDamage(newDamage);
+            }
+        }
+    }
 }

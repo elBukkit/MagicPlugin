@@ -140,29 +140,4 @@ public class TunnelSpell extends Spell
 		defaultSearchDistance = properties.getInteger("spells-tunnel-search-distance", defaultSearchDistance);
 		torchFrequency = properties.getInteger("spells-tunnel-torch-frequency", torchFrequency);
 	}
-	
-	@Override
-	public String getName()
-	{
-		return "tunnel";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "mining";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Create a tunnel for mining";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.STONE_PICKAXE;
-	}
-
 }

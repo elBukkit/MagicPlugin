@@ -260,12 +260,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @param event The original entity death event
 	 * @see Spells#registerEvent(SpellEventType, Spell)
 	 */
-	public void onPlayerDeath(Player player, EntityDeathEvent event)
+	public void onPlayerDeath(EntityDeathEvent event)
 	{
 
 	}
 	
-	public void onPlayerDamage(Player player, EntityDamageEvent event)
+	public void onPlayerDamage(EntityDamageEvent event)
     {
 	    
     }
@@ -274,6 +274,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		if (stack == null) return 0;
 		return (byte)stack.getDurability();
+	}
+	
+	public Player getPlayer()
+	{
+	    return player;
 	}
 	
 	/*

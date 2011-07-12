@@ -14,11 +14,6 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 
 public class SignSpell extends Spell
 {  
-    public SignSpell()
-    {
-        addVariant("tag", Material.SIGN, "help", "Leave a sign with your name", "tag");
-    }
-
     @Override
     public boolean onCast(String[] parameters)
     {
@@ -86,29 +81,4 @@ public class SignSpell extends Spell
             
         return false;
     }
-
-    @Override
-    public String getName()
-    {
-        return "sign";
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "help";
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return "Give yourself some signs";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.SIGN_POST;
-    }
-
 }

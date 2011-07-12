@@ -71,28 +71,4 @@ public class TowerSpell extends Spell {
 		castMessage(player, "Made tower " + height + " high with " + blocksCreated + " blocks");
 		return true;
 	}
-
-	@Override
-	public String getName() 
-	{
-		return "tower";
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return "Create a tower out of the specified material";
-	}
-
-	@Override
-	public String getCategory() 
-	{
-		return "wip";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.LADDER;
-	}
 }

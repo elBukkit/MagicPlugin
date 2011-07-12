@@ -7,11 +7,6 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class UndoSpell extends Spell
 {
-    public UndoSpell()
-    {
-        addVariant("erase", Material.LEVER, getCategory(), "Undo your target construction", "target");
-    }
-    
 	@Override
 	public boolean onCast(String[] parameters)
 	{
@@ -69,32 +64,6 @@ public class UndoSpell extends Spell
 		{
 			castMessage(player, "Nothing to undo");
 		}
-		return undone;
-		
+		return undone;	
 	}
-
-	@Override
-	public String getName()
-	{
-		return "rewind";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "construction";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Undoes your last action";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.WATCH;
-	}
-
 }

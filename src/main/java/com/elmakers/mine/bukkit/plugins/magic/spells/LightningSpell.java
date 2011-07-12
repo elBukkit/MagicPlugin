@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
@@ -12,13 +11,7 @@ import com.elmakers.mine.bukkit.utilities.SimpleBlockAction;
 public class LightningSpell extends Spell
 {
     protected int    maxRadius = 32;
-    
-    public LightningSpell()
-    {
-        setCooldown(2000);
-        addVariant("storm", Material.GRILLED_PORK, getCategory(), "Start a lightning storm", "10");
-    }
-    
+     
     public class ShockAction extends SimpleBlockAction
     {
         protected double density;
@@ -94,29 +87,4 @@ public class LightningSpell extends Spell
         
         return true;
     }
-
-    @Override
-    public String getName()
-    {
-        return "lightning";
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "combat";
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return "Strike lighting at your target";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.COOKED_FISH;
-    }
-
 }

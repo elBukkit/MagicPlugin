@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class TransmuteSpell extends Spell
 {
-
 	@Override
 	public boolean onCast(String[] parameters)
 	{	
@@ -68,29 +67,4 @@ public class TransmuteSpell extends Spell
 		
 		return true;
 	}
-
-	@Override
-	public String getName()
-	{
-		return "transmute";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "construction";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Modify your last spell";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.GOLD_INGOT;
-	}
-
 }

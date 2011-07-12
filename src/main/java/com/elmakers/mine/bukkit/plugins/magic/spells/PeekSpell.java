@@ -19,7 +19,6 @@ public class PeekSpell extends Spell
 	private int				maxRadius				= 32;
 	private int				defaultSearchDistance	= 32;
 
-
 	@Override
 	public boolean onCast(String[] parameters)
 	{
@@ -128,29 +127,4 @@ public class PeekSpell extends Spell
 		maxRadius = properties.getInteger("spells-peek-max-radius", maxRadius);
 		defaultSearchDistance = properties.getInteger("spells-peek-search-distance", defaultSearchDistance);
 	}
-
-	@Override
-	public String getName()
-	{
-		return "peek";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "exploring";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Temporarily glass your target surface";
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.SUGAR_CANE;
-	}
-
 }

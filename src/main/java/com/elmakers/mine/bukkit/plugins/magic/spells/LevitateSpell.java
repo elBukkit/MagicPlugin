@@ -274,29 +274,4 @@ public class LevitateSpell extends Spell
         
         return true;
     }
-
-    @Override
-    public String getName()
-    {
-        return "levitate";
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "exploration";
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return "Levitate yourself up into the air";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.GOLD_BOOTS;
-    }
-
 }

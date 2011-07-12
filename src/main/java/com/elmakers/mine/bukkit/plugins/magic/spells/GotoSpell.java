@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -12,7 +11,6 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 
 public class GotoSpell extends Spell
 {
-
     @Override
     public boolean onCast(String[] parameters)
     {
@@ -76,29 +74,4 @@ public class GotoSpell extends Spell
         
         return destinationPlayer;
     }
-
-    @Override
-    public String getName()
-    {
-        return "gather";
-    }
-
-    @Override
-    public String getCategory()
-    {
-        return "exploration";
-    }
-
-    @Override
-    public String getDescription()
-    {
-        return "Gather groups of players together";
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return Material.GLOWSTONE_DUST;
-    }
-
 }

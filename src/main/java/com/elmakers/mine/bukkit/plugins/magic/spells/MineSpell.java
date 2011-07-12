@@ -92,24 +92,6 @@ public class MineSpell extends Spell
 		mine(target, fillMaterial, minedBlocks, rDepth);
 	}
 
-	@Override
-	public String getName()
-	{
-		return "mine";
-	}
-
-	@Override
-	public String getCategory()
-	{
-		return "mining";
-	}
-
-	@Override
-	public String getDescription()
-	{
-		return "Mines and drops the targeted resources";
-	}
-	
 	public boolean isMineable(Block block)
 	{
 		if (block.getType() == Material.AIR)
@@ -125,11 +107,5 @@ public class MineSpell extends Spell
 		minedMaterials = PluginProperties.parseMaterials(DEFAULT_MINED);
 		minedData = PluginProperties.parseIntegers(DEFAULT_DATA);
 		maxRecursion = properties.getInteger("spells-mine-recursion", maxRecursion);
-	}
-
-	@Override
-	public Material getMaterial()
-	{
-		return Material.GOLD_PICKAXE;
 	}
 }
