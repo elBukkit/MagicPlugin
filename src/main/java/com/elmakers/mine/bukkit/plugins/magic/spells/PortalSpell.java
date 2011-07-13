@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +28,12 @@ public class PortalSpell extends Spell
     protected static final String DEFAULT_DESTRUCTIBLES = "0,1,2,3,4,10,11,12,13,14,15,16,21,51,56,78,79,82,87,88,89";
     public static MaterialList destructible          = null;
   
-    protected HashMap<String, PlayerPortals>            playerPortals = new HashMap<String, PlayerPortals>();
+    PlayerPortal    a;
+    PlayerPortal    b;
+    BlockVector     lastLocation;
+    boolean         portalling;
+    
+    protected static List<PlayerPortal>    allPortals = new ArrayList<PlayerPortal>();
     
     public class TeleportPlayerTask implements Runnable
     {
@@ -44,7 +50,6 @@ public class PortalSpell extends Spell
         {
             player.teleport(targetLocation);
         }
-    
     }
     
     public class PlayerPortal
@@ -58,6 +63,7 @@ public class PortalSpell extends Spell
             base = targetLocation;
             portalBlocks = new BlockList();
             buildPortalBlocks(base, BlockFace.NORTH, portalBlocks);
+            PortalSpell.allPortals.add(this);
         }
         
         protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)
@@ -70,6 +76,7 @@ public class PortalSpell extends Spell
         {
             portalBlocks.undo();
             portalBlocks = null;
+            PortalSpell.allPortals.remove(this);
         }
         
         public Location getLocation()
@@ -119,100 +126,84 @@ public class PortalSpell extends Spell
             this.target = null;
         }
     }
-    
-    public class PlayerPortals
+
+    public void create(Location fromLocation, Location targetLocation)
     {
-        PlayerPortal    a;
-        PlayerPortal    b;
-        BlockVector     lastLocation;
-        boolean         portalling;
-        
-        public PlayerPortals()
+        if (a == null)
         {
-            a = null;
-            b = null;
-            lastLocation = null;
-            portalling = false;
-        }
-        
-        public void create(Location fromLocation, Location targetLocation)
-        {
-            if (a == null)
-            {
-                a = new PlayerPortal(targetLocation);
-                relink();
-                return;
-            }
-            if (b == null)
-            {
-                b = new PlayerPortal(targetLocation);
-                relink();
-                return;
-            }
-            
-            double dist_a = Spell.getDistance(a.getLocation(), fromLocation);
-            double dist_b = Spell.getDistance(b.getLocation(), fromLocation);
-            
-            if (dist_a < dist_b)
-            {
-                b.remove();
-                b = new PlayerPortal(targetLocation);
-            }
-            else
-            {        
-                a.remove();
-                a = new PlayerPortal(targetLocation);   
-            }
-            
+            a = new PlayerPortal(targetLocation);
             relink();
+            return;
+        }
+        if (b == null)
+        {
+            b = new PlayerPortal(targetLocation);
+            relink();
+            return;
         }
         
-        public void relink()
+        double dist_a = Spell.getDistance(a.getLocation(), fromLocation);
+        double dist_b = Spell.getDistance(b.getLocation(), fromLocation);
+        
+        if (dist_a < dist_b)
         {
-            if (a != null)
-            {
-                a.link(b);
-            }
-            
-            if (b != null)
-            {
-                b.link(a);
-            }
+            b.remove();
+            b = new PlayerPortal(targetLocation);
+        }
+        else
+        {        
+            a.remove();
+            a = new PlayerPortal(targetLocation);   
         }
         
-        public boolean hasPortals()
+        relink();
+    }
+    
+    public void relink()
+    {
+        if (a != null)
         {
-            return a != null || b != null;
+            a.link(b);
         }
         
-        public BlockVector getLastLocation()
+        if (b != null)
         {
-            return lastLocation;
-        }
-        
-        public void setLastLocation(BlockVector location)
-        {
-            lastLocation = location;
-        }
-        
-        public void setPortalling(boolean p)
-        {
-            portalling = p;
-        }
-        
-        public boolean isPortalling()
-        {
-            return portalling;
-        }
-        
-        public PlayerPortal getPortal(Location target)
-        {
-            if (a != null && a.contains(target)) return a;
-            if (b != null && b.contains(target)) return b;
-            return null;
+            b.link(a);
         }
     }
     
+    public boolean hasPortals()
+    {
+        return a != null || b != null;
+    }
+    
+    public BlockVector getLastLocation()
+    {
+        return lastLocation;
+    }
+    
+    public void setLastLocation(BlockVector location)
+    {
+        lastLocation = location;
+    }
+    
+    public void setPortalling(boolean p)
+    {
+        portalling = p;
+    }
+    
+    public boolean isPortalling()
+    {
+        return portalling;
+    }
+    
+    public PlayerPortal getPortal(Location target)
+    {
+        if (a != null && a.contains(target)) return a;
+        if (b != null && b.contains(target)) return b;
+        return null;
+    }
+
 	@Override
 	public boolean onCast(String[] parameters)
 	{
@@ -245,21 +236,8 @@ public class PortalSpell extends Spell
 			return false;		
 		}
 		
-		String playerName = player.getName();
-		PlayerPortals portals = playerPortals.get(playerName);
-		if (portals == null)
-		{
-		    portals = new PlayerPortals();
-		    playerPortals.put(playerName, portals);
-		}
-		
         spells.disablePhysics(10000);
-		portals.create(player.getLocation(), portalBase.getLocation());
-        
-        if (!portals.hasPortals())
-        {
-            playerPortals.remove(playerName);
-        }
+		create(player.getLocation(), portalBase.getLocation());
         
         checkListener();
 		
@@ -279,25 +257,22 @@ public class PortalSpell extends Spell
 	@Override
     public void onPlayerMove(PlayerMoveEvent event)
     {
-	    PlayerPortals portals = playerPortals.get(event.getPlayer().getName());
-	    if (portals == null) return;
-	    
-        Location playerLocation = player.getLocation();
-        BlockVector lastLoc = portals.getLastLocation();
+	    Location playerLocation = player.getLocation();
+        BlockVector lastLoc = getLastLocation();
         BlockVector currentLoc = new BlockVector(playerLocation.getBlockX(), playerLocation.getBlockY(), playerLocation.getBlockZ());
         if (lastLoc != null && currentLoc.getBlockX() == lastLoc.getBlockX() && currentLoc.getBlockY() == lastLoc.getBlockY() && currentLoc.getBlockZ() == lastLoc.getBlockZ())
         {
             return;
         }
         
-        portals.setLastLocation(currentLoc);
+        setLastLocation(currentLoc);
         playerLocation.setY(playerLocation.getY() + 2);
         Block locationBlock = playerLocation.getBlock();
         if (locationBlock.getType() == Material.PORTAL)
         {
-            if (!portals.isPortalling())
+            if (!isPortalling())
             {
-                portals.setPortalling(true);
+                setPortalling(true);
                 PlayerPortal portal = findPortal(playerLocation);
                 if (portal != null)
                 {
@@ -307,23 +282,22 @@ public class PortalSpell extends Spell
         }
         else
         {
-            portals.setPortalling(false);
+            setPortalling(false);
         }
     }
 	
 	protected PlayerPortal findPortal(Location targetLocation)
 	{
-	    for (PlayerPortals portals : playerPortals.values())
+	    for (PlayerPortal portal : allPortals)
 	    {
-	        PlayerPortal portal = portals.getPortal(targetLocation);
-	        if (portal != null) return portal;
+	        if (portal.contains(targetLocation)) return portal;
 	    }
 	    return null;
 	}
 	
 	protected void checkListener()
     {
-        if (playerPortals.size() == 0)
+        if (allPortals.size() == 0)
         {
             spells.unregisterEvent(SpellEventType.PLAYER_MOVE, this);
         }

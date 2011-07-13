@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 public class WolfSpell extends Spell
 {
     private static final int maxWolves = 5;
-    protected HashMap<String, ArrayList<CraftWolf> > playerWolves = new HashMap<String, ArrayList<CraftWolf> >();
+    protected List<CraftWolf> wolves = new ArrayList<CraftWolf>();
     
 	public CraftWolf newWolf(Target target)
 	{
@@ -54,19 +54,17 @@ public class WolfSpell extends Spell
 			return false;
 		}
 		
-		ArrayList<CraftWolf> oldWolves = playerWolves.get(player.getName());
-		ArrayList<CraftWolf> wolves = new ArrayList<CraftWolf>();
+		ArrayList<CraftWolf> newWolves = new ArrayList<CraftWolf>();
 		
-		if (oldWolves != null)
-		{
-		    for (CraftWolf wolf : oldWolves)
-		    {
-		        if (!wolf.isDead())
-		        {
-		            wolves.add(wolf);
-		        }
-		    }
-		}
+	    for (CraftWolf wolf : wolves)
+	    {
+	        if (!wolf.isDead())
+	        {
+	            newWolves.add(wolf);
+	        }
+	    }
+	    
+	    wolves = newWolves;
 		
 		if (wolves.size() >= maxWolves) 
 		{
@@ -81,7 +79,6 @@ public class WolfSpell extends Spell
         }
          
         wolves.add(wolf);
-        playerWolves.put(player.getName(), wolves);
 		
 		Entity e = target.getEntity();
         if (e != null && e instanceof LivingEntity)

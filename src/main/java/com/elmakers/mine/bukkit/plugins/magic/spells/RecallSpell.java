@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.HashMap;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,23 +12,12 @@ import com.elmakers.mine.bukkit.utilities.PluginProperties;
 
 public class RecallSpell extends Spell
 {
-	public class PlayerMarker
-	{
-		public Location location;
-		public boolean isActive;
-		
-		public PlayerMarker(Location location)
-		{
-			this.location = location;
-			isActive = true;
-		}
-	}
-	
+	public Location location;
+    public boolean isActive;
 	private boolean autoDropOnDeath = true;
 	private boolean autoDropIsInvisible = false;
 	private boolean autoSpawn = true;
 	private int disableDistance = 5;
-	private HashMap<String, PlayerMarker> markers = new HashMap<String, PlayerMarker>();
 	Material markerMaterial = Material.REDSTONE_TORCH_ON;
 	
 	@Override
@@ -48,20 +35,18 @@ public class RecallSpell extends Spell
 			return true;
 		}
 		
-		PlayerMarker marker = markers.get(player.getName());
-		
 		if (getYRotation() > 80)
 		{
-			if (marker == null || !marker.isActive && autoSpawn)
+			if (!isActive && autoSpawn)
 			{
 				castMessage(player, "Returning you home");
 				player.teleport(player.getWorld().getSpawnLocation());
 			}
 			else
 			{
-				if (marker == null || !marker.isActive) return false;
+				if (!isActive) return false;
 				
-				double distance = getDistance(player.getLocation(), marker.location);
+				double distance = getDistance(player.getLocation(), location);
 
 				if (distance < disableDistance && autoSpawn)
 				{
@@ -71,13 +56,13 @@ public class RecallSpell extends Spell
 				else
 				{
 					castMessage(player, "Returning you to your marker");
-					player.teleport(marker.location);
+					player.teleport(location);
 				}
 			}
 			return true;
 		}
 		
-		if (marker == null || !marker.isActive)
+		if (!isActive)
 		{
 			return placeMarker(getTargetBlock());
 		}
@@ -85,15 +70,15 @@ public class RecallSpell extends Spell
 		return placeMarker(getTargetBlock());
 	}
 	
-	protected boolean removeMarker(PlayerMarker marker)
+	protected boolean removeMarker()
 	{
-		if (marker == null || !marker.isActive) return false;
+		if (isActive) return false;
 		
-		marker.isActive = false;
+		isActive = false;
 		
-		int x = (int)Math.floor(marker.location.getX());
-		int y = (int)Math.floor(marker.location.getY());
-		int z = (int)Math.floor(marker.location.getZ());
+		int x = (int)Math.floor(location.getX());
+		int y = (int)Math.floor(location.getY());
+		int z = (int)Math.floor(location.getZ());
 		Block targetBlock = player.getWorld().getBlockAt(x, y, z);
 		if (targetBlock != null && targetBlock.getType() == markerMaterial)
 		{
@@ -121,7 +106,7 @@ public class RecallSpell extends Spell
 			return false;
 		}
 		
-		if (removeMarker(markers.get(player.getName())))
+		if (removeMarker())
 		{
 			castMessage(player, "You move your recall marker");
 		}
@@ -134,8 +119,6 @@ public class RecallSpell extends Spell
 		location.setX(targetBlock.getX());
 		location.setY(targetBlock.getY());
 		location.setZ(targetBlock.getZ());
-		PlayerMarker marker = new PlayerMarker(location);
-		markers.put(player.getName(), marker);
 	
 		player.setCompassTarget(location);
 		
@@ -157,8 +140,7 @@ public class RecallSpell extends Spell
 	{
 		if (autoDropOnDeath)
 		{
-			PlayerMarker marker = markers.get(player.getName());
-			if (marker == null || !marker.isActive)
+			if (!isActive)
 			{
 			    sendMessage(player, "Use recall to return to where you died");
 				placeMarker(getPlayerBlock());
