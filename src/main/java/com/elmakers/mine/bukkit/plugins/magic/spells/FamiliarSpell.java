@@ -90,7 +90,8 @@ public class FamiliarSpell extends Spell
 			castMessage(player, "No target");
 			return false;
 		}
-		Block targetBlock = target.getBlock();
+		Block originalTarget = target.getBlock(); 
+		Block targetBlock = originalTarget;
 		LivingEntity targetEntity = null;
       
 		boolean hasFamiliar = familiars.hasFamiliar();
@@ -157,9 +158,10 @@ public class FamiliarSpell extends Spell
 		    }	
 		}
 		
-		if (targetBlock.getType() == Material.WATER || targetBlock.getType() == Material.STATIONARY_WATER)
+		if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
 		{
 			famType = CreatureType.SQUID;
+			famClass = FamiliarClass.SPECIFIC;
 		}
 		
 		List<Creature> newFamiliars = new ArrayList<Creature>();
