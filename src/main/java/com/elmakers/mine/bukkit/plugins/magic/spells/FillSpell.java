@@ -147,8 +147,8 @@ public class FillSpell extends Spell
 			
 			if (!overrideMaterial)
 			{
-			    material = targetBlock.getType();
-			    data = targetBlock.getData();
+			    material = this.targetBlock.getType();
+			    data = this.targetBlock.getData();
 			}
 			
 			BlockList filledBlocks = new BlockList();

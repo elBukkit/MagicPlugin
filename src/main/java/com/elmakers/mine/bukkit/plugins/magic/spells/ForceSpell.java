@@ -79,7 +79,7 @@ public class ForceSpell extends Spell
             return true;
         }
         
-        if (target == null || !target.hasTarget())
+        if (target == null || !target.hasTarget() || !target.isEntity())
         {
             return false;
         }

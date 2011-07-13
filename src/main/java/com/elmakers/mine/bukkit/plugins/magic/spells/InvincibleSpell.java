@@ -7,7 +7,7 @@ import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 
 public class InvincibleSpell extends Spell 
 {
-    protected float protectAmount = 100;
+    protected float protectAmount = 0;
     
  	@Override
 	public boolean onCast(String[] parameters) 
@@ -25,11 +25,11 @@ public class InvincibleSpell extends Spell
             }
         }
         
-        Float currentAmount = protectAmount;
-        if (currentAmount != null)
+        if (protectAmount != 0)
         {
             sendMessage(player, "You feel ... normal.");
             spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
+            protectAmount = 0;
         }
         else
         {
@@ -43,9 +43,9 @@ public class InvincibleSpell extends Spell
             {
                 sendMessage(player, "You feel strong!");
             }
+            
+            protectAmount = (float)amount / 100;
         }
-        
-        protectAmount = (float)amount / 100;
        
 		return true;
 	}

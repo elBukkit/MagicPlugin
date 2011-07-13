@@ -160,7 +160,7 @@ public class Spells
         loadSpell(new LavaSpell(), "lava", Material.LAVA, "Fire a stream of lava", "combat", "");
         loadSpell(new LevitateSpell(), "levitate", Material.GOLD_BOOTS, "Levitate yourself up into the air", "psychic", "");
         loadSpell(new LightningSpell(), "lightning", Material.COOKED_FISH, "Strike lighting at your target", "combat", "");
-        loadSpell(new LightningSpell(), "storm", Material.COOKED_FISH, "Start a lightning storm", "elemental", "10", 2000);
+        loadSpell(new LightningSpell(), "storm", Material.GRILLED_PORK, "Start a lightning storm", "elemental", "10", 2000);
         loadSpell(new MineSpell(), "mine", Material.GOLD_PICKAXE, "Mines and drops the targeted resources", "mining", "");
         loadSpell(new PeekSpell(), "peek", Material.SUGAR_CANE, "Temporarily glass your target surface", "psychic", "");
         loadSpell(new PillarSpell(), "pillar", Material.GOLD_AXE, "Raises a pillar up", "construction", "");

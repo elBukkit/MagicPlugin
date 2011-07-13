@@ -91,8 +91,7 @@ public class FamiliarSpell extends Spell
 		}
 		Block targetBlock = target.getBlock();
 		LivingEntity targetEntity = null;
-		targetBlock = targetBlock.getFace(BlockFace.UP);
-       
+      
 		boolean hasFamiliar = familiars.hasFamiliar();
 		
     	if (hasFamiliar)
@@ -116,7 +115,9 @@ public class FamiliarSpell extends Spell
 		        targetEntity = (LivingEntity)e;
 		    }
 		}
-		
+	    
+		targetBlock = targetBlock.getFace(BlockFace.UP);
+	       	
 		CreatureType famType = CreatureType.PIG;
 		FamiliarClass famClass = FamiliarClass.FRIENDLY;
 		int famCount = 1;
@@ -181,7 +182,7 @@ public class FamiliarSpell extends Spell
                 }
             }      
 
-		    Location targetLoc = target.getLocation();
+		    Location targetLoc = targetBlock.getLocation();
 		    if (famCount > 1)
 		    {
 		        targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * famCount) - famCount);
