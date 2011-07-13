@@ -17,6 +17,7 @@ public class ForceSpell extends Spell
     int entityMagnitude = 3;
     int maxAllDistance = 20;
     Entity targetEntity = null;
+    int maxRange = 64;
     
     public void forceAll(int magnitude, boolean push)
     {
@@ -39,7 +40,15 @@ public class ForceSpell extends Spell
         boolean pull = false;
         int magnitude = itemMagnitude;
         
-        setMaxRange(64, true);
+        setMaxRange(maxRange, true);
+        
+        if (targetEntity != null)
+        {
+            if (getDistance(player.getLocation(), targetEntity.getLocation()) > maxRange)
+            {
+                targetEntity = null;
+            }
+        }
         
         for (int i = 0; i < parameters.length; i++)
         {
