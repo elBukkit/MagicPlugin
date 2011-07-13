@@ -27,28 +27,31 @@ public class PortalSpell extends Spell
     private int             defaultSearchDistance   = 255;
     protected static final String DEFAULT_DESTRUCTIBLES = "0,1,2,3,4,10,11,12,13,14,15,16,21,51,56,78,79,82,87,88,89";
     public static MaterialList destructible          = null;
-  
+    public static int                               teleportCooldown = 500;
+    
     PlayerPortal    a;
     PlayerPortal    b;
     BlockVector     lastLocation;
-    boolean         portalling;
+    boolean         portalling = false;
+    long            lastTeleport = 0;
     
     protected static List<PlayerPortal>    allPortals = new ArrayList<PlayerPortal>();
     
     public class TeleportPlayerTask implements Runnable
     {
         protected Location  targetLocation;
-        protected Player    player;
+        protected PortalSpell   spell;
         
-        public TeleportPlayerTask(Location target, Player player)
+        public TeleportPlayerTask(Location target, PortalSpell spell)
         {
             this.targetLocation = target;
-            this.player = player;
+            this.spell = spell;
         }
         
         public void run()
         {
-            player.teleport(targetLocation);
+            spell.startTeleporting();
+            spell.getPlayer().teleport(targetLocation);
         }
     }
     
@@ -68,7 +71,7 @@ public class PortalSpell extends Spell
         
         protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)
         {
-            BoundingBox container = new BoundingBox(centerBlock.getBlockX() - 1, centerBlock.getBlockY(), centerBlock.getBlockZ() - 1, centerBlock.getBlockX() + 1, centerBlock.getBlockY() + 3, centerBlock.getBlockZ());
+            BoundingBox container = new BoundingBox(centerBlock.getBlockX(), centerBlock.getBlockY(), centerBlock.getBlockZ(), centerBlock.getBlockX() + 2, centerBlock.getBlockY() + 3, centerBlock.getBlockZ() + 1);
             container.fill(centerBlock.getWorld(), Material.PORTAL, destructible, blockList);
         }
         
@@ -95,7 +98,7 @@ public class PortalSpell extends Spell
             return lx >= bx - 3 && lx <= bx + 3 && ly >= by && ly <= by + 4 && lz >= bz - 3 && lz <= bz + 3;
         }
         
-        public void teleport(Player player, Plugin plugin)
+        public void teleport(Player player, Plugin plugin, PortalSpell spell)
         {
             if (target == null) return;
             
@@ -113,7 +116,7 @@ public class PortalSpell extends Spell
             
             Server server = plugin.getServer();
             BukkitScheduler sched = server.getScheduler();
-            sched.scheduleSyncDelayedTask(plugin, new TeleportPlayerTask(destination, player), 0);
+            sched.scheduleSyncDelayedTask(plugin, new TeleportPlayerTask(destination, spell), 0);
         }
         
         public void link(PlayerPortal target)
@@ -190,6 +193,17 @@ public class PortalSpell extends Spell
     public void setPortalling(boolean p)
     {
         portalling = p;
+    }
+    
+    public void startTeleporting()
+    {
+        portalling = true;
+        lastTeleport = System.currentTimeMillis();
+    }
+    
+    public boolean readyForTeleport()
+    {
+        return !portalling && (lastTeleport == 0 || lastTeleport + teleportCooldown < System.currentTimeMillis());
     }
     
     public boolean isPortalling()
@@ -272,13 +286,16 @@ public class PortalSpell extends Spell
         {
             if (!isPortalling())
             {
-                setPortalling(true);
-                PlayerPortal portal = findPortal(playerLocation);
-                if (portal != null)
+                if (readyForTeleport())
                 {
-                    portal.teleport(player, spells.getPlugin());
+                    PlayerPortal portal = findPortal(playerLocation);
+                    if (portal != null)
+                    {
+                        portal.teleport(player, spells.getPlugin(), this);
+                    }
                 }
-            }
+                setPortalling(true);
+             }
         }
         else
         {
