@@ -255,6 +255,7 @@ public class LevitateSpell extends Spell
     public boolean onCast(String[] parameters)
     {
         lastTick = System.currentTimeMillis();
+        hoverHeight = defaultHoverHeight;
         
         if (action == null)
         {
