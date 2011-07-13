@@ -10,11 +10,14 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 
 public class LevitateSpell extends Spell
 {
@@ -25,6 +28,9 @@ public class LevitateSpell extends Spell
     protected int groundHeight = 0;
     protected float hoverHeight = 0;
     protected long lastTick = 0;
+    
+    private final long safetyLength = 20000;
+    private long lastLevitate = 0;
     
     protected int checkFrequency = 10; // We'll check the ground every X steps 
     protected int maxTerrainChangeHeight = 4;
@@ -252,6 +258,25 @@ public class LevitateSpell extends Spell
             castMessage(player, "You feel lighter");
         }
         
+        lastLevitate = System.currentTimeMillis();
+        spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+        
         return true;
+    }
+
+    @Override
+    public void onPlayerDamage(EntityDamageEvent event)
+    {
+        if (event.getCause() != DamageCause.FALL) return;
+
+        spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+        
+        if (lastLevitate == 0) return;
+        
+        if (lastLevitate + safetyLength > System.currentTimeMillis())
+        {
+            event.setCancelled(true);
+            lastLevitate = 0;
+        }
     }
 }

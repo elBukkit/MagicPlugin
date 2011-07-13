@@ -6,6 +6,8 @@
  - Some tweaks to pull and push
  - Fix familiar so it spawns a random mob again
  - Fix shell
+ - Fix portal (?)
+ - Fix levitate (?), it at least protects you from death now.
 
 ## 2.0.3
 

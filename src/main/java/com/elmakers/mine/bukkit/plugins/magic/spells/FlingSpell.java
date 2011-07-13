@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.HashMap;
-
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -14,7 +12,7 @@ public class FlingSpell extends Spell
 {
 	private final int defaultMagnitude = 5;
 	private final long safetyLength = 20000;
-	private HashMap<String, Long> lastFling = new HashMap<String, Long>();
+	private long lastFling = 0;
 
 	@Override
 	public boolean onCast(String[] parameters)
@@ -39,7 +37,7 @@ public class FlingSpell extends Spell
 		castMessage(player, "Whee!");
 		
         spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
-		lastFling.put(player.getName(), System.currentTimeMillis());
+        lastFling = System.currentTimeMillis();
 		return true;
 	}
 	
@@ -47,18 +45,15 @@ public class FlingSpell extends Spell
     public void onPlayerDamage(EntityDamageEvent event)
     {
         if (event.getCause() != DamageCause.FALL) return;
+
+        spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
         
-        Long lastTime = lastFling.get(player.getName());
-        if (lastTime == null) return;
+        if (lastFling == 0) return;
         
-        if (lastTime + safetyLength > System.currentTimeMillis())
+        if (lastFling + safetyLength > System.currentTimeMillis())
         {
             event.setCancelled(true);
-            lastFling.remove(player.getName());
-            if (lastFling.size() == 0)
-            {
-                spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
-            }
+            lastFling = 0;
         }
     }
 }
