@@ -146,7 +146,8 @@ public class Spells
         loadSpell(new FireSpell(), "inferno", Material.FIRE, "Burn a wide area", "master", "6");
         loadSpell(new FlingSpell(), "fling", Material.IRON_BOOTS, "Sends you flying in the target direction", "psychic", "5");
         loadSpell(new FlingSpell(), "leap", Material.LEATHER_BOOTS, "Take a big leap", "psychic", "2");
-        loadSpell(new ForceSpell(), "pull", Material.FISHING_ROD, "Pull things toward you", "psychic", "");
+        loadSpell(new ForceSpell(), "force", Material.STRING, "Use telekinesis", "psychic", "");
+        loadSpell(new ForceSpell(), "pull", Material.FISHING_ROD, "Pull things toward you", "psychic", "pull");
         loadSpell(new ForceSpell(), "push", Material.RAILS, "Push things away from you", "psychic", "push");
         loadSpell(new FrostSpell(), "frost", Material.SNOW_BALL, "Freeze water and create snow", "alchemy", "");
         loadSpell(new GillsSpell(), "gills", Material.RAW_FISH, "Restores health while moving underwater", "medic", "");
