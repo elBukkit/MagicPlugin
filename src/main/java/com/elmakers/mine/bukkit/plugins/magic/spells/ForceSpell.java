@@ -44,7 +44,15 @@ public class ForceSpell extends Spell
         
         if (targetEntity != null)
         {
-            if (getDistance(player.getLocation(), targetEntity.getLocation()) > maxRange)
+            if (targetEntity instanceof LivingEntity)
+            {
+                LivingEntity le = (LivingEntity)targetEntity;
+                if (le.isDead())
+                {
+                    targetEntity = null;
+                }
+            }
+            if (targetEntity != null && getDistance(player.getLocation(), targetEntity.getLocation()) > maxRange)
             {
                 targetEntity = null;
             }
@@ -164,4 +172,15 @@ public class ForceSpell extends Spell
         CraftEntity ce = (CraftEntity)target;
         ce.setVelocity(forceVector);
     }
+    
+    @Override
+    public void onCancel()
+    {
+        if (targetEntity != null)
+        {
+            player.sendMessage("Released target");
+            targetEntity = null;
+        }
+    }
+
 }
