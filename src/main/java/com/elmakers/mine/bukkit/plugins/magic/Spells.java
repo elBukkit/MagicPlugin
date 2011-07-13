@@ -91,10 +91,11 @@ public class Spells
         Spell playerSpell = playerSpells.getSpell(spell.getName());
         if (playerSpell == null)
         {
-            playerSpell = (Spell) spell.clone();
-            playerSpell.setPlayer(player);
+            playerSpell = (Spell)spell.clone();
             playerSpells.addSpell(playerSpell);
         }
+
+        playerSpell.setPlayer(player);
 
         return playerSpell;
     }
@@ -107,6 +108,9 @@ public class Spells
             spells = new PlayerSpells(player);
             playerSpells.put(player.getName(), spells);
         }
+        
+        spells.setPlayer(player);
+        
         return spells;
     }
 

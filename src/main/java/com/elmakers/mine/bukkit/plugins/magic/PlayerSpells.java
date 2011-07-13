@@ -42,6 +42,11 @@ public class PlayerSpells
         }
     }
 
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+    
     public void unregisterEvent(SpellEventType type, Spell spell)
     {
         switch (type)
@@ -125,10 +130,7 @@ public class PlayerSpells
         active.addAll(damageListeners);
         for (Spell listener : active)
         {
-            if (player == listener.getPlayer())
-            {
-                listener.onPlayerDamage(event);
-            }
+            listener.onPlayerDamage(event);
         }
     }
 }

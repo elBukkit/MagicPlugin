@@ -70,6 +70,8 @@ public class LevitateSpell extends Spell
         
         public void activate(LevitateSpell spell)
         {
+            spell.spells.registerEvent(SpellEventType.PLAYER_DAMAGE, spell);
+
             players.put(spell.getPlayer().getName(), spell);
             
             spell.checkForGround();
@@ -81,9 +83,11 @@ public class LevitateSpell extends Spell
             scheduler.scheduleSyncDelayedTask(plugin, this, tickSpan);
         }
         
-        public void deactivate(Player player)
+        public void deactivate(LevitateSpell spell)
         {
-            players.remove(player.getName());
+            spell.spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, spell);
+
+            players.remove(spell.getPlayer().getName());
             player.setVelocity(new Vector(0,0,0));
         }
 
@@ -166,7 +170,11 @@ public class LevitateSpell extends Spell
     @SuppressWarnings("unchecked")
     protected void applyForce()
     {
-        if (!isActive()) return;
+        if (!isActive()) 
+        {
+            action.deactivate(this);
+            return;
+        }
         
         // testing out a perf hack- don't send chunks while flinging!
         CraftPlayer cp = (CraftPlayer)player;
@@ -264,7 +272,7 @@ public class LevitateSpell extends Spell
         
         if (action.isActive(player))
         {
-            action.deactivate(player);
+            action.deactivate(this);
             castMessage(player, "You feel heavier");
         }
         else
@@ -274,8 +282,7 @@ public class LevitateSpell extends Spell
         }
         
         lastLevitate = System.currentTimeMillis();
-        spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
-        
+       
         return true;
     }
 
@@ -283,8 +290,6 @@ public class LevitateSpell extends Spell
     public void onPlayerDamage(EntityDamageEvent event)
     {
         if (event.getCause() != DamageCause.FALL) return;
-
-        spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
         
         if (lastLevitate == 0) return;
         
