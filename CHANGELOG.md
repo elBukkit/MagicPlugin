@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2.0.4
+
+ - Massive refactor, in preparation for configurable spell variants
+ - Some tweaks to pull and push
+ - Fix familiar so it spawns a random mob again
+ - Fix shell
+
 ## 2.0.3
 
  - Add cloak spell (invisibility until you move).

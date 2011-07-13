@@ -69,7 +69,7 @@ public class WolfSpell extends Spell
 		if (wolves.size() >= maxWolves) 
 		{
 		   CraftWolf killWolf = wolves.remove(0);
-		   killWolf.damage(100);
+		   killWolf.setHealth(0);
 		}
 		
     	CraftWolf wolf = newWolf(target);

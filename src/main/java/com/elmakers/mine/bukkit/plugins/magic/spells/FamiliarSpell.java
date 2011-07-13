@@ -17,12 +17,13 @@ import org.bukkit.event.player.PlayerEvent;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.PluginProperties;
 
 public class FamiliarSpell extends Spell
 {
-	private String DEFAULT_FAMILIARS = "chicken,sheep,cow,pig,wolf";
-	private String DEFAULT_MONSTERS = "creeper,pigzombie,skeleton,spider,zombie,ghast,giant,monster";
+	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf";
+	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Ghast,Giant,Monster";
 	
 	private List<String> defaultFamiliars = new ArrayList<String>();
 	private List<String> defaultMonsters = new ArrayList<String>();
@@ -97,14 +98,16 @@ public class FamiliarSpell extends Spell
     	if (hasFamiliar)
         {   // Dispel familiars if you target them and cast
     	    boolean isFamiliar = target.isEntity() && familiars.isFamiliar(target.getEntity());
-    	    familiars.releaseFamiliar();
             if (isFamiliar)
             {
                 castMessage(player, "You release your familiar(s)");
                 checkListener();
                 return true;
             }
+            
+            familiars.releaseFamiliar();
         }
+    	
 		if (target.isEntity())
 		{
 		    
@@ -147,9 +150,9 @@ public class FamiliarSpell extends Spell
                         if (ct.getName().toUpperCase().equals(testType))
                         {
                             famType = ct;
+                            famClass = FamiliarClass.SPECIFIC;
                         }
                     }
-                    famClass = FamiliarClass.SPECIFIC;
                 }
 		    }	
 		}
@@ -240,8 +243,9 @@ public class FamiliarSpell extends Spell
 	@Override
 	public void onLoad(PluginProperties properties)
 	{
-		defaultFamiliars = properties.getStringList("spells-familiar-animals", DEFAULT_FAMILIARS);
-		defaultMonsters = properties.getStringList("spells-familiar-monsters", DEFAULT_MONSTERS);
+	    CSVParser csv = new CSVParser();
+	    defaultFamiliars = csv.parseStrings(DEFAULT_FAMILIARS);
+	    defaultMonsters = csv.parseStrings(DEFAULT_MONSTERS);
 	}
 	
 	public void onPlayerQuit(PlayerEvent event)

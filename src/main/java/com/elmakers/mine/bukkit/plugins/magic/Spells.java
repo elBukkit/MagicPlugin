@@ -406,8 +406,8 @@ public class Spells
 
     public void load()
     {
-        loadProperties();
         loadSpells();
+        loadProperties();
     }
 
     protected void loadProperties()

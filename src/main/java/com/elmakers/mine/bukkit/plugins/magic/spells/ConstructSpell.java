@@ -164,7 +164,7 @@ public class ConstructSpell extends Spell
 						fillBlock = distanceSquared <= radiusSquared;
 						if (!fill)
 						{
-							fillBlock = fillBlock && distanceSquared >= radiusSquared - 2;
+							fillBlock = fillBlock && distanceSquared >= radiusSquared - 16;
 						}
 					}
 					else
