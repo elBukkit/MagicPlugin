@@ -314,44 +314,14 @@ public class Spells
 
     public void registerEvent(SpellEventType type, Spell spell)
     {
-        switch (type)
-        {
-            case PLAYER_MOVE:
-                if (!movementListeners.contains(spell))
-                    movementListeners.add(spell);
-                break;
-            case PLAYER_QUIT:
-                if (!quitListeners.contains(spell))
-                    quitListeners.add(spell);
-                break;
-            case PLAYER_DAMAGE:
-                if (!damageListeners.contains(spell))
-                    damageListeners.add(spell);
-                break;
-            case PLAYER_DEATH:
-                if (!deathListeners.contains(spell))
-                    deathListeners.add(spell);
-                break;
-        }
+        PlayerSpells spells = getPlayerSpells(spell.getPlayer());
+        spells.registerEvent(type, spell);
     }
 
     public void unregisterEvent(SpellEventType type, Spell spell)
     {
-        switch (type)
-        {
-            case PLAYER_MOVE:
-                movementListeners.remove(spell);
-                break;
-            case PLAYER_DAMAGE:
-                damageListeners.remove(spell);
-                break;
-            case PLAYER_QUIT:
-                quitListeners.remove(spell);
-                break;
-            case PLAYER_DEATH:
-                deathListeners.remove(spell);
-                break;
-        }
+        PlayerSpells spells = getPlayerSpells(spell.getPlayer());
+        spells.registerEvent(type, spell);
     }
 
     /*
@@ -467,9 +437,7 @@ public class Spells
 
     public void clear()
     {
-        movementListeners.clear();
-        damageListeners.clear();
-        quitListeners.clear();
+        playerSpells.clear();
         spells.clear();
         spellsByMaterial.clear();
     }
@@ -480,50 +448,26 @@ public class Spells
 
     public void onPlayerQuit(PlayerQuitEvent event)
     {
-        // Must allow listeners to remove themselves during the event!
-        List<Spell> active = new ArrayList<Spell>();
-        active.addAll(quitListeners);
-        for (Spell listener : active)
-        {
-            listener.onPlayerQuit(event);
-        }
+        PlayerSpells spells = getPlayerSpells(event.getPlayer());
+        spells.onPlayerQuit(event);
     }
 
     public void onPlayerMove(PlayerMoveEvent event)
     {
-        // Must allow listeners to remove themselves during the event!
-        List<Spell> active = new ArrayList<Spell>();
-        active.addAll(movementListeners);
-        for (Spell listener : active)
-        {
-            listener.onPlayerMove(event);
-        }
+        PlayerSpells spells = getPlayerSpells(event.getPlayer());
+        spells.onPlayerMove(event);
     }
 
     public void onPlayerDeath(Player player, EntityDeathEvent event)
     {
-        List<Spell> active = new ArrayList<Spell>();
-        active.addAll(deathListeners);
-        for (Spell listener : active)
-        {
-            if (player == listener.getPlayer())
-            {
-                listener.onPlayerDeath(event);
-            }
-        }
+        PlayerSpells spells = getPlayerSpells(player);
+        spells.onPlayerDeath(event);
     }
 
     public void onPlayerDamage(Player player, EntityDamageEvent event)
     {
-        List<Spell> active = new ArrayList<Spell>();
-        active.addAll(damageListeners);
-        for (Spell listener : active)
-        {
-            if (player == listener.getPlayer())
-            {
-                listener.onPlayerDamage(event);
-            }
-        }
+        PlayerSpells spells = getPlayerSpells(player);
+        spells.onPlayerDamage(event);
     }
 
     public List<Spell> getAllSpells()
@@ -804,10 +748,6 @@ public class Spells
     private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
     private final HashMap<Material, Spell>      spellsByMaterial               = new HashMap<Material, Spell>();
     private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
-    private final List<Spell>                   movementListeners              = new ArrayList<Spell>();
-    private final List<Spell>                   quitListeners                  = new ArrayList<Spell>();
-    private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
-    private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
 
     private MagicPlugin                         plugin                         = null;
 }
