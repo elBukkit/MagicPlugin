@@ -178,7 +178,15 @@ public class ForceSpell extends Spell
     {
         if (targetEntity != null)
         {
-            player.sendMessage("Released target");
+            if 
+            (
+                    (targetEntity instanceof LivingEntity) 
+            &&      !targetEntity.isDead() 
+            &&      getDistance(player.getLocation(), targetEntity.getLocation()) < maxRange
+            )
+            {
+                player.sendMessage("Released target");
+            }
             targetEntity = null;
         }
     }
