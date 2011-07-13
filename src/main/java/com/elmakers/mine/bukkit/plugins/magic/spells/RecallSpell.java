@@ -72,7 +72,7 @@ public class RecallSpell extends Spell
 	
 	protected boolean removeMarker()
 	{
-		if (isActive) return false;
+		if (!isActive || location == null) return false;
 		
 		isActive = false;
 		
@@ -115,7 +115,7 @@ public class RecallSpell extends Spell
 			castMessage(player, "You place a recall marker");
 		}
 		
-		Location location = player.getLocation();
+		location = player.getLocation();
 		location.setX(targetBlock.getX());
 		location.setY(targetBlock.getY());
 		location.setZ(targetBlock.getZ());
@@ -123,6 +123,8 @@ public class RecallSpell extends Spell
 		player.setCompassTarget(location);
 		
 		targetBlock.setType(markerMaterial);
+		isActive = true;
+		
 		return true;
 	}
 
