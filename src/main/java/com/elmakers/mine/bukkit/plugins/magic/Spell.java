@@ -579,18 +579,32 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	}
 
 	/**
-	 * Get a Vector reprsenting the current aim direction
+	 * Get a Vector representing the current aim direction
 	 * 
 	 * @return The player's aim vector
 	 */
 	public Vector getAimVector()
 	{
-		return new Vector
-		(
-	        (0 - Math.sin(Math.toRadians(playerLocation.getYaw()))), 
-	        (0 - Math.sin(Math.toRadians(playerLocation.getPitch()))), 
-	        Math.cos(Math.toRadians(playerLocation.getYaw()))
-		);
+	    double yaw = Math.toRadians(playerLocation.getYaw());
+	    double pitch = Math.toRadians(playerLocation.getPitch());
+	    Vector aimVector = new Vector
+        (
+                (0 - Math.sin(yaw)), 
+                (0 - Math.sin(pitch)), 
+                Math.cos(yaw)
+        );
+	    // kind of a hack, but i can't seem to get the matrix math right :P
+	    double y = aimVector.getY();
+	    if  (y >= 1 || y <= -1)
+	    {
+	        aimVector.setX(0);
+	        aimVector.setZ(0);
+	    }
+	    else
+	    {
+	        aimVector.normalize();
+	    }
+	    return aimVector;
 	}
 	
 	/**
