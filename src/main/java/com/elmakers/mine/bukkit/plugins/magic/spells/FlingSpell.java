@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.logging.Logger;
+import net.minecraft.server.ChunkCoordIntPair;
+import net.minecraft.server.EntityPlayer;
 
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -22,11 +24,20 @@ public class FlingSpell extends Spell
     protected double minMagnitude = 1.5;
     protected double maxMagnitude = 12; 
 
-	@Override
+	@SuppressWarnings("unchecked")
+    @Override
 	public boolean onCast(String[] parameters)
 	{
 	    int height = 0;
 	    Block playerBlock = player.getLocation().getBlock();
+	    	    
+	    // testing out a perf hack- don't send chunks while flinging!
+        CraftPlayer cp = (CraftPlayer)player;
+        EntityPlayer ep = cp.getHandle();
+	    Chunk chunk = playerBlock.getChunk();
+	    ep.chunkCoordIntPairQueue.clear();
+	    ep.chunkCoordIntPairQueue.add(new ChunkCoordIntPair(chunk.getX(), chunk.getZ()));
+	    
 	    while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 	    {
 	        playerBlock = playerBlock.getFace(BlockFace.DOWN);

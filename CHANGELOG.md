@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.0.5
+
+ - Some experimental changes to fling and levitate
+ - Drop leap
+
 ## 2.0.4
 
  - Massive refactor, in preparation for configurable spell variants
