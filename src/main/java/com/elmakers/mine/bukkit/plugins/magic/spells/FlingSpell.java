@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.logging.Logger;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -10,27 +15,33 @@ import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 
 public class FlingSpell extends Spell
 {
-	private final int defaultMagnitude = 5;
 	private final long safetyLength = 20000;
 	private long lastFling = 0;
+	
+    protected int maxSpeedAtElevation = 32;
+    protected double minMagnitude = 1.5;
+    protected double maxMagnitude = 12; 
 
 	@Override
 	public boolean onCast(String[] parameters)
 	{
-	    int magnitude = defaultMagnitude;
-        if (parameters.length > 0)
-        {
-            try
-            {
-                magnitude = Integer.parseInt(parameters[0]);
-            }
-            catch (NumberFormatException ex)
-            {
-                magnitude = defaultMagnitude;
-            }
-        }
+	    int height = 0;
+	    Block playerBlock = player.getLocation().getBlock();
+	    while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
+	    {
+	        playerBlock = playerBlock.getFace(BlockFace.DOWN);
+	        height++;
+	    }
+	    
+	    double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * ((double)height / maxSpeedAtElevation)));
+      
 		Vector velocity = getAimVector();
-		velocity.normalize();
+		
+		if (player.getLocation().getBlockY() >= 128)
+		{
+		    velocity.setY(0);
+		}
+		
 		velocity.multiply(magnitude);
 		CraftPlayer craftPlayer = (CraftPlayer)player;
 		craftPlayer.setVelocity(velocity);
