@@ -682,7 +682,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
             if (entity == player) continue;
 			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 			
-			Target newScore = new Target(player, entity);
+			Target newScore = new Target(player, entity, range);
 			if (newScore.getScore() > 0)
 			{
 			    scored.add(newScore);

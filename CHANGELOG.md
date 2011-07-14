@@ -4,6 +4,9 @@
 
  - Some experimental changes to fling and levitate
  - Drop leap
+ - Add "breach", air-based peek variant
+ - Nerf frost (shorter range, auto-rewind)
+ - Nerf tesseract (no passing through things)
 
 ## 2.0.4
 

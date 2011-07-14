@@ -72,6 +72,9 @@ public class BlinkSpell extends Spell
 			{
 			    int range = Integer.parseInt(parameters[0]);
 			    setMaxRange(range, true);
+			    autoAscend = false;
+			    autoDescend = false;
+			    autoPassthrough = false;
 			}
 			catch (NumberFormatException ex)
 			{

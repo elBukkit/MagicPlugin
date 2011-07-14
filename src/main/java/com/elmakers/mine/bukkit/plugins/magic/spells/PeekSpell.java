@@ -18,6 +18,8 @@ public class PeekSpell extends Spell
 	private int				defaultRadius			= 3;
 	private int				maxRadius				= 32;
 	private int				defaultSearchDistance	= 32;
+	
+	private Material        peekMaterial            = Material.GLASS;
 
 	@Override
 	public boolean onCast(String[] parameters)
@@ -87,7 +89,11 @@ public class PeekSpell extends Spell
 
 		return true;
 	}
-	
+
+	public void setPeekMaterial(Material mat)
+	{
+	    this.peekMaterial = mat;
+	}
 
 	public int checkPosition(int x, int y, int z, int R)
 	{
@@ -105,7 +111,7 @@ public class PeekSpell extends Spell
 			return;
 		}
 		blocks.add(block);
-		block.setType(Material.GLASS);
+		block.setType(peekMaterial);
 	}
 
 	public boolean isPeekable(Block block)
@@ -113,7 +119,7 @@ public class PeekSpell extends Spell
 		if (block.getType() == Material.AIR)
 			return false;
 		
-		if (block.getType() == Material.GLASS)
+		if (block.getType() == peekMaterial)
 			return false;
 		
 		return peekableMaterials.contains(block.getType());

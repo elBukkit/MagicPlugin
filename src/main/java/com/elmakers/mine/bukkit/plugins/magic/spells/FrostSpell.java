@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.PluginProperties;
@@ -57,6 +58,7 @@ public class FrostSpell extends Spell
 	@Override
 	public boolean onCast(String[] parameters)
 	{
+	    setMaxRange(16, false);
 	    Target target = getTarget();
 
         if (target == null)
@@ -115,7 +117,10 @@ public class FrostSpell extends Spell
             this.coverSurface(target.getLocation(), radius, action);
         }
 
-        spells.addToUndoQueue(player, action.getBlocks());
+
+        BlockList frozenBlocks = action.getBlocks();
+        frozenBlocks.setTimeToLive(60000);
+        spells.scheduleCleanup(frozenBlocks);
         castMessage(player, "Frosted " + action.getBlocks().size() + " blocks");
         
         return true;

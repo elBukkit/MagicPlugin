@@ -27,8 +27,9 @@ public class Target implements Comparable<Target>
         calculateScore();
     }
     
-    public Target(Player player, Entity entity)
+    public Target(Player player, Entity entity, int range)
     {
+        this.maxDistance = range;
         this.player = player;
         this.entity = entity;
         calculateScore();
@@ -126,5 +127,4 @@ public class Target implements Comparable<Target>
         
         return null;
     }
-    
 }

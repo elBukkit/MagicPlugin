@@ -148,7 +148,7 @@ public class Spells
         loadSpell(new FireballSpell(), "fireball", Material.NETHERRACK, "Cast an exploding fireball", "combat", "", 1500);
         loadSpell(new FireSpell(), "fire", Material.FLINT_AND_STEEL, "Light fires from a distance", "elemental", "");
         loadSpell(new FireSpell(), "inferno", Material.FIRE, "Burn a wide area", "master", "6");
-        loadSpell(new FlingSpell(), "fling", Material.IRON_BOOTS, "Sends you flying in the target direction", "psychic", "5");
+        loadSpell(new FlingSpell(), "fling", Material.LEATHER_BOOTS, "Sends you flying in the target direction", "psychic", "5");
         loadSpell(new ForceSpell(), "force", Material.STRING, "Use telekinesis", "psychic", "");
         loadSpell(new ForceSpell(), "pull", Material.FISHING_ROD, "Pull things toward you", "psychic", "pull");
         loadSpell(new ForceSpell(), "push", Material.RAILS, "Push things away from you", "psychic", "push");
@@ -166,7 +166,12 @@ public class Spells
         loadSpell(new LightningSpell(), "lightning", Material.COOKED_FISH, "Strike lighting at your target", "combat", "");
         loadSpell(new LightningSpell(), "storm", Material.GRILLED_PORK, "Start a lightning storm", "elemental", "10", 2000);
         loadSpell(new MineSpell(), "mine", Material.GOLD_PICKAXE, "Mines and drops the targeted resources", "mining", "");
-        loadSpell(new PeekSpell(), "peek", Material.SUGAR_CANE, "Temporarily glass your target surface", "psychic", "");
+        loadSpell(new PeekSpell(), "peek", Material.SUGAR_CANE, "Temporarily glass the target surface", "alchemy", "");
+        
+        PeekSpell breachSpell = new PeekSpell();
+        breachSpell.setPeekMaterial(Material.AIR);
+        loadSpell(breachSpell, "breach", Material.SEEDS, "Temporarily destroy the target surface", "alchemy", "");
+        
         loadSpell(new PillarSpell(), "pillar", Material.GOLD_AXE, "Raises a pillar up", "construction", "");
         loadSpell(new PillarSpell(), "stalactite", Material.WOOD_AXE, "Create a downward pillar", "construction", "down");
         loadSpell(new PortalSpell(), "portal", Material.PORTAL, "Create two connected portals", "psychic", "");
@@ -191,7 +196,11 @@ public class Spells
 
     public void loadSpell(Spell template, String name, Material icon, String description, String category, String parameterString, int cooldown)
     {
-        String[] parameters = parameterString.split(" ");
+        String[] parameters = new String[0];
+        if (parameterString.length() > 0)
+        {
+            parameters = parameterString.split(" ");
+        }
         template.load(name, description, category, icon, parameters, cooldown);
         addSpell(template);
     }
