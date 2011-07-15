@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -56,7 +57,7 @@ public class GillsSpell extends Spell
 	private HashMap<String, PlayerGills> gillPlayers = new HashMap<String, PlayerGills>();
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		PlayerGills hasGills = gillPlayers.get(player.getName());
 		

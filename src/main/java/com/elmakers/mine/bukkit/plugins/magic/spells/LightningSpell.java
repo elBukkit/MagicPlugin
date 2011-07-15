@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
@@ -42,7 +44,7 @@ public class LightningSpell extends Spell
     }
     
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
         Target target = getTarget();
         if (!target.hasTarget())
@@ -53,16 +55,9 @@ public class LightningSpell extends Spell
        
 
         int radius = 1;
-        for (int i = 0; i < parameters.length; i++)
+        if (parameters.containsKey("radius"))
         {
-            // try radius;
-            try
-            {
-                radius = Integer.parseInt(parameters[0]);
-            }
-            catch(NumberFormatException ex)
-            {
-            }
+            radius = (Integer)parameters.get("radius");
         }
         
         if (radius > maxRadius && maxRadius > 0)

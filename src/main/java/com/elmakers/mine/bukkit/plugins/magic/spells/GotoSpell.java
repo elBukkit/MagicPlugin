@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -12,7 +13,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 public class GotoSpell extends Spell
 {
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
         targetEntity(Player.class);
         

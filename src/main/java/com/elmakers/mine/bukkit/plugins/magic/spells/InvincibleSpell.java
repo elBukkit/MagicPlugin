@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -10,20 +12,13 @@ public class InvincibleSpell extends Spell
     protected float protectAmount = 0;
     
  	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
 	    int amount = 100;
-        if (parameters.length > 0)
-        {
-            try
-            {
-                amount = Integer.parseInt(parameters[0]);
-            }
-            catch (NumberFormatException ex)
-            {
-                amount = 100;
-            }
-        }
+	    if (parameters.containsKey("amount"))
+	    {
+	        amount = (Integer)parameters.get("amount");
+	    }
         
         if (protectAmount != 0)
         {

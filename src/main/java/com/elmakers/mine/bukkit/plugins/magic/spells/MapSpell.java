@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
@@ -11,7 +12,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class MapSpell extends Spell
 {
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
         CraftInventory ci = (CraftInventory)player.getInventory();
         if (!ci.contains(Material.MAP))

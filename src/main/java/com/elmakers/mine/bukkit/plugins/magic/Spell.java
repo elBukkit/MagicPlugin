@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.bukkit.util.config.ConfigurationNode;
 
 import com.elmakers.mine.bukkit.utilities.BlockAction;
 import com.elmakers.mine.bukkit.utilities.PluginProperties;
@@ -46,7 +48,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String name;
     private String description;
     private String category;
-    private String[] parameters;
+    private Map<String, Object> parameters;
     private Material material;
 	
     /*
@@ -95,14 +97,91 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         this.player = null;
     }
     
-    public void load(String name, String description, String category, Material icon, String[] parameters, int cooldown)
+    public void initialize(String name, String description, String category, Material icon, String[] parameters, int cooldown)
     {
         this.name = name;
         this.description = description;
         this.category = category;
-        this.parameters = parameters;
+        this.parameters = new HashMap<String, Object>();
+        if (parameters != null && parameters.length > 1)
+        {
+            addParameters(parameters, this.parameters);
+        }
         this.material = icon;
         this.cooldown = cooldown;
+    }
+    
+    protected static String getBuiltinClasspath()
+    {
+        String baseClass = Spell.class.getName();
+        return baseClass.substring(0, baseClass.lastIndexOf('.'));
+    }
+    
+    public static Spell loadSpell(ConfigurationNode node)
+    {
+       String builtinClassPath = getBuiltinClasspath();
+        
+       String className = node.getString("type");
+       if (className.indexOf('.') <= 0)
+       {
+           className = builtinClassPath + "." + className;
+       }
+       
+       Object newObject = null;
+       try
+       {
+           newObject = Class.forName(className);
+       }
+       catch(ClassNotFoundException ex)
+       {
+           // TODO Log errors
+           return null;
+       }
+       if (newObject == null || !(newObject instanceof Spell))
+       {
+           // TODO Log errors
+           return null;
+       }
+       Spell newSpell = (Spell)newObject;
+       newSpell.load(node);
+       
+       return newSpell;
+    }
+    
+    protected void load(ConfigurationNode node)
+    {
+        // TODO Load basic data
+        // TODO refactor onLoad
+    }
+    
+    public void save(ConfigurationNode node)
+    {
+        String className = this.getClass().getName();
+        
+        String builtinClassPath = getBuiltinClasspath();
+        
+        if (className.contains(builtinClassPath))
+        {
+            className = className.substring(className.lastIndexOf('.') + 1);
+        }
+        
+        node.setProperty("name", name);
+        node.setProperty("description", description);
+        node.setProperty("icon", material);
+        node.setProperty("category", category);
+        node.setProperty("cooldown", cooldown);
+        if (parameters != null && parameters.size() > 0)
+        {
+            node.setProperty("parameters", parameters);
+        }
+        node.setProperty("class", className);
+        
+        this.onSave(node);
+    }
+
+    public void onSave(ConfigurationNode node)
+    {
+        
     }
     
     public void setPlayer(Player player)
@@ -130,7 +209,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         return category;
     }
     
-    public final String[] getParameters()
+    public final Map<String, Object> getParameters()
     {
         return parameters;
     }
@@ -151,22 +230,26 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         return cast(new String[0]);
     }
     
-    public boolean cast(String[] extraParameters)
+    protected void addParameters(String[] extraParameters, Map<String, Object> parameters)
     {
-        String[] spellParameters = parameters;
-        
-        if (extraParameters.length > 0)
+        if (extraParameters != null)
         {
-            spellParameters = new String[extraParameters.length + parameters.length];
-            for (int i = 0; i < parameters.length; i++)
+            for (int i = 0; i < extraParameters.length - 1; i += 2)
             {
-                spellParameters[i] = parameters[i];
-            }
-            for (int i = 0; i < extraParameters.length; i++)
-            {
-                spellParameters[i + parameters.length] = extraParameters[i];
+                parameters.put(extraParameters[i], extraParameters[i + 1]);
             }
         }
+    }
+    
+    public boolean cast(String[] extraParameters)
+    {
+        HashMap<String, Object> parameters = new HashMap<String, Object>();
+        if (this.parameters != null)
+        {
+            parameters.putAll(this.parameters);
+        }
+
+        addParameters(extraParameters, parameters);
  
         long currentTime = System.currentTimeMillis();
         if (lastCast != 0 && lastCast > currentTime - cooldown)
@@ -183,7 +266,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
         initializeTargeting(player);
 
-        return onCast(spellParameters);
+        return onCast(parameters);
     }
 
     public String getPermissionNode()
@@ -209,7 +292,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @param parameters Any parameters that were passed to this spell
 	 * @return true if the spell worked, false if it failed
 	 */
-	public abstract boolean onCast(String[] parameters);
+	public abstract boolean onCast(Map<String, Object> parameters);
 
 	/**
 	 * Called on load, you can load data here and set defaults.

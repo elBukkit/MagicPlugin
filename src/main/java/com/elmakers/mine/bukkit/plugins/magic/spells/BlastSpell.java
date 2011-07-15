@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,7 +22,7 @@ public class BlastSpell extends Spell
 	private int				torchFrequency			= 4;
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		Block target = getTargetBlock();
 		if (target == null)
@@ -36,21 +37,10 @@ public class BlastSpell extends Spell
 		}
 
 		int radius = defaultRadius;
-		if (parameters.length > 0)
-		{
-			try
-			{
-				radius = Integer.parseInt(parameters[0]);
-				if (radius > maxRadius && maxRadius > 0)
-				{
-					radius = maxRadius;
-				}
-			} 
-			catch(NumberFormatException ex)
-			{
-				radius = defaultRadius;
-			}
-		}
+		if (parameters.containsKey("radius"))
+        {
+		    radius = (Integer)parameters.get("radius");
+        }
 		
 		BlockList blastedBlocks = new BlockList();
 		int diameter = radius * 2;

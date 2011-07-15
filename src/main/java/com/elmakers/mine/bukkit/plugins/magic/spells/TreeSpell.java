@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -14,7 +16,7 @@ public class TreeSpell extends Spell
 	private boolean requireSapling = false;
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		Block target = getTargetBlock();
 
@@ -32,9 +34,11 @@ public class TreeSpell extends Spell
 
 		Location treeLoc = new Location(player.getWorld(), target.getX(), target.getY() + 1, target.getZ(), 0, 0);
 		TreeType treeType = defaultTreeType;
-		if (parameters.length > 0)
+		
+		if (parameters.containsKey("type"))
 		{
-			treeType = parseTreeString(parameters[0], defaultTreeType);
+		    String typeString = (String)parameters.get("type");
+		    treeType = parseTreeString(typeString, defaultTreeType);
 		}
 		
 		if (treeType == null)

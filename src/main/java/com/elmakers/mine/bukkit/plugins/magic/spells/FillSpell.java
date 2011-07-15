@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +20,7 @@ public class FillSpell extends Spell
 	private final BlockRecurse blockRecurse = new BlockRecurse();
 	
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
 	    noTargetThrough(Material.STATIONARY_WATER);
 	    noTargetThrough(Material.WATER);
@@ -38,28 +40,18 @@ public class FillSpell extends Spell
 			overrideMaterial = true;
 		}
 		
-		for (int i = 0; i < parameters.length; i++)
+		if (parameters.containsKey("type"))
 		{
-			String parameter = parameters[i];
-			if (parameter.equalsIgnoreCase("single"))
-			{
-				singleBlock = true;
-				continue;
-			}
-			if (parameter.equalsIgnoreCase("recurse"))
-			{
-				recurse = true;
-				continue;
-			}
-			if (parameter.equalsIgnoreCase("with") && i < parameters.length - 1)
-			{
-				String materialName = parameters[i + 1];
-				data = 0;
-				material = getMaterial(materialName, spells.getBuildingMaterials());
-				overrideMaterial = true;
-				i++;
-				continue;
-			}
+		    String typeString = (String)parameters.get("type");
+		    singleBlock = typeString.equals("single");
+		    recurse = typeString.equals("recurse");
+		}
+		
+		if (parameters.containsKey("material"))
+		{
+		    data = 0;
+            material = (Material)parameters.get("material");
+            overrideMaterial = true;
 		}
 		
 		if (targetBlock == null) 

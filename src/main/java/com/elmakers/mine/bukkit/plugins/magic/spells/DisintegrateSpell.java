@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -16,7 +18,7 @@ public class DisintegrateSpell extends Spell
 	private int				defaultSearchDistance	= 32;
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 	    Target target = getTarget();
         if (target == null)

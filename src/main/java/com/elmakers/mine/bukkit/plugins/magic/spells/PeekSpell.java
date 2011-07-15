@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,7 +23,7 @@ public class PeekSpell extends Spell
 	private Material        peekMaterial            = Material.GLASS;
 
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		targetThrough(Material.GLASS);
 		Block target = getTargetBlock();
@@ -38,21 +39,14 @@ public class PeekSpell extends Spell
 		}
 
 		int radius = defaultRadius;
-		if (parameters.length > 0)
+		if (parameters.containsKey("radius"))
 		{
-			try
-			{
-				radius = Integer.parseInt(parameters[0]);
-				if (radius > maxRadius && maxRadius > 0)
-				{
-					radius = maxRadius;
-				}
-			} 
-			catch(NumberFormatException ex)
-			{
-				radius = defaultRadius;
-			}
+		    radius = (Integer)parameters.get("radius");
 		}
+		if (radius > maxRadius && maxRadius > 0)
+        {
+            radius = maxRadius;
+        }
 		
 		BlockList peekedBlocks = new BlockList();
 		int diameter = radius * 2;

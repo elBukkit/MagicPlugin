@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -42,7 +43,7 @@ public class ConstructSpell extends Spell
 	};
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		setMaxRange(defaultSearchDistance, true);
 		targetThrough(Material.GLASS);
@@ -75,49 +76,34 @@ public class ConstructSpell extends Spell
 		int radius = defaultRadius;
 		boolean hollow = false;
 		
-		for (int i = 0; i < parameters.length; i++)
+		if (parameters.containsKey("fill"))
 		{
-			String parameter = parameters[i];
-
-			if (parameter.equalsIgnoreCase("hollow"))
-			{
-				hollow = true;
-				continue;
-			}
-			
-			if (parameter.equalsIgnoreCase("with") && i < parameters.length - 1)
-			{
-				String materialName = parameters[i + 1];
-				data = 0;
-				material = getMaterial(materialName, spells.getBuildingMaterials());
-				i++;
-				continue;
-			}
-			
-			// try radius
-			try
-			{
-				radius = Integer.parseInt(parameter);
-				if (radius > maxRadius && maxRadius > 0)
-				{
-					radius = maxRadius;
-				}
-				
-				// Assume number, ok to continue
-				continue;
-			} 
-			catch(NumberFormatException ex)
-			{
-			}
-
-			// Try con type
-			{
-				ConstructionType testType = ConstructionType.parseString(parameter, ConstructionType.UNKNOWN);
-				if (testType != ConstructionType.UNKNOWN)
-				{
-					conType = testType;
-				}
-			}
+		    String fillType = (String)parameters.get("fill");
+		    hollow = fillType.equals("hollow");
+		}
+		
+		if (parameters.containsKey("material"))
+        {
+		    data = 0;
+		    material = (Material)parameters.get("material");
+        }
+        
+		if (parameters.containsKey("radius"))
+		{
+		    radius = (Integer)parameters.get("radius");
+            if (radius > maxRadius && maxRadius > 0)
+            {
+                radius = maxRadius;
+            }
+		}
+		
+		if (parameters.containsKey("type"))
+		{
+		    ConstructionType testType = ConstructionType.parseString((String)parameters.get("type"), ConstructionType.UNKNOWN);
+            if (testType != ConstructionType.UNKNOWN)
+            {
+                conType = testType;
+            }
 		}
 		
 		switch (conType)

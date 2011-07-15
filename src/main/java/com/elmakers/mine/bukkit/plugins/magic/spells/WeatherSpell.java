@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.World;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -7,7 +9,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class WeatherSpell extends Spell
 {
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
         World world = player.getWorld();
         boolean hasStorm = world.hasStorm();

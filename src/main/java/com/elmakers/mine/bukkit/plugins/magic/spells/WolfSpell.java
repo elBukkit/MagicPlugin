@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -45,7 +46,7 @@ public class WolfSpell extends Spell
 	}
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 	    this.targetEntity(LivingEntity.class);
 		Target target = getTarget();

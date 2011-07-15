@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,19 +23,23 @@ public class RecallSpell extends Spell
 	Material markerMaterial = Material.REDSTONE_TORCH_ON;
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 	    if (autoDropOnDeath)
         {
             spells.registerEvent(SpellEventType.PLAYER_DEATH, this);
         }
         
-		if (parameters.length > 0 && parameters[0].equalsIgnoreCase("spawn"))
-		{
-			castMessage(player, "Returning you home");
-			player.teleport(player.getWorld().getSpawnLocation());
-			return true;
-		}
+	    if (parameters.containsKey("type"))
+	    {
+	        String typeString = (String)parameters.get("type");
+	        if (typeString.equals("spawn"))
+	        {
+	            castMessage(player, "Returning you home");
+	            player.teleport(player.getWorld().getSpawnLocation());
+	            return true; 
+	        }
+	    }
 		
 		if (getYRotation() > 80)
 		{

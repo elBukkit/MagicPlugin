@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -38,7 +40,7 @@ public class FireSpell extends Spell
     }
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		Block target = getTargetBlock();
 		if (target == null) 
@@ -54,16 +56,9 @@ public class FireSpell extends Spell
 		}
 		
 		int radius = 1;
-		for (int i = 0; i < parameters.length; i++)
+		if (parameters.containsKey("radius"))
 		{
-			// try radius;
-			try
-			{
-				radius = Integer.parseInt(parameters[0]);
-			}
-			catch(NumberFormatException ex)
-			{
-			}
+		    radius = (Integer)parameters.get("radius");
 		}
 		
 		if (radius > maxRadius && maxRadius > 0)

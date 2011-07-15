@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
@@ -34,7 +35,7 @@ public class ForceSpell extends Spell
     }
     
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
         boolean push = false;
         boolean pull = false;
@@ -58,34 +59,16 @@ public class ForceSpell extends Spell
             }
         }
         
-        for (int i = 0; i < parameters.length; i++)
+        if (parameters.containsKey("type"))
         {
-            String parameter = parameters[i];
-
-            if (parameter.equalsIgnoreCase("push"))
-            {
-                push = true;
-                continue;
-            }
-
-            if (parameter.equalsIgnoreCase("pull"))
-            {
-                pull = true;
-                continue;
-            }
-            
-            // try magnitude
-            try
-            {
-                magnitude = Integer.parseInt(parameter);
-                
-                // Assume number, ok to continue
-                continue;
-            } 
-            catch(NumberFormatException ex)
-            {
-                magnitude = itemMagnitude;
-            }
+            String typeString = (String)parameters.get("type");
+            push = typeString.equals("push");
+            pull = typeString.equals("pull");
+        }
+        
+        if (parameters.containsKey("size"))
+        {
+            magnitude = (Integer)parameters.get("size");
         }
         
         targetEntity(Entity.class);

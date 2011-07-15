@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet20NamedEntitySpawn;
@@ -21,18 +22,22 @@ public class InvisibilitySpell extends Spell
     protected Location location;
 
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
         this.location = player.getLocation();
        
-        if (parameters.length > 0 && parameters[0].equals("decoy"))
+        if (parameters.containsKey("type"))
         {
-            decoy();
+            String typeString = (String)parameters.get("type");
+            if (typeString.equals("decoy"))
+            {
+                decoy();
+            }
         }
-        else
-        {
-            cloak();
-        }
+       
+        
+        cloak();
+        
         spells.registerEvent(SpellEventType.PLAYER_MOVE, this);
         return true;
     }

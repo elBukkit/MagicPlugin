@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import net.minecraft.server.ChunkCoordIntPair;
 import net.minecraft.server.EntityPlayer;
 
@@ -26,7 +28,7 @@ public class FlingSpell extends Spell
 
 	@SuppressWarnings("unchecked")
     @Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 	    int height = 0;
 	    Block playerBlock = player.getLocation().getBlock();

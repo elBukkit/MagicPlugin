@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import net.minecraft.server.EntityArrow;
 
 import org.bukkit.craftbukkit.entity.CraftArrow;
@@ -11,20 +13,13 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class ArrowSpell extends Spell
 { 
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 	    int arrowCount = 1;
-        if (parameters.length > 0)
-        {
-            try
-            {
-                arrowCount = Integer.parseInt(parameters[0]);
-            }
-            catch (NumberFormatException ex)
-            {
-                arrowCount = 1;
-            }
-        }
+	    if (parameters.containsKey("count"))
+	    {
+	        arrowCount = (Integer)parameters.get("count");
+	    }
 		CraftPlayer cp = (CraftPlayer)player;
 		
 		for (int ai = 0; ai < arrowCount; ai++)

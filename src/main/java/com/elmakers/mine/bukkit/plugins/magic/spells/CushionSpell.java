@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -15,7 +17,7 @@ public class CushionSpell extends Spell
 	private int cushionHeight = 4;
 	
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
 		World world = player.getWorld();
     	CraftWorld craftWorld = (CraftWorld)world;

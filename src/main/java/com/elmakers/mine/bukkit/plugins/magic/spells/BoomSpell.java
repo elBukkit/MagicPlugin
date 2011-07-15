@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.WorldServer;
 
@@ -35,26 +37,25 @@ public class BoomSpell extends Spell {
 	}
 	
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
         float size = defaultSize;
-        for (String parameter : parameters)
+        
+        if (parameters.containsKey("size"))
         {
-            if (parameter.equalsIgnoreCase("here"))
+            size = (Float)parameters.get("size");
+        }
+        
+        if (parameters.containsKey("target"))
+        {
+            String targetType = (String)parameters.get("target");
+            if (targetType.equals("here"))
             {
                 player.damage(100);
                 return createExplosionAt(player.getLocation(), size);
             }
-            
-        	try
-        	{
-        		size = Float.parseFloat(parameter);
-        	}
-        	catch (NumberFormatException ex)
-        	{
-        		size = defaultSize;
-        	}
         }
+        
 		Target target = getTarget();
 		if (!target.hasTarget())
 		{

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -42,48 +44,42 @@ public class BlinkSpell extends Spell
 	}
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 	    setMaxRange(255, false);
 	    
-		if (parameters.length > 0)
-		{
-			if (parameters[0].equalsIgnoreCase("ascend"))
-			{
-				if (!ascend())
-				{
-					castMessage(player, "Nowhere to go up");
-					return false;
-				}
-				return true;
-			}
-			
-			if (parameters[0].equalsIgnoreCase("descend"))
-			{
-				if (!descend())
-				{
-					castMessage(player, "Nowhere to go down");
-					return false;
-				}
-				return true;
-			}
-			
-			try
-			{
-			    int range = Integer.parseInt(parameters[0]);
-			    setMaxRange(range, true);
-			    autoAscend = false;
-			    autoDescend = false;
-			    autoPassthrough = false;
-			}
-			catch (NumberFormatException ex)
-			{
-			    return false;
-			}
-		}
-		
-		// No parameters
-		
+	    if (parameters.containsKey("elevate"))
+	    {
+	        String elevateType = (String)parameters.get("elevate");
+	        if (elevateType.equals("descend"))
+	        {
+	            if (!descend())
+                {
+                    castMessage(player, "Nowhere to go down");
+                    return false;
+                }
+                return true;
+	        }
+	        else
+	        {
+	            if (!ascend())
+                {
+                    castMessage(player, "Nowhere to go up");
+                    return false;
+                }
+                return true;
+	        }
+	    }
+	    
+	    if (parameters.containsKey("range"))
+	    {
+	        int range = (Integer)parameters.get("range");
+            setMaxRange(range, true);
+            autoAscend = false;
+            autoDescend = false;
+            autoPassthrough = false;
+	    }
+	    
 		// Auto ascend + descend
 		
 		if (getYRotation() < -80 && autoDescend)

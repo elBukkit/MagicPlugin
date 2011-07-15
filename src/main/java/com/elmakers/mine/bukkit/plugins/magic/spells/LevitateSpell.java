@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.server.ChunkCoordIntPair;
 import net.minecraft.server.EntityPlayer;
@@ -260,7 +261,7 @@ public class LevitateSpell extends Spell
     }
 
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
         lastTick = System.currentTimeMillis();
         hoverHeight = defaultHoverHeight;

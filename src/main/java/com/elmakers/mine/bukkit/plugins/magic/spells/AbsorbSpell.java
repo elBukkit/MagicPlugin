@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,20 +14,15 @@ public class AbsorbSpell extends Spell
     private int giveAmount = 1;
     
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
 	    Material material = Material.AIR;
         List<Material> buildingMaterials = spells.getBuildingMaterials();
         
-        if (parameters.length > 0)
+        if (parameters.containsKey("material"))
         {
-            String matName = "";
-            for (int i = 0; i < parameters.length; i++)
-            {
-                matName = matName + parameters[i];
-            }
-            material = getMaterial(matName, buildingMaterials);
-            if (material != Material.AIR)
+            material = (Material)parameters.get("materials");
+            if (buildingMaterials.contains(material))
             {
                 int amount = giveAmount;
                 byte data = 0;
@@ -34,7 +30,7 @@ public class AbsorbSpell extends Spell
                 return giveMaterial(material, amount, (short)0 , data);
             }
         }
-       
+        
 		if (!isUnderwater())
 		{
 			noTargetThrough(Material.STATIONARY_WATER);

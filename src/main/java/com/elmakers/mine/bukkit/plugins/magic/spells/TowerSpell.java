@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -9,7 +11,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class TowerSpell extends Spell {
 
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null) 

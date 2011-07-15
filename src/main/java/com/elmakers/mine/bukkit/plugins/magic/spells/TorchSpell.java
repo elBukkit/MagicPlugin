@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -14,34 +16,34 @@ public class TorchSpell extends Spell
 	private boolean allowLightstone = true;
 	
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
-		if (parameters.length > 0)
-		{
-			long targetTime = 0;
-			String timeDescription = "day";
-			String param = parameters[0];
-			if (param.equalsIgnoreCase("night"))
-			{
-				targetTime = 13000;
-				timeDescription = "night";
-			}
-			else
-			{
-				try 
-				{
-					targetTime = Long.parseLong(param);
-					timeDescription = "raw: " + targetTime;
-				} 
-				catch (NumberFormatException ex) 
-				{
-					targetTime = 0;
-				}
-			}
-			setRelativeTime(targetTime);	
-			castMessage(player, "Changed time to " + timeDescription);
-			return true;
-		}
+	    if (parameters.containsKey("time"))
+	    {
+	        long targetTime = 0;
+	        String typeString = (String)parameters.get("time");
+	        String timeDescription = "day";
+            if (typeString.equalsIgnoreCase("night"))
+            {
+                targetTime = 13000;
+                timeDescription = "night";
+            }
+            else
+            {
+                try 
+                {
+                    targetTime = Long.parseLong(typeString);
+                    timeDescription = "raw: " + targetTime;
+                } 
+                catch (NumberFormatException ex) 
+                {
+                    targetTime = 0;
+                }
+            }
+            setRelativeTime(targetTime);    
+            castMessage(player, "Changed time to " + timeDescription);
+            return true;
+	    }
 		
 		if (getYRotation() > 80 && allowDay)
 		{

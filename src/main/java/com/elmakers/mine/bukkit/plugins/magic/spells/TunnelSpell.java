@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,7 +24,7 @@ public class TunnelSpell extends Spell
 	private int torchFrequency = 4;
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 

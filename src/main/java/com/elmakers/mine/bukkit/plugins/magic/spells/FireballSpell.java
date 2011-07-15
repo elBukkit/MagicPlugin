@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import net.minecraft.server.EntityFireball;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.MathHelper;
@@ -15,7 +17,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class FireballSpell extends Spell 
 {
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
         CraftWorld cw = (CraftWorld)player.getWorld();
         WorldServer world = cw.getHandle();

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -13,7 +15,7 @@ public class BridgeSpell extends Spell
 	int MAX_SEARCH_DISTANCE = 16;
 	
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 

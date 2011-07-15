@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -56,7 +58,7 @@ public class FrostSpell extends Spell
     }
 	 
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 	    setMaxRange(16, false);
 	    Target target = getTarget();
@@ -90,22 +92,17 @@ public class FrostSpell extends Spell
         }
 		
 		int radius = defaultRadius;
-		if (parameters.length > 0)
-		{
-			try
-			{
-				radius = Integer.parseInt(parameters[0]);
-				if (radius > maxRadius && maxRadius > 0)
-				{
-					radius = maxRadius;
-				}
-			} 
-			catch(NumberFormatException ex)
-			{
-				radius = defaultRadius;
-			}
-		}
 		
+		if (parameters.containsKey("radius"))
+        {
+            radius = (Integer)parameters.get("radius");
+        }
+		
+    	if (radius > maxRadius && maxRadius > 0)
+    	{
+    		radius = maxRadius;
+    	}
+
 	   FrostAction action = new FrostAction();
 
         if (radius <= 1)

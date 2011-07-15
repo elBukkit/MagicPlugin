@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,12 +16,17 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 public class SignSpell extends Spell
 {  
     @Override
-    public boolean onCast(String[] parameters)
+    public boolean onCast(Map<String, Object> parameters)
     {
-        if (parameters.length == 0)
+        if (parameters.containsKey("type"))
         {
-            castMessage(player, "Have some signs!");
-            return giveMaterial(Material.SIGN, 8, (short)0, (byte)0);
+            String typeString = (String)parameters.get("type");
+            if (typeString.equals("give"))
+            {
+
+                castMessage(player, "Have some signs!");
+                return giveMaterial(Material.SIGN, 8, (short)0, (byte)0);
+            }
         }
         
         setMaxRange(8, false);

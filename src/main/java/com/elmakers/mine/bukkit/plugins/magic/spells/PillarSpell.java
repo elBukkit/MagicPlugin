@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -13,7 +15,7 @@ public class PillarSpell extends Spell
 	int MAX_SEARCH_DISTANCE = 255;
 	
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
 		Block attachBlock = getTargetBlock();
 		if (attachBlock == null)
@@ -23,9 +25,13 @@ public class PillarSpell extends Spell
 		}	
 
 		BlockFace direction = BlockFace.UP;	
-		if (parameters.length > 0 && parameters[0].equalsIgnoreCase("down"))
+		if (parameters.containsKey("type"))
 		{
-			direction = BlockFace.DOWN;
+		    String typeString = (String)parameters.get("type");
+		    if (typeString.equals("down"))
+		    {
+		        direction = BlockFace.DOWN;
+		    }
 		}
 		
 		Block targetBlock = attachBlock.getFace(direction);

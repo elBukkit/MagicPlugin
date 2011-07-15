@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import net.minecraft.server.EntityTNTPrimed;
 import net.minecraft.server.WorldServer;
 
@@ -13,7 +15,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class GrenadeSpell extends Spell
 {
     @Override
-    public boolean onCast(String[] parameters) 
+    public boolean onCast(Map<String, Object> parameters) 
     {
         Block target = getNextBlock();
 

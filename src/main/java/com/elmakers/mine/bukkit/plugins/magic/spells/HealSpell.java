@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
@@ -9,7 +11,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 public class HealSpell extends Spell 
 {
 	@Override
-	public boolean onCast(String[] parameters) 
+	public boolean onCast(Map<String, Object> parameters) 
 	{
         Target target = getTarget();
         Entity targetEntity = target.getEntity();

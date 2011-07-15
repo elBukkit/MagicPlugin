@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -78,7 +79,7 @@ public class FamiliarSpell extends Spell
 	}
 	
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
@@ -125,37 +126,36 @@ public class FamiliarSpell extends Spell
 		CreatureType famType = CreatureType.PIG;
 		FamiliarClass famClass = FamiliarClass.FRIENDLY;
 		int famCount = 1;
-		for (String parameter : parameters)
+		
+		if (parameters.containsKey("count"))
 		{
-		    try
-		    {
-		        famCount = Integer.parseInt(parameter);
-		    }
-		    catch (NumberFormatException e)
-		    {
-		        famCount = 1;
-		        if (parameter.equalsIgnoreCase("any"))
+		    famCount = (Integer)parameters.get("count");
+		}
+		
+		if (parameters.containsKey("type"))
+		{
+		    String famTypeName = (String)parameters.get("type");
+		    if (famTypeName.equalsIgnoreCase("any"))
+            {
+                famClass = FamiliarClass.ANY;
+            }
+            else if (famTypeName.equalsIgnoreCase("mob"))
+            {
+                famClass = FamiliarClass.MONSTER;
+            }
+            else
+            {
+                // annoying- why do they have to CamelCase???
+                String testType = famTypeName.toUpperCase();
+                for (CreatureType ct : CreatureType.values())
                 {
-                    famClass = FamiliarClass.ANY;
-                }
-                else if (parameter.equalsIgnoreCase("mob"))
-                {
-                    famClass = FamiliarClass.MONSTER;
-                }
-                else
-                {
-                    // annoying- why do they have to CamelCase???
-                    String testType = parameters[0].toUpperCase();
-                    for (CreatureType ct : CreatureType.values())
+                    if (ct.getName().toUpperCase().equals(testType))
                     {
-                        if (ct.getName().toUpperCase().equals(testType))
-                        {
-                            famType = ct;
-                            famClass = FamiliarClass.SPECIFIC;
-                        }
+                        famType = ct;
+                        famClass = FamiliarClass.SPECIFIC;
                     }
                 }
-		    }	
+            }
 		}
 		
 		if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)

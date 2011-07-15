@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +13,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class TransmuteSpell extends Spell
 {
 	@Override
-	public boolean onCast(String[] parameters)
+	public boolean onCast(Map<String, Object> parameters)
 	{	
 		BlockList transmuteAction = null;
 
