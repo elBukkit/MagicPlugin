@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +20,7 @@ import com.elmakers.mine.bukkit.dao.MaterialList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PortalSpell extends Spell
 {

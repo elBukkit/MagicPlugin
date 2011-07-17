@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.WorldServer;
 
@@ -14,6 +12,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.MathHelper;
 import com.elmakers.mine.bukkit.utilities.Vec3D;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BoomSpell extends Spell {
 
@@ -39,21 +38,12 @@ public class BoomSpell extends Spell {
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-        float size = defaultSize;
-        
-        if (parameters.containsKey("size"))
+        int size = parameters.getInt("size", defaultSize);
+        String targetType = (String)parameters.getString("target", "");
+        if (targetType.equals("here"))
         {
-            size = (Float)parameters.get("size");
-        }
-        
-        if (parameters.containsKey("target"))
-        {
-            String targetType = (String)parameters.get("target");
-            if (targetType.equals("here"))
-            {
-                player.damage(100);
-                return createExplosionAt(player.getLocation(), size);
-            }
+            player.damage(100);
+            return createExplosionAt(player.getLocation(), size);
         }
         
 		Target target = getTarget();

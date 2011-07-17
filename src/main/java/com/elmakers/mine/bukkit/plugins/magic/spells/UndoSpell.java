@@ -1,11 +1,10 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class UndoSpell extends Spell
 {
@@ -14,7 +13,7 @@ public class UndoSpell extends Spell
 	{
 	    if (parameters.containsKey("player"))
 	    {
-	        String undoPlayer = (String)parameters.get("player");
+	        String undoPlayer = parameters.getString("player");
             boolean undone = spells.undo(undoPlayer);
             if (undone)
             {
@@ -29,7 +28,7 @@ public class UndoSpell extends Spell
 	    
 	    if (parameters.containsKey("type"))
 	    {
-	        String typeString = (String)parameters.get("type");
+	        String typeString = (String)parameters.getString("type");
 	        boolean targetAll = typeString.equals("target_all");
 	        if (typeString.equals("target") || targetAll)
 	        {

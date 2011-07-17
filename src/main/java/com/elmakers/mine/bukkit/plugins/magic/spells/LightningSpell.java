@@ -11,8 +11,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class LightningSpell extends Spell
 {
-    protected int    maxRadius = 32;
-     
     public class ShockAction extends SimpleBlockAction
     {
         protected double density;
@@ -52,11 +50,7 @@ public class LightningSpell extends Spell
             return false;
         }
        
-        int radius = parameters.getInt("radius", defaultRadius);
-        if (radius > maxRadius && maxRadius > 0)
-        {
-            radius = maxRadius;
-        }
+        int radius = parameters.getInt("radius", 1);
 
         double ratio = (radius < 2) ? 1.0 : (radius < 4) ? 0.5 : 0.25;
         ShockAction action = new ShockAction(player, ratio, 5);

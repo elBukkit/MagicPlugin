@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -9,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.BlockRecurse;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
 import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FillSpell extends Spell 
 {
@@ -39,20 +37,17 @@ public class FillSpell extends Spell
 			data = getItemData(buildWith);
 			overrideMaterial = true;
 		}
-		
-		if (parameters.containsKey("type"))
-		{
-		    String typeString = (String)parameters.get("type");
-		    singleBlock = typeString.equals("single");
-		    recurse = typeString.equals("recurse");
-		}
-		
-		if (parameters.containsKey("material"))
-		{
-		    data = 0;
-            material = (Material)parameters.get("material");
+		String typeString = parameters.getString("type", "");
+        singleBlock = typeString.equals("single");
+        recurse = typeString.equals("recurse");
+        
+        Material materialOverride = parameters.getMaterial("material");
+        if (materialOverride != null)
+        {
+            material = materialOverride;
+            data = 0;
             overrideMaterial = true;
-		}
+        }
 		
 		if (targetBlock == null) 
 		{

@@ -593,6 +593,12 @@ public class ConfigurationNode {
         return null;
     }
     
+    public boolean containsKey(String path)
+    {
+        Object test = getProperty(path);
+        return (test != null);
+    }
+    
     /**
      * Get a configuration node at a path. If the node doesn't exist or the
      * path does not lead to a node, null will be returned. A node has

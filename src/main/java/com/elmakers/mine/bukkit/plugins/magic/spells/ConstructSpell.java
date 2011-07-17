@@ -73,19 +73,17 @@ public class ConstructSpell extends Spell
 		}
 
 		ConstructionType conType = defaultConstructionType;
+		
 		boolean hollow = false;
+		String fillType = (String)parameters.getString("fill", "");
+		hollow = fillType.equals("hollow");
 		
-		if (parameters.containsKey("fill"))
+		Material materialOverride = parameters.getMaterial("material");
+		if (materialOverride != null)
 		{
-		    String fillType = (String)parameters.get("fill");
-		    hollow = fillType.equals("hollow");
-		}
-		
-		if (parameters.containsKey("material"))
-        {
+		    material = materialOverride;
 		    data = 0;
-		    material = (Material)parameters.get("material");
-        }
+		}
         
 		int radius = parameters.getInt("radius", defaultRadius);
 		if (radius > maxRadius && maxRadius > 0)
@@ -93,14 +91,13 @@ public class ConstructSpell extends Spell
             radius = maxRadius;
         }
 		
-		if (parameters.containsKey("type"))
-		{
-		    ConstructionType testType = ConstructionType.parseString((String)parameters.get("type"), ConstructionType.UNKNOWN);
-            if (testType != ConstructionType.UNKNOWN)
-            {
-                conType = testType;
-            }
-		}
+		String typeString = parameters.getString("type", "");
+		
+	    ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
+        if (testType != ConstructionType.UNKNOWN)
+        {
+            conType = testType;
+        }
 		
 		switch (conType)
 		{

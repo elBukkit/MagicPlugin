@@ -1,10 +1,9 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.World;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WeatherSpell extends Spell
 {

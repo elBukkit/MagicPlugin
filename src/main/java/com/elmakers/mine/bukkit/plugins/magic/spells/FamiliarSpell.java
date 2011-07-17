@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -19,7 +18,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FamiliarSpell extends Spell
 {
@@ -125,39 +124,32 @@ public class FamiliarSpell extends Spell
 	       	
 		CreatureType famType = CreatureType.PIG;
 		FamiliarClass famClass = FamiliarClass.FRIENDLY;
-		int famCount = 1;
+		int famCount = parameters.getInt("count", 1);
 		
-		if (parameters.containsKey("count"))
-		{
-		    famCount = (Integer)parameters.get("count");
-		}
+		String famTypeName = parameters.getString("type", "");
 		
-		if (parameters.containsKey("type"))
-		{
-		    String famTypeName = (String)parameters.get("type");
-		    if (famTypeName.equalsIgnoreCase("any"))
+	    if (famTypeName.equalsIgnoreCase("any"))
+        {
+            famClass = FamiliarClass.ANY;
+        }
+        else if (famTypeName.equalsIgnoreCase("mob"))
+        {
+            famClass = FamiliarClass.MONSTER;
+        }
+        else if (famTypeName.length() > 1)
+        {
+            // annoying- why do they have to CamelCase???
+            String testType = famTypeName.toUpperCase();
+            for (CreatureType ct : CreatureType.values())
             {
-                famClass = FamiliarClass.ANY;
-            }
-            else if (famTypeName.equalsIgnoreCase("mob"))
-            {
-                famClass = FamiliarClass.MONSTER;
-            }
-            else
-            {
-                // annoying- why do they have to CamelCase???
-                String testType = famTypeName.toUpperCase();
-                for (CreatureType ct : CreatureType.values())
+                if (ct.getName().toUpperCase().equals(testType))
                 {
-                    if (ct.getName().toUpperCase().equals(testType))
-                    {
-                        famType = ct;
-                        famClass = FamiliarClass.SPECIFIC;
-                    }
+                    famType = ct;
+                    famClass = FamiliarClass.SPECIFIC;
                 }
             }
-		}
-		
+        }
+	
 		if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
 		{
 			famType = CreatureType.SQUID;

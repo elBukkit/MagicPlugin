@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet20NamedEntitySpawn;
@@ -15,6 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class InvisibilitySpell extends Spell
 {
@@ -26,16 +26,12 @@ public class InvisibilitySpell extends Spell
     {
         this.location = player.getLocation();
        
-        if (parameters.containsKey("type"))
+        String typeString = parameters.getString("type", "");
+        if (typeString.equals("decoy"))
         {
-            String typeString = (String)parameters.get("type");
-            if (typeString.equals("decoy"))
-            {
-                decoy();
-            }
+            decoy();
         }
        
-        
         cloak();
         
         spells.registerEvent(SpellEventType.PLAYER_MOVE, this);

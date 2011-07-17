@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,7 +8,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class RecallSpell extends Spell
 {
@@ -30,16 +28,13 @@ public class RecallSpell extends Spell
             spells.registerEvent(SpellEventType.PLAYER_DEATH, this);
         }
         
-	    if (parameters.containsKey("type"))
-	    {
-	        String typeString = (String)parameters.get("type");
-	        if (typeString.equals("spawn"))
-	        {
-	            castMessage(player, "Returning you home");
-	            player.teleport(player.getWorld().getSpawnLocation());
-	            return true; 
-	        }
-	    }
+	    String typeString = parameters.getString("type", "");
+        if (typeString.equals("spawn"))
+        {
+            castMessage(player, "Returning you home");
+            player.teleport(player.getWorld().getSpawnLocation());
+            return true; 
+        }
 		
 		if (getYRotation() > 80)
 		{

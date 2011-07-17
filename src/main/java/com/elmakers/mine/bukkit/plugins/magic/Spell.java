@@ -1045,6 +1045,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		targetingComplete = true;
 	}
 	
+	protected int getMaxRange()
+	{
+	    return range;
+	}
+	
 	protected void setMaxRange(int range, boolean allow)
 	{
 		this.range = range;

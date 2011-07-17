@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -9,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PillarSpell extends Spell 
 {
@@ -25,14 +24,11 @@ public class PillarSpell extends Spell
 		}	
 
 		BlockFace direction = BlockFace.UP;	
-		if (parameters.containsKey("type"))
-		{
-		    String typeString = (String)parameters.get("type");
-		    if (typeString.equals("down"))
-		    {
-		        direction = BlockFace.DOWN;
-		    }
-		}
+		String typeString = parameters.getString("type", "");
+        if (typeString.equals("down"))
+        {
+            direction = BlockFace.DOWN;
+        }
 		
 		Block targetBlock = attachBlock.getFace(direction);
 		int distance = 0;

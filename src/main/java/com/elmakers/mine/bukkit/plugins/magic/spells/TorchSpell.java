@@ -1,13 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TorchSpell extends Spell 
 {
@@ -21,7 +19,7 @@ public class TorchSpell extends Spell
 	    if (parameters.containsKey("time"))
 	    {
 	        long targetTime = 0;
-	        String typeString = (String)parameters.get("time");
+	        String typeString = parameters.getString("time", "day");
 	        String timeDescription = "day";
             if (typeString.equalsIgnoreCase("night"))
             {
@@ -110,8 +108,8 @@ public class TorchSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		allowNight = properties.getBoolean("spells-torch-allow-night", allowNight);
-		allowDay = properties.getBoolean("spells-torch-allow-day", allowDay);
-		allowLightstone = properties.getBoolean("spells-torch-allow-lightstone", allowLightstone);
+		allowNight = properties.getBoolean("allow_night", allowNight);
+		allowDay = properties.getBoolean("allow_day", allowDay);
+		allowLightstone = properties.getBoolean("allow_glowstone", allowLightstone);
 	}
 }

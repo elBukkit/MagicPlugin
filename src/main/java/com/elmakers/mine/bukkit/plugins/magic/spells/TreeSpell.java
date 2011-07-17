@@ -1,14 +1,12 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TreeSpell extends Spell
 {
@@ -34,12 +32,8 @@ public class TreeSpell extends Spell
 
 		Location treeLoc = new Location(player.getWorld(), target.getX(), target.getY() + 1, target.getZ(), 0, 0);
 		TreeType treeType = defaultTreeType;
-		
-		if (parameters.containsKey("type"))
-		{
-		    String typeString = (String)parameters.get("type");
-		    treeType = parseTreeString(typeString, defaultTreeType);
-		}
+		String typeString = parameters.getString("type", "");
+        treeType = parseTreeString(typeString, defaultTreeType);
 		
 		if (treeType == null)
 		{

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,21 +11,18 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class SignSpell extends Spell
 {  
     @Override
     public boolean onCast(ConfigurationNode parameters) 
     {
-        if (parameters.containsKey("type"))
+        String typeString = parameters.getString("type", "");
+        if (typeString.equals("give"))
         {
-            String typeString = (String)parameters.get("type");
-            if (typeString.equals("give"))
-            {
-
-                castMessage(player, "Have some signs!");
-                return giveMaterial(Material.SIGN, 8, (short)0, (byte)0);
-            }
+            castMessage(player, "Have some signs!");
+            return giveMaterial(Material.SIGN, 8, (short)0, (byte)0);
         }
         
         setMaxRange(8, false);

@@ -1,14 +1,13 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class GillsSpell extends Spell
 {

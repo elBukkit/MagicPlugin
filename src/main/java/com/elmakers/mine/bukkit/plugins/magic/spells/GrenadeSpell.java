@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import net.minecraft.server.EntityTNTPrimed;
 import net.minecraft.server.WorldServer;
 
@@ -11,6 +9,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class GrenadeSpell extends Spell
 {
