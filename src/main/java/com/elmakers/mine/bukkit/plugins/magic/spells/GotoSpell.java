@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 public class GotoSpell extends Spell
 {
     @Override
-    public boolean onCast(Map<String, Object> parameters)
+    public boolean onCast(ConfigurationNode parameters) 
     {
         targetEntity(Player.class);
         

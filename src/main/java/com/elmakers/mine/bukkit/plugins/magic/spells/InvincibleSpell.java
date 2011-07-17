@@ -12,7 +12,7 @@ public class InvincibleSpell extends Spell
     protected float protectAmount = 0;
     
  	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    int amount = 100;
 	    if (parameters.containsKey("amount"))

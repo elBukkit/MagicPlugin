@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class FireballSpell extends Spell 
 {
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
         CraftWorld cw = (CraftWorld)player.getWorld();
         WorldServer world = cw.getHandle();

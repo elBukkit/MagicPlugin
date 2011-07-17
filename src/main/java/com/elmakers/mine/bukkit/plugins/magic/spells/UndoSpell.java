@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class UndoSpell extends Spell
 {
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    if (parameters.containsKey("player"))
 	    {

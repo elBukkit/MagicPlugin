@@ -23,7 +23,7 @@ public class RecallSpell extends Spell
 	Material markerMaterial = Material.REDSTONE_TORCH_ON;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    if (autoDropOnDeath)
         {
@@ -135,7 +135,7 @@ public class RecallSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		autoDropOnDeath = properties.getBoolean("spells-recall-auto-resurrect", autoDropOnDeath);
 		autoDropIsInvisible = properties.getBoolean("spells-recall-auto-resurrect-invisible", autoDropIsInvisible);

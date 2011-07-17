@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,10 +20,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.bukkit.util.config.ConfigurationNode;
 
 import com.elmakers.mine.bukkit.utilities.BlockAction;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**
  * 
@@ -48,7 +46,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String name;
     private String description;
     private String category;
-    private Map<String, Object> parameters;
+    private ConfigurationNode parameters;
     private Material material;
 	
     /*
@@ -102,7 +100,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         this.name = name;
         this.description = description;
         this.category = category;
-        this.parameters = new HashMap<String, Object>();
+        this.parameters = new ConfigurationNode();
         if (parameters != null && parameters.length > 1)
         {
             addParameters(parameters, this.parameters);
@@ -121,27 +119,47 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
     {
        String builtinClassPath = getBuiltinClasspath();
         
-       String className = node.getString("type");
+       String className = node.getString("class");
+       if (className == null) return null;
+       
        if (className.indexOf('.') <= 0)
        {
-           className = builtinClassPath + "." + className;
+           className = builtinClassPath + ".spells." + className;
        }
        
-       Object newObject = null;
+       Class<?> spellClass = null;
        try
        {
-           newObject = Class.forName(className);
+           spellClass = Class.forName(className);
        }
        catch(ClassNotFoundException ex)
        {
            // TODO Log errors
            return null;
        }
+
+       Object newObject;
+       try
+       {
+            newObject = spellClass.newInstance();
+       }
+       catch (InstantiationException e)
+       {
+           // TODO Log errors
+           return null;
+       }
+       catch (IllegalAccessException e)
+       {
+           // TODO Log errors
+           return null;
+       }
+       
        if (newObject == null || !(newObject instanceof Spell))
        {
            // TODO Log errors
            return null;
        }
+       
        Spell newSpell = (Spell)newObject;
        newSpell.load(node);
        
@@ -150,8 +168,19 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
     
     protected void load(ConfigurationNode node)
     {
-        // TODO Load basic data
-        // TODO refactor onLoad
+        name = node.getString("name", name);
+        description = node.getString("description", description);
+        material = node.getMaterial("icon", material);
+        category = node.getString("category", category);
+        parameters = node.getNode("parameters", parameters);
+        
+        ConfigurationNode properties = node.getNode("properties");
+        if (properties == null) properties = node.createChild("properties");
+        
+        range = properties.getInteger("range", range);
+        cooldown = properties.getInt("cooldown", cooldown);
+        
+        this.onLoad(properties);
     }
     
     public void save(ConfigurationNode node)
@@ -164,17 +193,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         {
             className = className.substring(className.lastIndexOf('.') + 1);
         }
-        
-        node.setProperty("name", name);
-        node.setProperty("description", description);
-        node.setProperty("icon", material);
-        node.setProperty("category", category);
-        node.setProperty("cooldown", cooldown);
-        if (parameters != null && parameters.size() > 0)
-        {
-            node.setProperty("parameters", parameters);
-        }
         node.setProperty("class", className);
+        
+        // Load will set everything to default values if not preset
+        load(node);
         
         this.onSave(node);
     }
@@ -209,11 +231,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         return category;
     }
     
-    public final Map<String, Object> getParameters()
-    {
-        return parameters;
-    }
-    
     public boolean isMatch(String spell, String[] params)
     {
         if (params == null) params = new String[0];
@@ -230,24 +247,20 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         return cast(new String[0]);
     }
     
-    protected void addParameters(String[] extraParameters, Map<String, Object> parameters)
+    protected void addParameters(String[] extraParameters, ConfigurationNode parameters)
     {
         if (extraParameters != null)
         {
             for (int i = 0; i < extraParameters.length - 1; i += 2)
             {
-                parameters.put(extraParameters[i], extraParameters[i + 1]);
+                parameters.setProperty(extraParameters[i], extraParameters[i + 1]);
             }
         }
     }
     
     public boolean cast(String[] extraParameters)
     {
-        HashMap<String, Object> parameters = new HashMap<String, Object>();
-        if (this.parameters != null)
-        {
-            parameters.putAll(this.parameters);
-        }
+        ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 
         addParameters(extraParameters, parameters);
  
@@ -292,16 +305,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @param parameters Any parameters that were passed to this spell
 	 * @return true if the spell worked, false if it failed
 	 */
-	public abstract boolean onCast(Map<String, Object> parameters);
+	public abstract boolean onCast(ConfigurationNode parameters);
 
 	/**
 	 * Called on load, you can load data here and set defaults.
 	 * 
-	 * This will be modified to use Persistence for loading in the future.
-	 * 
-	 * @param properties The spells properties file.
+	 * @param node The configuration node to load data from.
 	 */
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode node)
 	{
 
 	}

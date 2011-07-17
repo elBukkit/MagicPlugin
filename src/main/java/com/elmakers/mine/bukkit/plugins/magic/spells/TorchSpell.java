@@ -16,7 +16,7 @@ public class TorchSpell extends Spell
 	private boolean allowLightstone = true;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    if (parameters.containsKey("time"))
 	    {
@@ -108,7 +108,7 @@ public class TorchSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		allowNight = properties.getBoolean("spells-torch-allow-night", allowNight);
 		allowDay = properties.getBoolean("spells-torch-allow-day", allowDay);

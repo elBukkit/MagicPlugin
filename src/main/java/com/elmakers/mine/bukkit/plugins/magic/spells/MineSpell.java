@@ -27,7 +27,7 @@ public class MineSpell extends Spell
 	private int maxRecursion = 16;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null)
@@ -102,7 +102,7 @@ public class MineSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		mineableMaterials = PluginProperties.parseMaterials(DEFAULT_MINEABLE);
 		minedMaterials = PluginProperties.parseMaterials(DEFAULT_MINED);

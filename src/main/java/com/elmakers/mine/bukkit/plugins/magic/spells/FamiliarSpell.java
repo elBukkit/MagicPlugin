@@ -79,7 +79,7 @@ public class FamiliarSpell extends Spell
 	}
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
@@ -243,7 +243,7 @@ public class FamiliarSpell extends Spell
 	}
 	
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 	    CSVParser csv = new CSVParser();
 	    defaultFamiliars = csv.parseStrings(DEFAULT_FAMILIARS);

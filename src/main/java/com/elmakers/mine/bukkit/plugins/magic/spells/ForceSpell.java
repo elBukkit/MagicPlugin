@@ -35,7 +35,7 @@ public class ForceSpell extends Spell
     }
     
     @Override
-    public boolean onCast(Map<String, Object> parameters)
+    public boolean onCast(ConfigurationNode parameters) 
     {
         boolean push = false;
         boolean pull = false;

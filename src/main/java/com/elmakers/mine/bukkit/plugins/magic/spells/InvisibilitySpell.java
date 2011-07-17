@@ -22,7 +22,7 @@ public class InvisibilitySpell extends Spell
     protected Location location;
 
     @Override
-    public boolean onCast(Map<String, Object> parameters)
+    public boolean onCast(ConfigurationNode parameters) 
     {
         this.location = player.getLocation();
        

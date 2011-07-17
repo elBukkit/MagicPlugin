@@ -220,7 +220,7 @@ public class PortalSpell extends Spell
     }
 
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    targetThrough(Material.GLASS);
 	    
@@ -259,7 +259,7 @@ public class PortalSpell extends Spell
 		return true;
 	}
 	
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
     {
     	 if (destructible == null)
          {

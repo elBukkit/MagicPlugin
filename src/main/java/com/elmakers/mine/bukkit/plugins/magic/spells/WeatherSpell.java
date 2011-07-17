@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class WeatherSpell extends Spell
 {
     @Override
-    public boolean onCast(Map<String, Object> parameters)
+    public boolean onCast(ConfigurationNode parameters) 
     {
         World world = player.getWorld();
         boolean hasStorm = world.hasStorm();

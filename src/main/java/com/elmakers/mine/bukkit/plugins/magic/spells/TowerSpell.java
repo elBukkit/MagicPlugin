@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class TowerSpell extends Spell {
 
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null) 

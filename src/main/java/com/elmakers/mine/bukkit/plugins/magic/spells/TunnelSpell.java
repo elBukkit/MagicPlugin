@@ -24,7 +24,7 @@ public class TunnelSpell extends Spell
 	private int torchFrequency = 4;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 
@@ -132,7 +132,7 @@ public class TunnelSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		destructibleMaterials = properties.getMaterials("spells-tunnel-destructible", DEFAULT_DESTRUCTIBLES);
 		defaultDepth = properties.getInteger("spells-tunnel-depth", defaultDepth);

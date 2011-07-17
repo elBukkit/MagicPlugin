@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class MapSpell extends Spell
 {
     @Override
-    public boolean onCast(Map<String, Object> parameters)
+    public boolean onCast(ConfigurationNode parameters) 
     {
         CraftInventory ci = (CraftInventory)player.getInventory();
         if (!ci.contains(Material.MAP))

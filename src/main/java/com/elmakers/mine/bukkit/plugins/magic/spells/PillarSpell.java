@@ -15,7 +15,7 @@ public class PillarSpell extends Spell
 	int MAX_SEARCH_DISTANCE = 255;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block attachBlock = getTargetBlock();
 		if (attachBlock == null)

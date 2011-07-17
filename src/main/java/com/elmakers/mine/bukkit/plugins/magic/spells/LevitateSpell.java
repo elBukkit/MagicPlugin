@@ -261,7 +261,7 @@ public class LevitateSpell extends Spell
     }
 
     @Override
-    public boolean onCast(Map<String, Object> parameters)
+    public boolean onCast(ConfigurationNode parameters) 
     {
         lastTick = System.currentTimeMillis();
         hoverHeight = defaultHoverHeight;

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends Spell
 {
@@ -43,7 +43,7 @@ public class ConstructSpell extends Spell
 	};
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		setMaxRange(defaultSearchDistance, true);
 		targetThrough(Material.GLASS);
@@ -73,7 +73,6 @@ public class ConstructSpell extends Spell
 		}
 
 		ConstructionType conType = defaultConstructionType;
-		int radius = defaultRadius;
 		boolean hollow = false;
 		
 		if (parameters.containsKey("fill"))
@@ -88,14 +87,11 @@ public class ConstructSpell extends Spell
 		    material = (Material)parameters.get("material");
         }
         
-		if (parameters.containsKey("radius"))
-		{
-		    radius = (Integer)parameters.get("radius");
-            if (radius > maxRadius && maxRadius > 0)
-            {
-                radius = maxRadius;
-            }
-		}
+		int radius = parameters.getInt("radius", defaultRadius);
+		if (radius > maxRadius && maxRadius > 0)
+        {
+            radius = maxRadius;
+        }
 		
 		if (parameters.containsKey("type"))
 		{
@@ -205,7 +201,7 @@ public class ConstructSpell extends Spell
 	}
 	
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		destructibleMaterials = PluginProperties.parseMaterials(DEFAULT_DESTRUCTIBLES);
 		defaultConstructionType = ConstructionType.parseString(properties.getString("spells-construct-default", ""), defaultConstructionType);

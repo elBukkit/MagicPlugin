@@ -2,14 +2,13 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BlastSpell extends Spell
 {
@@ -22,7 +21,7 @@ public class BlastSpell extends Spell
 	private int				torchFrequency			= 4;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null)
@@ -36,12 +35,8 @@ public class BlastSpell extends Spell
 			return false;
 		}
 
-		int radius = defaultRadius;
-		if (parameters.containsKey("radius"))
-        {
-		    radius = (Integer)parameters.get("radius");
-        }
-		
+		int radius = parameters.getInt("radius", defaultRadius);
+
 		BlockList blastedBlocks = new BlockList();
 		int diameter = radius * 2;
 		int midX = (diameter - 1) / 2;
@@ -104,7 +99,7 @@ public class BlastSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		destructibleMaterials =  properties.getMaterials("spells-blast-destroy", DEFAULT_DESTRUCTIBLES);
 		defaultRadius = properties.getInteger("spells-blast-radius", defaultRadius);

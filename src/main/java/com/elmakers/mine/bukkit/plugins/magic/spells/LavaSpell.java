@@ -1,19 +1,17 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class LavaSpell extends Spell
 {
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null) 
@@ -28,16 +26,11 @@ public class LavaSpell extends Spell
 			return false;
 		}
 		
-		int radius = 1;
-		if (parameters.containsKey("radius"))
-		{
-		    radius = (Integer)parameters.get("radius");
-		}
-		
-		if (radius > maxRadius && maxRadius > 0)
-		{
-			radius = maxRadius;
-		}
+		int radius = parameters.getInt("radius", defaultRadius);
+        if (radius > maxRadius && maxRadius > 0)
+        {
+            radius = maxRadius;
+        }
 		
 		int lavaBlocks = (int)getDistance(player, target);
 		if (lavaBlocks <= 0) return false;
@@ -83,7 +76,7 @@ public class LavaSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		defaultRadius = properties.getInteger("spells-lava-radius", defaultRadius);
 		maxRadius = properties.getInteger("spells-lava-max-radius", maxRadius);

@@ -15,7 +15,7 @@ public class BridgeSpell extends Spell
 	int MAX_SEARCH_DISTANCE = 16;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 

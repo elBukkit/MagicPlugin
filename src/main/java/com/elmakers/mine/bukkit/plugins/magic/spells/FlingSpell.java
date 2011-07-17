@@ -28,7 +28,7 @@ public class FlingSpell extends Spell
 
 	@SuppressWarnings("unchecked")
     @Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    int height = 0;
 	    Block playerBlock = player.getLocation().getBlock();

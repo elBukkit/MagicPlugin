@@ -20,7 +20,7 @@ public class FillSpell extends Spell
 	private final BlockRecurse blockRecurse = new BlockRecurse();
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    noTargetThrough(Material.STATIONARY_WATER);
 	    noTargetThrough(Material.WATER);
@@ -189,7 +189,7 @@ public class FillSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		defaultMaxDimension = properties.getInteger("spells-fill-max-dimension", defaultMaxDimension);
 		defaultMaxVolume = properties.getInteger("spells-fill-max-volume", defaultMaxVolume);

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,7 +9,8 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.CSVParser;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AlterSpell extends Spell
 {
@@ -19,15 +19,15 @@ public class AlterSpell extends Spell
 	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0, 0, 0, 0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,2 ";
 	static final String DEFAULT_RECURSABLES = "17,18,59";
 	
-	private List<Material> adjustableMaterials = new ArrayList<Material>();
+	private List<Integer> adjustableMaterials = new ArrayList<Integer>();
 	private List<Integer> maxData = new ArrayList<Integer>();
 	private List<Integer> minData = new ArrayList<Integer>();
-	private List<Material> recursableMaterials = new ArrayList<Material>();
+	private List<Integer> recursableMaterials = new ArrayList<Integer>();
 	
 	private int recurseDistance = 32;	
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
@@ -44,14 +44,14 @@ public class AlterSpell extends Spell
 		BlockList undoList = new BlockList();
 		int originalData = targetBlock.getData();
 		
-		int materialIndex = adjustableMaterials.indexOf(targetBlock.getType());
+		int materialIndex = adjustableMaterials.indexOf(targetBlock.getTypeId());
 		int minValue = minData.get(materialIndex);
 		int maxValue = maxData.get(materialIndex);
 		int dataSize = maxValue - minValue + 1;
 
 		byte data = (byte)((((originalData - minValue) + 1) % dataSize) + minValue);
 
-		boolean recursive = recursableMaterials.contains(targetBlock.getType());
+		boolean recursive = recursableMaterials.contains(targetBlock.getTypeId());
 		
 		adjust(targetBlock, data, undoList, recursive, 0);
 		
@@ -90,15 +90,15 @@ public class AlterSpell extends Spell
 	}
 	
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties) 
 	{
-		recurseDistance = properties.getInteger("spells-alter-recursion-depth", recurseDistance);
-		recursableMaterials = properties.getMaterials("spells-alter-recursable", DEFAULT_RECURSABLES);
-
-		//adjustableMaterials = properties.getMaterials("spells-alter-adjustable", DEFAULT_ADJUSTABLES);
-		adjustableMaterials = PluginProperties.parseMaterials(DEFAULT_ADJUSTABLES);
-		maxData = PluginProperties.parseIntegers(DEFAULT_ADJUST_MAX);
-		minData = PluginProperties.parseIntegers(DEFAULT_ADJUST_MIN);
+		recurseDistance = properties.getInteger("depth", recurseDistance);
+		
+        CSVParser csv = new CSVParser();
+		recursableMaterials = csv.parseIntegers(DEFAULT_RECURSABLES);
+		adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
+		maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);
+		minData = csv.parseIntegers(DEFAULT_ADJUST_MIN);
 		
 		if (adjustableMaterials.size() != maxData.size() || maxData.size() != minData.size())
 		{

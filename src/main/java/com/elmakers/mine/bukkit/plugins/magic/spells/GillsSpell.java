@@ -57,7 +57,7 @@ public class GillsSpell extends Spell
 	private HashMap<String, PlayerGills> gillPlayers = new HashMap<String, PlayerGills>();
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		PlayerGills hasGills = gillPlayers.get(player.getName());
 		
@@ -121,7 +121,7 @@ public class GillsSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		gillDuration = properties.getInteger("spells-gills-duration", gillDuration);
 		healFrequency = properties.getInteger("spells-gills-heal-frequency", healFrequency);

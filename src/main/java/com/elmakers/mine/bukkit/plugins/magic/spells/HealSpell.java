@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 public class HealSpell extends Spell 
 {
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
         Target target = getTarget();
         Entity targetEntity = target.getEntity();

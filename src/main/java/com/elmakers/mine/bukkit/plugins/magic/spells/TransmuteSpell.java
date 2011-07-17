@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 public class TransmuteSpell extends Spell
 {
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{	
 		BlockList transmuteAction = null;
 

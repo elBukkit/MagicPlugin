@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -12,8 +10,8 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
 import com.elmakers.mine.bukkit.utilities.SimpleBlockAction;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FrostSpell extends Spell
 {
@@ -58,7 +56,7 @@ public class FrostSpell extends Spell
     }
 	 
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    setMaxRange(16, false);
 	    Target target = getTarget();
@@ -91,19 +89,13 @@ public class FrostSpell extends Spell
             return false;
         }
 		
-		int radius = defaultRadius;
-		
-		if (parameters.containsKey("radius"))
+        int radius = parameters.getInt("radius", defaultRadius);
+        if (radius > maxRadius && maxRadius > 0)
         {
-            radius = (Integer)parameters.get("radius");
+            radius = maxRadius;
         }
-		
-    	if (radius > maxRadius && maxRadius > 0)
-    	{
-    		radius = maxRadius;
-    	}
 
-	   FrostAction action = new FrostAction();
+        FrostAction action = new FrostAction();
 
         if (radius <= 1)
         {
@@ -129,7 +121,7 @@ public class FrostSpell extends Spell
 	}	
 	
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		defaultRadius = properties.getInteger("spells-frost-radius", defaultRadius);
 		maxRadius = properties.getInteger("spells-frost-max-radius", maxRadius);

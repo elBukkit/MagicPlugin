@@ -17,7 +17,7 @@ public class CushionSpell extends Spell
 	private int cushionHeight = 4;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		World world = player.getWorld();
     	CraftWorld craftWorld = (CraftWorld)world;
@@ -62,7 +62,7 @@ public class CushionSpell extends Spell
 	}
 	
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		cushionWidth = properties.getInteger("spells-cushion-width", cushionWidth);
 		cushionHeight = properties.getInteger("spells-cushion-height", cushionHeight);

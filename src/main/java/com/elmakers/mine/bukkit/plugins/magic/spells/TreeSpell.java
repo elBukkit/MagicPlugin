@@ -16,7 +16,7 @@ public class TreeSpell extends Spell
 	private boolean requireSapling = false;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 
@@ -80,7 +80,7 @@ public class TreeSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		requireSapling = properties.getBoolean("spells-tree-require-sapling", requireSapling);
 	}

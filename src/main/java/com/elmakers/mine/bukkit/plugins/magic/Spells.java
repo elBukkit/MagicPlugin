@@ -62,10 +62,10 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.TreeSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.UndoSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WeatherSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WolfSpell;
-import com.elmakers.mine.bukkit.utilities.PluginConfiguration;
-import com.elmakers.mine.bukkit.utilities.PluginConfigurationNode;
 import com.elmakers.mine.bukkit.utilities.PluginProperties;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
+import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 import com.nijiko.permissions.PermissionHandler;
 
 public class Spells
@@ -122,6 +122,7 @@ public class Spells
         createSpell(new AlterSpell(), "alter", Material.REDSTONE_TORCH_ON, "Alter certain objects", "construction", "");
         createSpell(new ArrowSpell(), "arrow", Material.ARROW, "Fire a magic arrow", "combat", "");
         createSpell(new ArrowSpell(), "arrowrain", Material.BOW, "Fire a volley of arrows", "combat", "count 4");
+     
         createSpell(new BlastSpell(), "blast", Material.SULPHUR, "Mine out a large area", "mining", "");
         createSpell(new BlastSpell(), "superblast", Material.SLIME_BALL, "Mine out a very large area", "mining", "radius 16");
         createSpell(new BlinkSpell(), "blink", Material.FEATHER, "Teleport to your target", "psychic", "");
@@ -423,6 +424,9 @@ public class Spells
     {
         File dataFolder = plugin.getDataFolder();
         dataFolder.mkdirs();
+
+        // TODO: Replace this with defaults read from a YML file
+        loadProperties(dataFolder);
         
         File spellsFile = new File(dataFolder, "spells.yml");
 
@@ -431,22 +435,46 @@ public class Spells
             createDefaultSpells();
             save(spellsFile);
         }
-        
-        loadProperties(dataFolder);
+        else
+        {
+            load(spellsFile);
+        }
     }
     
-    public void save(File spellsFile)
+    protected void save(File spellsFile)
     {
-        PluginConfiguration config = new PluginConfiguration(spellsFile);
-        PluginConfigurationNode spellsNode = config.createChild("spells");
+        Configuration config = new Configuration(spellsFile);
+        ConfigurationNode spellsNode = config.createChild("spells");
         
         for (Spell spell : spells.values())
         {
-            PluginConfigurationNode spellNode = spellsNode.createChild(spell.getName());
+            ConfigurationNode spellNode = spellsNode.createChild(spell.getName());
             spell.save(spellNode);
         }
         
         config.save();
+    }
+    
+    protected void load(File spellsFile)
+    {
+        Configuration config = new Configuration(spellsFile);
+        config.load();
+        
+        ConfigurationNode spellsNode = config.getNode("spells");
+        if (spellsNode == null) return;
+        
+        List<String> spellKeys = spellsNode.getKeys();
+        for (String key : spellKeys)
+        {
+            ConfigurationNode spellNode = spellsNode.getNode(key);
+            Spell newSpell = Spell.loadSpell(spellNode);
+            if (newSpell == null)
+            {
+                log.warning("Magic: Error loading spell " + key);
+                continue;
+            }
+            addSpell(newSpell);
+        }
     }
 
     protected void loadProperties(File dataFolder)
@@ -463,11 +491,6 @@ public class Spells
 
         buildingMaterials = properties.getMaterials("spells-general-building", DEFAULT_BUILDING_MATERIALS);
         wandTypeId = properties.getInteger("wand-type-id", wandTypeId);
-
-        for (Spell spell : spells.values())
-        {
-            spell.onLoad(properties);
-        }
 
         properties.save();
     }
@@ -538,7 +561,7 @@ public class Spells
                 Spell spell = null;
                 for (int i = 0; i < 9; i++)
                 {
-                    if (contents[i].getType() == Material.AIR || contents[i].getTypeId() == getWandTypeId())
+                    if (contents[i] == null || contents[i].getType() == Material.AIR || contents[i].getTypeId() == getWandTypeId())
                     {
                         continue;
                     }

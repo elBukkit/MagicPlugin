@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Map;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -9,11 +7,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BlinkSpell extends Spell
 {
-	private int maxRange = 0;
 	private boolean autoAscend = true;
 	private boolean autoDescend = true;
 	private boolean autoPassthrough = true;
@@ -44,44 +41,30 @@ public class BlinkSpell extends Spell
 	}
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    setMaxRange(255, false);
 	    
-	    if (parameters.containsKey("elevate"))
-	    {
-	        String elevateType = (String)parameters.get("elevate");
-	        if (elevateType.equals("descend"))
-	        {
-	            if (!descend())
-                {
-                    castMessage(player, "Nowhere to go down");
-                    return false;
-                }
-                return true;
-	        }
-	        else
-	        {
-	            if (!ascend())
-                {
-                    castMessage(player, "Nowhere to go up");
-                    return false;
-                }
-                return true;
-	        }
-	    }
-	    
-	    if (parameters.containsKey("range"))
-	    {
-	        int range = (Integer)parameters.get("range");
-            setMaxRange(range, true);
-            autoAscend = false;
-            autoDescend = false;
-            autoPassthrough = false;
-	    }
-	    
-		// Auto ascend + descend
-		
+        String elevateType = parameters.getString("type", "");
+        if (elevateType.equals("descend"))
+        {
+            if (!descend())
+            {
+                castMessage(player, "Nowhere to go down");
+                return false;
+            }
+            return true;
+        }
+        else if (elevateType.equals("ascend"))
+        {
+            if (!ascend())
+            {
+                castMessage(player, "Nowhere to go up");
+                return false;
+            }
+            return true;
+        }
+        
 		if (getYRotation() < -80 && autoDescend)
 		{
 			if (descend())
@@ -119,11 +102,6 @@ public class BlinkSpell extends Spell
 		if (target == null) 
 		{
 			castMessage(player, "Nowhere to blink to");
-			return false;
-		}
-		if (maxRange > 0 && getDistance(player,target) > maxRange) 
-		{
-			castMessage(player, "Can't blink that far");
 			return false;
 		}
 		
@@ -203,11 +181,10 @@ public class BlinkSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
-		maxRange = properties.getInteger("spells-blink-range", maxRange);
-		autoAscend = properties.getBoolean("spells-blink-auto-ascend", autoAscend);
-		autoDescend = properties.getBoolean("spells-blink-aauto-decend", autoDescend);
-		autoPassthrough = properties.getBoolean("spells-blink-auto-passthrough", autoPassthrough);
+		autoAscend = properties.getBoolean("allow_ascend", autoAscend);
+		autoDescend = properties.getBoolean("allow_decend", autoDescend);
+		autoPassthrough = properties.getBoolean("allow_passthrough", autoPassthrough);
 	}
 }

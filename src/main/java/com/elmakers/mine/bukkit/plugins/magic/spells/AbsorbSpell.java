@@ -1,34 +1,30 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AbsorbSpell extends Spell 
 {
     private int giveAmount = 1;
     
 	@Override
-	public boolean onCast(Map<String, Object> parameters) 
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    Material material = Material.AIR;
         List<Material> buildingMaterials = spells.getBuildingMaterials();
         
-        if (parameters.containsKey("material"))
+        material = parameters.getMaterial("material", material);
+        if (buildingMaterials.contains(material))
         {
-            material = (Material)parameters.get("materials");
-            if (buildingMaterials.contains(material))
-            {
-                int amount = giveAmount;
-                byte data = 0;
-                castMessage(player, "Manifesting some " + material.name().toLowerCase());
-                return giveMaterial(material, amount, (short)0 , data);
-            }
+            int amount = giveAmount;
+            byte data = 0;
+            castMessage(player, "Manifesting some " + material.name().toLowerCase());
+            return giveMaterial(material, amount, (short)0 , data);
         }
         
 		if (!isUnderwater())
@@ -48,11 +44,5 @@ public class AbsorbSpell extends Spell
 		castMessage(player, "Absorbing some " + target.getType().name().toLowerCase());
 			
 		return giveMaterial(target.getType(), amount, (short)0 , target.getData());
-	}
-	
-	@Override
-	public void onLoad(PluginProperties properties)
-	{
-		//defaultAmount = properties.getInteger("spells-absorb-amount", defaultAmount);
 	}
 }

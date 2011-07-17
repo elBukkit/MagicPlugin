@@ -46,7 +46,7 @@ public class WolfSpell extends Spell
 	}
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    this.targetEntity(LivingEntity.class);
 		Target target = getTarget();

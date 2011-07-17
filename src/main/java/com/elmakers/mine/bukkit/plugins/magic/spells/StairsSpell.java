@@ -23,7 +23,7 @@ public class StairsSpell extends Spell
 	private int torchFrequency = 4;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
@@ -143,7 +143,7 @@ public class StairsSpell extends Spell
 	}
 	
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		destructibleMaterials = properties.getMaterials("spells-stairs-destructible", DEFAULT_DESTRUCTIBLES);
 		defaultDepth = properties.getInteger("spells-stairs-depth", defaultDepth);

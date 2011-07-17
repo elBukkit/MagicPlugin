@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.utilities.borrowed;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.util.config.ConfigurationException;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -23,13 +21,44 @@ import org.yaml.snakeyaml.reader.UnicodeReader;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
-public class PluginConfiguration extends PluginConfigurationNode
-{
+/**
+ * YAML configuration loader. To use this class, construct it with path to
+ * a file and call its load() method. For specifying node paths in the
+ * various get*() methods, they support SK's path notation, allowing you to
+ * select child nodes by delimiting node names with periods.
+ *
+ * <p>
+ * For example, given the following configuration file:</p>
+ *
+ * <pre>members:
+ *     - Hollie
+ *     - Jason
+ *     - Bobo
+ *     - Aya
+ *     - Tetsu
+ * worldguard:
+ *     fire:
+ *         spread: false
+ *         blocks: [cloth, rock, glass]
+ * sturmeh:
+ *     cool: false
+ *     eats:
+ *         babies: true</pre>
+ *
+ * <p>Calling code could access sturmeh's baby eating state by using
+ * <code>getBoolean("sturmeh.eats.babies", false)</code>. For lists, there are
+ * methods such as <code>getStringList</code> that will return a type safe list.
+ *
+ * <p>This class is currently incomplete. It is not yet possible to get a node.
+ * </p>
+ *
+ */
+public class Configuration extends ConfigurationNode {
     private Yaml yaml;
     private File file;
     private String header = null;
 
-    public PluginConfiguration(File file) {
+    public Configuration(File file) {
         super(new HashMap<String, Object>());
 
         DumperOptions options = new DumperOptions();
@@ -157,8 +186,8 @@ public class PluginConfiguration extends PluginConfigurationNode
      * default in methods that select a node from a node list.
      * @return
      */
-    public static PluginConfigurationNode getEmptyNode() {
-        return new PluginConfigurationNode(new HashMap<String, Object>());
+    public static ConfigurationNode getEmptyNode() {
+        return new ConfigurationNode(new HashMap<String, Object>());
     }
 }
 

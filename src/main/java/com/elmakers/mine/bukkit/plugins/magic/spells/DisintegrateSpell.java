@@ -18,7 +18,7 @@ public class DisintegrateSpell extends Spell
 	private int				defaultSearchDistance	= 32;
 	
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    Target target = getTarget();
         if (target == null)
@@ -77,7 +77,7 @@ public class DisintegrateSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		defaultSearchDistance = properties.getInteger("spells-disintegrate-search-distance", defaultSearchDistance);
 	}

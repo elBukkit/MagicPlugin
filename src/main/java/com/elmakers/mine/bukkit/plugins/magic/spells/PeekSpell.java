@@ -2,14 +2,13 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PeekSpell extends Spell
 {
@@ -23,7 +22,7 @@ public class PeekSpell extends Spell
 	private Material        peekMaterial            = Material.GLASS;
 
 	@Override
-	public boolean onCast(Map<String, Object> parameters)
+	public boolean onCast(ConfigurationNode parameters) 
 	{
 		targetThrough(Material.GLASS);
 		Block target = getTargetBlock();
@@ -38,12 +37,8 @@ public class PeekSpell extends Spell
 			return false;
 		}
 
-		int radius = defaultRadius;
-		if (parameters.containsKey("radius"))
-		{
-		    radius = (Integer)parameters.get("radius");
-		}
-		if (radius > maxRadius && maxRadius > 0)
+		int radius = parameters.getInt("radius", defaultRadius);
+        if (radius > maxRadius && maxRadius > 0)
         {
             radius = maxRadius;
         }
@@ -120,7 +115,7 @@ public class PeekSpell extends Spell
 	}
 	
 	@Override
-	public void onLoad(PluginProperties properties)
+	public void onLoad(ConfigurationNode properties)  
 	{
 		peekableMaterials = properties.getMaterials("spells-peek-peekable", DEFAULT_PEEKABLES);
 		defaultRadius = properties.getInteger("spells-peek-radius", defaultRadius);
