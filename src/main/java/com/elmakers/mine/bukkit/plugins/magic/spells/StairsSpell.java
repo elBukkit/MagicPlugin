@@ -144,10 +144,10 @@ public class StairsSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		destructibleMaterials = properties.getMaterials("spells-stairs-destructible", DEFAULT_DESTRUCTIBLES);
-		defaultDepth = properties.getInteger("spells-stairs-depth", defaultDepth);
-		defaultWidth = properties.getInteger("spells-stairs-width", defaultWidth);
-		defaultHeight = properties.getInteger("spells-stairs-height", defaultHeight);
-		torchFrequency = properties.getInteger("spells-stairs-torch-frequency", torchFrequency);
+		destructibleMaterials = properties.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
+		defaultDepth = properties.getInteger("depth", defaultDepth);
+		defaultWidth = properties.getInteger("width", defaultWidth);
+		defaultHeight = properties.getInteger("height", defaultHeight);
+		torchFrequency = properties.getInteger("torch_frequency", torchFrequency);
 	}
 }

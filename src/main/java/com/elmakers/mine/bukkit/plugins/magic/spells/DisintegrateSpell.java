@@ -13,7 +13,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class DisintegrateSpell extends Spell
 {
-	private int				defaultSearchDistance	= 32;
+	private int             playerDamage = 1;
+	private int             entityDamage = 100;
 	
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
@@ -32,11 +33,11 @@ public class DisintegrateSpell extends Spell
 	            LivingEntity li = (LivingEntity)targetEntity;
 	            if (li instanceof Player)
 	            {
-	                li.damage(1);
+	                li.damage(playerDamage);
 	            }
 	            else
 	            {
-	                li.damage(100);
+	                li.damage(entityDamage);
 	            }
 	            castMessage(player, "ZOT!");
 	            return true;
@@ -46,12 +47,6 @@ public class DisintegrateSpell extends Spell
 		if (!target.hasTarget())
 		{
 			castMessage(player, "No target");
-			return false;
-		}
-
-		if (defaultSearchDistance > 0 && target.getDistance() > defaultSearchDistance)
-		{
-			castMessage(player, "Can't blast that far away");
 			return false;
 		}
 		
@@ -77,6 +72,7 @@ public class DisintegrateSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		defaultSearchDistance = properties.getInteger("spells-disintegrate-search-distance", defaultSearchDistance);
+		playerDamage = properties.getInteger("player_damage", playerDamage);
+		entityDamage = properties.getInteger("entity_damage", entityDamage);
 	}
 }

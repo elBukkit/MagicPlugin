@@ -20,18 +20,6 @@ public class LavaSpell extends Spell
 			return false;
 		}
 		
-		if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
-		{
-			castMessage(player, "Can't fire that far away");
-			return false;
-		}
-		
-		int radius = parameters.getInt("radius", defaultRadius);
-        if (radius > maxRadius && maxRadius > 0)
-        {
-            radius = maxRadius;
-        }
-		
 		int lavaBlocks = (int)getDistance(player, target);
 		if (lavaBlocks <= 0) return false;
 		
@@ -74,16 +62,4 @@ public class LavaSpell extends Spell
 		
 		return true;
 	}
-
-	@Override
-	public void onLoad(ConfigurationNode properties)  
-	{
-		defaultRadius = properties.getInteger("spells-lava-radius", defaultRadius);
-		maxRadius = properties.getInteger("spells-lava-max-radius", maxRadius);
-		defaultSearchDistance = properties.getInteger("spells-lava-search-distance", defaultSearchDistance);
-	}
-	
-	private int				defaultRadius			= 1;
-	private int				maxRadius				= 6;
-	private int				defaultSearchDistance	= 64;
 }

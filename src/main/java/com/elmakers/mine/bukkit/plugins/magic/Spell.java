@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utilities.BlockAction;
+import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**
@@ -39,6 +40,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	protected Player						player;
 	protected Spells						spells;
+    protected static CSVParser              csv = new CSVParser();
 
 	/*
 	 * Variant properties
@@ -178,6 +180,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         if (properties == null) properties = node.createChild("properties");
         
         range = properties.getInteger("range", range);
+        allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
         cooldown = properties.getInt("cooldown", cooldown);
         
         this.onLoad(properties);

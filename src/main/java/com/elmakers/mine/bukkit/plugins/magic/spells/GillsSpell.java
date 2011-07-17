@@ -122,8 +122,8 @@ public class GillsSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		gillDuration = properties.getInteger("spells-gills-duration", gillDuration);
-		healFrequency = properties.getInteger("spells-gills-heal-frequency", healFrequency);
-		healAmount = properties.getInteger("spells-gills-heal-amount", healAmount);
+		gillDuration = properties.getInteger("duration", gillDuration);
+		healFrequency = properties.getInteger("heal_frequency", healFrequency);
+		healAmount = properties.getInteger("heal_amount", healAmount);
 	}
 }

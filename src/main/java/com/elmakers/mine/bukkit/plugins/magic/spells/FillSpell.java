@@ -186,7 +186,7 @@ public class FillSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		defaultMaxDimension = properties.getInteger("spells-fill-max-dimension", defaultMaxDimension);
-		defaultMaxVolume = properties.getInteger("spells-fill-max-volume", defaultMaxVolume);
+		defaultMaxDimension = properties.getInteger("max_dimension", defaultMaxDimension);
+		defaultMaxVolume = properties.getInteger("max_volume", defaultMaxVolume);
 	}
 }

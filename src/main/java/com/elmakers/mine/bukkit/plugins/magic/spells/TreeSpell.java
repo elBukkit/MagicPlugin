@@ -76,6 +76,6 @@ public class TreeSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		requireSapling = properties.getBoolean("spells-tree-require-sapling", requireSapling);
+		requireSapling = properties.getBoolean("require_sapling", requireSapling);
 	}
 }

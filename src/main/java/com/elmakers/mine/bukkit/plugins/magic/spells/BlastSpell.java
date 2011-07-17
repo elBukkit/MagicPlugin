@@ -16,9 +16,6 @@ public class BlastSpell extends Spell
 
 	private List<Material>	destructibleMaterials	= new ArrayList<Material>();
 	private int				defaultRadius			= 4;
-	private int				maxRadius				= 32;
-	private int				defaultSearchDistance	= 32;
-	private int				torchFrequency			= 4;
 	
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
@@ -27,11 +24,6 @@ public class BlastSpell extends Spell
 		if (target == null)
 		{
 			castMessage(player, "No target");
-			return false;
-		}
-		if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
-		{
-			castMessage(player, "Can't blast that far away");
 			return false;
 		}
 
@@ -101,10 +93,7 @@ public class BlastSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		destructibleMaterials =  properties.getMaterials("spells-blast-destroy", DEFAULT_DESTRUCTIBLES);
-		defaultRadius = properties.getInteger("spells-blast-radius", defaultRadius);
-		maxRadius = properties.getInteger("spells-blast-max-radius", maxRadius);
-		defaultSearchDistance = properties.getInteger("spells-blast-search-distance", defaultSearchDistance);
-		torchFrequency = properties.getInteger("spells-blast-torch-frequency", torchFrequency);
+		destructibleMaterials =  properties.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
+		defaultRadius = properties.getInteger("radius", defaultRadius);
 	}
 }

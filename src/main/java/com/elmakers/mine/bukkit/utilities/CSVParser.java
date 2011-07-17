@@ -57,10 +57,27 @@ public class CSVParser
             }
         }
     }
-
-    public MaterialList parseMaterials(String csvList)
+    
+    public void parseMaterials(List<Material> materials, String csvList)
     {
-        MaterialList materials = new MaterialList();
+        String[] matIds = csvList.split(",");
+        for (String matId : matIds)
+        {
+            try
+            {
+                int typeId = Integer.parseInt(matId.trim());
+                materials.add(Material.getMaterial(typeId));
+            }
+            catch (NumberFormatException ex)
+            {
+
+            }
+        }
+    }
+
+    public List<Material> parseMaterials(String csvList)
+    {
+        List<Material> materials = new ArrayList<Material>();
         parseMaterials(materials, csvList);
         return materials;
 

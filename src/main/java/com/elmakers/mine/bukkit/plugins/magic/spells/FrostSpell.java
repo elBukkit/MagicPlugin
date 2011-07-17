@@ -16,9 +16,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class FrostSpell extends Spell
 {
 	private int				defaultRadius			= 2;
-	private int				maxRadius				= 32;
-	private int				defaultSearchDistance	= 32;
 	private int				verticalSearchDistance	= 8;
+	private int             timeToLive = 60000;
 	
 	public class FrostAction extends SimpleBlockAction
     {
@@ -90,11 +89,6 @@ public class FrostSpell extends Spell
         }
 		
         int radius = parameters.getInt("radius", defaultRadius);
-        if (radius > maxRadius && maxRadius > 0)
-        {
-            radius = maxRadius;
-        }
-
         FrostAction action = new FrostAction();
 
         if (radius <= 1)
@@ -108,7 +102,7 @@ public class FrostSpell extends Spell
 
 
         BlockList frozenBlocks = action.getBlocks();
-        frozenBlocks.setTimeToLive(60000);
+        frozenBlocks.setTimeToLive(timeToLive);
         spells.scheduleCleanup(frozenBlocks);
         castMessage(player, "Frosted " + action.getBlocks().size() + " blocks");
         
@@ -123,9 +117,8 @@ public class FrostSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		defaultRadius = properties.getInteger("spells-frost-radius", defaultRadius);
-		maxRadius = properties.getInteger("spells-frost-max-radius", maxRadius);
-		defaultSearchDistance = properties.getInteger("spells-frost-search-distance", defaultSearchDistance);
-		verticalSearchDistance = properties.getInteger("spells-frost-vertical-search-distance", verticalSearchDistance);
+		defaultRadius = properties.getInteger("radius", defaultRadius);
+		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);
+		timeToLive = properties.getInt("duration", timeToLive);
 	}
 }

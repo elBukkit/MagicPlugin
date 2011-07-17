@@ -47,18 +47,7 @@ public class FireSpell extends Spell
 			return false;
 		}
 		
-		if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
-		{
-			castMessage(player, "Can't fire that far away");
-			return false;
-		}
-		
 		int radius = parameters.getInt("radius", defaultRadius);
-        if (radius > maxRadius && maxRadius > 0)
-        {
-            radius = maxRadius;
-        }
-
         FireAction action = new FireAction();
 
         if (radius <= 1)
@@ -129,14 +118,10 @@ public class FireSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		defaultRadius = properties.getInteger("spells-fire-radius", defaultRadius);
-		maxRadius = properties.getInteger("spells-fire-max-radius", maxRadius);
-		defaultSearchDistance = properties.getInteger("spells-fire-search-distance", defaultSearchDistance);
-		verticalSearchDistance = properties.getInteger("spells-fire-vertical-search-distance", verticalSearchDistance);
+		defaultRadius = properties.getInteger("radius", defaultRadius);
+		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);
 	}
 	
 	private int				defaultRadius			= 4;
-	private int				maxRadius				= 32;
-	private int				defaultSearchDistance	= 32;
 	private int				verticalSearchDistance	= 8;
 }

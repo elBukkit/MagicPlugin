@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MineSpell extends Spell
@@ -104,9 +103,10 @@ public class MineSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		mineableMaterials = PluginProperties.parseMaterials(DEFAULT_MINEABLE);
-		minedMaterials = PluginProperties.parseMaterials(DEFAULT_MINED);
-		minedData = PluginProperties.parseIntegers(DEFAULT_DATA);
-		maxRecursion = properties.getInteger("spells-mine-recursion", maxRecursion);
+		mineableMaterials = csv.parseMaterials(DEFAULT_MINEABLE);
+		minedMaterials = csv.parseMaterials(DEFAULT_MINED);
+		minedData = csv.parseIntegers(DEFAULT_DATA);
+		
+		maxRecursion = properties.getInteger("recursion_depth", maxRecursion);
 	}
 }

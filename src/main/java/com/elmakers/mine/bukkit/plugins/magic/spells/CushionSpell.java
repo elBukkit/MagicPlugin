@@ -62,7 +62,7 @@ public class CushionSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		cushionWidth = properties.getInteger("spells-cushion-width", cushionWidth);
-		cushionHeight = properties.getInteger("spells-cushion-height", cushionHeight);
+		cushionWidth = properties.getInteger("width", cushionWidth);
+		cushionHeight = properties.getInteger("height", cushionHeight);
 	}
 }

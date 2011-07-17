@@ -19,8 +19,6 @@ public class ConstructSpell extends Spell
 	private List<Material>	destructibleMaterials	= new ArrayList<Material>();
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
-	private int				maxRadius				= 32;
-	private int				defaultSearchDistance	= 32;
 	
 	public enum ConstructionType
 	{
@@ -45,7 +43,6 @@ public class ConstructSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-		setMaxRange(defaultSearchDistance, true);
 		targetThrough(Material.GLASS);
 		Block target = getTarget().getBlock();
 		
@@ -85,12 +82,7 @@ public class ConstructSpell extends Spell
 		    data = 0;
 		}
         
-		int radius = parameters.getInt("radius", defaultRadius);
-		if (radius > maxRadius && maxRadius > 0)
-        {
-            radius = maxRadius;
-        }
-		
+		int radius = parameters.getInt("radius", defaultRadius);		
 		String typeString = parameters.getString("type", "");
 		
 	    ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
@@ -201,9 +193,6 @@ public class ConstructSpell extends Spell
 	public void onLoad(ConfigurationNode properties)  
 	{
 		destructibleMaterials = PluginProperties.parseMaterials(DEFAULT_DESTRUCTIBLES);
-		defaultConstructionType = ConstructionType.parseString(properties.getString("spells-construct-default", ""), defaultConstructionType);
-		defaultRadius = properties.getInteger("spells-construct-radius", defaultRadius);
-		maxRadius = properties.getInteger("spells-construct-max-radius", maxRadius);
-		defaultSearchDistance = properties.getInteger("spells-constructs-search-distance", defaultSearchDistance);
+		defaultRadius = properties.getInteger("default_radius", defaultRadius);
 	}
 }

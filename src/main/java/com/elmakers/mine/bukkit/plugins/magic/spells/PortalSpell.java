@@ -19,7 +19,6 @@ import com.elmakers.mine.bukkit.dao.BoundingBox;
 import com.elmakers.mine.bukkit.dao.MaterialList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
-import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PortalSpell extends Spell
@@ -262,9 +261,7 @@ public class PortalSpell extends Spell
     {
     	 if (destructible == null)
          {
-             destructible = new MaterialList();
-             CSVParser csv = new CSVParser();
-             destructible = csv.parseMaterials(DEFAULT_DESTRUCTIBLES);
+             destructible = new MaterialList(csv.parseMaterials(DEFAULT_DESTRUCTIBLES));
          }
     }
 	

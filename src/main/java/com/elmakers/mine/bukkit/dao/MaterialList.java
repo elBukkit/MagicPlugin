@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.dao;
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,6 +27,11 @@ public class MaterialList extends HashSet<Material>
     public MaterialList()
     {
 
+    }
+    
+    public MaterialList(List<Material> copy)
+    {
+        this.addAll(copy);
     }
 
     public MaterialList(String id)

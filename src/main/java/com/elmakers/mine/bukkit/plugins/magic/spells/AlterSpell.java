@@ -9,7 +9,6 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AlterSpell extends Spell
@@ -94,7 +93,6 @@ public class AlterSpell extends Spell
 	{
 		recurseDistance = properties.getInteger("depth", recurseDistance);
 		
-        CSVParser csv = new CSVParser();
 		recursableMaterials = csv.parseIntegers(DEFAULT_RECURSABLES);
 		adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
 		maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);

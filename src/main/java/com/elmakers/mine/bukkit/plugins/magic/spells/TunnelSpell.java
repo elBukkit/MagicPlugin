@@ -133,11 +133,11 @@ public class TunnelSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		destructibleMaterials = properties.getMaterials("spells-tunnel-destructible", DEFAULT_DESTRUCTIBLES);
-		defaultDepth = properties.getInteger("spells-tunnel-depth", defaultDepth);
-		defaultWidth = properties.getInteger("spells-tunnel-width", defaultWidth);
-		defaultHeight = properties.getInteger("spells-tunnel-height", defaultHeight);
-		defaultSearchDistance = properties.getInteger("spells-tunnel-search-distance", defaultSearchDistance);
-		torchFrequency = properties.getInteger("spells-tunnel-torch-frequency", torchFrequency);
+		destructibleMaterials = properties.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
+		defaultDepth = properties.getInteger("depth", defaultDepth);
+		defaultWidth = properties.getInteger("width", defaultWidth);
+		defaultHeight = properties.getInteger("height", defaultHeight);
+		defaultSearchDistance = properties.getInteger("search_distance", defaultSearchDistance);
+		torchFrequency = properties.getInteger("torch_frequency", torchFrequency);
 	}
 }

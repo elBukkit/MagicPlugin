@@ -132,10 +132,10 @@ public class RecallSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		autoDropOnDeath = properties.getBoolean("spells-recall-auto-resurrect", autoDropOnDeath);
-		autoDropIsInvisible = properties.getBoolean("spells-recall-auto-resurrect-invisible", autoDropIsInvisible);
-		autoSpawn = properties.getBoolean("spells-recall-auto-spawn", autoSpawn);
-		markerMaterial = properties.getMaterial("spells-recall-marker", markerMaterial);
+		autoDropOnDeath = properties.getBoolean("auto_resurrect", autoDropOnDeath);
+		autoDropIsInvisible = properties.getBoolean("auto_resurrect_invisible", autoDropIsInvisible);
+		autoSpawn = properties.getBoolean("allow_spawn", autoSpawn);
+		markerMaterial = properties.getMaterial("recall_marker", markerMaterial);
 	}
 
 	@Override

@@ -16,8 +16,7 @@ public class PeekSpell extends Spell
 
 	private List<Material>	peekableMaterials		= new ArrayList<Material>();
 	private int				defaultRadius			= 3;
-	private int				maxRadius				= 32;
-	private int				defaultSearchDistance	= 32;
+	private int             timeToLive              = 8000;
 	
 	private Material        peekMaterial            = Material.GLASS;
 
@@ -31,18 +30,8 @@ public class PeekSpell extends Spell
 			castMessage(player, "No target");
 			return false;
 		}
-		if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
-		{
-			castMessage(player, "Can't peek that far away");
-			return false;
-		}
 
 		int radius = parameters.getInt("radius", defaultRadius);
-        if (radius > maxRadius && maxRadius > 0)
-        {
-            radius = maxRadius;
-        }
-		
 		BlockList peekedBlocks = new BlockList();
 		int diameter = radius * 2;
 		int midX = (diameter - 1) / 2;
@@ -71,7 +60,7 @@ public class PeekSpell extends Spell
 			}
 		}
 		
-		peekedBlocks.setTimeToLive(8000);
+		peekedBlocks.setTimeToLive(timeToLive);
 		spells.scheduleCleanup(peekedBlocks);
 
 		castMessage(player, "Peeked through  " + peekedBlocks.size() + "blocks");
@@ -117,9 +106,8 @@ public class PeekSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		peekableMaterials = properties.getMaterials("spells-peek-peekable", DEFAULT_PEEKABLES);
-		defaultRadius = properties.getInteger("spells-peek-radius", defaultRadius);
-		maxRadius = properties.getInteger("spells-peek-max-radius", maxRadius);
-		defaultSearchDistance = properties.getInteger("spells-peek-search-distance", defaultSearchDistance);
+		peekableMaterials = properties.getMaterials("peekable", DEFAULT_PEEKABLES);
+		defaultRadius = properties.getInteger("radius", defaultRadius);
+		timeToLive = properties.getInt("duration", timeToLive);
 	}
 }

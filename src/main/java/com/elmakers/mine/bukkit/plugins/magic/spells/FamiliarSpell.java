@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerEvent;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
-import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FamiliarSpell extends Spell
@@ -237,7 +236,6 @@ public class FamiliarSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-	    CSVParser csv = new CSVParser();
 	    defaultFamiliars = csv.parseStrings(DEFAULT_FAMILIARS);
 	    defaultMonsters = csv.parseStrings(DEFAULT_MONSTERS);
 	}
