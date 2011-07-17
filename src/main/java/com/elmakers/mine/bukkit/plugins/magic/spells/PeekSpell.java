@@ -30,7 +30,9 @@ public class PeekSpell extends Spell
 			castMessage(player, "No target");
 			return false;
 		}
-
+		
+		peekMaterial = parameters.getMaterial("material", peekMaterial);
+        
 		int radius = parameters.getInt("radius", defaultRadius);
 		BlockList peekedBlocks = new BlockList();
 		int diameter = radius * 2;
@@ -66,11 +68,6 @@ public class PeekSpell extends Spell
 		castMessage(player, "Peeked through  " + peekedBlocks.size() + "blocks");
 
 		return true;
-	}
-
-	public void setPeekMaterial(Material mat)
-	{
-	    this.peekMaterial = mat;
 	}
 
 	public int checkPosition(int x, int y, int z, int R)

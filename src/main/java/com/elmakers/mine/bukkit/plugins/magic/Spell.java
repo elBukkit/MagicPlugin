@@ -97,7 +97,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         this.player = null;
     }
     
-    public void initialize(String name, String description, String category, Material icon, String[] parameters, int cooldown)
+    public void initialize(String name, String description, String category, Material icon, String[] parameters, String[] properties)
     {
         this.name = name;
         this.description = description;
@@ -108,7 +108,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
             addParameters(parameters, this.parameters);
         }
         this.material = icon;
-        this.cooldown = cooldown;
+        if (properties != null && properties.length > 1)
+        {
+            ConfigurationNode propertiesNode = new ConfigurationNode();
+            addParameters(properties, propertiesNode);
+            this.cooldown = propertiesNode.getInt("cooldown", this.cooldown);
+        }
     }
     
     protected static String getBuiltinClasspath()
@@ -117,7 +122,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         return baseClass.substring(0, baseClass.lastIndexOf('.'));
     }
     
-    public static Spell loadSpell(ConfigurationNode node)
+    public static Spell loadSpell(String name, ConfigurationNode node)
     {
        String builtinClassPath = getBuiltinClasspath();
         
@@ -163,6 +168,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
        }
        
        Spell newSpell = (Spell)newObject;
+       newSpell.name = name;
        newSpell.load(node);
        
        return newSpell;
@@ -170,7 +176,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
     
     protected void load(ConfigurationNode node)
     {
-        name = node.getString("name", name);
         description = node.getString("description", description);
         material = node.getMaterial("icon", material);
         category = node.getString("category", category);
