@@ -54,4 +54,10 @@ public class ArrowSpell extends Spell
 		
 		return true;
 	}
+
+    @Override
+    public void onLoad(ConfigurationNode node)
+    {
+        disableTargeting();
+    }
 }

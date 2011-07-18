@@ -75,7 +75,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
     private int                                 targetX, targetY, targetZ;
     private final HashMap<Material, Boolean>    targetThroughMaterials  = new HashMap<Material, Boolean>();
     private boolean                             reverseTargeting        = false;
-
+    private boolean                             usesTargeting           = true;
+    
     protected Object clone()
     {
         try
@@ -183,12 +184,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         
         ConfigurationNode properties = node.getNode("properties");
         if (properties == null) properties = node.createChild("properties");
-        
-        range = properties.getInteger("range", range);
-        allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
         cooldown = properties.getInt("cooldown", cooldown);
         
         this.onLoad(properties);
+        
+        if (usesTargeting)
+        {            
+            range = properties.getInteger("range", range);
+            allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
+        }
     }
     
     public void save(ConfigurationNode node)
@@ -1102,6 +1106,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 
 		return true;
+	}
+	
+	protected void disableTargeting()
+	{
+	    usesTargeting = false;
 	}
 
     public boolean isInCircle(int x, int z, int R)

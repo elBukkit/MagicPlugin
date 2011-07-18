@@ -122,13 +122,12 @@ public class Spells
         createSpell(new AlterSpell(), "alter", Material.REDSTONE_TORCH_ON, "Alter certain objects", "construction", "");
         createSpell(new ArrowSpell(), "arrow", Material.ARROW, "Fire a magic arrow", "combat", "");
         createSpell(new ArrowSpell(), "arrowrain", Material.BOW, "Fire a volley of arrows", "combat", "count 4");
-     
         createSpell(new BlastSpell(), "blast", Material.SULPHUR, "Mine out a large area", "mining", "");
         createSpell(new BlastSpell(), "superblast", Material.SLIME_BALL, "Mine out a very large area", "mining", "radius 16");
         createSpell(new BlinkSpell(), "blink", Material.FEATHER, "Teleport to your target", "psychic", "");
         createSpell(new BlinkSpell(), "ascend", Material.RED_MUSHROOM, "Go up to the nearest safe spot", "psychic", "type ascend");
         createSpell(new BlinkSpell(), "descend", Material.BROWN_MUSHROOM, "Travel underground", "psychic", "type descend");
-        createSpell(new BlinkSpell(), "tesseract", Material.WEB, "Blink a short distance", "psychic", "", "range 8");
+        createSpell(new BlinkSpell(), "tesseract", Material.WEB, "Blink a short distance", "psychic", "", "range 8 allow_passthrough false allow_ascend false allow_descend false");
         createSpell(new BoomSpell(), "boom", Material.RED_ROSE, "Create an explosion", "combat", "");
         createSpell(new BoomSpell(), "kaboom", Material.REDSTONE_WIRE, "Create a big explosion", "combat", "size 6");
         createSpell(new BoomSpell(), "kamikazee", Material.DEAD_BUSH, "Kill yourself with an explosion", "combat", "size 8 target here");

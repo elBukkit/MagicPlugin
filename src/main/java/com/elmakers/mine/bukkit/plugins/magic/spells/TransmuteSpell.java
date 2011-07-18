@@ -68,4 +68,10 @@ public class TransmuteSpell extends Spell
 		
 		return true;
 	}
+
+    @Override
+    public void onLoad(ConfigurationNode node)
+    {
+        disableTargeting();
+    }
 }

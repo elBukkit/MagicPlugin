@@ -122,6 +122,7 @@ public class GillsSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
+	    disableTargeting();
 		gillDuration = properties.getInteger("duration", gillDuration);
 		healFrequency = properties.getInteger("heal_frequency", healFrequency);
 		healAmount = properties.getInteger("heal_amount", healAmount);

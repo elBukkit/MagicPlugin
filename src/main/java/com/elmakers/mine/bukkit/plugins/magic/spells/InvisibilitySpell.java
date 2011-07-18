@@ -121,4 +121,10 @@ public class InvisibilitySpell extends Spell
         
         fromEntity.netServerHandler.sendPacket(new Packet20NamedEntitySpawn(hideEntity));
     }
+
+    @Override
+    public void onLoad(ConfigurationNode node)
+    {
+        disableTargeting();
+    }
 }

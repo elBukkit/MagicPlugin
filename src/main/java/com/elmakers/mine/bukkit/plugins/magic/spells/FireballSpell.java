@@ -44,4 +44,10 @@ public class FireballSpell extends Spell
         world.addEntity(fireball);
 		return true;
 	}
+
+    @Override
+    public void onLoad(ConfigurationNode node)
+    {
+        disableTargeting();
+    }
 }

@@ -79,4 +79,10 @@ public class FlingSpell extends Spell
             lastFling = 0;
         }
     }
+
+    @Override
+    public void onLoad(ConfigurationNode node)
+    {
+        disableTargeting();
+    }
 }

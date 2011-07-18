@@ -28,4 +28,10 @@ public class MapSpell extends Spell
                
         return false;
     }
+
+    @Override
+    public void onLoad(ConfigurationNode node)
+    {
+        disableTargeting();
+    }
 }

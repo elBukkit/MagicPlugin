@@ -300,4 +300,10 @@ public class LevitateSpell extends Spell
             lastLevitate = 0;
         }
     }
+
+    @Override
+    public void onLoad(ConfigurationNode node)
+    {
+        disableTargeting();
+    }
 }
