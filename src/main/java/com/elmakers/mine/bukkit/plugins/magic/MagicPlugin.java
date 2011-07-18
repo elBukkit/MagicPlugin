@@ -115,6 +115,23 @@ public class MagicPlugin extends JavaPlugin
             return onSpells(player, args);
         }
         
+        if (commandName.equalsIgnoreCase("magic") && args.length > 0)
+        {
+            String subCommand = args[0];
+            if (subCommand.equalsIgnoreCase("reload"))
+            {
+                if (!spells.hasPermission(player, "Magic.commands.magic.reload")) return false;
+                spells.clear();
+                spells.load();
+            }
+            if (subCommand.equalsIgnoreCase("reset"))
+            {
+                if (!spells.hasPermission(player, "Magic.commands.magic.reset")) return false;
+                spells.reset();
+            }
+            
+        }
+        
 	    return false;
 	}
 	

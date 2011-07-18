@@ -313,15 +313,43 @@ public class ConfigurationNode {
     public List<Material> getMaterials(String key, String csvList)
     {
         List<String> defaultMatNames = csv.parseStrings(csvList);
-        List<String> matNames = getStringList(key, defaultMatNames);
+        List<String> materialData = getStringList(key, defaultMatNames);
+        List<String> matNames = new ArrayList<String>();
         
         List<Material> materials = new ArrayList<Material>();
         
-        for (String matName : matNames)
+        for (String matName : materialData)
         {
             Material material = toMaterial(matName);
             materials.add(material);
+            matNames.add(material.name().toLowerCase());
         }
+        
+        setProperty(key, matNames);
+        
+        return materials;
+    }
+
+    public List<Material> getMaterials(String key, List<Material> def)
+    {
+        List<String> defaultMatNames = new ArrayList<String>();
+        for (Material mat : def)
+        {
+            defaultMatNames.add(mat.name().toLowerCase());
+        }
+        List<String> materialData = getStringList(key, defaultMatNames);
+        List<String> matNames = new ArrayList<String>();
+        
+        List<Material> materials = new ArrayList<Material>();
+        
+        for (String matName : materialData)
+        {
+            Material material = toMaterial(matName);
+            materials.add(material);
+            matNames.add(material.name().toLowerCase());
+        }
+        
+        setProperty(key, matNames);
         
         return materials;
     }
@@ -414,6 +442,11 @@ public class ConfigurationNode {
             return null;
         } else if (o instanceof List) {
             return (List<Object>) o;
+        } else if (o instanceof String) {
+            List<String> strings = csv.parseStrings((String)o);
+            List<Object> list = new ArrayList<Object>();
+            list.addAll(strings);
+            return list;
         } else {
             return null;
         }
@@ -435,7 +468,12 @@ public class ConfigurationNode {
         List<Object> raw = getList(path);
 
         if (raw == null) {
-            return def != null ? def : new ArrayList<String>();
+            if (def != null)
+            {
+                setProperty(path, def);
+                return def;
+            }
+            return new ArrayList<String>();
         }
 
         List<String> list = new ArrayList<String>();
@@ -667,6 +705,15 @@ public class ConfigurationNode {
             return (int) (float) (Float) o;
         } else if (o instanceof Long) {
             return (int) (long) (Long) o;
+        } else if (o instanceof String ) {
+            try
+            {
+                return Integer.parseInt((String)o);
+            }
+            catch(NumberFormatException ex)
+            {
+                return null;
+            }
         } else {
             return null;
         }
@@ -691,6 +738,15 @@ public class ConfigurationNode {
             return (double) (Integer) o;
         } else if (o instanceof Long) {
             return (double) (Long) o;
+        } else if (o instanceof String ) {
+            try
+            {
+                return Double.parseDouble((String)o);
+            }
+            catch(NumberFormatException ex)
+            {
+                return null;
+            }
         } else {
             return null;
         }
@@ -707,6 +763,15 @@ public class ConfigurationNode {
             return null;
         } else if (o instanceof Boolean) {
             return (Boolean) o;
+        } else if (o instanceof String ) {
+            try
+            {
+                return Boolean.parseBoolean((String)o);
+            }
+            catch(NumberFormatException ex)
+            {
+                return null;
+            }
         } else {
             return null;
         }

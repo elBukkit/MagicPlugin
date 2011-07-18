@@ -33,11 +33,13 @@ public class FlingSpell extends Spell
 	    Block playerBlock = player.getLocation().getBlock();
 	    	    
 	    // testing out a perf hack- don't send chunks while flinging!
+	    /*
         CraftPlayer cp = (CraftPlayer)player;
         EntityPlayer ep = cp.getHandle();
 	    Chunk chunk = playerBlock.getChunk();
 	    ep.chunkCoordIntPairQueue.clear();
 	    ep.chunkCoordIntPairQueue.add(new ChunkCoordIntPair(chunk.getX(), chunk.getZ()));
+	    */
 	    
 	    while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 	    {

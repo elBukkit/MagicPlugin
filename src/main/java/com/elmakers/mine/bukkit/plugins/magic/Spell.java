@@ -98,25 +98,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         this.player = null;
     }
     
-    public void initialize(String name, String description, String category, Material icon, String[] parameters, String[] properties)
-    {
-        this.name = name;
-        this.description = description;
-        this.category = category;
-        this.parameters = new ConfigurationNode();
-        if (parameters != null && parameters.length > 1)
-        {
-            addParameters(parameters, this.parameters);
-        }
-        this.material = icon;
-        if (properties != null && properties.length > 1)
-        {
-            ConfigurationNode propertiesNode = new ConfigurationNode();
-            addParameters(properties, propertiesNode);
-            this.cooldown = propertiesNode.getInt("cooldown", this.cooldown);
-        }
-    }
-    
     protected static String getBuiltinClasspath()
     {
         String baseClass = Spell.class.getName();
@@ -169,14 +150,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
        }
        
        Spell newSpell = (Spell)newObject;
-       newSpell.name = name;
-       newSpell.load(node);
+       newSpell.load(name, node);
        
        return newSpell;
     }
     
-    protected void load(ConfigurationNode node)
+    protected void load(String name, ConfigurationNode node)
     {
+        this.name = name;
         description = node.getString("description", description);
         material = node.getMaterial("icon", material);
         category = node.getString("category", category);
@@ -208,7 +189,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         node.setProperty("class", className);
         
         // Load will set everything to default values if not preset
-        load(node);
+        load(name, node);
         
         this.onSave(node);
     }
@@ -259,7 +240,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         return cast(new String[0]);
     }
     
-    protected void addParameters(String[] extraParameters, ConfigurationNode parameters)
+    static public void addParameters(String[] extraParameters, ConfigurationNode parameters)
     {
         if (extraParameters != null)
         {

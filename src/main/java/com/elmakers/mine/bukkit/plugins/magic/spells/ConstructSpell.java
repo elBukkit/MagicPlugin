@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -9,16 +8,16 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends Spell
 {
-	static final String		DEFAULT_DESTRUCTIBLES	= "1,2,3,8,9,10,11,12,13,87,88";
+	static final String		DEFAULT_DESTRUCTIBLES	= "0,1,2,3,4,8,9,10,11,12,13,87,88";
 
-	private List<Material>	destructibleMaterials	= new ArrayList<Material>();
+	private List<Material>	destructibleMaterials	= null;
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
+    private int             timeToLive              = 0;
 	
 	public enum ConstructionType
 	{
@@ -81,7 +80,7 @@ public class ConstructSpell extends Spell
 		    material = materialOverride;
 		    data = 0;
 		}
-        
+       
 		int radius = parameters.getInt("radius", defaultRadius);		
 		String typeString = parameters.getString("type", "");
 		
@@ -157,7 +156,15 @@ public class ConstructSpell extends Spell
 			}
 		}
 
-		spells.addToUndoQueue(player, constructedBlocks);
+		if (timeToLive == 0)
+		{
+		    spells.addToUndoQueue(player, constructedBlocks);
+		}
+		else
+		{
+		    constructedBlocks.setTimeToLive(timeToLive);
+		    spells.scheduleCleanup(constructedBlocks);
+		}
 		castMessage(player, "Constructed " + constructedBlocks.size() + "blocks");
 	}
 	
@@ -183,16 +190,16 @@ public class ConstructSpell extends Spell
 
 	public boolean isDestructible(Block block)
 	{
-		if (block.getType() == Material.AIR)
-			return true;
-
 		return destructibleMaterials.contains(block.getType());
 	}
 	
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		destructibleMaterials = PluginProperties.parseMaterials(DEFAULT_DESTRUCTIBLES);
-		defaultRadius = properties.getInteger("default_radius", defaultRadius);
+	    setMaxRange(getMaxRange(), true);
+	    
+	    destructibleMaterials = destructibleMaterials != null ? destructibleMaterials : csv.parseMaterials(DEFAULT_DESTRUCTIBLES);
+		destructibleMaterials = properties.getMaterials("destructible", destructibleMaterials);
+        timeToLive = properties.getInt("undo", timeToLive);
 	}
 }

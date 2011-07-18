@@ -178,11 +178,13 @@ public class LevitateSpell extends Spell
         }
         
         // testing out a perf hack- don't send chunks while flinging!
+        /*
         CraftPlayer cp = (CraftPlayer)player;
         EntityPlayer ep = cp.getHandle();
         Chunk chunk = player.getLocation().getBlock().getChunk();
         ep.chunkCoordIntPairQueue.clear();
         ep.chunkCoordIntPairQueue.add(new ChunkCoordIntPair(chunk.getX(), chunk.getZ()));
+        */
         
         // Calculate speeds based on previous delta, to try to adjust for server lag
         float timeDeltaSeconds = (System.currentTimeMillis() - lastTick) / 1000.0f;

@@ -28,7 +28,6 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.spells.AbsorbSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.AlterSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.ArrowSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.BlastSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.BlinkSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.BoomSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.BridgeSpell;
@@ -52,7 +51,6 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.LavaSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.LevitateSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.LightningSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.MineSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.PeekSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.PillarSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.PortalSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.RecallSpell;
@@ -122,8 +120,6 @@ public class Spells
         createSpell(new AlterSpell(), "alter", Material.REDSTONE_TORCH_ON, "Alter certain objects", "construction", "");
         createSpell(new ArrowSpell(), "arrow", Material.ARROW, "Fire a magic arrow", "combat", "");
         createSpell(new ArrowSpell(), "arrowrain", Material.BOW, "Fire a volley of arrows", "combat", "count 4");
-        createSpell(new BlastSpell(), "blast", Material.SULPHUR, "Mine out a large area", "mining", "");
-        createSpell(new BlastSpell(), "superblast", Material.SLIME_BALL, "Mine out a very large area", "mining", "radius 16");
         createSpell(new BlinkSpell(), "blink", Material.FEATHER, "Teleport to your target", "psychic", "");
         createSpell(new BlinkSpell(), "ascend", Material.RED_MUSHROOM, "Go up to the nearest safe spot", "psychic", "type ascend");
         createSpell(new BlinkSpell(), "descend", Material.BROWN_MUSHROOM, "Travel underground", "psychic", "type descend");
@@ -138,6 +134,10 @@ public class Spells
         createSpell(new ConstructSpell(), "box", Material.GOLD_HELMET, "Create a large hollow box", "construction", "type cuboid fill hollow radius 6");
         createSpell(new ConstructSpell(), "superblob", Material.CLAY_BRICK, "Create a large solid sphere", "construction", "type sphere radius 8");
         createSpell(new ConstructSpell(), "sandblast", Material.SANDSTONE, "Drop a big block of sand", "combat", "type cuboid radius 4 material sand");
+        createSpell(new ConstructSpell(), "blast", Material.SULPHUR, "Mine out a large area", "mining", "type sphere material air", "destructible 1,2,3,4,10,11,12,13,87,88");
+        createSpell(new ConstructSpell(), "superblast", Material.SLIME_BALL, "Mine out a very large area", "mining", "type sphere radius 16 material air", "destructible 1,2,3,4,10,11,12,13,87,88");
+        createSpell(new ConstructSpell(), "peek", Material.SUGAR_CANE, "Temporarily glass the target surface", "alchemy", "material glass type sphere radius 3", "undo 4000 destructible 1,2,3,4,8,9,10,11,12,13,87,88");
+        createSpell(new ConstructSpell(), "breach", Material.SEEDS, "Temporarily destroy the target surface", "alchemy", "material air type sphere radius 4", "undo 10000 destructible 1,2,3,4,8,9,10,11,12,13,87,88");
         createSpell(new CushionSpell(), "cushion", Material.SOUL_SAND, "Create a safety bubble", "alchemy", "");
         createSpell(new DisintegrateSpell(), "disintegrate", Material.BONE, "Damage your target", "combat", "");
         createSpell(new FamiliarSpell(), "familiar", Material.EGG, "Create an animal familiar", "summoner", "");
@@ -168,8 +168,6 @@ public class Spells
         createSpell(new LightningSpell(), "lightning", Material.COOKED_FISH, "Strike lighting at your target", "combat", "");
         createSpell(new LightningSpell(), "storm", Material.GRILLED_PORK, "Start a lightning storm", "elemental", "radius 10", "cooldown 2000");
         createSpell(new MineSpell(), "mine", Material.GOLD_PICKAXE, "Mines and drops the targeted resources", "mining", "");
-        createSpell(new PeekSpell(), "peek", Material.SUGAR_CANE, "Temporarily glass the target surface", "alchemy", "");
-        createSpell(new PeekSpell(), "breach", Material.SEEDS, "Temporarily destroy the target surface", "alchemy", "material air");
         createSpell(new PillarSpell(), "pillar", Material.GOLD_AXE, "Raises a pillar up", "construction", "");
         createSpell(new PillarSpell(), "stalactite", Material.WOOD_AXE, "Create a downward pillar", "construction", "down");
         createSpell(new PortalSpell(), "portal", Material.PORTAL, "Create two connected portals", "psychic", "");
@@ -194,6 +192,10 @@ public class Spells
 
     public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString, String propertiesString)
     {
+        ConfigurationNode spellNode = new ConfigurationNode();
+        ConfigurationNode parameterNode = spellNode.createChild("parameters");
+        ConfigurationNode propertiesNode = spellNode.createChild("properties");
+        
         String[] parameters = null;
         if (parameterString != null && parameterString.length() > 0)
         {
@@ -202,6 +204,8 @@ public class Spells
             if (parameterString.length() > 0)
             {
                 parameters = parameterString.split(" ");
+                
+                Spell.addParameters(parameters, parameterNode);
             }
         }
         
@@ -213,10 +217,16 @@ public class Spells
             if (propertiesString.length() > 0)
             {
                 properties = propertiesString.split(" ");
+                Spell.addParameters(properties, propertiesNode);
             }
         }
         
-        template.initialize(name, description, category, icon, parameters, properties);
+        spellNode.setProperty("description", description);
+        spellNode.setProperty("icon", icon);
+        spellNode.setProperty("category", category);
+        
+        template.load(name, spellNode);
+        
         addSpell(template);
     }
 
@@ -512,6 +522,19 @@ public class Spells
         playerSpells.clear();
         spells.clear();
         spellsByMaterial.clear();
+    }
+    
+    public void reset()
+    {
+        clear();
+        
+        File dataFolder = plugin.getDataFolder();
+        dataFolder.mkdirs();
+        
+        File spellsFile = new File(dataFolder, "spells.yml");
+        spellsFile.delete();
+        
+        load();
     }
 
     /*
