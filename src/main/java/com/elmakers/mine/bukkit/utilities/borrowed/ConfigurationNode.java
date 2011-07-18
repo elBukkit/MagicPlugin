@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utilities.borrowed;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -330,7 +331,7 @@ public class ConfigurationNode {
         return materials;
     }
 
-    public List<Material> getMaterials(String key, List<Material> def)
+    public List<Material> getMaterials(String key, Collection<Material> def)
     {
         List<String> defaultMatNames = new ArrayList<String>();
         for (Material mat : def)

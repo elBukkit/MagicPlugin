@@ -117,6 +117,8 @@ public class FrostSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
+        noTargetThrough(Material.WATER);
+        noTargetThrough(Material.STATIONARY_WATER);
 		defaultRadius = properties.getInteger("radius", defaultRadius);
 		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);
 		timeToLive = properties.getInt("duration", timeToLive);

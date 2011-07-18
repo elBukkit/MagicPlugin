@@ -92,6 +92,27 @@ public class MagicPlugin extends JavaPlugin
 	{
 	    String commandName = cmd.getName();
 	    
+        if (commandName.equalsIgnoreCase("magic") && args.length > 0)
+        {
+            String subCommand = args[0];
+            if (sender instanceof Player)
+            {
+                if (!spells.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return true;
+            }
+            if (subCommand.equalsIgnoreCase("reload"))
+            {
+                spells.clear();
+                spells.load();
+                return true;
+            }
+            if (subCommand.equalsIgnoreCase("reset"))
+            {   
+                spells.reset();
+                return true;
+            }
+            
+        }
+        
 	    // Everything beyond this point is is-game only
 	    if (!(sender instanceof Player)) return false;
 	    
@@ -99,37 +120,20 @@ public class MagicPlugin extends JavaPlugin
 
         if (commandName.equalsIgnoreCase("wand"))
         {
-            if (!spells.hasPermission(player, "Magic.commands.wand")) return false;
+            if (!spells.hasPermission(player, "Magic.commands.wand")) return true;
             return onWand(player, args);
         }
 	    
 	    if (commandName.equalsIgnoreCase("cast"))
         {
-	        if (!spells.hasPermission(player, "Magic.commands.cast")) return false;
+	        if (!spells.hasPermission(player, "Magic.commands.cast")) return true;
             return onCast(player, args);
         }
 
         if (commandName.equalsIgnoreCase("spells"))
         {
-            if (!spells.hasPermission(player, "Magic.commands.spells")) return false;
+            if (!spells.hasPermission(player, "Magic.commands.spells")) return true;
             return onSpells(player, args);
-        }
-        
-        if (commandName.equalsIgnoreCase("magic") && args.length > 0)
-        {
-            String subCommand = args[0];
-            if (subCommand.equalsIgnoreCase("reload"))
-            {
-                if (!spells.hasPermission(player, "Magic.commands.magic.reload")) return false;
-                spells.clear();
-                spells.load();
-            }
-            if (subCommand.equalsIgnoreCase("reset"))
-            {
-                if (!spells.hasPermission(player, "Magic.commands.magic.reset")) return false;
-                spells.reset();
-            }
-            
         }
         
 	    return false;

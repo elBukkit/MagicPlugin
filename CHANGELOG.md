@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.0.6
+
+ - Another massive refactor, spells now loading out of spells.yml
+ - Added /magic reset and /magic reload commands
+ - Collapsed peek, breach, blast and superblast into variants of construct
+
 ## 2.0.5
 
  - Some experimental changes to fling and levitate

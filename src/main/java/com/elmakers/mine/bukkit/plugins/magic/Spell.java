@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -21,6 +20,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.dao.MaterialList;
 import com.elmakers.mine.bukkit.utilities.BlockAction;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -73,7 +73,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
     private double                              xOffset, yOffset, zOffset;
     private int                                 lastX, lastY, lastZ;
     private int                                 targetX, targetY, targetZ;
-    private final HashMap<Material, Boolean>    targetThroughMaterials  = new HashMap<Material, Boolean>();
+    private MaterialList                        targetThroughMaterials  = new MaterialList();
     private boolean                             reverseTargeting        = false;
     private boolean                             usesTargeting           = true;
     
@@ -166,6 +166,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         ConfigurationNode properties = node.getNode("properties");
         if (properties == null) properties = node.createChild("properties");
         cooldown = properties.getInt("cooldown", cooldown);
+
+        targetThrough(Material.AIR);
+        targetThrough(Material.WATER);
+        targetThrough(Material.STATIONARY_WATER);
+        targetThrough(Material.SNOW);
         
         this.onLoad(properties);
         
@@ -173,6 +178,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         {            
             range = properties.getInteger("range", range);
             allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
+            targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
         }
     }
     
@@ -264,12 +270,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         }
         
         lastCast = currentTime;
-
-        targetThrough(Material.AIR);
-        targetThrough(Material.WATER);
-        targetThrough(Material.STATIONARY_WATER);
-        targetThrough(Material.SNOW);
-
         initializeTargeting(player);
 
         return onCast(parameters);
@@ -402,22 +402,22 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public void targetThrough(Material mat)
 	{
-		targetThroughMaterials.put(mat, true);
+		targetThroughMaterials.add(mat);
 	}
 
 	public void noTargetThrough(Material mat)
 	{
-		targetThroughMaterials.put(mat, false);
+		targetThroughMaterials.remove(mat);
 	}
 	
 	public boolean isTargetable(Material mat)
 	{
-		Boolean checkMat = targetThroughMaterials.get(mat);
+		boolean targetThrough = targetThroughMaterials.contains(mat);
 		if (reverseTargeting)
 		{
-			return(checkMat != null && checkMat);
+			return(targetThrough);
 		}
-		return (checkMat == null || !checkMat);
+		return !targetThrough;
 	}
 
 	public void setReverseTargeting(boolean reverse)

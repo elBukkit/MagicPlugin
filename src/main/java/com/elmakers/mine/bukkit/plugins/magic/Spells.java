@@ -60,7 +60,7 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.TreeSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.UndoSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WeatherSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WolfSpell;
-import com.elmakers.mine.bukkit.utilities.PluginProperties;
+import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -176,8 +176,8 @@ public class Spells
         createSpell(new SignSpell(), "sign", Material.SIGN_POST, "Give yourself some signs", "master", "");
         createSpell(new SignSpell(), "tag", Material.SIGN, "Leave a sign with your name", "exploration", "tag", "cooldown 30000");
         createSpell(new TorchSpell(), "torch", Material.TORCH, "Shed some light", "exploration", "");
-        createSpell(new TorchSpell(), "day", Material.FLINT, "Change time time to day", "elemental", "day");
-        createSpell(new TorchSpell(), "night", Material.COAL, "Change time time to night", "elemental", "night");
+        createSpell(new TorchSpell(), "day", Material.FLINT, "Change time time to day", "elemental", "time day");
+        createSpell(new TorchSpell(), "night", Material.COAL, "Change time time to night", "elemental", "time night");
         createSpell(new TreeSpell(), "tree", Material.SAPLING, "Instantly grow a tree", "farming", "");
         createSpell(new UndoSpell(), "rewind", Material.WATCH, "Undo your last action", "alchemy", "");
         createSpell(new UndoSpell(), "erase", Material.LEVER, "Undo your target construction", "alchemy", "");
@@ -244,10 +244,12 @@ public class Spells
         Material m = variant.getMaterial();
         if (m != null && m != Material.AIR)
         {
+            /*
             if (buildingMaterials.contains(m))
             {
                 log.warning("Spell " + variant.getName() + " uses building material as icon: " + m.name().toLowerCase());
             }
+            */
             conflict = spellsByMaterial.get(m);
             if (conflict != null)
             {
@@ -438,8 +440,6 @@ public class Spells
     {
         this.plugin = plugin;
         load();
-
-        log.info("Magic: Loaded " + spells.size() + " spells.");
     }
 
     public void load()
@@ -447,10 +447,10 @@ public class Spells
         File dataFolder = plugin.getDataFolder();
         dataFolder.mkdirs();
 
-        // TODO: Replace this with defaults read from a YML file
-        loadProperties(dataFolder);
+        File propertiesFile = new File(dataFolder, propertiesFileName);
+        loadProperties(propertiesFile);
         
-        File spellsFile = new File(dataFolder, "spells.yml");
+        File spellsFile = new File(dataFolder, spellsFileName);
 
         if (!spellsFile.exists())
         {
@@ -461,6 +461,8 @@ public class Spells
         {
             load(spellsFile);
         }
+
+        log.info("Magic: Loaded " + spells.size() + " spells.");
     }
     
     protected void save(File spellsFile)
@@ -499,20 +501,22 @@ public class Spells
         }
     }
 
-    protected void loadProperties(File dataFolder)
+    protected void loadProperties(File propertiesFile)
     {
-        File pFile = new File(dataFolder, propertiesFile);
-        PluginProperties properties = new PluginProperties(pFile.getAbsolutePath());
+        Configuration properties = new Configuration(propertiesFile);
         properties.load();
 
-        undoQueueDepth = properties.getInteger("spells-general-undo-depth", undoQueueDepth);
-        silent = properties.getBoolean("spells-general-silent", silent);
-        quiet = properties.getBoolean("spells-general-quiet", quiet);
-        stickyMaterials = PluginProperties.parseMaterials(STICKY_MATERIALS);
-        stickyMaterialsDoubleHeight = PluginProperties.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
-
-        buildingMaterials = properties.getMaterials("spells-general-building", DEFAULT_BUILDING_MATERIALS);
-        wandTypeId = properties.getInteger("wand-type-id", wandTypeId);
+        ConfigurationNode generalNode = properties.createChild("general");
+        undoQueueDepth = generalNode.getInteger("undo_depth", undoQueueDepth);
+        silent = generalNode.getBoolean("silent", silent);
+        quiet = generalNode.getBoolean("quiet", quiet);
+     
+        buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
+        wandTypeId = generalNode.getInteger("wand_type_id", wandTypeId);
+        
+        CSVParser csv = new CSVParser();
+        stickyMaterials = csv.parseMaterials(STICKY_MATERIALS);
+        stickyMaterialsDoubleHeight = csv.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
 
         properties.save();
     }
@@ -526,12 +530,13 @@ public class Spells
     
     public void reset()
     {
+        log.info("Magic: Resetting all spells to default");
         clear();
         
         File dataFolder = plugin.getDataFolder();
         dataFolder.mkdirs();
         
-        File spellsFile = new File(dataFolder, "spells.yml");
+        File spellsFile = new File(dataFolder, spellsFileName);
         spellsFile.delete();
         
         load();
@@ -822,7 +827,8 @@ public class Spells
     /*
      * Private data
      */
-    private final String                        propertiesFile                 = "magic.properties";
+    private final String                        spellsFileName                 = "spells.yml";
+    private final String                        propertiesFileName             = "magic.yml";
     private int                                 wandTypeId                     = 280;
 
     static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96";
