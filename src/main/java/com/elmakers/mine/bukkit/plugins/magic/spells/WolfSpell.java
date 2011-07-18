@@ -28,10 +28,10 @@ public class WolfSpell extends Spell
 		}
 		
 		Block targetBlock = target.getBlock();
-        targetBlock = targetBlock.getFace(BlockFace.UP);
+        targetBlock = targetBlock.getRelative(BlockFace.UP);
 		if (target.isEntity())
         {      
-            targetBlock = targetBlock.getFace(BlockFace.SOUTH);
+            targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
         }
 		
 		CraftWolf entity = (CraftWolf)player.getWorld().spawnCreature(targetBlock.getLocation(), CreatureType.WOLF);

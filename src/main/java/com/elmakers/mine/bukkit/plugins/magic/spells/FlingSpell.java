@@ -43,7 +43,7 @@ public class FlingSpell extends Spell
 	    
 	    while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 	    {
-	        playerBlock = playerBlock.getFace(BlockFace.DOWN);
+	        playerBlock = playerBlock.getRelative(BlockFace.DOWN);
 	        height++;
 	    }
 	    

@@ -966,7 +966,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean isUnderwater()
 	{
 		Block playerBlock = getPlayerBlock();
-		playerBlock = playerBlock.getFace(BlockFace.UP);
+		playerBlock = playerBlock.getRelative(BlockFace.UP);
 		return (playerBlock.getType() == Material.WATER || playerBlock.getType() == Material.STATIONARY_WATER);
 	}
 	
@@ -1025,7 +1025,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				boolean enoughSpace = true;
 				for (int i = 1; i < targetHeightRequired; i++)
 				{
-					block = block.getFace(BlockFace.UP);
+					block = block.getRelative(BlockFace.UP);
 					if (!isTargetable(block.getType()))
 					{
 						enoughSpace = false;
@@ -1118,7 +1118,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
                         while (depth < verticalSearchDistance && block.getType() == Material.AIR)
                         {
                             depth++;
-                            block = block.getFace(BlockFace.DOWN);
+                            block = block.getRelative(BlockFace.DOWN);
                         }   
                     }
                     else
@@ -1126,12 +1126,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
                         while (depth < verticalSearchDistance && block.getType() != Material.AIR)
                         {
                             depth++;
-                            block = block.getFace(BlockFace.UP);
+                            block = block.getRelative(BlockFace.UP);
                         }
-                        block = block.getFace(BlockFace.DOWN);
+                        block = block.getRelative(BlockFace.DOWN);
                     }
 
-                    Block coveringBlock = block.getFace(BlockFace.UP);
+                    Block coveringBlock = block.getRelative(BlockFace.UP);
                     if (block.getType() != Material.AIR && coveringBlock.getType() == Material.AIR)
                     {
                         action.perform(block);

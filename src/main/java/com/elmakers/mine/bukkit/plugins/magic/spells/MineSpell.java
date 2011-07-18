@@ -73,12 +73,12 @@ public class MineSpell extends Spell
 		
 		if (rDepth < maxRecursion)
 		{
-			tryMine(block.getFace(BlockFace.NORTH), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getFace(BlockFace.WEST), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getFace(BlockFace.SOUTH), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getFace(BlockFace.EAST), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getFace(BlockFace.UP), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getFace(BlockFace.DOWN), fillMaterial, minedBlocks, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.NORTH), fillMaterial, minedBlocks, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.WEST), fillMaterial, minedBlocks, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.SOUTH), fillMaterial, minedBlocks, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.EAST), fillMaterial, minedBlocks, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.UP), fillMaterial, minedBlocks, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.DOWN), fillMaterial, minedBlocks, rDepth + 1);
 		}
 	}
 	

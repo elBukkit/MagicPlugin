@@ -55,7 +55,7 @@ public class StairsSpell extends Spell
 		Block bottomLeftBlock = bottomBlock;
 		for (int i = 0; i < width / 2; i ++)
 		{
-			bottomLeftBlock = bottomLeftBlock.getFace(toTheLeft);
+			bottomLeftBlock = bottomLeftBlock.getRelative(toTheLeft);
 		}
 		
 		targetBlock = bottomLeftBlock;
@@ -76,11 +76,11 @@ public class StairsSpell extends Spell
 						Block checkBlock = null;
 						if (w == 0)
 						{
-							checkBlock = targetBlock.getFace(toTheLeft);
+							checkBlock = targetBlock.getRelative(toTheLeft);
 						}
 						else
 						{
-							checkBlock = targetBlock.getFace(toTheRight);
+							checkBlock = targetBlock.getRelative(toTheRight);
 						}
 						// Put torches on the left and right wall 
 						boolean useTorch = 
@@ -108,19 +108,19 @@ public class StairsSpell extends Spell
 							tunneledBlocks.add(targetBlock);
 							targetBlock.setType(Material.AIR);
 						}
-						Block standingBlock = targetBlock.getFace(BlockFace.DOWN);
+						Block standingBlock = targetBlock.getRelative(BlockFace.DOWN);
 						if (standingBlock.getType() == Material.AIR)
 						{
 							stairBlocks.add(standingBlock);
 							standingBlock.setType(fillMaterial);
 						}
 					}
-					targetBlock = targetBlock.getFace(BlockFace.UP);
+					targetBlock = targetBlock.getRelative(BlockFace.UP);
 				}
-				bottomBlock = bottomBlock.getFace(toTheRight);
+				bottomBlock = bottomBlock.getRelative(toTheRight);
 			}
-			bottomLeftBlock = bottomLeftBlock.getFace(horzDirection);
-			bottomLeftBlock = bottomLeftBlock.getFace(vertDirection);
+			bottomLeftBlock = bottomLeftBlock.getRelative(horzDirection);
+			bottomLeftBlock = bottomLeftBlock.getRelative(vertDirection);
 		}
 
 		spells.addToUndoQueue(player, tunneledBlocks);

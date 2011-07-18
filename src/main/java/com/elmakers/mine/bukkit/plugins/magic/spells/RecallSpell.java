@@ -96,7 +96,7 @@ public class RecallSpell extends Spell
 			castMessage(player, "No target");
 			return false;
 		}
-		Block targetBlock = target.getFace(BlockFace.UP);
+		Block targetBlock = target.getRelative(BlockFace.UP);
 		if (targetBlock.getType() != Material.AIR)
 		{
 			targetBlock = getFaceBlock();

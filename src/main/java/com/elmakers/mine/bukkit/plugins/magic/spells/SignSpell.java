@@ -30,7 +30,7 @@ public class SignSpell extends Spell
         if (target.isBlock())
         {
             Block targetBlock = getFaceBlock();
-            if (targetBlock.getFace(BlockFace.DOWN).getType() == Material.AIR)
+            if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)
             {
                 targetBlock.setType(Material.WALL_SIGN);
                 switch(target.getBlock().getFace(targetBlock))

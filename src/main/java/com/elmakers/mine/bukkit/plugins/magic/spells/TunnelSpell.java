@@ -34,12 +34,12 @@ public class TunnelSpell extends Spell
 		}
 		
 		BlockFace direction = getPlayerFacing();
-		Block searchBlock = playerBlock.getFace(BlockFace.UP).getFace(BlockFace.UP);
+		Block searchBlock = playerBlock.getRelative(BlockFace.UP).getRelative(BlockFace.UP);
 		
 		int searchDistance = 0;
 		while (searchBlock.getType() == Material.AIR && searchDistance < defaultSearchDistance)
 		{
-			searchBlock = searchBlock.getFace(direction);
+			searchBlock = searchBlock.getRelative(direction);
 			searchDistance++;
 		}
 		
@@ -51,11 +51,11 @@ public class TunnelSpell extends Spell
 		
 		BlockFace toTheLeft = goLeft(direction);
 		BlockFace toTheRight = goRight(direction);
-		Block bottomBlock = searchBlock.getFace(BlockFace.DOWN);
+		Block bottomBlock = searchBlock.getRelative(BlockFace.DOWN);
 		Block bottomLeftBlock = bottomBlock;
 		for (int i = 0; i < width / 2; i ++)
 		{
-			bottomLeftBlock = bottomLeftBlock.getFace(toTheLeft);
+			bottomLeftBlock = bottomLeftBlock.getRelative(toTheLeft);
 		}
 		
 		Block targetBlock = bottomLeftBlock;
@@ -89,11 +89,11 @@ public class TunnelSpell extends Spell
 							Block checkBlock = null;
 							if (w == 0)
 							{
-								checkBlock = targetBlock.getFace(toTheLeft);
+								checkBlock = targetBlock.getRelative(toTheLeft);
 							}
 							else
 							{
-								checkBlock = targetBlock.getFace(toTheRight);
+								checkBlock = targetBlock.getRelative(toTheRight);
 							}
 							if (checkBlock.getType() == Material.AIR)
 							{
@@ -109,11 +109,11 @@ public class TunnelSpell extends Spell
 							targetBlock.setType(Material.AIR);
 						}
 					}
-					targetBlock = targetBlock.getFace(BlockFace.UP);
+					targetBlock = targetBlock.getRelative(BlockFace.UP);
 				}
-				bottomBlock = bottomBlock.getFace(toTheRight);
+				bottomBlock = bottomBlock.getRelative(toTheRight);
 			}
-			bottomLeftBlock = bottomLeftBlock.getFace(direction);
+			bottomLeftBlock = bottomLeftBlock.getRelative(direction);
 		}
 
 		spells.addToUndoQueue(player, tunneledBlocks);

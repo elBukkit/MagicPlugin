@@ -125,14 +125,14 @@ public class LevitateSpell extends Spell
         Location playerLocation = player.getLocation();
         World world = playerLocation.getWorld();
         Block targetBlock = world.getBlockAt(playerLocation);
-        targetBlock = targetBlock.getFace(BlockFace.DOWN);
+        targetBlock = targetBlock.getRelative(BlockFace.DOWN);
         
         int newGroundHeight = targetBlock.getY();
         
         while (targetBlock.getType() == Material.AIR && newGroundHeight > 1)
         {
             newGroundHeight--;
-            targetBlock = targetBlock.getFace(BlockFace.DOWN);
+            targetBlock = targetBlock.getRelative(BlockFace.DOWN);
         }
         
         // if the terrain has changed more than the auto-hover tolerance, re-adjust hover height and keep level.

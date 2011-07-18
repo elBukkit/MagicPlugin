@@ -30,14 +30,14 @@ public class PillarSpell extends Spell
             direction = BlockFace.DOWN;
         }
 		
-		Block targetBlock = attachBlock.getFace(direction);
+		Block targetBlock = attachBlock.getRelative(direction);
 		int distance = 0;
 		
 		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
 		{
 			distance++;
 			attachBlock = targetBlock;
-			targetBlock = attachBlock.getFace(direction);
+			targetBlock = attachBlock.getRelative(direction);
 		}
 		if (isTargetable(targetBlock.getType()))
 		{

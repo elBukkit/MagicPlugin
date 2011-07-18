@@ -179,7 +179,7 @@ public class Targeting
                 boolean enoughSpace = true;
                 for (int i = 1; i < targetHeightRequired; i++)
                 {
-                    block = block.getFace(BlockFace.UP);
+                    block = block.getRelative(BlockFace.UP);
                     if (!isTargetable(block.getType()))
                     {
                         enoughSpace = false;

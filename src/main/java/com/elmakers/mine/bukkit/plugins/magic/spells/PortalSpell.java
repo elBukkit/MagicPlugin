@@ -235,7 +235,7 @@ public class PortalSpell extends Spell
 		}
 		
 		Material blockType = target.getType();
-		Block portalBase = target.getFace(BlockFace.UP);
+		Block portalBase = target.getRelative(BlockFace.UP);
 		blockType = portalBase.getType();
 		if (blockType != Material.AIR)
 		{

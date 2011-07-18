@@ -27,7 +27,7 @@ public class FireSpell extends Spell
             }
             else
             {
-                block = block.getFace(BlockFace.UP);
+                block = block.getRelative(BlockFace.UP);
             }
             
             super.perform(block);
@@ -78,7 +78,7 @@ public class FireSpell extends Spell
 			while (depth < verticalSearchDistance && block.getType() == Material.AIR)
 			{
 				depth++;
-				block = block.getFace(BlockFace.DOWN);
+				block = block.getRelative(BlockFace.DOWN);
 			}	
 		}
 		else
@@ -86,9 +86,9 @@ public class FireSpell extends Spell
 			while (depth < verticalSearchDistance && block.getType() != Material.AIR)
 			{
 				depth++;
-				block = block.getFace(BlockFace.UP);
+				block = block.getRelative(BlockFace.UP);
 			}
-			block = block.getFace(BlockFace.DOWN);
+			block = block.getRelative(BlockFace.DOWN);
 		}
 
 		if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
@@ -103,7 +103,7 @@ public class FireSpell extends Spell
 		}
 		else
 		{
-			block = block.getFace(BlockFace.UP);
+			block = block.getRelative(BlockFace.UP);
 		}
 		
 		burnedBlocks.add(block);

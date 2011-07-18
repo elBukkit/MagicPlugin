@@ -69,12 +69,12 @@ public class AlterSpell extends Spell
 		if (recursive && rDepth < recurseDistance)
 		{
 			Material targetMaterial = block.getType();
-			tryAdjust(block.getFace(BlockFace.NORTH), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getFace(BlockFace.WEST), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getFace(BlockFace.SOUTH), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getFace(BlockFace.EAST), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getFace(BlockFace.UP), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getFace(BlockFace.DOWN), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);			
+			tryAdjust(block.getRelative(BlockFace.NORTH), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.WEST), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.SOUTH), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.EAST), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);			
 		}
 	}
 	

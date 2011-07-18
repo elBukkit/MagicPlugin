@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.7
+
+ - Add casting costs to spells
+
 ## 2.0.6
 
  - Another massive refactor, spells now loading out of spells.yml

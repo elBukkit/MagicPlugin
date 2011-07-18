@@ -46,7 +46,7 @@ public class FrostSpell extends Spell
             }
             else
             {
-                block = block.getFace(BlockFace.UP);
+                block = block.getRelative(BlockFace.UP);
             }
             super.perform(block);
             block.setType(material);

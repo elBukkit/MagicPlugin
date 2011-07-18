@@ -26,7 +26,7 @@ public class BridgeSpell extends Spell
 		
 		BlockFace direction = getPlayerFacing();
 		Block attachBlock = playerBlock;
-		Block targetBlock = attachBlock.getFace(direction);
+		Block targetBlock = attachBlock.getRelative(direction);
 		
 		Material material = targetBlock.getType();
 		byte data = targetBlock.getData();
@@ -43,7 +43,7 @@ public class BridgeSpell extends Spell
 		{
 			distance++;
 			attachBlock = targetBlock;
-			targetBlock = attachBlock.getFace(direction);
+			targetBlock = attachBlock.getRelative(direction);
 		}
 		if (isTargetable(targetBlock.getType()))
 		{

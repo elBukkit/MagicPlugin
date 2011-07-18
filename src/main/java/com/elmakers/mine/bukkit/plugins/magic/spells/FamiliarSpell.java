@@ -111,7 +111,7 @@ public class FamiliarSpell extends Spell
 		if (target.isEntity())
 		{
 		    
-		    targetBlock = targetBlock.getFace(BlockFace.SOUTH);
+		    targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
 		    Entity e = target.getEntity();
 		    if (e instanceof LivingEntity)
 		    {
@@ -119,7 +119,7 @@ public class FamiliarSpell extends Spell
 		    }
 		}
 	    
-		targetBlock = targetBlock.getFace(BlockFace.UP);
+		targetBlock = targetBlock.getRelative(BlockFace.UP);
 	       	
 		CreatureType famType = CreatureType.PIG;
 		FamiliarClass famClass = FamiliarClass.FRIENDLY;

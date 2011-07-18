@@ -113,11 +113,11 @@ public class BlinkSpell extends Spell
     	{
     		destination = target;
     	}
-    	Block groundBlock = destination.getFace(BlockFace.DOWN);
+    	Block groundBlock = destination.getRelative(BlockFace.DOWN);
     	while (distanceDown < verticalSearchDistance && !isOkToStandOn(groundBlock.getType()))
     	{
     		destination = groundBlock;
-    		groundBlock = destination.getFace(BlockFace.DOWN);
+    		groundBlock = destination.getRelative(BlockFace.DOWN);
     		distanceDown++;
     	}
     	
@@ -132,10 +132,10 @@ public class BlinkSpell extends Spell
     		
         	do
         	{
-        		oneUp = ledge.getFace(BlockFace.UP);
-        		twoUp = oneUp.getFace(BlockFace.UP);
-        		inFront = inFront.getFace(BlockFace.UP);
-        		ledge = ledge.getFace(BlockFace.UP);
+        		oneUp = ledge.getRelative(BlockFace.UP);
+        		twoUp = oneUp.getRelative(BlockFace.UP);
+        		inFront = inFront.getRelative(BlockFace.UP);
+        		ledge = ledge.getRelative(BlockFace.UP);
         		distanceUp++;
         	}
         	while
@@ -156,8 +156,8 @@ public class BlinkSpell extends Spell
     		destination = ledge;
     	}
     	
-		Block oneUp = destination.getFace(BlockFace.UP);
-		Block twoUp = oneUp.getFace(BlockFace.UP);
+		Block oneUp = destination.getRelative(BlockFace.UP);
+		Block twoUp = oneUp.getRelative(BlockFace.UP);
 		if (!isOkToStandIn(oneUp.getType()) || !isOkToStandIn(twoUp.getType()))
 		{
 			castMessage(player, "You can't fit in there!");

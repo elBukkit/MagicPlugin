@@ -21,7 +21,7 @@ public class BlockRecurse
         BlockList affectedBlocks = recurseAction.getBlocks();
         if (nextFace != null)
         {
-            block = block.getFace(nextFace);
+            block = block.getRelative(nextFace);
         }
         if (affectedBlocks.contains(block))
         {
