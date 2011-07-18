@@ -57,7 +57,6 @@ public class FrostSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-	    setMaxRange(16, false);
 	    Target target = getTarget();
 
         if (target == null)

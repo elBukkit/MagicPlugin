@@ -19,7 +19,7 @@ public class AbsorbSpell extends Spell
         List<Material> buildingMaterials = spells.getBuildingMaterials();
         
         material = parameters.getMaterial("material", material);
-        if (buildingMaterials.contains(material))
+        if (material != Material.AIR && buildingMaterials.contains(material))
         {
             int amount = giveAmount;
             byte data = 0;

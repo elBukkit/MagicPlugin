@@ -25,7 +25,6 @@ public class SignSpell extends Spell
             return giveMaterial(Material.SIGN, 8, (short)0, (byte)0);
         }
         
-        setMaxRange(8, false);
         targetEntity(Player.class);
         Target target = getTarget();
         if (target.isBlock())

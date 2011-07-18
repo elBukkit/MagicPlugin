@@ -196,8 +196,6 @@ public class ConstructSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-	    setMaxRange(getMaxRange(), true);
-	    
 	    destructibleMaterials = destructibleMaterials != null ? destructibleMaterials : csv.parseMaterials(DEFAULT_DESTRUCTIBLES);
 		destructibleMaterials = properties.getMaterials("destructible", destructibleMaterials);
         timeToLive = properties.getInt("undo", timeToLive);

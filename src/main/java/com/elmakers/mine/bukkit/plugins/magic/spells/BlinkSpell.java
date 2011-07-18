@@ -43,8 +43,6 @@ public class BlinkSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-	    setMaxRange(255, false);
-	    
         String elevateType = parameters.getString("type", "");
         if (elevateType.equals("descend"))
         {

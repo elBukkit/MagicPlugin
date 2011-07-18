@@ -154,6 +154,7 @@ public class ForceSpell extends Spell
     {
         if (targetEntity != null)
         {
+            /*
             if 
             (
                     (targetEntity instanceof LivingEntity) 
@@ -163,6 +164,7 @@ public class ForceSpell extends Spell
             {
                 player.sendMessage("Released target");
             }
+            */
             targetEntity = null;
         }
     }
