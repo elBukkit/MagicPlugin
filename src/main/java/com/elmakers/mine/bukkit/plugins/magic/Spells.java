@@ -129,11 +129,11 @@ public class Spells
         createSpell(new BoomSpell(), "kamikazee", Material.DEAD_BUSH, "Kill yourself with an explosion", "combat", "size 8 target here");
         createSpell(new BoomSpell(), "nuke", Material.BED, "Create a huge explosino", "combat", "size 20");
         createSpell(new BridgeSpell(), "bridge", Material.GOLD_HOE, "Extend the ground underneath you", "construction", "");
-        createSpell(new ConstructSpell(), "blob", Material.CLAY_BALL, "Create a solid blob", "construction", "type sphere radius 3");
+        createSpell(new ConstructSpell(), "blob", Material.CLAY_BALL, "Create a solid blob", "construction", "type sphere radius 3", "allow_max_range true");
         createSpell(new ConstructSpell(), "shell", Material.BOWL, "Create a large spherical shell", "construction", "type sphere fill hollow radius 10");
         createSpell(new ConstructSpell(), "box", Material.GOLD_HELMET, "Create a large hollow box", "construction", "type cuboid fill hollow radius 6");
-        createSpell(new ConstructSpell(), "superblob", Material.CLAY_BRICK, "Create a large solid sphere", "construction", "type sphere radius 8");
-        createSpell(new ConstructSpell(), "sandblast", Material.SANDSTONE, "Drop a big block of sand", "combat", "type cuboid radius 4 material sand");
+        createSpell(new ConstructSpell(), "superblob", Material.CLAY_BRICK, "Create a large solid sphere", "construction", "type sphere radius 8", "allow_max_range true");
+        createSpell(new ConstructSpell(), "sandblast", Material.SANDSTONE, "Drop a big block of sand", "combat", "type cuboid radius 4 material sand", "allow_max_range true");
         createSpell(new ConstructSpell(), "blast", Material.SULPHUR, "Mine out a large area", "mining", "type sphere material air", "destructible 1,2,3,4,10,11,12,13,87,88");
         createSpell(new ConstructSpell(), "superblast", Material.SLIME_BALL, "Mine out a very large area", "mining", "type sphere radius 16 material air", "destructible 1,2,3,4,10,11,12,13,87,88");
         createSpell(new ConstructSpell(), "peek", Material.SUGAR_CANE, "Temporarily glass the target surface", "alchemy", "material glass type sphere radius 3", "undo 4000 destructible 1,2,3,4,8,9,10,11,12,13,87,88");
@@ -145,16 +145,16 @@ public class Spells
         createSpell(new FamiliarSpell(), "mob", Material.JACK_O_LANTERN, "Summon a mob of monsters", "summoner", "type mob count 20");
         createSpell(new FamiliarSpell(), "farm", Material.WHEAT, "Create a herd", "farming", "30");
         createSpell(new FillSpell(), "fill", Material.GOLD_SPADE, "Fill a selected area (cast twice)", "construction", "");
-        createSpell(new FillSpell(), "paint", Material.PAINTING, "Fill a single block", "alchemy", "single");
-        createSpell(new FillSpell(), "recurse", Material.WOOD_SPADE, "Recursively fill blocks", "alchemy", "recurse");
+        createSpell(new FillSpell(), "paint", Material.PAINTING, "Fill a single block", "alchemy", "type single");
+        createSpell(new FillSpell(), "recurse", Material.WOOD_SPADE, "Recursively fill blocks", "alchemy", "type recurse");
         createSpell(new FireballSpell(), "fireball", Material.NETHERRACK, "Cast an exploding fireball", "combat", "", "cooldown 1500");
         createSpell(new FireSpell(), "fire", Material.FLINT_AND_STEEL, "Light fires from a distance", "elemental", "");
         createSpell(new FireSpell(), "inferno", Material.FIRE, "Burn a wide area", "master", "6");
         createSpell(new FlingSpell(), "fling", Material.LEATHER_BOOTS, "Sends you flying in the target direction", "psychic", "size 5");
-        createSpell(new ForceSpell(), "force", Material.STRING, "Use telekinesis", "psychic", "");
-        createSpell(new ForceSpell(), "pull", Material.FISHING_ROD, "Pull things toward you", "psychic", "type pull");
-        createSpell(new ForceSpell(), "push", Material.RAILS, "Push things away from you", "psychic", "type push");
-        createSpell(new FrostSpell(), "frost", Material.SNOW_BALL, "Freeze water and create snow", "alchemy", "");
+        createSpell(new ForceSpell(), "force", Material.STRING, "Use telekinesis", "psychic", "", "allow_max_range true range 48");
+        createSpell(new ForceSpell(), "pull", Material.FISHING_ROD, "Pull things toward you", "psychic", "type pull range 32");
+        createSpell(new ForceSpell(), "push", Material.RAILS, "Push things away from you", "psychic", "type push range 16");
+        createSpell(new FrostSpell(), "frost", Material.SNOW_BALL, "Freeze water and create snow", "alchemy", "", "range 24");
         createSpell(new GillsSpell(), "gills", Material.RAW_FISH, "Restores health while moving underwater", "medic", "");
         createSpell(new GotoSpell(), "gather", Material.GLOWSTONE_DUST, "Gather groups of players together", "master", "");     
         createSpell(new GrenadeSpell(), "grenade", Material.TNT, "Place a primed grenade", "combat", "", "cooldown 2000");
@@ -361,7 +361,7 @@ public class Spells
     public void unregisterEvent(SpellEventType type, Spell spell)
     {
         PlayerSpells spells = getPlayerSpells(spell.getPlayer());
-        spells.registerEvent(type, spell);
+        spells.unregisterEvent(type, spell);
     }
 
     /*
