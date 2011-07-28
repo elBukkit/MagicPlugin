@@ -49,7 +49,7 @@ public class ConfigurationNode {
         this.root = newRoot;
     }
     
-    protected ConfigurationNode(Map<String, Object> root) {
+    public ConfigurationNode(Map<String, Object> root) {
         this.root = root;
     }
 
@@ -228,7 +228,7 @@ public class ConfigurationNode {
         return toMaterial(o);
     }
     
-    protected Material toMaterial(Object o)
+    public static Material toMaterial(Object o)
     {
         if (o instanceof Material) {
             return (Material)o;

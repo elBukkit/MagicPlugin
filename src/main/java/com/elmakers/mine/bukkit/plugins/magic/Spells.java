@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -157,8 +158,8 @@ public class Spells
         createSpell(new FrostSpell(), "frost", Material.SNOW_BALL, "Freeze water and create snow", "alchemy", "", "range 24");
         createSpell(new GillsSpell(), "gills", Material.RAW_FISH, "Restores health while moving underwater", "medic", "");
         createSpell(new GotoSpell(), "gather", Material.GLOWSTONE_DUST, "Gather groups of players together", "master", "");     
-        createSpell(new GrenadeSpell(), "grenade", Material.TNT, "Place a primed grenade", "combat", "", "cooldown 2000");
-        createSpell(new HealSpell(), "heal", Material.BREAD, "Heal yourself or others", "medic", "", "cooldown 5000");
+        createSpell(new GrenadeSpell(), "grenade", Material.TNT, "Place a primed grenade", "combat", "", "cooldown 2000", "tnt 1");
+        createSpell(new HealSpell(), "heal", Material.BREAD, "Heal yourself or others", "medic", "", "cooldown 5000", "apple 1 wheat 1");
         createSpell(new InvincibleSpell(), "invincible", Material.GOLDEN_APPLE, "Make yourself impervious to damage", "master", "");
         createSpell(new InvincibleSpell(), "ironskin", Material.IRON_CHESTPLATE, "Protect you from damage", "master", "amount 99");
         createSpell(new InvincibleSpell(), "leatherskin", Material.LEATHER_CHESTPLATE, "Protect you from some damage", "combat", "amount 50");
@@ -169,10 +170,10 @@ public class Spells
         createSpell(new LightningSpell(), "storm", Material.GRILLED_PORK, "Start a lightning storm", "elemental", "radius 10", "cooldown 2000");
         createSpell(new MineSpell(), "mine", Material.GOLD_PICKAXE, "Mines and drops the targeted resources", "mining", "");
         createSpell(new PillarSpell(), "pillar", Material.GOLD_AXE, "Raises a pillar up", "construction", "");
-        createSpell(new PillarSpell(), "stalactite", Material.WOOD_AXE, "Create a downward pillar", "construction", "down");
+        createSpell(new PillarSpell(), "stalactite", Material.WOOD_AXE, "Create a downward pillar", "construction", "type down");
         createSpell(new PortalSpell(), "portal", Material.PORTAL, "Create two connected portals", "psychic", "");
         createSpell(new RecallSpell(), "recall", Material.COMPASS, "Marks locations for return", "exploration", "");
-        createSpell(new RecallSpell(), "spawn", Material.YELLOW_FLOWER, "Take yourself back home", "exploration", "spawn");
+        createSpell(new RecallSpell(), "spawn", Material.YELLOW_FLOWER, "Take yourself back home", "exploration", "type spawn");
         createSpell(new SignSpell(), "sign", Material.SIGN_POST, "Give yourself some signs", "master", "");
         createSpell(new SignSpell(), "tag", Material.SIGN, "Leave a sign with your name", "exploration", "tag", "cooldown 30000");
         createSpell(new TorchSpell(), "torch", Material.TORCH, "Shed some light", "exploration", "");
@@ -187,40 +188,55 @@ public class Spells
 
     public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
     {
-        createSpell(template, name, icon, description, category, parameterString, null);
+        createSpell(template, name, icon, description, category, parameterString, null, null);
     }
-
+    
     public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString, String propertiesString)
+    {
+        createSpell(template, name, icon, description, category, parameterString, propertiesString, null);    
+    }
+    
+    public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString, String propertiesString, String costsString)
     {
         ConfigurationNode spellNode = new ConfigurationNode();
         ConfigurationNode parameterNode = spellNode.createChild("parameters");
         ConfigurationNode propertiesNode = spellNode.createChild("properties");
         
-        String[] parameters = null;
         if (parameterString != null && parameterString.length() > 0)
         {
-            parameters = new String[0];
-        
-            if (parameterString.length() > 0)
-            {
-                parameters = parameterString.split(" ");
-                
-                Spell.addParameters(parameters, parameterNode);
-            }
+            String[] parameters = parameterString.split(" ");
+            Spell.addParameters(parameters, parameterNode);
         }
         
-        String[] properties = null;
         if (propertiesString != null && propertiesString.length() > 0)
         {
-            properties = new String[0];
-        
-            if (propertiesString.length() > 0)
-            {
-                properties = propertiesString.split(" ");
-                Spell.addParameters(properties, propertiesNode);
-            }
+            String[] properties = propertiesString.split(" ");
+            Spell.addParameters(properties, propertiesNode);
         }
         
+        if (costsString != null && costsString.length() > 0)
+        {
+            List< Map<String, Object> > costs = new ArrayList< Map<String, Object> >();
+            String[] costPairs = costsString.split(" ");
+            for (int i = 0; i < costPairs.length - 1; i += 2)
+            {
+                try
+                {
+                    int amount = Integer.parseInt(costPairs[i + 1]);
+                    Map<String, Object> cost = new HashMap<String, Object>();
+                    cost.put("material", costPairs[i]);
+                    cost.put("amount", amount);
+                    costs.add(cost);
+                }
+                catch(Exception ex)
+                {
+                    
+                }
+            }
+            
+            spellNode.setProperty("costs", costs);
+        }
+
         spellNode.setProperty("description", description);
         spellNode.setProperty("icon", icon);
         spellNode.setProperty("category", category);

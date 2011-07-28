@@ -15,6 +15,13 @@ public class GotoSpell extends Spell
     @Override
     public boolean onCast(ConfigurationNode parameters) 
     {
+        String playerName = parameters.getString("player");
+        Player targetPlayer = null;
+        if (playerName != null)
+        {
+            targetPlayer = spells.getPlugin().getServer().getPlayer(playerName);
+        }
+        
         targetEntity(Player.class);
         
         if (getYRotation() > 80)
@@ -31,11 +38,11 @@ public class GotoSpell extends Spell
         
         if (targetEntity != null && targetEntity instanceof Player)
         {
-            Player targetPlayer = (Player)targetEntity;
-            Player destination = getFarthestPlayer(targetPlayer);
+            Player targetedPlayer = (Player)targetEntity;
+            Player destination = getFarthestPlayer(targetedPlayer);
             if (destination == null) return false;
-            targetPlayer.teleport(destination);
-            castMessage(player, "Teleporting " + targetPlayer.getName() + " to " + destination.getName());
+            targetedPlayer.teleport(destination);
+            castMessage(player, "Teleporting " + targetedPlayer.getName() + " to " + destination.getName());
             return true;
         }
         
@@ -46,7 +53,11 @@ public class GotoSpell extends Spell
             destination.setY(destination.getY() + 1);
         }
         
-        Player targetPlayer = getFarthestPlayer(player);
+        if (targetPlayer == null)
+        {
+            targetPlayer = getFarthestPlayer(player);
+        }
+        
         if (targetPlayer == null) return false;
         targetPlayer.teleport(destination);
         castMessage(player, "Teleporting " + targetPlayer.getName() + " to your target");

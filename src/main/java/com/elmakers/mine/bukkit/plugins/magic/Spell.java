@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,6 +51,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
     private String category;
     private ConfigurationNode parameters;
     private Material material;
+    private List<CastingCost> costs = null;
 	
     /*
      * private data
@@ -155,23 +157,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
        return newSpell;
     }
     
-    protected void load(String name, ConfigurationNode node)
+    protected void loadAndSave(ConfigurationNode node)
     {
-        this.name = name;
         description = node.getString("description", description);
         material = node.getMaterial("icon", material);
         category = node.getString("category", category);
         parameters = node.getNode("parameters", parameters);
-        
         ConfigurationNode properties = node.getNode("properties");
         if (properties == null) properties = node.createChild("properties");
         cooldown = properties.getInt("cooldown", cooldown);
 
-        targetThrough(Material.AIR);
-        targetThrough(Material.WATER);
-        targetThrough(Material.STATIONARY_WATER);
-        targetThrough(Material.SNOW);
-        
         this.onLoad(properties);
         
         if (usesTargeting)
@@ -180,6 +175,39 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
             allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
             targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
         }
+     }
+    
+    protected void load(String name, ConfigurationNode node)
+    {
+        this.name = name;
+        loadAndSave(node);
+        
+        List<Object> costNodes = node.getList("costs");
+
+        if (costNodes != null) 
+        {
+            if (costs == null)
+            {
+                costs = new ArrayList<CastingCost>();
+            }
+            costs.clear();
+            
+            for (Object o : costNodes)
+            {
+                if (o instanceof Map)
+                {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> nodeValues = (Map<String, Object>)o;
+                    CastingCost cost = new CastingCost(new ConfigurationNode(nodeValues));
+                    costs.add(cost);
+                }
+            }
+        }
+        
+        targetThrough(Material.AIR);
+        targetThrough(Material.WATER);
+        targetThrough(Material.STATIONARY_WATER);
+        targetThrough(Material.SNOW);
     }
     
     public void save(ConfigurationNode node)
@@ -194,9 +222,18 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         }
         node.setProperty("class", className);
         
-        // Load will set everything to default values if not preset
-        load(name, node);
-        
+        loadAndSave(node);
+
+        if (costs != null)
+        {
+            List< Map<String, Object> > costList = new ArrayList< Map<String, Object> >();
+            for (CastingCost cost : costs)
+            {
+                costList.add(cost.export());
+            }
+            
+            node.setProperty("costs", costList);
+        }
         this.onSave(node);
     }
 
@@ -267,6 +304,23 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         if (lastCast != 0 && lastCast > currentTime - cooldown)
         {
             return false;
+        }
+        
+        if (costs != null)
+        {
+            for (CastingCost cost : costs)
+            {
+                if (!cost.has(player.getInventory()))
+                {
+                    sendMessage(player, "Not enough " + cost.getDescription());
+                    return false;
+                }
+            }
+            
+            for (CastingCost cost : costs)
+            {
+                cost.use(player.getInventory());
+            }
         }
         
         lastCast = currentTime;
