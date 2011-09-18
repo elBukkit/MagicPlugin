@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.8
+
+ - Updates for mcserver 1.8
+
 ## 2.0.7
 
  - Add casting costs to spells

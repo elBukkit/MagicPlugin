@@ -9,19 +9,18 @@ import java.util.logging.Logger;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
-import org.bukkit.plugin.Plugin;
 
 public class MagicPlugin extends JavaPlugin
 {	
@@ -151,9 +150,6 @@ public class MagicPlugin extends JavaPlugin
                 ItemStack itemStack = new ItemStack(Material.getMaterial(spells.getWandTypeId()), 1);
                 player.getInventory().addItem(itemStack);
                 gaveWand = true;
-                
-                CraftPlayer cPlayer = ((CraftPlayer)player);
-                cPlayer.getHandle().l();
             }
             
             if (!gaveWand)
@@ -177,9 +173,6 @@ public class MagicPlugin extends JavaPlugin
         
         ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
         player.getInventory().addItem(itemStack);
-        
-        CraftPlayer cPlayer = ((CraftPlayer)player);
-        cPlayer.getHandle().l();
         
         return true;
     }

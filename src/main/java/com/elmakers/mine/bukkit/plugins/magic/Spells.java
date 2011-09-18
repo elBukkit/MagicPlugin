@@ -144,11 +144,12 @@ public class Spells
         createSpell(new FamiliarSpell(), "familiar", Material.EGG, "Create an animal familiar", "summoner", "");
         createSpell(new FamiliarSpell(), "monster", Material.PUMPKIN, "Call a monster to your side", "summoner", "type monster");
         createSpell(new FamiliarSpell(), "mob", Material.JACK_O_LANTERN, "Summon a mob of monsters", "summoner", "type mob count 20");
+        createSpell(new FamiliarSpell(), "ender", Material.ENDER_PEARL, "Summon an enderman", "summoner", "type enderman");
         createSpell(new FamiliarSpell(), "farm", Material.WHEAT, "Create a herd", "farming", "30");
         createSpell(new FillSpell(), "fill", Material.GOLD_SPADE, "Fill a selected area (cast twice)", "construction", "");
         createSpell(new FillSpell(), "paint", Material.PAINTING, "Fill a single block", "alchemy", "type single");
         createSpell(new FillSpell(), "recurse", Material.WOOD_SPADE, "Recursively fill blocks", "alchemy", "type recurse");
-        createSpell(new FireballSpell(), "fireball", Material.NETHERRACK, "Cast an exploding fireball", "combat", "", "cooldown 1500");
+        createSpell(new FireballSpell(), "fireball", Material.NETHERRACK, "Cast an exploding fireball", "combat", "", "");
         createSpell(new FireSpell(), "fire", Material.FLINT_AND_STEEL, "Light fires from a distance", "elemental", "");
         createSpell(new FireSpell(), "inferno", Material.FIRE, "Burn a wide area", "master", "6");
         createSpell(new FlingSpell(), "fling", Material.LEATHER_BOOTS, "Sends you flying in the target direction", "psychic", "size 5");
@@ -158,7 +159,7 @@ public class Spells
         createSpell(new FrostSpell(), "frost", Material.SNOW_BALL, "Freeze water and create snow", "alchemy", "", "range 24");
         createSpell(new GillsSpell(), "gills", Material.RAW_FISH, "Restores health while moving underwater", "medic", "");
         createSpell(new GotoSpell(), "gather", Material.GLOWSTONE_DUST, "Gather groups of players together", "master", "");     
-        createSpell(new GrenadeSpell(), "grenade", Material.TNT, "Place a primed grenade", "combat", "", "cooldown 2000", "tnt 1");
+        createSpell(new GrenadeSpell(), "grenade", Material.TNT, "Place a primed grenade", "combat", "", "", "tnt 1");
         createSpell(new HealSpell(), "heal", Material.BREAD, "Heal yourself or others", "medic", "", "cooldown 5000", "apple 1 wheat 1");
         createSpell(new InvincibleSpell(), "invincible", Material.GOLDEN_APPLE, "Make yourself impervious to damage", "master", "");
         createSpell(new InvincibleSpell(), "ironskin", Material.IRON_CHESTPLATE, "Protect you from damage", "master", "amount 99");
@@ -167,7 +168,7 @@ public class Spells
         createSpell(new LavaSpell(), "lava", Material.LAVA, "Fire a stream of lava", "combat", "");
         createSpell(new LevitateSpell(), "levitate", Material.GOLD_BOOTS, "Levitate yourself up into the air", "psychic", "");
         createSpell(new LightningSpell(), "lightning", Material.COOKED_FISH, "Strike lighting at your target", "combat", "");
-        createSpell(new LightningSpell(), "storm", Material.GRILLED_PORK, "Start a lightning storm", "elemental", "radius 10", "cooldown 2000");
+        createSpell(new LightningSpell(), "storm", Material.GRILLED_PORK, "Start a lightning storm", "elemental", "radius 10", "cooldown 500");
         createSpell(new MineSpell(), "mine", Material.GOLD_PICKAXE, "Mines and drops the targeted resources", "mining", "");
         createSpell(new PillarSpell(), "pillar", Material.GOLD_AXE, "Raises a pillar up", "construction", "");
         createSpell(new PillarSpell(), "stalactite", Material.WOOD_AXE, "Create a downward pillar", "construction", "type down");
@@ -175,7 +176,7 @@ public class Spells
         createSpell(new RecallSpell(), "recall", Material.COMPASS, "Marks locations for return", "exploration", "");
         createSpell(new RecallSpell(), "spawn", Material.YELLOW_FLOWER, "Take yourself back home", "exploration", "type spawn");
         createSpell(new SignSpell(), "sign", Material.SIGN_POST, "Give yourself some signs", "master", "");
-        createSpell(new SignSpell(), "tag", Material.SIGN, "Leave a sign with your name", "exploration", "tag", "cooldown 30000");
+        createSpell(new SignSpell(), "tag", Material.SIGN, "Leave a sign with your name", "exploration", "tag", "cooldown 10000");
         createSpell(new TorchSpell(), "torch", Material.TORCH, "Shed some light", "exploration", "");
         createSpell(new TorchSpell(), "day", Material.FLINT, "Change time time to day", "elemental", "time day");
         createSpell(new TorchSpell(), "night", Material.COAL, "Change time time to night", "elemental", "time night");
@@ -183,7 +184,7 @@ public class Spells
         createSpell(new UndoSpell(), "rewind", Material.WATCH, "Undo your last action", "alchemy", "");
         createSpell(new UndoSpell(), "erase", Material.LEVER, "Undo your target construction", "alchemy", "");
         createSpell(new WeatherSpell(), "weather", Material.WATER, "Change the weather", "elemental", "");
-        createSpell(new WolfSpell(), "wolf", Material.PORK, "Create a wolf familiar to follow you around", "summoner", "", "cooldown 5000");  
+        createSpell(new WolfSpell(), "wolf", Material.PORK, "Create a wolf familiar to follow you around", "summoner", "", "cooldown 500");  
     }
 
     public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
@@ -847,7 +848,7 @@ public class Spells
     private final String                        propertiesFileName             = "magic.yml";
     private int                                 wandTypeId                     = 280;
 
-    static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96";
+    static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
     static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
     static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
 
