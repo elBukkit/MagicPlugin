@@ -15,9 +15,14 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireballSpell extends Spell 
 {
+    int defaultSize = 1;
+    
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
+	     int size = parameters.getInt("size", defaultSize);
+	     boolean useFire = parameters.getBoolean("fire", true);
+	  
         CraftWorld cw = (CraftWorld)player.getWorld();
         WorldServer world = cw.getHandle();
         CraftPlayer craftPlayer = (CraftPlayer)player;
@@ -33,7 +38,9 @@ public class FireballSpell extends Spell
 
         EntityFireball fireball = new EntityFireball(world, playerEntity, aim.getX(), aim.getY(), aim.getZ());
         fireball.setPositionRotation(fireballX, fireballY, fireballZ, playerLoc.getYaw(), playerLoc.getPitch());
- 
+        fireball.yield = size;
+        fireball.isIncendiary = useFire;
+        
         // De-randomize aim vector
         double d3 = (double) MathHelper.a(d0 * d0 + d1 * d1 + d2 * d2);
 

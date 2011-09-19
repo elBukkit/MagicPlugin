@@ -149,7 +149,8 @@ public class Spells
         createSpell(new FillSpell(), "fill", Material.GOLD_SPADE, "Fill a selected area (cast twice)", "construction", "");
         createSpell(new FillSpell(), "paint", Material.PAINTING, "Fill a single block", "alchemy", "type single");
         createSpell(new FillSpell(), "recurse", Material.WOOD_SPADE, "Recursively fill blocks", "alchemy", "type recurse");
-        createSpell(new FireballSpell(), "fireball", Material.NETHERRACK, "Cast an exploding fireball", "combat", "", "");
+        createSpell(new FireballSpell(), "fireball", Material.NETHERRACK, "Cast an exploding fireball", "combat", "");
+        createSpell(new FireballSpell(), "icbm", Material.ROTTEN_FLESH, "Cast an exploding fireball", "combat", "size 10");
         createSpell(new FireSpell(), "fire", Material.FLINT_AND_STEEL, "Light fires from a distance", "elemental", "");
         createSpell(new FireSpell(), "inferno", Material.FIRE, "Burn a wide area", "master", "6");
         createSpell(new FlingSpell(), "fling", Material.LEATHER_BOOTS, "Sends you flying in the target direction", "psychic", "size 5");

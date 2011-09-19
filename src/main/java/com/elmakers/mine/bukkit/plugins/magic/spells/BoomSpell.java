@@ -18,7 +18,7 @@ public class BoomSpell extends Spell {
 
 	protected int defaultSize = 1;
 	
-	public boolean createExplosionAt(Location target, float size)
+	public boolean createExplosionAt(Location target, float size, boolean incendiary)
 	{
 		if (target == null) 
 		{
@@ -31,7 +31,7 @@ public class BoomSpell extends Spell {
 		EntityLiving playerEntity = craftPlayer.getHandle();
         WorldServer world = ((CraftWorld)player.getWorld()).getHandle();
 		
-        world.createExplosion(playerEntity, target.getBlockX(), target.getBlockY(), target.getBlockZ(), size, true);
+        world.createExplosion(playerEntity, target.getBlockX(), target.getBlockY(), target.getBlockZ(), size, incendiary);
 		return true;
 	}
 	
@@ -39,11 +39,12 @@ public class BoomSpell extends Spell {
 	public boolean onCast(ConfigurationNode parameters) 
 	{
         int size = parameters.getInt("size", defaultSize);
+        boolean useFire = parameters.getBoolean("fire", false);
         String targetType = (String)parameters.getString("target", "");
         if (targetType.equals("here"))
         {
             player.damage(100);
-            return createExplosionAt(player.getLocation(), size);
+            return createExplosionAt(player.getLocation(), size, useFire);
         }
         
 		Target target = getTarget();
@@ -53,7 +54,7 @@ public class BoomSpell extends Spell {
             return false;
 		}
 		
-		return createExplosionAt(target.getLocation(), size);
+		return createExplosionAt(target.getLocation(), size, useFire);
 	}
 	
 	public Vec3D getLocation(Player player, float f)
