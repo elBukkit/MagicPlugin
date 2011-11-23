@@ -44,9 +44,9 @@ public class FireballSpell extends Spell
         // De-randomize aim vector
         double d3 = (double) MathHelper.a(d0 * d0 + d1 * d1 + d2 * d2);
 
-        fireball.c = d0 / d3 * 0.1D;
-        fireball.d = d1 / d3 * 0.1D;
-        fireball.e = d2 / d3 * 0.1D;
+        fireball.dirX = d0 / d3 * 0.1D;
+        fireball.dirY = d1 / d3 * 0.1D;
+        fireball.dirZ = d2 / d3 * 0.1D;
         
         world.addEntity(fireball);
 		return true;
