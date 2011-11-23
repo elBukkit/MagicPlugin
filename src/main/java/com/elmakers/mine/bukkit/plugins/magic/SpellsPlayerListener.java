@@ -14,18 +14,6 @@ class SpellsPlayerListener extends PlayerListener
 	{
 		this.master = master;
 	}
-    
-    /**
-     * Called when a player performs an animation, such as the arm swing
-     * w
-     * @param event Relevant event details
-     */
-    
-	@Override
-    public void onPlayerAnimation(PlayerAnimationEvent event) 
-	{
-		master.onPlayerAnimation(event);
-    }
 	
     /**
      * Called when a player attempts to move location in a world

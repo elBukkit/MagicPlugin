@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.minecraft.server.CraftingManager;
+import net.minecraft.server.Item;
+
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
@@ -458,6 +461,21 @@ public class Spells
     {
         this.plugin = plugin;
         load();
+        
+        CraftingManager cm = CraftingManager.getInstance();
+        Object[] shape = new Object[] { "#", "X", Character.valueOf('X'), Item.STICK, Character.valueOf('#'), Item.GLOWSTONE_DUST };
+        cm.registerShapedRecipe
+        (
+            new net.minecraft.server.ItemStack(Item.STICK, 1, 10), 
+            shape
+        );
+        
+        
+        // this.registerShapedRecipe(
+        //new ItemStack(Block.RAILS, 16), 
+        //new Object[] { "X X", "X#X", "X X", 
+        //Character.valueOf('X'), Item.IRON_INGOT, Character.valueOf('#'), Item.STICK});
+
     }
 
     public void load()
@@ -594,48 +612,38 @@ public class Spells
         allSpells.addAll(spells.values());
         return allSpells;
     }
-
-    /**
-     * Called when a player plays an animation, such as an arm swing
-     * 
-     * @param event
-     *            Relevant event details
-     */
-    public void onPlayerAnimation(PlayerAnimationEvent event)
+    
+    protected void cast(Player player)
     {
-        Player player = event.getPlayer();
-        if (event.getAnimationType() == PlayerAnimationType.ARM_SWING)
+        if (player.getInventory().getItemInHand().getTypeId() == getWandTypeId())
         {
-            if (event.getPlayer().getInventory().getItemInHand().getTypeId() == getWandTypeId())
+            if (!hasWandPermission(player))
             {
-                if (!hasWandPermission(player))
+                return;
+            }
+
+            Inventory inventory = player.getInventory();
+            ItemStack[] contents = inventory.getContents();
+
+            Spell spell = null;
+            for (int i = 0; i < 9; i++)
+            {
+                if (contents[i] == null || contents[i].getType() == Material.AIR || contents[i].getTypeId() == getWandTypeId())
                 {
-                    return;
+                    continue;
                 }
-
-                Inventory inventory = player.getInventory();
-                ItemStack[] contents = inventory.getContents();
-
-                Spell spell = null;
-                for (int i = 0; i < 9; i++)
-                {
-                    if (contents[i] == null || contents[i].getType() == Material.AIR || contents[i].getTypeId() == getWandTypeId())
-                    {
-                        continue;
-                    }
-                    spell = getSpell(contents[i].getType(), player);
-                    if (spell != null)
-                    {
-                        break;
-                    }
-                }
-
+                spell = getSpell(contents[i].getType(), player);
                 if (spell != null)
                 {
-                    spell.cast();
+                    break;
                 }
-
             }
+
+            if (spell != null)
+            {
+                spell.cast();
+            }
+
         }
     }
 
@@ -775,6 +783,11 @@ public class Spells
      */
     public void onPlayerInteract(PlayerInteractEvent event)
     {
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
+        {
+            cast(event.getPlayer());
+        }
+        else
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
         {
             cancel(event.getPlayer());

@@ -43,7 +43,6 @@ public class MagicPlugin extends JavaPlugin
         PluginManager pm = getServer().getPluginManager();
 		
         pm.registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_ANIMATION, playerListener, Priority.Normal, this);
         pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
         pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
         
