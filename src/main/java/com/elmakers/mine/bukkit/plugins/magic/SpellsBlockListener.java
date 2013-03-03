@@ -1,9 +1,10 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.Listener;
+import org.bukkit.event.EventHandler;
 
-public class SpellsBlockListener extends BlockListener
+public class SpellsBlockListener implements Listener
 {
     protected Spells manager = null;
     
@@ -16,7 +17,7 @@ public class SpellsBlockListener extends BlockListener
     {
     }
 
-    @Override
+    @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent event)
     {
         if (!manager.allowPhysics(event.getBlock()))

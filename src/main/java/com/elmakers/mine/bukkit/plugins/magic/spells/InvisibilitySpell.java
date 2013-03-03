@@ -105,23 +105,27 @@ public class InvisibilitySpell extends Spell
     
     protected void cloakFrom(Player other)
     {
+        // TODO: FIXME ... seems like there is built-in invisibility now?
+        
         CraftPlayer hide = (CraftPlayer)player;
         CraftPlayer hideFrom = (CraftPlayer)other;
         
         EntityPlayer fromEntity = hideFrom.getHandle();
         
-        fromEntity.netServerHandler.sendPacket(new Packet29DestroyEntity(hide.getEntityId()));        
+        // fromEntity.netServerHandler.sendPacket(new Packet29DestroyEntity(hide.getEntityId()));        
     }
     
     protected void uncloakFrom(Player other)
     {
+        // TODO: FIXME ... seems like there is built-in invisibility now?
+        
         CraftPlayer hide = (CraftPlayer)player;
         CraftPlayer hideFrom = (CraftPlayer)other;
         
         EntityPlayer hideEntity = hide.getHandle();
         EntityPlayer fromEntity = hideFrom.getHandle();
         
-        fromEntity.netServerHandler.sendPacket(new Packet20NamedEntitySpawn(hideEntity));
+        // fromEntity.netServerHandler.sendPacket(new Packet20NamedEntitySpawn(hideEntity));
     }
 
     @Override

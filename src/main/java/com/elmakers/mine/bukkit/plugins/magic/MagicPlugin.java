@@ -10,17 +10,11 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class MagicPlugin extends JavaPlugin
 {	
@@ -42,47 +36,21 @@ public class MagicPlugin extends JavaPlugin
 		
         PluginManager pm = getServer().getPluginManager();
 		
-        pm.registerEvent(Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
+        pm.registerEvents(playerListener, this);
+        pm.registerEvents(entityListener, this);
+        pm.registerEvents(blockListener, this);
         
-        pm.registerEvent(Type.ENTITY_DEATH, entityListener, Priority.Normal, this);   
-        pm.registerEvent(Type.ENTITY_DAMAGE, entityListener, Priority.Normal, this);
-        
-        pm.registerEvent(Type.BLOCK_PHYSICS, blockListener, Priority.Normal, this);
-         
         PluginDescriptionFile pdfFile = this.getDescription();
         log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled");
 	}
 	
 	protected void initialize()
 	{
-	    bindToPermissions();
-	    
 	    spells.initialize(this);
 
 		playerListener.setSpells(spells);
 		entityListener.setSpells(spells);
         blockListener.setSpells(spells);
-	}
-
-	private void bindToPermissions() 
-	{
-	    if (permissionHandler != null) 
-	    {
-	        return;
-	    }
-	    
-	    Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
-	    
-	    if (permissionsPlugin == null) 
-	    {
-	        log.info("Permissions plugin not found, everyone has full access!");
-	        return;
-	    }
-	    
-	    permissionHandler = ((Permissions) permissionsPlugin).getHandler();
-	    log.info("Magic: Using permissions plugin: " + ((Permissions)permissionsPlugin).getDescription().getFullName());
 	}
 	
 	@Override
@@ -383,11 +351,6 @@ public class MagicPlugin extends JavaPlugin
 	{
 		spells.clear();
 	}
-
-	public static PermissionHandler getPermissionHandler()
-	{
-	    return permissionHandler;
-	}
 	
 	/*
 	 * Private data
@@ -397,8 +360,4 @@ public class MagicPlugin extends JavaPlugin
 	private final SpellsPlayerListener playerListener = new SpellsPlayerListener();
 	private final SpellsEntityListener entityListener = new SpellsEntityListener();
     private final SpellsBlockListener blockListener = new SpellsBlockListener();
-    
-    // Permissions
-    public static PermissionHandler permissionHandler;
-	
 }

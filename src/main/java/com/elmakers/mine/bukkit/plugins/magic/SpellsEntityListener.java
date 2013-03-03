@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityListener;
 
-class SpellsEntityListener extends EntityListener 
+class SpellsEntityListener implements Listener 
 {
 	private Spells master;
 	
@@ -13,6 +14,7 @@ class SpellsEntityListener extends EntityListener
 		this.master = master;
 	}
 	
+	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event)
 	{
 		if (Player.class.isInstance(event.getEntity()))

@@ -31,7 +31,7 @@ public class BoomSpell extends Spell {
 		EntityLiving playerEntity = craftPlayer.getHandle();
         WorldServer world = ((CraftWorld)player.getWorld()).getHandle();
 		
-        world.createExplosion(playerEntity, target.getBlockX(), target.getBlockY(), target.getBlockZ(), size, incendiary);
+        world.createExplosion(playerEntity, target.getBlockX(), target.getBlockY(), target.getBlockZ(), size, incendiary, true);
 		return true;
 	}
 	

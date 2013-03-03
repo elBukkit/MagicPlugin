@@ -20,7 +20,7 @@ public class ArrowSpell extends Spell
 		
 		for (int ai = 0; ai < arrowCount; ai++)
 		{
-		    Arrow arrow = cp.shootArrow();
+		    Arrow arrow = cp.launchProjectile(Arrow.class);
 		    if (arrow == null)
 		    {
 		        sendMessage(player, "One of your arrows fizzled");
@@ -32,7 +32,7 @@ public class ArrowSpell extends Spell
                 EntityArrow ea = (EntityArrow)ca.getHandle();
                 
                 // Make it so this arrow can't be picked up
-                ea.fromPlayer = false;
+                ea.fromPlayer = 0;
                 
                 // Make it so it disappears very quickly after sticking
                 // ... inaccessible! >:(

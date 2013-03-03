@@ -18,8 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerAnimationEvent;
-import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -68,7 +66,6 @@ import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
-import com.nijiko.permissions.PermissionHandler;
 
 public class Spells
 {
@@ -841,13 +838,8 @@ public class Spells
 
     public boolean hasPermission(Player player, String pNode, boolean defaultValue)
     {
-        PermissionHandler permissions = MagicPlugin.getPermissionHandler();
-        if (permissions == null)
-        {
-            return defaultValue;
-        }
-
-        return permissions.has(player, pNode);
+        // TODO: What happened to built-in bukkit permissions?
+        return defaultValue;
     }
 
     public boolean hasPermission(Player player, String pNode)
