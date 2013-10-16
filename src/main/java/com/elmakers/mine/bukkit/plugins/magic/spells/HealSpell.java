@@ -23,6 +23,7 @@ public class HealSpell extends Spell
 		castMessage(player, "You heal yourself");
 		player.setHealth(20);
 		player.setExhaustion(0);
+		player.setFoodLevel(20);
 		return true;
 	}
 }
