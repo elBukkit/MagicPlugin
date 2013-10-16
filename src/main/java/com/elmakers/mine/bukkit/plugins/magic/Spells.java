@@ -383,11 +383,6 @@ public class Spells
      * Random utility functions
      */
 
-    public int getWandTypeId()
-    {
-        return wandTypeId;
-    }
-
     public void cancel(Player player)
     {
         PlayerSpells playerSpells = getPlayerSpells(player);
@@ -527,7 +522,6 @@ public class Spells
         quiet = generalNode.getBoolean("quiet", quiet);
      
         buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
-        wandTypeId = generalNode.getInteger("wand_type_id", wandTypeId);
         
         CSVParser csv = new CSVParser();
         stickyMaterials = csv.parseMaterials(STICKY_MATERIALS);
@@ -594,7 +588,7 @@ public class Spells
     
     protected void cast(Player player)
     {
-        if (player.getInventory().getItemInHand().getTypeId() == getWandTypeId())
+        if (isWandActive(player))
         {
             if (!hasWandPermission(player))
             {
@@ -607,7 +601,7 @@ public class Spells
             Spell spell = null;
             for (int i = 0; i < 9; i++)
             {
-                if (contents[i] == null || contents[i].getType() == Material.AIR || contents[i].getTypeId() == getWandTypeId())
+                if (contents[i] == null || contents[i].getType() == Material.AIR || MagicPlugin.isWand(contents[i]))
                 {
                     continue;
                 }
@@ -622,7 +616,6 @@ public class Spells
             {
                 spell.cast();
             }
-
         }
     }
 
@@ -699,9 +692,9 @@ public class Spells
         {
             boolean isEmpty = active[i] == null;
             Material activeType = isEmpty ? Material.AIR : active[i].getType();
-            boolean isWand = activeType.getId() == getWandTypeId();
+            boolean isWand = isEmpty ? false : MagicPlugin.isWand(active[i]);
             boolean isSpell = false;
-            if (activeType != Material.AIR)
+            if (activeType != Material.AIR && active[i].hasItemMeta() && active[i].getItemMeta().hasEnchant(MagicPlugin.MagicEnchantment))
             {
                 Spell spell = getSpell(activeType, player);
                 isSpell = spell != null;
@@ -733,15 +726,18 @@ public class Spells
         for (int ddi = 0; ddi < numSpellSlots; ddi++)
         {
             int i = ddi + firstSpellSlot;
-            Material contentsType = contents[i] == null ? Material.AIR : active[i].getType();
-            if (contentsType.getId() != getWandTypeId())
+            boolean isEmpty = contents[i] == null;
+            boolean isWand = isEmpty ? false : MagicPlugin.isWand(active[i]);
+            
+            if (!isWand)
             {
                 for (int di = 1; di < numSpellSlots; di++)
                 {
                     int dni = (ddi + di) % numSpellSlots;
                     int ni = dni + firstSpellSlot;
-                    Material activeType = active[ni] == null ? Material.AIR : active[ni].getType();
-                    if (activeType.getId() != getWandTypeId())
+                    isEmpty = active[ni] == null;
+                    isWand = isEmpty ? false : MagicPlugin.isWand(active[ni]);
+                    if (!isWand)
                     {
                         contents[i] = active[ni];
                         break;
@@ -752,6 +748,11 @@ public class Spells
 
         inventory.setContents(contents);
         player.updateInventory();
+    }
+    
+    public boolean isWandActive(Player player) {
+    	ItemStack activeItem =  player.getInventory().getItemInHand();
+    	return MagicPlugin.isWand(activeItem);
     }
 
     /**
@@ -770,8 +771,6 @@ public class Spells
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
         {
             cancel(event.getPlayer());
-
-            int materialId = event.getPlayer().getInventory().getItemInHand().getTypeId();
             Player player = event.getPlayer();
 
             if (!hasWandPermission(player))
@@ -782,7 +781,7 @@ public class Spells
             boolean cycleSpells = false;
 
             cycleSpells = player.isSneaking();
-            if (materialId == getWandTypeId())
+            if (isWandActive(player))
             {
                 if (cycleSpells)
                 {
@@ -834,7 +833,6 @@ public class Spells
      */
     private final String                        spellsFileName                 = "spells.yml";
     private final String                        propertiesFileName             = "magic.yml";
-    private int                                 wandTypeId                     = 280;
 
     static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
     static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";

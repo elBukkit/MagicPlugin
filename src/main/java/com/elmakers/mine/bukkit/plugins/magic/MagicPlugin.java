@@ -9,15 +9,19 @@ import java.util.logging.Logger;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MagicPlugin extends JavaPlugin
 {	
+	protected static Enchantment MagicEnchantment = Enchantment.ARROW_INFINITE;
+	
 	/*
 	 * Public API
 	 */
@@ -105,16 +109,35 @@ public class MagicPlugin extends JavaPlugin
 	    return false;
 	}
 	
+	public static boolean isWand(ItemStack item) {
+		return item != null && item.getType() == Material.STICK && item.hasItemMeta() && item.getItemMeta().hasEnchant(MagicEnchantment);
+	}
+	
     public boolean onWand(Player player, String[] parameters)
     {
         if (parameters.length < 1)
         {
             boolean gaveWand = false;
-  
+            boolean hasWand = false;
             Inventory inventory = player.getInventory();
-            if (!inventory.contains(spells.getWandTypeId()))
+            ItemStack[] items = inventory.getContents();
+            for (ItemStack item : items) {
+            	if (isWand(item)) {
+            		hasWand = true;
+            		break;
+            	}
+            }
+            if (!hasWand)
             {
-                ItemStack itemStack = new ItemStack(Material.getMaterial(spells.getWandTypeId()), 1);
+            	ItemStack itemStack = new ItemStack(Material.STICK);
+                itemStack.addUnsafeEnchantment(MagicEnchantment, 1);
+                ItemMeta meta = itemStack.getItemMeta();
+                meta.setDisplayName("Wand");
+                List<String> lore = new ArrayList<String>();
+                lore.add("Left-click to cast active spell");
+                lore.add("Right-click to cycle spells");
+                meta.setLore(lore);
+                itemStack.setItemMeta(meta);
                 player.getInventory().addItem(itemStack);
                 gaveWand = true;
             }
@@ -139,6 +162,14 @@ public class MagicPlugin extends JavaPlugin
         }
         
         ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
+        itemStack.addUnsafeEnchantment(MagicEnchantment, 1);
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setDisplayName("Spell: " + spell.getName());
+        List<String> lore = new ArrayList<String>();
+        lore.add(spell.getCategory());
+        lore.add(spell.getDescription());
+        meta.setLore(lore);
+        itemStack.setItemMeta(meta);
         player.getInventory().addItem(itemStack);
         
         return true;

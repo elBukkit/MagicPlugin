@@ -666,8 +666,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				return BlockFace.SOUTH;
 			case SOUTH:
 				return BlockFace.EAST;
+			default:
+				return direction;
 		}
-		return direction;
 	}
 
 	/**
@@ -691,8 +692,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				return BlockFace.NORTH;
 			case NORTH:
 				return BlockFace.EAST;
+			default:
+				return direction;
 		}
-		return direction;
 	}
 	
 
