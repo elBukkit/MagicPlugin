@@ -54,7 +54,6 @@
 									<manifestEntries>
 										<Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
 										<Build-Version>${build.version}</Build-Version>
-										<Class-Path>Persistence.jar</Class-Path>
 									</manifestEntries>
 								</transformer>
 							</transformers>
