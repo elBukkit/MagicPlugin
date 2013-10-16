@@ -20,7 +20,7 @@ public class TowerSpell extends Spell {
 		}
 		int MAX_HEIGHT = 255;
 		int height = 16;
-		int maxHeight = 127;
+		int maxHeight = 255;
 		int material = 20;
 		int midX = target.getX();
 		int midY = target.getY();

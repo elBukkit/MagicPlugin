@@ -163,7 +163,6 @@ public class LevitateSpell extends Spell
         return (player != null && !player.isDead() && player.isOnline());
     }
  
-    @SuppressWarnings("unchecked")
     protected void applyForce()
     {
         if (!isActive()) 
