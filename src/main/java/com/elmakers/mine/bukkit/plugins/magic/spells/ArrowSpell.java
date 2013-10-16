@@ -21,8 +21,10 @@ public class ArrowSpell extends Spell
 		        sendMessage(player, "One of your arrows fizzled");
 		        return false;
 		    }
-		    arrow.setShooter(null);
-		    arrow.setTicksLived(1150);
+		    // TODO: One day they'll give us access to the "from player" variable, right? 
+		    // arrow.setFromPlayer(2); // Make this an infinite arrow
+		    // arrow.setTicksLived(1150);
+		    arrow.setTicksLived(1);
 		}
 	
 		castMessage(player, "You fire some magical arrows");
