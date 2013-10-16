@@ -18,22 +18,13 @@ public class FlingSpell extends Spell
 	
     protected int maxSpeedAtElevation = 32;
     protected double minMagnitude = 1.5;
-    protected double maxMagnitude = 12; 
+    protected double maxMagnitude = 8; 
 
     @Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
 	    int height = 0;
 	    Block playerBlock = player.getLocation().getBlock();
-	    	    
-	    // testing out a perf hack- don't send chunks while flinging!
-	    /*
-        CraftPlayer cp = (CraftPlayer)player;
-        EntityPlayer ep = cp.getHandle();
-	    Chunk chunk = playerBlock.getChunk();
-	    ep.chunkCoordIntPairQueue.clear();
-	    ep.chunkCoordIntPairQueue.add(new ChunkCoordIntPair(chunk.getX(), chunk.getZ()));
-	    */
 	    
 	    while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 	    {
