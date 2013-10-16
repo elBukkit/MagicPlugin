@@ -45,7 +45,7 @@ public class FlingSpell extends Spell
       
 		Vector velocity = getAimVector();
 		
-		if (player.getLocation().getBlockY() >= 128)
+		if (player.getLocation().getBlockY() >= 256)
 		{
 		    velocity.setY(0);
 		}
