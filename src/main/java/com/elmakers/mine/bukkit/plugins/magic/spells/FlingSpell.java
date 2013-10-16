@@ -1,13 +1,8 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import net.minecraft.server.ChunkCoordIntPair;
-import net.minecraft.server.EntityPlayer;
-
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
@@ -25,7 +20,6 @@ public class FlingSpell extends Spell
     protected double minMagnitude = 1.5;
     protected double maxMagnitude = 12; 
 
-	@SuppressWarnings("unchecked")
     @Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
@@ -57,8 +51,7 @@ public class FlingSpell extends Spell
 		}
 		
 		velocity.multiply(magnitude);
-		CraftPlayer craftPlayer = (CraftPlayer)player;
-		craftPlayer.setVelocity(velocity);
+		player.setVelocity(velocity);
 		castMessage(player, "Whee!");
 		
         spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);

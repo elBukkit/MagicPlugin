@@ -1,9 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import net.minecraft.server.EntityArrow;
-
-import org.bukkit.craftbukkit.entity.CraftArrow;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -16,38 +12,17 @@ public class ArrowSpell extends Spell
 	{
 	    int arrowCount = 1;
 	    arrowCount = parameters.getInt("count", arrowCount);
-		CraftPlayer cp = (CraftPlayer)player;
 		
 		for (int ai = 0; ai < arrowCount; ai++)
 		{
-		    Arrow arrow = cp.launchProjectile(Arrow.class);
+		    Arrow arrow = player.launchProjectile(Arrow.class);
 		    if (arrow == null)
 		    {
 		        sendMessage(player, "One of your arrows fizzled");
 		        return false;
 		    }
-		    if (arrow instanceof CraftArrow)
-		    {
-                CraftArrow ca = (CraftArrow)arrow;
-                EntityArrow ea = (EntityArrow)ca.getHandle();
-                
-                // Make it so this arrow can't be picked up
-                ea.fromPlayer = 0;
-                
-                // Make it so it disappears very quickly after sticking
-                // ... inaccessible! >:(
-                // ea.j = 1150;
-                
-    		    if (ai != 0)
-    		    {
-    		        ea.setPosition
-    		        (
-    	                ea.locX + Math.random() * arrowCount - arrowCount / 2,
-    	                ea.locY + Math.random() * arrowCount - arrowCount / 2,
-    	                ea.locZ + Math.random() * arrowCount - arrowCount / 2
-    		        );
-    		    }
-		    }
+		    arrow.setShooter(null);
+		    arrow.setTicksLived(1150);
 		}
 	
 		castMessage(player, "You fire some magical arrows");

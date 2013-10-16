@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.entity.CraftWolf;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Wolf;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
@@ -17,9 +17,9 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class WolfSpell extends Spell
 {
     private static int maxWolves = 5;
-    protected List<CraftWolf> wolves = new ArrayList<CraftWolf>();
+    protected List<Wolf> wolves = new ArrayList<Wolf>();
     
-	public CraftWolf newWolf(Target target)
+	public Wolf newWolf(Target target)
 	{
 		if (target == null)
 		{
@@ -34,7 +34,7 @@ public class WolfSpell extends Spell
             targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
         }
 		
-		CraftWolf entity = (CraftWolf)player.getWorld().spawnCreature(targetBlock.getLocation(), CreatureType.WOLF);
+		Wolf entity = (Wolf)player.getWorld().spawnEntity(targetBlock.getLocation(), EntityType.WOLF);
 		if (entity == null)
 		{
 			sendMessage(player, "Your wolfie is DOA");
@@ -55,9 +55,9 @@ public class WolfSpell extends Spell
 			return false;
 		}
 		
-		ArrayList<CraftWolf> newWolves = new ArrayList<CraftWolf>();
+		ArrayList<Wolf> newWolves = new ArrayList<Wolf>();
 		
-	    for (CraftWolf wolf : wolves)
+	    for (Wolf wolf : wolves)
 	    {
 	        if (!wolf.isDead())
 	        {
@@ -69,11 +69,11 @@ public class WolfSpell extends Spell
 		
 		if (wolves.size() >= maxWolves) 
 		{
-		   CraftWolf killWolf = wolves.remove(0);
+			Wolf killWolf = wolves.remove(0);
 		   killWolf.setHealth(0);
 		}
 		
-    	CraftWolf wolf = newWolf(target);
+		Wolf wolf = newWolf(target);
         if (wolf == null)
         {
             return false;
@@ -85,7 +85,7 @@ public class WolfSpell extends Spell
         if (e != null && e instanceof LivingEntity)
         {
             LivingEntity targetEntity = (LivingEntity)e;
-            for (CraftWolf w : wolves)
+            for (Wolf w : wolves)
             {
                 w.setTarget(targetEntity);
             }
@@ -94,7 +94,7 @@ public class WolfSpell extends Spell
 		return true;
 	}
 	
-	protected void tameWolf(CraftWolf wolfie)
+	protected void tameWolf(Wolf wolfie)
 	{
 	    wolfie.setAngry(false);
         wolfie.setHealth(20);

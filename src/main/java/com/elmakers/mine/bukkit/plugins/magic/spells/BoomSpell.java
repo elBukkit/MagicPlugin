@@ -1,11 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.WorldServer;
-
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -26,12 +21,8 @@ public class BoomSpell extends Spell {
 			return false;
 		}
 		
-		castMessage(player, "FOOM!");
-		CraftPlayer craftPlayer = (CraftPlayer)player;
-		EntityLiving playerEntity = craftPlayer.getHandle();
-        WorldServer world = ((CraftWorld)player.getWorld()).getHandle();
+		player.getWorld().createExplosion(target.getBlock().getLocation(), size, incendiary);
 		
-        world.createExplosion(playerEntity, target.getBlockX(), target.getBlockY(), target.getBlockZ(), size, incendiary, true);
 		return true;
 	}
 	

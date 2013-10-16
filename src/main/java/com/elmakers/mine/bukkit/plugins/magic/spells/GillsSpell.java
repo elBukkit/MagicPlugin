@@ -107,7 +107,7 @@ public class GillsSpell extends Spell
 					gills.heal();
 					if (isUnderwater())
 					{
-						int health = player.getHealth();
+						double health = player.getHealth();
 						if (health < 20) 
 						{
 							health = health + healAmount;

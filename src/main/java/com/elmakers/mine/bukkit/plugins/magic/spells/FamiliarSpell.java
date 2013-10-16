@@ -9,8 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.player.PlayerEvent;
 
@@ -21,8 +21,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FamiliarSpell extends Spell
 {
-	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow";
-	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Ghast,Giant,Monster,Silverfish,Enderman,CaveSpider,EnderDragon,Blaze";
+	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow,Snowman,Ozelot,VillagerGolem,EntityHorse";
+	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Ghast,Giant,Monster,Silverfish,Enderman,CaveSpider,EnderDragon,Blaze,LavaSlime,WitherBoss,Bat,Witch";
 	
 	private List<String> defaultFamiliars = new ArrayList<String>();
 	private List<String> defaultMonsters = new ArrayList<String>();
@@ -121,7 +121,7 @@ public class FamiliarSpell extends Spell
 	    
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
 	       	
-		CreatureType famType = CreatureType.PIG;
+		EntityType famType = EntityType.PIG;
 		FamiliarClass famClass = FamiliarClass.FRIENDLY;
 		int famCount = parameters.getInt("count", 1);
 		
@@ -139,7 +139,7 @@ public class FamiliarSpell extends Spell
         {
             // annoying- why do they have to CamelCase???
             String testType = famTypeName.toUpperCase();
-            for (CreatureType ct : CreatureType.values())
+            for (EntityType ct : EntityType.values())
             {
                 if (ct.getName().toUpperCase().equals(testType))
                 {
@@ -151,7 +151,7 @@ public class FamiliarSpell extends Spell
 	
 		if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
 		{
-			famType = CreatureType.SQUID;
+			famType = EntityType.SQUID;
 			famClass = FamiliarClass.SPECIFIC;
 		}
 		
@@ -163,8 +163,8 @@ public class FamiliarSpell extends Spell
             {
                 if (famClass == FamiliarClass.ANY)
                 {
-                    int randomFamiliar = rand.nextInt(CreatureType.values().length - 1);
-                    famType = CreatureType.values()[randomFamiliar];                        
+                    int randomFamiliar = rand.nextInt(EntityType.values().length - 1);
+                    famType = EntityType.values()[randomFamiliar];                        
                 }
                 else
                 {
@@ -174,7 +174,7 @@ public class FamiliarSpell extends Spell
                         types = defaultMonsters;
                     }
                     int randomFamiliar = rand.nextInt(types.size());
-                    famType = CreatureType.fromName(types.get(randomFamiliar));
+                    famType = EntityType.fromName(types.get(randomFamiliar));
                 }
             }      
 
@@ -208,9 +208,9 @@ public class FamiliarSpell extends Spell
 	
 	}
 		
-	protected Creature spawnFamiliar(Location target, CreatureType famType, LivingEntity targetEntity)
+	protected Creature spawnFamiliar(Location target, EntityType famType, LivingEntity targetEntity)
 	{
-	    LivingEntity famEntity = player.getWorld().spawnCreature(target, famType);
+	    Entity famEntity = player.getWorld().spawnEntity(target, famType);
 	    if (!(famEntity instanceof Creature)) return null;
 	    
 	    Creature familiar = (Creature)famEntity;

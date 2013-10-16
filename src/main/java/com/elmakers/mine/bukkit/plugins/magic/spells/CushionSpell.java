@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.CraftWorld;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -18,7 +17,6 @@ public class CushionSpell extends Spell
 	public boolean onCast(ConfigurationNode parameters) 
 	{
 		World world = player.getWorld();
-    	CraftWorld craftWorld = (CraftWorld)world;
   		Block targetFace = getTargetBlock();
 		if (targetFace == null)
 		{
@@ -44,7 +42,7 @@ public class CushionSpell extends Spell
 					int x = targetFace.getX() + dx;
 					int y = targetFace.getY() + dy;
 					int z = targetFace.getZ() + dz;
-					Block block = craftWorld.getBlockAt(x, y, z);
+					Block block = world.getBlockAt(x, y, z);
 					if (block.getType() == Material.AIR)
 					{
     					cushionBlocks.add(block);
@@ -55,7 +53,6 @@ public class CushionSpell extends Spell
 		}
 	
 		spells.scheduleCleanup(cushionBlocks);
-	
 		return true;
 	}
 	

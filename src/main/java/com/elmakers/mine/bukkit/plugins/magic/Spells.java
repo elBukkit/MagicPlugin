@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.minecraft.server.CraftingManager;
-import net.minecraft.server.Item;
-
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
@@ -458,21 +455,6 @@ public class Spells
     {
         this.plugin = plugin;
         load();
-        
-        CraftingManager cm = CraftingManager.getInstance();
-        Object[] shape = new Object[] { "#", "X", Character.valueOf('X'), Item.STICK, Character.valueOf('#'), Item.GLOWSTONE_DUST };
-        cm.registerShapedRecipe
-        (
-            new net.minecraft.server.ItemStack(Item.STICK, 1, 10), 
-            shape
-        );
-        
-        
-        // this.registerShapedRecipe(
-        //new ItemStack(Block.RAILS, 16), 
-        //new Object[] { "X X", "X#X", "X X", 
-        //Character.valueOf('X'), Item.IRON_INGOT, Character.valueOf('#'), Item.STICK});
-
     }
 
     public void load()

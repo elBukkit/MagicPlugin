@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Fireball;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -13,8 +12,7 @@ public class FireballSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-	    CraftPlayer cp = (CraftPlayer)player;
-	    cp.launchProjectile(Fireball.class);
+	    player.launchProjectile(Fireball.class);
 	    return true;
 	}
 

@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -28,12 +28,12 @@ public class LightningSpell extends Spell
         {
             if (Math.random() > density) return false;
             
-            CraftWorld craftWorld = ((CraftWorld)player.getWorld());
-            craftWorld.strikeLightning(block.getLocation());
+            World world = player.getWorld();
+            world.strikeLightning(block.getLocation());
             super.perform(block);
             if (blocks.size() > thunderThreshold)
             {
-                craftWorld.setThundering(true);
+                world.setThundering(true);
             }
             
             return true;

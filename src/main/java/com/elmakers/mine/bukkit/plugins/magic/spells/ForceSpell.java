@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -145,8 +144,7 @@ public class ForceSpell extends Spell
         forceVector.normalize();
         forceVector.multiply(magnitude);
         
-        CraftEntity ce = (CraftEntity)target;
-        ce.setVelocity(forceVector);
+        target.setVelocity(forceVector);
     }
     
     @Override

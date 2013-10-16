@@ -3,12 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Packet20NamedEntitySpawn;
-import net.minecraft.server.Packet29DestroyEntity;
-
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -105,27 +100,12 @@ public class InvisibilitySpell extends Spell
     
     protected void cloakFrom(Player other)
     {
-        // TODO: FIXME ... seems like there is built-in invisibility now?
-        
-        CraftPlayer hide = (CraftPlayer)player;
-        CraftPlayer hideFrom = (CraftPlayer)other;
-        
-        EntityPlayer fromEntity = hideFrom.getHandle();
-        
-        // fromEntity.netServerHandler.sendPacket(new Packet29DestroyEntity(hide.getEntityId()));        
+        other.hidePlayer(player);   
     }
     
     protected void uncloakFrom(Player other)
     {
-        // TODO: FIXME ... seems like there is built-in invisibility now?
-        
-        CraftPlayer hide = (CraftPlayer)player;
-        CraftPlayer hideFrom = (CraftPlayer)other;
-        
-        EntityPlayer hideEntity = hide.getHandle();
-        EntityPlayer fromEntity = hideFrom.getHandle();
-        
-        // fromEntity.netServerHandler.sendPacket(new Packet20NamedEntitySpawn(hideEntity));
+       other.showPlayer(player);
     }
 
     @Override
