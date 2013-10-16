@@ -11,17 +11,24 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class GrenadeSpell extends Spell
 {
+	int defaultSize = 6;
+	 
     @Override
     public boolean onCast(ConfigurationNode parameters) 
     {
+    	int size = parameters.getInt("size", defaultSize);
+    	int fuse = parameters.getInt("fuse", 80);
+		boolean useFire = parameters.getBoolean("fire", true);
+		
         Block target = getNextBlock();
         Location loc = target.getLocation();
         TNTPrimed grenade = (TNTPrimed)player.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
         
         Vector aim = getAimVector();
         grenade.setVelocity(aim);
-        grenade.setYield(6);
-        grenade.setFuseTicks(80);
+        grenade.setYield(size);
+        grenade.setFuseTicks(fuse);
+        grenade.setIsIncendiary(useFire);
         
         return true;
     }
