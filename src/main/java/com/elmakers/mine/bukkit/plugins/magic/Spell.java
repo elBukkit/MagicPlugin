@@ -882,7 +882,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		while ((length <= range) && ((targetX == lastX) && (targetY == lastY) && (targetZ == lastZ)));
 
-		if (length > range || targetY > 127)
+		if (length > range || targetY > 255)
 		{
 			if (allowMaxRange)
 			{
