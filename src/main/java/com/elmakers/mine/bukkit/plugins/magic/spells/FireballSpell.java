@@ -12,7 +12,11 @@ public class FireballSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-	    player.launchProjectile(Fireball.class);
+		int size = parameters.getInt("size", defaultSize);
+		boolean useFire = parameters.getBoolean("fire", true);
+	    Fireball fireball = (Fireball)player.launchProjectile(Fireball.class);
+	    fireball.setIsIncendiary(useFire);
+	    fireball.setYield(size);
 	    return true;
 	}
 
