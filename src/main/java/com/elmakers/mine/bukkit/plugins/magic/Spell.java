@@ -627,19 +627,19 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		BlockFace direction = BlockFace.NORTH;
 		if (playerRot <= 45 || playerRot > 315)
 		{
-			direction = BlockFace.WEST;
+			direction = BlockFace.SOUTH;
 		}
 		else if (playerRot > 45 && playerRot <= 135)
 		{
-			direction = BlockFace.NORTH;
+			direction = BlockFace.WEST;
 		}
 		else if (playerRot > 135 && playerRot <= 225)
 		{
-			direction = BlockFace.EAST;
+			direction = BlockFace.NORTH;
 		}
 		else if (playerRot > 225 && playerRot <= 315)
 		{
-			direction = BlockFace.SOUTH;
+			direction = BlockFace.EAST;
 		}
 
 		return direction;
