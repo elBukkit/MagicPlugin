@@ -88,6 +88,7 @@ public class WolfSpell extends Spell
             for (Wolf w : wolves)
             {
                 w.setTarget(targetEntity);
+                w.setAngry(true);
             }
         }
 		
