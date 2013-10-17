@@ -97,7 +97,7 @@ public class WolfSpell extends Spell
 	protected void tameWolf(Wolf wolfie)
 	{
 	    wolfie.setAngry(false);
-        wolfie.setHealth(20);
+        wolfie.setHealth(8);
         wolfie.setTamed(true);
         wolfie.setOwner(player);
 	}
