@@ -42,9 +42,7 @@ public class MagicPlugin extends JavaPlugin
 		
         PluginManager pm = getServer().getPluginManager();
 		
-        pm.registerEvents(playerListener, this);
-        pm.registerEvents(entityListener, this);
-        pm.registerEvents(blockListener, this);
+        pm.registerEvents(spells, this);
         
         PluginDescriptionFile pdfFile = this.getDescription();
         log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled");
@@ -53,10 +51,6 @@ public class MagicPlugin extends JavaPlugin
 	protected void initialize()
 	{
 	    spells.initialize(this);
-
-		playerListener.setSpells(spells);
-		entityListener.setSpells(spells);
-        blockListener.setSpells(spells);
 	}
 	
 	@Override
@@ -387,7 +381,4 @@ public class MagicPlugin extends JavaPlugin
 	 */	
 	private final Spells spells = new Spells();
 	private final Logger log = Logger.getLogger("Minecraft");
-	private final SpellsPlayerListener playerListener = new SpellsPlayerListener();
-	private final SpellsEntityListener entityListener = new SpellsEntityListener();
-    private final SpellsBlockListener blockListener = new SpellsBlockListener();
 }

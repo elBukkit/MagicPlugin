@@ -15,7 +15,10 @@ import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -73,7 +76,7 @@ import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class Spells
+public class Spells implements Listener 
 {
 	public static Enchantment MagicEnchantment = Enchantment.ARROW_INFINITE;
 		
@@ -561,44 +564,6 @@ public class Spells
         
         load();
     }
-
-    /*
-     * Listeners / callbacks
-     */
-
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
-    	// Check for wand re-activation.
-    	Player player = event.getPlayer();
-    	if (isWandActive(player)) {
-	    	// Save inventory
-			PlayerSpells spells = getPlayerSpells(player);
-	    	if (spells.storeInventory()) {
-	    		// Create spell inventory
-	    		updateWandInventory(player);
-	    	}
-    	}
-    }
-    
-    public void onPlayerQuit(PlayerQuitEvent event)
-    {
-        PlayerSpells spells = getPlayerSpells(event.getPlayer());
-        spells.onPlayerQuit(event);
-        spells.restoreInventory();
-    }
-   
-	public void onPluginDisable(PluginDisableEvent event)
-	{
-		for (PlayerSpells spells : playerSpells.values()) {
-			spells.restoreInventory();
-		}
-	}
-	
-	
-	public void onPluginEnable(PluginEnableEvent event)
-	{
-		
-	}
     
     public void updateWandInventory(Player player) {
     	updateWandInventory(player, player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
@@ -634,42 +599,6 @@ public class Spells
 		}
     }
 
-    public void onPlayerEquip(PlayerItemHeldEvent event)
-    {
-    	Player player = event.getPlayer();
-    	Inventory inventory = player.getInventory();
-    	ItemStack previous = inventory.getItem(event.getPreviousSlot());
-    	ItemStack next = inventory.getItem(event.getNewSlot());
-    	    	
-    	boolean wasWand = previous != null && isWand(previous);
-    	boolean isWand = next != null && isWand(next);
-    	if (isWand == wasWand) return;
-    	
-    	if (isWand) {
-    		// Save inventory
-    		PlayerSpells spells = getPlayerSpells(player);
-	    	if (spells.storeInventory(event.getNewSlot(), next)) {
-	    		// Create spell inventory
-	    		updateWandInventory(player, event.getNewSlot(), next);
-	    	}
-    	} else if (wasWand) {
-    		// Rebuild spell inventory, save in wand.
-    		ItemStack[] items = inventory.getContents();
-    		List<String> spellNames = new ArrayList<String>();
-    		for (int i = 0; i < items.length; i++) {
-    			if (items[i] == null) continue;
-    			
-    			Spell spell = getSpell(items[i].getType(), player);
-    			if (spell == null) continue;
-    			spellNames.add(spell.getName());
-    		}
-    		previous = setWandSpells(previous, spellNames);
-    		
-    		// Restore inventory
-    		PlayerSpells spells = getPlayerSpells(player);
-    		spells.restoreInventory(event.getPreviousSlot(), previous);
-    	}
-    }
     
     public static ItemStack setWandSpells(ItemStack wand, Collection<String> spellNames) {
     	String spellString = StringUtils.join(spellNames, "|");
@@ -693,25 +622,7 @@ public class Spells
         meta.setLore(lore);
         wand.setItemMeta(meta);
     }
-
-    public void onPlayerMove(PlayerMoveEvent event)
-    {
-        PlayerSpells spells = getPlayerSpells(event.getPlayer());
-        spells.onPlayerMove(event);
-    }
-
-    public void onPlayerDeath(Player player, EntityDeathEvent event)
-    {
-        PlayerSpells spells = getPlayerSpells(player);
-        spells.onPlayerDeath(event);
-    }
-
-    public void onPlayerDamage(Player player, EntityDamageEvent event)
-    {
-        PlayerSpells spells = getPlayerSpells(player);
-        spells.onPlayerDamage(event);
-    }
-
+    
     public List<Spell> getAllSpells()
     {
         List<Spell> allSpells = new ArrayList<Spell>();
@@ -892,12 +803,108 @@ public class Spells
 		return item != null && item.getType() == Material.STICK && item.hasItemMeta() && item.getItemMeta().hasEnchant(MagicEnchantment);
 	}
 
-    /**
-     * Called when a player uses an item
-     * 
-     * @param event
-     *            Relevant event details
+    public boolean allowPhysics(Block block)
+    {
+        if (physicsDisableTimeout == 0)
+            return true;
+        if (System.currentTimeMillis() > physicsDisableTimeout)
+            physicsDisableTimeout = 0;
+        return false;
+    }
+
+    public void disablePhysics(int interval)
+    {
+        physicsDisableTimeout = System.currentTimeMillis() + interval;
+    }
+
+    public boolean hasWandPermission(Player player)
+    {
+        return hasPermission(player, "Magic.wand.use");
+    }
+
+    public boolean hasPermission(Player player, String pNode, boolean defaultValue)
+    {
+        // TODO: What happened to built-in bukkit permissions?
+        return defaultValue;
+    }
+
+    public boolean hasPermission(Player player, String pNode)
+    {
+        return hasPermission(player, pNode, true);
+    }
+
+    /*
+     * Listeners / callbacks
      */
+    @EventHandler
+    public void onPlayerEquip(PlayerItemHeldEvent event)
+    {
+    	Player player = event.getPlayer();
+    	Inventory inventory = player.getInventory();
+    	ItemStack previous = inventory.getItem(event.getPreviousSlot());
+    	ItemStack next = inventory.getItem(event.getNewSlot());
+    	    	
+    	boolean wasWand = previous != null && isWand(previous);
+    	boolean isWand = next != null && isWand(next);
+    	if (isWand == wasWand) return;
+    	
+    	if (isWand) {
+    		// Save inventory
+    		PlayerSpells spells = getPlayerSpells(player);
+	    	if (spells.storeInventory(event.getNewSlot(), next)) {
+	    		// Create spell inventory
+	    		updateWandInventory(player, event.getNewSlot(), next);
+	    	}
+    	} else if (wasWand) {
+    		// Rebuild spell inventory, save in wand.
+    		ItemStack[] items = inventory.getContents();
+    		List<String> spellNames = new ArrayList<String>();
+    		for (int i = 0; i < items.length; i++) {
+    			if (items[i] == null) continue;
+    			
+    			Spell spell = getSpell(items[i].getType(), player);
+    			if (spell == null) continue;
+    			spellNames.add(spell.getName());
+    		}
+    		previous = setWandSpells(previous, spellNames);
+    		
+    		// Restore inventory
+    		PlayerSpells spells = getPlayerSpells(player);
+    		spells.restoreInventory(event.getPreviousSlot(), previous);
+    	}
+    }
+    
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event)
+    {
+        PlayerSpells spells = getPlayerSpells(event.getPlayer());
+        spells.onPlayerMove(event);
+    }
+
+    @EventHandler
+    public void onPlayerDeath(Player player, EntityDeathEvent event)
+    {
+        PlayerSpells spells = getPlayerSpells(player);
+        spells.onPlayerDeath(event);
+    }
+
+    public void onPlayerDamage(Player player, EntityDamageEvent event)
+    {
+        PlayerSpells spells = getPlayerSpells(player);
+        spells.onPlayerDamage(event);
+    }
+    
+    @EventHandler
+	public void onEntityDamage(EntityDamageEvent event)
+	{
+		if (Player.class.isInstance(event.getEntity()))
+		{
+			Player player = (Player)event.getEntity();
+			onPlayerDamage(player, event);
+		}
+	}
+
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event)
     {
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
@@ -935,35 +942,52 @@ public class Spells
         }
     }
 
-    public boolean allowPhysics(Block block)
+    @EventHandler
+    public void onBlockPhysics(BlockPhysicsEvent event)
     {
-        if (physicsDisableTimeout == 0)
-            return true;
-        if (System.currentTimeMillis() > physicsDisableTimeout)
-            physicsDisableTimeout = 0;
-        return false;
+        if (!allowPhysics(event.getBlock()))
+        {
+            event.setCancelled(true);
+        }
     }
+    
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event)
+    {
+    	// Check for wand re-activation.
+    	Player player = event.getPlayer();
+    	if (isWandActive(player)) {
+	    	// Save inventory
+			PlayerSpells spells = getPlayerSpells(player);
+	    	if (spells.storeInventory()) {
+	    		// Create spell inventory
+	    		updateWandInventory(player);
+	    	}
+    	}
+    }
+    
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event)
+    {
+        PlayerSpells spells = getPlayerSpells(event.getPlayer());
+        spells.onPlayerQuit(event);
+        spells.restoreInventory();
+    }
+   
+    @EventHandler
+	public void onPluginDisable(PluginDisableEvent event)
+	{
+		for (PlayerSpells spells : playerSpells.values()) {
+			spells.restoreInventory();
+		}
+	}
+	
+    @EventHandler
+	public void onPluginEnable(PluginEnableEvent event)
+	{
+		
+	}
 
-    public void disablePhysics(int interval)
-    {
-        physicsDisableTimeout = System.currentTimeMillis() + interval;
-    }
-
-    public boolean hasWandPermission(Player player)
-    {
-        return hasPermission(player, "Magic.wand.use");
-    }
-
-    public boolean hasPermission(Player player, String pNode, boolean defaultValue)
-    {
-        // TODO: What happened to built-in bukkit permissions?
-        return defaultValue;
-    }
-
-    public boolean hasPermission(Player player, String pNode)
-    {
-        return hasPermission(player, pNode, true);
-    }
 
     /*
      * Private data
