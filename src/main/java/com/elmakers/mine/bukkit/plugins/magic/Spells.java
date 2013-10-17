@@ -21,6 +21,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -990,6 +991,17 @@ public class Spells implements Listener
 		
 	}
     
+    @EventHandler
+    public void onPlayerCraftItem(CraftItemEvent event)
+    {
+    	if (!(event.getWhoClicked() instanceof Player)) return;
+    	Player player = (Player)event.getWhoClicked();
+    	PlayerSpells spells = getPlayerSpells(player);
+    	if (spells.hasStoredInventory()) {
+      		event.setCancelled(true); 
+    	}
+    }
+    	
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent event)
     {
