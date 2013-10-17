@@ -21,6 +21,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -997,6 +998,34 @@ public class Spells implements Listener
       		event.setCancelled(true);   		
     		if (spells.addToStoredInventory(event.getItem().getItemStack())) {
     			event.getItem().remove();
+    		}
+    	} else {
+    		// Hackiness needed because we don't get an equip event for this!
+    		PlayerInventory inventory = event.getPlayer().getInventory();
+    		ItemStack inHand = inventory.getItemInHand();
+    		ItemStack pickup = event.getItem().getItemStack();
+    		if (isWand(pickup) && (inHand == null || inHand.getType() == Material.AIR)) {
+    			event.setCancelled(true);
+    			event.getItem().remove();
+    			inventory.setItem(inventory.getHeldItemSlot(), pickup);
+    			if (spells.storeInventory()) {
+    	    		// Create spell inventory
+    	    		updateWandInventory(event.getPlayer());
+    	    	}
+    		} 
+    	}
+    }
+    
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event)
+    {
+    	PlayerSpells spells = getPlayerSpells(event.getPlayer());
+    	if (spells.hasStoredInventory()) {
+    		ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
+    		if (isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
+    			spells.restoreInventory(0,  null);
+    		} else {
+    			event.setCancelled(true);
     		}
     	}
     }
