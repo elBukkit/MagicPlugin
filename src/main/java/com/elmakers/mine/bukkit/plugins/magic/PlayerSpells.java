@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -24,6 +25,23 @@ public class PlayerSpells
     private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
     private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
 
+    public boolean hasStoredInventory() {
+    	return storedInventory != null;
+    }
+    
+    public boolean addToStoredInventory(ItemStack item) {
+    	if (storedInventory == null) {
+    		return false;
+    	}
+ 
+    	HashMap<Integer, ItemStack> remainder = storedInventory.addItem(item);
+    	for (ItemStack remains : remainder.values()) {
+			player.getWorld().dropItemNaturally(player.getLocation(), remains);
+		}
+		
+    	return true;
+    }
+    
     public boolean storeInventory(int keepSlot, ItemStack keepItem) {
     	Inventory inventory = player.getInventory();
     	if (storedInventory != null) {
@@ -67,7 +85,7 @@ public class PlayerSpells
     		if (occupied != null) {
     			HashMap<Integer, ItemStack> remainder = inventory.addItem(occupied);
     			for (ItemStack remains : remainder.values()) {
-    				player.getWorld().dropItem(player.getLocation(), remains);
+    				player.getWorld().dropItemNaturally(player.getLocation(), remains);
     			}
     		}
     	}

@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -987,7 +988,18 @@ public class Spells implements Listener
 	{
 		
 	}
-
+    
+    @EventHandler
+    public void onPlayerPickupItem(PlayerPickupItemEvent event)
+    {
+    	PlayerSpells spells = getPlayerSpells(event.getPlayer());
+    	if (spells.hasStoredInventory()) {
+      		event.setCancelled(true);   		
+    		if (spells.addToStoredInventory(event.getItem().getItemStack())) {
+    			event.getItem().remove();
+    		}
+    	}
+    }
 
     /*
      * Private data
