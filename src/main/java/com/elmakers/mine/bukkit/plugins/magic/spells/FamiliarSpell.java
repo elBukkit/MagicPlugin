@@ -141,7 +141,8 @@ public class FamiliarSpell extends Spell
             String testType = famTypeName.toUpperCase();
             for (EntityType ct : EntityType.values())
             {
-                if (ct.getName().toUpperCase().equals(testType))
+            	String name = ct.getName();
+                if (name != null && name.toUpperCase().equals(testType))
                 {
                     famType = ct;
                     famClass = FamiliarClass.SPECIFIC;
