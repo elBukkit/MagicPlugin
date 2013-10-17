@@ -60,6 +60,8 @@ public class PlayerSpells
     		inventory.setItem(keepSlot, keepItem);
     	}
     	
+    	player.updateInventory();
+    	
     	return true;
     }
     
@@ -89,6 +91,8 @@ public class PlayerSpells
     			}
     		}
     	}
+    	
+    	player.updateInventory();
     	
     	return true;
     }

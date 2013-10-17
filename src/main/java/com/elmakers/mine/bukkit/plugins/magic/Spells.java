@@ -22,6 +22,9 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -76,6 +79,7 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.WolfSpell;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
+import com.elmakers.mine.bukkit.utilities.UpdateInventoryTask;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -600,6 +604,8 @@ public class Spells implements Listener
 			
 			currentIndex++;
 		}
+		
+		player.updateInventory();
     }
 
     
@@ -999,6 +1005,30 @@ public class Spells implements Listener
     	PlayerSpells spells = getPlayerSpells(player);
     	if (spells.hasStoredInventory()) {
       		event.setCancelled(true); 
+    	}
+    }
+    
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+    	if (!(event.getPlayer() instanceof Player)) return;
+    	PlayerSpells spells = getPlayerSpells((Player)event.getPlayer());
+    	if (spells.hasStoredInventory()) {
+    		spells.restoreInventory();
+    	}
+    }
+    
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+    	if (!(event.getPlayer() instanceof Player)) return;
+    	if (event.getView().getType() == InventoryType.CRAFTING) return;
+    	Player player = (Player)event.getPlayer();
+    	PlayerSpells spells = getPlayerSpells(player);
+    	if (!spells.hasStoredInventory() && isWandActive(player)) {
+    		if (spells.storeInventory()) {
+	    		updateWandInventory(player);
+	    		// Need an extra update here, probably something happens after inventory close.
+	    		new UpdateInventoryTask(player).runTaskLater(this.plugin, 2);
+	    	}
     	}
     }
     	
