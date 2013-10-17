@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2.1.1
+
+ - Use enchanted items, names and lore for a more immersive experience.
+
+## 2.1.0
+
+ - Updates for 1.6.4
+
 ## 2.0.8
 
  - Updates for mcserver 1.8
