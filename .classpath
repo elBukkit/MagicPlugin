@@ -28,6 +28,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/nathan/Documents/Code/Bukkit/Testing/craftbukkit-1.6.4-R0.1-20131015.235042-14.jar"/>
+	<classpathentry kind="lib" path="/Users/nathan/Documents/Code/Bukkit/Testing/craftbukkit-1.6.4-R0.1-20131015.235042-14.jar" sourcepath="/CraftBukkit"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

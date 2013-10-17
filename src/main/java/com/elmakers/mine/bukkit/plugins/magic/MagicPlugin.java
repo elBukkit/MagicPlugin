@@ -1,27 +1,29 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+
 public class MagicPlugin extends JavaPlugin
 {	
-	protected static Enchantment MagicEnchantment = Enchantment.ARROW_INFINITE;
-	
 	/*
 	 * Public API
 	 */
@@ -109,47 +111,31 @@ public class MagicPlugin extends JavaPlugin
 	    return false;
 	}
 	
-	public static boolean isWand(ItemStack item) {
-		return item != null && item.getType() == Material.STICK && item.hasItemMeta() && item.getItemMeta().hasEnchant(MagicEnchantment);
-	}
-	
     public boolean onWand(Player player, String[] parameters)
     {
+    	boolean holdingWand = Spells.isWandActive(player);
+    	
         if (parameters.length < 1)
         {
-            boolean gaveWand = false;
-            boolean hasWand = false;
-            Inventory inventory = player.getInventory();
-            ItemStack[] items = inventory.getContents();
-            for (ItemStack item : items) {
-            	if (isWand(item)) {
-            		hasWand = true;
-            		break;
-            	}
-            }
-            if (!hasWand)
+            if (!holdingWand)
             {
             	ItemStack itemStack = new ItemStack(Material.STICK);
-                itemStack.addUnsafeEnchantment(MagicEnchantment, 1);
-                ItemMeta meta = itemStack.getItemMeta();
-                meta.setDisplayName("Wand");
-                List<String> lore = new ArrayList<String>();
-                lore.add("Left-click to cast active spell");
-                lore.add("Right-click to cycle spells");
-                meta.setLore(lore);
-                itemStack.setItemMeta(meta);
+                itemStack.addUnsafeEnchantment(Spells.MagicEnchantment, 1);
+                Spells.updateWand(itemStack, 0);
                 player.getInventory().addItem(itemStack);
-                gaveWand = true;
+                
+                player.sendMessage("Use /wand again for help, /spells for spell list");
             }
-            
-            if (!gaveWand)
+            else 
             {
                 showWandHelp(player);
             }
-            else
-            {
-                player.sendMessage("Use /wand again for help, /spells for spell list");
-            }
+            return true;
+        }
+        
+        if (!holdingWand) 
+        {
+        	player.sendMessage("Equip a wand to enchant with a spell");
             return true;
         }
         
@@ -161,18 +147,31 @@ public class MagicPlugin extends JavaPlugin
             return true;
         }
         
-        ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
-        itemStack.addUnsafeEnchantment(MagicEnchantment, 1);
-        ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName("Spell: " + spell.getName());
-        List<String> lore = new ArrayList<String>();
-        lore.add(spell.getCategory());
-        lore.add(spell.getDescription());
-        meta.setLore(lore);
-        itemStack.setItemMeta(meta);
-        player.getInventory().addItem(itemStack);
-        
+        PlayerInventory inventory = player.getInventory();
+        int wandSlot = inventory.getHeldItemSlot();
+        ItemStack newWand = addSpellToWand(player, spell, inventory.getItemInHand());
+        inventory.setItem(wandSlot, newWand);    	
+        spells.updateWandInventory(player);
         return true;
+    }
+    
+    private ItemStack addSpellToWand(Player player, Spell spell, ItemStack wand) {
+    	if (!Spells.isWand(wand)) {
+    		return wand;
+    	}
+    	
+    	// Add new spell to wand's spell list
+    	String spellString = InventoryUtils.getMeta(wand, "magic_spells");
+    	if (spellString == null) spellString = "";
+    	
+    	String[] spells = StringUtils.split(spellString, "|");
+    	Map<String, Boolean> spellMap = new HashMap<String, Boolean>();
+    	for (int i = 0; i < spells.length; i++) {
+    		spellMap.put(spells[i], true);
+    	}
+    	spellMap.put(spell.getName(), true);
+    	Collection<String> newSpells = spellMap.keySet();
+    	return Spells.setWandSpells(wand, newSpells);
     }
     
     private void showWandHelp(Player player)

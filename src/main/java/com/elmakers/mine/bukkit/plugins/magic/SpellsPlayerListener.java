@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -41,5 +42,11 @@ class SpellsPlayerListener implements Listener
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		master.onPlayerQuit(event);
+	}
+
+	@EventHandler
+	public void onPlayerEquip(PlayerItemHeldEvent event)
+	{
+		master.onPlayerEquip(event);
 	}
 }

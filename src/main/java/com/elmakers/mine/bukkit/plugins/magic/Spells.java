@@ -2,25 +2,32 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -60,12 +67,15 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.UndoSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WeatherSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WolfSpell;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Spells
 {
+	public static Enchantment MagicEnchantment = Enchantment.ARROW_INFINITE;
+		
     /*
      * Public API - Use for hooking up a plugin, or calling a spell
      */
@@ -560,6 +570,107 @@ public class Spells
         PlayerSpells spells = getPlayerSpells(event.getPlayer());
         spells.onPlayerQuit(event);
     }
+    
+    public void updateWandInventory(Player player) {
+    	updateWandInventory(player, player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
+    }
+    
+    protected void updateWandInventory(Player player, int itemSlot, ItemStack wand) {
+    	if (!isWand(wand)) return;
+    	
+    	Inventory inventory = player.getInventory();
+    	inventory.clear();
+		inventory.setItem(itemSlot, wand);
+		String spellString = InventoryUtils.getMeta(wand, "magic_spells");
+		String[] spells = StringUtils.split(spellString, "|");
+		
+		int currentIndex = 0;
+		for (int i = 0; i < spells.length; i++) {
+			if (currentIndex == itemSlot) currentIndex++;
+			Spell spell = getSpell(spells[i], player);
+			if (spell != null) {
+	            ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
+	            itemStack.addUnsafeEnchantment(Spells.MagicEnchantment, 1);
+	            ItemMeta meta = itemStack.getItemMeta();
+	            meta.setDisplayName("Spell: " + spell.getName());
+	            List<String> lore = new ArrayList<String>();
+	            lore.add(spell.getCategory());
+	            lore.add(spell.getDescription());
+	            meta.setLore(lore);
+	            itemStack.setItemMeta(meta);
+	            inventory.setItem(currentIndex, itemStack);
+			}
+			
+			currentIndex++;
+		}
+    }
+
+    public void onPlayerEquip(PlayerItemHeldEvent event)
+    {
+    	Player player = event.getPlayer();
+    	Inventory inventory = player.getInventory();
+    	ItemStack previous = inventory.getItem(event.getPreviousSlot());
+    	ItemStack next = inventory.getItem(event.getNewSlot());
+    	    	
+    	boolean wasWand = previous != null && isWand(previous);
+    	boolean isWand = next != null && isWand(next);
+    	if (isWand == wasWand) return;
+    	
+    	if (isWand) {
+    		// Save inventory
+    		// TODO: move this to the wand, persist it, or restore before shutdown (not really safe)
+    		String savedInventory = InventoryUtils.inventoryToString(inventory);
+    		player.setMetadata("wand_inventory", new FixedMetadataValue(plugin, savedInventory));
+    		
+    		// Create spell inventory
+    		updateWandInventory(player, event.getNewSlot(), next);
+    	} else if (wasWand) {
+    		// Rebuild spell inventory, save in wand.
+    		ItemStack[] items = inventory.getContents();
+    		List<String> spellNames = new ArrayList<String>();
+    		for (int i = 0; i < items.length; i++) {
+    			if (items[i] == null) continue;
+    			
+    			Spell spell = getSpell(items[i].getType(), player);
+    			if (spell == null) continue;
+    			spellNames.add(spell.getName());
+    		}
+    		previous = setWandSpells(previous, spellNames);
+    		
+    		List<MetadataValue> metadata = player.getMetadata("wand_inventory");
+    		if (metadata != null && metadata.size() > 0) {
+        		String savedInventory = metadata.get(0).asString();
+        		player.removeMetadata("wand_inventory", plugin);
+        		Inventory saved = InventoryUtils.stringToInventory(savedInventory, "Restoring From Wand");
+        		inventory.setContents(saved.getContents());
+    		}
+    		
+    		inventory.setItem(event.getPreviousSlot(), previous);
+    	}
+    }
+    
+    public static ItemStack setWandSpells(ItemStack wand, Collection<String> spellNames) {
+    	String spellString = StringUtils.join(spellNames, "|");
+    	  
+    	// Update wand lore - do this BEFORE setMeta, else Bukkit will squash our spell list.
+    	updateWand(wand, spellNames.size());
+        
+        // Set new spells string, which creates a copy of the wand.
+    	wand = InventoryUtils.setMeta(wand,  "magic_spells", spellString);
+    	
+    	return wand;
+    }
+    
+    public static void updateWand(ItemStack wand, int spellCount) {
+    	ItemMeta meta = wand.getItemMeta();
+        meta.setDisplayName("Wand");
+        List<String> lore = new ArrayList<String>();
+        lore.add("Knows " + spellCount +" Spells");
+        lore.add("Left-click to cast active spell");
+        lore.add("Right-click to cycle spells");
+        meta.setLore(lore);
+        wand.setItemMeta(meta);
+    }
 
     public void onPlayerMove(PlayerMoveEvent event)
     {
@@ -601,7 +712,7 @@ public class Spells
             Spell spell = null;
             for (int i = 0; i < 9; i++)
             {
-                if (contents[i] == null || contents[i].getType() == Material.AIR || MagicPlugin.isWand(contents[i]))
+                if (contents[i] == null || contents[i].getType() == Material.AIR || isWand(contents[i]))
                 {
                     continue;
                 }
@@ -692,9 +803,9 @@ public class Spells
         {
             boolean isEmpty = active[i] == null;
             Material activeType = isEmpty ? Material.AIR : active[i].getType();
-            boolean isWand = isEmpty ? false : MagicPlugin.isWand(active[i]);
+            boolean isWand = isEmpty ? false : isWand(active[i]);
             boolean isSpell = false;
-            if (activeType != Material.AIR && active[i].hasItemMeta() && active[i].getItemMeta().hasEnchant(MagicPlugin.MagicEnchantment))
+            if (activeType != Material.AIR && active[i].hasItemMeta() && active[i].getItemMeta().hasEnchant(MagicEnchantment))
             {
                 Spell spell = getSpell(activeType, player);
                 isSpell = spell != null;
@@ -727,7 +838,7 @@ public class Spells
         {
             int i = ddi + firstSpellSlot;
             boolean isEmpty = contents[i] == null;
-            boolean isWand = isEmpty ? false : MagicPlugin.isWand(active[i]);
+            boolean isWand = isEmpty ? false : isWand(active[i]);
             
             if (!isWand)
             {
@@ -736,7 +847,7 @@ public class Spells
                     int dni = (ddi + di) % numSpellSlots;
                     int ni = dni + firstSpellSlot;
                     isEmpty = active[ni] == null;
-                    isWand = isEmpty ? false : MagicPlugin.isWand(active[ni]);
+                    isWand = isEmpty ? false : isWand(active[ni]);
                     if (!isWand)
                     {
                         contents[i] = active[ni];
@@ -750,10 +861,14 @@ public class Spells
         player.updateInventory();
     }
     
-    public boolean isWandActive(Player player) {
+    public static boolean isWandActive(Player player) {
     	ItemStack activeItem =  player.getInventory().getItemInHand();
-    	return MagicPlugin.isWand(activeItem);
+    	return isWand(activeItem);
     }
+	
+	public static boolean isWand(ItemStack item) {
+		return item != null && item.getType() == Material.STICK && item.hasItemMeta() && item.getItemMeta().hasEnchant(MagicEnchantment);
+	}
 
     /**
      * Called when a player uses an item
