@@ -1,11 +1,16 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.util.logging.Logger;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.event.server.PluginEnableEvent;
 
 class SpellsPlayerListener implements Listener 
 {
@@ -39,14 +44,32 @@ class SpellsPlayerListener implements Listener
     }
 
 	@EventHandler
+	public void onPlayerEquip(PlayerItemHeldEvent event)
+	{
+		master.onPlayerEquip(event);
+	}
+
+	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		master.onPlayerQuit(event);
 	}
 
 	@EventHandler
-	public void onPlayerEquip(PlayerItemHeldEvent event)
+	public void onPluginDisable(PluginDisableEvent event)
 	{
-		master.onPlayerEquip(event);
+		master.onPluginDisable(event);
+	}
+	
+	@EventHandler
+	public void onPluginEnable(PluginEnableEvent event)
+	{
+		master.onPluginEnable(event);
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event)
+	{
+		master.onPlayerJoin(event);
 	}
 }

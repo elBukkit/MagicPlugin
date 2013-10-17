@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
@@ -23,26 +24,53 @@ public class PlayerSpells
     private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
     private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
 
-    // TODO: Safely persist or restore inventory
-    public boolean storeInventory() {
+    public boolean storeInventory(int keepSlot, ItemStack keepItem) {
+    	Inventory inventory = player.getInventory();
     	if (storedInventory != null) {
     		return false;
     	}
-    	Inventory inventory = player.getInventory();
+    	
+    	if (keepItem != null) {
+    		inventory.clear(keepSlot);
+    	}
+
     	storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Magic.Wand.StoredInventory");
     	storedInventory.setContents(inventory.getContents());
     	inventory.clear();
     	
+    	if (keepItem != null) {
+    		inventory.setItem(keepSlot, keepItem);
+    	}
+    	
     	return true;
     }
     
+    public boolean storeInventory() {
+    	return storeInventory(player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
+    }
+    
     public boolean restoreInventory() {
+    	return restoreInventory(player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
+    }
+    
+    public boolean restoreInventory(int keepSlot, ItemStack keepItem) {
     	if (storedInventory == null) {
     		return false;
     	}
     	Inventory inventory = player.getInventory();
     	inventory.setContents(storedInventory.getContents());
     	storedInventory = null;
+    	
+    	if (keepItem != null) {
+    		ItemStack occupied = inventory.getItem(keepSlot);
+    		inventory.setItem(keepSlot,keepItem);
+    		if (occupied != null) {
+    			HashMap<Integer, ItemStack> remainder = inventory.addItem(occupied);
+    			for (ItemStack remains : remainder.values()) {
+    				player.getWorld().dropItem(player.getLocation(), remains);
+    			}
+    		}
+    	}
     	
     	return true;
     }

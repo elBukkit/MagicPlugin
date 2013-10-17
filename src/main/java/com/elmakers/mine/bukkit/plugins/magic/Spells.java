@@ -20,14 +20,15 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -565,11 +566,39 @@ public class Spells
      * Listeners / callbacks
      */
 
+    public void onPlayerJoin(PlayerJoinEvent event)
+    {
+    	// Check for wand re-activation.
+    	Player player = event.getPlayer();
+    	if (isWandActive(player)) {
+	    	// Save inventory
+			PlayerSpells spells = getPlayerSpells(player);
+	    	if (spells.storeInventory()) {
+	    		// Create spell inventory
+	    		updateWandInventory(player);
+	    	}
+    	}
+    }
+    
     public void onPlayerQuit(PlayerQuitEvent event)
     {
         PlayerSpells spells = getPlayerSpells(event.getPlayer());
         spells.onPlayerQuit(event);
+        spells.restoreInventory();
     }
+   
+	public void onPluginDisable(PluginDisableEvent event)
+	{
+		for (PlayerSpells spells : playerSpells.values()) {
+			spells.restoreInventory();
+		}
+	}
+	
+	
+	public void onPluginEnable(PluginEnableEvent event)
+	{
+		
+	}
     
     public void updateWandInventory(Player player) {
     	updateWandInventory(player, player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
@@ -619,7 +648,7 @@ public class Spells
     	if (isWand) {
     		// Save inventory
     		PlayerSpells spells = getPlayerSpells(player);
-	    	if (spells.storeInventory()) {
+	    	if (spells.storeInventory(event.getNewSlot(), next)) {
 	    		// Create spell inventory
 	    		updateWandInventory(player, event.getNewSlot(), next);
 	    	}
@@ -638,9 +667,7 @@ public class Spells
     		
     		// Restore inventory
     		PlayerSpells spells = getPlayerSpells(player);
-    		spells.restoreInventory();
-    		
-    		inventory.setItem(event.getPreviousSlot(), previous);
+    		spells.restoreInventory(event.getPreviousSlot(), previous);
     	}
     }
     
