@@ -9,16 +9,44 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
+
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 public class PlayerSpells 
 {
     protected Player player;
 	protected HashMap<String, Spell> spells = new HashMap<String, Spell>();
+	private Inventory							storedInventory  			   = null;
     private final List<Spell>                   movementListeners              = new ArrayList<Spell>();
     private final List<Spell>                   quitListeners                  = new ArrayList<Spell>();
     private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
     private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
 
+    // TODO: Safely persist or restore inventory
+    public boolean storeInventory() {
+    	if (storedInventory != null) {
+    		return false;
+    	}
+    	Inventory inventory = player.getInventory();
+    	storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Magic.Wand.StoredInventory");
+    	storedInventory.setContents(inventory.getContents());
+    	inventory.clear();
+    	
+    	return true;
+    }
+    
+    public boolean restoreInventory() {
+    	if (storedInventory == null) {
+    		return false;
+    	}
+    	Inventory inventory = player.getInventory();
+    	inventory.setContents(storedInventory.getContents());
+    	storedInventory = null;
+    	
+    	return true;
+    }
+    
     public void registerEvent(SpellEventType type, Spell spell)
     {
         switch (type)

@@ -618,12 +618,11 @@ public class Spells
     	
     	if (isWand) {
     		// Save inventory
-    		// TODO: move this to the wand, persist it, or restore before shutdown (not really safe)
-    		String savedInventory = InventoryUtils.inventoryToString(inventory);
-    		player.setMetadata("wand_inventory", new FixedMetadataValue(plugin, savedInventory));
-    		
-    		// Create spell inventory
-    		updateWandInventory(player, event.getNewSlot(), next);
+    		PlayerSpells spells = getPlayerSpells(player);
+	    	if (spells.storeInventory()) {
+	    		// Create spell inventory
+	    		updateWandInventory(player, event.getNewSlot(), next);
+	    	}
     	} else if (wasWand) {
     		// Rebuild spell inventory, save in wand.
     		ItemStack[] items = inventory.getContents();
@@ -637,13 +636,9 @@ public class Spells
     		}
     		previous = setWandSpells(previous, spellNames);
     		
-    		List<MetadataValue> metadata = player.getMetadata("wand_inventory");
-    		if (metadata != null && metadata.size() > 0) {
-        		String savedInventory = metadata.get(0).asString();
-        		player.removeMetadata("wand_inventory", plugin);
-        		Inventory saved = InventoryUtils.stringToInventory(savedInventory, "Restoring From Wand");
-        		inventory.setContents(saved.getContents());
-    		}
+    		// Restore inventory
+    		PlayerSpells spells = getPlayerSpells(player);
+    		spells.restoreInventory();
     		
     		inventory.setItem(event.getPreviousSlot(), previous);
     	}

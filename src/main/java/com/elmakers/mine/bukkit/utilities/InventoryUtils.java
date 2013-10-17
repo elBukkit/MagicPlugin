@@ -161,12 +161,10 @@ public class InventoryUtils
 			Method getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
 			final int listSize = (Integer)sizeMethod.invoke(itemList);
 
-			Method isEmptyMethod = class_NBTTagCompound.getMethod("isEmpty");
-
-			Constructor<?> inventoryConstructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
-			inventory = (Inventory)inventoryConstructor.newInstance(null, listSize, ChatColor.translateAlternateColorCodes('&', name));
-
+			Method isEmptyMethod = class_NBTTagCompound.getMethod("isEmpty");			
 			Method setItemMethod = class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);
+
+			inventory = createInventory(null, listSize, name);
 
 			for (int i = 0; i < listSize; i++) {
 				final Object inputObject = getMethod.invoke(itemList, i);
@@ -182,5 +180,27 @@ public class InventoryUtils
 			ex.printStackTrace();
 		}
 		return inventory;
+	}
+	
+	public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
+		Inventory inventory = null;
+		try {
+			Constructor<?> inventoryConstructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
+			inventory = (Inventory)inventoryConstructor.newInstance(holder, size, ChatColor.translateAlternateColorCodes('&', name));			
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return inventory;
+	}
+	
+	public static boolean inventorySetItem(Inventory inventory, int index, ItemStack item) {
+		try {
+			Method setItemMethod = class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);
+			setItemMethod.invoke(inventory, index, item);
+			return true;
+		} catch(Throwable ex) {
+			ex.printStackTrace();
+		}
+		return false;
 	}
 }
