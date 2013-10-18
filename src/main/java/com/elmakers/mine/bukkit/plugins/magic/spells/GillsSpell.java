@@ -16,50 +16,50 @@ public class GillsSpell extends Spell
 		public long lastHealTick;
 		public long lastMoveTick;
 		public int timeRemaining;
-		
+
 		public PlayerGills(int duration)
 		{
 			lastMoveTick = System.currentTimeMillis();
 			lastHealTick = lastMoveTick;
 			timeRemaining = duration;
 		}
-		
+
 		public void move()
 		{
-			
+
 			long thisMoveTick = System.currentTimeMillis();
 			int timeDelta = (int)(thisMoveTick - lastMoveTick);
 			lastMoveTick = thisMoveTick;
 			timeRemaining -= timeDelta;
 		}
-		
+
 		public void heal()
 		{
 			lastHealTick = System.currentTimeMillis();
 		}
-		
+
 		public boolean isTimeToHeal(int frequency)
 		{
 			int healDelta = (int)(lastMoveTick - lastHealTick);
 			return healDelta > frequency;
 		}
-		
+
 		public boolean isTimeToRecede()
 		{
 			return timeRemaining < 0;
 		}
 	}
-	
+
 	private int gillDuration = 60;
 	private int healFrequency = 1000;
 	private int healAmount = 4;
 	private HashMap<String, PlayerGills> gillPlayers = new HashMap<String, PlayerGills>();
-	
+
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
 		PlayerGills hasGills = gillPlayers.get(player.getName());
-		
+
 		if (hasGills != null)
 		{
 			sendMessage(player, "Your gills recede");
@@ -73,7 +73,7 @@ public class GillsSpell extends Spell
 		checkListener();
 		return true;
 	}
-	
+
 	protected void checkListener()
 	{
 		if (gillPlayers.size() == 0)
@@ -85,7 +85,7 @@ public class GillsSpell extends Spell
 			spells.registerEvent(SpellEventType.PLAYER_MOVE, this);
 		}
 	}
-	
+
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
@@ -102,8 +102,8 @@ public class GillsSpell extends Spell
 			}
 			else
 			{
-			if (gills.isTimeToHeal(healFrequency))
-			{
+				if (gills.isTimeToHeal(healFrequency))
+				{
 					gills.heal();
 					if (isUnderwater())
 					{
@@ -122,7 +122,7 @@ public class GillsSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-	    disableTargeting();
+		disableTargeting();
 		gillDuration = properties.getInteger("duration", gillDuration);
 		healFrequency = properties.getInteger("heal_frequency", healFrequency);
 		healAmount = properties.getInteger("heal_amount", healAmount);

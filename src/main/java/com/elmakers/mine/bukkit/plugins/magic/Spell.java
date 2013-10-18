@@ -41,308 +41,308 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	protected Player						player;
 	protected Spells						spells;
-    protected static CSVParser              csv = new CSVParser();
+	protected static CSVParser              csv = new CSVParser();
 
 	/*
 	 * Variant properties
 	 */
 	private String name;
-    private String description;
-    private String category;
-    private ConfigurationNode parameters;
-    private Material material;
-    private List<CastingCost> costs = null;
-	
-    /*
-     * private data
-     */
+	private String description;
+	private String category;
+	private ConfigurationNode parameters;
+	private Material material;
+	private List<CastingCost> costs = null;
 
-    private boolean                             allowMaxRange           = false;
-    private int                                 range                   = 200;
-    private double                              viewHeight              = 1.65;
-    private double                              step                    = 0.2;
-    
-    private int                                 cooldown                = 0;
-    private long                                lastCast                = 0;
+	/*
+	 * private data
+	 */
 
-    private int                                 verticalSearchDistance  = 8;
-    private boolean                             targetingComplete;
-    private int                                 targetHeightRequired    = 1;
-    private Class<? extends Entity>             targetEntityType        = null;
-    private Location                            playerLocation;
-    private double                              xRotation, yRotation;
-    private double                              length, hLength;
-    private double                              xOffset, yOffset, zOffset;
-    private int                                 lastX, lastY, lastZ;
-    private int                                 targetX, targetY, targetZ;
-    private MaterialList                        targetThroughMaterials  = new MaterialList();
-    private boolean                             reverseTargeting        = false;
-    private boolean                             usesTargeting           = true;
-    
-    protected Object clone()
-    {
-        try
-        {
-            return super.clone();
-        }
-        catch (CloneNotSupportedException ex)
-        {
-            return null;
-        }
-    }
-    
-    /**
-     * Default constructor, used to register spells.
-     * 
-     */
-    public Spell()
-    {
-        this.player = null;
-    }
-    
-    protected static String getBuiltinClasspath()
-    {
-        String baseClass = Spell.class.getName();
-        return baseClass.substring(0, baseClass.lastIndexOf('.'));
-    }
-    
-    public static Spell loadSpell(String name, ConfigurationNode node)
-    {
-       String builtinClassPath = getBuiltinClasspath();
-        
-       String className = node.getString("class");
-       if (className == null) return null;
-       
-       if (className.indexOf('.') <= 0)
-       {
-           className = builtinClassPath + ".spells." + className;
-       }
-       
-       Class<?> spellClass = null;
-       try
-       {
-           spellClass = Class.forName(className);
-       }
-       catch(ClassNotFoundException ex)
-       {
-           // TODO Log errors
-           return null;
-       }
+	private boolean                             allowMaxRange           = false;
+	private int                                 range                   = 200;
+	private double                              viewHeight              = 1.65;
+	private double                              step                    = 0.2;
 
-       Object newObject;
-       try
-       {
-            newObject = spellClass.newInstance();
-       }
-       catch (InstantiationException e)
-       {
-           // TODO Log errors
-           return null;
-       }
-       catch (IllegalAccessException e)
-       {
-           // TODO Log errors
-           return null;
-       }
-       
-       if (newObject == null || !(newObject instanceof Spell))
-       {
-           // TODO Log errors
-           return null;
-       }
-       
-       Spell newSpell = (Spell)newObject;
-       newSpell.load(name, node);
-       
-       return newSpell;
-    }
-    
-    protected void loadAndSave(ConfigurationNode node)
-    {
-        description = node.getString("description", description);
-        material = node.getMaterial("icon", material);
-        category = node.getString("category", category);
-        parameters = node.getNode("parameters", parameters);
-        ConfigurationNode properties = node.getNode("properties");
-        if (properties == null) properties = node.createChild("properties");
-        cooldown = properties.getInt("cooldown", cooldown);
+	private int                                 cooldown                = 0;
+	private long                                lastCast                = 0;
 
-        this.onLoad(properties);
-        
-        if (usesTargeting)
-        {            
-            range = properties.getInteger("range", range);
-            allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
-            targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
-        }
-     }
-    
-    protected void load(String name, ConfigurationNode node)
-    {
-        this.name = name;
-        loadAndSave(node);
-        
-        List<Object> costNodes = node.getList("costs");
+	private int                                 verticalSearchDistance  = 8;
+	private boolean                             targetingComplete;
+	private int                                 targetHeightRequired    = 1;
+	private Class<? extends Entity>             targetEntityType        = null;
+	private Location                            playerLocation;
+	private double                              xRotation, yRotation;
+	private double                              length, hLength;
+	private double                              xOffset, yOffset, zOffset;
+	private int                                 lastX, lastY, lastZ;
+	private int                                 targetX, targetY, targetZ;
+	private MaterialList                        targetThroughMaterials  = new MaterialList();
+	private boolean                             reverseTargeting        = false;
+	private boolean                             usesTargeting           = true;
 
-        if (costNodes != null) 
-        {
-            if (costs == null)
-            {
-                costs = new ArrayList<CastingCost>();
-            }
-            costs.clear();
-            
-            for (Object o : costNodes)
-            {
-                if (o instanceof Map)
-                {
-                    @SuppressWarnings("unchecked")
-                    Map<String, Object> nodeValues = (Map<String, Object>)o;
-                    CastingCost cost = new CastingCost(new ConfigurationNode(nodeValues));
-                    costs.add(cost);
-                }
-            }
-        }
-        
-        targetThrough(Material.AIR);
-        targetThrough(Material.WATER);
-        targetThrough(Material.STATIONARY_WATER);
-        targetThrough(Material.SNOW);
-    }
-    
-    public void save(ConfigurationNode node)
-    {
-        String className = this.getClass().getName();
-        
-        String builtinClassPath = getBuiltinClasspath();
-        
-        if (className.contains(builtinClassPath))
-        {
-            className = className.substring(className.lastIndexOf('.') + 1);
-        }
-        node.setProperty("class", className);
-        
-        loadAndSave(node);
+	protected Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException ex)
+		{
+			return null;
+		}
+	}
 
-        if (costs != null)
-        {
-            List< Map<String, Object> > costList = new ArrayList< Map<String, Object> >();
-            for (CastingCost cost : costs)
-            {
-                costList.add(cost.export());
-            }
-            
-            node.setProperty("costs", costList);
-        }
-        this.onSave(node);
-    }
+	/**
+	 * Default constructor, used to register spells.
+	 * 
+	 */
+	public Spell()
+	{
+		this.player = null;
+	}
 
-    public void onSave(ConfigurationNode node)
-    {
-        
-    }
-    
-    public void setPlayer(Player player)
-    {
-        this.player = player;
-    }
+	protected static String getBuiltinClasspath()
+	{
+		String baseClass = Spell.class.getName();
+		return baseClass.substring(0, baseClass.lastIndexOf('.'));
+	}
 
-    public final String getName()
-    {
-        return name;
-    }
+	public static Spell loadSpell(String name, ConfigurationNode node)
+	{
+		String builtinClassPath = getBuiltinClasspath();
 
-    public final Material getMaterial()
-    {
-        return material;
-    }
-    
-    public final String getDescription()
-    {
-        return description;
-    }
-    
-    public final String getCategory()
-    {
-        return category;
-    }
-    
-    public boolean isMatch(String spell, String[] params)
-    {
-        if (params == null) params = new String[0];
-        return (name.equalsIgnoreCase(spell) && parameters.equals(params));
-    }
-    
-    public int compareTo(Spell other)
-    {
-        return getName().compareTo(other.getName());
-    }
-    
-    public boolean cast()
-    {
-        return cast(new String[0]);
-    }
-    
-    static public void addParameters(String[] extraParameters, ConfigurationNode parameters)
-    {
-        if (extraParameters != null)
-        {
-            for (int i = 0; i < extraParameters.length - 1; i += 2)
-            {
-                parameters.setProperty(extraParameters[i], extraParameters[i + 1]);
-            }
-        }
-    }
-    
-    public boolean cast(String[] extraParameters)
-    {
-        ConfigurationNode parameters = new ConfigurationNode(this.parameters);
+		String className = node.getString("class");
+		if (className == null) return null;
 
-        addParameters(extraParameters, parameters);
- 
-        long currentTime = System.currentTimeMillis();
-        if (lastCast != 0 && lastCast > currentTime - cooldown)
-        {
-            return false;
-        }
-        
-        if (costs != null)
-        {
-            PlayerSpells playerSpells = spells.getPlayerSpells(player);
-            Inventory inventory = playerSpells.hasStoredInventory() ? playerSpells.getStoredInventory() : player.getInventory();
-            for (CastingCost cost : costs)
-            {
-                if (!cost.has(player, inventory))
-                {
-                    sendMessage(player, "Not enough " + cost.getDescription());
-                    return false;
-                }
-            }
-            
-            for (CastingCost cost : costs)
-            {
-                cost.use(player, inventory);
-            }
-        }
-        
-        lastCast = currentTime;
-        initializeTargeting(player);
+		if (className.indexOf('.') <= 0)
+		{
+			className = builtinClassPath + ".spells." + className;
+		}
 
-        return onCast(parameters);
-    }
+		Class<?> spellClass = null;
+		try
+		{
+			spellClass = Class.forName(className);
+		}
+		catch(ClassNotFoundException ex)
+		{
+			// TODO Log errors
+			return null;
+		}
 
-    public String getPermissionNode()
-    {
-        return "Magic.cast." + getName();
-    }
-    
-    public boolean hasSpellPermission(Player player)
-    {
-        if (player == null) return false;
-    
-        return spells.hasPermission(player, getPermissionNode());
-    }
-    
+		Object newObject;
+		try
+		{
+			newObject = spellClass.newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			// TODO Log errors
+			return null;
+		}
+		catch (IllegalAccessException e)
+		{
+			// TODO Log errors
+			return null;
+		}
+
+		if (newObject == null || !(newObject instanceof Spell))
+		{
+			// TODO Log errors
+			return null;
+		}
+
+		Spell newSpell = (Spell)newObject;
+		newSpell.load(name, node);
+
+		return newSpell;
+	}
+
+	protected void loadAndSave(ConfigurationNode node)
+	{
+		description = node.getString("description", description);
+		material = node.getMaterial("icon", material);
+		category = node.getString("category", category);
+		parameters = node.getNode("parameters", parameters);
+		ConfigurationNode properties = node.getNode("properties");
+		if (properties == null) properties = node.createChild("properties");
+		cooldown = properties.getInt("cooldown", cooldown);
+
+		this.onLoad(properties);
+
+		if (usesTargeting)
+		{            
+			range = properties.getInteger("range", range);
+			allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
+			targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
+		}
+	}
+
+	protected void load(String name, ConfigurationNode node)
+	{
+		this.name = name;
+		loadAndSave(node);
+
+		List<Object> costNodes = node.getList("costs");
+
+		if (costNodes != null) 
+		{
+			if (costs == null)
+			{
+				costs = new ArrayList<CastingCost>();
+			}
+			costs.clear();
+
+			for (Object o : costNodes)
+			{
+				if (o instanceof Map)
+				{
+					@SuppressWarnings("unchecked")
+					Map<String, Object> nodeValues = (Map<String, Object>)o;
+					CastingCost cost = new CastingCost(new ConfigurationNode(nodeValues));
+					costs.add(cost);
+				}
+			}
+		}
+
+		targetThrough(Material.AIR);
+		targetThrough(Material.WATER);
+		targetThrough(Material.STATIONARY_WATER);
+		targetThrough(Material.SNOW);
+	}
+
+	public void save(ConfigurationNode node)
+	{
+		String className = this.getClass().getName();
+
+		String builtinClassPath = getBuiltinClasspath();
+
+		if (className.contains(builtinClassPath))
+		{
+			className = className.substring(className.lastIndexOf('.') + 1);
+		}
+		node.setProperty("class", className);
+
+		loadAndSave(node);
+
+		if (costs != null)
+		{
+			List< Map<String, Object> > costList = new ArrayList< Map<String, Object> >();
+			for (CastingCost cost : costs)
+			{
+				costList.add(cost.export());
+			}
+
+			node.setProperty("costs", costList);
+		}
+		this.onSave(node);
+	}
+
+	public void onSave(ConfigurationNode node)
+	{
+
+	}
+
+	public void setPlayer(Player player)
+	{
+		this.player = player;
+	}
+
+	public final String getName()
+	{
+		return name;
+	}
+
+	public final Material getMaterial()
+	{
+		return material;
+	}
+
+	public final String getDescription()
+	{
+		return description;
+	}
+
+	public final String getCategory()
+	{
+		return category;
+	}
+
+	public boolean isMatch(String spell, String[] params)
+	{
+		if (params == null) params = new String[0];
+		return (name.equalsIgnoreCase(spell) && parameters.equals(params));
+	}
+
+	public int compareTo(Spell other)
+	{
+		return getName().compareTo(other.getName());
+	}
+
+	public boolean cast()
+	{
+		return cast(new String[0]);
+	}
+
+	static public void addParameters(String[] extraParameters, ConfigurationNode parameters)
+	{
+		if (extraParameters != null)
+		{
+			for (int i = 0; i < extraParameters.length - 1; i += 2)
+			{
+				parameters.setProperty(extraParameters[i], extraParameters[i + 1]);
+			}
+		}
+	}
+
+	public boolean cast(String[] extraParameters)
+	{
+		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
+
+		addParameters(extraParameters, parameters);
+
+		long currentTime = System.currentTimeMillis();
+		if (lastCast != 0 && lastCast > currentTime - cooldown)
+		{
+			return false;
+		}
+
+		if (costs != null)
+		{
+			PlayerSpells playerSpells = spells.getPlayerSpells(player);
+			Inventory inventory = playerSpells.hasStoredInventory() ? playerSpells.getStoredInventory() : player.getInventory();
+			for (CastingCost cost : costs)
+			{
+				if (!cost.has(player, inventory))
+				{
+					sendMessage(player, "Not enough " + cost.getDescription());
+					return false;
+				}
+			}
+
+			for (CastingCost cost : costs)
+			{
+				cost.use(player, inventory);
+			}
+		}
+
+		lastCast = currentTime;
+		initializeTargeting(player);
+
+		return onCast(parameters);
+	}
+
+	public String getPermissionNode()
+	{
+		return "Magic.cast." + getName();
+	}
+
+	public boolean hasSpellPermission(Player player)
+	{
+		if (player == null) return false;
+
+		return spells.hasPermission(player, getPermissionNode());
+	}
+
 	/**
 	 * Called when this spell is cast.
 	 * 
@@ -382,9 +382,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		
+
 	}
-	
+
 	/**
 	 * Listener method, called on player quit for registered spells.
 	 * 
@@ -395,7 +395,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 
 	}
-	
+
 	/**
 	 * Listener method, called on player move for registered spells.
 	 * 
@@ -407,23 +407,23 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 
 	}
-	
+
 	public void onPlayerDamage(EntityDamageEvent event)
-    {
-	    
-    }
-	
+	{
+
+	}
+
 	public static byte getItemData(ItemStack stack)
 	{
 		if (stack == null) return 0;
 		return (byte)stack.getDurability();
 	}
-	
+
 	public Player getPlayer()
 	{
-	    return player;
+		return player;
 	}
-	
+
 	/*
 	 * General helper functions
 	 */
@@ -433,27 +433,27 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		List<Material> buildingMaterials = spells.getBuildingMaterials();
 		Inventory inventory = player.getInventory();
 		ItemStack[] contents = inventory.getContents();
-		
+
 		result = contents[8];
 		boolean isAir = result == null || result.getType() == Material.AIR;
 		if (!isAir && buildingMaterials.contains(result.getType()))
 		{
 			return result;
 		}
-		
+
 		// Should be air now
 		result = null;
-		
+
 		// Check for other building materials- if the second-to-last material is a building
 		// material, then return air- else return null.
 		if (contents[7] == null || contents[7].getType() == Material.AIR) return null;
-		
+
 		return new ItemStack(Material.AIR);
 	}
-	
+
 	public void targetEntity(Class<? extends Entity> typeOf)
 	{
-	    targetEntityType = typeOf;
+		targetEntityType = typeOf;
 	}
 
 	public void targetThrough(Material mat)
@@ -465,7 +465,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		targetThroughMaterials.remove(mat);
 	}
-	
+
 	public boolean isTargetable(Material mat)
 	{
 		boolean targetThrough = targetThroughMaterials.contains(mat);
@@ -480,48 +480,48 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		reverseTargeting = reverse;
 	}
-	
+
 	public boolean isReverseTargeting()
 	{
 		return reverseTargeting;
 	}
-	
+
 	public void setTargetHeightRequired(int height)
 	{
 		targetHeightRequired = height;
 	}
-	
+
 	public int getTargetHeightRequired()
 	{
 		return targetHeightRequired;
 	}
-	
+
 	/*
 	 * Ground / location search and test function functions
 	 */
 	public boolean isOkToStandIn(Material mat)
 	{
 		return 
-		(
-		        mat == Material.AIR 
-		||    mat == Material.WATER 
-		||    mat == Material.STATIONARY_WATER 
-		||    mat == Material.SNOW
-		||    mat == Material.TORCH
-		||    mat == Material.SIGN_POST
-		||    mat == Material.REDSTONE_TORCH_ON
-        ||    mat == Material.REDSTONE_TORCH_OFF
-        ||    mat == Material.YELLOW_FLOWER
-        ||    mat == Material.RED_ROSE
-        ||    mat == Material.RED_MUSHROOM
-        ||    mat == Material.BROWN_MUSHROOM
-        ||    mat == Material.LONG_GRASS
-		);
+				(
+						mat == Material.AIR 
+						||    mat == Material.WATER 
+						||    mat == Material.STATIONARY_WATER 
+						||    mat == Material.SNOW
+						||    mat == Material.TORCH
+						||    mat == Material.SIGN_POST
+						||    mat == Material.REDSTONE_TORCH_ON
+						||    mat == Material.REDSTONE_TORCH_OFF
+						||    mat == Material.YELLOW_FLOWER
+						||    mat == Material.RED_ROSE
+						||    mat == Material.RED_MUSHROOM
+						||    mat == Material.BROWN_MUSHROOM
+						||    mat == Material.LONG_GRASS
+						);
 	}
-	
+
 	public boolean isWater(Material mat)
 	{
-	    return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
+		return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
 	}
 
 	public boolean isOkToStandOn(Material mat)
@@ -529,7 +529,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		// Added snow here to avoid blink bounciness
 		return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
 	}
-	
+
 	public Location findPlaceToStand(Location playerLoc, boolean goUp)
 	{
 		int step;
@@ -557,16 +557,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			Block blockTwoUp = world.getBlockAt(x, y + 2, z);
 			if 
 			(
-				isOkToStandOn(block.getType())
-			&&	isOkToStandIn(blockOneUp.getType())
-			&& 	isOkToStandIn(blockTwoUp.getType())
-			&&   (!goUp || !isUnderwater() || !isWater(blockOneUp.getType())) // rise to surface of water
-			)
+					isOkToStandOn(block.getType())
+					&&	isOkToStandIn(blockOneUp.getType())
+					&& 	isOkToStandIn(blockTwoUp.getType())
+					&&   (!goUp || !isUnderwater() || !isWater(blockOneUp.getType())) // rise to surface of water
+					)
 			{
 				// spot found - return location
 				return new Location(world, (double) x + 0.5, (double) y + 1, (double) z + 0.5, playerLoc.getYaw(),
 						playerLoc.getPitch());
-		    
+
 			}
 			y += step;
 		}
@@ -574,26 +574,26 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		// no spot found
 		return null;
 	}
-	
+
 	public static double getDistance(Location source, Location target)
 	{
 		return Math.sqrt
-		(
-			Math.pow(source.getX() - target.getX(), 2) 
-		+ 	Math.pow(source.getY() - target.getY(), 2)
-		+ 	Math.pow(source.getZ() - target.getZ(), 2)
-		);
+				(
+						Math.pow(source.getX() - target.getX(), 2) 
+						+ 	Math.pow(source.getY() - target.getY(), 2)
+						+ 	Math.pow(source.getZ() - target.getZ(), 2)
+						);
 	}
-	
+
 	public static double getDistance(Player player, Block target)
 	{
 		Location loc = player.getLocation();
 		return Math.sqrt
-		(
-			Math.pow(loc.getX() - target.getX(), 2) 
-		+ 	Math.pow(loc.getY() - target.getY(), 2)
-		+ 	Math.pow(loc.getZ() - target.getZ(), 2)
-		);
+				(
+						Math.pow(loc.getX() - target.getX(), 2) 
+						+ 	Math.pow(loc.getY() - target.getY(), 2)
+						+ 	Math.pow(loc.getZ() - target.getZ(), 2)
+						);
 	}
 
 	/**
@@ -660,16 +660,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		switch (direction)
 		{
-			case EAST:
-				return BlockFace.NORTH;
-			case NORTH:
-				return BlockFace.WEST;
-			case WEST:
-				return BlockFace.SOUTH;
-			case SOUTH:
-				return BlockFace.EAST;
-			default:
-				return direction;
+		case EAST:
+			return BlockFace.NORTH;
+		case NORTH:
+			return BlockFace.WEST;
+		case WEST:
+			return BlockFace.SOUTH;
+		case SOUTH:
+			return BlockFace.EAST;
+		default:
+			return direction;
 		}
 	}
 
@@ -686,19 +686,19 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		switch (direction)
 		{
-			case EAST:
-				return BlockFace.SOUTH;
-			case SOUTH:
-				return BlockFace.WEST;
-			case WEST:
-				return BlockFace.NORTH;
-			case NORTH:
-				return BlockFace.EAST;
-			default:
-				return direction;
+		case EAST:
+			return BlockFace.SOUTH;
+		case SOUTH:
+			return BlockFace.WEST;
+		case WEST:
+			return BlockFace.NORTH;
+		case NORTH:
+			return BlockFace.EAST;
+		default:
+			return direction;
 		}
 	}
-	
+
 
 	/**
 	 * Find a good location to spawn a projectile, such as a fireball.
@@ -730,28 +730,28 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Vector getAimVector()
 	{
-	    double yaw = Math.toRadians(playerLocation.getYaw());
-	    double pitch = Math.toRadians(playerLocation.getPitch());
-	    Vector aimVector = new Vector
-        (
-                (0 - Math.sin(yaw)), 
-                (0 - Math.sin(pitch)), 
-                Math.cos(yaw)
-        );
-	    // kind of a hack, but i can't seem to get the matrix math right :P
-	    double y = aimVector.getY();
-	    if  (y >= 1 || y <= -1)
-	    {
-	        aimVector.setX(0);
-	        aimVector.setZ(0);
-	    }
-	    else
-	    {
-	        aimVector.normalize();
-	    }
-	    return aimVector;
+		double yaw = Math.toRadians(playerLocation.getYaw());
+		double pitch = Math.toRadians(playerLocation.getPitch());
+		Vector aimVector = new Vector
+				(
+						(0 - Math.sin(yaw)), 
+						(0 - Math.sin(pitch)), 
+						Math.cos(yaw)
+						);
+		// kind of a hack, but i can't seem to get the matrix math right :P
+		double y = aimVector.getY();
+		if  (y >= 1 || y <= -1)
+		{
+			aimVector.setX(0);
+			aimVector.setZ(0);
+		}
+		else
+		{
+			aimVector.normalize();
+		}
+		return aimVector;
 	}
-	
+
 	/**
 	 * Get the (simplified) player pitch.
 	 * 
@@ -761,7 +761,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		return yRotation;
 	}
-	
+
 	/**
 	 * Get the (simplified) player yaw.
 	 * @return Player X-axis rotation (yaw)
@@ -770,7 +770,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		return xRotation;
 	}
-	
+
 	/**
 	 * Gets the normal player rotation.
 	 * 
@@ -789,7 +789,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			playerRot -= 360;
 		return playerRot;
 	}
-	
+
 	/*
 	 * HitBlox-ported code
 	 */
@@ -801,17 +801,17 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Target getTarget()
 	{
-	    Block block = getTargetBlock();
-	    Target targetBlock = new Target(player, block);
-	    Target targetEntity = getTargetEntity();
-	    if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance())
-	    {
-	        return targetBlock;
-	    }
-	    
-	    return targetEntity;
+		Block block = getTargetBlock();
+		Target targetBlock = new Target(player, block);
+		Target targetEntity = getTargetEntity();
+		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance())
+		{
+			return targetBlock;
+		}
+
+		return targetEntity;
 	}
-	
+
 	public Block getTargetBlock()
 	{
 		findTargetBlock();
@@ -824,19 +824,19 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		List<Target> scored = new ArrayList<Target>();
 		for (Entity entity : entities)
 		{
-            if (entity == player) continue;
+			if (entity == player) continue;
 			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
-			
+
 			Target newScore = new Target(player, entity, range);
 			if (newScore.getScore() > 0)
 			{
-			    scored.add(newScore);
+				scored.add(newScore);
 			}
 		}
-		
+
 		if (scored.size() <= 0) return null;
 		Collections.sort(scored);
-		
+
 		return scored.get(0);
 	}
 
@@ -943,11 +943,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		World world = player.getWorld();
 		return world.getBlockAt(x, y, z);
 	}	
-	
+
 	/*
 	 * Functions to send text to player- use these to respect "quiet" and "silent" modes.
 	 */
-	
+
 	/**
 	 * Send a message to a player when a spell is cast.
 	 * 
@@ -998,7 +998,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void setRelativeTime(long time)
 	{
 		long margin = (time - getTime()) % 24000;
-		
+
 		if (margin < 0)
 		{
 			margin += 24000;
@@ -1015,7 +1015,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		return player.getWorld().getTime();
 	}
-	
+
 	/**
 	 * Check to see if the player is underwater
 	 * 
@@ -1027,7 +1027,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		playerBlock = playerBlock.getRelative(BlockFace.UP);
 		return (playerBlock.getType() == Material.WATER || playerBlock.getType() == Material.STATIONARY_WATER);
 	}
-	
+
 	/**
 	 * Used internally to initialize the Spell, do not call.
 	 * 
@@ -1095,18 +1095,18 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		targetingComplete = true;
 	}
-	
+
 	protected int getMaxRange()
 	{
-	    return range;
+		return range;
 	}
-	
+
 	protected void setMaxRange(int range, boolean allow)
 	{
 		this.range = range;
 		this.allowMaxRange = allow;
 	}
-	
+
 	protected Material getMaterial(String matName, List<Material> materials)
 	{
 		Material material = Material.AIR;
@@ -1123,7 +1123,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		return material;
 	}
-	
+
 	protected boolean giveMaterial(Material materialType, int amount, short damage, byte data)
 	{
 		@SuppressWarnings("deprecation")
@@ -1139,7 +1139,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				break;
 			}
 		}
-		
+
 		if (!active)
 		{
 			player.getInventory().addItem(itemStack);
@@ -1147,56 +1147,56 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		return true;
 	}
-	
+
 	protected void disableTargeting()
 	{
-	    usesTargeting = false;
+		usesTargeting = false;
 	}
 
-    public boolean isInCircle(int x, int z, int R)
-    {
-        return ((x * x) +  (z * z) - (R * R)) <= 0;
-    }
-    
-    public void coverSurface(Location center, int radius, BlockAction action)
-    {   
-        int y = center.getBlockY();
-        for (int dx = -radius; dx < radius; ++dx)
-        {
-            for (int dz = -radius; dz < radius; ++dz)
-            {
-                if (isInCircle(dx, dz, radius))
-                {
-                    int x = center.getBlockX() + dx;
-                    int z = center.getBlockZ() + dz;
-                    Block block = player.getWorld().getBlockAt(x, y, z);
-                    int depth = 0;
-                    
-                    if (block.getType() == Material.AIR)
-                    {
-                        while (depth < verticalSearchDistance && block.getType() == Material.AIR)
-                        {
-                            depth++;
-                            block = block.getRelative(BlockFace.DOWN);
-                        }   
-                    }
-                    else
-                    {
-                        while (depth < verticalSearchDistance && block.getType() != Material.AIR)
-                        {
-                            depth++;
-                            block = block.getRelative(BlockFace.UP);
-                        }
-                        block = block.getRelative(BlockFace.DOWN);
-                    }
+	public boolean isInCircle(int x, int z, int R)
+	{
+		return ((x * x) +  (z * z) - (R * R)) <= 0;
+	}
 
-                    Block coveringBlock = block.getRelative(BlockFace.UP);
-                    if (block.getType() != Material.AIR && coveringBlock.getType() == Material.AIR)
-                    {
-                        action.perform(block);
-                    }  
-                } 
-            }
-        }
-    }
+	public void coverSurface(Location center, int radius, BlockAction action)
+	{   
+		int y = center.getBlockY();
+		for (int dx = -radius; dx < radius; ++dx)
+		{
+			for (int dz = -radius; dz < radius; ++dz)
+			{
+				if (isInCircle(dx, dz, radius))
+				{
+					int x = center.getBlockX() + dx;
+					int z = center.getBlockZ() + dz;
+					Block block = player.getWorld().getBlockAt(x, y, z);
+					int depth = 0;
+
+					if (block.getType() == Material.AIR)
+					{
+						while (depth < verticalSearchDistance && block.getType() == Material.AIR)
+						{
+							depth++;
+							block = block.getRelative(BlockFace.DOWN);
+						}   
+					}
+					else
+					{
+						while (depth < verticalSearchDistance && block.getType() != Material.AIR)
+						{
+							depth++;
+							block = block.getRelative(BlockFace.UP);
+						}
+						block = block.getRelative(BlockFace.DOWN);
+					}
+
+					Block coveringBlock = block.getRelative(BlockFace.UP);
+					if (block.getType() != Material.AIR && coveringBlock.getType() == Material.AIR)
+					{
+						action.perform(block);
+					}  
+				} 
+			}
+		}
+	}
 }

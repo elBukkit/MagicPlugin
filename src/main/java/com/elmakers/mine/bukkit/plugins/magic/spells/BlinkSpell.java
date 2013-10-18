@@ -15,7 +15,7 @@ public class BlinkSpell extends Spell
 	private boolean autoDescend = true;
 	private boolean autoPassthrough = true;
 	private int verticalSearchDistance = 255;
-	
+
 	protected boolean ascend()
 	{
 		Location location = findPlaceToStand(player.getLocation(), true);
@@ -27,7 +27,7 @@ public class BlinkSpell extends Spell
 		}
 		return false;
 	}
-	
+
 	protected boolean descend()
 	{
 		Location location = findPlaceToStand(player.getLocation(), false);
@@ -39,30 +39,30 @@ public class BlinkSpell extends Spell
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-        String elevateType = parameters.getString("type", "");
-        if (elevateType.equals("descend"))
-        {
-            if (!descend())
-            {
-                castMessage(player, "Nowhere to go down");
-                return false;
-            }
-            return true;
-        }
-        else if (elevateType.equals("ascend"))
-        {
-            if (!ascend())
-            {
-                castMessage(player, "Nowhere to go up");
-                return false;
-            }
-            return true;
-        }
-        
+		String elevateType = parameters.getString("type", "");
+		if (elevateType.equals("descend"))
+		{
+			if (!descend())
+			{
+				castMessage(player, "Nowhere to go down");
+				return false;
+			}
+			return true;
+		}
+		else if (elevateType.equals("ascend"))
+		{
+			if (!ascend())
+			{
+				castMessage(player, "Nowhere to go up");
+				return false;
+			}
+			return true;
+		}
+
 		if (getYRotation() < -80 && autoDescend)
 		{
 			if (descend())
@@ -70,7 +70,7 @@ public class BlinkSpell extends Spell
 				return true;
 			}
 		}
-		
+
 		if (getYRotation() > 80 && autoAscend)
 		{
 			if (ascend())
@@ -78,7 +78,7 @@ public class BlinkSpell extends Spell
 				return true;
 			}
 		}
-		
+
 		if (autoPassthrough)
 		{
 			Block firstBlock = getNextBlock();
@@ -93,69 +93,69 @@ public class BlinkSpell extends Spell
 				targetThrough(Material.GLASS);
 			}
 		}
-		
+
 		Block target = getTargetBlock();
 		Block face = getLastBlock();
-		
+
 		if (target == null) 
 		{
 			castMessage(player, "Nowhere to blink to");
 			return false;
 		}
-		
+
 		World world = player.getWorld();
-		
+
 		// Don't drop the player too far, and make sure there is somewhere to stand
-    	Block destination = face;
-    	int distanceUp = 0;
-    	int distanceDown = 0;
-    	if (isReverseTargeting())
-    	{
-    		destination = target;
-    	}
-    	Block groundBlock = destination.getRelative(BlockFace.DOWN);
-    	while (distanceDown < verticalSearchDistance && !isOkToStandOn(groundBlock.getType()))
-    	{
-    		destination = groundBlock;
-    		groundBlock = destination.getRelative(BlockFace.DOWN);
-    		distanceDown++;
-    	}
-    	
-    	Block ledge = null;
-    	// Also check for a ledge above the target
-    	if (!isReverseTargeting())
-    	{
-    		ledge = target;
-    		Block inFront = face;
-    		Block oneUp = null;
-    		Block twoUp = null;
-    		
-        	do
-        	{
-        		oneUp = ledge.getRelative(BlockFace.UP);
-        		twoUp = oneUp.getRelative(BlockFace.UP);
-        		inFront = inFront.getRelative(BlockFace.UP);
-        		ledge = ledge.getRelative(BlockFace.UP);
-        		distanceUp++;
-        	}
-        	while
-        	(
-        			distanceUp < verticalSearchDistance
-        	&&		isOkToStandIn(inFront.getType())
-        	&&	(
-        				!isOkToStandOn(groundBlock.getType())
-        		||		!isOkToStandIn(oneUp.getType())
-        		||		!isOkToStandIn(twoUp.getType())
-        		)
-        	);
-        	
-    	}
-    	
-    	if (ledge != null && distanceUp < distanceDown)
-    	{
-    		destination = ledge;
-    	}
-    	
+		Block destination = face;
+		int distanceUp = 0;
+		int distanceDown = 0;
+		if (isReverseTargeting())
+		{
+			destination = target;
+		}
+		Block groundBlock = destination.getRelative(BlockFace.DOWN);
+		while (distanceDown < verticalSearchDistance && !isOkToStandOn(groundBlock.getType()))
+		{
+			destination = groundBlock;
+			groundBlock = destination.getRelative(BlockFace.DOWN);
+			distanceDown++;
+		}
+
+		Block ledge = null;
+		// Also check for a ledge above the target
+		if (!isReverseTargeting())
+		{
+			ledge = target;
+			Block inFront = face;
+			Block oneUp = null;
+			Block twoUp = null;
+
+			do
+			{
+				oneUp = ledge.getRelative(BlockFace.UP);
+				twoUp = oneUp.getRelative(BlockFace.UP);
+				inFront = inFront.getRelative(BlockFace.UP);
+				ledge = ledge.getRelative(BlockFace.UP);
+				distanceUp++;
+			}
+			while
+				(
+						distanceUp < verticalSearchDistance
+						&&		isOkToStandIn(inFront.getType())
+						&&	(
+								!isOkToStandOn(groundBlock.getType())
+								||		!isOkToStandIn(oneUp.getType())
+								||		!isOkToStandIn(twoUp.getType())
+								)
+						);
+
+		}
+
+		if (ledge != null && distanceUp < distanceDown)
+		{
+			destination = ledge;
+		}
+
 		Block oneUp = destination.getRelative(BlockFace.UP);
 		Block twoUp = oneUp.getRelative(BlockFace.UP);
 		if (!isOkToStandIn(oneUp.getType()) || !isOkToStandIn(twoUp.getType()))
@@ -165,16 +165,16 @@ public class BlinkSpell extends Spell
 		}
 		castMessage(player, "Blink!");
 		Location targetLocation = new Location
-		(
-			world,
-			destination.getX() + 0.5,
-			destination.getY(),
-			destination.getZ() + 0.5,
-			player.getLocation().getYaw(),
-			player.getLocation().getPitch()
-		);
+				(
+						world,
+						destination.getX() + 0.5,
+						destination.getY(),
+						destination.getZ() + 0.5,
+						player.getLocation().getYaw(),
+						player.getLocation().getPitch()
+						);
 		player.teleport(targetLocation);
-		
+
 		return true;
 	}
 

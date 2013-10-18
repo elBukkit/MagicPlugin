@@ -17,35 +17,35 @@ import org.bukkit.block.Block;
 
 public class MaterialList extends HashSet<Material>
 {
-    /**
+	/**
 	 * 
 	 */
-    private static final long         serialVersionUID = 1L;
+	private static final long         serialVersionUID = 1L;
 
-    protected String                  id               = null;
+	protected String                  id               = null;
 
-    public MaterialList()
-    {
+	public MaterialList()
+	{
 
-    }
-    
-    public MaterialList(List<Material> copy)
-    {
-        this.addAll(copy);
-    }
+	}
 
-    public MaterialList(String id)
-    {
-        this.id = id;
-    }
+	public MaterialList(List<Material> copy)
+	{
+		this.addAll(copy);
+	}
 
-    public void add(Block block)
-    {
-        add(block.getType());
-    }
+	public MaterialList(String id)
+	{
+		this.id = id;
+	}
 
-    public String getId()
-    {
-        return id;
-    }
+	public void add(Block block)
+	{
+		add(block.getType());
+	}
+
+	public String getId()
+	{
+		return id;
+	}
 }

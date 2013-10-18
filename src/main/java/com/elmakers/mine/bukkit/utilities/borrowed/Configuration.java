@@ -54,177 +54,177 @@ import org.yaml.snakeyaml.representer.Representer;
  *
  */
 public class Configuration extends ConfigurationNode {
-    private Yaml yaml;
-    private File file;
-    private String header = null;
+	private Yaml yaml;
+	private File file;
+	private String header = null;
 
-    public Configuration(File file) {
-        super(new HashMap<String, Object>());
+	public Configuration(File file) {
+		super(new HashMap<String, Object>());
 
-        DumperOptions options = new DumperOptions();
+		DumperOptions options = new DumperOptions();
 
-        options.setIndent(4);
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		options.setIndent(4);
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
-        yaml = new Yaml(new SafeConstructor(), new EmptyNullRepresenter(), options);
+		yaml = new Yaml(new SafeConstructor(), new EmptyNullRepresenter(), options);
 
-        this.file = file;
-    }
+		this.file = file;
+	}
 
-    /**
-     * Loads the configuration file. All errors are thrown away.
-     */
-    public void load() {
-        FileInputStream stream = null;
+	/**
+	 * Loads the configuration file. All errors are thrown away.
+	 */
+	public void load() {
+		FileInputStream stream = null;
 
-        try {
-            stream = new FileInputStream(file);
-            read(yaml.load(new UnicodeReader(stream)));
-        } catch (IOException e) {
-            root = new HashMap<String, Object>();
-        } catch (ConfigurationException e) {
-            root = new HashMap<String, Object>();
-        } finally {
-            try {
-                if (stream != null) {
-                    stream.close();
-                }
-            } catch (IOException e) {}
-        }
-    }
+		try {
+			stream = new FileInputStream(file);
+			read(yaml.load(new UnicodeReader(stream)));
+		} catch (IOException e) {
+			root = new HashMap<String, Object>();
+		} catch (ConfigurationException e) {
+			root = new HashMap<String, Object>();
+		} finally {
+			try {
+				if (stream != null) {
+					stream.close();
+				}
+			} catch (IOException e) {}
+		}
+	}
 
-    /**
-     * Set the header for the file as a series of lines that are terminated
-     * by a new line sequence.
-     *
-     * @param headerLines header lines to prepend
-     */
-    public void setHeader(String... headerLines) {
-        StringBuilder header = new StringBuilder();
+	/**
+	 * Set the header for the file as a series of lines that are terminated
+	 * by a new line sequence.
+	 *
+	 * @param headerLines header lines to prepend
+	 */
+	public void setHeader(String... headerLines) {
+		StringBuilder header = new StringBuilder();
 
-        for (String line : headerLines) {
-            if (header.length() > 0) {
-                header.append("\r\n");
-            }
-            header.append(line);
-        }
+		for (String line : headerLines) {
+			if (header.length() > 0) {
+				header.append("\r\n");
+			}
+			header.append(line);
+		}
 
-        setHeader(header.toString());
-    }
+		setHeader(header.toString());
+	}
 
-    /**
-     * Set the header for the file. A header can be provided to prepend the
-     * YAML data output on configuration save. The header is
-     * printed raw and so must be manually commented if used. A new line will
-     * be appended after the header, however, if a header is provided.
-     *
-     * @param header header to prepend
-     */
-    public void setHeader(String header) {
-        this.header = header;
-    }
+	/**
+	 * Set the header for the file. A header can be provided to prepend the
+	 * YAML data output on configuration save. The header is
+	 * printed raw and so must be manually commented if used. A new line will
+	 * be appended after the header, however, if a header is provided.
+	 *
+	 * @param header header to prepend
+	 */
+	public void setHeader(String header) {
+		this.header = header;
+	}
 
-    /**
-     * Return the set header.
-     *
-     * @return
-     */
-    public String getHeader() {
-        return header;
-    }
+	/**
+	 * Return the set header.
+	 *
+	 * @return
+	 */
+	public String getHeader() {
+		return header;
+	}
 
-    /**
-     * Saves the configuration to disk. All errors are clobbered.
-     *
-     * @param header header to prepend
-     * @return true if it was successful
-     */
-    public boolean save() {
-        FileOutputStream stream = null;
+	/**
+	 * Saves the configuration to disk. All errors are clobbered.
+	 *
+	 * @param header header to prepend
+	 * @return true if it was successful
+	 */
+	public boolean save() {
+		FileOutputStream stream = null;
 
-        File parent = file.getParentFile();
+		File parent = file.getParentFile();
 
-        if (parent != null) {
-            parent.mkdirs();
-        }
+		if (parent != null) {
+			parent.mkdirs();
+		}
 
-        try {
-            stream = new FileOutputStream(file);
-            OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
-            if (header != null) {
-                writer.append(header);
-                writer.append("\r\n");
-            }
-            yaml.dump(root, writer);
-            return true;
-        } catch (IOException e) {} finally {
-            try {
-                if (stream != null) {
-                    stream.close();
-                }
-            } catch (IOException e) {}
-        }
+		try {
+			stream = new FileOutputStream(file);
+			OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
+			if (header != null) {
+				writer.append(header);
+				writer.append("\r\n");
+			}
+			yaml.dump(root, writer);
+			return true;
+		} catch (IOException e) {} finally {
+			try {
+				if (stream != null) {
+					stream.close();
+				}
+			} catch (IOException e) {}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @SuppressWarnings("unchecked")
-    private void read(Object input) throws ConfigurationException {
-        try {
-            if (null == input) {
-                root = new HashMap<String, Object>();
-            } else {
-                root = (Map<String, Object>) input;
-            }
-        } catch (ClassCastException e) {
-            throw new ConfigurationException("Root document must be an key-value structure");
-        }
-    }
+	@SuppressWarnings("unchecked")
+	private void read(Object input) throws ConfigurationException {
+		try {
+			if (null == input) {
+				root = new HashMap<String, Object>();
+			} else {
+				root = (Map<String, Object>) input;
+			}
+		} catch (ClassCastException e) {
+			throw new ConfigurationException("Root document must be an key-value structure");
+		}
+	}
 
-    /**
-     * This method returns an empty ConfigurationNode for using as a
-     * default in methods that select a node from a node list.
-     * @return
-     */
-    public static ConfigurationNode getEmptyNode() {
-        return new ConfigurationNode(new HashMap<String, Object>());
-    }
+	/**
+	 * This method returns an empty ConfigurationNode for using as a
+	 * default in methods that select a node from a node list.
+	 * @return
+	 */
+	public static ConfigurationNode getEmptyNode() {
+		return new ConfigurationNode(new HashMap<String, Object>());
+	}
 }
 
 class EmptyNullRepresenter extends Representer {
 
-    public EmptyNullRepresenter() {
-        super();
-        this.nullRepresenter = new EmptyRepresentNull();
-    }
+	public EmptyNullRepresenter() {
+		super();
+		this.nullRepresenter = new EmptyRepresentNull();
+	}
 
-    protected class EmptyRepresentNull implements Represent {
-        public Node representData(Object data) {
-            return representScalar(Tag.NULL, ""); // Changed "null" to "" so as to avoid writing nulls
-        }
-    }
+	protected class EmptyRepresentNull implements Represent {
+		public Node representData(Object data) {
+			return representScalar(Tag.NULL, ""); // Changed "null" to "" so as to avoid writing nulls
+		}
+	}
 
-    // Code borrowed from snakeyaml (http://code.google.com/p/snakeyaml/source/browse/src/test/java/org/yaml/snakeyaml/issues/issue60/SkipBeanTest.java)
-    @Override
-    protected NodeTuple representJavaBeanProperty(Object javaBean, Property property, Object propertyValue, Tag customTag) {
-        NodeTuple tuple = super.representJavaBeanProperty(javaBean, property, propertyValue, customTag);
-        Node valueNode = tuple.getValueNode();
-        if (valueNode instanceof CollectionNode) {
-            // Removed null check
-            if (Tag.SEQ.equals(valueNode.getTag())) {
-                SequenceNode seq = (SequenceNode) valueNode;
-                if (seq.getValue().isEmpty()) {
-                    return null; // skip empty lists
-                }
-            }
-            if (Tag.MAP.equals(valueNode.getTag())) {
-                MappingNode seq = (MappingNode) valueNode;
-                if (seq.getValue().isEmpty()) {
-                    return null; // skip empty maps
-                }
-            }
-        }
-        return tuple;
-    }
-    // End of borrowed code
+	// Code borrowed from snakeyaml (http://code.google.com/p/snakeyaml/source/browse/src/test/java/org/yaml/snakeyaml/issues/issue60/SkipBeanTest.java)
+	@Override
+	protected NodeTuple representJavaBeanProperty(Object javaBean, Property property, Object propertyValue, Tag customTag) {
+		NodeTuple tuple = super.representJavaBeanProperty(javaBean, property, propertyValue, customTag);
+		Node valueNode = tuple.getValueNode();
+		if (valueNode instanceof CollectionNode) {
+			// Removed null check
+			if (Tag.SEQ.equals(valueNode.getTag())) {
+				SequenceNode seq = (SequenceNode) valueNode;
+				if (seq.getValue().isEmpty()) {
+					return null; // skip empty lists
+				}
+			}
+			if (Tag.MAP.equals(valueNode.getTag())) {
+				MappingNode seq = (MappingNode) valueNode;
+				if (seq.getValue().isEmpty()) {
+					return null; // skip empty maps
+				}
+			}
+		}
+		return tuple;
+	}
+	// End of borrowed code
 }

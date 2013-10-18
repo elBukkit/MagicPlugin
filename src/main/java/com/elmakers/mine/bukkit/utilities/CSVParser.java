@@ -9,86 +9,86 @@ import com.elmakers.mine.bukkit.dao.MaterialList;
 
 public class CSVParser
 {
-    public List<Integer> parseIntegers(String csvList)
-    {
-        List<Integer> ints = new ArrayList<Integer>();
+	public List<Integer> parseIntegers(String csvList)
+	{
+		List<Integer> ints = new ArrayList<Integer>();
 
-        String[] intStrings = csvList.split(",");
-        for (String s : intStrings)
-        {
-            try
-            {
-                int thisInt = Integer.parseInt(s.trim());
-                ints.add(thisInt);
-            }
-            catch (NumberFormatException ex)
-            {
+		String[] intStrings = csvList.split(",");
+		for (String s : intStrings)
+		{
+			try
+			{
+				int thisInt = Integer.parseInt(s.trim());
+				ints.add(thisInt);
+			}
+			catch (NumberFormatException ex)
+			{
 
-            }
-        }
-        return ints;
-    }
-    
-    public List<String> parseStrings(String csvList)
-    {
-        List<String> strings = new ArrayList<String>();
+			}
+		}
+		return ints;
+	}
 
-        String[] stringArray = csvList.split(",");
-        for (String s : stringArray)
-        {
-            strings.add(s);
-        }
-        return strings;
-    }
+	public List<String> parseStrings(String csvList)
+	{
+		List<String> strings = new ArrayList<String>();
 
-    @SuppressWarnings("deprecation")
+		String[] stringArray = csvList.split(",");
+		for (String s : stringArray)
+		{
+			strings.add(s);
+		}
+		return strings;
+	}
+
+	@SuppressWarnings("deprecation")
 	public void parseMaterials(MaterialList materials, String csvList)
-    {
-        String[] matIds = csvList.split(",");
-        for (String matId : matIds)
-        {
-            try
-            {
-                int typeId = Integer.parseInt(matId.trim());
-                materials.add(Material.getMaterial(typeId));
-            }
-            catch (NumberFormatException ex)
-            {
+	{
+		String[] matIds = csvList.split(",");
+		for (String matId : matIds)
+		{
+			try
+			{
+				int typeId = Integer.parseInt(matId.trim());
+				materials.add(Material.getMaterial(typeId));
+			}
+			catch (NumberFormatException ex)
+			{
 
-            }
-        }
-    }
-    
-    @SuppressWarnings("deprecation")
+			}
+		}
+	}
+
+	@SuppressWarnings("deprecation")
 	public void parseMaterials(List<Material> materials, String csvList)
-    {
-        String[] matIds = csvList.split(",");
-        for (String matId : matIds)
-        {
-            try
-            {
-                int typeId = Integer.parseInt(matId.trim());
-                materials.add(Material.getMaterial(typeId));
-            }
-            catch (NumberFormatException ex)
-            {
+	{
+		String[] matIds = csvList.split(",");
+		for (String matId : matIds)
+		{
+			try
+			{
+				int typeId = Integer.parseInt(matId.trim());
+				materials.add(Material.getMaterial(typeId));
+			}
+			catch (NumberFormatException ex)
+			{
 
-            }
-        }
-    }
+			}
+		}
+	}
 
-    public List<Material> parseMaterials(String csvList)
-    {
-        List<Material> materials = new ArrayList<Material>();
-        parseMaterials(materials, csvList);
-        return materials;
+	public List<Material> parseMaterials(String csvList)
+	{
+		List<Material> materials = new ArrayList<Material>();
+		parseMaterials(materials, csvList);
+		return materials;
 
-    }
+	}
 
-    public MaterialList parseMaterials(String listId, String csvList)
-    {
-        MaterialList materials = new MaterialList(listId);
-        parseMaterials(materials, csvList);
-        return materials;
-    }
+	public MaterialList parseMaterials(String listId, String csvList)
+	{
+		MaterialList materials = new MaterialList(listId);
+		parseMaterials(materials, csvList);
+		return materials;
+	}
 }

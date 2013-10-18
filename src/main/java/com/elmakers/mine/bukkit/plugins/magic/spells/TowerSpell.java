@@ -26,7 +26,7 @@ public class TowerSpell extends Spell {
 		int midX = target.getX();
 		int midY = target.getY();
 		int midZ = target.getZ();
-		
+
 		// Check for roof
 		for (int i = height; i < maxHeight; i++)
 		{
@@ -45,7 +45,7 @@ public class TowerSpell extends Spell {
 				break;
 			}
 		}
-		
+
 		int blocksCreated = 0;
 		BlockList towerBlocks = new BlockList();
 		for (int i = 0; i < height; i++)

@@ -6,6 +6,6 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 
 public interface BlockAction
 {
-    public boolean perform(Block block);
-    public BlockList getBlocks();
+	public boolean perform(Block block);
+	public BlockList getBlocks();
 }

@@ -17,14 +17,14 @@ public class ConstructSpell extends Spell
 	private List<Material>	destructibleMaterials	= null;
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
-    private int             timeToLive              = 0;
-	
+	private int             timeToLive              = 0;
+
 	public enum ConstructionType
 	{
 		SPHERE,
 		CUBOID,
 		UNKNOWN;
-		
+
 		public static ConstructionType parseString(String s, ConstructionType defaultType)
 		{
 			ConstructionType construct = defaultType;
@@ -38,30 +38,30 @@ public class ConstructSpell extends Spell
 			return construct;
 		}
 	};
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
 		targetThrough(Material.GLASS);
 		Block target = getTarget().getBlock();
-		
-	    if (target == null)
-	    {
-            initializeTargeting(player);
-            noTargetThrough(Material.GLASS);
-            target = getTarget().getBlock();
-        }
-	
-        if (target == null)
-        {
-            castMessage(player, "No target");
-            return false;
-        }
-    	 		
+
+		if (target == null)
+		{
+			initializeTargeting(player);
+			noTargetThrough(Material.GLASS);
+			target = getTarget().getBlock();
+		}
+
+		if (target == null)
+		{
+			castMessage(player, "No target");
+			return false;
+		}
+
 		Material material = target.getType();
 		byte data = target.getData();
-		
+
 		ItemStack buildWith = getBuildingMaterial();
 		if (buildWith != null)
 		{
@@ -70,47 +70,47 @@ public class ConstructSpell extends Spell
 		}
 
 		ConstructionType conType = defaultConstructionType;
-		
+
 		boolean hollow = false;
 		String fillType = (String)parameters.getString("fill", "");
 		hollow = fillType.equals("hollow");
-		
+
 		Material materialOverride = parameters.getMaterial("material");
 		if (materialOverride != null)
 		{
-		    material = materialOverride;
-		    data = 0;
+			material = materialOverride;
+			data = 0;
 		}
-       
+
 		int radius = parameters.getInt("radius", defaultRadius);		
 		String typeString = parameters.getString("type", "");
-		
-	    ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
-        if (testType != ConstructionType.UNKNOWN)
-        {
-            conType = testType;
-        }
-		
+
+		ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
+		if (testType != ConstructionType.UNKNOWN)
+		{
+			conType = testType;
+		}
+
 		switch (conType)
 		{
-			case SPHERE: constructSphere(target, radius, material, data, !hollow); break;
-			case CUBOID: constructCuboid(target, radius, material, data, !hollow); break;
-			default : return false;
+		case SPHERE: constructSphere(target, radius, material, data, !hollow); break;
+		case CUBOID: constructCuboid(target, radius, material, data, !hollow); break;
+		default : return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public void constructCuboid(Block target, int radius, Material material, byte data, boolean fill)
 	{
 		fillArea(target, radius, material, data, fill, false);
 	}
-	
+
 	public void constructSphere(Block target, int radius, Material material, byte data, boolean fill)
 	{
 		fillArea(target, radius, material, data, fill, true);
 	}
-	
+
 	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, boolean sphere)
 	{
 		BlockList constructedBlocks = new BlockList();
@@ -128,7 +128,7 @@ public class ConstructSpell extends Spell
 				for (int z = 0; z < radius; ++z)
 				{
 					boolean fillBlock = false;
-					
+
 					if (sphere)
 					{
 						int distanceSquared = getDistanceSquared(x - midX, y - midY, z - midZ);
@@ -159,16 +159,16 @@ public class ConstructSpell extends Spell
 
 		if (timeToLive == 0)
 		{
-		    spells.addToUndoQueue(player, constructedBlocks);
+			spells.addToUndoQueue(player, constructedBlocks);
 		}
 		else
 		{
-		    constructedBlocks.setTimeToLive(timeToLive);
-		    spells.scheduleCleanup(constructedBlocks);
+			constructedBlocks.setTimeToLive(timeToLive);
+			spells.scheduleCleanup(constructedBlocks);
 		}
 		castMessage(player, "Constructed " + constructedBlocks.size() + "blocks");
 	}
-	
+
 	public int getDistanceSquared(int x, int y, int z)
 	{
 		return x * x + y * y + z * z;
@@ -194,12 +194,12 @@ public class ConstructSpell extends Spell
 	{
 		return destructibleMaterials.contains(block.getType());
 	}
-	
+
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-	    destructibleMaterials = destructibleMaterials != null ? destructibleMaterials : csv.parseMaterials(DEFAULT_DESTRUCTIBLES);
+		destructibleMaterials = destructibleMaterials != null ? destructibleMaterials : csv.parseMaterials(DEFAULT_DESTRUCTIBLES);
 		destructibleMaterials = properties.getMaterials("destructible", destructibleMaterials);
-        timeToLive = properties.getInt("undo", timeToLive);
+		timeToLive = properties.getInt("undo", timeToLive);
 	}
 }

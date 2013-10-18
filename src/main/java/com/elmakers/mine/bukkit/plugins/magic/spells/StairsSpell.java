@@ -14,13 +14,13 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class StairsSpell extends Spell
 {
 	static final String DEFAULT_DESTRUCTIBLES = "1,3,10,11,12,13";
-	
+
 	private List<Material> destructibleMaterials = new ArrayList<Material>();
 	private int defaultDepth = 4;
 	private int defaultWidth = 3;
 	private int defaultHeight = 3;
 	private int torchFrequency = 4;
-	
+
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
@@ -30,25 +30,25 @@ public class StairsSpell extends Spell
 			castMessage(player, "No target");
 			return false;
 		}
-		
+
 		createStairs(targetBlock);
-		
+
 		return true;
 	}
-	
+
 	protected void createStairs(Block targetBlock)
 	{
 		BlockFace vertDirection = BlockFace.UP;
 		BlockFace horzDirection = getPlayerFacing();
-		
+
 		int depth = defaultDepth;
 		int height = defaultHeight;
 		int width = defaultWidth;
-		
+
 		BlockList tunneledBlocks = new BlockList();
 		BlockList stairBlocks = new BlockList();
 		Material fillMaterial = targetBlock.getType();
-		
+
 		BlockFace toTheLeft = goLeft(horzDirection);
 		BlockFace toTheRight = goRight(horzDirection);
 		Block bottomBlock = targetBlock;
@@ -57,10 +57,10 @@ public class StairsSpell extends Spell
 		{
 			bottomLeftBlock = bottomLeftBlock.getRelative(toTheLeft);
 		}
-		
+
 		targetBlock = bottomLeftBlock;
 		Material stairsMaterial = Material.COBBLESTONE_STAIRS;
-		
+
 		for (int d = 0; d < depth; d++)
 		{
 			bottomBlock = bottomLeftBlock;
@@ -84,13 +84,13 @@ public class StairsSpell extends Spell
 						}
 						// Put torches on the left and right wall 
 						boolean useTorch = 
-						(
-								torchFrequency > 0 
-						&& 		(w == 0 || w == width - 1) 
-						&& 		(h == 1)
-						&& 		(d % torchFrequency == 0)
-						&&		checkBlock.getType() != Material.AIR
-						);
+								(
+										torchFrequency > 0 
+										&& 		(w == 0 || w == width - 1) 
+										&& 		(h == 1)
+										&& 		(d % torchFrequency == 0)
+										&&		checkBlock.getType() != Material.AIR
+										);
 						boolean useStairs = (h == 0);
 						if (useStairs)
 						{
@@ -98,16 +98,16 @@ public class StairsSpell extends Spell
 							targetBlock.setType(stairsMaterial);
 						}
 						else
-						if (useTorch)
-						{
-							tunneledBlocks.add(targetBlock);
-							targetBlock.setType(Material.TORCH);
-						}
-						else
-						{
-							tunneledBlocks.add(targetBlock);
-							targetBlock.setType(Material.AIR);
-						}
+							if (useTorch)
+							{
+								tunneledBlocks.add(targetBlock);
+								targetBlock.setType(Material.TORCH);
+							}
+							else
+							{
+								tunneledBlocks.add(targetBlock);
+								targetBlock.setType(Material.AIR);
+							}
 						Block standingBlock = targetBlock.getRelative(BlockFace.DOWN);
 						if (standingBlock.getType() == Material.AIR)
 						{
@@ -127,12 +127,12 @@ public class StairsSpell extends Spell
 		spells.addToUndoQueue(player, stairBlocks);
 		castMessage(player, "Tunneled through " + tunneledBlocks.size() + "blocks and created " + stairBlocks.size() + " stairs");
 	}	
-	
+
 	protected void createSpiralStairs(Block targetBlock)
 	{
 		// TODO
 	}
-	
+
 	public boolean isDestructible(Block block)
 	{
 		if (block.getType() == Material.AIR)
@@ -140,7 +140,7 @@ public class StairsSpell extends Spell
 
 		return destructibleMaterials.contains(block.getType());
 	}
-	
+
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{

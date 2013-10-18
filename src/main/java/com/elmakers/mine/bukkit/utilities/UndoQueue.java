@@ -8,77 +8,77 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 
 public class UndoQueue
 {
-    private final LinkedList<BlockList> blockQueue = new LinkedList<BlockList>();
-    private int                         maxSize    = 0;
+	private final LinkedList<BlockList> blockQueue = new LinkedList<BlockList>();
+	private int                         maxSize    = 0;
 
-    public void add(BlockList blocks)
-    {
-        if (maxSize > 0 && blockQueue.size() > maxSize)
-        {
-            blockQueue.removeFirst();
-        }
-        blockQueue.add(blocks);
-    }
+	public void add(BlockList blocks)
+	{
+		if (maxSize > 0 && blockQueue.size() > maxSize)
+		{
+			blockQueue.removeFirst();
+		}
+		blockQueue.add(blocks);
+	}
 
-    public BlockList getLast()
-    {
-        if (blockQueue.isEmpty())
-        {
-            return null;
-        }
-        return blockQueue.getLast();
-    }
+	public BlockList getLast()
+	{
+		if (blockQueue.isEmpty())
+		{
+			return null;
+		}
+		return blockQueue.getLast();
+	}
 
-    public BlockList getLast(Block target)
-    {
+	public BlockList getLast(Block target)
+	{
 
-        if (blockQueue.size() == 0)
-        {
-            return null;
-        }
-        for (BlockList blocks : blockQueue)
-        {
-            if (blocks.contains(target))
-            {
-                return blocks;
-            }
-        }
-        return null;
-    }
+		if (blockQueue.size() == 0)
+		{
+			return null;
+		}
+		for (BlockList blocks : blockQueue)
+		{
+			if (blocks.contains(target))
+			{
+				return blocks;
+			}
+		}
+		return null;
+	}
 
-    public void setMaxSize(int size)
-    {
-        maxSize = size;
-    }
+	public void setMaxSize(int size)
+	{
+		maxSize = size;
+	}
 
-    public boolean undo()
-    {
-        if (blockQueue.size() == 0)
-        {
-            return false;
-        }
+	public boolean undo()
+	{
+		if (blockQueue.size() == 0)
+		{
+			return false;
+		}
 
-        BlockList blocks = blockQueue.removeLast();
-        if (!blocks.undo())
-        {
-            blockQueue.add(blocks);
-            return false;
-        }
-        return true;
-    }
+		BlockList blocks = blockQueue.removeLast();
+		if (!blocks.undo())
+		{
+			blockQueue.add(blocks);
+			return false;
+		}
+		return true;
+	}
 
-    public boolean undo(Block target)
-    {
-        BlockList lastActionOnTarget = getLast(target);
+	public boolean undo(Block target)
+	{
+		BlockList lastActionOnTarget = getLast(target);
 
-        if (lastActionOnTarget == null)
-        {
-            return false;
-        }
+		if (lastActionOnTarget == null)
+		{
+			return false;
+		}
 
-        blockQueue.remove(lastActionOnTarget);
-        lastActionOnTarget.undo();
+		blockQueue.remove(lastActionOnTarget);
+		lastActionOnTarget.undo();
 
-        return true;
-    }
+		return true;
+	}
 }

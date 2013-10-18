@@ -11,51 +11,51 @@ public class UndoSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-	    if (parameters.containsKey("player"))
-	    {
-	        String undoPlayer = parameters.getString("player");
-            boolean undone = spells.undo(undoPlayer);
-            if (undone)
-            {
-                castMessage(player, "You revert " + undoPlayer + "'s construction");
-            }
-            else
-            {
-                castMessage(player, "There is nothing to undo for " + undoPlayer);
-            }
-            return undone;
-	    }
-	    
-	    if (parameters.containsKey("type"))
-	    {
-	        String typeString = (String)parameters.getString("type");
-	        boolean targetAll = typeString.equals("target_all");
-	        if (typeString.equals("target") || targetAll)
-	        {
-	            targetThrough(Material.GLASS);
-                Block target = getTargetBlock();
-                if (target != null)
-                {
-                    boolean undone = false;
-                    if (targetAll)
-                    {
-                        undone = spells.undoAny(player, target);
-                    }
-                    else
-                    {
-                        undone = spells.undo(player.getName(), target);
-                    }
-                    
-                    if (undone)
-                    {
-                        castMessage(player, "You revert your construction");
-                        return true;
-                    }
-                }
-                return false;
-	        }
-	    }
-		
+		if (parameters.containsKey("player"))
+		{
+			String undoPlayer = parameters.getString("player");
+			boolean undone = spells.undo(undoPlayer);
+			if (undone)
+			{
+				castMessage(player, "You revert " + undoPlayer + "'s construction");
+			}
+			else
+			{
+				castMessage(player, "There is nothing to undo for " + undoPlayer);
+			}
+			return undone;
+		}
+
+		if (parameters.containsKey("type"))
+		{
+			String typeString = (String)parameters.getString("type");
+			boolean targetAll = typeString.equals("target_all");
+			if (typeString.equals("target") || targetAll)
+			{
+				targetThrough(Material.GLASS);
+				Block target = getTargetBlock();
+				if (target != null)
+				{
+					boolean undone = false;
+					if (targetAll)
+					{
+						undone = spells.undoAny(player, target);
+					}
+					else
+					{
+						undone = spells.undo(player.getName(), target);
+					}
+
+					if (undone)
+					{
+						castMessage(player, "You revert your construction");
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
 		/*
 		 * No target, or target isn't yours- just undo last
 		 */

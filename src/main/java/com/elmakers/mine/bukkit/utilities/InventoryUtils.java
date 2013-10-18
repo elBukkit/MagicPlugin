@@ -181,7 +181,7 @@ public class InventoryUtils
 		}
 		return inventory;
 	}
-	
+
 	public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
 		Inventory inventory = null;
 		try {
@@ -192,7 +192,7 @@ public class InventoryUtils
 		}
 		return inventory;
 	}
-	
+
 	public static boolean inventorySetItem(Inventory inventory, int index, ItemStack item) {
 		try {
 			Method setItemMethod = class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);

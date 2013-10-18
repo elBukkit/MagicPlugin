@@ -14,14 +14,14 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class TunnelSpell extends Spell
 {
 	static final String DEFAULT_DESTRUCTIBLES = "1,3,10,11,12,13,87,88";
-	
+
 	private List<Material> destructibleMaterials = new ArrayList<Material>();
 	private int defaultDepth = 8;
 	private int defaultWidth = 3;
 	private int defaultHeight = 3;
 	private int defaultSearchDistance = 32;
 	private int torchFrequency = 4;
-	
+
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
@@ -32,23 +32,23 @@ public class TunnelSpell extends Spell
 			player.sendMessage("You need to be standing on something");
 			return false;
 		}
-		
+
 		BlockFace direction = getPlayerFacing();
 		Block searchBlock = playerBlock.getRelative(BlockFace.UP).getRelative(BlockFace.UP);
-		
+
 		int searchDistance = 0;
 		while (searchBlock.getType() == Material.AIR && searchDistance < defaultSearchDistance)
 		{
 			searchBlock = searchBlock.getRelative(direction);
 			searchDistance++;
 		}
-		
+
 		int depth = defaultDepth;
 		int height = defaultHeight;
 		int width = defaultWidth;
-		
+
 		BlockList tunneledBlocks = new BlockList();
-		
+
 		BlockFace toTheLeft = goLeft(direction);
 		BlockFace toTheRight = goRight(direction);
 		Block bottomBlock = searchBlock.getRelative(BlockFace.DOWN);
@@ -57,9 +57,9 @@ public class TunnelSpell extends Spell
 		{
 			bottomLeftBlock = bottomLeftBlock.getRelative(toTheLeft);
 		}
-		
+
 		Block targetBlock = bottomLeftBlock;
-		
+
 		for (int d = 0; d < depth; d++)
 		{
 			bottomBlock = bottomLeftBlock;
@@ -79,7 +79,7 @@ public class TunnelSpell extends Spell
 						&& 		(h == 1)
 						&& 		(d % torchFrequency == 0)
 						);
-						*/
+						 */
 						boolean useTorch = false; // TODO!
 						tunneledBlocks.add(targetBlock);
 						if (useTorch)
@@ -118,10 +118,10 @@ public class TunnelSpell extends Spell
 
 		spells.addToUndoQueue(player, tunneledBlocks);
 		castMessage(player, "Tunneled through " + tunneledBlocks.size() + "blocks");
-		
+
 		return true;
 	}
-	
+
 	public boolean isDestructible(Block block)
 	{
 		if (block.getType() == Material.AIR)

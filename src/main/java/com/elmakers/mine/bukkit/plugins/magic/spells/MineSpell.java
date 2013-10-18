@@ -19,12 +19,12 @@ public class MineSpell extends Spell
 	static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 74, 21";
 	static final String		DEFAULT_MINED		= "14,15,263,264,331,331,351";
 	static final String		DEFAULT_DATA		= "0 ,0 ,0  ,0  ,0  ,0  ,4";
-	
+
 	private List<Material>	mineableMaterials	= new ArrayList<Material>();
 	private List<Material>	minedMaterials	= new ArrayList<Material>();
 	private List<Integer>	minedData	= new ArrayList<Integer>();
 	private int maxRecursion = 16;
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
@@ -40,38 +40,38 @@ public class MineSpell extends Spell
 			sendMessage(player, "Can't mine " + target.getType().name().toLowerCase());
 			return false;
 		}
-		
+
 		BlockList minedBlocks = new BlockList();
 		Material mineMaterial = target.getType();
 		mine(target, mineMaterial, minedBlocks);
-		
+
 		World world = player.getWorld();
-		
+
 		int index = mineableMaterials.indexOf(mineMaterial);
 		mineMaterial = minedMaterials.get(index);
 		byte data = (byte)(int)minedData.get(index);
-		
+
 		Location itemDrop = new Location(world, target.getX(), target.getY(), target.getZ(), 0, 0);
 		ItemStack items = new ItemStack(mineMaterial, (int)minedBlocks.size(), (short)0 , data);
 		player.getWorld().dropItemNaturally(itemDrop, items);
-		
+
 		// This isn't undoable, since we can't pick the items back up!
 		// So, don't add it to the undo queue.
 		castMessage(player, "Mined " + minedBlocks.size() + " blocks of " + mineMaterial.name().toLowerCase());
-		
+
 		return true;
 	}
-	
+
 	protected void mine(Block block, Material fillMaterial, BlockList minedBlocks)
 	{		
 		mine(block, fillMaterial, minedBlocks, 0);
 	}
-	
+
 	protected void mine(Block block, Material fillMaterial, BlockList minedBlocks, int rDepth)
 	{
 		minedBlocks.add(block);
 		block.setType(Material.AIR);
-		
+
 		if (rDepth < maxRecursion)
 		{
 			tryMine(block.getRelative(BlockFace.NORTH), fillMaterial, minedBlocks, rDepth + 1);
@@ -82,14 +82,14 @@ public class MineSpell extends Spell
 			tryMine(block.getRelative(BlockFace.DOWN), fillMaterial, minedBlocks, rDepth + 1);
 		}
 	}
-	
+
 	protected void tryMine(Block target, Material fillMaterial, BlockList minedBlocks, int rDepth)
 	{
 		if (target.getType() != fillMaterial || minedBlocks.contains(target))
 		{
 			return;
 		}
-		
+
 		mine(target, fillMaterial, minedBlocks, rDepth);
 	}
 
@@ -107,7 +107,7 @@ public class MineSpell extends Spell
 		mineableMaterials = csv.parseMaterials(DEFAULT_MINEABLE);
 		minedMaterials = csv.parseMaterials(DEFAULT_MINED);
 		minedData = csv.parseIntegers(DEFAULT_DATA);
-		
+
 		maxRecursion = properties.getInteger("recursion_depth", maxRecursion);
 	}
 }

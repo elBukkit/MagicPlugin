@@ -6,5 +6,5 @@ import org.bukkit.block.Block;
 
 public interface BlockRequestListener
 {
-    public void onBlockListLoaded(List<Block> blocks);
+	public void onBlockListLoaded(List<Block> blocks);
 }

@@ -12,14 +12,14 @@ public class HealSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-        Target target = getTarget();
-        Entity targetEntity = target.getEntity();
-	    if (targetEntity != null && targetEntity instanceof LivingEntity)
-	    {
-	        castMessage(player, "You heal your target");
-	        ((LivingEntity)targetEntity).setHealth(20);
-	        return true;    
-	    }
+		Target target = getTarget();
+		Entity targetEntity = target.getEntity();
+		if (targetEntity != null && targetEntity instanceof LivingEntity)
+		{
+			castMessage(player, "You heal your target");
+			((LivingEntity)targetEntity).setHealth(20);
+			return true;    
+		}
 		castMessage(player, "You heal yourself");
 		player.setHealth(20);
 		player.setExhaustion(0);

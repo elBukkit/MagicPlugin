@@ -7,22 +7,22 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireballSpell extends Spell 
 {
-    int defaultSize = 1;
-    
+	int defaultSize = 1;
+
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
 		int size = parameters.getInt("size", defaultSize);
 		boolean useFire = parameters.getBoolean("fire", true);
-	    Fireball fireball = (Fireball)player.launchProjectile(Fireball.class);
-	    fireball.setIsIncendiary(useFire);
-	    fireball.setYield(size);
-	    return true;
+		Fireball fireball = (Fireball)player.launchProjectile(Fireball.class);
+		fireball.setIsIncendiary(useFire);
+		fireball.setYield(size);
+		return true;
 	}
 
-    @Override
-    public void onLoad(ConfigurationNode node)
-    {
-        disableTargeting();
-    }
+	@Override
+	public void onLoad(ConfigurationNode node)
+	{
+		disableTargeting();
+	}
 }

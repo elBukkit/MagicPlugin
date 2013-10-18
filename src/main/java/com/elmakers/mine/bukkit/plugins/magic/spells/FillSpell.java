@@ -16,21 +16,21 @@ public class FillSpell extends Spell
 	private int defaultMaxVolume = 512;
 	private Block targetBlock = null;
 	private final BlockRecurse blockRecurse = new BlockRecurse();
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-	    noTargetThrough(Material.STATIONARY_WATER);
-	    noTargetThrough(Material.WATER);
+		noTargetThrough(Material.STATIONARY_WATER);
+		noTargetThrough(Material.WATER);
 		Block targetBlock = getTargetBlock();
 		Material material = Material.AIR;
 		byte data = 0;
 		boolean singleBlock = false;
 		boolean recurse = false;
-	
+
 		boolean overrideMaterial = false;
-		
+
 		ItemStack buildWith = getBuildingMaterial();
 		if (buildWith != null)
 		{
@@ -39,47 +39,47 @@ public class FillSpell extends Spell
 			overrideMaterial = true;
 		}
 		String typeString = parameters.getString("type", "");
-        singleBlock = typeString.equals("single");
-        recurse = typeString.equals("recurse");
-        
-        Material materialOverride = parameters.getMaterial("material");
-        if (materialOverride != null)
-        {
-            material = materialOverride;
-            data = 0;
-            overrideMaterial = true;
-        }
-		
+		singleBlock = typeString.equals("single");
+		recurse = typeString.equals("recurse");
+
+		Material materialOverride = parameters.getMaterial("material");
+		if (materialOverride != null)
+		{
+			material = materialOverride;
+			data = 0;
+			overrideMaterial = true;
+		}
+
 		if (targetBlock == null) 
 		{
 			castMessage(player, "No target");
 			return false;
 		}
-	
+
 		if (recurse)
 		{
-		    this.targetBlock = null;
-		    
-		    Material targetMaterial = targetBlock.getType();
+			this.targetBlock = null;
+
+			Material targetMaterial = targetBlock.getType();
 			ReplaceMaterialAction action = new ReplaceMaterialAction(targetBlock, material, data);
-			
+
 			// A bit hacky, but is very handy!
 			if (targetMaterial == Material.STATIONARY_WATER)
 			{
-			    action.addReplaceable(Material.WATER);
+				action.addReplaceable(Material.WATER);
 			}
 			else if (targetMaterial == Material.WATER)
-            {
-                action.addReplaceable(Material.STATIONARY_WATER);
-            }
+			{
+				action.addReplaceable(Material.STATIONARY_WATER);
+			}
 			else if (targetMaterial == Material.STATIONARY_LAVA)
-            {
-                action.addReplaceable(Material.LAVA);
-            }
-            else if (targetMaterial == Material.LAVA)
-            {
-                action.addReplaceable(Material.STATIONARY_LAVA);
-            }
+			{
+				action.addReplaceable(Material.LAVA);
+			}
+			else if (targetMaterial == Material.LAVA)
+			{
+				action.addReplaceable(Material.STATIONARY_LAVA);
+			}
 			blockRecurse.recurse(targetBlock, action);
 			spells.addToUndoQueue(player, action.getBlocks());
 			castMessage(player, "Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
@@ -87,32 +87,32 @@ public class FillSpell extends Spell
 		}
 		else if (singleBlock)
 		{
-		    this.targetBlock = null;
-        
+			this.targetBlock = null;
+
 			BlockList filledBlocks = new BlockList();
-			
+
 			filledBlocks.add(targetBlock);
 			targetBlock.setType(material);
 			targetBlock.setData(data);
-			
+
 			castMessage(player, "Painting with " + material.name().toLowerCase());
 			spells.addToUndoQueue(player, filledBlocks);
 			return true;
 		}
-		
+
 		if (this.targetBlock != null)
 		{			
 			int deltax = targetBlock.getX() - this.targetBlock.getX();
 			int deltay = targetBlock.getY() - this.targetBlock.getY();
 			int deltaz = targetBlock.getZ() - this.targetBlock.getZ();
-			
+
 			int absx = Math.abs(deltax);
 			int absy = Math.abs(deltay);
 			int absz = Math.abs(deltaz);
-			
+
 			int maxDimension = player.isOp() ? defaultMaxDimension * 10 : defaultMaxDimension;
 			int maxVolume = player.isOp() ? defaultMaxVolume * 10 : defaultMaxVolume;
-		
+
 			if (maxDimension > 0 && (absx > maxDimension || absy > maxDimension || absz > maxDimension))
 			{
 				player.sendMessage("Dimension is too big!");
@@ -124,21 +124,21 @@ public class FillSpell extends Spell
 				player.sendMessage("Volume is too big!");
 				return false;
 			}
-			
+
 			int dx = (int)Math.signum(deltax);
 			int dy = (int)Math.signum(deltay);
 			int dz = (int)Math.signum(deltaz);
-			
+
 			absx++;
 			absy++;
 			absz++;
-			
+
 			if (!overrideMaterial)
 			{
-			    material = this.targetBlock.getType();
-			    data = this.targetBlock.getData();
+				material = this.targetBlock.getType();
+				data = this.targetBlock.getData();
 			}
-			
+
 			BlockList filledBlocks = new BlockList();
 			castMessage(player, "Filling " + absx + "x" + absy + "x" + absz + " area with " + material.name().toLowerCase());
 			int x = this.targetBlock.getX();
@@ -158,13 +158,13 @@ public class FillSpell extends Spell
 				}
 			}
 			spells.addToUndoQueue(player, filledBlocks);
-			
+
 			this.targetBlock = null;
 			return true;
 		}
 		else
 		{
-		    this.targetBlock = targetBlock;
+			this.targetBlock = targetBlock;
 			if (!overrideMaterial)
 			{
 				material = targetBlock.getType();
@@ -173,7 +173,7 @@ public class FillSpell extends Spell
 			return true;
 		}
 	}
-	
+
 	@Override
 	public void onCancel()
 	{

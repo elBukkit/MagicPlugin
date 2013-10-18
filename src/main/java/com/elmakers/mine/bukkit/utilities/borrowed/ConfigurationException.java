@@ -6,13 +6,13 @@ package com.elmakers.mine.bukkit.utilities.borrowed;
  * @author sk89q
  */
 public class ConfigurationException extends Exception {
-    private static final long serialVersionUID = -2442886939908724203L;
+	private static final long serialVersionUID = -2442886939908724203L;
 
-    public ConfigurationException() {
-        super();
-    }
+	public ConfigurationException() {
+		super();
+	}
 
-    public ConfigurationException(String msg) {
-        super(msg);
-    }
+	public ConfigurationException(String msg) {
+		super(msg);
+	}
 }

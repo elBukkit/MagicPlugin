@@ -18,106 +18,106 @@ public class FrostSpell extends Spell
 	private int				defaultRadius			= 2;
 	private int				verticalSearchDistance	= 8;
 	private int             timeToLive = 60000;
-	
+
 	public class FrostAction extends SimpleBlockAction
-    {
-        public boolean perform(Block block)
-        {
-            if (block.getType() == Material.AIR || block.getType() == Material.SNOW)
-            {
-                return false;
-            }
-            Material material = Material.SNOW;
-            if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
-            {
-                material = Material.ICE;
-            }
-            else if (block.getType() == Material.LAVA)
-            {
-                material = Material.COBBLESTONE;
-            }
-            else if (block.getType() == Material.STATIONARY_LAVA)
-            {
-                material = Material.OBSIDIAN;
-            }
-            else if (block.getType() == Material.FIRE)
-            {
-                material = Material.AIR;
-            }
-            else
-            {
-                block = block.getRelative(BlockFace.UP);
-            }
-            super.perform(block);
-            block.setType(material);
-            return true;
-        }
-    }
-	 
+	{
+		public boolean perform(Block block)
+		{
+			if (block.getType() == Material.AIR || block.getType() == Material.SNOW)
+			{
+				return false;
+			}
+			Material material = Material.SNOW;
+			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+			{
+				material = Material.ICE;
+			}
+			else if (block.getType() == Material.LAVA)
+			{
+				material = Material.COBBLESTONE;
+			}
+			else if (block.getType() == Material.STATIONARY_LAVA)
+			{
+				material = Material.OBSIDIAN;
+			}
+			else if (block.getType() == Material.FIRE)
+			{
+				material = Material.AIR;
+			}
+			else
+			{
+				block = block.getRelative(BlockFace.UP);
+			}
+			super.perform(block);
+			block.setType(material);
+			return true;
+		}
+	}
+
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
-	    Target target = getTarget();
+		Target target = getTarget();
 
-        if (target == null)
-        {
-            castMessage(player, "No target");
-            return false;
-        }
-        if (target.isEntity())
-        {
-            Entity targetEntity = target.getEntity();
-            if (targetEntity instanceof LivingEntity)
-            {
-                LivingEntity li = (LivingEntity)targetEntity;
-                if (li instanceof Player)
-                {
-                    li.damage(1);
-                }
-                else
-                {
-                    li.damage(10);
-                }
-            }
-        }
+		if (target == null)
+		{
+			castMessage(player, "No target");
+			return false;
+		}
+		if (target.isEntity())
+		{
+			Entity targetEntity = target.getEntity();
+			if (targetEntity instanceof LivingEntity)
+			{
+				LivingEntity li = (LivingEntity)targetEntity;
+				if (li instanceof Player)
+				{
+					li.damage(1);
+				}
+				else
+				{
+					li.damage(10);
+				}
+			}
+		}
 
-        if (!target.hasTarget())
-        {
-            castMessage(player, "No target");
-            return false;
-        }
-		
-        int radius = parameters.getInt("radius", defaultRadius);
-        FrostAction action = new FrostAction();
+		if (!target.hasTarget())
+		{
+			castMessage(player, "No target");
+			return false;
+		}
 
-        if (radius <= 1)
-        {
-            action.perform(target.getBlock());
-        }
-        else
-        {
-            this.coverSurface(target.getLocation(), radius, action);
-        }
+		int radius = parameters.getInt("radius", defaultRadius);
+		FrostAction action = new FrostAction();
+
+		if (radius <= 1)
+		{
+			action.perform(target.getBlock());
+		}
+		else
+		{
+			this.coverSurface(target.getLocation(), radius, action);
+		}
 
 
-        BlockList frozenBlocks = action.getBlocks();
-        frozenBlocks.setTimeToLive(timeToLive);
-        spells.scheduleCleanup(frozenBlocks);
-        castMessage(player, "Frosted " + action.getBlocks().size() + " blocks");
-        
-        return true;
+		BlockList frozenBlocks = action.getBlocks();
+		frozenBlocks.setTimeToLive(timeToLive);
+		spells.scheduleCleanup(frozenBlocks);
+		castMessage(player, "Frosted " + action.getBlocks().size() + " blocks");
+
+		return true;
 	}
 
 	public int checkPosition(int x, int z, int R)
 	{
 		return (x * x) +  (z * z) - (R * R);
 	}	
-	
+
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-        noTargetThrough(Material.WATER);
-        noTargetThrough(Material.STATIONARY_WATER);
+		noTargetThrough(Material.WATER);
+		noTargetThrough(Material.STATIONARY_WATER);
 		defaultRadius = properties.getInteger("radius", defaultRadius);
 		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);
 		timeToLive = properties.getInt("duration", timeToLive);

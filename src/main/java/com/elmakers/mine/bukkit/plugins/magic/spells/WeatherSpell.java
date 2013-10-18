@@ -7,41 +7,41 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WeatherSpell extends Spell
 {
-    @Override
-    public boolean onCast(ConfigurationNode parameters) 
-    {
-        World world = player.getWorld();
-        boolean hasStorm = world.hasStorm();
-        
-        if (hasStorm)
-        {
-            world.setStorm(false);
-            world.setThundering(false);
-            castMessage(player, "You calm the storm");
-            /*
+	@Override
+	public boolean onCast(ConfigurationNode parameters) 
+	{
+		World world = player.getWorld();
+		boolean hasStorm = world.hasStorm();
+
+		if (hasStorm)
+		{
+			world.setStorm(false);
+			world.setThundering(false);
+			castMessage(player, "You calm the storm");
+			/*
             boolean hasThunder = world.isThundering();
             if (hasThunder)
             {
-                
+
             }
             else
             {
                 world.setThundering(true);
                 castMessage(player, "You anger the storm");
             }
-            */
-        }
-        else
-        {
-            world.setStorm(true);
-            castMessage(player, "You stir up a storm");
-        }
-        return true;
-    }
+			 */
+		}
+		else
+		{
+			world.setStorm(true);
+			castMessage(player, "You stir up a storm");
+		}
+		return true;
+	}
 
-    @Override
-    public void onLoad(ConfigurationNode node)
-    {
-        disableTargeting();
-    }
+	@Override
+	public void onLoad(ConfigurationNode node)
+	{
+		disableTargeting();
+	}
 }

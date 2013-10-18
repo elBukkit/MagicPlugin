@@ -6,22 +6,22 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 
 public class SimpleBlockAction implements BlockAction
 {
-    protected BlockList blocks = null;
-    
-    public SimpleBlockAction()
-    {
-        blocks = new BlockList();
-    }
-    
-    public boolean perform(Block block)
-    {
-        blocks.add(block);
-        return true;
-    }
+	protected BlockList blocks = null;
 
-    public BlockList getBlocks()
-    {
-        return blocks;
-    }
+	public SimpleBlockAction()
+	{
+		blocks = new BlockList();
+	}
+
+	public boolean perform(Block block)
+	{
+		blocks.add(block);
+		return true;
+	}
+
+	public BlockList getBlocks()
+	{
+		return blocks;
+	}
 
 }
