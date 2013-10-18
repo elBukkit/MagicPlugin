@@ -61,16 +61,27 @@ public class InventoryUtils
 			return null;
 		}
 	}
-
+	
 	protected static Object getNMSCopy(ItemStack stack) {
-		Object nms = null;
-		try {
-			Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
+    	Object nms = null;
+    	try {
+			Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", stack.getClass());
 			nms = copyMethod.invoke(null, stack);
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
 		return nms;
+    }
+	
+	protected static Object getHandle(ItemStack stack) {
+		Object handle = null;
+		try {
+			Field handleField = class_CraftItemStack.getField("handle");
+			handle = handleField.get(stack);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return handle;
 	}
 
 	protected static Object getTag(Object mcItemStack) {		
@@ -88,7 +99,7 @@ public class InventoryUtils
 		if (stack == null) return null;
 		String meta = null;
 		try {
-			Object craft = getNMSCopy(stack);
+			Object craft = getHandle(stack);
 			Object tagObject = getTag(craft);
 			Method getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
 			meta = (String)getStringMethod.invoke(tagObject, tag);
@@ -101,12 +112,10 @@ public class InventoryUtils
 	public static ItemStack setMeta(ItemStack stack, String tag, String value) {
 		if (stack == null) return null;
 		try {
-			Object craft = getNMSCopy(stack);
+			Object craft = getHandle(stack);
 			Object tagObject = getTag(craft);
 			Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
 			setStringMethod.invoke(tagObject, tag, value);
-			Method mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", craft.getClass());
-			stack = (ItemStack)mirrorMethod.invoke(null, craft);
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
