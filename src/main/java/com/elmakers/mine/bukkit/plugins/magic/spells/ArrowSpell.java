@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import org.bukkit.entity.Arrow;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -21,10 +24,16 @@ public class ArrowSpell extends Spell
 		        sendMessage(player, "One of your arrows fizzled");
 		        return false;
 		    }
-		    // TODO: One day they'll give us access to the "from player" variable, right? 
-		    // arrow.setFromPlayer(2); // Make this an infinite arrow
-		    // arrow.setTicksLived(1150);
-		    arrow.setTicksLived(1);
+		    // Hackily make this an infinite arrow
+		    try {
+		    	Method getHandleMethod = arrow.getClass().getMethod("getHandle");
+		    	Object handle = getHandleMethod.invoke(arrow);
+		    	Field fromPlayerField = handle.getClass().getField("fromPlayer");
+		    	fromPlayerField.setInt(handle, 2);
+		    } catch (Throwable ex) {
+		    	ex.printStackTrace();
+		    }
+		    arrow.setTicksLived(1150);
 		}
 	
 		castMessage(player, "You fire some magical arrows");
