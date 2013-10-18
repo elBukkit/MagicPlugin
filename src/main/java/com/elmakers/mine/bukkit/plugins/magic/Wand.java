@@ -210,7 +210,7 @@ public class Wand {
 				ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
 				itemStack.addUnsafeEnchantment(WandEnchantment, 1);
 				ItemMeta meta = itemStack.getItemMeta();
-				meta.setDisplayName("Spell: " + spell.getName());
+				meta.setDisplayName(spell.getName());
 				List<String> lore = new ArrayList<String>();
 				lore.add(spell.getCategory());
 				lore.add(spell.getDescription());
@@ -237,7 +237,7 @@ public class Wand {
 
 			Spell spell = playerSpells.getSpell(items[i].getType());
 			if (spell == null) continue;
-			spellNames.add(spell.getName());
+			spellNames.add(spell.getKey());
 		}
 		setSpells(spellNames);
 	}

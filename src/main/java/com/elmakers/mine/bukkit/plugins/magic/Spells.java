@@ -127,14 +127,14 @@ public class Spells implements Listener
 
 	public void addSpell(Spell variant)
 	{
-		Spell conflict = spells.get(variant.getName());
+		Spell conflict = spells.get(variant.getKey());
 		if (conflict != null)
 		{
-			log.log(Level.WARNING, "Duplicate spell name: '" + conflict.getName() + "'");
+			log.log(Level.WARNING, "Duplicate spell name: '" + conflict.getKey() + "'");
 		}
 		else
 		{
-			spells.put(variant.getName(), variant);
+			spells.put(variant.getKey(), variant);
 		}
 		Material m = variant.getMaterial();
 		if (m != null && m != Material.AIR)
@@ -148,7 +148,7 @@ public class Spells implements Listener
 			conflict = spellsByMaterial.get(m);
 			if (conflict != null)
 			{
-				log.log(Level.WARNING, "Duplicate spell material: " + m.name() + " for " + conflict.getName() + " and " + variant.getName());
+				log.log(Level.WARNING, "Duplicate spell material: " + m.name() + " for " + conflict.getKey() + " and " + variant.getKey());
 			}
 			else
 			{
@@ -361,7 +361,7 @@ public class Spells implements Listener
 
 		for (Spell spell : spells.values())
 		{
-			ConfigurationNode spellNode = spellsNode.createChild(spell.getName());
+			ConfigurationNode spellNode = spellsNode.createChild(spell.getKey());
 			spell.save(spellNode);
 		}
 

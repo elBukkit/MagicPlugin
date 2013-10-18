@@ -344,7 +344,12 @@ public class MagicPlugin extends JavaPlugin
 		Collections.sort(categorySpells);
 		for (Spell spell : categorySpells)
 		{
-			player.sendMessage(spell.getName() + " [" + spell.getMaterial().name().toLowerCase() + "] : " + spell.getDescription());
+			String name = spell.getName();
+			String description = spell.getDescription();
+			if (!name.equals(spell.getKey())) {
+				description = name + ", " + description;
+			}
+			player.sendMessage(spell.getKey() + " [" + spell.getMaterial().name().toLowerCase() + "] : " + description);
 		}
 	}
 
@@ -444,7 +449,12 @@ public class MagicPlugin extends JavaPlugin
 						player.sendMessage(group.groupName + ":");
 						isFirst = false;
 					}
-					player.sendMessage(" " + spell.getName() + " [" + spell.getMaterial().name().toLowerCase() + "] : " + spell.getDescription());
+					String name = spell.getName();
+					String description = spell.getDescription();
+					if (!name.equals(spell.getKey())) {
+						description = name + ", " + description;
+					}
+					player.sendMessage(" " + spell.getKey() + " [" + spell.getMaterial().name().toLowerCase() + "] : " + description);
 					printedCount++;
 				}
 				lineCount++;

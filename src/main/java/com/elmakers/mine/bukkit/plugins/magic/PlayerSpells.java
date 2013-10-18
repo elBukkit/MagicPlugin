@@ -220,7 +220,7 @@ public class PlayerSpells
 		if (spell == null || !spell.hasSpellPermission(player))
 			return null;
 
-		return getSpell(spell.getName());
+		return getSpell(spell.getKey());
 	}
 
 	public Spell getSpell(String name)
@@ -229,11 +229,11 @@ public class PlayerSpells
 		if (spell == null || !spell.hasSpellPermission(player))
 			return null;
 
-		Spell playerSpell = spells.get(spell.getName());
+		Spell playerSpell = spells.get(spell.getKey());
 		if (playerSpell == null)
 		{
 			playerSpell = (Spell)spell.clone();
-			spells.put(spell.getName(), playerSpell);
+			spells.put(spell.getKey(), playerSpell);
 		}
 
 		playerSpell.setPlayer(player);

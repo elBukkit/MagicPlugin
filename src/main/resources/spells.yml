@@ -1,5 +1,6 @@
 spells:
     shell:
+        name: Shell
         icon: bowl
         category: construction
         description: Create a large spherical shell
@@ -33,6 +34,7 @@ spells:
             radius: '10'
             type: sphere
     tag:
+        name: Tag
         icon: sign
         category: exploration
         description: Leave a sign with your name
@@ -48,6 +50,7 @@ spells:
             cooldown: 10000
         parameters: {}
     arrow:
+        name: Arrow
         icon: arrow
         category: combat
         description: Fire a magic arrow
@@ -56,6 +59,7 @@ spells:
             cooldown: 0
         parameters: {}
     pull:
+        name: Pull
         icon: fishing_rod
         category: psychic
         description: Pull things toward you
@@ -77,6 +81,7 @@ spells:
             range: '32'
             type: pull
     kaboom:
+        name: KaBoom
         icon: redstone_wire
         category: combat
         description: Create a big explosion
@@ -93,6 +98,7 @@ spells:
         parameters:
             size: '6'
     frost:
+        name: Frost
         icon: snow_ball
         category: alchemy
         description: Freeze water and create snow
@@ -109,6 +115,7 @@ spells:
             cooldown: 0
         parameters: {}
     storm:
+        name: Storm
         icon: grilled_pork
         category: elemental
         description: Start a lightning storm
@@ -125,6 +132,7 @@ spells:
         parameters:
             radius: '10'
     spawn:
+        name: Home
         icon: yellow_flower
         category: exploration
         description: Take yourself back home
@@ -145,6 +153,7 @@ spells:
         parameters:
             type: spawn
     leatherskin:
+        name: LeatherSkin
         icon: leather_chestplate
         category: combat
         description: Protect you from some damage
@@ -154,6 +163,7 @@ spells:
         parameters:
             amount: '50'
     tree:
+        name: Tree
         icon: sapling
         category: farming
         description: Instantly grow a tree
@@ -170,6 +180,7 @@ spells:
             cooldown: 0
         parameters: {}
     heal:
+        name: Heal
         icon: bread
         category: medic
         description: Heal yourself or others
@@ -185,6 +196,7 @@ spells:
             cooldown: 5000
         parameters: {}
     gather:
+        name: Gather
         icon: glowstone_dust
         category: master
         description: Gather groups of players together
@@ -200,6 +212,7 @@ spells:
             cooldown: 0
         parameters: {}
     icbm:
+        name: ICBM
         icon: rotten_flesh
         category: combat
         description: Cast an exploding fireball
@@ -209,6 +222,7 @@ spells:
         parameters:
             size: '10'
     weather:
+        name: Weather
         icon: water
         category: elemental
         description: Change the weather
@@ -217,6 +231,7 @@ spells:
             cooldown: 0
         parameters: {}
     ironskin:
+        name: IronSkin
         icon: iron_chestplate
         category: master
         description: Protect you from damage
@@ -226,6 +241,7 @@ spells:
         parameters:
             amount: '99'
     fling:
+        name: Fling
         icon: leather_boots
         category: psychic
         description: Sends you flying in the target direction
@@ -235,6 +251,7 @@ spells:
         parameters:
             size: '5'
     torch:
+        name: Torch
         icon: torch
         category: exploration
         description: Shed some light
@@ -253,6 +270,7 @@ spells:
             cooldown: 0
         parameters: {}
     monster:
+        name: Monster
         icon: pumpkin
         category: summoner
         description: Call a monster to your side
@@ -269,6 +287,7 @@ spells:
         parameters:
             type: monster
     mob:
+        name: Mob
         icon: jack_o_lantern
         category: summoner
         description: Summon a mob of monsters
@@ -286,6 +305,7 @@ spells:
             count: '20'
             type: mob
     portal:
+        name: Portal
         icon: portal
         category: psychic
         description: Create two connected portals
@@ -301,6 +321,7 @@ spells:
             cooldown: 0
         parameters: {}
     invincible:
+        name: Invincible
         icon: golden_apple
         category: master
         description: Make yourself impervious to damage
@@ -309,6 +330,7 @@ spells:
             cooldown: 0
         parameters: {}
     inferno:
+        name: Inferno
         icon: fire
         category: master
         description: Burn a wide area
@@ -326,6 +348,7 @@ spells:
             cooldown: 0
         parameters: {}
     cushion:
+        name: Cushion
         icon: soul_sand
         category: alchemy
         description: Create a safety bubble
@@ -343,6 +366,7 @@ spells:
             cooldown: 0
         parameters: {}
     paint:
+        name: Paint
         icon: painting
         category: alchemy
         description: Fill a single block
@@ -361,6 +385,7 @@ spells:
         parameters:
             type: single
     gills:
+        name: Gills
         icon: raw_fish
         category: medic
         description: Restores health while moving underwater
@@ -372,6 +397,7 @@ spells:
             cooldown: 0
         parameters: {}
     arrowrain:
+        name: Arrow Rain
         icon: bow
         category: combat
         description: Fire a volley of arrows
@@ -381,6 +407,7 @@ spells:
         parameters:
             count: '4'
     sign:
+        name: Sign
         icon: sign_post
         category: master
         description: Give yourself some signs
@@ -396,6 +423,7 @@ spells:
             cooldown: 0
         parameters: {}
     lightning:
+        name: Lightning
         icon: cooked_fish
         category: combat
         description: Strike lighting at your target
@@ -411,6 +439,7 @@ spells:
             cooldown: 0
         parameters: {}
     nuke:
+        name: Nuke
         icon: bed
         category: combat
         description: Create a huge explosino
@@ -427,6 +456,7 @@ spells:
         parameters:
             size: '20'
     day:
+        name: Day
         icon: flint
         category: elemental
         description: Change time time to day
@@ -446,6 +476,7 @@ spells:
         parameters:
             time: day
     bridge:
+        name: Bridge
         icon: gold_hoe
         category: construction
         description: Extend the ground underneath you
@@ -454,6 +485,7 @@ spells:
             cooldown: 0
         parameters: {}
     ascend:
+        name: Ascend
         icon: red_mushroom
         category: psychic
         description: Go up to the nearest safe spot
@@ -473,6 +505,7 @@ spells:
         parameters:
             type: ascend
     grenade:
+        name: Grenade
         icon: tnt
         category: combat
         description: Place a primed grenade
@@ -493,6 +526,7 @@ spells:
         -   amount: 1.0
             material: tnt
     superblob:
+        name: SuperBlob
         icon: clay_brick
         category: construction
         description: Create a large solid sphere
@@ -525,6 +559,7 @@ spells:
             radius: '8'
             type: sphere
     kamikazee:
+        name: Kamikazee
         icon: dead_bush
         category: combat
         description: Kill yourself with an explosion
@@ -542,6 +577,7 @@ spells:
             size: '8'
             target: here
     superblast:
+        name: Superblast
         icon: slime_ball
         category: mining
         description: Mine out a very large area
@@ -572,6 +608,7 @@ spells:
             radius: '16'
             type: sphere
     blast:
+        name: Blast
         icon: sulphur
         category: mining
         description: Mine out a large area
@@ -601,6 +638,7 @@ spells:
             material: air
             type: sphere
     erase:
+        name: Erase
         icon: lever
         category: alchemy
         description: Undo your target construction
@@ -616,6 +654,7 @@ spells:
             cooldown: 0
         parameters: {}
     cloak:
+        name: Cloak
         icon: chainmail_chestplate
         category: psychic
         description: Make yourself invisible while still
@@ -624,6 +663,7 @@ spells:
             cooldown: 0
         parameters: {}
     rewind:
+        name: Rewind
         icon: watch
         category: alchemy
         description: Undo your last action
@@ -639,6 +679,7 @@ spells:
             cooldown: 0
         parameters: {}
     push:
+        name: Push
         icon: rails
         category: psychic
         description: Push things away from you
@@ -660,6 +701,7 @@ spells:
             range: '16'
             type: push
     farm:
+        name: Herd
         icon: wheat
         category: farming
         description: Create a herd
@@ -675,6 +717,7 @@ spells:
             cooldown: 0
         parameters: {}
     breach:
+        name: Breach
         icon: seeds
         category: alchemy
         description: Temporarily destroy the target surface
@@ -708,6 +751,7 @@ spells:
             radius: '4'
             type: sphere
     tesseract:
+        name: Tesseract
         icon: web
         category: psychic
         description: Blink a short distance
@@ -726,6 +770,7 @@ spells:
             cooldown: 0
         parameters: {}
     mine:
+        name: Mine
         icon: gold_pickaxe
         category: mining
         description: Mines and drops the targeted resources
@@ -742,6 +787,7 @@ spells:
             cooldown: 0
         parameters: {}
     peek:
+        name: Peek
         icon: sugar_cane
         category: alchemy
         description: Temporarily glass the target surface
@@ -774,6 +820,7 @@ spells:
             radius: '3'
             type: sphere
     sandblast:
+        name: Sandblast
         icon: sandstone
         category: combat
         description: Drop a big block of sand
@@ -807,6 +854,7 @@ spells:
             radius: '4'
             type: cuboid
     fill:
+        name: Fill
         icon: gold_spade
         category: construction
         description: Fill a selected area (cast twice)
@@ -824,6 +872,7 @@ spells:
             cooldown: 0
         parameters: {}
     recurse:
+        name: Recurse
         icon: wood_spade
         category: alchemy
         description: Recursively fill blocks
@@ -842,6 +891,7 @@ spells:
         parameters:
             type: recurse
     fire:
+        name: Fire
         icon: flint_and_steel
         category: elemental
         description: Light fires from a distance
@@ -859,6 +909,7 @@ spells:
             cooldown: 0
         parameters: {}
     alter:
+        name: Alter
         icon: redstone_torch_on
         category: construction
         description: Alter certain objects
@@ -875,6 +926,7 @@ spells:
             depth: 32
         parameters: {}
     blob:
+        name: Blob
         icon: clay_ball
         category: construction
         description: Create a solid blob
@@ -907,6 +959,7 @@ spells:
             radius: '3'
             type: sphere
     familiar:
+        name: Familiar
         icon: egg
         category: summoner
         description: Create an animal familiar
@@ -922,6 +975,7 @@ spells:
             cooldown: 0
         parameters: {}
     disintegrate:
+        name: Disintegrate
         icon: bone
         category: combat
         description: Damage your target
@@ -939,6 +993,7 @@ spells:
             entity_damage: 100
         parameters: {}
     blink:
+        name: Blink
         icon: feather
         category: psychic
         description: Teleport to your target
@@ -957,6 +1012,7 @@ spells:
             cooldown: 0
         parameters: {}
     absorb:
+        name: Absorb
         icon: bucket
         category: construction
         description: Absorb some of the target
@@ -972,6 +1028,7 @@ spells:
             cooldown: 0
         parameters: {}
     stalactite:
+        name: Stalactite
         icon: wood_axe
         category: construction
         description: Create a downward pillar
@@ -988,6 +1045,7 @@ spells:
         parameters:
             type: down
     lava:
+        name: Lava
         icon: lava
         category: combat
         description: Fire a stream of lava
@@ -1003,6 +1061,7 @@ spells:
             cooldown: 0
         parameters: {}
     wolf:
+        name: Wolf
         icon: pork
         category: summoner
         description: Create a wolf familiar to follow you around
@@ -1019,6 +1078,7 @@ spells:
             cooldown: 500
         parameters: {}
     recall:
+        name: Recall
         icon: compass
         category: exploration
         description: Marks locations for return
@@ -1038,6 +1098,7 @@ spells:
             cooldown: 0
         parameters: {}
     levitate:
+        name: Levitate
         icon: gold_boots
         category: psychic
         description: Levitate yourself up into the air
@@ -1046,6 +1107,7 @@ spells:
             cooldown: 0
         parameters: {}
     boom:
+        name: Boom
         icon: red_rose
         category: combat
         description: Create an explosion
@@ -1061,6 +1123,7 @@ spells:
             cooldown: 0
         parameters: {}
     box:
+        name: Box
         icon: gold_helmet
         category: construction
         description: Create a large hollow box
@@ -1094,6 +1157,7 @@ spells:
             radius: '6'
             type: cuboid
     pillar:
+        name: Pillar
         icon: gold_axe
         category: construction
         description: Raises a pillar up
@@ -1109,6 +1173,7 @@ spells:
             cooldown: 0
         parameters: {}
     night:
+        name: Night
         icon: coal
         category: elemental
         description: Change time time to night
@@ -1128,6 +1193,7 @@ spells:
         parameters:
             time: night
     force:
+        name: Force
         icon: string
         category: psychic
         description: Use telekinesis
@@ -1147,6 +1213,7 @@ spells:
             cooldown: 0
         parameters: {}
     descend:
+        name: Descend
         icon: brown_mushroom
         category: psychic
         description: Travel underground
@@ -1166,6 +1233,7 @@ spells:
         parameters:
             type: descend
     fireball:
+        name: Fireball
         icon: netherrack
         category: combat
         description: Cast an exploding fireball
@@ -1174,6 +1242,7 @@ spells:
             cooldown: 0
         parameters: {}
     ender:
+        name: Ender
         icon: ender_pearl
         category: summoner
         description: Summon an enderman

@@ -46,6 +46,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	/*
 	 * Variant properties
 	 */
+	private String key;
 	private String name;
 	private String description;
 	private String category;
@@ -159,6 +160,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected void loadAndSave(ConfigurationNode node)
 	{
+		name = node.getString("name", name);
 		description = node.getString("description", description);
 		material = node.getMaterial("icon", material);
 		category = node.getString("category", category);
@@ -177,9 +179,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 	}
 
-	protected void load(String name, ConfigurationNode node)
+	protected void load(String key, ConfigurationNode node)
 	{
-		this.name = name;
+		this.key = key;
+		this.name = key;
 		loadAndSave(node);
 
 		List<Object> costNodes = node.getList("costs");
@@ -247,6 +250,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		this.player = player;
 	}
 
+	public final String getKey()
+	{
+		return key;
+	}
+
 	public final String getName()
 	{
 		return name;
@@ -270,12 +278,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean isMatch(String spell, String[] params)
 	{
 		if (params == null) params = new String[0];
-		return (name.equalsIgnoreCase(spell) && parameters.equals(params));
+		return (key.equalsIgnoreCase(spell) && parameters.equals(params));
 	}
 
 	public int compareTo(Spell other)
 	{
-		return getName().compareTo(other.getName());
+		return name.compareTo(other.name);
 	}
 
 	public boolean cast()
@@ -333,7 +341,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public String getPermissionNode()
 	{
-		return "Magic.cast." + getName();
+		return "Magic.cast." + key;
 	}
 
 	public boolean hasSpellPermission(Player player)
