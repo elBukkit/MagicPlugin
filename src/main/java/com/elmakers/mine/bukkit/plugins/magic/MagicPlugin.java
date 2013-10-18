@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -88,10 +90,10 @@ public class MagicPlugin extends JavaPlugin
             String subCommand = "";
             String[] args2 = args;
             
-            if (args.length > 1) {
+            if (args.length > 0) {
             	subCommand = args[0];;
 	            args2 = new String[args.length - 1];
-	            for (int i = 1; i < args.length - 1; i++) {
+	            for (int i = 1; i < args.length; i++) {
 	            	args2[i - 1] = args[i];
 	            }
             }
@@ -289,13 +291,12 @@ public class MagicPlugin extends JavaPlugin
     	if (spellString == null) spellString = "";
     	
     	String[] spells = StringUtils.split(spellString, "|");
-    	Map<String, Boolean> spellMap = new HashMap<String, Boolean>();
+    	Set<String> spellMap = new TreeSet<String>();
     	for (int i = 0; i < spells.length; i++) {
-    		spellMap.put(spells[i], true);
+    		spellMap.add(spells[i]);
     	}
-    	spellMap.put(spell.getName(), true);
-    	Collection<String> newSpells = spellMap.keySet();
-    	return Spells.setWandSpells(wand, newSpells);
+    	spellMap.add(spell.getName());
+    	return Spells.setWandSpells(wand, spellMap);
     }
     
     private ItemStack removeSpellFromWand(Player player, String spellName, ItemStack wand) {
@@ -308,13 +309,12 @@ public class MagicPlugin extends JavaPlugin
     	if (spellString == null) spellString = "";
     	
     	String[] spells = StringUtils.split(spellString, "|");
-    	Map<String, Boolean> spellMap = new HashMap<String, Boolean>();
+    	Set<String> spellMap = new TreeSet<String>();
     	for (int i = 0; i < spells.length; i++) {
-    		spellMap.put(spells[i], true);
+    		spellMap.add(spells[i]);
     	}
     	spellMap.remove(spellName);
-    	Collection<String> newSpells = spellMap.keySet();
-    	return Spells.setWandSpells(wand, newSpells);
+    	return Spells.setWandSpells(wand, spellMap);
     }
     
     private void showWandHelp(Player player)
