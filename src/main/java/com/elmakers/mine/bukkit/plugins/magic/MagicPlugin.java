@@ -42,6 +42,7 @@ public class MagicPlugin extends JavaPlugin
 	{
 	    initialize();
 		
+	    BlockData.setServer(getServer());
         PluginManager pm = getServer().getPluginManager();
 		
         pm.registerEvents(spells, this);

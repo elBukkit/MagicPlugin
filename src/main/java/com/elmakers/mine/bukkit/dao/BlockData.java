@@ -3,12 +3,11 @@ package com.elmakers.mine.bukkit.dao;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.BlockVector;
-
-import com.elmakers.mine.bukkit.utilities.BukkitServer;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
@@ -28,6 +27,11 @@ public class BlockData
     public String       world;
     public Material     material;
     public byte         materialData;
+    
+    protected static Server server;
+    public static void setServer(Server server) {
+    	BlockData.server = server;
+    }
     
     public static long getBlockId(Block block)
     {
@@ -55,16 +59,17 @@ public class BlockData
                 return BlockFace.DOWN;
             case DOWN:
                 return BlockFace.UP;
+            default:
+            	return BlockFace.SELF;
         }
-
-        return BlockFace.SELF;
     }
 
     public BlockData()
     {
     }
 
-    public BlockData(Block block)
+    @SuppressWarnings("deprecation")
+	public BlockData(Block block)
     {
         this.block = block;
 
@@ -96,9 +101,9 @@ public class BlockData
 
     public Block getBlock()
     {
-        if (block == null && location != null)
+        if (block == null && location != null && server != null)
         {
-            Location blockLocation = new Location(BukkitServer.getWorld(world), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            Location blockLocation = new Location(server.getWorld(world), location.getBlockX(), location.getBlockY(), location.getBlockZ());
             if (blockLocation != null)
             {
                 block = blockLocation.getWorld().getBlockAt(blockLocation);
@@ -137,7 +142,8 @@ public class BlockData
         this.materialData = materialData;
     }
 
-    public boolean undo()
+    @SuppressWarnings("deprecation")
+	public boolean undo()
     {
         if (!checkBlock())
         {
