@@ -17,6 +17,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.dao.BlockData;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MagicPlugin extends JavaPlugin
 {	
@@ -138,7 +139,7 @@ public class MagicPlugin extends JavaPlugin
 	public boolean onWandAdd(Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			player.sendMessage("Use: /wand add <spell>");
+			player.sendMessage("Use: /wand add <spell|material> [material]");
 			return true;
 		}
 		
@@ -150,13 +151,29 @@ public class MagicPlugin extends JavaPlugin
 
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		String spellName = parameters[0];
+		if (spellName.equals("material")) {
+			if (parameters.length < 2) {
+				player.sendMessage("Use: /wand add material <material> [data]");
+				return true;
+			}
+			String materialName = parameters[1];
+			byte data = 0;
+			if (parameters.length > 2) {
+				data = (byte)Integer.parseInt(parameters[2]);
+			}
+			wand.saveInventory(playerSpells);
+			wand.addMaterial(ConfigurationNode.toMaterial(materialName), data);
+			wand.updateInventory(playerSpells);
+			return true;
+		}
 		Spell spell = playerSpells.getSpell(spellName);
 		if (spell == null)
 		{
 			player.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
 			return true;
 		}
-		
+
+		wand.saveInventory(playerSpells);
 		wand.addSpell(spellName);
 		wand.updateInventory(playerSpells);
 
@@ -166,7 +183,7 @@ public class MagicPlugin extends JavaPlugin
 	public boolean onWandRemove(Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			player.sendMessage("Use: /wand remove <spell>");
+			player.sendMessage("Use: /wand remove <spell|material> [material]");
 			return true;
 		}
 		
@@ -178,7 +195,24 @@ public class MagicPlugin extends JavaPlugin
 
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		String spellName = parameters[0];
+		
+		if (spellName.equals("material")) {
+			if (parameters.length < 2) {
+				player.sendMessage("Use: /wand remove material <material> [data]");
+				return true;
+			}
+			String materialName = parameters[1];
+			byte data = 0;
+			if (parameters.length > 2) {
+				data = (byte)Integer.parseInt(parameters[2]);
+			}
+			wand.saveInventory(playerSpells);
+			wand.removeMaterial(ConfigurationNode.toMaterial(materialName), data);
+			wand.updateInventory(playerSpells);
+			return true;
+		}
 
+		wand.saveInventory(playerSpells);
 		wand.removeSpell(spellName);
 		wand.updateInventory(playerSpells);
 

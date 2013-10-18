@@ -41,7 +41,7 @@ public class Wand {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void removeMateriall(Material material, byte data) {
+	public void removeMaterial(Material material, byte data) {
 		Integer id = material.getId();
 		String materialString = id.toString();
 		if (data > 0) {
@@ -306,7 +306,7 @@ public class Wand {
 			if (spell == null) {
 				List<Material> buildingMaterials = playerSpells.getMaster().getBuildingMaterials();
 				if (material != Material.AIR && buildingMaterials.contains(material)) {
-					materialNames.add(material.getId() + ":" + material.getData() + "@" + i);
+					materialNames.add(material.getId() + "@" + i);
 				}
 			} else {
 				spellNames.add(spell.getKey() + "@" + i);
