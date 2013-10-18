@@ -348,7 +348,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		if (player == null) return false;
 
-		return spells.hasPermission(player, getPermissionNode());
+		return spells.hasPermission(player, getPermissionNode(), true);
 	}
 
 	/**

@@ -618,18 +618,18 @@ public class Spells implements Listener
 
 	public boolean hasWandPermission(Player player)
 	{
-		return hasPermission(player, "Magic.wand.use");
+		return hasPermission(player, "Magic.wand.use", true);
 	}
 
 	public boolean hasPermission(Player player, String pNode, boolean defaultValue)
 	{
-		// TODO: What happened to built-in bukkit permissions?
-		return defaultValue;
+		boolean isSet = player.isPermissionSet(pNode);
+		return isSet ? player.hasPermission(pNode) : defaultValue;
 	}
 
 	public boolean hasPermission(Player player, String pNode)
 	{
-		return hasPermission(player, pNode, true);
+		return hasPermission(player, pNode, false);
 	}
 
 	/*
