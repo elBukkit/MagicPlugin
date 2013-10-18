@@ -67,6 +67,7 @@ public class SignSpell extends Spell
 				sign.setLine(1, "was here");
 				Date currentDate = new Date();
 				sign.setLine(3, DateFormat.getInstance().format(currentDate));
+				sign.update();
 				castMessage(player, "You leave a tag");
 				return true;
 			}
