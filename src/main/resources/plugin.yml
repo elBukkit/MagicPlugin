@@ -29,7 +29,7 @@ permissions:
           spells:
             description: Player may list spells
             type: boolean
-            default: true
+            default: false
           cast:
             description: Player may cast spells
             type: boolean
