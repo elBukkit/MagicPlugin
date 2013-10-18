@@ -243,25 +243,77 @@ public class Wand {
 		for (ItemStack stack : unpositioned) {
 			inventory.addItem(stack);
 		}
+		String materialString = InventoryUtils.getMeta(item, "magic_materials");
+		String[] materials = StringUtils.split(materialString, "|");
+
+		unpositioned.clear();
+		for (int i = 0; i < materials.length; i++) {
+			String[] parts = StringUtils.split(materials[i], "@");
+			String[] nameParts = StringUtils.split(parts[0], ":");
+			int typeId = Integer.parseInt(nameParts[0]);
+			int dataId = nameParts.length > 1 ? Integer.parseInt(nameParts[1]) : 0;
+			
+			ItemStack itemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);		
+			itemStack = InventoryUtils.getCopy(itemStack);
+			ItemMeta meta = itemStack.getItemMeta();
+			List<String> lore = new ArrayList<String>();
+			lore.add("Magic building material");
+			meta.setLore(lore);
+			itemStack.setItemMeta(meta);
+			
+			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
+			if (parts.length > 1 && slot != itemSlot) {
+				inventory.setItem(slot, itemStack);
+			} else {
+				unpositioned.add(itemStack);
+			}
+		}
+		
+		for (ItemStack stack : unpositioned) {
+			addMaterialToInventory(inventory, stack);
+		}
 
 		player.updateInventory();
 	}
 	
+	protected static void addMaterialToInventory(Inventory inventory, ItemStack stack) {
+		// First try to put it in the main bar, starting from the right.
+		for (int i = 8; i >= 0; i--) {
+			ItemStack existing = inventory.getItem(i);
+			if (existing == null || existing.getType() == Material.AIR) {
+				inventory.setItem(i, stack);
+				return;
+			}
+		}
+		
+		inventory.addItem(stack);
+	}
+	
+	@SuppressWarnings("deprecation")
 	public void saveInventory(PlayerSpells playerSpells) {
 		PlayerInventory inventory = playerSpells.getPlayer().getInventory();
 		
 		// Rebuild spell inventory, save in wand.
 		ItemStack[] items = inventory.getContents();
 		List<String> spellNames = new ArrayList<String>();
+		List<String> materialNames = new ArrayList<String>();
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] == null) continue;
 			if (!isSpell(items[i])) continue;
 
-			Spell spell = playerSpells.getSpell(items[i].getType());
-			if (spell == null) continue;
-			spellNames.add(spell.getKey() + "@" + i);
+			Material material = items[i].getType();
+			Spell spell = playerSpells.getSpell(material);
+			if (spell == null) {
+				List<Material> buildingMaterials = playerSpells.getMaster().getBuildingMaterials();
+				if (material != Material.AIR && buildingMaterials.contains(material)) {
+					materialNames.add(material.getId() + ":" + material.getData() + "@" + i);
+				}
+			} else {
+				spellNames.add(spell.getKey() + "@" + i);
+			}
 		}
 		setSpells(spellNames);
+		setMaterials(materialNames);
 	}
 
 	public static boolean isActive(Player player) {

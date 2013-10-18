@@ -240,4 +240,8 @@ public class PlayerSpells
 
 		return playerSpell;
 	}
+	
+	public Spells getMaster() {
+		return master;
+	}
 }
