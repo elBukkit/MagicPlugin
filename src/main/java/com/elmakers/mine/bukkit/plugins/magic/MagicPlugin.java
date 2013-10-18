@@ -214,28 +214,8 @@ public class MagicPlugin extends JavaPlugin
 
 		if (!holdingWand)
 		{
-			Wand wand = new Wand();
-
-			List<String> defaultSpells = new ArrayList<String>();
-			String defaultName = "Wand";
-
-			// Hacky until we have a config file!
-			if (wandName.equals("demo")) {
-				defaultSpells.add("torch");
-				defaultSpells.add("fling");
-				defaultSpells.add("blink");
-				defaultName = "Demo Wand";
-			} else if (wandName.equals("engineer")) {
-				defaultSpells.add("fill");
-				defaultSpells.add("pillar");
-				defaultSpells.add("bridge");
-				defaultSpells.add("absorb");
-				defaultName = "Engineering Wand";
-			}
-			
-			wand.setName(defaultName);
-			wand.addSpells(defaultSpells);
-
+			Wand wand = Wand.createWand(wandName);
+		
 			// Place directly in hand if possible
 			PlayerInventory inventory = player.getInventory();
 			ItemStack inHand = inventory.getItemInHand();

@@ -246,4 +246,29 @@ public class Wand {
 		ItemStack activeItem = player.getInventory().getItemInHand();
 		return isWand(activeItem);
 	}
+	
+	public static Wand createWand(String templateName) {
+		Wand wand = new Wand();
+		List<String> defaultSpells = new ArrayList<String>();
+		String defaultName = "Wand";
+
+		// Hacky until we have a config file!
+		if (templateName.equals("demo")) {
+			defaultSpells.add("torch");
+			defaultSpells.add("fling");
+			defaultSpells.add("blink");
+			defaultName = "Demo Wand";
+		} else if (templateName.equals("engineer")) {
+			defaultSpells.add("fill");
+			defaultSpells.add("pillar");
+			defaultSpells.add("bridge");
+			defaultSpells.add("absorb");
+			defaultName = "Engineering Wand";
+		}
+		
+		wand.setName(defaultName);
+		wand.addSpells(defaultSpells);
+		
+		return wand;
+	}
 }
