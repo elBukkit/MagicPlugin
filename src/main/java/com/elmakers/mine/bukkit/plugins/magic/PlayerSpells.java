@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -68,8 +67,6 @@ public class PlayerSpells
     		inventory.setItem(keepSlot, keepItem);
     	}
     	
-    	player.updateInventory();
-    	
     	return true;
     }
     
@@ -99,8 +96,6 @@ public class PlayerSpells
     			}
     		}
     	}
-    	
-    	player.updateInventory();
     	
     	return true;
     }
