@@ -213,27 +213,35 @@ public class Wand {
 		String spellString = InventoryUtils.getMeta(item, "magic_spells");
 		String[] spells = StringUtils.split(spellString, "|");
 
-		int currentIndex = 0;
+		List<ItemStack> unpositioned = new ArrayList<ItemStack>();
 		for (int i = 0; i < spells.length; i++) {
-			if (currentIndex == itemSlot) currentIndex++;
-			Spell spell = playerSpells.getSpell(spells[i]);
-			if (spell != null) {
-				ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
-				itemStack = InventoryUtils.getCopy(itemStack);
-				ItemMeta meta = itemStack.getItemMeta();
-				meta.setDisplayName(spell.getName());
-				List<String> lore = new ArrayList<String>();
-				lore.add(spell.getCategory());
-				lore.add(spell.getDescription());
-				meta.setLore(lore);
-				itemStack.setItemMeta(meta);
-				InventoryUtils.addGlow(itemStack);
-				InventoryUtils.setMeta(itemStack, "magic_spell", spells[i]);
-				
-				inventory.setItem(currentIndex, itemStack);
+			String[] parts = StringUtils.split(spells[i], "@");
+			String spellName = parts[0];
+			Spell spell = playerSpells.getSpell(spellName);
+			if (spell == null) continue;
+			
+			ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
+			itemStack = InventoryUtils.getCopy(itemStack);
+			ItemMeta meta = itemStack.getItemMeta();
+			meta.setDisplayName(spell.getName());
+			List<String> lore = new ArrayList<String>();
+			lore.add(spell.getCategory());
+			lore.add(spell.getDescription());
+			meta.setLore(lore);
+			itemStack.setItemMeta(meta);
+			InventoryUtils.addGlow(itemStack);
+			InventoryUtils.setMeta(itemStack, "magic_spell", spells[i]);
+			
+			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
+			if (parts.length > 1 && slot != itemSlot) {
+				inventory.setItem(slot, itemStack);
+			} else {
+				unpositioned.add(itemStack);
 			}
-
-			currentIndex++;
+		}
+		
+		for (ItemStack stack : unpositioned) {
+			inventory.addItem(stack);
 		}
 
 		player.updateInventory();
@@ -251,7 +259,7 @@ public class Wand {
 
 			Spell spell = playerSpells.getSpell(items[i].getType());
 			if (spell == null) continue;
-			spellNames.add(spell.getKey());
+			spellNames.add(spell.getKey() + "@" + i);
 		}
 		setSpells(spellNames);
 	}
