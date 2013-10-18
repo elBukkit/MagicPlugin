@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2.2.1
+
+ - Fix materials system
+ - Fix bogus enchantments on items to make them glow
+ - Lots of miscellaneous bugs + fixes to the new spell inventory system.
+
+## 2.2.0
+
+ - First release with "Spell Inventory" system.
+
 ## 2.1.1
 
  - Use enchanted items, names and lore for a more immersive experience.
