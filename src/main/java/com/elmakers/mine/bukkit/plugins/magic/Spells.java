@@ -39,41 +39,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.spells.AbsorbSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.AlterSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.ArrowSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.BlinkSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.BoomSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.BridgeSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.ConstructSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.CushionSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.DisintegrateSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FamiliarSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FillSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FireSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FireballSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FlingSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.ForceSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.FrostSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.GillsSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.GotoSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.GrenadeSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.HealSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.InvincibleSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.InvisibilitySpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.LavaSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.LevitateSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.LightningSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.MineSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.PillarSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.PortalSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.RecallSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.SignSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.TorchSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.TreeSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.UndoSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.WeatherSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spells.WolfSpell;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.UpdateInventoryTask;
@@ -98,79 +63,6 @@ public class Spells implements Listener
 		spells.setPlayer(player);
 
 		return spells;
-	}
-
-	protected void createDefaultSpells()
-	{
-		createSpell(new AbsorbSpell(), "absorb", Material.BUCKET, "Absorb some of the target", "construction", "");
-		createSpell(new AlterSpell(), "alter", Material.REDSTONE_TORCH_ON, "Alter certain objects", "construction", "");
-		createSpell(new ArrowSpell(), "arrow", Material.ARROW, "Fire a magic arrow", "combat", "");
-		createSpell(new ArrowSpell(), "arrowrain", Material.BOW, "Fire a volley of arrows", "combat", "count 4");
-		createSpell(new BlinkSpell(), "blink", Material.FEATHER, "Teleport to your target", "psychic", "");
-		createSpell(new BlinkSpell(), "ascend", Material.RED_MUSHROOM, "Go up to the nearest safe spot", "psychic", "type ascend");
-		createSpell(new BlinkSpell(), "descend", Material.BROWN_MUSHROOM, "Travel underground", "psychic", "type descend");
-		createSpell(new BlinkSpell(), "tesseract", Material.WEB, "Blink a short distance", "psychic", "", "range 8 allow_passthrough false allow_ascend false allow_descend false");
-		createSpell(new BoomSpell(), "boom", Material.RED_ROSE, "Create an explosion", "combat", "");
-		createSpell(new BoomSpell(), "kaboom", Material.REDSTONE_WIRE, "Create a big explosion", "combat", "size 6");
-		createSpell(new BoomSpell(), "kamikazee", Material.DEAD_BUSH, "Kill yourself with an explosion", "combat", "size 8 target here");
-		createSpell(new BoomSpell(), "nuke", Material.BED, "Create a huge explosino", "combat", "size 20");
-		createSpell(new BridgeSpell(), "bridge", Material.GOLD_HOE, "Extend the ground underneath you", "construction", "");
-		createSpell(new ConstructSpell(), "blob", Material.CLAY_BALL, "Create a solid blob", "construction", "type sphere radius 3", "allow_max_range true");
-		createSpell(new ConstructSpell(), "shell", Material.BOWL, "Create a large spherical shell", "construction", "type sphere fill hollow radius 10");
-		createSpell(new ConstructSpell(), "box", Material.GOLD_HELMET, "Create a large hollow box", "construction", "type cuboid fill hollow radius 6");
-		createSpell(new ConstructSpell(), "superblob", Material.CLAY_BRICK, "Create a large solid sphere", "construction", "type sphere radius 8", "allow_max_range true");
-		createSpell(new ConstructSpell(), "sandblast", Material.SANDSTONE, "Drop a big block of sand", "combat", "type cuboid radius 4 material sand", "allow_max_range true");
-		createSpell(new ConstructSpell(), "blast", Material.SULPHUR, "Mine out a large area", "mining", "type sphere material air", "destructible 1,2,3,4,10,11,12,13,87,88");
-		createSpell(new ConstructSpell(), "superblast", Material.SLIME_BALL, "Mine out a very large area", "mining", "type sphere radius 16 material air", "destructible 1,2,3,4,10,11,12,13,87,88");
-		createSpell(new ConstructSpell(), "peek", Material.SUGAR_CANE, "Temporarily glass the target surface", "alchemy", "material glass type sphere radius 3", "undo 4000 destructible 1,2,3,4,8,9,10,11,12,13,87,88");
-		createSpell(new ConstructSpell(), "breach", Material.SEEDS, "Temporarily destroy the target surface", "alchemy", "material air type sphere radius 4", "undo 10000 destructible 1,2,3,4,8,9,10,11,12,13,87,88");
-		createSpell(new CushionSpell(), "cushion", Material.SOUL_SAND, "Create a safety bubble", "alchemy", "");
-		createSpell(new DisintegrateSpell(), "disintegrate", Material.BONE, "Damage your target", "combat", "");
-		createSpell(new FamiliarSpell(), "familiar", Material.EGG, "Create an animal familiar", "summoner", "");
-		createSpell(new FamiliarSpell(), "monster", Material.PUMPKIN, "Call a monster to your side", "summoner", "type monster");
-		createSpell(new FamiliarSpell(), "mob", Material.JACK_O_LANTERN, "Summon a mob of monsters", "summoner", "type mob count 20");
-		createSpell(new FamiliarSpell(), "ender", Material.ENDER_PEARL, "Summon an enderman", "summoner", "type enderman");
-		createSpell(new FamiliarSpell(), "farm", Material.WHEAT, "Create a herd", "farming", "30");
-		createSpell(new FillSpell(), "fill", Material.GOLD_SPADE, "Fill a selected area (cast twice)", "construction", "");
-		createSpell(new FillSpell(), "paint", Material.PAINTING, "Fill a single block", "alchemy", "type single");
-		createSpell(new FillSpell(), "recurse", Material.WOOD_SPADE, "Recursively fill blocks", "alchemy", "type recurse");
-		createSpell(new FireballSpell(), "fireball", Material.NETHERRACK, "Cast an exploding fireball", "combat", "");
-		createSpell(new FireballSpell(), "icbm", Material.ROTTEN_FLESH, "Cast an exploding fireball", "combat", "size 10");
-		createSpell(new FireSpell(), "fire", Material.FLINT_AND_STEEL, "Light fires from a distance", "elemental", "");
-		createSpell(new FireSpell(), "inferno", Material.FIRE, "Burn a wide area", "master", "6");
-		createSpell(new FlingSpell(), "fling", Material.LEATHER_BOOTS, "Sends you flying in the target direction", "psychic", "size 5");
-		createSpell(new ForceSpell(), "force", Material.STRING, "Use telekinesis", "psychic", "", "allow_max_range true range 48");
-		createSpell(new ForceSpell(), "pull", Material.FISHING_ROD, "Pull things toward you", "psychic", "type pull range 32");
-		createSpell(new ForceSpell(), "push", Material.RAILS, "Push things away from you", "psychic", "type push range 16");
-		createSpell(new FrostSpell(), "frost", Material.SNOW_BALL, "Freeze water and create snow", "alchemy", "", "range 24");
-		createSpell(new GillsSpell(), "gills", Material.RAW_FISH, "Restores health while moving underwater", "medic", "");
-		createSpell(new GotoSpell(), "gather", Material.GLOWSTONE_DUST, "Gather groups of players together", "master", "");     
-		createSpell(new GrenadeSpell(), "grenade", Material.TNT, "Place a primed grenade", "combat", "", "", "tnt 1");
-		createSpell(new HealSpell(), "heal", Material.BREAD, "Heal yourself or others", "medic", "", "cooldown 5000", "apple 1 wheat 1");
-		createSpell(new InvincibleSpell(), "invincible", Material.GOLDEN_APPLE, "Make yourself impervious to damage", "master", "");
-		createSpell(new InvincibleSpell(), "ironskin", Material.IRON_CHESTPLATE, "Protect you from damage", "master", "amount 99");
-		createSpell(new InvincibleSpell(), "leatherskin", Material.LEATHER_CHESTPLATE, "Protect you from some damage", "combat", "amount 50");
-		createSpell(new InvisibilitySpell(), "cloak", Material.CHAINMAIL_CHESTPLATE, "Make yourself invisible while still", "psychic", "");
-		createSpell(new LavaSpell(), "lava", Material.LAVA, "Fire a stream of lava", "combat", "");
-		createSpell(new LevitateSpell(), "levitate", Material.GOLD_BOOTS, "Levitate yourself up into the air", "psychic", "");
-		createSpell(new LightningSpell(), "lightning", Material.COOKED_FISH, "Strike lighting at your target", "combat", "");
-		createSpell(new LightningSpell(), "storm", Material.GRILLED_PORK, "Start a lightning storm", "elemental", "radius 10", "cooldown 500");
-		createSpell(new MineSpell(), "mine", Material.GOLD_PICKAXE, "Mines and drops the targeted resources", "mining", "");
-		createSpell(new PillarSpell(), "pillar", Material.GOLD_AXE, "Raises a pillar up", "construction", "");
-		createSpell(new PillarSpell(), "stalactite", Material.WOOD_AXE, "Create a downward pillar", "construction", "type down");
-		createSpell(new PortalSpell(), "portal", Material.PORTAL, "Create two connected portals", "psychic", "");
-		createSpell(new RecallSpell(), "recall", Material.COMPASS, "Marks locations for return", "exploration", "");
-		createSpell(new RecallSpell(), "spawn", Material.YELLOW_FLOWER, "Take yourself back home", "exploration", "type spawn");
-		createSpell(new SignSpell(), "sign", Material.SIGN_POST, "Give yourself some signs", "master", "");
-		createSpell(new SignSpell(), "tag", Material.SIGN, "Leave a sign with your name", "exploration", "tag", "cooldown 10000");
-		createSpell(new TorchSpell(), "torch", Material.TORCH, "Shed some light", "exploration", "");
-		createSpell(new TorchSpell(), "day", Material.FLINT, "Change time time to day", "elemental", "time day");
-		createSpell(new TorchSpell(), "night", Material.COAL, "Change time time to night", "elemental", "time night");
-		createSpell(new TreeSpell(), "tree", Material.SAPLING, "Instantly grow a tree", "farming", "");
-		createSpell(new UndoSpell(), "rewind", Material.WATCH, "Undo your last action", "alchemy", "");
-		createSpell(new UndoSpell(), "erase", Material.LEVER, "Undo your target construction", "alchemy", "");
-		createSpell(new WeatherSpell(), "weather", Material.WATER, "Change the weather", "elemental", "");
-		createSpell(new WolfSpell(), "wolf", Material.PORK, "Create a wolf familiar to follow you around", "summoner", "", "cooldown 500");  
 	}
 
 	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
@@ -446,19 +338,18 @@ public class Spells implements Listener
 		dataFolder.mkdirs();
 
 		File propertiesFile = new File(dataFolder, propertiesFileName);
+		if (!propertiesFile.exists())
+		{
+			plugin.saveResource(propertiesFileName, false);
+		}
 		loadProperties(propertiesFile);
 
 		File spellsFile = new File(dataFolder, spellsFileName);
-
 		if (!spellsFile.exists())
 		{
-			createDefaultSpells();
-			save(spellsFile);
-		}
-		else
-		{
-			load(spellsFile);
-		}
+			plugin.saveResource(spellsFileName, false);
+		}	
+		load(spellsFile);
 
 		log.info("Magic: Loaded " + spells.size() + " spells.");
 	}
