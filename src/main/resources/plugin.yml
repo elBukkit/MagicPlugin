@@ -8,69 +8,56 @@ commands:
   cast:
     description: Cast a spell directly
     usage: cast <spellname>
+    permission: Magic.commands.cast
   spells:
     description: List all the spells you know
     usage: spells [category]
+    permission: Magic.commands.spells
   wand:
     description: Create and modify wands
     usage: /wand [add|remove] [spell]
+    permission: Magic.commands.wand
   magic:
     description: Administer the Magic plugin
     usage: /magic [reload|reset]
+    permission: Magic.commands.magic
 permissions:
-  Magic:
-    description: Magic permissions
-    type: map
-    map:
-      commands:
-        description: Magic console command permissions
-        type: map
-        map:
-          spells:
-            description: Player may list spells
-            type: boolean
-            default: false
-          cast:
-            description: Player may cast command-line spells
-            type: boolean
-            default: false
-          wand:
-            description: Player may create and modify wands
-            type: boolean
-            default: false
-            map:
-              add:
-                description: Player may add spells to a wand
-                type: boolean
-                default: false;
-              remove:
-                description: Player may remove spells from a wand
-                type: boolean
-                default: false;
-              name:
-                description: Player may rename  wand
-                type: boolean
-                default: false;
-          magic:
-            description: Player may use administration commands for Magic
-            type: map
-            map:
-              reset:
-                description: Player may reset spells to defaults
-                type: boolean
-                default: false;
-              reload:
-                description: Player may reload the configuration
-                type: boolean
-                default: false;
-      cast:
-        description: The spells a player may cast
-        type: list
-      wand:
-        description: Wand-related permissoins
-        type: map
-        map:
-          use:
-            description: Player may use a wand
-            type: boolean
-            default: true
+  Magic.commands.spells:
+    description: Player may list spells
+    type: boolean
+    default: op
+  Magic.commands.cast:
+    description: Player may cast command-line spells
+    type: boolean
+    default: op
+  Magic.commands.wand:
+    description: Player may create a wand
+    type: boolean
+    default: op
+  Magic.commands.wand.add:
+    description: Player may add a spell to a wand
+    type: boolean
+    default: op
+  Magic.commands.wand.remove:
+    description: Player may remove a spell from a wand
+    type: boolean
+    default: op
+  Magic.commands.wand.name:
+    description: Player may name a wand
+    type: boolean
+    default: op
+  Magic.commands.magic.reset:
+    description: Player may reset spells to defaults
+    type: boolean
+    default: op
+  Magic.commands.magic.reload:
+    description: Player may reload the configuration
+    type: boolean
+    default: op
+  Magic.wand.use:
+    description: The player may use a wand
+    default: true
+    type: boolean
+  Magic.cast:
+    description: The spells a player may cast
+    type: list
