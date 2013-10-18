@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -907,11 +908,40 @@ public class Spells implements Listener
         PlayerSpells spells = getPlayerSpells(event.getPlayer());
         spells.onPlayerMove(event);
     }
-
+    
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event)
+    {
+    	if (event.getEntityType() == EntityType.PLAYER && event.getEntity() instanceof Player) {
+    		onPlayerDeath((Player)event.getEntity(), event);
+    	}
+    }
+    
     @EventHandler
     public void onPlayerDeath(Player player, EntityDeathEvent event)
     {
         PlayerSpells spells = getPlayerSpells(player);
+        String rule = player.getWorld().getGameRuleValue("keepInventory");
+        if (spells.hasStoredInventory() && !rule.equals("true")) {
+        	List<ItemStack> drops = event.getDrops();
+        	drops.clear();
+        	
+        	// Drop the held wand, since that's not in the stored inventory
+        	ItemStack wand = player.getInventory().getItemInHand();
+        	if (isWand(wand)) {
+        		drops.add(wand);
+        	}
+        	
+        	player.getInventory().clear();
+        	ItemStack[] stored = spells.getStoredInventory().getContents();
+        	spells.clearStoredInventory();
+        	for (ItemStack stack : stored) {
+        		if (stack != null) {
+        			drops.add(stack);
+        		}
+        	}
+        }
+        
         spells.onPlayerDeath(event);
     }
 

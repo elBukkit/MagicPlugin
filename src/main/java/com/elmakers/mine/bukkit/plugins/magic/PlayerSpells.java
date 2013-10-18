@@ -29,6 +29,14 @@ public class PlayerSpells
     	return storedInventory != null;
     }
     
+    public Inventory getStoredInventory() {
+    	return storedInventory;
+    }
+    
+    public void clearStoredInventory() {
+    	storedInventory = null;
+    }
+    
     public boolean addToStoredInventory(ItemStack item) {
     	if (storedInventory == null) {
     		return false;
