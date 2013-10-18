@@ -22,6 +22,7 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -1086,6 +1087,21 @@ public class Spells implements Listener
     		} else {
     			event.setCancelled(true);
     		}
+    	}
+    }
+    
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+    	if (!(event.getWhoClicked() instanceof Player)) return;
+    	if (event.getView().getType() != InventoryType.CRAFTING) return;
+    	
+    	Player player = (Player)event.getWhoClicked();
+    	PlayerInventory inventory = player.getInventory();
+    	PlayerSpells spells = getPlayerSpells(player);
+    	if (spells.hasStoredInventory()) {
+	    	if (event.getSlot() == inventory.getHeldItemSlot()) {
+	    		event.setCancelled(true);
+	    	}
     	}
     }
 
