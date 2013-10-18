@@ -76,7 +76,8 @@ public class InventoryUtils
 	protected static Object getHandle(ItemStack stack) {
 		Object handle = null;
 		try {
-			Field handleField = class_CraftItemStack.getField("handle");
+			Field handleField = stack.getClass().getDeclaredField("handle");
+			handleField.setAccessible(true);
 			handle = handleField.get(stack);
 		} catch (Throwable ex) {
 			ex.printStackTrace();
