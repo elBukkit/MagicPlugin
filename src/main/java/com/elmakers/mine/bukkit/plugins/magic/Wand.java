@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,14 +19,17 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 public class Wand {
 	private ItemStack item;
 	
-	private static Enchantment WandEnchantment = Enchantment.ARROW_INFINITE;
 	private static Material WandMaterial = Material.STICK;
 	
 	public Wand() {
 		item = new ItemStack(WandMaterial);
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
 		item = InventoryUtils.getCopy(item);
-		item.addUnsafeEnchantment(WandEnchantment, 1);
+		ItemMeta itemMeta = item.getItemMeta();
+		item.setItemMeta(itemMeta);
+
+		InventoryUtils.addGlow(item);
+		InventoryUtils.setMeta(item, "magic_wand", "");
 	}
 	
 	public Wand(ItemStack item) {
@@ -145,17 +147,23 @@ public class Wand {
 	
 	public void setName(String name) {
 		String spellString = InventoryUtils.getMeta(item, "magic_spells");
+		String wandString = InventoryUtils.getMeta(item, "magic_wand");
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
+		
+		// Reset Enchantment glow
+		InventoryUtils.addGlow(item);
 
 		// The all-important last step of restoring the spell list, something
 		// the Anvil will blow away.
 		InventoryUtils.setMeta(item, "magic_spells", spellString);
+		InventoryUtils.setMeta(item, "magic_wand", wandString);
 	}
 
 	protected void updateLore(int spellCount, int materialCount) {
 		String spellString = InventoryUtils.getMeta(item, "magic_spells");
+		String wandString = InventoryUtils.getMeta(item, "magic_wand");
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<String>();
 		lore.add("Knows " + spellCount +" Spells");
@@ -165,10 +173,13 @@ public class Wand {
 		lore.add("Left-click to cast active spell");
 		lore.add("Right-click to cycle spells");
 		meta.setLore(lore);
+		
 		item.setItemMeta(meta);
+		InventoryUtils.addGlow(item);
 
-		// Reset spell list!
+		// Reset spell list and wand config
 		InventoryUtils.setMeta(item, "magic_spells", spellString);
+		InventoryUtils.setMeta(item, "magic_wand", wandString);
 	}
 	
 	public static Wand getActiveWand(Player player) {
@@ -182,11 +193,11 @@ public class Wand {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && item.getType() == Material.STICK && item.hasItemMeta() && item.getItemMeta().hasEnchant(WandEnchantment);
+		return item != null && item.getType() == Material.STICK && InventoryUtils.getMeta(item, "magic_wand") != null;
 	}
 
 	public static boolean isSpell(ItemStack item) {
-		return item != null && item.getType() != Material.STICK && item.hasItemMeta() && item.getItemMeta().hasEnchant(WandEnchantment);
+		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell") != null;
 	}
 	
 	public void updateInventory(PlayerSpells playerSpells) {
@@ -208,7 +219,7 @@ public class Wand {
 			Spell spell = playerSpells.getSpell(spells[i]);
 			if (spell != null) {
 				ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
-				itemStack.addUnsafeEnchantment(WandEnchantment, 1);
+				itemStack = InventoryUtils.getCopy(itemStack);
 				ItemMeta meta = itemStack.getItemMeta();
 				meta.setDisplayName(spell.getName());
 				List<String> lore = new ArrayList<String>();
@@ -216,6 +227,9 @@ public class Wand {
 				lore.add(spell.getDescription());
 				meta.setLore(lore);
 				itemStack.setItemMeta(meta);
+				InventoryUtils.addGlow(itemStack);
+				InventoryUtils.setMeta(itemStack, "magic_spell", spells[i]);
+				
 				inventory.setItem(currentIndex, itemStack);
 			}
 

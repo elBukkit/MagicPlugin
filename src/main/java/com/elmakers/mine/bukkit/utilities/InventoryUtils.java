@@ -135,6 +135,20 @@ public class InventoryUtils
 			ex.printStackTrace();
 		}
 	}
+	
+	public static void addGlow(ItemStack stack) { 
+		if (stack == null) return;
+		
+		try {
+			Object craft = getHandle(stack);
+			Object tagObject = getTag(craft);
+			final Object enchList = class_NBTTagList.newInstance();
+			Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);		
+			setMethod.invoke(tagObject, "ench", enchList);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+    }
 
 	public static String inventoryToString(final Inventory inventory) {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
