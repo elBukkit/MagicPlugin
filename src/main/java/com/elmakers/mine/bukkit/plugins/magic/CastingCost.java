@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -45,12 +46,12 @@ public class CastingCost
         return cost;
     }
     
-    public boolean has(PlayerInventory inventory)
+    public boolean has(Player player, Inventory inventory)
     {
         return inventory.contains(item, getAmount());
     }
     
-    public void use(PlayerInventory inventory)
+    public void use(Player player, Inventory inventory)
     {
         ItemStack itemStack = getItemStack();
         inventory.removeItem(itemStack);

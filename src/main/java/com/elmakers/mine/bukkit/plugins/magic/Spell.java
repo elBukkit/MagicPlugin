@@ -308,9 +308,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
         
         if (costs != null)
         {
+            PlayerSpells playerSpells = spells.getPlayerSpells(player);
+            Inventory inventory = playerSpells.hasStoredInventory() ? playerSpells.getStoredInventory() : player.getInventory();
             for (CastingCost cost : costs)
             {
-                if (!cost.has(player.getInventory()))
+                if (!cost.has(player, inventory))
                 {
                     sendMessage(player, "Not enough " + cost.getDescription());
                     return false;
@@ -319,7 +321,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
             
             for (CastingCost cost : costs)
             {
-                cost.use(player.getInventory());
+                cost.use(player, inventory);
             }
         }
         
