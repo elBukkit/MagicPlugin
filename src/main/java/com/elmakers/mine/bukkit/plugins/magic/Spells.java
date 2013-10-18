@@ -806,18 +806,30 @@ public class Spells implements Listener
 		spells.restoreInventory();
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event)
 	{
 		for (PlayerSpells spells : playerSpells.values()) {
+			Player player = spells.getPlayer();
 			spells.restoreInventory();
+			player.updateInventory();
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPluginEnable(PluginEnableEvent event)
 	{
-
+		Player[] players = plugin.getServer().getOnlinePlayers();
+		for (Player player : players) {
+			Wand wand = Wand.getActiveWand(player);
+			if (wand != null) {
+				PlayerSpells spells = getPlayerSpells(player);
+				wand.updateInventory(spells);
+				player.updateInventory();
+			}
+		}
 	}
 
 	@EventHandler
