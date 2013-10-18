@@ -76,7 +76,6 @@ public class MagicPlugin extends JavaPlugin
                 spells.reset();
                 return true;
             }
-            
         }
         
 	    // Everything beyond this point is is-game only
@@ -86,8 +85,42 @@ public class MagicPlugin extends JavaPlugin
 
         if (commandName.equalsIgnoreCase("wand"))
         {
-            if (!spells.hasPermission(player, "Magic.commands.wand")) return true;
-            return onWand(player, args);
+            String subCommand = "";
+            String[] args2 = args;
+            
+            if (args.length > 1) {
+            	subCommand = args[0];;
+	            args2 = new String[args.length - 1];
+	            for (int i = 1; i < args.length - 1; i++) {
+	            	args2[i - 1] = args[i];
+	            }
+            }
+            
+            if (subCommand.equalsIgnoreCase("add"))
+            {
+                if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+            	
+                onWandAdd(player, args2);
+                return true;
+            }
+            if (subCommand.equalsIgnoreCase("remove"))
+            {   
+                if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+            	
+            	onWandRemove(player, args2);
+                return true;
+            }
+
+            if (subCommand.equalsIgnoreCase("name"))
+            {
+                if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+           	
+            	onWandName(player, args2);
+                return true;
+            }
+            
+        	if (!spells.hasPermission(player, "Magic.commands.wand")) return true;
+        	return onWand(player, args);
         }
 	    
 	    if (commandName.equalsIgnoreCase("cast"))
@@ -104,48 +137,19 @@ public class MagicPlugin extends JavaPlugin
         
 	    return false;
 	}
-	
-    public boolean onWand(Player player, String[] parameters)
+
+	public boolean onWandAdd(Player player, String[] parameters)
     {
-    	boolean holdingWand = Spells.isWandActive(player);
-    	
-        if (parameters.length < 1)
-        {
-            if (!holdingWand)
-            {
-            	ItemStack itemStack = new ItemStack(Material.STICK);
-                itemStack.addUnsafeEnchantment(Spells.MagicEnchantment, 1);
-                Spells.updateWand(itemStack, 0, "Wand");
-                
-                // Place directly in hand if possible
-                PlayerInventory inventory = player.getInventory();
-                ItemStack inHand = inventory.getItemInHand();
-        		if (inHand == null || inHand.getType() == Material.AIR) {
-        			PlayerSpells playerSpells = spells.getPlayerSpells(player);
-        			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
-        			if (playerSpells.storeInventory()) {
-        	    		// Create spell inventory
-        	    		spells.updateWandInventory(player);
-        	    	}
-        		} else {
-        			player.getInventory().addItem(itemStack);
-        		}
-                
-                player.sendMessage("Use /wand again for help, /spells for spell list");
-            }
-            else 
-            {
-                showWandHelp(player);
-            }
+	   	boolean holdingWand = Spells.isWandActive(player);
+	    if (!holdingWand) {
+	    	player.sendMessage("Equip a wand first (use /wand if needed)");
             return true;
-        }
-        
-        if (!holdingWand) 
-        {
-        	player.sendMessage("Equip a wand to enchant with a spell");
+	    }
+	    if (parameters.length < 1) {
+	    	player.sendMessage("Use: /wand add <spell>");
             return true;
-        }
-        
+	    }
+	    
         String spellName = parameters[0];
         Spell spell = spells.getSpell(spellName, player);
         if (spell == null)
@@ -159,6 +163,119 @@ public class MagicPlugin extends JavaPlugin
         ItemStack newWand = addSpellToWand(player, spell, inventory.getItemInHand());
         inventory.setItem(wandSlot, newWand);    	
         spells.updateWandInventory(player);
+        
+        return true;
+    }
+
+	public boolean onWandRemove(Player player, String[] parameters)
+    {
+		boolean holdingWand = Spells.isWandActive(player);
+	    if (!holdingWand) {
+	    	player.sendMessage("Equip a wand first (use /wand if needed)");
+            return true;
+	    }
+	    if (parameters.length < 1) {
+	    	player.sendMessage("Use: /wand remove <spell>");
+            return true;
+	    }
+	    
+	    String spellName = parameters[0];
+       
+        PlayerInventory inventory = player.getInventory();
+        int wandSlot = inventory.getHeldItemSlot();
+        ItemStack newWand = removeSpellFromWand(player, spellName, inventory.getItemInHand());
+        inventory.setItem(wandSlot, newWand);    	
+        spells.updateWandInventory(player);
+	    
+	    return true;
+    }
+
+	public boolean onWandName(Player player, String[] parameters)
+    {
+		boolean holdingWand = Spells.isWandActive(player);
+	    if (!holdingWand) {
+	    	player.sendMessage("Equip a wand first (use /wand if needed)");
+            return true;
+	    }
+	    if (parameters.length < 1) {
+	    	player.sendMessage("Use: /wand name <name>");
+            return true;
+	    }
+	    
+	    PlayerInventory inventory = player.getInventory();
+        ItemStack wand = inventory.getItemInHand();
+	    
+	    String spellString = InventoryUtils.getMeta(wand, "magic_spells");
+	    ItemMeta meta = wand.getItemMeta();
+    	meta.setDisplayName(parameters[0]);
+        wand.setItemMeta(meta);
+        
+        // The all-important last step of restoring the spell list, something
+        // the Anvil will blow away.
+        InventoryUtils.setMeta(wand, "magic_spells", spellString);
+	    
+	    return true;
+    }
+		
+    public boolean onWand(Player player, String[] parameters)
+    {
+    	boolean holdingWand = Spells.isWandActive(player);
+    	String wandName = "default";
+    	if (parameters.length > 0)
+        {
+    		wandName = parameters[0];
+        }
+            
+    	if (!holdingWand)
+        {
+        	ItemStack itemStack = new ItemStack(Material.STICK);
+            itemStack.addUnsafeEnchantment(Spells.MagicEnchantment, 1);
+            
+            List<String> defaultSpells = new ArrayList<String>();
+            String defaultName = "Wand";
+            
+            // Hacky until we have a config file!
+            if (wandName.equals("demo")) {
+            	defaultSpells.add("torch");
+            	defaultSpells.add("fling");
+            	defaultSpells.add("blink");
+            	defaultName = "Demo Wand";
+            } else if (wandName.equals("engineer")) {
+            	defaultSpells.add("fill");
+            	defaultSpells.add("pillar");
+            	defaultSpells.add("bridge");
+            	defaultSpells.add("absorb");
+            	defaultName = "Engineering Wand";
+            }
+            
+            Spells.updateWand(itemStack, defaultSpells.size(), defaultName);
+            for (String spellName : defaultSpells) {
+            	Spell spell = spells.getSpell(spellName, player);
+                if (spell != null) {    	
+                	itemStack = addSpellToWand(player, spell, itemStack);
+                }
+            }
+            
+            // Place directly in hand if possible
+            PlayerInventory inventory = player.getInventory();
+            ItemStack inHand = inventory.getItemInHand();
+    		if (inHand == null || inHand.getType() == Material.AIR) {
+    			PlayerSpells playerSpells = spells.getPlayerSpells(player);
+    			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
+    			if (playerSpells.storeInventory()) {
+    	    		// Create spell inventory
+    	    		spells.updateWandInventory(player);
+    	    	}
+    		} else {
+    			player.getInventory().addItem(itemStack);
+    		}
+            
+            player.sendMessage("Use /wand again for help, /spells for spell list");
+        }
+        else 
+        {
+            showWandHelp(player);
+        }
         return true;
     }
     
@@ -181,18 +298,31 @@ public class MagicPlugin extends JavaPlugin
     	return Spells.setWandSpells(wand, newSpells);
     }
     
+    private ItemStack removeSpellFromWand(Player player, String spellName, ItemStack wand) {
+    	if (!Spells.isWand(wand)) {
+    		return wand;
+    	}
+    	
+    	// Add new spell to wand's spell list
+    	String spellString = InventoryUtils.getMeta(wand, "magic_spells");
+    	if (spellString == null) spellString = "";
+    	
+    	String[] spells = StringUtils.split(spellString, "|");
+    	Map<String, Boolean> spellMap = new HashMap<String, Boolean>();
+    	for (int i = 0; i < spells.length; i++) {
+    		spellMap.put(spells[i], true);
+    	}
+    	spellMap.remove(spellName);
+    	Collection<String> newSpells = spellMap.keySet();
+    	return Spells.setWandSpells(wand, newSpells);
+    }
+    
     private void showWandHelp(Player player)
     {
         player.sendMessage("How to use your wand:");
-        player.sendMessage(" Type /spells to see what spells you know");
-        player.sendMessage(" Place a spell item in your first inventory slot");
-        player.sendMessage(" Left-click your wand to cast!");
-        player.sendMessage(" Right-click to cycle spells in your inventory");
-
-        if (spells.hasPermission(player, "Magic.commands.wand"))
-        {
-            player.sendMessage("/wand <spellname> : Give the item necessary to cast a spell");
-        }
+        player.sendMessage(" The active spell is farthest to left");
+        player.sendMessage(" Left-click your wand to cast");
+        player.sendMessage(" Right-click to cycle spells");
     }
     
 	public boolean onCast(Player player, String[] castParameters)

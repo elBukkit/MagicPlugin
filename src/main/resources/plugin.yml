@@ -6,14 +6,14 @@ author: NathanWolf
 description : Mmmmmmaaaaagic!
 commands:
   cast:
-    description: Cast a spell
+    description: Cast a spell directly
     usage: cast <spellname>
   spells:
     description: List all the spells you know
     usage: spells [category]
   wand:
-    description: Get wand help, spawn wand/magic items
-    usage: /wand [spellname]
+    description: Create and modify wands
+    usage: /wand [add|remove] [spell]
   magic:
     description: Administer the Magic plugin
     usage: /magic [reload|reset]
@@ -31,13 +31,26 @@ permissions:
             type: boolean
             default: false
           cast:
-            description: Player may cast spells
+            description: Player may cast command-line spells
             type: boolean
             default: false
           wand:
-            description: Player may spawn wands and items
+            description: Player may create and modify wands
             type: boolean
             default: false
+            map:
+              add:
+                description: Player may add spells to a wand
+                type: boolean
+                default: false;
+              remove:
+                description: Player may remove spells from a wand
+                type: boolean
+                default: false;
+              name:
+                description: Player may rename  wand
+                type: boolean
+                default: false;
           magic:
             description: Player may use administration commands for Magic
             type: map
