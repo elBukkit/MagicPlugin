@@ -621,9 +621,16 @@ public class Spells implements Listener
     	return wand;
     }
     
+    
     public static void updateWand(ItemStack wand, int spellCount) {
+    	updateWand(wand, spellCount, null);
+    }
+    
+    public static void updateWand(ItemStack wand, int spellCount, String name) {
     	ItemMeta meta = wand.getItemMeta();
-        meta.setDisplayName("Wand");
+    	if (name != null) {
+    		meta.setDisplayName(name);
+    	}
         List<String> lore = new ArrayList<String>();
         lore.add("Knows " + spellCount +" Spells");
         lore.add("Left-click to cast active spell");
@@ -849,19 +856,21 @@ public class Spells implements Listener
     public void onPlayerEquip(PlayerItemHeldEvent event)
     {
     	Player player = event.getPlayer();
-    	Inventory inventory = player.getInventory();
+    	PlayerInventory inventory = player.getInventory();
     	ItemStack previous = inventory.getItem(event.getPreviousSlot());
     	ItemStack next = inventory.getItem(event.getNewSlot());
     	    	
     	boolean wasWand = previous != null && isWand(previous);
     	boolean isWand = next != null && isWand(next);
-    	if (isWand == wasWand) return;
     	
+    	// If we're not dealing with wands, we don't care
+    	// And you should never be switching directly from one wand to another!
+    	if (wasWand == isWand) return;
+    	
+    	// If we're switching to a wand, save the inventory.
     	if (isWand) {
-    		// Save inventory
     		PlayerSpells spells = getPlayerSpells(player);
 	    	if (spells.storeInventory(event.getNewSlot(), next)) {
-	    		// Create spell inventory
 	    		updateWandInventory(player, event.getNewSlot(), next);
 	    	}
     	} else if (wasWand) {
@@ -870,6 +879,7 @@ public class Spells implements Listener
     		List<String> spellNames = new ArrayList<String>();
     		for (int i = 0; i < items.length; i++) {
     			if (items[i] == null) continue;
+    			if (!items[i].hasItemMeta() || !items[i].getItemMeta().hasEnchant(MagicEnchantment)) continue;
     			
     			Spell spell = getSpell(items[i].getType(), player);
     			if (spell == null) continue;
@@ -880,6 +890,13 @@ public class Spells implements Listener
     		// Restore inventory
     		PlayerSpells spells = getPlayerSpells(player);
     		spells.restoreInventory(event.getPreviousSlot(), previous);
+    		
+    		// Check for new wand selection
+    		if (isWand(inventory.getItem(event.getNewSlot()))) {
+    			if (spells.storeInventory(event.getNewSlot(), inventory.getItem(event.getNewSlot()))) {
+    	    		updateWandInventory(player, event.getNewSlot(), inventory.getItem(event.getNewSlot()));
+    	    	}
+    		}
     	}
     }
     
