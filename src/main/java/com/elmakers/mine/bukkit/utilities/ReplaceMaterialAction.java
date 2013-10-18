@@ -29,7 +29,8 @@ public class ReplaceMaterialAction extends SimpleBlockAction
         replaceable.add(material);
     }
 
-    public boolean perform(Block block)
+    @SuppressWarnings("deprecation")
+	public boolean perform(Block block)
     {
         if (replace == null)
         {

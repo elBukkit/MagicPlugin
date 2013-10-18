@@ -10,7 +10,8 @@ public class UpdateInventoryTask extends BukkitRunnable {
         this.player = player;
     }
  
-    public void run() {
+    @SuppressWarnings("deprecation")
+	public void run() {
         player.updateInventory();
     }
 }

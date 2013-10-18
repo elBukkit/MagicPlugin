@@ -39,6 +39,7 @@ public class ConstructSpell extends Spell
 		}
 	};
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
@@ -173,6 +174,7 @@ public class ConstructSpell extends Spell
 		return x * x + y * y + z * z;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void constructBlock(int dx, int dy, int dz, Block centerPoint, int radius, Material material, byte data, BlockList constructedBlocks)
 	{
 		int x = centerPoint.getX() + dx - radius;

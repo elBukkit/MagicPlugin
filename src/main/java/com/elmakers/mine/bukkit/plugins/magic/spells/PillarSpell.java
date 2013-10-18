@@ -13,6 +13,7 @@ public class PillarSpell extends Spell
 {
 	int MAX_SEARCH_DISTANCE = 255;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{

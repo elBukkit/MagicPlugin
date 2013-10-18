@@ -57,7 +57,8 @@ public class CastingCost
         inventory.removeItem(itemStack);
     }
     
-    protected ItemStack getItemStack()
+    @SuppressWarnings("deprecation")
+	protected ItemStack getItemStack()
     {
         return new ItemStack(item, getAmount(), (short)0, data);
     }

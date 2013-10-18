@@ -1126,6 +1126,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	protected boolean giveMaterial(Material materialType, int amount, short damage, byte data)
 	{
+		@SuppressWarnings("deprecation")
 		ItemStack itemStack = new ItemStack(materialType, amount, damage, data);
 		boolean active = false;
 		for (int i = 8; i >= 0; i--)

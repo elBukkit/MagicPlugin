@@ -578,7 +578,8 @@ public class Spells implements Listener
     	updateWandInventory(player, player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
     }
     
-    protected void updateWandInventory(Player player, int itemSlot, ItemStack wand) {
+    @SuppressWarnings("deprecation")
+	protected void updateWandInventory(Player player, int itemSlot, ItemStack wand) {
     	if (!isWand(wand)) return;
     	
     	Inventory inventory = player.getInventory();

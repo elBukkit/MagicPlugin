@@ -12,6 +12,7 @@ public class AbsorbSpell extends Spell
 {
     private int giveAmount = 1;
     
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{

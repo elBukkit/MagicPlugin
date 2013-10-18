@@ -15,7 +15,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class SignSpell extends Spell
 {  
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean onCast(ConfigurationNode parameters) 
     {
         String typeString = parameters.getString("type", "");
@@ -46,6 +47,9 @@ public class SignSpell extends Spell
                         break;
                     case SOUTH:
                         targetBlock.setData((byte)5);
+                        break;
+                    default:
+                        targetBlock.setData((byte)0);
                         break;
                 }
             }

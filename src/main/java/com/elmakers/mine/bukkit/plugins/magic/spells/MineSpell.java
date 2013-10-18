@@ -25,6 +25,7 @@ public class MineSpell extends Spell
 	private List<Integer>	minedData	= new ArrayList<Integer>();
 	private int maxRecursion = 16;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{

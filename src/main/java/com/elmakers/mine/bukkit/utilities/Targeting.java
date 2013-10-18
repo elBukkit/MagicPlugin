@@ -40,8 +40,9 @@ public class Targeting
                 return BlockFace.SOUTH;
             case SOUTH:
                 return BlockFace.EAST;
+            default:
+            	return direction;
         }
-        return direction;
     }
 
     /**
@@ -67,8 +68,9 @@ public class Targeting
                 return BlockFace.NORTH;
             case NORTH:
                 return BlockFace.EAST;
+            default:
+            	return direction;
         }
-        return direction;
     }
 
     private boolean                          allowMaxRange          = false;

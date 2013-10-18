@@ -41,7 +41,8 @@ public class CSVParser
         return strings;
     }
 
-    public void parseMaterials(MaterialList materials, String csvList)
+    @SuppressWarnings("deprecation")
+	public void parseMaterials(MaterialList materials, String csvList)
     {
         String[] matIds = csvList.split(",");
         for (String matId : matIds)
@@ -58,7 +59,8 @@ public class CSVParser
         }
     }
     
-    public void parseMaterials(List<Material> materials, String csvList)
+    @SuppressWarnings("deprecation")
+	public void parseMaterials(List<Material> materials, String csvList)
     {
         String[] matIds = csvList.split(",");
         for (String matId : matIds)

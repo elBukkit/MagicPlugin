@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,7 +21,7 @@ import org.bukkit.util.BlockVector;
  * @author NathanWolf
  * 
  */
-public class BlockList implements Collection<BlockData>
+public class BlockList implements Collection<BlockData>, Serializable
 {
     /**
      * Default serial id, in case you want to serialize this (probably shouldn't

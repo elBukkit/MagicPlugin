@@ -76,6 +76,7 @@ public class FamiliarSpell extends Spell
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
@@ -202,7 +203,7 @@ public class FamiliarSpell extends Spell
 		{
 		    typeMessage = " " + famClass.name().toLowerCase();
 		}
-		castMessage(player, "You create " + famCount + typeMessage +" familiar(s)!");
+		castMessage(player, "You create " + spawnCount + typeMessage +" familiar(s)!");
 		familiars.setFamiliars(newFamiliars);
 		checkListener();
 		return true;

@@ -297,9 +297,9 @@ public class BoundingBox
                 return new BoundingBox(max.getBlockX() + offset, min.getBlockY(), min.getBlockZ(), max.getBlockX() + offset + thickness, max.getBlockY(), max.getBlockZ());
             case NORTH:
                 return new BoundingBox(min.getBlockX() - offset - thickness, min.getBlockY(), min.getBlockZ(), min.getBlockX() - offset, max.getBlockY(), max.getBlockZ());
+            default:
+            	return null;
         }
-
-        return null;
     }
 
     /**

@@ -25,6 +25,7 @@ public class AlterSpell extends Spell
 	
 	private int recurseDistance = 32;	
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
@@ -61,6 +62,7 @@ public class AlterSpell extends Spell
 		return true;
 	}
 	
+	@SuppressWarnings("deprecation")
 	protected void adjust(Block block, byte dataValue, BlockList adjustedBlocks, boolean recursive, int rDepth)
 	{
 		adjustedBlocks.add(block);

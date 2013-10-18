@@ -17,6 +17,7 @@ public class FillSpell extends Spell
 	private Block targetBlock = null;
 	private final BlockRecurse blockRecurse = new BlockRecurse();
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{

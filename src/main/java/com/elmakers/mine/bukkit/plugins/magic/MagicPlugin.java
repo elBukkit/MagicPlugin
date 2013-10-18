@@ -1,11 +1,9 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
@@ -22,6 +20,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 public class MagicPlugin extends JavaPlugin

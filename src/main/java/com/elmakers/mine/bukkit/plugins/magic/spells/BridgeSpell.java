@@ -13,6 +13,7 @@ public class BridgeSpell extends Spell
 {
 	int MAX_SEARCH_DISTANCE = 16;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
