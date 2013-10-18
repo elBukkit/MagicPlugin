@@ -1123,6 +1123,17 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		return material;
 	}
+	
+	protected boolean addMaterialToWand(Material materialType, byte data)
+	{
+		Wand wand = Wand.getActiveWand(player);
+		if (wand == null) return false;
+		
+		wand.addMaterial(materialType, data);
+		wand.updateInventory(spells.getPlayerSpells(player));
+		
+		return true;
+	}
 
 	protected boolean giveMaterial(Material materialType, int amount, short damage, byte data)
 	{

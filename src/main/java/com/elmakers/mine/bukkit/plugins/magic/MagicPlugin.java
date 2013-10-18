@@ -4,24 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.dao.BlockData;
-import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 public class MagicPlugin extends JavaPlugin
 {	
@@ -142,86 +137,75 @@ public class MagicPlugin extends JavaPlugin
 
 	public boolean onWandAdd(Player player, String[] parameters)
 	{
-		boolean holdingWand = Spells.isWandActive(player);
-		if (!holdingWand) {
-			player.sendMessage("Equip a wand first (use /wand if needed)");
-			return true;
-		}
 		if (parameters.length < 1) {
 			player.sendMessage("Use: /wand add <spell>");
 			return true;
 		}
+		
+		Wand wand = Wand.getActiveWand(player);
+		if (wand == null) {
+			player.sendMessage("Equip a wand first (use /wand if needed)");
+			return true;
+		}
 
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		String spellName = parameters[0];
-		Spell spell = spells.getSpell(spellName, player);
+		Spell spell = playerSpells.getSpell(spellName);
 		if (spell == null)
 		{
 			player.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
 			return true;
 		}
-
-		PlayerInventory inventory = player.getInventory();
-		int wandSlot = inventory.getHeldItemSlot();
-		ItemStack newWand = addSpellToWand(player, spell, inventory.getItemInHand());
-		inventory.setItem(wandSlot, newWand);    	
-		spells.updateWandInventory(player);
+		
+		wand.addSpell(spellName);
+		wand.updateInventory(playerSpells);
 
 		return true;
 	}
 
 	public boolean onWandRemove(Player player, String[] parameters)
 	{
-		boolean holdingWand = Spells.isWandActive(player);
-		if (!holdingWand) {
-			player.sendMessage("Equip a wand first (use /wand if needed)");
-			return true;
-		}
 		if (parameters.length < 1) {
 			player.sendMessage("Use: /wand remove <spell>");
 			return true;
 		}
+		
+		Wand wand = Wand.getActiveWand(player);
+		if (wand == null) {
+			player.sendMessage("Equip a wand first (use /wand if needed)");
+			return true;
+		}
 
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		String spellName = parameters[0];
 
-		PlayerInventory inventory = player.getInventory();
-		int wandSlot = inventory.getHeldItemSlot();
-		ItemStack newWand = removeSpellFromWand(player, spellName, inventory.getItemInHand());
-		inventory.setItem(wandSlot, newWand);    	
-		spells.updateWandInventory(player);
+		wand.removeSpell(spellName);
+		wand.updateInventory(playerSpells);
 
 		return true;
 	}
 
 	public boolean onWandName(Player player, String[] parameters)
 	{
-		boolean holdingWand = Spells.isWandActive(player);
-		if (!holdingWand) {
-			player.sendMessage("Equip a wand first (use /wand if needed)");
-			return true;
-		}
 		if (parameters.length < 1) {
 			player.sendMessage("Use: /wand name <name>");
 			return true;
 		}
-
-		PlayerInventory inventory = player.getInventory();
-		ItemStack wand = inventory.getItemInHand();
-
-		String spellString = InventoryUtils.getMeta(wand, "magic_spells");
-		ItemMeta meta = wand.getItemMeta();
-		meta.setDisplayName(parameters[0]);
-		wand.setItemMeta(meta);
-
-		// The all-important last step of restoring the spell list, something
-		// the Anvil will blow away.
-		InventoryUtils.setMeta(wand, "magic_spells", spellString);
+		
+		Wand wand = Wand.getActiveWand(player);
+		if (wand == null) {
+			player.sendMessage("Equip a wand first (use /wand if needed)");
+			return true;
+		}
+		
+		wand.setName(parameters[0]);
 
 		return true;
 	}
 
 	public boolean onWand(Player player, String[] parameters)
 	{
-		boolean holdingWand = Spells.isWandActive(player);
+		boolean holdingWand = Wand.isActive(player);
 		String wandName = "default";
 		if (parameters.length > 0)
 		{
@@ -230,8 +214,7 @@ public class MagicPlugin extends JavaPlugin
 
 		if (!holdingWand)
 		{
-			ItemStack itemStack = new ItemStack(Material.STICK);
-			itemStack.addUnsafeEnchantment(Spells.MagicEnchantment, 1);
+			Wand wand = new Wand();
 
 			List<String> defaultSpells = new ArrayList<String>();
 			String defaultName = "Wand";
@@ -249,27 +232,22 @@ public class MagicPlugin extends JavaPlugin
 				defaultSpells.add("absorb");
 				defaultName = "Engineering Wand";
 			}
-
-			Spells.updateWand(itemStack, defaultSpells.size(), defaultName);
-			for (String spellName : defaultSpells) {
-				Spell spell = spells.getSpell(spellName, player);
-				if (spell != null) {    	
-					itemStack = addSpellToWand(player, spell, itemStack);
-				}
-			}
+			
+			wand.setName(defaultName);
+			wand.addSpells(defaultSpells);
 
 			// Place directly in hand if possible
 			PlayerInventory inventory = player.getInventory();
 			ItemStack inHand = inventory.getItemInHand();
 			if (inHand == null || inHand.getType() == Material.AIR) {
 				PlayerSpells playerSpells = spells.getPlayerSpells(player);
-				inventory.setItem(inventory.getHeldItemSlot(), itemStack);
+				inventory.setItem(inventory.getHeldItemSlot(), wand.getItem());
 				if (playerSpells.storeInventory()) {
 					// Create spell inventory
-					spells.updateWandInventory(player);
+					wand.updateInventory(playerSpells);
 				}
 			} else {
-				player.getInventory().addItem(itemStack);
+				player.getInventory().addItem(wand.getItem());
 			}
 
 			player.sendMessage("Use /wand again for help, /spells for spell list");
@@ -279,42 +257,6 @@ public class MagicPlugin extends JavaPlugin
 			showWandHelp(player);
 		}
 		return true;
-	}
-
-	private ItemStack addSpellToWand(Player player, Spell spell, ItemStack wand) {
-		if (!Spells.isWand(wand)) {
-			return wand;
-		}
-
-		// Add new spell to wand's spell list
-		String spellString = InventoryUtils.getMeta(wand, "magic_spells");
-		if (spellString == null) spellString = "";
-
-		String[] spells = StringUtils.split(spellString, "|");
-		Set<String> spellMap = new TreeSet<String>();
-		for (int i = 0; i < spells.length; i++) {
-			spellMap.add(spells[i]);
-		}
-		spellMap.add(spell.getName());
-		return Spells.setWandSpells(wand, spellMap);
-	}
-
-	private ItemStack removeSpellFromWand(Player player, String spellName, ItemStack wand) {
-		if (!Spells.isWand(wand)) {
-			return wand;
-		}
-
-		// Add new spell to wand's spell list
-		String spellString = InventoryUtils.getMeta(wand, "magic_spells");
-		if (spellString == null) spellString = "";
-
-		String[] spells = StringUtils.split(spellString, "|");
-		Set<String> spellMap = new TreeSet<String>();
-		for (int i = 0; i < spells.length; i++) {
-			spellMap.add(spells[i]);
-		}
-		spellMap.remove(spellName);
-		return Spells.setWandSpells(wand, spellMap);
 	}
 
 	private void showWandHelp(Player player)
@@ -336,7 +278,8 @@ public class MagicPlugin extends JavaPlugin
 			parameters[i - 1] = castParameters[i];
 		}
 
-		Spell spell = spells.getSpell(spellName, player);
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Spell spell = playerSpells.getSpell(spellName);
 		if (spell == null)
 		{
 			return false;

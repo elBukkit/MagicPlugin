@@ -95,6 +95,20 @@ public class InventoryUtils
 		}
 		return tag;
 	}
+	
+	public static ItemStack getCopy(ItemStack stack) {
+		if (stack == null) return null;
+		
+        try {
+                Object craft = getNMSCopy(stack);
+                Method mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", craft.getClass());
+                stack = (ItemStack)mirrorMethod.invoke(null, craft);
+        } catch (Throwable ex) {
+                ex.printStackTrace();
+        }
+
+        return stack;
+	}
 
 	public static String getMeta(ItemStack stack, String tag) {
 		if (stack == null) return null;
@@ -110,8 +124,8 @@ public class InventoryUtils
 		return meta;
 	}
 
-	public static ItemStack setMeta(ItemStack stack, String tag, String value) {
-		if (stack == null) return null;
+	public static void setMeta(ItemStack stack, String tag, String value) {
+		if (stack == null) return;
 		try {
 			Object craft = getHandle(stack);
 			Object tagObject = getTag(craft);
@@ -120,8 +134,6 @@ public class InventoryUtils
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
-
-		return stack;
 	}
 
 	public static String inventoryToString(final Inventory inventory) {

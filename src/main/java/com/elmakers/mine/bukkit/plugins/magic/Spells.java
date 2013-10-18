@@ -2,18 +2,15 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,7 +36,6 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -79,7 +75,6 @@ import com.elmakers.mine.bukkit.plugins.magic.spells.UndoSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WeatherSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spells.WolfSpell;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
-import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.UpdateInventoryTask;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
@@ -87,46 +82,16 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Spells implements Listener 
 {
-	public static Enchantment MagicEnchantment = Enchantment.ARROW_INFINITE;
-
 	/*
 	 * Public API - Use for hooking up a plugin, or calling a spell
 	 */
-
-	public Spell getSpell(Material material, Player player)
-	{
-		Spell spell = spellsByMaterial.get(material);
-		if (spell == null || !spell.hasSpellPermission(player))
-			return null;
-
-		return getSpell(spell.getName(), player);
-	}
-
-	public Spell getSpell(String name, Player player)
-	{
-		Spell spell = spells.get(name);
-		if (spell == null || !spell.hasSpellPermission(player))
-			return null;
-
-		PlayerSpells playerSpells = getPlayerSpells(player);
-		Spell playerSpell = playerSpells.getSpell(spell.getName());
-		if (playerSpell == null)
-		{
-			playerSpell = (Spell)spell.clone();
-			playerSpells.addSpell(playerSpell);
-		}
-
-		playerSpell.setPlayer(player);
-
-		return playerSpell;
-	}
 
 	public PlayerSpells getPlayerSpells(Player player)
 	{
 		PlayerSpells spells = playerSpells.get(player.getName());
 		if (spells == null)
 		{
-			spells = new PlayerSpells(player);
+			spells = new PlayerSpells(this, player);
 			playerSpells.put(player.getName(), spells);
 		}
 
@@ -574,74 +539,6 @@ public class Spells implements Listener
 		load();
 	}
 
-	public void updateWandInventory(Player player) {
-		updateWandInventory(player, player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
-	}
-
-	@SuppressWarnings("deprecation")
-	protected void updateWandInventory(Player player, int itemSlot, ItemStack wand) {
-		if (!isWand(wand)) return;
-
-		Inventory inventory = player.getInventory();
-		inventory.clear();
-		inventory.setItem(itemSlot, wand);
-		String spellString = InventoryUtils.getMeta(wand, "magic_spells");
-		String[] spells = StringUtils.split(spellString, "|");
-
-		int currentIndex = 0;
-		for (int i = 0; i < spells.length; i++) {
-			if (currentIndex == itemSlot) currentIndex++;
-			Spell spell = getSpell(spells[i], player);
-			if (spell != null) {
-				ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
-				itemStack.addUnsafeEnchantment(Spells.MagicEnchantment, 1);
-				ItemMeta meta = itemStack.getItemMeta();
-				meta.setDisplayName("Spell: " + spell.getName());
-				List<String> lore = new ArrayList<String>();
-				lore.add(spell.getCategory());
-				lore.add(spell.getDescription());
-				meta.setLore(lore);
-				itemStack.setItemMeta(meta);
-				inventory.setItem(currentIndex, itemStack);
-			}
-
-			currentIndex++;
-		}
-
-		player.updateInventory();
-	}
-
-
-	public static ItemStack setWandSpells(ItemStack wand, Collection<String> spellNames) {
-		String spellString = StringUtils.join(spellNames, "|");
-
-		// Update wand lore - do this BEFORE setMeta, else Bukkit will squash our spell list.
-		updateWand(wand, spellNames.size());
-
-		// Set new spells string, which creates a copy of the wand.
-		wand = InventoryUtils.setMeta(wand,  "magic_spells", spellString);
-
-		return wand;
-	}
-
-
-	public static void updateWand(ItemStack wand, int spellCount) {
-		updateWand(wand, spellCount, null);
-	}
-
-	public static void updateWand(ItemStack wand, int spellCount, String name) {
-		ItemMeta meta = wand.getItemMeta();
-		if (name != null) {
-			meta.setDisplayName(name);
-		}
-		List<String> lore = new ArrayList<String>();
-		lore.add("Knows " + spellCount +" Spells");
-		lore.add("Left-click to cast active spell");
-		lore.add("Right-click to cycle spells");
-		meta.setLore(lore);
-		wand.setItemMeta(meta);
-	}
-
 	public List<Spell> getAllSpells()
 	{
 		List<Spell> allSpells = new ArrayList<Spell>();
@@ -651,7 +548,7 @@ public class Spells implements Listener
 
 	protected void cast(Player player)
 	{
-		if (isWandActive(player))
+		if (Wand.isActive(player))
 		{
 			if (!hasWandPermission(player))
 			{
@@ -660,15 +557,15 @@ public class Spells implements Listener
 
 			Inventory inventory = player.getInventory();
 			ItemStack[] contents = inventory.getContents();
-
+			PlayerSpells playerSpells = getPlayerSpells(player);
 			Spell spell = null;
 			for (int i = 0; i < 9; i++)
 			{
-				if (contents[i] == null || contents[i].getType() == Material.AIR || isWand(contents[i]))
+				if (contents[i] == null || contents[i].getType() == Material.AIR || Wand.isWand(contents[i]))
 				{
 					continue;
 				}
-				spell = getSpell(contents[i].getType(), player);
+				spell = playerSpells.getSpell(contents[i].getType());
 				if (spell != null)
 				{
 					break;
@@ -751,15 +648,16 @@ public class Spells implements Listener
 
 		int maxSpellSlot = 0;
 		int firstSpellSlot = -1;
+		PlayerSpells playerSpells = getPlayerSpells(player);
 		for (int i = 0; i < 9; i++)
 		{
 			boolean isEmpty = active[i] == null;
 			Material activeType = isEmpty ? Material.AIR : active[i].getType();
-			boolean isWand = isEmpty ? false : isWand(active[i]);
+			boolean isWand = isEmpty ? false : Wand.isWand(active[i]);
 			boolean isSpell = false;
-			if (activeType != Material.AIR && active[i].hasItemMeta() && active[i].getItemMeta().hasEnchant(MagicEnchantment))
+			if (activeType != Material.AIR && Wand.isSpell(active[i]))
 			{
-				Spell spell = getSpell(activeType, player);
+				Spell spell = playerSpells.getSpell(activeType);
 				isSpell = spell != null;
 			}
 
@@ -790,7 +688,7 @@ public class Spells implements Listener
 		{
 			int i = ddi + firstSpellSlot;
 			boolean isEmpty = contents[i] == null;
-			boolean isWand = isEmpty ? false : isWand(active[i]);
+			boolean isWand = isEmpty ? false : Wand.isWand(active[i]);
 
 			if (!isWand)
 			{
@@ -799,7 +697,7 @@ public class Spells implements Listener
 					int dni = (ddi + di) % numSpellSlots;
 					int ni = dni + firstSpellSlot;
 					isEmpty = active[ni] == null;
-					isWand = isEmpty ? false : isWand(active[ni]);
+					isWand = isEmpty ? false : Wand.isWand(active[ni]);
 					if (!isWand)
 					{
 						contents[i] = active[ni];
@@ -811,15 +709,6 @@ public class Spells implements Listener
 
 		inventory.setContents(contents);
 		player.updateInventory();
-	}
-
-	public static boolean isWandActive(Player player) {
-		ItemStack activeItem =  player.getInventory().getItemInHand();
-		return isWand(activeItem);
-	}
-
-	public static boolean isWand(ItemStack item) {
-		return item != null && item.getType() == Material.STICK && item.hasItemMeta() && item.getItemMeta().hasEnchant(MagicEnchantment);
 	}
 
 	public boolean allowPhysics(Block block)
@@ -863,41 +752,34 @@ public class Spells implements Listener
 		ItemStack previous = inventory.getItem(event.getPreviousSlot());
 		ItemStack next = inventory.getItem(event.getNewSlot());
 
-		boolean wasWand = previous != null && isWand(previous);
-		boolean isWand = next != null && isWand(next);
+		boolean wasWand = previous != null && Wand.isWand(previous);
+		boolean isWand = next != null && Wand.isWand(next);
 
 		// If we're not dealing with wands, we don't care
 		// And you should never be switching directly from one wand to another!
 		if (wasWand == isWand) return;
+		
+		PlayerSpells playerSpells = getPlayerSpells(player);
 
 		// If we're switching to a wand, save the inventory.
 		if (isWand) {
-			PlayerSpells spells = getPlayerSpells(player);
-			if (spells.storeInventory(event.getNewSlot(), next)) {
-				updateWandInventory(player, event.getNewSlot(), next);
+			Wand newWand = new Wand(next);
+			if (playerSpells.storeInventory(event.getNewSlot(), next)) {
+				newWand.updateInventory(playerSpells, event.getNewSlot());
 			}
 		} else if (wasWand) {
-			// Rebuild spell inventory, save in wand.
-			ItemStack[] items = inventory.getContents();
-			List<String> spellNames = new ArrayList<String>();
-			for (int i = 0; i < items.length; i++) {
-				if (items[i] == null) continue;
-				if (!items[i].hasItemMeta() || !items[i].getItemMeta().hasEnchant(MagicEnchantment)) continue;
-
-				Spell spell = getSpell(items[i].getType(), player);
-				if (spell == null) continue;
-				spellNames.add(spell.getName());
-			}
-			previous = setWandSpells(previous, spellNames);
+			Wand oldWand = new Wand(previous);
+			oldWand.saveInventory(playerSpells);
 
 			// Restore inventory
-			PlayerSpells spells = getPlayerSpells(player);
-			spells.restoreInventory(event.getPreviousSlot(), previous);
+			playerSpells.restoreInventory(event.getPreviousSlot(), previous);
 
-			// Check for new wand selection
-			if (isWand(inventory.getItem(event.getNewSlot()))) {
-				if (spells.storeInventory(event.getNewSlot(), inventory.getItem(event.getNewSlot()))) {
-					updateWandInventory(player, event.getNewSlot(), inventory.getItem(event.getNewSlot()));
+			// Check for new wand selection, after restoring inventory
+			next = inventory.getItem(event.getNewSlot());
+			if (Wand.isWand(next)) {
+				Wand newWand = new Wand(next);
+				if (playerSpells.storeInventory(event.getNewSlot(), next)) {
+					newWand.updateInventory(playerSpells, event.getNewSlot());
 				}
 			}
 		}
@@ -929,7 +811,7 @@ public class Spells implements Listener
 
 			// Drop the held wand, since that's not in the stored inventory
 			ItemStack wand = player.getInventory().getItemInHand();
-			if (isWand(wand)) {
+			if (Wand.isWand(wand)) {
 				drops.add(wand);
 			}
 
@@ -983,7 +865,7 @@ public class Spells implements Listener
 				boolean cycleSpells = false;
 
 				cycleSpells = player.isSneaking();
-				if (isWandActive(player))
+				if (Wand.isActive(player))
 				{
 					if (cycleSpells)
 					{
@@ -1014,14 +896,15 @@ public class Spells implements Listener
 	{
 		// Check for wand re-activation.
 		Player player = event.getPlayer();
-				if (isWandActive(player)) {
-					// Save inventory
-					PlayerSpells spells = getPlayerSpells(player);
-					if (spells.storeInventory()) {
-						// Create spell inventory
-						updateWandInventory(player);
-					}
-				}
+		if (Wand.isActive(player)) {
+			// Save inventory
+			PlayerSpells spells = getPlayerSpells(player);
+			if (spells.storeInventory()) {
+				// Create spell inventory
+				Wand wand = new Wand(player.getItemInHand());
+				wand.updateInventory(spells);
+			}
+		}
 	}
 
 	@EventHandler
@@ -1072,9 +955,11 @@ public class Spells implements Listener
 		if (event.getView().getType() == InventoryType.CRAFTING) return;
 		Player player = (Player)event.getPlayer();
 		PlayerSpells spells = getPlayerSpells(player);
-		if (!spells.hasStoredInventory() && isWandActive(player)) {
+		if (!spells.hasStoredInventory() && Wand.isActive(player)) {
 			if (spells.storeInventory()) {
-				updateWandInventory(player);
+				Wand wand = new Wand(player.getItemInHand());
+				wand.updateInventory(spells);
+				
 				// Need an extra update here, probably something happens after inventory close.
 				new UpdateInventoryTask(player).runTaskLater(this.plugin, 2);
 			}
@@ -1095,13 +980,14 @@ public class Spells implements Listener
 			PlayerInventory inventory = event.getPlayer().getInventory();
 			ItemStack inHand = inventory.getItemInHand();
 			ItemStack pickup = event.getItem().getItemStack();
-			if (isWand(pickup) && (inHand == null || inHand.getType() == Material.AIR)) {
+			if (Wand.isWand(pickup) && (inHand == null || inHand.getType() == Material.AIR)) {
+				Wand wand = new Wand(pickup);
 				event.setCancelled(true);
 				event.getItem().remove();
 				inventory.setItem(inventory.getHeldItemSlot(), pickup);
 				if (spells.storeInventory()) {
 					// Create spell inventory
-					updateWandInventory(event.getPlayer());
+					wand.updateInventory(spells);
 				}
 			} 
 		}
@@ -1113,7 +999,7 @@ public class Spells implements Listener
 		PlayerSpells spells = getPlayerSpells(event.getPlayer());
 		if (spells.hasStoredInventory()) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
-			if (isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
+			if (Wand.isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
 				spells.restoreInventory(0,  null);
 			} else {
 				event.setCancelled(true);
@@ -1134,6 +1020,14 @@ public class Spells implements Listener
 				event.setCancelled(true);
 			}
 		}
+	}
+
+	public Spell getSpell(Material material) {
+		return spellsByMaterial.get(material);
+	}
+	
+	public Spell getSpell(String name) {
+		return spells.get(name);
 	}
 
 	/*

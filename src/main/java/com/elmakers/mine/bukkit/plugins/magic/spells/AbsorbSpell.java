@@ -10,8 +10,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AbsorbSpell extends Spell 
 {
-	private int giveAmount = 1;
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
@@ -22,10 +20,9 @@ public class AbsorbSpell extends Spell
 		material = parameters.getMaterial("material", material);
 		if (material != Material.AIR && buildingMaterials.contains(material))
 		{
-			int amount = giveAmount;
 			byte data = 0;
 			castMessage(player, "Manifesting some " + material.name().toLowerCase());
-			return giveMaterial(material, amount, (short)0 , data);
+			return addMaterialToWand(material, data);
 		}
 
 		if (!isUnderwater())
@@ -40,10 +37,9 @@ public class AbsorbSpell extends Spell
 			castMessage(player, "No target");
 			return false;
 		}
-		int amount = 1;
 
 		castMessage(player, "Absorbing some " + target.getType().name().toLowerCase());
 
-		return giveMaterial(target.getType(), amount, (short)0 , target.getData());
+		return addMaterialToWand(target.getType(), target.getData());
 	}
 }

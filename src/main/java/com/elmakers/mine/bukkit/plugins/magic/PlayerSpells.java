@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -17,6 +18,7 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 public class PlayerSpells 
 {
 	protected Player player;
+	protected Spells master;
 	protected HashMap<String, Spell> spells = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
 	private final List<Spell>                   movementListeners              = new ArrayList<Spell>();
@@ -147,19 +149,15 @@ public class PlayerSpells
 		}
 	}
 
-	public PlayerSpells(Player player)
+	public PlayerSpells(Spells master, Player player)
 	{
+		this.master = master;
 		this.player = player;
 	}
-
-	public Spell getSpell(String name)
+	
+	public Player getPlayer()
 	{
-		return spells.get(name);
-	}
-
-	protected void addSpell(Spell spell)
-	{
-		spells.put(spell.getName(), spell);
+		return player;
 	}
 
 	public void cancel()
@@ -213,5 +211,33 @@ public class PlayerSpells
 		{
 			listener.onPlayerDamage(event);
 		}
+	}
+
+
+	public Spell getSpell(Material material)
+	{
+		Spell spell = master.getSpell(material);
+		if (spell == null || !spell.hasSpellPermission(player))
+			return null;
+
+		return getSpell(spell.getName());
+	}
+
+	public Spell getSpell(String name)
+	{
+		Spell spell = master.getSpell(name);
+		if (spell == null || !spell.hasSpellPermission(player))
+			return null;
+
+		Spell playerSpell = spells.get(spell.getName());
+		if (playerSpell == null)
+		{
+			playerSpell = (Spell)spell.clone();
+			spells.put(spell.getName(), playerSpell);
+		}
+
+		playerSpell.setPlayer(player);
+
+		return playerSpell;
 	}
 }
