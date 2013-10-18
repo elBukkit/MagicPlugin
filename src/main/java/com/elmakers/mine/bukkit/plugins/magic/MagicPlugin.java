@@ -115,7 +115,7 @@ public class MagicPlugin extends JavaPlugin
             {
             	ItemStack itemStack = new ItemStack(Material.STICK);
                 itemStack.addUnsafeEnchantment(Spells.MagicEnchantment, 1);
-                Spells.updateWand(itemStack, 0);
+                Spells.updateWand(itemStack, 0, "Wand");
                 player.getInventory().addItem(itemStack);
                 
                 player.sendMessage("Use /wand again for help, /spells for spell list");
