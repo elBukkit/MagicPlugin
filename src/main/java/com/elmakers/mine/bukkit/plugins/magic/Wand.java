@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -74,7 +75,7 @@ public class Wand {
 		materialString += ":" + data;
 
 		String[] materials = getMaterials();
-		Set<String> materialMap = new TreeSet<String>();
+		List<String> materialMap = new LinkedList<String>();
 		for (int i = 0; i < materials.length; i++) {	
 			String[] pieces = StringUtils.split(materials[i], "@");
 			if (!pieces[0].equals(materialString)) {
@@ -99,7 +100,7 @@ public class Wand {
 		materialString += ":" + data;
 
 		String[] materials = getMaterials();
-		Set<String> materialMap = new TreeSet<String>();
+		List<String> materialMap = new LinkedList<String>();
 		for (int i = 0; i < materials.length; i++) {	
 			String[] pieces = StringUtils.split(materials[i], "@");
 			if (!pieces[0].equals(materialString)) {
@@ -125,7 +126,7 @@ public class Wand {
 	
 	public void addSpells(Collection<String> spellNames) {
 		String[] spells = getSpells();
-		Set<String> spellMap = new TreeSet<String>();
+		List<String> spellMap = new LinkedList<String>();
 		for (String spell : spells) {
 			spellMap.add(spell);
 			String[] pieces = StringUtils.split(spell, "@");
@@ -144,7 +145,7 @@ public class Wand {
 
 	public void removeSpell(String spellName) {
 		String[] spells = getSpells();
-		Set<String> spellMap = new TreeSet<String>();
+		List<String> spellMap = new LinkedList<String>();
 		for (int i = 0; i < spells.length; i++) {
 			String[] pieces = StringUtils.split(spells[i], "@");
 			if (!pieces[0].equals(spellName)) {
