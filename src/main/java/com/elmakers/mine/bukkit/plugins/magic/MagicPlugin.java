@@ -158,11 +158,22 @@ public class MagicPlugin extends JavaPlugin
 			}
 			String materialName = parameters[1];
 			byte data = 0;
-			if (parameters.length > 2) {
-				data = (byte)Integer.parseInt(parameters[2]);
+			Material material = Material.AIR;
+			if (materialName.equals("erase")) {
+				material = Wand.EraseMaterial;
+			} else {
+				List<Material> buildingMaterials = spells.getBuildingMaterials();
+				material = ConfigurationNode.toMaterial(materialName);
+				if (material == null || material == Material.AIR || !buildingMaterials.contains(material)) {
+					player.sendMessage(materialName + " is not a valid material");
+					return true;
+				}
+				if (parameters.length > 2) {
+					data = (byte)Integer.parseInt(parameters[2]);
+				}
 			}
 			wand.saveInventory(playerSpells);
-			wand.addMaterial(ConfigurationNode.toMaterial(materialName), data);
+			wand.addMaterial(material, data);
 			wand.updateInventory(playerSpells);
 			return true;
 		}
@@ -202,12 +213,18 @@ public class MagicPlugin extends JavaPlugin
 				return true;
 			}
 			String materialName = parameters[1];
+			Material material = Material.AIR;
 			byte data = 0;
-			if (parameters.length > 2) {
-				data = (byte)Integer.parseInt(parameters[2]);
+			if (materialName.equals("erase")) {
+				material = Wand.EraseMaterial;
+			} else {
+				material = ConfigurationNode.toMaterial(materialName);
+				if (parameters.length > 2) {
+					data = (byte)Integer.parseInt(parameters[2]);
+				}
 			}
 			wand.saveInventory(playerSpells);
-			wand.removeMaterial(ConfigurationNode.toMaterial(materialName), data);
+			wand.removeMaterial(material, data);
 			wand.updateInventory(playerSpells);
 			return true;
 		}

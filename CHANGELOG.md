@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.2
+
+ - Implement sulpher-as-erase material
+
 ## 2.2.1
 
  - Fix materials system

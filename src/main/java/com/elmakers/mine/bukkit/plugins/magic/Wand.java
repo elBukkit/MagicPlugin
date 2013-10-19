@@ -20,6 +20,7 @@ public class Wand {
 	private ItemStack item;
 	
 	private static Material WandMaterial = Material.STICK;
+	public static Material EraseMaterial = Material.SULPHUR;
 	
 	public Wand() {
 		item = new ItemStack(WandMaterial);
@@ -29,7 +30,7 @@ public class Wand {
 		item.setItemMeta(itemMeta);
 
 		InventoryUtils.addGlow(item);
-		InventoryUtils.setMeta(item, "magic_wand", "");
+		InventoryUtils.setMeta(item, "magic_wand", " ");
 	}
 	
 	public Wand(ItemStack item) {
@@ -193,11 +194,11 @@ public class Wand {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && item.getType() == Material.STICK && InventoryUtils.getMeta(item, "magic_wand") != null;
+		return item != null && item.getType() == Material.STICK && InventoryUtils.getMeta(item, "magic_wand").length() > 0;
 	}
 
 	public static boolean isSpell(ItemStack item) {
-		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell") != null;
+		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell").length() > 0;
 	}
 	
 	public void updateInventory(PlayerSpells playerSpells) {
@@ -247,6 +248,7 @@ public class Wand {
 		String[] materials = StringUtils.split(materialString, "|");
 
 		unpositioned.clear();
+		ItemStack eraseStack = null;
 		for (int i = 0; i < materials.length; i++) {
 			String[] parts = StringUtils.split(materials[i], "@");
 			String[] nameParts = StringUtils.split(parts[0], ":");
@@ -262,11 +264,20 @@ public class Wand {
 			itemStack.setItemMeta(meta);
 			
 			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
-			if (parts.length > 1 && slot != itemSlot) {
+			ItemStack existing = inventory.getItem(slot);
+			if (parts.length > 1 && slot != itemSlot && (existing == null || existing.getType() == Material.AIR)) {
 				inventory.setItem(slot, itemStack);
 			} else {
-				unpositioned.add(itemStack);
+				if (itemStack.getType() == EraseMaterial) {
+					eraseStack = itemStack;
+				} else {
+					unpositioned.add(itemStack);
+				}
 			}
+		}
+		
+		if (eraseStack != null) {
+			addMaterialToInventory(inventory, eraseStack);
 		}
 		
 		for (ItemStack stack : unpositioned) {
@@ -299,17 +310,17 @@ public class Wand {
 		List<String> materialNames = new ArrayList<String>();
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] == null) continue;
-			if (!isSpell(items[i])) continue;
-
 			Material material = items[i].getType();
-			Spell spell = playerSpells.getSpell(material);
-			if (spell == null) {
-				List<Material> buildingMaterials = playerSpells.getMaster().getBuildingMaterials();
-				if (material != Material.AIR && buildingMaterials.contains(material)) {
-					materialNames.add(material.getId() + "@" + i);
+			if (isSpell(items[i])) {
+				Spell spell = playerSpells.getSpell(material);
+				if (spell != null) {
+					spellNames.add(spell.getKey() + "@" + i);
 				}
 			} else {
-				spellNames.add(spell.getKey() + "@" + i);
+				List<Material> buildingMaterials = playerSpells.getMaster().getBuildingMaterials();
+				if (material != Material.AIR && (buildingMaterials.contains(material) || material == EraseMaterial)) {
+					materialNames.add(material.getId() + "@" + i);
+				}
 			}
 		}
 		setSpells(spellNames);

@@ -497,7 +497,7 @@ public class Spells implements Listener
 			}
 			else
 			{
-				if (buildingMaterials.contains(mat))
+				if (mat == Wand.EraseMaterial || buildingMaterials.contains(mat))
 				{
 					firstMaterialSlot = i;
 					continue;

@@ -443,20 +443,20 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		ItemStack[] contents = inventory.getContents();
 
 		result = contents[8];
-		boolean isAir = result == null || result.getType() == Material.AIR;
-		if (!isAir && buildingMaterials.contains(result.getType()))
+		if (result == null || result.getType() == Material.AIR || Wand.isSpell(result)) {
+			return null;
+		}
+		if (buildingMaterials.contains(result.getType()))
 		{
 			return result;
 		}
 
-		// Should be air now
-		result = null;
+		// Check for erase
+		if (result.getType() == Wand.EraseMaterial) {
+			return new ItemStack(Material.AIR, 1);
+		}
 
-		// Check for other building materials- if the second-to-last material is a building
-		// material, then return air- else return null.
-		if (contents[7] == null || contents[7].getType() == Material.AIR) return null;
-
-		return new ItemStack(Material.AIR);
+		return null;
 	}
 
 	public void targetEntity(Class<? extends Entity> typeOf)
