@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,6 +21,11 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 public class Wand {
 	private ItemStack item;
 	
+	// Cached state
+	private String wandSettings;
+	private String wandSpells;
+	private String wandMaterials;
+	
 	private static Material WandMaterial = Material.STICK;
 	public static Material EraseMaterial = Material.SULPHUR;
 	
@@ -30,11 +37,30 @@ public class Wand {
 		item.setItemMeta(itemMeta);
 
 		InventoryUtils.addGlow(item);
-		InventoryUtils.setMeta(item, "magic_wand", " ");
+		wandSettings = " ";
+		wandSpells = "";
+		wandMaterials = "";
+		saveState();
 	}
 	
 	public Wand(ItemStack item) {
 		this.item = item;
+		loadState();
+	}
+	
+	protected void saveState() {
+		InventoryUtils.setMeta(item, "magic_wand", wandSettings);
+		InventoryUtils.setMeta(item, "magic_materials", wandMaterials);
+		InventoryUtils.setMeta(item, "magic_spells", wandSpells);
+	}
+	
+	protected void loadState() {
+		wandSettings = InventoryUtils.getMeta(item, "magic_wand");
+		wandSettings = wandSettings == null ? "" : wandSettings;
+		wandMaterials = InventoryUtils.getMeta(item, "magic_materials");
+		wandMaterials = wandMaterials == null ? "" : wandMaterials;
+		wandSpells = InventoryUtils.getMeta(item, "magic_spells");
+		wandSpells = wandSpells == null ? "" : wandSpells;
 	}
 	
 	public ItemStack getItem() {
@@ -45,16 +71,16 @@ public class Wand {
 	public void removeMaterial(Material material, byte data) {
 		Integer id = material.getId();
 		String materialString = id.toString();
-		if (data > 0) {
-			materialString += ":" + data;
-		}
+		materialString += ":" + data;
 
 		String[] materials = getMaterials();
 		Set<String> materialMap = new TreeSet<String>();
-		for (int i = 0; i < materials.length; i++) {
-			materialMap.add(materials[i]);
+		for (int i = 0; i < materials.length; i++) {	
+			String[] pieces = StringUtils.split(materials[i], "@");
+			if (!pieces[0].equals(materialString)) {
+				materialMap.add(materials[i]);
+			}
 		}
-		materialMap.remove(materialString);
 		setMaterials(materialMap);
 	}
 	
@@ -62,34 +88,31 @@ public class Wand {
 	public void addMaterial(Material material, byte data) {
 		Integer id = material.getId();
 		String materialString = id.toString();
-		if (data > 0) {
-			materialString += ":" + data;
-		}
+		materialString += ":" + data;
 
 		String[] materials = getMaterials();
 		Set<String> materialMap = new TreeSet<String>();
-		for (int i = 0; i < materials.length; i++) {
-			materialMap.add(materials[i]);
+		for (int i = 0; i < materials.length; i++) {	
+			String[] pieces = StringUtils.split(materials[i], "@");
+			if (!pieces[0].equals(materialString)) {
+				materialMap.add(materials[i]);
+			}
 		}
 		materialMap.add(materialString);
 		setMaterials(materialMap);
 	}
 	
 	protected void setMaterials(Collection<String> materialNames) {
-		String spellString = StringUtils.join(materialNames, "|");
+		wandMaterials = StringUtils.join(materialNames, "|");
 
 		// Set new spells count
 		setMaterialCount(materialNames.size());
 
-		// Set new spells string
-		InventoryUtils.setMeta(item, "magic_materials", spellString);
+		saveState();
 	}
 	
 	public String[] getMaterials() {
-		String materialsString = InventoryUtils.getMeta(item, "magic_materials");
-		if (materialsString == null) materialsString = "";
-
-		return StringUtils.split(materialsString, "|");
+		return StringUtils.split(wandMaterials, "|");
 	}
 	
 	public void addSpells(Collection<String> spellNames) {
@@ -97,6 +120,8 @@ public class Wand {
 		Set<String> spellMap = new TreeSet<String>();
 		for (String spell : spells) {
 			spellMap.add(spell);
+			String[] pieces = StringUtils.split(spell, "@");
+			spellNames.remove(pieces[0]);
 		}
 		for (String spellName : spellNames) { 	
 			spellMap.add(spellName);
@@ -106,19 +131,18 @@ public class Wand {
 	}
 	
 	public String[] getSpells() {
-		String spellString = InventoryUtils.getMeta(item, "magic_spells");
-		if (spellString == null) spellString = "";
-
-		return StringUtils.split(spellString, "|");
+		return StringUtils.split(wandSpells, "|");
 	}
 
 	public void removeSpell(String spellName) {
 		String[] spells = getSpells();
 		Set<String> spellMap = new TreeSet<String>();
 		for (int i = 0; i < spells.length; i++) {
-			spellMap.add(spells[i]);
+			String[] pieces = StringUtils.split(spells[i], "@");
+			if (!pieces[0].equals(spellName)) {
+				spellMap.add(spells[i]);
+			}
 		}
-		spellMap.remove(spellName);
 		setSpells(spellMap);
 	}
 	
@@ -129,13 +153,12 @@ public class Wand {
 	}
 	
 	public void setSpells(Collection<String> spellNames) {
-		String spellString = StringUtils.join(spellNames, "|");
+		wandSpells = StringUtils.join(spellNames, "|");
 
 		// Set new spells count
 		setSpellCount(spellNames.size());
 
-		// Set new spells string
-		InventoryUtils.setMeta(item, "magic_spells", spellString);
+		saveState();
 	}
 	
 	public void setSpellCount(int spellCount) {
@@ -147,8 +170,6 @@ public class Wand {
 	}
 	
 	public void setName(String name) {
-		String spellString = InventoryUtils.getMeta(item, "magic_spells");
-		String wandString = InventoryUtils.getMeta(item, "magic_wand");
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
@@ -156,15 +177,12 @@ public class Wand {
 		// Reset Enchantment glow
 		InventoryUtils.addGlow(item);
 
-		// The all-important last step of restoring the spell list, something
+		// The all-important last step of restoring the meta state, something
 		// the Anvil will blow away.
-		InventoryUtils.setMeta(item, "magic_spells", spellString);
-		InventoryUtils.setMeta(item, "magic_wand", wandString);
+		saveState();
 	}
 
 	protected void updateLore(int spellCount, int materialCount) {
-		String spellString = InventoryUtils.getMeta(item, "magic_spells");
-		String wandString = InventoryUtils.getMeta(item, "magic_wand");
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<String>();
 		lore.add("Knows " + spellCount +" Spells");
@@ -179,8 +197,7 @@ public class Wand {
 		InventoryUtils.addGlow(item);
 
 		// Reset spell list and wand config
-		InventoryUtils.setMeta(item, "magic_spells", spellString);
-		InventoryUtils.setMeta(item, "magic_wand", wandString);
+		saveState();
 	}
 	
 	public static Wand getActiveWand(Player player) {
@@ -211,8 +228,7 @@ public class Wand {
 		Inventory inventory = player.getInventory();
 		inventory.clear();
 		inventory.setItem(itemSlot, item);
-		String spellString = InventoryUtils.getMeta(item, "magic_spells");
-		String[] spells = StringUtils.split(spellString, "|");
+		String[] spells = StringUtils.split(wandSpells, "|");
 
 		List<ItemStack> unpositioned = new ArrayList<ItemStack>();
 		for (int i = 0; i < spells.length; i++) {
@@ -244,29 +260,39 @@ public class Wand {
 		for (ItemStack stack : unpositioned) {
 			inventory.addItem(stack);
 		}
-		String materialString = InventoryUtils.getMeta(item, "magic_materials");
-		String[] materials = StringUtils.split(materialString, "|");
+		String[] materials = StringUtils.split(wandMaterials, "|");
 
 		unpositioned.clear();
+		HashMap<Integer, ItemStack> positioned = new HashMap<Integer, ItemStack>();
 		ItemStack eraseStack = null;
 		for (int i = 0; i < materials.length; i++) {
 			String[] parts = StringUtils.split(materials[i], "@");
 			String[] nameParts = StringUtils.split(parts[0], ":");
 			int typeId = Integer.parseInt(nameParts[0]);
+			if (typeId == 0) {
+				typeId = EraseMaterial.getId();
+			}
 			int dataId = nameParts.length > 1 ? Integer.parseInt(nameParts[1]) : 0;
 			
 			ItemStack itemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);		
 			itemStack = InventoryUtils.getCopy(itemStack);
 			ItemMeta meta = itemStack.getItemMeta();
-			List<String> lore = new ArrayList<String>();
-			lore.add("Magic building material");
-			meta.setLore(lore);
+			if (typeId == EraseMaterial.getId()) {
+				meta.setDisplayName("Erase");
+				List<String> lore = new ArrayList<String>();
+				lore.add("Fills with Air");
+				meta.setLore(lore);
+			} else {
+				List<String> lore = new ArrayList<String>();
+				lore.add("Magic building material");
+				meta.setLore(lore);
+			}
 			itemStack.setItemMeta(meta);
 			
 			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
 			ItemStack existing = inventory.getItem(slot);
 			if (parts.length > 1 && slot != itemSlot && (existing == null || existing.getType() == Material.AIR)) {
-				inventory.setItem(slot, itemStack);
+				positioned.put((Integer)slot, itemStack);
 			} else {
 				if (itemStack.getType() == EraseMaterial) {
 					eraseStack = itemStack;
@@ -276,12 +302,24 @@ public class Wand {
 			}
 		}
 		
+		// Put the new stuff first, then the mapped stuff
 		if (eraseStack != null) {
 			addMaterialToInventory(inventory, eraseStack);
 		}
 		
 		for (ItemStack stack : unpositioned) {
 			addMaterialToInventory(inventory, stack);
+		}
+		
+		for (Entry<Integer, ItemStack> entry : positioned.entrySet()) {
+			int slot = entry.getKey();
+			ItemStack itemStack = entry.getValue();
+			ItemStack existing = inventory.getItem(slot);
+			if (slot != itemSlot && (existing == null || existing.getType() == Material.AIR)) {
+				inventory.setItem(slot, itemStack);
+			} else {
+				addMaterialToInventory(inventory, itemStack);
+			}
 		}
 
 		player.updateInventory();
@@ -319,12 +357,14 @@ public class Wand {
 			} else {
 				List<Material> buildingMaterials = playerSpells.getMaster().getBuildingMaterials();
 				if (material != Material.AIR && (buildingMaterials.contains(material) || material == EraseMaterial)) {
-					materialNames.add(material.getId() + "@" + i);
+					String materialkey = (material == EraseMaterial) ? "0:0" : material.getId() + ":" + items[i].getData().getData();
+					materialNames.add(materialkey + "@" + i);
 				}
 			}
 		}
 		setSpells(spellNames);
 		setMaterials(materialNames);
+		saveState();
 	}
 
 	public static boolean isActive(Player player) {

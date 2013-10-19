@@ -855,7 +855,6 @@ public class Spells implements Listener
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
-		if (event.getView().getType() == InventoryType.CRAFTING) return;
 		Player player = (Player)event.getPlayer();
 		PlayerSpells spells = getPlayerSpells(player);
 		if (!spells.hasStoredInventory() && Wand.isActive(player)) {

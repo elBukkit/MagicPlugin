@@ -1137,8 +1137,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		Wand wand = Wand.getActiveWand(player);
 		if (wand == null) return false;
 		
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		wand.saveInventory(playerSpells);
 		wand.addMaterial(materialType, data);
-		wand.updateInventory(spells.getPlayerSpells(player));
+		wand.updateInventory(playerSpells);
 		
 		return true;
 	}
