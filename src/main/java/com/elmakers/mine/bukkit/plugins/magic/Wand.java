@@ -84,6 +84,14 @@ public class Wand {
 		setMaterials(materialMap);
 	}
 	
+	public void addMaterial(Material material, int data) {
+		addMaterial(material, (byte)data);
+	}
+	
+	public void addMaterial(Material material) {
+		addMaterial(material, 0);
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void addMaterial(Material material, byte data) {
 		Integer id = material.getId();
@@ -189,8 +197,6 @@ public class Wand {
 		if (materialCount > 0) {
 			lore.add("Has " + materialCount +" Materials");
 		}
-		lore.add("Left-click to cast active spell");
-		lore.add("Right-click to cycle spells");
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
@@ -388,6 +394,13 @@ public class Wand {
 			defaultSpells.add("pillar");
 			defaultSpells.add("bridge");
 			defaultSpells.add("absorb");
+			wand.addMaterial(Material.STONE);
+			wand.addMaterial(Material.DIRT);
+			wand.addMaterial(Material.WOOD);
+			wand.addMaterial(Material.GLASS);
+			wand.addMaterial(Material.WOOD, 1);
+			wand.addMaterial(Material.WOOD, 2);
+			wand.addMaterial(Material.WOOD, 3);
 			defaultName = "Engineering Wand";
 		}
 		
