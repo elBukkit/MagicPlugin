@@ -691,7 +691,6 @@ public class Spells implements Listener
 		}
 	}
 
-	@EventHandler
 	public void onPlayerDeath(Player player, EntityDeathEvent event)
 	{
 		PlayerSpells spells = getPlayerSpells(player);
