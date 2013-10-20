@@ -176,6 +176,27 @@ public class Wand {
 		updateLore(getSpells().length, materialCount);
 	}
 	
+	public String getName() {
+		return item.getItemMeta().getDisplayName();
+	}
+	
+	public void updateActiveName(PlayerSpells playerSpells) {
+		Player player = playerSpells.getPlayer();
+		Spell spell = playerSpells.getMaster().getActiveSpell(player);
+		ItemStack activeMaterial = player.getInventory().getItem(8);
+		String name = getName();
+		int endOfWand = name.indexOf("(");
+		if (endOfWand > 0) {
+			name = name.substring(0, endOfWand - 1);
+		}
+		String materialName = "";
+		if (spell != null && activeMaterial != null && activeMaterial.getType() != Material.AIR && !isSpell(activeMaterial)) {
+			materialName = activeMaterial.getType() == Wand.EraseMaterial ? "erase" : activeMaterial.getType().name().toLowerCase();
+			materialName = " : " + materialName;
+ 		}
+		setName(name + " (" + spell.getName() + materialName + ")");
+	}
+	
 	public void setName(String name) {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(name);

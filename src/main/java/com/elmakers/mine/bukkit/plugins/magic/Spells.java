@@ -462,7 +462,28 @@ public class Spells implements Listener
 		allSpells.addAll(spells.values());
 		return allSpells;
 	}
-
+	
+	protected Spell getActiveSpell(Player player) {
+		Inventory inventory = player.getInventory();
+		ItemStack[] contents = inventory.getContents();
+		PlayerSpells playerSpells = getPlayerSpells(player);
+		Spell spell = null;
+		for (int i = 0; i < 9; i++)
+		{
+			if (contents[i] == null || contents[i].getType() == Material.AIR || Wand.isWand(contents[i]))
+			{
+				continue;
+			}
+			spell = playerSpells.getSpell(contents[i].getType());
+			if (spell != null)
+			{
+				break;
+			}
+		}
+		
+		return spell;
+	}
+	
 	protected void cast(Player player)
 	{
 		if (Wand.isActive(player))
@@ -472,22 +493,7 @@ public class Spells implements Listener
 				return;
 			}
 
-			Inventory inventory = player.getInventory();
-			ItemStack[] contents = inventory.getContents();
-			PlayerSpells playerSpells = getPlayerSpells(player);
-			Spell spell = null;
-			for (int i = 0; i < 9; i++)
-			{
-				if (contents[i] == null || contents[i].getType() == Material.AIR || Wand.isWand(contents[i]))
-				{
-					continue;
-				}
-				spell = playerSpells.getSpell(contents[i].getType());
-				if (spell != null)
-				{
-					break;
-				}
-			}
+			Spell spell = getActiveSpell(player);
 
 			if (spell != null)
 			{
@@ -546,6 +552,12 @@ public class Spells implements Listener
 		contents[firstMaterialSlot] = lastSlot;
 
 		inventory.setContents(contents);
+		
+		// Some hackery to try and get a tooltip to show up on item switch
+		Wand wand = Wand.getActiveWand(player);
+		PlayerSpells playerSpells = getPlayerSpells(player);
+		wand.updateActiveName(playerSpells);
+		
 		player.updateInventory();
 
 		return true;
@@ -625,6 +637,9 @@ public class Spells implements Listener
 		}
 
 		inventory.setContents(contents);
+		// Some hackery to try and get a tooltip to show up on item switch
+		Wand wand = Wand.getActiveWand(player);
+		wand.updateActiveName(playerSpells);
 		player.updateInventory();
 	}
 

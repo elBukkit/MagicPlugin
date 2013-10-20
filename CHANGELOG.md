@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.3
+
+ - Experiment with a hacky method of showing the active spell as you cycle spells and materials.
+
 ## 2.2.2
 
  - Implement sulpher-as-erase material
