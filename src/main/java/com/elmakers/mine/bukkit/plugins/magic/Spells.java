@@ -845,9 +845,14 @@ public class Spells implements Listener
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
-		PlayerSpells spells = getPlayerSpells((Player)event.getPlayer());
-		if (spells.hasStoredInventory()) {
-			spells.restoreInventory();
+		Player player = (Player)event.getPlayer();
+		PlayerSpells playerSpells = getPlayerSpells(player);
+		if (playerSpells.hasStoredInventory()) {
+			if (Wand.isActive(player)) {
+				Wand wand = new Wand(player.getItemInHand());
+				wand.saveInventory(playerSpells);
+			}
+			playerSpells.restoreInventory();
 		}
 	}
 

@@ -3,6 +3,7 @@
 ## 2.2.2
 
  - Implement sulpher-as-erase material
+ - Fix issues taking wands out of chests
 
 ## 2.2.1
 
