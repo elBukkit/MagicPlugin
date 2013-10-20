@@ -4,6 +4,7 @@
 
  - Implement sulpher-as-erase material
  - Fix issues taking wands out of chests
+ - Some tweaks to absorb, make it so you don't collect a mass of materials unless you want to.
 
 ## 2.2.1
 
