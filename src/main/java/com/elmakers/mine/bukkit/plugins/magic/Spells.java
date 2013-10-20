@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -340,16 +341,20 @@ public class Spells implements Listener
 		File propertiesFile = new File(dataFolder, propertiesFileName);
 		if (!propertiesFile.exists())
 		{
-			plugin.saveResource(propertiesFileName, false);
+			plugin.saveResource(propertiesFileNameDefaults, false);
+			loadProperties(plugin.getResource(propertiesFileNameDefaults));
+		} else {
+			loadProperties(propertiesFile);
 		}
-		loadProperties(propertiesFile);
 
 		File spellsFile = new File(dataFolder, spellsFileName);
 		if (!spellsFile.exists())
 		{
-			plugin.saveResource(spellsFileName, false);
-		}	
-		load(spellsFile);
+			plugin.saveResource(spellsFileNameDefaults, false);
+			load(plugin.getResource(spellsFileNameDefaults));
+		} else {
+			load(spellsFile);
+		}
 
 		log.info("Magic: Loaded " + spells.size() + " spells.");
 	}
@@ -370,7 +375,16 @@ public class Spells implements Listener
 
 	protected void load(File spellsFile)
 	{
-		Configuration config = new Configuration(spellsFile);
+		load(new Configuration(spellsFile));
+	}
+
+	protected void load(InputStream spellsConfig)
+	{
+		load(new Configuration(spellsConfig));
+	}
+	
+	protected void load(Configuration config)
+	{
 		config.load();
 
 		ConfigurationNode spellsNode = config.getNode("spells");
@@ -392,7 +406,16 @@ public class Spells implements Listener
 
 	protected void loadProperties(File propertiesFile)
 	{
-		Configuration properties = new Configuration(propertiesFile);
+		loadProperties(new Configuration(propertiesFile));
+	}
+	
+	protected void loadProperties(InputStream properties)
+	{
+		loadProperties(new Configuration(properties));
+	}
+	
+	protected void loadProperties(Configuration properties)
+	{
 		properties.load();
 
 		ConfigurationNode generalNode = properties.createChild("general");
@@ -426,6 +449,9 @@ public class Spells implements Listener
 
 		File spellsFile = new File(dataFolder, spellsFileName);
 		spellsFile.delete();
+
+		File magicFile = new File(dataFolder, propertiesFileName);
+		magicFile.delete();
 
 		load();
 	}
@@ -941,6 +967,8 @@ public class Spells implements Listener
 	 */
 	 private final String                        spellsFileName                 = "spells.yml";
 	 private final String                        propertiesFileName             = "magic.yml";
+	 private final String                        spellsFileNameDefaults         = "spells.defaults.yml";
+	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
 
 	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
 	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";

@@ -1,0 +1,23 @@
+wands:
+    demo:
+        name: Demo Wand
+        description: A wand with a few simple demo spells
+        spells:
+            - torch
+            - blink
+            - fling
+    engineer:
+        name: Engineering Wand
+        description: A wand with some powerful building spells
+        spells:
+            - fill
+            - absorb
+            - bridge
+            - pillar
+            - recurse
+            - rewind
+        materials:
+            - stone
+            - wood
+            - glass
+            - dirt

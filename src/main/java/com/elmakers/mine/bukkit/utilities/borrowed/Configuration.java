@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -56,6 +58,7 @@ import org.yaml.snakeyaml.representer.Representer;
 public class Configuration extends ConfigurationNode {
 	private Yaml yaml;
 	private File file;
+	private InputStream inputStream;
 	private String header = null;
 
 	public Configuration(File file) {
@@ -70,24 +73,37 @@ public class Configuration extends ConfigurationNode {
 
 		this.file = file;
 	}
+	
+	public Configuration(InputStream inputStream) {
+		super(new HashMap<String, Object>());
+
+		DumperOptions options = new DumperOptions();
+
+		options.setIndent(4);
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+		yaml = new Yaml(new SafeConstructor(), new EmptyNullRepresenter(), options);
+
+		this.inputStream = inputStream;
+	}
 
 	/**
 	 * Loads the configuration file. All errors are thrown away.
 	 */
 	public void load() {
-		FileInputStream stream = null;
-
 		try {
-			stream = new FileInputStream(file);
-			read(yaml.load(new UnicodeReader(stream)));
+			if (inputStream == null) {
+				inputStream = new FileInputStream(file);
+			}
+			read(yaml.load(new UnicodeReader(inputStream)));
 		} catch (IOException e) {
 			root = new HashMap<String, Object>();
 		} catch (ConfigurationException e) {
 			root = new HashMap<String, Object>();
 		} finally {
 			try {
-				if (stream != null) {
-					stream.close();
+				if (inputStream != null) {
+					inputStream.close();
 				}
 			} catch (IOException e) {}
 		}
@@ -141,6 +157,7 @@ public class Configuration extends ConfigurationNode {
 	 */
 	public boolean save() {
 		FileOutputStream stream = null;
+		if (file == null) return false;
 
 		File parent = file.getParentFile();
 
