@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -249,7 +250,7 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		
-		wand.setName(parameters[0]);
+		wand.setName(StringUtils.join(parameters, " "));
 
 		return true;
 	}
