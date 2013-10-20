@@ -341,6 +341,8 @@ public class Spells implements Listener
 		File propertiesFile = new File(dataFolder, propertiesFileName);
 		if (!propertiesFile.exists())
 		{
+			File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
+			oldDefaults.delete();
 			plugin.saveResource(propertiesFileNameDefaults, false);
 			loadProperties(plugin.getResource(propertiesFileNameDefaults));
 		} else {
@@ -350,13 +352,17 @@ public class Spells implements Listener
 		File spellsFile = new File(dataFolder, spellsFileName);
 		if (!spellsFile.exists())
 		{
+			File oldDefaults = new File(dataFolder, spellsFileNameDefaults);
+			oldDefaults.delete();
 			plugin.saveResource(spellsFileNameDefaults, false);
 			load(plugin.getResource(spellsFileNameDefaults));
 		} else {
 			load(spellsFile);
 		}
+		
+		Wand.load(plugin);
 
-		log.info("Magic: Loaded " + spells.size() + " spells.");
+		log.info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
 	}
 
 	protected void save(File spellsFile)
@@ -453,6 +459,8 @@ public class Spells implements Listener
 		File magicFile = new File(dataFolder, propertiesFileName);
 		magicFile.delete();
 
+		Wand.reset(plugin);
+		
 		load();
 	}
 

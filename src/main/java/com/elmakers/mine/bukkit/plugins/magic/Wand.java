@@ -1,11 +1,15 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
@@ -14,8 +18,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Wand {
 	private ItemStack item;
@@ -27,6 +34,11 @@ public class Wand {
 	
 	private static Material WandMaterial = Material.STICK;
 	public static Material EraseMaterial = Material.SULPHUR;
+	
+	// Wand configurations
+	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
+	private static final String propertiesFileName = "wands";
+	private static final String propertiesFileNameDefaults = "wands.defaults.yml";
 	
 	public Wand() {
 		item = new ItemStack(WandMaterial);
@@ -194,6 +206,7 @@ public class Wand {
 			materialName = activeMaterial.getType() == Wand.EraseMaterial ? "erase" : activeMaterial.getType().name().toLowerCase();
 			materialName = " : " + materialName;
  		}
+		// TODO: Maybe put spell name first, but restore on saveinventory?
 		setName(name + " (" + spell.getName() + materialName + ")");
 	}
 	
@@ -403,30 +416,77 @@ public class Wand {
 		List<String> defaultSpells = new ArrayList<String>();
 		String defaultName = "Wand";
 
-		// Hacky until we have a config file!
-		if (templateName.equals("demo")) {
-			defaultSpells.add("torch");
-			defaultSpells.add("fling");
-			defaultSpells.add("blink");
-			defaultName = "Demo Wand";
-		} else if (templateName.equals("engineer")) {
-			defaultSpells.add("fill");
-			defaultSpells.add("pillar");
-			defaultSpells.add("bridge");
-			defaultSpells.add("absorb");
-			wand.addMaterial(Material.STONE);
-			wand.addMaterial(Material.DIRT);
-			wand.addMaterial(Material.WOOD);
-			wand.addMaterial(Material.GLASS);
-			wand.addMaterial(Material.WOOD, 1);
-			wand.addMaterial(Material.WOOD, 2);
-			wand.addMaterial(Material.WOOD, 3);
-			defaultName = "Engineering Wand";
+		// See if there is a template with this key
+		if (wandTemplates.containsKey(templateName)) {
+			ConfigurationNode wandConfig = wandTemplates.get(templateName);
+			defaultName = wandConfig.getString("name", defaultName);
+			List<Object> spellList = wandConfig.getList("spells");
+			if (spellList != null) {
+				for (Object spellName : spellList) {
+					defaultSpells.add((String)spellName);
+				}
+			}
+			List<Object> materialList = wandConfig.getList("materials");
+			if (materialList != null) {
+				for (Object materialName : materialList) {
+					wand.addMaterial(ConfigurationNode.toMaterial(materialName));
+				}
+			}
 		}
 		
 		wand.setName(defaultName);
 		wand.addSpells(defaultSpells);
 		
 		return wand;
+	}
+	
+	public static void reset(Plugin plugin) {
+		File dataFolder = plugin.getDataFolder();
+		File propertiesFile = new File(dataFolder, propertiesFileName);
+		propertiesFile.delete();
+	}
+	
+	public static void load(Plugin plugin) {
+		File dataFolder = plugin.getDataFolder();
+		File propertiesFile = new File(dataFolder, propertiesFileName);
+		if (!propertiesFile.exists())
+		{
+			File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
+			oldDefaults.delete();
+			plugin.saveResource(propertiesFileNameDefaults, false);
+			loadProperties(plugin.getResource(propertiesFileNameDefaults));
+		} else {
+			loadProperties(propertiesFile);
+		}
+	}
+	
+	protected static void loadProperties(File propertiesFile)
+	{
+		loadProperties(new Configuration(propertiesFile));
+	}
+	
+	protected static void loadProperties(InputStream properties)
+	{
+		loadProperties(new Configuration(properties));
+	}
+	
+	protected static void loadProperties(Configuration properties)
+	{
+		properties.load();
+		wandTemplates.clear();
+
+		ConfigurationNode wandList = properties.getNode("wands");
+		if (wandList == null) return;
+
+		List<String> wandKeys = wandList.getKeys();
+		for (String key : wandKeys)
+		{
+			ConfigurationNode wandNode = wandList.getNode(key);
+			wandTemplates.put(key,  wandNode);
+		}
+	}
+	
+	public static Set<String> getWandTemplates() {
+		return wandTemplates.keySet();
 	}
 }
