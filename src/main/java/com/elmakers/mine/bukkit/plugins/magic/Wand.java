@@ -191,22 +191,30 @@ public class Wand {
 		return item.getItemMeta().getDisplayName();
 	}
 	
+	public String getBaseName() {
+		String name = getName();
+		int beginningOfWand = name.indexOf("(");
+		if (beginningOfWand > 0) {
+			name = name.substring(beginningOfWand + 1, name.length() - 1);
+		}
+		return name;
+	}
+	
 	public void updateActiveName(PlayerSpells playerSpells) {
 		Player player = playerSpells.getPlayer();
 		Spell spell = playerSpells.getMaster().getActiveSpell(player);
 		ItemStack activeMaterial = player.getInventory().getItem(8);
-		String name = getName();
-		int endOfWand = name.indexOf("(");
-		if (endOfWand > 0) {
-			name = name.substring(0, endOfWand - 1);
-		}
+		String baseName = getBaseName();
 		String materialName = "";
-		if (spell != null && activeMaterial != null && activeMaterial.getType() != Material.AIR && !isSpell(activeMaterial)) {
+		if (spell != null && activeMaterial != null && activeMaterial.getType() != Material.AIR && !isSpell(activeMaterial) && !isWand(activeMaterial)) {
 			materialName = activeMaterial.getType() == Wand.EraseMaterial ? "erase" : activeMaterial.getType().name().toLowerCase();
 			materialName = " : " + materialName;
  		}
-		// TODO: Maybe put spell name first, but restore on saveinventory?
-		setName(name + " (" + spell.getName() + materialName + ")");
+		if (spell != null) {
+			setName(spell.getName() + materialName + " (" + baseName + ")");
+		} else {
+			setName(getBaseName());
+		}
 	}
 	
 	public void setName(String name) {
@@ -360,6 +368,7 @@ public class Wand {
 			}
 		}
 
+		updateActiveName(playerSpells);
 		player.updateInventory();
 	}
 	
@@ -403,6 +412,7 @@ public class Wand {
 		setSpells(spellNames);
 		setMaterials(materialNames);
 		saveState();
+		setName(getBaseName());
 	}
 
 	public static boolean isActive(Player player) {

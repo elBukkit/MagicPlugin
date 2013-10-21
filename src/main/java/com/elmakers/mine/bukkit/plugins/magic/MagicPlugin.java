@@ -321,14 +321,6 @@ public class MagicPlugin extends JavaPlugin
 		return true;
 	}
 
-	private void showWandHelp(Player player)
-	{
-		player.sendMessage("How to use your wand:");
-		player.sendMessage(" The active spell is farthest to left");
-		player.sendMessage(" Left-click your wand to cast");
-		player.sendMessage(" Right-click to cycle spells");
-	}
-
 	public boolean onCast(Player player, String[] castParameters)
 	{
 		if (castParameters.length < 1) return false;

@@ -3,6 +3,7 @@
 ## 2.2.3
 
  - Experiment with a hacky method of showing the active spell as you cycle spells and materials.
+ - Add wands.yml configuration file
 
 ## 2.2.2
 
