@@ -302,7 +302,7 @@ spells:
             - stationary_water
             cooldown: 0
         parameters:
-            count: '20'
+            count: 20
             type: mob
     portal:
         name: Portal
@@ -715,7 +715,8 @@ spells:
             - snow
             - stationary_water
             cooldown: 0
-        parameters: {}
+        parameters:
+            count: 10
     breach:
         name: Breach
         icon: seeds

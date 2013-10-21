@@ -1,14 +1,69 @@
 wands:
     demo:
         name: Demo Wand
-        description: A wand with a few simple demo spells
+        description: Has a few simple demo spells
         spells:
             - torch
             - blink
             - fling
+    explorer:
+        name: Exploring Wand
+        description: For exploring
+        spells:
+            - tesseract
+            - torch
+            - spawn
+            - recall
+    psychic:
+        name: Psychic Wand
+        description: Airbending!
+        spells:
+            - fling
+            - blink
+            - push
+            - pull
+            - force
+    painter:
+        name: Painting Wand
+        description: For the designer in all of us
+        spells:
+            - paint
+        materials:
+            - wool:0
+            - wool:1
+            - wool:2
+            - wool:3
+            - wool:4
+            - wool:5
+            - wool:6
+            - wool:7
+            - wool:8
+            - wool:9
+            - wool:10
+            - wool:11
+            - wool:12
+            - wool:13
+            - wool:14
+            - wool:15
+            - stained_clay:0
+            - stained_clay:1
+            - stained_clay:2
+            - stained_clay:3
+            - stained_clay:4
+            - stained_clay:5
+            - stained_clay:6
+            - stained_clay:7
+            - stained_clay:8
+            - stained_clay:9
+            - stained_clay:10
+            - stained_clay:11
+            - stained_clay:12
+            - stained_clay:13
+            - stained_clay:14
+            - stained_clay:15
     engineer:
         name: Engineering Wand
-        description: A wand with some powerful building spells
+        description: Has powerful building spells
         spells:
             - fill
             - absorb
@@ -16,8 +71,98 @@ wands:
             - pillar
             - recurse
             - rewind
+            - blob
+            - stalactite
         materials:
             - stone
             - wood
             - glass
             - dirt
+    battle:
+        name: Battle Wand
+        description: Has some moderate attack spells
+        spells:
+            - arrow
+            - fireball
+            - grenade
+            - boom
+    mining:
+        name: Mining Wand
+        description: For mining
+        spells:
+            - peek
+            - mine
+            - blast
+    farming:
+        name: Farming Wand
+        description: For farming
+        spells:
+            - farm
+            - fill
+        materials:
+            - soil
+            - wheat
+            - pumpkin_stem
+            - melon_stem
+            - carrot
+            - potato
+            - water
+    elementalist:
+        name: Elementalist Wand
+        description: A master of the elements
+        spells:
+            - sandblast
+            - recurse
+            - fire
+            - lightning
+            - blob
+            - lava
+            - wolf
+        materials:
+            - water
+            - lava
+            - soul_sand
+            - sand
+    necromancy:
+        name: Necromancer Wand
+        description: Evil, evil stuff
+        spells:
+            - fire
+            - mob
+            - disintegrate
+            - portal
+    elder:
+        name: Elder Wand
+        description: The Uber Wand
+        spells:
+            - fill
+            - absorb
+            - bridge
+            - pillar
+            - recurse
+            - rewind
+            - icbm
+            - arrowrain
+            - inferno
+            - superblob
+            - push
+            - pull
+            - force
+            - fling
+            - levitate
+            - storm
+            - mob
+            - torch
+            - blink
+            - shell
+            - box
+            - kaboom
+            - gather
+        materials:
+            - lava
+            - water
+            - glowstone
+            - glass
+            - erase
+            - tnt
+            - soul_sand

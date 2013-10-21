@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
@@ -428,8 +427,19 @@ public class Wand {
 			}
 			List<Object> materialList = wandConfig.getList("materials");
 			if (materialList != null) {
-				for (Object materialName : materialList) {
-					wand.addMaterial(ConfigurationNode.toMaterial(materialName));
+				for (Object materialNameAndData : materialList) {
+					String[] materialParts = StringUtils.split((String)materialNameAndData, ':');
+					String materialName = materialParts[0];
+					byte data = 0;
+					if (materialParts.length > 1) {
+						data = Byte.parseByte(materialParts[1]);
+					}
+					
+					if (materialName.equals("erase")) {
+						wand.addMaterial(EraseMaterial, data);
+					} else {
+						wand.addMaterial(ConfigurationNode.toMaterial(materialName), data);
+					}
 				}
 			}
 		}
@@ -482,11 +492,12 @@ public class Wand {
 		for (String key : wandKeys)
 		{
 			ConfigurationNode wandNode = wandList.getNode(key);
+			wandNode.setProperty("key", key);
 			wandTemplates.put(key,  wandNode);
 		}
 	}
 	
-	public static Set<String> getWandTemplates() {
-		return wandTemplates.keySet();
+	public static Collection<ConfigurationNode> getWandTemplates() {
+		return wandTemplates.values();
 	}
 }
