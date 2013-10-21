@@ -3,6 +3,7 @@
 ## 2.2.4
  - Allow use of /wand list and /spells from the console
  - Colorize active spell text
+ - Fix cycling materials if you use slot 8 to hold the wand
  
 ## 2.2.3
 

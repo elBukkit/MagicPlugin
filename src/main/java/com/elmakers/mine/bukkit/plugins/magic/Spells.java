@@ -517,6 +517,7 @@ public class Spells implements Listener
 		PlayerInventory inventory = player.getInventory();
 		ItemStack[] contents = inventory.getContents();
 		int firstMaterialSlot = 8;
+		int lastMaterialSlot = 8;
 		boolean foundAir = false;
 
 		for (int i = 8; i >= 0; i--)
@@ -542,18 +543,22 @@ public class Spells implements Listener
 					firstMaterialSlot = i;
 					continue;
 				}
-				else
+				else if (Wand.isWand(contents[i])) 
+				{
+					lastMaterialSlot = i - 1;
+					continue;
+				} else 
 				{
 					break;
 				}
 			}
 		}
 
-		if (firstMaterialSlot == 8)
+		if (firstMaterialSlot >= lastMaterialSlot)
 			return false;
 
-		ItemStack lastSlot = contents[8];
-		for (int i = 7; i >= firstMaterialSlot; i--)
+		ItemStack lastSlot = contents[lastMaterialSlot];
+		for (int i = lastMaterialSlot - 1; i >= firstMaterialSlot; i--)
 		{
 			contents[i + 1] = contents[i];
 		}
