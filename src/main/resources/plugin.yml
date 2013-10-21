@@ -34,6 +34,10 @@ permissions:
     description: Player may create a wand
     type: boolean
     default: op
+  Magic.commands.wand.list:
+    description: Player may list available wand templates
+    type: boolean
+    default: op
   Magic.commands.wand.add:
     description: Player may add a spell to a wand
     type: boolean

@@ -1,12 +1,16 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -94,7 +98,13 @@ public class MagicPlugin extends JavaPlugin
 					args2[i - 1] = args[i];
 				}
 			}
+			if (subCommand.equalsIgnoreCase("list"))
+			{
+				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
 
+				onWandList(player);
+				return true;
+			}
 			if (subCommand.equalsIgnoreCase("add"))
 			{
 				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
@@ -137,6 +147,28 @@ public class MagicPlugin extends JavaPlugin
 		return false;
 	}
 
+	public boolean onWandList(CommandSender sender) {
+		Collection<ConfigurationNode> templates = Wand.getWandTemplates();
+		Map<String, ConfigurationNode> nameMap = new TreeMap<String, ConfigurationNode>();
+		for (ConfigurationNode templateConfig : templates)
+		{
+			nameMap.put(templateConfig.getString("key"), templateConfig);
+		}
+		for (ConfigurationNode templateConfig : nameMap.values())
+		{
+			String key = templateConfig.getString("key");
+			String name = templateConfig.getString("name");
+			String description = templateConfig.getString("description");
+			description = ChatColor.YELLOW + description; 
+			if (!name.equals(key)) {
+				description = ChatColor.BLUE + name + ChatColor.WHITE + " : " + description;
+			}
+			sender.sendMessage(ChatColor.AQUA + key + ChatColor.WHITE + " : " + description);
+		}
+
+		return true;
+	}
+	
 	public boolean onWandAdd(Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
@@ -281,12 +313,10 @@ public class MagicPlugin extends JavaPlugin
 			} else {
 				player.getInventory().addItem(wand.getItem());
 			}
-
-			player.sendMessage("Use /wand again for help, /spells for spell list");
 		}
 		else 
 		{
-			showWandHelp(player);
+			player.sendMessage("Unequip your current wand to create a new one");
 		}
 		return true;
 	}
@@ -379,9 +409,9 @@ public class MagicPlugin extends JavaPlugin
 			String name = spell.getName();
 			String description = spell.getDescription();
 			if (!name.equals(spell.getKey())) {
-				description = name + ", " + description;
+				description = name + " : " + description;
 			}
-			player.sendMessage(spell.getKey() + " [" + spell.getMaterial().name().toLowerCase() + "] : " + description);
+			player.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
 		}
 	}
 
@@ -484,9 +514,9 @@ public class MagicPlugin extends JavaPlugin
 					String name = spell.getName();
 					String description = spell.getDescription();
 					if (!name.equals(spell.getKey())) {
-						description = name + ", " + description;
+						description = name + " : " + description;
 					}
-					player.sendMessage(" " + spell.getKey() + " [" + spell.getMaterial().name().toLowerCase() + "] : " + description);
+					player.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
 					printedCount++;
 				}
 				lineCount++;
