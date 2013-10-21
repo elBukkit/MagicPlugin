@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class FamiliarSpell extends Spell
 {
 	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow,Snowman,Ozelot,VillagerGolem,EntityHorse";
-	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Ghast,Giant,Monster,Silverfish,Enderman,CaveSpider,Blaze,LavaSlime,Bat,Witch";
+	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Ghast,Giant,Silverfish,Enderman,CaveSpider,Blaze,LavaSlime,Bat,Witch";
 
 	private List<String> defaultFamiliars = new ArrayList<String>();
 	private List<String> defaultMonsters = new ArrayList<String>();
@@ -186,11 +186,13 @@ public class FamiliarSpell extends Spell
 				targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * famCount) - famCount);
 				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * famCount) - famCount);
 			}
-			Creature entity =  spawnFamiliar(targetLoc, famType, targetEntity);
-			if (entity != null)
-			{
-				newFamiliars.add(entity);
-				spawnCount++;
+			if (famType != null) {
+				Creature entity =  spawnFamiliar(targetLoc, famType, targetEntity);
+				if (entity != null)
+				{
+					newFamiliars.add(entity);
+					spawnCount++;
+				}
 			}
 		}
 
@@ -212,13 +214,18 @@ public class FamiliarSpell extends Spell
 
 	protected Creature spawnFamiliar(Location target, EntityType famType, LivingEntity targetEntity)
 	{
-		Entity famEntity = player.getWorld().spawnEntity(target, famType);
-		if (!(famEntity instanceof Creature)) return null;
-
-		Creature familiar = (Creature)famEntity;
-		if (targetEntity != null)
-		{
-			familiar.setTarget(targetEntity);
+		Creature familiar = null;
+		try {
+			Entity famEntity = player.getWorld().spawnEntity(target, famType);
+			if (!(famEntity instanceof Creature)) return null;
+	
+			familiar = (Creature)famEntity;
+			if (targetEntity != null)
+			{
+				familiar.setTarget(targetEntity);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return familiar;
 	}
