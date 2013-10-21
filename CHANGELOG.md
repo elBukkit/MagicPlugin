@@ -2,7 +2,8 @@
 
 ## 2.2.4
  - Allow use of /wand list and /spells from the console
-
+ - Colorize active spell text
+ 
 ## 2.2.3
 
  - Experiment with a hacky method of showing the active spell as you cycle spells and materials.
