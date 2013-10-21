@@ -99,6 +99,8 @@ wands:
         spells:
             - farm
             - fill
+            - weather
+            - tree
         materials:
             - soil
             - wheat

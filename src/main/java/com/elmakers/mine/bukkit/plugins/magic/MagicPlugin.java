@@ -82,7 +82,21 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		// Everything beyond this point is is-game only
-		if (!(sender instanceof Player)) return false;
+		if (!(sender instanceof Player)) {
+			if (commandName.equalsIgnoreCase("spells"))
+			{
+				listSpells(sender, -1, null);
+				return true;
+			}
+			if (commandName.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("list"))
+			{
+				onWandList(sender);
+				return true;
+			}
+			
+			
+			return false;
+		}
 
 		Player player = (Player)sender;
 
@@ -377,13 +391,14 @@ public class MagicPlugin extends JavaPlugin
 	 * Help commands
 	 */
 
-	public void listSpellsByCategory(Player player,String category)
+	public void listSpellsByCategory(CommandSender sender, String category)
 	{
 		List<Spell> categorySpells = new ArrayList<Spell>();
 		List<Spell> spellVariants = spells.getAllSpells();
+		Player player = sender instanceof Player ? (Player)sender : null;
 		for (Spell spell : spellVariants)
 		{
-			if (spell.getCategory().equalsIgnoreCase(category) && spell.hasSpellPermission(player))
+			if (spell.getCategory().equalsIgnoreCase(category) && (player == null || spell.hasSpellPermission(player)))
 			{
 				categorySpells.add(spell);
 			}
@@ -441,13 +456,14 @@ public class MagicPlugin extends JavaPlugin
 		}
 	}
 
-	public void listSpells(Player player, int pageNumber, String category)
+	public void listSpells(CommandSender sender, int pageNumber, String category)
 	{
 		if (category != null)
 		{
-			listSpellsByCategory(player, category);
+			listSpellsByCategory(sender, category);
 			return;
 		}
+		Player player = sender instanceof Player ? (Player)sender : null;
 
 		HashMap<String, SpellGroup> spellGroups = new HashMap<String, SpellGroup>();
 		List<Spell> spellVariants = spells.getAllSpells();
@@ -455,7 +471,7 @@ public class MagicPlugin extends JavaPlugin
 		int spellCount = 0;
 		for (Spell spell : spellVariants)
 		{
-			if (!spell.hasSpellPermission(player))
+			if (player != null && !spell.hasSpellPermission(player))
 			{
 				continue;
 			}
@@ -474,33 +490,38 @@ public class MagicPlugin extends JavaPlugin
 		sortedGroups.addAll(spellGroups.values());
 		Collections.sort(sortedGroups);
 
-		int maxLines = 5;
-		int maxPages = spellCount / maxLines + 1;
-		if (pageNumber > maxPages)
-		{
-			pageNumber = maxPages;
-		}
+		int maxLines = -1;
+		if (pageNumber >= 0) {
+			maxLines = 5;
+			int maxPages = spellCount / maxLines + 1;
+			if (pageNumber > maxPages)
+			{
+				pageNumber = maxPages;
+			}
 
-		player.sendMessage("You know " + spellCount + " spells. [" + pageNumber + "/" + maxPages + "]");
+			sender.sendMessage("You know " + spellCount + " spells. [" + pageNumber + "/" + maxPages + "]");
+		} else {
+			sender.sendMessage("Listing " + spellCount + " spells.");	
+		}
 
 		int currentPage = 1;
 		int lineCount = 0;
 		int printedCount = 0;
 		for (SpellGroup group : sortedGroups)
 		{
-			if (printedCount > maxLines) break;
+			if (printedCount > maxLines && maxLines > 0) break;
 
 			boolean isFirst = true;
 			Collections.sort(group.spells);
 			for (Spell spell : group.spells)
 			{
-				if (printedCount > maxLines) break;
+				if (printedCount > maxLines && maxLines > 0) break;
 
-				if (currentPage == pageNumber)
+				if (currentPage == pageNumber || maxLines < 0)
 				{
 					if (isFirst)
 					{
-						player.sendMessage(group.groupName + ":");
+						sender.sendMessage(group.groupName + ":");
 						isFirst = false;
 					}
 					String name = spell.getName();
@@ -508,7 +529,7 @@ public class MagicPlugin extends JavaPlugin
 					if (!name.equals(spell.getKey())) {
 						description = name + " : " + description;
 					}
-					player.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
+					sender.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
 					printedCount++;
 				}
 				lineCount++;
