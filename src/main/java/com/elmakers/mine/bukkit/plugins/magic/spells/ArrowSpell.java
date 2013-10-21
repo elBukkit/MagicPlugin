@@ -17,7 +17,7 @@ public class ArrowSpell extends Spell
 	{
 		int arrowCount = 1;
 		arrowCount = parameters.getInt("count", arrowCount);
-		boolean useFire = parameters.getBoolean("fire", true);
+		boolean useFire = parameters.getBoolean("fire", false);
 
 		Arrow firstArrow = null;
 		float speed = 3;
