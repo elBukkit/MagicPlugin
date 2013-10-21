@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -277,7 +278,9 @@ public class Wand {
 		inventory.setItem(itemSlot, item);
 		String[] spells = StringUtils.split(wandSpells, "|");
 
-		List<ItemStack> unpositioned = new ArrayList<ItemStack>();
+		// Gather up all spells and materials
+		// Spells saved in a specific slot are put directly there.
+		Queue<ItemStack> unpositionedSpells = new LinkedList<ItemStack>();
 		for (int i = 0; i < spells.length; i++) {
 			String[] parts = StringUtils.split(spells[i], "@");
 			String spellName = parts[0];
@@ -300,16 +303,14 @@ public class Wand {
 			if (parts.length > 1 && slot != itemSlot) {
 				inventory.setItem(slot, itemStack);
 			} else {
-				unpositioned.add(itemStack);
+				unpositionedSpells.add(itemStack);
 			}
 		}
 		
-		for (ItemStack stack : unpositioned) {
-			inventory.addItem(stack);
-		}
 		String[] materials = StringUtils.split(wandMaterials, "|");
 
-		unpositioned.clear();
+		// Materials saved in a specific spot are added to a hashmap for later processing
+		Queue<ItemStack> unpositionedMaterials = new LinkedList<ItemStack>();
 		HashMap<Integer, ItemStack> positioned = new HashMap<Integer, ItemStack>();
 		ItemStack eraseStack = null;
 		for (int i = 0; i < materials.length; i++) {
@@ -344,20 +345,41 @@ public class Wand {
 				if (itemStack.getType() == EraseMaterial) {
 					eraseStack = itemStack;
 				} else {
-					unpositioned.add(itemStack);
+					unpositionedMaterials.add(itemStack);
 				}
 			}
 		}
 		
-		// Put the new stuff first, then the mapped stuff
+		// This is here to try and leave some room for materials, if present
+		// in a newly-created wand.
+		if (unpositionedMaterials.size() > 0) {
+			int materialSpaces = Math.max(unpositionedMaterials.size(), 3);
+			int remainingSpaces = 8 - materialSpaces;
+			while (unpositionedSpells.size() > 0 && remainingSpaces > 0) {
+				inventory.addItem(unpositionedSpells.remove());
+				remainingSpaces--;
+			}
+		}
+		
+		// Put the new materials first, then the mapped materials
+		// This is so newly-added materials immediately become active.
+		// Mainly for the absorb spell to work nicely.
 		if (eraseStack != null) {
 			addMaterialToInventory(inventory, eraseStack);
 		}
 		
-		for (ItemStack stack : unpositioned) {
+		for (ItemStack stack : unpositionedMaterials) {
 			addMaterialToInventory(inventory, stack);
 		}
 		
+		// Add the rest of the unpositioned spells
+		for (ItemStack stack : unpositionedSpells) {
+			inventory.addItem(stack);
+		}
+		
+		
+		// Add mapped materials, but if there is already something there just
+		// toss it in the inventory.
 		for (Entry<Integer, ItemStack> entry : positioned.entrySet()) {
 			int slot = entry.getKey();
 			ItemStack itemStack = entry.getValue();
