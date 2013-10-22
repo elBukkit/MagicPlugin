@@ -130,7 +130,7 @@ public class PlayerSpells
 		// Make sure we don't store any spells or magical materials, just in case
 		ItemStack[] contents = inventory.getContents();
 		for (int i = 0; i < contents.length; i++) {
-			if (Wand.isWand(contents[i]) || Wand.isSpell(contents[i])) {
+			if (Wand.isSpell(contents[i])) {
 				contents[i] = null;
 			}
 		}
