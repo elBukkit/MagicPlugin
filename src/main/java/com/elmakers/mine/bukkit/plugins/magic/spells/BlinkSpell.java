@@ -91,6 +91,7 @@ public class BlinkSpell extends Spell
 			else
 			{
 				targetThrough(Material.GLASS);
+				targetThrough(Material.THIN_GLASS);
 			}
 		}
 
