@@ -1,5 +1,10 @@
 general:
     silent: false
+    target_through:
+    - water
+    - air
+    - snow
+    - stationary_water
     building:
     - air
     - stone
@@ -32,10 +37,18 @@ general:
     - piston_sticky_base
     - piston_base
     - piston_extension
+    - long_grass
+    - dead_bush
+    - piston_moving_piece
+    - yellow_flower
+    - red_rose
+    - brown_mushroom
+    - red_mushroom
     - wool
     - gold_block
     - iron_block
     - double_step
+    - step
     - brick
     - tnt
     - bookshelf
@@ -86,5 +99,43 @@ general:
     - fence_gate
     - brick_stairs
     - smooth_stairs
+    - mycel
+    - water_lily
+    - nether_brick
+    - nether_fence
+    - nether_brick_stairs
+    - nether_warts
+    - cauldron
+    - ender_portal
+    - ender_portal_frame
+    - ender_stone
+    - wood_double_step
+    - wood_step
+    - sandstone_stairs
+    - emerald_ore
+    - emerald_block
+    - spruce_wood_stairs
+    - birch_wood_stairs
+    - jungle_wood_stairs
+    - beacon
+    - cobble_wall
+    - carrot
+    - potato
+    - skull
+    - anvil
+    - gold_plate
+    - iron_plate
+    - redstone_block
+    - quartz_ore
+    - hopper
+    - quartz_block
+    - quartz_stairs
+    - activator_rail
+    - dropper
+    - stained_clay
+    - hay_block
+    - carpet
+    - hard_clay
+    - coal_block
     undo_depth: 256
     quiet: true

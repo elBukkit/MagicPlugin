@@ -107,7 +107,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return baseClass.substring(0, baseClass.lastIndexOf('.'));
 	}
 
-	public static Spell loadSpell(String name, ConfigurationNode node)
+	public static Spell loadSpell(String name, ConfigurationNode node, Spells spells)
 	{
 		String builtinClassPath = getBuiltinClasspath();
 
@@ -153,6 +153,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 
 		Spell newSpell = (Spell)newObject;
+		newSpell.initialize(spells);
 		newSpell.load(name, node);
 
 		return newSpell;
@@ -207,10 +208,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			}
 		}
 
-		targetThrough(Material.AIR);
-		targetThrough(Material.WATER);
-		targetThrough(Material.STATIONARY_WATER);
-		targetThrough(Material.SNOW);
+		List<Material> defaultTargetThrough = spells.getTargetThroughMaterials();
+		for (Material defMat : defaultTargetThrough) {
+			targetThrough(defMat);
+		}
 	}
 
 	public void save(ConfigurationNode node)

@@ -121,6 +121,7 @@ public class Spells implements Listener
 		spellNode.setProperty("icon", icon);
 		spellNode.setProperty("category", category);
 
+		template.initialize(this);
 		template.load(name, spellNode);
 
 		addSpell(template);
@@ -156,8 +157,6 @@ public class Spells implements Listener
 				spellsByMaterial.put(variant.getMaterial(), variant);
 			}
 		}
-
-		variant.initialize(this);
 	}
 
 	/*
@@ -169,6 +168,11 @@ public class Spells implements Listener
 		return buildingMaterials;
 	}
 
+	public List<Material> getTargetThroughMaterials()
+	{
+		return targetThroughMaterials;
+	}
+	
 	/*
 	 * Undo system
 	 */
@@ -400,7 +404,7 @@ public class Spells implements Listener
 		for (String key : spellKeys)
 		{
 			ConfigurationNode spellNode = spellsNode.getNode(key);
-			Spell newSpell = Spell.loadSpell(key, spellNode);
+			Spell newSpell = Spell.loadSpell(key, spellNode, this);
 			if (newSpell == null)
 			{
 				log.warning("Magic: Error loading spell " + key);
@@ -424,12 +428,13 @@ public class Spells implements Listener
 	{
 		properties.load();
 
-		ConfigurationNode generalNode = properties.createChild("general");
+		ConfigurationNode generalNode = properties.getNode("general");
 		undoQueueDepth = generalNode.getInteger("undo_depth", undoQueueDepth);
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
+		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
 
 		CSVParser csv = new CSVParser();
 		stickyMaterials = csv.parseMaterials(STICKY_MATERIALS);
@@ -999,12 +1004,15 @@ public class Spells implements Listener
 	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
 
 	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
+	 static final String                         DEFAULT_TARGET_THROUGH_MATERIALS = "0";
+	 
 	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
 	 static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
 
 	 private List<Material>                      buildingMaterials              = new ArrayList<Material>();
 	 private List<Material>                      stickyMaterials                = new ArrayList<Material>();
 	 private List<Material>                      stickyMaterialsDoubleHeight    = new ArrayList<Material>();
+	 private List<Material>                      targetThroughMaterials  		= new ArrayList<Material>();
 
 	 private long                                physicsDisableTimeout          = 0;
 	 private int                                 undoQueueDepth                 = 256;

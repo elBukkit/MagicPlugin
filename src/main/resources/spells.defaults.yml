@@ -23,11 +23,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             fill: hollow
@@ -42,11 +37,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 10000
         parameters: {}
     arrow:
@@ -70,11 +60,6 @@ spells:
             allow_area: true
             item_force: 1
             area_range: 20
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             entity_force: 3
             cooldown: 0
         parameters:
@@ -89,11 +74,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             size: '6'
@@ -123,11 +103,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 500
         parameters:
             radius: '10'
@@ -144,11 +119,6 @@ spells:
             auto_resurrect: true
             range: 200
             auto_resurrect_invisible: false
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             type: spawn
@@ -172,11 +142,6 @@ spells:
             allow_max_range: false
             range: 200
             require_sapling: false
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     heal:
@@ -188,11 +153,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 5000
         parameters: {}
     gather:
@@ -204,11 +164,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     icbm:
@@ -262,11 +217,6 @@ spells:
             range: 200
             allow_day: true
             allow_glowstone: true
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     monster:
@@ -278,11 +228,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             type: monster
@@ -295,11 +240,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             count: 20
@@ -313,11 +253,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     invincible:
@@ -340,11 +275,6 @@ spells:
             range: 200
             radius: 4
             vertical_search_distance: 8
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     cushion:
@@ -358,11 +288,6 @@ spells:
             height: 4
             range: 200
             width: 3
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     paint:
@@ -375,11 +300,6 @@ spells:
             allow_max_range: false
             range: 200
             max_volume: 512
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             max_dimension: 128
             cooldown: 0
         parameters:
@@ -415,11 +335,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     lightning:
@@ -431,11 +346,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     nuke:
@@ -447,11 +357,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             size: '20'
@@ -467,11 +372,6 @@ spells:
             range: 200
             allow_day: true
             allow_glowstone: true
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             time: day
@@ -496,11 +396,6 @@ spells:
             allow_passthrough: true
             range: 200
             allow_decend: true
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             type: ascend
@@ -513,11 +408,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             size: 32
@@ -546,11 +436,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             radius: '8'
@@ -564,11 +449,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             size: '8'
@@ -594,11 +474,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             material: air
@@ -625,11 +500,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             material: air
@@ -643,11 +513,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     cloak:
@@ -668,11 +533,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     push:
@@ -687,11 +547,6 @@ spells:
             allow_area: true
             item_force: 1
             area_range: 20
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             entity_force: 3
             cooldown: 0
         parameters:
@@ -706,11 +561,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             count: 10
@@ -738,11 +588,6 @@ spells:
             - soul_sand
             - wood
             undo: 10000
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             material: air
@@ -760,11 +605,6 @@ spells:
             allow_passthrough: false
             range: 8
             allow_decend: true
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     mine:
@@ -777,11 +617,6 @@ spells:
             allow_max_range: false
             range: 200
             recursion_depth: 16
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     peek:
@@ -807,11 +642,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 4000
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             material: glass
@@ -841,11 +671,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             material: sand
@@ -861,11 +686,6 @@ spells:
             allow_max_range: false
             range: 200
             max_volume: 512
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             max_dimension: 128
             cooldown: 0
         parameters: {}
@@ -879,11 +699,6 @@ spells:
             allow_max_range: false
             range: 200
             max_volume: 512
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             max_dimension: 128
             cooldown: 0
         parameters:
@@ -899,11 +714,6 @@ spells:
             range: 200
             radius: 4
             vertical_search_distance: 8
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     alter:
@@ -915,11 +725,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
             depth: 32
         parameters: {}
@@ -947,11 +752,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             radius: '3'
@@ -965,11 +765,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     disintegrate:
@@ -982,11 +777,6 @@ spells:
             allow_max_range: false
             range: 200
             player_damage: 1
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
             entity_damage: 100
         parameters: {}
@@ -1002,11 +792,6 @@ spells:
             allow_passthrough: true
             range: 200
             allow_decend: true
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     absorb:
@@ -1018,11 +803,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     stalactite:
@@ -1034,11 +814,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             type: down
@@ -1051,11 +826,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     wolf:
@@ -1068,11 +838,6 @@ spells:
             max_wolves: 5
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 500
         parameters: {}
     cat:
@@ -1085,11 +850,6 @@ spells:
             max_ocelots: 5
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 500
         parameters: {}
     shrink:
@@ -1101,11 +861,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
         parameters: {}
     flare:
         name: Flare
@@ -1116,11 +871,6 @@ spells:
         properties:
             allow_max_range: true
             range: 10
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
         parameters: {}     
     recall:
         name: Recall
@@ -1135,11 +885,6 @@ spells:
             auto_resurrect: true
             range: 200
             auto_resurrect_invisible: false
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     levitate:
@@ -1160,11 +905,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     box:
@@ -1191,11 +931,6 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             fill: hollow
@@ -1210,11 +945,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters: {}
     night:
@@ -1229,11 +959,6 @@ spells:
             range: 200
             allow_day: true
             allow_glowstone: true
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             time: night
@@ -1249,11 +974,6 @@ spells:
             allow_area: true
             item_force: 1
             area_range: 20
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             entity_force: 3
             cooldown: 0
         parameters: {}
@@ -1269,11 +989,6 @@ spells:
             allow_passthrough: true
             range: 200
             allow_decend: true
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             type: descend
@@ -1295,11 +1010,6 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            target_through:
-            - water
-            - air
-            - snow
-            - stationary_water
             cooldown: 0
         parameters:
             type: enderman
