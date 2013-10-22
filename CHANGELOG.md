@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.5
+ - Implement XP as a casting cost
+ - Implement wand properties for protection and cost reduction
+
 ## 2.2.4
  - Allow use of /wand list and /spells from the console
  - Colorize active spell text

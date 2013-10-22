@@ -499,7 +499,8 @@ public class Spells implements Listener
 	
 	protected void cast(Player player)
 	{
-		if (Wand.isActive(player))
+		Wand wand = Wand.getActiveWand(player);
+		if (wand != null)
 		{
 			if (!hasWandPermission(player))
 			{
@@ -507,10 +508,12 @@ public class Spells implements Listener
 			}
 
 			Spell spell = getActiveSpell(player);
-
+			PlayerSpells playerSpells = getPlayerSpells(player);
 			if (spell != null)
 			{
-				spell.cast();
+				if (spell.cast()) {
+					wand.use(playerSpells);
+				}
 			}
 		}
 	}
@@ -715,11 +718,11 @@ public class Spells implements Listener
 		if (isWand) {
 			Wand newWand = new Wand(next);
 			if (playerSpells.storeInventory(event.getNewSlot(), next)) {
-				newWand.updateInventory(playerSpells, event.getNewSlot());
+				newWand.activate(playerSpells, event.getNewSlot());
 			}
 		} else if (wasWand) {
 			Wand oldWand = new Wand(previous);
-			oldWand.saveInventory(playerSpells);
+			oldWand.deactivate(playerSpells);
 
 			// Restore inventory
 			playerSpells.restoreInventory(event.getPreviousSlot(), previous);
@@ -729,7 +732,7 @@ public class Spells implements Listener
 			if (Wand.isWand(next)) {
 				Wand newWand = new Wand(next);
 				if (playerSpells.storeInventory(event.getNewSlot(), next)) {
-					newWand.updateInventory(playerSpells, event.getNewSlot());
+					newWand.activate(playerSpells, event.getNewSlot());
 				}
 			}
 		}
@@ -909,7 +912,7 @@ public class Spells implements Listener
 		if (playerSpells.hasStoredInventory()) {
 			if (Wand.isActive(player)) {
 				Wand wand = new Wand(player.getItemInHand());
-				wand.saveInventory(playerSpells);
+				wand.deactivate(playerSpells);
 			}
 			playerSpells.restoreInventory();
 		}

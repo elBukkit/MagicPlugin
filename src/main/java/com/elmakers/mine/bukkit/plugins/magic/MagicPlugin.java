@@ -219,9 +219,9 @@ public class MagicPlugin extends JavaPlugin
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.saveInventory(playerSpells);
+			wand.deactivate(playerSpells);
 			wand.addMaterial(material, data);
-			wand.updateInventory(playerSpells);
+			wand.activate(playerSpells);
 			return true;
 		}
 		Spell spell = playerSpells.getSpell(spellName);
@@ -231,9 +231,9 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		wand.saveInventory(playerSpells);
+		wand.deactivate(playerSpells);
 		wand.addSpell(spellName);
-		wand.updateInventory(playerSpells);
+		wand.activate(playerSpells);
 
 		return true;
 	}
@@ -270,15 +270,15 @@ public class MagicPlugin extends JavaPlugin
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.saveInventory(playerSpells);
+			wand.deactivate(playerSpells);
 			wand.removeMaterial(material, data);
-			wand.updateInventory(playerSpells);
+			wand.activate(playerSpells);
 			return true;
 		}
 
-		wand.saveInventory(playerSpells);
+		wand.deactivate(playerSpells);
 		wand.removeSpell(spellName);
-		wand.updateInventory(playerSpells);
+		wand.activate(playerSpells);
 
 		return true;
 	}

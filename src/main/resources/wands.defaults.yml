@@ -7,6 +7,13 @@ wands:
             - blink
             - fling
         cost_reduction: 1
+    fireball:
+        name: Fireball Wand
+        description: A temporary fireball wand
+        spells:
+            - fireball
+        uses: 10
+        cost_reduction: 0.75
     fire:
         name: Fire Wand
         description: Firebending!
@@ -22,6 +29,7 @@ wands:
             - torch
             - spawn
             - recall
+            - flare
     psychic:
         name: Psychic Wand
         description: Airbending!

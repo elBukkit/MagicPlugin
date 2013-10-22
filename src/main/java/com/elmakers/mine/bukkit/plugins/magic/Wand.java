@@ -41,6 +41,7 @@ public class Wand {
 	private float damageReductionFalling = 0;
 	private float damageReductionFire = 0;
 	private float damageReductionExplosions = 0;
+	private int uses = 0;
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
@@ -134,6 +135,15 @@ public class Wand {
 		updateWandSettings();
 	}
 
+	public int getUses() {
+		return uses;
+	}
+
+	public void setUses(int uses) {
+		this.uses = uses;
+		updateWandSettings();
+	}
+
 	protected void saveState() {
 		updateWandSettings();
 		InventoryUtils.setMeta(item, "magic_wand", wandSettings);
@@ -148,7 +158,8 @@ public class Wand {
 		 "&drpr=" + floatFormat.format(damageReductionProjectiles) +
 		 "&drfa=" + floatFormat.format(damageReductionFalling) +
 		 "&drfi=" + floatFormat.format(damageReductionFire) +
-		 "&drex=" + floatFormat.format(damageReductionExplosions);
+		 "&drex=" + floatFormat.format(damageReductionExplosions) +
+		 "&uses=" + uses;
 	}
 	
 	protected void loadState() {
@@ -179,6 +190,8 @@ public class Wand {
 					damageReductionFire = value;
 				} else if (key.equalsIgnoreCase("drex")) {
 					damageReductionExplosions = value;
+				} else if (key.equalsIgnoreCase("uses")) {
+					uses = (int)value;
 				}
 			}
 		}
@@ -321,10 +334,17 @@ public class Wand {
 			materialName = activeMaterial.getType() == Wand.EraseMaterial ? "erase" : activeMaterial.getType().name().toLowerCase();
 			materialName = " : " + materialName;
  		}
+		int remaining = getRemainingUses();
 		if (spell != null) {
-			setName(ChatColor.RED + spell.getName() + ChatColor.GRAY + materialName + ChatColor.WHITE + " (" + baseName + ")");
+			if (remaining > 0) {
+				setName(ChatColor.RED + "" + remaining + " Uses " + ChatColor.GOLD + spell.getName() + ChatColor.GRAY + materialName + ChatColor.WHITE + " (" + baseName + ")");
+			} else {
+				setName(ChatColor.GOLD + spell.getName() + ChatColor.GRAY + materialName + ChatColor.WHITE + " (" + baseName + ")");					
+			}
+		} else if (remaining > 0) {
+			setName(ChatColor.RED + "" + remaining + " Uses " + ChatColor.WHITE + "(" + baseName + ")");
 		} else {
-			setName(getBaseName());
+			setName(baseName);
 		}
 	}
 	
@@ -365,6 +385,10 @@ public class Wand {
 		if (materialCount > 0) {
 			lore.add("Has " + materialCount +" Materials");
 		}
+		int remaining = getRemainingUses();
+		if (remaining > 0) {
+			lore.add(ChatColor.RED + "" + remaining + " Uses Remaining");
+		}
 		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
 		if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
@@ -381,6 +405,15 @@ public class Wand {
 		saveState();
 	}
 	
+	public int getRemainingUses() {
+		int remaining = 0;
+		if (uses > 0) {
+			short durability = item.getDurability();
+			remaining = Math.max(0, uses - durability);
+		}
+		return remaining;
+	}
+	
 	public static Wand getActiveWand(Player player) {
 		ItemStack activeItem =  player.getInventory().getItemInHand();
 		return isWand(activeItem) ? new Wand(activeItem) : null;
@@ -392,15 +425,11 @@ public class Wand {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && item.getType() == Material.STICK && InventoryUtils.getMeta(item, "magic_wand").length() > 0;
+		return item != null && item.getType() == Material.STICK && InventoryUtils.getMeta(item, "magic_wand", "").length() > 0;
 	}
 
 	public static boolean isSpell(ItemStack item) {
-		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell").length() > 0;
-	}
-	
-	protected void updateInventory(PlayerSpells playerSpells) {
-		updateInventory(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
+		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell", "").length() > 0;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -623,6 +652,7 @@ public class Wand {
 			wand.setDamageReductionFalling((float)wandConfig.getDouble("damage_reduction_falling", 0));
 			wand.setDamageReductionFire((float)wandConfig.getDouble("damage_reduction_fire", 0));
 			wand.setDamageReductionExplosions((float)wandConfig.getDouble("damage_reduction_explosions", 0));
+			wand.setUses((int)wandConfig.getInt("uses", 0));
 		}
 		
 		wand.setName(defaultName);
@@ -692,9 +722,13 @@ public class Wand {
 		spells.setCostReduction(costReduction);
 	}
 	
-	public void activate(PlayerSpells spells) {
-		updateSpellSettings(spells);
-		updateInventory(spells);
+	public void activate(PlayerSpells playerSpells, int itemSlot) {
+		updateSpellSettings(playerSpells);
+		updateInventory(playerSpells, itemSlot);
+	}
+	
+	public void activate(PlayerSpells playerSpells) {
+		activate(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
 	}
 	
 	public void deactivate(PlayerSpells spells) {
@@ -707,5 +741,23 @@ public class Wand {
 		spells.setDamageReductionFire(0);
 		spells.setDamageReductionExplosions(0);
 		spells.setCostReduction(0);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void use(PlayerSpells playerSpells) {
+		if (uses > 0) {
+			short durability = item.getDurability();
+			if (durability >= uses - 1) {
+				deactivate(playerSpells);
+				playerSpells.restoreInventory();
+				PlayerInventory playerInventory = playerSpells.getPlayer().getInventory();
+				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
+				playerSpells.getPlayer().updateInventory();
+			} else {
+				item.setDurability((short)(durability + 1));
+				updateActiveName(playerSpells);
+				updateLore(getSpells().length, getMaterials().length);
+			}
+		}
 	}
 }

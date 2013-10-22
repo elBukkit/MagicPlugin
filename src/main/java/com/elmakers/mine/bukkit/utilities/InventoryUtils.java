@@ -109,13 +109,20 @@ public class InventoryUtils
 
         return stack;
 	}
-
+	
+	public static String getMeta(ItemStack stack, String tag, String defaultValue) {
+		String result = getMeta(stack, tag);
+		return result == null ? defaultValue : result;
+	}
+	
 	public static String getMeta(ItemStack stack, String tag) {
 		if (stack == null) return null;
 		String meta = null;
 		try {
 			Object craft = getHandle(stack);
+			if (craft == null) return null;
 			Object tagObject = getTag(craft);
+			if (tagObject == null) return null;
 			Method getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
 			meta = (String)getStringMethod.invoke(tagObject, tag);
 		} catch (Throwable ex) {
