@@ -62,7 +62,15 @@ public class PlayerSpells
 		}
 
 		storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Magic.Wand.StoredInventory");
-		storedInventory.setContents(inventory.getContents());
+		
+		// Make sure we don't store any spells or magical materials, just in case
+		ItemStack[] contents = inventory.getContents();
+		for (int i = 0; i < contents.length; i++) {
+			if (Wand.isWand(contents[i]) || Wand.isSpell(contents[i])) {
+				contents[i] = null;
+			}
+		}
+		storedInventory.setContents(contents);
 		inventory.clear();
 
 		if (keepItem != null) {
@@ -90,7 +98,7 @@ public class PlayerSpells
 
 		if (keepItem != null) {
 			ItemStack occupied = inventory.getItem(keepSlot);
-			inventory.setItem(keepSlot,keepItem);
+			inventory.setItem(keepSlot, keepItem);
 			if (occupied != null) {
 				HashMap<Integer, ItemStack> remainder = inventory.addItem(occupied);
 				for (ItemStack remains : remainder.values()) {
