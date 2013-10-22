@@ -825,7 +825,7 @@ spells:
         class: ConstructSpell
         properties:
             allow_max_range: true
-            range: 200
+            range: 64
             destructible:
             - air
             - stone
@@ -1106,7 +1106,22 @@ spells:
             - air
             - snow
             - stationary_water
-        parameters: {}        
+        parameters: {}
+    flare:
+        name: Flare
+        icon: FIREWORK
+        category: exploration
+        description: Fire off flares
+        class: FireworkSpell
+        properties:
+            allow_max_range: true
+            range: 10
+            target_through:
+            - water
+            - air
+            - snow
+            - stationary_water
+        parameters: {}     
     recall:
         name: Recall
         icon: compass

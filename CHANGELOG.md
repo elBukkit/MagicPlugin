@@ -6,6 +6,7 @@
  - Fix cycling materials if you use slot 8 to hold the wand
  - Add "cat" spell (OcelotSpell)
  - Add Head Shrinker spell
+ - Add flare spell
  
 ## 2.2.3
 
