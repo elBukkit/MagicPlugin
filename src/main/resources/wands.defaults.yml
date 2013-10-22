@@ -130,9 +130,10 @@ wands:
         description: Evil, evil stuff
         spells:
             - fire
-            - mob
+            - monster
             - disintegrate
             - portal
+            - shrink
     elder:
         name: Elder Wand
         description: The Uber Wand

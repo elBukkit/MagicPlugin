@@ -1092,6 +1092,21 @@ spells:
             - stationary_water
             cooldown: 500
         parameters: {}
+    shrink:
+        name: Head Shrinker
+        icon: skull
+        category: summoner
+        description: Shrink heads for fun and profit
+        class: ShunkenHeadSpell
+        properties:
+            allow_max_range: false
+            range: 200
+            target_through:
+            - water
+            - air
+            - snow
+            - stationary_water
+        parameters: {}        
     recall:
         name: Recall
         icon: compass
