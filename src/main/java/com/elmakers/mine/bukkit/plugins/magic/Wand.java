@@ -353,7 +353,7 @@ public class Wand {
 		// This is here to try and leave some room for materials, if present
 		// in a newly-created wand.
 		if (unpositionedMaterials.size() > 0) {
-			int materialSpaces = Math.max(unpositionedMaterials.size(), 3);
+			int materialSpaces = Math.min(unpositionedMaterials.size(), 3);
 			int remainingSpaces = 8 - materialSpaces;
 			while (unpositionedSpells.size() > 0 && remainingSpaces > 0) {
 				inventory.addItem(unpositionedSpells.remove());
