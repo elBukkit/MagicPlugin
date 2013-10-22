@@ -9,9 +9,9 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TorchSpell extends Spell 
 {
-	private boolean allowDay = true;
-	private boolean allowNight = true;
-	private boolean allowLightstone = true;
+	private boolean allowDay = false;
+	private boolean allowNight = false;
+	private boolean allowLightstone = false;
 
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
