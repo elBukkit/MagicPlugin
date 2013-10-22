@@ -322,7 +322,7 @@ public class MagicPlugin extends JavaPlugin
 				inventory.setItem(inventory.getHeldItemSlot(), wand.getItem());
 				if (playerSpells.storeInventory()) {
 					// Create spell inventory
-					wand.updateInventory(playerSpells);
+					wand.activate(playerSpells);
 				}
 			} else {
 				player.getInventory().addItem(wand.getItem());
@@ -353,7 +353,11 @@ public class MagicPlugin extends JavaPlugin
 			return false;
 		}
 
+		// Make it free
+		float previousReduction = playerSpells.getCostReduction();
+		playerSpells.setCostReduction(1);
 		spell.cast(parameters);
+		playerSpells.setCostReduction(previousReduction);
 
 		return true;
 	}
