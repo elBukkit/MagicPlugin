@@ -294,6 +294,12 @@ public class Wand {
 			List<String> lore = new ArrayList<String>();
 			lore.add(spell.getCategory());
 			lore.add(spell.getDescription());
+			List<CastingCost> costs = spell.getCosts();
+			if (costs != null) {
+				for (CastingCost cost : costs) {
+					lore.add(ChatColor.YELLOW + "Costs " + cost.getFullDescription());
+				}
+			}
 			meta.setLore(lore);
 			itemStack.setItemMeta(meta);
 			InventoryUtils.addGlow(itemStack);
