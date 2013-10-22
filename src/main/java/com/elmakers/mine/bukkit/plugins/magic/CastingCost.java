@@ -42,10 +42,6 @@ public class CastingCost
 	public Material getMaterial() {
 		return item;
 	}
-	
-	public int getXP() {
-		return xp;
-	}
 
 	public Map<String, Object> export()
 	{
@@ -57,20 +53,25 @@ public class CastingCost
 		return cost;
 	}
 
-	public boolean has(Player player, Inventory inventory)
+	public boolean has(PlayerSpells playerSpells)
 	{
-		boolean hasItem = item == null || inventory.contains(item, getAmount());
-		boolean hasXp = xp <= 0 || player.getTotalExperience() >= xp;
+		Player player = playerSpells.getPlayer();
+		Inventory inventory = playerSpells.getInventory();
+		boolean hasItem = item == null || inventory.contains(item, getAmount(playerSpells));
+		boolean hasXp = xp <= 0 || player.getTotalExperience() >= getXP(playerSpells);
 		return hasItem && hasXp;
 	}
 
-	public void use(Player player, Inventory inventory)
+	public void use(PlayerSpells playerSpells)
 	{
+		Player player = playerSpells.getPlayer();
+		Inventory inventory = playerSpells.getInventory();
 		if (item != null) {
 			ItemStack itemStack = getItemStack();
 			inventory.removeItem(itemStack);
 		}
-		if (xp > 0) {
+		int xp = getXP(playerSpells);
+		if (getXP(playerSpells) > 0) {
 			removeExperience(player, xp);
 		}
 	}
@@ -96,19 +97,48 @@ public class CastingCost
 		return (int)Math.ceil(amount);
 	}
 
+	protected int getXP()
+	{
+		return xp;
+	}
+
+	protected int getAmount(PlayerSpells spells)
+	{
+		double reducedAmount = amount;
+		float reduction = spells.getCostReduction();
+		if (reduction > 0) {
+			reducedAmount = (1.0f - reduction) * reducedAmount;
+		}
+		return (int)Math.ceil(reducedAmount);
+	}
+
+	protected int getXP(PlayerSpells spells)
+	{
+		float reducedAmount = xp;
+		float reduction = spells.getCostReduction();
+		if (reduction > 0) {
+			reducedAmount = (1.0f - reduction) * reducedAmount;
+		}
+		return (int)Math.ceil(reducedAmount);
+	}
+	
+	public boolean hasCosts(PlayerSpells spells) {
+		return (item != null && getAmount(spells) > 0) || getXP(spells) > 0;
+	}
+
 	public String getDescription()
 	{
-		if (item != null) {
+		if (item != null && getAmount() != 0) {
 			return item.name().toLowerCase().replace("_", " ").replace(" block", "");
 		}
 		return "XP";
 	}
 
-	public String getFullDescription()
+	public String getFullDescription(PlayerSpells spells)
 	{
 		if (item != null) {
-			return (int)amount + " " + item.name().toLowerCase().replace("_", " ").replace(" block", "");
+			return (int)getAmount(spells) + " " + item.name().toLowerCase().replace("_", " ").replace(" block", "");
 		}
-		return xp + " XP";
+		return getXP(spells) + " XP";
 	}
 }

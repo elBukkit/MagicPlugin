@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +34,16 @@ public class Wand {
 	private String wandSpells;
 	private String wandMaterials;
 	
+	private float costReduction = 0;
+	private float damageReduction = 0;
+	private float damageReductionPhysical = 0;
+	private float damageReductionProjectiles = 0;
+	private float damageReductionFalling = 0;
+	private float damageReductionFire = 0;
+	private float damageReductionExplosions = 0;
+	
+	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
+	
 	private static Material WandMaterial = Material.STICK;
 	public static Material EraseMaterial = Material.SULPHUR;
 	
@@ -60,10 +71,84 @@ public class Wand {
 		loadState();
 	}
 	
+	public float getCostReduction() {
+		return costReduction;
+	}
+
+	public void setCostReduction(float costReduction) {
+		this.costReduction = costReduction;
+		updateWandSettings();
+	}
+
+	public float getDamageReduction() {
+		return damageReduction;
+	}
+
+	public void setDamageReduction(float damageReduction) {
+		this.damageReduction = damageReduction;
+		updateWandSettings();
+	}
+
+	public float getDamageReductionPhysical() {
+		return damageReductionPhysical;
+	}
+
+	public void setDamageReductionPhysical(float damageReductionPhysical) {
+		this.damageReductionPhysical = damageReductionPhysical;
+		updateWandSettings();
+	}
+
+	public float getDamageReductionProjectiles() {
+		return damageReductionProjectiles;
+	}
+
+	public void setDamageReductionProjectiles(float damageReductionProjectiles) {
+		this.damageReductionProjectiles = damageReductionProjectiles;
+		updateWandSettings();
+	}
+
+	public float getDamageReductionFalling() {
+		return damageReductionFalling;
+	}
+
+	public void setDamageReductionFalling(float damageReductionFalling) {
+		this.damageReductionFalling = damageReductionFalling;
+		updateWandSettings();
+	}
+
+	public float getDamageReductionFire() {
+		return damageReductionFire;
+	}
+
+	public void setDamageReductionFire(float damageReductionFire) {
+		this.damageReductionFire = damageReductionFire;
+		updateWandSettings();
+	}
+
+	public float getDamageReductionExplosions() {
+		return damageReductionExplosions;
+	}
+
+	public void setDamageReductionExplosions(float damageReductionExplosions) {
+		this.damageReductionExplosions = damageReductionExplosions;
+		updateWandSettings();
+	}
+
 	protected void saveState() {
+		updateWandSettings();
 		InventoryUtils.setMeta(item, "magic_wand", wandSettings);
 		InventoryUtils.setMeta(item, "magic_materials", wandMaterials);
 		InventoryUtils.setMeta(item, "magic_spells", wandSpells);
+	}
+	
+	protected void updateWandSettings() {
+		wandSettings = "cr=" + floatFormat.format(costReduction) + 
+		 "&dr=" + floatFormat.format(damageReduction) +
+		 "&drph=" + floatFormat.format(damageReductionPhysical) +
+		 "&drpr=" + floatFormat.format(damageReductionProjectiles) +
+		 "&drfa=" + floatFormat.format(damageReductionFalling) +
+		 "&drfi=" + floatFormat.format(damageReductionFire) +
+		 "&drex=" + floatFormat.format(damageReductionExplosions);
 	}
 	
 	protected void loadState() {
@@ -73,6 +158,30 @@ public class Wand {
 		wandMaterials = wandMaterials == null ? "" : wandMaterials;
 		wandSpells = InventoryUtils.getMeta(item, "magic_spells");
 		wandSpells = wandSpells == null ? "" : wandSpells;
+		
+		String[] wandPairs = StringUtils.split(wandSettings, "&");
+		for (String pair : wandPairs) {
+			String[] keyValue = StringUtils.split(pair, "=");
+			if (keyValue.length == 2) {
+				String key = keyValue[0];
+				float value = Float.parseFloat(keyValue[1]);
+				if (key.equalsIgnoreCase("cr")) {
+					costReduction = value;
+				} else if (key.equalsIgnoreCase("dr")) {
+					damageReduction = value;
+				} else if (key.equalsIgnoreCase("drph")) {
+					damageReductionPhysical = value;
+				} else if (key.equalsIgnoreCase("drpr")) {
+					damageReductionProjectiles = value;
+				} else if (key.equalsIgnoreCase("drfa")) {
+					damageReductionFalling = value;
+				} else if (key.equalsIgnoreCase("drfi")) {
+					damageReductionFire = value;
+				} else if (key.equalsIgnoreCase("drex")) {
+					damageReductionExplosions = value;
+				}
+			}
+		}
 	}
 	
 	public ItemStack getItem() {
@@ -202,7 +311,7 @@ public class Wand {
 		return name;
 	}
 	
-	public void updateActiveName(PlayerSpells playerSpells) {
+	protected void updateActiveName(PlayerSpells playerSpells) {
 		Player player = playerSpells.getPlayer();
 		Spell spell = playerSpells.getMaster().getActiveSpell(player);
 		ItemStack activeMaterial = player.getInventory().getItem(8);
@@ -231,6 +340,23 @@ public class Wand {
 		// the Anvil will blow away.
 		saveState();
 	}
+	
+	protected String getLevelString(String prefix, float amount) {
+		String suffix = "I";
+
+		if (amount >= 1) {
+			suffix = "X";
+		} else if (amount > 0.8) {
+			suffix = "V";
+		} else if (amount > 0.6) {
+			suffix = "IV";
+		} else if (amount > 0.4) {
+			suffix = "III";
+		} else if (amount > 0.2) {
+			suffix = "II";
+		}
+		return prefix + " " + suffix;
+	}
 
 	protected void updateLore(int spellCount, int materialCount) {
 		ItemMeta meta = item.getItemMeta();
@@ -239,6 +365,13 @@ public class Wand {
 		if (materialCount > 0) {
 			lore.add("Has " + materialCount +" Materials");
 		}
+		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
+		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
+		if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
+		if (damageReductionProjectiles > 0) lore.add(ChatColor.GOLD + getLevelString("Projectile Protection", damageReductionProjectiles));
+		if (damageReductionFalling > 0) lore.add(ChatColor.GOLD + getLevelString("Fall Protection", damageReductionFalling));
+		if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
+		if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
@@ -266,7 +399,7 @@ public class Wand {
 		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell").length() > 0;
 	}
 	
-	public void updateInventory(PlayerSpells playerSpells) {
+	protected void updateInventory(PlayerSpells playerSpells) {
 		updateInventory(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
 	}
 
@@ -297,7 +430,9 @@ public class Wand {
 			List<CastingCost> costs = spell.getCosts();
 			if (costs != null) {
 				for (CastingCost cost : costs) {
-					lore.add(ChatColor.YELLOW + "Costs " + cost.getFullDescription());
+					if (cost.hasCosts(playerSpells)) {
+						lore.add(ChatColor.YELLOW + "Costs " + cost.getFullDescription(playerSpells));
+					}
 				}
 			}
 			meta.setLore(lore);
@@ -383,7 +518,6 @@ public class Wand {
 			inventory.addItem(stack);
 		}
 		
-		
 		// Add mapped materials, but if there is already something there just
 		// toss it in the inventory.
 		for (Entry<Integer, ItemStack> entry : positioned.entrySet()) {
@@ -415,7 +549,7 @@ public class Wand {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void saveInventory(PlayerSpells playerSpells) {
+	protected void saveInventory(PlayerSpells playerSpells) {
 		PlayerInventory inventory = playerSpells.getPlayer().getInventory();
 		
 		// Rebuild spell inventory, save in wand.
@@ -481,6 +615,14 @@ public class Wand {
 					}
 				}
 			}
+			
+			wand.setCostReduction((float)wandConfig.getDouble("cost_reduction", 0));
+			wand.setDamageReduction((float)wandConfig.getDouble("damage_reduction", 0));
+			wand.setDamageReductionPhysical((float)wandConfig.getDouble("damage_reduction_physical", 0));
+			wand.setDamageReductionProjectiles((float)wandConfig.getDouble("damage_reduction_projectiles", 0));
+			wand.setDamageReductionFalling((float)wandConfig.getDouble("damage_reduction_falling", 0));
+			wand.setDamageReductionFire((float)wandConfig.getDouble("damage_reduction_fire", 0));
+			wand.setDamageReductionExplosions((float)wandConfig.getDouble("damage_reduction_explosions", 0));
 		}
 		
 		wand.setName(defaultName);
@@ -538,5 +680,32 @@ public class Wand {
 	
 	public static Collection<ConfigurationNode> getWandTemplates() {
 		return wandTemplates.values();
+	}
+	
+	protected void updateSpellSettings(PlayerSpells spells) {
+		spells.setDamageReduction(damageReduction);
+		spells.setDamageReductionPhysical(damageReductionPhysical);
+		spells.setDamageReductionProjectiles(damageReductionProjectiles);
+		spells.setDamageReductionFalling(damageReductionFalling);
+		spells.setDamageReductionFire(damageReductionFire);
+		spells.setDamageReductionExplosions(damageReductionExplosions);
+		spells.setCostReduction(costReduction);
+	}
+	
+	public void activate(PlayerSpells spells) {
+		updateSpellSettings(spells);
+		updateInventory(spells);
+	}
+	
+	public void deactivate(PlayerSpells spells) {
+		saveInventory(spells);
+		
+		spells.setDamageReduction(0);
+		spells.setDamageReductionPhysical(0);
+		spells.setDamageReductionProjectiles(0);
+		spells.setDamageReductionFalling(0);
+		spells.setDamageReductionFire(0);
+		spells.setDamageReductionExplosions(0);
+		spells.setCostReduction(0);
 	}
 }

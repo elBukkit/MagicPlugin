@@ -851,7 +851,7 @@ public class Spells implements Listener
 			if (spells.storeInventory()) {
 				// Create spell inventory
 				Wand wand = new Wand(player.getItemInHand());
-				wand.updateInventory(spells);
+				wand.activate(spells);
 			}
 		}
 	}
@@ -884,7 +884,7 @@ public class Spells implements Listener
 			Wand wand = Wand.getActiveWand(player);
 			if (wand != null) {
 				PlayerSpells spells = getPlayerSpells(player);
-				wand.updateInventory(spells);
+				wand.activate(spells);
 				player.updateInventory();
 			}
 		}
@@ -923,7 +923,7 @@ public class Spells implements Listener
 		if (!spells.hasStoredInventory() && Wand.isActive(player)) {
 			if (spells.storeInventory()) {
 				Wand wand = new Wand(player.getItemInHand());
-				wand.updateInventory(spells);
+				wand.activate(spells);
 				
 				// Need an extra update here, probably something happens after inventory close.
 				new UpdateInventoryTask(player).runTaskLater(this.plugin, 2);
@@ -952,7 +952,7 @@ public class Spells implements Listener
 				inventory.setItem(inventory.getHeldItemSlot(), pickup);
 				if (spells.storeInventory()) {
 					// Create spell inventory
-					wand.updateInventory(spells);
+					wand.activate(spells);
 				}
 			} 
 		}

@@ -74,9 +74,9 @@ public class AbsorbSpell extends Spell
 					}
 				}
 				inventory.setItem(targetSlot, new ItemStack(Material.AIR, 1));
-				wand.saveInventory(playerSpells);
+				wand.deactivate(playerSpells);
 				addMaterialToWand(material, data);
-				wand.updateInventory(playerSpells);
+				wand.activate(playerSpells);
 				if (Wand.isSpell(currentItem) || currentItem.getType() == Wand.EraseMaterial) {
 					inventory.addItem(currentItem);
 				}

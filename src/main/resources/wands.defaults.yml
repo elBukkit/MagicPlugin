@@ -6,6 +6,14 @@ wands:
             - torch
             - blink
             - fling
+        cost_reduction: 1
+    fire:
+        name: Fire Wand
+        description: Firebending!
+        damage_reduction_fire: 1
+        spells:
+            - fire
+            - lava
     explorer:
         name: Exploring Wand
         description: For exploring
@@ -17,6 +25,7 @@ wands:
     psychic:
         name: Psychic Wand
         description: Airbending!
+        damage_reduction_falling: 0.9
         spells:
             - fling
             - blink
@@ -81,6 +90,7 @@ wands:
     battle:
         name: Battle Wand
         description: Has some moderate attack spells
+        damage_reduction_physical: 0.3
         spells:
             - arrow
             - fireball
@@ -137,6 +147,8 @@ wands:
     elder:
         name: Elder Wand
         description: The Uber Wand
+        cost_reduction: 1
+        damage_reduction: 1
         spells:
             - fill
             - absorb

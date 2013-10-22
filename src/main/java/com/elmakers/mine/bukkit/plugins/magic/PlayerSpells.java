@@ -25,6 +25,70 @@ public class PlayerSpells
 	private final List<Spell>                   quitListeners                  = new ArrayList<Spell>();
 	private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
 	private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
+	
+	private float costReduction = 0;
+	private float damageReduction = 0;
+	private float damageReductionPhysical = 0;
+	private float damageReductionProjectiles = 0;
+	private float damageReductionFalling = 0;
+	private float damageReductionFire = 0;
+	private float damageReductionExplosions = 0;
+
+	public float getDamageReductionPhysical() {
+		return damageReductionPhysical;
+	}
+
+	public void setDamageReductionPhysical(float damageReductionPhysical) {
+		this.damageReductionPhysical = damageReductionPhysical;
+	}
+
+	public float getCostReduction() {
+		return costReduction;
+	}
+
+	public void setCostReduction(float costReduction) {
+		this.costReduction = costReduction;
+	}
+
+	public float getDamageReduction() {
+		return damageReduction;
+	}
+
+	public void setDamageReduction(float damageReduction) {
+		this.damageReduction = damageReduction;
+	}
+
+	public float getDamageReductionProjectiles() {
+		return damageReductionProjectiles;
+	}
+
+	public void setDamageReductionProjectiles(float damageReductionProjectiles) {
+		this.damageReductionProjectiles = damageReductionProjectiles;
+	}
+
+	public float getDamageReductionFalling() {
+		return damageReductionFalling;
+	}
+
+	public void setDamageReductionFalling(float damageReductionFalling) {
+		this.damageReductionFalling = damageReductionFalling;
+	}
+
+	public float getDamageReductionFire() {
+		return damageReductionFire;
+	}
+
+	public void setDamageReductionFire(float damageReductionFire) {
+		this.damageReductionFire = damageReductionFire;
+	}
+
+	public float getDamageReductionExplosions() {
+		return damageReductionExplosions;
+	}
+
+	public void setDamageReductionExplosions(float damageReductionExplosions) {
+		this.damageReductionExplosions = damageReductionExplosions;
+	}
 
 	public boolean hasStoredInventory() {
 		return storedInventory != null;
@@ -213,6 +277,43 @@ public class PlayerSpells
 
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
+		// First check for damage reduction
+		float reduction = damageReduction;
+		switch (event.getCause()) {
+			case CONTACT:
+			case ENTITY_ATTACK:
+				reduction += damageReductionPhysical;
+				break;
+			case PROJECTILE:
+				reduction += damageReductionProjectiles;
+				break;
+			case FALL:
+				reduction += damageReductionFalling;
+				break;
+			case FIRE:
+			case FIRE_TICK:
+			case LAVA:
+				reduction += damageReductionFire;
+				break;
+			case BLOCK_EXPLOSION:
+			case ENTITY_EXPLOSION:
+				reduction += damageReductionExplosions;
+			default:
+				break;
+		}
+		
+		if (reduction >= 1) {
+			event.setCancelled(true);
+			return;
+		}
+		
+		if (reduction > 0) {
+			int newDamage = (int)Math.floor((1.0f - reduction) * event.getDamage());
+			if (newDamage == 0) newDamage = 1;
+			event.setDamage(newDamage);
+		}
+		
+		// Send on to any registered spells
 		List<Spell> active = new ArrayList<Spell>();
 		active.addAll(damageListeners);
 		for (Spell listener : active)
@@ -251,5 +352,9 @@ public class PlayerSpells
 	
 	public Spells getMaster() {
 		return master;
+	}
+	
+	public Inventory getInventory() {
+		return hasStoredInventory() ? getStoredInventory() : player.getInventory();
 	}
 }
