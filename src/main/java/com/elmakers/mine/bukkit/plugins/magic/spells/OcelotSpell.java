@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class OcelotSpell extends Spell
 {
-	private static int maxOcelots = 5;
+	private static int maxOcelots = 30;
 	protected List<Ocelot> ocelots = new ArrayList<Ocelot>();
 
 	public Ocelot newOcelot(Target target)
