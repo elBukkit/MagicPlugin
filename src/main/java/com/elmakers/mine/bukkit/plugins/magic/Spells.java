@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
@@ -335,6 +336,31 @@ public class Spells implements Listener
 	{
 		this.plugin = plugin;
 		load();
+		
+		// Set up the Wand-tracking timer
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+			public void run() {
+				for (PlayerSpells spells : playerSpells.values()) {
+					Player player = spells.getPlayer();
+					if (player.isOnline()) { 
+						int xpRegeneration = spells.getXpRegeneration();
+						int xpMax = spells.getXPMax();
+						if (xpRegeneration > 0 && player.getTotalExperience() < xpMax) {
+							player.giveExp(xpRegeneration);
+						}
+						int healthRegeneration = spells.getHealthRegeneration();
+						if (healthRegeneration > 0 && player.getHealth() < 20) {
+							player.setHealth(player.getHealth() + healthRegeneration);
+						}
+						int hungerRegeneration = spells.getHungerRegeneration();
+						if (hungerRegeneration > 0 && player.getFoodLevel() < 20) {
+							player.setExhaustion(0);
+							player.setFoodLevel(player.getFoodLevel() + hungerRegeneration);
+						}
+					}
+				}
+			}
+		}, 0, 20);
 	}
 
 	public void load()

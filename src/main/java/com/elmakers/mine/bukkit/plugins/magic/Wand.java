@@ -43,6 +43,11 @@ public class Wand {
 	private float damageReductionExplosions = 0;
 	private int uses = 0;
 	
+	private int xpRegeneration = 0;
+	private int xpMax = 0;
+	private int healthRegeneration = 0;
+	private int hungerRegeneration = 0;
+	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	private static Material WandMaterial = Material.STICK;
@@ -72,6 +77,42 @@ public class Wand {
 		loadState();
 	}
 	
+	public int getXpRegeneration() {
+		return xpRegeneration;
+	}
+
+	public void setXPRegeneration(int xpRegeneration) {
+		this.xpRegeneration = xpRegeneration;
+		updateWandSettings();
+	}
+
+	public int getXPMax() {
+		return xpMax;
+	}
+
+	public void setXPMax(int xpMax) {
+		this.xpMax = xpMax;
+		updateWandSettings();
+	}
+
+	public int getHealthRegeneration() {
+		return healthRegeneration;
+	}
+
+	public void setHealthRegeneration(int healthRegeneration) {
+		this.healthRegeneration = healthRegeneration;
+		updateWandSettings();
+	}
+
+	public int getHungerRegeneration() {
+		return hungerRegeneration;
+	}
+
+	public void setHungerRegeneration(int hungerRegeneration) {
+		this.hungerRegeneration = hungerRegeneration;
+		updateWandSettings();
+	}
+
 	public float getCostReduction() {
 		return costReduction;
 	}
@@ -159,6 +200,11 @@ public class Wand {
 		 "&drfa=" + floatFormat.format(damageReductionFalling) +
 		 "&drfi=" + floatFormat.format(damageReductionFire) +
 		 "&drex=" + floatFormat.format(damageReductionExplosions) +
+		 "&drex=" + floatFormat.format(damageReductionExplosions) +
+		 "&xpre=" + xpRegeneration +
+		 "&xpmax=" + xpMax +
+		 "&hereg=" + healthRegeneration +
+		 "&hureg=" + hungerRegeneration +
 		 "&uses=" + uses;
 	}
 	
@@ -192,6 +238,14 @@ public class Wand {
 					damageReductionExplosions = value;
 				} else if (key.equalsIgnoreCase("uses")) {
 					uses = (int)value;
+				} else if (key.equalsIgnoreCase("xpre")) {
+					xpRegeneration = (int)value;
+				} else if (key.equalsIgnoreCase("xpmax")) {
+					xpMax = (int)value;
+				} else if (key.equalsIgnoreCase("hereg")) {
+					healthRegeneration = (int)value;
+				} else if (key.equalsIgnoreCase("hureg")) {
+					hungerRegeneration = (int)value;
 				}
 			}
 		}
@@ -396,6 +450,9 @@ public class Wand {
 		if (damageReductionFalling > 0) lore.add(ChatColor.GOLD + getLevelString("Fall Protection", damageReductionFalling));
 		if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
 		if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
+		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Protection", xpRegeneration / 100));
+		if (healthRegeneration > 0) lore.add(ChatColor.GOLD + "Health Regeneration");
+		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + "No Hunger");
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
@@ -652,6 +709,10 @@ public class Wand {
 			wand.setDamageReductionFalling((float)wandConfig.getDouble("damage_reduction_falling", 0));
 			wand.setDamageReductionFire((float)wandConfig.getDouble("damage_reduction_fire", 0));
 			wand.setDamageReductionExplosions((float)wandConfig.getDouble("damage_reduction_explosions", 0));
+			wand.setXPRegeneration(wandConfig.getInt("xp_regeneration", 0));
+			wand.setXPMax(wandConfig.getInt("xp_max", 0));
+			wand.setHealthRegeneration(wandConfig.getInt("health_regeneration", 0));
+			wand.setHungerRegeneration(wandConfig.getInt("hunger_regeneration", 0));
 			wand.setUses((int)wandConfig.getInt("uses", 0));
 		}
 		
@@ -720,6 +781,10 @@ public class Wand {
 		spells.setDamageReductionFire(damageReductionFire);
 		spells.setDamageReductionExplosions(damageReductionExplosions);
 		spells.setCostReduction(costReduction);
+		spells.setXPRegeneration(xpRegeneration);
+		spells.setXPMax(xpMax);
+		spells.setHealthRegeneration(healthRegeneration);
+		spells.setHungerRegeneration(hungerRegeneration);
 	}
 	
 	public void activate(PlayerSpells playerSpells, int itemSlot) {
@@ -741,6 +806,10 @@ public class Wand {
 		spells.setDamageReductionFire(0);
 		spells.setDamageReductionExplosions(0);
 		spells.setCostReduction(0);
+		spells.setXPRegeneration(0);
+		spells.setXPMax(0);
+		spells.setHealthRegeneration(0);
+		spells.setHungerRegeneration(0);
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -1,5 +1,5 @@
 general:
-    silent: false
+    silent: true
     target_through:
     - water
     - air

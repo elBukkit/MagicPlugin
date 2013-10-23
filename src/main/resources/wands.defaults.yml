@@ -18,12 +18,16 @@ wands:
         name: Fire Wand
         description: Firebending!
         damage_reduction_fire: 1
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - fire
             - lava
     explorer:
         name: Exploring Wand
         description: For exploring
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - tesseract
             - torch
@@ -34,6 +38,8 @@ wands:
         name: Psychic Wand
         description: Airbending!
         damage_reduction_falling: 0.9
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - fling
             - blink
@@ -43,6 +49,8 @@ wands:
     painter:
         name: Painting Wand
         description: For the designer in all of us
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - paint
         materials:
@@ -99,6 +107,8 @@ wands:
         name: Battle Wand
         description: Has some moderate attack spells
         damage_reduction_physical: 0.3
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - arrow
             - fireball
@@ -107,6 +117,8 @@ wands:
     mining:
         name: Mining Wand
         description: For mining
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - peek
             - mine
@@ -114,6 +126,8 @@ wands:
     farming:
         name: Farming Wand
         description: For farming
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - farm
             - fill
@@ -130,6 +144,8 @@ wands:
     elementalist:
         name: Elementalist Wand
         description: A master of the elements
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - sandblast
             - recurse
@@ -146,6 +162,8 @@ wands:
     necromancy:
         name: Necromancer Wand
         description: Evil, evil stuff
+        xp_regeneration: 1
+        xp_max: 100
         spells:
             - fire
             - monster
@@ -157,6 +175,10 @@ wands:
         description: The Uber Wand
         cost_reduction: 1
         damage_reduction: 1
+        xp_regeneration: 100
+        xp_max: 1000
+        health_regeneration: 1
+        hunger_regeneration: 1
         spells:
             - fill
             - absorb

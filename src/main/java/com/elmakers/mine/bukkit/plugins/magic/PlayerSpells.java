@@ -33,6 +33,43 @@ public class PlayerSpells
 	private float damageReductionFalling = 0;
 	private float damageReductionFire = 0;
 	private float damageReductionExplosions = 0;
+	
+	private int xpRegeneration = 0;
+	private int xpMax = 0;
+	private int healthRegeneration = 0;
+	private int hungerRegeneration = 0;
+
+	public int getXpRegeneration() {
+		return xpRegeneration;
+	}
+
+	public void setXPRegeneration(int xpRegeneration) {
+		this.xpRegeneration = xpRegeneration;
+	}
+
+	public int getXPMax() {
+		return xpMax;
+	}
+
+	public void setXPMax(int xpMax) {
+		this.xpMax = xpMax;
+	}
+
+	public int getHealthRegeneration() {
+		return healthRegeneration;
+	}
+
+	public void setHealthRegeneration(int healthRegeneration) {
+		this.healthRegeneration = healthRegeneration;
+	}
+
+	public int getHungerRegeneration() {
+		return hungerRegeneration;
+	}
+
+	public void setHungerRegeneration(int hungerRegeneration) {
+		this.hungerRegeneration = hungerRegeneration;
+	}
 
 	public float getDamageReductionPhysical() {
 		return damageReductionPhysical;
