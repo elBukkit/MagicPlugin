@@ -350,12 +350,12 @@ public class Spells implements Listener
 						}
 						int healthRegeneration = spells.getHealthRegeneration();
 						if (healthRegeneration > 0 && player.getHealth() < 20) {
-							player.setHealth(player.getHealth() + healthRegeneration);
+							player.setHealth(Math.min(20, player.getHealth() + healthRegeneration));
 						}
 						int hungerRegeneration = spells.getHungerRegeneration();
 						if (hungerRegeneration > 0 && player.getFoodLevel() < 20) {
 							player.setExhaustion(0);
-							player.setFoodLevel(player.getFoodLevel() + hungerRegeneration);
+							player.setFoodLevel(Math.min(20, player.getFoodLevel() + hungerRegeneration));
 						}
 					}
 				}
