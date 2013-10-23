@@ -558,7 +558,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		World world = player.getWorld();
 
 		// search for a spot to stand
-		while (4 < y && y < 125)
+		while (4 < y && y < 253)
 		{
 			Block block = world.getBlockAt(x, y, z);
 			Block blockOneUp = world.getBlockAt(x, y + 1, z);

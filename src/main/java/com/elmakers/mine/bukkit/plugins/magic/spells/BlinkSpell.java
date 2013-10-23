@@ -183,7 +183,7 @@ public class BlinkSpell extends Spell
 	public void onLoad(ConfigurationNode properties)  
 	{
 		autoAscend = properties.getBoolean("allow_ascend", autoAscend);
-		autoDescend = properties.getBoolean("allow_decend", autoDescend);
+		autoDescend = properties.getBoolean("allow_descend", autoDescend);
 		autoPassthrough = properties.getBoolean("allow_passthrough", autoPassthrough);
 	}
 }

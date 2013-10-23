@@ -437,7 +437,7 @@ spells:
             allow_ascend: true
             allow_passthrough: true
             range: 200
-            allow_decend: true
+            allow_descend: true
             cooldown: 0
         parameters:
             type: ascend
