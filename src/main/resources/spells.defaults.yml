@@ -454,8 +454,24 @@ spells:
             range: 200
             cooldown: 0
         parameters:
+            size: 6
+            fuse: 30
+        costs:
+        - xp: 20
+    frag:
+        name: frag Grenade
+        icon: redstone_block
+        category: combat
+        description: Place a mega frag grenade
+        class: GrenadeSpell
+        properties:
+            allow_max_range: false
+            range: 200
+            cooldown: 0
+        parameters:
             size: 32
             fuse: 160
+            fire: true
         costs:
         - xp: 20
     superblob:

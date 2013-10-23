@@ -18,7 +18,7 @@ public class GrenadeSpell extends Spell
 	{
 		int size = parameters.getInt("size", defaultSize);
 		int fuse = parameters.getInt("fuse", 80);
-		boolean useFire = parameters.getBoolean("fire", true);
+		boolean useFire = parameters.getBoolean("fire", false);
 
 		Block target = getNextBlock();
 		Location loc = target.getLocation();
