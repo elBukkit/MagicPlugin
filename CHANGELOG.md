@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.2.6
+
+ - Some blink fixes
+ - Add special mode to "shrink" to give you your own head.
+
 ## 2.2.5
  - Implement XP as a casting cost
  - Implement wand properties for protection and cost reduction

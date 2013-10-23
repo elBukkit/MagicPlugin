@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -20,6 +21,12 @@ public class ShunkenHeadSpell extends Spell
 	@Override
 	public boolean onCast(ConfigurationNode parameters) 
 	{
+		String castType = parameters.getString("type");
+		if (castType != null && castType.equalsIgnoreCase("self")) {
+			dropHead(player.getLocation(), player.getName(), null);
+			return true;
+		}
+		
 		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
 		if (target == null || ! target.isEntity() || !(target.getEntity() instanceof LivingEntity))
@@ -27,7 +34,7 @@ public class ShunkenHeadSpell extends Spell
 			return false;
 		}
 		
-	Entity targetEntity = target.getEntity();
+		Entity targetEntity = target.getEntity();
 		LivingEntity li = (LivingEntity)targetEntity;
 		String ownerName = null;
 		String itemName = null;
@@ -116,19 +123,23 @@ public class ShunkenHeadSpell extends Spell
 			
 		}
 		if (ownerName != null && li.isDead()) {
-			@SuppressWarnings("deprecation")
-			ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
-			shrunkenHead = InventoryUtils.getCopy(shrunkenHead);
-			ItemMeta itemMeta = shrunkenHead.getItemMeta();
-			if (itemName != null) {
-				itemMeta.setDisplayName(itemName);
-			}
-			shrunkenHead.setItemMeta(itemMeta);
-			InventoryUtils.setMeta(shrunkenHead, "SkullOwner", ownerName);
-			targetEntity.getWorld().dropItemNaturally(targetEntity.getLocation(), shrunkenHead);
+			dropHead(targetEntity.getLocation(), ownerName, itemName);
 		}
 		castMessage(player, "Boogidie Boogidie");
 		return true;
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected void dropHead(Location location, String ownerName, String itemName) {
+		ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+		shrunkenHead = InventoryUtils.getCopy(shrunkenHead);
+		ItemMeta itemMeta = shrunkenHead.getItemMeta();
+		if (itemName != null) {
+			itemMeta.setDisplayName(itemName);
+		}
+		shrunkenHead.setItemMeta(itemMeta);
+		InventoryUtils.setMeta(shrunkenHead, "SkullOwner", ownerName);
+		location.getWorld().dropItemNaturally(location, shrunkenHead);
 	}
 
 	@Override
