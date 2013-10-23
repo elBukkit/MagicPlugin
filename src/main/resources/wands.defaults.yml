@@ -180,28 +180,29 @@ wands:
         health_regeneration: 1
         hunger_regeneration: 1
         spells:
+            - fling
+            - blink
+            - recurse
+            - arrowrain
+            - kaboom
+            - fireball
+            - storm
             - fill
             - absorb
             - bridge
             - pillar
-            - recurse
             - rewind
             - icbm
-            - arrowrain
             - inferno
             - superblob
             - push
             - pull
             - force
-            - fling
             - levitate
-            - storm
             - mob
             - torch
-            - blink
             - shell
             - box
-            - kaboom
             - gather
         materials:
             - lava
