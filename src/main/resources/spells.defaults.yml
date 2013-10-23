@@ -459,7 +459,7 @@ spells:
         costs:
         - xp: 20
     frag:
-        name: frag Grenade
+        name: Frag Grenade
         icon: redstone_block
         category: combat
         description: Place a mega frag grenade
