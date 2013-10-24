@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -723,6 +724,15 @@ public class Spells implements Listener
 	/*
 	 * Listeners / callbacks
 	 */
+	@EventHandler
+	public void onContainerClick(InventoryDragEvent event) {
+		// this is a huge hack! :\
+		// I apologize for any weird behavior this causes.
+		// Bukkit, unfortunately, will blow away NBT data for anything you drag
+		// Which will nuke a wand or spell.
+		event.setCancelled(true);
+	}
+	
 	@EventHandler
 	public void onPlayerEquip(PlayerItemHeldEvent event)
 	{
