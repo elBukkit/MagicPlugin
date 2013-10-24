@@ -730,7 +730,14 @@ public class Spells implements Listener
 		// I apologize for any weird behavior this causes.
 		// Bukkit, unfortunately, will blow away NBT data for anything you drag
 		// Which will nuke a wand or spell.
-		event.setCancelled(true);
+		// To make matters worse, Bukkit passes a copy of the item in the event, so we can't 
+		// even check for metadata and only cancel the event if it involves one of our special items.
+		// The best I can do is look for metadata at all, since Bukkit will retain the name and lore.
+		ItemStack oldStack = event.getOldCursor();
+		if (oldStack != null && oldStack.hasItemMeta()) {
+			event.setCancelled(true);
+			return;
+		}
 	}
 	
 	@EventHandler
