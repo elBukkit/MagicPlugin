@@ -204,6 +204,7 @@ wands:
             - shell
             - box
             - gather
+            - frag
         materials:
             - lava
             - water

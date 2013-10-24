@@ -359,7 +359,8 @@ spells:
         properties:
             cooldown: 0
         parameters:
-            count: '4'
+            count: 6
+            fire: true
         costs:
         - xp: 20
     sign:
