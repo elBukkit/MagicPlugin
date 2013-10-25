@@ -3,7 +3,9 @@
 ## 2.2.6
 
  - Some blink fixes
- - Add special mode to "shrink" to give you your own head.
+ - Add special mode to "shrink" to give you your own head, or any named player's head.
+ - Add emeralds and nether quartz to the mine spell
+ - Make levitate just put you in fly mode. Saved the old spell as "ThrustSpell" just in case anyone wants it.
 
 ## 2.2.5
  - Implement XP as a casting cost
