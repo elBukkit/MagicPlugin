@@ -16,9 +16,9 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MineSpell extends Spell
 {
-	static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 74, 21";
-	static final String		DEFAULT_MINED		= "14,15,263,264,331,331,351";
-	static final String		DEFAULT_DATA		= "0 ,0 ,0  ,0  ,0  ,0  ,4";
+	static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 74, 21 ,129,153";
+	static final String		DEFAULT_MINED		= "14,15,263,264,331,331,351,388,406";
+	static final String		DEFAULT_DATA		= "0 ,0 ,0  ,0  ,0  ,0  ,4  ,0  ,1";
 
 	private List<Material>	mineableMaterials	= new ArrayList<Material>();
 	private List<Material>	minedMaterials	= new ArrayList<Material>();
