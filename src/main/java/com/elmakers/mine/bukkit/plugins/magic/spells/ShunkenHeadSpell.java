@@ -26,6 +26,11 @@ public class ShunkenHeadSpell extends Spell
 			dropHead(player.getLocation(), player.getName(), null);
 			return true;
 		}
+		String giveName = parameters.getString("name");
+		if (giveName != null) {
+			dropHead(player.getLocation(), giveName, null);
+			return true;
+		}
 		
 		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
@@ -53,71 +58,71 @@ public class ShunkenHeadSpell extends Spell
 			switch (li.getType()) {
 				case BLAZE:
 					ownerName = "MHF_Blaze";
-					itemName = "Blaze Skull";
+					itemName = "Shrunken Blaze Head";
 					break;
 				case CAVE_SPIDER:
 					ownerName = "MHF_CaveSpider";
-					itemName = "Cave Spider Skull";
+					itemName = "Shrunken Cave Spider Head";
 					break;
 				case CHICKEN:
 					ownerName = "MHF_Chicken";
-					itemName = "Chicken Skull";
+					itemName = "Shrunken Chicken Head";
 					break;
 				case COW:
 					ownerName = "MHF_Cow";
-					itemName = "Cow Skull";
+					itemName = "Shrunken Cow Head";
 					break;
 				case ENDERMAN:
 					ownerName = "MHF_Enderman";
-					itemName = "Enderman Skull";
+					itemName = "Shrunken Enderman Head";
 					break;
 				case GHAST:
 					ownerName = "MHF_Ghast";
-					itemName = "Ghast Skull";
+					itemName = "Shrunken Ghast Head";
 					break;
 				case IRON_GOLEM:
 					ownerName = "MHF_Golem";
-					itemName = "Golem Skull";
+					itemName = "Shrunken Golem Head";
 					break;
 				case MAGMA_CUBE:
 					ownerName = "MHF_LavaSlime";
-					itemName = "Magma Cube Skull";
+					itemName = "Shrunken Magma Cube Head";
 					break;
 				case MUSHROOM_COW:
 					ownerName = "MHF_MushroomCow";
-					itemName = "Mushroom Cow Skull";
+					itemName = "Shrunken Mushroom Cow Head";
 					break;
 				case OCELOT:
 					ownerName = "MHF_Ocelot";
-					itemName = "Ocelot Skull";
+					itemName = "Shrunken Ocelot Head";
 					break;
 				case PIG:
 					ownerName = "MHF_Pig";
-					itemName = "Pig Skull";
+					itemName = "Shrunken Pig Head";
 					break;
 				case PIG_ZOMBIE:
 					ownerName = "MHF_PigZombie";
-					itemName = "Zombie Pigman Skull";
+					itemName = "Shrunken Zombie Pigman Head";
 					break;
 				case SHEEP:
 					ownerName = "MHF_Sheep";
-					itemName = "Sheep Skull";
+					itemName = "Shrunken Sheep Head";
 					break;
 				case SLIME:
 					ownerName = "MHF_Slime";
-					itemName = "Slime Skull";
+					itemName = "Shrunken Slime Head";
 					break;
 				case SPIDER:
 					ownerName = "MHF_Spider";
-					itemName = "Spider Skull";
+					itemName = "Shrunken Spider Head";
 					break;
 				case SQUID:
 					ownerName = "MHF_Squid";
-					itemName = "Squid Skull";
+					itemName = "Shrunken Squid Head";
 					break;
 				case VILLAGER:
 					ownerName = "MHF_Villager";
-					itemName = "Villager Skull";
+					itemName = "Shrunken Villager Head";
 				default:
 			}
 			
