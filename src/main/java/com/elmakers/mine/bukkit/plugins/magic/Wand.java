@@ -55,7 +55,7 @@ public class Wand {
 	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
-	private static final String propertiesFileName = "wands";
+	private static final String propertiesFileName = "wands.yml";
 	private static final String propertiesFileNameDefaults = "wands.defaults.yml";
 	
 	public Wand() {
