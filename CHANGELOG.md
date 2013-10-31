@@ -1,8 +1,8 @@
 # CHANGELOG
 
-## 2.2.7
+## 2.3.0
 
- -
+ - Implement new Wand inventory system.
 
 ## 2.2.6
 
