@@ -21,6 +21,7 @@ public class PlayerSpells
 	protected Spells master;
 	protected HashMap<String, Spell> spells = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
+	private Wand								activeWand					   = null;
 	private final List<Spell>                   movementListeners              = new ArrayList<Spell>();
 	private final List<Spell>                   quitListeners                  = new ArrayList<Spell>();
 	private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
@@ -393,5 +394,13 @@ public class PlayerSpells
 	
 	public Inventory getInventory() {
 		return hasStoredInventory() ? getStoredInventory() : player.getInventory();
+	}
+	
+	public Wand getActiveWand() {
+		return activeWand;
+	}
+	
+	public void setActiveWand(Wand activeWand) {
+		this.activeWand = activeWand;
 	}
 }

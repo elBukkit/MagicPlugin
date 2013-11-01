@@ -604,7 +604,7 @@ public class Spells implements Listener
 		// Some hackery to try and get a tooltip to show up on item switch
 		Wand wand = Wand.getActiveWand(player);
 		PlayerSpells playerSpells = getPlayerSpells(player);
-		wand.updateActiveName(playerSpells);
+		wand.updateName(playerSpells);
 		
 		player.updateInventory();
 
@@ -687,7 +687,7 @@ public class Spells implements Listener
 		inventory.setContents(contents);
 		// Some hackery to try and get a tooltip to show up on item switch
 		Wand wand = Wand.getActiveWand(player);
-		wand.updateActiveName(playerSpells);
+		wand.updateName(playerSpells);
 		player.updateInventory();
 	}
 

@@ -312,13 +312,13 @@ public class MagicPlugin extends JavaPlugin
 
 		if (!holdingWand)
 		{
-			Wand wand = Wand.createWand(wandName);
+			PlayerSpells playerSpells = spells.getPlayerSpells(player);
+			Wand wand = Wand.createWand(playerSpells, wandName);
 		
 			// Place directly in hand if possible
 			PlayerInventory inventory = player.getInventory();
 			ItemStack inHand = inventory.getItemInHand();
 			if (inHand == null || inHand.getType() == Material.AIR) {
-				PlayerSpells playerSpells = spells.getPlayerSpells(player);
 				inventory.setItem(inventory.getHeldItemSlot(), wand.getItem());
 				if (playerSpells.storeInventory()) {
 					// Create spell inventory

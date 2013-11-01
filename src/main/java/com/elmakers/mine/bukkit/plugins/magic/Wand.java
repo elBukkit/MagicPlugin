@@ -34,6 +34,10 @@ public class Wand {
 	private String wandSpells;
 	private String wandMaterials;
 	
+	private String activeSpell;
+	private String activeMaterial;
+	private String wandName;
+	
 	private float costReduction = 0;
 	private float damageReduction = 0;
 	private float damageReductionPhysical = 0;
@@ -41,6 +45,7 @@ public class Wand {
 	private float damageReductionFalling = 0;
 	private float damageReductionFire = 0;
 	private float damageReductionExplosions = 0;
+	private boolean hasInventory = true;
 	private int uses = 0;
 	
 	private int xpRegeneration = 0;
@@ -57,6 +62,7 @@ public class Wand {
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
 	private static final String propertiesFileName = "wands.yml";
 	private static final String propertiesFileNameDefaults = "wands.defaults.yml";
+	private static final String defaultWandName = "Wand";
 	
 	public Wand() {
 		item = new ItemStack(WandMaterial);
@@ -69,6 +75,9 @@ public class Wand {
 		wandSettings = " ";
 		wandSpells = "";
 		wandMaterials = "";
+		activeSpell = "";
+		activeMaterial = "";
+		wandName = defaultWandName;
 		saveState();
 	}
 	
@@ -115,6 +124,15 @@ public class Wand {
 
 	public float getCostReduction() {
 		return costReduction;
+	}
+	
+	public boolean getHasInventory() {
+		return hasInventory;
+	}
+	
+	public void setHasInventory(boolean hasInventory) {
+		this.hasInventory = hasInventory;
+		updateWandSettings();
 	}
 
 	public void setCostReduction(float costReduction) {
@@ -190,6 +208,9 @@ public class Wand {
 		InventoryUtils.setMeta(item, "magic_wand", wandSettings);
 		InventoryUtils.setMeta(item, "magic_materials", wandMaterials);
 		InventoryUtils.setMeta(item, "magic_spells", wandSpells);
+		InventoryUtils.setMeta(item, "magic_active_spell", activeSpell);
+		InventoryUtils.setMeta(item, "magic_active_material", activeMaterial);
+		InventoryUtils.setMeta(item, "magic_wand_name", wandName);
 	}
 	
 	protected void updateWandSettings() {
@@ -205,7 +226,8 @@ public class Wand {
 		 "&xpmax=" + xpMax +
 		 "&hereg=" + healthRegeneration +
 		 "&hureg=" + hungerRegeneration +
-		 "&uses=" + uses;
+		 "&uses=" + uses +
+		 "&hasi=" + (hasInventory ? 1 : 0);
 	}
 	
 	protected void loadState() {
@@ -215,6 +237,12 @@ public class Wand {
 		wandMaterials = wandMaterials == null ? "" : wandMaterials;
 		wandSpells = InventoryUtils.getMeta(item, "magic_spells");
 		wandSpells = wandSpells == null ? "" : wandSpells;
+		activeSpell = InventoryUtils.getMeta(item, "magic_active_spell");
+		activeSpell = activeSpell == null ? "" : activeSpell;
+		activeMaterial = InventoryUtils.getMeta(item, "magic_active_material");
+		activeMaterial = activeMaterial == null ? "" : activeMaterial;
+		wandName = InventoryUtils.getMeta(item, "magic_wand_name");
+		wandName = wandName == null ? defaultWandName : wandName;
 		
 		String[] wandPairs = StringUtils.split(wandSettings, "&");
 		for (String pair : wandPairs) {
@@ -246,6 +274,8 @@ public class Wand {
 					healthRegeneration = (int)value;
 				} else if (key.equalsIgnoreCase("hureg")) {
 					hungerRegeneration = (int)value;
+				} else if (key.equalsIgnoreCase("hasi")) {
+					hasInventory = (int)value != 0;
 				}
 			}
 		}
@@ -270,6 +300,10 @@ public class Wand {
 			}
 		}
 		setMaterials(materialMap);
+		
+		if (materialString.equalsIgnoreCase(activeMaterial)) {
+			activeMaterial = "";
+		}
 	}
 	
 	public void addMaterial(Material material, int data) {
@@ -293,6 +327,9 @@ public class Wand {
 			if (!pieces[0].equals(materialString)) {
 				materialMap.add(materials[i]);
 			}
+		}
+		if (activeMaterial.length() == 0) {
+			activeMaterial = materialString;
 		}
 		materialMap.add(materialString);
 		setMaterials(materialMap);
@@ -320,6 +357,9 @@ public class Wand {
 			spellNames.remove(pieces[0]);
 		}
 		for (String spellName : spellNames) { 	
+			if (activeSpell.length() == 0) {
+				activeSpell = spellName;
+			}
 			spellMap.add(spellName);
 		}
 				
@@ -340,6 +380,10 @@ public class Wand {
 			}
 		}
 		setSpells(spellMap);
+		
+		if (spellName.equalsIgnoreCase(activeSpell)) {
+			activeSpell = "";
+		}
 	}
 	
 	public void addSpell(String spellName) {
@@ -366,43 +410,40 @@ public class Wand {
 	}
 	
 	public String getName() {
-		return item.getItemMeta().getDisplayName();
+		return wandName;
 	}
 	
-	public String getBaseName() {
-		String name = getName();
-		int beginningOfWand = name.indexOf("(");
-		if (beginningOfWand > 0) {
-			name = name.substring(beginningOfWand + 1, name.length() - 1);
-		}
-		return name;
+	protected void setName(String name) {
+		wandName = name;
+	}
+
+	
+	public void setName(String name, PlayerSpells playerSpells) {
+		setName(name);
+		updateName(playerSpells);
 	}
 	
-	protected void updateActiveName(PlayerSpells playerSpells) {
-		Player player = playerSpells.getPlayer();
-		Spell spell = playerSpells.getMaster().getActiveSpell(player);
-		ItemStack activeMaterial = player.getInventory().getItem(8);
-		String baseName = getBaseName();
-		String materialName = "";
-		if (spell != null && activeMaterial != null && activeMaterial.getType() != Material.AIR && !isSpell(activeMaterial) && !isWand(activeMaterial)) {
-			materialName = activeMaterial.getType() == Wand.EraseMaterial ? "erase" : activeMaterial.getType().name().toLowerCase();
-			materialName = " : " + materialName;
- 		}
-		int remaining = getRemainingUses();
-		if (spell != null) {
-			if (remaining > 0) {
-				setName(ChatColor.RED + "" + remaining + " Uses " + ChatColor.GOLD + spell.getName() + ChatColor.GRAY + materialName + ChatColor.WHITE + " (" + baseName + ")");
-			} else {
-				setName(ChatColor.GOLD + spell.getName() + ChatColor.GRAY + materialName + ChatColor.WHITE + " (" + baseName + ")");					
+	protected void updateName(PlayerSpells playerSpells) {
+		// Build wand name
+		String name = wandName;
+		
+		// Add active spell to description
+		if (hasInventory) {
+			Spell spell = playerSpells.getSpell(activeSpell);
+			if (spell != null) {
+				Material material = Material.getMaterial(activeMaterial);
+				if (material != null && spell.usesMaterial()) {
+					String materialName = material == Wand.EraseMaterial ? "erase" : material.name().toLowerCase();
+					name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + materialName + ChatColor.WHITE + " (" + wandName + ")";
+				} else {
+					name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandName + ")";
+				}
 			}
-		} else if (remaining > 0) {
-			setName(ChatColor.RED + "" + remaining + " Uses " + ChatColor.WHITE + "(" + baseName + ")");
-		} else {
-			setName(baseName);
 		}
-	}
-	
-	public void setName(String name) {
+		int remaining = getRemainingUses();
+		if (remaining > 0) {
+			name = name + " : " + ChatColor.RED + "" + remaining + " Uses ";
+		}
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
@@ -617,7 +658,7 @@ public class Wand {
 			}
 		}
 
-		updateActiveName(playerSpells);
+		updateName(playerSpells);
 		player.updateInventory();
 	}
 	
@@ -661,7 +702,6 @@ public class Wand {
 		setSpells(spellNames);
 		setMaterials(materialNames);
 		saveState();
-		setName(getBaseName());
 	}
 
 	public static boolean isActive(Player player) {
@@ -669,10 +709,10 @@ public class Wand {
 		return isWand(activeItem);
 	}
 	
-	public static Wand createWand(String templateName) {
+	public static Wand createWand(PlayerSpells playerSpells, String templateName) {
 		Wand wand = new Wand();
 		List<String> defaultSpells = new ArrayList<String>();
-		String defaultName = "Wand";
+		String defaultName = defaultWandName;
 
 		// See if there is a template with this key
 		if (wandTemplates.containsKey(templateName)) {
@@ -715,9 +755,9 @@ public class Wand {
 			wand.setHungerRegeneration(wandConfig.getInt("hunger_regeneration", 0));
 			wand.setUses((int)wandConfig.getInt("uses", 0));
 		}
-		
-		wand.setName(defaultName);
+
 		wand.addSpells(defaultSpells);
+		wand.setName(defaultName, playerSpells);
 		
 		return wand;
 	}
@@ -824,7 +864,7 @@ public class Wand {
 				playerSpells.getPlayer().updateInventory();
 			} else {
 				item.setDurability((short)(durability + 1));
-				updateActiveName(playerSpells);
+				updateName(playerSpells);
 				updateLore(getSpells().length, getMaterials().length);
 			}
 		}
