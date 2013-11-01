@@ -69,4 +69,9 @@ public class BridgeSpell extends Spell
 	{
 		disableTargeting();
 	}
+	
+	@Override
+	public boolean usesMaterial() {
+		return true;
+	}
 }

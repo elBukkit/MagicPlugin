@@ -68,4 +68,9 @@ public class ExtendSpell extends Spell
 
 		return true;
 	}
+	
+	@Override
+	public boolean usesMaterial() {
+		return true;
+	}
 }

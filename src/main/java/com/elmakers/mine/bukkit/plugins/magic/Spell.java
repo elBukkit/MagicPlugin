@@ -1224,4 +1224,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			}
 		}
 	}
+	
+	public boolean usesMaterial() {
+		return false;
+	}
 }

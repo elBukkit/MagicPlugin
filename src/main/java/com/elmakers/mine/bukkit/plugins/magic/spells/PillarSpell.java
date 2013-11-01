@@ -67,4 +67,9 @@ public class PillarSpell extends Spell
 
 		return true;
 	}
+	
+	@Override
+	public boolean usesMaterial() {
+		return true;
+	}
 }

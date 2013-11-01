@@ -190,4 +190,9 @@ public class FillSpell extends Spell
 		defaultMaxDimension = properties.getInteger("max_dimension", defaultMaxDimension);
 		defaultMaxVolume = properties.getInteger("max_volume", defaultMaxVolume);
 	}
+	
+	@Override
+	public boolean usesMaterial() {
+		return true;
+	}
 }

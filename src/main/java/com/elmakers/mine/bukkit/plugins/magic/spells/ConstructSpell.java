@@ -202,4 +202,9 @@ public class ConstructSpell extends Spell
 		destructibleMaterials = properties.getMaterials("destructible", destructibleMaterials);
 		timeToLive = properties.getInt("undo", timeToLive);
 	}
+	
+	@Override
+	public boolean usesMaterial() {
+		return true;
+	}
 }
