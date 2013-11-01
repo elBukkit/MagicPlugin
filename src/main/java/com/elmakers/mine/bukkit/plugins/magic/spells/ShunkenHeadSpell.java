@@ -47,10 +47,6 @@ public class ShunkenHeadSpell extends Spell
 		{
 			li.damage(playerDamage);
 			ownerName = ((Player)li).getName();
-			// ... No nathan heads for you! :P
-			if (ownerName.equals("NathanWolf")) {
-				ownerName = "MHF_Herobrine";
-			}
 		}
 		else
 		{
