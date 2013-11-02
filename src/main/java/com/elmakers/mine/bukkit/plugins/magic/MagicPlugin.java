@@ -296,41 +296,35 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		
-		wand.setName(StringUtils.join(parameters, " "));
+		wand.setName(StringUtils.join(parameters, " "), spells.getPlayerSpells(player));
 
 		return true;
 	}
 
 	public boolean onWand(Player player, String[] parameters)
 	{
-		boolean holdingWand = Wand.isActive(player);
 		String wandName = "default";
 		if (parameters.length > 0)
 		{
 			wandName = parameters[0];
 		}
 
-		if (!holdingWand)
-		{
-			PlayerSpells playerSpells = spells.getPlayerSpells(player);
-			Wand wand = Wand.createWand(playerSpells, wandName);
-		
-			// Place directly in hand if possible
-			PlayerInventory inventory = player.getInventory();
-			ItemStack inHand = inventory.getItemInHand();
-			if (inHand == null || inHand.getType() == Material.AIR) {
-				inventory.setItem(inventory.getHeldItemSlot(), wand.getItem());
-				if (playerSpells.storeInventory()) {
-					// Create spell inventory
-					wand.activate(playerSpells);
-				}
-			} else {
-				player.getInventory().addItem(wand.getItem());
-			}
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand currentWand = Wand.getActiveWand(player);
+		if (currentWand != null) {
+			currentWand.closeInventory(playerSpells);
 		}
-		else 
-		{
-			player.sendMessage("Unequip your current wand to create a new one");
+	
+		Wand wand = Wand.createWand(playerSpells, wandName);
+	
+		// Place directly in hand if possible
+		PlayerInventory inventory = player.getInventory();
+		ItemStack inHand = inventory.getItemInHand();
+		if (inHand == null || inHand.getType() == Material.AIR) {
+			inventory.setItem(inventory.getHeldItemSlot(), wand.getItem());
+			wand.activate(playerSpells);
+		} else {
+			player.getInventory().addItem(wand.getItem());
 		}
 		return true;
 	}

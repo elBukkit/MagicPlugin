@@ -92,8 +92,9 @@ public class Wand {
 		saveState();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setActiveMaterial(PlayerSpells playerSpells, Material material, byte data) {
-		this.activeMaterial = material.name().toLowerCase() + ":" + data;
+		this.activeMaterial = material.getId() + ":" + data;
 		updateName(playerSpells);
 		if (hasActiveWand(playerSpells.getPlayer())) {
 			updateActiveMaterial(playerSpells);
@@ -318,7 +319,7 @@ public class Wand {
 		List<String> materialMap = new LinkedList<String>();
 		for (int i = 0; i < materials.length; i++) {	
 			String[] pieces = StringUtils.split(materials[i], "@");
-			if (!pieces[0].equals(materialString)) {
+			if (pieces.length > 0 && !pieces[0].equals(materialString)) {
 				materialMap.add(materials[i]);
 			}
 		}
@@ -347,7 +348,7 @@ public class Wand {
 		List<String> materialMap = new LinkedList<String>();
 		for (int i = 0; i < materials.length; i++) {	
 			String[] pieces = StringUtils.split(materials[i], "@");
-			if (!pieces[0].equals(materialString)) {
+			if (pieces.length > 0 && !pieces[0].equals(materialString)) {
 				materialMap.add(materials[i]);
 			}
 		}
@@ -363,7 +364,9 @@ public class Wand {
 
 		// Set new spells count
 		setMaterialCount(materialNames.size());
-
+		String[] spellNames = getSpells();
+		hasInventory = (spellNames.length + materialNames.size() > 1);
+		
 		saveState();
 	}
 	
@@ -377,7 +380,9 @@ public class Wand {
 		for (String spell : spells) {
 			spellMap.add(spell);
 			String[] pieces = StringUtils.split(spell, "@");
-			spellNames.remove(pieces[0]);
+			if (pieces.length > 0) {
+				spellNames.remove(pieces[0]);
+			}
 		}
 		for (String spellName : spellNames) { 	
 			if (activeSpell.length() == 0) {
@@ -398,7 +403,7 @@ public class Wand {
 		List<String> spellMap = new LinkedList<String>();
 		for (int i = 0; i < spells.length; i++) {
 			String[] pieces = StringUtils.split(spells[i], "@");
-			if (!pieces[0].equals(spellName)) {
+			if (pieces.length > 0 && !pieces[0].equals(spellName)) {
 				spellMap.add(spells[i]);
 			}
 		}
@@ -420,6 +425,8 @@ public class Wand {
 
 		// Set new spells count
 		setSpellCount(spellNames.size());
+		String[] materials = getMaterials();
+		hasInventory = (spellNames.size() + materials.length > 1);
 
 		saveState();
 	}
@@ -437,6 +444,7 @@ public class Wand {
 		updateName(playerSpells);
 	}
 	
+	@SuppressWarnings("deprecation")
 	protected void updateName(PlayerSpells playerSpells) {
 		// Build wand name
 		String name = wandName;
@@ -445,10 +453,14 @@ public class Wand {
 		if (hasInventory) {
 			Spell spell = playerSpells.getSpell(activeSpell);
 			if (spell != null) {
-				Material material = Material.getMaterial(activeMaterial);
+				String[] pieces = StringUtils.split(activeMaterial, ":");
+				Material material = null;
+				if (pieces.length > 0 && pieces[0].length() > 0) {
+					material = Material.getMaterial(Integer.parseInt(pieces[0]));
+				}
 				if (material != null && spell.usesMaterial()) {
 					String materialName = material == Wand.EraseMaterial ? "erase" : material.name().toLowerCase();
-					name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + materialName + ChatColor.WHITE + " (" + wandName + ")";
+					name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandName + ")";
 				} else {
 					name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandName + ")";
 				}
@@ -768,12 +780,12 @@ public class Wand {
 	public static Wand createWand(PlayerSpells playerSpells, String templateName) {
 		Wand wand = new Wand();
 		List<String> defaultSpells = new ArrayList<String>();
-		String defaultName = defaultWandName;
+		String wandName = defaultWandName;
 
 		// See if there is a template with this key
 		if (wandTemplates.containsKey(templateName)) {
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
-			defaultName = wandConfig.getString("name", defaultName);
+			wandName = wandConfig.getString("name", wandName);
 			List<Object> spellList = wandConfig.getList("spells");
 			if (spellList != null) {
 				for (Object spellName : spellList) {
@@ -813,7 +825,7 @@ public class Wand {
 		}
 
 		wand.addSpells(defaultSpells);
-		wand.setName(defaultName, playerSpells);
+		wand.setName(wandName, playerSpells);
 		
 		return wand;
 	}
@@ -893,12 +905,14 @@ public class Wand {
 			playerSpells.clearBuildingMaterial();
 		} else {
 			String[] pieces = StringUtils.split(activeMaterial, ":");
-			byte data = 0;
-			if (pieces.length > 1) {
-				data = Byte.parseByte(pieces[1]);
+			if (pieces.length > 0) {
+				byte data = 0;
+				if (pieces.length > 1) {
+					data = Byte.parseByte(pieces[1]);
+				}
+				Material material = Material.getMaterial(Integer.parseInt(pieces[0]));
+				playerSpells.setBuildingMaterial(material, data);
 			}
-			Material material = Material.getMaterial(Integer.parseInt(pieces[0]));
-			playerSpells.setBuildingMaterial(material, data);
 		}
 	}
 	

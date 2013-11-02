@@ -23,7 +23,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -43,7 +42,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
-import com.elmakers.mine.bukkit.utilities.UpdateInventoryTask;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -551,6 +549,7 @@ public class Spells implements Listener
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerEquip(PlayerItemHeldEvent event)
 	{
@@ -569,60 +568,27 @@ public class Spells implements Listener
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		// If we're switching away from a wand, deactivate it
 		if (wasWand) {
-			Wand oldWand = new Wand(previous);
+			Wand wand = new Wand(previous);
 			
 			// If the inventory is open, prevent switching but rather switch material or spell.
-			if (oldWand.isInventoryOpen(playerSpells)) {
+			if (wand.isInventoryOpen(playerSpells)) {
 				// This should never happen....
 				if (isWand) {
 					return;
 				}
 				
-				// TODO: Check for spell or material selection
-				/*
-				ItemStack result = null;
-				List<Material> buildingMaterials = spells.getBuildingMaterials();
-				Inventory inventory = player.getInventory();
-				ItemStack[] contents = inventory.getContents();
-
-				result = contents[8];
-				if (result == null || result.getType() == Material.AIR || Wand.isSpell(result)) {
-					return null;
-				}
-				if (buildingMaterials.contains(result.getType()))
-				{
-					return result;
-				}
-
-				// Check for erase
-				if (result.getType() == Wand.EraseMaterial) {
-					return new ItemStack(Material.AIR, 1);
-				}
-				
-				Inventory inventory = player.getInventory();
-				ItemStack[] contents = inventory.getContents();
-				PlayerSpells playerSpells = getPlayerSpells(player);
-				Spell spell = null;
-				for (int i = 0; i < 9; i++)
-				{
-					if (contents[i] == null || contents[i].getType() == Material.AIR || Wand.isWand(contents[i]))
-					{
-						continue;
-					}
-					spell = playerSpells.getSpell(contents[i].getType());
-					if (spell != null)
-					{
-						break;
+				// Check for spell or material selection
+				if (next != null && next.getType() != Material.AIR) {
+					Spell spell = Wand.isSpell(next) ? playerSpells.getSpell(next.getType()) : null;
+					if (spell != null) {
+						wand.setActiveSpell(playerSpells, spell.getKey());
+					} else if (buildingMaterials.contains(next.getType())) {
+						wand.setActiveMaterial(playerSpells, next.getType(), next.getData().getData());
 					}
 				}
-				
-				return spell;
-				
-				*/
-				
 				event.setCancelled(true);
 			} else {
-				oldWand.deactivate(playerSpells, event.getPreviousSlot());
+				wand.deactivate(playerSpells, event.getPreviousSlot());
 			}
 		}
 		
@@ -652,19 +618,22 @@ public class Spells implements Listener
 	{
 		PlayerSpells spells = getPlayerSpells(player);
 		String rule = player.getWorld().getGameRuleValue("keepInventory");
-		if (spells.hasStoredInventory() && !rule.equals("true")) {
+		Wand wand = Wand.getActiveWand(player);
+		if (wand != null  && !rule.equals("true")) {
 			List<ItemStack> drops = event.getDrops();
 			drops.clear();
-
-			// Drop the held wand, since that's not in the stored inventory
-			ItemStack wand = player.getInventory().getItemInHand();
-			if (Wand.isWand(wand)) {
-				drops.add(wand);
-			}
-
-			player.getInventory().clear();
+			
+			// Drop the held wand since it does not get stored
+			drops.add(wand.getItem());
+			
+			// Retrieve stored inventory before deactiavting the wand
 			ItemStack[] stored = spells.getStoredInventory().getContents();
-			spells.clearStoredInventory();
+			
+			// Deactivate the wand.
+			wand.deactivate(spells);
+
+			// Clear the inventory, which was just restored by the wand
+			player.getInventory().clear();
 			for (ItemStack stack : stored) {
 				if (stack != null) {
 					drops.add(stack);
@@ -707,7 +676,15 @@ public class Spells implements Listener
 		{
 			wand.cast(spells);
 		}
-		else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+		boolean toggleInventory = (event.getAction() == Action.RIGHT_CLICK_AIR);
+		if (!toggleInventory && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			Material material = event.getMaterial();
+			toggleInventory = !(material == Material.CHEST || material == Material.WOODEN_DOOR 
+					|| material == Material.IRON_DOOR_BLOCK || material == Material.ENDER_CHEST
+					|| material == Material.ANVIL || material == Material.BREWING_STAND || material == Material.ENCHANTMENT_TABLE
+					|| material == Material.STONE_BUTTON || material == Material.LEVER || material == Material.FURNACE);
+		}
+		if (toggleInventory)
 		{
 			if (wand.isInventoryOpen(spells)) {
 				wand.closeInventory(spells);
@@ -731,23 +708,26 @@ public class Spells implements Listener
 	{
 		// Check for wand re-activation.
 		Player player = event.getPlayer();
-		if (Wand.isActive(player)) {
-			// Save inventory
-			PlayerSpells spells = getPlayerSpells(player);
-			if (spells.storeInventory()) {
-				// Create spell inventory
-				Wand wand = new Wand(player.getItemInHand());
-				wand.activate(spells);
-			}
+		Wand wand = Wand.getActiveWand(player);
+		if (wand != null) {
+			wand.activate(getPlayerSpells(player));
 		}
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
-		PlayerSpells spells = getPlayerSpells(event.getPlayer());
-		spells.onPlayerQuit(event);
+		Player player = event.getPlayer();
+		PlayerSpells spells = getPlayerSpells(player);
+		Wand wand = Wand.getActiveWand(player);
+		if (wand != null) {
+			wand.deactivate(spells);
+		}
+		
+		// Just in case...
 		spells.restoreInventory();
+		
+		spells.onPlayerQuit(event);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -756,6 +736,10 @@ public class Spells implements Listener
 	{
 		for (PlayerSpells spells : playerSpells.values()) {
 			Player player = spells.getPlayer();
+			Wand wand = Wand.getActiveWand(player);
+			if (wand != null) {
+				wand.deactivate(spells);
+			}
 			spells.restoreInventory();
 			player.updateInventory();
 		}
@@ -792,28 +776,9 @@ public class Spells implements Listener
 		if (!(event.getPlayer() instanceof Player)) return;
 		Player player = (Player)event.getPlayer();
 		PlayerSpells playerSpells = getPlayerSpells(player);
-		if (playerSpells.hasStoredInventory()) {
-			if (Wand.isActive(player)) {
-				Wand wand = new Wand(player.getItemInHand());
-				wand.deactivate(playerSpells);
-			}
-			playerSpells.restoreInventory();
-		}
-	}
-
-	@EventHandler
-	public void onInventoryClose(InventoryCloseEvent event) {
-		if (!(event.getPlayer() instanceof Player)) return;
-		Player player = (Player)event.getPlayer();
-		PlayerSpells spells = getPlayerSpells(player);
-		if (!spells.hasStoredInventory() && Wand.isActive(player)) {
-			if (spells.storeInventory()) {
-				Wand wand = new Wand(player.getItemInHand());
-				wand.activate(spells);
-				
-				// Need an extra update here, probably something happens after inventory close.
-				new UpdateInventoryTask(player).runTaskLater(this.plugin, 2);
-			}
+		Wand wand = Wand.getActiveWand(player);
+		if (wand != null && wand.isInventoryOpen(playerSpells)) {
+			wand.closeInventory(playerSpells);
 		}
 	}
 
@@ -836,10 +801,7 @@ public class Spells implements Listener
 				event.setCancelled(true);
 				event.getItem().remove();
 				inventory.setItem(inventory.getHeldItemSlot(), pickup);
-				if (spells.storeInventory()) {
-					// Create spell inventory
-					wand.activate(spells);
-				}
+				wand.activate(spells);
 			} 
 		}
 	}
@@ -847,11 +809,14 @@ public class Spells implements Listener
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent event)
 	{
-		PlayerSpells spells = getPlayerSpells(event.getPlayer());
+		Player player = event.getPlayer();
+		PlayerSpells spells = getPlayerSpells(player);
 		if (spells.hasStoredInventory()) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
 			if (Wand.isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
-				spells.restoreInventory(0,  null);
+				Wand wand = new Wand(event.getItemDrop().getItemStack());
+				wand.deactivate(spells);
+				player.setItemInHand(new ItemStack(Material.AIR, 1));
 			} else {
 				event.setCancelled(true);
 			}
