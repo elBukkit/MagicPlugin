@@ -39,6 +39,8 @@ public class PlayerSpells
 	private int xpMax = 0;
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
+	
+	private ItemStack buildingMaterial = null;
 
 	public int getXpRegeneration() {
 		return xpRegeneration;
@@ -402,5 +404,21 @@ public class PlayerSpells
 	
 	public void setActiveWand(Wand activeWand) {
 		this.activeWand = activeWand;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void setBuildingMaterial(Material material, byte data) {
+		if (material == Wand.EraseMaterial) {
+			material = Material.AIR;
+		}
+		buildingMaterial = new ItemStack(material, 1, (short)0, data);
+	}
+	
+	public void clearBuildingMaterial() {
+		buildingMaterial = null;
+	}
+	
+	public ItemStack getBuildingMaterial() {
+		return buildingMaterial;
 	}
 }

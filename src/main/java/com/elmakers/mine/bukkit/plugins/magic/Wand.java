@@ -85,6 +85,21 @@ public class Wand {
 		this.item = item;
 		loadState();
 	}
+
+	public void setActiveSpell(PlayerSpells playerSpells, String activeSpell) {
+		this.activeSpell = activeSpell;
+		updateName(playerSpells);
+		saveState();
+	}
+
+	public void setActiveMaterial(PlayerSpells playerSpells, Material material, byte data) {
+		this.activeMaterial = material.name().toLowerCase() + ":" + data;
+		updateName(playerSpells);
+		if (hasActiveWand(playerSpells.getPlayer())) {
+			updateActiveMaterial(playerSpells);
+		}
+		saveState();
+	}
 	
 	public int getXpRegeneration() {
 		return xpRegeneration;
@@ -202,6 +217,18 @@ public class Wand {
 		this.uses = uses;
 		updateWandSettings();
 	}
+	
+	public String getName() {
+		return wandName;
+	}
+	
+	protected void setName(String name) {
+		wandName = name;
+	}
+	
+	public ItemStack getItem() {
+		return item;
+	}
 
 	protected void saveState() {
 		updateWandSettings();
@@ -279,10 +306,6 @@ public class Wand {
 				}
 			}
 		}
-	}
-	
-	public ItemStack getItem() {
-		return item;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -408,15 +431,6 @@ public class Wand {
 	public void setMaterialCount(int materialCount) {
 		updateLore(getSpells().length, materialCount);
 	}
-	
-	public String getName() {
-		return wandName;
-	}
-	
-	protected void setName(String name) {
-		wandName = name;
-	}
-
 	
 	public void setName(String name, PlayerSpells playerSpells) {
 		setName(name);
@@ -680,25 +694,67 @@ public class Wand {
 		PlayerInventory inventory = playerSpells.getPlayer().getInventory();
 		
 		// Rebuild spell inventory, save in wand.
+		// Never add/remove a spell or material from the wand, just re-arrange them.
+		String[] currentSpells = getSpells();
+		String[] currentMaterials = getMaterials();
+		
+		// Map current Wand inventory
+		HashMap<String, Integer> spellMap = new HashMap<String, Integer>();
+		HashMap<String, Integer> materialMap = new HashMap<String, Integer>();
+		
+		for (String spell : currentSpells) {
+			String[] pieces = StringUtils.split(spell, "@");
+			Integer position = pieces.length > 1 ? Integer.parseInt(pieces[1]) : null;
+			spellMap.put(pieces[0], position);
+		}
+		for (String material : currentMaterials) {
+			String[] pieces = StringUtils.split(material, "@");
+			Integer position = pieces.length > 1 ? Integer.parseInt(pieces[1]) : null;
+			materialMap.put(pieces[0], position);
+		}
+		
+		// re-arrange based on player inventory contents
 		ItemStack[] items = inventory.getContents();
-		List<String> spellNames = new ArrayList<String>();
-		List<String> materialNames = new ArrayList<String>();
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] == null) continue;
 			Material material = items[i].getType();
 			if (isSpell(items[i])) {
 				Spell spell = playerSpells.getSpell(material);
-				if (spell != null) {
-					spellNames.add(spell.getKey() + "@" + i);
+				if (spell != null && spellMap.containsKey(spell.getKey())) {
+					spellMap.put(spell.getKey(), i);
 				}
 			} else {
 				List<Material> buildingMaterials = playerSpells.getMaster().getBuildingMaterials();
 				if (material != Material.AIR && (buildingMaterials.contains(material) || material == EraseMaterial)) {
-					String materialkey = (material == EraseMaterial) ? "0:0" : material.getId() + ":" + items[i].getData().getData();
-					materialNames.add(materialkey + "@" + i);
+					String materialKey = (material == EraseMaterial) ? "0:0" : material.getId() + ":" + items[i].getData().getData();
+					if (materialMap.containsKey(materialKey)) {
+						materialMap.put(materialKey, i);
+					}
 				}
 			}
 		}
+		
+		// Pack up into lists and set to wand
+		List<String> spellNames = new ArrayList<String>();
+		List<String> materialNames = new ArrayList<String>();
+		
+		for (Entry<String, Integer> spellEntry : spellMap.entrySet()) {
+			Integer position = spellEntry.getValue();
+			String spellName = spellEntry.getKey();
+			if (position != null) {
+				spellName += "@" + position;
+			}
+			spellNames.add(spellName);
+		}
+		for (Entry<String, Integer> materialEntry : materialMap.entrySet()) {
+			Integer position = materialEntry.getValue();
+			String materialName = materialEntry.getKey();
+			if (position != null) {
+				materialName += "@" + position;
+			}
+			materialNames.add(materialName);
+		}
+		
 		setSpells(spellNames);
 		setMaterials(materialNames);
 		saveState();
@@ -814,51 +870,100 @@ public class Wand {
 	}
 	
 	protected void updateSpellSettings(PlayerSpells spells) {
-		spells.setDamageReduction(damageReduction);
-		spells.setDamageReductionPhysical(damageReductionPhysical);
-		spells.setDamageReductionProjectiles(damageReductionProjectiles);
-		spells.setDamageReductionFalling(damageReductionFalling);
-		spells.setDamageReductionFire(damageReductionFire);
-		spells.setDamageReductionExplosions(damageReductionExplosions);
-		spells.setCostReduction(costReduction);
-		spells.setXPRegeneration(xpRegeneration);
-		spells.setXPMax(xpMax);
-		spells.setHealthRegeneration(healthRegeneration);
-		spells.setHungerRegeneration(hungerRegeneration);
+		updateSpellSettings(spells, false);
 	}
 	
-	public void activate(PlayerSpells playerSpells, int itemSlot) {
-		updateSpellSettings(playerSpells);
-		updateInventory(playerSpells, itemSlot);
+	protected void updateSpellSettings(PlayerSpells spells, boolean clearValue) {
+		spells.setDamageReduction(clearValue ? 0 : damageReduction);
+		spells.setDamageReductionPhysical(clearValue ? 0 : damageReductionPhysical);
+		spells.setDamageReductionProjectiles(clearValue ? 0 : damageReductionProjectiles);
+		spells.setDamageReductionFalling(clearValue ? 0 : damageReductionFalling);
+		spells.setDamageReductionFire(clearValue ? 0 : damageReductionFire);
+		spells.setDamageReductionExplosions(clearValue ? 0 : damageReductionExplosions);
+		spells.setCostReduction(clearValue ? 0 : costReduction);
+		spells.setXPRegeneration(clearValue ? 0 : xpRegeneration);
+		spells.setXPMax(clearValue ? 0 : xpMax);
+		spells.setHealthRegeneration(clearValue ? 0 : healthRegeneration);
+		spells.setHungerRegeneration(clearValue ? 0 : hungerRegeneration);
 	}
-	
-	public void activate(PlayerSpells playerSpells) {
-		activate(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
-	}
-	
-	public void deactivate(PlayerSpells spells) {
-		saveInventory(spells);
-		
-		spells.setDamageReduction(0);
-		spells.setDamageReductionPhysical(0);
-		spells.setDamageReductionProjectiles(0);
-		spells.setDamageReductionFalling(0);
-		spells.setDamageReductionFire(0);
-		spells.setDamageReductionExplosions(0);
-		spells.setCostReduction(0);
-		spells.setXPRegeneration(0);
-		spells.setXPMax(0);
-		spells.setHealthRegeneration(0);
-		spells.setHungerRegeneration(0);
+
+	@SuppressWarnings("deprecation")
+	protected void updateActiveMaterial(PlayerSpells playerSpells) {
+		if (activeMaterial == null) {
+			playerSpells.clearBuildingMaterial();
+		} else {
+			String[] pieces = StringUtils.split(activeMaterial, ":");
+			byte data = 0;
+			if (pieces.length > 1) {
+				data = Byte.parseByte(pieces[1]);
+			}
+			Material material = Material.getMaterial(Integer.parseInt(pieces[0]));
+			playerSpells.setBuildingMaterial(material, data);
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void use(PlayerSpells playerSpells) {
+	private void openInventory(PlayerSpells playerSpells, int itemSlot) {
+		if (playerSpells.storeInventory(itemSlot, item)) {
+			updateInventory(playerSpells, itemSlot);
+			playerSpells.getPlayer().updateInventory();
+		}
+	}
+	
+	public void openInventory(PlayerSpells playerSpells) {
+		openInventory(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void closeInventory(PlayerSpells playerSpells, int itemSlot) {
+		saveInventory(playerSpells);
+		playerSpells.restoreInventory(itemSlot, item);
+		playerSpells.getPlayer().updateInventory();
+	}
+	
+	public void closeInventory(PlayerSpells playerSpells) {
+		closeInventory(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
+	}
+	
+	public void activate(PlayerSpells playerSpells) {
+		updateSpellSettings(playerSpells);
+		updateActiveMaterial(playerSpells);
+	}
+	
+	public boolean isInventoryOpen(PlayerSpells playerSpells) {
+		return playerSpells.hasStoredInventory();
+	}
+	
+	public void deactivate(PlayerSpells playerSpells) {
+		deactivate(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
+	}
+	
+	public void deactivate(PlayerSpells playerSpells, int itemSlot) {
+		if (isInventoryOpen(playerSpells)) {
+			closeInventory(playerSpells, itemSlot);
+		}
+		
+		updateSpellSettings(playerSpells, true);
+	}
+	
+	public boolean cast(PlayerSpells playerSpells) {
+		Spell spell = playerSpells.getSpell(activeSpell);
+		if (spell != null) {
+			if (spell.cast()) {
+				use(playerSpells);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected void use(PlayerSpells playerSpells) {
 		if (uses > 0) {
 			short durability = item.getDurability();
 			if (durability >= uses - 1) {
 				deactivate(playerSpells);
-				playerSpells.restoreInventory();
 				PlayerInventory playerInventory = playerSpells.getPlayer().getInventory();
 				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
 				playerSpells.getPlayer().updateInventory();

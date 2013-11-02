@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -437,26 +436,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public ItemStack getBuildingMaterial()
 	{
-		ItemStack result = null;
-		List<Material> buildingMaterials = spells.getBuildingMaterials();
-		Inventory inventory = player.getInventory();
-		ItemStack[] contents = inventory.getContents();
-
-		result = contents[8];
-		if (result == null || result.getType() == Material.AIR || Wand.isSpell(result)) {
-			return null;
-		}
-		if (buildingMaterials.contains(result.getType()))
-		{
-			return result;
-		}
-
-		// Check for erase
-		if (result.getType() == Wand.EraseMaterial) {
-			return new ItemStack(Material.AIR, 1);
-		}
-
-		return null;
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		return playerSpells.getBuildingMaterial();
 	}
 
 	public void targetEntity(Class<? extends Entity> typeOf)

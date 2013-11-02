@@ -36,7 +36,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -503,194 +502,6 @@ public class Spells implements Listener
 		return allSpells;
 	}
 	
-	protected Spell getActiveSpell(Player player) {
-		Inventory inventory = player.getInventory();
-		ItemStack[] contents = inventory.getContents();
-		PlayerSpells playerSpells = getPlayerSpells(player);
-		Spell spell = null;
-		for (int i = 0; i < 9; i++)
-		{
-			if (contents[i] == null || contents[i].getType() == Material.AIR || Wand.isWand(contents[i]))
-			{
-				continue;
-			}
-			spell = playerSpells.getSpell(contents[i].getType());
-			if (spell != null)
-			{
-				break;
-			}
-		}
-		
-		return spell;
-	}
-	
-	protected void cast(Player player)
-	{
-		Wand wand = Wand.getActiveWand(player);
-		if (wand != null)
-		{
-			if (!hasWandPermission(player))
-			{
-				return;
-			}
-
-			Spell spell = getActiveSpell(player);
-			PlayerSpells playerSpells = getPlayerSpells(player);
-			if (spell != null)
-			{
-				if (spell.cast()) {
-					wand.use(playerSpells);
-				}
-			}
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public boolean cycleMaterials(Player player)
-	{
-		List<Material> buildingMaterials = getBuildingMaterials();
-		PlayerInventory inventory = player.getInventory();
-		ItemStack[] contents = inventory.getContents();
-		int firstMaterialSlot = 8;
-		int lastMaterialSlot = 8;
-		boolean foundAir = false;
-
-		for (int i = 8; i >= 0; i--)
-		{
-			Material mat = contents[i] == null ? Material.AIR : contents[i].getType();
-			if (mat == Material.AIR)
-			{
-				if (foundAir)
-				{
-					break;
-				}
-				else
-				{
-					foundAir = true;
-					firstMaterialSlot = i;
-					continue;
-				}
-			}
-			else
-			{
-				if (!Wand.isSpell(contents[i]) && !Wand.isWand(contents[i]) && (mat == Wand.EraseMaterial || buildingMaterials.contains(mat)))
-				{
-					firstMaterialSlot = i;
-					continue;
-				}
-				else if (Wand.isWand(contents[i])) 
-				{
-					lastMaterialSlot = i - 1;
-					continue;
-				} else 
-				{
-					break;
-				}
-			}
-		}
-
-		if (firstMaterialSlot >= lastMaterialSlot)
-			return false;
-
-		ItemStack lastSlot = contents[lastMaterialSlot];
-		for (int i = lastMaterialSlot - 1; i >= firstMaterialSlot; i--)
-		{
-			contents[i + 1] = contents[i];
-		}
-		contents[firstMaterialSlot] = lastSlot;
-
-		inventory.setContents(contents);
-		
-		// Some hackery to try and get a tooltip to show up on item switch
-		Wand wand = Wand.getActiveWand(player);
-		PlayerSpells playerSpells = getPlayerSpells(player);
-		wand.updateName(playerSpells);
-		
-		player.updateInventory();
-
-		return true;
-	}
-
-	@SuppressWarnings("deprecation")
-	public void cycleSpells(Player player)
-	{
-		Inventory inventory = player.getInventory();
-		ItemStack[] contents = inventory.getContents();
-		ItemStack[] active = new ItemStack[9];
-
-		for (int i = 0; i < 9; i++)
-		{
-			active[i] = contents[i];
-		}
-
-		int maxSpellSlot = 0;
-		int firstSpellSlot = -1;
-		PlayerSpells playerSpells = getPlayerSpells(player);
-		for (int i = 0; i < 9; i++)
-		{
-			boolean isEmpty = active[i] == null;
-			Material activeType = isEmpty ? Material.AIR : active[i].getType();
-			boolean isWand = isEmpty ? false : Wand.isWand(active[i]);
-			boolean isSpell = false;
-			if (activeType != Material.AIR && Wand.isSpell(active[i]))
-			{
-				Spell spell = playerSpells.getSpell(activeType);
-				isSpell = spell != null;
-			}
-
-			if (isSpell)
-			{
-				if (firstSpellSlot < 0)
-					firstSpellSlot = i;
-				maxSpellSlot = i;
-			}
-			else
-			{
-				if (!isWand && firstSpellSlot >= 0)
-				{
-					break;
-				}
-			}
-
-		}
-
-		int numSpellSlots = firstSpellSlot < 0 ? 0 : maxSpellSlot - firstSpellSlot + 1;
-
-		if (numSpellSlots < 2)
-		{
-			return;
-		}
-
-		for (int ddi = 0; ddi < numSpellSlots; ddi++)
-		{
-			int i = ddi + firstSpellSlot;
-			boolean isEmpty = contents[i] == null;
-			boolean isWand = isEmpty ? false : Wand.isWand(active[i]);
-
-			if (!isWand)
-			{
-				for (int di = 1; di < numSpellSlots; di++)
-				{
-					int dni = (ddi + di) % numSpellSlots;
-					int ni = dni + firstSpellSlot;
-					isEmpty = active[ni] == null;
-					isWand = isEmpty ? false : Wand.isWand(active[ni]);
-					if (!isWand)
-					{
-						contents[i] = active[ni];
-						break;
-					}
-				}
-			}
-		}
-
-		inventory.setContents(contents);
-		// Some hackery to try and get a tooltip to show up on item switch
-		Wand wand = Wand.getActiveWand(player);
-		wand.updateName(playerSpells);
-		player.updateInventory();
-	}
-
 	public boolean allowPhysics(Block block)
 	{
 		if (physicsDisableTimeout == 0)
@@ -756,28 +567,69 @@ public class Spells implements Listener
 		if (wasWand == isWand) return;
 		
 		PlayerSpells playerSpells = getPlayerSpells(player);
+		// If we're switching away from a wand, deactivate it
+		if (wasWand) {
+			Wand oldWand = new Wand(previous);
+			
+			// If the inventory is open, prevent switching but rather switch material or spell.
+			if (oldWand.isInventoryOpen(playerSpells)) {
+				// This should never happen....
+				if (isWand) {
+					return;
+				}
+				
+				// TODO: Check for spell or material selection
+				/*
+				ItemStack result = null;
+				List<Material> buildingMaterials = spells.getBuildingMaterials();
+				Inventory inventory = player.getInventory();
+				ItemStack[] contents = inventory.getContents();
 
-		// If we're switching to a wand, save the inventory.
+				result = contents[8];
+				if (result == null || result.getType() == Material.AIR || Wand.isSpell(result)) {
+					return null;
+				}
+				if (buildingMaterials.contains(result.getType()))
+				{
+					return result;
+				}
+
+				// Check for erase
+				if (result.getType() == Wand.EraseMaterial) {
+					return new ItemStack(Material.AIR, 1);
+				}
+				
+				Inventory inventory = player.getInventory();
+				ItemStack[] contents = inventory.getContents();
+				PlayerSpells playerSpells = getPlayerSpells(player);
+				Spell spell = null;
+				for (int i = 0; i < 9; i++)
+				{
+					if (contents[i] == null || contents[i].getType() == Material.AIR || Wand.isWand(contents[i]))
+					{
+						continue;
+					}
+					spell = playerSpells.getSpell(contents[i].getType());
+					if (spell != null)
+					{
+						break;
+					}
+				}
+				
+				return spell;
+				
+				*/
+				
+				event.setCancelled(true);
+			} else {
+				oldWand.deactivate(playerSpells, event.getPreviousSlot());
+			}
+		}
+		
+		// If we're switching to a wand, activate it.
 		if (isWand) {
 			Wand newWand = new Wand(next);
-			if (playerSpells.storeInventory(event.getNewSlot(), next)) {
-				newWand.activate(playerSpells, event.getNewSlot());
-			}
-		} else if (wasWand) {
-			Wand oldWand = new Wand(previous);
-			oldWand.deactivate(playerSpells);
-
-			// Restore inventory
-			playerSpells.restoreInventory(event.getPreviousSlot(), previous);
-
-			// Check for new wand selection, after restoring inventory
-			next = inventory.getItem(event.getNewSlot());
-			if (Wand.isWand(next)) {
-				Wand newWand = new Wand(next);
-				if (playerSpells.storeInventory(event.getNewSlot(), next)) {
-					newWand.activate(playerSpells, event.getNewSlot());
-				}
-			}
+			newWand.activate(playerSpells);
 		}
 	}
 
@@ -842,39 +694,27 @@ public class Spells implements Listener
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
+		Player player = event.getPlayer();
+		PlayerSpells spells = getPlayerSpells(player);
+		Wand wand = Wand.getActiveWand(player);
+		
+		if (wand == null || !hasWandPermission(player))
+		{
+			return;
+		}
+		
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
 		{
-			cast(event.getPlayer());
+			wand.cast(spells);
 		}
-		else
-			if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
-			{
-				cancel(event.getPlayer());
-				Player player = event.getPlayer();
-
-				if (!hasWandPermission(player))
-				{
-					return;
-				}
-
-				boolean cycleSpells = false;
-
-				cycleSpells = player.isSneaking();
-				if (Wand.isActive(player))
-				{
-					if (cycleSpells)
-					{
-						if (!cycleMaterials(event.getPlayer()))
-						{
-							cycleSpells(event.getPlayer());
-						}
-					}
-					else
-					{
-						cycleSpells(event.getPlayer());
-					}
-				}
+		else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+		{
+			if (wand.isInventoryOpen(spells)) {
+				wand.closeInventory(spells);
+			} else {
+				wand.openInventory(spells);
 			}
+		}
 	}
 
 	@EventHandler
