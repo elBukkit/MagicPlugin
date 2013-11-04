@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -78,7 +79,7 @@ public class FamiliarSpell extends Spell
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
@@ -87,8 +88,8 @@ public class FamiliarSpell extends Spell
 		Target target = getTarget();
 		if (target == null || !target.hasTarget())
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 		Block originalTarget = target.getBlock(); 
 		Block targetBlock = originalTarget;
@@ -101,9 +102,9 @@ public class FamiliarSpell extends Spell
 			boolean isFamiliar = target.isEntity() && familiars.isFamiliar(target.getEntity());
 			if (isFamiliar)
 			{
-				castMessage(player, "You release your familiar(s)");
+				castMessage("You release your familiar(s)");
 				checkListener();
-				return true;
+				return SpellResult.SUCCESS;
 			}
 
 			familiars.releaseFamiliar();
@@ -205,10 +206,10 @@ public class FamiliarSpell extends Spell
 		{
 			typeMessage = " " + famClass.name().toLowerCase();
 		}
-		castMessage(player, "You create " + spawnCount + typeMessage +" familiar(s)!");
+		castMessage("You create " + spawnCount + typeMessage +" familiar(s)!");
 		familiars.setFamiliars(newFamiliars);
 		checkListener();
-		return true;
+		return SpellResult.SUCCESS;
 
 	}
 

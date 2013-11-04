@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.SimpleBlockAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -21,11 +22,11 @@ public class FrostSpell extends Spell
 
 	public class FrostAction extends SimpleBlockAction
 	{
-		public boolean perform(Block block)
+		public SpellResult perform(Block block)
 		{
 			if (block.getType() == Material.AIR || block.getType() == Material.SNOW)
 			{
-				return false;
+				return SpellResult.NO_TARGET;
 			}
 			Material material = Material.SNOW;
 			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
@@ -50,19 +51,19 @@ public class FrostSpell extends Spell
 			}
 			super.perform(block);
 			block.setType(material);
-			return true;
+			return SpellResult.SUCCESS;
 		}
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
 
 		if (target == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 		if (target.isEntity())
 		{
@@ -83,8 +84,12 @@ public class FrostSpell extends Spell
 
 		if (!target.hasTarget())
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target.getBlock())) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		int radius = parameters.getInt("radius", defaultRadius);
@@ -103,9 +108,9 @@ public class FrostSpell extends Spell
 		BlockList frozenBlocks = action.getBlocks();
 		frozenBlocks.setTimeToLive(timeToLive);
 		spells.scheduleCleanup(frozenBlocks);
-		castMessage(player, "Frosted " + action.getBlocks().size() + " blocks");
+		castMessage("Frosted " + action.getBlocks().size() + " blocks");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	public int checkPosition(int x, int z, int R)

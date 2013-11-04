@@ -9,6 +9,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Wand;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -16,7 +17,7 @@ public class AbsorbSpell extends Spell
 {
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Material material = Material.AIR;
 		List<Material> buildingMaterials = spells.getBuildingMaterials();
@@ -35,8 +36,8 @@ public class AbsorbSpell extends Spell
 	
 			if (target == null) 
 			{
-				castMessage(player, "No target");
-				return false;
+				castMessage("No target");
+				return SpellResult.NO_TARGET;
 			}
 	
 			material = target.getType();
@@ -69,8 +70,8 @@ public class AbsorbSpell extends Spell
 						}
 					}
 					if (full) {
-						castMessage(player, "Your wand is full!");
-						return false;
+						castMessage("Your wand is full!");
+						return SpellResult.FAILURE;
 					}
 				}
 				inventory.setItem(targetSlot, new ItemStack(Material.AIR, 1));
@@ -90,10 +91,10 @@ public class AbsorbSpell extends Spell
 		}
 		
 		if (success) {
-			castMessage(player, "Absorbing some " + material.name().toLowerCase());
+			castMessage("Absorbing some " + material.name().toLowerCase());
 		} else {
-			castMessage(player, "Failed to absorb");
+			castMessage("Failed to absorb");
 		}
-		return success;
+		return success ? SpellResult.SUCCESS : SpellResult.FAILURE;
 	}
 }

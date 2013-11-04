@@ -6,6 +6,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.SimpleBlockAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -13,11 +14,11 @@ public class FireSpell extends Spell
 {
 	public class FireAction extends SimpleBlockAction
 	{
-		public boolean perform(Block block)
+		public SpellResult perform(Block block)
 		{
 			if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
 			{
-				return false;
+				return SpellResult.NO_TARGET;
 			}
 			Material material = Material.FIRE;
 
@@ -33,18 +34,18 @@ public class FireSpell extends Spell
 			super.perform(block);
 			block.setType(material);
 
-			return true;
+			return SpellResult.SUCCESS;
 		}
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 
 		int radius = parameters.getInt("radius", defaultRadius);
@@ -60,9 +61,9 @@ public class FireSpell extends Spell
 		}
 
 		spells.addToUndoQueue(player, action.getBlocks());
-		castMessage(player, "Burned " + action.getBlocks().size() + " blocks");
+		castMessage("Burned " + action.getBlocks().size() + " blocks");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	public void burnBlock(int dx, int dy, int dz, Block centerPoint, int radius, BlockList burnedBlocks)

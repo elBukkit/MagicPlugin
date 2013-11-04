@@ -7,6 +7,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class LevitateSpell extends Spell
@@ -15,10 +16,10 @@ public class LevitateSpell extends Spell
 	private final long safetyLength = 10000;
 	
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		if (player.getAllowFlight()) {
-			castMessage(player, "You feel heavier");
+			castMessage("You feel heavier");
 			player.setFlying(false);
 			player.setAllowFlight(false);
 			
@@ -26,9 +27,9 @@ public class LevitateSpell extends Spell
 			spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 			levitateEnded = System.currentTimeMillis();
 			
-			return false;
+			return SpellResult.COST_FREE;
 		}
-		castMessage(player, "You feel lighter");
+		castMessage("You feel lighter");
 		Vector velocity = player.getVelocity();
 		velocity.setY(velocity.getY() + 2);
 		player.setVelocity(velocity);
@@ -40,7 +41,7 @@ public class LevitateSpell extends Spell
 			}
 		}, 2);
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

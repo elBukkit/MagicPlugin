@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CushionSpell extends Spell
@@ -14,17 +15,21 @@ public class CushionSpell extends Spell
 	private int cushionHeight = 4;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		World world = player.getWorld();
 		Block targetFace = getTargetBlock();
 		if (targetFace == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(targetFace)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		castMessage(player, "Happy landings");
+		castMessage("Happy landings");
 
 		BlockList cushionBlocks = new BlockList();
 		cushionBlocks.setTimeToLive(7000);
@@ -53,7 +58,7 @@ public class CushionSpell extends Spell
 		}
 
 		spells.scheduleCleanup(cushionBlocks);
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

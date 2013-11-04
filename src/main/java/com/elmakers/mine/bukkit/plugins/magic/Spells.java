@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
@@ -283,6 +285,11 @@ public class Spells implements Listener
 		return silent;
 	}
 
+	public boolean soundsEnabled()
+	{
+		return soundsEnabled;
+	}
+
 	public boolean isSolid(Material mat)
 	{
 		return (mat != Material.AIR && mat != Material.WATER && mat != Material.STATIONARY_WATER && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
@@ -321,17 +328,52 @@ public class Spells implements Listener
 	{
 		return plugin;
 	}
+	
+	public boolean hasBuildPermission(Player player, Location location) {
+		return hasBuildPermission(player, location.getBlock());
+	}
 
+	public boolean hasBuildPermission(Player player, Block block) {
+		if (regionManager == null) return true;
+		
+		try {
+			Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
+			if (canBuildMethod != null) {
+				return (Boolean)canBuildMethod.invoke(regionManager, player, block);
+			}
+		} catch (Throwable ex) {
+		}
+		
+		return true;
+		
+	}
+	
 	/*
 	 * Internal functions - don't call these, or really anything below here.
 	 */
-
+	
 	/*
 	 * Saving and loading
 	 */
 
 	public void initialize(MagicPlugin plugin)
 	{
+		// Try to (dynamically) link to WorldGuard:
+		try {
+			regionManager = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
+			Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
+			if (canBuildMethod != null) {
+				log.info("WorldGuard found, will respect build permissions for construction spells");
+			} else {
+				regionManager = null;
+			}
+		} catch (Throwable ex) {
+		}
+		
+		if (regionManager == null) {
+			log.info("WorldGuard not found, not using a region manager.");
+		}
+		
 		this.plugin = plugin;
 		load();
 		
@@ -456,6 +498,7 @@ public class Spells implements Listener
 		undoQueueDepth = generalNode.getInteger("undo_depth", undoQueueDepth);
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
+		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
 		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
@@ -869,6 +912,7 @@ public class Spells implements Listener
 	 private int                                 undoQueueDepth                 = 256;
 	 private boolean                             silent                         = false;
 	 private boolean                             quiet                          = true;
+	 private boolean                             soundsEnabled                  = true;
 	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
 
 	 private final Logger                        log                            = Logger.getLogger("Minecraft");
@@ -877,4 +921,5 @@ public class Spells implements Listener
 	 private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
 
 	 private MagicPlugin                         plugin                         = null;
+	 private Object								 regionManager					= null;
 }

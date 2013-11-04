@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PillarSpell extends Spell 
@@ -15,13 +16,13 @@ public class PillarSpell extends Spell
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block attachBlock = getTargetBlock();
 		if (attachBlock == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}	
 
 		BlockFace direction = BlockFace.UP;	
@@ -34,6 +35,10 @@ public class PillarSpell extends Spell
 		Block targetBlock = attachBlock.getRelative(direction);
 		int distance = 0;
 
+		if (!hasBuildPermission(targetBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
 		{
 			distance++;
@@ -42,8 +47,12 @@ public class PillarSpell extends Spell
 		}
 		if (isTargetable(targetBlock.getType()))
 		{
-			player.sendMessage("Can't pillar any further");
-			return false;
+			castMessage("Can't pillar any further");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(targetBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		Material material = attachBlock.getType();
@@ -62,10 +71,10 @@ public class PillarSpell extends Spell
 		pillar.setType(material);
 		pillar.setData(data);
 
-		castMessage(player, "Creating a pillar of " + attachBlock.getType().name().toLowerCase());
+		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
 		spells.addToUndoQueue(player, pillarBlocks);
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 	
 	@Override

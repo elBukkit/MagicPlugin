@@ -10,6 +10,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -17,13 +18,13 @@ public class SignSpell extends Spell
 {  
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		String typeString = parameters.getString("type", "");
 		if (typeString.equals("give"))
 		{
-			castMessage(player, "Have some signs!");
-			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0);
+			castMessage("Have some signs!");
+			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0) ? SpellResult.SUCCESS : SpellResult.FAILURE;
 		}
 
 		targetEntity(Player.class);
@@ -31,6 +32,10 @@ public class SignSpell extends Spell
 		if (target.isBlock())
 		{
 			Block targetBlock = getFaceBlock();
+			if (!hasBuildPermission(targetBlock)) {
+				castMessage("You don't have permission to build here.");
+				return SpellResult.INSUFFICIENT_PERMISSION;
+			}
 			if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)
 			{
 				targetBlock.setType(Material.WALL_SIGN);
@@ -68,13 +73,13 @@ public class SignSpell extends Spell
 				Date currentDate = new Date();
 				sign.setLine(3, DateFormat.getInstance().format(currentDate));
 				sign.update();
-				castMessage(player, "You leave a tag");
-				return true;
+				castMessage("You leave a tag");
+				return SpellResult.SUCCESS;
 			}
 			else
 			{
 				sendMessage(player, "Sign placement failed!");
-				return false;
+				return SpellResult.FAILURE;
 			}
 		}
 		else if (target.isEntity() && target.getEntity() instanceof Player)
@@ -82,9 +87,9 @@ public class SignSpell extends Spell
 			Player targetPlayer = (Player)target.getEntity();
 			targetPlayer.sendMessage(player.getName() + " says hi!");
 			sendMessage(player, "You send " + targetPlayer.getName() + " a message");
-			return true;
+			return SpellResult.SUCCESS;
 		}
 
-		return false;
+		return SpellResult.NO_TARGET;
 	}
 }

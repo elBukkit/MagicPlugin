@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.SimpleBlockAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -24,9 +25,9 @@ public class LightningSpell extends Spell
 			this.thunderThreshold = thunderThreshold;
 		}
 
-		public boolean perform(Block block)
+		public SpellResult perform(Block block)
 		{
-			if (Math.random() > density) return false;
+			if (Math.random() > density) return SpellResult.COST_FREE;
 
 			World world = player.getWorld();
 			world.strikeLightning(block.getLocation());
@@ -36,18 +37,18 @@ public class LightningSpell extends Spell
 				world.setThundering(true);
 			}
 
-			return true;
+			return SpellResult.SUCCESS;
 		}
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
 		if (!target.hasTarget())
 		{
 			sendMessage(player, "No target");
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		int radius = parameters.getInt("radius", 1);
@@ -65,8 +66,8 @@ public class LightningSpell extends Spell
 		}
 
 		spells.addToUndoQueue(player, action.getBlocks());
-		castMessage(player, "Zapped " + action.getBlocks().size() + " blocks");
+		castMessage("Zapped " + action.getBlocks().size() + " blocks");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 }

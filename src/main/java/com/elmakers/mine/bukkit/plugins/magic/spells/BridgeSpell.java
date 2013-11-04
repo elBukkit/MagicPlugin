@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BridgeSpell extends Spell 
@@ -15,14 +16,18 @@ public class BridgeSpell extends Spell
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 
 		{
 			// no spot found to bridge
-			player.sendMessage("You need to be standing on something");
-			return false;
+			castMessage("You need to be standing on something");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(playerBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		BlockFace direction = getPlayerFacing();
@@ -48,20 +53,24 @@ public class BridgeSpell extends Spell
 		}
 		if (isTargetable(targetBlock.getType()))
 		{
-			player.sendMessage("Can't bridge any further");
-			return false;
+			castMessage("Can't bridge any further");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(targetBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		BlockList bridgeBlocks = new BlockList();
 		bridgeBlocks.add(targetBlock);
 		targetBlock.setType(material);
 		targetBlock.setData(data);
 
-		castMessage(player, "A bridge extends!");
+		castMessage("A bridge extends!");
 		spells.addToUndoQueue(player, bridgeBlocks);
 
-		//castMessage(player, "Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
+		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

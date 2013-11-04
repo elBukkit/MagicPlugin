@@ -305,37 +305,43 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean cast(String[] extraParameters)
 	{
 		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
-
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		addParameters(extraParameters, parameters);
 
 		long currentTime = System.currentTimeMillis();
 		if (lastCast != 0 && lastCast > currentTime - cooldown)
 		{
+			playerSpells.onCast(SpellResult.COOLDOWN);
 			return false;
 		}
 
 		if (costs != null)
 		{
-			PlayerSpells playerSpells = spells.getPlayerSpells(player);
 			for (CastingCost cost : costs)
 			{
 				if (!cost.has(playerSpells))
 				{
 					sendMessage(player, "Not enough " + cost.getDescription());
+					playerSpells.onCast(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}
-			}
-
-			for (CastingCost cost : costs)
-			{
-				cost.use(playerSpells);
 			}
 		}
 
 		lastCast = currentTime;
 		initializeTargeting(player);
 
-		return onCast(parameters);
+		SpellResult result = onCast(parameters);
+		playerSpells.onCast(result);
+		
+		if (result == SpellResult.SUCCESS && costs != null) {
+			for (CastingCost cost : costs)
+			{
+				cost.use(playerSpells);
+			}
+		}
+		
+		return result == SpellResult.SUCCESS;
 	}
 
 	public String getPermissionNode()
@@ -361,7 +367,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @param parameters Any parameters that were passed to this spell
 	 * @return true if the spell worked, false if it failed
 	 */
-	public abstract boolean onCast(ConfigurationNode parameters);
+	public abstract SpellResult onCast(ConfigurationNode parameters);
 
 	/**
 	 * Called on load, you can load data here and set defaults.
@@ -438,6 +444,18 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		return playerSpells.getBuildingMaterial();
+	}
+	
+	public boolean hasBuildPermission(Location location)
+	{
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		return playerSpells.hasBuildPermission(location);
+	}
+	
+	public boolean hasBuildPermission(Block block)
+	{
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		return playerSpells.hasBuildPermission(block);
 	}
 
 	public void targetEntity(Class<? extends Entity> typeOf)
@@ -948,6 +966,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @param message The message to send
 	 */
 	public void castMessage(Player player, String message)
+	{
+		if (!spells.isQuiet() && !spells.isSilent())
+		{
+			player.sendMessage(message);
+		}
+	}
+	
+	public void castMessage(String message)
 	{
 		if (!spells.isQuiet() && !spells.isSilent())
 		{

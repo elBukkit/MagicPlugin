@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.3.1
+
+ - Add WorldGuard integration for construction spells
+ - Add sound effect feedback for spell failures
+
 ## 2.3.0
 
  - Implement new Wand inventory system.

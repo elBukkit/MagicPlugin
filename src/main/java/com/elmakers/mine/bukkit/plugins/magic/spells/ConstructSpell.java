@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends Spell
@@ -41,7 +42,7 @@ public class ConstructSpell extends Spell
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		targetThrough(Material.GLASS);
 		Block target = getTarget().getBlock();
@@ -55,8 +56,12 @@ public class ConstructSpell extends Spell
 
 		if (target == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		Material material = target.getType();
@@ -95,10 +100,10 @@ public class ConstructSpell extends Spell
 		{
 		case SPHERE: constructSphere(target, radius, material, data, !hollow); break;
 		case CUBOID: constructCuboid(target, radius, material, data, !hollow); break;
-		default : return false;
+		default : return SpellResult.FAILURE;
 		}
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	public void constructCuboid(Block target, int radius, Material material, byte data, boolean fill)
@@ -166,7 +171,7 @@ public class ConstructSpell extends Spell
 			constructedBlocks.setTimeToLive(timeToLive);
 			spells.scheduleCleanup(constructedBlocks);
 		}
-		castMessage(player, "Constructed " + constructedBlocks.size() + "blocks");
+		castMessage("Constructed " + constructedBlocks.size() + "blocks");
 	}
 
 	public int getDistanceSquared(int x, int y, int z)
@@ -182,6 +187,10 @@ public class ConstructSpell extends Spell
 		int z = centerPoint.getZ() + dz - radius;
 		Block block = player.getWorld().getBlockAt(x, y, z);
 		if (!isDestructible(block))
+		{
+			return;
+		}
+		if (!hasBuildPermission(block)) 
 		{
 			return;
 		}

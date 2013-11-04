@@ -6,23 +6,28 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class LavaSpell extends Spell
 {
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		int lavaBlocks = (int)getDistance(player, target);
-		if (lavaBlocks <= 0) return false;
+		if (lavaBlocks <= 0) return SpellResult.NO_TARGET;
 
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
 		Vector playerLoc = new Vector(player.getLocation().getX(), player.getLocation().getY() + 1, player.getLocation().getZ());
@@ -59,8 +64,8 @@ public class LavaSpell extends Spell
 			spells.addToUndoQueue(player, burnedBlocks);
 		}
 
-		castMessage(player, "Blasted " + burnedBlocks.size() + " lava blocks");
+		castMessage("Blasted " + burnedBlocks.size() + " lava blocks");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 }

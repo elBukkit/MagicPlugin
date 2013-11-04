@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utilities;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 
 public class SimpleBlockAction implements BlockAction
 {
@@ -13,10 +14,10 @@ public class SimpleBlockAction implements BlockAction
 		blocks = new BlockList();
 	}
 
-	public boolean perform(Block block)
+	public SpellResult perform(Block block)
 	{
 		blocks.add(block);
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	public BlockList getBlocks()

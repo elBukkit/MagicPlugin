@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class RecallSpell extends Spell
@@ -21,7 +22,7 @@ public class RecallSpell extends Spell
 	Material markerMaterial = Material.REDSTONE_TORCH_ON;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		if (autoDropOnDeath)
 		{
@@ -31,36 +32,36 @@ public class RecallSpell extends Spell
 		String typeString = parameters.getString("type", "");
 		if (typeString.equals("spawn"))
 		{
-			castMessage(player, "Returning you home");
+			castMessage("Returning you home");
 			player.teleport(player.getWorld().getSpawnLocation());
-			return true; 
+			return SpellResult.SUCCESS; 
 		}
 
 		if (getYRotation() > 80)
 		{
 			if (!isActive && autoSpawn)
 			{
-				castMessage(player, "Returning you home");
+				castMessage("Returning you home");
 				player.teleport(player.getWorld().getSpawnLocation());
 			}
 			else
 			{
-				if (!isActive) return false;
+				if (!isActive) return SpellResult.NO_TARGET;
 
 				double distance = getDistance(player.getLocation(), location);
 
 				if (distance < disableDistance && autoSpawn)
 				{
-					castMessage(player, "Returning you home");
+					castMessage("Returning you home");
 					player.teleport(player.getWorld().getSpawnLocation());
 				}
 				else
 				{
-					castMessage(player, "Returning you to your marker");
+					castMessage("Returning you to your marker");
 					player.teleport(location);
 				}
 			}
-			return true;
+			return SpellResult.SUCCESS;
 		}
 
 		if (!isActive)
@@ -89,12 +90,12 @@ public class RecallSpell extends Spell
 		return true;
 	}
 
-	protected boolean placeMarker(Block target)
+	protected SpellResult placeMarker(Block target)
 	{
 		if (target == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 		Block targetBlock = target.getRelative(BlockFace.UP);
 		if (targetBlock.getType() != Material.AIR)
@@ -103,17 +104,17 @@ public class RecallSpell extends Spell
 		}
 		if (targetBlock.getType() != Material.AIR)
 		{
-			castMessage(player, "Can't place a marker there");
-			return false;
+			castMessage("Can't place a marker there");
+			return SpellResult.NO_TARGET;
 		}
 
 		if (removeMarker())
 		{
-			castMessage(player, "You move your recall marker");
+			castMessage("You move your recall marker");
 		}
 		else
 		{
-			castMessage(player, "You place a recall marker");
+			castMessage("You place a recall marker");
 		}
 
 		location = player.getLocation();
@@ -126,7 +127,7 @@ public class RecallSpell extends Spell
 		targetBlock.setType(markerMaterial);
 		isActive = true;
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

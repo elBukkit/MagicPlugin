@@ -7,13 +7,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class GotoSpell extends Spell
 {
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		String playerName = parameters.getString("player");
 		Player targetPlayer = null;
@@ -27,10 +28,10 @@ public class GotoSpell extends Spell
 		if (getYRotation() > 80)
 		{
 			Player destination = getFarthestPlayer(player);
-			if (destination == null) return false;
+			if (destination == null) return SpellResult.NO_TARGET;
 			player.teleport(destination);
-			castMessage(player, "Teleporting you to " + destination.getName());
-			return true;
+			castMessage("Teleporting you to " + destination.getName());
+			return SpellResult.SUCCESS;
 		}
 
 		Target target = getTarget();
@@ -40,10 +41,10 @@ public class GotoSpell extends Spell
 		{
 			Player targetedPlayer = (Player)targetEntity;
 			Player destination = getFarthestPlayer(targetedPlayer);
-			if (destination == null) return false;
+			if (destination == null) return SpellResult.NO_TARGET;
 			targetedPlayer.teleport(destination);
-			castMessage(player, "Teleporting " + targetedPlayer.getName() + " to " + destination.getName());
-			return true;
+			castMessage("Teleporting " + targetedPlayer.getName() + " to " + destination.getName());
+			return SpellResult.SUCCESS;
 		}
 
 		Location destination = player.getLocation();
@@ -58,11 +59,11 @@ public class GotoSpell extends Spell
 			targetPlayer = getFarthestPlayer(player);
 		}
 
-		if (targetPlayer == null) return false;
+		if (targetPlayer == null) return SpellResult.NO_TARGET;
 		targetPlayer.teleport(destination);
-		castMessage(player, "Teleporting " + targetPlayer.getName() + " to your target");
+		castMessage("Teleporting " + targetPlayer.getName() + " to your target");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	protected Player getFarthestPlayer(Player fromPlayer)

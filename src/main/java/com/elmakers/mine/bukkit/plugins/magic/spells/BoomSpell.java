@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import org.bukkit.Location;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -10,21 +11,21 @@ public class BoomSpell extends Spell {
 
 	protected int defaultSize = 1;
 
-	public boolean createExplosionAt(Location target, float size, boolean incendiary)
+	public SpellResult createExplosionAt(Location target, float size, boolean incendiary)
 	{
 		if (target == null) 
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 
 		player.getWorld().createExplosion(target.getBlock().getLocation(), size, incendiary);
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int size = parameters.getInt("size", defaultSize);
 		boolean useFire = parameters.getBoolean("fire", false);
@@ -39,7 +40,7 @@ public class BoomSpell extends Spell {
 		if (!target.hasTarget())
 		{
 			sendMessage(player, "No target");
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		return createExplosionAt(target.getLocation(), size, useFire);

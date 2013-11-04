@@ -5,19 +5,24 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TowerSpell extends Spell {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		int MAX_HEIGHT = 255;
 		int height = 16;
@@ -40,7 +45,7 @@ public class TowerSpell extends Spell {
 			Block block = getBlockAt(midX, y, midZ);
 			if (block.getType() != Material.AIR)
 			{
-				castMessage(player, "Found ceiling of " + block.getType().name().toLowerCase());
+				castMessage("Found ceiling of " + block.getType().name().toLowerCase());
 				height = i;
 				break;
 			}
@@ -70,7 +75,7 @@ public class TowerSpell extends Spell {
 			}
 		}
 		spells.addToUndoQueue(player, towerBlocks);
-		castMessage(player, "Made tower " + height + " high with " + blocksCreated + " blocks");
-		return true;
+		castMessage("Made tower " + height + " high with " + blocksCreated + " blocks");
+		return SpellResult.SUCCESS;
 	}
 }

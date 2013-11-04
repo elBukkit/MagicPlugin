@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class GillsSpell extends Spell
@@ -56,7 +57,7 @@ public class GillsSpell extends Spell
 	private HashMap<String, PlayerGills> gillPlayers = new HashMap<String, PlayerGills>();
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		PlayerGills hasGills = gillPlayers.get(player.getName());
 
@@ -71,7 +72,7 @@ public class GillsSpell extends Spell
 			gillPlayers.put(player.getName(), new PlayerGills(gillDuration * 1000));
 		}
 		checkListener();
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	protected void checkListener()

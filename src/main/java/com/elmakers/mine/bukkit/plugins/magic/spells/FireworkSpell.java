@@ -13,6 +13,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireworkSpell extends Spell
@@ -30,7 +31,7 @@ public class FireworkSpell extends Spell
 			Color.RED, Color.SILVER, Color.TEAL, Color. WHITE, Color.YELLOW };
 	
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Random rand = new Random();
 		color1 = getColor(rand.nextInt(17));
@@ -62,9 +63,9 @@ public class FireworkSpell extends Spell
 			spawnFirework(target.getLocation(), flareCount);
 		}
 
-		castMessage(player, "You fire some magical flares");
+		castMessage("You fire some magical flares");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 	
 	protected void spawnFirework(Location location, int spread) {

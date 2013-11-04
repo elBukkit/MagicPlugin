@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MineSpell extends Spell
@@ -27,18 +28,22 @@ public class MineSpell extends Spell
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 		if (!isMineable(target))
 		{
 			sendMessage(player, "Can't mine " + target.getType().name().toLowerCase());
-			return false;
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		BlockList minedBlocks = new BlockList();
@@ -57,9 +62,9 @@ public class MineSpell extends Spell
 
 		// This isn't undoable, since we can't pick the items back up!
 		// So, don't add it to the undo queue.
-		castMessage(player, "Mined " + minedBlocks.size() + " blocks of " + mineMaterial.name().toLowerCase());
+		castMessage("Mined " + minedBlocks.size() + " blocks of " + mineMaterial.name().toLowerCase());
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	protected void mine(Block block, Material fillMaterial, BlockList minedBlocks)

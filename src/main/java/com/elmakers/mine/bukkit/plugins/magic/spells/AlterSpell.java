@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AlterSpell extends Spell
@@ -27,18 +28,22 @@ public class AlterSpell extends Spell
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 		if (!adjustableMaterials.contains(targetBlock.getType()))
 		{
-			player.sendMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
-			return false;
+			castMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
+			return SpellResult.FAILURE;
+		}
+		if (!hasBuildPermission(targetBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		BlockList undoList = new BlockList();
@@ -57,9 +62,9 @@ public class AlterSpell extends Spell
 
 		spells.addToUndoQueue(player, undoList);
 
-		castMessage(player, "Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
+		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@SuppressWarnings("deprecation")

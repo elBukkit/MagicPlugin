@@ -9,6 +9,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FlingSpell extends Spell
@@ -21,7 +22,7 @@ public class FlingSpell extends Spell
 	protected double maxMagnitude = 8; 
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int height = 0;
 		Block playerBlock = player.getLocation().getBlock();
@@ -43,11 +44,11 @@ public class FlingSpell extends Spell
 
 		velocity.multiply(magnitude);
 		player.setVelocity(velocity);
-		castMessage(player, "Whee!");
+		castMessage("Whee!");
 
 		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling = System.currentTimeMillis();
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

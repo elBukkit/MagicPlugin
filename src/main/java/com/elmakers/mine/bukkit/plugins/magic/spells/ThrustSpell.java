@@ -19,6 +19,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ThrustSpell extends Spell
@@ -257,7 +258,7 @@ public class ThrustSpell extends Spell
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		lastTick = System.currentTimeMillis();
 		hoverHeight = defaultHoverHeight;
@@ -270,17 +271,17 @@ public class ThrustSpell extends Spell
 		if (action.isActive(player))
 		{
 			action.deactivate(this);
-			castMessage(player, "You feel heavier");
+			castMessage("You feel heavier");
 		}
 		else
 		{
 			action.activate(this);
-			castMessage(player, "You feel lighter");
+			castMessage("You feel lighter");
 		}
 
 		lastLevitate = System.currentTimeMillis();
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

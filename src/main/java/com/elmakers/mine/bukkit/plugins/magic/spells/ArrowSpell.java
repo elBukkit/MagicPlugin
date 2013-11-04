@@ -8,12 +8,13 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ArrowSpell extends Spell
 { 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int arrowCount = 1;
 		arrowCount = parameters.getInt("count", arrowCount);
@@ -40,7 +41,7 @@ public class ArrowSpell extends Spell
 			if (arrow == null)
 			{
 				sendMessage(player, "One of your arrows fizzled");
-				return false;
+				return SpellResult.FAILURE;
 			}
 
 			if (useFire) {
@@ -59,9 +60,9 @@ public class ArrowSpell extends Spell
 			arrow.setTicksLived(300);
 		}
 
-		castMessage(player, "You fire some magical arrows");
+		castMessage("You fire some magical arrows");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TreeSpell extends Spell
@@ -14,20 +15,24 @@ public class TreeSpell extends Spell
 	private boolean requireSapling = false;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
 
 		if (target == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 
 		if (requireSapling && target.getType() != Material.SAPLING)
 		{
-			castMessage(player, "Plant a sapling first");
-			return false;
+			castMessage("Plant a sapling first");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		Location treeLoc = new Location(player.getWorld(), target.getX(), target.getY() + 1, target.getZ(), 0, 0);
@@ -43,13 +48,13 @@ public class TreeSpell extends Spell
 
 		if (result)
 		{
-			castMessage(player, "You grow a " + getTreeName(treeType) + " tree");
+			castMessage("You grow a " + getTreeName(treeType) + " tree");
 		}
 		else
 		{
-			castMessage(player, "Your tree didn't grow");
+			castMessage("Your tree didn't grow");
 		}
-		return result;
+		return result ? SpellResult.SUCCESS : SpellResult.FAILURE;
 	}
 
 	public String getTreeName(TreeType treeType)

@@ -5,6 +5,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 
 public class BlockRecurse
 {
@@ -29,7 +30,7 @@ public class BlockRecurse
 		}
 		affectedBlocks.add(block);
 
-		if (!recurseAction.perform(block))
+		if (recurseAction.perform(block) != SpellResult.SUCCESS)
 		{
 			return;
 		}

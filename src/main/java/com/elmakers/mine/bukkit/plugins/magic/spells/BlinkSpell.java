@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BlinkSpell extends Spell
@@ -21,7 +22,7 @@ public class BlinkSpell extends Spell
 		Location location = findPlaceToStand(player.getLocation(), true);
 		if (location != null) 
 		{
-			castMessage(player, "You ascend");
+			castMessage("You ascend");
 			player.teleport(location);
 			return true;
 		}
@@ -33,7 +34,7 @@ public class BlinkSpell extends Spell
 		Location location = findPlaceToStand(player.getLocation(), false);
 		if (location != null) 
 		{
-			castMessage(player, "You descend");
+			castMessage("You descend");
 			player.teleport(location);
 			return true;
 		}
@@ -41,33 +42,33 @@ public class BlinkSpell extends Spell
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		String elevateType = parameters.getString("type", "");
 		if (elevateType.equals("descend"))
 		{
 			if (!descend())
 			{
-				castMessage(player, "Nowhere to go down");
-				return false;
+				castMessage("Nowhere to go down");
+				return SpellResult.NO_TARGET;
 			}
-			return true;
+			return SpellResult.SUCCESS;
 		}
 		else if (elevateType.equals("ascend"))
 		{
 			if (!ascend())
 			{
-				castMessage(player, "Nowhere to go up");
-				return false;
+				castMessage("Nowhere to go up");
+				return SpellResult.NO_TARGET;
 			}
-			return true;
+			return SpellResult.SUCCESS;
 		}
 
 		if (getYRotation() < -80 && autoDescend)
 		{
 			if (descend())
 			{
-				return true;
+				return SpellResult.SUCCESS;
 			}
 		}
 
@@ -75,7 +76,7 @@ public class BlinkSpell extends Spell
 		{
 			if (ascend())
 			{
-				return true;
+				return SpellResult.SUCCESS;
 			}
 		}
 
@@ -100,8 +101,8 @@ public class BlinkSpell extends Spell
 
 		if (target == null) 
 		{
-			castMessage(player, "Nowhere to blink to");
-			return false;
+			castMessage("Nowhere to blink to");
+			return SpellResult.NO_TARGET;
 		}
 
 		World world = player.getWorld();
@@ -161,10 +162,10 @@ public class BlinkSpell extends Spell
 		Block twoUp = oneUp.getRelative(BlockFace.UP);
 		if (!isOkToStandIn(oneUp.getType()) || !isOkToStandIn(twoUp.getType()))
 		{
-			castMessage(player, "You can't fit in there!");
-			return false;
+			castMessage("You can't fit in there!");
+			return SpellResult.NO_TARGET;
 		}
-		castMessage(player, "Blink!");
+		castMessage("Blink!");
 		Location targetLocation = new Location
 				(
 						world,
@@ -176,7 +177,7 @@ public class BlinkSpell extends Spell
 						);
 		player.teleport(targetLocation);
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

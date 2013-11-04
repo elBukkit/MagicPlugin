@@ -4,6 +4,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class InvincibleSpell extends Spell 
@@ -11,7 +12,7 @@ public class InvincibleSpell extends Spell
 	protected float protectAmount = 0;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int amount = parameters.getInt("amount", 100);
 
@@ -37,7 +38,7 @@ public class InvincibleSpell extends Spell
 			protectAmount = (float)amount / 100;
 		}
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

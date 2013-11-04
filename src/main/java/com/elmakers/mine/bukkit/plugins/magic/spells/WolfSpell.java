@@ -11,6 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -23,7 +24,7 @@ public class WolfSpell extends Spell
 	{
 		if (target == null)
 		{
-			castMessage(player, "No target");
+			castMessage("No target");
 			return null;
 		}
 
@@ -41,18 +42,18 @@ public class WolfSpell extends Spell
 			return null;
 		}
 		tameWolf(entity);
-		castMessage(player, "You summon a wolfie!");
+		castMessage("You summon a wolfie!");
 		return entity;
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
 		if (target == null)
 		{
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		ArrayList<Wolf> newWolves = new ArrayList<Wolf>();
@@ -76,7 +77,7 @@ public class WolfSpell extends Spell
 		Wolf wolf = newWolf(target);
 		if (wolf == null)
 		{
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		wolves.add(wolf);
@@ -92,7 +93,7 @@ public class WolfSpell extends Spell
 			}
 		}
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	protected void tameWolf(Wolf wolfie)

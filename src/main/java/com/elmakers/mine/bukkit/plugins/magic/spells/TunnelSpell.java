@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TunnelSpell extends Spell
@@ -23,14 +24,18 @@ public class TunnelSpell extends Spell
 	private int torchFrequency = 4;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 
 		{
 			// no spot found to tunnel
-			player.sendMessage("You need to be standing on something");
-			return false;
+			castMessage("You need to be standing on something");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(playerBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		BlockFace direction = getPlayerFacing();
@@ -117,9 +122,9 @@ public class TunnelSpell extends Spell
 		}
 
 		spells.addToUndoQueue(player, tunneledBlocks);
-		castMessage(player, "Tunneled through " + tunneledBlocks.size() + "blocks");
+		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	public boolean isDestructible(Block block)

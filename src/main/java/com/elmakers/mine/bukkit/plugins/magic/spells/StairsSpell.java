@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class StairsSpell extends Spell
@@ -22,18 +23,22 @@ public class StairsSpell extends Spell
 	private int torchFrequency = 4;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 
+		if (!hasBuildPermission(targetBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		createStairs(targetBlock);
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	protected void createStairs(Block targetBlock)
@@ -125,7 +130,7 @@ public class StairsSpell extends Spell
 
 		spells.addToUndoQueue(player, tunneledBlocks);
 		spells.addToUndoQueue(player, stairBlocks);
-		castMessage(player, "Tunneled through " + tunneledBlocks.size() + "blocks and created " + stairBlocks.size() + " stairs");
+		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks and created " + stairBlocks.size() + " stairs");
 	}	
 
 	protected void createSpiralStairs(Block targetBlock)

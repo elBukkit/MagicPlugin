@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -17,13 +18,13 @@ public class DisintegrateSpell extends Spell
 	private int             entityDamage = 100;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
 		if (target == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 		if (target.isEntity())
 		{
@@ -39,21 +40,25 @@ public class DisintegrateSpell extends Spell
 				{
 					li.damage(entityDamage);
 				}
-				castMessage(player, "ZOT!");
-				return true;
+				castMessage("ZOT!");
+				return SpellResult.SUCCESS;
 			}
 		}
 
 		if (!target.hasTarget())
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
 		}
 
 		Block targetBlock = target.getBlock();
 		BlockList disintigrated = new BlockList();
 		disintigrated.add(targetBlock);
 
+		if (!hasBuildPermission(targetBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		if (isUnderwater())
 		{
 			targetBlock.setType(Material.STATIONARY_WATER);
@@ -64,9 +69,9 @@ public class DisintegrateSpell extends Spell
 		}
 
 		spells.addToUndoQueue(player, disintigrated);
-		castMessage(player, "ZAP!");
+		castMessage("ZAP!");
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

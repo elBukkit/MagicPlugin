@@ -4,12 +4,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class UndoSpell extends Spell
 {
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		if (parameters.containsKey("player"))
 		{
@@ -17,13 +18,13 @@ public class UndoSpell extends Spell
 			boolean undone = spells.undo(undoPlayer);
 			if (undone)
 			{
-				castMessage(player, "You revert " + undoPlayer + "'s construction");
+				castMessage("You revert " + undoPlayer + "'s construction");
 			}
 			else
 			{
-				castMessage(player, "There is nothing to undo for " + undoPlayer);
+				castMessage("There is nothing to undo for " + undoPlayer);
 			}
-			return undone;
+			return undone ? SpellResult.SUCCESS : SpellResult.FAILURE;
 		}
 
 		if (parameters.containsKey("type"))
@@ -48,11 +49,11 @@ public class UndoSpell extends Spell
 
 					if (undone)
 					{
-						castMessage(player, "You revert your construction");
-						return true;
+						castMessage("You revert your construction");
+						return SpellResult.SUCCESS;
 					}
 				}
-				return false;
+				return SpellResult.NO_TARGET;
 			}
 		}
 
@@ -62,12 +63,12 @@ public class UndoSpell extends Spell
 		boolean undone = spells.undo(player.getName());
 		if (undone)
 		{
-			castMessage(player, "You revert your construction");
+			castMessage("You revert your construction");
 		}
 		else
 		{
-			castMessage(player, "Nothing to undo");
+			castMessage("Nothing to undo");
 		}
-		return undone;	
+		return undone ? SpellResult.SUCCESS : SpellResult.FAILURE;	
 	}
 }

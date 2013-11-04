@@ -11,22 +11,26 @@
 		</dependencies>
 	</dependencyManagement>
 	<properties>
-		<build.version>2.3.0</build.version>
+		<build.version>2.3.1</build.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.6.4-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.6.4-R0.1-SNAPSHOT</version>
+			<version>LATEST</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	<repositories>
+       <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
+       </repository>
+       <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
+      </repository>
+    </repositories>
 	<build>
 		<plugins>
 			<plugin>

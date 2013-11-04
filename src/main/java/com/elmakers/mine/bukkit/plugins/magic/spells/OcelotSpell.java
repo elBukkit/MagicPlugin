@@ -11,6 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -23,7 +24,7 @@ public class OcelotSpell extends Spell
 	{
 		if (target == null)
 		{
-			castMessage(player, "No target");
+			castMessage("No target");
 			return null;
 		}
 
@@ -41,18 +42,18 @@ public class OcelotSpell extends Spell
 			return null;
 		}
 		tameOcelot(entity);
-		castMessage(player, "You summon a Ocelot!");
+		castMessage("You summon a Ocelot!");
 		return entity;
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
 		if (target == null)
 		{
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		ArrayList<Ocelot> newocelots = new ArrayList<Ocelot>();
@@ -76,7 +77,7 @@ public class OcelotSpell extends Spell
 		Ocelot Ocelot = newOcelot(target);
 		if (Ocelot == null)
 		{
-			return false;
+			return SpellResult.FAILURE;
 		}
 
 		ocelots.add(Ocelot);
@@ -91,7 +92,7 @@ public class OcelotSpell extends Spell
 			}
 		}
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	protected void tameOcelot(Ocelot Ocelot)

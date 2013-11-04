@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -19,24 +20,24 @@ public class ShunkenHeadSpell extends Spell
 	private int             entityDamage = 100;
 	
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		String castType = parameters.getString("type");
 		if (castType != null && castType.equalsIgnoreCase("self")) {
 			dropHead(player.getLocation(), player.getName(), null);
-			return true;
+			return SpellResult.SUCCESS;
 		}
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
 			dropHead(player.getLocation(), giveName, null);
-			return true;
+			return SpellResult.SUCCESS;
 		}
 		
 		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
 		if (target == null || ! target.isEntity() || !(target.getEntity() instanceof LivingEntity))
 		{
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 		
 		Entity targetEntity = target.getEntity();
@@ -126,8 +127,8 @@ public class ShunkenHeadSpell extends Spell
 		if (ownerName != null && li.isDead()) {
 			dropHead(targetEntity.getLocation(), ownerName, itemName);
 		}
-		castMessage(player, "Boogidie Boogidie");
-		return true;
+		castMessage("Boogidie Boogidie");
+		return SpellResult.SUCCESS;
 	}
 	
 	@SuppressWarnings("deprecation")

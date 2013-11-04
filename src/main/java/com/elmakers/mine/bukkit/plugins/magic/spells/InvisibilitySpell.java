@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class InvisibilitySpell extends Spell
@@ -17,7 +18,7 @@ public class InvisibilitySpell extends Spell
 	protected Location location;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		this.location = player.getLocation();
 
@@ -31,7 +32,7 @@ public class InvisibilitySpell extends Spell
 		sendMessage(player, "You are invisible");
 
 		spells.registerEvent(SpellEventType.PLAYER_MOVE, this);
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

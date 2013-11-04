@@ -7,13 +7,14 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TransmuteSpell extends Spell
 {
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{	
 		BlockList transmuteAction = null;
 
@@ -38,14 +39,14 @@ public class TransmuteSpell extends Spell
 		if (transmuteAction == null)
 		{
 			sendMessage(player, "Nothing to transmute");
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		ItemStack targetItem = getBuildingMaterial();
 		if (targetItem == null)
 		{
 			sendMessage(player, "Nothing to transmute with");
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		Material material = targetItem.getType();
@@ -60,14 +61,14 @@ public class TransmuteSpell extends Spell
 
 		if (usedTarget)
 		{
-			castMessage(player, "You transmute your target structure to " + material.name().toLowerCase());
+			castMessage("You transmute your target structure to " + material.name().toLowerCase());
 		}
 		else
 		{
-			castMessage(player, "You transmute your last structure to " + material.name().toLowerCase());
+			castMessage("You transmute your last structure to " + material.name().toLowerCase());
 		}
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TorchSpell extends Spell 
@@ -14,7 +15,7 @@ public class TorchSpell extends Spell
 	private boolean allowLightstone = false;
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		if (parameters.containsKey("time"))
 		{
@@ -39,23 +40,23 @@ public class TorchSpell extends Spell
 				}
 			}
 			setRelativeTime(targetTime);    
-			castMessage(player, "Changed time to " + timeDescription);
-			return true;
+			castMessage("Changed time to " + timeDescription);
+			return SpellResult.SUCCESS;
 		}
 
 		if (getYRotation() > 80 && allowDay)
 		{
-			castMessage(player, "FLAME ON!");
+			castMessage("FLAME ON!");
 			setRelativeTime(0);
-			return true;
+			return SpellResult.SUCCESS;
 		}
 
 
 		if (getYRotation() < -80 && allowNight)
 		{
-			castMessage(player, "FLAME OFF!");
+			castMessage("FLAME OFF!");
 			setRelativeTime(13000);
-			return true;
+			return SpellResult.SUCCESS;
 		}
 
 		Block target = getTargetBlock();	
@@ -63,8 +64,12 @@ public class TorchSpell extends Spell
 
 		if (target == null || face == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		boolean isAir = face.getType() == Material.AIR;
@@ -87,8 +92,8 @@ public class TorchSpell extends Spell
 				||		(targetMaterial == Material.GLOWSTONE && !allowLightstone)
 				)
 		{
-			player.sendMessage("Can't put a torch there");
-			return false;
+			castMessage("Can't put a torch there");
+			return SpellResult.NO_TARGET;
 		}
 
 		if (!replaceAttachment)
@@ -96,13 +101,13 @@ public class TorchSpell extends Spell
 			target = face;
 		}	
 
-		castMessage(player, "Flame on!");
+		castMessage("Flame on!");
 		BlockList torchBlock = new BlockList();
 		target.setType(targetMaterial);
 		torchBlock.add(target);
 		spells.addToUndoQueue(player, torchBlock);
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

@@ -3,12 +3,13 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import org.bukkit.World;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WeatherSpell extends Spell
 {
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		World world = player.getWorld();
 		boolean hasStorm = world.hasStorm();
@@ -17,7 +18,7 @@ public class WeatherSpell extends Spell
 		{
 			world.setStorm(false);
 			world.setThundering(false);
-			castMessage(player, "You calm the storm");
+			castMessage("You calm the storm");
 			/*
             boolean hasThunder = world.isThundering();
             if (hasThunder)
@@ -27,16 +28,16 @@ public class WeatherSpell extends Spell
             else
             {
                 world.setThundering(true);
-                castMessage(player, "You anger the storm");
+                castMessage("You anger the storm");
             }
 			 */
 		}
 		else
 		{
 			world.setStorm(true);
-			castMessage(player, "You stir up a storm");
+			castMessage("You stir up a storm");
 		}
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	@Override

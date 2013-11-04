@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -310,7 +314,7 @@ public class PlayerSpells
 			}
 		}
 	}
-
+	
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
 		// First check for damage reduction
@@ -416,5 +420,37 @@ public class PlayerSpells
 	
 	public ItemStack getBuildingMaterial() {
 		return buildingMaterial;
+	}
+	
+	public boolean hasBuildPermission(Location location) {
+		return master.hasBuildPermission(player, location);
+	}
+	
+	public boolean hasBuildPermission(Block block) {
+		return master.hasBuildPermission(player, block);
+	}
+	
+	public void onCast(SpellResult result) {
+		if (master.soundsEnabled()) {
+			switch(result) {
+			case SUCCESS:
+				// No sound on success
+				break;
+			case INSUFFICIENT_RESOURCES:
+				player.playEffect(player.getLocation(), Effect.SMOKE,  null);
+				player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+				break;
+			case COOLDOWN:
+				player.playEffect(player.getLocation(), Effect.SMOKE,  null);
+				player.playSound(player.getLocation(), Sound.NOTE_SNARE_DRUM, 1, 1);
+				break;
+			case NO_TARGET:
+				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 1);
+				break;
+			default:
+				player.playEffect(player.getLocation(), Effect.EXTINGUISH,  null);
+				player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1, 1);
+			}
+		}
 	}
 }

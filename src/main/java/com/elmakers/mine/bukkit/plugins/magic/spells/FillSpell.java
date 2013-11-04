@@ -5,7 +5,9 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.BlockRecurse;
 import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -19,7 +21,7 @@ public class FillSpell extends Spell
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
@@ -52,16 +54,21 @@ public class FillSpell extends Spell
 
 		if (targetBlock == null) 
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(targetBlock)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		if (recurse)
 		{
 			this.targetBlock = null;
 
+			PlayerSpells playerSpells = spells.getPlayerSpells(player);
 			Material targetMaterial = targetBlock.getType();
-			ReplaceMaterialAction action = new ReplaceMaterialAction(targetBlock, material, data);
+			ReplaceMaterialAction action = new ReplaceMaterialAction(playerSpells, targetBlock, material, data);
 
 			// A bit hacky, but is very handy!
 			if (targetMaterial == Material.STATIONARY_WATER)
@@ -82,8 +89,8 @@ public class FillSpell extends Spell
 			}
 			blockRecurse.recurse(targetBlock, action);
 			spells.addToUndoQueue(player, action.getBlocks());
-			castMessage(player, "Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
-			return true;
+			castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
+			return SpellResult.SUCCESS;
 		}
 		else if (singleBlock)
 		{
@@ -95,13 +102,13 @@ public class FillSpell extends Spell
 			targetBlock.setType(material);
 			targetBlock.setData(data);
 
-			castMessage(player, "Painting with " + material.name().toLowerCase());
+			castMessage("Painting with " + material.name().toLowerCase());
 			spells.addToUndoQueue(player, filledBlocks);
-			return true;
+			return SpellResult.SUCCESS;
 		}
 
 		if (this.targetBlock != null)
-		{			
+		{
 			int deltax = targetBlock.getX() - this.targetBlock.getX();
 			int deltay = targetBlock.getY() - this.targetBlock.getY();
 			int deltaz = targetBlock.getZ() - this.targetBlock.getZ();
@@ -115,14 +122,14 @@ public class FillSpell extends Spell
 
 			if (maxDimension > 0 && (absx > maxDimension || absy > maxDimension || absz > maxDimension))
 			{
-				player.sendMessage("Dimension is too big!");
-				return false;
+				castMessage("Dimension is too big!");
+				return SpellResult.FAILURE;
 			}
 
 			if (maxVolume > 0 && absx * absy * absz > maxVolume)
 			{
-				player.sendMessage("Volume is too big!");
-				return false;
+				castMessage("Volume is too big!");
+				return SpellResult.FAILURE;
 			}
 
 			int dx = (int)Math.signum(deltax);
@@ -140,7 +147,7 @@ public class FillSpell extends Spell
 			}
 
 			BlockList filledBlocks = new BlockList();
-			castMessage(player, "Filling " + absx + "x" + absy + "x" + absz + " area with " + material.name().toLowerCase());
+			castMessage("Filling " + absx + "x" + absy + "x" + absz + " area with " + material.name().toLowerCase());
 			int x = this.targetBlock.getX();
 			int y = this.targetBlock.getY();
 			int z = this.targetBlock.getZ();
@@ -151,6 +158,8 @@ public class FillSpell extends Spell
 					for (int iz = 0; iz < absz; iz++)
 					{
 						Block block = getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
+						if (!hasBuildPermission(block)) continue;
+						
 						filledBlocks.add(block);
 						block.setType(material);
 						block.setData(data);
@@ -160,7 +169,7 @@ public class FillSpell extends Spell
 			spells.addToUndoQueue(player, filledBlocks);
 
 			this.targetBlock = null;
-			return true;
+			return SpellResult.SUCCESS;
 		}
 		else
 		{
@@ -169,8 +178,8 @@ public class FillSpell extends Spell
 			{
 				material = targetBlock.getType();
 			}
-			castMessage(player, "Cast again to fill with " + material.name().toLowerCase());
-			return true;
+			castMessage("Cast again to fill with " + material.name().toLowerCase());
+			return SpellResult.SUCCESS;
 		}
 	}
 
@@ -179,7 +188,7 @@ public class FillSpell extends Spell
 	{
 		if (targetBlock != null)
 		{
-			player.sendMessage("Cancelled fill");
+			castMessage("Cancelled fill");
 			targetBlock = null;
 		}
 	}

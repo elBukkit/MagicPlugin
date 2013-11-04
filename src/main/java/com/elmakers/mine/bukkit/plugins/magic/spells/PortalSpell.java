@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.dao.BoundingBox;
 import com.elmakers.mine.bukkit.dao.MaterialList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PortalSpell extends Spell
@@ -218,20 +219,24 @@ public class PortalSpell extends Spell
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		targetThrough(Material.GLASS);
 
 		Block target = getTargetBlock();
 		if (target == null)
 		{
-			castMessage(player, "No target");
-			return false;
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
+		if (!hasBuildPermission(target)) {
+			castMessage("You don't have permission to build here.");
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
 		{
-			castMessage(player, "Can't create a portal that far away");
-			return false;
+			castMessage("Can't create a portal that far away");
+			return SpellResult.NO_TARGET;
 		}
 
 		Material blockType = target.getType();
@@ -245,8 +250,8 @@ public class PortalSpell extends Spell
 		blockType = portalBase.getType();
 		if (blockType != Material.AIR && blockType != Material.SNOW)
 		{
-			castMessage(player, "Can't create a portal there");
-			return false;		
+			castMessage("Can't create a portal there");
+			return SpellResult.NO_TARGET;		
 		}
 
 		spells.disablePhysics(10000);
@@ -254,7 +259,7 @@ public class PortalSpell extends Spell
 
 		checkListener();
 
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	public void onLoad(ConfigurationNode properties)  

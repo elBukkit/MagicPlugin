@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -34,7 +35,7 @@ public class ForceSpell extends Spell
 	}
 
 	@Override
-	public boolean onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		boolean push = false;
 		boolean pull = false;
@@ -74,21 +75,21 @@ public class ForceSpell extends Spell
 		{
 			if (push)
 			{
-				castMessage(player, "Get away!");
+				castMessage("Get away!");
 				forceAll(multiplier, true);
 			}
 			else
 			{
-				castMessage(player, "Gimme!");
+				castMessage("Gimme!");
 				forceAll(multiplier, false);
 			}
-			return true;
+			return SpellResult.SUCCESS;
 		}
 
 		if (target == null || !target.hasTarget())
 		{
 			targetEntity = null;
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		if (target.isEntity())
@@ -102,13 +103,13 @@ public class ForceSpell extends Spell
 					)
 			{
 				targetEntity = newEntity;
-				if (!(push || pull)) return true;
+				if (!(push || pull)) return SpellResult.SUCCESS;
 			}
 		}
 
 		if (targetEntity == null)
 		{
-			return false;
+			return SpellResult.NO_TARGET;
 		}
 
 		Location destination = target.getLocation();
@@ -117,13 +118,13 @@ public class ForceSpell extends Spell
 
 		if (pull)
 		{
-			castMessage(player, "Yoink!");
+			castMessage("Yoink!");
 		}
 		else
 		{
-			castMessage(player, "Shove!");
+			castMessage("Shove!");
 		}
-		return true;
+		return SpellResult.SUCCESS;
 	}
 
 	protected void forceEntity(Entity target, double multiplier, Location destination, boolean useAim)
@@ -160,7 +161,7 @@ public class ForceSpell extends Spell
             &&      getDistance(player.getLocation(), targetEntity.getLocation()) < getMaxRange()
             )
             {
-                player.sendMessage("Released target");
+                castMessage("Released target");
             }
 			 */
 			targetEntity = null;
