@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2.3.2
+
+ - Fix absorb spell to work with new wand inventory system
+ - Fix erase material
+ - Add clone material for more explicit control over clone behavior
+ - Fix alter spell, add new materials up to 1.7.2
+
 ## 2.3.1
 
  - Add WorldGuard integration for construction spells
