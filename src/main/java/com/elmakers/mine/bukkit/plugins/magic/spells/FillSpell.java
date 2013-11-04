@@ -179,18 +179,21 @@ public class FillSpell extends Spell
 				material = targetBlock.getType();
 			}
 			castMessage("Cast again to fill with " + material.name().toLowerCase());
-			return SpellResult.SUCCESS;
+			return SpellResult.COST_FREE;
 		}
 	}
 
 	@Override
-	public void onCancel()
+	public boolean onCancel()
 	{
 		if (targetBlock != null)
 		{
 			castMessage("Cancelled fill");
 			targetBlock = null;
+			return true;
 		}
+		
+		return false;
 	}
 
 	@Override

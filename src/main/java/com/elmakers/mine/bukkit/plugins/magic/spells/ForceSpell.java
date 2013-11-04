@@ -103,7 +103,7 @@ public class ForceSpell extends Spell
 					)
 			{
 				targetEntity = newEntity;
-				if (!(push || pull)) return SpellResult.SUCCESS;
+				if (!(push || pull)) return SpellResult.COST_FREE;
 			}
 		}
 
@@ -149,11 +149,10 @@ public class ForceSpell extends Spell
 	}
 
 	@Override
-	public void onCancel()
+	public boolean onCancel()
 	{
 		if (targetEntity != null)
 		{
-			/*
             if 
             (
                     (targetEntity instanceof LivingEntity) 
@@ -163,9 +162,12 @@ public class ForceSpell extends Spell
             {
                 castMessage("Released target");
             }
-			 */
-			targetEntity = null;
+
+            targetEntity = null;
+			return true;
 		}
+		
+		return false;
 	}
 
 	@Override

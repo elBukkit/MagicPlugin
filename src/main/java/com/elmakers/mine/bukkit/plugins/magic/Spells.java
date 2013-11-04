@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -269,10 +270,10 @@ public class Spells implements Listener
 	 * Random utility functions
 	 */
 
-	public void cancel(Player player)
+	public boolean cancel(Player player)
 	{
 		PlayerSpells playerSpells = getPlayerSpells(player);
-		playerSpells.cancel();
+		return playerSpells.cancel();
 	}
 
 	public boolean isQuiet()
@@ -624,9 +625,13 @@ public class Spells implements Listener
 				if (next != null && next.getType() != Material.AIR) {
 					Spell spell = Wand.isSpell(next) ? playerSpells.getSpell(next.getType()) : null;
 					if (spell != null) {
+						playerSpells.cancel();
 						wand.setActiveSpell(playerSpells, spell.getKey());
-					} else if (buildingMaterials.contains(next.getType())) {
-						wand.setActiveMaterial(playerSpells, next.getType(), next.getData().getData());
+					} else {
+						Material material = next.getType();
+						if (buildingMaterials.contains(material) || material == Wand.EraseMaterial || material == Wand.CopyMaterial) {
+							wand.setActiveMaterial(playerSpells, material, next.getData().getData());
+						}
 					}
 				}
 				event.setCancelled(true);
@@ -729,10 +734,17 @@ public class Spells implements Listener
 		}
 		if (toggleInventory)
 		{
-			if (wand.isInventoryOpen(spells)) {
-				wand.closeInventory(spells);
+			// Check for spell cancel first, e.g. fill or force
+			if (!spells.cancel()) {
+				if (wand.isInventoryOpen(spells)) {
+					spells.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+					wand.closeInventory(spells);
+				} else {
+					spells.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
+					wand.openInventory(spells);
+				}
 			} else {
-				wand.openInventory(spells);
+				spells.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
 			}
 		}
 	}

@@ -98,11 +98,14 @@ wands:
             - rewind
             - blob
             - stalactite
+            - alter
         materials:
             - stone
             - wood
             - glass
             - dirt
+            - erase
+            - copy
     battle:
         name: Battle Wand
         description: Has some moderate attack spells

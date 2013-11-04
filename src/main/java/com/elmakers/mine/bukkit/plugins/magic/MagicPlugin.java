@@ -208,7 +208,9 @@ public class MagicPlugin extends JavaPlugin
 			Material material = Material.AIR;
 			if (materialName.equals("erase")) {
 				material = Wand.EraseMaterial;
-			} else {
+			} else if (materialName.equals("clone") || materialName.equals("copy")) {
+				material = Wand.CopyMaterial;
+			} else{
 				List<Material> buildingMaterials = spells.getBuildingMaterials();
 				material = ConfigurationNode.toMaterial(materialName);
 				if (material == null || material == Material.AIR || !buildingMaterials.contains(material)) {
@@ -219,9 +221,7 @@ public class MagicPlugin extends JavaPlugin
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.deactivate(playerSpells);
-			wand.addMaterial(material, data);
-			wand.activate(playerSpells);
+			wand.addMaterial(playerSpells, material, data);
 			return true;
 		}
 		Spell spell = playerSpells.getSpell(spellName);
@@ -231,9 +231,7 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		wand.deactivate(playerSpells);
-		wand.addSpell(spellName);
-		wand.activate(playerSpells);
+		wand.addSpell(playerSpells, spellName);
 
 		return true;
 	}
@@ -264,21 +262,18 @@ public class MagicPlugin extends JavaPlugin
 			byte data = 0;
 			if (materialName.equals("erase")) {
 				material = Wand.EraseMaterial;
+			} else if (materialName.equals("copy") || materialName.equals("clone")) {
+				material = Wand.CopyMaterial;
 			} else {
 				material = ConfigurationNode.toMaterial(materialName);
 				if (parameters.length > 2) {
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.deactivate(playerSpells);
-			wand.removeMaterial(material, data);
-			wand.activate(playerSpells);
+			wand.removeMaterial(playerSpells, material, data);
 			return true;
 		}
-
-		wand.deactivate(playerSpells);
-		wand.removeSpell(spellName);
-		wand.activate(playerSpells);
+		wand.removeSpell(playerSpells, spellName);
 
 		return true;
 	}
@@ -296,7 +291,7 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		
-		wand.setName(StringUtils.join(parameters, " "), spells.getPlayerSpells(player));
+		wand.setName(spells.getPlayerSpells(player), StringUtils.join(parameters, " "));
 
 		return true;
 	}

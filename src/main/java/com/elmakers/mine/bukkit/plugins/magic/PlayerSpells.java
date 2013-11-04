@@ -272,12 +272,14 @@ public class PlayerSpells
 		return player;
 	}
 
-	public void cancel()
+	public boolean cancel()
 	{
+		boolean result = false;
 		for (Spell spell : spells.values())
 		{
-			spell.cancel();
+			result = result || spell.cancel();
 		}
+		return result;
 	}
 
 	public void onPlayerQuit(PlayerQuitEvent event)
@@ -408,6 +410,10 @@ public class PlayerSpells
 	
 	@SuppressWarnings("deprecation")
 	public void setBuildingMaterial(Material material, byte data) {
+		if (material == Wand.CopyMaterial) {
+			buildingMaterial = null;
+			return;
+		}
 		if (material == Wand.EraseMaterial) {
 			material = Material.AIR;
 		}
@@ -431,26 +437,32 @@ public class PlayerSpells
 	}
 	
 	public void onCast(SpellResult result) {
-		if (master.soundsEnabled()) {
-			switch(result) {
+		switch(result) {
 			case SUCCESS:
 				// No sound on success
 				break;
 			case INSUFFICIENT_RESOURCES:
 				player.playEffect(player.getLocation(), Effect.SMOKE,  null);
-				player.playSound(player.getLocation(), Sound.NOTE_BASS, 1, 1);
+				playSound(Sound.NOTE_BASS, 1, 1);
 				break;
 			case COOLDOWN:
 				player.playEffect(player.getLocation(), Effect.SMOKE,  null);
-				player.playSound(player.getLocation(), Sound.NOTE_SNARE_DRUM, 1, 1);
+				playSound(Sound.NOTE_SNARE_DRUM, 1, 1);
 				break;
 			case NO_TARGET:
-				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 1);
+				playSound(Sound.NOTE_STICKS, 1, 1);
+				break;
+			case COST_FREE:
 				break;
 			default:
 				player.playEffect(player.getLocation(), Effect.EXTINGUISH,  null);
-				player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1, 1);
-			}
+				playSound(Sound.NOTE_BASS_DRUM, 1, 1);
+		}
+	}
+	
+	public void playSound(Sound sound, float volume, float pitch) {
+		if (master.soundsEnabled()) {
+			player.playSound(player.getLocation(), sound, volume, pitch);
 		}
 	}
 }

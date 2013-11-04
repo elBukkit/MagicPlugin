@@ -45,7 +45,7 @@ public class Wand {
 	private float damageReductionFalling = 0;
 	private float damageReductionFire = 0;
 	private float damageReductionExplosions = 0;
-	private boolean hasInventory = true;
+	private boolean hasInventory = false;
 	private int uses = 0;
 	
 	private int xpRegeneration = 0;
@@ -56,8 +56,8 @@ public class Wand {
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	private static Material WandMaterial = Material.STICK;
-	public static Material EraseMaterial = Material.RECORD_8;
-	public static Material CopyMaterial = Material.RECORD_9;
+	public static Material EraseMaterial = Material.SULPHUR;
+	public static Material CopyMaterial = Material.PUMPKIN_SEEDS;
 	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
@@ -95,7 +95,13 @@ public class Wand {
 
 	@SuppressWarnings("deprecation")
 	public void setActiveMaterial(PlayerSpells playerSpells, Material material, byte data) {
-		this.activeMaterial = material.getId() + ":" + data;
+		if (material == CopyMaterial) {
+			this.activeMaterial = "-1:0";
+		} else if (material == EraseMaterial) {
+			this.activeMaterial = "0:0";
+		} else {
+			this.activeMaterial = material.getId() + ":" + data;
+		}
 		updateName(playerSpells);
 		if (hasActiveWand(playerSpells.getPlayer())) {
 			updateActiveMaterial(playerSpells);
@@ -311,7 +317,7 @@ public class Wand {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void removeMaterial(Material material, byte data) {
+	public void removeMaterial(PlayerSpells playerSpells, Material material, byte data) {
 		Integer id = material.getId();
 		String materialString = id.toString();
 		materialString += ":" + data;
@@ -328,26 +334,32 @@ public class Wand {
 		
 		if (materialString.equalsIgnoreCase(activeMaterial)) {
 			activeMaterial = "";
+			updateActiveMaterial(playerSpells);
+			updateName(playerSpells);
+			if (isInventoryOpen(playerSpells)) {
+				updateInventory(playerSpells);
+			}
 		}
 	}
 	
 	public void addMaterial(PlayerSpells playerSpells, Material material, byte data) {
 		addMaterial(material, data);
+		updateActiveMaterial(playerSpells);
 		updateName(playerSpells);
-	}
-	
-	public void addMaterial(Material material, int data) {
-		addMaterial(material, (byte)data);
-	}
-	
-	public void addMaterial(Material material) {
-		addMaterial(material, 0);
+		if (isInventoryOpen(playerSpells)) {
+			updateInventory(playerSpells);
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void addMaterial(Material material, byte data) {
+	private void addMaterial(Material material, byte data) {
 		Integer id = material.getId();
 		String materialString = id.toString();
+		if (material == EraseMaterial) {
+			materialString = "0";
+		} else if (material == CopyMaterial) {
+			materialString = "-1";
+		}
 		materialString += ":" + data;
 
 		String[] materials = getMaterials();
@@ -363,7 +375,7 @@ public class Wand {
 		setMaterials(materialMap);
 	}
 	
-	protected void setMaterials(Collection<String> materialNames) {
+	private void setMaterials(Collection<String> materialNames) {
 		wandMaterials = StringUtils.join(materialNames, "|");
 
 		// Set new spells count
@@ -378,7 +390,7 @@ public class Wand {
 		return StringUtils.split(wandMaterials, "|");
 	}
 	
-	public void addSpells(Collection<String> spellNames) {
+	private void addSpells(Collection<String> spellNames) {
 		String[] spells = getSpells();
 		List<String> spellMap = new LinkedList<String>();
 		for (String spell : spells) {
@@ -400,7 +412,7 @@ public class Wand {
 		return StringUtils.split(wandSpells, "|");
 	}
 
-	public void removeSpell(String spellName) {
+	public void removeSpell(PlayerSpells playerSpells, String spellName) {
 		String[] spells = getSpells();
 		List<String> spellMap = new LinkedList<String>();
 		for (int i = 0; i < spells.length; i++) {
@@ -413,16 +425,28 @@ public class Wand {
 		
 		if (spellName.equalsIgnoreCase(activeSpell)) {
 			activeSpell = "";
+			updateName(playerSpells);
+			if (isInventoryOpen(playerSpells)) {
+				updateInventory(playerSpells);
+			}
 		}
 	}
 	
-	public void addSpell(String spellName) {
+	private void addSpell(String spellName) {
 		List<String> names = new ArrayList<String>();
 		names.add(spellName);
 		addSpells(names);
 	}
 	
-	public void setSpells(Collection<String> spellNames) {
+	public void addSpell(PlayerSpells playerSpells, String spellName) {
+		addSpell(spellName);
+		updateName(playerSpells);
+		if (isInventoryOpen(playerSpells)) {
+			updateInventory(playerSpells);
+		}
+	}
+	
+	private void setSpells(Collection<String> spellNames) {
 		wandSpells = StringUtils.join(spellNames, "|");
 
 		// Set new spells count
@@ -433,21 +457,21 @@ public class Wand {
 		saveState();
 	}
 	
-	public void setSpellCount(int spellCount) {
+	private void setSpellCount(int spellCount) {
 		updateLore(spellCount, getMaterials().length);
 	}
 	
-	public void setMaterialCount(int materialCount) {
+	private void setMaterialCount(int materialCount) {
 		updateLore(getSpells().length, materialCount);
 	}
 	
-	public void setName(String name, PlayerSpells playerSpells) {
+	public void setName(PlayerSpells playerSpells, String name) {
 		setName(name);
 		updateName(playerSpells);
 	}
 	
 	@SuppressWarnings("deprecation")
-	protected void updateName(PlayerSpells playerSpells) {
+	private void updateName(PlayerSpells playerSpells) {
 		// Build wand name
 		String name = wandName;
 		
@@ -456,12 +480,21 @@ public class Wand {
 			Spell spell = playerSpells.getSpell(activeSpell);
 			if (spell != null) {
 				String[] pieces = StringUtils.split(activeMaterial, ":");
-				Material material = null;
-				if (pieces.length > 0 && pieces[0].length() > 0) {
-					material = Material.getMaterial(Integer.parseInt(pieces[0]));
+				String materialName = null;
+				
+				if (spell.usesMaterial() && pieces.length > 0 && pieces[0].length() > 0) {
+					int materialId = Integer.parseInt(pieces[0]);
+					if (materialId == 0) {
+						materialName = "erase";
+					} else if (materialId == -1) {
+						materialName = "copy";
+					} else {
+						Material material = Material.getMaterial(materialId);
+						materialName = material.name().toLowerCase();;
+					}
 				}
-				if (material != null && spell.usesMaterial()) {
-					String materialName = material == Wand.EraseMaterial ? "erase" : material.name().toLowerCase();
+				if (materialName != null) {
+					materialName = materialName.replace('_', ' ');
 					name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandName + ")";
 				} else {
 					name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandName + ")";
@@ -484,7 +517,7 @@ public class Wand {
 		saveState();
 	}
 	
-	protected String getLevelString(String prefix, float amount) {
+	private String getLevelString(String prefix, float amount) {
 		String suffix = "I";
 
 		if (amount >= 1) {
@@ -501,7 +534,7 @@ public class Wand {
 		return prefix + " " + suffix;
 	}
 
-	protected void updateLore(int spellCount, int materialCount) {
+	private void updateLore(int spellCount, int materialCount) {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<String>();
 		lore.add("Knows " + spellCount +" Spells");
@@ -558,8 +591,12 @@ public class Wand {
 		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell", "").length() > 0;
 	}
 
+	protected void updateInventory(PlayerSpells playerSpells) {
+		updateInventory(playerSpells, playerSpells.getPlayer().getInventory().getHeldItemSlot());
+	}
+	
 	@SuppressWarnings("deprecation")
-	protected void updateInventory(PlayerSpells playerSpells, int itemSlot) {
+	private void updateInventory(PlayerSpells playerSpells, int itemSlot) {
 		Player player = playerSpells.getPlayer();
 		Inventory inventory = player.getInventory();
 		inventory.clear();
@@ -609,12 +646,15 @@ public class Wand {
 		Queue<ItemStack> unpositionedMaterials = new LinkedList<ItemStack>();
 		HashMap<Integer, ItemStack> positioned = new HashMap<Integer, ItemStack>();
 		ItemStack eraseStack = null;
+		ItemStack copyStack = null;
 		for (int i = 0; i < materials.length; i++) {
 			String[] parts = StringUtils.split(materials[i], "@");
 			String[] nameParts = StringUtils.split(parts[0], ":");
 			int typeId = Integer.parseInt(nameParts[0]);
 			if (typeId == 0) {
 				typeId = EraseMaterial.getId();
+			} else if (typeId == -1) {
+				typeId = CopyMaterial.getId();
 			}
 			int dataId = nameParts.length > 1 ? Integer.parseInt(nameParts[1]) : 0;
 			
@@ -625,6 +665,11 @@ public class Wand {
 				meta.setDisplayName("Erase");
 				List<String> lore = new ArrayList<String>();
 				lore.add("Fills with Air");
+				meta.setLore(lore);
+			} else if (typeId == CopyMaterial.getId()) {
+				meta.setDisplayName("Copy");
+				List<String> lore = new ArrayList<String>();
+				lore.add("Fills with the target material");
 				meta.setLore(lore);
 			} else {
 				List<String> lore = new ArrayList<String>();
@@ -640,6 +685,8 @@ public class Wand {
 			} else {
 				if (itemStack.getType() == EraseMaterial) {
 					eraseStack = itemStack;
+				} else if (itemStack.getType() == CopyMaterial) {
+					copyStack = itemStack;
 				} else {
 					unpositionedMaterials.add(itemStack);
 				}
@@ -658,10 +705,12 @@ public class Wand {
 		}
 		
 		// Put the new materials first, then the mapped materials
-		// This is so newly-added materials immediately become active.
-		// Mainly for the absorb spell to work nicely.
+		// TODO: Investigate if all of this is necessary now with the new inventory system.
 		if (eraseStack != null) {
 			addMaterialToInventory(inventory, eraseStack);
+		}
+		if (copyStack != null) {
+			addMaterialToInventory(inventory, copyStack);
 		}
 		
 		for (ItemStack stack : unpositionedMaterials) {
@@ -690,7 +739,7 @@ public class Wand {
 		player.updateInventory();
 	}
 	
-	protected static void addMaterialToInventory(Inventory inventory, ItemStack stack) {
+	private static void addMaterialToInventory(Inventory inventory, ItemStack stack) {
 		// First try to put it in the main bar, starting from the right.
 		for (int i = 8; i >= 0; i--) {
 			ItemStack existing = inventory.getItem(i);
@@ -704,7 +753,7 @@ public class Wand {
 	}
 	
 	@SuppressWarnings("deprecation")
-	protected void saveInventory(PlayerSpells playerSpells) {
+	private void saveInventory(PlayerSpells playerSpells) {
 		PlayerInventory inventory = playerSpells.getPlayer().getInventory();
 		
 		// Rebuild spell inventory, save in wand.
@@ -740,7 +789,12 @@ public class Wand {
 			} else {
 				List<Material> buildingMaterials = playerSpells.getMaster().getBuildingMaterials();
 				if (material != Material.AIR && (buildingMaterials.contains(material) || material == EraseMaterial)) {
-					String materialKey = (material == EraseMaterial) ? "0:0" : material.getId() + ":" + items[i].getData().getData();
+					String materialKey = material.getId() + ":" + items[i].getData().getData();
+					if (material == EraseMaterial) {
+						materialKey = "0:0"; 
+					} else if (material == CopyMaterial) {
+						materialKey = "-1:0"; 
+					}
 					if (materialMap.containsKey(materialKey)) {
 						materialMap.put(materialKey, i);
 					}
@@ -806,6 +860,8 @@ public class Wand {
 					
 					if (materialName.equals("erase")) {
 						wand.addMaterial(EraseMaterial, data);
+					} else if (materialName.equals("copy") || materialName.equals("clone")) {
+						wand.addMaterial(CopyMaterial, data);
 					} else {
 						wand.addMaterial(ConfigurationNode.toMaterial(materialName), data);
 					}
@@ -827,7 +883,7 @@ public class Wand {
 		}
 
 		wand.addSpells(defaultSpells);
-		wand.setName(wandName, playerSpells);
+		wand.setName(playerSpells, wandName);
 		
 		return wand;
 	}
@@ -852,17 +908,17 @@ public class Wand {
 		}
 	}
 	
-	protected static void loadProperties(File propertiesFile)
+	private static void loadProperties(File propertiesFile)
 	{
 		loadProperties(new Configuration(propertiesFile));
 	}
 	
-	protected static void loadProperties(InputStream properties)
+	private static void loadProperties(InputStream properties)
 	{
 		loadProperties(new Configuration(properties));
 	}
 	
-	protected static void loadProperties(Configuration properties)
+	private static void loadProperties(Configuration properties)
 	{
 		properties.load();
 		wandTemplates.clear();
@@ -887,7 +943,7 @@ public class Wand {
 		updateSpellSettings(spells, false);
 	}
 	
-	protected void updateSpellSettings(PlayerSpells spells, boolean clearValue) {
+	private void updateSpellSettings(PlayerSpells spells, boolean clearValue) {
 		spells.setDamageReduction(clearValue ? 0 : damageReduction);
 		spells.setDamageReductionPhysical(clearValue ? 0 : damageReductionPhysical);
 		spells.setDamageReductionProjectiles(clearValue ? 0 : damageReductionProjectiles);
@@ -902,7 +958,7 @@ public class Wand {
 	}
 
 	@SuppressWarnings("deprecation")
-	protected void updateActiveMaterial(PlayerSpells playerSpells) {
+	private void updateActiveMaterial(PlayerSpells playerSpells) {
 		if (activeMaterial == null) {
 			playerSpells.clearBuildingMaterial();
 		} else {
@@ -912,7 +968,15 @@ public class Wand {
 				if (pieces.length > 1) {
 					data = Byte.parseByte(pieces[1]);
 				}
-				Material material = Material.getMaterial(Integer.parseInt(pieces[0]));
+				int materialId = Integer.parseInt(pieces[0]);
+				Material material = null;
+				if (materialId == 0) {
+					material = EraseMaterial;
+				} else if (materialId == -1) {
+					material = CopyMaterial;
+				} else {
+					material = Material.getMaterial(materialId);
+				}
 				playerSpells.setBuildingMaterial(material, data);
 			}
 		}

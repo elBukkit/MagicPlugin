@@ -382,9 +382,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	/**
 	 * Called when a material selection spell is cancelled mid-selection.
 	 */
-	public void onCancel()
+	public boolean onCancel()
 	{
-
+		return false;
 	}
 
 	/**
@@ -1059,9 +1059,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @param plugin The Spells plugin instance
 	 * @param player The player cancelling selection
 	 */
-	public void cancel()
+	public boolean cancel()
 	{
-		onCancel();
+		return onCancel();
 	}
 
 	protected void initializeTargeting(Player player)

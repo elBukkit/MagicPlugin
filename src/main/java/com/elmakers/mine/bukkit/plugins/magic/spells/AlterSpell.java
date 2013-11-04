@@ -14,10 +14,10 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AlterSpell extends Spell
 {
-	static final String DEFAULT_ADJUSTABLES = "6, 8, 9, 10,11,17,18,23,27,28,29,33,35,50,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,71,75,76,77,81,83,85,86,93,94,95";
-	static final String DEFAULT_ADJUST_MAX =  "15,15,15,15,15,2 ,15,5 ,9 ,9 ,5 ,5 ,15,5, 15,3 ,5 ,15,5 ,15,8 ,5 ,5 ,15,15,3 ,9 ,3 ,2 ,14,15,5 ,5 ,15,15,15,5 ,0 ,5 ,5 ,5 ";
-	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0, 0, 0, 0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,2 ";
-	static final String DEFAULT_RECURSABLES = "17,18,59";
+	static final String DEFAULT_ADJUSTABLES = "5, 6, 8, 9, 10,11,12,17,18,20,23,27,28,29,33,35,50,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,71,75,76,77,81,83,85,86,93,94,95,102,104,105,115,141,142,159,171";
+	static final String DEFAULT_ADJUST_MAX =  "15,15,15,15,15,15,1 ,2 ,15,15,5 ,9 ,9 ,5 ,5 ,15,5, 15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,15,3 ,9 ,3 ,2 ,14,15,5 ,5 ,15,15,15,5 ,0 ,5 ,5 ,5 ,15 ,7  ,7  ,7  ,7  ,7  ,15 ,15";
+	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0, 0, 0, 0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,2 ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0";
+	static final String DEFAULT_RECURSABLES = "5,17,18,59,104,105,115,141,142";
 
 	private List<Integer> adjustableMaterials = new ArrayList<Integer>();
 	private List<Integer> maxData = new ArrayList<Integer>();
@@ -36,7 +36,7 @@ public class AlterSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
-		if (!adjustableMaterials.contains(targetBlock.getType()))
+		if (!adjustableMaterials.contains(targetBlock.getTypeId()))
 		{
 			castMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
 			return SpellResult.FAILURE;
