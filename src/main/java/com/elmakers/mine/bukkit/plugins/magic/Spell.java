@@ -1138,19 +1138,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		return material;
 	}
-	
-	protected boolean addMaterialToWand(Material materialType, byte data)
-	{
-		Wand wand = Wand.getActiveWand(player);
-		if (wand == null) return false;
-		
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
-		wand.deactivate(playerSpells);
-		wand.addMaterial(materialType, data);
-		wand.activate(playerSpells);
-		
-		return true;
-	}
 
 	protected boolean giveMaterial(Material materialType, int amount, short damage, byte data)
 	{

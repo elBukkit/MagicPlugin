@@ -4,10 +4,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
-import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Wand;
@@ -24,7 +21,6 @@ public class AbsorbSpell extends Spell
 
 		material = parameters.getMaterial("material", material);
 		byte data = 0;
-		boolean success = false;
 		if (material == Material.AIR || !buildingMaterials.contains(material))
 		{
 			if (!isUnderwater())
@@ -44,57 +40,11 @@ public class AbsorbSpell extends Spell
 			data = target.getData();
 		}
 		
-		// Do some special hacky stuff for the wand.
+		// Add to the wand
 		Wand wand = Wand.getActiveWand(player);
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
-		if (wand != null) {
-			// Make sure there's room in the inventory.
-			int targetSlot = 8;
-			PlayerInventory inventory = player.getInventory();
-			if (inventory.getHeldItemSlot() == 8) {
-				targetSlot = 7;
-			}
-			
-			// Clear this slot directly and save the inventory
-			ItemStack currentItem = inventory.getItem(targetSlot);
-			if (currentItem != null && currentItem.getType() != Material.AIR) {
-				// Make sure there's room in the inventory if we need to save this item.
-				if (Wand.isSpell(currentItem) || currentItem.getType() == Wand.EraseMaterial) {
-					// Not a great way to do this.
-					ItemStack[] contents = inventory.getContents();
-					boolean full = true;
-					for (ItemStack stack : contents) {
-						if (stack == null || stack.getType() == Material.AIR) {
-							full = false; 
-							break;
-						}
-					}
-					if (full) {
-						castMessage("Your wand is full!");
-						return SpellResult.FAILURE;
-					}
-				}
-				inventory.setItem(targetSlot, new ItemStack(Material.AIR, 1));
-				wand.deactivate(playerSpells);
-				addMaterialToWand(material, data);
-				wand.activate(playerSpells);
-				if (Wand.isSpell(currentItem) || currentItem.getType() == Wand.EraseMaterial) {
-					inventory.addItem(currentItem);
-				}
-			}
-		} else {
-			
-		}
+		wand.addMaterial(spells.getPlayerSpells(player), material, data);
+		castMessage("Absorbing some " + material.name().toLowerCase());
 		
-		if (!success) {
-			success = addMaterialToWand(material, data);
-		}
-		
-		if (success) {
-			castMessage("Absorbing some " + material.name().toLowerCase());
-		} else {
-			castMessage("Failed to absorb");
-		}
-		return success ? SpellResult.SUCCESS : SpellResult.FAILURE;
+		return SpellResult.SUCCESS;
 	}
 }

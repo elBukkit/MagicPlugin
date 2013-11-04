@@ -56,7 +56,8 @@ public class Wand {
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	private static Material WandMaterial = Material.STICK;
-	public static Material EraseMaterial = Material.SULPHUR;
+	public static Material EraseMaterial = Material.RECORD_8;
+	public static Material CopyMaterial = Material.RECORD_9;
 	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
@@ -330,6 +331,11 @@ public class Wand {
 		}
 	}
 	
+	public void addMaterial(PlayerSpells playerSpells, Material material, byte data) {
+		addMaterial(material, data);
+		updateName(playerSpells);
+	}
+	
 	public void addMaterial(Material material, int data) {
 		addMaterial(material, (byte)data);
 	}
@@ -352,9 +358,7 @@ public class Wand {
 				materialMap.add(materials[i]);
 			}
 		}
-		if (activeMaterial.length() == 0) {
-			activeMaterial = materialString;
-		}
+		activeMaterial = materialString;
 		materialMap.add(materialString);
 		setMaterials(materialMap);
 	}
@@ -385,9 +389,7 @@ public class Wand {
 			}
 		}
 		for (String spellName : spellNames) { 	
-			if (activeSpell.length() == 0) {
-				activeSpell = spellName;
-			}
+			activeSpell = spellName;
 			spellMap.add(spellName);
 		}
 				
@@ -942,6 +944,7 @@ public class Wand {
 	public void activate(PlayerSpells playerSpells) {
 		updateSpellSettings(playerSpells);
 		updateActiveMaterial(playerSpells);
+		updateName(playerSpells);
 	}
 	
 	public boolean isInventoryOpen(PlayerSpells playerSpells) {
