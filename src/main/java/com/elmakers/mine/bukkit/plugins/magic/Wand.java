@@ -351,8 +351,12 @@ public class Wand {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void addMaterial(Material material, byte data) {
+		addMaterial(material, data, true);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void addMaterial(Material material, byte data, boolean makeActive) {
 		Integer id = material.getId();
 		String materialString = id.toString();
 		if (material == EraseMaterial) {
@@ -370,7 +374,9 @@ public class Wand {
 				materialMap.add(materials[i]);
 			}
 		}
-		activeMaterial = materialString;
+		if (makeActive || activeMaterial == null || activeMaterial.length() == 0) {
+			activeMaterial = materialString;
+		}
 		materialMap.add(materialString);
 		setMaterials(materialMap);
 	}
@@ -400,8 +406,10 @@ public class Wand {
 				spellNames.remove(pieces[0]);
 			}
 		}
-		for (String spellName : spellNames) { 	
-			activeSpell = spellName;
+		for (String spellName : spellNames) {
+			if (activeSpell == null || activeSpell.length() == 0) {
+				activeSpell = spellName;
+			}
 			spellMap.add(spellName);
 		}
 				
@@ -433,6 +441,7 @@ public class Wand {
 	}
 	
 	private void addSpell(String spellName) {
+		activeSpell = spellName;
 		List<String> names = new ArrayList<String>();
 		names.add(spellName);
 		addSpells(names);
@@ -859,11 +868,11 @@ public class Wand {
 					}
 					
 					if (materialName.equals("erase")) {
-						wand.addMaterial(EraseMaterial, data);
+						wand.addMaterial(EraseMaterial, (byte)0, false);
 					} else if (materialName.equals("copy") || materialName.equals("clone")) {
-						wand.addMaterial(CopyMaterial, data);
+						wand.addMaterial(CopyMaterial, (byte)0, false);
 					} else {
-						wand.addMaterial(ConfigurationNode.toMaterial(materialName), data);
+						wand.addMaterial(ConfigurationNode.toMaterial(materialName), data, false);
 					}
 				}
 			}

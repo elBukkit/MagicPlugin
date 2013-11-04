@@ -319,6 +319,16 @@ public class PlayerSpells
 	
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
+		// Send on to any registered spells
+		List<Spell> active = new ArrayList<Spell>();
+		active.addAll(damageListeners);
+		for (Spell listener : active)
+		{
+			listener.onPlayerDamage(event);
+		}
+		
+		if (event.isCancelled()) return;
+		
 		// First check for damage reduction
 		float reduction = damageReduction;
 		switch (event.getCause()) {
@@ -353,14 +363,6 @@ public class PlayerSpells
 			int newDamage = (int)Math.floor((1.0f - reduction) * event.getDamage());
 			if (newDamage == 0) newDamage = 1;
 			event.setDamage(newDamage);
-		}
-		
-		// Send on to any registered spells
-		List<Spell> active = new ArrayList<Spell>();
-		active.addAll(damageListeners);
-		for (Spell listener : active)
-		{
-			listener.onPlayerDamage(event);
 		}
 	}
 
