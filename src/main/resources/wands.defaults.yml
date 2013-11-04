@@ -101,7 +101,7 @@ wands:
             - bridge
             - pillar
             - recurse
-            - rewind
+            - undo
             - blob
             - stalactite
             - alter
@@ -157,6 +157,7 @@ wands:
         xp_regeneration: 1
         xp_max: 100
         spells:
+            - alter
             - sandblast
             - recurse
             - fire

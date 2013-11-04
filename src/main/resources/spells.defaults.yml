@@ -71,7 +71,7 @@ spells:
         - xp: 2
     kaboom:
         name: KaBoom
-        icon: redstone_wire
+        icon: ender_pearl
         category: combat
         description: Create a big explosion
         class: BoomSpell
@@ -104,7 +104,7 @@ spells:
         - xp: 8
     storm:
         name: Storm
-        icon: grilled_pork
+        icon: blaze_rod
         category: elemental
         description: Start a lightning storm
         class: LightningSpell
@@ -118,7 +118,7 @@ spells:
         - xp: 30
     spawn:
         name: Home
-        icon: yellow_flower
+        icon: wood_door
         category: exploration
         description: Take yourself back home
         class: RecallSpell
@@ -182,7 +182,7 @@ spells:
         parameters: {}
     icbm:
         name: ICBM
-        icon: rotten_flesh
+        icon: nether_star
         category: combat
         description: Cast an exploding fireball
         class: FireballSpell
@@ -215,7 +215,7 @@ spells:
             amount: '99'
     fling:
         name: Fling
-        icon: leather_boots
+        icon: feather
         category: psychic
         description: Sends you flying in the target direction
         class: FlingSpell
@@ -389,7 +389,7 @@ spells:
         - xp: 10
     nuke:
         name: Nuke
-        icon: bed
+        icon: magma_cream
         category: combat
         description: Create a huge explosino
         class: BoomSpell
@@ -477,7 +477,7 @@ spells:
         - xp: 20
     superblob:
         name: SuperBlob
-        icon: clay_brick
+        icon: slime_ball
         category: construction
         description: Create a large solid sphere
         class: ConstructSpell
@@ -520,7 +520,7 @@ spells:
         - xp: 5
     superblast:
         name: Superblast
-        icon: slime_ball
+        icon: sugar
         category: mining
         description: Mine out a very large area
         class: ConstructSpell
@@ -571,17 +571,6 @@ spells:
             type: sphere
         costs:
         - xp: 10
-    erase:
-        name: Erase
-        icon: lever
-        category: alchemy
-        description: Undo your target construction
-        class: UndoSpell
-        properties:
-            allow_max_range: false
-            range: 200
-            cooldown: 0
-        parameters: {}
     cloak:
         name: Cloak
         icon: chainmail_chestplate
@@ -591,9 +580,9 @@ spells:
         properties:
             cooldown: 0
         parameters: {}
-    rewind:
-        name: Rewind
-        icon: watch
+    undo:
+        name: Undo
+        icon: book_and_quill
         category: alchemy
         description: Undo your last action
         class: UndoSpell
@@ -841,7 +830,7 @@ spells:
         - xp: 20
     familiar:
         name: Familiar
-        icon: egg
+        icon: monster_egg
         category: summoner
         description: Create an animal familiar
         class: FamiliarSpell
@@ -869,7 +858,7 @@ spells:
         - xp: 30
     blink:
         name: Blink
-        icon: feather
+        icon: eye_of_ender
         category: psychic
         description: Teleport to your target
         class: BlinkSpell
@@ -921,7 +910,7 @@ spells:
         - xp: 100
     wolf:
         name: Wolf
-        icon: pork
+        icon: raw_beef
         category: summoner
         description: Create a wolf familiar to follow you around
         class: WolfSpell
@@ -961,7 +950,7 @@ spells:
         - xp: 20
     flare:
         name: Flare
-        icon: FIREWORK
+        icon: firework
         category: exploration
         description: Fire off flares
         class: FireworkSpell
@@ -997,7 +986,7 @@ spells:
         parameters: {}
     boom:
         name: Boom
-        icon: red_rose
+        icon: firework_charge
         category: combat
         description: Create an explosion
         class: BoomSpell
@@ -1101,7 +1090,7 @@ spells:
         - xp: 20
     fireball:
         name: Fireball
-        icon: netherrack
+        icon: ghast_tear
         category: combat
         description: Cast an exploding fireball
         class: FireballSpell
@@ -1110,17 +1099,3 @@ spells:
         parameters: {}
         costs:
         - xp: 15
-    ender:
-        name: Ender
-        icon: ender_pearl
-        category: summoner
-        description: Summon an enderman
-        class: FamiliarSpell
-        properties:
-            allow_max_range: false
-            range: 200
-            cooldown: 0
-        parameters:
-            type: enderman
-        costs:
-        - xp: 50
