@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -24,12 +26,12 @@ public class ShunkenHeadSpell extends Spell
 	{
 		String castType = parameters.getString("type");
 		if (castType != null && castType.equalsIgnoreCase("self")) {
-			dropHead(player.getLocation(), player.getName(), null);
+			dropHead(player.getLocation(), player.getName(), null, (byte)3);
 			return SpellResult.SUCCESS;
 		}
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
-			dropHead(player.getLocation(), giveName, null);
+			dropHead(player.getLocation(), giveName, null, (byte)3);
 			return SpellResult.SUCCESS;
 		}
 		
@@ -44,6 +46,7 @@ public class ShunkenHeadSpell extends Spell
 		LivingEntity li = (LivingEntity)targetEntity;
 		String ownerName = null;
 		String itemName = null;
+		byte data = 3;
 		if (li instanceof Player)
 		{
 			li.damage(playerDamage);
@@ -53,6 +56,19 @@ public class ShunkenHeadSpell extends Spell
 		{
 			li.damage(entityDamage);
 			switch (li.getType()) {
+				case CREEPER:
+					data = 4;
+					ownerName = null;
+				break;
+				case ZOMBIE:
+					data = 2;
+					ownerName = null;
+				break;
+				case SKELETON:
+					Skeleton skeleton = (Skeleton)li;
+					data = (byte)(skeleton.getSkeletonType() == SkeletonType.NORMAL ? 0 : 1);
+					ownerName = null;
+				break;
 				case BLAZE:
 					ownerName = "MHF_Blaze";
 					itemName = "Shrunken Blaze Head";
@@ -125,22 +141,24 @@ public class ShunkenHeadSpell extends Spell
 			
 		}
 		if (ownerName != null && li.isDead()) {
-			dropHead(targetEntity.getLocation(), ownerName, itemName);
+			dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 		}
 		castMessage("Boogidie Boogidie");
 		return SpellResult.SUCCESS;
 	}
 	
 	@SuppressWarnings("deprecation")
-	protected void dropHead(Location location, String ownerName, String itemName) {
-		ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
-		shrunkenHead = InventoryUtils.getCopy(shrunkenHead);
-		ItemMeta itemMeta = shrunkenHead.getItemMeta();
-		if (itemName != null) {
-			itemMeta.setDisplayName(itemName);
+	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
+		ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)data);
+		if (ownerName != null) {
+			shrunkenHead = InventoryUtils.getCopy(shrunkenHead);
+			ItemMeta itemMeta = shrunkenHead.getItemMeta();
+			if (itemName != null) {
+				itemMeta.setDisplayName(itemName);
+			}
+			shrunkenHead.setItemMeta(itemMeta);
+			InventoryUtils.setMeta(shrunkenHead, "SkullOwner", ownerName);
 		}
-		shrunkenHead.setItemMeta(itemMeta);
-		InventoryUtils.setMeta(shrunkenHead, "SkullOwner", ownerName);
 		location.getWorld().dropItemNaturally(location, shrunkenHead);
 	}
 
