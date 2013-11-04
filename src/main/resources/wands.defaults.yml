@@ -14,6 +14,13 @@ wands:
             - fireball
         uses: 10
         cost_reduction: 0.75
+    arrow:
+        name: Arrow Wand
+        description: A temporary arrow wand
+        spells:
+            - fireball
+        uses: 200
+        cost_reduction: 0.75        
     fire:
         name: Fire Wand
         description: Firebending!
@@ -31,7 +38,6 @@ wands:
         spells:
             - tesseract
             - torch
-            - spawn
             - recall
             - flare
     psychic:
@@ -136,6 +142,7 @@ wands:
             - fill
             - weather
             - tree
+            - alter
         materials:
             - soil
             - wheat
@@ -144,16 +151,15 @@ wands:
             - carrot
             - potato
             - water
-    elementalist:
-        name: Elementalist Wand
-        description: A master of the elements
+    alchemist:
+        name: Alchemist Wand
+        description: Full metal!
         xp_regeneration: 1
         xp_max: 100
         spells:
             - sandblast
             - recurse
             - fire
-            - lightning
             - blob
             - lava
             - wolf
@@ -162,7 +168,19 @@ wands:
             - lava
             - soul_sand
             - sand
-    necromancy:
+    elementalist:
+        name: Elementalist Wand
+        description: A master of the elements
+        xp_regeneration: 1
+        xp_max: 100
+        spells:
+            - fire
+            - lightning
+            - storm
+            - lava
+            - wolf
+            - weather
+    necromancer:
         name: Necromancer Wand
         description: Evil, evil stuff
         xp_regeneration: 1
@@ -209,8 +227,8 @@ wands:
             - gather
             - frag
         materials:
-            - lava
             - water
+            - lava
             - glowstone
             - glass
             - erase
