@@ -228,6 +228,7 @@ public class ConfigurationNode {
 		return toMaterial(o);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static Material toMaterial(Object o)
 	{
 		if (o instanceof Material) {
@@ -243,14 +244,14 @@ public class ConfigurationNode {
 				Integer value = Integer.parseInt(matName);
 				if (value != null)
 				{
-					return Material.values()[value];
+					return Material.getMaterial(value);
 				}
 			}
 			catch(NumberFormatException ex)
 			{
 
 			}
-			return Material.valueOf(matName.toUpperCase());
+			return Material.getMaterial(matName.toUpperCase());
 		}
 
 		return null;
@@ -322,8 +323,10 @@ public class ConfigurationNode {
 		 for (String matName : materialData)
 		 {
 			 Material material = toMaterial(matName);
-			 materials.add(material);
-			 matNames.add(material.name().toLowerCase());
+			 if (material != null) {
+				 materials.add(material);
+				 matNames.add(material.name().toLowerCase());
+			 }
 		 }
 
 		 setProperty(key, matNames);
@@ -346,8 +349,10 @@ public class ConfigurationNode {
 		 for (String matName : materialData)
 		 {
 			 Material material = toMaterial(matName);
-			 materials.add(material);
-			 matNames.add(material.name().toLowerCase());
+			 if (material != null) {
+				 materials.add(material);
+				 matNames.add(material.name().toLowerCase());
+			 }
 		 }
 
 		 setProperty(key, matNames);
