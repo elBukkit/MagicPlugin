@@ -123,6 +123,8 @@ wands:
             - fireball
             - grenade
             - boom
+            - sniper
+            - arrowrain
     mining:
         name: Mining Wand
         description: For mining

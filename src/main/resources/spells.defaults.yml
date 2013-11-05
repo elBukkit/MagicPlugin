@@ -47,9 +47,25 @@ spells:
         class: ArrowSpell
         properties:
             cooldown: 0
-        parameters: {}
+        parameters:
+          speed: 2
+          spread: 6
         costs:
         - xp: 5 
+    sniper:
+        name: Sniper
+        icon: gold_nugget
+        category: combat
+        description: Fire a super fast arrow
+        class: ArrowSpell
+        properties:
+            cooldown: 1000
+        parameters:
+          speed: 6
+          spread: 0
+          damage: 20
+        costs:
+        - xp: 10
     pull:
         name: Pull
         icon: fishing_rod
@@ -361,6 +377,8 @@ spells:
         parameters:
             count: 6
             fire: true
+            speed: 3
+            spread: 30
         costs:
         - xp: 20
     sign:

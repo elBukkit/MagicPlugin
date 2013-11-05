@@ -20,23 +20,23 @@ public class ArrowSpell extends Spell
 		arrowCount = parameters.getInt("count", arrowCount);
 		boolean useFire = parameters.getBoolean("fire", false);
 
-		Arrow firstArrow = null;
-		float speed = 3;
-		float spread = 0.1f;
+		float speed = 0.6f;
+		float spread = 12f;
+		double damage = 2.0;
+		
+		speed = (float)parameters.getDouble("speed", speed);
+		spread = (float)parameters.getDouble("spread", spread);
+		damage = parameters.getDouble("damage", damage);
+		Vector direction = player.getLocation().getDirection();
+		
 		for (int ai = 0; ai < arrowCount; ai++)
 		{
 			Arrow arrow = null;
-			if (firstArrow == null) {
-				arrow = player.launchProjectile(Arrow.class);
-				firstArrow = arrow;
-			} else {
-				Location location = firstArrow.getLocation();
-				Vector velocity = firstArrow.getVelocity();
-				location.setX(location.getX() + velocity.getX() * (1 + Math.random() * arrowCount));
-				location.setY(location.getY() + velocity.getY() * (1 + Math.random() * arrowCount));
-				location.setZ(location.getZ() + velocity.getZ() * (1 + Math.random() * arrowCount));
-				arrow = player.getWorld().spawnArrow(location, velocity, speed, spread);
-			}
+			Location location = player.getLocation();
+			location.setX(location.getX() + direction.getX() * (1 + Math.random() * arrowCount));
+			location.setY(location.getY() + 1.5f);
+			location.setZ(location.getZ() + direction.getZ() * (1 + Math.random() * arrowCount));
+			arrow = player.getWorld().spawnArrow(location, direction, speed, spread);
 
 			if (arrow == null)
 			{
@@ -48,12 +48,14 @@ public class ArrowSpell extends Spell
 				arrow.setFireTicks(300);
 			}
 
-			// Hackily make this an infinite arrow
+			// Hackily make this an infinite arrow and set damage
 			try {
 				Method getHandleMethod = arrow.getClass().getMethod("getHandle");
 				Object handle = getHandleMethod.invoke(arrow);
 				Field fromPlayerField = handle.getClass().getField("fromPlayer");
 				fromPlayerField.setInt(handle, 2);
+				Method setDamageMethod = handle.getClass().getMethod("b", Double.TYPE);
+				setDamageMethod.invoke(handle, damage);
 			} catch (Throwable ex) {
 				ex.printStackTrace();
 			}
