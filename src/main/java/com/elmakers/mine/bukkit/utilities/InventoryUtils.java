@@ -114,6 +114,72 @@ public class InventoryUtils
 		String result = getMeta(stack, tag);
 		return result == null ? defaultValue : result;
 	}
+
+	public static boolean hasMeta(ItemStack stack, String tag) {
+		return getNode(stack, tag) != null;
+	}
+	
+	public static Object getNode(ItemStack stack, String tag) {
+		if (stack == null) return null;
+		Object meta = null;
+		try {
+			Object craft = getHandle(stack);
+			if (craft == null) return null;
+			Object tagObject = getTag(craft);
+			if (tagObject == null) return null;
+			Method getMethod = class_NBTTagCompound.getMethod("get", String.class);
+			meta = getMethod.invoke(tagObject, tag);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return meta;
+	}
+	
+	public static Object createNode(ItemStack stack, String tag) {
+		if (stack == null) return null;
+		Object outputObject = getNode(stack, tag);
+		if (outputObject == null) {
+			try {
+				Object craft = getHandle(stack);
+				if (craft == null) return null;
+				Object tagObject = getTag(craft);
+				if (tagObject == null) return null;
+				outputObject = class_NBTTagCompound.newInstance();
+				Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
+				setMethod.invoke(tagObject, tag, outputObject);
+			} catch (Throwable ex) {
+				ex.printStackTrace();
+			}
+		}
+		return outputObject;
+	}
+	
+	public static String getMeta(Object node, String tag, String defaultValue) {
+		String meta = getMeta(node, tag);
+		return meta == null || meta.length() == 0 ? defaultValue : meta;
+	}
+	
+	public static String getMeta(Object node, String tag) {
+		if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
+		String meta = null;
+		try {
+			Method getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
+			meta = (String)getStringMethod.invoke(node, tag);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return meta;
+	}
+
+	public static void setMeta(Object node, String tag, String value) {
+		if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+		try {
+			Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
+			setStringMethod.invoke(node, tag, value);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+	}
 	
 	public static String getMeta(ItemStack stack, String tag) {
 		if (stack == null) return null;

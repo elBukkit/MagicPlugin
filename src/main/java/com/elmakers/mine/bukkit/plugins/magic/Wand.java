@@ -34,13 +34,12 @@ public class Wand implements CostReducer {
 	
 	// Cached state
 	private String id;
-	private String wandSettings;
-	private String wandSpells;
-	private String wandMaterials;
+	private String wandSpells = "";
+	private String wandMaterials = "";
 	
-	private String activeSpell;
-	private String activeMaterial;
-	private String wandName;
+	private String activeSpell = "";
+	private String activeMaterial = "";
+	private String wandName = "";
 	
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
@@ -82,11 +81,6 @@ public class Wand implements CostReducer {
 
 		InventoryUtils.addGlow(item);
 		id = UUID.randomUUID().toString();
-		wandSettings = " ";
-		wandSpells = "";
-		wandMaterials = "";
-		activeSpell = "";
-		activeMaterial = "";
 		wandName = defaultWandName;
 		saveState();
 	}
@@ -193,88 +187,61 @@ public class Wand implements CostReducer {
 	}
 
 	protected void saveState() {
-		updateWandSettings();
-		InventoryUtils.setMeta(item, "magic_wand_id", id);
-		InventoryUtils.setMeta(item, "magic_wand", wandSettings);
-		InventoryUtils.setMeta(item, "magic_materials", wandMaterials);
-		InventoryUtils.setMeta(item, "magic_spells", wandSpells);
-		InventoryUtils.setMeta(item, "magic_active_spell", activeSpell);
-		InventoryUtils.setMeta(item, "magic_active_material", activeMaterial);
-		InventoryUtils.setMeta(item, "magic_wand_name", wandName);
-	}
+		Object wandNode = InventoryUtils.createNode(item, "wand");
+		
+		InventoryUtils.setMeta(wandNode, "id", id);
+		InventoryUtils.setMeta(wandNode, "materials", wandMaterials);
+		InventoryUtils.setMeta(wandNode, "spells", wandSpells);
+		InventoryUtils.setMeta(wandNode, "active_spell", activeSpell);
+		InventoryUtils.setMeta(wandNode, "active_material", activeMaterial);
+		InventoryUtils.setMeta(wandNode, "name", wandName);
 	
-	protected void updateWandSettings() {
-		wandSettings = 
-		  "cr=" + floatFormat.format(costReduction) + 
-	     "&cdr=" + floatFormat.format(cooldownReduction) +
-		 "&dr=" + floatFormat.format(damageReduction) +
-		 "&drph=" + floatFormat.format(damageReductionPhysical) +
-		 "&drpr=" + floatFormat.format(damageReductionProjectiles) +
-		 "&drfa=" + floatFormat.format(damageReductionFalling) +
-		 "&drfi=" + floatFormat.format(damageReductionFire) +
-		 "&drex=" + floatFormat.format(damageReductionExplosions) +
-		 "&drex=" + floatFormat.format(damageReductionExplosions) +
-		 "&xpre=" + xpRegeneration +
-		 "&xpmax=" + xpMax +
-		 "&hereg=" + healthRegeneration +
-		 "&hureg=" + hungerRegeneration +
-		 "&uses=" + uses +
-		 "&hasi=" + (hasInventory ? 1 : 0);
+		InventoryUtils.setMeta(wandNode, "cost_reduction", floatFormat.format(costReduction));
+		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
+		InventoryUtils.setMeta(wandNode, "damage_reduction", floatFormat.format(damageReduction));
+		InventoryUtils.setMeta(wandNode, "damage_reduction_physical", floatFormat.format(damageReductionPhysical));
+		InventoryUtils.setMeta(wandNode, "damage_reduction_projectiles", floatFormat.format(damageReductionProjectiles));
+		InventoryUtils.setMeta(wandNode, "damage_reduction_falling", floatFormat.format(damageReductionFalling));
+		InventoryUtils.setMeta(wandNode, "damage_reduction_fire", floatFormat.format(damageReductionFire));
+		InventoryUtils.setMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions));
+		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
+		InventoryUtils.setMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration));
+		InventoryUtils.setMeta(wandNode, "xp_max", Integer.toString(xpMax));
+		InventoryUtils.setMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration));
+		InventoryUtils.setMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration));
+		InventoryUtils.setMeta(wandNode, "uses", Integer.toString(uses));
+		InventoryUtils.setMeta(wandNode, "has_inventory", Integer.toString((hasInventory ? 1 : 0)));
 	}
 	
 	protected void loadState() {
-		id = InventoryUtils.getMeta(item, "magic_wand_id");
-		id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
-		wandSettings = InventoryUtils.getMeta(item, "magic_wand");
-		wandSettings = wandSettings == null ? "" : wandSettings;
-		wandMaterials = InventoryUtils.getMeta(item, "magic_materials");
-		wandMaterials = wandMaterials == null ? "" : wandMaterials;
-		wandSpells = InventoryUtils.getMeta(item, "magic_spells");
-		wandSpells = wandSpells == null ? "" : wandSpells;
-		activeSpell = InventoryUtils.getMeta(item, "magic_active_spell");
-		activeSpell = activeSpell == null ? "" : activeSpell;
-		activeMaterial = InventoryUtils.getMeta(item, "magic_active_material");
-		activeMaterial = activeMaterial == null ? "" : activeMaterial;
-		wandName = InventoryUtils.getMeta(item, "magic_wand_name");
-		wandName = wandName == null ? defaultWandName : wandName;
+		Object wandNode = InventoryUtils.getNode(item, "wand");
+		if (wandNode == null) return;
 		
-		String[] wandPairs = StringUtils.split(wandSettings, "&");
-		for (String pair : wandPairs) {
-			String[] keyValue = StringUtils.split(pair, "=");
-			if (keyValue.length == 2) {
-				String key = keyValue[0];
-				float value = Float.parseFloat(keyValue[1]);
-				if (key.equalsIgnoreCase("cr")) {
-					costReduction = value;
-				} else if (key.equalsIgnoreCase("cdr")) {
-				 	cooldownReduction = value;
-				} else if (key.equalsIgnoreCase("dr")) {
-					damageReduction = value;
-				} else if (key.equalsIgnoreCase("drph")) {
-					damageReductionPhysical = value;
-				} else if (key.equalsIgnoreCase("drpr")) {
-					damageReductionProjectiles = value;
-				} else if (key.equalsIgnoreCase("drfa")) {
-					damageReductionFalling = value;
-				} else if (key.equalsIgnoreCase("drfi")) {
-					damageReductionFire = value;
-				} else if (key.equalsIgnoreCase("drex")) {
-					damageReductionExplosions = value;
-				} else if (key.equalsIgnoreCase("uses")) {
-					uses = (int)value;
-				} else if (key.equalsIgnoreCase("xpre")) {
-					xpRegeneration = (int)value;
-				} else if (key.equalsIgnoreCase("xpmax")) {
-					xpMax = (int)value;
-				} else if (key.equalsIgnoreCase("hereg")) {
-					healthRegeneration = (int)value;
-				} else if (key.equalsIgnoreCase("hureg")) {
-					hungerRegeneration = (int)value;
-				} else if (key.equalsIgnoreCase("hasi")) {
-					hasInventory = (int)value != 0;
-				}
-			}
-		}
+		// Don't generate a UUID unless we need to, not sure how expensive that is.
+		id = InventoryUtils.getMeta(wandNode, "id");
+		id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
+		
+		wandMaterials = InventoryUtils.getMeta(wandNode, "materials", wandMaterials);
+		wandSpells = InventoryUtils.getMeta(wandNode, "spells", wandSpells);
+		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
+		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
+		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
+		
+		costReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cost_reduction", floatFormat.format(costReduction)));
+		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
+		damageReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction", floatFormat.format(damageReduction)));
+		damageReductionPhysical = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_physical", floatFormat.format(damageReductionPhysical)));
+		damageReductionProjectiles = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_projectiles", floatFormat.format(damageReductionProjectiles)));
+		damageReductionFalling = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_falling", floatFormat.format(damageReductionFalling)));
+		damageReductionFire = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_fire", floatFormat.format(damageReductionFire)));
+		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions)));
+		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
+		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
+		xpMax = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_max", Integer.toString(xpMax)));
+		healthRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration)));
+		hungerRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration)));
+		uses = Integer.parseInt(InventoryUtils.getMeta(wandNode, "uses", Integer.toString(uses)));
+		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -584,11 +551,11 @@ public class Wand implements CostReducer {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && item.getType() == Material.STICK && InventoryUtils.getMeta(item, "magic_wand", "").length() > 0;
+		return item != null && item.getType() == Material.STICK && InventoryUtils.hasMeta(item, "wand");
 	}
 
 	public static boolean isSpell(ItemStack item) {
-		return item != null && item.getType() != Material.STICK && InventoryUtils.getMeta(item, "magic_spell", "").length() > 0;
+		return item != null && item.getType() != Material.STICK && InventoryUtils.hasMeta(item, "spell");
 	}
 
 	protected void updateInventory() {
@@ -626,7 +593,8 @@ public class Wand implements CostReducer {
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
 		InventoryUtils.addGlow(itemStack);
-		InventoryUtils.setMeta(itemStack, "magic_spell", spell.getKey());
+		Object spellNode = InventoryUtils.createNode(itemStack, "spell");
+		InventoryUtils.setMeta(spellNode, "key", spell.getKey());
 	}
 	
 	protected void updateMaterialName(ItemStack itemStack) {
@@ -931,8 +899,8 @@ public class Wand implements CostReducer {
 		healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
 		hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
 		uses = wandConfig.getInt("uses", 0);
-		
-		updateWandSettings();
+	
+		saveState();
 		updateName();
 		updateLore();
 	}
