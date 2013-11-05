@@ -47,7 +47,7 @@ public class LightningSpell extends Spell
 		Target target = getTarget();
 		if (!target.hasTarget())
 		{
-			sendMessage(player, "No target");
+			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 
