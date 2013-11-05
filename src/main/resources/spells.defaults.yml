@@ -788,6 +788,7 @@ spells:
         parameters:
             radius: '4'
             type: cuboid
+            y_offset: 32
         costs:
         - xp: 10
     fill:

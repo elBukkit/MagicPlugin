@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -59,6 +60,10 @@ public class ConstructSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
+		if (parameters.containsKey("y_offset")) {
+			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
+		}
+		
 		if (!hasBuildPermission(target)) {
 			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
