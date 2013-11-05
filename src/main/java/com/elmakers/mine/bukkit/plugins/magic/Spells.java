@@ -492,6 +492,7 @@ public class Spells implements Listener
 		quiet = generalNode.getBoolean("quiet", quiet);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
+		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
 		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
@@ -913,9 +914,9 @@ public class Spells implements Listener
 	@EventHandler
 	public void onWorldInit(WorldInitEvent event) {
 		// Install our block populator if configured to do so.
-		if (blockPopulatorEnabled) {
+		if (blockPopulatorEnabled && blockPopulatorConfig != null) {
 			World world = event.getWorld();
-			world.getPopulators().add(new WandChestPopulator(this));
+			world.getPopulators().add(new WandChestPopulator(this, blockPopulatorConfig));
 		}
 	}
 
@@ -952,6 +953,7 @@ public class Spells implements Listener
 	 private boolean                             quiet                          = true;
 	 private boolean                             soundsEnabled                  = true;
 	 private boolean							 blockPopulatorEnabled			= false;
+	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
 
 	 private final Logger                        log                            = Logger.getLogger("Minecraft");

@@ -129,7 +129,12 @@ public class ConfigurationNode {
 			Object val = root.get(path);
 
 			if (val == null) {
-				return null;
+				// Special case for YAML parsing doing stupid things	
+				try {
+					return root.get(Integer.parseInt(path));
+				} catch (Exception ex) {
+					return null;
+				}
 			}
 			return val;
 		}
@@ -411,7 +416,7 @@ public class ConfigurationNode {
 	 @SuppressWarnings("unchecked")
 	 public List<String> getKeys(String path) {
 		 if (path == null) {
-			 return new ArrayList<String>(root.keySet());
+			 return getKeys();
 		 }
 		 Object o = getProperty(path);
 
@@ -430,7 +435,13 @@ public class ConfigurationNode {
 	  * @return List of keys
 	  */
 	 public List<String> getKeys() {
-		 return new ArrayList<String>(root.keySet());
+		 // Note that the YAML parser may have decided we want non-String keys :\
+		 Set<String> keys = root.keySet();
+		 ArrayList<String> stringKeys = new ArrayList<String>();
+		 for (Object key : keys) {
+			 stringKeys.add(key.toString());
+		 }
+		 return stringKeys;
 	 }
 
 	 /**

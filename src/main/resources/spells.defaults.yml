@@ -614,6 +614,7 @@ spells:
             cooldown: 0
             material: air
         parameters:
+            radius: 3
             type: sphere
         costs:
         - xp: 10
@@ -871,7 +872,7 @@ spells:
             undo: 0
             cooldown: 50
         parameters:
-            radius: '3'
+            radius: 3
             type: sphere
         costs:
         - xp: 20

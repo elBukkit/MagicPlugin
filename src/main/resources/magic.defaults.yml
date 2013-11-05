@@ -1,6 +1,21 @@
 general:
     silent: false
     sounds: true
+    enable_block_populator: false
+    populate_chests:
+      base_probability:
+        0: 100
+        1: 70
+        2: 20
+        3: 5
+      wand_probability:
+        explorer: 30
+        arrow: 50
+        fireball: 60
+        psychic: 10
+        battle: 10
+        necromancer: 5
+        fire: 8
     target_through:
     - water
     - air

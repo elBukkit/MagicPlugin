@@ -2,7 +2,7 @@
 
 ## 2.3.3
  
- - Add an optional block generator, which will randomly put wands in naturually spawned chests
+ - Add an optional block generator, which will randomly put wands in naturally spawned chests
  - Update spells with cooldowns
  - Add cooldown reduction option for wands
  - Add "/wand configure" command for setting wand properties
@@ -10,6 +10,8 @@
  - Don't let the player keep or use XP given by wand regeneration
  - Fix interaction with inventories, chests, etc
  - Prevent name jumpiness when switching spells/materials
+ - Added "leap", "time" and "sniper" spells
+ - Fix "sandblast"
  
 ## 2.3.2
 
