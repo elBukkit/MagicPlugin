@@ -1012,15 +1012,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * 
 	 * @param time specified server time (0-24000)
 	 */
-	public void setRelativeTime(long time)
+	public void setTime(long time)
 	{
-		long margin = (time - getTime()) % 24000;
-
-		if (margin < 0)
-		{
-			margin += 24000;
-		}
-		player.getWorld().setTime(getTime() + margin);
+		player.getWorld().setTime(time);
 	}
 
 	/**

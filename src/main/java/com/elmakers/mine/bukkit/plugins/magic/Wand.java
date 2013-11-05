@@ -56,6 +56,7 @@ public class Wand implements CostReducer {
 	private int xpMax = 50;
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
+	private float walkSpeedIncrease = 0;
 	
 	private int accumulatedXp = 0;
 	
@@ -205,6 +206,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "damage_reduction_fire", floatFormat.format(damageReductionFire));
 		InventoryUtils.setMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions));
 		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
+		InventoryUtils.setMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease));
 		InventoryUtils.setMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration));
 		InventoryUtils.setMeta(wandNode, "xp_max", Integer.toString(xpMax));
 		InventoryUtils.setMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration));
@@ -236,6 +238,7 @@ public class Wand implements CostReducer {
 		damageReductionFire = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_fire", floatFormat.format(damageReductionFire)));
 		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
+		walkSpeedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease)));
 		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
 		xpMax = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_max", Integer.toString(xpMax)));
 		healthRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration)));
@@ -509,13 +512,14 @@ public class Wand implements CostReducer {
 		}
 		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
+		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + "Haste");
+		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Regeneration", xpRegeneration / 100));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
 		if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
 		if (damageReductionProjectiles > 0) lore.add(ChatColor.GOLD + getLevelString("Projectile Protection", damageReductionProjectiles));
 		if (damageReductionFalling > 0) lore.add(ChatColor.GOLD + getLevelString("Fall Protection", damageReductionFalling));
 		if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
 		if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
-		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Regeneration", xpRegeneration / 100));
 		if (healthRegeneration > 0) lore.add(ChatColor.GOLD + "Health Regeneration");
 		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + "No Hunger");
 		meta.setLore(lore);
@@ -900,6 +904,14 @@ public class Wand implements CostReducer {
 		hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
 		uses = wandConfig.getInt("uses", 0);
 	
+		// Make sure to adjust the player's walk speed if it changes and this wand is active.
+		float oldWalkSpeedIncrease = walkSpeedIncrease;
+		walkSpeedIncrease = (float)wandConfig.getDouble("haste", walkSpeedIncrease);
+		if (activePlayer != null && walkSpeedIncrease != oldWalkSpeedIncrease) {
+			Player player = activePlayer.getPlayer();
+			player.setWalkSpeed(player.getWalkSpeed() + walkSpeedIncrease - oldWalkSpeedIncrease);
+		}
+		
 		saveState();
 		updateName();
 		updateLore();
@@ -1013,6 +1025,10 @@ public class Wand implements CostReducer {
 	
 	public void activate(PlayerSpells playerSpells) {
 		activePlayer = playerSpells;
+		if (walkSpeedIncrease > 0) {
+			Player player = activePlayer.getPlayer();
+			player.setWalkSpeed(player.getWalkSpeed() + walkSpeedIncrease);
+		}
 		activePlayer.setActiveWand(this);
 		accumulatedXp = 0;
 		updateActiveMaterial();
@@ -1035,6 +1051,10 @@ public class Wand implements CostReducer {
 		}
 		if (accumulatedXp > 0) {
 			CastingCost.removeExperience(activePlayer.getPlayer(), accumulatedXp);
+		}
+		if (walkSpeedIncrease > 0) {
+			Player player = activePlayer.getPlayer();
+			player.setWalkSpeed(player.getWalkSpeed() - walkSpeedIncrease);
 		}
 		accumulatedXp = 0;
 		activePlayer.setActiveWand(null);
