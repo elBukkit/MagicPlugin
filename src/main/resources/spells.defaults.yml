@@ -586,8 +586,8 @@ spells:
             - soul_sand
             undo: 0
             cooldown: 5000
-        parameters:
             material: air
+        parameters:
             radius: '16'
             type: sphere
     blast:
@@ -612,8 +612,8 @@ spells:
             - soul_sand
             undo: 0
             cooldown: 0
-        parameters:
             material: air
+        parameters:
             type: sphere
         costs:
         - xp: 10
@@ -693,8 +693,8 @@ spells:
             - wood
             undo: 10000
             cooldown: 0
-        parameters:
             material: air
+        parameters:
             radius: '4'
             type: sphere
         costs:
@@ -753,8 +753,8 @@ spells:
             - soul_sand
             undo: 4000
             cooldown: 0
-        parameters:
             material: glass
+        parameters:
             radius: '3'
             type: sphere
         costs:
@@ -784,8 +784,8 @@ spells:
             - soul_sand
             undo: 0
             cooldown: 500
-        parameters:
             material: sand
+        parameters:
             radius: '4'
             type: cuboid
         costs:

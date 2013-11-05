@@ -51,6 +51,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String category;
 	private ConfigurationNode parameters = new ConfigurationNode();
 	private Material material;
+	private Material materialOverride;
 	private List<CastingCost> costs = null;
 
 	/*
@@ -168,6 +169,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		ConfigurationNode properties = node.getNode("properties");
 		if (properties == null) properties = node.createChild("properties");
 		cooldown = properties.getInt("cooldown", cooldown);
+		materialOverride = properties.getMaterial("material", materialOverride);
 
 		this.onLoad(properties);
 
@@ -444,6 +446,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public ItemStack getBuildingMaterial()
 	{
+		if (materialOverride != null)
+		{
+			return new ItemStack(materialOverride, 1);
+		}
+		
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		return playerSpells.getBuildingMaterial();
 	}
@@ -1217,5 +1224,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public boolean usesMaterial() {
 		return false;
+	}
+	
+	public boolean hasMaterialOverride() {
+		return materialOverride != null;
 	}
 }
