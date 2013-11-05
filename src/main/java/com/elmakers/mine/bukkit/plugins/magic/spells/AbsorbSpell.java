@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Wand;
@@ -16,7 +17,8 @@ public class AbsorbSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Wand wand = Wand.getActiveWand(player);
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			castMessage("This spell requires a wand");
 			return SpellResult.NO_TARGET;
@@ -46,7 +48,7 @@ public class AbsorbSpell extends Spell
 		}
 		
 		// Add to the wand
-		wand.addMaterial(spells.getPlayerSpells(player), material, data);
+		wand.addMaterial(material, data);
 		castMessage("Absorbing some " + material.name().toLowerCase());
 		
 		return SpellResult.SUCCESS;

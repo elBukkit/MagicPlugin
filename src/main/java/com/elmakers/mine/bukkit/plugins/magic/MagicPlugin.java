@@ -189,14 +189,14 @@ public class MagicPlugin extends JavaPlugin
 			player.sendMessage("Use: /wand add <spell|material> [material]");
 			return true;
 		}
-		
-		Wand wand = Wand.getActiveWand(player);
+
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first (use /wand if needed)");
 			return true;
 		}
 
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		String spellName = parameters[0];
 		if (spellName.equals("material")) {
 			if (parameters.length < 2) {
@@ -221,7 +221,7 @@ public class MagicPlugin extends JavaPlugin
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.addMaterial(playerSpells, material, data);
+			wand.addMaterial(material, data);
 			return true;
 		}
 		Spell spell = playerSpells.getSpell(spellName);
@@ -231,7 +231,7 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		wand.addSpell(playerSpells, spellName);
+		wand.addSpell(spellName);
 
 		return true;
 	}
@@ -242,14 +242,14 @@ public class MagicPlugin extends JavaPlugin
 			player.sendMessage("Use: /wand remove <spell|material> [material]");
 			return true;
 		}
-		
-		Wand wand = Wand.getActiveWand(player);
+
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first (use /wand if needed)");
 			return true;
 		}
 
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		String spellName = parameters[0];
 		
 		if (spellName.equals("material")) {
@@ -270,10 +270,10 @@ public class MagicPlugin extends JavaPlugin
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.removeMaterial(playerSpells, material, data);
+			wand.removeMaterial(material, data);
 			return true;
 		}
-		wand.removeSpell(playerSpells, spellName);
+		wand.removeSpell(spellName);
 
 		return true;
 	}
@@ -285,13 +285,14 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		
-		Wand wand = Wand.getActiveWand(player);
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first (use /wand if needed)");
 			return true;
 		}
 		
-		wand.setName(spells.getPlayerSpells(player), StringUtils.join(parameters, " "));
+		wand.setName(StringUtils.join(parameters, " "));
 
 		return true;
 	}
@@ -305,12 +306,12 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
-		Wand currentWand = Wand.getActiveWand(player);
+		Wand currentWand =  playerSpells.getActiveWand();
 		if (currentWand != null) {
-			currentWand.closeInventory(playerSpells);
+			currentWand.closeInventory();
 		}
 	
-		Wand wand = Wand.createWand(playerSpells, wandName);
+		Wand wand = Wand.createWand(spells, wandName);
 	
 		// Place directly in hand if possible
 		PlayerInventory inventory = player.getInventory();
