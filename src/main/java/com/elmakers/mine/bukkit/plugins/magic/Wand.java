@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class Wand {
+public class Wand implements CostReducer {
 	private ItemStack item;
 	private Spells spells;
 	private PlayerSpells activePlayer;
@@ -54,7 +54,7 @@ public class Wand {
 	private int uses = 0;
 	
 	private int xpRegeneration = 0;
-	private int xpMax = 0;
+	private int xpMax = 50;
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
 	
@@ -100,6 +100,7 @@ public class Wand {
 	public void setActiveSpell(String activeSpell) {
 		this.activeSpell = activeSpell;
 		updateName();
+		updateInventoryNames();
 		saveState();
 	}
 
@@ -114,6 +115,7 @@ public class Wand {
 		}
 		updateName();
 		updateActiveMaterial();
+		updateInventoryNames();
 		saveState();
 	}
 	
@@ -424,30 +426,14 @@ public class Wand {
 	private void setMaterialCount(int materialCount) {
 		updateLore(getSpells().length, materialCount);
 	}
-	
-	@SuppressWarnings("deprecation")
-	private void updateName() {
+
+	private String getActiveWandName(Spell spell, String materialName) {
 		// Build wand name
 		String name = wandName;
 		
 		// Add active spell to description
-		if (hasInventory) {
-			Spell spell = spells.getSpell(activeSpell);
+		if (hasInventory) {		
 			if (spell != null) {
-				String[] pieces = StringUtils.split(activeMaterial, ":");
-				String materialName = null;
-				
-				if (spell.usesMaterial() && pieces.length > 0 && pieces[0].length() > 0) {
-					int materialId = Integer.parseInt(pieces[0]);
-					if (materialId == 0) {
-						materialName = "erase";
-					} else if (materialId == -1) {
-						materialName = "copy";
-					} else {
-						Material material = Material.getMaterial(materialId);
-						materialName = material.name().toLowerCase();;
-					}
-				}
 				if (materialName != null) {
 					materialName = materialName.replace('_', ' ');
 					name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandName + ")";
@@ -460,8 +446,52 @@ public class Wand {
 		if (remaining > 0) {
 			name = name + " : " + ChatColor.RED + "" + remaining + " Uses ";
 		}
+		return name;
+	}
+	
+	@SuppressWarnings("deprecation")
+	private String getActiveWandName(Spell spell) {
+		String[] pieces = StringUtils.split(activeMaterial, ":");
+		String materialName = null;
+		
+		if (spell != null && spell.usesMaterial() && pieces.length > 0 && pieces[0].length() > 0) {
+			int materialId = Integer.parseInt(pieces[0]);
+			if (materialId == 0) {
+				materialName = "erase";
+			} else if (materialId == -1) {
+				materialName = "copy";
+			} else {
+				Material material = Material.getMaterial(materialId);
+				materialName = material.name().toLowerCase();;
+			}
+		}
+		return getActiveWandName(spell, materialName);
+	}
+	
+	private String getActiveWandName(Material material) {
+		Spell spell = spells.getSpell(activeSpell);
+		String materialName = null;
+		
+		if (spell != null && spell.usesMaterial() && material != null) {
+			if (material == EraseMaterial) {
+				materialName = "erase";
+			} else if (material == CopyMaterial) {
+				materialName = "copy";
+			} else {
+				materialName = material.name().toLowerCase();
+			}
+		}
+		return getActiveWandName(spell, materialName);
+	}
+	
+	private String getActiveWandName() {
+		Spell spell = spells.getSpell(activeSpell);
+		return getActiveWandName(spell);
+	}
+	
+	private void updateName() {
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(name);
+		meta.setDisplayName(getActiveWandName());
 		item.setItemMeta(meta);
 		
 		// Reset Enchantment glow
@@ -499,7 +529,7 @@ public class Wand {
 		
 		Spell spell = spells.getSpell(activeSpell);
 		if (spell != null && spellCount == 1 && materialCount <= 1) {
-			lore.add(spell.getDescription());
+			addSpellLore(spell, lore);
 		} else {
 			lore.add("Knows " + spellCount +" Spells");
 			if (materialCount > 0) {
@@ -566,6 +596,45 @@ public class Wand {
 		updateInventory(activePlayer.getPlayer().getInventory().getHeldItemSlot());
 	}
 	
+	protected void updateInventoryNames() {
+		if (activePlayer == null || !isInventoryOpen()) return;
+		
+		ItemStack[] contents = activePlayer.getPlayer().getInventory().getContents();
+		for (ItemStack item : contents) {
+			if (item == null || item.getType() == Material.AIR || isWand(item)) continue;
+			updateInventoryName(item);
+		}
+	}
+
+	protected void updateInventoryName(ItemStack item) {
+		if (isSpell(item)) {
+			Spell spell = activePlayer.getSpell(item.getType());
+			if (spell != null) {
+				updateSpellName(item, spell);
+			}
+			
+		} else {
+			updateMaterialName(item);
+		}
+	}
+	
+	protected void updateSpellName(ItemStack itemStack, Spell spell) {
+		ItemMeta meta = itemStack.getItemMeta();
+		meta.setDisplayName(getActiveWandName(spell));
+		List<String> lore = new ArrayList<String>();
+		addSpellLore(spell, lore);
+		meta.setLore(lore);
+		itemStack.setItemMeta(meta);
+		InventoryUtils.addGlow(itemStack);
+		InventoryUtils.setMeta(itemStack, "magic_spell", spell.getKey());
+	}
+	
+	protected void updateMaterialName(ItemStack itemStack) {
+		ItemMeta meta = itemStack.getItemMeta();
+		meta.setDisplayName(getActiveWandName(itemStack.getType()));
+		itemStack.setItemMeta(meta);
+	}
+	
 	@SuppressWarnings("deprecation")
 	private void updateInventory(int itemSlot) {
 		if (activePlayer == null) return;
@@ -587,23 +656,7 @@ public class Wand {
 			
 			ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
 			itemStack = InventoryUtils.getCopy(itemStack);
-			ItemMeta meta = itemStack.getItemMeta();
-			meta.setDisplayName(spell.getName());
-			List<String> lore = new ArrayList<String>();
-			lore.add(spell.getCategory());
-			lore.add(spell.getDescription());
-			List<CastingCost> costs = spell.getCosts();
-			if (costs != null) {
-				for (CastingCost cost : costs) {
-					if (cost.hasCosts(activePlayer)) {
-						lore.add(ChatColor.YELLOW + "Costs " + cost.getFullDescription(activePlayer));
-					}
-				}
-			}
-			meta.setLore(lore);
-			itemStack.setItemMeta(meta);
-			InventoryUtils.addGlow(itemStack);
-			InventoryUtils.setMeta(itemStack, "magic_spell", spells[i]);
+			updateSpellName(itemStack, spell);
 			
 			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
 			if (parts.length > 1 && slot != itemSlot) {
@@ -635,12 +688,10 @@ public class Wand {
 			itemStack = InventoryUtils.getCopy(itemStack);
 			ItemMeta meta = itemStack.getItemMeta();
 			if (typeId == EraseMaterial.getId()) {
-				meta.setDisplayName("Erase");
 				List<String> lore = new ArrayList<String>();
 				lore.add("Fills with Air");
 				meta.setLore(lore);
 			} else if (typeId == CopyMaterial.getId()) {
-				meta.setDisplayName("Copy");
 				List<String> lore = new ArrayList<String>();
 				lore.add("Fills with the target material");
 				meta.setLore(lore);
@@ -649,6 +700,7 @@ public class Wand {
 				lore.add("Magic building material");
 				meta.setLore(lore);
 			}
+			meta.setDisplayName(getActiveWandName(Material.getMaterial(typeId)));
 			itemStack.setItemMeta(meta);
 			
 			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
@@ -710,6 +762,18 @@ public class Wand {
 
 		updateName();
 		player.updateInventory();
+	}
+	
+	protected void addSpellLore(Spell spell, List<String> lore) {
+		lore.add(spell.getDescription());
+		List<CastingCost> costs = spell.getCosts();
+		if (costs != null) {
+			for (CastingCost cost : costs) {
+				if (cost.hasCosts(this)) {
+					lore.add(ChatColor.YELLOW + "Costs " + cost.getFullDescription(this));
+				}
+			}
+		}
 	}
 	
 	private static void addMaterialToInventory(Inventory inventory, ItemStack stack) {
@@ -1045,7 +1109,7 @@ public class Wand {
 		if (activePlayer == null) return;
 		
 		Player player = activePlayer.getPlayer();
-		if (xpRegeneration > 0 && player.getTotalExperience() < xpMax) {
+		if (xpRegeneration > 0 && (xpMax == 0 || player.getTotalExperience() < xpMax)) {
 			player.giveExp(xpRegeneration);
 			accumulatedXp += xpRegeneration;
 		}

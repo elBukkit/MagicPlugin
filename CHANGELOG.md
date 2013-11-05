@@ -9,7 +9,8 @@
  - Bugfixes: NPE on last use of wand, wands with no inventory, displayed uses, NPE on player death
  - Don't let the player keep or use XP given by wand regeneration
  - Fix interaction with inventories, chests, etc
-
+ - Prevent name jumpiness when switching spells/materials
+ 
 ## 2.3.2
 
  - Fix absorb spell to work with new wand inventory system

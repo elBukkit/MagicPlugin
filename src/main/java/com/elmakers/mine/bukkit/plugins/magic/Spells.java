@@ -46,6 +46,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
+import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -591,16 +592,17 @@ public class Spells implements Listener
 		Player player = event.getPlayer();
 		PlayerInventory inventory = player.getInventory();
 		ItemStack next = inventory.getItem(event.getNewSlot());
+		ItemStack previous = inventory.getItem(event.getPreviousSlot());
 
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand activeWand = playerSpells.getActiveWand();
 		
 		// Check for active Wand
-		if (activeWand != null) {
+		if (activeWand != null && Wand.isWand(previous)) {
 			// If the wand inventory is open, we're going to let them select a spell or material
 			if (activeWand.isInventoryOpen()) {
 				// Update the wand item, Bukkit has probably made a copy
-				activeWand.setItem(inventory.getItem(event.getPreviousSlot()));
+				activeWand.setItem(previous);
 				
 				// Check for spell or material selection
 				if (next != null && next.getType() != Material.AIR) {
@@ -615,7 +617,8 @@ public class Spells implements Listener
 						}
 					}
 				}
-				event.setCancelled(true);
+				// Cancelling the event causes some name bouncing. Trying out just resetting the item slot in a tick.
+				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new SetActiveItemSlotTask(player, event.getPreviousSlot()), 1);
 				return;	
 			} else {
 				// Otherwise, we're switching away from the wand, so deactivate it.

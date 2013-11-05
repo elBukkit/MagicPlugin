@@ -102,28 +102,28 @@ public class CastingCost
 		return xp;
 	}
 
-	protected int getAmount(PlayerSpells spells)
+	protected int getAmount(CostReducer reducer)
 	{
 		double reducedAmount = amount;
-		float reduction = spells.getCostReduction();
+		float reduction = reducer.getCostReduction();
 		if (reduction > 0) {
 			reducedAmount = (1.0f - reduction) * reducedAmount;
 		}
 		return (int)Math.ceil(reducedAmount);
 	}
 
-	protected int getXP(PlayerSpells spells)
+	protected int getXP(CostReducer reducer)
 	{
 		float reducedAmount = xp;
-		float reduction = spells.getCostReduction();
+		float reduction = reducer.getCostReduction();
 		if (reduction > 0) {
 			reducedAmount = (1.0f - reduction) * reducedAmount;
 		}
 		return (int)Math.ceil(reducedAmount);
 	}
 	
-	public boolean hasCosts(PlayerSpells spells) {
-		return (item != null && getAmount(spells) > 0) || getXP(spells) > 0;
+	public boolean hasCosts(CostReducer reducer) {
+		return (item != null && getAmount(reducer) > 0) || getXP(reducer) > 0;
 	}
 
 	public String getDescription()
@@ -134,11 +134,11 @@ public class CastingCost
 		return "XP";
 	}
 
-	public String getFullDescription(PlayerSpells spells)
+	public String getFullDescription(CostReducer reducer)
 	{
 		if (item != null) {
-			return (int)getAmount(spells) + " " + item.name().toLowerCase().replace("_", " ").replace(" block", "");
+			return (int)getAmount(reducer) + " " + item.name().toLowerCase().replace("_", " ").replace(" block", "");
 		}
-		return getXP(spells) + " XP";
+		return getXP(reducer) + " XP";
 	}
 }

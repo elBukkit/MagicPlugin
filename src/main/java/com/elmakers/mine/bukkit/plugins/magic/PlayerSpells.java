@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
-public class PlayerSpells 
+public class PlayerSpells implements CostReducer
 {
 	protected Player player;
 	protected Spells master;
