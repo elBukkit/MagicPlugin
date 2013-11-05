@@ -199,6 +199,7 @@ wands:
         description: The Uber Wand
         cost_reduction: 1
         damage_reduction: 1
+        cooldown_reduction: 1
         xp_regeneration: 100
         xp_max: 1000
         health_regeneration: 1
@@ -207,15 +208,11 @@ wands:
             - fling
             - blink
             - recurse
-            - arrowrain
+            - superblast
             - kaboom
             - fireball
+            - sniper
             - storm
-            - fill
-            - absorb
-            - bridge
-            - pillar
-            - rewind
             - icbm
             - inferno
             - superblob
@@ -224,7 +221,7 @@ wands:
             - force
             - levitate
             - mob
-            - torch
+            - farm
             - shell
             - box
             - gather

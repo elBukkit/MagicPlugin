@@ -17,9 +17,9 @@ public class FlingSpell extends Spell
 	private final long safetyLength = 20000;
 	private long lastFling = 0;
 
-	protected int maxSpeedAtElevation = 32;
-	protected double minMagnitude = 1.5;
-	protected double maxMagnitude = 8; 
+	protected int defaultMaxSpeedAtElevation = 64;
+	protected double defaultMinMagnitude = 1.5;
+	protected double defaultMaxMagnitude = 6; 
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -27,13 +27,18 @@ public class FlingSpell extends Spell
 		int height = 0;
 		Block playerBlock = player.getLocation().getBlock();
 
+		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
+		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
+		double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
+		
 		while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 		{
 			playerBlock = playerBlock.getRelative(BlockFace.DOWN);
 			height++;
 		}
 
-		double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * ((double)height / maxSpeedAtElevation)));
+		double heightModifier = maxSpeedAtElevation > 0 ? ((double)height / maxSpeedAtElevation) : 1;
+		double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * heightModifier));
 
 		Vector velocity = getAimVector();
 

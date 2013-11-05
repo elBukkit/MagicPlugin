@@ -94,7 +94,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 500
         parameters:
             size: '6'
         costs:
@@ -114,7 +114,7 @@ spells:
             target_through:
             - air
             - snow
-            cooldown: 0
+            cooldown: 10
         parameters: {}
         costs:
         - xp: 8
@@ -203,7 +203,7 @@ spells:
         description: Cast an exploding fireball
         class: FireballSpell
         properties:
-            cooldown: 0
+            cooldown: 5000
         parameters:
             size: '10'
         costs:
@@ -237,10 +237,22 @@ spells:
         class: FlingSpell
         properties:
             cooldown: 0
-        parameters:
-            size: '5'
         costs:
-        - xp: 1
+        - xp: 5
+    leap:
+        name: Leap
+        icon: leather_boots
+        category: psychic
+        description: Take a big leap
+        class: FlingSpell
+        properties:
+            cooldown: 5000
+        parameters:
+            cruising_altitude: 0
+            min_speed: 3
+            max_speed: 3
+        costs:
+        - xp: 2
     torch:
         name: Torch
         icon: torch
@@ -266,7 +278,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 100
         parameters:
             type: mob
         costs:
@@ -280,7 +292,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 1000
         parameters:
             count: 20
             type: mob
@@ -295,7 +307,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 50
         parameters: {}
         costs:
         - xp: 20
@@ -319,7 +331,7 @@ spells:
             range: 200
             radius: 4
             vertical_search_distance: 8
-            cooldown: 0
+            cooldown: 200
         parameters: {}
         costs:
         - xp: 100
@@ -334,7 +346,7 @@ spells:
             height: 4
             range: 200
             width: 3
-            cooldown: 0
+            cooldown: 100
         parameters: {}
         costs:
         - xp: 10
@@ -414,7 +426,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 5000
         parameters:
             size: '20'
         costs:
@@ -471,7 +483,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 100
         parameters:
             size: 6
             fuse: 30
@@ -486,7 +498,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 1000
         parameters:
             size: 12
             fuse: 60
@@ -517,7 +529,7 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            cooldown: 0
+            cooldown: 5000
         parameters:
             radius: '8'
             type: sphere
@@ -530,7 +542,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 5000
         parameters:
             size: '8'
             target: here
@@ -557,7 +569,7 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            cooldown: 0
+            cooldown: 5000
         parameters:
             material: air
             radius: '16'
@@ -681,7 +693,7 @@ spells:
             allow_max_range: false
             allow_ascend: false
             allow_passthrough: false
-            range: 8
+            range: 16
             allow_decend: true
             cooldown: 0
         parameters: {}
@@ -755,7 +767,7 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            cooldown: 0
+            cooldown: 500
         parameters:
             material: sand
             radius: '4'
@@ -800,7 +812,7 @@ spells:
             range: 200
             radius: 2
             vertical_search_distance: 8
-            cooldown: 0
+            cooldown: 50
         parameters: {}
         costs:
         - xp: 10
@@ -840,7 +852,7 @@ spells:
             - netherrack
             - soul_sand
             undo: 0
-            cooldown: 0
+            cooldown: 50
         parameters:
             radius: '3'
             type: sphere
@@ -868,8 +880,8 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            player_damage: 1
-            cooldown: 0
+            player_damage: 2
+            cooldown: 100
             entity_damage: 100
         parameters: {}
         costs:
@@ -922,7 +934,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 500
         parameters: {}
         costs:
         - xp: 100
@@ -1011,7 +1023,7 @@ spells:
         properties:
             allow_max_range: false
             range: 200
-            cooldown: 0
+            cooldown: 50
         parameters: {}
         costs:
         - xp: 20
@@ -1113,7 +1125,7 @@ spells:
         description: Cast an exploding fireball
         class: FireballSpell
         properties:
-            cooldown: 0
+            cooldown: 100
         parameters: {}
         costs:
         - xp: 15
