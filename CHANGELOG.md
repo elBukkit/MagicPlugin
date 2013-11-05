@@ -5,7 +5,10 @@
  - Add an optional block generator, which will randomly put wands in naturually spawned chests
  - Update spells with cooldowns
  - Add cooldown reduction option for wands
- - Bugfixes: NPE on last use of wand, wands with no inventory, displayed uses
+ - Add "/wand configure" command for setting wand properties
+ - Bugfixes: NPE on last use of wand, wands with no inventory, displayed uses, NPE on player death
+ - Don't let the player keep or use XP given by wand regeneration
+ - Fix interaction with inventories, chests, etc
 
 ## 2.3.2
 

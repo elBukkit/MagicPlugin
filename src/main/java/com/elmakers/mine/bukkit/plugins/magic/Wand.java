@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -32,6 +33,7 @@ public class Wand {
 	private PlayerSpells activePlayer;
 	
 	// Cached state
+	private String id;
 	private String wandSettings;
 	private String wandSpells;
 	private String wandMaterials;
@@ -56,6 +58,8 @@ public class Wand {
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
 	
+	private int accumulatedXp = 0;
+	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	private static Material WandMaterial = Material.STICK;
@@ -77,6 +81,7 @@ public class Wand {
 		item.setItemMeta(itemMeta);
 
 		InventoryUtils.addGlow(item);
+		id = UUID.randomUUID().toString();
 		wandSettings = " ";
 		wandSpells = "";
 		wandMaterials = "";
@@ -187,6 +192,7 @@ public class Wand {
 
 	protected void saveState() {
 		updateWandSettings();
+		InventoryUtils.setMeta(item, "magic_wand_id", id);
 		InventoryUtils.setMeta(item, "magic_wand", wandSettings);
 		InventoryUtils.setMeta(item, "magic_materials", wandMaterials);
 		InventoryUtils.setMeta(item, "magic_spells", wandSpells);
@@ -215,6 +221,8 @@ public class Wand {
 	}
 	
 	protected void loadState() {
+		id = InventoryUtils.getMeta(item, "magic_wand_id");
+		id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
 		wandSettings = InventoryUtils.getMeta(item, "magic_wand");
 		wandSettings = wandSettings == null ? "" : wandSettings;
 		wandMaterials = InventoryUtils.getMeta(item, "magic_materials");
@@ -974,6 +982,7 @@ public class Wand {
 	public void activate(PlayerSpells playerSpells) {
 		activePlayer = playerSpells;
 		activePlayer.setActiveWand(this);
+		accumulatedXp = 0;
 		updateActiveMaterial();
 		updateName();
 	}
@@ -988,10 +997,14 @@ public class Wand {
 	}
 	
 	public void deactivate(int itemSlot) {
+		if (activePlayer == null) return;
 		if (isInventoryOpen()) {
 			closeInventory(itemSlot);
 		}
-		
+		if (accumulatedXp > 0) {
+			CastingCost.removeExperience(activePlayer.getPlayer(), accumulatedXp);
+		}
+		accumulatedXp = 0;
 		activePlayer.setActiveWand(null);
 		activePlayer = null;
 	}
@@ -1030,9 +1043,11 @@ public class Wand {
 	
 	public void processRegeneration() {
 		if (activePlayer == null) return;
+		
 		Player player = activePlayer.getPlayer();
 		if (xpRegeneration > 0 && player.getTotalExperience() < xpMax) {
 			player.giveExp(xpRegeneration);
+			accumulatedXp += xpRegeneration;
 		}
 		if (healthRegeneration > 0 && player.getHealth() < 20) {
 			player.setHealth(Math.min(20, player.getHealth() + healthRegeneration));
@@ -1041,5 +1056,16 @@ public class Wand {
 			player.setExhaustion(0);
 			player.setFoodLevel(Math.min(20, player.getFoodLevel() + hungerRegeneration));
 		}
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null) return false;
+		if (!(other instanceof Wand)) return false;
+		
+		Wand otherWand =  ((Wand)other);
+		if (this.id == null || otherWand.id == null) return false;
+		
+		return otherWand.id.equals(this.id);
 	}
 }

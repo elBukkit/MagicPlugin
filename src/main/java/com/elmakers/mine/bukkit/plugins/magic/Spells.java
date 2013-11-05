@@ -26,7 +26,7 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -595,11 +595,12 @@ public class Spells implements Listener
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand activeWand = playerSpells.getActiveWand();
 		
-		// First deactivate current wand
+		// Check for active Wand
 		if (activeWand != null) {
+			// If the wand inventory is open, we're going to let them select a spell or material
 			if (activeWand.isInventoryOpen()) {
-				// Create a new wand.. this avoids some issues updating the name
-				activeWand = new Wand(this, inventory.getItem(event.getPreviousSlot()));
+				// Update the wand item, Bukkit has probably made a copy
+				activeWand.setItem(inventory.getItem(event.getPreviousSlot()));
 				
 				// Check for spell or material selection
 				if (next != null && next.getType() != Material.AIR) {
@@ -614,11 +615,10 @@ public class Spells implements Listener
 						}
 					}
 				}
-				
-				activeWand.activate(playerSpells);
 				event.setCancelled(true);
 				return;	
 			} else {
+				// Otherwise, we're switching away from the wand, so deactivate it.
 				activeWand.deactivate();
 			}
 		}
@@ -818,13 +818,43 @@ public class Spells implements Listener
 
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
-		if (!(event.getPlayer() instanceof Player)) return;
+		if (!(event.getPlayer() instanceof Player) || event.getView().getType() == InventoryType.CRAFTING) return;
+		
 		Player player = (Player)event.getPlayer();
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
-		if (wand != null && wand.isInventoryOpen()) {
-			wand.closeInventory();
+		if (wand != null) {
+			wand.deactivate();
 		}
+	}
+
+	@EventHandler
+	public void onInventoryClosed(InventoryCloseEvent event) {
+		if (!(event.getPlayer() instanceof Player)) return;
+			
+		// Update the active wand, it may have changed around
+		Player player = (Player)event.getPlayer();
+		PlayerSpells playerSpells = getPlayerSpells(player);
+		Wand previousWand = playerSpells.getActiveWand();
+		Wand wand = Wand.getActiveWand(this, player);
+		boolean changedWands = false;
+		if (previousWand != null && wand == null) changedWands = true;
+		if (previousWand == null && wand != null) changedWands = true;
+		if (previousWand != null && wand != null && !previousWand.equals(wand)) changedWands = true;
+		if (changedWands) {
+			boolean inventoryWasOpen = false;
+			if (previousWand != null) {
+				inventoryWasOpen = previousWand.isInventoryOpen();
+				previousWand.deactivate();
+			}
+			if (wand != null) {
+				wand.activate(playerSpells);
+				if (inventoryWasOpen) {
+					wand.openInventory();
+				}
+			}
+		}
+		
 	}
 
 	@EventHandler
@@ -876,21 +906,6 @@ public class Spells implements Listener
 		if (blockPopulatorEnabled) {
 			World world = event.getWorld();
 			world.getPopulators().add(new WandChestPopulator(this));
-		}
-	}
-
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		if (!(event.getWhoClicked() instanceof Player)) return;
-		if (event.getView().getType() != InventoryType.CRAFTING) return;
-
-		Player player = (Player)event.getWhoClicked();
-		PlayerInventory inventory = player.getInventory();
-		PlayerSpells spells = getPlayerSpells(player);
-		if (spells.hasStoredInventory()) {
-			if (event.getSlot() == inventory.getHeldItemSlot()) {
-				event.setCancelled(true);
-			}
 		}
 	}
 
