@@ -49,7 +49,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String name;
 	private String description;
 	private String category;
-	private ConfigurationNode parameters;
+	private ConfigurationNode parameters = new ConfigurationNode();
 	private Material material;
 	private List<CastingCost> costs = null;
 
@@ -309,7 +309,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		addParameters(extraParameters, parameters);
 
 		long currentTime = System.currentTimeMillis();
-		if (lastCast != 0 && lastCast > currentTime - cooldown)
+		float cooldownReduction = playerSpells.getCooldownReduction();
+		int reducedCooldown = cooldownReduction >= 1 ? 0 : (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+		if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
 		{
 			playerSpells.onCast(SpellResult.COOLDOWN);
 			return false;

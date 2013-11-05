@@ -343,11 +343,12 @@ public class MagicPlugin extends JavaPlugin
 			return false;
 		}
 
-		// Make it free
-		float previousReduction = playerSpells.getCostReduction();
+		// Make it free and skip cooldowns
 		playerSpells.setCostReduction(1);
+		playerSpells.setCooldownReduction(1);
 		spell.cast(parameters);
-		playerSpells.setCostReduction(previousReduction);
+		playerSpells.setCostReduction(0);
+		playerSpells.setCooldownReduction(0);
 
 		return true;
 	}

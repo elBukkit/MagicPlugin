@@ -31,6 +31,7 @@ public class PlayerSpells
 	private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
 	
 	private float costReduction = 0;
+	private float cooldownReduction = 0;
 	private ItemStack buildingMaterial = null;
 
 	
@@ -48,6 +49,14 @@ public class PlayerSpells
 	
 	public float getCostReduction() {
 		return activeWand == null ? costReduction : activeWand.getCostReduction() + costReduction;
+	}
+	
+	public float getCooldownReduction() {
+		return activeWand == null ? cooldownReduction : activeWand.getCooldownReduction() + cooldownReduction;
+	}
+	
+	public void setCooldownReduction(float reduction) {
+		cooldownReduction = reduction;
 	}
 
 	public boolean addToStoredInventory(ItemStack item) {

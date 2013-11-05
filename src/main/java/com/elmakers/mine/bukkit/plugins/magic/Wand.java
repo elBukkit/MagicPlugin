@@ -41,6 +41,7 @@ public class Wand {
 	private String wandName;
 	
 	private float costReduction = 0;
+	private float cooldownReduction = 0;
 	private float damageReduction = 0;
 	private float damageReductionPhysical = 0;
 	private float damageReductionProjectiles = 0;
@@ -150,6 +151,15 @@ public class Wand {
 	public float getCostReduction() {
 		return costReduction;
 	}
+
+	public float getCooldownReduction() {
+		return costReduction;
+	}
+
+	public void setCooldownReduction(float cooldownReduction) {
+		this.cooldownReduction = cooldownReduction;
+		updateWandSettings();
+	}
 	
 	public boolean getHasInventory() {
 		return hasInventory;
@@ -252,7 +262,9 @@ public class Wand {
 	}
 	
 	protected void updateWandSettings() {
-		wandSettings = "cr=" + floatFormat.format(costReduction) + 
+		wandSettings = 
+		  "cr=" + floatFormat.format(costReduction) + 
+	     "&cdr=" + floatFormat.format(cooldownReduction) +
 		 "&dr=" + floatFormat.format(damageReduction) +
 		 "&drph=" + floatFormat.format(damageReductionPhysical) +
 		 "&drpr=" + floatFormat.format(damageReductionProjectiles) +
@@ -290,6 +302,8 @@ public class Wand {
 				float value = Float.parseFloat(keyValue[1]);
 				if (key.equalsIgnoreCase("cr")) {
 					costReduction = value;
+				} else if (key.equalsIgnoreCase("cdr")) {
+				 	cooldownReduction = value;
 				} else if (key.equalsIgnoreCase("dr")) {
 					damageReduction = value;
 				} else if (key.equalsIgnoreCase("drph")) {
@@ -545,6 +559,7 @@ public class Wand {
 			lore.add(ChatColor.RED + "" + remaining + " Uses Remaining");
 		}
 		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
+		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
 		if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
 		if (damageReductionProjectiles > 0) lore.add(ChatColor.GOLD + getLevelString("Projectile Protection", damageReductionProjectiles));

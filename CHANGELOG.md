@@ -2,7 +2,9 @@
 
 ## 2.3.3
  
- - Experimenting with chunk generation to put wands in chests
+ - Add an optional block generator, which will randomly put wands in naturually spawned chests
+ - Update spells with cooldowns
+ - Add cooldown reduction option for wands
 
 ## 2.3.2
 
