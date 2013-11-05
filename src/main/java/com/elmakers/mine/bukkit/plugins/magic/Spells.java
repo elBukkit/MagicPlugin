@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -38,6 +39,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -500,6 +502,7 @@ public class Spells implements Listener
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
+		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
 		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
@@ -872,6 +875,15 @@ public class Spells implements Listener
 			}
 		}
 	}
+	
+	@EventHandler
+	public void onWorldInit(WorldInitEvent event) {
+		// Install our block populator if configured to do so.
+		if (blockPopulatorEnabled) {
+			World world = event.getWorld();
+			world.getPopulators().add(new WandChestPopulator(this));
+		}
+	}
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
@@ -887,7 +899,7 @@ public class Spells implements Listener
 			}
 		}
 	}
-	
+
 	public Spell getSpell(Material material) {
 		return spellsByMaterial.get(material);
 	}
@@ -920,6 +932,7 @@ public class Spells implements Listener
 	 private boolean                             silent                         = false;
 	 private boolean                             quiet                          = true;
 	 private boolean                             soundsEnabled                  = true;
+	 private boolean							 blockPopulatorEnabled			= false;
 	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
 
 	 private final Logger                        log                            = Logger.getLogger("Minecraft");

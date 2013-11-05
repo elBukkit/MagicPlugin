@@ -5,6 +5,7 @@ website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
 softdepend: [WorldGuard]
+load: startup
 commands:
   cast:
     description: Cast a spell directly
