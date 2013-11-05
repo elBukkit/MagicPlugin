@@ -439,15 +439,31 @@ spells:
         class: TorchSpell
         properties:
             allow_max_range: false
-            allow_night: true
-            range: 200
+            allow_night: false
             allow_day: true
-            allow_glowstone: true
-            cooldown: 0
+            allow_glowstone: false
+            cooldown: 1000
         parameters:
             time: day
         costs:
         - xp: 40
+
+    time:
+        name: Time
+        icon: watch
+        category: elemental
+        description: Change the time of day
+        class: TorchSpell
+        properties:
+            allow_max_range: false
+            allow_night: true
+            allow_day: true
+            allow_glowstone: false
+            cooldown: 1000
+        parameters:
+            time: toggle
+        costs:
+        - xp: 40        
     bridge:
         name: Bridge
         icon: gold_hoe
@@ -1076,10 +1092,9 @@ spells:
         properties:
             allow_max_range: false
             allow_night: true
-            range: 200
-            allow_day: true
-            allow_glowstone: true
-            cooldown: 0
+            allow_day: false
+            allow_glowstone: false
+            cooldown: 1000
         parameters:
             time: night
         costs:

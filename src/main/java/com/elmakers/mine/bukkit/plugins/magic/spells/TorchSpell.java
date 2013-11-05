@@ -22,6 +22,15 @@ public class TorchSpell extends Spell
 			long targetTime = 0;
 			String typeString = parameters.getString("time", "day");
 			String timeDescription = "day";
+			if (typeString.equalsIgnoreCase("toggle")) {
+				long currentTime = getTime();
+				if (currentTime > 13000) {
+					typeString = "day";
+				} else {
+					typeString = "night";
+				}
+			}
+			
 			if (typeString.equalsIgnoreCase("night"))
 			{
 				targetTime = 13000;
@@ -39,7 +48,7 @@ public class TorchSpell extends Spell
 					targetTime = 0;
 				}
 			}
-			setRelativeTime(targetTime);    
+			setTime(targetTime);    
 			castMessage("Changed time to " + timeDescription);
 			return SpellResult.SUCCESS;
 		}
@@ -47,7 +56,7 @@ public class TorchSpell extends Spell
 		if (getYRotation() > 80 && allowDay)
 		{
 			castMessage("FLAME ON!");
-			setRelativeTime(0);
+			setTime(0);
 			return SpellResult.SUCCESS;
 		}
 
@@ -55,7 +64,7 @@ public class TorchSpell extends Spell
 		if (getYRotation() < -80 && allowNight)
 		{
 			castMessage("FLAME OFF!");
-			setRelativeTime(13000);
+			setTime(13000);
 			return SpellResult.SUCCESS;
 		}
 

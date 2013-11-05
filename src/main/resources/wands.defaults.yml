@@ -205,14 +205,16 @@ wands:
         xp_max: 1000
         health_regeneration: 1
         hunger_regeneration: 1
+        haste: 0.3
         spells:
             - fling
             - blink
             - recurse
-            - superblast
+            - time
+            - sniper
             - kaboom
             - fireball
-            - sniper
+            - superblast
             - storm
             - icbm
             - inferno
