@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.3.3
+ 
+ - Experimenting with chunk generation to put wands in chests
+
 ## 2.3.2
 
  - Fix absorb spell to work with new wand inventory system
