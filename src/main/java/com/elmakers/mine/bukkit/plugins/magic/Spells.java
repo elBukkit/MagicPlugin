@@ -658,17 +658,21 @@ public class Spells implements Listener
 			drops.add(wand.getItem());
 			
 			// Retrieve stored inventory before deactiavting the wand
-			ItemStack[] stored = playerSpells.getStoredInventory().getContents();
-			
-			// Deactivate the wand.
-			wand.deactivate();
-
-			// Clear the inventory, which was just restored by the wand
-			player.getInventory().clear();
-			for (ItemStack stack : stored) {
-				if (stack != null) {
-					drops.add(stack);
+			if (playerSpells.hasStoredInventory()) {
+				ItemStack[] stored = playerSpells.getStoredInventory().getContents();
+				
+				// Deactivate the wand.
+				wand.deactivate();
+	
+				// Clear the inventory, which was just restored by the wand
+				player.getInventory().clear();
+				for (ItemStack stack : stored) {
+					if (stack != null) {
+						drops.add(stack);
+					}
 				}
+			} else {
+				wand.deactivate();
 			}
 		}
 
@@ -719,12 +723,14 @@ public class Spells implements Listener
 		{
 			// Check for spell cancel first, e.g. fill or force
 			if (!playerSpells.cancel()) {
-				if (wand.isInventoryOpen()) {
-					playerSpells.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
-					wand.closeInventory();
-				} else {
-					playerSpells.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
-					wand.openInventory();
+				if (wand.getHasInventory()) {
+					if (wand.isInventoryOpen()) {
+						playerSpells.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+						wand.closeInventory();
+					} else {
+						playerSpells.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
+						wand.openInventory();
+					}
 				}
 			} else {
 				playerSpells.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);

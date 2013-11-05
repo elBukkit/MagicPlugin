@@ -116,36 +116,16 @@ public class Wand {
 		return xpRegeneration;
 	}
 
-	public void setXPRegeneration(int xpRegeneration) {
-		this.xpRegeneration = xpRegeneration;
-		updateWandSettings();
-	}
-
 	public int getXPMax() {
 		return xpMax;
-	}
-
-	public void setXPMax(int xpMax) {
-		this.xpMax = xpMax;
-		updateWandSettings();
 	}
 
 	public int getHealthRegeneration() {
 		return healthRegeneration;
 	}
 
-	public void setHealthRegeneration(int healthRegeneration) {
-		this.healthRegeneration = healthRegeneration;
-		updateWandSettings();
-	}
-
 	public int getHungerRegeneration() {
 		return hungerRegeneration;
-	}
-
-	public void setHungerRegeneration(int hungerRegeneration) {
-		this.hungerRegeneration = hungerRegeneration;
-		updateWandSettings();
 	}
 
 	public float getCostReduction() {
@@ -155,87 +135,37 @@ public class Wand {
 	public float getCooldownReduction() {
 		return costReduction;
 	}
-
-	public void setCooldownReduction(float cooldownReduction) {
-		this.cooldownReduction = cooldownReduction;
-		updateWandSettings();
-	}
 	
 	public boolean getHasInventory() {
 		return hasInventory;
-	}
-	
-	public void setHasInventory(boolean hasInventory) {
-		this.hasInventory = hasInventory;
-		updateWandSettings();
-	}
-
-	public void setCostReduction(float costReduction) {
-		this.costReduction = costReduction;
-		updateWandSettings();
 	}
 
 	public float getDamageReduction() {
 		return damageReduction;
 	}
 
-	public void setDamageReduction(float damageReduction) {
-		this.damageReduction = damageReduction;
-		updateWandSettings();
-	}
-
 	public float getDamageReductionPhysical() {
 		return damageReductionPhysical;
 	}
-
-	public void setDamageReductionPhysical(float damageReductionPhysical) {
-		this.damageReductionPhysical = damageReductionPhysical;
-		updateWandSettings();
-	}
-
+	
 	public float getDamageReductionProjectiles() {
 		return damageReductionProjectiles;
-	}
-
-	public void setDamageReductionProjectiles(float damageReductionProjectiles) {
-		this.damageReductionProjectiles = damageReductionProjectiles;
-		updateWandSettings();
 	}
 
 	public float getDamageReductionFalling() {
 		return damageReductionFalling;
 	}
 
-	public void setDamageReductionFalling(float damageReductionFalling) {
-		this.damageReductionFalling = damageReductionFalling;
-		updateWandSettings();
-	}
-
 	public float getDamageReductionFire() {
 		return damageReductionFire;
-	}
-
-	public void setDamageReductionFire(float damageReductionFire) {
-		this.damageReductionFire = damageReductionFire;
-		updateWandSettings();
 	}
 
 	public float getDamageReductionExplosions() {
 		return damageReductionExplosions;
 	}
 
-	public void setDamageReductionExplosions(float damageReductionExplosions) {
-		this.damageReductionExplosions = damageReductionExplosions;
-		updateWandSettings();
-	}
-
 	public int getUses() {
 		return uses;
-	}
-
-	public void setUses(int uses) {
-		this.uses = uses;
-		updateWandSettings();
 	}
 	
 	public String getName() {
@@ -249,6 +179,10 @@ public class Wand {
 	
 	public ItemStack getItem() {
 		return item;
+	}
+	
+	public void setItem(ItemStack item) {
+		this.item = item;
 	}
 
 	protected void saveState() {
@@ -546,13 +480,23 @@ public class Wand {
 		}
 		return prefix + " " + suffix;
 	}
+	
+	private void updateLore() {
+		updateLore(getSpells().length, getMaterials().length);
+	}
 
 	private void updateLore(int spellCount, int materialCount) {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<String>();
-		lore.add("Knows " + spellCount +" Spells");
-		if (materialCount > 0) {
-			lore.add("Has " + materialCount +" Materials");
+		
+		Spell spell = spells.getSpell(activeSpell);
+		if (spell != null && spellCount == 1 && materialCount <= 1) {
+			lore.add(spell.getDescription());
+		} else {
+			lore.add("Knows " + spellCount +" Spells");
+			if (materialCount > 0) {
+				lore.add("Has " + materialCount +" Materials");
+			}
 		}
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
@@ -861,7 +805,10 @@ public class Wand {
 		String wandName = defaultWandName;
 
 		// See if there is a template with this key
-		if (wandTemplates.containsKey(templateName)) {
+		if (templateName != null && templateName.length() > 0) {
+			if (!wandTemplates.containsKey(templateName)) {
+				return null;
+			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
 			wandName = wandConfig.getString("name", wandName);
 			List<Object> spellList = wandConfig.getList("spells");
@@ -890,24 +837,32 @@ public class Wand {
 				}
 			}
 			
-			wand.setCostReduction((float)wandConfig.getDouble("cost_reduction", 0));
-			wand.setDamageReduction((float)wandConfig.getDouble("damage_reduction", 0));
-			wand.setDamageReductionPhysical((float)wandConfig.getDouble("damage_reduction_physical", 0));
-			wand.setDamageReductionProjectiles((float)wandConfig.getDouble("damage_reduction_projectiles", 0));
-			wand.setDamageReductionFalling((float)wandConfig.getDouble("damage_reduction_falling", 0));
-			wand.setDamageReductionFire((float)wandConfig.getDouble("damage_reduction_fire", 0));
-			wand.setDamageReductionExplosions((float)wandConfig.getDouble("damage_reduction_explosions", 0));
-			wand.setXPRegeneration(wandConfig.getInt("xp_regeneration", 0));
-			wand.setXPMax(wandConfig.getInt("xp_max", 0));
-			wand.setHealthRegeneration(wandConfig.getInt("health_regeneration", 0));
-			wand.setHungerRegeneration(wandConfig.getInt("hunger_regeneration", 0));
-			wand.setUses((int)wandConfig.getInt("uses", 0));
+			wand.configureProperties(wandConfig);
 		}
 
 		wand.addSpells(defaultSpells);
 		wand.setName(wandName);
 		
 		return wand;
+	}
+	
+	public void configureProperties(ConfigurationNode wandConfig) {
+		costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
+		damageReduction = (float)wandConfig.getDouble("damage_reduction", damageReduction);
+		damageReductionPhysical = (float)wandConfig.getDouble("damage_reduction_physical", damageReductionPhysical);
+		damageReductionProjectiles = (float)wandConfig.getDouble("damage_reduction_projectiles", damageReductionPhysical);
+		damageReductionFalling = (float)wandConfig.getDouble("damage_reduction_falling", damageReductionFalling);
+		damageReductionFire = (float)wandConfig.getDouble("damage_reduction_fire", damageReductionFire);
+		damageReductionExplosions = (float)wandConfig.getDouble("damage_reduction_explosions", damageReductionExplosions);
+		xpRegeneration = wandConfig.getInt("xp_regeneration", xpRegeneration);
+		xpMax = wandConfig.getInt("xp_max", xpMax);
+		healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
+		hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
+		uses = wandConfig.getInt("uses", 0);
+		
+		updateWandSettings();
+		updateName();
+		updateLore();
 	}
 	
 	public static void reset(Plugin plugin) {
@@ -1060,10 +1015,11 @@ public class Wand {
 		if (uses > 0) {
 			short durability = item.getDurability();
 			if (durability >= uses - 1) {
+				Player player = activePlayer.getPlayer();
 				deactivate();
-				PlayerInventory playerInventory = activePlayer.getPlayer().getInventory();
+				PlayerInventory playerInventory = player.getInventory();
 				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
-				activePlayer.getPlayer().updateInventory();
+				player.updateInventory();
 			} else {
 				item.setDurability((short)(durability + 1));
 				updateName();

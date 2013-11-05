@@ -44,6 +44,10 @@ permissions:
     description: Player may add a spell to a wand
     type: boolean
     default: op
+  Magic.commands.wand.configure:
+    description: Player may set wand properties
+    type: boolean
+    default: op
   Magic.commands.wand.remove:
     description: Player may remove a spell from a wand
     type: boolean

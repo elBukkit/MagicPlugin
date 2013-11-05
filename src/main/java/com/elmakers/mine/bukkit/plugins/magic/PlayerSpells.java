@@ -323,6 +323,12 @@ public class PlayerSpells
 	}
 	
 	public Wand getActiveWand() {
+		if (activeWand != null) {
+			ItemStack currentItem = player.getItemInHand();
+			if (Wand.isWand(currentItem)) {
+				activeWand.setItem(currentItem);
+			}
+		}
 		return activeWand;
 	}
 	

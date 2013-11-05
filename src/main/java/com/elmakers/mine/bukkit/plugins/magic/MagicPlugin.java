@@ -126,6 +126,13 @@ public class MagicPlugin extends JavaPlugin
 				onWandAdd(player, args2);
 				return true;
 			}
+			if (subCommand.equalsIgnoreCase("configure"))
+			{
+				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+
+				onWandConfigure(player, args2);
+				return true;
+			}
 			if (subCommand.equalsIgnoreCase("remove"))
 			{   
 				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
@@ -179,6 +186,30 @@ public class MagicPlugin extends JavaPlugin
 			}
 			sender.sendMessage(ChatColor.AQUA + key + ChatColor.WHITE + " : " + description);
 		}
+
+		return true;
+	}
+	
+	public boolean onWandConfigure(Player player, String[] parameters)
+	{
+		if (parameters.length < 2) {
+			player.sendMessage("Use: /wand configure <property> <value>");
+			player.sendMessage("Properties: cost_reduction, uses, health_regeneration, hunger_regeneration, xp_regeneration,");
+			player.sendMessage("  xp_max, damage_reduction, damage_reduction_physical, damage_reduction_projectiles,");
+			player.sendMessage("  damage_reduction_falling,damage_reduction_fire, damage_reduction_explosions");
+			
+			return true;
+		}
+
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
+		if (wand == null) {
+			player.sendMessage("Equip a wand first (use /wand if needed)");
+			return true;
+		}
+		ConfigurationNode node = new ConfigurationNode();
+		node.setProperty(parameters[0], parameters[1]);
+		wand.configureProperties(node);
 
 		return true;
 	}
@@ -299,7 +330,7 @@ public class MagicPlugin extends JavaPlugin
 
 	public boolean onWand(Player player, String[] parameters)
 	{
-		String wandName = "default";
+		String wandName = null;
 		if (parameters.length > 0)
 		{
 			wandName = parameters[0];
@@ -312,6 +343,10 @@ public class MagicPlugin extends JavaPlugin
 		}
 	
 		Wand wand = Wand.createWand(spells, wandName);
+		if (wand == null) {
+			player.sendMessage("No wand defined with key " + wandName);
+			return true;
+		}
 	
 		// Place directly in hand if possible
 		PlayerInventory inventory = player.getInventory();

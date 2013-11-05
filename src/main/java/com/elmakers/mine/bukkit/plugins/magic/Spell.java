@@ -323,7 +323,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			{
 				if (!cost.has(playerSpells))
 				{
-					sendMessage(player, "Not enough " + cost.getDescription());
+					castMessage("Not enough " + cost.getDescription());
 					playerSpells.onCast(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}
