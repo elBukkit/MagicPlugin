@@ -435,7 +435,7 @@ spells:
         name: Day
         icon: flint
         category: elemental
-        description: Change time time to day
+        description: Change the time to day
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -1089,7 +1089,7 @@ spells:
         name: Night
         icon: coal
         category: elemental
-        description: Change time time to night
+        description: Change the time to night
         class: TorchSpell
         properties:
             allow_max_range: false
