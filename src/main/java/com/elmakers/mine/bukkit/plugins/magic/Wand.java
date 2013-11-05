@@ -215,9 +215,68 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "has_inventory", Integer.toString((hasInventory ? 1 : 0)));
 	}
 	
+	protected void loadOldState(ItemStack item) {
+		id = InventoryUtils.getMeta(item, "magic_wand_id");
+        id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
+        String wandSettings = InventoryUtils.getMeta(item, "magic_wand");
+        wandSettings = wandSettings == null ? "" : wandSettings;
+        wandMaterials = InventoryUtils.getMeta(item, "magic_materials");
+        wandMaterials = wandMaterials == null ? "" : wandMaterials;
+        wandSpells = InventoryUtils.getMeta(item, "magic_spells");
+        wandSpells = wandSpells == null ? "" : wandSpells;
+        activeSpell = InventoryUtils.getMeta(item, "magic_active_spell");
+        activeSpell = activeSpell == null ? "" : activeSpell;
+        activeMaterial = InventoryUtils.getMeta(item, "magic_active_material");
+        activeMaterial = activeMaterial == null ? "" : activeMaterial;
+        wandName = InventoryUtils.getMeta(item, "magic_wand_name");
+        wandName = wandName == null ? defaultWandName : wandName;
+        
+        String[] wandPairs = StringUtils.split(wandSettings, "&");
+        for (String pair : wandPairs) {
+                String[] keyValue = StringUtils.split(pair, "=");
+                if (keyValue.length == 2) {
+                        String key = keyValue[0];
+                        float value = Float.parseFloat(keyValue[1]);
+                        if (key.equalsIgnoreCase("cr")) {
+                                costReduction = value;
+                        } else if (key.equalsIgnoreCase("cdr")) {
+                                 cooldownReduction = value;
+                        } else if (key.equalsIgnoreCase("dr")) {
+                                damageReduction = value;
+                        } else if (key.equalsIgnoreCase("drph")) {
+                                damageReductionPhysical = value;
+                        } else if (key.equalsIgnoreCase("drpr")) {
+                                damageReductionProjectiles = value;
+                        } else if (key.equalsIgnoreCase("drfa")) {
+                                damageReductionFalling = value;
+                        } else if (key.equalsIgnoreCase("drfi")) {
+                                damageReductionFire = value;
+                        } else if (key.equalsIgnoreCase("drex")) {
+                                damageReductionExplosions = value;
+                        } else if (key.equalsIgnoreCase("uses")) {
+                                uses = (int)value;
+                        } else if (key.equalsIgnoreCase("xpre")) {
+                                xpRegeneration = (int)value;
+                        } else if (key.equalsIgnoreCase("xpmax")) {
+                                xpMax = (int)value;
+                        } else if (key.equalsIgnoreCase("hereg")) {
+                                healthRegeneration = (int)value;
+                        } else if (key.equalsIgnoreCase("hureg")) {
+                                hungerRegeneration = (int)value;
+                        } else if (key.equalsIgnoreCase("hasi")) {
+                                hasInventory = (int)value != 0;
+                        }
+                }
+        }
+	}
+	
 	protected void loadState() {
 		Object wandNode = InventoryUtils.getNode(item, "wand");
-		if (wandNode == null) return;
+		if (wandNode == null) {
+			// Try to update old wands, this could be removed eventually.
+			loadOldState(item);
+            return;
+		}
 		
 		// Don't generate a UUID unless we need to, not sure how expensive that is.
 		id = InventoryUtils.getMeta(wandNode, "id");
@@ -555,7 +614,8 @@ public class Wand implements CostReducer {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && item.getType() == Material.STICK && InventoryUtils.hasMeta(item, "wand");
+		// Special-case here for porting old wands. Could be removed eventually.
+		return item != null && item.getType() == Material.STICK && (InventoryUtils.hasMeta(item, "wand") || InventoryUtils.hasMeta(item, "magic_wand"));
 	}
 
 	public static boolean isSpell(ItemStack item) {
