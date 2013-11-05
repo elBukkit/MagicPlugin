@@ -551,7 +551,7 @@ public class Wand {
 		if (damageReductionFalling > 0) lore.add(ChatColor.GOLD + getLevelString("Fall Protection", damageReductionFalling));
 		if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
 		if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
-		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Protection", xpRegeneration / 100));
+		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Regeneration", xpRegeneration / 100));
 		if (healthRegeneration > 0) lore.add(ChatColor.GOLD + "Health Regeneration");
 		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + "No Hunger");
 		meta.setLore(lore);
