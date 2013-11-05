@@ -726,7 +726,7 @@ public class Wand {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void saveInventory() {
+	public void saveInventory() {
 		if (activePlayer == null) return;
 		PlayerInventory inventory = activePlayer.getPlayer().getInventory();
 		
@@ -753,7 +753,7 @@ public class Wand {
 		// re-arrange based on player inventory contents
 		ItemStack[] items = inventory.getContents();
 		for (int i = 0; i < items.length; i++) {
-			if (items[i] == null) continue;
+			if (items[i] == null || isWand(items[i])) continue;
 			Material material = items[i].getType();
 			if (isSpell(items[i])) {
 				Spell spell = activePlayer.getSpell(material);

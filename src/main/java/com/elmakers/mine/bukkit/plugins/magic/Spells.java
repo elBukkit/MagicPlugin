@@ -835,7 +835,14 @@ public class Spells implements Listener
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
 		PlayerSpells playerSpells = getPlayerSpells(player);
+		
+		// Save the inventory state the the current wand if its spell inventory is open
+		// This is just to make sure we don't lose changes made to the inventory
 		Wand previousWand = playerSpells.getActiveWand();
+		if (previousWand != null && previousWand.isInventoryOpen()) {
+			previousWand.saveInventory();
+		}
+		
 		Wand wand = Wand.getActiveWand(this, player);
 		boolean changedWands = false;
 		if (previousWand != null && wand == null) changedWands = true;
