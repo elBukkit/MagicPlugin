@@ -945,26 +945,6 @@ public class Wand {
 	public static Collection<ConfigurationNode> getWandTemplates() {
 		return wandTemplates.values();
 	}
-	
-	protected void updateSpellSettings() {
-		updateSpellSettings(false);
-	}
-	
-	private void updateSpellSettings(boolean clearValue) {
-		if (activePlayer == null) return;
-		
-		activePlayer.setDamageReduction(clearValue ? 0 : damageReduction);
-		activePlayer.setDamageReductionPhysical(clearValue ? 0 : damageReductionPhysical);
-		activePlayer.setDamageReductionProjectiles(clearValue ? 0 : damageReductionProjectiles);
-		activePlayer.setDamageReductionFalling(clearValue ? 0 : damageReductionFalling);
-		activePlayer.setDamageReductionFire(clearValue ? 0 : damageReductionFire);
-		activePlayer.setDamageReductionExplosions(clearValue ? 0 : damageReductionExplosions);
-		activePlayer.setCostReduction(clearValue ? 0 : costReduction);
-		activePlayer.setXPRegeneration(clearValue ? 0 : xpRegeneration);
-		activePlayer.setXPMax(clearValue ? 0 : xpMax);
-		activePlayer.setHealthRegeneration(clearValue ? 0 : healthRegeneration);
-		activePlayer.setHungerRegeneration(clearValue ? 0 : hungerRegeneration);
-	}
 
 	@SuppressWarnings("deprecation")
 	private void updateActiveMaterial() {
@@ -1024,7 +1004,6 @@ public class Wand {
 	public void activate(PlayerSpells playerSpells) {
 		activePlayer = playerSpells;
 		activePlayer.setActiveWand(this);
-		updateSpellSettings();
 		updateActiveMaterial();
 		updateName();
 	}
@@ -1043,7 +1022,6 @@ public class Wand {
 			closeInventory(itemSlot);
 		}
 		
-		updateSpellSettings(true);
 		activePlayer.setActiveWand(null);
 		activePlayer = null;
 	}
@@ -1076,6 +1054,21 @@ public class Wand {
 				updateName();
 				updateLore(getSpells().length, getMaterials().length);
 			}
+		}
+	}
+	
+	public void processRegeneration() {
+		if (activePlayer == null) return;
+		Player player = activePlayer.getPlayer();
+		if (xpRegeneration > 0 && player.getTotalExperience() < xpMax) {
+			player.giveExp(xpRegeneration);
+		}
+		if (healthRegeneration > 0 && player.getHealth() < 20) {
+			player.setHealth(Math.min(20, player.getHealth() + healthRegeneration));
+		}
+		if (hungerRegeneration > 0 && player.getFoodLevel() < 20) {
+			player.setExhaustion(0);
+			player.setFoodLevel(Math.min(20, player.getFoodLevel() + hungerRegeneration));
 		}
 	}
 }

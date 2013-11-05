@@ -385,21 +385,9 @@ public class Spells implements Listener
 			public void run() {
 				for (PlayerSpells spells : playerSpells.values()) {
 					Player player = spells.getPlayer();
-					if (player.isOnline()) { 
-						int xpRegeneration = spells.getXpRegeneration();
-						int xpMax = spells.getXPMax();
-						if (xpRegeneration > 0 && player.getTotalExperience() < xpMax) {
-							player.giveExp(xpRegeneration);
-						}
-						int healthRegeneration = spells.getHealthRegeneration();
-						if (healthRegeneration > 0 && player.getHealth() < 20) {
-							player.setHealth(Math.min(20, player.getHealth() + healthRegeneration));
-						}
-						int hungerRegeneration = spells.getHungerRegeneration();
-						if (hungerRegeneration > 0 && player.getFoodLevel() < 20) {
-							player.setExhaustion(0);
-							player.setFoodLevel(Math.min(20, player.getFoodLevel() + hungerRegeneration));
-						}
+					Wand wand = spells.getActiveWand();
+					if (player.isOnline() && wand != null) {
+						wand.processRegeneration();
 					}
 				}
 			}
