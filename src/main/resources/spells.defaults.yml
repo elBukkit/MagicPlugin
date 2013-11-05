@@ -488,8 +488,8 @@ spells:
             range: 200
             cooldown: 0
         parameters:
-            size: 32
-            fuse: 160
+            size: 12
+            fuse: 60
             fire: true
         costs:
         - xp: 20
