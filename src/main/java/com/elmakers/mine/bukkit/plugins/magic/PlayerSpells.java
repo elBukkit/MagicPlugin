@@ -444,11 +444,11 @@ public class PlayerSpells
 				// No sound on success
 				break;
 			case INSUFFICIENT_RESOURCES:
-				player.playEffect(player.getLocation(), Effect.SMOKE,  null);
+				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
 				playSound(Sound.NOTE_BASS, 1, 1);
 				break;
 			case COOLDOWN:
-				player.playEffect(player.getLocation(), Effect.SMOKE,  null);
+				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
 				playSound(Sound.NOTE_SNARE_DRUM, 1, 1);
 				break;
 			case NO_TARGET:
@@ -457,7 +457,7 @@ public class PlayerSpells
 			case COST_FREE:
 				break;
 			default:
-				player.playEffect(player.getLocation(), Effect.EXTINGUISH,  null);
+				// player.playEffect(player.getLocation(), Effect.EXTINGUISH,  null);
 				playSound(Sound.NOTE_BASS_DRUM, 1, 1);
 		}
 	}
