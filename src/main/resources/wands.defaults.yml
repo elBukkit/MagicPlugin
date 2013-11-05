@@ -13,20 +13,20 @@ wands:
         spells:
             - fireball
         uses: 10
-        cost_reduction: 0.75
+        cost_reduction: 1
     arrow:
         name: Arrow Wand
         description: A temporary arrow wand
         spells:
-            - fireball
+            - arrow
         uses: 200
-        cost_reduction: 0.75        
+        cost_reduction: 1        
     fire:
         name: Fire Wand
         description: Firebending!
-        damage_reduction_fire: 1
+        damage_reduction_fire: 0.9
         xp_regeneration: 1
-        xp_max: 100
+        xp_max: 50
         spells:
             - fire
             - lava
@@ -34,21 +34,22 @@ wands:
         name: Exploring Wand
         description: For exploring
         xp_regeneration: 1
-        xp_max: 100
+        xp_max: 50
         spells:
             - tesseract
             - torch
-            - recall
+            - leap
             - flare
     psychic:
         name: Psychic Wand
         description: Airbending!
         damage_reduction_falling: 0.9
         xp_regeneration: 1
-        xp_max: 100
+        xp_max: 50
         spells:
             - fling
             - blink
+            - leap
             - push
             - pull
             - force
