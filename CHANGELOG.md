@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.3.3
+## 2.4.0
  
  - Add an optional block generator, which will randomly put wands in naturally spawned chests
  - Update spells with cooldowns
@@ -12,6 +12,7 @@
  - Prevent name jumpiness when switching spells/materials
  - Added "leap", "time" and "sniper" spells
  - Fix "sandblast"
+ - Changed wand data NBT format, though old wands should get updated.
  
 ## 2.3.2
 
