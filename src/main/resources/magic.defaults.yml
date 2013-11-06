@@ -1,6 +1,13 @@
 general:
     silent: false
     sounds: true
+    wand_item: blaze_rod
+    erase_item: sulpher
+    copy_item: sugar
+    enable_crafting: true
+    crafting_material_upper: diamond
+    crafting_material_lower: blaze_rod
+    enable_enchanting: true
     enable_block_populator: false
     populate_chests:
       base_probability:

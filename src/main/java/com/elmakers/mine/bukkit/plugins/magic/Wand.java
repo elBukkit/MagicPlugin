@@ -62,7 +62,7 @@ public class Wand implements CostReducer {
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
-	private static Material WandMaterial = Material.STICK;
+	public static Material WandMaterial = Material.STICK;
 	public static Material EraseMaterial = Material.SULPHUR;
 	public static Material CopyMaterial = Material.PUMPKIN_SEEDS;
 	
@@ -83,6 +83,8 @@ public class Wand implements CostReducer {
 		InventoryUtils.addGlow(item);
 		id = UUID.randomUUID().toString();
 		wandName = defaultWandName;
+		updateName();
+		updateLore();
 		saveState();
 	}
 	
@@ -619,11 +621,11 @@ public class Wand implements CostReducer {
 
 	public static boolean isWand(ItemStack item) {
 		// Special-case here for porting old wands. Could be removed eventually.
-		return item != null && item.getType() == Material.STICK && (InventoryUtils.hasMeta(item, "wand") || InventoryUtils.hasMeta(item, "magic_wand"));
+		return item != null && item.getType() == WandMaterial && (InventoryUtils.hasMeta(item, "wand") || InventoryUtils.hasMeta(item, "magic_wand"));
 	}
 
 	public static boolean isSpell(ItemStack item) {
-		return item != null && item.getType() != Material.STICK && InventoryUtils.hasMeta(item, "spell");
+		return item != null && item.getType() != WandMaterial && InventoryUtils.hasMeta(item, "spell");
 	}
 
 	protected void updateInventory() {

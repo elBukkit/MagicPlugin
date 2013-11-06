@@ -3,6 +3,8 @@
 ## 2.4.1
 
  - Fix renaming wands on an anvil
+ - Add basics of wand crafting mechanic
+ - Changed default wand item to blaze rod
 
 ## 2.4.0
  

@@ -120,7 +120,7 @@ spells:
         - xp: 8
     storm:
         name: Storm
-        icon: blaze_rod
+        icon: cooked_porkchop
         category: elemental
         description: Start a lightning storm
         class: LightningSpell

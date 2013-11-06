@@ -32,6 +32,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -44,6 +45,8 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -495,14 +498,32 @@ public class Spells implements Listener
 		quiet = generalNode.getBoolean("quiet", quiet);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
+		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
+		boolean craftingEnabled = generalNode.getBoolean("enable_crafting", false);
+		if (craftingEnabled) {
+			Material upperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
+			Material lowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
+			Wand wand = new Wand(this);
+			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
+			recipe.shape("o", "i").
+					setIngredient('o', upperMaterial).
+					setIngredient('i', lowerMaterial);
+			wandRecipe = recipe;
+		}
+		
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
 		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
 
 		CSVParser csv = new CSVParser();
 		stickyMaterials = csv.parseMaterials(STICKY_MATERIALS);
 		stickyMaterialsDoubleHeight = csv.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
+		
+		// Parse wand settings
+		Wand.WandMaterial = generalNode.getMaterial("wand_item", Wand.WandMaterial);
+		Wand.CopyMaterial = generalNode.getMaterial("copy_item", Wand.CopyMaterial);
+		Wand.EraseMaterial = generalNode.getMaterial("erase_item", Wand.EraseMaterial);
 
 		properties.save();
 	}
@@ -810,17 +831,45 @@ public class Spells implements Listener
 				player.updateInventory();
 			}
 		}
+		
+		// Add our custom recipe if crafting is enabled
+		if (wandRecipe != null) {
+			plugin.getServer().addRecipe(wandRecipe);
+		}
 	}
-
+	
 	@EventHandler
-	public void onPlayerCraftItem(CraftItemEvent event)
+	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
+		Recipe recipe = event.getRecipe();
+		// Note: this implies you can't use a wand material that is naturally craftable (like a stick)!
+		// it'd be nice to find a better way, probably checking the recipe.
+		if (wandRecipe != null && recipe.getResult().getType() == Wand.WandMaterial) {
+			Wand wand = new Wand(this);
+			event.getInventory().setResult(wand.getItem());
+		}
+	}
+	
+	@EventHandler
+	public void onCraftItem(CraftItemEvent event) {
 		if (!(event.getWhoClicked() instanceof Player)) return;
+		
 		Player player = (Player)event.getWhoClicked();
 		PlayerSpells spells = getPlayerSpells(player);
+		
+		// Don't allow crafting in the wand inventory.
 		if (spells.hasStoredInventory()) {
 			event.setCancelled(true); 
+			return;
 		}
+		
+		ItemStack current = event.getCurrentItem();
+		ItemStack cursor = event.getCursor();
+		
+		boolean currentWand = Wand.isWand(current);
+		boolean cursorWand = Wand.isWand(cursor);
+		
+		log.info("Current: " + current.getType() + "?" + currentWand + ", Cursor: " + cursor.getType() + "?" + cursorWand);
 	}
 
 	@EventHandler
@@ -987,6 +1036,7 @@ public class Spells implements Listener
 	 private boolean                             quiet                          = true;
 	 private boolean                             soundsEnabled                  = true;
 	 private boolean							 blockPopulatorEnabled			= false;
+	 private boolean							 enchantingEnabled				= false;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
 
@@ -995,6 +1045,8 @@ public class Spells implements Listener
 	 private final HashMap<Material, Spell>      spellsByMaterial               = new HashMap<Material, Spell>();
 	 private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
 
+	 private Recipe								wandRecipe						= null;
+	 
 	 private MagicPlugin                         plugin                         = null;
 	 private Object								 regionManager					= null;
 }
