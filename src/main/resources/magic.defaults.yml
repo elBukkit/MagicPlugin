@@ -109,7 +109,6 @@ general:
     - diode_block_on
     - locked_chest
     - trap_door
-    - monster_eggs
     - smooth_brick
     - huge_mushroom_1
     - huge_mushroom_2
@@ -132,8 +131,11 @@ general:
     - ender_portal
     - ender_portal_frame
     - ender_stone
+    - redstone_lamp_off
+    - redstone_lamp_on
     - wood_double_step
     - wood_step
+    - cocoa
     - sandstone_stairs
     - emerald_ore
     - emerald_block
@@ -142,6 +144,7 @@ general:
     - jungle_wood_stairs
     - beacon
     - cobble_wall
+    - flower_pot
     - carrot
     - potato
     - skull
