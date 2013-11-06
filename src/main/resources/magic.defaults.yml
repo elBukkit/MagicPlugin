@@ -155,5 +155,6 @@ general:
     - coal_block
     - 160
     - 95
+    - 174
     undo_depth: 256
     quiet: true
