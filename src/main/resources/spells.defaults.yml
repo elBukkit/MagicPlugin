@@ -1034,7 +1034,7 @@ spells:
         parameters: {}
     boom:
         name: Boom
-        icon: firework_charge
+        icon: baked_potato
         category: combat
         description: Create an explosion
         class: BoomSpell
