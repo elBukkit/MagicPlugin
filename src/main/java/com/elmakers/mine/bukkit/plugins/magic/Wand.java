@@ -908,6 +908,15 @@ public class Wand implements CostReducer {
 		return isWand(activeItem);
 	}
 	
+	protected void randomize(int level, boolean additive) {
+		if (!wandTemplates.containsKey("random")) return;	
+		ConfigurationNode randomTemplate = wandTemplates.get("random");
+		if (!additive && randomTemplate.containsKey("name")) {
+			wandName = randomTemplate.getString("name");
+		}
+		WandLevel.randomizeWand(this, additive, level, randomTemplate);
+	}
+	
 	public static Wand createWand(Spells spells, String templateName) {
 		Wand wand = new Wand(spells);
 		List<String> defaultSpells = new ArrayList<String>();
@@ -915,6 +924,16 @@ public class Wand implements CostReducer {
 
 		// See if there is a template with this key
 		if (templateName != null && templateName.length() > 0) {
+			if ((templateName.equals("random") || templateName.startsWith("random(")) && wandTemplates.containsKey("random")) {
+				int level = 1;
+				if (!templateName.equals("random")) {
+					String randomLevel = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
+					level = Integer.parseInt(randomLevel);
+				}
+				wand.randomize(level, false);
+				return wand;
+			}
+			
 			if (!wandTemplates.containsKey(templateName)) {
 				return null;
 			}
@@ -1184,5 +1203,9 @@ public class Wand implements CostReducer {
 		if (this.id == null || otherWand.id == null) return false;
 		
 		return otherWand.id.equals(this.id);
+	}
+	
+	public Spells getMaster() {
+		return spells;
 	}
 }

@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -14,12 +13,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.generator.BlockPopulator;
 
+import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandChestPopulator extends BlockPopulator {
 
 	private final static Logger log = Logger.getLogger("Minecraft");
-	private final Random random = new Random();
 	private final Spells spells; 
 	private final TreeMap<Float, Integer> baseProbability = new TreeMap<Float, Integer>();
 	private final TreeMap<Float, String> wandProbability = new TreeMap<Float, String>();
@@ -54,26 +53,12 @@ public class WandChestPopulator extends BlockPopulator {
 		}
 	}
 	
-	protected <T extends Object> T weightedRandom(TreeMap<Float, T> weightMap) {
-		if (weightMap.size() == 0) return null;
-		
-		Float maxWeight = weightMap.lastKey();
-		Float selectedWeight = random.nextFloat() * maxWeight;
-		for (Entry<Float, T> entry : weightMap.entrySet()) {
-			if (selectedWeight < entry.getKey()) {
-				return entry.getValue();
-			}
-		}
-		
-		return weightMap.lastEntry().getValue();
-	}
-	
 	protected String[] populateChest(Chest chest) {
 		// First determine how many wands to add
-		Integer wandCount = weightedRandom(baseProbability);
+		Integer wandCount = RandomUtils.weightedRandom(baseProbability);
 		String[] wandNames = new String[wandCount];
 		for (int i = 0; i < wandCount; i++) {
-			String wandName = weightedRandom(wandProbability);
+			String wandName = RandomUtils.weightedRandom(wandProbability);
 			Wand wand = Wand.createWand(spells, wandName);
 			if (wand != null) {
 				chest.getInventory().addItem(wand.getItem());

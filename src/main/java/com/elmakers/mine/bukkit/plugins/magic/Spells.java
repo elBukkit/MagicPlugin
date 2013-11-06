@@ -516,6 +516,7 @@ public class Spells implements Listener
 		// Parse crafting recipe settings
 		boolean craftingEnabled = generalNode.getBoolean("enable_crafting", false);
 		if (craftingEnabled) {
+			recipeOutputTemplate = generalNode.getString("crafting_output", recipeOutputTemplate);
 			Material upperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
 			Material lowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
 			Wand wand = new Wand(this);
@@ -846,7 +847,10 @@ public class Spells implements Listener
 		// Note: this implies you can't use a wand material that is naturally craftable (like a stick)!
 		// it'd be nice to find a better way, probably checking the recipe.
 		if (wandRecipe != null && recipe.getResult().getType() == Wand.WandMaterial) {
-			Wand wand = new Wand(this);
+			Wand wand = Wand.createWand(this, recipeOutputTemplate);
+			if (wand == null) {
+				wand = new Wand(this);
+			}
 			event.getInventory().setResult(wand.getItem());
 		}
 	}
@@ -863,14 +867,6 @@ public class Spells implements Listener
 			event.setCancelled(true); 
 			return;
 		}
-		
-		ItemStack current = event.getCurrentItem();
-		ItemStack cursor = event.getCursor();
-		
-		boolean currentWand = Wand.isWand(current);
-		boolean cursorWand = Wand.isWand(cursor);
-		
-		log.info("Current: " + current.getType() + "?" + currentWand + ", Cursor: " + cursor.getType() + "?" + cursorWand);
 	}
 
 	@EventHandler
@@ -1046,7 +1042,8 @@ public class Spells implements Listener
 	 private final HashMap<Material, Spell>      spellsByMaterial               = new HashMap<Material, Spell>();
 	 private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
 
-	 private Recipe								wandRecipe						= null;
+	 private Recipe								 wandRecipe						= null;
+	 private String								 recipeOutputTemplate			= "random(1)";
 	 
 	 private MagicPlugin                         plugin                         = null;
 	 private Object								 regionManager					= null;

@@ -7,6 +7,7 @@ general:
     enable_crafting: true
     crafting_material_upper: diamond
     crafting_material_lower: blaze_rod
+    crafting_output: random(1)
     enable_enchanting: true
     enable_block_populator: false
     populate_chests:
@@ -23,6 +24,12 @@ general:
         battle: 10
         necromancer: 5
         fire: 8
+        random(1): 200
+        random(2): 150
+        random(5): 80
+        random(10): 10
+        random(20): 5
+        random(30): 1
     target_through:
     - water
     - air

@@ -1,4 +1,47 @@
 wands:
+    random:
+        name: Wand of {Spell}
+        description: This will randomly generate a wand
+        levels: 1,5,10,50
+        spell_count_probability:
+          1: 100,100,100,100
+          2: 1,10,60,100
+          3: 0,5,20,70
+          4: 0,0,10,60
+        spells:
+          arrow: 100,80,70,30
+          arrowrain: 10,30,50,40
+          fireball: 60,70,80,50
+          fire: 50,70,60,50
+          tesseract: 80,50,40,20
+          torch: 80,60,50,10
+          leap: 70,80,60,40
+          fling: 0,10,20,40
+          flare: 110,80,60,20
+          blink: 0,0,10,20
+          push: 10,20,40,30
+          pull: 10,20,40,30
+          force: 5,10,20,60
+          sniper: 5,20,30,40
+          disintegrate: 5,20,30,40
+          blast: 30,40,50,30
+          boom: 20,50,60,40
+          peek: 10,30,40,30
+          cushion: 10,40,20,10
+          breach: 5,20,30,40
+          grenade: 30,50,70,20
+          familiar: 10,30,40,20
+          monster: 5,20,30,30
+          wolf: 0,10,20,50
+          cat: 5,20,50,10
+          lightning: 40,50,30,5
+          storm: 0,5,10,90
+          inferno: 0,5,10,90
+          frag: 0,5,10,90
+          sandblast: 20,30,40,10
+          lava: 5,20,50,20
+          blob: 0,10,40,10
+          shrink: 5,20,30,90
     demo:
         name: Demo Wand
         description: Has a few simple demo spells
