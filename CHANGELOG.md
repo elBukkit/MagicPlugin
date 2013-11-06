@@ -1,9 +1,10 @@
 # CHANGELOG
 
-## 2.4.1
+## 2.5.0
 
  - Fix renaming wands on an anvil
  - Add basics of wand crafting mechanic
+ - Add randomized wand functionality (used in world population and crafting)
  - Changed default wand item to blaze rod
 
 ## 2.4.0
