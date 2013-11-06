@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.4.1
+
+ - Fix renaming wands on an anvil
+
 ## 2.4.0
  
  - Add an optional block generator, which will randomly put wands in naturally spawned chests
