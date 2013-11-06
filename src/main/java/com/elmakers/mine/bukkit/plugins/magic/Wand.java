@@ -84,7 +84,6 @@ public class Wand implements CostReducer {
 		id = UUID.randomUUID().toString();
 		wandName = defaultWandName;
 		updateName();
-		updateLore();
 		saveState();
 	}
 	

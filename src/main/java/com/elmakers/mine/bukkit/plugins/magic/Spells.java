@@ -501,18 +501,6 @@ public class Spells implements Listener
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
-		boolean craftingEnabled = generalNode.getBoolean("enable_crafting", false);
-		if (craftingEnabled) {
-			Material upperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
-			Material lowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
-			Wand wand = new Wand(this);
-			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
-			recipe.shape("o", "i").
-					setIngredient('o', upperMaterial).
-					setIngredient('i', lowerMaterial);
-			wandRecipe = recipe;
-		}
-		
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
 		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
 
@@ -525,6 +513,19 @@ public class Spells implements Listener
 		Wand.CopyMaterial = generalNode.getMaterial("copy_item", Wand.CopyMaterial);
 		Wand.EraseMaterial = generalNode.getMaterial("erase_item", Wand.EraseMaterial);
 
+		// Parse crafting recipe settings
+		boolean craftingEnabled = generalNode.getBoolean("enable_crafting", false);
+		if (craftingEnabled) {
+			Material upperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
+			Material lowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
+			Wand wand = new Wand(this);
+			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
+			recipe.shape("o", "i").
+					setIngredient('o', upperMaterial).
+					setIngredient('i', lowerMaterial);
+			wandRecipe = recipe;
+		}
+		
 		properties.save();
 	}
 
