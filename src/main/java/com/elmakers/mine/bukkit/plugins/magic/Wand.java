@@ -518,9 +518,9 @@ public class Wand implements CostReducer {
 		return getActiveWandName(spell);
 	}
 	
-	private void updateName() {
+	public void updateName(boolean isActive) {
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(getActiveWandName());
+		meta.setDisplayName(isActive ? getActiveWandName() : wandName);
 		item.setItemMeta(meta);
 		
 		// Reset Enchantment glow
@@ -529,6 +529,10 @@ public class Wand implements CostReducer {
 		// The all-important last step of restoring the meta state, something
 		// the Anvil will blow away.
 		saveState();
+	}
+	
+	private void updateName() {
+		updateName(true);
 	}
 	
 	private String getLevelString(String prefix, float amount) {

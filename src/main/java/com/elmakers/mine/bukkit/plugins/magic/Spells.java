@@ -26,10 +26,12 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -42,6 +44,7 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -831,6 +834,38 @@ public class Spells implements Listener
 			wand.deactivate();
 		}
 	}
+	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if (event.getInventory().getType() != InventoryType.ANVIL) return;
+		if (!(event.getWhoClicked() instanceof Player)) return;
+		
+		SlotType slotType = event.getSlotType();
+		ItemStack cursor = event.getCursor();
+		ItemStack current = event.getCurrentItem();
+		
+		// Set/unset active names when starting to craft
+		if (slotType == SlotType.CRAFTING) {
+			// Putting a wand into the anvil's crafting slot
+			if (Wand.isWand(cursor)) {
+				Wand wand = new Wand(this, cursor);
+				wand.updateName(false);
+			} 
+			// Taking a wand out of the anvil's crafting slot
+			if (Wand.isWand(current)) {
+				Wand wand = new Wand(this, current);
+				wand.updateName(true);
+			}
+		}
+		
+		// Rename wand when taking from result slot
+		if (slotType == SlotType.RESULT && Wand.isWand(current)) {
+			ItemMeta meta = current.getItemMeta();
+			String newName = meta.getDisplayName();
+			Wand wand = new Wand(this, current);
+			wand.setName(newName);
+		}
+	}
 
 	@EventHandler
 	public void onInventoryClosed(InventoryCloseEvent event) {
@@ -865,7 +900,6 @@ public class Spells implements Listener
 				}
 			}
 		}
-		
 	}
 
 	@EventHandler
