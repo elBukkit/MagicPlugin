@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.List;
 import java.util.Random;
-import java.util.TreeMap;
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,14 +14,15 @@ import org.bukkit.block.Chest;
 import org.bukkit.generator.BlockPopulator;
 
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
+import com.elmakers.mine.bukkit.utilities.WeightedPair;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandChestPopulator extends BlockPopulator {
 
 	private final static Logger log = Logger.getLogger("Minecraft");
 	private final Spells spells; 
-	private final TreeMap<Float, Integer> baseProbability = new TreeMap<Float, Integer>();
-	private final TreeMap<Float, String> wandProbability = new TreeMap<Float, String>();
+	private final LinkedList<WeightedPair<Integer>> baseProbability = new LinkedList<WeightedPair<Integer>>();
+	private final LinkedList<WeightedPair<String>> wandProbability = new LinkedList<WeightedPair<String>>();
 	
 	public WandChestPopulator(Spells spells, ConfigurationNode config) {
 		this.spells = spells;
@@ -35,7 +36,7 @@ public class WandChestPopulator extends BlockPopulator {
 				Integer wandCount = Integer.parseInt(key);
 				Float threshold = (float)base.getDouble(key, 0);
 				currentThreshold += threshold;
-				baseProbability.put(currentThreshold, wandCount);
+				baseProbability.add(new WeightedPair<Integer>(currentThreshold, wandCount));
 			}
 		}
 		
@@ -48,7 +49,7 @@ public class WandChestPopulator extends BlockPopulator {
 				String wandName = key;
 				Float threshold = (float)wands.getDouble(key, 0);
 				currentThreshold += threshold;
-				wandProbability.put(currentThreshold, wandName);
+				wandProbability.add(new WeightedPair<String>(currentThreshold, wandName));
 			}
 		}
 	}
