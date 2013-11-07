@@ -58,6 +58,8 @@ public class Wand implements CostReducer {
 	private int xpMax = 50;
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
+	
+	private static float maxWalkSpeedIncrease = 0.3f;
 	private float walkSpeedIncrease = 0;
 	
 	private int accumulatedXp = 0;
@@ -306,6 +308,7 @@ public class Wand implements CostReducer {
 		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
 		walkSpeedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease)));
+		walkSpeedIncrease = Math.min(maxWalkSpeedIncrease, walkSpeedIncrease);
 		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
 		xpMax = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_max", Integer.toString(xpMax)));
 		healthRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration)));
