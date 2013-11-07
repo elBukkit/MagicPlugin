@@ -46,6 +46,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
@@ -521,13 +522,13 @@ public class Spells implements Listener
 		boolean craftingEnabled = generalNode.getBoolean("enable_crafting", false);
 		if (craftingEnabled) {
 			recipeOutputTemplate = generalNode.getString("crafting_output", recipeOutputTemplate);
-			Material upperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
-			Material lowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
+			wandRecipeUpperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
+			wandRecipeLowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
 			Wand wand = new Wand(this);
 			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
 			recipe.shape("o", "i").
-					setIngredient('o', upperMaterial).
-					setIngredient('i', lowerMaterial);
+					setIngredient('o', wandRecipeUpperMaterial).
+					setIngredient('i', wandRecipeLowerMaterial);
 			wandRecipe = recipe;
 		}
 		
@@ -848,9 +849,14 @@ public class Spells implements Listener
 	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
 		Recipe recipe = event.getRecipe();
-		// Note: this implies you can't use a wand material that is naturally craftable (like a stick)!
-		// it'd be nice to find a better way, probably checking the recipe.
 		if (wandRecipe != null && recipe.getResult().getType() == Wand.WandMaterial) {
+			// Verify that this was our recipe
+			// Just in case something else can craft our base material (e.g. stick)
+			Inventory inventory = event.getInventory();
+			if (!inventory.contains(wandRecipeLowerMaterial) || !inventory.contains(wandRecipeUpperMaterial)) {
+				return;
+			}
+			
 			Wand wand = Wand.createWand(this, recipeOutputTemplate);
 			if (wand == null) {
 				wand = new Wand(this);
@@ -1097,6 +1103,8 @@ public class Spells implements Listener
 	 private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
 
 	 private Recipe								 wandRecipe						= null;
+	 private Material							 wandRecipeUpperMaterial		= Material.DIAMOND;
+	 private Material							 wandRecipeLowerMaterial		= Material.BLAZE_ROD;
 	 private String								 recipeOutputTemplate			= "random(1)";
 	 
 	 private MagicPlugin                         plugin                         = null;

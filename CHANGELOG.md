@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.5.1
+
+ - Add stricter checks to wand crafting
+ - Keep trying to add spells to a wand if the randomly chosen one was already on it
+
 ## 2.5.0
 
  - Fix renaming wands on an anvil
