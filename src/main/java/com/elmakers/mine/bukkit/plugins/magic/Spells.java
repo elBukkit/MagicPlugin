@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +24,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -512,6 +515,7 @@ public class Spells implements Listener
 		Wand.WandMaterial = generalNode.getMaterial("wand_item", Wand.WandMaterial);
 		Wand.CopyMaterial = generalNode.getMaterial("copy_item", Wand.CopyMaterial);
 		Wand.EraseMaterial = generalNode.getMaterial("erase_item", Wand.EraseMaterial);
+		Wand.EnchantableWandMaterial = generalNode.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings
 		boolean craftingEnabled = generalNode.getBoolean("enable_crafting", false);
@@ -883,33 +887,55 @@ public class Spells implements Listener
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		if (event.getInventory().getType() != InventoryType.ANVIL) return;
+		
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		
-		SlotType slotType = event.getSlotType();
-		ItemStack cursor = event.getCursor();
-		ItemStack current = event.getCurrentItem();
-		
-		// Set/unset active names when starting to craft
-		if (slotType == SlotType.CRAFTING) {
-			// Putting a wand into the anvil's crafting slot
-			if (Wand.isWand(cursor)) {
-				Wand wand = new Wand(this, cursor);
-				wand.updateName(false);
-			} 
-			// Taking a wand out of the anvil's crafting slot
-			if (Wand.isWand(current)) {
-				Wand wand = new Wand(this, current);
-				wand.updateName(true);
+		if (event.getInventory().getType() == InventoryType.ENCHANTING)
+		{
+			SlotType slotType = event.getSlotType();
+			if (slotType == SlotType.CRAFTING) {
+				ItemStack cursor = event.getCursor();
+				ItemStack current = event.getCurrentItem();
+				
+				// Make wands into an enchantable item when placing
+				if (Wand.isWand(cursor)) {
+					Wand wand = new Wand(this, cursor);
+					wand.makeEnchantable(true);
+				}
+				// And turn them back when taking out
+				if (Wand.isWand(current)) {
+					Wand wand = new Wand(this, current);
+					wand.makeEnchantable(false);
+				}
 			}
 		}
-		
-		// Rename wand when taking from result slot
-		if (slotType == SlotType.RESULT && Wand.isWand(current)) {
-			ItemMeta meta = current.getItemMeta();
-			String newName = meta.getDisplayName();
-			Wand wand = new Wand(this, current);
-			wand.setName(newName);
+		if (event.getInventory().getType() == InventoryType.ANVIL)
+		{
+			SlotType slotType = event.getSlotType();
+			ItemStack cursor = event.getCursor();
+			ItemStack current = event.getCurrentItem();
+			
+			// Set/unset active names when starting to craft
+			if (slotType == SlotType.CRAFTING) {
+				// Putting a wand into the anvil's crafting slot
+				if (Wand.isWand(cursor)) {
+					Wand wand = new Wand(this, cursor);
+					wand.updateName(false);
+				} 
+				// Taking a wand out of the anvil's crafting slot
+				if (Wand.isWand(current)) {
+					Wand wand = new Wand(this, current);
+					wand.updateName(true);
+				}
+			}
+			
+			// Rename wand when taking from result slot
+			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
+				ItemMeta meta = current.getItemMeta();
+				String newName = meta.getDisplayName();
+				Wand wand = new Wand(this, current);
+				wand.setName(newName);
+			}
 		}
 	}
 
@@ -988,6 +1014,34 @@ public class Spells implements Listener
 			} else {
 				event.setCancelled(true);
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onEnchantItem(EnchantItemEvent event) {
+		if (enchantingEnabled && Wand.isWand(event.getItem())) {
+			event.getEnchantsToAdd().clear();
+			int level = event.getExpLevelCost();
+			Wand wand = new Wand(this, event.getItem());
+			WandLevel.randomizeWand(wand, true, level);
+		}
+	}
+	
+	@EventHandler
+	public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
+		if (Wand.isWand(event.getItem())) {
+			Set<Integer> levelSet = WandLevel.getLevels();
+			ArrayList<Integer> levels = new ArrayList<Integer>();
+			levels.addAll(levelSet);
+			int[] offered = event.getExpLevelCostsOffered();
+			int bonusLevels = event.getEnchantmentBonus();
+			for (int i = 0; i < offered.length; i++) {
+				int levelIndex = (int)((float)i * levels.size() / (float)offered.length);
+				levelIndex += (float)bonusLevels * ((i + 1) / offered.length);
+				levelIndex = Math.min(levelIndex, levels.size() - 1);
+				offered[i] = levels.get(levelIndex);
+			}
+			event.setCancelled(false);
 		}
 	}
 	

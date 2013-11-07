@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -15,10 +16,8 @@ public class WandLevel {
 	private final TreeMap<Float, Integer> spellCountProbability = new TreeMap<Float, Integer>();
 	private final TreeMap<Float, String> spellProbability = new TreeMap<Float, String>();
 	
-	public static WandLevel getLevel(int level, ConfigurationNode template) {
-		if (levelMap == null) {
-			mapLevels(template);
-		}
+	public static WandLevel getLevel(int level) {
+		if (levelMap == null) return null;
 		
 		if (!levelMap.containsKey(level)) {
 			if (level > levelMap.lastKey()) {
@@ -31,7 +30,7 @@ public class WandLevel {
 		return levelMap.get(level);
 	}
 	
-	private static void mapLevels(ConfigurationNode template) {
+	public static void mapLevels(ConfigurationNode template) {
 		// Parse defined levels
 		levelMap = new TreeMap<Integer, WandLevel>();
 		String[] levelStrings = StringUtils.split(template.getString("levels"), ",");
@@ -117,8 +116,14 @@ public class WandLevel {
 		}
 	}
 	
-	public static void randomizeWand(Wand wand, boolean additive, int level, ConfigurationNode template) {
-		WandLevel wandLevel = getLevel(level, template);
+	public static void randomizeWand(Wand wand, boolean additive, int level) {
+		WandLevel wandLevel = getLevel(level);
 		wandLevel.randomizeWand(wand, additive);
+	}
+	
+	public static Set<Integer> getLevels() {
+		if (levels == null) return null;
+		
+		return levelMap.keySet();
 	}
 }

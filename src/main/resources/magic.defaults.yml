@@ -2,6 +2,7 @@ general:
     silent: false
     sounds: true
     wand_item: blaze_rod
+    wand_item_enchantable: wood_sword
     erase_item: sulpher
     copy_item: sugar
     enable_crafting: true

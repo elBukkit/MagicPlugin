@@ -6,6 +6,7 @@
  - Add basics of wand crafting mechanic
  - Add randomized wand functionality (used in world population and crafting)
  - Changed default wand item to blaze rod
+ - Add functionality to enchant wands to add more spells
 
 ## 2.4.0
  

@@ -62,7 +62,8 @@ public class Wand implements CostReducer {
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
-	public static Material WandMaterial = Material.STICK;
+	public static Material WandMaterial = Material.BLAZE_ROD;
+	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static Material EraseMaterial = Material.SULPHUR;
 	public static Material CopyMaterial = Material.PUMPKIN_SEEDS;
 	
@@ -604,6 +605,11 @@ public class Wand implements CostReducer {
 		return remaining;
 	}
 	
+	public void makeEnchantable(boolean enchantable) {
+		item.setType(enchantable ? EnchantableWandMaterial : WandMaterial);
+		updateName();
+	}
+	
 	public static boolean hasActiveWand(Player player) {
 		ItemStack activeItem =  player.getInventory().getItemInHand();
 		return isWand(activeItem);
@@ -620,7 +626,7 @@ public class Wand implements CostReducer {
 
 	public static boolean isWand(ItemStack item) {
 		// Special-case here for porting old wands. Could be removed eventually.
-		return item != null && item.getType() == WandMaterial && (InventoryUtils.hasMeta(item, "wand") || InventoryUtils.hasMeta(item, "magic_wand"));
+		return item != null && (item.getType() == WandMaterial || item.getType() == EnchantableWandMaterial) && (InventoryUtils.hasMeta(item, "wand") || InventoryUtils.hasMeta(item, "magic_wand"));
 	}
 
 	public static boolean isSpell(ItemStack item) {
@@ -914,7 +920,7 @@ public class Wand implements CostReducer {
 		if (!additive && randomTemplate.containsKey("name")) {
 			wandName = randomTemplate.getString("name");
 		}
-		WandLevel.randomizeWand(this, additive, level, randomTemplate);
+		WandLevel.randomizeWand(this, additive, level);
 	}
 	
 	public static Wand createWand(Spells spells, String templateName) {
@@ -1045,6 +1051,9 @@ public class Wand implements CostReducer {
 			ConfigurationNode wandNode = wandList.getNode(key);
 			wandNode.setProperty("key", key);
 			wandTemplates.put(key,  wandNode);
+			if (key.equals("random")) {
+				WandLevel.mapLevels(wandNode);
+			}
 		}
 	}
 	
