@@ -209,8 +209,9 @@ public class MagicPlugin extends JavaPlugin
 		}
 		ConfigurationNode node = new ConfigurationNode();
 		node.setProperty(parameters[0], parameters[1]);
+		wand.deactivate();
 		wand.configureProperties(node);
-
+		wand.activate(playerSpells);
 		return true;
 	}
 	
