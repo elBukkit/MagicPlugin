@@ -1,22 +1,45 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
-import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
+import com.elmakers.mine.bukkit.utilities.WeightedPair;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandLevel {
 	private static TreeMap<Integer, WandLevel> levelMap = null;
 	private static int[] levels = null;
 	
-	private final TreeMap<Float, Integer> spellCountProbability = new TreeMap<Float, Integer>();
-	private final TreeMap<Float, String> spellProbability = new TreeMap<Float, String>();
-	private final TreeMap<Float, Integer> useProbability = new TreeMap<Float, Integer>();
-	private final TreeMap<Float, Integer> addUseProbability = new TreeMap<Float, Integer>();
+	private final LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<WeightedPair<Integer>>();
+	private final LinkedList<WeightedPair<String>> spellProbability = new LinkedList<WeightedPair<String>>();
+	private final LinkedList<WeightedPair<Integer>> useProbability = new LinkedList<WeightedPair<Integer>>();
+	private final LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<WeightedPair<Integer>>();
+
+	private final LinkedList<WeightedPair<Float>> costReductionProbability = new LinkedList<WeightedPair<Float>>();
+	private final LinkedList<WeightedPair<Float>> damageReductionProbability = new LinkedList<WeightedPair<Float>>();
+	private final LinkedList<WeightedPair<Float>> damageReductionPhysicalProbability = new LinkedList<WeightedPair<Float>>();
+	private final LinkedList<WeightedPair<Float>> damageReductionProjectilesProbability = new LinkedList<WeightedPair<Float>>();
+	private final LinkedList<WeightedPair<Float>> damageReductionFallingProbability = new LinkedList<WeightedPair<Float>>();
+	private final LinkedList<WeightedPair<Float>> damageReductionFireProbability = new LinkedList<WeightedPair<Float>>();
+	private final LinkedList<WeightedPair<Float>> damageReductionExplosionsProbability = new LinkedList<WeightedPair<Float>>();
+	
+	private final LinkedList<WeightedPair<Integer>> xpRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
+	private final LinkedList<WeightedPair<Integer>> xpMaxProbability = new LinkedList<WeightedPair<Integer>>();
+	private final LinkedList<WeightedPair<Integer>> healthRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
+	private final LinkedList<WeightedPair<Integer>> hungerRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
+	
+	private final LinkedList<WeightedPair<Float>> hasteProbability = new LinkedList<WeightedPair<Float>>();
+	
+	private static final int maxUses = 500;
+	private static final int maxMaxXp = 10000;
+	private static final int maxXpRegeneration = 100;
+	private static final int maxRegeneration = 20;
+	private static final float maxReduction = 0.9f;
+	private static final float maxProtection = 0.9f;
 	
 	public static WandLevel getLevel(int level) {
 		if (levelMap == null) return null;
@@ -66,42 +89,32 @@ public class WandLevel {
 		}
 		
 		// Fetch spell probabilities
-		populateStringProbabilityMap(spellProbability, template.getNode("spells"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateStringProbabilityMap(spellProbability, template.getNode("spells"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch spell count probabilities
-		populateIntegerProbabilityMap(spellCountProbability, template.getNode("spell_count"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template.getNode("spell_count"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch uses
-		populateIntegerProbabilityMap(useProbability, template.getNode("uses"), levelIndex, nextLevelIndex, distance);
-		populateIntegerProbabilityMap(addUseProbability, template.getNode("add_uses"), levelIndex, nextLevelIndex, distance);
-	}
-	
-	private static void populateIntegerProbabilityMap(TreeMap<Float, Integer> probabilityMap, ConfigurationNode nodeMap, int levelIndex, int nextLevelIndex, float distance) {
-		Float currentThreshold = 0.0f;
-		if (nodeMap != null) {
-			List<String> keys = nodeMap.getKeys();
-			for (String key : keys) {
-				currentThreshold += lerp(nodeMap.getString(key).split(","), levelIndex, nextLevelIndex, distance);
-				probabilityMap.put(currentThreshold, Integer.parseInt(key));
-			}
-		}
-	}
-	
-	private static void populateStringProbabilityMap(TreeMap<Float, String> probabilityMap, ConfigurationNode nodeMap, int levelIndex, int nextLevelIndex, float distance) {
-		Float currentThreshold = 0.0f;
-		if (nodeMap != null) {
-			List<String> keys = nodeMap.getKeys();
-			for (String key : keys) {
-				currentThreshold += lerp(nodeMap.getString(key).split(","), levelIndex, nextLevelIndex, distance);
-				probabilityMap.put(currentThreshold, key);
-			}
-		}
-	}
-	
-	private static float lerp(String[] list, int levelIndex, int nextLevelIndex, float distance) {
-		float previousValue = Float.parseFloat(list[levelIndex]);
-		float nextValue = Float.parseFloat(list[nextLevelIndex]);
-		return previousValue + distance * (nextValue - previousValue);
+		RandomUtils.populateIntegerProbabilityMap(useProbability, template.getNode("uses"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(addUseProbability, template.getNode("add_uses"), levelIndex, nextLevelIndex, distance);
+		
+		// Fetch cost and damage reduction
+		RandomUtils.populateFloatProbabilityMap(costReductionProbability, template.getNode("cost_reduction"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template.getNode("damage_reduction"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template.getNode("damage_reduction_physical"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template.getNode("damage_reduction_falling"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template.getNode("damage_reduction_projectiles"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template.getNode("damage_reduction_fire"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template.getNode("damage_reduction_explosions"), levelIndex, nextLevelIndex, distance);
+
+		// Fetch regeneration
+		RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getNode("xp_regeneration"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template.getNode("xp_max"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(healthRegenerationProbability, template.getNode("health_regeneration"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateIntegerProbabilityMap(hungerRegenerationProbability, template.getNode("hunger_regeneration"), levelIndex, nextLevelIndex, distance);
+		
+		// Fetch haste
+		RandomUtils.populateFloatProbabilityMap(hasteProbability, template.getNode("haste"), levelIndex, nextLevelIndex, distance);
 	}
 	
 	private void randomizeWand(Wand wand, boolean additive) {
@@ -122,16 +135,62 @@ public class WandLevel {
 			}
 		}
 		
+		// Add random wand properties
+		ConfigurationNode wandProperties = new ConfigurationNode();
+		float costReduction = wand.getCostReduction();
+		if (costReduction < maxReduction) {
+			wandProperties.setProperty("cost_reduction", (Double)(double)(Math.min(maxReduction, costReduction + RandomUtils.weightedRandom(costReductionProbability))));
+		}
+		float damageReduction = wand.getDamageReduction();
+		if (damageReduction < maxReduction) {
+			wandProperties.setProperty("damage_reduction", (Double)(double)(Math.min(maxProtection, damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
+		}
+		float damageReductionPhysical = wand.getDamageReductionPhysical();
+		if (damageReductionPhysical < maxReduction) {
+			wandProperties.setProperty("damage_reduction_physical", (Double)(double)(Math.min(maxProtection, damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
+		}
+		float damageReductionProjectiles = wand.getDamageReductionProjectiles();
+		if (damageReductionProjectiles < maxReduction) {
+			wandProperties.setProperty("damage_reduction_projectiles", (Double)(double)(Math.min(maxProtection, damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
+		}
+		float damageReductionFalling = wand.getDamageReductionFalling();
+		if (damageReductionFalling < maxReduction) {
+			wandProperties.setProperty("damage_reduction_falling", (Double)(double)(Math.min(maxProtection, damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
+		}
+		float damageReductionFire = wand.getDamageReductionFire();
+		if (damageReductionFire < maxReduction) {
+			wandProperties.setProperty("damage_reduction_fire", (Double)(double)(Math.min(maxProtection, damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
+		}
+		float damageReductionExplosions = wand.getDamageReductionExplosions();
+		if (damageReductionExplosions < maxReduction) {
+			wandProperties.setProperty("damage_reduction_explosions", (Double)(double)(Math.min(maxProtection, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
+		}
+		int xpRegeneration = wand.getXpRegeneration();
+		if (xpRegeneration < maxXpRegeneration) {
+			wandProperties.setProperty("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
+		}
+		int xpMax = wand.getXpMax();
+		if (xpMax < maxMaxXp) {
+			wandProperties.setProperty("xp_max", (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability))));
+		}
+		int healthRegeneration = wand.getHealthRegeneration();
+		if (healthRegeneration < maxRegeneration) {
+			wandProperties.setProperty("health_regeneration", (Integer)(int)(Math.min(maxRegeneration, healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability))));
+		}
+		int hungerRegeneration = wand.getHungerRegeneration();
+		if (hungerRegeneration < maxRegeneration) {
+			wandProperties.setProperty("hunger_regeneration", (Integer)(int)(Math.min(maxRegeneration, hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability))));
+		}
+		
 		// Add or set uses to the wand
 		if (additive) {
 			// Only add uses to a wand if it already has some.
 			int wandUses = wand.getUses();
-			if (wandUses > 0) {
-				wand.setUses(wandUses + RandomUtils.weightedRandom(addUseProbability));
-				wand.updateName(true);
+			if (wandUses > 0 && wandUses < maxUses) {
+				wandProperties.setProperty("uses", Math.min(maxUses, wandUses + RandomUtils.weightedRandom(addUseProbability)));
 			}
 		} else {
-			wand.setUses(RandomUtils.weightedRandom(useProbability));
+			wandProperties.setProperty("uses", Math.min(maxUses, RandomUtils.weightedRandom(useProbability)));
 			
 			// If we are creating a new wand, make a templatized name
 			// based on the first spell that was added to it.
@@ -142,6 +201,9 @@ public class WandLevel {
 			String updatedName = wand.getName();
 			wand.setName(updatedName.replace("{Spell}", spellName));
 		}
+
+		// Set properties. This also updates name and lore.
+		wand.configureProperties(wandProperties);
 	}
 	
 	public static void randomizeWand(Wand wand, boolean additive, int level) {

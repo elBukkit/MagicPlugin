@@ -125,15 +125,30 @@ public class ConfigurationNode {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object getProperty(String path) {
-		if (!path.contains(".")) {
+		// More nasty special cases since float keys look like paths! :\
+		boolean isFloat = false;
+		try {
+			Double.parseDouble(path);
+			isFloat = true;
+		} catch (Exception ex2) {
+		}
+		if (isFloat || !path.contains(".")) {
 			Object val = root.get(path);
 
 			if (val == null) {
-				// Special case for YAML parsing doing stupid things	
+				// Special cases for YAML parsing doing stupid things	
 				try {
 					return root.get(Integer.parseInt(path));
 				} catch (Exception ex) {
-					return null;
+					try {
+						return root.get(Double.parseDouble(path));
+					} catch (Exception ex2) {
+						try {
+							return root.get(Float.parseFloat(path));
+						} catch (Exception ex3) {
+							return null;
+						}
+					}
 				}
 			}
 			return val;

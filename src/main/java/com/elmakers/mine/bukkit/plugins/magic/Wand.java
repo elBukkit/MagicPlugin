@@ -124,7 +124,7 @@ public class Wand implements CostReducer {
 		return xpRegeneration;
 	}
 
-	public int getXPMax() {
+	public int getXpMax() {
 		return xpMax;
 	}
 
@@ -174,10 +174,6 @@ public class Wand implements CostReducer {
 
 	public int getUses() {
 		return uses;
-	}
-	
-	public void setUses(int uses) {
-		this.uses = uses;
 	}
 	
 	public String getName() {
@@ -594,16 +590,18 @@ public class Wand implements CostReducer {
 		}
 		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
-		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + "Haste");
+		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", walkSpeedIncrease / maxWalkSpeedIncrease));
 		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Regeneration", xpRegeneration / 100));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
-		if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
-		if (damageReductionProjectiles > 0) lore.add(ChatColor.GOLD + getLevelString("Projectile Protection", damageReductionProjectiles));
-		if (damageReductionFalling > 0) lore.add(ChatColor.GOLD + getLevelString("Fall Protection", damageReductionFalling));
-		if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
-		if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
+		if (damageReduction < 1) {
+			if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
+			if (damageReductionProjectiles > 0) lore.add(ChatColor.GOLD + getLevelString("Projectile Protection", damageReductionProjectiles));
+			if (damageReductionFalling > 0) lore.add(ChatColor.GOLD + getLevelString("Fall Protection", damageReductionFalling));
+			if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
+			if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
+		}
 		if (healthRegeneration > 0) lore.add(ChatColor.GOLD + "Health Regeneration");
-		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + "No Hunger");
+		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + "Anti-Hunger");
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
@@ -1009,7 +1007,7 @@ public class Wand implements CostReducer {
 		xpMax = wandConfig.getInt("xp_max", xpMax);
 		healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
 		hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
-		uses = wandConfig.getInt("uses", 0);
+		uses = wandConfig.getInt("uses", uses);
 	
 		// Make sure to adjust the player's walk speed if it changes and this wand is active.
 		float oldWalkSpeedIncrease = walkSpeedIncrease;
