@@ -59,7 +59,6 @@ public class Wand implements CostReducer {
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
 	
-	private static float maxWalkSpeedIncrease = 0.3f;
 	private float walkSpeedIncrease = 0;
 	
 	private int accumulatedXp = 0;
@@ -304,13 +303,16 @@ public class Wand implements CostReducer {
 		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
 		walkSpeedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease)));
-		walkSpeedIncrease = Math.min(maxWalkSpeedIncrease, walkSpeedIncrease);
 		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
 		xpMax = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_max", Integer.toString(xpMax)));
 		healthRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration)));
 		hungerRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration)));
 		uses = Integer.parseInt(InventoryUtils.getMeta(wandNode, "uses", Integer.toString(uses)));
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
+		
+		// This is done here as an extra safety measure.
+		// A walk speed too high will cause a server error.
+		walkSpeedIncrease = Math.min(WandLevel.maxWalkSpeedIncrease, walkSpeedIncrease);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -590,8 +592,8 @@ public class Wand implements CostReducer {
 		}
 		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
-		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", walkSpeedIncrease / maxWalkSpeedIncrease));
-		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Regeneration", xpRegeneration / 100));
+		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", walkSpeedIncrease / WandLevel.maxWalkSpeedIncrease));
+		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
 		if (damageReduction < 1) {
 			if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
@@ -600,8 +602,8 @@ public class Wand implements CostReducer {
 			if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
 			if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
 		}
-		if (healthRegeneration > 0) lore.add(ChatColor.GOLD + "Health Regeneration");
-		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + "Anti-Hunger");
+		if (healthRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Health Regeneration", healthRegeneration / WandLevel.maxRegeneration));
+		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Anti-Hunger", hungerRegeneration / WandLevel.maxRegeneration));
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
