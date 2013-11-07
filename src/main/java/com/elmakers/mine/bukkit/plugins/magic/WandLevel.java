@@ -16,6 +16,9 @@ public class WandLevel {
 	private final TreeMap<Float, Integer> spellCountProbability = new TreeMap<Float, Integer>();
 	private final TreeMap<Float, String> spellProbability = new TreeMap<Float, String>();
 	
+	private int uses;
+	private int addUses;
+	
 	public static WandLevel getLevel(int level) {
 		if (levelMap == null) return null;
 		
@@ -69,11 +72,7 @@ public class WandLevel {
 			List<String> keys = spellCountNode.getKeys();
 			for (String key : keys) {
 				Integer spellCount = Integer.parseInt(key);
-				String[] thresholdList = spellCountNode.getString(key).split(",");
-				float previousThreshold = Float.parseFloat(thresholdList[levelIndex]);
-				float nextThreshold = Float.parseFloat(thresholdList[nextLevelIndex]);
-				Float threshold = previousThreshold + distance * (nextThreshold - previousThreshold);
-				currentThreshold += threshold;
+				currentThreshold += lerp(spellCountNode.getString(key).split(","), levelIndex, nextLevelIndex, distance);
 				spellCountProbability.put(currentThreshold, spellCount);
 			}
 		}
@@ -85,19 +84,24 @@ public class WandLevel {
 			List<String> keys = spellsNode.getKeys();
 			for (String key : keys) {
 				String spellName = key;
-				String[] thresholdList = spellsNode.getString(key).split(",");
-				float previousThreshold = Float.parseFloat(thresholdList[levelIndex]);
-				float nextThreshold = Float.parseFloat(thresholdList[nextLevelIndex]);
-				Float threshold = previousThreshold + distance * (nextThreshold - previousThreshold);
-				currentThreshold += threshold;
+				currentThreshold += lerp(spellsNode.getString(key).split(","), levelIndex, nextLevelIndex, distance);
 				spellProbability.put(currentThreshold, spellName);
 			}
 		}
+		
+		uses = (int)lerp(template.getString("uses").split(","), levelIndex, nextLevelIndex, distance);
+		addUses = (int)lerp(template.getString("add_uses").split(","), levelIndex, nextLevelIndex, distance);
+	}
+	
+	private float lerp(String[] list, int levelIndex, int nextLevelIndex, float distance) {
+		float previousValue = Float.parseFloat(list[levelIndex]);
+		float nextValue = Float.parseFloat(list[nextLevelIndex]);
+		return previousValue + distance * (nextValue - previousValue);
 	}
 	
 	private void randomizeWand(Wand wand, boolean additive) {
-		Spell firstSpell = null;
-		
+		// Add random spells to the wand
+		Spell firstSpell = null;		
 		Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
 		int retries = 30;
 		for (int i = 0; i < spellCount; i++) {
@@ -112,7 +116,20 @@ public class WandLevel {
 				if (retries-- > 0) i--;
 			}
 		}
-		if (!additive) {
+		
+		// Add or set uses to the wand
+		if (additive) {
+			// Only add uses to a wand if it already has some.
+			int wandUses = wand.getUses();
+			if (wandUses > 0) {
+				wand.setUses(wandUses + addUses);
+				wand.updateName(true);
+			}
+		} else {
+			wand.setUses(uses);
+			
+			// If we are creating a new wand, make a templatized name
+			// based on the first spell that was added to it.
 			String spellName = "Nothing";
 			if (firstSpell != null) {
 				spellName = firstSpell.getName();

@@ -174,6 +174,10 @@ public class Wand implements CostReducer {
 		return uses;
 	}
 	
+	public void setUses(int uses) {
+		this.uses = uses;
+	}
+	
 	public String getName() {
 		return wandName;
 	}
