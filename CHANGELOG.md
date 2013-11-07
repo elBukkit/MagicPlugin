@@ -4,6 +4,7 @@
 
  - Add stricter checks to wand crafting
  - Keep trying to add spells to a wand if the randomly chosen one was already on it
+ - Allow for crafting limited-use wands (off by default), and adding uses to wands via enchanting
 
 ## 2.5.0
 

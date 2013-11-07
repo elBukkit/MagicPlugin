@@ -15,9 +15,8 @@ public class WandLevel {
 	
 	private final TreeMap<Float, Integer> spellCountProbability = new TreeMap<Float, Integer>();
 	private final TreeMap<Float, String> spellProbability = new TreeMap<Float, String>();
-	
-	private int uses;
-	private int addUses;
+	private final TreeMap<Float, Integer> useProbability = new TreeMap<Float, Integer>();
+	private final TreeMap<Float, Integer> addUseProbability = new TreeMap<Float, Integer>();
 	
 	public static WandLevel getLevel(int level) {
 		if (levelMap == null) return null;
@@ -66,34 +65,40 @@ public class WandLevel {
 			}
 		}
 		
-		Float currentThreshold = 0.0f;
-		ConfigurationNode spellCountNode = template.getNode("spell_count_probability");
-		if (spellCountNode != null) {
-			List<String> keys = spellCountNode.getKeys();
-			for (String key : keys) {
-				Integer spellCount = Integer.parseInt(key);
-				currentThreshold += lerp(spellCountNode.getString(key).split(","), levelIndex, nextLevelIndex, distance);
-				spellCountProbability.put(currentThreshold, spellCount);
-			}
-		}
-		
 		// Fetch spell probabilities
-		currentThreshold = 0.0f;
-		ConfigurationNode spellsNode = template.getNode("spells");
-		if (spellsNode != null) {
-			List<String> keys = spellsNode.getKeys();
-			for (String key : keys) {
-				String spellName = key;
-				currentThreshold += lerp(spellsNode.getString(key).split(","), levelIndex, nextLevelIndex, distance);
-				spellProbability.put(currentThreshold, spellName);
-			}
-		}
+		populateStringProbabilityMap(spellProbability, template.getNode("spells"), levelIndex, nextLevelIndex, distance);
 		
-		uses = (int)lerp(template.getString("uses").split(","), levelIndex, nextLevelIndex, distance);
-		addUses = (int)lerp(template.getString("add_uses").split(","), levelIndex, nextLevelIndex, distance);
+		// Fetch spell count probabilities
+		populateIntegerProbabilityMap(spellCountProbability, template.getNode("spell_count"), levelIndex, nextLevelIndex, distance);
+		
+		// Fetch uses
+		populateIntegerProbabilityMap(useProbability, template.getNode("uses"), levelIndex, nextLevelIndex, distance);
+		populateIntegerProbabilityMap(addUseProbability, template.getNode("add_uses"), levelIndex, nextLevelIndex, distance);
 	}
 	
-	private float lerp(String[] list, int levelIndex, int nextLevelIndex, float distance) {
+	private static void populateIntegerProbabilityMap(TreeMap<Float, Integer> probabilityMap, ConfigurationNode nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+		Float currentThreshold = 0.0f;
+		if (nodeMap != null) {
+			List<String> keys = nodeMap.getKeys();
+			for (String key : keys) {
+				currentThreshold += lerp(nodeMap.getString(key).split(","), levelIndex, nextLevelIndex, distance);
+				probabilityMap.put(currentThreshold, Integer.parseInt(key));
+			}
+		}
+	}
+	
+	private static void populateStringProbabilityMap(TreeMap<Float, String> probabilityMap, ConfigurationNode nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+		Float currentThreshold = 0.0f;
+		if (nodeMap != null) {
+			List<String> keys = nodeMap.getKeys();
+			for (String key : keys) {
+				currentThreshold += lerp(nodeMap.getString(key).split(","), levelIndex, nextLevelIndex, distance);
+				probabilityMap.put(currentThreshold, key);
+			}
+		}
+	}
+	
+	private static float lerp(String[] list, int levelIndex, int nextLevelIndex, float distance) {
 		float previousValue = Float.parseFloat(list[levelIndex]);
 		float nextValue = Float.parseFloat(list[nextLevelIndex]);
 		return previousValue + distance * (nextValue - previousValue);
@@ -122,11 +127,11 @@ public class WandLevel {
 			// Only add uses to a wand if it already has some.
 			int wandUses = wand.getUses();
 			if (wandUses > 0) {
-				wand.setUses(wandUses + addUses);
+				wand.setUses(wandUses + RandomUtils.weightedRandom(addUseProbability));
 				wand.updateName(true);
 			}
 		} else {
-			wand.setUses(uses);
+			wand.setUses(RandomUtils.weightedRandom(useProbability));
 			
 			// If we are creating a new wand, make a templatized name
 			// based on the first spell that was added to it.
