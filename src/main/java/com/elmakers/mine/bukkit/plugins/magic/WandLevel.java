@@ -99,11 +99,17 @@ public class WandLevel {
 		Spell firstSpell = null;
 		
 		Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
+		int retries = 30;
 		for (int i = 0; i < spellCount; i++) {
 			String spellKey = RandomUtils.weightedRandom(spellProbability);
-			wand.addSpell(spellKey);
-			if (firstSpell == null) {
-				firstSpell = wand.getMaster().getSpell(spellKey);
+			
+			if (wand.addSpell(spellKey)) {	
+				if (firstSpell == null) {
+					firstSpell = wand.getMaster().getSpell(spellKey);
+				}
+			} else {
+				// Try again up to a certain number if we picked one the wand already had.
+				if (retries-- > 0) i--;
 			}
 		}
 		if (!additive) {

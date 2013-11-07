@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
@@ -334,12 +336,12 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	public void addMaterial(Material material, byte data) {
-		addMaterial(material, data, true);
+	public boolean addMaterial(Material material, byte data) {
+		return addMaterial(material, data, true);
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void addMaterial(Material material, byte data, boolean makeActive) {
+	private boolean addMaterial(Material material, byte data, boolean makeActive) {
 		Integer id = material.getId();
 		String materialString = id.toString();
 		if (material == EraseMaterial) {
@@ -350,7 +352,7 @@ public class Wand implements CostReducer {
 		materialString += ":" + data;
 
 		String[] materials = getMaterials();
-		List<String> materialMap = new LinkedList<String>();
+		Set<String> materialMap = new TreeSet<String>();
 		for (int i = 0; i < materials.length; i++) {	
 			String[] pieces = StringUtils.split(materials[i], "@");
 			if (pieces.length > 0 && !pieces[0].equals(materialString)) {
@@ -360,6 +362,7 @@ public class Wand implements CostReducer {
 		if (makeActive || activeMaterial == null || activeMaterial.length() == 0) {
 			activeMaterial = materialString;
 		}
+		boolean addedNew = !materialMap.contains(materialString);
 		materialMap.add(materialString);
 		setMaterials(materialMap);
 		updateActiveMaterial();
@@ -367,6 +370,8 @@ public class Wand implements CostReducer {
 		if (isInventoryOpen()) {
 			updateInventory();
 		}
+		
+		return addedNew;
 	}
 	
 	private void setMaterials(Collection<String> materialNames) {
@@ -384,24 +389,27 @@ public class Wand implements CostReducer {
 		return StringUtils.split(wandMaterials, "|");
 	}
 	
-	private void addSpells(Collection<String> spellNames) {
+	private boolean addSpells(Collection<String> spellNames) {
 		String[] spells = getSpells();
-		List<String> spellMap = new LinkedList<String>();
+		Set<String> spellMap = new TreeSet<String>();
+		boolean addedNew = false;
 		for (String spell : spells) {
 			spellMap.add(spell);
-			String[] pieces = StringUtils.split(spell, "@");
-			if (pieces.length > 0) {
-				spellNames.remove(pieces[0]);
-			}
 		}
 		for (String spellName : spellNames) {
 			if (activeSpell == null || activeSpell.length() == 0) {
 				activeSpell = spellName;
 			}
+			if (!spellMap.contains(spellName)) {
+				addedNew = true;
+			}
 			spellMap.add(spellName);
+			addedNew = true;
 		}
 				
 		setSpells(spellMap);
+		
+		return addedNew;
 	}
 	
 	public String[] getSpells() {
@@ -428,15 +436,17 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	public void addSpell(String spellName) {
+	public boolean addSpell(String spellName) {
 		activeSpell = spellName;
 		List<String> names = new ArrayList<String>();
 		names.add(spellName);
-		addSpells(names);
+		boolean addedNew = addSpells(names);
 		updateName();
 		if (isInventoryOpen()) {
 			updateInventory();
 		}
+		
+		return addedNew;
 	}
 	
 	private void setSpells(Collection<String> spellNames) {
