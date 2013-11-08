@@ -1,10 +1,15 @@
 # CHANGELOG
 
+## 2.5.2
+
+ - Fix right-click interact with beds, signs and command-blocks while holding a wand
+
 ## 2.5.1
 
  - Add stricter checks to wand crafting
  - Keep trying to add spells to a wand if the randomly chosen one was already on it
  - Allow for crafting limited-use wands (off by default), and adding uses to wands via enchanting
+ - Add randomized wand properties
 
 ## 2.5.0
 

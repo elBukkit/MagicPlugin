@@ -1,6 +1,5 @@
 # TODO
 
- - Add BED, SIGN, COMMAND to right-click exclusion list
  - Add materials to random wands, always add a material when needed by a spell
  - Make sure max XP is always at least the highest-costing spell on a wand
  - Fix XP system, use a “Mana” system when wand has XP Regen, store accumulated XP, etc

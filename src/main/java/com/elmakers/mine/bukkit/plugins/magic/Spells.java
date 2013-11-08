@@ -752,7 +752,8 @@ public class Spells implements Listener
 			toggleInventory = !(material == Material.CHEST || material == Material.WOODEN_DOOR 
 					|| material == Material.IRON_DOOR_BLOCK || material == Material.ENDER_CHEST
 					|| material == Material.ANVIL || material == Material.BREWING_STAND || material == Material.ENCHANTMENT_TABLE
-					|| material == Material.STONE_BUTTON || material == Material.LEVER || material == Material.FURNACE);
+					|| material == Material.STONE_BUTTON || material == Material.LEVER || material == Material.FURNACE
+					|| material == Material.BED || material == Material.SIGN_POST || material == Material.COMMAND);
 		}
 		if (toggleInventory)
 		{
