@@ -3,6 +3,7 @@
 ## 2.5.2
 
  - Fix right-click interact with beds, signs and command-blocks while holding a wand
+ - Some fixes to the "haste" wand property
 
 ## 2.5.1
 

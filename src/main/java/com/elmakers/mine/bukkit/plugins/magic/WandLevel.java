@@ -40,7 +40,7 @@ public class WandLevel {
 	public static final int maxRegeneration = 20;
 	public static final float maxReduction = 0.9f;
 	public static final float maxProtection = 0.9f;
-	public static float maxWalkSpeedIncrease = 0.3f;
+	public static float maxWalkSpeedIncrease = 0.7f;
 	
 	public static WandLevel getLevel(int level) {
 		if (levelMap == null) return null;

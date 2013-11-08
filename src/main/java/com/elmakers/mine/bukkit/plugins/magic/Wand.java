@@ -59,6 +59,7 @@ public class Wand implements CostReducer {
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
 	
+	private float defaultWalkSpeed = 0.2f;
 	private float walkSpeedIncrease = 0;
 	
 	private int accumulatedXp = 0;
@@ -1136,8 +1137,15 @@ public class Wand implements CostReducer {
 	public void activate(PlayerSpells playerSpells) {
 		activePlayer = playerSpells;
 		if (walkSpeedIncrease > 0) {
-			Player player = activePlayer.getPlayer();
-			player.setWalkSpeed(player.getWalkSpeed() + walkSpeedIncrease);
+			try {
+				activePlayer.getPlayer().setWalkSpeed(defaultWalkSpeed + walkSpeedIncrease);
+			} catch(Exception ex2) {
+				try {
+					activePlayer.getPlayer().setWalkSpeed(defaultWalkSpeed);
+				}  catch(Exception ex) {
+					
+				}
+			}
 		}
 		activePlayer.setActiveWand(this);
 		accumulatedXp = 0;
@@ -1163,8 +1171,11 @@ public class Wand implements CostReducer {
 			CastingCost.removeExperience(activePlayer.getPlayer(), accumulatedXp);
 		}
 		if (walkSpeedIncrease > 0) {
-			Player player = activePlayer.getPlayer();
-			player.setWalkSpeed(player.getWalkSpeed() - walkSpeedIncrease);
+			try {
+				activePlayer.getPlayer().setWalkSpeed(defaultWalkSpeed);
+			}  catch(Exception ex) {
+				
+			}
 		}
 		accumulatedXp = 0;
 		activePlayer.setActiveWand(null);
