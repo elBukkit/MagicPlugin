@@ -19,6 +19,8 @@ public class FrostSpell extends Spell
 	private int				defaultRadius			= 2;
 	private int				verticalSearchDistance	= 8;
 	private int             timeToLive = 60000;
+	private int             playerDamage = 1;
+	private int             entityDamage = 10;
 
 	public class FrostAction extends SimpleBlockAction
 	{
@@ -73,11 +75,11 @@ public class FrostSpell extends Spell
 				LivingEntity li = (LivingEntity)targetEntity;
 				if (li instanceof Player)
 				{
-					li.damage(1);
+					li.damage(playerDamage, player);
 				}
 				else
 				{
-					li.damage(10);
+					li.damage(entityDamage, player);
 				}
 			}
 		}
@@ -123,6 +125,8 @@ public class FrostSpell extends Spell
 	{
 		noTargetThrough(Material.WATER);
 		noTargetThrough(Material.STATIONARY_WATER);
+		playerDamage = properties.getInteger("player_damage", playerDamage);
+		entityDamage = properties.getInteger("entity_damage", entityDamage);
 		defaultRadius = properties.getInteger("radius", defaultRadius);
 		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);
 		timeToLive = properties.getInt("duration", timeToLive);

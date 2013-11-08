@@ -44,6 +44,8 @@ public class ArrowSpell extends Spell
 				return SpellResult.FAILURE;
 			}
 
+			arrow.setShooter(player);
+
 			if (useFire) {
 				arrow.setFireTicks(300);
 			}

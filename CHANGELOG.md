@@ -4,6 +4,7 @@
 
  - Fix right-click interact with beds, signs and command-blocks while holding a wand
  - Some fixes to the "haste" wand property
+ - Add damage senders when possible for spell damage
 
 ## 2.5.1
 

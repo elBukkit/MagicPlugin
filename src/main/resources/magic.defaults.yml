@@ -43,7 +43,6 @@ general:
     - dirt
     - cobblestone
     - wood
-    - bedrock
     - water
     - stationary_water
     - lava

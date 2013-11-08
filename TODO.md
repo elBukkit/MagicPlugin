@@ -6,9 +6,12 @@
  - Test dying while the wand inventory is open
  - .. add region message for test world, update docs, .. make new video
  - .. Factions support .. ?
- - .. remove bedrock from building material list, make sure it' not destructible
+ - Make sure bedrock is not destructible
  - ^ Wand override for building material list?
- - Set damage sources if possible for player death messages
  - Add sound effects
  - Add disarm spell
- - Look into using player portal event for the portal spell instead of move event
+
+
+
+ * Tried this, didn't work... waiting on forum confirmation, but sounds like a bust:
+  - Look into using player portal event for the portal spell instead of move event

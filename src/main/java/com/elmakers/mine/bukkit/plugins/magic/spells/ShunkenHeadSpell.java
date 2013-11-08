@@ -49,7 +49,7 @@ public class ShunkenHeadSpell extends Spell
 		byte data = 3;
 		if (li instanceof Player)
 		{
-			li.damage(playerDamage);
+			li.damage(playerDamage, player);
 			ownerName = ((Player)li).getName();
 		}
 		else

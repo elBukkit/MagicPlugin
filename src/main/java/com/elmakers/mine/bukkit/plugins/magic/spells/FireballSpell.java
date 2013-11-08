@@ -16,6 +16,7 @@ public class FireballSpell extends Spell
 		int size = parameters.getInt("size", defaultSize);
 		boolean useFire = parameters.getBoolean("fire", true);
 		Fireball fireball = (Fireball)player.launchProjectile(Fireball.class);
+		fireball.setShooter(player);
 		fireball.setIsIncendiary(useFire);
 		fireball.setYield(size);
 		return SpellResult.SUCCESS;
