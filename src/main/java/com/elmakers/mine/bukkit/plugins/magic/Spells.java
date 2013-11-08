@@ -1068,6 +1068,10 @@ public class Spells implements Listener
 	public Spell getSpell(String name) {
 		return spells.get(name);
 	}
+	
+	public void info(String message) {
+		log.info(message);
+	}
 
 	/*
 	 * Private data
