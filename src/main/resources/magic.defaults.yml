@@ -1,6 +1,8 @@
 general:
     silent: false
     sounds: true
+    cast_command_cost_reduction: 1.0
+    cast_command_cooldown_reduction: 1.0
     wand_item: blaze_rod
     wand_item_enchantable: wood_sword
     erase_item: sulpher

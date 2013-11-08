@@ -5,6 +5,7 @@
  - Fix right-click interact with beds, signs and command-blocks while holding a wand
  - Some fixes to the "haste" wand property
  - Add damage senders when possible for spell damage
+ - Add config options for using casting costs and cooldowns with the /cast command
 
 ## 2.5.1
 

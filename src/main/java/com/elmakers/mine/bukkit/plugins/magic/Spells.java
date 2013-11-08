@@ -501,6 +501,8 @@ public class Spells implements Listener
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
+		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
+		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
@@ -1072,6 +1074,11 @@ public class Spells implements Listener
 	public void info(String message) {
 		log.info(message);
 	}
+	
+	public void toggleCastCommandOverrides(PlayerSpells playerSpells, boolean override) {
+		playerSpells.setCostReduction(override ? castCommandCostReduction : 0);
+		playerSpells.setCooldownReduction(override ? castCommandCooldownReduction : 0);
+	}
 
 	/*
 	 * Private data
@@ -1099,6 +1106,8 @@ public class Spells implements Listener
 	 private boolean                             soundsEnabled                  = true;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
+	 private float							 	 castCommandCostReduction	    = 1.0f;
+	 private float							 	 castCommandCooldownReduction	    = 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
 

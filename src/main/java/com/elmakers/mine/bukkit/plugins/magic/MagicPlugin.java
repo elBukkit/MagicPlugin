@@ -379,12 +379,10 @@ public class MagicPlugin extends JavaPlugin
 			return false;
 		}
 
-		// Make it free and skip cooldowns
-		playerSpells.setCostReduction(1);
-		playerSpells.setCooldownReduction(1);
+		// Make it free and skip cooldowns, if configured to do so.
+		spells.toggleCastCommandOverrides(playerSpells, true);
 		spell.cast(parameters);
-		playerSpells.setCostReduction(0);
-		playerSpells.setCooldownReduction(0);
+		spells.toggleCastCommandOverrides(playerSpells, false);
 
 		return true;
 	}
