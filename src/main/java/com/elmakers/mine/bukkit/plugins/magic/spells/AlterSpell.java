@@ -3,13 +3,27 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Horse.Color;
+import org.bukkit.entity.Horse.Style;
+import org.bukkit.entity.Horse.Variant;
+import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Ocelot.Type;
+import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Wolf;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AlterSpell extends Spell
@@ -30,7 +44,11 @@ public class AlterSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Block targetBlock = getTargetBlock();
+		Target target = getTarget();
+		if (target.isEntity()) {
+			return alterEntity(target.getEntity());
+		}
+		Block targetBlock = target.getBlock();
 		if (targetBlock == null) 
 		{
 			castMessage("No target");
@@ -83,6 +101,74 @@ public class AlterSpell extends Spell
 			tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
 			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);			
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected SpellResult alterEntity(Entity entity) {
+		EntityType entityType = entity.getType();
+		switch (entityType) {
+			case HORSE:
+				Horse horse = (Horse)entity;
+
+				Color color = horse.getColor();
+				Color[] colorValues = Color.values();
+				color = colorValues[(color.ordinal() + 1) % colorValues.length];
+			
+				Variant variant = horse.getVariant();
+				Variant[] variantValues = Variant.values();
+				variant = variantValues[(variant.ordinal() + 1) % variantValues.length];
+			
+				Style horseStyle = horse.getStyle();
+				Style[] styleValues = Style.values();
+				horseStyle = styleValues[(horseStyle.ordinal() + 1) % styleValues.length];
+				
+				horse.setStyle(horseStyle);
+				horse.setColor(color);
+				horse.setVariant(variant);
+				castMessage("You altered a horse");
+			break;
+			case OCELOT:
+				Ocelot ocelot = (Ocelot)entity;
+				Type catType = ocelot.getCatType();
+				Type[] typeValues = Type.values();
+				catType = typeValues[(catType.ordinal() + 1) % typeValues.length];
+				ocelot.setCatType(catType);
+				castMessage("You altered an ocelot");
+				break;
+			case WOLF:
+			{
+				Wolf wolf = (Wolf)entity;
+				DyeColor dyeColor = wolf.getCollarColor();
+				DyeColor[] dyeColorValues = DyeColor.values();
+				dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
+				wolf.setCollarColor(dyeColor);
+				castMessage("You altered a wolf's collar");
+			}
+				break;
+			case SHEEP:
+				{
+					Sheep sheep = (Sheep)entity;
+					DyeColor dyeColor = sheep.getColor();
+					DyeColor[] dyeColorValues = DyeColor.values();
+					dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
+					sheep.setColor(dyeColor);
+					castMessage("You altered a sheep");
+				}
+				break;
+			case SKELETON:
+				Skeleton skeleton = (Skeleton)entity;
+				SkeletonType skeletonType = skeleton.getSkeletonType();
+				SkeletonType[] skeletonTypeValues = SkeletonType.values();
+				skeletonType = skeletonTypeValues[(skeletonType.ordinal() + 1) % skeletonTypeValues.length];
+				skeleton.setSkeletonType(skeletonType);
+				castMessage("You altered a skeleton");
+				break;
+			default:
+				sendMessage("Can't alter " + entityType.getName());
+				return SpellResult.NO_TARGET;
+		};
+		
+		return SpellResult.SUCCESS;
 	}
 
 	protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, BlockList adjustedBlocks, int rDepth)

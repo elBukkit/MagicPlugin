@@ -248,9 +248,9 @@ public class PlayerSpells implements CostReducer
 		
 		// First check for damage reduction
 		float reduction = 0;
-		float damageReductionFire = activeWand.getDamageReductionFire();
 		if (activeWand != null) {
 			reduction = activeWand.getDamageReduction();
+			float damageReductionFire = activeWand.getDamageReductionFire();
 			switch (event.getCause()) {
 				case CONTACT:
 				case ENTITY_ATTACK:

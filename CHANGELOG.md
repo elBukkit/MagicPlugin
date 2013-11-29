@@ -8,6 +8,7 @@
  - Add break_blocks option to boom
  - Add speed parameter to levitate spell
  - Add destructible and indestructible material lists to magic.yml
+ - The "alter" spell now works on some entities (horses, etc)
 
 ## 2.5.2
 

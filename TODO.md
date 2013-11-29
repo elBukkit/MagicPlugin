@@ -16,12 +16,12 @@
  - zombie/skeleton horses! Different cat breeds / dog collars?
  - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
- - allow alter on entities (wolves, horses, cats, etc)
  - invincibility doesn't protect against magic or lightning?
 
 
 DONE:
 
+ - allow alter on entities (wolves, horses, cats, etc)
  - grenades/explosion that do no block damage
  - remove chests from destructible (+ build able?) list
  - Make sure bedrock is not destructible
