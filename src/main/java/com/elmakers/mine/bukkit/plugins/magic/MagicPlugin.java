@@ -243,9 +243,8 @@ public class MagicPlugin extends JavaPlugin
 			} else if (materialName.equals("clone") || materialName.equals("copy")) {
 				material = Wand.CopyMaterial;
 			} else{
-				List<Material> buildingMaterials = spells.getBuildingMaterials();
 				material = ConfigurationNode.toMaterial(materialName);
-				if (material == null || material == Material.AIR || !buildingMaterials.contains(material)) {
+				if (material == null || material == Material.AIR) {
 					player.sendMessage(materialName + " is not a valid material");
 					return true;
 				}

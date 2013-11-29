@@ -14,7 +14,6 @@
  - Add disarm spell
  - remove chests from destructible (+ build able?) list
  - fix spheres at large radii - maybe keep current effect though? Looks cool.
- - Decrease levitate flight speed?
  - Target through doors?
  - zombie/skeleton horses! Different cat breeds / dog collars?
  - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
@@ -26,6 +25,7 @@
 
 DONE:
 
+ - Decrease levitate flight speed?
  - add “break blocks” parameter to BoomSpell
  - fix health regeneration with max health (test with some plugin?)
  * Tried this, didn't work... waiting on forum confirmation, but sounds like a bust:
