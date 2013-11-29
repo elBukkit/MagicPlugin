@@ -97,6 +97,7 @@ spells:
             cooldown: 500
         parameters:
             size: '6'
+            break_blocks: true
         costs:
         - xp: 50
     frost:
@@ -429,6 +430,7 @@ spells:
             cooldown: 5000
         parameters:
             size: '20'
+            break_blocks: true
         costs:
         - xp: 100
     day:
@@ -562,6 +564,7 @@ spells:
         parameters:
             size: '8'
             target: here
+            break_blocks: false
         costs:
         - xp: 5
     superblast:
@@ -1042,7 +1045,8 @@ spells:
             allow_max_range: false
             range: 200
             cooldown: 50
-        parameters: {}
+        parameters:
+            break_blocks: false
         costs:
         - xp: 20
     box:

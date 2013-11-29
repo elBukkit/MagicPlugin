@@ -11,7 +11,7 @@ public class BoomSpell extends Spell {
 
 	protected int defaultSize = 1;
 
-	public SpellResult createExplosionAt(Location target, float size, boolean incendiary)
+	public SpellResult createExplosionAt(Location target, float size, boolean incendiary, boolean breakBlocks)
 	{
 		if (target == null) 
 		{
@@ -19,7 +19,8 @@ public class BoomSpell extends Spell {
 			return SpellResult.NO_TARGET;
 		}
 
-		player.getWorld().createExplosion(target.getBlock().getLocation(), size, incendiary);
+		Location l = target.getBlock().getLocation();
+		player.getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 
 		return SpellResult.SUCCESS;
 	}
@@ -29,11 +30,12 @@ public class BoomSpell extends Spell {
 	{
 		int size = parameters.getInt("size", defaultSize);
 		boolean useFire = parameters.getBoolean("fire", false);
+		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
 		String targetType = (String)parameters.getString("target", "");
 		if (targetType.equals("here"))
 		{
-			player.damage(100);
-			return createExplosionAt(player.getLocation(), size, useFire);
+			player.damage(player.getMaxHealth() * 10);
+			return createExplosionAt(player.getLocation(), size, useFire, breakBlocks);
 		}
 
 		Target target = getTarget();
@@ -43,6 +45,6 @@ public class BoomSpell extends Spell {
 			return SpellResult.NO_TARGET;
 		}
 
-		return createExplosionAt(target.getLocation(), size, useFire);
+		return createExplosionAt(target.getLocation(), size, useFire, breakBlocks);
 	}
 }

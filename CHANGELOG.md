@@ -4,6 +4,8 @@
 
  - Fix "quiet" option to still show error messages and failures (e.g. cooldown)
  - Add throttle for messages, defaults to one every 5 seconds
+ - Fire protection now puts out fires
+ - Add break_blocks option to boom
 
 ## 2.5.2
 
