@@ -317,7 +317,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
 		{
 			long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
-			sendMessage("You must wait another " + seconds + " seconds.");
+			if (seconds > 1) {
+				sendMessage("You must wait another " + seconds + " seconds.");
+			} else {
+				sendMessage("You must wait a moment.");
+			}
 			playerSpells.onCast(SpellResult.COOLDOWN);
 			return false;
 		}
