@@ -1,6 +1,8 @@
 general:
     silent: false
+    quiet: true
     sounds: true
+    message_throttle: 5000
     cast_command_cost_reduction: 1.0
     cast_command_cooldown_reduction: 1.0
     wand_item: blaze_rod
@@ -13,6 +15,7 @@ general:
     crafting_output: random(1)
     enable_enchanting: true
     enable_block_populator: false
+    undo_depth: 256
     populate_chests:
       base_probability:
         0: 100
@@ -175,5 +178,3 @@ general:
     - 160
     - 95
     - 174
-    undo_depth: 256
-    quiet: true

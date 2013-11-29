@@ -38,14 +38,14 @@ public class TransmuteSpell extends Spell
 
 		if (transmuteAction == null)
 		{
-			sendMessage(player, "Nothing to transmute");
+			sendMessage("Nothing to transmute");
 			return SpellResult.NO_TARGET;
 		}
 
 		ItemStack targetItem = getBuildingMaterial();
 		if (targetItem == null)
 		{
-			sendMessage(player, "Nothing to transmute with");
+			sendMessage("Nothing to transmute with");
 			return SpellResult.NO_TARGET;
 		}
 

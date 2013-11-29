@@ -18,7 +18,7 @@ public class InvincibleSpell extends Spell
 
 		if (protectAmount != 0)
 		{
-			sendMessage(player, "You feel ... normal.");
+			sendMessage("You feel normal.");
 			spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
 			protectAmount = 0;
 		}
@@ -28,11 +28,11 @@ public class InvincibleSpell extends Spell
 
 			if (amount >= 100)
 			{
-				sendMessage(player, "You feel invincible!");
+				castMessage("You feel invincible!");
 			}
 			else
 			{
-				sendMessage(player, "You feel strong!");
+				castMessage("You feel strong!");
 			}
 
 			protectAmount = (float)amount / 100;

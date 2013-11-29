@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.5.3
+
+ - Fix "quiet" option to still show error messages and failures (e.g. cooldown)
+ - Add throttle for messages, defaults to one every 5 seconds
+
 ## 2.5.2
 
  - Fix right-click interact with beds, signs and command-blocks while holding a wand

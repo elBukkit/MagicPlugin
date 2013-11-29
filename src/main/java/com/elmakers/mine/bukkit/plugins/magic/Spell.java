@@ -34,7 +34,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
  *
  */
 public abstract class Spell implements Comparable<Spell>, Cloneable
-{	    
+{	
 	/*
 	 * protected members that are helpful to use
 	 */
@@ -65,6 +65,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	private int                                 cooldown                = 0;
 	private long                                lastCast                = 0;
+	private long 								lastMessageSent 		= 0;
 
 	private int                                 verticalSearchDistance  = 8;
 	private boolean                             targetingComplete;
@@ -315,6 +316,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		int reducedCooldown = cooldownReduction >= 1 ? 0 : (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
 		if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
 		{
+			long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
+			sendMessage("You must wait another " + seconds + " seconds.");
 			playerSpells.onCast(SpellResult.COOLDOWN);
 			return false;
 		}
@@ -325,7 +328,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			{
 				if (!cost.has(playerSpells))
 				{
-					castMessage("Not enough " + cost.getDescription());
+					sendMessage("Not enough " + cost.getDescription());
 					playerSpells.onCast(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}
@@ -967,33 +970,22 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	/**
 	 * Send a message to a player when a spell is cast.
 	 * 
-	 * Will be replaced with the Message interface from Persistence soon.
-	 * 
 	 * Respects the "quiet" and "silent" properties settings.
 	 * 
 	 * @param player The player to send a message to 
 	 * @param message The message to send
 	 */
-	public void castMessage(Player player, String message)
-	{
-		if (!spells.isQuiet() && !spells.isSilent())
-		{
-			player.sendMessage(message);
-		}
-	}
-	
 	public void castMessage(String message)
 	{
-		if (!spells.isQuiet() && !spells.isSilent())
+		if (!spells.isQuiet() && !spells.isSilent() && canSendMessage())
 		{
 			player.sendMessage(message);
+			lastMessageSent = System.currentTimeMillis();
 		}
 	}
 
 	/**
 	 * Send a message to a player. 
-	 * 
-	 * Will be replaced with the Message interface from Persistence soon.
 	 * 
 	 * Use this to send messages to the player that are important.
 	 * 
@@ -1002,12 +994,21 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @param player The player to send the message to
 	 * @param message The message to send
 	 */
-	public void sendMessage(Player player, String message)
+	public void sendMessage(String message)
 	{
-		if (!spells.isSilent())
+		if (!spells.isSilent() && canSendMessage())
 		{
 			player.sendMessage(message);
+			lastMessageSent = System.currentTimeMillis();
 		}
+	}
+	
+	private boolean canSendMessage()
+	{
+		if (lastMessageSent == 0) return true;
+		int throttle = spells.getMessageThrottle();
+		long now = System.currentTimeMillis();
+		return (lastMessageSent < now - throttle);
 	}
 
 	/*

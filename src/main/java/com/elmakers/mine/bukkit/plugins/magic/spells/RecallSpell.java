@@ -146,7 +146,7 @@ public class RecallSpell extends Spell
 		{
 			if (!isActive)
 			{
-				sendMessage(player, "Use recall to return to where you died");
+				sendMessage("Use recall to return to where you died");
 				placeMarker(getPlayerBlock());
 			}
 		}

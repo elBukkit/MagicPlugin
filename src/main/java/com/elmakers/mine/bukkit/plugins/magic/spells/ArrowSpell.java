@@ -40,7 +40,7 @@ public class ArrowSpell extends Spell
 
 			if (arrow == null)
 			{
-				sendMessage(player, "One of your arrows fizzled");
+				sendMessage("One of your arrows fizzled");
 				return SpellResult.FAILURE;
 			}
 

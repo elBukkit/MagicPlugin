@@ -122,13 +122,13 @@ public class FillSpell extends Spell
 
 			if (maxDimension > 0 && (absx > maxDimension || absy > maxDimension || absz > maxDimension))
 			{
-				castMessage("Dimension is too big!");
+				sendMessage("Dimension is too big!");
 				return SpellResult.FAILURE;
 			}
 
 			if (maxVolume > 0 && absx * absy * absz > maxVolume)
 			{
-				castMessage("Volume is too big!");
+				sendMessage("Volume is too big!");
 				return SpellResult.FAILURE;
 			}
 
@@ -188,7 +188,7 @@ public class FillSpell extends Spell
 	{
 		if (targetBlock != null)
 		{
-			castMessage("Cancelled fill");
+			sendMessage("Cancelled fill");
 			targetBlock = null;
 			return true;
 		}

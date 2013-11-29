@@ -29,7 +29,7 @@ public class InvisibilitySpell extends Spell
 		}
 
 		cloak();
-		sendMessage(player, "You are invisible");
+		castMessage("You are invisible");
 
 		spells.registerEvent(SpellEventType.PLAYER_MOVE, this);
 		return SpellResult.SUCCESS;
@@ -40,7 +40,7 @@ public class InvisibilitySpell extends Spell
 	{
 		if (!hasMoved()) return;
 
-		sendMessage(player, "You are visible again");
+		sendMessage("You are visible again");
 		uncloak();
 		spells.unregisterEvent(SpellEventType.PLAYER_MOVE, this);
 	}

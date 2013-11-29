@@ -78,7 +78,7 @@ public class SignSpell extends Spell
 			}
 			else
 			{
-				sendMessage(player, "Sign placement failed!");
+				sendMessage("Sign placement failed!");
 				return SpellResult.FAILURE;
 			}
 		}
@@ -86,7 +86,7 @@ public class SignSpell extends Spell
 		{
 			Player targetPlayer = (Player)target.getEntity();
 			targetPlayer.sendMessage(player.getName() + " says hi!");
-			sendMessage(player, "You send " + targetPlayer.getName() + " a message");
+			sendMessage("You send " + targetPlayer.getName() + " a message");
 			return SpellResult.SUCCESS;
 		}
 

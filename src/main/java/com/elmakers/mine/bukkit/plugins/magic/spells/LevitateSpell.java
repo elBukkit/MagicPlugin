@@ -19,7 +19,7 @@ public class LevitateSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		if (player.getAllowFlight()) {
-			castMessage("You feel heavier");
+			sendMessage("You feel heavier");
 			player.setFlying(false);
 			player.setAllowFlight(false);
 			

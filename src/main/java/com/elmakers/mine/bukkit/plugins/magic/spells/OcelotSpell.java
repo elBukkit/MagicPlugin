@@ -38,11 +38,11 @@ public class OcelotSpell extends Spell
 		Ocelot entity = (Ocelot)player.getWorld().spawnEntity(targetBlock.getLocation(), EntityType.OCELOT);
 		if (entity == null)
 		{
-			sendMessage(player, "Your Ocelot is DOA");
+			sendMessage("Your Ocelot is DOA");
 			return null;
 		}
 		tameOcelot(entity);
-		castMessage("You summon a Ocelot!");
+		castMessage("You summon an Ocelot!");
 		return entity;
 	}
 

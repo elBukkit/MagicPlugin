@@ -293,6 +293,11 @@ public class Spells implements Listener
 	{
 		return quiet;
 	}
+	
+	public int getMessageThrottle()
+	{
+		return messageThrottle;
+	}
 
 	public boolean isSilent()
 	{
@@ -500,6 +505,7 @@ public class Spells implements Listener
 		undoQueueDepth = generalNode.getInteger("undo_depth", undoQueueDepth);
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
+		messageThrottle = generalNode.getInt("message_throttle", 0);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
@@ -1104,13 +1110,14 @@ public class Spells implements Listener
 	 private boolean                             silent                         = false;
 	 private boolean                             quiet                          = true;
 	 private boolean                             soundsEnabled                  = true;
+	 private int								 messageThrottle				= 0;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	    = 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
-
+	 
 	 private final Logger                        log                            = Logger.getLogger("Minecraft");
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<Material, Spell>      spellsByMaterial               = new HashMap<Material, Spell>();

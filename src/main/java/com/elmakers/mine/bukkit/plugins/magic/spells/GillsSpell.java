@@ -63,12 +63,12 @@ public class GillsSpell extends Spell
 
 		if (hasGills != null)
 		{
-			sendMessage(player, "Your gills recede");
+			castMessage("Your gills recede");
 			gillPlayers.remove(player.getName());
 		}
 		else
 		{
-			sendMessage(player, "You grow gills!");
+			castMessage("You grow gills!");
 			gillPlayers.put(player.getName(), new PlayerGills(gillDuration * 1000));
 		}
 		checkListener();
@@ -97,7 +97,7 @@ public class GillsSpell extends Spell
 			gills.move();
 			if (gills.isTimeToRecede())
 			{
-				sendMessage(player, "Your gills recede!");
+				sendMessage("Your gills recede!");
 				gillPlayers.remove(player.getName());
 				checkListener();
 			}

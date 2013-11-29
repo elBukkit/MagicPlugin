@@ -38,7 +38,7 @@ public class MineSpell extends Spell
 		}
 		if (!isMineable(target))
 		{
-			sendMessage(player, "Can't mine " + target.getType().name().toLowerCase());
+			sendMessage("Can't mine " + target.getType().name().toLowerCase());
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target)) {
