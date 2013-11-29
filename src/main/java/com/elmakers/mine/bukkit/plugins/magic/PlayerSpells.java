@@ -248,6 +248,7 @@ public class PlayerSpells implements CostReducer
 		
 		// First check for damage reduction
 		float reduction = 0;
+		float damageReductionFire = activeWand.getDamageReductionFire();
 		if (activeWand != null) {
 			reduction = activeWand.getDamageReduction();
 			switch (event.getCause()) {
@@ -264,7 +265,11 @@ public class PlayerSpells implements CostReducer
 				case FIRE:
 				case FIRE_TICK:
 				case LAVA:
-					reduction += activeWand.getDamageReductionFire();
+					// Also put out fire if they have fire protection of any kind.
+					if (damageReductionFire > 0 && player.getFireTicks() > 0) {
+						player.setFireTicks(0);
+					}
+					reduction += damageReductionFire;
 					break;
 				case BLOCK_EXPLOSION:
 				case ENTITY_EXPLOSION:
