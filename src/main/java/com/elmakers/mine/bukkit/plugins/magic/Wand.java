@@ -1222,12 +1222,17 @@ public class Wand implements CostReducer {
 			player.giveExp(xpRegeneration);
 			accumulatedXp += xpRegeneration;
 		}
-		if (healthRegeneration > 0 && player.getHealth() < 20) {
-			player.setHealth(Math.min(20, player.getHealth() + healthRegeneration));
+		double maxHealth = player.getMaxHealth();
+		if (healthRegeneration > 0 && player.getHealth() < maxHealth) {
+			player.setHealth(Math.min(maxHealth, player.getHealth() + healthRegeneration));
 		}
-		if (hungerRegeneration > 0 && player.getFoodLevel() < 20) {
+		double maxFoodLevel = 20;
+		if (hungerRegeneration > 0 && player.getFoodLevel() < maxFoodLevel) {
 			player.setExhaustion(0);
 			player.setFoodLevel(Math.min(20, player.getFoodLevel() + hungerRegeneration));
+		}
+		if (damageReductionFire > 0 && player.getFireTicks() > 0) {
+			player.setFireTicks(0);
 		}
 	}
 	
