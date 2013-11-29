@@ -750,6 +750,13 @@ public class Spells implements Listener
 			return;
 		}
 		
+		// An extra double-check for a bug that is hard to reproduce, where the wand is no
+		// longer the active item, but we never deactivated it.
+		if (!Wand.hasActiveWand(player)) 
+		{
+			wand.deactivate();
+		}
+		
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
 		{
 			wand.cast();
