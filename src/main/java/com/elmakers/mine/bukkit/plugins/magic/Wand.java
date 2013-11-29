@@ -886,7 +886,7 @@ public class Wand implements CostReducer {
 					spellMap.put(spell.getKey(), i);
 				}
 			} else {
-				List<Material> buildingMaterials = activePlayer.getMaster().getBuildingMaterials();
+				Set<Material> buildingMaterials = activePlayer.getMaster().getBuildingMaterials();
 				if (material != Material.AIR && (buildingMaterials.contains(material) || material == EraseMaterial)) {
 					String materialKey = material.getId() + ":" + items[i].getData().getData();
 					if (material == EraseMaterial) {

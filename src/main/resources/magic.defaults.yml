@@ -41,6 +41,24 @@ general:
     - air
     - snow
     - stationary_water
+    destructible:
+    - air
+    - stone
+    - grass
+    - dirt
+    - cobblestone
+    - water
+    - stationary_water
+    - lava
+    - stationary_lava
+    - sand
+    - gravel
+    - netherrack
+    - soul_sand
+    indestructible:
+    - bedrock
+    - chest
+    - ender_chest
     building:
     - air
     - stone

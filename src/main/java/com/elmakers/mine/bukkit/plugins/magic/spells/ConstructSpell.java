@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -14,9 +12,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends Spell
 {
-	static final String		DEFAULT_DESTRUCTIBLES	= "0,1,2,3,4,8,9,10,11,12,13,87,88";
-
-	private List<Material>	destructibleMaterials	= null;
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
 	private int             timeToLive              = 0;
@@ -206,14 +201,12 @@ public class ConstructSpell extends Spell
 
 	public boolean isDestructible(Block block)
 	{
-		return destructibleMaterials.contains(block.getType());
+		return spells.getDestructibleMaterials().contains(block.getType());
 	}
 
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		destructibleMaterials = destructibleMaterials != null ? destructibleMaterials : csv.parseMaterials(DEFAULT_DESTRUCTIBLES);
-		destructibleMaterials = properties.getMaterials("destructible", destructibleMaterials);
 		timeToLive = properties.getInt("undo", timeToLive);
 	}
 	

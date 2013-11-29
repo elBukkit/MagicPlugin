@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -210,7 +211,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			}
 		}
 
-		List<Material> defaultTargetThrough = spells.getTargetThroughMaterials();
+		Set<Material> defaultTargetThrough = spells.getTargetThroughMaterials();
 		for (Material defMat : defaultTargetThrough) {
 			targetThrough(defMat);
 		}

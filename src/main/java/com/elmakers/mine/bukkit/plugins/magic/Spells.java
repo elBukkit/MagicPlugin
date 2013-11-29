@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -178,12 +179,17 @@ public class Spells implements Listener
 	 * Material use system
 	 */
 
-	public List<Material> getBuildingMaterials()
+	public Set<Material> getBuildingMaterials()
 	{
 		return buildingMaterials;
 	}
 
-	public List<Material> getTargetThroughMaterials()
+	public Set<Material> getDestructibleMaterials()
+	{
+		return destructibleMaterials;
+	}
+
+	public Set<Material> getTargetThroughMaterials()
 	{
 		return targetThroughMaterials;
 	}
@@ -353,6 +359,10 @@ public class Spells implements Listener
 	}
 
 	public boolean hasBuildPermission(Player player, Block block) {
+		// First check the indestructible list
+		if (indestructibleMaterials.contains(block.getType())) return false;
+
+		// Now check the region manager.
 		if (regionManager == null) return true;
 		
 		try {
@@ -514,6 +524,8 @@ public class Spells implements Listener
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
+		indestructibleMaterials = generalNode.getMaterials("indestructible", DEFAULT_INDESTRUCTIBLE_MATERIALS);
+		destructibleMaterials = generalNode.getMaterials("destructible", DEFAULT_DESTRUCTIBLE_MATERIALS);
 		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
 
 		CSVParser csv = new CSVParser();
@@ -1101,16 +1113,20 @@ public class Spells implements Listener
 	 private final String                        spellsFileNameDefaults         = "spells.defaults.yml";
 	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
 
-	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
+	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
+	 static final String                         DEFAULT_INDESTRUCTIBLE_MATERIALS = "7,54,130";
+     static final String						 DEFAULT_DESTRUCTIBLE_MATERIALS	= "0,1,2,3,4,8,9,10,11,12,13,87,88";
 	 static final String                         DEFAULT_TARGET_THROUGH_MATERIALS = "0";
 	 
 	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
 	 static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
 
-	 private List<Material>                      buildingMaterials              = new ArrayList<Material>();
-	 private List<Material>                      stickyMaterials                = new ArrayList<Material>();
-	 private List<Material>                      stickyMaterialsDoubleHeight    = new ArrayList<Material>();
-	 private List<Material>                      targetThroughMaterials  		= new ArrayList<Material>();
+	 private Set<Material>                      buildingMaterials              = new TreeSet<Material>();
+	 private Set<Material>                      indestructibleMaterials        = new TreeSet<Material>();
+	 private Set<Material>                      destructibleMaterials        = new TreeSet<Material>();
+	 private Set<Material>                      stickyMaterials                = new TreeSet<Material>();
+	 private Set<Material>                      stickyMaterialsDoubleHeight    = new TreeSet<Material>();
+	 private Set<Material>                      targetThroughMaterials  	   = new TreeSet<Material>();
 
 	 private long                                physicsDisableTimeout          = 0;
 	 private int                                 undoQueueDepth                 = 256;

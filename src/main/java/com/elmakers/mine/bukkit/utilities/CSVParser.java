@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.Material;
 
@@ -60,7 +62,7 @@ public class CSVParser
 	}
 
 	@SuppressWarnings("deprecation")
-	public void parseMaterials(List<Material> materials, String csvList)
+	public void parseMaterials(Set<Material> materials, String csvList)
 	{
 		String[] matIds = csvList.split(",");
 		for (String matId : matIds)
@@ -77,9 +79,9 @@ public class CSVParser
 		}
 	}
 
-	public List<Material> parseMaterials(String csvList)
+	public Set<Material> parseMaterials(String csvList)
 	{
-		List<Material> materials = new ArrayList<Material>();
+		Set<Material> materials = new TreeSet<Material>();
 		parseMaterials(materials, csvList);
 		return materials;
 

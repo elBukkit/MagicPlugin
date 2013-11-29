@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.bukkit.Material;
 
@@ -332,13 +333,12 @@ public class ConfigurationNode {
 		 return getInt(path, def);
 	 }
 
-	 public List<Material> getMaterials(String key, String csvList)
+	 public Set<Material> getMaterials(String key, String csvList)
 	 {
 		 List<String> defaultMatNames = csv.parseStrings(csvList);
 		 List<String> materialData = getStringList(key, defaultMatNames);
-		 List<String> matNames = new ArrayList<String>();
-
-		 List<Material> materials = new ArrayList<Material>();
+		 Set<String> matNames = new TreeSet<String>();
+		 Set<Material> materials = new TreeSet<Material>();
 
 		 for (String matName : materialData)
 		 {
@@ -354,7 +354,7 @@ public class ConfigurationNode {
 		 return materials;
 	 }
 
-	 public List<Material> getMaterials(String key, Collection<Material> def)
+	 public Set<Material> getMaterials(String key, Collection<Material> def)
 	 {
 		 List<String> defaultMatNames = new ArrayList<String>();
 		 for (Material mat : def)
@@ -362,9 +362,9 @@ public class ConfigurationNode {
 			 defaultMatNames.add(mat.name().toLowerCase());
 		 }
 		 List<String> materialData = getStringList(key, defaultMatNames);
-		 List<String> matNames = new ArrayList<String>();
-
-		 List<Material> materials = new ArrayList<Material>();
+		 
+		 Set<String> matNames = new TreeSet<String>();
+		 Set<Material> materials = new TreeSet<Material>();
 
 		 for (String matName : materialData)
 		 {

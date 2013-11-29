@@ -7,6 +7,7 @@
  - Fire protection now puts out fires
  - Add break_blocks option to boom
  - Add speed parameter to levitate spell
+ - Add destructible and indestructible material lists to magic.yml
 
 ## 2.5.2
 

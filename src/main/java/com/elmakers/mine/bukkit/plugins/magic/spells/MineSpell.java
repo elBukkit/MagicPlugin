@@ -109,8 +109,8 @@ public class MineSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		mineableMaterials = csv.parseMaterials(DEFAULT_MINEABLE);
-		minedMaterials = csv.parseMaterials(DEFAULT_MINED);
+		mineableMaterials.addAll(csv.parseMaterials(DEFAULT_MINEABLE));
+		minedMaterials.addAll(csv.parseMaterials(DEFAULT_MINED));
 		minedData = csv.parseIntegers(DEFAULT_DATA);
 
 		maxRecursion = properties.getInteger("recursion_depth", maxRecursion);

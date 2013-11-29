@@ -25,7 +25,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class PortalSpell extends Spell
 {
 	private int             defaultSearchDistance   = 255;
-	protected static final String DEFAULT_DESTRUCTIBLES = "0,1,2,3,4,10,11,12,13,14,15,16,21,51,56,78,79,82,87,88,89";
 	public static MaterialList destructible          = null;
 	public static int                               teleportCooldown = 500;
 
@@ -266,7 +265,7 @@ public class PortalSpell extends Spell
 	{
 		if (destructible == null)
 		{
-			destructible = new MaterialList(csv.parseMaterials(DEFAULT_DESTRUCTIBLES));
+			destructible = new MaterialList(spells.getDestructibleMaterials());
 		}
 	}
 

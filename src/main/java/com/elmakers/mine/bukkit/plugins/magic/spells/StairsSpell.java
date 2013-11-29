@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,7 +16,7 @@ public class StairsSpell extends Spell
 {
 	static final String DEFAULT_DESTRUCTIBLES = "1,3,10,11,12,13";
 
-	private List<Material> destructibleMaterials = new ArrayList<Material>();
+	private Set<Material> destructibleMaterials = new TreeSet<Material>();
 	private int defaultDepth = 4;
 	private int defaultWidth = 3;
 	private int defaultHeight = 3;
