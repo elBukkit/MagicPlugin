@@ -18,6 +18,7 @@ public class LevitateSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		final float flightSpeed = (float)parameters.getDouble("speed", 0.6f);
 		if (player.getAllowFlight()) {
 			sendMessage("You feel heavier");
 			player.setFlying(false);
@@ -35,7 +36,7 @@ public class LevitateSpell extends Spell
 		player.setVelocity(velocity);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(spells.getPlugin(), new Runnable() {
 			public void run() {
-				player.setFlySpeed(0.99f);
+				player.setFlySpeed(flightSpeed);
 				player.setAllowFlight(true);
 				player.setFlying(true);
 			}

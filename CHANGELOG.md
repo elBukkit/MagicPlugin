@@ -6,6 +6,7 @@
  - Add throttle for messages, defaults to one every 5 seconds
  - Fire protection now puts out fires
  - Add break_blocks option to boom
+ - Add speed parameter to levitate spell
 
 ## 2.5.2
 
