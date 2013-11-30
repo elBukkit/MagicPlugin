@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.LinkedList;
@@ -136,6 +137,20 @@ public class WandLevel {
 			}
 		}
 		
+		// Look through all spells for the max XP casting cost
+		int maxXpCost = 0;
+		String[] spells = wand.getSpells();
+		for (int i = 0; i < spells.length; i++) {
+			String[] pieces = StringUtils.split(spells[i], "@");
+			Spell spell = wand.getMaster().getSpell(pieces[0]);
+			if (spell != null) {
+				List<CastingCost> costs = spell.getCosts();
+				for (CastingCost cost : costs) {
+					maxXpCost = Math.max(maxXpCost, cost.getXP());
+				}
+			}
+		}
+		
 		// Add random wand properties
 		ConfigurationNode wandProperties = new ConfigurationNode();
 		float costReduction = wand.getCostReduction();
@@ -172,7 +187,9 @@ public class WandLevel {
 		}
 		int xpMax = wand.getXpMax();
 		if (xpMax < maxMaxXp) {
-			wandProperties.setProperty("xp_max", (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability))));
+			// Make sure the wand has at least enough xp to cast the highest costing spell it has.
+			int newMaxXp = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
+			wandProperties.setProperty("xp_max", Math.min(maxXpCost, newMaxXp));
 		}
 		int healthRegeneration = wand.getHealthRegeneration();
 		if (healthRegeneration < maxRegeneration) {

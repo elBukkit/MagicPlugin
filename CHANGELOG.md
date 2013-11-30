@@ -5,6 +5,7 @@
  - Allow altering the profession of villagers
  - Update xp regeneration system, make it a separate "mana" system.
  - Fix some strange behavior with how material positions are saved when there are too many for the wand to hold.
+ - When randomizing a wand, make sure it has at least enough max xp to cast its most expensive spell.
 
 ## 2.5.3
 
