@@ -18,6 +18,8 @@ import org.bukkit.entity.Ocelot.Type;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Villager.Profession;
 import org.bukkit.entity.Wolf;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -134,6 +136,14 @@ public class AlterSpell extends Spell
 				catType = typeValues[(catType.ordinal() + 1) % typeValues.length];
 				ocelot.setCatType(catType);
 				castMessage("You altered an ocelot");
+				break;
+			case VILLAGER:
+				Villager villager = (Villager)entity;
+				Profession profession = villager.getProfession();
+				Profession[] professionValues = Profession.values();
+				profession = professionValues[(profession.ordinal() + 1) % professionValues.length];
+				villager.setProfession(profession);
+				castMessage("You altered a villager");
 				break;
 			case WOLF:
 			{
