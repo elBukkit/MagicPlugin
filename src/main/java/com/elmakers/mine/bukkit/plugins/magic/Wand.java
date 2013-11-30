@@ -1156,8 +1156,8 @@ public class Wand implements CostReducer {
 		}
 		activePlayer.setActiveWand(this);
 		if (xpRegeneration > 0) {
-			storedXp = activePlayer.player.getTotalExperience();
-			CastingCost.safeSetExperience(activePlayer.player, xp);
+			storedXp = activePlayer.getExperience();
+			activePlayer.setExperience(xp);
 		}
 		updateActiveMaterial();
 		updateName();
@@ -1178,8 +1178,8 @@ public class Wand implements CostReducer {
 			closeInventory(itemSlot);
 		}
 		if (xpRegeneration > 0) {
-			xp = activePlayer.player.getTotalExperience();
-			CastingCost.safeSetExperience(activePlayer.player, storedXp);
+			xp = activePlayer.getExperience();
+			activePlayer.setExperience(storedXp);
 		}
 		if (walkSpeedIncrease > 0) {
 			try {

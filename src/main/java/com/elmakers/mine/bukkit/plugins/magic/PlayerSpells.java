@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import me.desht.dhutils.ExperienceManager;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -22,6 +24,7 @@ public class PlayerSpells implements CostReducer
 {
 	protected Player player;
 	protected Spells master;
+	protected ExperienceManager xpManager;
 	protected HashMap<String, Spell> spells = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
 	private Wand								activeWand					   = null;
@@ -34,6 +37,17 @@ public class PlayerSpells implements CostReducer
 	private float cooldownReduction = 0;
 	private ItemStack buildingMaterial = null;
 
+	public void removeExperience(int xp) {
+		xpManager.changeExp(-xp);
+	}
+	
+	public void setExperience(int xp) {
+		xpManager.setExp(xp);
+	}
+	
+	public int getExperience() {
+		return xpManager.getCurrentExp();
+	}
 	
 	public void setCostReduction(float reduction) {
 		costReduction = reduction;
@@ -182,6 +196,7 @@ public class PlayerSpells implements CostReducer
 	{
 		this.master = master;
 		this.player = player;
+		this.xpManager = new ExperienceManager(player);
 	}
 	
 	public Player getPlayer()

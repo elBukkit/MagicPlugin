@@ -64,31 +64,15 @@ public class CastingCost
 
 	public void use(PlayerSpells playerSpells)
 	{
-		Player player = playerSpells.getPlayer();
 		Inventory inventory = playerSpells.getInventory();
 		if (item != null) {
 			ItemStack itemStack = getItemStack();
 			inventory.removeItem(itemStack);
 		}
 		int xp = getXP(playerSpells);
-		if (getXP(playerSpells) > 0) {
-			removeExperience(player, xp);
+		if (xp > 0) {
+			playerSpells.removeExperience(xp);
 		}
-	}
-
-	// This is very hacky and prone to issues, but player.setTotalExperience doesn't seem to update the UI.
-	public static void safeSetExperience(Player player, int amount) {
-		player.setTotalExperience(0);
-		player.setLevel(0);
-		player.setExp(0);
-		if (amount > 0) {
-			player.giveExp(amount);
-		}
-	}
-	
-	public static void removeExperience(Player player, int amount) {
-		int currentExperience = player.getTotalExperience();
-		safeSetExperience(player, Math.max(0, currentExperience - amount));
 	}
 
 	@SuppressWarnings("deprecation")
