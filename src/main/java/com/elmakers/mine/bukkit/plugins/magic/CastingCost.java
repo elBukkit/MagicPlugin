@@ -75,15 +75,20 @@ public class CastingCost
 			removeExperience(player, xp);
 		}
 	}
-	
-	public static void removeExperience(Player player, int amount) {
-		int currentExperience = player.getTotalExperience();
-		
-		// This is very hacky and prone to issues, but player.setTotalExperience doesn't seem to update the UI.
+
+	// This is very hacky and prone to issues, but player.setTotalExperience doesn't seem to update the UI.
+	public static void safeSetExperience(Player player, int amount) {
 		player.setTotalExperience(0);
 		player.setLevel(0);
 		player.setExp(0);
-		player.giveExp(Math.max(0, currentExperience - amount));
+		if (amount > 0) {
+			player.giveExp(amount);
+		}
+	}
+	
+	public static void removeExperience(Player player, int amount) {
+		int currentExperience = player.getTotalExperience();
+		safeSetExperience(player, Math.max(0, currentExperience - amount));
 	}
 
 	@SuppressWarnings("deprecation")

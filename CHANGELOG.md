@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.5.4
+ 
+ - Allow altering the profession of villagers
+ - Update xp regeneration system, make it a separate "mana" system.
+ - Fix some strange behavior with how material positions are saved when there are too many for the wand to hold.
+
 ## 2.5.3
 
  - Fix "quiet" option to still show error messages and failures (e.g. cooldown)

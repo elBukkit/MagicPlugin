@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -53,6 +54,7 @@ public class Wand implements CostReducer {
 	private float damageReductionExplosions = 0;
 	private boolean hasInventory = false;
 	private int uses = 0;
+	private int xp = 0;
 	
 	private int xpRegeneration = 0;
 	private int xpMax = 50;
@@ -62,7 +64,7 @@ public class Wand implements CostReducer {
 	private float defaultWalkSpeed = 0.2f;
 	private float walkSpeedIncrease = 0;
 	
-	private int accumulatedXp = 0;
+	private int storedXp = 0;
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
@@ -213,6 +215,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions));
 		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
 		InventoryUtils.setMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease));
+		InventoryUtils.setMeta(wandNode, "xp", Integer.toString(xp));
 		InventoryUtils.setMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration));
 		InventoryUtils.setMeta(wandNode, "xp_max", Integer.toString(xpMax));
 		InventoryUtils.setMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration));
@@ -304,6 +307,7 @@ public class Wand implements CostReducer {
 		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
 		walkSpeedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease)));
+		xp = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp", Integer.toString(xp)));
 		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
 		xpMax = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_max", Integer.toString(xpMax)));
 		healthRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration)));
@@ -594,7 +598,7 @@ public class Wand implements CostReducer {
 		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
 		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", walkSpeedIncrease / WandLevel.maxWalkSpeedIncrease));
-		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("XP Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
+		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
 		if (damageReduction < 1) {
 			if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
@@ -781,6 +785,7 @@ public class Wand implements CostReducer {
 		
 		// This is here to try and leave some room for materials, if present
 		// in a newly-created wand.
+		
 		if (unpositionedMaterials.size() > 0) {
 			int materialSpaces = Math.min(unpositionedMaterials.size(), 3);
 			int remainingSpaces = 8 - materialSpaces;
@@ -790,6 +795,7 @@ public class Wand implements CostReducer {
 			}
 		}
 		
+		
 		// Put the new materials first, then the mapped materials
 		// TODO: Investigate if all of this is necessary now with the new inventory system.
 		if (eraseStack != null) {
@@ -797,10 +803,6 @@ public class Wand implements CostReducer {
 		}
 		if (copyStack != null) {
 			addMaterialToInventory(inventory, copyStack);
-		}
-		
-		for (ItemStack stack : unpositionedMaterials) {
-			addMaterialToInventory(inventory, stack);
 		}
 		
 		// Add the rest of the unpositioned spells
@@ -819,6 +821,10 @@ public class Wand implements CostReducer {
 			} else {
 				addMaterialToInventory(inventory, itemStack);
 			}
+		}
+		
+		for (ItemStack stack : unpositionedMaterials) {
+			addMaterialToInventory(inventory, stack);
 		}
 
 		updateName();
@@ -1008,6 +1014,7 @@ public class Wand implements CostReducer {
 		damageReductionExplosions = (float)wandConfig.getDouble("damage_reduction_explosions", damageReductionExplosions);
 		xpRegeneration = wandConfig.getInt("xp_regeneration", xpRegeneration);
 		xpMax = wandConfig.getInt("xp_max", xpMax);
+		xp = wandConfig.getInt("xp", xp);
 		healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
 		hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
 		uses = wandConfig.getInt("uses", uses);
@@ -1148,7 +1155,10 @@ public class Wand implements CostReducer {
 			}
 		}
 		activePlayer.setActiveWand(this);
-		accumulatedXp = 0;
+		if (xpRegeneration > 0) {
+			storedXp = activePlayer.player.getTotalExperience();
+			CastingCost.safeSetExperience(activePlayer.player, xp);
+		}
 		updateActiveMaterial();
 		updateName();
 	}
@@ -1167,8 +1177,9 @@ public class Wand implements CostReducer {
 		if (isInventoryOpen()) {
 			closeInventory(itemSlot);
 		}
-		if (accumulatedXp > 0) {
-			CastingCost.removeExperience(activePlayer.getPlayer(), accumulatedXp);
+		if (xpRegeneration > 0) {
+			xp = activePlayer.player.getTotalExperience();
+			CastingCost.safeSetExperience(activePlayer.player, storedXp);
 		}
 		if (walkSpeedIncrease > 0) {
 			try {
@@ -1177,9 +1188,9 @@ public class Wand implements CostReducer {
 				
 			}
 		}
-		accumulatedXp = 0;
 		activePlayer.setActiveWand(null);
 		activePlayer = null;
+		saveState();
 	}
 	
 	public boolean cast() {
@@ -1214,13 +1225,21 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	public void onPlayerExpChange(PlayerExpChangeEvent event) {
+		if (activePlayer == null) return;
+		
+		if (xpRegeneration > 0) {
+			storedXp += event.getAmount();
+			event.setAmount(0);
+		}
+	}
+	
 	public void processRegeneration() {
 		if (activePlayer == null) return;
 		
 		Player player = activePlayer.getPlayer();
 		if (xpRegeneration > 0 && (xpMax == 0 || player.getTotalExperience() < xpMax)) {
 			player.giveExp(xpRegeneration);
-			accumulatedXp += xpRegeneration;
 		}
 		double maxHealth = player.getMaxHealth();
 		if (healthRegeneration > 0 && player.getHealth() < maxHealth) {

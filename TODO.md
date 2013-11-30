@@ -2,7 +2,6 @@
 
  - Add materials to random wands, always add a material when needed by a spell
  - Make sure max XP is always at least the highest-costing spell on a wand
- - Fix XP system, use a mana system when wand has XP Regen, store accumulated XP, etc
  - Test dying while the wand inventory is open
  - .. add region message for test world, update docs, .. make new video
  - .. Factions support .. ?
@@ -17,11 +16,14 @@
  - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - invincibility doesn't protect against magic or lightning?
-
+ - add power property to wands and support in spells that can
+ - can't recurse with colored clay? (hm, prolly 1.7 thing)
+ - materials don't store inventory locations
 
 DONE:
 
  - allow alter on entities (wolves, horses, cats, etc)
+ - Fix XP system, use a mana system when wand has XP Regen, store accumulated XP, etc
  - grenades/explosion that do no block damage
  - remove chests from destructible (+ build able?) list
  - Make sure bedrock is not destructible

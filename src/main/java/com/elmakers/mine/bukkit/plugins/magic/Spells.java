@@ -38,6 +38,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -822,6 +823,19 @@ public class Spells implements Listener
 		}
 	}
 
+	@EventHandler
+	public void onPlayerExpChange(PlayerExpChangeEvent event)
+	{
+		// We don't care about exp loss events
+		if (event.getAmount() <= 0) return;
+		
+		Player player = event.getPlayer();
+		Wand wand = Wand.getActiveWand(this, player);
+		if (wand != null) {
+			wand.onPlayerExpChange(event);
+		}
+	}
+	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
