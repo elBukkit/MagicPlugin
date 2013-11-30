@@ -189,7 +189,7 @@ public class WandLevel {
 		if (xpMax < maxMaxXp) {
 			// Make sure the wand has at least enough xp to cast the highest costing spell it has.
 			int newMaxXp = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
-			wandProperties.setProperty("xp_max", Math.min(maxXpCost, newMaxXp));
+			wandProperties.setProperty("xp_max", Math.max(maxXpCost, newMaxXp));
 		}
 		int healthRegeneration = wand.getHealthRegeneration();
 		if (healthRegeneration < maxRegeneration) {

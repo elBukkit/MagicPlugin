@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,10 +54,9 @@ public class CastingCost
 
 	public boolean has(PlayerSpells playerSpells)
 	{
-		Player player = playerSpells.getPlayer();
 		Inventory inventory = playerSpells.getInventory();
 		boolean hasItem = item == null || inventory.contains(item, getAmount(playerSpells));
-		boolean hasXp = xp <= 0 || player.getTotalExperience() >= getXP(playerSpells);
+		boolean hasXp = xp <= 0 || playerSpells.getExperience() >= getXP(playerSpells);
 		return hasItem && hasXp;
 	}
 

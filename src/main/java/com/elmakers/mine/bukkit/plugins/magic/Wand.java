@@ -64,7 +64,9 @@ public class Wand implements CostReducer {
 	private float defaultWalkSpeed = 0.2f;
 	private float walkSpeedIncrease = 0;
 	
+	private int storedXpLevel = 0;
 	private int storedXp = 0;
+	private float storedXpProgress = 0;
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
@@ -1143,12 +1145,13 @@ public class Wand implements CostReducer {
 	
 	public void activate(PlayerSpells playerSpells) {
 		activePlayer = playerSpells;
+		Player player = activePlayer.getPlayer();
 		if (walkSpeedIncrease > 0) {
 			try {
-				activePlayer.getPlayer().setWalkSpeed(defaultWalkSpeed + walkSpeedIncrease);
+				player.setWalkSpeed(defaultWalkSpeed + walkSpeedIncrease);
 			} catch(Exception ex2) {
 				try {
-					activePlayer.getPlayer().setWalkSpeed(defaultWalkSpeed);
+					player.setWalkSpeed(defaultWalkSpeed);
 				}  catch(Exception ex) {
 					
 				}
@@ -1156,8 +1159,12 @@ public class Wand implements CostReducer {
 		}
 		activePlayer.setActiveWand(this);
 		if (xpRegeneration > 0) {
-			storedXp = activePlayer.getExperience();
-			activePlayer.setExperience(xp);
+			storedXpLevel = player.getLevel();
+			storedXpProgress = player.getExp();
+			storedXp = 0;
+			player.setLevel(0);
+			player.setExp(0);
+			player.giveExp(xp);
 		}
 		updateActiveMaterial();
 		updateName();
@@ -1179,7 +1186,12 @@ public class Wand implements CostReducer {
 		}
 		if (xpRegeneration > 0) {
 			xp = activePlayer.getExperience();
-			activePlayer.setExperience(storedXp);
+			activePlayer.player.setExp(storedXpProgress);
+			activePlayer.player.setLevel(storedXpLevel);
+			activePlayer.player.giveExp(storedXp);
+			storedXp = 0;
+			storedXpProgress = 0;
+			storedXpLevel = 0;
 		}
 		if (walkSpeedIncrease > 0) {
 			try {
@@ -1238,7 +1250,7 @@ public class Wand implements CostReducer {
 		if (activePlayer == null) return;
 		
 		Player player = activePlayer.getPlayer();
-		if (xpRegeneration > 0 && (xpMax == 0 || player.getTotalExperience() < xpMax)) {
+		if (xpRegeneration > 0 && (xpMax == 0 || activePlayer.getExperience() < xpMax)) {
 			player.giveExp(xpRegeneration);
 		}
 		double maxHealth = player.getMaxHealth();

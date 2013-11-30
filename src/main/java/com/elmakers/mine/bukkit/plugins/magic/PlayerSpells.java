@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import me.desht.dhutils.ExperienceManager;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -24,7 +22,6 @@ public class PlayerSpells implements CostReducer
 {
 	protected Player player;
 	protected Spells master;
-	protected ExperienceManager xpManager;
 	protected HashMap<String, Spell> spells = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
 	private Wand								activeWand					   = null;
@@ -38,15 +35,46 @@ public class PlayerSpells implements CostReducer
 	private ItemStack buildingMaterial = null;
 
 	public void removeExperience(int xp) {
-		xpManager.changeExp(-xp);
+		float expProgress = player.getExp();
+		int expLevel = player.getLevel();
+		while ((expProgress > 0 || expLevel > 0) && xp > 0) {
+			if (expProgress > 0) {
+				int expAtLevel = (int)(expProgress * (player.getExpToLevel()));
+				if (expAtLevel > xp) {
+					expAtLevel -= xp;
+					xp = 0;
+					expProgress = (float)expAtLevel / (float)getExpToLevel(expLevel);
+				} else {
+					expProgress = 0;
+					xp -= expAtLevel;
+				}
+			} else {
+				xp -= player.getExpToLevel();
+				expLevel--;
+				if (xp < 0) {
+					expProgress = (float)(-xp) / getExpToLevel(expLevel);
+					xp = 0;
+				}
+			}
+		}
+		
+		player.setExp(expProgress);
+		player.setLevel(expLevel);
 	}
 	
-	public void setExperience(int xp) {
-		xpManager.setExp(xp);
-	}
+	// Taken from mc Player
+    public static int getExpToLevel(int expLevel) {
+        return expLevel >= 30 ? 62 + (expLevel - 30) * 7 : (expLevel >= 15 ? 17 + (expLevel - 15) * 3 : 17);
+    }
 	
 	public int getExperience() {
-		return xpManager.getCurrentExp();
+		int xp = 0;
+		float expProgress = player.getExp();
+		int expLevel = player.getLevel();
+		for (int level = 0; level < expLevel; level++) {
+			xp += getExpToLevel(level);
+		}
+		return xp + (int)(expProgress * getExpToLevel(expLevel));
 	}
 	
 	public void setCostReduction(float reduction) {
@@ -196,7 +224,6 @@ public class PlayerSpells implements CostReducer
 	{
 		this.master = master;
 		this.player = player;
-		this.xpManager = new ExperienceManager(player);
 	}
 	
 	public Player getPlayer()
