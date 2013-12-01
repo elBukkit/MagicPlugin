@@ -15,12 +15,15 @@ public class TossSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!hasBuildPermission(player.getLocation())) {
+		Location location = player.getLocation();
+		if (!hasBuildPermission(location)) {
 			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		Material material = Material.SAND;
+		location.setY(location.getY() - 1);
+		Material material = location.getBlock().getType();
+		if (material == Material.AIR) material = Material.SAND;
 		byte data = 0;
 		ItemStack buildWith = getBuildingMaterial();
 		if (buildWith != null)
@@ -44,7 +47,7 @@ public class TossSpell extends Spell
 		for (int i = 0; i < tossCount; i++)
 		{
 			FallingBlock block = null;
-			Location location = player.getEyeLocation();
+			location = player.getEyeLocation();
 			location.setX(location.getX() + perp.getX() * (Math.random() * tossCount / 4 - tossCount / 8));
 			location.setY(location.getY());
 			location.setZ(location.getZ() + perp.getZ() * (Math.random() * tossCount / 4 - tossCount / 8));
@@ -68,5 +71,10 @@ public class TossSpell extends Spell
 	public void onLoad(ConfigurationNode node)
 	{
 		disableTargeting();
+	}
+	
+	@Override
+	public boolean usesMaterial() {
+		return true;
 	}
 }
