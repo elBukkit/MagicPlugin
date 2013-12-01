@@ -1,12 +1,16 @@
 # CHANGELOG
 
+## 2.5.5
+
+ - Add "toss" spell.
+
 ## 2.5.4
  
  - Allow altering the profession of villagers
  - Update xp regeneration system, make it a separate "mana" system.
  - Fix some strange behavior with how material positions are saved when there are too many for the wand to hold.
  - When randomizing a wand, make sure it has at least enough max xp to cast its most expensive spell.
- - Use desht's Exp manager plugin to fix some of the xp-related issues.
+ - Fix some of the xp-related issues, particularly enchanting and the mana system
 
 ## 2.5.3
 

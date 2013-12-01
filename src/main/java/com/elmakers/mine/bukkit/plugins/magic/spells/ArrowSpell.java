@@ -28,14 +28,19 @@ public class ArrowSpell extends Spell
 		spread = (float)parameters.getDouble("spread", spread);
 		damage = parameters.getDouble("damage", damage);
 		Vector direction = player.getLocation().getDirection();
+		direction.normalize().multiply(speed);
+		Vector up = new Vector(0, 1, 0);
+		Vector perp = new Vector();
+		perp.copy(direction);
+		perp.crossProduct(up);
 		
 		for (int ai = 0; ai < arrowCount; ai++)
 		{
 			Arrow arrow = null;
-			Location location = player.getLocation();
-			location.setX(location.getX() + direction.getX() * (1 + Math.random() * arrowCount));
-			location.setY(location.getY() + 1.5f);
-			location.setZ(location.getZ() + direction.getZ() * (1 + Math.random() * arrowCount));
+			Location location = player.getEyeLocation();
+			location.setX(location.getX() + perp.getX() * (Math.random() * arrowCount / 2 - arrowCount / 4));
+			location.setY(location.getY());
+			location.setZ(location.getZ() + perp.getZ() * (Math.random() * arrowCount / 2 - arrowCount / 4));
 			arrow = player.getWorld().spawnArrow(location, direction, speed, spread);
 
 			if (arrow == null)

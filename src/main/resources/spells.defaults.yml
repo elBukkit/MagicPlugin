@@ -52,6 +52,31 @@ spells:
           spread: 6
         costs:
         - xp: 5 
+    toss:
+        name: Toss
+        icon: wood_button
+        category: construction
+        description: Toss a block
+        class: TossSpell
+        properties:
+            cooldown: 0
+        parameters:
+          speed: 3
+        costs:
+        - xp: 10
+    volley:
+        name: Volley
+        icon: stone_button
+        category: construction
+        description: Toss a bunch of blocks
+        class: TossSpell
+        properties:
+            cooldown: 0
+        parameters:
+          speed: 2
+          count: 8
+        costs:
+        - xp: 10   
     sniper:
         name: Sniper
         icon: gold_nugget
