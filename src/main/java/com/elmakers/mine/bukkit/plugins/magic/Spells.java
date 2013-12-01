@@ -522,6 +522,7 @@ public class Spells implements Listener
 		quiet = generalNode.getBoolean("quiet", quiet);
 		messageThrottle = generalNode.getInt("message_throttle", 0);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
+		maxPowerMultiplier = (float)generalNode.getDouble("max_power_multiplier", maxPowerMultiplier);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);

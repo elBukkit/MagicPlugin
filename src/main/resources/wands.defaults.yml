@@ -3,6 +3,16 @@ wands:
         name: Wand of {Spell}
         description: This will randomly generate a wand
         levels: 1,5,10,50
+        property_count:
+          0: 100,100, 50,  0
+          1: 5,  10,  100,  100
+          2: 0,   5,   60,  70
+          3: 0,   0,    0,  50
+        power:
+          0:   100,100,80, 30
+          0.1: 2, 30, 40, 50
+          0.2: 0 , 10, 20, 30
+          0.3: 0 ,  0, 10, 20 
         cost_reduction:
           0:   100,100,80, 30
           0.1: 2, 30, 40, 50

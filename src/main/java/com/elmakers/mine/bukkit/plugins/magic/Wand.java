@@ -455,8 +455,10 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	public boolean addSpell(String spellName) {
-		activeSpell = spellName;
+	public boolean addSpell(String spellName, boolean makeDefault) {
+		if (makeDefault) {
+			activeSpell = spellName;
+		}
 		List<String> names = new ArrayList<String>();
 		names.add(spellName);
 		boolean addedNew = addSpells(names);
@@ -466,6 +468,10 @@ public class Wand implements CostReducer {
 		}
 		
 		return addedNew;
+	}
+	
+	public boolean addSpell(String spellName) {
+		return addSpell(spellName, true);
 	}
 	
 	private void setSpells(Collection<String> spellNames) {

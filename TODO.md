@@ -4,7 +4,6 @@
  - Test dying while the wand inventory is open
  - .. add region message for test world, update docs, .. make new video
  - .. Factions support .. ?
- - randomizing shouldn't change active spell or material
  - make sure when a spell is removed that a wand still has an active spell
  - Add sound effects
  - Add disarm spell
@@ -17,6 +16,7 @@
 DONE:
 
  - add power property to wands and support in spells that can
+ - randomizing shouldn't change active spell or material
  - Make sure max XP is always at least the highest-costing spell on a wand
  - Target through doors?
  * ^ Wand override for building material list? (Nah)

@@ -253,6 +253,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void setPlayer(Player player)
 	{
 		this.player = player;
+		playerSpells = spells.getPlayerSpells(player);
 	}
 
 	public final String getKey()
@@ -1060,7 +1061,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void initialize(Spells instance)
 	{
 		this.spells = instance;
-		playerSpells = spells.getPlayerSpells(player);
 	}
 
 	/**
