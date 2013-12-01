@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.5.6
+
 ## 2.5.5
 
  - Add "toss" spell.
