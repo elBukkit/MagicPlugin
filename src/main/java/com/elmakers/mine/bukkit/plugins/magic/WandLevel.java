@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.WeightedPair;
@@ -16,7 +17,9 @@ public class WandLevel {
 	private static int[] levels = null;
 	
 	private final LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<WeightedPair<Integer>>();
+	private final LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<String>> spellProbability = new LinkedList<WeightedPair<String>>();
+	private final LinkedList<WeightedPair<String>> materialProbability = new LinkedList<WeightedPair<String>>();
 	private final LinkedList<WeightedPair<Integer>> useProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<Integer>> addUseProbability = new LinkedList<WeightedPair<Integer>>();
 
@@ -99,6 +102,12 @@ public class WandLevel {
 		// Fetch spell count probabilities
 		RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template.getNode("spell_count"), levelIndex, nextLevelIndex, distance);
 		
+		// Fetch material probabilities
+		RandomUtils.populateStringProbabilityMap(materialProbability, template.getNode("materials"), levelIndex, nextLevelIndex, distance);
+		
+		// Fetch material count probabilities
+		RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getNode("material_count"), levelIndex, nextLevelIndex, distance);
+		
 		// Fetch uses
 		RandomUtils.populateIntegerProbabilityMap(useProbability, template.getNode("uses"), levelIndex, nextLevelIndex, distance);
 		RandomUtils.populateIntegerProbabilityMap(addUseProbability, template.getNode("add_uses"), levelIndex, nextLevelIndex, distance);
@@ -147,15 +156,43 @@ public class WandLevel {
 		}
 		
 		// Look through all spells for the max XP casting cost
+		// Also look for any material-using spells
+		boolean needsMaterials = false;
 		int maxXpCost = 0;
 		String[] spells = wand.getSpells();
 		for (int i = 0; i < spells.length; i++) {
 			String[] pieces = StringUtils.split(spells[i], "@");
 			Spell spell = wand.getMaster().getSpell(pieces[0]);
 			if (spell != null) {
+				needsMaterials = needsMaterials || spell.usesMaterial();
 				List<CastingCost> costs = spell.getCosts();
 				for (CastingCost cost : costs) {
 					maxXpCost = Math.max(maxXpCost, cost.getXP());
+				}
+			}
+		}
+		
+		// Add random materials
+		if (needsMaterials) {
+			int currentMaterialCount = wand.getMaterials().length;
+			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
+			
+			// Make sure the wand has at least one material.
+			if (currentMaterialCount == 0) {
+				materialCount++;
+			}
+			retries = 30;
+			for (int i = 0; i < materialCount; i++) {
+				String materialName = RandomUtils.weightedRandom(materialProbability);
+				byte data = 0;
+				String[] pieces = materialName.split(":");
+				if (pieces.length > 1) {
+					data = Byte.parseByte(pieces[1]);
+				}
+				Material material = ConfigurationNode.toMaterial(materialName);
+				if (!wand.addMaterial(material, data, false)) {
+					// Try again up to a certain number if we picked one the wand already had.
+					if (retries-- > 0) i--;
 				}
 			}
 		}
@@ -165,7 +202,7 @@ public class WandLevel {
 		ConfigurationNode wandProperties = new ConfigurationNode();
 		
 		while (propertyCount-- > 0) {
-			int randomProperty = (int)(Math.random() * 12);
+			int randomProperty = (int)(Math.random() * 10);
 			switch (randomProperty) {
 			case 0: 
 				float costReduction = wand.getCostReduction();
@@ -215,20 +252,6 @@ public class WandLevel {
 					wandProperties.setProperty("damage_reduction_explosions", (Double)(double)(Math.min(maxProtection, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
 				}
 				break;
-			case 8:
-				int xpRegeneration = wand.getXpRegeneration();
-				if (xpRegeneration < maxXpRegeneration) {
-					wandProperties.setProperty("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
-				}
-				break;
-			case 9:
-				int xpMax = wand.getXpMax();
-				if (xpMax < maxMaxXp) {
-					// Make sure the wand has at least enough xp to cast the highest costing spell it has.
-					int newMaxXp = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
-					wandProperties.setProperty("xp_max", Math.max(maxXpCost, newMaxXp));
-				}
-				break;
 			case 10:
 				int healthRegeneration = wand.getHealthRegeneration();
 				if (healthRegeneration < maxRegeneration) {
@@ -242,6 +265,19 @@ public class WandLevel {
 				}
 				break;
 			}
+		}
+		
+		// The mana system is considered separate from other properties
+
+		int xpRegeneration = wand.getXpRegeneration();
+		if (xpRegeneration < maxXpRegeneration) {
+			wandProperties.setProperty("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
+		}
+		int xpMax = wand.getXpMax();
+		if (xpMax < maxMaxXp) {
+			// Make sure the wand has at least enough xp to cast the highest costing spell it has.
+			int newMaxXp = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
+			wandProperties.setProperty("xp_max", Math.max(maxXpCost, newMaxXp));
 		}
 		
 		// Add or set uses to the wand

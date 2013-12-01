@@ -6,6 +6,8 @@
  - Add "power" property to wands, supported by: arrow, boom, construct, disintegrate, familiar, fire, fireball, frost, grenade, lightning, shrink, toss, wolf.
  - Some fixes to wand randomization, provide limiting for added properties.
  - Enchanting (randomizing) a wand won't change the active spell. Seemed confusing and dangerous.
+ - Add materials to random wands.
+ - Random wands will always use the mana system.
 
 ## 2.5.4
  

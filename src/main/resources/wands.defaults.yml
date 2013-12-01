@@ -119,6 +119,9 @@ wands:
           sandblast: 20,30,40,10
           lava: 5,20,50,20
           blob: 0,10,40,10
+          recurse: 0,5,20,40
+          paint: 1,20,45,15
+          toss: 2,25,35,70
           shrink: 5,20,30,90
         material_count:
           0: 100,100, 100,  100
@@ -126,8 +129,15 @@ wands:
           2: 0,  5,   20,   70
           3: 0,  0,   10,   60
         materials:
-          lava: 1,10,15,30
+          stationary_lava: 1,10,15,30
           stationary_water: 5,20,30,90
+          stone: 50,70,80,100
+          dirt: 50,50,70,80
+          sand: 20,30,40,70
+          gravel: 20,30,40,60
+          glass: 10,20,30,50
+          glowstone: 5,10,20,40
+          tnt: 1,10,15,2
     demo:
         name: Demo Wand
         description: Has a few simple demo spells

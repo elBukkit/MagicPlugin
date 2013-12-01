@@ -360,7 +360,7 @@ public class Wand implements CostReducer {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private boolean addMaterial(Material material, byte data, boolean makeActive) {
+	public boolean addMaterial(Material material, byte data, boolean makeActive) {
 		Integer id = material.getId();
 		String materialString = id.toString();
 		if (material == EraseMaterial) {
