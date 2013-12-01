@@ -21,13 +21,10 @@ public class LevitateSpell extends Spell
 	{
 		flightSpeed = (float)parameters.getDouble("speed", flightSpeed);
 		if (player.getAllowFlight()) {
-			sendMessage("You feel heavier");
-			
 			deactivate();
 			
 			return SpellResult.COST_FREE;
 		}
-		castMessage("You feel lighter");
 		activate();
 
 		return SpellResult.SUCCESS;
@@ -41,6 +38,8 @@ public class LevitateSpell extends Spell
 		// Prevent the player from death by fall
 		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		levitateEnded = System.currentTimeMillis();
+		
+		sendMessage("You feel heavier");
 	}
 	
 	@Override
@@ -55,6 +54,8 @@ public class LevitateSpell extends Spell
 				player.setFlying(true);
 			}
 		}, 2);
+
+		castMessage("You feel lighter");
 	}
 
 	@Override

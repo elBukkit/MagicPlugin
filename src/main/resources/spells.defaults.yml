@@ -1075,7 +1075,7 @@ spells:
         costs:
         - xp: 20
         active_costs:
-        - xp: 1
+        - xp: 10
     boom:
         name: Boom
         icon: baked_potato
