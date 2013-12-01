@@ -1,10 +1,6 @@
 # TODO
 
- - Add materials to random wands, always add a material when needed by a spell
- - Test dying while the wand inventory is open
- - .. add region message for test world, update docs, .. make new video
- - .. Factions support .. ?
- - make sure when a spell is removed that a wand still has an active spell
+ - Test dieing while the wand inventory is open
  - Add sound effects
  - Add disarm spell
  - fix spheres at large radii - maybe keep current effect though? Looks cool.
@@ -12,9 +8,14 @@
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - invincibility doesn't protect against magic or lightning?
  - can't recurse with colored clay? (hm, prolly 1.7 thing)
+ - Persist player spell data
+ - .. update docs, .. make new video
+ - .. Factions support .. ?
 
 DONE:
 
+ - make sure when a spell is removed that a wand still has an active spell
+ - Add materials to random wands, always add a material when needed by a spell
  - add power property to wands and support in spells that can
  - randomizing shouldn't change active spell or material
  - Make sure max XP is always at least the highest-costing spell on a wand

@@ -184,6 +184,10 @@ spells:
             cooldown: 0
         parameters:
             amount: '50'
+        costs:
+        - xp: 10
+        active_costs:
+        - xp: 2
     tree:
         name: Tree
         icon: sapling
@@ -255,6 +259,10 @@ spells:
             cooldown: 0
         parameters:
             amount: '99'
+        costs:
+        - xp: 15
+        active_costs:
+        - xp: 5
     fling:
         name: Fling
         icon: feather
@@ -346,6 +354,10 @@ spells:
         properties:
             cooldown: 0
         parameters: {}
+        costs:
+        - xp: 30
+        active_costs:
+        - xp: 10
     inferno:
         name: Inferno
         icon: fire
@@ -1060,6 +1072,10 @@ spells:
         properties:
             cooldown: 0
         parameters: {}
+        costs:
+        - xp: 20
+        active_costs:
+        - xp: 1
     boom:
         name: Boom
         icon: baked_potato

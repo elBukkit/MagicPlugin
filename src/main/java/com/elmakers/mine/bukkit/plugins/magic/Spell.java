@@ -55,6 +55,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private Material material;
 	private Material materialOverride;
 	private List<CastingCost> costs = null;
+	private List<CastingCost> activeCosts = null;
 
 	/*
 	 * private data
@@ -161,6 +162,33 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		return newSpell;
 	}
+	
+	public void checkActiveCosts() {
+		if (activeCosts == null) return;
+		
+		for (CastingCost cost : activeCosts)
+		{
+			if (!cost.has(playerSpells))
+			{
+				deactivate();
+				return;
+			}
+			
+			cost.use(playerSpells);
+		}
+	}
+	
+	protected void activate() {
+		onActivate();
+		
+		playerSpells.activateSpell(this);
+	}
+	
+	protected void deactivate() {
+		onDeactivate();
+		
+		playerSpells.deactivateSpell(this);
+	}
 
 	protected void loadAndSave(ConfigurationNode node)
 	{
@@ -183,23 +211,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
 		}
 	}
-
-	protected void load(String key, ConfigurationNode node)
-	{
-		this.key = key;
-		this.name = key;
-		loadAndSave(node);
-
-		List<Object> costNodes = node.getList("costs");
-
+	
+	protected List<CastingCost> parseCosts(ConfigurationNode node, String nodeName) {
+		List<Object> costNodes = node.getList(nodeName);
+		List<CastingCost> castingCosts = null;
+		
 		if (costNodes != null) 
 		{
-			if (costs == null)
-			{
-				costs = new ArrayList<CastingCost>();
-			}
-			costs.clear();
-
+			castingCosts = new ArrayList<CastingCost>();
 			for (Object o : costNodes)
 			{
 				if (o instanceof Map)
@@ -207,10 +226,22 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 					@SuppressWarnings("unchecked")
 					Map<String, Object> nodeValues = (Map<String, Object>)o;
 					CastingCost cost = new CastingCost(new ConfigurationNode(nodeValues));
-					costs.add(cost);
+					castingCosts.add(cost);
 				}
 			}
 		}
+		
+		return castingCosts;
+	}
+
+	protected void load(String key, ConfigurationNode node)
+	{
+		this.key = key;
+		this.name = key;
+		loadAndSave(node);
+
+		costs = parseCosts(node, "costs");
+		activeCosts = parseCosts(node, "active_costs");
 
 		Set<Material> defaultTargetThrough = spells.getTargetThroughMaterials();
 		for (Material defMat : defaultTargetThrough) {
@@ -1235,5 +1266,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public boolean hasMaterialOverride() {
 		return materialOverride != null;
+	}
+	
+	public void onActivate() {
+		
+	}
+	
+	public void onDeactivate() {
+
 	}
 }

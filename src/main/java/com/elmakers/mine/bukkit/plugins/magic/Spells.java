@@ -411,15 +411,11 @@ public class Spells implements Listener
 		this.plugin = plugin;
 		load();
 		
-		// Set up the Wand-tracking timer
+		// Set up the PlayerSpells timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
 				for (PlayerSpells spells : playerSpells.values()) {
-					Player player = spells.getPlayer();
-					Wand wand = spells.getActiveWand();
-					if (player.isOnline() && wand != null) {
-						wand.processRegeneration();
-					}
+					spells.tick();
 				}
 			}
 		}, 0, 20);

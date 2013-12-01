@@ -123,6 +123,10 @@ wands:
           paint: 1,20,45,15
           toss: 2,25,35,70
           shrink: 5,20,30,90
+          invincible: 0,0,10,20
+          levitate: 0,0,10,30
+          leatherskin: 5,10,30,10
+          ironskin: 0,5,10,20
         material_count:
           0: 100,100, 100,  100
           1: 1,  10,  60,   100
@@ -344,6 +348,7 @@ wands:
         xp_max: 1000
         health_regeneration: 1
         hunger_regeneration: 1
+        power: 1
         haste: 0.3
         spells:
             - fling
@@ -368,6 +373,7 @@ wands:
             - box
             - gather
             - frag
+            - volley
         materials:
             - water
             - lava

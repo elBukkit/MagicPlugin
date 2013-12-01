@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +31,7 @@ public class PlayerSpells implements CostReducer
 	private final List<Spell>                   quitListeners                  = new ArrayList<Spell>();
 	private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
 	private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
+	private final Set<Spell>					activeSpells				   = new TreeSet<Spell>();
 	
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
@@ -338,7 +341,6 @@ public class PlayerSpells implements CostReducer
 		}
 	}
 
-
 	public Spell getSpell(Material material)
 	{
 		Spell spell = master.getSpell(material);
@@ -443,6 +445,37 @@ public class PlayerSpells implements CostReducer
 	public void playSound(Sound sound, float volume, float pitch) {
 		if (master.soundsEnabled()) {
 			player.playSound(player.getLocation(), sound, volume, pitch);
+		}
+	}
+	
+	public void activateSpell(Spell spell) {
+		activeSpells.add(spell);
+	}
+	
+	public void deactivateSpell(Spell spell) {
+		activeSpells.remove(spell);
+	}
+	
+	public void deactivateAllSpells() {
+		// Copy this set since spells will get removed while iterating!
+		List<Spell> active = new ArrayList<Spell>(activeSpells);
+		for (Spell spell : active) {
+			spell.deactivate();
+		}
+	}
+	
+	// This gets called every second (or so - 20 ticks)
+	public void tick() {
+		// TODO: Won't need this online check once we're cleaning up on logout, I think.
+		// Also this theoretically should never happen since we deactive wands on logout. Shrug.
+		if (activeWand != null && player.isOnline()) {
+			activeWand.processRegeneration();
+		}
+		
+		// Copy this set since spells may get removed while iterating!
+		List<Spell> active = new ArrayList<Spell>(activeSpells);
+		for (Spell spell : active) {
+			spell.checkActiveCosts();
 		}
 	}
 }

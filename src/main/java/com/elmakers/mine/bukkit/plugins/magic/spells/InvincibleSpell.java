@@ -10,37 +10,50 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class InvincibleSpell extends Spell 
 {
 	protected float protectAmount = 0;
+	protected int amount = 100;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		int amount = parameters.getInt("amount", 100);
+		amount = parameters.getInt("amount", amount);
 
 		if (protectAmount != 0)
 		{
-			sendMessage("You feel normal.");
-			spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
-			protectAmount = 0;
+			deactivate();
 		}
 		else
 		{
-			spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
-
-			if (amount >= 100)
-			{
-				castMessage("You feel invincible!");
-			}
-			else
-			{
-				castMessage("You feel strong!");
-			}
-
-			protectAmount = (float)amount / 100;
+			activate();
 		}
 
 		return SpellResult.SUCCESS;
 	}
 
+	@Override
+	public void onDeactivate()
+	{
+		sendMessage("You feel normal.");
+		spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
+		protectAmount = 0;
+	}
+	
+	@Override
+	public void onActivate()
+	{
+		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+
+		if (amount >= 100)
+		{
+			castMessage("You feel invincible!");
+		}
+		else
+		{
+			castMessage("You feel strong!");
+		}
+
+		protectAmount = (float)amount / 100;
+	}
+	
 	@Override
 	public void onPlayerDamage(EntityDamageEvent event)
 	{

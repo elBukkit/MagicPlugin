@@ -14,23 +14,37 @@ public class LevitateSpell extends Spell
 {
 	private long levitateEnded;
 	private final long safetyLength = 10000;
+	private float flightSpeed = 0.6f;
 	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		final float flightSpeed = (float)parameters.getDouble("speed", 0.6f);
+		flightSpeed = (float)parameters.getDouble("speed", flightSpeed);
 		if (player.getAllowFlight()) {
 			sendMessage("You feel heavier");
-			player.setFlying(false);
-			player.setAllowFlight(false);
 			
-			// Prevent the player from death by fall
-			spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
-			levitateEnded = System.currentTimeMillis();
+			deactivate();
 			
 			return SpellResult.COST_FREE;
 		}
 		castMessage("You feel lighter");
+		activate();
+
+		return SpellResult.SUCCESS;
+	}
+	
+	@Override
+	public void onDeactivate() {
+		player.setFlying(false);
+		player.setAllowFlight(false);
+		
+		// Prevent the player from death by fall
+		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+		levitateEnded = System.currentTimeMillis();
+	}
+	
+	@Override
+	public void onActivate() {
 		Vector velocity = player.getVelocity();
 		velocity.setY(velocity.getY() + 2);
 		player.setVelocity(velocity);
@@ -41,8 +55,6 @@ public class LevitateSpell extends Spell
 				player.setFlying(true);
 			}
 		}, 2);
-
-		return SpellResult.SUCCESS;
 	}
 
 	@Override

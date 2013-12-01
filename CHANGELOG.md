@@ -1,6 +1,14 @@
 # CHANGELOG
 
+## 2.5.7
+
+ - Make sure when a spell is removed that a wand still has an active spell (same with materials)
+ - Implement activating and deactivating of spells like levitate and invincible, with cost draining.
+
 ## 2.5.6
+
+ - Fixes for 1.7.2 release (woohoo!)
+ - Fix the broken arrow spell.
 
 ## 2.5.5
 

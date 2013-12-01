@@ -336,17 +336,19 @@ public class Wand implements CostReducer {
 		materialString += ":" + data;
 
 		String[] materials = getMaterials();
+		String fallbackActiveMaterial = "";
 		List<String> materialMap = new LinkedList<String>();
 		for (int i = 0; i < materials.length; i++) {	
 			String[] pieces = StringUtils.split(materials[i], "@");
 			if (pieces.length > 0 && !pieces[0].equals(materialString)) {
+				fallbackActiveMaterial = materials[i];
 				materialMap.add(materials[i]);
 			}
 		}
 		setMaterials(materialMap);
 		
 		if (materialString.equalsIgnoreCase(activeMaterial)) {
-			activeMaterial = "";
+			activeMaterial = fallbackActiveMaterial;
 			updateActiveMaterial();
 			updateName();
 			if (isInventoryOpen()) {
@@ -438,16 +440,18 @@ public class Wand implements CostReducer {
 	public void removeSpell(String spellName) {
 		String[] spells = getSpells();
 		List<String> spellMap = new LinkedList<String>();
+		String fallbackActive = "";
 		for (int i = 0; i < spells.length; i++) {
 			String[] pieces = StringUtils.split(spells[i], "@");
 			if (pieces.length > 0 && !pieces[0].equals(spellName)) {
+				fallbackActive = spells[i];
 				spellMap.add(spells[i]);
 			}
 		}
 		setSpells(spellMap);
 		
 		if (spellName.equalsIgnoreCase(activeSpell)) {
-			activeSpell = "";
+			activeSpell = fallbackActive;
 			updateName();
 			if (isInventoryOpen()) {
 				updateInventory();
@@ -1206,6 +1210,11 @@ public class Wand implements CostReducer {
 	
 	public void deactivate() {
 		if (activePlayer == null) return;
+		
+		// This is a tying wands together with other spells, potentially
+		// But with the way the mana system works, this seems like the safest route.
+		activePlayer.deactivateAllSpells();
+		
 		deactivate(activePlayer.getPlayer().getInventory().getHeldItemSlot());
 	}
 	
@@ -1280,8 +1289,11 @@ public class Wand implements CostReducer {
 		if (activePlayer == null) return;
 		
 		Player player = activePlayer.getPlayer();
-		if (xpRegeneration > 0 && (xpMax == 0 || activePlayer.getExperience() < xpMax)) {
-			player.giveExp(xpRegeneration);
+		if (xpRegeneration > 0) {
+			int playerExperience = activePlayer.getExperience();
+			if (playerExperience < xpMax) {
+				player.giveExp(Math.min(xpRegeneration, xpMax - playerExperience));
+			}
 		}
 		double maxHealth = player.getMaxHealth();
 		if (healthRegeneration > 0 && player.getHealth() < maxHealth) {
