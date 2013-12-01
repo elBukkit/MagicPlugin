@@ -49,6 +49,8 @@ public class FireSpell extends Spell
 		}
 
 		int radius = parameters.getInt("radius", defaultRadius);
+		radius = (int)(playerSpells.getPowerMultiplier() * radius);
+		
 		FireAction action = new FireAction();
 
 		if (radius <= 1)

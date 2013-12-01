@@ -93,6 +93,11 @@ public class PlayerSpells implements CostReducer
 		return activeWand == null ? costReduction : activeWand.getCostReduction() + costReduction;
 	}
 	
+	public float getPowerMultiplier() {
+		float maxPowerMultiplier = master.getMaxPowerMultiplier() - 1;
+		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+	}
+	
 	public float getCooldownReduction() {
 		return activeWand == null ? cooldownReduction : activeWand.getCooldownReduction() + cooldownReduction;
 	}

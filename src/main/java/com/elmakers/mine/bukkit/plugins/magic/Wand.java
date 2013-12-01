@@ -52,6 +52,7 @@ public class Wand implements CostReducer {
 	private float damageReductionFalling = 0;
 	private float damageReductionFire = 0;
 	private float damageReductionExplosions = 0;
+	private float power = 0;
 	private boolean hasInventory = false;
 	private int uses = 0;
 	private int xp = 0;
@@ -152,6 +153,10 @@ public class Wand implements CostReducer {
 		return hasInventory;
 	}
 
+	public float getPower() {
+		return power;
+	}
+
 	public float getDamageReduction() {
 		return damageReduction;
 	}
@@ -209,6 +214,7 @@ public class Wand implements CostReducer {
 	
 		InventoryUtils.setMeta(wandNode, "cost_reduction", floatFormat.format(costReduction));
 		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
+		InventoryUtils.setMeta(wandNode, "power", floatFormat.format(power));
 		InventoryUtils.setMeta(wandNode, "damage_reduction", floatFormat.format(damageReduction));
 		InventoryUtils.setMeta(wandNode, "damage_reduction_physical", floatFormat.format(damageReductionPhysical));
 		InventoryUtils.setMeta(wandNode, "damage_reduction_projectiles", floatFormat.format(damageReductionProjectiles));
@@ -301,6 +307,7 @@ public class Wand implements CostReducer {
 		
 		costReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cost_reduction", floatFormat.format(costReduction)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
+		power = Float.parseFloat(InventoryUtils.getMeta(wandNode, "power", floatFormat.format(power)));
 		damageReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction", floatFormat.format(damageReduction)));
 		damageReductionPhysical = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_physical", floatFormat.format(damageReductionPhysical)));
 		damageReductionProjectiles = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_projectiles", floatFormat.format(damageReductionProjectiles)));
@@ -601,6 +608,7 @@ public class Wand implements CostReducer {
 		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
 		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", walkSpeedIncrease / WandLevel.maxWalkSpeedIncrease));
 		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
+		if (power > 0) lore.add(ChatColor.GOLD + getLevelString("Power", power));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
 		if (damageReduction < 1) {
 			if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
@@ -1008,6 +1016,7 @@ public class Wand implements CostReducer {
 	
 	public void configureProperties(ConfigurationNode wandConfig) {
 		costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
+		power = (float)wandConfig.getDouble("power", power);
 		damageReduction = (float)wandConfig.getDouble("damage_reduction", damageReduction);
 		damageReductionPhysical = (float)wandConfig.getDouble("damage_reduction_physical", damageReductionPhysical);
 		damageReductionProjectiles = (float)wandConfig.getDouble("damage_reduction_projectiles", damageReductionPhysical);

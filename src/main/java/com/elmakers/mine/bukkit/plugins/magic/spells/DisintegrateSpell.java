@@ -34,11 +34,11 @@ public class DisintegrateSpell extends Spell
 				LivingEntity li = (LivingEntity)targetEntity;
 				if (li instanceof Player)
 				{
-					li.damage(playerDamage, player);
+					li.damage(playerSpells.getPowerMultiplier() * playerDamage, player);
 				}
 				else
 				{
-					li.damage(entityDamage, player);
+					li.damage(playerSpells.getPowerMultiplier() * entityDamage, player);
 				}
 				castMessage("ZOT!");
 				return SpellResult.SUCCESS;

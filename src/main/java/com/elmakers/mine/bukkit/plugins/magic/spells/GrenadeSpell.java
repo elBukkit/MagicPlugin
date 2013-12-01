@@ -18,6 +18,7 @@ public class GrenadeSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int size = parameters.getInt("size", defaultSize);
+		size = (int)(playerSpells.getPowerMultiplier() * size);		
 		int fuse = parameters.getInt("fuse", 80);
 		boolean useFire = parameters.getBoolean("fire", false);
 

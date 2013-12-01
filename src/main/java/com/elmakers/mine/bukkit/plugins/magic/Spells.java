@@ -195,6 +195,10 @@ public class Spells implements Listener
 		return targetThroughMaterials;
 	}
 	
+	public float getMaxPowerMultiplier() {
+		return maxPowerMultiplier;
+	}
+	
 	/*
 	 * Undo system
 	 */
@@ -1150,6 +1154,7 @@ public class Spells implements Listener
 	 private int								 messageThrottle				= 0;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
+	 private float							 	 maxPowerMultiplier			    = 1.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	    = 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;

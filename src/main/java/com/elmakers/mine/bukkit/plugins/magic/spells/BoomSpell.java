@@ -32,6 +32,9 @@ public class BoomSpell extends Spell {
 		boolean useFire = parameters.getBoolean("fire", false);
 		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
 		String targetType = (String)parameters.getString("target", "");
+		
+		size = (int)(playerSpells.getPowerMultiplier() * size);
+		
 		if (targetType.equals("here"))
 		{
 			player.damage(player.getMaxHealth() * 10);

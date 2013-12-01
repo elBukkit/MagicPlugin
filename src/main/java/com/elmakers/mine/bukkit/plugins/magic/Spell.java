@@ -41,6 +41,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	protected Player						player;
 	protected Spells						spells;
+	protected PlayerSpells					playerSpells;
 	protected static CSVParser              csv = new CSVParser();
 
 	/*
@@ -309,7 +310,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean cast(String[] extraParameters)
 	{
 		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		addParameters(extraParameters, parameters);
 
 		long currentTime = System.currentTimeMillis();
@@ -459,19 +459,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			return new ItemStack(materialOverride, 1);
 		}
 		
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		return playerSpells.getBuildingMaterial();
 	}
 	
 	public boolean hasBuildPermission(Location location)
 	{
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		return playerSpells.hasBuildPermission(location);
 	}
 	
 	public boolean hasBuildPermission(Block block)
 	{
-		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		return playerSpells.hasBuildPermission(block);
 	}
 
@@ -851,7 +848,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			if (entity == player) continue;
 			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 
-			Target newScore = new Target(player, entity, range);
+			Target newScore = new Target(player, entity, getMaxRange());
 			if (newScore.getScore() > 0)
 			{
 				scored.add(newScore);
@@ -893,6 +890,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		lastX = targetX;
 		lastY = targetY;
 		lastZ = targetZ;
+		int scaledRange = getMaxRange();
 
 		do
 		{
@@ -908,9 +906,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			targetZ = (int) Math.floor(zOffset + playerLocation.getZ());
 
 		}
-		while ((length <= range) && ((targetX == lastX) && (targetY == lastY) && (targetZ == lastZ)));
+		while ((length <= scaledRange) && ((targetX == lastX) && (targetY == lastY) && (targetZ == lastZ)));
 
-		if (length > range || targetY > 255)
+		if (length > scaledRange || targetY > 255)
 		{
 			if (allowMaxRange)
 			{
@@ -932,7 +930,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Block getCurBlock()
 	{
-		if (length > range && !allowMaxRange)
+		int scaledRange = getMaxRange();
+		
+		if (length > scaledRange && !allowMaxRange)
 		{
 			return null;
 		}
@@ -1060,6 +1060,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void initialize(Spells instance)
 	{
 		this.spells = instance;
+		playerSpells = spells.getPlayerSpells(player);
 	}
 
 	/**
@@ -1098,8 +1099,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		{
 			return;
 		}
-
-		while (getNextBlock() != null && length <= range)
+		int scaledRange = getMaxRange();
+		while (getNextBlock() != null && length <= scaledRange)
 		{
 			Block block = getCurBlock();
 			if (isTargetable(block.getType()))
@@ -1122,7 +1123,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected int getMaxRange()
 	{
-		return range;
+		return (int)(playerSpells.getPowerMultiplier() * range);
 	}
 
 	protected void setMaxRange(int range, boolean allow)

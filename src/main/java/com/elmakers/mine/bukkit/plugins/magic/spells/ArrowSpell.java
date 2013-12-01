@@ -27,6 +27,13 @@ public class ArrowSpell extends Spell
 		speed = (float)parameters.getDouble("speed", speed);
 		spread = (float)parameters.getDouble("spread", spread);
 		damage = parameters.getDouble("damage", damage);
+		
+		// Modify with wand power
+		float powerMultiplier = playerSpells.getPowerMultiplier();
+		speed *= powerMultiplier;
+		damage *= powerMultiplier;
+		spread /= powerMultiplier;
+		
 		Vector direction = player.getLocation().getDirection();
 		direction.normalize().multiply(speed);
 		Vector up = new Vector(0, 1, 0);

@@ -52,6 +52,7 @@ public class LightningSpell extends Spell
 		}
 
 		int radius = parameters.getInt("radius", 1);
+		radius = (int)(playerSpells.getPowerMultiplier() * radius);	
 
 		double ratio = (radius < 2) ? 1.0 : (radius < 4) ? 0.5 : 0.25;
 		ShockAction action = new ShockAction(player, ratio, 5);

@@ -126,6 +126,7 @@ public class FamiliarSpell extends Spell
 		EntityType famType = EntityType.PIG;
 		FamiliarClass famClass = FamiliarClass.FRIENDLY;
 		int famCount = parameters.getInt("count", 1);
+		famCount = (int)(playerSpells.getPowerMultiplier() * famCount);	
 
 		String famTypeName = parameters.getString("type", "");
 

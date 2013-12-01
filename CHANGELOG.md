@@ -3,6 +3,7 @@
 ## 2.5.5
 
  - Add "toss" spell.
+ - Add "power" property to wands, supported by: arrow, boom, construct, disintegrate, familiar, fire, fireball, frost, grenade, lightning, shrink, toss, wolf.
 
 ## 2.5.4
  

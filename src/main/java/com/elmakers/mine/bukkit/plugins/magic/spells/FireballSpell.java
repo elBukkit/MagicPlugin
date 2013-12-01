@@ -14,6 +14,7 @@ public class FireballSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int size = parameters.getInt("size", defaultSize);
+		size = (int)(playerSpells.getPowerMultiplier() * size);
 		boolean useFire = parameters.getBoolean("fire", true);
 		Fireball fireball = (Fireball)player.launchProjectile(Fireball.class);
 		fireball.setShooter(player);

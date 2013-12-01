@@ -68,7 +68,8 @@ public class WolfSpell extends Spell
 
 		wolves = newWolves;
 
-		if (wolves.size() >= maxWolves) 
+		int scaledMaxWolves = (int)(playerSpells.getPowerMultiplier() * maxWolves);
+		if (wolves.size() >= scaledMaxWolves) 
 		{
 			Wolf killWolf = wolves.remove(0);
 			killWolf.setHealth(0);

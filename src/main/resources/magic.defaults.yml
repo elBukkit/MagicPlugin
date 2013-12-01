@@ -16,6 +16,7 @@ general:
     enable_enchanting: true
     enable_block_populator: false
     undo_depth: 256
+    max_power_multiplier: 5
     populate_chests:
       base_probability:
         0: 100
