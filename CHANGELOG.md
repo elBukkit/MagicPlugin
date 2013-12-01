@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.5.8
+
+ - Add disarm spell
+
 ## 2.5.7
 
  - Make sure when a spell is removed that a wand still has an active spell (same with materials)

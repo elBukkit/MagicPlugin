@@ -202,6 +202,19 @@ spells:
         parameters: {}
         costs:
         - xp: 20
+    disarm:
+        name: Disarm
+        icon: tripwire_hook
+        category: combat
+        description: Disarm your opponent
+        class: DisarmSpell
+        properties:
+            allow_max_range: false
+            range: 200
+            cooldown: 1000
+        parameters: {}
+        costs:
+        - xp: 50
     heal:
         name: Heal
         icon: bread
