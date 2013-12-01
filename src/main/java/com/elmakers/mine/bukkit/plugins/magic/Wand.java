@@ -106,7 +106,7 @@ public class Wand implements CostReducer {
 	public void setActiveSpell(String activeSpell) {
 		this.activeSpell = activeSpell;
 		updateName();
-		updateInventoryNames();
+		updateInventoryNames(true);
 		saveState();
 	}
 
@@ -121,7 +121,7 @@ public class Wand implements CostReducer {
 		}
 		updateName();
 		updateActiveMaterial();
-		updateInventoryNames();
+		updateInventoryNames(true);
 		saveState();
 	}
 	
@@ -534,18 +534,25 @@ public class Wand implements CostReducer {
 		return getActiveWandName(spell, materialName);
 	}
 	
+	private String getMaterialName(Material material) {
+		String materialName = null;
+		
+		if (material == EraseMaterial) {
+			materialName = "erase";
+		} else if (material == CopyMaterial) {
+			materialName = "copy";
+		} else {
+			materialName = material.name().toLowerCase();
+		}
+		return materialName;
+	}
+	
 	private String getActiveWandName(Material material) {
 		Spell spell = spells.getSpell(activeSpell);
 		String materialName = null;
 		
 		if (spell != null && spell.usesMaterial() && !spell.hasMaterialOverride() && material != null) {
-			if (material == EraseMaterial) {
-				materialName = "erase";
-			} else if (material == CopyMaterial) {
-				materialName = "copy";
-			} else {
-				materialName = material.name().toLowerCase();
-			}
+			materialName = getMaterialName(material);
 		}
 		return getActiveWandName(spell, materialName);
 	}
@@ -676,31 +683,35 @@ public class Wand implements CostReducer {
 		updateInventory(activePlayer.getPlayer().getInventory().getHeldItemSlot());
 	}
 	
-	protected void updateInventoryNames() {
+	public void updateInventoryNames(boolean activeNames) {
 		if (activePlayer == null || !isInventoryOpen()) return;
 		
 		ItemStack[] contents = activePlayer.getPlayer().getInventory().getContents();
 		for (ItemStack item : contents) {
 			if (item == null || item.getType() == Material.AIR || isWand(item)) continue;
-			updateInventoryName(item);
+			updateInventoryName(item, activeNames);
 		}
 	}
 
-	protected void updateInventoryName(ItemStack item) {
+	protected void updateInventoryName(ItemStack item, boolean activeName) {
 		if (isSpell(item)) {
 			Spell spell = activePlayer.getSpell(item.getType());
 			if (spell != null) {
-				updateSpellName(item, spell);
+				updateSpellName(item, spell, activeName);
 			}
 			
 		} else {
-			updateMaterialName(item);
+			updateMaterialName(item, activeName);
 		}
 	}
 	
-	protected void updateSpellName(ItemStack itemStack, Spell spell) {
+	protected void updateSpellName(ItemStack itemStack, Spell spell, boolean activeName) {
 		ItemMeta meta = itemStack.getItemMeta();
-		meta.setDisplayName(getActiveWandName(spell));
+		if (activeName) {
+			meta.setDisplayName(getActiveWandName(spell));
+		} else {
+			meta.setDisplayName(ChatColor.GOLD + spell.getName());
+		}
 		List<String> lore = new ArrayList<String>();
 		addSpellLore(spell, lore);
 		meta.setLore(lore);
@@ -710,9 +721,13 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(spellNode, "key", spell.getKey());
 	}
 	
-	protected void updateMaterialName(ItemStack itemStack) {
+	protected void updateMaterialName(ItemStack itemStack, boolean activeName) {
 		ItemMeta meta = itemStack.getItemMeta();
-		meta.setDisplayName(getActiveWandName(itemStack.getType()));
+		if (activeName) {
+			meta.setDisplayName(getActiveWandName(itemStack.getType()));
+		} else {
+			meta.setDisplayName(getMaterialName(itemStack.getType()));
+		}
 		itemStack.setItemMeta(meta);
 	}
 	
@@ -737,7 +752,7 @@ public class Wand implements CostReducer {
 			
 			ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
 			itemStack = InventoryUtils.getCopy(itemStack);
-			updateSpellName(itemStack, spell);
+			updateSpellName(itemStack, spell, true);
 			
 			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
 			if (parts.length > 1 && slot != itemSlot) {

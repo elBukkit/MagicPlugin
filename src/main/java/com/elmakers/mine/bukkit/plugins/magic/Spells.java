@@ -928,13 +928,18 @@ public class Spells implements Listener
 
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
-		if (!(event.getPlayer() instanceof Player) || event.getView().getType() == InventoryType.CRAFTING) return;
+		if (!(event.getPlayer() instanceof Player)) return;
 		
 		Player player = (Player)event.getPlayer();
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
-			wand.deactivate();
+			// NOTE: This never actually happens, unfortunately opening the player's inventory is client-side.
+			if (event.getView().getType() == InventoryType.CRAFTING) {
+				wand.updateInventoryNames(false);
+			} else {
+				wand.deactivate();
+			}
 		}
 	}
 	
@@ -1024,6 +1029,10 @@ public class Spells implements Listener
 					wand.openInventory();
 				}
 			}
+		}
+		
+		if (wand != null && !changedWands) {
+			wand.updateInventoryNames(true);
 		}
 	}
 

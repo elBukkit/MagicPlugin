@@ -8,6 +8,7 @@
  - Enchanting (randomizing) a wand won't change the active spell. Seemed confusing and dangerous.
  - Add materials to random wands.
  - Random wands will always use the mana system.
+ - TRY to: Fix spell and material names to be simpler when the inventory is open. (thwarted by client-side-only inventory open event)
 
 ## 2.5.4
  
