@@ -90,7 +90,7 @@ public class ConstructSpell extends Spell
 		int radius = parameters.getInt("radius", defaultRadius);		
 		String typeString = parameters.getString("type", "");
 		
-		radius = (int)(playerSpells.getPowerMultiplier() * radius);
+		// radius = (int)(playerSpells.getPowerMultiplier() * radius);
 
 		ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
 		if (testType != ConstructionType.UNKNOWN)
