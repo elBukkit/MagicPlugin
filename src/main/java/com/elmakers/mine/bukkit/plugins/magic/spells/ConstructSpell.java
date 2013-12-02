@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,6 +17,7 @@ public class ConstructSpell extends Spell
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
 	private int             timeToLive              = 0;
+	private Set<Material>	indestructible		    = null;
 
 	public enum ConstructionType
 	{
@@ -203,13 +206,14 @@ public class ConstructSpell extends Spell
 
 	public boolean isDestructible(Block block)
 	{
-		return spells.getDestructibleMaterials().contains(block.getType());
+		return spells.getDestructibleMaterials().contains(block.getType()) && !indestructible.contains(block.getType());
 	}
 
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
 		timeToLive = properties.getInt("undo", timeToLive);
+		indestructible = properties.getMaterials("indestructible", "");
 	}
 	
 	@Override
