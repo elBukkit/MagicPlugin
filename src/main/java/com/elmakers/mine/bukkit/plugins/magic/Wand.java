@@ -63,7 +63,8 @@ public class Wand implements CostReducer {
 	private int hungerRegeneration = 0;
 	
 	private float defaultWalkSpeed = 0.2f;
-	private float walkSpeedIncrease = 0;
+	private float defaultFlySpeed = 0.1f;
+	private float speedIncrease = 0;
 	
 	private int storedXpLevel = 0;
 	private int storedXp = 0;
@@ -222,7 +223,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "damage_reduction_fire", floatFormat.format(damageReductionFire));
 		InventoryUtils.setMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions));
 		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
-		InventoryUtils.setMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease));
+		InventoryUtils.setMeta(wandNode, "haste", floatFormat.format(speedIncrease));
 		InventoryUtils.setMeta(wandNode, "xp", Integer.toString(xp));
 		InventoryUtils.setMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration));
 		InventoryUtils.setMeta(wandNode, "xp_max", Integer.toString(xpMax));
@@ -315,7 +316,7 @@ public class Wand implements CostReducer {
 		damageReductionFire = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_fire", floatFormat.format(damageReductionFire)));
 		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "damage_reduction_explosions", floatFormat.format(damageReductionExplosions)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
-		walkSpeedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(walkSpeedIncrease)));
+		speedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(speedIncrease)));
 		xp = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp", Integer.toString(xp)));
 		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
 		xpMax = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_max", Integer.toString(xpMax)));
@@ -326,7 +327,7 @@ public class Wand implements CostReducer {
 		
 		// This is done here as an extra safety measure.
 		// A walk speed too high will cause a server error.
-		walkSpeedIncrease = Math.min(WandLevel.maxWalkSpeedIncrease, walkSpeedIncrease);
+		speedIncrease = Math.min(WandLevel.maxSpeedIncrease, speedIncrease);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -622,7 +623,7 @@ public class Wand implements CostReducer {
 		}
 		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
-		if (walkSpeedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", walkSpeedIncrease / WandLevel.maxWalkSpeedIncrease));
+		if (speedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", speedIncrease / WandLevel.maxSpeedIncrease));
 		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
 		if (power > 0) lore.add(ChatColor.GOLD + getLevelString("Power", power));
 		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
@@ -1055,11 +1056,12 @@ public class Wand implements CostReducer {
 		uses = wandConfig.getInt("uses", uses);
 	
 		// Make sure to adjust the player's walk speed if it changes and this wand is active.
-		float oldWalkSpeedIncrease = walkSpeedIncrease;
-		walkSpeedIncrease = (float)wandConfig.getDouble("haste", walkSpeedIncrease);
-		if (activePlayer != null && walkSpeedIncrease != oldWalkSpeedIncrease) {
+		float oldWalkSpeedIncrease = speedIncrease;
+		speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
+		if (activePlayer != null && speedIncrease != oldWalkSpeedIncrease) {
 			Player player = activePlayer.getPlayer();
-			player.setWalkSpeed(player.getWalkSpeed() + walkSpeedIncrease - oldWalkSpeedIncrease);
+			player.setWalkSpeed(defaultWalkSpeed + speedIncrease);
+			player.setFlySpeed(defaultFlySpeed + speedIncrease);
 		}
 		
 		saveState();
@@ -1179,12 +1181,14 @@ public class Wand implements CostReducer {
 	public void activate(PlayerSpells playerSpells) {
 		activePlayer = playerSpells;
 		Player player = activePlayer.getPlayer();
-		if (walkSpeedIncrease > 0) {
+		if (speedIncrease > 0) {
 			try {
-				player.setWalkSpeed(defaultWalkSpeed + walkSpeedIncrease);
+				player.setWalkSpeed(defaultWalkSpeed + speedIncrease);
+				player.setFlySpeed(defaultFlySpeed + speedIncrease);
 			} catch(Exception ex2) {
 				try {
 					player.setWalkSpeed(defaultWalkSpeed);
+					player.setFlySpeed(defaultFlySpeed);
 				}  catch(Exception ex) {
 					
 				}
@@ -1231,9 +1235,10 @@ public class Wand implements CostReducer {
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
-		if (walkSpeedIncrease > 0) {
+		if (speedIncrease > 0) {
 			try {
 				activePlayer.getPlayer().setWalkSpeed(defaultWalkSpeed);
+				activePlayer.getPlayer().setFlySpeed(defaultFlySpeed);
 			}  catch(Exception ex) {
 				
 			}

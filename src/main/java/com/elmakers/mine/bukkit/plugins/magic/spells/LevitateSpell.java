@@ -14,15 +14,12 @@ public class LevitateSpell extends Spell
 {
 	private long levitateEnded;
 	private final long safetyLength = 10000;
-	private float flightSpeed = 0.6f;
 	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		flightSpeed = (float)parameters.getDouble("speed", flightSpeed);
 		if (player.getAllowFlight()) {
 			deactivate();
-			
 			return SpellResult.COST_FREE;
 		}
 		activate();
@@ -49,7 +46,6 @@ public class LevitateSpell extends Spell
 		player.setVelocity(velocity);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(spells.getPlugin(), new Runnable() {
 			public void run() {
-				player.setFlySpeed(flightSpeed);
 				player.setAllowFlight(true);
 				player.setFlying(true);
 			}

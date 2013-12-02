@@ -2,19 +2,25 @@
 
  - Allow combining wands on an anvil
  - Maybe make wands regenerate while you're not holding them (timer-based)?
+ - Use firework effects directly
  - Add sound effects
- - Add disarm spell
+ - Add other visual effects
  - fix spheres at large radii - maybe keep current effect though? Looks cool.
- - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
+ - Add pyramid construction type, use for blast and blob (makes steps)
+ - Add duration to spells for auto-deactivate after X ms
+
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
- - invincibility doesn't protect against magic or lightning?
- - can't recurse with colored clay? (hm, prolly 1.7 thing)
  - Persist player spell data
+
+ - invincibility doesn't protect against magic or lightning?
+ - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
+ - can't recurse with colored clay? (hm, prolly 1.7 thing)
  - .. update docs, .. make new video
  - .. Factions support .. ?
 
 DONE:
 
+ - Add disarm spell
  - Need to drop armor on death with wand inventory open (!)
  - Test dieing while the wand inventory is open
  - make sure when a spell is removed that a wand still has an active spell
