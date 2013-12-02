@@ -72,7 +72,7 @@ public class WandLevel {
 			levels[i] = Integer.parseInt(levelStrings[i]);
 		}
 		
-		for (int level = 1; level < levels[levels.length - 1]; level++) {
+		for (int level = 1; level <= levels[levels.length - 1]; level++) {
 			levelMap.put(level, new WandLevel(level, template));
 		}
 	}

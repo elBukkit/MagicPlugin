@@ -2,7 +2,7 @@ wands:
     random:
         name: Wand of {Spell}
         description: This will randomly generate a wand
-        levels: 1,5,15,30
+        levels: 1,5,15,40
         property_count:
           0: 100,100, 50,  0
           1: 5,  10,  100,  100
