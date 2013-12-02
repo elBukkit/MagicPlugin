@@ -352,6 +352,7 @@ spells:
         class: InvincibleSpell
         properties:
             cooldown: 0
+            duration: 5000
         parameters: {}
         costs:
         - xp: 30

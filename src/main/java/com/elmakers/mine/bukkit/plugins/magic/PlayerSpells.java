@@ -475,6 +475,7 @@ public class PlayerSpells implements CostReducer
 		// Copy this set since spells may get removed while iterating!
 		List<Spell> active = new ArrayList<Spell>(activeSpells);
 		for (Spell spell : active) {
+			spell.checkActiveDuration();
 			spell.checkActiveCosts();
 		}
 	}

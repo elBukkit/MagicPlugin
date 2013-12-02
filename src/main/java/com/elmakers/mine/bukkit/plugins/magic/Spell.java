@@ -68,6 +68,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private double                              step                    = 0.2;
 
 	private int                                 cooldown                = 0;
+	private int                                 duration                = 0;
 	private long                                lastCast                = 0;
 	private long 								lastMessageSent 		= 0;
 
@@ -179,6 +180,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 	}
 	
+	public void checkActiveDuration() {
+		if (duration > 0 && lastCast < System.currentTimeMillis() - duration) {
+			deactivate();
+		}
+	}
+	
 	protected void activate() {
 		onActivate();
 		
@@ -201,6 +208,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		ConfigurationNode properties = node.getNode("properties");
 		if (properties == null) properties = node.createChild("properties");
 		cooldown = properties.getInt("cooldown", cooldown);
+		duration = properties.getInt("duration", duration);
 		materialOverride = properties.getMaterial("material", materialOverride);
 
 		this.onLoad(properties);

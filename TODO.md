@@ -7,7 +7,6 @@
  - Add other visual effects
  - fix spheres at large radii - maybe keep current effect though? Looks cool.
  - Add pyramid construction type, use for blast and blob (makes steps)
- - Add duration to spells for auto-deactivate after X ms
 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Persist player spell data
@@ -20,6 +19,7 @@
 
 DONE:
 
+ - Add duration to spells for auto-deactivate after X ms
  - Add disarm spell
  - Need to drop armor on death with wand inventory open (!)
  - Test dieing while the wand inventory is open

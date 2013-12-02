@@ -5,6 +5,7 @@
  - Add disarm spell
  - Fix armor not dropping on death if the wand inventory is open
  - Some wand randomization fixes
+ - Add duration property (supported by levitate and invincible)
 
 ## 2.5.7
 
