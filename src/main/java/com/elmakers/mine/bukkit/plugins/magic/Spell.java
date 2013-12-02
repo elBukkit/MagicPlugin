@@ -63,6 +63,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	private boolean                             allowMaxRange           = false;
 	private int                                 range                   = 200;
+	private static int                          maxRange                = 511;
 	private double                              viewHeight              = 1.65;
 	private double                              step                    = 0.2;
 
@@ -1154,7 +1155,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected int getMaxRange()
 	{
-		return (int)(playerSpells.getPowerMultiplier() * range);
+		return Math.min(maxRange, (int)(playerSpells.getPowerMultiplier() * range));
 	}
 
 	protected void setMaxRange(int range, boolean allow)
