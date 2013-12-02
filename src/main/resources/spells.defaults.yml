@@ -107,7 +107,7 @@ spells:
             range: 200
             cooldown: 500
         parameters:
-            size: '6'
+            size: 6
             break_blocks: true
         costs:
         - xp: 50
@@ -1001,6 +1001,7 @@ spells:
             cooldown: 50
         parameters:
             break_blocks: false
+            size: 4
         costs:
         - xp: 20
     box:
