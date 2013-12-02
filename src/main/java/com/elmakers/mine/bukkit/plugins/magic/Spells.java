@@ -785,7 +785,7 @@ public class Spells implements Listener
 		}
 		boolean toggleInventory = (event.getAction() == Action.RIGHT_CLICK_AIR);
 		if (!toggleInventory && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			Material material = event.getMaterial();
+			Material material = event.getClickedBlock().getType();
 			toggleInventory = !(material == Material.CHEST || material == Material.WOODEN_DOOR 
 					|| material == Material.IRON_DOOR_BLOCK || material == Material.ENDER_CHEST
 					|| material == Material.ANVIL || material == Material.BREWING_STAND || material == Material.ENCHANTMENT_TABLE
@@ -1100,13 +1100,17 @@ public class Spells implements Listener
 			ArrayList<Integer> levels = new ArrayList<Integer>();
 			levels.addAll(levelSet);
 			int[] offered = event.getExpLevelCostsOffered();
+			// bonusLevels caps at 20
 			int bonusLevels = event.getEnchantmentBonus();
-			for (int i = 0; i < offered.length; i++) {
+			int maxLevel = levels.get(levels.size() - 1) - 20 + bonusLevels;
+			
+			for (int i = 0; i < offered.length - 1; i++) {
 				int levelIndex = (int)((float)i * levels.size() / (float)offered.length);
 				levelIndex += (float)bonusLevels * ((i + 1) / offered.length);
 				levelIndex = Math.min(levelIndex, levels.size() - 1);
 				offered[i] = levels.get(levelIndex);
 			}
+			offered[offered.length - 1] = maxLevel;
 			event.setCancelled(false);
 		}
 	}
