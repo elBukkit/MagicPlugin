@@ -728,6 +728,14 @@ public class Spells implements Listener
 						drops.add(stack);
 					}
 				}
+				
+				// Drop armor also
+				ItemStack[] armor = player.getInventory().getArmorContents();
+				for (ItemStack stack : armor) {
+					if (stack != null) {
+						drops.add(stack);
+					}
+				}
 			} else {
 				wand.deactivate();
 			}

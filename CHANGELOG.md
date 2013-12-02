@@ -3,6 +3,8 @@
 ## 2.5.8
 
  - Add disarm spell
+ - Fix armor not dropping on death if the wand inventory is open
+ - Some wand randomization fixes
 
 ## 2.5.7
 

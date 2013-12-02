@@ -1,6 +1,5 @@
 # TODO
 
- - Need to drop armor on death with wand inventory open (!)
  - Allow combining wands on an anvil
  - Maybe make wands regenerate while you're not holding them (timer-based)?
  - Add sound effects
@@ -16,6 +15,7 @@
 
 DONE:
 
+ - Need to drop armor on death with wand inventory open (!)
  - Test dieing while the wand inventory is open
  - make sure when a spell is removed that a wand still has an active spell
  - Add materials to random wands, always add a material when needed by a spell
