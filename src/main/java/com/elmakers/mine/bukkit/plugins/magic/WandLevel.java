@@ -164,7 +164,7 @@ public class WandLevel {
 			String[] pieces = StringUtils.split(spells[i], "@");
 			Spell spell = wand.getMaster().getSpell(pieces[0]);
 			if (spell != null) {
-				needsMaterials = needsMaterials || spell.usesMaterial();
+				needsMaterials = needsMaterials || (spell.usesMaterial() && !spell.hasMaterialOverride());
 				List<CastingCost> costs = spell.getCosts();
 				for (CastingCost cost : costs) {
 					maxXpCost = Math.max(maxXpCost, cost.getXP());
@@ -276,9 +276,13 @@ public class WandLevel {
 		int xpMax = wand.getXpMax();
 		if (xpMax < maxMaxXp) {
 			// Make sure the wand has at least enough xp to cast the highest costing spell it has.
-			int newMaxXp = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
-			wandProperties.setProperty("xp_max", Math.max(maxXpCost, newMaxXp));
+			xpMax = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
+			xpMax = Math.max(maxXpCost, xpMax);
+			wandProperties.setProperty("xp_max", xpMax);
 		}
+		
+		// Refill the wand's xp, why not
+		wandProperties.setProperty("xp", xpMax);
 		
 		// Add or set uses to the wand
 		if (additive) {

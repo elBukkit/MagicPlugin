@@ -1,5 +1,6 @@
 # TODO
 
+ - Maybe make wands regenerate while you're not holding them (timer-based)?
  - Test dieing while the wand inventory is open
  - Add sound effects
  - Add disarm spell
