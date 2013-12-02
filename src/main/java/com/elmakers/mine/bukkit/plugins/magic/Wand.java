@@ -376,9 +376,7 @@ public class Wand implements CostReducer {
 		Set<String> materialMap = new TreeSet<String>();
 		for (int i = 0; i < materials.length; i++) {	
 			String[] pieces = StringUtils.split(materials[i], "@");
-			if (pieces.length > 0 && !pieces[0].equals(materialString)) {
-				materialMap.add(materials[i]);
-			}
+			materialMap.add(pieces[0]);
 		}
 		if (makeActive || activeMaterial == null || activeMaterial.length() == 0) {
 			activeMaterial = materialString;
@@ -415,7 +413,8 @@ public class Wand implements CostReducer {
 		Set<String> spellMap = new TreeSet<String>();
 		boolean addedNew = false;
 		for (String spell : spells) {
-			spellMap.add(spell);
+			String[] pieces = spell.split("@");
+			spellMap.add(pieces[0]);
 		}
 		for (String spellName : spellNames) {
 			if (activeSpell == null || activeSpell.length() == 0) {
