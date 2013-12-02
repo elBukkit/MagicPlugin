@@ -6,6 +6,8 @@
  - Fix armor not dropping on death if the wand inventory is open
  - Some wand randomization fixes
  - Add duration property (supported by levitate and invincible)
+ - Fix spawn spell when the actual spawn point is underground.
+ - Cap enchanting wand levels to 40, and fix the way levels are presented when enchanting.
 
 ## 2.5.7
 

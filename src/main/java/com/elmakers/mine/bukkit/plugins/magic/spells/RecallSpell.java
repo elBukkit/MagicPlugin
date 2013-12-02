@@ -33,7 +33,7 @@ public class RecallSpell extends Spell
 		if (typeString.equals("spawn"))
 		{
 			castMessage("Returning you home");
-			player.teleport(player.getWorld().getSpawnLocation());
+			player.teleport(findPlaceToStand(player.getWorld().getSpawnLocation(), true));
 			return SpellResult.SUCCESS; 
 		}
 
@@ -42,7 +42,7 @@ public class RecallSpell extends Spell
 			if (!isActive && autoSpawn)
 			{
 				castMessage("Returning you home");
-				player.teleport(player.getWorld().getSpawnLocation());
+				player.teleport(findPlaceToStand(player.getWorld().getSpawnLocation(), true));
 			}
 			else
 			{
@@ -53,7 +53,7 @@ public class RecallSpell extends Spell
 				if (distance < disableDistance && autoSpawn)
 				{
 					castMessage("Returning you home");
-					player.teleport(player.getWorld().getSpawnLocation());
+					player.teleport(findPlaceToStand(player.getWorld().getSpawnLocation(), true));
 				}
 				else
 				{
