@@ -1253,9 +1253,13 @@ public class Wand implements CostReducer {
 		saveState();
 	}
 	
+	public Spell getActiveSpell() {
+		if (activePlayer == null) return null;
+		return activePlayer.getSpell(activeSpell);
+	}
+	
 	public boolean cast() {
-		if (activePlayer == null) return false;
-		Spell spell = activePlayer.getSpell(activeSpell);
+		Spell spell = getActiveSpell();
 		if (spell != null) {
 			if (spell.cast()) {
 				use();

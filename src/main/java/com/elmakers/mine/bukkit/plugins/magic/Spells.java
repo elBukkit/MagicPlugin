@@ -801,7 +801,8 @@ public class Spells implements Listener
 				// Check for wand cycling
 				if (wandCycling) {
 					if (player.isSneaking()) {
-						if (wand.getMaterials().length > 0) {
+						Spell activeSpell = wand.getActiveSpell();
+						if (activeSpell != null && activeSpell.usesMaterial() && !activeSpell.hasMaterialOverride() && wand.getMaterials().length > 0) {
 							wand.cycleMaterials();
 						} else {
 							wand.cycleSpells();
