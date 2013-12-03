@@ -58,6 +58,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
@@ -992,6 +993,7 @@ public class Spells implements Listener
 			SlotType slotType = event.getSlotType();
 			ItemStack cursor = event.getCursor();
 			ItemStack current = event.getCurrentItem();
+			Inventory anvilInventory = event.getInventory();
 			
 			// Set/unset active names when starting to craft
 			if (slotType == SlotType.CRAFTING) {
@@ -1004,6 +1006,24 @@ public class Spells implements Listener
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(this, current);
 					wand.updateName(true);
+				}
+				
+				// Check for wands in both slots
+				// ...... arg. So close.. and yet, not.
+				// I guess I need to wait for the long-awaited anvil API?
+				ItemStack firstItem = event.getSlot() == 0 ? cursor : anvilInventory.getItem(0);
+				ItemStack secondItem = event.getSlot() == 1 ? cursor : anvilInventory.getItem(1);
+				if (Wand.isWand(firstItem) && Wand.isWand(secondItem)) 
+				{
+					Wand firstWand = new Wand(this, firstItem);
+					Wand secondWand = new Wand(this, secondItem);
+					Wand newWand = new Wand(this);
+					newWand.setName(firstWand.getName());
+					newWand.add(firstWand);
+					newWand.add(secondWand);
+					
+					// This seems to work in the debugger, but.. doesn't do anything.
+					InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
 				}
 			}
 			

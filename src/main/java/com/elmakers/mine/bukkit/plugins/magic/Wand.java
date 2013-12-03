@@ -367,17 +367,7 @@ public class Wand implements CostReducer {
 		return addMaterial(material, data, true);
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean addMaterial(Material material, byte data, boolean makeActive) {
-		Integer id = material.getId();
-		String materialString = id.toString();
-		if (material == EraseMaterial) {
-			materialString = "0";
-		} else if (material == CopyMaterial) {
-			materialString = "-1";
-		}
-		materialString += ":" + data;
-
+	protected boolean addMaterial(String materialString, boolean makeActive) {
 		String[] materials = getMaterials();
 		Set<String> materialMap = new TreeSet<String>();
 		for (int i = 0; i < materials.length; i++) {	
@@ -397,6 +387,19 @@ public class Wand implements CostReducer {
 		}
 		
 		return addedNew;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public boolean addMaterial(Material material, byte data, boolean makeActive) {
+		Integer id = material.getId();
+		String materialString = id.toString();
+		if (material == EraseMaterial) {
+			materialString = "0";
+		} else if (material == CopyMaterial) {
+			materialString = "-1";
+		}
+		materialString += ":" + data;
+		return addMaterial(materialString, makeActive);
 	}
 	
 	private void setMaterials(Collection<String> materialNames) {
@@ -1042,6 +1045,47 @@ public class Wand implements CostReducer {
 		wand.setName(wandName);
 		
 		return wand;
+	}
+	
+	public void add(Wand other) {
+		costReduction = Math.max(costReduction, other.costReduction);
+		power = Math.max(power, other.power);
+		damageReduction = Math.max(damageReduction, other.damageReduction);
+		damageReductionPhysical = Math.max(damageReductionPhysical, other.damageReductionPhysical);
+		damageReductionProjectiles = Math.max(damageReductionProjectiles, other.damageReductionProjectiles);
+		damageReductionFalling = Math.max(damageReductionFalling, other.damageReductionFalling);
+		damageReductionFire = Math.max(damageReductionFire, other.damageReductionFire);
+		damageReductionExplosions = Math.max(damageReductionExplosions, other.damageReductionExplosions);
+		xpRegeneration = Math.max(xpRegeneration, other.xpRegeneration);
+		xpMax = Math.max(xpMax, other.xpMax);
+		xp = Math.max(xp, other.xp);
+		healthRegeneration = Math.max(healthRegeneration, other.healthRegeneration);
+		hungerRegeneration = Math.max(hungerRegeneration, other.hungerRegeneration);
+		speedIncrease = Math.max(speedIncrease, other.speedIncrease);
+		
+		// Eliminate limited-use wands
+		if (uses == 0 || other.uses == 0) {
+			uses = 0;
+		} else {
+			// Otherwise add them
+			uses = uses + other.uses;
+		}
+		
+		// Add spells
+		String[] spells = other.getSpells();
+		for (String spell : spells) {
+			addSpell(spell.split("@")[0], false);
+		}
+
+		// Add materials
+		String[] materials = other.getMaterials();
+		for (String material : materials) {
+			addMaterial(material.split("@")[0], false);
+		}
+
+		saveState();
+		updateName();
+		updateLore();
 	}
 	
 	public void configureProperties(ConfigurationNode wandConfig) {

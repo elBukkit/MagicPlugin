@@ -312,4 +312,17 @@ public class InventoryUtils
 		}
 		return false;
 	}
+	
+	public static boolean setInventoryResults(Inventory inventory, ItemStack item) {
+		try {
+			Method getResultsMethod = inventory.getClass().getMethod("getResultInventory");
+			Object inv = getResultsMethod.invoke(inventory);
+			Method setItemMethod = inv.getClass().getMethod("setItem", Integer.TYPE, class_ItemStack);
+			setItemMethod.invoke(inv, 0, getHandle(item));
+			return true;
+		} catch(Throwable ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 }

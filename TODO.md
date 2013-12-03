@@ -1,6 +1,5 @@
 # TODO
 
- - Allow combining wands on an anvil
  - Maybe make wands regenerate while you're not holding them (timer-based)?
  - Use firework effects directly
  - Add sound effects
@@ -19,6 +18,7 @@
 
 DONE:
 
+ * Allow combining wands on an anvil - Sort of... I think I need some Bukkit support here. Or, maybe it's not possible. :(
  - Add duration to spells for auto-deactivate after X ms
  - Add disarm spell
  - Need to drop armor on death with wand inventory open (!)
