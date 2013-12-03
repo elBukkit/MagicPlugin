@@ -17,6 +17,7 @@ general:
     enable_block_populator: false
     undo_depth: 256
     max_power_multiplier: 5
+    right_click_cycles: false
     populate_chests:
       base_probability:
         0: 100

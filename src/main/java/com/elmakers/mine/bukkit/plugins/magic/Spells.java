@@ -514,6 +514,7 @@ public class Spells implements Listener
 
 		ConfigurationNode generalNode = properties.getNode("general");
 		undoQueueDepth = generalNode.getInteger("undo_depth", undoQueueDepth);
+		wandCycling = generalNode.getBoolean("right_click_cycles", wandCycling);
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
 		messageThrottle = generalNode.getInt("message_throttle", 0);
@@ -796,13 +797,27 @@ public class Spells implements Listener
 		{
 			// Check for spell cancel first, e.g. fill or force
 			if (!playerSpells.cancel()) {
-				if (wand.getHasInventory()) {
-					if (wand.isInventoryOpen()) {
-						playerSpells.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
-						wand.closeInventory();
-					} else {
-						playerSpells.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
-						wand.openInventory();
+				
+				// Check for wand cycling
+				if (wandCycling) {
+					if (player.isSneaking()) {
+						if (wand.getMaterials().length > 0) {
+							wand.cycleMaterials();
+						} else {
+							wand.cycleSpells();
+						}
+					} else { 
+						wand.cycleSpells();
+					}
+				} else {
+					if (wand.getHasInventory()) {
+						if (wand.isInventoryOpen()) {
+							playerSpells.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+							wand.closeInventory();
+						} else {
+							playerSpells.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
+							wand.openInventory();
+						}
 					}
 				}
 			} else {
@@ -1166,6 +1181,7 @@ public class Spells implements Listener
 
 	 private long                                physicsDisableTimeout          = 0;
 	 private int                                 undoQueueDepth                 = 256;
+	 private boolean							 wandCycling					= false;
 	 private boolean                             silent                         = false;
 	 private boolean                             quiet                          = true;
 	 private boolean                             soundsEnabled                  = true;

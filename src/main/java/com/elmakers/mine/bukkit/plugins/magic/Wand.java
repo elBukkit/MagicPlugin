@@ -113,13 +113,18 @@ public class Wand implements CostReducer {
 
 	@SuppressWarnings("deprecation")
 	public void setActiveMaterial(Material material, byte data) {
+		String materialKey = "";
 		if (material == CopyMaterial) {
-			this.activeMaterial = "-1:0";
+			materialKey = "-1:0";
 		} else if (material == EraseMaterial) {
-			this.activeMaterial = "0:0";
+			materialKey = "0:0";
 		} else {
-			this.activeMaterial = material.getId() + ":" + data;
+			materialKey = material.getId() + ":" + data;
 		}
+		setActiveMaterial(materialKey);
+	}
+	protected void setActiveMaterial(String materialKey) {
+		this.activeMaterial = materialKey;
 		updateName();
 		updateActiveMaterial();
 		updateInventoryNames(true);
@@ -1326,5 +1331,45 @@ public class Wand implements CostReducer {
 	
 	public Spells getMaster() {
 		return spells;
+	}
+	
+	public void cycleSpells() {
+		String[] spells = getSpells();
+		if (spells.length == 0) return;
+		if (activeSpell == null) {
+			activeSpell = spells[0].split("@")[0];
+			return;
+		}
+		
+		int spellIndex = 0;
+		for (int i = 0; i < spells.length; i++) {
+			if (spells[i].split("@")[0].equals(activeSpell)) {
+				spellIndex = i;
+				break;
+			}
+		}
+		
+		spellIndex = (spellIndex + 1) % spells.length;
+		setActiveSpell(spells[spellIndex].split("@")[0]);
+	}
+	
+	public void cycleMaterials() {
+		String[] materials = getMaterials();
+		if (materials.length == 0) return;
+		if (activeMaterial == null) {
+			activeMaterial = materials[0].split("@")[0];
+			return;
+		}
+		
+		int materialIndex = 0;
+		for (int i = 0; i < materials.length; i++) {
+			if (materials[i].split("@")[0].equals(activeMaterial)) {
+				materialIndex = i;
+				break;
+			}
+		}
+		
+		materialIndex = (materialIndex + 1) % materials.length;
+		setActiveMaterial(materials[materialIndex].split("@")[0]);
 	}
 }
