@@ -1,15 +1,8 @@
 package com.elmakers.mine.bukkit.utilities;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.math.BigInteger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -222,74 +215,6 @@ public class InventoryUtils
 			ex.printStackTrace();
 		}
     }
-
-	public static String inventoryToString(final Inventory inventory) {
-		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		final DataOutputStream dataOutput = new DataOutputStream(outputStream);
-		try {        
-			final Object itemList = class_NBTTagList.newInstance();
-			for (int i = 0; i < inventory.getSize(); i++) {
-				final Object outputObject = class_NBTTagCompound.newInstance();
-				Object craft = null;
-				final ItemStack is = inventory.getItem(i);
-				if (is != null) {
-					craft = getNMSCopy(is);
-				} else {
-					craft = null;
-				}
-				if (craft != null && class_ItemStack.isInstance(craft)) {
-					Method saveMethod = class_ItemStack.getMethod("save", outputObject.getClass());
-					saveMethod.invoke(craft, outputObject);
-				}
-				Method addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
-				addMethod.invoke(itemList, outputObject);
-			}
-
-			// This bit is kind of ugly and prone to break between versions
-			// Well, moreso than the rest of this, even.
-			Method saveMethod = class_NBTBase.getMethod("a", class_NBTBase, DataOutput.class);
-			saveMethod.invoke(null, itemList, dataOutput);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-
-		return new BigInteger(1, outputStream.toByteArray()).toString(32);
-	}
-
-	public static Inventory stringToInventory(final String data, final String name) {
-		Inventory inventory = null;
-
-		try {
-			final ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
-
-			// More MC internals :(
-			Method loadMethod = class_NBTBase.getMethod("a", DataInput.class);
-			final Object itemList = loadMethod.invoke(null, new DataInputStream(inputStream));
-
-			Method sizeMethod = class_NBTTagList.getMethod("size");
-			Method getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
-			final int listSize = (Integer)sizeMethod.invoke(itemList);
-
-			Method isEmptyMethod = class_NBTTagCompound.getMethod("isEmpty");			
-			Method setItemMethod = class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);
-
-			inventory = createInventory(null, listSize, name);
-
-			for (int i = 0; i < listSize; i++) {
-				final Object inputObject = getMethod.invoke(itemList, i);
-				if (!(Boolean)isEmptyMethod.invoke(inputObject)) {
-					Method createMethod = class_ItemStack.getMethod("createStack", inputObject.getClass());
-					Object newStack = createMethod.invoke(null, inputObject);
-					Method bukkitCopyMethod = class_CraftItemStack.getMethod("asBukkitCopy", class_ItemStack);
-					Object newCraftStack = bukkitCopyMethod.invoke(null, newStack);
-					setItemMethod.invoke(inventory, i, newCraftStack);
-				}
-			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return inventory;
-	}
 
 	public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
 		Inventory inventory = null;
