@@ -8,6 +8,7 @@
  - Add duration property (supported by levitate and invincible)
  - Fix spawn spell when the actual spawn point is underground.
  - Cap enchanting wand levels to 40, and fix the way levels are presented when enchanting.
+ - Add right-click-to-cycle option, for all the wand inventory haters out there (er, everyone but me?)
 
 ## 2.5.7
 
