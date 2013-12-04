@@ -654,12 +654,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public int getRemainingUses() {
-		int remaining = 0;
-		if (uses > 0) {
-			short durability = item.getDurability();
-			remaining = Math.max(0, uses - durability);
-		}
-		return remaining;
+		return uses;
 	}
 	
 	public void makeEnchantable(boolean enchantable) {
@@ -1318,17 +1313,17 @@ public class Wand implements CostReducer {
 	protected void use() {
 		if (activePlayer == null) return;
 		if (uses > 0) {
-			short durability = item.getDurability();
-			if (durability >= uses - 1) {
+			uses--;
+			if (uses <= 0) {
 				Player player = activePlayer.getPlayer();
 				deactivate();
 				PlayerInventory playerInventory = player.getInventory();
 				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
 				player.updateInventory();
 			} else {
-				item.setDurability((short)(durability + 1));
 				updateName();
 				updateLore(getSpells().length, getMaterials().length);
+				saveState();
 			}
 		}
 	}
