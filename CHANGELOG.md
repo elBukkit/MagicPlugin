@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.5.9
+
+ - Fix cooldown and cost reduction being tied together.
+
 ## 2.5.8
 
  - Add disarm spell

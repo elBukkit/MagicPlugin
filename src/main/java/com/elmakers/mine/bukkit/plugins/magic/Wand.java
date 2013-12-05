@@ -152,7 +152,7 @@ public class Wand implements CostReducer {
 	}
 
 	public float getCooldownReduction() {
-		return costReduction;
+		return cooldownReduction;
 	}
 	
 	public boolean getHasInventory() {

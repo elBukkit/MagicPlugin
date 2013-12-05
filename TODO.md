@@ -1,11 +1,14 @@
 # TODO
 
+ - Cooldowns stopped working? Check sniper spell...
+   also, managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?
  - Use firework effects directly
- - Add sound effects
+ - Add sound effects (breaking on wand break... spell-specific)
  - Add other visual effects
  - fix spheres at large radii - maybe keep current effect though? Looks cool.
  - Add pyramid construction type, use for blast and blob (makes steps)
+ - Add server commands to create or upgrade wands
 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Persist player spell data
