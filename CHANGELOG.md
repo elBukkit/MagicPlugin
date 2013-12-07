@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.6.0
+
+
+
 ## 2.5.9
 
  - Fix cooldown and cost reduction being tied together.
