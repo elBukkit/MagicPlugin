@@ -639,8 +639,8 @@ public class Wand implements CostReducer {
 			lore.add(ChatColor.RED + "" + remaining + " Uses Remaining");
 		}
 		if (xpRegeneration > 0) {
-			lore.add(ChatColor.LIGHT_PURPLE + "Mana: " + xpMax);
-			lore.add(ChatColor.AQUA + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
+			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Mana: " + xpMax);
+			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
 		}
 		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Protection", damageReduction));
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Cost Reduction", costReduction));
