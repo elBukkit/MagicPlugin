@@ -195,8 +195,8 @@ public class MagicPlugin extends JavaPlugin
 		if (parameters.length < 2) {
 			player.sendMessage("Use: /wand configure <property> <value>");
 			player.sendMessage("Properties: cost_reduction, uses, health_regeneration, hunger_regeneration, xp_regeneration,");
-			player.sendMessage("  xp_max, damage_reduction, damage_reduction_physical, damage_reduction_projectiles,");
-			player.sendMessage("  damage_reduction_falling,damage_reduction_fire, damage_reduction_explosions");
+			player.sendMessage("  xp_max, protection, protection_physical, protection_projectiles,");
+			player.sendMessage("  protection_falling,protection_fire, protection_explosions, haste, power");
 			
 			return true;
 		}

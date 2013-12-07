@@ -117,12 +117,12 @@ public class WandLevel {
 		
 		// Fetch cost and damage reduction
 		RandomUtils.populateFloatProbabilityMap(costReductionProbability, template.getNode("cost_reduction"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template.getNode("damage_reduction"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template.getNode("damage_reduction_physical"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template.getNode("damage_reduction_falling"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template.getNode("damage_reduction_projectiles"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template.getNode("damage_reduction_fire"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template.getNode("damage_reduction_explosions"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template.getNode("protection"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template.getNode("protection_physical"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template.getNode("protection_falling"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template.getNode("protection_projectiles"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template.getNode("protection_fire"), levelIndex, nextLevelIndex, distance);
+		RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template.getNode("protection_explosions"), levelIndex, nextLevelIndex, distance);
 
 		// Fetch regeneration
 		RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getNode("xp_regeneration"), levelIndex, nextLevelIndex, distance);
@@ -219,37 +219,37 @@ public class WandLevel {
 			case 2:
 				float damageReduction = wand.getDamageReduction();
 				if (damageReduction < maxReduction) {
-					wandProperties.setProperty("damage_reduction", (Double)(double)(Math.min(maxProtection, damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
+					wandProperties.setProperty("protection", (Double)(double)(Math.min(maxProtection, damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
 				}
 				break;
 			case 3:
 				float damageReductionPhysical = wand.getDamageReductionPhysical();
 				if (damageReductionPhysical < maxReduction) {
-					wandProperties.setProperty("damage_reduction_physical", (Double)(double)(Math.min(maxProtection, damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
+					wandProperties.setProperty("protection_physical", (Double)(double)(Math.min(maxProtection, damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
 				}
 				break;
 			case 4:
 				float damageReductionProjectiles = wand.getDamageReductionProjectiles();
 				if (damageReductionProjectiles < maxReduction) {
-					wandProperties.setProperty("damage_reduction_projectiles", (Double)(double)(Math.min(maxProtection, damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
+					wandProperties.setProperty("protection_projectiles", (Double)(double)(Math.min(maxProtection, damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
 				}
 				break;
 			case 5:
 				float damageReductionFalling = wand.getDamageReductionFalling();
 				if (damageReductionFalling < maxReduction) {
-					wandProperties.setProperty("damage_reduction_falling", (Double)(double)(Math.min(maxProtection, damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
+					wandProperties.setProperty("protection_falling", (Double)(double)(Math.min(maxProtection, damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
 				}
 				break;
 			case 6:
 				float damageReductionFire = wand.getDamageReductionFire();
 				if (damageReductionFire < maxReduction) {
-					wandProperties.setProperty("damage_reduction_fire", (Double)(double)(Math.min(maxProtection, damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
+					wandProperties.setProperty("protection_fire", (Double)(double)(Math.min(maxProtection, damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
 				}
 				break;
 			case 7:
 				float damageReductionExplosions = wand.getDamageReductionExplosions();
 				if (damageReductionExplosions < maxReduction) {
-					wandProperties.setProperty("damage_reduction_explosions", (Double)(double)(Math.min(maxProtection, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
+					wandProperties.setProperty("protection_explosions", (Double)(double)(Math.min(maxProtection, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
 				}
 				break;
 			case 10:

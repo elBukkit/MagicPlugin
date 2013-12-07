@@ -18,32 +18,32 @@ wands:
           0.1: 2, 30, 40, 50
           0.2: 0 , 10, 20, 30
           0.3: 0 ,  0, 10, 20 
-        damage_reduction:
+        protection:
           0:   100,100,90, 80
           0.1: 0,   5, 10, 20
           0.2: 0 ,  1, 5,  15
           0.3: 0 ,  0, 1,  10
-        damage_reduction_physical:
+        protection_physical:
           0:   100,100,90, 80
           0.1: 1,  10, 20, 30
           0.2: 0 , 15, 15, 40
           0.3: 0 ,  0, 10, 50
-        damage_reduction_projectiles:
+        protection_projectiles:
           0:   100,100,90, 80
           0.1: 1,  10, 20, 30
           0.2: 0 , 15, 15, 40
           0.3: 0 ,  0, 10, 50
-        damage_reduction_falling:
+        protection_falling:
           0:   100,100,90, 80
           0.1: 1,  10, 20, 30
           0.2: 0 , 15, 15, 40
           0.3: 0 ,  0, 10, 50
-        damage_reduction_fire:
+        protection_fire:
           0:   100,100,90, 80
           0.1: 1,  10, 20, 30
           0.2: 0 , 15, 15, 40
           0.3: 0 ,  0, 10, 50
-        damage_reduction_explosions:
+        protection_explosions:
           0:   100,100,90, 80
           0.1: 1,  10, 20, 30
           0.2: 0 , 15, 15, 40
@@ -167,8 +167,8 @@ wands:
     deuling:
         name: Deuling Wand
         description: Made for PVP!
-        damage_reduction_fire: 0.8
-        damage_reduction: 0.8
+        protection_fire: 0.8
+        protection: 0.8
         xp_regeneration: 2
         xp_max: 40
         spells:
@@ -179,7 +179,7 @@ wands:
     fire:
         name: Fire Wand
         description: Firebending!
-        damage_reduction_fire: 0.9
+        protection_fire: 0.9
         xp_regeneration: 1
         xp_max: 50
         spells:
@@ -198,7 +198,7 @@ wands:
     psychic:
         name: Psychic Wand
         description: Airbending!
-        damage_reduction_falling: 0.9
+        protection_falling: 0.9
         xp_regeneration: 1
         xp_max: 50
         spells:
@@ -271,7 +271,7 @@ wands:
     battle:
         name: Battle Wand
         description: Has some moderate attack spells
-        damage_reduction_physical: 0.3
+        protection_physical: 0.3
         xp_regeneration: 1
         xp_max: 100
         spells:
@@ -354,7 +354,7 @@ wands:
         name: Elder Wand
         description: The Uber Wand
         cost_reduction: 1
-        damage_reduction: 1
+        protection: 1
         cooldown_reduction: 1
         xp_regeneration: 100
         xp_max: 1000
