@@ -58,7 +58,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
-import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
@@ -1008,11 +1007,14 @@ public class Spells implements Listener
 					wand.updateName(true);
 				}
 				
+			}
+			
+			if (slotType == SlotType.RESULT) {
 				// Check for wands in both slots
 				// ...... arg. So close.. and yet, not.
 				// I guess I need to wait for the long-awaited anvil API?
-				ItemStack firstItem = event.getSlot() == 0 ? cursor : anvilInventory.getItem(0);
-				ItemStack secondItem = event.getSlot() == 1 ? cursor : anvilInventory.getItem(1);
+				ItemStack firstItem = anvilInventory.getItem(0);
+				ItemStack secondItem = anvilInventory.getItem(1);
 				if (Wand.isWand(firstItem) && Wand.isWand(secondItem)) 
 				{
 					Wand firstWand = new Wand(this, firstItem);
@@ -1021,9 +1023,16 @@ public class Spells implements Listener
 					newWand.setName(firstWand.getName());
 					newWand.add(firstWand);
 					newWand.add(secondWand);
+					anvilInventory.setItem(0,  null);
+					anvilInventory.setItem(1,  null);
+					cursor.setType(Material.AIR);
+					
+					Player player = (Player)event.getWhoClicked();
+					player.sendMessage("Combined wands for free. Hope that's what you wanted! (WIP, need Anvil API)");
+					player.getInventory().addItem(newWand.getItem());
 					
 					// This seems to work in the debugger, but.. doesn't do anything.
-					InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
+					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
 				}
 			}
 			
