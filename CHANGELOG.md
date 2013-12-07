@@ -3,6 +3,7 @@
 ## 2.5.9
 
  - Fix cooldown and cost reduction being tied together.
+ - Change the mana display to only use one XP bar.
 
 ## 2.5.8
 

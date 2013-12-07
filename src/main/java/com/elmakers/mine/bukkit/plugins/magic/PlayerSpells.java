@@ -38,6 +38,12 @@ public class PlayerSpells implements CostReducer
 	private ItemStack buildingMaterial = null;
 
 	public void removeExperience(int xp) {
+		
+		if (activeWand != null) {
+			activeWand.removeExperience(xp);
+			return;
+		}
+		
 		float expProgress = player.getExp();
 		int expLevel = player.getLevel();
 		while ((expProgress > 0 || expLevel > 0) && xp > 0) {
@@ -71,6 +77,10 @@ public class PlayerSpells implements CostReducer
     }
 	
 	public int getExperience() {
+		if (activeWand != null) {
+			return activeWand.getExperience();
+		}
+		
 		int xp = 0;
 		float expProgress = player.getExp();
 		int expLevel = player.getLevel();

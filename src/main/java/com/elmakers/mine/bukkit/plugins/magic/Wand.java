@@ -138,6 +138,15 @@ public class Wand implements CostReducer {
 	public int getXpMax() {
 		return xpMax;
 	}
+	
+	public int getExperience() {
+		return xp;
+	}
+	
+	public void removeExperience(int amount) {
+		xp = Math.max(0,  xp - amount);
+		updateMana();
+	}
 
 	public int getHealthRegeneration() {
 		return healthRegeneration;
@@ -1243,12 +1252,18 @@ public class Wand implements CostReducer {
 			storedXpLevel = player.getLevel();
 			storedXpProgress = player.getExp();
 			storedXp = 0;
-			player.setLevel(0);
-			player.setExp(0);
-			player.giveExp(xp);
+			updateMana();
 		}
 		updateActiveMaterial();
 		updateName();
+	}
+	
+	protected void updateMana() {
+		if (activePlayer != null && xpMax > 0 && xpRegeneration > 0) {
+			Player player = activePlayer.getPlayer();
+			player.setLevel(0);
+			player.setExp((float)xp / (float)xpMax);
+		}
 	}
 	
 	public boolean isInventoryOpen() {
@@ -1342,10 +1357,8 @@ public class Wand implements CostReducer {
 		
 		Player player = activePlayer.getPlayer();
 		if (xpRegeneration > 0) {
-			int playerExperience = activePlayer.getExperience();
-			if (playerExperience < xpMax) {
-				player.giveExp(Math.min(xpRegeneration, xpMax - playerExperience));
-			}
+			xp = Math.min(xpMax, xp + xpRegeneration);
+			updateMana();
 		}
 		double maxHealth = player.getMaxHealth();
 		if (healthRegeneration > 0 && player.getHealth() < maxHealth) {

@@ -163,7 +163,19 @@ wands:
         spells:
             - arrow
         uses: 200
-        cost_reduction: 1        
+        cost_reduction: 1    
+    deuling:
+        name: Deuling Wand
+        description: Made for PVP!
+        damage_reduction_fire: 0.8
+        damage_reduction: 0.8
+        xp_regeneration: 2
+        xp_max: 40
+        spells:
+            - fireball
+            - fling
+            - arrow
+            - grenade
     fire:
         name: Fire Wand
         description: Firebending!
