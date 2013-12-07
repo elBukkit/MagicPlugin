@@ -638,21 +638,24 @@ public class Wand implements CostReducer {
 		if (remaining > 0) {
 			lore.add(ChatColor.RED + "" + remaining + " Uses Remaining");
 		}
-		if (costReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cost Reduction", costReduction));
-		if (cooldownReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Cooldown Reduction", cooldownReduction));
-		if (speedIncrease > 0) lore.add(ChatColor.GOLD + getLevelString("Haste", speedIncrease / WandLevel.maxSpeedIncrease));
-		if (xpRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
-		if (power > 0) lore.add(ChatColor.GOLD + getLevelString("Power", power));
-		if (damageReduction > 0) lore.add(ChatColor.GOLD + getLevelString("Protection", damageReduction));
-		if (damageReduction < 1) {
-			if (damageReductionPhysical > 0) lore.add(ChatColor.GOLD + getLevelString("Physical Protection", damageReductionPhysical));
-			if (damageReductionProjectiles > 0) lore.add(ChatColor.GOLD + getLevelString("Projectile Protection", damageReductionProjectiles));
-			if (damageReductionFalling > 0) lore.add(ChatColor.GOLD + getLevelString("Fall Protection", damageReductionFalling));
-			if (damageReductionFire > 0) lore.add(ChatColor.GOLD + getLevelString("Fire Protection", damageReductionFire));
-			if (damageReductionExplosions > 0) lore.add(ChatColor.GOLD + getLevelString("Blast Protection", damageReductionExplosions));
+		if (xpRegeneration > 0) {
+			lore.add(ChatColor.LIGHT_PURPLE + "Mana: " + xpMax);
+			lore.add(ChatColor.AQUA + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
 		}
-		if (healthRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Health Regeneration", healthRegeneration / WandLevel.maxRegeneration));
-		if (hungerRegeneration > 0) lore.add(ChatColor.GOLD + getLevelString("Anti-Hunger", hungerRegeneration / WandLevel.maxRegeneration));
+		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Protection", damageReduction));
+		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Cost Reduction", costReduction));
+		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Cooldown Reduction", cooldownReduction));
+		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString("Haste", speedIncrease / WandLevel.maxSpeedIncrease));
+		if (power > 0) lore.add(ChatColor.AQUA + getLevelString("Power", power));
+		if (damageReduction < 1) {
+			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString("Physical Protection", damageReductionPhysical));
+			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString("Projectile Protection", damageReductionProjectiles));
+			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString("Fall Protection", damageReductionFalling));
+			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString("Fire Protection", damageReductionFire));
+			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString("Blast Protection", damageReductionExplosions));
+		}
+		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("Health Regeneration", healthRegeneration / WandLevel.maxRegeneration));
+		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("Anti-Hunger", hungerRegeneration / WandLevel.maxRegeneration));
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);

@@ -2,7 +2,7 @@
 
 ## 2.6.0
 
-
+- Show maximum mana in Wand lore.
 
 ## 2.5.9
 
