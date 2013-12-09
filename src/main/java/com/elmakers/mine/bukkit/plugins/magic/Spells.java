@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,6 +58,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
@@ -419,6 +421,25 @@ public class Spells implements Listener
 				}
 			}
 		}, 0, 20);
+
+		// Set up the Block update timer
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+			public void run() {
+				int updated = 0;
+				while (updated < maxBlockUpdates && pendingBatches.size() > 0) {
+					BlockBatch batch = pendingBatches.getFirst();
+					int batchUpdated = batch.process(maxBlockUpdates);
+					updated += batchUpdated;
+					if (batchUpdated == 0) {
+						pendingBatches.removeFirst();
+					}
+				}
+			}
+		}, 0, 1);
+	}
+	
+	public void addPendingBlockBatch(BlockBatch batch) {
+		pendingBatches.addLast(batch);
 	}
 
 	public void load()
@@ -518,6 +539,7 @@ public class Spells implements Listener
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
 		messageThrottle = generalNode.getInt("message_throttle", 0);
+		maxBlockUpdates = generalNode.getInt("max_block_updates", 100);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 		maxPowerMultiplier = (float)generalNode.getDouble("max_power_multiplier", maxPowerMultiplier);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
@@ -1223,6 +1245,8 @@ public class Spells implements Listener
 	 private float							 	 castCommandCooldownReduction	    = 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
+	 private LinkedList<BlockBatch>				 pendingBatches					= new LinkedList<BlockBatch>();
+	 private int								 maxBlockUpdates				= 100;
 	 
 	 private final Logger                        log                            = Logger.getLogger("Minecraft");
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();

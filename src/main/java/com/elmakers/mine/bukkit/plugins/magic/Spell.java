@@ -1284,4 +1284,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void onDeactivate() {
 
 	}
+	
+	public PlayerSpells getPlayerSpells() {
+		return playerSpells;
+	}
 }
