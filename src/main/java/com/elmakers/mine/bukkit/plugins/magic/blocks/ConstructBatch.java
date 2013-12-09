@@ -21,6 +21,7 @@ public class ConstructBatch implements BlockBatch {
 	private final int radius;
 	private final Material material;
 	private final byte data;
+	private boolean checkDestructible = true;
 	private final ConstructionType type;
 	private final boolean fill;
 	private final PlayerSpells playerSpells;
@@ -141,7 +142,7 @@ public class ConstructBatch implements BlockBatch {
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
 		Block block = center.getWorld().getBlockAt(x, y, z);
-		if (!isDestructible(block))
+		if (checkDestructible && !isDestructible(block))
 		{
 			return;
 		}
@@ -154,12 +155,16 @@ public class ConstructBatch implements BlockBatch {
 		block.setData(data);
 	}
 
-	public boolean isDestructible(Block block)
+	protected boolean isDestructible(Block block)
 	{
 		return playerSpells.getMaster().getDestructibleMaterials().contains(block.getType()) && !indestructible.contains(block.getType());
 	}
 	
 	public void setTimeToLive(int timeToLive) {
 		this.timeToLive = timeToLive;
+	}
+	
+	public void setCheckDestructible(boolean check) {
+		this.checkDestructible = check;
 	}
 }
