@@ -6,6 +6,11 @@ NEW SPELLS:
 
 OTHER STUFF:
 
+ - The skull_item seems to not play well with InventoryUtils :(
+ - Show material names in lore since they don't always show up in the display name
+ - Allow adding materials with data e.g. /wand add material stained_glass_blue
+   - support above in config files, too- ideally even for spell icons.
+   - Related to above, refactor so spell materials don't matter, use nbt data.
  - managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?
  - Use firework effects directly

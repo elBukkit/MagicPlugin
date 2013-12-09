@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.6.1
+
 ## 2.6.0
 
  - Show maximum mana in Wand lore.
