@@ -2,7 +2,6 @@
 
 NEW SPELLS:
 
- - PotionEffectSpell: slow, haste, etc - also use in frost spell
  - Light spell- using client-side lighting hacks?
 
 OTHER STUFF:
@@ -25,6 +24,7 @@ OTHER STUFF:
 
 DONE:
 
+ - PotionEffectSpell: slow, haste, etc - also use in frost spell
  - Add pyramid construction type, use for blast and blob (makes steps)
  - fix SHELL at large radii - maybe keep current effect though? Looks cool.
  - Maybe change mana system to scale XP to one bar?
