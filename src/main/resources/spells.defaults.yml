@@ -619,7 +619,7 @@ spells:
             material: air
         parameters:
             radius: 3
-            type: sphere
+            type: pyramid
         costs:
         - xp: 10
     cloak:
@@ -826,7 +826,7 @@ spells:
             cooldown: 50
         parameters:
             radius: 3
-            type: sphere
+            type: pyramid
         costs:
         - xp: 20
     familiar:

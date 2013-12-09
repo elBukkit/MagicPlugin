@@ -1,14 +1,18 @@
 # TODO
 
+NEW SPELLS:
+
+ - PotionEffectSpell: slow, haste, etc - also use in frost spell
+ - Light spell- using client-side lighting hacks?
+
+OTHER STUFF:
+
  - managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?
  - Use firework effects directly
  - Add sound effects (breaking on wand break... spell-specific)
  - Add other visual effects
- - fix spheres at large radii - maybe keep current effect though? Looks cool.
- - Add pyramid construction type, use for blast and blob (makes steps)
  - Add server commands to create or upgrade wands
- - Maybe change mana system to scale XP to one bar?
 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Persist player spell data
@@ -21,7 +25,9 @@
 
 DONE:
 
-
+ - Add pyramid construction type, use for blast and blob (makes steps)
+ - fix SHELL at large radii - maybe keep current effect though? Looks cool.
+ - Maybe change mana system to scale XP to one bar?
  - Cooldowns stopped working? Check sniper spell...
  * Allow combining wands on an anvil - Sort of... I think I need some Bukkit support here. Or, maybe it's not possible. :(
  - Add duration to spells for auto-deactivate after X ms

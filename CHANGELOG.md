@@ -2,7 +2,8 @@
 
 ## 2.6.0
 
-- Show maximum mana in Wand lore.
+ - Show maximum mana in Wand lore.
+ - "damage_reduction" properties changed to "protection".
 
 ## 2.5.9
 

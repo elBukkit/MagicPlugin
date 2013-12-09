@@ -23,6 +23,7 @@ public class ConstructSpell extends Spell
 	{
 		SPHERE,
 		CUBOID,
+		PYRAMID,
 		UNKNOWN;
 
 		public static ConstructionType parseString(String s, ConstructionType defaultType)
@@ -90,7 +91,8 @@ public class ConstructSpell extends Spell
 			data = 0;
 		}
 
-		int radius = parameters.getInt("radius", defaultRadius);		
+		int radius = parameters.getInt("radius", defaultRadius);
+		radius = parameters.getInt("size", radius);
 		String typeString = parameters.getString("type", "");
 		
 		// radius = (int)(playerSpells.getPowerMultiplier() * radius);
@@ -101,67 +103,66 @@ public class ConstructSpell extends Spell
 			conType = testType;
 		}
 
-		switch (conType)
-		{
-		case SPHERE: constructSphere(target, radius, material, data, !hollow); break;
-		case CUBOID: constructCuboid(target, radius, material, data, !hollow); break;
-		default : return SpellResult.FAILURE;
-		}
+		fillArea(target, radius, material, data, !hollow, conType);
 
 		return SpellResult.SUCCESS;
 	}
 
-	public void constructCuboid(Block target, int radius, Material material, byte data, boolean fill)
-	{
-		fillArea(target, radius, material, data, fill, false);
-	}
-
-	public void constructSphere(Block target, int radius, Material material, byte data, boolean fill)
-	{
-		fillArea(target, radius, material, data, fill, true);
-	}
-
-	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, boolean sphere)
+	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type)
 	{
 		BlockList constructedBlocks = new BlockList();
-		int diameter = radius * 2;
-		int midX = (diameter - 1) / 2;
-		int midY = (diameter - 1) / 2;
-		int midZ = (diameter - 1) / 2;
-		int diameterOffset = diameter - 1;
-		int radiusSquared = (radius - 1) * (radius - 1);
 
-		for (int x = 0; x < radius; ++x)
+		for (int x = 0; x <= radius; ++x)
 		{
-			for (int y = 0; y < radius; ++y)
+			for (int y = 0; y <= radius; ++y)
 			{
-				for (int z = 0; z < radius; ++z)
+				for (int z = 0; z <= radius; ++z)
 				{
 					boolean fillBlock = false;
-
-					if (sphere)
-					{
-						int distanceSquared = getDistanceSquared(x - midX, y - midY, z - midZ);
-						fillBlock = distanceSquared <= radiusSquared;
-						if (!fill)
-						{
-							fillBlock = fillBlock && distanceSquared >= radiusSquared - 16;
-						}
-					}
-					else
-					{
-						fillBlock = fill ? true : (x == 0 || y == 0 || z == 0);
+					switch(type) {
+						case SPHERE:
+							int maxDistanceSquared = radius * radius;
+							float mx = (float)x - 0.5f;
+							float my = (float)y - 0.5f;
+							float mz = (float)z - 0.5f;
+							
+							int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
+							if (fill)
+							{
+								fillBlock = distanceSquared <= maxDistanceSquared;
+							} 
+							else 
+							{
+								mx++;
+								my++;
+								mz++;
+								int outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
+								fillBlock = maxDistanceSquared >= distanceSquared && maxDistanceSquared <= outerDistanceSquared;
+							}
+							//spells.getLog().info("(" + x + "," + y + "," + z + ") : " + fillBlock + " = " + distanceSquared + " : " + maxDistanceSquared);
+							break;
+						case PYRAMID:
+							int elevation = radius - y;
+							if (fill) {
+								fillBlock = (x <= elevation) && (z <= elevation);
+							} else {
+								fillBlock = (x == elevation && z <= elevation) || (z == elevation && x <= elevation);
+							}
+							break;
+						default: 
+							fillBlock = fill ? true : (x == radius || y == radius || z == radius);
+							break;
 					}
 					if (fillBlock)
 					{
-						constructBlock(x, y, z, target, radius, material, data, constructedBlocks);
-						constructBlock(diameterOffset - x, y, z, target, radius, material, data, constructedBlocks);
-						constructBlock(x, diameterOffset - y, z, target, radius, material, data, constructedBlocks);
-						constructBlock(x, y, diameterOffset - z, target, radius, material, data, constructedBlocks);
-						constructBlock(diameterOffset - x, diameterOffset - y, z, target, radius, material, data, constructedBlocks);
-						constructBlock(x, diameterOffset - y, diameterOffset - z, target, radius, material, data, constructedBlocks);
-						constructBlock(diameterOffset - x, y, diameterOffset - z, target, radius, material, data, constructedBlocks);
-						constructBlock(diameterOffset - x, diameterOffset - y, diameterOffset - z, target, radius, material, data, constructedBlocks);
+						constructBlock(x, y, z, target, material, data, constructedBlocks);
+						constructBlock(-x, y, z, target, material, data, constructedBlocks);
+						constructBlock(x, -y, z, target, material, data, constructedBlocks);
+						constructBlock(x, y, -z, target,  material, data, constructedBlocks);
+						constructBlock(-x, -y, z, target, material, data, constructedBlocks);
+						constructBlock(x, -y, -z, target, material, data, constructedBlocks);
+						constructBlock(-x, y, -z, target, material, data, constructedBlocks);
+						constructBlock(-x, -y, -z, target, material, data, constructedBlocks);
 					}
 				}
 			}
@@ -185,11 +186,11 @@ public class ConstructSpell extends Spell
 	}
 
 	@SuppressWarnings("deprecation")
-	public void constructBlock(int dx, int dy, int dz, Block centerPoint, int radius, Material material, byte data, BlockList constructedBlocks)
+	public void constructBlock(int dx, int dy, int dz, Block centerPoint, Material material, byte data, BlockList constructedBlocks)
 	{
-		int x = centerPoint.getX() + dx - radius;
-		int y = centerPoint.getY() + dy - radius;
-		int z = centerPoint.getZ() + dz - radius;
+		int x = centerPoint.getX() + dx;
+		int y = centerPoint.getY() + dy;
+		int z = centerPoint.getZ() + dz;
 		Block block = player.getWorld().getBlockAt(x, y, z);
 		if (!isDestructible(block))
 		{
