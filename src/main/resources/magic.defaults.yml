@@ -51,6 +51,9 @@ general:
     - red_rose
     - brown_mushroom
     - red_mushroom
+    - stained_glass
+    - stained_glass_pane
+    - thin_glass
     destructible:
     - air
     - stone
@@ -203,6 +206,6 @@ general:
     - carpet
     - hard_clay
     - coal_block
-    - 160
-    - 95
-    - 174
+    - stained_glass_pane
+    - stained_glass
+    - packed_ice
