@@ -1,4 +1,12 @@
 spells:
+    light:
+        name: Light
+        icon: redstone_torch_on
+        category: exploration
+        description: Creates a magical light source
+        class: LightSpell
+        costs:
+        - xp: 10
     curse:
         name: Curse
         icon: spider_eye
@@ -834,7 +842,7 @@ spells:
         - xp: 10
     alter:
         name: Alter
-        icon: redstone_torch_on
+        icon: redstone_torch_off
         category: construction
         description: Alter certain objects
         class: AlterSpell

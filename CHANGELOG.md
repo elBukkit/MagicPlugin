@@ -5,6 +5,7 @@
  - Show maximum mana in Wand lore.
  - "damage_reduction" properties changed to "protection".
  - Add boon + curse spells (PotionEffectSpell)
+ - Add "light" spell.
 
 ## 2.5.9
 
