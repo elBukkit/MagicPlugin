@@ -112,9 +112,9 @@ public class ConstructSpell extends Spell
 	{
 		BlockList constructedBlocks = new BlockList();
 
-		for (int x = 0; x <= radius; ++x)
+		for (int y = 0; y <= radius; ++y)
 		{
-			for (int y = 0; y <= radius; ++y)
+			for (int x = 0; x <= radius; ++x)
 			{
 				for (int z = 0; z <= radius; ++z)
 				{

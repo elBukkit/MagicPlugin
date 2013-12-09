@@ -2,7 +2,6 @@
 
 NEW SPELLS:
 
- - Light spell- using client-side lighting hacks?
 
 OTHER STUFF:
 
@@ -17,6 +16,7 @@ OTHER STUFF:
  - Add sound effects (breaking on wand break... spell-specific)
  - Add other visual effects
  - Add server commands to create or upgrade wands
+ - Async mass block updates?
 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Persist player spell data
@@ -29,6 +29,7 @@ OTHER STUFF:
 
 DONE:
 
+ - Light spell- using client-side lighting hacks?
  - PotionEffectSpell: slow, haste, etc - also use in frost spell
  - Add pyramid construction type, use for blast and blob (makes steps)
  - fix SHELL at large radii - maybe keep current effect though? Looks cool.
