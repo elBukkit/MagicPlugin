@@ -52,10 +52,10 @@ public class ConstructBatch implements BlockBatch {
 			fillBlock(x, y, z);
 			
 			y++;
-			if (y >= radius) {
+			if (y > radius) {
 				y = 0;
 				z++;
-				if (z >= radius) {
+				if (z > radius) {
 					z = 0;
 					x++;
 				}
