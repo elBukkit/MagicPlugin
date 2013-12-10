@@ -978,7 +978,7 @@ spells:
         - xp: 30
     shrink:
         name: Head Shrinker
-        icon: cake
+        icon: skull_item
         category: summoner
         description: Shrink heads for fun and profit
         class: ShunkenHeadSpell
