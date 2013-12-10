@@ -43,7 +43,6 @@ general:
     - water
     - air
     - snow
-    - stationary_water
     - wooden_door
     - iron_door_block
     - long_grass
@@ -52,9 +51,6 @@ general:
     - red_rose
     - brown_mushroom
     - red_mushroom
-    - stained_glass
-    - stained_glass_pane
-    - thin_glass
     destructible:
     - air
     - stone

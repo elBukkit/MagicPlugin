@@ -31,7 +31,7 @@ OTHER STUFF:
 
 DONE:
 
- - XP system broken without mana regen?
+ - XP system broken without mana regen?	
  - Light spell- using client-side lighting hacks?
  - PotionEffectSpell: slow, haste, etc - also use in frost spell
  - Add pyramid construction type, use for blast and blob (makes steps)
