@@ -842,7 +842,7 @@ spells:
         - xp: 10
     alter:
         name: Alter
-        icon: redstone_torch_off
+        icon: ink_sack
         category: construction
         description: Alter certain objects
         class: AlterSpell
