@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.6.2
+
 ## 2.6.1
 
  - Use delayed block changes in batches to allow large construction without killing the server.
