@@ -1431,4 +1431,8 @@ public class Wand implements CostReducer {
 		materialIndex = (materialIndex + 1) % materials.length;
 		setActiveMaterial(materials[materialIndex].split("@")[0]);
 	}
+	
+	public boolean hasExperience() {
+		return xpRegeneration > 0;
+	}
 }

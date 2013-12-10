@@ -3,6 +3,7 @@
 ## 2.6.1
 
  - Use delayed block changes in batches to allow large construction without killing the server.
+ - Fix issues with XP (not mana)-based wands
 
 ## 2.6.0
 

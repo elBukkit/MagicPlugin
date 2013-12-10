@@ -39,7 +39,7 @@ public class PlayerSpells implements CostReducer
 
 	public void removeExperience(int xp) {
 		
-		if (activeWand != null) {
+		if (activeWand != null && activeWand.hasExperience()) {
 			activeWand.removeExperience(xp);
 			return;
 		}
@@ -77,7 +77,7 @@ public class PlayerSpells implements CostReducer
     }
 	
 	public int getExperience() {
-		if (activeWand != null) {
+		if (activeWand != null && activeWand.hasExperience()) {
 			return activeWand.getExperience();
 		}
 		

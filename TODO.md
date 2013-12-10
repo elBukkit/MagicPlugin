@@ -5,6 +5,8 @@ NEW SPELLS:
 
 OTHER STUFF:
 
+ - XP system broken without mana regen?
+ - force is wonky
  - The skull_item seems to not play well with InventoryUtils :(
  - Show material names in lore since they don't always show up in the display name
  - Allow adding materials with data e.g. /wand add material stained_glass_blue
