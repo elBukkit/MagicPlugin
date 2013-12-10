@@ -5,7 +5,7 @@ NEW SPELLS:
 
 OTHER STUFF:
 
- - XP system broken without mana regen?
+ - Maybe data-drive blink's special list of things it will try to target through?
  - force is wonky
  - The skull_item seems to not play well with InventoryUtils :(
  - Show material names in lore since they don't always show up in the display name
@@ -31,6 +31,7 @@ OTHER STUFF:
 
 DONE:
 
+ - XP system broken without mana regen?
  - Light spell- using client-side lighting hacks?
  - PotionEffectSpell: slow, haste, etc - also use in frost spell
  - Add pyramid construction type, use for blast and blob (makes steps)

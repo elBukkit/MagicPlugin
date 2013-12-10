@@ -3,7 +3,9 @@
 ## 2.6.1
 
  - Use delayed block changes in batches to allow large construction without killing the server.
- - Fix issues with XP (not mana)-based wands
+ - Fix issues with XP (non mana-based) wands
+ - Add material names to magic build materials (including sub-types for certain materials, wool, stained glass, wood, etc)
+ - Fix targeting issues related to stained glass (only blink should target through them)
 
 ## 2.6.0
 

@@ -17,13 +17,16 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Tree;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
@@ -556,6 +559,11 @@ public class Wand implements CostReducer {
 	}
 	
 	private String getMaterialName(Material material) {
+		return getMaterialName(material, (byte)0);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private String getMaterialName(Material material, byte data) {
 		String materialName = null;
 		
 		if (material == EraseMaterial) {
@@ -564,7 +572,30 @@ public class Wand implements CostReducer {
 			materialName = "copy";
 		} else {
 			materialName = material.name().toLowerCase();
+			// I started doing this the "right" way by looking at MaterialData
+			// But I don't feel like waiting for Bukkit to update their classes.
+			// This also seems super ugly and messy.. if this is the replacement for "magic numbers", count me out :P
+			/*
+			Class<? extends MaterialData> materialData = material.getData();
+			if (Dye.class.isAssignableFrom(materialData)) {
+				Dye dye = new Dye(material, data);
+				materialName += " " + dye.getColor().name();
+			} else if (Dye.class.isAssignableFrom(materialData)) {
+				Dye dye = new Dye(material, data);
+				materialName += " " + dye.getColor().name();
+			}
+			*/
+			
+			if (material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
+				// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
+				DyeColor color = DyeColor.getByWoolData(data);
+				materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
+			} else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
+				TreeSpecies treeSpecies = TreeSpecies.getByData(data);
+				materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
+			}
 		}
+		materialName = materialName.replace('_', ' ');
 		return materialName;
 	}
 	
@@ -812,7 +843,11 @@ public class Wand implements CostReducer {
 				meta.setLore(lore);
 			} else {
 				List<String> lore = new ArrayList<String>();
-				lore.add("Magic building material");
+				Material material = Material.getMaterial(typeId);
+				if (material != null) {
+					lore.add(ChatColor.GRAY + getMaterialName(material, (byte)dataId));
+				}
+				lore.add(ChatColor.LIGHT_PURPLE + "Magic building material");
 				meta.setLore(lore);
 			}
 			meta.setDisplayName(getActiveWandName(Material.getMaterial(typeId)));
