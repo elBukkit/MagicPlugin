@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.FillBatch;
 import com.elmakers.mine.bukkit.utilities.BlockRecurse;
 import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -109,65 +110,33 @@ public class FillSpell extends Spell
 
 		if (this.targetBlock != null)
 		{
-			int deltax = targetBlock.getX() - this.targetBlock.getX();
-			int deltay = targetBlock.getY() - this.targetBlock.getY();
-			int deltaz = targetBlock.getZ() - this.targetBlock.getZ();
-
-			int absx = Math.abs(deltax);
-			int absy = Math.abs(deltay);
-			int absz = Math.abs(deltaz);
-
-			int maxDimension = player.isOp() ? defaultMaxDimension * 10 : defaultMaxDimension;
-			int maxVolume = player.isOp() ? defaultMaxVolume * 10 : defaultMaxVolume;
-
-			if (maxDimension > 0 && (absx > maxDimension || absy > maxDimension || absz > maxDimension))
-			{
-				sendMessage("Dimension is too big!");
-				return SpellResult.FAILURE;
-			}
-
-			if (maxVolume > 0 && absx * absy * absz > maxVolume)
-			{
-				sendMessage("Volume is too big!");
-				return SpellResult.FAILURE;
-			}
-
-			int dx = (int)Math.signum(deltax);
-			int dy = (int)Math.signum(deltay);
-			int dz = (int)Math.signum(deltaz);
-
-			absx++;
-			absy++;
-			absz++;
-
 			if (!overrideMaterial)
 			{
 				material = this.targetBlock.getType();
 				data = this.targetBlock.getData();
 			}
 
-			BlockList filledBlocks = new BlockList();
-			castMessage("Filling " + absx + "x" + absy + "x" + absz + " area with " + material.name().toLowerCase());
-			int x = this.targetBlock.getX();
-			int y = this.targetBlock.getY();
-			int z = this.targetBlock.getZ();
-			for (int ix = 0; ix < absx; ix++)
-			{
-				for (int iy = 0; iy < absy; iy++)
-				{
-					for (int iz = 0; iz < absz; iz++)
-					{
-						Block block = getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
-						if (!hasBuildPermission(block)) continue;
-						
-						filledBlocks.add(block);
-						block.setType(material);
-						block.setData(data);
-					}
-				}
-			}
-			spells.addToUndoQueue(player, filledBlocks);
+			FillBatch batch = new FillBatch(this, targetBlock.getLocation(), this.targetBlock.getLocation(), material, data);
 
+			int maxDimension = player.isOp() ? defaultMaxDimension * 10 : defaultMaxDimension;
+			int maxVolume = player.isOp() ? defaultMaxVolume * 10 : defaultMaxVolume;
+			
+			if (!batch.checkDimension(maxDimension))
+			{
+				sendMessage("Dimension is too big!");
+				return SpellResult.FAILURE;
+			}
+
+			if (!batch.checkVolume(maxVolume))
+			{
+				sendMessage("Volume is too big!");
+				return SpellResult.FAILURE;
+			}
+
+			castMessage("Filling " + batch.getXSize() + "x" +  batch.getYSize() + "x" +  batch.getZSize() + " area with " + material.name().toLowerCase());
+			
+			spells.addPendingBlockBatch(batch);
+			
 			this.targetBlock = null;
 			return SpellResult.SUCCESS;
 		}
