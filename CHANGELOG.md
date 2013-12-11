@@ -4,6 +4,7 @@
 
  - Add carpet to the special-case material variant list.
  - Make push + pull target multiple entities
+ - Maybe fixed some issues with "force"
 
 ## 2.6.1
 

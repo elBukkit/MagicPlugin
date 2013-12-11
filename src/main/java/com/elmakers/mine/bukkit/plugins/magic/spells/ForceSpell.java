@@ -1,8 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.List;
-
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -14,137 +11,52 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ForceSpell extends Spell
 {
-	int itemMagnitude = 1;
-	int entityMagnitude = 3;
-	int maxAllDistance = 20;
-	Entity targetEntity = null;
-	boolean allowAll = true;
-
-	public void forceAll(double mutliplier, boolean push)
-	{
-		List<Entity> entities = player.getWorld().getEntities();
-		for (Entity entity : entities)
-		{
-			if (entity == player) continue;
-			Location playerLocation = player.getLocation();
-
-			if (getDistance(playerLocation, entity.getLocation()) > maxAllDistance) continue;
-
-			forceEntity(entity, mutliplier, playerLocation, !push);
-		}
-	}
-
+	int magnitude = 3;
+	LivingEntity targetEntity = null;
+	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		boolean push = false;
-		boolean pull = false;
-
 		if (targetEntity != null)
 		{
 			if (targetEntity instanceof LivingEntity)
 			{
-				LivingEntity le = (LivingEntity)targetEntity;
-				if (le.isDead())
+				if (!targetEntity.isValid() || targetEntity.isDead())
 				{
 					targetEntity = null;
 				}
-				if (targetEntity != null && getDistance(player.getLocation(), targetEntity.getLocation()) > getMaxRange())
+				if (targetEntity != null && player.getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
 				{
 					targetEntity = null;
 				}
 			}
 		}
+		
+		if (targetEntity == null) {
+			targetEntity(LivingEntity.class);
+			Target target = getTarget();
 
-		String typeString = parameters.getString("type", "");
-		push = typeString.equals("push");
-		pull = typeString.equals("pull");
+			if (target == null || !target.hasTarget() || !target.isEntity() || !(target.getEntity() instanceof LivingEntity))
+			{
+				targetEntity = null;
+				return SpellResult.NO_TARGET;
+			}
+			
+			targetEntity = (LivingEntity)target.getEntity();
+			return SpellResult.COST_FREE;
+		}
 
 		double multiplier = parameters.getDouble("size", 1);
-
-		targetEntity(Entity.class);
-		Target target = getTarget();
-
-		if 
-		(
-				(push || pull)
-				&&  allowAll
-				&&  (target == null || !target.isEntity() || target.isBlock()) 
-				&&  (getYRotation() < -60 || getYRotation() > 60)
-				)
-		{
-			if (push)
-			{
-				castMessage("Get away!");
-				forceAll(multiplier, true);
-			}
-			else
-			{
-				castMessage("Gimme!");
-				forceAll(multiplier, false);
-			}
-			return SpellResult.SUCCESS;
-		}
-
-		if (target == null || !target.hasTarget())
-		{
-			targetEntity = null;
-			return SpellResult.NO_TARGET;
-		}
-
-		if (target.isEntity())
-		{
-			Entity newEntity = target.getEntity();
-			if 
-			(
-					targetEntity == null 
-					||  (newEntity instanceof LivingEntity) 
-					||  !(targetEntity instanceof LivingEntity)
-					)
-			{
-				targetEntity = newEntity;
-				if (!(push || pull)) return SpellResult.COST_FREE;
-			}
-		}
-
-		if (targetEntity == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
-
-		Location destination = target.getLocation();
-		if (pull) destination = player.getLocation();
-		forceEntity(targetEntity, multiplier, destination, push);
-
-		if (pull)
-		{
-			castMessage("Yoink!");
-		}
-		else
-		{
-			castMessage("Shove!");
-		}
+		forceEntity(targetEntity, multiplier);
 		return SpellResult.SUCCESS;
 	}
 
-	protected void forceEntity(Entity target, double multiplier, Location destination, boolean useAim)
+	protected void forceEntity(Entity target, double multiplier)
 	{
-		int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 		magnitude = (int)((double)magnitude * multiplier);
-		Vector targetLoc = new Vector(target.getLocation().getBlockX(), target.getLocation().getBlockY(), target.getLocation().getBlockZ());
-		Vector destinationLoc = new Vector(destination.getBlockX(), destination.getBlockY(), destination.getBlockZ());
-		Vector forceVector = destinationLoc;
-		if (useAim)
-		{
-			forceVector = getAimVector();
-		}
-		else
-		{
-			forceVector.subtract(targetLoc);                   
-		}
+		Vector forceVector = getAimVector();
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
-
 		target.setVelocity(forceVector);
 	}
 
@@ -157,7 +69,7 @@ public class ForceSpell extends Spell
             (
                     (targetEntity instanceof LivingEntity) 
             &&      !targetEntity.isDead() 
-            &&      getDistance(player.getLocation(), targetEntity.getLocation()) < getMaxRange()
+            &&      player.getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared()
             )
             {
                 castMessage("Released target");
@@ -173,9 +85,6 @@ public class ForceSpell extends Spell
 	@Override
 	public void onLoad(ConfigurationNode properties)  
 	{
-		itemMagnitude = properties.getInt("item_force", itemMagnitude);
-		entityMagnitude = properties.getInt("entity_force", entityMagnitude);
-		allowAll = properties.getBoolean("allow_area", allowAll);
-		maxAllDistance = properties.getInt("area_range", maxAllDistance);
+		magnitude = properties.getInt("entity_force", magnitude);
 	}
 }

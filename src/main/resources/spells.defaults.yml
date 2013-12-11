@@ -121,7 +121,7 @@ spells:
         icon: fishing_rod
         category: psychic
         description: Pull things toward you
-        class: ForceSpell
+        class: PushSpell
         properties:
             allow_max_range: false
             range: 200
@@ -686,7 +686,7 @@ spells:
         icon: rails
         category: psychic
         description: Push things away from you
-        class: ForceSpell
+        class: PushSpell
         properties:
             allow_max_range: false
             range: 200

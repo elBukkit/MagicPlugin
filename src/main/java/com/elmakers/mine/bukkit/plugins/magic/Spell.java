@@ -861,6 +861,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected Target getTargetEntity()
 	{
+		List<Target> scored = getAllTargetEntities();
+		if (scored.size() <= 0) return null;
+		return scored.get(0);
+	}
+	
+	protected List<Target> getAllTargetEntities() {
 		List<Entity> entities = player.getWorld().getEntities();
 		List<Target> scored = new ArrayList<Target>();
 		for (Entity entity : entities)
@@ -875,10 +881,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			}
 		}
 
-		if (scored.size() <= 0) return null;
 		Collections.sort(scored);
-
-		return scored.get(0);
+		return scored;
 	}
 
 	/**

@@ -6,8 +6,6 @@ NEW SPELLS:
 OTHER STUFF:
 
  - Maybe data-drive blink's special list of things it will try to target through?
- - force is wonky
- - Show material names in lore since they don't always show up in the display name
  - Allow adding materials with data e.g. /wand add material stained_glass_blue
    - support above in config files, too- ideally even for spell icons.
    - Related to above, refactor so spell materials don't matter, use nbt data.
@@ -29,6 +27,8 @@ OTHER STUFF:
 
 DONE:
 
+ - Show material names in lore since they don't always show up in the display name
+ - force is wonky
  - Async mass block updates?
  - The skull_item seems to not play well with InventoryUtils :(
  - XP system broken without mana regen?	
