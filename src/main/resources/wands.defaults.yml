@@ -197,7 +197,7 @@ wands:
             - flare
     psychic:
         name: Psychic Wand
-        description: Airbending!
+        description: Psychic stuff
         protection_falling: 0.9
         xp_regeneration: 1
         xp_max: 50
@@ -394,3 +394,67 @@ wands:
             - erase
             - tnt
             - soul_sand
+    airbending:
+        name: Airbending Wand
+        description: Master the element of air
+        protection: 0.6
+        xp_regeneration: 2
+        xp_max: 50
+        spells:
+            - fling
+            - push
+            - pull
+            - force
+            - leap
+    waterbending:
+        name: Waterbending Wand
+        description: Master the element of water
+        protection: 0.5
+        xp_regeneration: 2
+        xp_max: 50
+        spells:
+            - frost
+            - toss
+            - blob
+            - recurse
+            - cushion
+            - heal
+        materials:
+            - stationary_water
+            - ice
+    earthbending:
+        name: Earthbending Wand
+        description: Master the element of earth
+        protection: 0.5
+        xp_regeneration: 2
+        xp_max: 50
+        spells:
+            - blob
+            - sandblast
+            - recurse
+            - toss
+            - pillar
+            - bridge
+            - breach
+        materials:
+            - dirt
+            - stone
+            - sand
+    firebending:
+        name: Firebending Wand
+        description: Master the element of fire
+        protection_fire: 0.7
+        protection: 0.3
+        xp_regeneration: 2
+        xp_max: 40
+        spells:
+            - fireball
+            - recurse
+            - blob
+            - fire
+            - inferno
+            - lava
+            - lightning
+            - toss
+        materials:
+            - lava

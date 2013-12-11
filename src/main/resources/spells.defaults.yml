@@ -551,6 +551,8 @@ spells:
         properties:
             cooldown: 0
         parameters: {}
+        costs:
+        - xp: 5
     ascend:
         name: Ascend
         icon: red_mushroom
@@ -825,6 +827,8 @@ spells:
             cooldown: 0
         parameters:
             type: recurse
+        costs:
+        - xp: 30
     fire:
         name: Fire
         icon: flint_and_steel
@@ -935,6 +939,8 @@ spells:
             cooldown: 0
         parameters:
             type: down
+        costs:
+        - xp: 5
     lava:
         name: Lava
         icon: lava
@@ -1069,6 +1075,8 @@ spells:
             range: 200
             cooldown: 0
         parameters: {}
+        costs:
+        - xp: 5
     night:
         name: Night
         icon: coal
