@@ -76,7 +76,7 @@ public class PortalSpell extends Spell
 
 		public void remove()
 		{
-			portalBlocks.undo();
+			portalBlocks.undo(spells);
 			portalBlocks = null;
 			PortalSpell.allPortals.remove(this);
 		}

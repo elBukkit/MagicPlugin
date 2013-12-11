@@ -2,6 +2,9 @@
 
 ## 2.6.3
 
+ - Make the undo system use batched block updates
+ - Ensure chunks are loaded when processing batch block updates
+
 ## 2.6.2
 
  - Add carpet to the special-case material variant list.

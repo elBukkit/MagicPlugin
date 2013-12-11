@@ -9,6 +9,9 @@ import java.util.Iterator;
 import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 
+import com.elmakers.mine.bukkit.plugins.magic.Spells;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.UndoBatch;
+
 /**
  * 
  * Implements a Collection of Blocks, for quick getting/putting while iterating
@@ -296,19 +299,12 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return blockList.toArray(arg0);
 	}
 
-	public boolean undo()
+	public void undo(Spells spells)
 	{
-		if (blockList == null) return true;
+		if (blockList == null) return;
 
 		passesRemaining--;
-		for (BlockData block : blockList)
-		{
-			if (!block.undo())
-			{
-				return false;
-			}
-		}
-
-		return true;
+		UndoBatch batch = new UndoBatch(this);
+		spells.addPendingBlockBatch(batch);
 	}
 }

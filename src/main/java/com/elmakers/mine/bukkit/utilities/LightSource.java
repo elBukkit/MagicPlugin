@@ -210,8 +210,6 @@ public class LightSource {
 					Object playerHandle = getHandle(p1);
 					Field connectionField = playerHandle.getClass().getField("playerConnection");
 					Object connection = connectionField.get(playerHandle);
-					
-					
 					Method sendPacketMethod = connection.getClass().getMethod("sendPacket", class_Packet);
 					sendPacketMethod.invoke(connection, packet);
 				}

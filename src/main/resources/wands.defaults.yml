@@ -176,15 +176,6 @@ wands:
             - fling
             - arrow
             - grenade
-    fire:
-        name: Fire Wand
-        description: Firebending!
-        protection_fire: 0.9
-        xp_regeneration: 1
-        xp_max: 50
-        spells:
-            - fire
-            - lava
     explorer:
         name: Exploring Wand
         description: For exploring
@@ -444,8 +435,8 @@ wands:
     firebending:
         name: Firebending Wand
         description: Master the element of fire
-        protection_fire: 0.7
-        protection: 0.3
+        protection_fire: 0.9
+        protection: 0.1
         xp_regeneration: 2
         xp_max: 40
         spells:

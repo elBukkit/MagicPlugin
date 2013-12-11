@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.Spells;
 
 public class UndoQueue
 {
@@ -51,7 +52,7 @@ public class UndoQueue
 		maxSize = size;
 	}
 
-	public boolean undo()
+	public boolean undo(Spells spells)
 	{
 		if (blockQueue.size() == 0)
 		{
@@ -59,15 +60,11 @@ public class UndoQueue
 		}
 
 		BlockList blocks = blockQueue.removeLast();
-		if (!blocks.undo())
-		{
-			blockQueue.add(blocks);
-			return false;
-		}
+		blocks.undo(spells);
 		return true;
 	}
 
-	public boolean undo(Block target)
+	public boolean undo(Spells spells, Block target)
 	{
 		BlockList lastActionOnTarget = getLast(target);
 
@@ -77,7 +74,7 @@ public class UndoQueue
 		}
 
 		blockQueue.remove(lastActionOnTarget);
-		lastActionOnTarget.undo();
+		lastActionOnTarget.undo(spells);
 
 		return true;
 	}

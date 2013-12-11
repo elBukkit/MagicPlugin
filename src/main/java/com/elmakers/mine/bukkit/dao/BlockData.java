@@ -4,7 +4,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.BlockVector;
@@ -106,7 +105,7 @@ public class BlockData
 			Location blockLocation = new Location(server.getWorld(world), location.getBlockX(), location.getBlockY(), location.getBlockZ());
 			if (blockLocation != null)
 			{
-				block = blockLocation.getWorld().getBlockAt(blockLocation);
+				block = blockLocation.getBlock();
 			}
 		}
 		return block;
@@ -147,13 +146,13 @@ public class BlockData
 	{
 		if (!checkBlock())
 		{
-			return false;
+			return true;
 		}
 
-		World world = block.getWorld();
-		Chunk chunk = world.getChunkAt(block);
-		if (!world.isChunkLoaded(chunk))
+		Chunk chunk = block.getChunk();
+		if (!chunk.isLoaded())
 		{
+			chunk.load();
 			return false;
 		}
 

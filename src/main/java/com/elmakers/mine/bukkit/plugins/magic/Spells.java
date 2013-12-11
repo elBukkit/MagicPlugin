@@ -229,7 +229,7 @@ public class Spells implements Listener
 		for (String playerName : playerUndoQueues.keySet())
 		{
 			UndoQueue queue = playerUndoQueues.get(playerName);
-			if (queue.undo(target))
+			if (queue.undo(this, target))
 			{
 				if (!player.getName().equals(playerName))
 				{
@@ -245,13 +245,13 @@ public class Spells implements Listener
 	public boolean undo(String playerName)
 	{
 		UndoQueue queue = getUndoQueue(playerName);
-		return queue.undo();
+		return queue.undo(this);
 	}
 
 	public boolean undo(String playerName, Block target)
 	{
 		UndoQueue queue = getUndoQueue(playerName);
-		return queue.undo(target);
+		return queue.undo(this, target);
 	}
 
 	public BlockList getLastBlockList(String playerName, Block target)
@@ -273,7 +273,7 @@ public class Spells implements Listener
 
 		// scheduler works in ticks- 20 ticks per second.
 		long ticksToLive = blocks.getTimeToLive() * 20 / 1000;
-		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(blocks), ticksToLive);
+		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(this, blocks), ticksToLive);
 	}
 
 	/*
@@ -430,7 +430,7 @@ public class Spells implements Listener
 					BlockBatch batch = pendingBatches.getFirst();
 					int batchUpdated = batch.process(maxBlockUpdates);
 					updated += batchUpdated;
-					if (batchUpdated == 0) {
+					if (batch.isFinished()) {
 						pendingBatches.removeFirst();
 					}
 				}
