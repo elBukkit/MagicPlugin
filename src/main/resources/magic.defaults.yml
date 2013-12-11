@@ -8,7 +8,7 @@ general:
     cast_command_cooldown_reduction: 1.0
     wand_item: blaze_rod
     wand_item_enchantable: wood_sword
-    erase_item: sulpher
+    erase_item: sulphur
     copy_item: sugar
     enable_crafting: true
     crafting_material_upper: diamond
