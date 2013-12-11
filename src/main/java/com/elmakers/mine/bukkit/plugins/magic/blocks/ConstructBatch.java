@@ -27,6 +27,7 @@ public class ConstructBatch implements BlockBatch {
 	private final PlayerSpells playerSpells;
 	private final Spell spell;
 	
+	private boolean finished = false;
 	private int x = 0;
 	private int y = 0;
 	private int z = 0;
@@ -49,7 +50,9 @@ public class ConstructBatch implements BlockBatch {
 		Player player = playerSpells.getPlayer();
 		
 		while (processedBlocks <= maxBlocks && x <= radius) {
-			fillBlock(x, y, z);
+			if (!fillBlock(x, y, z)) {
+				return processedBlocks;
+			}
 			
 			y++;
 			if (y > radius) {
@@ -63,8 +66,9 @@ public class ConstructBatch implements BlockBatch {
 			processedBlocks++;
 		}
 		
-		if (processedBlocks == 0) 
-		{			
+		if (!finished && x > radius) 
+		{
+			finished = true;
 			if (timeToLive == 0)
 			{
 				spells.addToUndoQueue(player, constructedBlocks);
@@ -80,7 +84,7 @@ public class ConstructBatch implements BlockBatch {
 		return processedBlocks;
 	}
 
-	public void fillBlock(int x, int y, int z)
+	public boolean fillBlock(int x, int y, int z)
 	{
 		boolean fillBlock = false;
 		switch(type) {
@@ -117,17 +121,19 @@ public class ConstructBatch implements BlockBatch {
 				fillBlock = fill ? true : (x == radius || y == radius || z == radius);
 				break;
 		}
+		boolean success = true;
 		if (fillBlock)
 		{
-			constructBlock(x, y, z);
-			constructBlock(-x, y, z);
-			constructBlock(x, -y, z);
-			constructBlock(x, y, -z);
-			constructBlock(-x, -y, z);
-			constructBlock(x, -y, -z);
-			constructBlock(-x, y, -z);
-			constructBlock(-x, -y, -z);
+			success = success && constructBlock(x, y, z);
+			success = success && constructBlock(-x, y, z);
+			success = success && constructBlock(x, -y, z);
+			success = success && constructBlock(x, y, -z);
+			success = success && constructBlock(-x, -y, z);
+			success = success && constructBlock(x, -y, -z);
+			success = success && constructBlock(-x, y, -z);
+			success = success && constructBlock(-x, -y, -z);
 		}
+		return success;
 	}
 
 	public int getDistanceSquared(int x, int y, int z)
@@ -136,23 +142,30 @@ public class ConstructBatch implements BlockBatch {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void constructBlock(int dx, int dy, int dz)
+	public boolean constructBlock(int dx, int dy, int dz)
 	{
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
+		if (y < 0 || y > 255) return true;
+		
 		Block block = center.getWorld().getBlockAt(x, y, z);
+		if (!block.getChunk().isLoaded()) {
+			block.getChunk().load();
+			return false;
+		}
 		if (checkDestructible && !isDestructible(block))
 		{
-			return;
+			return true;
 		}
 		if (!playerSpells.hasBuildPermission(block)) 
 		{
-			return;
+			return true;
 		}
 		constructedBlocks.add(block);
 		block.setType(material);
 		block.setData(data);
+		return true;
 	}
 
 	protected boolean isDestructible(Block block)
@@ -166,5 +179,9 @@ public class ConstructBatch implements BlockBatch {
 	
 	public void setCheckDestructible(boolean check) {
 		this.checkDestructible = check;
+	}
+	
+	public boolean isFinished() {
+		return finished;
 	}
 }

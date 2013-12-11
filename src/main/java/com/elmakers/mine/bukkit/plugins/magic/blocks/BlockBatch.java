@@ -4,4 +4,6 @@ public interface BlockBatch {
 	// Return the number of block sprocessed. The batch is assumed to be complete
 	// if it returns 0.
 	public int process(int maxBlocks);
+	
+	public boolean isFinished();
 }

@@ -29,6 +29,7 @@ public class FillBatch implements BlockBatch {
 	private int ix = 0;
 	private int iy = 0;
 	private int iz = 0;
+	private boolean finished = false;
 	
 	public FillBatch(Spell spell, Location p1, Location p2, Material material, byte data) {
 		this.material = material;
@@ -69,6 +70,13 @@ public class FillBatch implements BlockBatch {
 		
 		while (processedBlocks <= maxBlocks && ix < absx) {
 			Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
+			
+			if (!block.getChunk().isLoaded()) {
+				block.getChunk().load();
+				return processedBlocks;
+			}
+			processedBlocks++;
+
 			if (!playerSpells.hasBuildPermission(block)) continue;
 			
 			filledBlocks.add(block);
@@ -84,11 +92,11 @@ public class FillBatch implements BlockBatch {
 					ix++;
 				}
 			}
-			processedBlocks++;
 		}
 		
-		if (processedBlocks == 0) 
-		{			
+		if (!finished && ix >= absx) 
+		{
+			finished = true;
 			spells.addToUndoQueue(player, filledBlocks);
 		}
 		
@@ -105,5 +113,9 @@ public class FillBatch implements BlockBatch {
 	
 	public int getZSize() {
 		return absz;
+	}
+	
+	public boolean isFinished() {
+		return finished;
 	}
 }
