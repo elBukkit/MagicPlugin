@@ -76,7 +76,7 @@ public class GotoSpell extends Spell
 		{
 			if (d != fromPlayer)
 			{
-				double dd = getDistance(d.getLocation(), fromPlayer.getLocation());
+				double dd = d.getLocation().distanceSquared(fromPlayer.getLocation());
 				if (destinationPlayer == null || dd > targetToDestinationDistance)
 				{
 					targetToDestinationDistance = dd;

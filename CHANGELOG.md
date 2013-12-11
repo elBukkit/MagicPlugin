@@ -2,6 +2,9 @@
 
 ## 2.6.2
 
+ - Add carpet to the special-case material variant list.
+ - Make push + pull target multiple entities
+
 ## 2.6.1
 
  - Use delayed block changes in batches to allow large construction without killing the server.

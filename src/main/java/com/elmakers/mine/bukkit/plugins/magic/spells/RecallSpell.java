@@ -48,9 +48,9 @@ public class RecallSpell extends Spell
 			{
 				if (!isActive) return SpellResult.NO_TARGET;
 
-				double distance = getDistance(player.getLocation(), location);
+				double distanceSquared = player.getLocation().distanceSquared(location);
 
-				if (distance < disableDistance && autoSpawn)
+				if (distanceSquared < disableDistance * disableDistance && autoSpawn)
 				{
 					castMessage("Returning you home");
 					player.teleport(findPlaceToStand(player.getWorld().getSpawnLocation(), true));

@@ -7,7 +7,6 @@ OTHER STUFF:
 
  - Maybe data-drive blink's special list of things it will try to target through?
  - force is wonky
- - The skull_item seems to not play well with InventoryUtils :(
  - Show material names in lore since they don't always show up in the display name
  - Allow adding materials with data e.g. /wand add material stained_glass_blue
    - support above in config files, too- ideally even for spell icons.
@@ -18,7 +17,6 @@ OTHER STUFF:
  - Add sound effects (breaking on wand break... spell-specific)
  - Add other visual effects
  - Add server commands to create or upgrade wands
- - Async mass block updates?
 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Persist player spell data
@@ -31,6 +29,8 @@ OTHER STUFF:
 
 DONE:
 
+ - Async mass block updates?
+ - The skull_item seems to not play well with InventoryUtils :(
  - XP system broken without mana regen?	
  - Light spell- using client-side lighting hacks?
  - PotionEffectSpell: slow, haste, etc - also use in frost spell

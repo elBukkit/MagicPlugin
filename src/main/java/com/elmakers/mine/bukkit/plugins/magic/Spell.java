@@ -636,28 +636,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		// no spot found
 		return null;
 	}
-
-	public static double getDistance(Location source, Location target)
-	{
-		return Math.sqrt
-				(
-						Math.pow(source.getX() - target.getX(), 2) 
-						+ 	Math.pow(source.getY() - target.getY(), 2)
-						+ 	Math.pow(source.getZ() - target.getZ(), 2)
-						);
-	}
-
-	public static double getDistance(Player player, Block target)
-	{
-		Location loc = player.getLocation();
-		return Math.sqrt
-				(
-						Math.pow(loc.getX() - target.getX(), 2) 
-						+ 	Math.pow(loc.getY() - target.getY(), 2)
-						+ 	Math.pow(loc.getZ() - target.getZ(), 2)
-						);
-	}
-
+	
 	/**
 	 * Get the block the player is standing on.
 	 * 
@@ -1164,6 +1143,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	protected int getMaxRange()
 	{
 		return Math.min(maxRange, (int)(playerSpells.getPowerMultiplier() * range));
+	}
+
+	protected int getMaxRangeSquared()
+	{
+		int maxRange = getMaxRange();
+		return maxRange * maxRange;
 	}
 
 	protected void setMaxRange(int range, boolean allow)

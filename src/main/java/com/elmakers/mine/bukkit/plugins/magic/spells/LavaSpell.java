@@ -26,7 +26,7 @@ public class LavaSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		int lavaBlocks = (int)getDistance(player, target);
+		int lavaBlocks = (int)player.getLocation().distance(target.getLocation());
 		if (lavaBlocks <= 0) return SpellResult.NO_TARGET;
 
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());

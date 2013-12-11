@@ -144,8 +144,8 @@ public class PortalSpell extends Spell
 			return;
 		}
 
-		double dist_a = Spell.getDistance(a.getLocation(), fromLocation);
-		double dist_b = Spell.getDistance(b.getLocation(), fromLocation);
+		double dist_a = a.getLocation().distanceSquared(fromLocation);
+		double dist_b = b.getLocation().distanceSquared(fromLocation);
 
 		if (dist_a < dist_b)
 		{
@@ -232,7 +232,7 @@ public class PortalSpell extends Spell
 			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		if (defaultSearchDistance > 0 && getDistance(player, target) > defaultSearchDistance)
+		if (defaultSearchDistance > 0 && player.getLocation().distanceSquared(target.getLocation()) > defaultSearchDistance* defaultSearchDistance)
 		{
 			castMessage("Can't create a portal that far away");
 			return SpellResult.NO_TARGET;
