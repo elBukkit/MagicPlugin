@@ -1,27 +1,26 @@
 package com.elmakers.mine.bukkit.utilities;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-public class LimitedRepeatingTask implements Runnable {
+// This can be used as a base class for a repeating task that you want
+// to end after a certain number of iterations (repeats).
+public abstract class LimitedRepeatingTask extends ManagedRepeatingTask {
 
 	protected int iterations;
-	protected final int taskId;
 	
 	public LimitedRepeatingTask(Plugin plugin, int delay, int period, int iterations) {
+		super(plugin, delay, period);
 		this.iterations = iterations;
-		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, delay, period);
 	}
 	
-	// Override this, but be sure to call super.run
+	// Don't override this, override onRepeat()
 	public void run() {
+		onRepeat();
 		this.iterations--;
 		if (this.iterations <= 0) {
 			cancel();
 		}
 	}
 	
-	public void cancel() {
-		Bukkit.getScheduler().cancelTask(taskId);
-	}
+	public abstract void onRepeat();
 }
