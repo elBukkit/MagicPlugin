@@ -6,6 +6,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -21,6 +23,8 @@ public class FrostSpell extends Spell
 	private int             timeToLive = 60000;
 	private int             playerDamage = 1;
 	private int             entityDamage = 10;
+	private int				slowness = 1;
+	private int				slownessDuration = 200;
 
 	public class FrostAction extends SimpleBlockAction
 	{
@@ -73,6 +77,10 @@ public class FrostSpell extends Spell
 			if (targetEntity instanceof LivingEntity)
 			{
 				LivingEntity li = (LivingEntity)targetEntity;
+				if (slowness > 0) {
+					PotionEffect effect = new PotionEffect(PotionEffectType.SLOW, slownessDuration, slowness, false);
+					li.addPotionEffect(effect);
+				}
 				if (li instanceof Player)
 				{
 					li.damage(playerDamage, player);
@@ -131,5 +139,7 @@ public class FrostSpell extends Spell
 		defaultRadius = properties.getInteger("radius", defaultRadius);
 		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);
 		timeToLive = properties.getInt("duration", timeToLive);
+		slowness = properties.getInt("slowness", slowness);
+		slownessDuration = properties.getInt("slowness_duration", slownessDuration);
 	}
 }

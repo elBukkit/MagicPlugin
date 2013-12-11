@@ -7,6 +7,7 @@
  - Maybe fixed some issues with "force"
  - Added "bending" wands (yes, I love the Avatar!)
  - Fix "breach" and other auto-undo versions of construct
+ - The frost spell will slow target entities
 
 ## 2.6.1
 
