@@ -64,6 +64,8 @@ public class Wand implements CostReducer {
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
 	
+	private int effectColor = 0;
+	
 	private float defaultWalkSpeed = 0.2f;
 	private float defaultFlySpeed = 0.1f;
 	private float speedIncrease = 0;
@@ -247,6 +249,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration));
 		InventoryUtils.setMeta(wandNode, "uses", Integer.toString(uses));
 		InventoryUtils.setMeta(wandNode, "has_inventory", Integer.toString((hasInventory ? 1 : 0)));
+		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 	}
 	
 	protected void loadOldState(ItemStack item) {
@@ -340,6 +343,7 @@ public class Wand implements CostReducer {
 		hungerRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration)));
 		uses = Integer.parseInt(InventoryUtils.getMeta(wandNode, "uses", Integer.toString(uses)));
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
+		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
 		
 		// This is done here as an extra safety measure.
 		// A walk speed too high will cause a server error.
@@ -1103,6 +1107,7 @@ public class Wand implements CostReducer {
 		healthRegeneration = Math.max(healthRegeneration, other.healthRegeneration);
 		hungerRegeneration = Math.max(hungerRegeneration, other.hungerRegeneration);
 		speedIncrease = Math.max(speedIncrease, other.speedIncrease);
+		effectColor = Math.max(effectColor, other.effectColor);
 		
 		// Eliminate limited-use wands
 		if (uses == 0 || other.uses == 0) {
@@ -1144,6 +1149,7 @@ public class Wand implements CostReducer {
 		healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
 		hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
 		uses = wandConfig.getInt("uses", uses);
+		effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
 	
 		// Make sure to adjust the player's walk speed if it changes and this wand is active.
 		float oldWalkSpeedIncrease = speedIncrease;
@@ -1293,6 +1299,10 @@ public class Wand implements CostReducer {
 		}
 		updateActiveMaterial();
 		updateName();
+		
+		if (effectColor != 0) {
+			InventoryUtils.addPotionEffect(player, effectColor);
+		}
 	}
 	
 	protected void updateMana() {
@@ -1310,15 +1320,20 @@ public class Wand implements CostReducer {
 	public void deactivate() {
 		if (activePlayer == null) return;
 		
-		// This is a tying wands together with other spells, potentially
-		// But with the way the mana system works, this seems like the safest route.
-		activePlayer.deactivateAllSpells();
-		
 		deactivate(activePlayer.getPlayer().getInventory().getHeldItemSlot());
 	}
 	
 	public void deactivate(int itemSlot) {
 		if (activePlayer == null) return;
+
+		if (effectColor > 0) {
+			InventoryUtils.removePotionEffect(activePlayer.getPlayer());
+		}
+		
+		// This is a tying wands together with other spells, potentially
+		// But with the way the mana system works, this seems like the safest route.
+		activePlayer.deactivateAllSpells();
+		
 		if (isInventoryOpen()) {
 			closeInventory(itemSlot);
 		}

@@ -466,6 +466,7 @@ wands:
         fire_protection: 0.9
         xp_regeneration: 20
         xp_max: 500
+        effect_color: 0000FF
         haste: 0.1
         spells:
             - fling
