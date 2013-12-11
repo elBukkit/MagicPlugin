@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +21,9 @@ public class InventoryUtils
 	private static Class<?> class_NBTTagList;
 	private static Class<?> class_CraftInventoryCustom;
 	private static Class<?> class_CraftItemStack;
+	private static Class<?> class_CraftLivingEntity;
+	private static Class<?> class_Entity;
+	private static Class<?> class_DataWatcher;
 
 	static 
 	{
@@ -32,12 +36,15 @@ public class InventoryUtils
 				versionPrefix = packages[3] + ".";
 			}
 
+			class_Entity = fixBukkitClass("net.minecraft.server.Entity");
 			class_ItemStack = fixBukkitClass("net.minecraft.server.ItemStack");
+			class_DataWatcher = fixBukkitClass("net.minecraft.server.DataWatcher");
 			class_NBTBase = fixBukkitClass("net.minecraft.server.NBTBase");
 			class_NBTTagCompound = fixBukkitClass("net.minecraft.server.NBTTagCompound");
 			class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
 			class_CraftInventoryCustom = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftInventoryCustom");
 			class_CraftItemStack = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftItemStack");
+			class_CraftLivingEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftLivingEntity");
 		} 
 		catch (Throwable ex) {
 			ex.printStackTrace();
@@ -249,5 +256,22 @@ public class InventoryUtils
 			ex.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static void addPotionEffect(LivingEntity entity, int color) {
+		try {
+			Method geHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
+			Object entityLiving = geHandleMethod.invoke(entity);
+			Method getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
+			Object dataWatcher = getDataWatcherMethod.invoke(entityLiving);
+			Method watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
+			watchMethod.invoke(dataWatcher, (int)7, Integer.valueOf(color));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void removePotionEffect(LivingEntity entity) {
+		addPotionEffect(entity, 0); // ?
 	}
 }
