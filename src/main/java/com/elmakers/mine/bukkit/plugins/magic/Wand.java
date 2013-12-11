@@ -26,7 +26,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Tree;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
@@ -586,7 +585,7 @@ public class Wand implements CostReducer {
 			}
 			*/
 			
-			if (material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
+			if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
 				// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
 				DyeColor color = DyeColor.getByWoolData(data);
 				materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
