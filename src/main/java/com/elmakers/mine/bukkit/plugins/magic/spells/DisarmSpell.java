@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -30,6 +31,11 @@ public class DisarmSpell extends Spell
 		LivingEntity entity = (LivingEntity)targetEntity;
 		EntityEquipment equipment = entity.getEquipment();
 		ItemStack stack = equipment.getItemInHand();
+		
+		if (stack == null || stack.getType() == Material.AIR)
+		{
+			return SpellResult.NO_TARGET;
+		}
 		
 		// Special case for wands
 		if (Wand.isWand(stack) && entity instanceof Player) {

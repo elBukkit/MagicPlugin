@@ -8,6 +8,7 @@
  - Added "bending" wands (yes, I love the Avatar!)
  - Fix "breach" and other auto-undo versions of construct
  - The frost spell will slow target entities
+ - Fix an exception in the disarm spell when the target is not holding anything.
 
 ## 2.6.1
 
