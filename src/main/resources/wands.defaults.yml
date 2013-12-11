@@ -400,6 +400,7 @@ wands:
         protection: 0.6
         xp_regeneration: 2
         xp_max: 50
+        haste: 0.1
         spells:
             - fling
             - push
@@ -457,4 +458,41 @@ wands:
             - lightning
             - toss
         materials:
+            - stationary_lava
+    avatar:
+        name: The Avatar Wand
+        description: Master of all four elements
+        protection: 0.9
+        fire_protection: 0.9
+        xp_regeneration: 20
+        xp_max: 500
+        haste: 0.1
+        spells:
+            - fling
+            - push
+            - pull
+            - force
+            - leap
+            - fireball
+            - recurse
+            - blob
+            - fire
+            - inferno
             - lava
+            - lightning
+            - toss
+            - sandblast
+            - pillar
+            - bridge
+            - breach
+            - frost
+            - cushion
+            - levitate
+        materials:
+            - dirt
+            - stone
+            - sand
+            - stationary_lava
+            - iron_block
+            - ice
+            - stationary_water

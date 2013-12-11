@@ -411,7 +411,7 @@ spells:
             cooldown: 200
         parameters: {}
         costs:
-        - xp: 100
+        - xp: 40
     cushion:
         name: Cushion
         icon: soul_sand
@@ -871,7 +871,7 @@ spells:
             radius: 3
             type: pyramid
         costs:
-        - xp: 20
+        - xp: 25
     familiar:
         name: Familiar
         icon: monster_egg
@@ -953,7 +953,7 @@ spells:
             cooldown: 500
         parameters: {}
         costs:
-        - xp: 100
+        - xp: 20
     wolf:
         name: Wolf
         icon: raw_beef
