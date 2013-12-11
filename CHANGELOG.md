@@ -5,6 +5,8 @@
  - Add carpet to the special-case material variant list.
  - Make push + pull target multiple entities
  - Maybe fixed some issues with "force"
+ - Added "bending" wands (yes, I love the Avatar!)
+ - Fix "breach" and other auto-undo versions of construct
 
 ## 2.6.1
 

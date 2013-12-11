@@ -91,6 +91,9 @@ public class ConstructSpell extends Spell
 	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type)
 	{
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, material, data, indestructible);
+		if (timeToLive > 0) {
+			batch.setTimeToLive(timeToLive);
+		}
 		spells.addPendingBlockBatch(batch);
 	}
 
