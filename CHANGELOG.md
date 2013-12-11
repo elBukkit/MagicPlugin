@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.6.3
+
 ## 2.6.2
 
  - Add carpet to the special-case material variant list.
