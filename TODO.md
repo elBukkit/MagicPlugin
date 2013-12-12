@@ -13,9 +13,8 @@ OTHER STUFF:
    - Related to above, refactor so spell materials don't matter, use nbt data.
  - managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?
- - Use firework effects directly
  - Add sound effects (breaking on wand break... spell-specific)
- - Add other visual effects
+ - Add other visual effects (fireworks, particles, etc)
  - Add server commands to create or upgrade wands
 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
@@ -29,6 +28,7 @@ OTHER STUFF:
 
 DONE:
 
+ - Use firework effects directly
  - Show material names in lore since they don't always show up in the display name
  - force is wonky
  - Async mass block updates?

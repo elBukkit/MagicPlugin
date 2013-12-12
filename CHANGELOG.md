@@ -5,6 +5,7 @@
  - Make the undo system use batched block updates
  - Ensure chunks are loaded when processing batch block updates
  - Fix a potential issue with changes to magic.yml getting overwritten.
+ - The "flare" spell now only spawns a firework effect
 
 ## 2.6.2
 

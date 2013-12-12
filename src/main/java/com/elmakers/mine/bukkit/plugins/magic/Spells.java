@@ -770,7 +770,7 @@ public class Spells implements Listener
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		Player player = event.getPlayer();
+		Player player = event.getPlayer();		
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		

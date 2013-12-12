@@ -6,14 +6,11 @@ import java.util.Random;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
-import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.utilities.FireworkUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireworkSpell extends Spell
@@ -58,24 +55,19 @@ public class FireworkSpell extends Spell
 		int flareCount = parameters.getInt("count", 1);
 		Block target = getTarget().getBlock();
 
+	     
+        FireworkEffect effect = FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
+		
 		for (int i = 0; i < flareCount; i++)
 		{
-			spawnFirework(target.getLocation(), flareCount);
+			// TODO: Spread locations
+			FireworkUtils.spawnFireworkEffect(target.getLocation(), effect, power);
+			//spawnFirework(target.getLocation(), flareCount);
 		}
 
 		castMessage("You fire some magical flares");
 
 		return SpellResult.SUCCESS;
-	}
-	
-	protected void spawnFirework(Location location, int spread) {
-		Firework firework = (Firework)player.getWorld().spawnEntity(location, EntityType.FIREWORK);
-        FireworkMeta meta = firework.getFireworkMeta();
-     
-        FireworkEffect effect = FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
-        meta.addEffect(effect);
-        meta.setPower(power);
-        firework.setFireworkMeta(meta);     
 	}
 	
 	protected Type getType(int i) {
