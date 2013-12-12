@@ -412,6 +412,7 @@ wands:
             - recurse
             - cushion
             - heal
+            - force
         materials:
             - stationary_water
             - ice
@@ -449,6 +450,7 @@ wands:
             - lava
             - lightning
             - toss
+            - boom
         materials:
             - stationary_lava
     avatar:
@@ -458,6 +460,7 @@ wands:
         fire_protection: 0.9
         xp_regeneration: 20
         xp_max: 500
+        power: 0.5
         effect_color: 0000FF
         haste: 0.1
         spells:
@@ -481,6 +484,8 @@ wands:
             - frost
             - cushion
             - levitate
+            - boom
+            - kaboom
         materials:
             - dirt
             - stone
