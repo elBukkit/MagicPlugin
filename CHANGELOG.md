@@ -4,6 +4,7 @@
 
  - Make the undo system use batched block updates
  - Ensure chunks are loaded when processing batch block updates
+ - Fix a potential issue with changes to magic.yml getting overwritten.
 
 ## 2.6.2
 

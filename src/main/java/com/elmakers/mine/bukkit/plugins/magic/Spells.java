@@ -576,8 +576,6 @@ public class Spells implements Listener
 					setIngredient('i', wandRecipeLowerMaterial);
 			wandRecipe = recipe;
 		}
-		
-		properties.save();
 	}
 
 	public void clear()
