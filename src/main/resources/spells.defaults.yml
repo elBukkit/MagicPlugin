@@ -126,7 +126,7 @@ spells:
             allow_max_range: false
             range: 32
             allow_area: true
-            item_force: 1
+            item_force: 2
             area_range: 20
             entity_force: 3
             cooldown: 0

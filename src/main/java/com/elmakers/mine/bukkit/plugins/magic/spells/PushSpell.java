@@ -34,7 +34,7 @@ public class PushSpell extends Spell
 
 	public void forceAll(double mutliplier, boolean pull)
 	{
-		float maxDistance = (float)maxAllDistance * spells.getMaxPowerMultiplier();
+		float maxDistance = (float)maxAllDistance * playerSpells.getPowerMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
 		
 		// Visual effect
@@ -71,6 +71,7 @@ public class PushSpell extends Spell
 		pull = typeString.equals("pull");
 
 		double multiplier = parameters.getDouble("size", 1);
+		multiplier *= playerSpells.getPowerMultiplier();
 		int count = parameters.getInt("count", 0);
 
 		targetEntity(Entity.class);
@@ -78,8 +79,7 @@ public class PushSpell extends Spell
 		if 
 		(
 			allowAll
-			&&  (targets.size() == 0) 
-			&&  (getYRotation() < -60 || getYRotation() > 60)
+			&&  (getYRotation() < -80 || getYRotation() > 80)
 		)
 		{
 			if (push)
