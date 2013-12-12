@@ -11,7 +11,7 @@ general:
     erase_item: sulphur
     copy_item: sugar
     enable_crafting: true
-    crafting_material_upper: diamond
+    crafting_material_upper: nether_star
     crafting_material_lower: blaze_rod
     crafting_output: random(1)
     enable_enchanting: true
