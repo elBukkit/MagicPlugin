@@ -731,6 +731,13 @@ public class Wand implements CostReducer {
 		return item != null && item.getType() != WandMaterial && InventoryUtils.hasMeta(item, "spell");
 	}
 
+	public static String getSpell(ItemStack item) {
+		if (!isSpell(item)) return null;
+		
+		Object spellNode = InventoryUtils.getNode(item, "spell");
+		return InventoryUtils.getMeta(spellNode, "key");
+	}
+
 	protected void updateInventory() {
 		if (activePlayer == null) return;
 		updateInventory(activePlayer.getPlayer().getInventory().getHeldItemSlot());
@@ -748,7 +755,7 @@ public class Wand implements CostReducer {
 
 	protected void updateInventoryName(ItemStack item, boolean activeName) {
 		if (isSpell(item)) {
-			Spell spell = activePlayer.getSpell(item.getType());
+			Spell spell = activePlayer.getSpell(getSpell(item));
 			if (spell != null) {
 				updateSpellName(item, spell, activeName);
 			}
@@ -975,7 +982,7 @@ public class Wand implements CostReducer {
 			if (items[i] == null || isWand(items[i])) continue;
 			Material material = items[i].getType();
 			if (isSpell(items[i])) {
-				Spell spell = activePlayer.getSpell(material);
+				Spell spell = activePlayer.getSpell(getSpell(items[i]));
 				if (spell != null && spellMap.containsKey(spell.getKey())) {
 					spellMap.put(spell.getKey(), i);
 				}

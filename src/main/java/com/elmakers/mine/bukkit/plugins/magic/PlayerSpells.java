@@ -351,15 +351,6 @@ public class PlayerSpells implements CostReducer
 		}
 	}
 
-	public Spell getSpell(Material material)
-	{
-		Spell spell = master.getSpell(material);
-		if (spell == null || !spell.hasSpellPermission(player))
-			return null;
-
-		return getSpell(spell.getKey());
-	}
-
 	public Spell getSpell(String name)
 	{
 		Spell spell = master.getSpell(name);

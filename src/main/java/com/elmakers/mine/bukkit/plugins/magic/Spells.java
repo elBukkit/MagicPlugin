@@ -157,25 +157,6 @@ public class Spells implements Listener
 		{
 			spells.put(variant.getKey(), variant);
 		}
-		Material m = variant.getMaterial();
-		if (m != null && m != Material.AIR)
-		{
-			/*
-            if (buildingMaterials.contains(m))
-            {
-                log.warning("Spell " + variant.getName() + " uses building material as icon: " + m.name().toLowerCase());
-            }
-			 */
-			conflict = spellsByMaterial.get(m);
-			if (conflict != null)
-			{
-				log.log(Level.WARNING, "Duplicate spell material: " + m.name() + " for " + conflict.getKey() + " and " + variant.getKey());
-			}
-			else
-			{
-				spellsByMaterial.put(variant.getMaterial(), variant);
-			}
-		}
 	}
 
 	/*
@@ -568,7 +549,6 @@ public class Spells implements Listener
 	{
 		playerSpells.clear();
 		spells.clear();
-		spellsByMaterial.clear();
 	}
 
 	public void reset()
@@ -667,7 +647,7 @@ public class Spells implements Listener
 				
 				// Check for spell or material selection
 				if (next != null && next.getType() != Material.AIR) {
-					Spell spell = Wand.isSpell(next) ? playerSpells.getSpell(next.getType()) : null;
+					Spell spell = playerSpells.getSpell(Wand.getSpell(next));
 					if (spell != null) {
 						playerSpells.cancel();
 						activeWand.setActiveSpell(spell.getKey());
@@ -1174,10 +1154,6 @@ public class Spells implements Listener
 			world.getPopulators().add(new WandChestPopulator(this, blockPopulatorConfig));
 		}
 	}
-
-	public Spell getSpell(Material material) {
-		return spellsByMaterial.get(material);
-	}
 	
 	public Spell getSpell(String name) {
 		return spells.get(name);
@@ -1234,7 +1210,6 @@ public class Spells implements Listener
 	 
 	 private final Logger                        log                            = Logger.getLogger("Minecraft");
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
-	 private final HashMap<Material, Spell>      spellsByMaterial               = new HashMap<Material, Spell>();
 	 private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
 
 	 private Recipe								 wandRecipe						= null;
