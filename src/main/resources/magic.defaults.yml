@@ -65,6 +65,15 @@ general:
     - gravel
     - netherrack
     - soul_sand
+    - snow
+    - long_grass
+    - dead_bush
+    - yellow_flower
+    - red_rose
+    - brown_mushroom
+    - red_mushroom
+    - leaves
+    - sandstone
     indestructible:
     - bedrock
     - chest
