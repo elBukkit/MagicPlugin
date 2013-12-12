@@ -12,6 +12,8 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.EffectPlayer;
+import com.elmakers.mine.bukkit.utilities.EffectRing;
 import com.elmakers.mine.bukkit.utilities.EffectTrail;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -21,9 +23,27 @@ public class PushSpell extends Spell
 	int entityMagnitude = 3;
 	int maxAllDistance = 20;
 	boolean allowAll = true;
+	
+	// Maybe make these configurable for custom effects?
+    final static int effectLevel = 3;
+    final static int effectSpeed = 2;
+    final static int effectPeriod = 2;
+    final static int ringEffectAmount = 8;
+    final static int maxEffectRange = 16;
+    final static int maxRingEffectRange = 6;
 
 	public void forceAll(double mutliplier, boolean pull)
 	{
+		float maxDistance = (float)maxAllDistance * spells.getMaxPowerMultiplier();
+		float maxDistanceSquared = maxDistance * maxDistance;
+		
+		// Visual effect
+		int effectRange = Math.min((int)maxRingEffectRange, maxEffectRange / effectSpeed);
+		Location effectLocation = player.getLocation();
+		EffectRing effectRing = new EffectRing(spells.getPlugin(), effectLocation, effectRange, ringEffectAmount);
+		if (pull) effectRing.setInvert(true);
+		startEffect(effectRing, effectRange);
+		
 		List<Entity> entities = player.getWorld().getEntities();
 		for (Entity target : entities)
 		{
@@ -31,7 +51,7 @@ public class PushSpell extends Spell
 			Location playerLocation = player.getLocation();
 			Location targetLocation = target.getLocation();
 
-			if (playerLocation.distanceSquared(targetLocation) > maxAllDistance * maxAllDistance) continue;
+			if (playerLocation.distanceSquared(targetLocation) >maxDistanceSquared) continue;
 
 			Location to = pull ? targetLocation : playerLocation;
 			Location from = pull ? playerLocation : targetLocation;
@@ -73,20 +93,25 @@ public class PushSpell extends Spell
 			forceAll(multiplier, pull);
 			return SpellResult.SUCCESS;
 		}
-		
+
+		// Visual effect
+		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
 		Location effectLocation = player.getEyeLocation();
-		int effectRange = Math.min(getMaxRange(), 16);
-		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectLocation.getDirection(), effectRange);
-		effectTrail.setPeriod(1);
-		// Shame they won't share these!
-		
-		final int SPLASH_BIT = 0x4000;
-	    final int TIER_SHIFT = 5;
-	    final int level = 3;
-		effectTrail.setData((level << TIER_SHIFT) | PotionType.SPEED.ordinal() | SPLASH_BIT);
-		effectTrail.setSpeed(2);
-		effectTrail.setEffect(Effect.POTION_BREAK);
-		effectTrail.start();
+		Vector effectDirection = effectLocation.getDirection();
+		if (pull) {
+			effectDirection.normalize();
+			effectDirection.multiply(effectSpeed * effectRange);
+			effectLocation.add(effectDirection);
+			effectDirection.multiply(-1);
+		}
+		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		startEffect(effectTrail, effectRange);
+
+		// Don't deduct costs for not doing anything but still show the effect.
+		if (targets.size() == 0)
+		{
+			return SpellResult.NO_TARGET;
+		}
 		
 		int pushed = 0;
 		for (Target target : targets) {
@@ -129,5 +154,18 @@ public class PushSpell extends Spell
 		entityMagnitude = properties.getInt("entity_force", entityMagnitude);
 		allowAll = properties.getBoolean("allow_area", allowAll);
 		maxAllDistance = properties.getInt("area_range", maxAllDistance);
+	}
+	
+	protected void startEffect(EffectPlayer effect, int effectRange) {
+
+		// Shame Bukkit won't share these!	
+		final int SPLASH_BIT = 0x4000;
+	    final int TIER_SHIFT = 5;
+
+		effect.setPeriod(effectPeriod);
+		effect.setData((effectLevel << TIER_SHIFT) | PotionType.SPEED.ordinal() | SPLASH_BIT);
+		effect.setSpeed(effectSpeed);
+		effect.setEffect(Effect.POTION_BREAK);
+		effect.start();
 	}
 }

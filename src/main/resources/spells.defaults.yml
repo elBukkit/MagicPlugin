@@ -124,7 +124,7 @@ spells:
         class: PushSpell
         properties:
             allow_max_range: false
-            range: 200
+            range: 32
             allow_area: true
             item_force: 1
             area_range: 20
@@ -692,7 +692,7 @@ spells:
         class: PushSpell
         properties:
             allow_max_range: false
-            range: 200
+            range: 32
             allow_area: true
             item_force: 1
             area_range: 20
