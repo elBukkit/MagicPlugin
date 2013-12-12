@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -11,6 +12,8 @@ public abstract class EffectPlayer implements Runnable {
 	protected Effect effect = null;
 	protected int period = 1;
 	protected int data = 0;
+	protected FireworkEffect fireworkEffect = null;
+	protected int power = 0;
 	
 	public EffectPlayer(Plugin plugin) {
 		this.plugin = plugin;
@@ -18,6 +21,11 @@ public abstract class EffectPlayer implements Runnable {
 	
 	public void setEffect(Effect effect) {
 		this.effect = effect;
+	}
+	
+	public void setFireworkEffect(FireworkEffect fireworkEffect, int power) {
+		this.fireworkEffect = fireworkEffect;
+		this.power = power;
 	}
 	
 	public void start() {
@@ -39,6 +47,9 @@ public abstract class EffectPlayer implements Runnable {
 	protected void playEffect(Location location) {
 		if (effect != null) {
 			location.getWorld().playEffect(location, effect, data);
+		}
+		if (fireworkEffect != null) {
+			FireworkUtils.spawnFireworkEffect(location, fireworkEffect, power);
 		}
 	}
 	
