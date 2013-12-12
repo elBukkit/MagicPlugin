@@ -353,7 +353,7 @@ wands:
         hunger_regeneration: 1
         power: 1
         haste: 0.3
-        effect_color: 010101
+        effect_color: FF0000
         spells:
             - fling
             - blink

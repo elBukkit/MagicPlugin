@@ -133,6 +133,7 @@ spells:
         parameters:
             range: '32'
             type: pull
+            count: 1
         costs:
         - xp: 2
     kaboom:

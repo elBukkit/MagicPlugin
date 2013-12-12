@@ -48,6 +48,7 @@ public class PushSpell extends Spell
 		pull = typeString.equals("pull");
 
 		double multiplier = parameters.getDouble("size", 1);
+		int count = parameters.getInt("count", 0);
 
 		targetEntity(Entity.class);
 		List<Target> targets = getAllTargetEntities();
@@ -75,11 +76,14 @@ public class PushSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		
+		int pushed = 0;
 		for (Target target : targets) {
 			Entity targetEntity = target.getEntity();
 			Location to = pull ? target.getLocation() : player.getLocation();
 			Location from = pull ? player.getLocation() : target.getLocation();
 			forceEntity(targetEntity, multiplier, from, to);
+			pushed++;
+			if (count > 0 && pushed >= count) break;
 		}
 
 		if (pull)

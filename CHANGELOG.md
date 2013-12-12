@@ -6,6 +6,8 @@
  - Ensure chunks are loaded when processing batch block updates
  - Fix a potential issue with changes to magic.yml getting overwritten.
  - The "flare" spell now only spawns a firework effect
+ - Allow two spells to use the same material icon.
+ - Add a parameter to push/pull to specify how many entities to effect. Pull now does only 1 again (for Yoinking)
 
 ## 2.6.2
 
