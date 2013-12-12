@@ -11,102 +11,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
-public class LightSource {
+public class LightSource extends NMSUtils {
 	/*
 	 * This was modified by NathanWolf from the following code:
 	 * 
-	 * MINI README
-	 * 
-	 * This is free and you can use it/change it all you want.
-	 * 
-	 * There is a bukkit forum post on for this code:
 	 * http://forums.bukkit.org/threads/resource-server-side-lighting-no-it-isnt-just-client-side.154503/
 	 */
-	
-	private static String versionPrefix = "";
-
-	private static Class<?> class_World;
-	private static Class<?> class_Packet;
-	private static Class<Enum> class_EnumSkyBlock;
-	private static Class<?> class_PacketPlayOutMapChunkBulk;
-	private static Class<?> class_Packet56MapChunkBulk;
-	
-	static 
-	{
-		// Find classes Bukkit hides from us. :-D
-		// Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
-		String className = Bukkit.getServer().getClass().getName();
-		String[] packages = className.split("\\.");
-		if (packages.length == 5) {
-			versionPrefix = packages[3] + ".";
-		}
-
-		try { 	
-			class_Packet = fixBukkitClass("net.minecraft.server.Packet");
-			class_World = fixBukkitClass("net.minecraft.server.World");
-			class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");
-		} 
-		catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		
-		// This is version-dependent, so try both.
-		try { 	
-			class_PacketPlayOutMapChunkBulk = fixBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk");
-		} 
-		catch (Throwable ex) {
-		}
-		try { 	
-			class_Packet56MapChunkBulk = fixBukkitClass("net.minecraft.server.Packet56MapChunkBulk");
-		} 
-		catch (Throwable ex) {
-		}
-		
-		if (class_PacketPlayOutMapChunkBulk == null && class_Packet56MapChunkBulk == null) {
-			// This should probably use a logger, but.. this is a pretty bad issue.
-			System.err.println("Could not bind to either PlayOutMapChunk packet version");
-		}
-	}
-
-	private static Class<?> fixBukkitClass(String className) throws Exception {
-		className = className.replace("org.bukkit.craftbukkit.", "org.bukkit.craftbukkit." + versionPrefix);
-		className = className.replace("net.minecraft.server.", "net.minecraft.server." + versionPrefix);
-		return Class.forName(className);
-	}
-
-	protected static Object getHandle(org.bukkit.World world) {
-		Object handle = null;
-		try {
-			Method handleMethod = world.getClass().getMethod("getHandle");
-			handle = handleMethod.invoke(world);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return handle;
-	}
-
-	protected static Object getHandle(org.bukkit.Chunk chunk) {
-		Object handle = null;
-		try {
-			Method handleMethod = chunk.getClass().getMethod("getHandle");
-			handle = handleMethod.invoke(chunk);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return handle;
-	}
-
-	protected static Object getHandle(org.bukkit.entity.Player player) {
-		Object handle = null;
-		try {
-			Method handleMethod = player.getClass().getMethod("getHandle");
-			handle = handleMethod.invoke(player);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return handle;
-	}
 	
 	public static void createLightSource (Location l, int level) {
 		createLightSource(l, level, null);
@@ -118,6 +28,7 @@ public class LightSource {
 	 * @param level
 	 * @param players
 	 */
+	@SuppressWarnings("unchecked")
 	public static void createLightSource (Location l, int level, Collection<Player> players) {
 		// Store the original light level
 		int oLevel = l.getBlock().getLightLevel();

@@ -4,64 +4,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-public class InventoryUtils 
+public class InventoryUtils extends NMSUtils
 {
-	private static String versionPrefix = "";
-
-	private static Class<?> class_ItemStack;
-	private static Class<?> class_NBTBase;
-	private static Class<?> class_NBTTagCompound;
-	private static Class<?> class_NBTTagList;
-	private static Class<?> class_CraftInventoryCustom;
-	private static Class<?> class_CraftItemStack;
-	private static Class<?> class_CraftLivingEntity;
-	private static Class<?> class_Entity;
-	private static Class<?> class_DataWatcher;
-
-	static 
-	{
-		// Find classes Bukkit hides from us. :-D
-		// Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
-		try { 
-			String className = Bukkit.getServer().getClass().getName();
-			String[] packages = className.split("\\.");
-			if (packages.length == 5) {
-				versionPrefix = packages[3] + ".";
-			}
-
-			class_Entity = fixBukkitClass("net.minecraft.server.Entity");
-			class_ItemStack = fixBukkitClass("net.minecraft.server.ItemStack");
-			class_DataWatcher = fixBukkitClass("net.minecraft.server.DataWatcher");
-			class_NBTBase = fixBukkitClass("net.minecraft.server.NBTBase");
-			class_NBTTagCompound = fixBukkitClass("net.minecraft.server.NBTTagCompound");
-			class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
-			class_CraftInventoryCustom = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftInventoryCustom");
-			class_CraftItemStack = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftItemStack");
-			class_CraftLivingEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftLivingEntity");
-		} 
-		catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	private static Class<?> fixBukkitClass(String className) {
-		className = className.replace("org.bukkit.craftbukkit.", "org.bukkit.craftbukkit." + versionPrefix);
-		className = className.replace("net.minecraft.server.", "net.minecraft.server." + versionPrefix);
-		try {
-			return Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 	protected static Object getNMSCopy(ItemStack stack) {
     	Object nms = null;
     	try {
@@ -72,18 +22,6 @@ public class InventoryUtils
 		}
 		return nms;
     }
-	
-	protected static Object getHandle(ItemStack stack) {
-		Object handle = null;
-		try {
-			Field handleField = stack.getClass().getDeclaredField("handle");
-			handleField.setAccessible(true);
-			handle = handleField.get(stack);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return handle;
-	}
 
 	protected static Object getTag(Object mcItemStack) {		
 		Object tag = null;
