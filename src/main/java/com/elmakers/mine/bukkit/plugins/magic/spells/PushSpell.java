@@ -2,14 +2,17 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
 
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.EffectTrail;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PushSpell extends Spell
@@ -71,10 +74,19 @@ public class PushSpell extends Spell
 			return SpellResult.SUCCESS;
 		}
 		
-		if (targets.size() == 0)
-		{
-			return SpellResult.NO_TARGET;
-		}
+		Location effectLocation = player.getEyeLocation();
+		int effectRange = Math.min(getMaxRange(), 16);
+		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectLocation.getDirection(), effectRange);
+		effectTrail.setPeriod(1);
+		// Shame they won't share these!
+		
+		final int SPLASH_BIT = 0x4000;
+	    final int TIER_SHIFT = 5;
+	    final int level = 3;
+		effectTrail.setData((level << TIER_SHIFT) | PotionType.SPEED.ordinal() | SPLASH_BIT);
+		effectTrail.setSpeed(2);
+		effectTrail.setEffect(Effect.POTION_BREAK);
+		effectTrail.start();
 		
 		int pushed = 0;
 		for (Target target : targets) {
