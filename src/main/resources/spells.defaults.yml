@@ -1139,3 +1139,14 @@ spells:
         parameters: {}
         costs:
         - xp: 15
+    map:
+        name: Map
+        icon: map
+        category: exploration
+        description: Generate a map
+        class: MapSpell
+        properties:
+            cooldown: 5000
+        parameters: {}
+        costs:
+        - xp: 15
