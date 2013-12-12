@@ -474,20 +474,6 @@ public class Spells implements Listener
 		log.info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
 	}
 
-	protected void save(File spellsFile)
-	{
-		Configuration config = new Configuration(spellsFile);
-		ConfigurationNode spellsNode = config.createChild("spells");
-
-		for (Spell spell : spells.values())
-		{
-			ConfigurationNode spellNode = spellsNode.createChild(spell.getKey());
-			spell.save(spellNode);
-		}
-
-		config.save();
-	}
-
 	protected void load(File spellsFile)
 	{
 		load(new Configuration(spellsFile));
