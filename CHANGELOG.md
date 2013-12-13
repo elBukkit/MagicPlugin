@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.6.4
+
 ## 2.6.3
 
  - Make the undo system use batched block updates
