@@ -35,6 +35,10 @@ public class CameraSpell extends Spell
 			playerName = targetPlayer.getName();
 		}
 		MapView newMap = spells.getPlayerPortrait(playerName);
+		if (newMap == null) {
+			sendMessage("Failed to load photo");
+			return SpellResult.FAILURE;
+		}
 		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
 		ItemMeta meta = newMapItem.getItemMeta();
 		meta.setDisplayName("Photo of " + playerName);

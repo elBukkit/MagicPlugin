@@ -483,7 +483,7 @@ public class Spells implements Listener
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				SkinRenderer.loadPlayers(playerMapIds);
+				SkinRenderer.loadPlayers(plugin, playerMapIds);
 			}
 		}, 20);
 		
@@ -1249,11 +1249,13 @@ public class Spells implements Listener
 	@SuppressWarnings("deprecation")
 	public MapView getPlayerPortrait(String playerName) {
 		MapView mapView = SkinRenderer.getPlayerPortrait(playerName);
-		PlayerSpells playerSpells = getPlayerSpells(playerName);
-		Short currentId = playerSpells.getPortraitMapId();
-		if (currentId == null || currentId != mapView.getId()) {
-			playerSpells.setPortraitMapId(mapView.getId());
-			save();
+		if (mapView != null) {
+			PlayerSpells playerSpells = getPlayerSpells(playerName);
+			Short currentId = playerSpells.getPortraitMapId();
+			if (currentId == null || currentId != mapView.getId()) {
+				playerSpells.setPortraitMapId(mapView.getId());
+				save();
+			}
 		}
 		
 		return mapView;
