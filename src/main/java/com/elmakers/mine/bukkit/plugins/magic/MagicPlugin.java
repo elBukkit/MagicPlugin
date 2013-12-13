@@ -572,6 +572,7 @@ public class MagicPlugin extends JavaPlugin
 
 	public void onDisable() 
 	{
+		spells.save();
 		spells.clear();
 	}
 

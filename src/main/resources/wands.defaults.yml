@@ -494,3 +494,10 @@ wands:
             - iron_block
             - ice
             - stationary_water
+    camera:
+        name: Camera
+        description: Take a portrait of yourself or others
+        xp_regeneration: 1
+        xp_max: 5
+        spells:
+            - camera

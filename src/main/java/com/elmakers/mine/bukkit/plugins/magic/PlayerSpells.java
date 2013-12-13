@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PlayerSpells implements CostReducer
 {
@@ -36,6 +37,7 @@ public class PlayerSpells implements CostReducer
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
 	private ItemStack buildingMaterial = null;
+	private Short mapPortraitId;
 
 	public void removeExperience(int xp) {
 		
@@ -162,15 +164,17 @@ public class PlayerSpells implements CostReducer
 	}
 
 	public boolean storeInventory() {
+		if (player == null) return false;
 		return storeInventory(player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
 	}
 
 	public boolean restoreInventory() {
+		if (player == null) return false;
 		return restoreInventory(player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
 	}
 
 	public boolean restoreInventory(int keepSlot, ItemStack keepItem) {
-		if (storedInventory == null) {
+		if (storedInventory == null || player == null) {
 			return false;
 		}
 		Inventory inventory = player.getInventory();
@@ -378,7 +382,7 @@ public class PlayerSpells implements CostReducer
 	}
 	
 	public Wand getActiveWand() {
-		if (activeWand != null) {
+		if (activeWand != null && player != null) {
 			ItemStack currentItem = player.getItemInHand();
 			if (Wand.isWand(currentItem)) {
 				activeWand.setItem(currentItem);
@@ -479,5 +483,27 @@ public class PlayerSpells implements CostReducer
 			spell.checkActiveDuration();
 			spell.checkActiveCosts();
 		}
+	}
+	
+	protected void load(ConfigurationNode configNode)
+	{
+		if (configNode.containsKey("portraitMapId")) {
+			mapPortraitId = (short)configNode.getInt("portraitMapId", 0);
+		}
+	}
+	
+	protected void save(ConfigurationNode configNode)
+	{
+		if (mapPortraitId != null) {
+			configNode.setProperty("portraitMapId", mapPortraitId);
+		}
+	}
+	
+	public Short getPortraitMapId() {
+		return mapPortraitId;
+	}
+	
+	public void setPortraitMapId(short id) {
+		mapPortraitId = id;
 	}
 }

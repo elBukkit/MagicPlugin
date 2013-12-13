@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -61,6 +62,7 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
+import com.elmakers.mine.bukkit.utilities.SkinRenderer;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -83,6 +85,14 @@ public class Spells implements Listener
 		spells.setPlayer(player);
 
 		return spells;
+	}
+	
+	public PlayerSpells getPlayerSpells(String playerName) {
+		if (!playerSpells.containsKey(playerName)) {
+			playerSpells.put(playerName, new PlayerSpells(this, null));
+		}
+		
+		return playerSpells.get(playerName);
 	}
 
 	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
@@ -449,10 +459,50 @@ public class Spells implements Listener
 		} else {
 			load(spellsFile);
 		}
+
+		File playersFile = new File(dataFolder, playersFileName);
+		if (playersFile.exists())
+		{
+			Configuration playerConfiguration = new Configuration(playersFile);
+			playerConfiguration.load();
+			List<String> playerNames = playerConfiguration.getKeys();
+			for (String playerName : playerNames) {
+				getPlayerSpells(playerName).load(playerConfiguration.getNode(playerName));
+			}
+		}
+		
+		// Preload player portrait maps. This is pretty specific to CameraSpell for now.
+		final Map<String, Short> playerMapIds = new HashMap<String, Short>();
+		for (Entry<String, PlayerSpells> entry : playerSpells.entrySet()) {
+			Short mapId = (Short)entry.getValue().getPortraitMapId();
+			if (mapId != null) {
+				playerMapIds.put(entry.getKey(), mapId);
+			}
+		}
+		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				SkinRenderer.loadPlayers(playerMapIds);
+			}
+		}, 20);
 		
 		Wand.load(plugin);
 
 		log.info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
+	}
+	
+	public void save()
+	{
+		File dataFolder = plugin.getDataFolder();
+		dataFolder.mkdirs();
+		
+		File playersFile = new File(dataFolder, playersFileName);
+		Configuration playerConfiguration = new Configuration(playersFile);
+		for (Entry<String, PlayerSpells> spellsEntry : playerSpells.entrySet()) {
+			ConfigurationNode playerNode = playerConfiguration.createChild(spellsEntry.getKey());
+			spellsEntry.getValue().save(playerNode);
+		}
+		playerConfiguration.save();
 	}
 
 	protected void load(File spellsFile)
@@ -625,6 +675,24 @@ public class Spells implements Listener
 			return;
 		}
 	}
+	
+	/*
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onMapInitialize(MapInitializeEvent event)
+	{
+		MapView map = event.getMap();
+		String playerName = SkinRenderer.getPlayerName(map.getId());
+		if (playerName != null)
+		{
+			for(MapRenderer renderer : map.getRenderers()) {
+				map.removeRenderer(renderer);
+			}
+			MapRenderer renderer = new SkinRenderer(playerName);
+			map.addRenderer(renderer);
+		}
+	}
+	*/
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
@@ -833,7 +901,7 @@ public class Spells implements Listener
 			wand.activate(playerSpells);
 		}
 	}
-
+	
 	@EventHandler
 	public void onPlayerExpChange(PlayerExpChangeEvent event)
 	{
@@ -862,6 +930,11 @@ public class Spells implements Listener
 		playerSpells.restoreInventory();
 		
 		playerSpells.onPlayerQuit(event);
+		
+		// Let the GC collect these
+		// TODO: See how deep the rabbit-hole goes here. Probably need to clear spells too.
+		playerSpells.setActiveWand(null);
+		playerSpells.setPlayer(null);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -870,6 +943,8 @@ public class Spells implements Listener
 	{
 		for (PlayerSpells spells : playerSpells.values()) {
 			Player player = spells.getPlayer();
+			if (player == null) continue;
+			
 			Wand wand = spells.getActiveWand();
 			if (wand != null) {
 				wand.deactivate();
@@ -1174,6 +1249,7 @@ public class Spells implements Listener
 	 */
 	 private final String                        spellsFileName                 = "spells.yml";
 	 private final String                        propertiesFileName             = "magic.yml";
+	 private final String                        playersFileName                 = "players.yml";
 	 private final String                        spellsFileNameDefaults         = "spells.defaults.yml";
 	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
 

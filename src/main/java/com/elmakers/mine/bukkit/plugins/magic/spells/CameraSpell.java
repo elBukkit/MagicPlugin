@@ -1,11 +1,9 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.map.MapRenderer;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -22,23 +20,27 @@ public class CameraSpell extends Spell
 	{
 		this.targetEntity(Player.class);
 		Target target = getTarget();
-		Player targetPlayer  =player;
-		if (target != null && target.isEntity() && (target.getEntity() instanceof Player))
+		String playerName = parameters.getString("name");
+		if (playerName == null) 
 		{
-			castMessage("CLICK!");
-			targetPlayer = (Player)target.getEntity();
-		} else {
-			castMessage("Selfie!");
+			Player targetPlayer = player;
+			if (target != null && target.isEntity() && (target.getEntity() instanceof Player))
+			{
+				castMessage("CLICK!");
+				targetPlayer = (Player)target.getEntity();
+			} 
+			else 
+			{
+				castMessage("Selfie!");
+			}
+			playerName = targetPlayer.getName();
 		}
-		World world = player.getWorld();
-		MapView newMap = Bukkit.createMap(world);
-		for(MapRenderer renderer : newMap.getRenderers()) {
-			newMap.removeRenderer(renderer);
-		}
-		MapRenderer renderer = new SkinRenderer(targetPlayer.getName());
-		newMap.addRenderer(renderer);
+		MapView newMap = SkinRenderer.getPlayerPortrait(playerName, spells);
 		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
-		world.dropItemNaturally(player.getLocation(), newMapItem);
+		ItemMeta meta = newMapItem.getItemMeta();
+		meta.setDisplayName("Photo of " + playerName);
+		newMapItem.setItemMeta(meta);
+		player.getWorld().dropItemNaturally(player.getLocation(), newMapItem);
 		return SpellResult.SUCCESS;
 	}
 }
