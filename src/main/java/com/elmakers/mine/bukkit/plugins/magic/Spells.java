@@ -677,24 +677,6 @@ public class Spells implements Listener
 		}
 	}
 	
-	/*
-	@SuppressWarnings("deprecation")
-	@EventHandler
-	public void onMapInitialize(MapInitializeEvent event)
-	{
-		MapView map = event.getMap();
-		String playerName = SkinRenderer.getPlayerName(map.getId());
-		if (playerName != null)
-		{
-			for(MapRenderer renderer : map.getRenderers()) {
-				map.removeRenderer(renderer);
-			}
-			MapRenderer renderer = new SkinRenderer(playerName);
-			map.addRenderer(renderer);
-		}
-	}
-	*/
-	
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerEquip(PlayerItemHeldEvent event)
