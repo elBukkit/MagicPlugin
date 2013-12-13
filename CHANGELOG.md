@@ -3,6 +3,7 @@
 ## 2.6.4
 
  - Load player skins asynchronously, and various fixes/optimizations to the camera spell.
+ - Player portraits show up immediately, instead of slowly loading.
 
 ## 2.6.3
 

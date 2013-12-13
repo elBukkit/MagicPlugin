@@ -903,6 +903,10 @@ public class Spells implements Listener
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
+		
+		// Make sure they get their portraits back right away on relogin.
+		SkinRenderer.resend(player.getName());
+		
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {

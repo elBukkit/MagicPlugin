@@ -30,6 +30,7 @@ public class SkinRenderer extends MapRenderer {
 	private static HashMap<String, BufferedImage> playerImages = new HashMap<String, BufferedImage>();
 	private static Map<String, Short> playerPortraitIds = new HashMap<String, Short>();
 	private static Map<Short, String> portraitIdPlayers = new HashMap<Short, String>();
+	private static HashMap<Short, Set<String>> sentToPlayers = new HashMap<Short, Set<String>>();
 	private static Set<Short> rendered = new HashSet<Short>();
 	private static Set<Short> loading = new HashSet<Short>();
 
@@ -107,6 +108,12 @@ public class SkinRenderer extends MapRenderer {
 		return playerMap;
 	}
 	
+	public static void resend(String playerName) {
+		for (Set<String> players : sentToPlayers.values()) {
+			players.remove(playerName);
+		}
+	}
+	
 	public static void forceReload(String playerName) {
 		synchronized(playerImages) {
 			if (playerImages.containsKey(playerName)){
@@ -117,6 +124,7 @@ public class SkinRenderer extends MapRenderer {
 			Short id = playerPortraitIds.get(playerName);
 			rendered.remove(id);
 			loading.remove(id);
+			sentToPlayers.remove(id);
 		}
 	}
 	
@@ -161,7 +169,21 @@ public class SkinRenderer extends MapRenderer {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
-		if (rendered.contains(map.getId())) return;
+		short mapId = map.getId();
+		Set<String> sent = sentToPlayers.get(mapId);
+		boolean sentToPlayer = (sent != null && sent.contains(player.getName()));
+		if (rendered.contains(map.getId())) {
+			if (!sentToPlayer) {
+				if (sent == null) {
+					sent = new HashSet<String>();
+					sentToPlayers.put(mapId, sent);
+				}
+				sent.add(player.getName());
+				// Careful here- this causes re-entry, but since we've marked this player already it should be ok.
+				player.sendMap(map);
+			}
+			return;
+		}
 		
 		BufferedImage portraitImage = getSkin();
 		if (portraitImage != null) {
