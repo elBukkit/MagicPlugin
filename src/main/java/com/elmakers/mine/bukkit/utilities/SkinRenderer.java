@@ -21,9 +21,6 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.map.MinecraftFont;
 
-import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
-import com.elmakers.mine.bukkit.plugins.magic.Spells;
-
 public class SkinRenderer extends MapRenderer {
 
 	private final String playerName;
@@ -83,20 +80,6 @@ public class SkinRenderer extends MapRenderer {
 		playerMap.addRenderer(renderer);
 		
 		return playerMap;
-	}
-	
-	// Magic-specific version of this function for tracking player/map id associations
-	@SuppressWarnings("deprecation")
-	public static MapView getPlayerPortrait(String playerName, Spells spells) {
-		MapView mapView = getPlayerPortrait(playerName);
-		PlayerSpells playerSpells = spells.getPlayerSpells(playerName);
-		Short currentId = playerSpells.getPortraitMapId();
-		if (currentId == null || currentId != mapView.getId()) {
-			playerSpells.setPortraitMapId(mapView.getId());
-			spells.save();
-		}
-		
-		return mapView;
 	}
 	
 	protected void loadSkin() {

@@ -9,7 +9,6 @@ import org.bukkit.map.MapView;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
-import com.elmakers.mine.bukkit.utilities.SkinRenderer;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CameraSpell extends Spell
@@ -35,7 +34,7 @@ public class CameraSpell extends Spell
 			}
 			playerName = targetPlayer.getName();
 		}
-		MapView newMap = SkinRenderer.getPlayerPortrait(playerName, spells);
+		MapView newMap = spells.getPlayerPortrait(playerName);
 		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
 		ItemMeta meta = newMapItem.getItemMeta();
 		meta.setDisplayName("Photo of " + playerName);

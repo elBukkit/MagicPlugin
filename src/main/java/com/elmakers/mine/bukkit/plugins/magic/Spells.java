@@ -56,6 +56,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.map.MapView;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -1242,6 +1243,20 @@ public class Spells implements Listener
 	public void toggleCastCommandOverrides(PlayerSpells playerSpells, boolean override) {
 		playerSpells.setCostReduction(override ? castCommandCostReduction : 0);
 		playerSpells.setCooldownReduction(override ? castCommandCooldownReduction : 0);
+	}
+
+	// Magic-specific version of this function for tracking player/map id associations
+	@SuppressWarnings("deprecation")
+	public MapView getPlayerPortrait(String playerName) {
+		MapView mapView = SkinRenderer.getPlayerPortrait(playerName);
+		PlayerSpells playerSpells = getPlayerSpells(playerName);
+		Short currentId = playerSpells.getPortraitMapId();
+		if (currentId == null || currentId != mapView.getId()) {
+			playerSpells.setPortraitMapId(mapView.getId());
+			save();
+		}
+		
+		return mapView;
 	}
 
 	/*
