@@ -1345,7 +1345,6 @@ public class Wand implements CostReducer {
 			closeInventory(itemSlot);
 		}
 		if (xpRegeneration > 0) {
-			xp = activePlayer.getExperience();
 			activePlayer.player.setExp(storedXpProgress);
 			activePlayer.player.setLevel(storedXpLevel);
 			activePlayer.player.giveExp(storedXp);

@@ -9,6 +9,7 @@
  - Allow two spells to use the same material icon.
  - Add a parameter to push/pull to specify how many entities to effect. Pull now does only 1 again (for Yoinking)
  - Add "camera" spell, which takes a portrait of the target player.
+ - Fix a bug in XP tracking with an active Mana-based wand.
 
 ## 2.6.2
 

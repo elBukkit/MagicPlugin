@@ -841,7 +841,8 @@ public class Spells implements Listener
 		if (event.getAmount() <= 0) return;
 		
 		Player player = event.getPlayer();
-		Wand wand = Wand.getActiveWand(this, player);
+		PlayerSpells playerSpells = getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
 			wand.onPlayerExpChange(event);
 		}
