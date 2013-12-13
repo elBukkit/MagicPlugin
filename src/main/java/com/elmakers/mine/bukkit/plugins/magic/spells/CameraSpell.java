@@ -9,6 +9,7 @@ import org.bukkit.map.MapView;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.SkinRenderer;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CameraSpell extends Spell
@@ -33,6 +34,9 @@ public class CameraSpell extends Spell
 				castMessage("Selfie!");
 			}
 			playerName = targetPlayer.getName();
+		}
+		if (parameters.containsKey("reload")) {
+			SkinRenderer.forceReload(playerName);
 		}
 		MapView newMap = spells.getPlayerPortrait(playerName);
 		if (newMap == null) {

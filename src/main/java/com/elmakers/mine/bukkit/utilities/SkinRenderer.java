@@ -25,7 +25,7 @@ import org.bukkit.plugin.Plugin;
 public class SkinRenderer extends MapRenderer {
 
 	private final String playerName;
-	private BufferedImage portraitImage;
+	
 	private static Plugin plugin;
 	private static HashMap<String, BufferedImage> playerImages = new HashMap<String, BufferedImage>();
 	private static Map<String, Short> playerPortraitIds = new HashMap<String, Short>();
@@ -107,8 +107,22 @@ public class SkinRenderer extends MapRenderer {
 		return playerMap;
 	}
 	
-	protected void loadSkin() {
+	public static void forceReload(String playerName) {
+		synchronized(playerImages) {
+			if (playerImages.containsKey(playerName)){
+				playerImages.remove(playerName);
+			}
+		}
+		if (playerPortraitIds.containsKey(playerName)){
+			Short id = playerPortraitIds.get(playerName);
+			rendered.remove(id);
+			loading.remove(id);
+		}
+	}
+	
+	protected BufferedImage getSkin() {
 		boolean needLoading = false;
+		BufferedImage portraitImage = null;
 		synchronized(playerImages) {
 			if (playerImages.containsKey(playerName)){
 				portraitImage = playerImages.get(playerName);
@@ -127,20 +141,21 @@ public class SkinRenderer extends MapRenderer {
 						URL url = new URL(skinUrl);
 						BufferedImage skinImage = ImageIO.read(url);
 						BufferedImage headImage = skinImage.getSubimage(8, 8, 8, 8);
-						portraitImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
-					    Graphics2D graphics = portraitImage.createGraphics();
+						BufferedImage newPortrait = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+					    Graphics2D graphics = newPortrait.createGraphics();
 					    AffineTransform transform = AffineTransform.getScaleInstance(16, 16);
 					    graphics.drawRenderedImage(headImage, transform);				    
 					    synchronized(playerImages) {
-					    	playerImages.put(playerName, portraitImage);
+					    	playerImages.put(playerName, newPortrait);
 					    }
 					} catch (Exception ex) {
-						portraitImage = null;
 						ex.printStackTrace();
 					}
 				}
 			});
 		}
+		
+		return portraitImage;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -148,9 +163,7 @@ public class SkinRenderer extends MapRenderer {
 	public void render(MapView map, MapCanvas canvas, Player player) {
 		if (rendered.contains(map.getId())) return;
 		
-		if (portraitImage == null) {
-			loadSkin();
-		}
+		BufferedImage portraitImage = getSkin();
 		if (portraitImage != null) {
 			canvas.drawImage(0, 0, portraitImage);
 			rendered.add(map.getId());

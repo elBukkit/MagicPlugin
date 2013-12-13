@@ -2,7 +2,7 @@
 
 ## 2.6.4
 
- - Load player skins asynchronously, and various fixes to the camera spell.
+ - Load player skins asynchronously, and various fixes/optimizations to the camera spell.
 
 ## 2.6.3
 
