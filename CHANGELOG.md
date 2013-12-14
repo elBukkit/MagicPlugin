@@ -1,9 +1,14 @@
 # CHANGELOG
 
+## 2.6.5
+
+ - Fix wand cooldown reduction
+
 ## 2.6.4
 
  - Load player skins asynchronously, and various fixes/optimizations to the camera spell.
  - Player portraits show up immediately, instead of slowly loading.
+ - Abstract map renderer to handle any URL image.
 
 ## 2.6.3
 
