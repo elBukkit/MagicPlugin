@@ -473,6 +473,7 @@ public class Spells implements Listener
 	
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
+				URLMapRenderer.reset();
 				URLMapRenderer.load(plugin);
 			}
 		}, 20);
