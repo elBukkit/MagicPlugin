@@ -1,20 +1,16 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
-import com.elmakers.mine.bukkit.utilities.SkinRenderer;
+import com.elmakers.mine.bukkit.utilities.URLMapRenderer;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CameraSpell extends Spell
 {
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -36,18 +32,17 @@ public class CameraSpell extends Spell
 			playerName = targetPlayer.getName();
 		}
 		if (parameters.containsKey("reload")) {
-			SkinRenderer.forceReload(playerName);
+			URLMapRenderer.forceReloadPlayerPortrait(playerName);
 		}
-		MapView newMap = spells.getPlayerPortrait(playerName);
-		if (newMap == null) {
+		ItemStack newMapItem = URLMapRenderer.getPlayerPortrait(playerName);
+		if (newMapItem == null) {
 			sendMessage("Failed to load photo");
 			return SpellResult.FAILURE;
 		}
-		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
-		ItemMeta meta = newMapItem.getItemMeta();
-		meta.setDisplayName("Photo of " + playerName);
-		newMapItem.setItemMeta(meta);
 		player.getWorld().dropItemNaturally(player.getLocation(), newMapItem);
+		
+		// Kinda hacky, but safe.
+		URLMapRenderer.save();
 		return SpellResult.SUCCESS;
 	}
 }

@@ -56,14 +56,13 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.map.MapView;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
-import com.elmakers.mine.bukkit.utilities.SkinRenderer;
+import com.elmakers.mine.bukkit.utilities.URLMapRenderer;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -483,7 +482,7 @@ public class Spells implements Listener
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				SkinRenderer.loadPlayers(plugin, playerMapIds);
+				URLMapRenderer.load(plugin);
 			}
 		}, 20);
 		
@@ -504,6 +503,7 @@ public class Spells implements Listener
 			spellsEntry.getValue().save(playerNode);
 		}
 		playerConfiguration.save();
+		URLMapRenderer.save();
 	}
 
 	protected void load(File spellsFile)
@@ -905,7 +905,7 @@ public class Spells implements Listener
 		Player player = event.getPlayer();
 		
 		// Make sure they get their portraits back right away on relogin.
-		SkinRenderer.resend(player.getName());
+		URLMapRenderer.resend(player.getName());
 		
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
@@ -1229,22 +1229,6 @@ public class Spells implements Listener
 	public void toggleCastCommandOverrides(PlayerSpells playerSpells, boolean override) {
 		playerSpells.setCostReduction(override ? castCommandCostReduction : 0);
 		playerSpells.setCooldownReduction(override ? castCommandCooldownReduction : 0);
-	}
-
-	// Magic-specific version of this function for tracking player/map id associations
-	@SuppressWarnings("deprecation")
-	public MapView getPlayerPortrait(String playerName) {
-		MapView mapView = SkinRenderer.getPlayerPortrait(playerName);
-		if (mapView != null) {
-			PlayerSpells playerSpells = getPlayerSpells(playerName);
-			Short currentId = playerSpells.getPortraitMapId();
-			if (currentId == null || currentId != mapView.getId()) {
-				playerSpells.setPortraitMapId(mapView.getId());
-				save();
-			}
-		}
-		
-		return mapView;
 	}
 
 	/*
