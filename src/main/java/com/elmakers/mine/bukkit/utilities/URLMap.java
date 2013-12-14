@@ -123,9 +123,11 @@ public class URLMap {
 						plugin.getLogger().info("Loading " + url);
 						URL connection = new URL(url);
 						BufferedImage rawImage = ImageIO.read(connection);
-						BufferedImage croppedImage = rawImage.getSubimage(x, y, width == 0 ? rawImage.getWidth() : width, height == 0 ? rawImage.getHeight() : height);
+						width = width <= 0 ? rawImage.getWidth() + width : width;
+						height = height <= 0 ? rawImage.getHeight() + height : height;
+						BufferedImage croppedImage = rawImage.getSubimage(x, y, width, height);
 					    Graphics2D graphics = image.createGraphics();
-					    AffineTransform transform = AffineTransform.getScaleInstance(16, 16);
+					    AffineTransform transform = AffineTransform.getScaleInstance((float)128 / width, (float)128 / height);
 					    graphics.drawRenderedImage(croppedImage, transform);
 					    loading = false;
 					} catch (Exception ex) {
