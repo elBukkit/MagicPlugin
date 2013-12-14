@@ -1141,7 +1141,7 @@ public class Wand implements CostReducer {
 	
 	public void configureProperties(ConfigurationNode wandConfig) {
 		costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
-		cooldownReduction = (float)wandConfig.getDouble("coooldown_reduction", cooldownReduction);
+		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
 		power = (float)wandConfig.getDouble("power", power);
 		damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
 		damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
