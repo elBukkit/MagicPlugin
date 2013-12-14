@@ -108,6 +108,11 @@ public class URLMapRenderer extends MapRenderer
 	public static MapView getURL(String url) {
 		return getURL(url, 0, 0, 0, 0);
 	}
+
+	public static ItemStack getURLItem(String url, int x, int y, int width, int height, String name) {
+		MapView mapView = getURL(url, x, y, width, height);
+		return getMapItem(name, mapView);
+	}
 	
 	@SuppressWarnings("deprecation")
 	public static MapView getURL(String url, int x, int y, int width, int height) {
