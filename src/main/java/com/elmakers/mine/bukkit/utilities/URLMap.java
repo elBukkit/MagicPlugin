@@ -56,6 +56,12 @@ public class URLMap {
 		}
 	}
 	
+	public static void resetAll() {
+		for (URLMap map : keyMap.values()) {
+			map.reset();
+		}
+	}
+	
 	public static void save(ConfigurationSection root) {
 		for (URLMap map : keyMap.values()) {
 			ConfigurationSection mapConfig = root.createSection(Short.toString(map.getId()));
@@ -138,6 +144,13 @@ public class URLMap {
 			return null;
 		}
 		return image;
+	}
+	
+	public void reset() {
+		image = null;
+		rendered = false;
+		loading = false;
+		sentToPlayers.clear();
 	}
 	
 	public boolean isRendered() {

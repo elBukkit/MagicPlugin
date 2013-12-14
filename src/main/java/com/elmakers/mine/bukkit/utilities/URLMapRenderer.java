@@ -22,7 +22,6 @@ public class URLMapRenderer extends MapRenderer
 	private final static String configurationFileName = "urlmaps.yml";
 	
 	private static Plugin plugin;
-	private static YamlConfiguration configuration;
 
 	private final URLMap map;
 	
@@ -34,12 +33,13 @@ public class URLMapRenderer extends MapRenderer
 	@SuppressWarnings("deprecation")
 	public static void load(Plugin callingPlugin) {
 		plugin = callingPlugin;
-		configuration = new YamlConfiguration();
+		YamlConfiguration configuration = new YamlConfiguration();
 		File configurationFile = getConfigurationFile();
 		if (configurationFile.exists()) {
 			try {
 				configuration.load(configurationFile);
 				Set<String> maps = configuration.getKeys(false);
+				boolean needsUpdate = false;
 				for (String mapId : maps) {
 					ConfigurationSection mapConfig = configuration.getConfigurationSection(mapId);
 					try {
@@ -48,7 +48,14 @@ public class URLMapRenderer extends MapRenderer
 						
 						MapView playerMap = Bukkit.getMap(newMap.getId());
 						if (playerMap == null) {
-							throw new Exception("Failed to load map id " + newMap.getId() + " for url key " + newMap.getKey());
+							plugin.getLogger().info("Failed to load map id " + newMap.getId() + " for url key " + newMap.getKey() + ", assigning new id");
+							World world = Bukkit.getWorlds().get(0);
+							playerMap = Bukkit.createMap(world);
+							if (playerMap == null) {
+								throw new Exception("Failed to create new map");
+							}
+							newMap.setId(playerMap.getId());
+							needsUpdate = true;
 						}
 						for(MapRenderer renderer : playerMap.getRenderers()) {
 							playerMap.removeRenderer(renderer);
@@ -59,6 +66,10 @@ public class URLMapRenderer extends MapRenderer
 						plugin.getLogger().warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 					}
 				}
+
+				if (needsUpdate) {
+					save();
+				}
 			} catch (Exception ex) {
 				plugin.getLogger().warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 			}
@@ -66,9 +77,7 @@ public class URLMapRenderer extends MapRenderer
 	}
 	
 	public static void save() {
-		if (configuration == null) {
-			configuration = new YamlConfiguration();
-		}
+		YamlConfiguration configuration = new YamlConfiguration();
 		File configurationFile = getConfigurationFile();
 		URLMap.save(configuration);
 		try {
@@ -155,6 +164,10 @@ public class URLMapRenderer extends MapRenderer
 	
 	public static void forceReload(String url, int x, int y, int width, int height) {
 		URLMap.get(url, x, y, width, height).reload();
+	}
+	
+	public static void reset() {
+		URLMap.resetAll();
 	}
 	
 	@Override
