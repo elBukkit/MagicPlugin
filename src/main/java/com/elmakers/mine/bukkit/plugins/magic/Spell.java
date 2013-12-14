@@ -355,17 +355,19 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		long currentTime = System.currentTimeMillis();
 		float cooldownReduction = playerSpells.getCooldownReduction();
-		int reducedCooldown = cooldownReduction >= 1 ? 0 : (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-		if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
-		{
-			long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
-			if (seconds > 1) {
-				sendMessage("You must wait another " + seconds + " seconds.");
-			} else {
-				sendMessage("You must wait a moment.");
+		if (cooldownReduction < 1) {
+			int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+			if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
+			{
+				long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
+				if (seconds > 1) {
+					sendMessage("You must wait another " + seconds + " seconds.");
+				} else {
+					sendMessage("You must wait a moment.");
+				}
+				playerSpells.onCast(SpellResult.COOLDOWN);
+				return false;
 			}
-			playerSpells.onCast(SpellResult.COOLDOWN);
-			return false;
 		}
 
 		if (costs != null)
