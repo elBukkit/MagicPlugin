@@ -470,16 +470,7 @@ public class Spells implements Listener
 				getPlayerSpells(playerName).load(playerConfiguration.getNode(playerName));
 			}
 		}
-		
-		// Preload player portrait maps. This is pretty specific to CameraSpell for now.
-		final Map<String, Short> playerMapIds = new HashMap<String, Short>();
-		for (Entry<String, PlayerSpells> entry : playerSpells.entrySet()) {
-			Short mapId = (Short)entry.getValue().getPortraitMapId();
-			if (mapId != null) {
-				playerMapIds.put(entry.getKey(), mapId);
-			}
-		}
-		
+	
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
 				URLMapRenderer.load(plugin);
