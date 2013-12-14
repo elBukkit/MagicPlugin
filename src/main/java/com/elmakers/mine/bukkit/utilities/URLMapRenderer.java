@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utilities;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -40,28 +41,44 @@ public class URLMapRenderer extends MapRenderer
 				configuration.load(configurationFile);
 				Set<String> maps = configuration.getKeys(false);
 				boolean needsUpdate = false;
-				for (String mapId : maps) {
-					ConfigurationSection mapConfig = configuration.getConfigurationSection(mapId);
+				for (String mapIdString : maps) {
+					ConfigurationSection mapConfig = configuration.getConfigurationSection(mapIdString);
 					try {
-						URLMap newMap = URLMap.get(Short.parseShort(mapId), mapConfig.getString("url"), mapConfig.getInt("x"), mapConfig.getInt("y")
-								, mapConfig.getInt("width"), mapConfig.getInt("height"));
-						
-						MapView playerMap = Bukkit.getMap(newMap.getId());
-						if (playerMap == null) {
-							plugin.getLogger().info("Failed to load map id " + newMap.getId() + " for url key " + newMap.getKey() + ", assigning new id");
+						Short mapId = null;
+						MapView playerMap = null;
+						try {
+							mapId = Short.parseShort(mapIdString);
+						} catch (Exception ex) {
 							World world = Bukkit.getWorlds().get(0);
 							playerMap = Bukkit.createMap(world);
-							if (playerMap == null) {
-								throw new Exception("Failed to create new map");
+							if (playerMap != null) {
+								mapId = playerMap.getId();
+								plugin.getLogger().info("Created new map id " + mapId + " for config id " + mapIdString);
+								needsUpdate = true;
 							}
-							newMap.setId(playerMap.getId());
-							needsUpdate = true;
 						}
-						for(MapRenderer renderer : playerMap.getRenderers()) {
-							playerMap.removeRenderer(renderer);
+						if (mapId == null) {
+							throw new Exception("Failed to load map id " + mapIdString);
 						}
-						MapRenderer renderer = new URLMapRenderer(newMap);
-						playerMap.addRenderer(renderer);
+						URLMap newMap = URLMap.get(mapId, mapConfig.getString("url"), mapConfig.getInt("x"), mapConfig.getInt("y")
+								, mapConfig.getInt("width"), mapConfig.getInt("height"));
+						if (playerMap == null) {
+							playerMap = Bukkit.getMap(mapId);
+						}						
+						
+						if (playerMap == null) {
+							throw new Exception("Failed to load map id " + mapId + " for url key " + newMap.getKey());
+						}
+						List<MapRenderer> renderers = playerMap.getRenderers();
+						for (MapRenderer renderer : renderers) {
+							if (!(renderer instanceof URLMapRenderer)){
+								playerMap.removeRenderer(renderer);
+							}
+						}
+						if (playerMap.getRenderers().size() == 0) {
+							URLMapRenderer renderer = new URLMapRenderer(newMap);
+							playerMap.addRenderer(renderer);
+						}
 					} catch (Exception ex) {
 						plugin.getLogger().warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 					}
@@ -125,35 +142,12 @@ public class URLMapRenderer extends MapRenderer
 	
 	@SuppressWarnings("deprecation")
 	public static MapView getURL(String url, int x, int y, int width, int height) {
-		// We're going to always take maps from the main world
-		// This is to avoid potential problems with maps created in other worlds...
-		// But it all has the potential to get out of sync anyway.
-		World world = Bukkit.getWorlds().get(0);
 		MapView mapView = null;
 		URLMap map = URLMap.get(url, x, y, width, height);
-		if (map.getId() != null) {
-			mapView = Bukkit.getMap(map.getId());
-			plugin.getLogger().warning("Failed to get map id " + map.getId() + ", unregistering from key " + map.getKey());
-			map.setId(null);
-		}
-		
-		if (map.getId() == null) {
-			mapView = Bukkit.createMap(world);
-			if (mapView == null) {
-				plugin.getLogger().warning("Failed to create a new map");
-			} else {
-				map.setId(mapView.getId());
-			}
-		}
+		mapView = Bukkit.getMap(map.getId());
 		if (mapView == null) {
-			return mapView;
+			plugin.getLogger().warning("Failed to get map id " + map.getId() + ", unregistering from key " + map.getKey());
 		}
-		
-		for (MapRenderer renderer : mapView.getRenderers()) {
-			mapView.removeRenderer(renderer);
-		}
-		MapRenderer renderer = new URLMapRenderer(map);
-		mapView.addRenderer(renderer);
 		
 		return mapView;
 	}

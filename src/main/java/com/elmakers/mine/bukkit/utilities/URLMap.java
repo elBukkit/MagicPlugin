@@ -63,7 +63,7 @@ public class URLMap {
 	}
 	
 	public static void save(ConfigurationSection root) {
-		for (URLMap map : keyMap.values()) {
+		for (URLMap map : idMap.values()) {
 			ConfigurationSection mapConfig = root.createSection(Short.toString(map.getId()));
 			mapConfig.set("url", map.url);
 			mapConfig.set("x", map.x);
@@ -92,17 +92,6 @@ public class URLMap {
 	
 	public Short getId() {
 		return id;
-	}
-	
-	public void setId(Short id) {
-		if (this.id == id) return;
-		if (this.id != null) {
-			idMap.remove(this.id);
-		}
-		this.id = id;
-		if (this.id != null) {
-			idMap.put(this.id, this);
-		}
 	}
 	
 	public void resendTo(String playerName) {
