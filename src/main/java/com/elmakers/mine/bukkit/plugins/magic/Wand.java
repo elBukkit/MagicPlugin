@@ -240,7 +240,6 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "protection_falling", floatFormat.format(damageReductionFalling));
 		InventoryUtils.setMeta(wandNode, "protection_fire", floatFormat.format(damageReductionFire));
 		InventoryUtils.setMeta(wandNode, "protection_explosions", floatFormat.format(damageReductionExplosions));
-		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
 		InventoryUtils.setMeta(wandNode, "haste", floatFormat.format(speedIncrease));
 		InventoryUtils.setMeta(wandNode, "xp", Integer.toString(xp));
 		InventoryUtils.setMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration));
@@ -334,7 +333,6 @@ public class Wand implements CostReducer {
 		damageReductionFalling = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_falling", floatFormat.format(damageReductionFalling)));
 		damageReductionFire = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_fire", floatFormat.format(damageReductionFire)));
 		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_explosions", floatFormat.format(damageReductionExplosions)));
-		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
 		speedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(speedIncrease)));
 		xp = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp", Integer.toString(xp)));
 		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
@@ -1143,6 +1141,7 @@ public class Wand implements CostReducer {
 	
 	public void configureProperties(ConfigurationNode wandConfig) {
 		costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
+		cooldownReduction = (float)wandConfig.getDouble("coooldown_reduction", cooldownReduction);
 		power = (float)wandConfig.getDouble("power", power);
 		damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
 		damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
