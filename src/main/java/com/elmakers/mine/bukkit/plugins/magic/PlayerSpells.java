@@ -37,7 +37,6 @@ public class PlayerSpells implements CostReducer
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
 	private ItemStack buildingMaterial = null;
-	private Short mapPortraitId;
 
 	public void removeExperience(int xp) {
 		
@@ -487,23 +486,9 @@ public class PlayerSpells implements CostReducer
 	
 	protected void load(ConfigurationNode configNode)
 	{
-		if (configNode.containsKey("portraitMapId")) {
-			mapPortraitId = (short)configNode.getInt("portraitMapId", 0);
-		}
 	}
 	
 	protected void save(ConfigurationNode configNode)
 	{
-		if (mapPortraitId != null) {
-			configNode.setProperty("portraitMapId", mapPortraitId);
-		}
-	}
-	
-	public Short getPortraitMapId() {
-		return mapPortraitId;
-	}
-	
-	public void setPortraitMapId(short id) {
-		mapPortraitId = id;
 	}
 }
