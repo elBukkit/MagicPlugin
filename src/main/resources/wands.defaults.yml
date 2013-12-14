@@ -150,6 +150,11 @@ wands:
             - blink
             - fling
         cost_reduction: 1
+    spawn:
+        name: Return to Spawn
+        description: Returns you to spawn
+        spells:
+            - spawn
     fireball:
         name: Fireball Wand
         description: A temporary fireball wand
@@ -242,6 +247,7 @@ wands:
     engineer:
         name: Engineering Wand
         description: Has powerful building spells
+        cost_reduction: 1
         spells:
             - fill
             - absorb
@@ -259,6 +265,7 @@ wands:
             - dirt
             - erase
             - copy
+            - glowstone
     battle:
         name: Battle Wand
         description: Has some moderate attack spells
