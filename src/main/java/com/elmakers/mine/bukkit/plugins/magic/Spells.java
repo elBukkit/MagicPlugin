@@ -62,7 +62,7 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
-import com.elmakers.mine.bukkit.utilities.URLMapRenderer;
+import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -473,8 +473,8 @@ public class Spells implements Listener
 	
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				URLMapRenderer.reset();
-				URLMapRenderer.load(plugin);
+				URLMap.resetAll();
+				URLMap.load(plugin);
 			}
 		}, 20);
 		
@@ -495,7 +495,7 @@ public class Spells implements Listener
 			spellsEntry.getValue().save(playerNode);
 		}
 		playerConfiguration.save();
-		URLMapRenderer.save();
+		URLMap.save();
 	}
 
 	protected void load(File spellsFile)
@@ -897,7 +897,7 @@ public class Spells implements Listener
 		Player player = event.getPlayer();
 		
 		// Make sure they get their portraits back right away on relogin.
-		URLMapRenderer.resend(player.getName());
+		URLMap.resend(player.getName());
 		
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();

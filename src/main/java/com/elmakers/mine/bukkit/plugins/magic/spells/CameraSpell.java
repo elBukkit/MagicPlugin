@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
-import com.elmakers.mine.bukkit.utilities.URLMapRenderer;
+import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CameraSpell extends Spell
@@ -32,7 +32,7 @@ public class CameraSpell extends Spell
 				int y = parameters.getInt("y", 0);
 				int width = parameters.getInt("width", 0);
 				int height = parameters.getInt("height", 0);
-				newMapItem = URLMapRenderer.getURLItem(url, x, y, width, height, "Photo");
+				newMapItem = URLMap.getURLItem(url, x, y, width, height, "Photo");
 			}
 		}
 		
@@ -55,9 +55,9 @@ public class CameraSpell extends Spell
 				playerName = targetPlayer.getName();
 			}
 			if (parameters.containsKey("reload")) {
-				URLMapRenderer.forceReloadPlayerPortrait(playerName);
+				URLMap.forceReloadPlayerPortrait(playerName);
 			}
-			newMapItem = URLMapRenderer.getPlayerPortrait(playerName);
+			newMapItem = URLMap.getPlayerPortrait(playerName);
 		}
 		if (newMapItem == null) {
 			sendMessage("Failed to load photo");
@@ -66,8 +66,6 @@ public class CameraSpell extends Spell
 		player.getWorld().dropItemNaturally(player.getLocation(), newMapItem);
 		player.getWorld().playEffect(player.getEyeLocation(), Effect.SMOKE, 0);
 		
-		// Kinda hacky, but safe.
-		URLMapRenderer.save();
 		return SpellResult.SUCCESS;
 	}
 }
