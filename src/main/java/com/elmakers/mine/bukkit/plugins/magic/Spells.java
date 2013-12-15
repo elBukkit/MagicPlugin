@@ -495,7 +495,6 @@ public class Spells implements Listener
 			spellsEntry.getValue().save(playerNode);
 		}
 		playerConfiguration.save();
-		URLMap.save();
 	}
 
 	protected void load(File spellsFile)

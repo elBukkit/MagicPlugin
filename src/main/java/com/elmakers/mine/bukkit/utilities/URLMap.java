@@ -28,6 +28,10 @@ import org.bukkit.plugin.Plugin;
 public class URLMap extends MapRenderer  {
 	// Map ids will be saved in /plugins/<yourplugin>/<configurationFileName>
 	private final static String configurationFileName = "urlmaps.yml";
+	
+	// This can be used to avoid a big lag hit on login.
+	// If you have a lot of maps in one place, try making this number larger.
+	// A map has a 1 / staggerSending chance of being sent to a player (that hasn't already received it) every tick.
 	private final int staggerSending = 10;
 	
 	// Public API
