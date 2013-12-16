@@ -70,17 +70,20 @@ function underscoreToReadable($s) {
 	return strtoupper($s[0]).  preg_replace_callback('/_([a-z])/', $convertFunction, substr($s, 1));
 }
 
-function printMaterial($materialKey, $iconOnly) {
+function printMaterial($materialKey, $iconOnly = null) {
 	$materialName = underscoreToReadable($materialKey);
 	$imagePath = 'image/material';
 	$imageDir = dirname(__FILE__) . '/' . $imagePath;
 	$materialIcon = str_replace('_', '', $materialKey) . '_icon32.png';
 	$materialFilename = $imageDir . '/' . $materialIcon;
-	if (file_exists) {
-		return '<span title="' . $materialName . '" class="materal_icon" style="background-image: url(' . $imagePath . '/' . $materialIcon . ')">&nbsp;</span>';
+	if (file_exists($materialFilename)) {
+		return $icon = '<span title="' . $materialName . '" class="materal_icon" style="background-image: url(' . $imagePath . '/' . $materialIcon . ')">&nbsp;</span>';
+	} else {
+		if ($iconOnly) {
+			return '<span title="' . $materialName . '" class="materal_icon">&nbsp;</span>';
+		}
 	}
-	if ($iconOnly) return '';
-	return '<span class="material">' . $materialKey . '</span>';
+	return '<span class="material">' . $materialName . '</span>';
 }
 
 ?>
