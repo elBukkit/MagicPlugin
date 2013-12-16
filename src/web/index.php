@@ -27,7 +27,10 @@ function getConfigFile($name) {
 	global $magicRootFolder;
 	$configFile = "$magicRootFolder/$name.yml";
 	if (!file_exists($configFile)) {
-		$configFile =  "$magicRootFolder/$name_default.yml";
+		$configFile = "$magicRootFolder/$name.defaults.yml";
+	}
+	if (!file_exists($configFile)) {
+		die('Could not locate file: ' . $configFile);
 	}
 	return $configFile;
 }
@@ -37,20 +40,20 @@ $spellsConfiguration = Yaml::parse(getConfigFile('spells'));
 $magicConfiguratiom = Yaml::parse(getConfigFile('magic'));
 $wandConfiguratiom = Yaml::parse(getConfigFile('wands'));
 
-$spells = [];
+$spells = array();
 if (isset($spellsConfiguration['spells'])) {
 	$spells = $spellsConfiguration['spells'];
 }
 ksort($spells);
 
-$wands = [];
+$wands = array();
 if (isset($wandConfiguratiom['wands'])) {
 	$wands = $wandConfiguratiom['wands'];
 }
 ksort($wands);
 
 // Look for important config options
-$general = [];
+$general = array();
 
 if (isset($magicConfiguratiom['general'])) {
 	$general = $magicConfiguratiom['general'];
