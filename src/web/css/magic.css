@@ -1,0 +1,17 @@
+/*
+ Magic-specific styling
+*/
+
+#heading
+{
+	margin: 4px 8px;
+	padding: 10px;
+	background-color: #EEEEEE;
+	border: 1px solid #444444;
+}
+
+.minecraftServer
+{
+	color: gray;
+	font: monospace;	
+}
