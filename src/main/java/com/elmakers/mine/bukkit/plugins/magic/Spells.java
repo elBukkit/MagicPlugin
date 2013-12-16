@@ -366,7 +366,8 @@ public class Spells implements Listener
 		if (indestructibleMaterials.contains(block.getType())) return false;
 
 		// Now check the region manager.
-		if (regionManager == null) return true;
+		// TODO: We need to be able to do WG permission checks while a player is offline.
+		if (regionManager == null || player == null) return true;
 		
 		try {
 			Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);

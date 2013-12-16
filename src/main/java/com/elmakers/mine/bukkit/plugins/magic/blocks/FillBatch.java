@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
@@ -15,6 +14,7 @@ public class FillBatch implements BlockBatch {
 	private final BlockList filledBlocks = new BlockList();
 	private final Material material;
 	private final byte data;
+	private final World world;
 	private final PlayerSpells playerSpells;
 	private String playerName;
 
@@ -37,6 +37,7 @@ public class FillBatch implements BlockBatch {
 		this.data = data;
 		this.playerSpells = spell.getPlayerSpells();
 		this.playerName = this.playerSpells.getPlayer().getName();
+		this.world = this.playerSpells.getPlayer().getWorld();
 		
 		int deltax = p2.getBlockX() - p1.getBlockX();
 		int deltay = p2.getBlockY() - p1.getBlockY();
@@ -67,8 +68,6 @@ public class FillBatch implements BlockBatch {
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
 		Spells spells = playerSpells.getMaster();
-		Player player = playerSpells.getPlayer();
-		World world = player.getWorld();
 		
 		while (processedBlocks <= maxBlocks && ix < absx) {
 			Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
