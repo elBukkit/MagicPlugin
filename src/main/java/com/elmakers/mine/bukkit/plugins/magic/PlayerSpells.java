@@ -133,16 +133,11 @@ public class PlayerSpells implements CostReducer
 		return true;
 	}
 
-	public boolean storeInventory(int keepSlot, ItemStack keepItem) {
+	public boolean storeInventory() {
 		Inventory inventory = player.getInventory();
 		if (storedInventory != null) {
 			return false;
 		}
-
-		if (keepItem != null) {
-			inventory.clear(keepSlot);
-		}
-
 		storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Magic.Wand.StoredInventory");
 		
 		// Make sure we don't store any spells or magical materials, just in case
@@ -155,41 +150,16 @@ public class PlayerSpells implements CostReducer
 		storedInventory.setContents(contents);
 		inventory.clear();
 
-		if (keepItem != null) {
-			inventory.setItem(keepSlot, keepItem);
-		}
-
 		return true;
 	}
 
-	public boolean storeInventory() {
-		if (player == null) return false;
-		return storeInventory(player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
-	}
-
 	public boolean restoreInventory() {
-		if (player == null) return false;
-		return restoreInventory(player.getInventory().getHeldItemSlot(), player.getInventory().getItemInHand());
-	}
-
-	public boolean restoreInventory(int keepSlot, ItemStack keepItem) {
 		if (storedInventory == null || player == null) {
 			return false;
 		}
 		Inventory inventory = player.getInventory();
 		inventory.setContents(storedInventory.getContents());
 		storedInventory = null;
-
-		if (keepItem != null) {
-			ItemStack occupied = inventory.getItem(keepSlot);
-			inventory.setItem(keepSlot, keepItem);
-			if (occupied != null) {
-				HashMap<Integer, ItemStack> remainder = inventory.addItem(occupied);
-				for (ItemStack remains : remainder.values()) {
-					player.getWorld().dropItemNaturally(player.getLocation(), remains);
-				}
-			}
-		}
 
 		return true;
 	}

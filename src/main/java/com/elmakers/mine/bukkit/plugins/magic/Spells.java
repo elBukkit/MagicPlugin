@@ -210,7 +210,12 @@ public class Spells implements Listener
 
 	public void addToUndoQueue(Player player, BlockList blocks)
 	{
-		UndoQueue queue = getUndoQueue(player.getName());
+		addToUndoQueue(player.getName(), blocks);
+	}
+
+	public void addToUndoQueue(String playerName, BlockList blocks)
+	{
+		UndoQueue queue = getUndoQueue(playerName);
 
 		queue.add(blocks);
 	}
@@ -840,13 +845,7 @@ public class Spells implements Listener
 					}
 				} else {
 					if (wand.getHasInventory()) {
-						if (wand.isInventoryOpen()) {
-							playerSpells.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
-							wand.closeInventory();
-						} else {
-							playerSpells.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
-							wand.openInventory();
-						}
+						wand.toggleInventory();
 					}
 				}
 			} else {
@@ -1107,16 +1106,11 @@ public class Spells implements Listener
 		if (previousWand == null && wand != null) changedWands = true;
 		if (previousWand != null && wand != null && !previousWand.equals(wand)) changedWands = true;
 		if (changedWands) {
-			boolean inventoryWasOpen = false;
 			if (previousWand != null) {
-				inventoryWasOpen = previousWand.isInventoryOpen();
 				previousWand.deactivate();
 			}
 			if (wand != null) {
 				wand.activate(playerSpells);
-				if (inventoryWasOpen) {
-					wand.openInventory();
-				}
 			}
 		}
 		

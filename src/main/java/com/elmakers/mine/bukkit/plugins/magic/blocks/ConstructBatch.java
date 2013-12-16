@@ -5,7 +5,6 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
@@ -26,6 +25,7 @@ public class ConstructBatch implements BlockBatch {
 	private final boolean fill;
 	private final PlayerSpells playerSpells;
 	private final Spell spell;
+	private final String playerName;
 	
 	private boolean finished = false;
 	private int x = 0;
@@ -42,12 +42,12 @@ public class ConstructBatch implements BlockBatch {
 		this.fill = fill;
 		this.playerSpells = spell.getPlayerSpells();
 		this.spell = spell;
+		this.playerName = this.playerSpells.getPlayer().getName();
 	}
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
 		Spells spells = playerSpells.getMaster();
-		Player player = playerSpells.getPlayer();
 		
 		while (processedBlocks <= maxBlocks && x <= radius) {
 			if (!fillBlock(x, y, z)) {
@@ -71,7 +71,7 @@ public class ConstructBatch implements BlockBatch {
 			finished = true;
 			if (timeToLive == 0)
 			{
-				spells.addToUndoQueue(player, constructedBlocks);
+				spells.addToUndoQueue(playerName, constructedBlocks);
 			}
 			else
 			{

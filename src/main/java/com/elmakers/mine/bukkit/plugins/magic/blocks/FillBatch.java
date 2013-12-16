@@ -16,6 +16,7 @@ public class FillBatch implements BlockBatch {
 	private final Material material;
 	private final byte data;
 	private final PlayerSpells playerSpells;
+	private String playerName;
 
 	private final int absx;
 	private final int absy;
@@ -35,6 +36,7 @@ public class FillBatch implements BlockBatch {
 		this.material = material;
 		this.data = data;
 		this.playerSpells = spell.getPlayerSpells();
+		this.playerName = this.playerSpells.getPlayer().getName();
 		
 		int deltax = p2.getBlockX() - p1.getBlockX();
 		int deltay = p2.getBlockY() - p1.getBlockY();
@@ -97,7 +99,7 @@ public class FillBatch implements BlockBatch {
 		if (!finished && ix >= absx) 
 		{
 			finished = true;
-			spells.addToUndoQueue(player, filledBlocks);
+			spells.addToUndoQueue(playerName, filledBlocks);
 		}
 		
 		return processedBlocks;
