@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -86,6 +87,9 @@ public class Wand implements CostReducer {
 	private static final String propertiesFileName = "wands.yml";
 	private static final String propertiesFileNameDefaults = "wands.defaults.yml";
 	private static final String defaultWandName = "Wand";
+	
+	// Inventory functionality
+	boolean isInventoryOpen = false;
 	
 	public Wand(Spells spells) {
 		this.spells = spells;
@@ -735,11 +739,6 @@ public class Wand implements CostReducer {
 		Object spellNode = InventoryUtils.getNode(item, "spell");
 		return InventoryUtils.getMeta(spellNode, "key");
 	}
-
-	protected void updateInventory() {
-		if (activePlayer == null) return;
-		updateInventory(activePlayer.getPlayer().getInventory().getHeldItemSlot());
-	}
 	
 	public void updateInventoryNames(boolean activeNames) {
 		if (activePlayer == null || !isInventoryOpen()) return;
@@ -790,13 +789,12 @@ public class Wand implements CostReducer {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void updateInventory(int itemSlot) {
+	private void updateInventory() {
 		if (activePlayer == null) return;
 		
 		Player player = activePlayer.getPlayer();
 		Inventory inventory = player.getInventory();
 		inventory.clear();
-		inventory.setItem(itemSlot, item);
 		String[] spells = StringUtils.split(wandSpells, "|");
 
 		// Gather up all spells and materials
@@ -812,8 +810,8 @@ public class Wand implements CostReducer {
 			itemStack = InventoryUtils.getCopy(itemStack);
 			updateSpellName(itemStack, spell, true);
 			
-			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
-			if (parts.length > 1 && slot != itemSlot) {
+			if (parts.length > 1) {
+				int slot = Integer.parseInt(parts[1]);
 				inventory.setItem(slot, itemStack);
 			} else {
 				unpositionedSpells.add(itemStack);
@@ -861,10 +859,14 @@ public class Wand implements CostReducer {
 			meta.setDisplayName(getActiveWandName(Material.getMaterial(typeId)));
 			itemStack.setItemMeta(meta);
 			
-			int slot = parts.length > 1 ? Integer.parseInt(parts[1]) : itemSlot;
-			ItemStack existing = inventory.getItem(slot);
-			if (parts.length > 1 && slot != itemSlot && (existing == null || existing.getType() == Material.AIR)) {
-				positioned.put((Integer)slot, itemStack);
+			if (parts.length > 1) {
+				int slot = Integer.parseInt(parts[1]);
+				ItemStack existing = inventory.getItem(slot);
+				if (existing == null || existing.getType() == Material.AIR) {
+					positioned.put((Integer)slot, itemStack);
+				} else {
+					unpositionedMaterials.add(itemStack);
+				}
 			} else {
 				if (itemStack.getType() == EraseMaterial) {
 					eraseStack = itemStack;
@@ -909,7 +911,7 @@ public class Wand implements CostReducer {
 			int slot = entry.getKey();
 			ItemStack itemStack = entry.getValue();
 			ItemStack existing = inventory.getItem(slot);
-			if (slot != itemSlot && (existing == null || existing.getType() == Material.AIR)) {
+			if (existing == null || existing.getType() == Material.AIR) {
 				inventory.setItem(slot, itemStack);
 			} else {
 				addMaterialToInventory(inventory, itemStack);
@@ -919,6 +921,13 @@ public class Wand implements CostReducer {
 		for (ItemStack stack : unpositionedMaterials) {
 			addMaterialToInventory(inventory, stack);
 		}
+		
+		// Finally give the player this wand
+		ItemStack itemStack = player.getItemInHand();
+		if (itemStack != null && itemStack.getType() != Material.AIR && !isWand(itemStack)) {
+			// TODO: Save this item somewhere.
+		}
+		player.setItemInHand(item);
 
 		updateName();
 		player.updateInventory();
@@ -1252,32 +1261,36 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	public void toggleInventory() {
+		if (isInventoryOpen) {
+			closeInventory();
+		} else {
+			openInventory();
+		}
+	}
+	
 	@SuppressWarnings("deprecation")
-	private void openInventory(int itemSlot) {
+	private void openInventory() {
+		if (isInventoryOpen) return;
+		isInventoryOpen = true;
 		if (activePlayer == null) return;
-		if (activePlayer.storeInventory(itemSlot, item)) {
-			updateInventory(itemSlot);
+		if (activePlayer.storeInventory()) {
+			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+			updateInventory();
 			activePlayer.getPlayer().updateInventory();
 		}
 	}
 	
-	public void openInventory() {
-		if (activePlayer == null) return;
-		openInventory(activePlayer.getPlayer().getInventory().getHeldItemSlot());
-	}
-	
 	@SuppressWarnings("deprecation")
-	private void closeInventory(int itemSlot) {
+	public void closeInventory() {
+		if (!isInventoryOpen) return;
+		isInventoryOpen = false;
 		saveInventory();
 		if (activePlayer != null) {
-			activePlayer.restoreInventory(itemSlot, item);
+			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+			activePlayer.restoreInventory();
 			activePlayer.getPlayer().updateInventory();
 		}
-	}
-	
-	public void closeInventory() {
-		if (activePlayer == null) return;
-		closeInventory(activePlayer.getPlayer().getInventory().getHeldItemSlot());
 	}
 	
 	public void activate(PlayerSpells playerSpells) {
@@ -1320,16 +1333,10 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean isInventoryOpen() {
-		return activePlayer != null && activePlayer.hasStoredInventory();
+		return activePlayer != null && isInventoryOpen;
 	}
 	
 	public void deactivate() {
-		if (activePlayer == null) return;
-		
-		deactivate(activePlayer.getPlayer().getInventory().getHeldItemSlot());
-	}
-	
-	public void deactivate(int itemSlot) {
 		if (activePlayer == null) return;
 
 		if (effectColor > 0) {
@@ -1341,7 +1348,7 @@ public class Wand implements CostReducer {
 		activePlayer.deactivateAllSpells();
 		
 		if (isInventoryOpen()) {
-			closeInventory(itemSlot);
+			closeInventory();
 		}
 		if (xpRegeneration > 0) {
 			activePlayer.player.setExp(storedXpProgress);
