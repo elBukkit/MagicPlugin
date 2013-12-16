@@ -14,6 +14,7 @@ general:
     crafting_material_upper: nether_star
     crafting_material_lower: blaze_rod
     crafting_output: random(1)
+    enable_combining: true
     enable_enchanting: true
     enable_block_populator: false
     undo_depth: 256

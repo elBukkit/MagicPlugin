@@ -4,6 +4,7 @@
 
  - Fix wand cooldown reduction
  - Fix adding a batch to an undo queue after the player has logged out.
+ - Add a config option to disable hacky WIP wand-combining on an anvil.
 
 ## 2.6.4
 

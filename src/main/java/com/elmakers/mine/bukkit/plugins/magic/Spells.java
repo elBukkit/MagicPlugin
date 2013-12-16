@@ -561,6 +561,7 @@ public class Spells implements Listener
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
+		combiningEnabled = generalNode.getBoolean("combining_enabled", combiningEnabled);		
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
@@ -1049,7 +1050,7 @@ public class Spells implements Listener
 				
 			}
 			
-			if (slotType == SlotType.RESULT) {
+			if (combiningEnabled && slotType == SlotType.RESULT) {
 				// Check for wands in both slots
 				// ...... arg. So close.. and yet, not.
 				// I guess I need to wait for the long-awaited anvil API?
@@ -1068,7 +1069,7 @@ public class Spells implements Listener
 					cursor.setType(Material.AIR);
 					
 					Player player = (Player)event.getWhoClicked();
-					player.sendMessage("Combined wands for free. Hope that's what you wanted! (WIP, need Anvil API)");
+					player.sendMessage("Combined wands for free. (WIP, need Anvil API)");
 					player.getInventory().addItem(newWand.getItem());
 					
 					// This seems to work in the debugger, but.. doesn't do anything.
@@ -1250,6 +1251,7 @@ public class Spells implements Listener
 	 private int								 messageThrottle				= 0;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
+	 private boolean							 combiningEnabled				= false;
 	 private float							 	 maxPowerMultiplier			    = 1.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	    = 1.0f;
