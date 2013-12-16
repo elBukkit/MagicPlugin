@@ -8,10 +8,109 @@
 	padding: 10px;
 	background-color: #EEEEEE;
 	border: 1px solid #444444;
+	font-family: Verdana,Arial,sans-serif;
+	background: url(../image/logo.png);
+	background-repeat: no-repeat;
+	font-size: 0.9em;
+	height: 150px;
+}
+
+#tabs
+{
+	position: absolute;
+	overflow: hidden;
+	top: 150px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+#feedback { font-size: 1.4em; }
+.selectable .ui-selecting { background: #FECA40; }
+.selectable .ui-selected { background: #F39814; color: white; }
+.selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+.selectable li { margin: 3px; padding: 0.4em; height: 32px; white-space: nowrap; }
+.selectable li:hover { background: #DDDDFF; }
+
+.scrollingTab
+{
+	position:absolute;
+	top: 54px;
+	bottom: 24px;
+	left: 24px;
+	right: 24px;
+	overflow: auto;
 }
 
 .minecraftServer
 {
 	color: gray;
 	font: monospace;	
+}
+
+.material
+{
+	color: #440000;
+}
+
+.materal_icon
+{
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+	display: inline-block;
+}
+
+.navigation
+{
+	position:absolute;
+	left: 0px;
+	width: 300px;
+}
+
+.details
+{
+	position:absolute;
+	left: 220px;
+	right: 0px;
+}
+
+.spellTitleBanner
+{
+	width: 600px;
+	padding: 5px;
+	font-size: 1.2em;
+	color: white;
+	background-color: #222288;"
+}
+
+.wandTitleBanner
+{
+	width: 600px;
+	padding: 5px;
+	font-size: 1.2em;
+	color: white;
+	background-color: #228888;"
+}
+
+.spellDescription
+{
+	color: #222222;
+	font-style: italic;
+	margin-bottom: 2px;
+}
+
+.wandDescription
+{
+	color: #222222;
+	font-style: italic;
+	margin-bottom: 2px;
+}
+
+.spellIcon
+{
+	color: #888888;
+	height: 38px;
+	margin-top: 3px;
+	margin-bottom: 3px;
 }

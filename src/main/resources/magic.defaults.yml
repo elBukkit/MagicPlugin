@@ -16,7 +16,7 @@ general:
     crafting_output: random(1)
     enable_combining: true
     enable_enchanting: true
-    enable_block_populator: false
+    enable_block_populator: true
     undo_depth: 256
     max_power_multiplier: 5
     right_click_cycles: false
