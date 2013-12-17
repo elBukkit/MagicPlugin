@@ -16,11 +16,14 @@ public class CastingCost
 	protected double amount;
 	protected int xp;
 
-	public CastingCost(ConfigurationNode config)
+	public CastingCost(String key, double cost)
 	{
-		this.item = config.getMaterial("material");
-		this.amount = config.getDouble("amount", 1);
-		this.xp = config.getInt("xp", 0);
+		if (key.toLowerCase().equals("xp")) {
+			this.xp = (int)cost;
+		} else {
+			this.item = ConfigurationNode.toMaterial(key);
+			this.amount = cost;
+		}
 		this.data = 0;
 	}
 

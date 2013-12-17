@@ -6,7 +6,7 @@ spells:
         description: Creates a magical light source
         class: LightSpell
         costs:
-        - xp: 10
+            xp: 50
     curse:
         name: Curse
         icon: spider_eye
@@ -14,7 +14,7 @@ spells:
         description: Slows down and weakens the target
         class: PotionEffectSpell
         costs:
-        - xp: 10
+            xp: 10
         parameters:
             slow: 600,5  
             confusion: 600,5
@@ -27,7 +27,7 @@ spells:
         description: Makes you temporarily superpowered
         class: PotionEffectSpell
         costs:
-        - xp: 20
+            xp: 20
         parameters:
             target: self
             speed: 600,5   
@@ -76,7 +76,7 @@ spells:
           speed: 2
           spread: 6
         costs:
-        - xp: 5 
+            xp: 5 
     toss:
         name: Toss
         icon: wood_button
@@ -88,7 +88,7 @@ spells:
         parameters:
           speed: 3
         costs:
-        - xp: 10
+            xp: 10
     volley:
         name: Volley
         icon: stone_button
@@ -101,7 +101,7 @@ spells:
           speed: 2
           count: 8
         costs:
-        - xp: 10   
+            xp: 10   
     sniper:
         name: Sniper
         icon: gold_nugget
@@ -115,7 +115,7 @@ spells:
           spread: 0
           damage: 20
         costs:
-        - xp: 10
+            xp: 10
     pull:
         name: Pull
         icon: fishing_rod
@@ -135,7 +135,7 @@ spells:
             type: pull
             count: 1
         costs:
-        - xp: 2
+            xp: 2
     kaboom:
         name: KaBoom
         icon: ender_pearl
@@ -150,7 +150,7 @@ spells:
             size: 6
             break_blocks: true
         costs:
-        - xp: 50
+            xp: 50
     frost:
         name: Frost
         icon: snow_ball
@@ -169,7 +169,7 @@ spells:
             cooldown: 10
         parameters: {}
         costs:
-        - xp: 8
+            xp: 8
     storm:
         name: Storm
         icon: grilled_pork
@@ -183,7 +183,7 @@ spells:
         parameters:
             radius: '10'
         costs:
-        - xp: 30
+            xp: 30
     spawn:
         name: Home
         icon: wood_door
@@ -211,9 +211,9 @@ spells:
         parameters:
             amount: '50'
         costs:
-        - xp: 10
+            xp: 10
         active_costs:
-        - xp: 2
+            xp: 2
     tree:
         name: Tree
         icon: sapling
@@ -227,7 +227,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 20
+            xp: 20
     disarm:
         name: Disarm
         icon: tripwire_hook
@@ -240,7 +240,7 @@ spells:
             cooldown: 1000
         parameters: {}
         costs:
-        - xp: 50
+            xp: 50
     heal:
         name: Heal
         icon: bread
@@ -253,7 +253,7 @@ spells:
             cooldown: 5000
         parameters: {}
         costs:
-        - xp: 50
+            xp: 50
     gather:
         name: Gather
         icon: glowstone_dust
@@ -276,7 +276,7 @@ spells:
         parameters:
             size: '10'
         costs:
-        - xp: 100
+            xp: 100
     weather:
         name: Weather
         icon: water
@@ -287,7 +287,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     ironskin:
         name: IronSkin
         icon: iron_chestplate
@@ -299,9 +299,9 @@ spells:
         parameters:
             amount: '99'
         costs:
-        - xp: 15
+            xp: 15
         active_costs:
-        - xp: 5
+            xp: 5
     fling:
         name: Fling
         icon: feather
@@ -311,7 +311,7 @@ spells:
         properties:
             cooldown: 0
         costs:
-        - xp: 5
+            xp: 5
     leap:
         name: Leap
         icon: leather_boots
@@ -325,7 +325,7 @@ spells:
             min_speed: 3
             max_speed: 3
         costs:
-        - xp: 2
+            xp: 2
     torch:
         name: Torch
         icon: torch
@@ -341,7 +341,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     monster:
         name: Monster
         icon: pumpkin
@@ -355,7 +355,7 @@ spells:
         parameters:
             type: mob
         costs:
-        - xp: 40
+            xp: 40
     mob:
         name: Mob
         icon: jack_o_lantern
@@ -370,7 +370,7 @@ spells:
             count: 20
             type: mob
         costs:
-        - xp: 100
+            xp: 100
     portal:
         name: Portal
         icon: portal
@@ -383,7 +383,7 @@ spells:
             cooldown: 50
         parameters: {}
         costs:
-        - xp: 20
+            xp: 20
     invincible:
         name: Invincible
         icon: golden_apple
@@ -395,9 +395,9 @@ spells:
             duration: 5000
         parameters: {}
         costs:
-        - xp: 30
+            xp: 30
         active_costs:
-        - xp: 10
+            xp: 10
     inferno:
         name: Inferno
         icon: fire
@@ -412,7 +412,7 @@ spells:
             cooldown: 200
         parameters: {}
         costs:
-        - xp: 40
+            xp: 40
     cushion:
         name: Cushion
         icon: soul_sand
@@ -427,7 +427,7 @@ spells:
             cooldown: 100
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     paint:
         name: Paint
         icon: painting
@@ -443,7 +443,7 @@ spells:
         parameters:
             type: single
         costs:
-        - xp: 1
+            xp: 1
     gills:
         name: Gills
         icon: cooked_fish
@@ -470,7 +470,7 @@ spells:
             speed: 3
             spread: 30
         costs:
-        - xp: 20
+            xp: 20
     sign:
         name: Sign
         icon: sign_post
@@ -494,7 +494,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     nuke:
         name: Nuke
         icon: magma_cream
@@ -509,7 +509,7 @@ spells:
             size: '20'
             break_blocks: true
         costs:
-        - xp: 100
+            xp: 100
     day:
         name: Day
         icon: flint
@@ -525,7 +525,7 @@ spells:
         parameters:
             time: day
         costs:
-        - xp: 40
+            xp: 40
 
     time:
         name: Time
@@ -542,7 +542,7 @@ spells:
         parameters:
             time: toggle
         costs:
-        - xp: 40        
+            xp: 40        
     bridge:
         name: Bridge
         icon: gold_hoe
@@ -553,7 +553,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 5
+            xp: 5
     ascend:
         name: Ascend
         icon: red_mushroom
@@ -570,7 +570,7 @@ spells:
         parameters:
             type: ascend
         costs:
-        - xp: 5
+            xp: 5
     grenade:
         name: Grenade
         icon: tnt
@@ -585,7 +585,7 @@ spells:
             size: 6
             fuse: 30
         costs:
-        - xp: 20
+            xp: 20
     frag:
         name: Frag Grenade
         icon: redstone_block
@@ -601,7 +601,7 @@ spells:
             fuse: 60
             fire: true
         costs:
-        - xp: 20
+            xp: 20
     superblob:
         name: SuperBlob
         icon: slime_ball
@@ -631,7 +631,7 @@ spells:
             target: here
             break_blocks: false
         costs:
-        - xp: 5
+            xp: 5
     superblast:
         name: Superblast
         icon: sugar
@@ -663,7 +663,7 @@ spells:
             radius: 3
             type: pyramid
         costs:
-        - xp: 10
+            xp: 10
     cloak:
         name: Cloak
         icon: chainmail_chestplate
@@ -702,7 +702,7 @@ spells:
             range: '16'
             type: push
         costs:
-        - xp: 3
+            xp: 3
     farm:
         name: Herd
         icon: wheat
@@ -733,7 +733,7 @@ spells:
             radius: '4'
             type: sphere
         costs:
-        - xp: 20
+            xp: 20
     tesseract:
         name: Tesseract
         icon: web
@@ -749,7 +749,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 2
+            xp: 2
     mine:
         name: Mine
         icon: gold_pickaxe
@@ -763,7 +763,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 50
+            xp: 50
     peek:
         name: Peek
         icon: sugar_cane
@@ -782,7 +782,7 @@ spells:
             radius: '3'
             type: sphere
         costs:
-        - xp: 3
+            xp: 3
     sandblast:
         name: Sandblast
         icon: sandstone
@@ -800,7 +800,7 @@ spells:
             type: cuboid
             y_offset: 32
         costs:
-        - xp: 10
+            xp: 10
     fill:
         name: Fill
         icon: gold_spade
@@ -829,7 +829,7 @@ spells:
         parameters:
             type: recurse
         costs:
-        - xp: 30
+            xp: 30
     fire:
         name: Fire
         icon: flint_and_steel
@@ -844,7 +844,7 @@ spells:
             cooldown: 50
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     alter:
         name: Alter
         icon: ink_sack
@@ -872,7 +872,7 @@ spells:
             radius: 3
             type: pyramid
         costs:
-        - xp: 25
+            xp: 25
     familiar:
         name: Familiar
         icon: monster_egg
@@ -885,7 +885,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     disintegrate:
         name: Disintegrate
         icon: bone
@@ -900,7 +900,7 @@ spells:
             entity_damage: 100
         parameters: {}
         costs:
-        - xp: 30
+            xp: 30
     blink:
         name: Blink
         icon: eye_of_ender
@@ -916,7 +916,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 50
+            xp: 50
     absorb:
         name: Absorb
         icon: bucket
@@ -941,7 +941,7 @@ spells:
         parameters:
             type: down
         costs:
-        - xp: 5
+            xp: 5
     lava:
         name: Lava
         icon: lava
@@ -954,7 +954,7 @@ spells:
             cooldown: 500
         parameters: {}
         costs:
-        - xp: 20
+            xp: 20
     wolf:
         name: Wolf
         icon: raw_beef
@@ -968,7 +968,7 @@ spells:
             cooldown: 500
         parameters: {}
         costs:
-        - xp: 50
+            xp: 50
     cat:
         name: Cat
         icon: raw_fish
@@ -982,7 +982,7 @@ spells:
             cooldown: 500
         parameters: {}
         costs:
-        - xp: 30
+            xp: 30
     shrink:
         name: Head Shrinker
         icon: skull_item
@@ -994,7 +994,7 @@ spells:
             range: 200
         parameters: {}
         costs:
-        - xp: 20
+            xp: 20
     flare:
         name: Flare
         icon: firework
@@ -1006,7 +1006,7 @@ spells:
             range: 10
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     recall:
         name: Recall
         icon: compass
@@ -1032,9 +1032,9 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 20
+            xp: 20
         active_costs:
-        - xp: 10
+            xp: 10
     boom:
         name: Boom
         icon: baked_potato
@@ -1049,7 +1049,7 @@ spells:
             break_blocks: false
             size: 4
         costs:
-        - xp: 20
+            xp: 20
     box:
         name: Box
         icon: gold_helmet
@@ -1077,7 +1077,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 5
+            xp: 5
     night:
         name: Night
         icon: coal
@@ -1093,7 +1093,7 @@ spells:
         parameters:
             time: night
         costs:
-        - xp: 50
+            xp: 50
     force:
         name: Force
         icon: leash
@@ -1110,7 +1110,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-        - xp: 10
+            xp: 10
     descend:
         name: Descend
         icon: brown_mushroom
@@ -1127,7 +1127,7 @@ spells:
         parameters:
             type: descend
         costs:
-        - xp: 20
+            xp: 20
     fireball:
         name: Fireball
         icon: ghast_tear
@@ -1138,7 +1138,7 @@ spells:
             cooldown: 100
         parameters: {}
         costs:
-        - xp: 15
+            xp: 15
     map:
         name: Map
         icon: map
@@ -1149,7 +1149,7 @@ spells:
             cooldown: 5000
         parameters: {}
         costs:
-        - xp: 15
+            xp: 15
     camera:
         name: Camera
         icon: paper
@@ -1160,4 +1160,4 @@ spells:
             cooldown: 1000
         parameters: {}
         costs:
-        - xp: 5
+            xp: 5
