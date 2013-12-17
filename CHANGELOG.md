@@ -5,6 +5,8 @@
  - Fix wand cooldown reduction
  - Fix adding a batch to an undo queue after the player has logged out.
  - Add a config option to disable hacky WIP wand-combining on an anvil.
+ - Add a customizeable web site (like at http://mine.elmakers.com)
+ - Change spell costs to be simpler YML. (** This is a breaking change for custom configs, sorry!**)
 
 ## 2.6.4
 
