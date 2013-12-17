@@ -36,9 +36,13 @@ function getConfigFile($name) {
 }
 
 // Load and parse Magic configuration files
-$spellsConfiguration = Yaml::parse(getConfigFile('spells'));
-$magicConfiguratiom = Yaml::parse(getConfigFile('magic'));
-$wandConfiguratiom = Yaml::parse(getConfigFile('wands'));
+try {
+	$spellsConfiguration = Yaml::parse(getConfigFile('spells'));
+	$magicConfiguratiom = Yaml::parse(getConfigFile('magic'));
+	$wandConfiguratiom = Yaml::parse(getConfigFile('wands'));
+} catch (Exception $ex) {
+	die($ex->getMessage());
+}
 
 $spells = array();
 if (isset($spellsConfiguration['spells'])) {
@@ -67,6 +71,9 @@ $craftingMaterialLower = isset($general['crafting_material_lower']) ? $general['
 $craftingEnabled = isset($general['enable_crafting']) ? $general['enable_crafting'] : false;
 $rightClickCycles = isset($general['right_click_cycles']) ? $general['right_click_cycles'] : false;
 
+$eraseMaterial = isset($general['erase_item']) ? $general['erase_item'] : 'sulphur';
+$copyMaterial = isset($general['copy_item']) ? $general['copy_item'] : 'sugar';
+
 function underscoreToReadable($s) {
 	if (!$s) return $s;
 	$convertFunction = create_function('$c', 'return " " . strtoupper($c[1]);');
@@ -93,79 +100,19 @@ function printMaterial($materialKey, $iconOnly = null) {
 <html>
 	<head>
 		<title><?= $title ?></title>
+		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 		<link rel="stylesheet" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" />
 		<link rel="stylesheet" href="css/magic.css" />
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<script src="js/jquery-ui-1.10.3.custom.min.js"></script>
-		 <script>
+		<script>
 			var spells = <?= json_encode($spells); ?>;
 			var wands = <?= json_encode($wands); ?>;
-
-			function getMaterial(materialKey)
-			{
-				var materialName = materialKey.replace(/_/g, ' ');
-				var imagePath = 'image/material';
-				var materialIcon = materialKey.replace(/_/g, '') + '_icon32.png';
-				var enclosingSpan = $('<span/>');
-				var icon = $('<span title="' + materialName + '" class="materal_icon" style="background-image: url(' + imagePath + '/' + materialIcon + ')">&nbsp;</span>');
-				var text = $('<span class="material"/>').text(materialName);
-				enclosingSpan.append(icon);
-				enclosingSpan.append(text);
-				return enclosingSpan;
-			}
-			
-			function getSpellDetails(key)
-			{
-				if (!(key in spells)) {
-					return $('<span/>').text("Sorry, something went wrong!");
-				}
-				var spell = spells[key];
-				var detailsDiv = $('<div/>');
-	  			var title = $('<div class="spellTitleBanner"/>').text(spell.name);
-	  			var description = $('<div class="spellDescription"/>').text(spell.description);
-	  			var icon = $('<div class="spellIcon"/>');
-	  			icon.append($('<span/>').text('Icon: '));
-	  			icon.append(getMaterial(spell.icon));
-
-	  			detailsDiv.append(title);
-	  			detailsDiv.append(description);
-	  			detailsDiv.append(icon);
-	  			return detailsDiv;
-			}
-			
-			function getWandDetails(key)
-			{
-				if (!(key in wands)) {
-					return $('<span/>').text("Sorry, something went wrong!");
-				}
-				var wand = wands[key];
-				var detailsDiv = $('<div/>');
-	  			var title = $('<div class="wandTitleBanner"/>').text(wand.name);
-	  			var description = $('<div class="wandDescription"/>').text(wand.description);
-
-	  			detailsDiv.append(title);
-	  			detailsDiv.append(description);
-	  			return detailsDiv;
-			}
-  		 
-			$(document).ready(function() {
-			    $("#tabs").tabs();
-			    $("#spellList").selectable({
-					selected: function(event, ui) {
-						$key = $(ui.selected).prop('title');
-						$('#spellDetails').empty();
-						$('#spellDetails').append(getSpellDetails($key));
-					}
-			    });
-			    $("#wandList").selectable({
-					selected: function(event, ui) {
-						$key = $(ui.selected).prop('title');
-						$('#wandDetails').empty();
-						$('#wandDetails').append(getWandDetails($key));
-					}
-			    });
-			});
-		  </script>
+			var eraseMaterial = '<?= $eraseMaterial ?>';
+			var copyMaterial = '<?= $copyMaterial ?>';
+		</script>
+		<script src="js/magic.js"></script>
+		<?php if ($analytics) echo $analytics; ?>
 	</head>
 	<body>
 		<div id="heading"><?= $pageOverview ?></div>
@@ -185,7 +132,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<ul>
 					<?php if ($howToGetWands) echo "<li>$howToGetWands</li>"; ?>
 					<?php if ($craftingEnabled) {
-						echo '<li>Craft a wand with a ' . printMaterial($craftingMaterialUpper) . ' and a ' . 
+						echo '<li>Craft a wand with ' . printMaterial($craftingMaterialUpper) . ' and ' . 
 								printMaterial($craftingMaterialLower);
 						echo '</li>'; 
 					}?>
@@ -208,7 +155,8 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<div>
 					A wand is considered "active" when you are holding it. Any special effects a wand gives are only applied while the wand is active.<br.>
 					<br/><br/>
-					Swing a wand (left-click) to cast its active spell. Some wands may have more than one spell.<br/>
+					Swing a wand (left-click) to cast its active spell. Some wands may have more than one spell.
+					<br/><br/>
 					<?php if ($rightClickCycles)  { ?>
 						Right-click with your wand to cycle to the next spell.
 					<?php } else {?>
@@ -217,7 +165,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 						<br/><br/>
 						<img src="image/WandHotbar.png" alt="Wand hotbar image"></img>
 						<br/><br/>
-						With the wand inventory active, each spell is represented by a material icon. You can quickly change spells using the hotbar buttons (1-9).
+						With the wand inventory active, each spell is represented by an icon. You can quickly change spells using the hotbar buttons (1-9).
 						<br/>You can also open your inventory ('E' by default) to see all of the spells and materials your wand has, with detailed descriptions:
 						<br/><br/>
 						<img src="image/WandInventory.png" alt="Wand inventory image"></img>
@@ -243,10 +191,10 @@ function printMaterial($materialKey, $iconOnly = null) {
 			<div id="spells">
 			  <div class="scrollingTab">
 			  	<div class="navigation">
-				<ol id="spellList" class="selectable">
+				<ol id="spellList">
 				<?php 
 					foreach ($spells as $key => $spell) {
-						echo '<li class="ui-widget-content" title="' . $key . '">' . printMaterial($spell['icon'], true) . '<span class="spellTitle">' . $spell['name'] . '</span></li>';
+						echo '<li class="ui-widget-content" id="spell-' . $key . '">' . printMaterial($spell['icon'], true) . '<span class="spellTitle">' . $spell['name'] . '</span></li>';
 					}
 				?>
 				</ol>
@@ -259,10 +207,10 @@ function printMaterial($materialKey, $iconOnly = null) {
 			<div id="wands">
 			  <div class="scrollingTab">
 				<div class="navigation">
-				<ol id="wandList" class="selectable">
+				<ol id="wandList">
 				<?php 
 					foreach ($wands as $key => $wand) {
-						echo '<li class="ui-widget-content" title="' . $key . '">' .'<span class="wandTitle">' . $wand['name'] . '</span></li>';
+						echo '<li class="ui-widget-content" id="wand-' . $key . '">' .'<span class="wandTitle">' . $wand['name'] . '</span></li>';
 					}
 				?>
 				</ol>

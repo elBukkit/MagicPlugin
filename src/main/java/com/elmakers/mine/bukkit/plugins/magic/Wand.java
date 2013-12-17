@@ -678,11 +678,11 @@ public class Wand implements CostReducer {
 			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Mana: " + xpMax);
 			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
 		}
-		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Protection", damageReduction));
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Cost Reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Cooldown Reduction", cooldownReduction));
-		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString("Haste", speedIncrease / WandLevel.maxSpeedIncrease));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString("Power", power));
+		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString("Haste", speedIncrease / WandLevel.maxSpeedIncrease));
+		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Protection", damageReduction));
 		if (damageReduction < 1) {
 			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString("Physical Protection", damageReductionPhysical));
 			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString("Projectile Protection", damageReductionProjectiles));

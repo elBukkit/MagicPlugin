@@ -26,11 +26,18 @@
 }
 
 #feedback { font-size: 1.4em; }
-.selectable .ui-selecting { background: #FECA40; }
-.selectable .ui-selected { background: #F39814; color: white; }
-.selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-.selectable li { margin: 3px; padding: 0.4em; height: 32px; white-space: nowrap; }
-.selectable li:hover { background: #DDDDFF; }
+.ui-selectable .ui-selecting { background: #FECA40; }
+.ui-selectable .ui-selected { background: #F39814; color: white; }
+.ui-selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+.ui-selectable li 
+{ 
+	margin: 3px; 
+	padding: 0.4em; 
+	height: 32px; 
+	white-space: nowrap; 
+}
+
+.ui-selectable li:hover { background: #DDDDFF; }
 
 .scrollingTab
 {
@@ -59,20 +66,23 @@
 	height: 32px;
 	background-repeat: no-repeat;
 	display: inline-block;
+	padding-right: 4px; 
 }
 
 .navigation
 {
 	position:absolute;
 	left: 0px;
-	width: 300px;
+	width: 320px;
 }
 
 .details
 {
 	position:absolute;
-	left: 220px;
+	left: 240px;
 	right: 0px;
+	bottom: 30px;
+	top: 60px;
 }
 
 .spellTitleBanner
@@ -113,4 +123,44 @@
 	height: 38px;
 	margin-top: 3px;
 	margin-bottom: 3px;
+}
+
+.adminuse
+{
+	color: #777777;
+	position: absolute;
+	bottom: 0px;
+	font-size: 0.75em;
+}
+
+.wandHeading
+{
+	margin-top: 8px;
+	font-weight: bold;
+}
+
+.spellHeading
+{
+	margin-top: 8px;
+	font-weight: bold;
+}
+
+.wandContainer
+{
+	position:absolute;
+	top: 40px;
+	bottom: 20px;
+	left: 0px;
+	right: 0px;
+	overflow: auto;
+}
+
+.mana
+{
+	color: orchid;
+}
+
+.uses
+{
+	color: red;
 }

@@ -465,7 +465,7 @@ wands:
         description: Master of all four elements
         protection: 0.9
         fire_protection: 0.9
-        xp_regeneration: 20
+        xp_regeneration: 40
         xp_max: 500
         power: 0.5
         effect_color: 0000FF

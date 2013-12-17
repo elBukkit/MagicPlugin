@@ -21,10 +21,23 @@ $pageOverview = <<<EOT
 		For more information, <a href="http://dev.bukkit.org/bukkit-plugins/magic/" target="_new">click here.</a>
 		<br/><br/>
 		While this is just a development server, you are free to log in and play at
-		<span class="minecraftServer">mine.elmakers.com</span>. You may also view our <a href="http://mine.elmakers.com:8080"/>dynamp here</a>, the world is a bit of a mess.
+		<span class="minecraftServer">mine.elmakers.com</span>. You may also view our <a href="http://mine.elmakers.com:8080"/>dynmap here</a>, the world is a bit of a mess.
 		<br/><br/>
 		Thanks for looking!
 	</div>
+EOT;
+
+$analytics = <<<EOT
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-17131761-5', 'elmakers.com');
+  ga('send', 'pageview');
+
+</script>
 EOT;
 
 ?>
