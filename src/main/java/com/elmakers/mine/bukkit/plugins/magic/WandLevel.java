@@ -178,7 +178,7 @@ public class WandLevel {
 			
 			// Make sure the wand has at least one material.
 			if (currentMaterialCount == 0) {
-				materialCount = Math.min(1, materialCount);
+				materialCount = Math.max(1, materialCount);
 			}
 			retries = 30;
 			for (int i = 0; i < materialCount; i++) {
