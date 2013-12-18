@@ -32,6 +32,7 @@ import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -1046,8 +1047,7 @@ public class Spells implements Listener
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(this, current);
 					wand.updateName(true);
-				}
-				
+				}	
 			}
 			
 			if (combiningEnabled && slotType == SlotType.RESULT) {
@@ -1083,6 +1083,17 @@ public class Spells implements Listener
 				String newName = meta.getDisplayName();
 				Wand wand = new Wand(this, current);
 				wand.setName(newName);
+			}
+		}
+		
+		// Check for wand cycling with active inventory
+		if (event.getInventory().getType() == InventoryType.CRAFTING && event.getAction() == InventoryAction.PICKUP_HALF) {
+			Player player = (Player)event.getWhoClicked();
+			PlayerSpells playerSpells = getPlayerSpells(player);
+			Wand wand = playerSpells.getActiveWand();
+			if (wand != null && wand.isInventoryOpen()) {
+				wand.toggleInventory();
+				event.setCancelled(true);
 			}
 		}
 	}
