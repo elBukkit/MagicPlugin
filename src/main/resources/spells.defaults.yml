@@ -53,6 +53,8 @@ spells:
             fill: hollow
             radius: '10'
             type: sphere
+        costs:
+            xp: 10
     tag:
         name: Tag
         icon: sign
@@ -64,6 +66,8 @@ spells:
             range: 200
             cooldown: 10000
         parameters: {}
+        costs:
+            xp: 20
     arrow:
         name: Arrow
         icon: arrow
@@ -197,9 +201,11 @@ spells:
             auto_resurrect: true
             range: 200
             auto_resurrect_invisible: false
-            cooldown: 0
+            cooldown: 30000
         parameters:
             type: spawn
+        costs:
+            xp: 2
     leatherskin:
         name: LeatherSkin
         icon: leather_chestplate
@@ -240,7 +246,7 @@ spells:
             cooldown: 1000
         parameters: {}
         costs:
-            xp: 50
+            xp: 75
     heal:
         name: Heal
         icon: bread
@@ -265,6 +271,8 @@ spells:
             range: 200
             cooldown: 0
         parameters: {}
+        costs:
+            xp: 50
     icbm:
         name: ICBM
         icon: nether_star
@@ -673,6 +681,8 @@ spells:
         properties:
             cooldown: 0
         parameters: {}
+        costs:
+            xp: 15
     undo:
         name: Undo
         icon: book_and_quill
@@ -684,6 +694,8 @@ spells:
             range: 200
             cooldown: 0
         parameters: {}
+        costs:
+            xp: 5
     push:
         name: Push
         icon: rails
@@ -715,6 +727,8 @@ spells:
             cooldown: 0
         parameters:
             count: 10
+        costs:
+            xp: 50
     breach:
         name: Breach
         icon: seeds
@@ -763,7 +777,7 @@ spells:
             cooldown: 0
         parameters: {}
         costs:
-            xp: 50
+            xp: 10
     peek:
         name: Peek
         icon: sugar_cane
@@ -796,11 +810,11 @@ spells:
             cooldown: 500
             material: sand
         parameters:
-            radius: '4'
+            radius: '2'
             type: cuboid
             y_offset: 32
         costs:
-            xp: 10
+            xp: 20
     fill:
         name: Fill
         icon: gold_spade
@@ -814,6 +828,8 @@ spells:
             max_dimension: 256
             cooldown: 0
         parameters: {}
+        costs:
+            xp: 40
     recurse:
         name: Recurse
         icon: wood_spade
@@ -857,6 +873,8 @@ spells:
             cooldown: 0
             depth: 32
         parameters: {}
+        costs:
+            xp: 1
     blob:
         name: Blob
         icon: clay_ball
@@ -928,6 +946,8 @@ spells:
             range: 200
             cooldown: 0
         parameters: {}
+        costs:
+            xp: 30
     stalactite:
         name: Stalactite
         icon: wood_axe
@@ -1022,6 +1042,8 @@ spells:
             auto_resurrect_invisible: false
             cooldown: 0
         parameters: {}
+        costs:
+            xp: 20
     levitate:
         name: Levitate
         icon: gold_boots
@@ -1065,6 +1087,8 @@ spells:
             fill: hollow
             radius: '6'
             type: cuboid
+        costs:
+            xp: 10
     pillar:
         name: Pillar
         icon: gold_axe

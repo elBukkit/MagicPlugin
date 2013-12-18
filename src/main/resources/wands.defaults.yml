@@ -127,7 +127,6 @@ wands:
           levitate: 0,0,10,30
           leatherskin: 5,10,30,10
           ironskin: 0,5,10,20
-          disarm: 0, 1, 10,30
         material_count:
           0: 100,100, 100,  100
           1: 1,  10,  60,   100
@@ -381,10 +380,20 @@ wands:
             - mob
             - farm
             - shell
+            - shrink
             - box
             - gather
             - frag
             - volley
+            - stalactite
+            - fill
+            - blob
+            - blast
+            - pillar
+            - bridge
+            - absorb
+            - alter
+            - disarm
         materials:
             - water
             - lava
@@ -393,6 +402,8 @@ wands:
             - erase
             - tnt
             - soul_sand
+            - stained_glass
+            - copy
     airbending:
         name: Airbending Wand
         description: Master the element of air
