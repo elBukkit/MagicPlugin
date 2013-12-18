@@ -159,10 +159,9 @@ public class WandLevel {
 		// Also look for any material-using spells
 		boolean needsMaterials = false;
 		int maxXpCost = 0;
-		String[] spells = wand.getSpells();
-		for (int i = 0; i < spells.length; i++) {
-			String[] pieces = StringUtils.split(spells[i], "@");
-			Spell spell = wand.getMaster().getSpell(pieces[0]);
+		Set<String> spells = wand.getSpells();
+		for (String spellName : spells) {
+			Spell spell = wand.getMaster().getSpell(spellName);
 			if (spell != null) {
 				needsMaterials = needsMaterials || (spell.usesMaterial() && !spell.hasMaterialOverride());
 				List<CastingCost> costs = spell.getCosts();
@@ -174,7 +173,7 @@ public class WandLevel {
 		
 		// Add random materials
 		if (needsMaterials) {
-			int currentMaterialCount = wand.getMaterials().length;
+			int currentMaterialCount = wand.getMaterialNames().size();
 			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
 			
 			// Make sure the wand has at least one material.

@@ -6,11 +6,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -34,14 +31,17 @@ import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Wand implements CostReducer {
+	private final static int inventorySize = 27;
+	private final static int hotbarSize = 9;
+	
 	private ItemStack item;
 	private Spells spells;
 	private PlayerSpells activePlayer;
 	
 	// Cached state
 	private String id;
-	private String wandSpells = "";
-	private String wandMaterials = "";
+	private Inventory hotbar;
+	private List<Inventory> inventories;
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -89,9 +89,15 @@ public class Wand implements CostReducer {
 	private static final String defaultWandName = "Wand";
 	
 	// Inventory functionality
-	boolean isInventoryOpen = false;
+	Integer openInventoryPage;
+	
+	private Wand() {
+		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
+		inventories = new ArrayList<Inventory>();
+	}
 	
 	public Wand(Spells spells) {
+		this();
 		this.spells = spells;
 		item = new ItemStack(WandMaterial);
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
@@ -107,6 +113,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public Wand(Spells spells, ItemStack item) {
+		this();
 		this.item = item;
 		this.spells = spells;
 		loadState();
@@ -224,11 +231,241 @@ public class Wand implements CostReducer {
 	public void setItem(ItemStack item) {
 		this.item = item;
 	}
+	
+	protected List<Inventory> getAllInventories() {
+		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
+		allInventories.add(hotbar);
+		allInventories.addAll(inventories);
+		return allInventories;
+	}
+	
+	protected Set<String> getSpells() {
+		return getSpells(false);
+	}
+	
+	protected Set<String> getSpells(boolean includePositions) {
+		Set<String> spellNames = new TreeSet<String>();
+		List<Inventory> allInventories = getAllInventories();
+		int index = 0;
+		for (Inventory inventory : allInventories) {
+			ItemStack[] items = inventory.getContents();
+			for (int i = 0; i < items.length; i++) {
+				if (items[i] != null && !isWand(items[i])) {
+					if (isSpell(items[i])) {
+						String spellName = getSpell(items[i]);
+						if (includePositions) {
+							spellName += "@" + index;
+						}
+						spellNames.add(spellName);
+					}
+				}	
+				index++;
+			}
+		}
+		return spellNames;
+	}
+	
+	protected String getSpellString() {
+		return StringUtils.join(getSpells(true), "|");
+	}
+
+	protected Set<String> getMaterialNames() {
+		return getMaterialNames(false);
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected Set<String> getMaterialNames(boolean includePositions) {
+		Set<String> materialNames = new TreeSet<String>();
+		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
+		allInventories.add(hotbar);
+		allInventories.addAll(inventories);
+		int index = 0;
+		for (Inventory inventory : allInventories) {
+			ItemStack[] items = inventory.getContents();
+			for (int i = 0; i < items.length; i++) {
+				if (items[i] != null && !isWand(items[i])) {
+					if (!isSpell(items[i])) {
+						Material material = items[i].getType();
+						if (material != Material.AIR) {
+							String materialKey = material.getId() + ":" + items[i].getData().getData();
+							if (material == EraseMaterial) {
+								materialKey = "0:0"; 
+							} else if (material == CopyMaterial) {
+								materialKey = "-1:0"; 
+							}
+							if (includePositions) {
+								materialKey += "@" + index;
+							}
+							materialNames.add(materialKey);
+						}
+					}
+				}	
+				index++;
+			}
+		}
+		return materialNames;	
+	}
+	
+	protected String getMaterialString() {
+		return StringUtils.join(getMaterialNames(true), "|");		
+	}
+	
+	protected Integer parseSlot(String[] pieces) {
+		Integer slot = null;
+		if (pieces.length > 0) {
+			try {
+				slot = Integer.parseInt(pieces[1]);
+			} catch (Exception ex) {
+				slot = null;
+			}
+			if (slot != null && slot < 0) {
+				slot = null;
+			}
+		}
+		return slot;
+	}
+	
+	protected void addToInventory(ItemStack itemStack) {
+		if (activePlayer == null || activePlayer.getPlayer() == null) return;
+		List<Inventory> allInventories = getAllInventories();
+		boolean added = false;
+		// Set the wand item
+		int selectedItem = activePlayer.getPlayer().getInventory().getHeldItemSlot();
+		hotbar.setItem(selectedItem, item);
+		for (Inventory inventory : allInventories) {
+			HashMap<Integer, ItemStack> returned = inventory.addItem(itemStack);
+			if (returned.size() == 0) {
+				added = true;
+				break;
+			}
+		}
+		if (!added) {
+			Inventory newInventory = InventoryUtils.createInventory(null, inventorySize, "Wand");
+			newInventory.addItem(itemStack);
+			inventories.add(newInventory);
+		}
+		hotbar.setItem(selectedItem, null);
+	}
+	
+	protected Inventory getInventory(Integer slot) {
+		Inventory inventory = hotbar;
+		if (slot >= hotbarSize) {
+			int inventoryIndex = (slot - hotbarSize) / inventorySize;
+			while (inventoryIndex >= inventories.size()) {
+				inventories.add(InventoryUtils.createInventory(null, inventorySize, "Wand"));
+			}
+			inventory = inventories.get(inventoryIndex);
+		}
+		
+		return inventory;
+	}
+	
+	protected int getInventorySlot(Integer slot) {
+		if (slot < hotbarSize) {
+			return slot;
+		}
+		
+		return ((slot - hotbarSize) % inventorySize);
+	}
+	
+	protected void addToInventory(ItemStack itemStack, Integer slot) {
+		if (slot == null) {
+			addToInventory(itemStack);
+			return;
+		}
+		
+		Inventory inventory = getInventory(slot);
+		slot = getInventorySlot(slot);
+		
+		ItemStack existing = inventory.getItem(slot);
+		inventory.setItem(slot, itemStack);
+		
+		if (existing != null && existing.getType() != Material.AIR) {
+			addToInventory(existing);
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected void parseInventoryStrings(String spellString, String materialString) {
+		hotbar.clear();
+		inventories.clear();
+		String[] spellNames = StringUtils.split(spellString, "|");
+		for (String spellName : spellNames) {
+			String[] pieces = spellName.split("@");
+			Integer slot = parseSlot(pieces);
+			ItemStack itemStack = createSpellItem(pieces[0]);
+			if (itemStack == null) continue;
+			addToInventory(itemStack, slot);
+		}
+		String[] materialNames = StringUtils.split(materialString, "|");
+		for (String materialName : materialNames) {
+			String[] pieces = materialName.split("@");
+			Integer slot = parseSlot(pieces);
+			
+			String[] nameParts = StringUtils.split(pieces[0], ":");
+			int typeId = Integer.parseInt(nameParts[0]);
+			if (typeId == 0) {
+				typeId = EraseMaterial.getId();
+			} else if (typeId == -1) {
+				typeId = CopyMaterial.getId();
+			}
+			byte dataId = nameParts.length > 1 ? Byte.parseByte(nameParts[1]) : 0;		
+			ItemStack itemStack = createMaterialItem(typeId, dataId);
+			addToInventory(itemStack, slot);
+		}
+		hasInventory = spellNames.length + materialNames.length > 1;
+	}
+	
+	protected ItemStack createSpellItem(String spellName) {
+		Spell spell = spells.getSpell(spellName);
+		if (spell == null) return null;
+		
+		ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
+		itemStack = InventoryUtils.getCopy(itemStack);
+		updateSpellName(itemStack, spell, true);
+		return itemStack;
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected ItemStack createMaterialItem(int typeId, byte dataId) {
+		if (typeId == 0) {
+			typeId = EraseMaterial.getId();
+		} else if (typeId == -1) {
+			typeId = CopyMaterial.getId();
+		}		
+		ItemStack itemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);		
+		itemStack = InventoryUtils.getCopy(itemStack);
+		ItemMeta meta = itemStack.getItemMeta();
+		if (typeId == EraseMaterial.getId()) {
+			typeId = EraseMaterial.getId();
+			List<String> lore = new ArrayList<String>();
+			lore.add("Fills with Air");
+			meta.setLore(lore);
+		} else if (typeId == CopyMaterial.getId()) {
+			typeId = EraseMaterial.getId();
+			List<String> lore = new ArrayList<String>();
+			lore.add("Fills with the target material");
+			meta.setLore(lore);
+		} else {
+			List<String> lore = new ArrayList<String>();
+			Material material = Material.getMaterial(typeId);
+			if (material != null) {
+				lore.add(ChatColor.GRAY + getMaterialName(material, (byte)dataId));
+			}
+			lore.add(ChatColor.LIGHT_PURPLE + "Magic building material");
+			meta.setLore(lore);
+		}
+		meta.setDisplayName(getActiveWandName(Material.getMaterial(typeId)));
+		itemStack.setItemMeta(meta);
+		return itemStack;
+	}
 
 	protected void saveState() {
 		Object wandNode = InventoryUtils.createNode(item, "wand");
 		
 		InventoryUtils.setMeta(wandNode, "id", id);
+		String wandMaterials = getMaterialString();
+		String wandSpells = getSpellString();
 		InventoryUtils.setMeta(wandNode, "materials", wandMaterials);
 		InventoryUtils.setMeta(wandNode, "spells", wandSpells);
 		InventoryUtils.setMeta(wandNode, "active_spell", activeSpell);
@@ -255,66 +492,11 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 	}
 	
-	protected void loadOldState(ItemStack item) {
-		id = InventoryUtils.getMeta(item, "magic_wand_id");
-        id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
-        String wandSettings = InventoryUtils.getMeta(item, "magic_wand");
-        wandSettings = wandSettings == null ? "" : wandSettings;
-        wandMaterials = InventoryUtils.getMeta(item, "magic_materials");
-        wandMaterials = wandMaterials == null ? "" : wandMaterials;
-        wandSpells = InventoryUtils.getMeta(item, "magic_spells");
-        wandSpells = wandSpells == null ? "" : wandSpells;
-        activeSpell = InventoryUtils.getMeta(item, "magic_active_spell");
-        activeSpell = activeSpell == null ? "" : activeSpell;
-        activeMaterial = InventoryUtils.getMeta(item, "magic_active_material");
-        activeMaterial = activeMaterial == null ? "" : activeMaterial;
-        wandName = InventoryUtils.getMeta(item, "magic_wand_name");
-        wandName = wandName == null ? defaultWandName : wandName;
-        
-        String[] wandPairs = StringUtils.split(wandSettings, "&");
-        for (String pair : wandPairs) {
-                String[] keyValue = StringUtils.split(pair, "=");
-                if (keyValue.length == 2) {
-                        String key = keyValue[0];
-                        float value = Float.parseFloat(keyValue[1]);
-                        if (key.equalsIgnoreCase("cr")) {
-                                costReduction = value;
-                        } else if (key.equalsIgnoreCase("cdr")) {
-                                 cooldownReduction = value;
-                        } else if (key.equalsIgnoreCase("dr")) {
-                                damageReduction = value;
-                        } else if (key.equalsIgnoreCase("drph")) {
-                                damageReductionPhysical = value;
-                        } else if (key.equalsIgnoreCase("drpr")) {
-                                damageReductionProjectiles = value;
-                        } else if (key.equalsIgnoreCase("drfa")) {
-                                damageReductionFalling = value;
-                        } else if (key.equalsIgnoreCase("drfi")) {
-                                damageReductionFire = value;
-                        } else if (key.equalsIgnoreCase("drex")) {
-                                damageReductionExplosions = value;
-                        } else if (key.equalsIgnoreCase("uses")) {
-                                uses = (int)value;
-                        } else if (key.equalsIgnoreCase("xpre")) {
-                                xpRegeneration = (int)value;
-                        } else if (key.equalsIgnoreCase("xpmax")) {
-                                xpMax = (int)value;
-                        } else if (key.equalsIgnoreCase("hereg")) {
-                                healthRegeneration = (int)value;
-                        } else if (key.equalsIgnoreCase("hureg")) {
-                                hungerRegeneration = (int)value;
-                        } else if (key.equalsIgnoreCase("hasi")) {
-                                hasInventory = (int)value != 0;
-                        }
-                }
-        }
-	}
 	
 	protected void loadState() {
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		if (wandNode == null) {
-			// Try to update old wands, this could be removed eventually.
-			loadOldState(item);
+			spells.getPlugin().getLogger().warning("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
 		}
 		
@@ -322,8 +504,9 @@ public class Wand implements CostReducer {
 		id = InventoryUtils.getMeta(wandNode, "id");
 		id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
 		
-		wandMaterials = InventoryUtils.getMeta(wandNode, "materials", wandMaterials);
-		wandSpells = InventoryUtils.getMeta(wandNode, "spells", wandSpells);
+		String wandMaterials = InventoryUtils.getMeta(wandNode, "materials", "");
+		String wandSpells = InventoryUtils.getMeta(wandNode, "spells", "");
+		parseInventoryStrings(wandSpells, wandMaterials);
 		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
 		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
 		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
@@ -354,29 +537,41 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	public void removeMaterial(Material material, byte data) {
+		if (isInventoryOpen()) {
+			saveInventory();
+		}
 		Integer id = material.getId();
 		String materialString = id.toString();
 		materialString += ":" + data;
-
-		String[] materials = getMaterials();
-		String fallbackActiveMaterial = "";
-		List<String> materialMap = new LinkedList<String>();
-		for (int i = 0; i < materials.length; i++) {	
-			String[] pieces = StringUtils.split(materials[i], "@");
-			if (pieces.length > 0 && !pieces[0].equals(materialString)) {
-				fallbackActiveMaterial = materials[i];
-				materialMap.add(materials[i]);
+		if (materialString.equals(activeMaterial)) {
+			activeMaterial = null;
+		}
+		
+		List<Inventory> allInventories = getAllInventories();
+		boolean found = false;
+		for (Inventory inventory : allInventories) {
+			ItemStack[] items = inventory.getContents();
+			for (int index = 0; index < items.length; index++) {
+				ItemStack itemStack = items[index];
+				if (itemStack != null && itemStack.getType() != Material.AIR && !isWand(itemStack) && !isSpell(itemStack)) {
+					if (itemStack.getType() == material && data == itemStack.getData().getData()) {
+						found = true;
+						inventory.setItem(index, null);
+					} else if (activeMaterial == null) {
+						activeMaterial = "" + itemStack.getTypeId() + ":" + (itemStack.getData().getData());
+					}
+					if (found && activeMaterial != null) {
+						break;
+					}
+				}
 			}
 		}
-		setMaterials(materialMap);
-		
-		if (materialString.equalsIgnoreCase(activeMaterial)) {
-			activeMaterial = fallbackActiveMaterial;
-			updateActiveMaterial();
-			updateName();
-			if (isInventoryOpen()) {
-				updateInventory();
-			}
+		updateActiveMaterial();
+		updateInventoryNames(true);
+		updateName();
+		saveState();
+		if (isInventoryOpen()) {
+			updateInventory();
 		}
 	}
 	
@@ -384,30 +579,57 @@ public class Wand implements CostReducer {
 		return addMaterial(material, data, true);
 	}
 	
-	protected boolean addMaterial(String materialString, boolean makeActive) {
-		String[] materials = getMaterials();
-		Set<String> materialMap = new TreeSet<String>();
-		for (int i = 0; i < materials.length; i++) {	
-			String[] pieces = StringUtils.split(materials[i], "@");
-			materialMap.add(pieces[0]);
+	public boolean hasMaterial(int materialId, byte data) {
+		String materialName = materialId + ":" + data;
+		return getMaterialNames().contains(materialName);
+	}
+
+	@SuppressWarnings("deprecation")
+	public boolean hasMaterial(Material material, byte data) {
+		return hasMaterial(material.getId(), data);
+	}
+	
+	public boolean hasSpell(String spellName) {
+		return getSpells().contains(spellName);
+	}
+	
+	public boolean addMaterial(String materialName, boolean makeActive) {
+		Integer materialId = null;
+		byte data = 0;
+		try {
+			String[] pieces = materialName.split(":");
+			data = pieces.length > 1 ? Byte.parseByte(pieces[1]) : 0;
+			materialId =Integer.parseInt(pieces[0]);
+		} catch (Exception ex) {
+			materialId = null;
 		}
-		if (makeActive || activeMaterial == null || activeMaterial.length() == 0) {
-			activeMaterial = materialString;
+		if (materialId == null) {
+			return false;
 		}
-		boolean addedNew = !materialMap.contains(materialString);
-		materialMap.add(materialString);
-		setMaterials(materialMap);
+		boolean addedNew = !hasMaterial(materialId, data);
+		if (addedNew) {
+			addToInventory(createMaterialItem(materialId, data));
+		}
+		if (activeMaterial == null || activeMaterial.length() == 0 || makeActive) {
+			activeMaterial = materialName;
+		}
 		updateActiveMaterial();
+		updateInventoryNames(true);
 		updateName();
+		saveState();
 		if (isInventoryOpen()) {
 			updateInventory();
 		}
+		hasInventory = getSpells().size() + getMaterialNames().size() > 1;
 		
 		return addedNew;
 	}
 	
 	@SuppressWarnings("deprecation")
 	public boolean addMaterial(Material material, byte data, boolean makeActive) {
+		if (isInventoryOpen()) {
+			saveInventory();
+		}
 		Integer id = material.getId();
 		String materialString = id.toString();
 		if (material == EraseMaterial) {
@@ -419,79 +641,56 @@ public class Wand implements CostReducer {
 		return addMaterial(materialString, makeActive);
 	}
 	
-	private void setMaterials(Collection<String> materialNames) {
-		wandMaterials = StringUtils.join(materialNames, "|");
-
-		// Set new spells count
-		setMaterialCount(materialNames.size());
-		String[] spellNames = getSpells();
-		hasInventory = (spellNames.length + materialNames.size() > 1);
-		
-		saveState();
-	}
-	
-	public String[] getMaterials() {
-		return StringUtils.split(wandMaterials, "|");
-	}
-	
-	private boolean addSpells(Collection<String> spellNames) {
-		String[] spells = getSpells();
-		Set<String> spellMap = new TreeSet<String>();
-		boolean addedNew = false;
-		for (String spell : spells) {
-			String[] pieces = spell.split("@");
-			spellMap.add(pieces[0]);
-		}
-		for (String spellName : spellNames) {
-			if (activeSpell == null || activeSpell.length() == 0) {
-				activeSpell = spellName;
-			}
-			if (!spellMap.contains(spellName)) {
-				addedNew = true;
-			}
-			spellMap.add(spellName);
-			addedNew = true;
-		}
-				
-		setSpells(spellMap);
-		
-		return addedNew;
-	}
-	
-	public String[] getSpells() {
-		return StringUtils.split(wandSpells, "|");
-	}
-
 	public void removeSpell(String spellName) {
-		String[] spells = getSpells();
-		List<String> spellMap = new LinkedList<String>();
-		String fallbackActive = "";
-		for (int i = 0; i < spells.length; i++) {
-			String[] pieces = StringUtils.split(spells[i], "@");
-			if (pieces.length > 0 && !pieces[0].equals(spellName)) {
-				fallbackActive = spells[i];
-				spellMap.add(spells[i]);
+		if (isInventoryOpen()) {
+			saveInventory();
+		}
+		if (spellName.equals(activeSpell)) {
+			activeSpell = null;
+		}
+		
+		List<Inventory> allInventories = getAllInventories();
+		boolean found = false;
+		for (Inventory inventory : allInventories) {
+			ItemStack[] items = inventory.getContents();
+			for (int index = 0; index < items.length; index++) {
+				ItemStack itemStack = items[index];
+				if (itemStack != null && itemStack.getType() != Material.AIR && !isWand(itemStack) && isSpell(itemStack)) {
+					if (getSpell(itemStack).equals(spellName)) {
+						found = true;
+						inventory.setItem(index, null);
+					} else if (activeSpell == null) {
+						activeSpell = getSpell(itemStack);
+					}
+					if (found && activeSpell != null) {
+						break;
+					}
+				}
 			}
 		}
-		setSpells(spellMap);
-		
-		if (spellName.equalsIgnoreCase(activeSpell)) {
-			activeSpell = fallbackActive;
-			updateName();
-			if (isInventoryOpen()) {
-				updateInventory();
-			}
+		updateInventoryNames(true);
+		updateName();
+		saveState();
+		if (isInventoryOpen()) {
+			updateInventory();
 		}
 	}
 	
-	public boolean addSpell(String spellName, boolean makeDefault) {
-		if (makeDefault) {
+	public boolean addSpell(String spellName, boolean makeActive) {
+		if (isInventoryOpen()) {
+			saveInventory();
+		}
+		boolean addedNew = !hasSpell(spellName);
+		if (addedNew) {
+			addToInventory(createSpellItem(spellName));
+		}
+		if (activeSpell == null || activeSpell.length() == 0 || makeActive) {
 			activeSpell = spellName;
 		}
-		List<String> names = new ArrayList<String>();
-		names.add(spellName);
-		boolean addedNew = addSpells(names);
+		hasInventory = getSpells().size() + getMaterialNames().size() > 1;
+		updateInventoryNames(true);
 		updateName();
+		saveState();
 		if (isInventoryOpen()) {
 			updateInventory();
 		}
@@ -501,25 +700,6 @@ public class Wand implements CostReducer {
 	
 	public boolean addSpell(String spellName) {
 		return addSpell(spellName, true);
-	}
-	
-	private void setSpells(Collection<String> spellNames) {
-		wandSpells = StringUtils.join(spellNames, "|");
-
-		// Set new spells count
-		setSpellCount(spellNames.size());
-		String[] materials = getMaterials();
-		hasInventory = (spellNames.size() + materials.length > 1);
-
-		saveState();
-	}
-	
-	private void setSpellCount(int spellCount) {
-		updateLore(spellCount, getMaterials().length);
-	}
-	
-	private void setMaterialCount(int materialCount) {
-		updateLore(getSpells().length, materialCount);
 	}
 
 	private String getActiveWandName(Spell spell, String materialName) {
@@ -654,7 +834,7 @@ public class Wand implements CostReducer {
 	}
 	
 	private void updateLore() {
-		updateLore(getSpells().length, getMaterials().length);
+		updateLore(getSpells().size(), getMaterialNames().size());
 	}
 
 	private void updateLore(int spellCount, int materialCount) {
@@ -791,143 +971,39 @@ public class Wand implements CostReducer {
 	@SuppressWarnings("deprecation")
 	private void updateInventory() {
 		if (activePlayer == null) return;
+		if (!isInventoryOpen()) return;
+		if (activePlayer.getPlayer() == null) return;
+		if (!activePlayer.hasStoredInventory()) return;
 		
+		// Clear the player's inventory
 		Player player = activePlayer.getPlayer();
-		Inventory inventory = player.getInventory();
-		inventory.clear();
-		String[] spells = StringUtils.split(wandSpells, "|");
-
-		// Gather up all spells and materials
-		// Spells saved in a specific slot are put directly there.
-		Queue<ItemStack> unpositionedSpells = new LinkedList<ItemStack>();
-		for (int i = 0; i < spells.length; i++) {
-			String[] parts = StringUtils.split(spells[i], "@");
-			String spellName = parts[0];
-			Spell spell = activePlayer.getSpell(spellName);
-			if (spell == null) continue;
-			
-			ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
-			itemStack = InventoryUtils.getCopy(itemStack);
-			updateSpellName(itemStack, spell, true);
-			
-			if (parts.length > 1) {
-				int slot = Integer.parseInt(parts[1]);
-				inventory.setItem(slot, itemStack);
-			} else {
-				unpositionedSpells.add(itemStack);
+		PlayerInventory playerInventory = player.getInventory();
+		playerInventory.clear();
+		
+		// First add the wand and check the hotbar for conflicts
+		int currentSlot = playerInventory.getHeldItemSlot();
+		ItemStack existingHotbar = hotbar.getItem(currentSlot);
+		if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
+			addToInventory(existingHotbar);
+			hotbar.setItem(currentSlot, null);
+		}
+		playerInventory.setItem(currentSlot, item);
+		
+		// Set hotbar
+		for (int hotbarSlot = 0; hotbarSlot < hotbarSize; hotbarSlot++) {
+			if (hotbarSlot != currentSlot) {
+				playerInventory.setItem(hotbarSlot, hotbar.getItem(hotbarSlot));
 			}
 		}
 		
-		String[] materials = StringUtils.split(wandMaterials, "|");
-
-		// Materials saved in a specific spot are added to a hashmap for later processing
-		Queue<ItemStack> unpositionedMaterials = new LinkedList<ItemStack>();
-		HashMap<Integer, ItemStack> positioned = new HashMap<Integer, ItemStack>();
-		ItemStack eraseStack = null;
-		ItemStack copyStack = null;
-		for (int i = 0; i < materials.length; i++) {
-			String[] parts = StringUtils.split(materials[i], "@");
-			String[] nameParts = StringUtils.split(parts[0], ":");
-			int typeId = Integer.parseInt(nameParts[0]);
-			if (typeId == 0) {
-				typeId = EraseMaterial.getId();
-			} else if (typeId == -1) {
-				typeId = CopyMaterial.getId();
-			}
-			int dataId = nameParts.length > 1 ? Integer.parseInt(nameParts[1]) : 0;
-			
-			ItemStack itemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);		
-			itemStack = InventoryUtils.getCopy(itemStack);
-			ItemMeta meta = itemStack.getItemMeta();
-			if (typeId == EraseMaterial.getId()) {
-				List<String> lore = new ArrayList<String>();
-				lore.add("Fills with Air");
-				meta.setLore(lore);
-			} else if (typeId == CopyMaterial.getId()) {
-				List<String> lore = new ArrayList<String>();
-				lore.add("Fills with the target material");
-				meta.setLore(lore);
-			} else {
-				List<String> lore = new ArrayList<String>();
-				Material material = Material.getMaterial(typeId);
-				if (material != null) {
-					lore.add(ChatColor.GRAY + getMaterialName(material, (byte)dataId));
-				}
-				lore.add(ChatColor.LIGHT_PURPLE + "Magic building material");
-				meta.setLore(lore);
-			}
-			meta.setDisplayName(getActiveWandName(Material.getMaterial(typeId)));
-			itemStack.setItemMeta(meta);
-			
-			if (parts.length > 1) {
-				int slot = Integer.parseInt(parts[1]);
-				ItemStack existing = inventory.getItem(slot);
-				if (existing == null || existing.getType() == Material.AIR) {
-					positioned.put((Integer)slot, itemStack);
-				} else {
-					unpositionedMaterials.add(itemStack);
-				}
-			} else {
-				if (itemStack.getType() == EraseMaterial) {
-					eraseStack = itemStack;
-				} else if (itemStack.getType() == CopyMaterial) {
-					copyStack = itemStack;
-				} else {
-					unpositionedMaterials.add(itemStack);
-				}
-			}
+		// Set inventory from current page
+		if (openInventoryPage < inventories.size()) {
+			Inventory inventory = inventories.get(openInventoryPage);
+			ItemStack[] contents = inventory.getContents();
+			for (int i = 0; i < contents.length; i++) {
+				playerInventory.setItem(i + hotbarSize, contents[i]);
+			}	
 		}
-		
-		// This is here to try and leave some room for materials, if present
-		// in a newly-created wand.
-		
-		if (unpositionedMaterials.size() > 0) {
-			int materialSpaces = Math.min(unpositionedMaterials.size(), 3);
-			int remainingSpaces = 8 - materialSpaces;
-			while (unpositionedSpells.size() > 0 && remainingSpaces > 0) {
-				inventory.addItem(unpositionedSpells.remove());
-				remainingSpaces--;
-			}
-		}
-		
-		
-		// Put the new materials first, then the mapped materials
-		// TODO: Investigate if all of this is necessary now with the new inventory system.
-		if (eraseStack != null) {
-			addMaterialToInventory(inventory, eraseStack);
-		}
-		if (copyStack != null) {
-			addMaterialToInventory(inventory, copyStack);
-		}
-		
-		// Add the rest of the unpositioned spells
-		for (ItemStack stack : unpositionedSpells) {
-			inventory.addItem(stack);
-		}
-		
-		// Add mapped materials, but if there is already something there just
-		// toss it in the inventory.
-		for (Entry<Integer, ItemStack> entry : positioned.entrySet()) {
-			int slot = entry.getKey();
-			ItemStack itemStack = entry.getValue();
-			ItemStack existing = inventory.getItem(slot);
-			if (existing == null || existing.getType() == Material.AIR) {
-				inventory.setItem(slot, itemStack);
-			} else {
-				addMaterialToInventory(inventory, itemStack);
-			}
-		}
-		
-		for (ItemStack stack : unpositionedMaterials) {
-			addMaterialToInventory(inventory, stack);
-		}
-		
-		// Finally give the player this wand
-		ItemStack itemStack = player.getItemInHand();
-		if (itemStack != null && itemStack.getType() != Material.AIR && !isWand(itemStack)) {
-			// TODO: Save this item somewhere.
-		}
-		player.setItemInHand(item);
 
 		updateName();
 		player.updateInventory();
@@ -945,93 +1021,39 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	private static void addMaterialToInventory(Inventory inventory, ItemStack stack) {
-		// First try to put it in the main bar, starting from the right.
-		for (int i = 8; i >= 0; i--) {
-			ItemStack existing = inventory.getItem(i);
-			if (existing == null || existing.getType() == Material.AIR) {
-				inventory.setItem(i, stack);
-				return;
-			}
+	protected Inventory getOpenInventory() {
+		if (openInventoryPage == null) {
+			openInventoryPage = 0;
 		}
-		
-		inventory.addItem(stack);
+		while (openInventoryPage >= inventories.size()) {
+			inventories.add(InventoryUtils.createInventory(null, inventorySize, "Wand"));
+		}
+		return inventories.get(openInventoryPage);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void saveInventory() {
 		if (activePlayer == null) return;
-		PlayerInventory inventory = activePlayer.getPlayer().getInventory();
+		if (activePlayer == null) return;
+		if (!isInventoryOpen()) return;
+		if (activePlayer.getPlayer() == null) return;
+		if (!activePlayer.hasStoredInventory()) return;
 		
-		// Rebuild spell inventory, save in wand.
-		// Never add/remove a spell or material from the wand, just re-arrange them.
-		String[] currentSpells = getSpells();
-		String[] currentMaterials = getMaterials();
-		
-		// Map current Wand inventory
-		HashMap<String, Integer> spellMap = new HashMap<String, Integer>();
-		HashMap<String, Integer> materialMap = new HashMap<String, Integer>();
-		
-		for (String spell : currentSpells) {
-			String[] pieces = StringUtils.split(spell, "@");
-			Integer position = pieces.length > 1 ? Integer.parseInt(pieces[1]) : null;
-			spellMap.put(pieces[0], position);
-		}
-		for (String material : currentMaterials) {
-			String[] pieces = StringUtils.split(material, "@");
-			Integer position = pieces.length > 1 ? Integer.parseInt(pieces[1]) : null;
-			materialMap.put(pieces[0], position);
-		}
-		
-		// re-arrange based on player inventory contents
-		ItemStack[] items = inventory.getContents();
-		for (int i = 0; i < items.length; i++) {
-			if (items[i] == null || isWand(items[i])) continue;
-			Material material = items[i].getType();
-			if (isSpell(items[i])) {
-				Spell spell = activePlayer.getSpell(getSpell(items[i]));
-				if (spell != null && spellMap.containsKey(spell.getKey())) {
-					spellMap.put(spell.getKey(), i);
-				}
-			} else {
-				Set<Material> buildingMaterials = activePlayer.getMaster().getBuildingMaterials();
-				if (material != Material.AIR && (buildingMaterials.contains(material) || material == EraseMaterial)) {
-					String materialKey = material.getId() + ":" + items[i].getData().getData();
-					if (material == EraseMaterial) {
-						materialKey = "0:0"; 
-					} else if (material == CopyMaterial) {
-						materialKey = "-1:0"; 
-					}
-					if (materialMap.containsKey(materialKey)) {
-						materialMap.put(materialKey, i);
-					}
-				}
+		// Fill in the hotbar
+		Player player = activePlayer.getPlayer();
+		PlayerInventory playerInventory = player.getInventory();
+		for (int i = 0; i < hotbarSize; i++) {
+			ItemStack playerItem = playerInventory.getItem(i);
+			if (isWand(playerItem)) {
+				playerItem = null;
 			}
+			hotbar.setItem(i, playerItem);
 		}
 		
-		// Pack up into lists and set to wand
-		List<String> spellNames = new ArrayList<String>();
-		List<String> materialNames = new ArrayList<String>();
-		
-		for (Entry<String, Integer> spellEntry : spellMap.entrySet()) {
-			Integer position = spellEntry.getValue();
-			String spellName = spellEntry.getKey();
-			if (position != null) {
-				spellName += "@" + position;
-			}
-			spellNames.add(spellName);
+		// Fill in the active inventory page
+		Inventory openInventory = getOpenInventory();
+		for (int i = 0; i < openInventory.getSize(); i++) {
+			openInventory.setItem(i, playerInventory.getItem(i + hotbarSize));
 		}
-		for (Entry<String, Integer> materialEntry : materialMap.entrySet()) {
-			Integer position = materialEntry.getValue();
-			String materialName = materialEntry.getKey();
-			if (position != null) {
-				materialName += "@" + position;
-			}
-			materialNames.add(materialName);
-		}
-		
-		setSpells(spellNames);
-		setMaterials(materialNames);
 		saveState();
 	}
 
@@ -1051,7 +1073,6 @@ public class Wand implements CostReducer {
 	
 	public static Wand createWand(Spells spells, String templateName) {
 		Wand wand = new Wand(spells);
-		List<String> defaultSpells = new ArrayList<String>();
 		String wandName = defaultWandName;
 
 		// See if there is a template with this key
@@ -1073,8 +1094,8 @@ public class Wand implements CostReducer {
 			wandName = wandConfig.getString("name", wandName);
 			List<Object> spellList = wandConfig.getList("spells");
 			if (spellList != null) {
-				for (Object spellName : spellList) {
-					defaultSpells.add((String)spellName);
+				for (Object spellName : spellList) {			
+					wand.addSpell((String)spellName);
 				}
 			}
 			List<Object> materialList = wandConfig.getList("materials");
@@ -1086,7 +1107,6 @@ public class Wand implements CostReducer {
 					if (materialParts.length > 1) {
 						data = Byte.parseByte(materialParts[1]);
 					}
-					
 					if (materialName.equals("erase")) {
 						wand.addMaterial(EraseMaterial, (byte)0, false);
 					} else if (materialName.equals("copy") || materialName.equals("clone")) {
@@ -1100,7 +1120,6 @@ public class Wand implements CostReducer {
 			wand.configureProperties(wandConfig);
 		}
 
-		wand.addSpells(defaultSpells);
 		wand.setName(wandName);
 		
 		return wand;
@@ -1132,15 +1151,15 @@ public class Wand implements CostReducer {
 		}
 		
 		// Add spells
-		String[] spells = other.getSpells();
+		Set<String> spells = other.getSpells();
 		for (String spell : spells) {
-			addSpell(spell.split("@")[0], false);
+			addSpell(spell, false);
 		}
 
 		// Add materials
-		String[] materials = other.getMaterials();
+		Set<String> materials = other.getMaterialNames();
 		for (String material : materials) {
-			addMaterial(material.split("@")[0], false);
+			addMaterial(material, false);
 		}
 
 		saveState();
@@ -1261,21 +1280,37 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void toggleInventory() {
-		if (isInventoryOpen) {
-			closeInventory();
-		} else {
+		if (!hasInventory) {
+			return;
+		}
+		if (!isInventoryOpen()) {
+			openInventoryPage = 0;
 			openInventory();
+		} else {
+			saveInventory();
+			int newInventoryPage = openInventoryPage + 1;
+			if (newInventoryPage >= inventories.size()) {
+				closeInventory();
+			} else {
+				saveInventory();
+				openInventoryPage = newInventoryPage;
+				updateInventory();
+				if (activePlayer != null) {
+					activePlayer.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
+					activePlayer.getPlayer().updateInventory();
+				}
+			}
 		}
 	}
 	
 	@SuppressWarnings("deprecation")
 	private void openInventory() {
-		if (isInventoryOpen) return;
-		isInventoryOpen = true;
 		if (activePlayer == null) return;
+		if (activePlayer.hasStoredInventory()) return;
 		if (activePlayer.storeInventory()) {
-			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+			activePlayer.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 			updateInventory();
 			activePlayer.getPlayer().updateInventory();
 		}
@@ -1283,9 +1318,9 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	public void closeInventory() {
-		if (!isInventoryOpen) return;
-		isInventoryOpen = false;
+		if (!isInventoryOpen()) return;
 		saveInventory();
+		openInventoryPage = null;
 		if (activePlayer != null) {
 			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
 			activePlayer.restoreInventory();
@@ -1333,11 +1368,12 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean isInventoryOpen() {
-		return activePlayer != null && isInventoryOpen;
+		return activePlayer != null && openInventoryPage != null;
 	}
 	
 	public void deactivate() {
 		if (activePlayer == null) return;
+		saveState();
 
 		if (effectColor > 0) {
 			InventoryUtils.removePotionEffect(activePlayer.getPlayer());
@@ -1368,7 +1404,6 @@ public class Wand implements CostReducer {
 		}
 		activePlayer.setActiveWand(null);
 		activePlayer = null;
-		saveState();
 	}
 	
 	public Spell getActiveSpell() {
@@ -1401,7 +1436,7 @@ public class Wand implements CostReducer {
 				player.updateInventory();
 			} else {
 				updateName();
-				updateLore(getSpells().length, getMaterials().length);
+				updateLore();
 				saveState();
 			}
 		}
@@ -1454,7 +1489,8 @@ public class Wand implements CostReducer {
 	}
 	
 	public void cycleSpells() {
-		String[] spells = getSpells();
+		Set<String> spellsSet = getSpells();
+		String[] spells = (String[])spellsSet.toArray();
 		if (spells.length == 0) return;
 		if (activeSpell == null) {
 			activeSpell = spells[0].split("@")[0];
@@ -1474,7 +1510,8 @@ public class Wand implements CostReducer {
 	}
 	
 	public void cycleMaterials() {
-		String[] materials = getMaterials();
+		Set<String> materialsSet = getMaterialNames();
+		String[] materials = (String[])materialsSet.toArray();
 		if (materials.length == 0) return;
 		if (activeMaterial == null) {
 			activeMaterial = materials[0].split("@")[0];

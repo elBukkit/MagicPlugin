@@ -138,7 +138,7 @@ public class PlayerSpells implements CostReducer
 		if (storedInventory != null) {
 			return false;
 		}
-		storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Magic.Wand.StoredInventory");
+		storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
 		
 		// Make sure we don't store any spells or magical materials, just in case
 		ItemStack[] contents = inventory.getContents();

@@ -7,6 +7,8 @@
  - Add a config option to disable hacky WIP wand-combining on an anvil.
  - Add a customizeable web site (like at http://mine.elmakers.com)
  - Change spell costs to be simpler YML. (** This is a breaking change for custom configs, sorry!**)
+ - Removed the old wand state restore method. Make sure you've run a version since 2.5.0 before upgrading.
+ - Re-work the wand inventory system completely, support multiple inventory pages.
 
 ## 2.6.4
 
