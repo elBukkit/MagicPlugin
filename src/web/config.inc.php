@@ -1,8 +1,8 @@
 <?php 
 
 // Magic configuration file path
-//$magicRootFolder = '/Users/nathan/Server/plugins/Magic';
-$magicRootFolder = '/Users/nathan/Documents/Code/Bukkit/Testing/plugins/Magic';
+// You can set up a symlink for this, or handle it however you like
+$magicRootFolder = dirname(__FILE__) . '/Magic';
 
 // Page title
 $title = "elMakers Magic Development Site";

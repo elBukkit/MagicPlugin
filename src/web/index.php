@@ -155,22 +155,30 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<div>
 					A wand is considered "active" when you are holding it. Any special effects a wand gives are only applied while the wand is active.<br.>
 					<br/><br/>
-					Swing a wand (left-click) to cast its active spell. Some wands may have more than one spell.
+					Swing a wand (left-click) to cast its active spell. Some wands may have more than one spell. If a wand has multiple spells, you use the
+					interact (right-click) action to select spells.
 					<br/><br/>
 					<?php if ($rightClickCycles)  { ?>
 						Right-click with your wand to cycle to the next spell.
 					<?php } else {?>
-						Right-click with your wand to toggle the wand inventory. When the wand's inventory is active, your survival items are stores
+						Right-click with your wand to toggle the wand inventory. When the wand's inventory is active, your survival items are stored
 						and your player's inventory will change to show the spells and materials bound to your active wand:
 						<br/><br/>
 						<img src="image/WandHotbar.png" alt="Wand hotbar image"></img>
 						<br/><br/>
 						With the wand inventory active, each spell is represented by an icon. You can quickly change spells using the hotbar buttons (1-9).
-						<br/>You can also open your inventory ('E' by default) to see all of the spells and materials your wand has, with detailed descriptions:
+						<br/><br/>
+						You can also open your inventory ('E' by default) to see all of the spells and materials your wand has, with detailed descriptions:
 						<br/><br/>
 						<img src="image/WandInventory.png" alt="Wand inventory image"></img>
 						<br/><br/>
 						While in this view, you can re-arrange your spells and materials, deciding which ones to put in the hotbar.
+						<br/><br/>
+						Right-click again to deactive the wand inventory and restore your items. Any items you
+						collected while the wand inventory was active will be in your surivival inventory.
+						<br/><br/>
+						For wands with more than 35 spells, right-clicking an additional time will cycle to the next "page" of spells. You may also
+						right-click on an item in the inventory to cycle the inventory page.
 						<br/><br/>
 						For detailed instructions, see this video: (TODO: Updated Video!)<br/><br/>
 						<iframe width="640" height="360" src="//www.youtube.com/embed/<?= $youTubeVideo ?>" frameborder="0" allowfullscreen></iframe>
@@ -180,7 +188,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<div>
 					Casting costs vary by spell, wand, and server configuration.<br/><br/>
 					The most common setup is the "mana" system. In this mode, each wand has a mana pool that 
-					regenerates over time. While a wand is active, your mana is represented by the xp bar. (Your gathered xp will
+					regenerates over time. While a wand is active, your mana is represented by the XP bar. (Your gathered XP will
 					be saved and restored when the wand deactivates).<br/><br/>
 					Other configurations could range from consuming actual XP, reagent items, or just being free.
 					<br/><br/>
