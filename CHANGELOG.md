@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.6.5
+## 2.7.0
 
  - Fix wand cooldown reduction
  - Fix adding a batch to an undo queue after the player has logged out.
