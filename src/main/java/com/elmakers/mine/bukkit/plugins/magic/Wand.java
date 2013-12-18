@@ -326,12 +326,14 @@ public class Wand implements CostReducer {
 	}
 	
 	protected void addToInventory(ItemStack itemStack) {
-		if (activePlayer == null || activePlayer.getPlayer() == null) return;
 		List<Inventory> allInventories = getAllInventories();
 		boolean added = false;
 		// Set the wand item
-		int selectedItem = activePlayer.getPlayer().getInventory().getHeldItemSlot();
-		hotbar.setItem(selectedItem, item);
+		Integer selectedItem = null;
+		if (activePlayer != null && activePlayer.getPlayer() != null) {
+			selectedItem = activePlayer.getPlayer().getInventory().getHeldItemSlot();
+			hotbar.setItem(selectedItem, item);
+		}
 		for (Inventory inventory : allInventories) {
 			HashMap<Integer, ItemStack> returned = inventory.addItem(itemStack);
 			if (returned.size() == 0) {
@@ -344,7 +346,9 @@ public class Wand implements CostReducer {
 			newInventory.addItem(itemStack);
 			inventories.add(newInventory);
 		}
-		hotbar.setItem(selectedItem, null);
+		if (selectedItem != null) {
+			hotbar.setItem(selectedItem, null);
+		}
 	}
 	
 	protected Inventory getInventory(Integer slot) {
@@ -569,6 +573,7 @@ public class Wand implements CostReducer {
 		updateActiveMaterial();
 		updateInventoryNames(true);
 		updateName();
+		updateLore();
 		saveState();
 		if (isInventoryOpen()) {
 			updateInventory();
@@ -616,6 +621,7 @@ public class Wand implements CostReducer {
 		updateActiveMaterial();
 		updateInventoryNames(true);
 		updateName();
+		updateLore();
 		saveState();
 		if (isInventoryOpen()) {
 			updateInventory();
@@ -670,6 +676,7 @@ public class Wand implements CostReducer {
 		}
 		updateInventoryNames(true);
 		updateName();
+		updateLore();
 		saveState();
 		if (isInventoryOpen()) {
 			updateInventory();
@@ -690,6 +697,7 @@ public class Wand implements CostReducer {
 		hasInventory = getSpells().size() + getMaterialNames().size() > 1;
 		updateInventoryNames(true);
 		updateName();
+		updateLore();
 		saveState();
 		if (isInventoryOpen()) {
 			updateInventory();
