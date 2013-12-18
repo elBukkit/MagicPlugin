@@ -229,7 +229,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		List<String> costKeys = node.getKeys();
 		for (String key : costKeys)
 		{
-			castingCosts.add(new CastingCost(key, node.getDouble("key", 1)));
+			castingCosts.add(new CastingCost(key, node.getDouble(key, 1)));
 		}
 		
 		return castingCosts;

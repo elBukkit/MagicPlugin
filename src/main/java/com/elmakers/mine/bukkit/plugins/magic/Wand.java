@@ -507,13 +507,13 @@ public class Wand implements CostReducer {
 		// Don't generate a UUID unless we need to, not sure how expensive that is.
 		id = InventoryUtils.getMeta(wandNode, "id");
 		id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
+		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
 		
 		String wandMaterials = InventoryUtils.getMeta(wandNode, "materials", "");
 		String wandSpells = InventoryUtils.getMeta(wandNode, "spells", "");
 		parseInventoryStrings(wandSpells, wandMaterials);
 		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
 		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
-		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
 		
 		costReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cost_reduction", floatFormat.format(costReduction)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
@@ -715,14 +715,12 @@ public class Wand implements CostReducer {
 		String name = wandName;
 		
 		// Add active spell to description
-		if (hasInventory) {		
-			if (spell != null) {
-				if (materialName != null) {
-					materialName = materialName.replace('_', ' ');
-					name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandName + ")";
-				} else {
-					name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandName + ")";
-				}
+		if (spell != null) {
+			if (materialName != null) {
+				materialName = materialName.replace('_', ' ');
+				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandName + ")";
+			} else {
+				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandName + ")";
 			}
 		}
 		int remaining = getRemainingUses();
@@ -803,7 +801,10 @@ public class Wand implements CostReducer {
 	}
 	
 	private String getActiveWandName() {
-		Spell spell = spells.getSpell(activeSpell);
+		Spell spell = null;
+		if (hasInventory) {
+			spell = spells.getSpell(activeSpell);
+		}
 		return getActiveWandName(spell);
 	}
 	
