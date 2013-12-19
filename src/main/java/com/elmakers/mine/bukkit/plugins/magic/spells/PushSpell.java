@@ -2,11 +2,9 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
 
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -157,15 +155,11 @@ public class PushSpell extends Spell
 	}
 	
 	protected void startEffect(EffectPlayer effect, int effectRange) {
-
-		// Shame Bukkit won't share these!	
-		final int SPLASH_BIT = 0x4000;
-	    final int TIER_SHIFT = 5;
-
-		effect.setPeriod(effectPeriod);
-		effect.setData((effectLevel << TIER_SHIFT) | PotionType.SPEED.ordinal() | SPLASH_BIT);
+		effect.setEffectName("spell");
+		effect.setParticleCount(3);
+		effect.setEffectSpeed(2);
 		effect.setSpeed(effectSpeed);
-		effect.setEffect(Effect.POTION_BREAK);
+		effect.setPeriod(effectPeriod);
 		effect.start();
 	}
 }

@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.FireworkUtils;
+import com.elmakers.mine.bukkit.utilities.EffectUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireworkSpell extends Spell
@@ -61,7 +61,7 @@ public class FireworkSpell extends Spell
 		for (int i = 0; i < flareCount; i++)
 		{
 			// TODO: Spread locations
-			FireworkUtils.spawnFireworkEffect(target.getLocation(), effect, power);
+			EffectUtils.spawnFireworkEffect(target.getLocation(), effect, power);
 			//spawnFirework(target.getLocation(), flareCount);
 		}
 

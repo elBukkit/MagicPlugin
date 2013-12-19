@@ -373,7 +373,7 @@ public class URLMap extends MapRenderer  {
 					    graphics.drawRenderedImage(croppedImage, transform);
 					    loading = false;
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						plugin.getLogger().warning("Failed to load url " + url + ": " + ex.getMessage());
 					}
 				}
 			});

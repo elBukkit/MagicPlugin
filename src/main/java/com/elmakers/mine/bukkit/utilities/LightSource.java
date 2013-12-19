@@ -1,13 +1,11 @@
 package com.elmakers.mine.bukkit.utilities;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -114,17 +112,7 @@ public class LightSource extends NMSUtils {
 			int t = l.clone().add(0, 1, 0).getBlock().getTypeId();
 			l.clone().add(0, 1, 0).getBlock().setTypeId(t == 1 ? 2 : 1);
 			
-			players = ((players != null && players.size() > 0) ? players : l.getWorld().getPlayers());
-				
-			for(Player p1 : players) {
-				if(p1.getLocation().distance(l) <= Bukkit.getServer().getViewDistance() * 16) {
-					Object playerHandle = getHandle(p1);
-					Field connectionField = playerHandle.getClass().getField("playerConnection");
-					Object connection = connectionField.get(playerHandle);
-					Method sendPacketMethod = connection.getClass().getMethod("sendPacket", class_Packet);
-					sendPacketMethod.invoke(connection, packet);
-				}
-			}
+			sendPacket(l, players, packet);
 				
 			l.clone().add(0, 1, 0).getBlock().setTypeId(t);
 		} catch (Throwable ex) {

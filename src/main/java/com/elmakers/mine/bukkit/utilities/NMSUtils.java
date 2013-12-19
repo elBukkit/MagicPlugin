@@ -2,8 +2,11 @@ package com.elmakers.mine.bukkit.utilities;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class NMSUtils {
@@ -23,6 +26,8 @@ public class NMSUtils {
 	protected static Class<Enum> class_EnumSkyBlock;
 	protected static Class<?> class_PacketPlayOutMapChunkBulk;
 	protected static Class<?> class_Packet56MapChunkBulk;
+	protected static Class<?> class_Packet63WorldParticles;
+	protected static Class<?> class_PacketPlayOutWorldParticles;
 
 	static 
 	{
@@ -51,22 +56,30 @@ public class NMSUtils {
 			ex.printStackTrace();
 		}
 
-		// This is version-dependent, so try both.
-		try { 	
-			class_PacketPlayOutMapChunkBulk = fixBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk");
-		} 
-		catch (Throwable ex) {
-		}
-		try { 	
-			class_Packet56MapChunkBulk = fixBukkitClass("net.minecraft.server.Packet56MapChunkBulk");
-		} 
-		catch (Throwable ex) {
-		}
-		
+		// These is version-dependent, so try both.
+		class_PacketPlayOutMapChunkBulk = getBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk");
+		class_Packet56MapChunkBulk = getBukkitClass("net.minecraft.server.Packet56MapChunkBulk");
 		if (class_PacketPlayOutMapChunkBulk == null && class_Packet56MapChunkBulk == null) {
 			// This should probably use a logger, but.. this is a pretty bad issue.
 			System.err.println("Could not bind to either PlayOutMapChunk packet version");
 		}
+		
+		class_PacketPlayOutWorldParticles = getBukkitClass("net.minecraft.server.PacketPlayOutWorldParticles");
+		class_Packet63WorldParticles = getBukkitClass("net.minecraft.server.Packet63WorldParticles");
+		if (class_PacketPlayOutWorldParticles == null && class_Packet63WorldParticles == null) {
+			// This should probably use a logger, but.. this is a pretty bad issue.
+			System.err.println("Could not bind to either PlayOutWorldParticles packet version");
+		}
+	}
+	
+	protected static Class getBukkitClass(String className) {
+		Class<?> ret = null;
+		try { 	
+			ret = fixBukkitClass(className);
+		} 
+		catch (Throwable ex) {
+		}
+		return ret;
 	}
 
 	protected static Class<?> fixBukkitClass(String className) {
@@ -134,4 +147,23 @@ public class NMSUtils {
 		}
 		return handle;
 	}
+	
+	protected static void sendPacket(Location source, Collection<Player> players, Object packet) throws Exception  {
+		players = ((players != null && players.size() > 0) ? players : source.getWorld().getPlayers());
+			
+		for(Player p1 : players) {
+			if(p1.getLocation().distanceSquared(source) <= Bukkit.getServer().getViewDistance() * Bukkit.getServer().getViewDistance()) {
+				sendPacket(p1, packet);
+			}
+		}
+	}
+
+	protected static void sendPacket(Player player, Object packet) throws Exception {
+		Object playerHandle = getHandle(player);
+		Field connectionField = playerHandle.getClass().getField("playerConnection");
+		Object connection = connectionField.get(playerHandle);
+		Method sendPacketMethod = connection.getClass().getMethod("sendPacket", class_Packet);
+		sendPacketMethod.invoke(connection, packet);
+	}
+	
 }
