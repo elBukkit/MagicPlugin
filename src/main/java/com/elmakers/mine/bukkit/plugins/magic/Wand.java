@@ -1335,6 +1335,7 @@ public class Wand implements CostReducer {
 			activePlayer.restoreInventory();
 			activePlayer.getPlayer().updateInventory();
 		}
+		saveState();
 	}
 	
 	public void activate(PlayerSpells playerSpells) {
