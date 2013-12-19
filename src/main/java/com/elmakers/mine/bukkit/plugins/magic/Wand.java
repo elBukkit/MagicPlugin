@@ -89,7 +89,8 @@ public class Wand implements CostReducer {
 	private static final String defaultWandName = "Wand";
 	
 	// Inventory functionality
-	Integer openInventoryPage;
+	int openInventoryPage = 0;
+	boolean inventoryIsOpen = false;
 	
 	private Wand() {
 		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
@@ -1031,9 +1032,6 @@ public class Wand implements CostReducer {
 	}
 	
 	protected Inventory getOpenInventory() {
-		if (openInventoryPage == null) {
-			openInventoryPage = 0;
-		}
 		while (openInventoryPage >= inventories.size()) {
 			inventories.add(InventoryUtils.createInventory(null, inventorySize, "Wand"));
 		}
@@ -1289,27 +1287,14 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void toggleInventory() {
 		if (!hasInventory) {
 			return;
 		}
 		if (!isInventoryOpen()) {
-			openInventoryPage = 0;
 			openInventory();
 		} else {
-			int newInventoryPage = openInventoryPage + 1;
-			if (newInventoryPage >= inventories.size()) {
-				closeInventory();
-			} else {
-				saveInventory();
-				openInventoryPage = newInventoryPage;
-				updateInventory();
-				if (activePlayer != null) {
-					activePlayer.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
-					activePlayer.getPlayer().updateInventory();
-				}
-			}
+			closeInventory();
 		}
 	}
 	
@@ -1320,10 +1305,9 @@ public class Wand implements CostReducer {
 		}
 		if (isInventoryOpen()) {
 			saveInventory();
-			int newInventoryPage = (openInventoryPage + 1) % inventories.size();
-			openInventoryPage = newInventoryPage;
+			openInventoryPage = (openInventoryPage + 1) % inventories.size();
 			updateInventory();
-			if (activePlayer != null) {
+			if (activePlayer != null && inventories.size() > 1) {
 				activePlayer.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
 				activePlayer.getPlayer().updateInventory();
 			}
@@ -1335,6 +1319,7 @@ public class Wand implements CostReducer {
 		if (activePlayer == null) return;
 		if (activePlayer.hasStoredInventory()) return;
 		if (activePlayer.storeInventory()) {
+			inventoryIsOpen = true;
 			activePlayer.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 			updateInventory();
 			activePlayer.getPlayer().updateInventory();
@@ -1345,7 +1330,7 @@ public class Wand implements CostReducer {
 	public void closeInventory() {
 		if (!isInventoryOpen()) return;
 		saveInventory();
-		openInventoryPage = null;
+		inventoryIsOpen = false;
 		if (activePlayer != null) {
 			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
 			activePlayer.restoreInventory();
@@ -1394,7 +1379,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean isInventoryOpen() {
-		return activePlayer != null && openInventoryPage != null;
+		return activePlayer != null && inventoryIsOpen;
 	}
 	
 	public void deactivate() {
