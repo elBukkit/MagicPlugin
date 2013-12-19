@@ -79,6 +79,8 @@ general:
     - bedrock
     - chest
     - ender_chest
+    - sign_post
+    - wall_sign
     building:
     - air
     - stone
