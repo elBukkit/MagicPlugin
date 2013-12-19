@@ -1092,7 +1092,7 @@ public class Spells implements Listener
 			PlayerSpells playerSpells = getPlayerSpells(player);
 			Wand wand = playerSpells.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
-				wand.toggleInventory();
+				wand.cycleInventory();
 				event.setCancelled(true);
 			}
 		}

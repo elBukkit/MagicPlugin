@@ -1298,7 +1298,6 @@ public class Wand implements CostReducer {
 			openInventoryPage = 0;
 			openInventory();
 		} else {
-			saveInventory();
 			int newInventoryPage = openInventoryPage + 1;
 			if (newInventoryPage >= inventories.size()) {
 				closeInventory();
@@ -1310,6 +1309,23 @@ public class Wand implements CostReducer {
 					activePlayer.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
 					activePlayer.getPlayer().updateInventory();
 				}
+			}
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void cycleInventory() {
+		if (!hasInventory) {
+			return;
+		}
+		if (isInventoryOpen()) {
+			saveInventory();
+			int newInventoryPage = (openInventoryPage + 1) % inventories.size();
+			openInventoryPage = newInventoryPage;
+			updateInventory();
+			if (activePlayer != null) {
+				activePlayer.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
+				activePlayer.getPlayer().updateInventory();
 			}
 		}
 	}

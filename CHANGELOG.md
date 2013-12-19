@@ -2,6 +2,10 @@
 
 ## 2.7.1
 
+ - Added raw particle effects
+ - Add effects to heal spell
+ - Right-clicking an item in the wand inventory will cycle pages, never close the inventory.
+
 ## 2.7.0
 
  - Fix wand cooldown reduction
