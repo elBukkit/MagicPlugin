@@ -394,6 +394,8 @@ wands:
             - absorb
             - alter
             - disarm
+            - undo
+            - toss
         materials:
             - water
             - lava
