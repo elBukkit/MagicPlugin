@@ -2,29 +2,34 @@
 
 NEW SPELLS:
 
+ - vortex type spells.. singularity, black hole, tornado - fun ideas there.
+ 
 OTHER STUFF:
 
+ - Light spell is not temporary anymore!
+ - Add sound effects (breaking on wand break... spell-specific)
+ - Add other visual effects (fireworks, particles, etc)
+ 
+ - Persist player spell data
+ - Add server commands to create or upgrade wands
+
+LONG-TERM OR INCOMPLETE:
+ 
  - Maybe data-drive blink's special list of things it will try to target through?
  - Allow adding materials with data e.g. /wand add material stained_glass_blue
    - support above in config files, too- ideally even for spell icons.
    - Related to above, refactor so spell materials don't matter, use nbt data.
  - managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?
- - Add sound effects (breaking on wand break... spell-specific)
- - Add other visual effects (fireworks, particles, etc)
- - Add server commands to create or upgrade wands
-
- - vortex type spells.. singularity, black hole, tornado - fun ideas there.
- - Persist player spell data
 
  - invincibility doesn't protect against magic or lightning?
  - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
- - can't recurse with colored clay? (hm, prolly 1.7 thing)
  - .. update docs, .. make new video
  - .. Factions support .. ?
 
 DONE:
 
+ - can't recurse with colored clay? (hm, prolly 1.7 thing)
  - Might need to support multiple wand inventory "pages"?
  - Camera: Downloads a player's skin and creates a map image
  - Use firework effects directly
