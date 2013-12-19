@@ -1440,6 +1440,7 @@ public class Wand implements CostReducer {
 			if (uses <= 0) {
 				Player player = activePlayer.getPlayer();
 				deactivate();
+				activePlayer.playSound(Sound.ITEM_BREAK, 1.0f, 0.8f);
 				PlayerInventory playerInventory = player.getInventory();
 				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
 				player.updateInventory();
