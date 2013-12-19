@@ -5,6 +5,7 @@
  - Added raw particle effects
  - Add effects to heal spell
  - Right-clicking an item in the wand inventory will cycle pages, never close the inventory.
+ - Add a "size" parameter to the recurse spell
 
 ## 2.7.0
 

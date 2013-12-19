@@ -65,6 +65,8 @@ public class FillSpell extends Spell
 
 		if (recurse)
 		{
+			int size = parameters.getInt("size", 8);
+			blockRecurse.setMaxRecursion(size);
 			this.targetBlock = null;
 
 			PlayerSpells playerSpells = spells.getPlayerSpells(player);

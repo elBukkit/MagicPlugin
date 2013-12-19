@@ -46,4 +46,12 @@ public class BlockRecurse
 			}
 		}
 	}
+
+	public int getMaxRecursion() {
+		return maxRecursion;
+	}
+
+	public void setMaxRecursion(int maxRecursion) {
+		this.maxRecursion = maxRecursion;
+	}
 }
