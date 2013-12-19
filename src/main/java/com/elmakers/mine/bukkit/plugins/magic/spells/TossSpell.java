@@ -37,7 +37,6 @@ public class TossSpell extends Spell
 		tossCount = (int)(playerSpells.getPowerMultiplier() * tossCount);	
 		float speed = 0.6f;
 		speed = (float)parameters.getDouble("speed", speed);
-		speed = (int)(playerSpells.getPowerMultiplier() * speed);	
 		
 		Vector direction = player.getLocation().getDirection();
 		direction.normalize().multiply(speed);
