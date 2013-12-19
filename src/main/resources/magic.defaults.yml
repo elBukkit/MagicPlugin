@@ -18,7 +18,7 @@ general:
     enable_enchanting: true
     enable_block_populator: true
     undo_depth: 256
-    max_power_multiplier: 5
+    max_power_multiplier: 2
     right_click_cycles: false
     populate_chests:
       base_probability:
