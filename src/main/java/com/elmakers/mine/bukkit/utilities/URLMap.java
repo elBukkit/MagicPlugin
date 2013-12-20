@@ -301,7 +301,9 @@ public class URLMap extends MapRenderer  {
 			plugin.getLogger().warning("Unable to create new map for url key " + key);
 			return null;
 		}
-		return get(mapView.getId(), url, x, y, width, height);
+		URLMap newMap = get(mapView.getId(), url, x, y, width, height);
+		save();
+		return newMap;
 	}
 	
 	@SuppressWarnings("deprecation")
