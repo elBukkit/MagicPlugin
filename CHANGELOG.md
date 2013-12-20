@@ -1,11 +1,14 @@
 # CHANGELOG
 
+## 2.7.2
+
 ## 2.7.1
 
  - Added raw particle effects
  - Add effects to heal spell
  - Right-clicking an item in the wand inventory will cycle pages, never close the inventory.
  - Add a "size" parameter to the recurse spell
+ - Fix saving new camera maps
 
 ## 2.7.0
 
