@@ -38,7 +38,15 @@ public class EffectUtils extends NMSUtils {
 		}
 	}
 	
-	public static void playEffect(Location location, String effectName, float xOffset, float yOffset, float zOffset, float effectSpeed, int particleCount) {
+	public static void playEffect(Location location, ParticleType particleType, float xOffset, float yOffset, float zOffset, float effectSpeed, int particleCount) {
+		playEffect(location, particleType, "", xOffset, yOffset, zOffset, effectSpeed, particleCount);
+	}
+	
+	public static void playEffect(Location location, ParticleType particleType, float effectSpeed, int particleCount) {
+		playEffect(location, particleType, "", 0, 0, 0, effectSpeed, particleCount);
+	}
+	
+	public static void playEffect(Location location, ParticleType particleType, String subtype, float xOffset, float yOffset, float zOffset, float effectSpeed, int particleCount) {
 		try {
 			Object packet = null;
 			if (class_PacketPlayOutWorldParticles != null) {
@@ -54,7 +62,7 @@ public class EffectUtils extends NMSUtils {
                 field.setAccessible(true);
                 String fieldName = field.getName();
                 if (fieldName.equals("a")) {
-                	field.set(packet, effectName);
+                	field.set(packet, particleType.getParticleName(subtype));
                 } else if (fieldName.equals("b")) {
                 	field.setFloat(packet, (float)location.getX());
                 } else if (fieldName.equals("c")) {

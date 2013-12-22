@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.EffectPlayer;
 import com.elmakers.mine.bukkit.utilities.EffectRing;
 import com.elmakers.mine.bukkit.utilities.EffectTrail;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PushSpell extends Spell
@@ -155,7 +156,7 @@ public class PushSpell extends Spell
 	}
 	
 	protected void startEffect(EffectPlayer effect, int effectRange) {
-		effect.setEffectName("spell");
+		effect.setParticleType(ParticleType.SPELL);
 		effect.setParticleCount(3);
 		effect.setEffectSpeed(2);
 		effect.setSpeed(effectSpeed);

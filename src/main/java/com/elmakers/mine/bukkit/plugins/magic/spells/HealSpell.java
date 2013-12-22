@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.EffectRing;
 import com.elmakers.mine.bukkit.utilities.EffectTrail;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class HealSpell extends Spell 
@@ -25,7 +26,7 @@ public class HealSpell extends Spell
 			Location effectLocation = player.getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
 			EffectTrail effect = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, 32);
-			effect.setEffectName("heart");
+			effect.setParticleType(ParticleType.HEART);
 			effect.setParticleCount(2);
 			effect.setEffectSpeed(2);
 			effect.setSpeed(3);
@@ -42,7 +43,7 @@ public class HealSpell extends Spell
 		}
 		Location effectLocation = player.getEyeLocation();
 		EffectRing effect = new EffectRing(spells.getPlugin(), effectLocation, 4, 8);
-		effect.setEffectName("heart");
+		effect.setParticleType(ParticleType.HEART);
 		effect.setParticleCount(1);
 		effect.setEffectSpeed(2);
 		effect.setInvert(true);

@@ -14,7 +14,8 @@ public abstract class EffectPlayer implements Runnable {
 	protected int data = 0;
 	protected FireworkEffect fireworkEffect = null;
 	protected int power = 0;
-	protected String effectName = null;
+	protected ParticleType particleType = null;
+	protected String particleSubType = "";
 	protected float xOffset = 0;
 	protected float yOffset = 0;
 	protected float zOffset = 0;
@@ -34,8 +35,12 @@ public abstract class EffectPlayer implements Runnable {
 		this.power = power;
 	}
 	
-	public void setEffectName(String effectName) {
-		this.effectName = effectName;
+	public void setParticleType(ParticleType particleType) {
+		this.particleType = particleType;
+	}
+	
+	public void setParticleSubType(String particleSubType) {
+		this.particleSubType = particleSubType;
 	}
 	
 	public void start() {
@@ -61,8 +66,8 @@ public abstract class EffectPlayer implements Runnable {
 		if (fireworkEffect != null) {
 			EffectUtils.spawnFireworkEffect(location, fireworkEffect, power);
 		}
-		if (effectName != null) {
-			EffectUtils.playEffect(location, effectName, xOffset, yOffset, zOffset, effectSpeed, particleCount);
+		if (particleType != null) {
+			EffectUtils.playEffect(location, particleType, particleSubType, xOffset, yOffset, zOffset, effectSpeed, particleCount);
 		}
 	}
 	
