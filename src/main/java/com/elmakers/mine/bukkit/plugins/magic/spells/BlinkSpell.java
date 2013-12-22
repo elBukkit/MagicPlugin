@@ -8,6 +8,8 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.utilities.EffectUtils;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BlinkSpell extends Spell
@@ -44,6 +46,7 @@ public class BlinkSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		Location playerLocation = player.getEyeLocation();
 		String elevateType = parameters.getString("type", "");
 		if (elevateType.equals("descend"))
 		{
@@ -52,6 +55,7 @@ public class BlinkSpell extends Spell
 				castMessage("Nowhere to go down");
 				return SpellResult.NO_TARGET;
 			}
+			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 			return SpellResult.SUCCESS;
 		}
 		else if (elevateType.equals("ascend"))
@@ -61,6 +65,7 @@ public class BlinkSpell extends Spell
 				castMessage("Nowhere to go up");
 				return SpellResult.NO_TARGET;
 			}
+			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 			return SpellResult.SUCCESS;
 		}
 
@@ -68,6 +73,7 @@ public class BlinkSpell extends Spell
 		{
 			if (descend())
 			{
+				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 				return SpellResult.SUCCESS;
 			}
 		}
@@ -76,6 +82,7 @@ public class BlinkSpell extends Spell
 		{
 			if (ascend())
 			{
+				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 				return SpellResult.SUCCESS;
 			}
 		}
@@ -171,16 +178,16 @@ public class BlinkSpell extends Spell
 		}
 		castMessage("Blink!");
 		Location targetLocation = new Location
-				(
-						world,
-						destination.getX() + 0.5,
-						destination.getY(),
-						destination.getZ() + 0.5,
-						player.getLocation().getYaw(),
-						player.getLocation().getPitch()
-						);
+		(
+			world,
+			destination.getX() + 0.5,
+			destination.getY(),
+			destination.getZ() + 0.5,
+			player.getLocation().getYaw(),
+			player.getLocation().getPitch()
+		);
 		player.teleport(targetLocation);
-
+		EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 		return SpellResult.SUCCESS;
 	}
 

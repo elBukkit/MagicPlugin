@@ -13,7 +13,7 @@ public enum ParticleType {
 	BUBBLE("bubble"),
 	SUSPENDED("suspended"),
 	DEPTH_SUSPENDED("depthsuspend"),
-	TOWN_AURA("town_aura"),
+	TOWN_AURA("townaura"),
 	HUGE_EXPLOSION("hugeexplosion"),
 	LARGE_EXPLOSION("largeexplode"),
 	FLAME("flame"),

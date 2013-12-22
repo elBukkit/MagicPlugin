@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +11,8 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.FillBatch;
 import com.elmakers.mine.bukkit.utilities.BlockRecurse;
+import com.elmakers.mine.bukkit.utilities.EffectUtils;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -144,6 +147,9 @@ public class FillSpell extends Spell
 		}
 		else
 		{
+			Location effectLocation = targetBlock.getLocation();
+			effectLocation.add(0.5f, 0.5f, 0.5f);
+			EffectUtils.playEffect(effectLocation, ParticleType.HAPPY_VILLAGER, 0.3f, 0.3f, 0.3f, 1, 16);
 			this.targetBlock = targetBlock;
 			if (!overrideMaterial)
 			{
