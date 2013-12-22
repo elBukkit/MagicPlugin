@@ -1,7 +1,10 @@
 # CHANGELOG
 
 ## 2.7.2
-
+ 
+ - Added effects to fill and blink.
+ - Fix boon spell's icon.
+ 
 ## 2.7.1
 
  - Added raw particle effects

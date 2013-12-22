@@ -22,7 +22,7 @@ spells:
             hunger: 600,5
     boon:
         name: Boon
-        icon: sunflower
+        icon: double_plant
         category: psychic
         description: Makes you temporarily superpowered
         class: PotionEffectSpell
