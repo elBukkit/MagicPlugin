@@ -1,15 +1,19 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.EffectTrail;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class DisintegrateSpell extends Spell
@@ -17,9 +21,27 @@ public class DisintegrateSpell extends Spell
 	private int             playerDamage = 1;
 	private int             entityDamage = 100;
 
+    private final static int 		maxEffectRange = 16;
+    private final static int 		effectSpeed = 1;
+    private final static int 		effectPeriod = 2;
+	private final static float 		particleSpeed = 1f;
+	private final static int 		particleCount = 6;
+
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
+		Location effectLocation = player.getEyeLocation();
+		Vector effectDirection = effectLocation.getDirection();
+		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		effectTrail.setParticleType(ParticleType.LAVA_DRIPPING);
+		effectTrail.setParticleCount(particleCount);
+		effectTrail.setEffectSpeed(particleSpeed);
+		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
+		effectTrail.setSpeed(effectSpeed);
+		effectTrail.setPeriod(effectPeriod);
+		effectTrail.start();
+		
 		Target target = getTarget();
 		if (target == null)
 		{

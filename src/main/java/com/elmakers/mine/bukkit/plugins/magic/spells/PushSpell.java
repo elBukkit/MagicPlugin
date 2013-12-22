@@ -18,18 +18,17 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PushSpell extends Spell
 {
-	int itemMagnitude = 1;
-	int entityMagnitude = 3;
-	int maxAllDistance = 20;
-	boolean allowAll = true;
+	private int itemMagnitude = 1;
+	private int entityMagnitude = 3;
+	private int maxAllDistance = 20;
+	private boolean allowAll = true;
 	
 	// Maybe make these configurable for custom effects?
-    final static int effectLevel = 3;
-    final static int effectSpeed = 2;
-    final static int effectPeriod = 2;
-    final static int ringEffectAmount = 8;
-    final static int maxEffectRange = 16;
-    final static int maxRingEffectRange = 6;
+    private final static int effectSpeed = 2;
+    private final static int effectPeriod = 2;
+    private final static int ringEffectAmount = 8;
+    private final static int maxEffectRange = 16;
+    private final static int maxRingEffectRange = 6;
 
 	public void forceAll(double mutliplier, boolean pull)
 	{
@@ -159,6 +158,7 @@ public class PushSpell extends Spell
 		effect.setParticleType(ParticleType.SPELL);
 		effect.setParticleCount(3);
 		effect.setEffectSpeed(2);
+		effect.setParticleOffset(0.2f, 0.2f, 0.2f);
 		effect.setSpeed(effectSpeed);
 		effect.setPeriod(effectPeriod);
 		effect.start();

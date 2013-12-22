@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -8,11 +9,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.EffectTrail;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.SimpleBlockAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -25,6 +29,12 @@ public class FrostSpell extends Spell
 	private int             entityDamage = 10;
 	private int				slowness = 1;
 	private int				slownessDuration = 200;
+	
+    private final static int 		maxEffectRange = 16;
+    private final static int 		effectSpeed = 1;
+    private final static float 		particleSpeed = 0.1f;
+    private final static int 		effectPeriod = 2;
+    private final static int 		particleCount = 8;
 
 	public class FrostAction extends SimpleBlockAction
 	{
@@ -64,6 +74,18 @@ public class FrostSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		int effectRange = Math.min(getMaxRange(), maxEffectRange);
+		Location effectLocation = player.getEyeLocation();
+		Vector effectDirection = effectLocation.getDirection();
+		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		effectTrail.setParticleType(ParticleType.SNOWBALL_POOF);
+		effectTrail.setParticleCount(particleCount);
+		effectTrail.setEffectSpeed(particleSpeed);
+		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
+		effectTrail.setSpeed(effectSpeed);
+		effectTrail.setPeriod(effectPeriod);
+		effectTrail.start();
+		
 		Target target = getTarget();
 
 		if (target == null)

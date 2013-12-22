@@ -9,17 +9,26 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.EffectTrail;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ShunkenHeadSpell extends Spell
 {
 	private int             playerDamage = 1;
 	private int             entityDamage = 100;
+
+	private final static int 		maxEffectRange = 16;
+	private final static int 		effectSpeed = 1;
+	private final static int 		effectPeriod = 2;
+    private final static float 		particleSpeed = 2;
+    private final static int 		particleCount = 6;
 	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -34,6 +43,18 @@ public class ShunkenHeadSpell extends Spell
 			dropHead(player.getLocation(), giveName, null, (byte)3);
 			return SpellResult.SUCCESS;
 		}
+		
+		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
+		Location effectLocation = player.getEyeLocation();
+		Vector effectDirection = effectLocation.getDirection();
+		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		effectTrail.setParticleType(ParticleType.INSTANT_SPELL);
+		effectTrail.setParticleCount(particleCount);
+		effectTrail.setEffectSpeed(particleSpeed);
+		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
+		effectTrail.setSpeed(effectSpeed);
+		effectTrail.setPeriod(effectPeriod);
+		effectTrail.start();
 		
 		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();

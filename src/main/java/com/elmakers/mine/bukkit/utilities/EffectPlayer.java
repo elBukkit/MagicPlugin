@@ -88,4 +88,10 @@ public abstract class EffectPlayer implements Runnable {
 	public void setParticleCount(int particleCount) {
 		this.particleCount = particleCount;
 	}
+	
+	public void setParticleOffset(float xOffset, float yOffset, float zOffset) {
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+		this.zOffset = zOffset;
+	}
 }

@@ -15,13 +15,33 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.plugins.magic.Wand;
+import com.elmakers.mine.bukkit.utilities.EffectTrail;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class DisarmSpell extends Spell 
 {
+	private final static int 		maxEffectRange = 16;
+	private final static int 		effectSpeed = 1;
+	private final static float 		particleSpeed = 2f;
+	private final static int 		effectPeriod = 2;
+	private final static int 		particleCount = 6;
+    
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
+		Location effectLocation = player.getEyeLocation();
+		Vector effectDirection = effectLocation.getDirection();
+		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		effectTrail.setParticleType(ParticleType.MOB_SPELL);
+		effectTrail.setParticleCount(particleCount);
+		effectTrail.setEffectSpeed(particleSpeed);
+		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
+		effectTrail.setSpeed(effectSpeed);
+		effectTrail.setPeriod(effectPeriod);
+		effectTrail.start();
+		
 		Target target = getTarget();
 		Entity targetEntity = target.getEntity();
 		if (targetEntity == null || !(targetEntity instanceof LivingEntity))

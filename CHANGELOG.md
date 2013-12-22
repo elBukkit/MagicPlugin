@@ -4,6 +4,7 @@
  
  - Added effects to fill and blink.
  - Fix boon spell's icon.
+ - Add effects to disintegrate, shrink, fire, frost, disarm.
  
 ## 2.7.1
 
