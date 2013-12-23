@@ -146,7 +146,7 @@ public class PushSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		itemMagnitude = properties.getInt("item_force", itemMagnitude);
 		entityMagnitude = properties.getInt("entity_force", entityMagnitude);

@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -160,7 +159,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		Spell newSpell = (Spell)newObject;
 		newSpell.initialize(spells);
-		newSpell.load(name, node);
+		newSpell.loadTemplate(name, node);
 
 		return newSpell;
 	}
@@ -197,29 +196,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		playerSpells.deactivateSpell(this);
 	}
-
-	protected void loadAndSave(ConfigurationNode node)
-	{
-		name = node.getString("name", name);
-		description = node.getString("description", description);
-		material = node.getMaterial("icon", material);
-		category = node.getString("category", category);
-		parameters = node.getNode("parameters", parameters);
-		ConfigurationNode properties = node.getNode("properties");
-		if (properties == null) properties = node.createChild("properties");
-		cooldown = properties.getInt("cooldown", cooldown);
-		duration = properties.getInt("duration", duration);
-		materialOverride = properties.getMaterial("material", materialOverride);
-
-		this.onLoad(properties);
-
-		if (usesTargeting)
-		{            
-			range = properties.getInteger("range", range);
-			allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
-			targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
-		}
-	}
 	
 	protected List<CastingCost> parseCosts(ConfigurationNode node) {
 		if (node == null) {
@@ -235,11 +211,30 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return castingCosts;
 	}
 
-	protected void load(String key, ConfigurationNode node)
+	protected void loadTemplate(String key, ConfigurationNode node)
 	{
 		this.key = key;
 		this.name = key;
-		loadAndSave(node);
+		
+		name = node.getString("name", name);
+		description = node.getString("description", description);
+		material = node.getMaterial("icon", material);
+		category = node.getString("category", category);
+		parameters = node.getNode("parameters", parameters);
+		ConfigurationNode properties = node.getNode("properties");
+		if (properties == null) properties = node.createChild("properties");
+		cooldown = properties.getInt("cooldown", cooldown);
+		duration = properties.getInt("duration", duration);
+		materialOverride = properties.getMaterial("material", materialOverride);
+
+		this.onLoadTemplate(properties);
+
+		if (usesTargeting)
+		{            
+			range = properties.getInteger("range", range);
+			allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
+			targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
+		}
 
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
@@ -248,38 +243,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		for (Material defMat : defaultTargetThrough) {
 			targetThrough(defMat);
 		}
-	}
-
-	public void save(ConfigurationNode node)
-	{
-		String className = this.getClass().getName();
-
-		String builtinClassPath = getBuiltinClasspath();
-
-		if (className.contains(builtinClassPath))
-		{
-			className = className.substring(className.lastIndexOf('.') + 1);
-		}
-		node.setProperty("class", className);
-
-		loadAndSave(node);
-
-		if (costs != null)
-		{
-			List< Map<String, Object> > costList = new ArrayList< Map<String, Object> >();
-			for (CastingCost cost : costs)
-			{
-				costList.add(cost.export());
-			}
-
-			node.setProperty("costs", costList);
-		}
-		this.onSave(node);
-	}
-
-	public void onSave(ConfigurationNode node)
-	{
-
 	}
 
 	public void setPlayer(Player player)
@@ -421,7 +384,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * 
 	 * @param node The configuration node to load data from.
 	 */
-	public void onLoad(ConfigurationNode node)
+	public void onLoadTemplate(ConfigurationNode node)
 	{
 
 	}
@@ -1270,5 +1233,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public PlayerSpells getPlayerSpells() {
 		return playerSpells;
+	}
+	
+	public void load(ConfigurationNode node) {
+		
+	}
+	
+	public void save(ConfigurationNode node) {
+		
 	}
 }

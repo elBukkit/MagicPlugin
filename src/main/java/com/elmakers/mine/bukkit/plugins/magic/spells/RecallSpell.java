@@ -131,7 +131,7 @@ public class RecallSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		autoDropOnDeath = properties.getBoolean("auto_resurrect", autoDropOnDeath);
 		autoDropIsInvisible = properties.getBoolean("auto_resurrect_invisible", autoDropIsInvisible);
@@ -151,5 +151,4 @@ public class RecallSpell extends Spell
 			}
 		}
 	}
-
 }

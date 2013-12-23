@@ -79,7 +79,7 @@ public class TreeSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		requireSapling = properties.getBoolean("require_sapling", requireSapling);
 	}

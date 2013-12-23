@@ -62,7 +62,7 @@ public class CushionSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		cushionWidth = properties.getInteger("width", cushionWidth);
 		cushionHeight = properties.getInteger("height", cushionHeight);

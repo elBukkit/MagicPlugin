@@ -174,7 +174,7 @@ public class FillSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		defaultMaxDimension = properties.getInteger("max_dimension", defaultMaxDimension);
 		defaultMaxVolume = properties.getInteger("max_volume", defaultMaxVolume);

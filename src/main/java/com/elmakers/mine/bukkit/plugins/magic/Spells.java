@@ -152,7 +152,7 @@ public class Spells implements Listener
 		spellNode.setProperty("category", category);
 
 		template.initialize(this);
-		template.load(name, spellNode);
+		template.loadTemplate(name, spellNode);
 
 		addSpell(template);
 	}

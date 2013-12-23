@@ -141,7 +141,7 @@ public class FireSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		defaultRadius = properties.getInteger("radius", defaultRadius);
 		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);

@@ -192,7 +192,7 @@ public class AlterSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties) 
+	public void onLoadTemplate(ConfigurationNode properties) 
 	{
 		recurseDistance = properties.getInteger("depth", recurseDistance);
 

@@ -5,10 +5,6 @@ NEW SPELLS:
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  
 OTHER STUFF:
-
- - Light spell is not temporary anymore!
- - Add sound effects (breaking on wand break... spell-specific)
- - Add other visual effects (fireworks, particles, etc)
  
  - Persist player spell data
  - Add server commands to create or upgrade wands
@@ -29,6 +25,9 @@ LONG-TERM OR INCOMPLETE:
 
 DONE:
 
+ - Light spell is not temporary anymore! (meh...)
+ - Add other visual effects (fireworks, particles, etc)
+ - Add sound effects (breaking on wand break... spell-specific)
  - can't recurse with colored clay? (hm, prolly 1.7 thing)
  - Might need to support multiple wand inventory "pages"?
  - Camera: Downloads a player's skin and creates a map image

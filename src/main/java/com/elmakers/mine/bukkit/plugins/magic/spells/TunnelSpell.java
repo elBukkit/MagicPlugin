@@ -136,7 +136,7 @@ public class TunnelSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		destructibleMaterials = properties.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
 		defaultDepth = properties.getInteger("depth", defaultDepth);

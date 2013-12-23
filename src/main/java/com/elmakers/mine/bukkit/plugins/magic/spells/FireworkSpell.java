@@ -107,7 +107,7 @@ public class FireworkSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode parameters)
+	public void onLoadTemplate(ConfigurationNode parameters)
 	{
 	}
 }

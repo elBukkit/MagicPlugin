@@ -184,7 +184,7 @@ public class ShunkenHeadSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)
+	public void onLoadTemplate(ConfigurationNode properties)
 	{
 		playerDamage = properties.getInteger("player_damage", playerDamage);
 		entityDamage = properties.getInteger("entity_damage", entityDamage);

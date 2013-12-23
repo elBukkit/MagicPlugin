@@ -192,7 +192,7 @@ public class BlinkSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		autoAscend = properties.getBoolean("allow_ascend", autoAscend);
 		autoDescend = properties.getBoolean("allow_descend", autoDescend);

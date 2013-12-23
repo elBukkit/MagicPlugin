@@ -107,7 +107,7 @@ public class MineSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		mineableMaterials.addAll(csv.parseMaterials(DEFAULT_MINEABLE));
 		minedMaterials.addAll(csv.parseMaterials(DEFAULT_MINED));

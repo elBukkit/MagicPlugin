@@ -120,7 +120,7 @@ public class TorchSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		allowNight = properties.getBoolean("allow_night", allowNight);
 		allowDay = properties.getBoolean("allow_day", allowDay);

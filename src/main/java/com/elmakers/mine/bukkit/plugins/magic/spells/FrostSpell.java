@@ -152,7 +152,7 @@ public class FrostSpell extends Spell
 	}	
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		noTargetThrough(Material.WATER);
 		noTargetThrough(Material.STATIONARY_WATER);

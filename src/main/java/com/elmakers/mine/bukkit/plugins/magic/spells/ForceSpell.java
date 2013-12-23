@@ -95,7 +95,7 @@ public class ForceSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		magnitude = properties.getInt("entity_force", magnitude);
 		effectColor = Integer.parseInt(properties.getString("effect_color", "FF0000"), 16);

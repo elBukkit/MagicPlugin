@@ -24,7 +24,7 @@ public class FireballSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode node)
+	public void onLoadTemplate(ConfigurationNode node)
 	{
 		disableTargeting();
 	}

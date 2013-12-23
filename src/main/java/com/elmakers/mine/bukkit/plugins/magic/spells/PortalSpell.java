@@ -261,7 +261,7 @@ public class PortalSpell extends Spell
 		return SpellResult.SUCCESS;
 	}
 
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		if (destructible == null)
 		{

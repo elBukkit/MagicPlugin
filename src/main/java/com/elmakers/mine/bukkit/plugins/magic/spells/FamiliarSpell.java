@@ -244,7 +244,7 @@ public class FamiliarSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		defaultFamiliars = csv.parseStrings(DEFAULT_FAMILIARS);
 		defaultMonsters = csv.parseStrings(DEFAULT_MONSTERS);

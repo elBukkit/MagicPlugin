@@ -103,7 +103,7 @@ public class OcelotSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode node)
+	public void onLoadTemplate(ConfigurationNode node)
 	{
 		maxOcelots = node.getInt("max_ocelots", maxOcelots);
 	}

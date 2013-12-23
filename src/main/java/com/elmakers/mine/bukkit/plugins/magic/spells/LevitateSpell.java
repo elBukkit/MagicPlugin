@@ -71,7 +71,7 @@ public class LevitateSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode node)
+	public void onLoadTemplate(ConfigurationNode node)
 	{
 		disableTargeting();
 	}

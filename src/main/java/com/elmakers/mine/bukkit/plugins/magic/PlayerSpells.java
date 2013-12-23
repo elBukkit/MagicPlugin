@@ -25,7 +25,7 @@ public class PlayerSpells implements CostReducer
 {
 	protected Player player;
 	protected Spells master;
-	protected HashMap<String, Spell> spells = new HashMap<String, Spell>();
+	protected HashMap<String, Spell> 			spells 						  = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
 	private Wand								activeWand					   = null;
 	private final List<Spell>                   movementListeners              = new ArrayList<Spell>();
@@ -456,9 +456,19 @@ public class PlayerSpells implements CostReducer
 	
 	protected void load(ConfigurationNode configNode)
 	{
+		List<String> keys = configNode.getKeys();
+		for (String key : keys) {
+			Spell spell = getSpell(key);
+			if (spell != null) {
+				spell.load(configNode.getNode(key));
+			}
+		}
 	}
 	
 	protected void save(ConfigurationNode configNode)
 	{
+		for (Spell spell : spells.values()) {
+			spell.save(configNode.createChild(spell.getKey()));
+		}
 	}
 }

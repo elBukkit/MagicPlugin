@@ -106,7 +106,7 @@ public class WolfSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode node)
+	public void onLoadTemplate(ConfigurationNode node)
 	{
 		maxWolves = node.getInt("max_wolves", maxWolves);
 	}

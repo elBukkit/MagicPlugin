@@ -121,7 +121,7 @@ public class GillsSpell extends Spell
 	}
 
 	@Override
-	public void onLoad(ConfigurationNode properties)  
+	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		disableTargeting();
 		gillDuration = properties.getInteger("duration", gillDuration);
