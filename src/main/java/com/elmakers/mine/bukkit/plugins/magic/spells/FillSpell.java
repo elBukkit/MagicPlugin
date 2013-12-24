@@ -115,6 +115,11 @@ public class FillSpell extends Spell
 
 		if (this.targetBlock != null)
 		{
+			// This is a hacky work-around for frequent double-interact events :\
+			if (this.targetBlock.getLocation().equals(targetBlock.getLocation())) {
+				return SpellResult.NO_TARGET;
+			}
+			
 			if (!overrideMaterial)
 			{
 				material = this.targetBlock.getType();
