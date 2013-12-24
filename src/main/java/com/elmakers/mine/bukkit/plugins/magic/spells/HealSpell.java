@@ -39,7 +39,7 @@ public class HealSpell extends Spell
 				p.setExhaustion(0);
 				p.setFoodLevel(20);
 			}
-			return SpellResult.SUCCESS;    
+			return SpellResult.SUCCESS;
 		}
 		Location effectLocation = player.getEyeLocation();
 		EffectRing effect = new EffectRing(spells.getPlugin(), effectLocation, 4, 8);

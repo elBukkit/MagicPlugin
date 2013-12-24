@@ -87,6 +87,13 @@ public class BlockData
 
 		block = copy.block;
 	}
+	
+	public BlockData(Location location, Material material, byte data)
+	{
+		this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+		this.material = material;
+		this.materialData = data;
+	}
 
 	protected boolean checkBlock()
 	{

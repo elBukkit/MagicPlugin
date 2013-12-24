@@ -442,7 +442,7 @@ public class Spells implements Listener
 
 	public void load()
 	{
-		File dataFolder = plugin.getDataFolder();
+		final File dataFolder = plugin.getDataFolder();
 		dataFolder.mkdirs();
 
 		File propertiesFile = new File(dataFolder, propertiesFileName);
@@ -467,16 +467,20 @@ public class Spells implements Listener
 			load(spellsFile);
 		}
 
-		File playersFile = new File(dataFolder, playersFileName);
-		if (playersFile.exists())
-		{
-			Configuration playerConfiguration = new Configuration(playersFile);
-			playerConfiguration.load();
-			List<String> playerNames = playerConfiguration.getKeys();
-			for (String playerName : playerNames) {
-				getPlayerSpells(playerName).load(playerConfiguration.getNode(playerName));
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				File playersFile = new File(dataFolder, playersFileName);
+				if (playersFile.exists())
+				{
+					Configuration playerConfiguration = new Configuration(playersFile);
+					playerConfiguration.load();
+					List<String> playerNames = playerConfiguration.getKeys();
+					for (String playerName : playerNames) {
+						getPlayerSpells(playerName).load(playerConfiguration.getNode(playerName));
+					}
+				}
 			}
-		}
+		}, 5);
 	
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {

@@ -190,6 +190,9 @@ public class PlayerSpells implements CostReducer
 	public void setPlayer(Player player)
 	{
 		this.player = player;
+		for (Spell spell : spells.values()) {
+			spell.setPlayer(player);
+		}
 	}
 
 	public void unregisterEvent(SpellEventType type, Spell spell)
@@ -337,7 +340,9 @@ public class PlayerSpells implements CostReducer
 			spells.put(spell.getKey(), playerSpell);
 		}
 
-		playerSpell.setPlayer(player);
+		if (player != null) {
+			playerSpell.setPlayer(player);
+		}
 
 		return playerSpell;
 	}

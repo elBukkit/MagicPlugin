@@ -247,8 +247,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public void setPlayer(Player player)
 	{
+		if (player == this.player) return;
+		
 		this.player = player;
-		playerSpells = spells.getPlayerSpells(player);
+		if (player == null) {
+			playerSpells = null;
+		} else {
+			playerSpells = spells.getPlayerSpells(player);
+		}
 	}
 
 	public final String getKey()
@@ -361,7 +367,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public boolean hasSpellPermission(Player player)
 	{
-		if (player == null) return false;
+		if (player == null) return true;
 
 		return spells.hasPermission(player, getPermissionNode(), true);
 	}
@@ -1236,10 +1242,30 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	}
 	
 	public void load(ConfigurationNode node) {
-		
+		// TODO: Load use count, last use time
+		onLoad(node);
 	}
 	
 	public void save(ConfigurationNode node) {
+		// TODO: Save use count, last use time
+		onSave(node);
+	}
+
+	/**
+	 * Called on player data load.
+	 */
+	public void onLoad(ConfigurationNode node)
+	{
 		
+	}
+
+	/**
+	 * Called on player data save.
+	 * 
+	 * @param node The configuration node to load data from.
+	 */
+	public void onSave(ConfigurationNode node)
+	{
+
 	}
 }
