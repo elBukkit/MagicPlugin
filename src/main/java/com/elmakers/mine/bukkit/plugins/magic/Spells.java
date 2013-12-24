@@ -808,6 +808,13 @@ public class Spells implements Listener
 		PlayerSpells playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		
+		// Another hacky double-check for wands getting accidentally deactivated?
+		if (wand == null && playerSpells.hasStoredInventory())
+		{
+			playerSpells.restoreInventory();
+			return;
+		}
+		
 		if (wand == null || !hasWandPermission(player))
 		{
 			return;
