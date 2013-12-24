@@ -9,6 +9,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.utilities.EffectUtils;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class RecallSpell extends Spell
@@ -16,10 +18,8 @@ public class RecallSpell extends Spell
 	public Location location;
 	public boolean isActive;
 	private boolean autoDropOnDeath = true;
-	private boolean autoDropIsInvisible = false;
 	private boolean autoSpawn = true;
 	private int disableDistance = 5;
-	Material markerMaterial = Material.REDSTONE_TORCH_ON;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -75,18 +75,7 @@ public class RecallSpell extends Spell
 	protected boolean removeMarker()
 	{
 		if (!isActive || location == null) return false;
-
 		isActive = false;
-
-		int x = (int)Math.floor(location.getX());
-		int y = (int)Math.floor(location.getY());
-		int z = (int)Math.floor(location.getZ());
-		Block targetBlock = player.getWorld().getBlockAt(x, y, z);
-		if (targetBlock != null && targetBlock.getType() == markerMaterial)
-		{
-			targetBlock.setType(Material.AIR);
-		}		
-
 		return true;
 	}
 
@@ -123,8 +112,8 @@ public class RecallSpell extends Spell
 		location.setZ(targetBlock.getZ());
 
 		player.setCompassTarget(location);
-
-		targetBlock.setType(markerMaterial);
+		EffectUtils.playEffect(targetBlock.getLocation(), ParticleType.CLOUD, 1, 1);
+		
 		isActive = true;
 
 		return SpellResult.SUCCESS;
@@ -134,9 +123,7 @@ public class RecallSpell extends Spell
 	public void onLoadTemplate(ConfigurationNode properties)  
 	{
 		autoDropOnDeath = properties.getBoolean("auto_resurrect", autoDropOnDeath);
-		autoDropIsInvisible = properties.getBoolean("auto_resurrect_invisible", autoDropIsInvisible);
 		autoSpawn = properties.getBoolean("allow_spawn", autoSpawn);
-		markerMaterial = properties.getMaterial("recall_marker", markerMaterial);
 	}
 
 	@Override

@@ -6,6 +6,7 @@
  - Fix boon spell's icon.
  - Add effects to disintegrate, shrink, fire, frost, disarm.
  - Put a hack in to work-around annoying double-interact event breaking fill.
+ - Add effects to recall, remove item.
  
 ## 2.7.1
 
