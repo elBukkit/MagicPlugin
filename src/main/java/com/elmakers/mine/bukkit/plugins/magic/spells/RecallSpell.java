@@ -151,4 +151,18 @@ public class RecallSpell extends Spell
 			}
 		}
 	}
+
+	@Override
+	public void onLoad(ConfigurationNode node)
+	{
+		isActive = node.getBoolean("active", false);
+		location = node.getLocation("location");
+	}
+
+	@Override
+	public void onSave(ConfigurationNode node)
+	{
+		node.setProperty("active", isActive);
+		node.setProperty("location", location);
+	}
 }
