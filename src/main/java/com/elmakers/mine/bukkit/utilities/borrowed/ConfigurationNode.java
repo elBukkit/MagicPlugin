@@ -9,8 +9,13 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 
+import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 
 /**
@@ -178,6 +183,10 @@ public class ConfigurationNode {
 
 		return null;
 	}
+	
+	protected String fromLocation(Location location) {
+		return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorld().getName();
+	}
 
 	/**
 	 * Set the property at a location. This will override existing
@@ -186,13 +195,30 @@ public class ConfigurationNode {
 	 * @param path
 	 * @param value
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public void setProperty(String path, Object value) {
 		// Going to convert materials to strings, to make this easier to hand edit.
 		if (value instanceof Material)
 		{
 			Material matValue = (Material)value;
 			value = matValue.name().toLowerCase();
+		}
+		
+		// Convert locations
+		if (value instanceof Location)
+		{
+			value = fromLocation((Location)value);
+		}
+
+		// Convert blocks
+		if (value instanceof BlockData)
+		{
+			value = ((BlockData)value).getBlock();
+		}
+		if (value instanceof Block)
+		{
+			Block blockValue = (Block)value;
+			value = fromLocation(blockValue.getLocation()) + "|" + blockValue.getTypeId() + ":" + blockValue.getData();
 		}
 
 		if (!path.contains(".")) {
@@ -247,6 +273,62 @@ public class ConfigurationNode {
 		}
 
 		return toMaterial(o);
+	}
+	
+	public Location getLocation(String path) {
+		Object o = getProperty(path);
+		if (o == null) {
+			return null;
+		}
+
+		return toLocation(o);
+	}
+	
+	protected Location toLocation(Object o) {
+		if (o instanceof Location) {
+			return (Location)o;
+		}
+		if (o instanceof String) {
+			try {
+				String[] pieces = ((String)o).split(",");
+				double x = Double.parseDouble(pieces[0]);
+				double y = Double.parseDouble(pieces[1]);
+				double z = Double.parseDouble(pieces[2]);
+				World world = null;
+				if (pieces.length > 3) {
+					world = Bukkit.getWorld(pieces[3]);
+				} else {
+					world = Bukkit.getWorlds().get(0);
+				}
+				return new Location(world, x, y, z);
+			} catch(Exception ex) {
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected BlockData toBlockData(Object o) {
+		if (o instanceof BlockData) {
+			return (BlockData)o;
+		}
+		if (o instanceof Block) {
+			return new BlockData((Block)o);
+		}
+		if (o instanceof String) {
+			try {
+				String[] pieces = ((String)o).split("|");
+				Location location = toLocation(pieces[0]);
+				String[] materialPieces = pieces[1].split(":");
+				int materialId = Integer.parseInt(materialPieces[0]);
+				byte dataId = Byte.parseByte(materialPieces[1]);
+				return new BlockData(location, Material.getMaterial(materialId), dataId);
+			} catch(Exception ex) {
+				return null;
+			}
+		}
+		return null;
 	}
 
 	@SuppressWarnings("deprecation")
