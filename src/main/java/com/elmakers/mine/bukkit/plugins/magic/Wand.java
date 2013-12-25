@@ -1397,6 +1397,10 @@ public class Wand implements CostReducer {
 		if (isInventoryOpen()) {
 			closeInventory();
 		}
+		
+		// Extra just-in-case
+		activePlayer.restoreInventory();
+		
 		if (xpRegeneration > 0) {
 			activePlayer.player.setExp(storedXpProgress);
 			activePlayer.player.setLevel(storedXpLevel);
