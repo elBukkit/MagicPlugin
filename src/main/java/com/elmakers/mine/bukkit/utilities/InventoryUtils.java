@@ -38,11 +38,11 @@ public class InventoryUtils extends NMSUtils
 		if (stack == null) return null;
 		
         try {
-                Object craft = getNMSCopy(stack);
-                Method mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", craft.getClass());
-                stack = (ItemStack)mirrorMethod.invoke(null, craft);
+            Object craft = getNMSCopy(stack);
+            Method mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", craft.getClass());
+            stack = (ItemStack)mirrorMethod.invoke(null, craft);
         } catch (Throwable ex) {
-                ex.printStackTrace();
+            stack = null;
         }
 
         return stack;
@@ -157,7 +157,7 @@ public class InventoryUtils extends NMSUtils
 			Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);		
 			setMethod.invoke(tagObject, "ench", enchList);
 		} catch (Throwable ex) {
-			ex.printStackTrace();
+			
 		}
     }
 
