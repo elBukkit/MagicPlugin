@@ -479,17 +479,6 @@ spells:
             spread: 30
         costs:
             xp: 20
-    sign:
-        name: Sign
-        icon: sign_post
-        category: master
-        description: Give yourself some signs
-        class: SignSpell
-        properties:
-            allow_max_range: false
-            range: 200
-            cooldown: 0
-        parameters: {}
     lightning:
         name: Lightning
         icon: blaze_powder
