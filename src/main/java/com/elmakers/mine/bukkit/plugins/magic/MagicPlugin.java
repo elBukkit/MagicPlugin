@@ -347,6 +347,19 @@ public class MagicPlugin extends JavaPlugin
 			player.sendMessage("No wand defined with key " + wandName);
 			return true;
 		}
+		
+		// Check for special "fill wands" configuration
+		if (spells.fillWands() && parameters.length == 0) {
+			List<Spell> allSpells = spells.getAllSpells();
+
+			for (Spell spell : allSpells)
+			{
+				if (spell.hasSpellPermission(player))
+				{
+					wand.addSpell(spell.getKey());
+				}
+			}
+		}
 	
 		// Place directly in hand if possible
 		PlayerInventory inventory = player.getInventory();

@@ -320,6 +320,11 @@ public class Spells implements Listener
 		return soundsEnabled;
 	}
 
+	public boolean fillWands()
+	{
+		return fillWands;
+	}
+
 	public boolean isSolid(Material mat)
 	{
 		return (mat != Material.AIR && mat != Material.WATER && mat != Material.STATIONARY_WATER && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
@@ -571,6 +576,7 @@ public class Spells implements Listener
 		messageThrottle = generalNode.getInt("message_throttle", 0);
 		maxBlockUpdates = generalNode.getInt("max_block_updates", 100);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
+		fillWands = generalNode.getBoolean("fill_wands", fillWands);
 		maxPowerMultiplier = (float)generalNode.getDouble("max_power_multiplier", maxPowerMultiplier);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
@@ -1288,6 +1294,7 @@ public class Spells implements Listener
 	 private boolean                             silent                         = false;
 	 private boolean                             quiet                          = true;
 	 private boolean                             soundsEnabled                  = true;
+	 private boolean                             fillWands                      = false;
 	 private int								 messageThrottle				= 0;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
