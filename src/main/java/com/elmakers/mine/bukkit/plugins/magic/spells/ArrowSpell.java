@@ -36,7 +36,8 @@ public class ArrowSpell extends Spell
 		Vector direction = player.getLocation().getDirection();
 		for (int ai = 0; ai < arrowCount; ai++)
 		{
-			Arrow arrow = null;Location location = player.getLocation();
+			Arrow arrow = null;
+			Location location = player.getLocation();
 			location.setX(location.getX() + direction.getX() * (1 + Math.random() * arrowCount));
 			location.setY(location.getY() + 1.5f);
 			location.setZ(location.getZ() + direction.getZ() * (1 + Math.random() * arrowCount));
