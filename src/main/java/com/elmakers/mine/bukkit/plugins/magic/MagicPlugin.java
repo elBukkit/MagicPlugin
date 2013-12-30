@@ -252,7 +252,7 @@ public class MagicPlugin extends JavaPlugin
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.addMaterial(material, data);
+			wand.addMaterial(material, data, true);
 			return true;
 		}
 		Spell spell = playerSpells.getSpell(spellName);
@@ -262,7 +262,7 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		wand.addSpell(spellName);
+		wand.addSpell(spellName, true);
 
 		return true;
 	}

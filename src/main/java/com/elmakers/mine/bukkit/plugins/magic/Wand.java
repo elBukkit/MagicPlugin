@@ -586,7 +586,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean addMaterial(Material material, byte data) {
-		return addMaterial(material, data, true);
+		return addMaterial(material, data, false);
 	}
 	
 	public boolean hasMaterial(int materialId, byte data) {
@@ -712,7 +712,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean addSpell(String spellName) {
-		return addSpell(spellName, true);
+		return addSpell(spellName, false);
 	}
 
 	private String getActiveWandName(Spell spell, String materialName) {
