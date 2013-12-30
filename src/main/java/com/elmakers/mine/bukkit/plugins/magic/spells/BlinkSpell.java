@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -56,6 +57,7 @@ public class BlinkSpell extends Spell
 				return SpellResult.NO_TARGET;
 			}
 			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 			return SpellResult.SUCCESS;
 		}
 		else if (elevateType.equals("ascend"))
@@ -66,6 +68,7 @@ public class BlinkSpell extends Spell
 				return SpellResult.NO_TARGET;
 			}
 			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 			return SpellResult.SUCCESS;
 		}
 
@@ -74,6 +77,7 @@ public class BlinkSpell extends Spell
 			if (descend())
 			{
 				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+				playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 				return SpellResult.SUCCESS;
 			}
 		}
@@ -83,6 +87,7 @@ public class BlinkSpell extends Spell
 			if (ascend())
 			{
 				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+				playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 				return SpellResult.SUCCESS;
 			}
 		}
@@ -188,6 +193,9 @@ public class BlinkSpell extends Spell
 		);
 		player.teleport(targetLocation);
 		EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+		playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+		EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);
+		playerLocation.getWorld().playSound(targetLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 		return SpellResult.SUCCESS;
 	}
 
