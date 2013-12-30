@@ -87,7 +87,6 @@ public class Wand implements CostReducer {
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
 	private static final String propertiesFileName = "wands.yml";
 	private static final String propertiesFileNameDefaults = "wands.defaults.yml";
-	private static String defaultWandName = "Wand";
 	
 	// Inventory functionality
 	int openInventoryPage = 0;
@@ -109,7 +108,7 @@ public class Wand implements CostReducer {
 
 		InventoryUtils.addGlow(item);
 		id = UUID.randomUUID().toString();
-		wandName = defaultWandName;
+		wandName = Messages.get("wand.default_name");
 		updateName();
 		saveState();
 	}
@@ -175,6 +174,10 @@ public class Wand implements CostReducer {
 
 	public float getCostReduction() {
 		return costReduction;
+	}
+	
+	public boolean usesMana() {
+		return xpMax > 0 && xpRegeneration > 0;
 	}
 
 	public float getCooldownReduction() {
@@ -445,12 +448,12 @@ public class Wand implements CostReducer {
 		if (typeId == EraseMaterial.getId()) {
 			typeId = EraseMaterial.getId();
 			List<String> lore = new ArrayList<String>();
-			lore.add("Fills with Air");
+			lore.add(Messages.get("wand.erase_material_description"));
 			meta.setLore(lore);
 		} else if (typeId == CopyMaterial.getId()) {
 			typeId = EraseMaterial.getId();
 			List<String> lore = new ArrayList<String>();
-			lore.add("Fills with the target material");
+			lore.add(Messages.get("wand.copy_material_description"));
 			meta.setLore(lore);
 		} else {
 			List<String> lore = new ArrayList<String>();
@@ -458,7 +461,7 @@ public class Wand implements CostReducer {
 			if (material != null) {
 				lore.add(ChatColor.GRAY + getMaterialName(material, (byte)dataId));
 			}
-			lore.add(ChatColor.LIGHT_PURPLE + "Magic building material");
+			lore.add(ChatColor.LIGHT_PURPLE + Messages.get("wand.building_material_description"));
 			meta.setLore(lore);
 		}
 		meta.setDisplayName(getActiveWandName(Material.getMaterial(typeId)));
@@ -727,7 +730,7 @@ public class Wand implements CostReducer {
 		}
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
-			name = name + " : " + ChatColor.RED + "" + remaining + " Uses ";
+			name = name + " : " + ChatColor.RED + Messages.get("wand.uses_remaining_brief").replace("$count", ((Integer)remaining).toString());
 		}
 		return name;
 	}
@@ -828,18 +831,20 @@ public class Wand implements CostReducer {
 	}
 	
 	private String getLevelString(String prefix, float amount) {
-		String suffix = "I";
+		String suffix = "";
 
 		if (amount >= 1) {
-			suffix = "X";
+			suffix = Messages.get("wand.enchantment_level_max");
 		} else if (amount > 0.8) {
-			suffix = "V";
+			suffix = Messages.get("wand.enchantment_level_5");
 		} else if (amount > 0.6) {
-			suffix = "IV";
+			suffix = Messages.get("wand.enchantment_level_4");
 		} else if (amount > 0.4) {
-			suffix = "III";
+			suffix = Messages.get("wand.enchantment_level_3");
 		} else if (amount > 0.2) {
-			suffix = "II";
+			suffix = Messages.get("wand.enchantment_level_2");
+		} else {
+			 suffix = Messages.get("wand.enchantment_level_1");
 		}
 		return prefix + " " + suffix;
 	}
@@ -856,33 +861,33 @@ public class Wand implements CostReducer {
 		if (spell != null && spellCount == 1 && materialCount <= 1) {
 			addSpellLore(spell, lore);
 		} else {
-			lore.add("Knows " + spellCount +" Spells");
+			lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
 			if (materialCount > 0) {
-				lore.add("Has " + materialCount +" Materials");
+				lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
 			}
 		}
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
-			lore.add(ChatColor.RED + "" + remaining + " Uses Remaining");
+			lore.add(ChatColor.RED + Messages.get("wand.uses_remaining").replace("$count", ((Integer)remaining).toString()));
 		}
 		if (xpRegeneration > 0) {
-			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "Mana: " + xpMax);
-			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString("Mana Regeneration", xpRegeneration / WandLevel.maxXpRegeneration));
+			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + Messages.get("wand.mana_amount").replace("$amount", ((Integer)xpMax).toString()));
+			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(Messages.get("wand.mana_regeneration"), xpRegeneration / WandLevel.maxXpRegeneration));
 		}
-		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Cost Reduction", costReduction));
-		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Cooldown Reduction", cooldownReduction));
-		if (power > 0) lore.add(ChatColor.AQUA + getLevelString("Power", power));
-		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString("Haste", speedIncrease / WandLevel.maxSpeedIncrease));
-		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("Protection", damageReduction));
+		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cost_reduction"), costReduction));
+		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cooldown_reduction"), cooldownReduction));
+		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.power"), power));
+		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.haste"), speedIncrease / WandLevel.maxSpeedIncrease));
+		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection"), damageReduction));
 		if (damageReduction < 1) {
-			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString("Physical Protection", damageReductionPhysical));
-			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString("Projectile Protection", damageReductionProjectiles));
-			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString("Fall Protection", damageReductionFalling));
-			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString("Fire Protection", damageReductionFire));
-			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString("Blast Protection", damageReductionExplosions));
+			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_physical"), damageReductionPhysical));
+			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_projectile"), damageReductionProjectiles));
+			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fall"), damageReductionFalling));
+			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fire"), damageReductionFire));
+			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_blast"), damageReductionExplosions));
 		}
-		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("Health Regeneration", healthRegeneration / WandLevel.maxRegeneration));
-		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("Anti-Hunger", hungerRegeneration / WandLevel.maxRegeneration));
+		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.health_regeneration"), healthRegeneration / WandLevel.maxRegeneration));
+		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.hunger_regeneration"), hungerRegeneration / WandLevel.maxRegeneration));
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
@@ -1026,7 +1031,7 @@ public class Wand implements CostReducer {
 		if (costs != null) {
 			for (CastingCost cost : costs) {
 				if (cost.hasCosts(this)) {
-					lore.add(ChatColor.YELLOW + "Costs " + cost.getFullDescription(this));
+					lore.add(ChatColor.YELLOW + Messages.get("wand.costs_description").replace("$description", cost.getFullDescription(this)));
 				}
 			}
 		}
@@ -1081,7 +1086,7 @@ public class Wand implements CostReducer {
 	
 	public static Wand createWand(Spells spells, String templateName) {
 		Wand wand = new Wand(spells);
-		String wandName = defaultWandName;
+		String wandName = Messages.get("wand.default_name");
 
 		// See if there is a template with this key
 		if (templateName != null && templateName.length() > 0) {
@@ -1214,9 +1219,6 @@ public class Wand implements CostReducer {
 	}
 	
 	public static void load(Plugin plugin) {
-		// Load global localization data
-		defaultWandName = Messages.get("wand.defaultname", defaultWandName);
-		
 		// Load properties file with wand templates
 		File dataFolder = plugin.getDataFolder();
 		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);

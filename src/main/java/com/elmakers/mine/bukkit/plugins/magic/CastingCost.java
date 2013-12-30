@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CastingCost
@@ -121,7 +122,7 @@ public class CastingCost
 		if (item != null && getAmount() != 0) {
 			return item.name().toLowerCase().replace("_", " ").replace(" block", "");
 		}
-		return "XP";
+		return Messages.get("costs.xp");
 	}
 
 	public String getFullDescription(CostReducer reducer)
@@ -129,6 +130,9 @@ public class CastingCost
 		if (item != null) {
 			return (int)getAmount(reducer) + " " + item.name().toLowerCase().replace("_", " ").replace(" block", "");
 		}
-		return getXP(reducer) + " XP";
+		if (reducer.usesMana()) {
+			return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+		}
+		return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
 	}
 }

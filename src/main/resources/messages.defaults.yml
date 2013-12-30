@@ -1,3 +1,39 @@
 messages:
     wand:
-        defaultname: Wand
+        default_name: Wand
+        copy_material_description: Fills with the target material
+        erase_material_description: Fills with Air
+        building_material_description: Magic building material
+        uses_remaining_brief: $count Uses
+        uses_remaining: $count Uses Remaining
+        enchantment_level_1: I
+        enchantment_level_2: II
+        enchantment_level_3: III
+        enchantment_level_4: IV
+        enchantment_level_5: V
+        enchantment_level_max: X
+        spell_count: Knows $count Spells
+        material_count: Has $count Materials
+        mana_amount: "Mana: $amount"
+        mana_regeneration: Mana Regeneration
+        cost_reduction: Cost Reduction
+        cooldown_reduction: Cooldown Reduction
+        power: Power
+        haste: Haste
+        protection: Protection
+        protection_physical: Physical Protection
+        protection_projectile: Projectile Protection
+        protection_fall: Fall Protection
+        protection_fire: Fire Protection
+        protection_blast: Blast Protection
+        health_regeneration: Health Regeneration
+        hunger_regeneration: Anti-Hunger
+        costs_description: Costs $description
+    costs:
+        xp_amount: $amount XP
+        mana_amount: $amount Mana
+        xp: XP
+        insufficient_resources: Not enough $cost
+    cooldown:
+        wait_seconds: You must wait another $seconds seconds.
+        wait_moment: You must wait a moment.

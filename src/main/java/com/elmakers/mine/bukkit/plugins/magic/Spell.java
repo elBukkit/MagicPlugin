@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.dao.MaterialList;
 import com.elmakers.mine.bukkit.utilities.BlockAction;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
+import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**
@@ -322,9 +323,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			{
 				long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
 				if (seconds > 1) {
-					sendMessage("You must wait another " + seconds + " seconds.");
+					sendMessage(Messages.get("cooldown.wait_seconds").replace("$seconds", ((Long)seconds).toString()));
 				} else {
-					sendMessage("You must wait a moment.");
+					sendMessage(Messages.get("cooldown.wait_moment"));
 				}
 				playerSpells.onCast(SpellResult.COOLDOWN);
 				return false;
@@ -337,7 +338,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			{
 				if (!cost.has(playerSpells))
 				{
-					sendMessage("Not enough " + cost.getDescription());
+					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription()));
 					playerSpells.onCast(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}

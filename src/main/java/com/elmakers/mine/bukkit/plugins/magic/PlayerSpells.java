@@ -107,6 +107,10 @@ public class PlayerSpells implements CostReducer
 		return activeWand == null ? costReduction : activeWand.getCostReduction() + costReduction;
 	}
 	
+	public boolean usesMana() {
+		return activeWand == null ? false : activeWand.usesMana();
+	}
+	
 	public float getPowerMultiplier() {
 		float maxPowerMultiplier = master.getMaxPowerMultiplier() - 1;
 		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
