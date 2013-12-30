@@ -127,6 +127,8 @@ wands:
           levitate: 0,0,10,30
           leatherskin: 5,10,30,10
           ironskin: 0,5,10,20
+          boon: 0,5,10,20
+          curse: 0,1,10,25
         material_count:
           0: 100,100, 100,  100
           1: 1,  10,  60,   100
@@ -396,6 +398,8 @@ wands:
             - disarm
             - undo
             - toss
+            - curse
+            - boon
         materials:
             - water
             - lava

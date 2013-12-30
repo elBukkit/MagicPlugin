@@ -8,7 +8,7 @@ OTHER STUFF:
  
  - Persist player spell data
  - Add server commands to create or upgrade wands
- - Add a localization file for all hard-coded text.
+ - Localize all spell-specific messages.
 
 LONG-TERM OR INCOMPLETE:
  
