@@ -27,6 +27,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -86,7 +87,7 @@ public class Wand implements CostReducer {
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
 	private static final String propertiesFileName = "wands.yml";
 	private static final String propertiesFileNameDefaults = "wands.defaults.yml";
-	private static final String defaultWandName = "Wand";
+	private static String defaultWandName = "Wand";
 	
 	// Inventory functionality
 	int openInventoryPage = 0;
@@ -1213,13 +1214,17 @@ public class Wand implements CostReducer {
 	}
 	
 	public static void load(Plugin plugin) {
+		// Load global localization data
+		defaultWandName = Messages.get("wand.defaultname", defaultWandName);
+		
+		// Load properties file with wand templates
 		File dataFolder = plugin.getDataFolder();
+		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
+		oldDefaults.delete();
+		plugin.saveResource(propertiesFileNameDefaults, false);
 		File propertiesFile = new File(dataFolder, propertiesFileName);
 		if (!propertiesFile.exists())
 		{
-			File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
-			oldDefaults.delete();
-			plugin.saveResource(propertiesFileNameDefaults, false);
 			loadProperties(plugin.getResource(propertiesFileNameDefaults));
 		} else {
 			loadProperties(propertiesFile);

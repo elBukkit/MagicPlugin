@@ -7,6 +7,7 @@
  - Add effects to disintegrate, shrink, fire, frost, disarm.
  - Put a hack in to work-around annoying double-interact event breaking fill.
  - Add effects to recall, remove item.
+ - Add messages.yml for localization
  
 ## 2.7.1
 

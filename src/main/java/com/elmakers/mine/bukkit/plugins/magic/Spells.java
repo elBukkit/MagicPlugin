@@ -62,6 +62,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
+import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
@@ -444,29 +445,36 @@ public class Spells implements Listener
 	{
 		final File dataFolder = plugin.getDataFolder();
 		dataFolder.mkdirs();
-
+		
+		// Load localizations
+		Messages.reset();
+		Messages.load(plugin);
+		
+		// Load main configuration
+		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
+		oldDefaults.delete();
+		plugin.saveResource(propertiesFileNameDefaults, false);
 		File propertiesFile = new File(dataFolder, propertiesFileName);
 		if (!propertiesFile.exists())
 		{
-			File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
-			oldDefaults.delete();
-			plugin.saveResource(propertiesFileNameDefaults, false);
 			loadProperties(plugin.getResource(propertiesFileNameDefaults));
 		} else {
 			loadProperties(propertiesFile);
 		}
 
+		// Load spells
+		oldDefaults = new File(dataFolder, spellsFileNameDefaults);
+		oldDefaults.delete();
+		plugin.saveResource(spellsFileNameDefaults, false);
 		File spellsFile = new File(dataFolder, spellsFileName);
 		if (!spellsFile.exists())
 		{
-			File oldDefaults = new File(dataFolder, spellsFileNameDefaults);
-			oldDefaults.delete();
-			plugin.saveResource(spellsFileNameDefaults, false);
 			load(plugin.getResource(spellsFileNameDefaults));
 		} else {
 			load(spellsFile);
 		}
 
+		// Load player data
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
 				File playersFile = new File(dataFolder, playersFileName);
@@ -482,6 +490,7 @@ public class Spells implements Listener
 			}
 		}, 5);
 	
+		// Load URL map data
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
 				URLMap.resetAll();
@@ -489,6 +498,7 @@ public class Spells implements Listener
 			}
 		}, 20);
 		
+		// Load wand templates
 		Wand.load(plugin);
 
 		log.info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
@@ -1253,7 +1263,7 @@ public class Spells implements Listener
 	 */
 	 private final String                        spellsFileName                 = "spells.yml";
 	 private final String                        propertiesFileName             = "magic.yml";
-	 private final String                        playersFileName                 = "players.yml";
+	 private final String                        playersFileName                = "players.yml";
 	 private final String                        spellsFileNameDefaults         = "spells.defaults.yml";
 	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
 
