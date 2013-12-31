@@ -154,6 +154,8 @@ wands:
     spawn:
         name: Return to Spawn
         description: Returns you to spawn
+        xp_regeneration: 2
+        xp_max: 10
         spells:
             - spawn
     fireball:
