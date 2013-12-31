@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
@@ -413,7 +415,7 @@ public class Spells implements Listener
 		if (regionManager == null) {
 			log.info("WorldGuard not found, not using a region manager.");
 		}
-		
+
 		this.plugin = plugin;
 		load();
 		
@@ -612,6 +614,27 @@ public class Spells implements Listener
 					setIngredient('o', wandRecipeUpperMaterial).
 					setIngredient('i', wandRecipeLowerMaterial);
 			wandRecipe = recipe;
+		}
+		
+		// Try to link to Essentials:
+		if (generalNode.getBoolean("enable_essentials_signs", false)) {
+			final Spells me = this;
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				public void run() {
+					try {
+						Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
+						if (essentials != null) {
+							Class<?> essentialsClass = essentials.getClass();
+							Field itemDbField = essentialsClass.getDeclaredField("itemDb");
+							itemDbField.setAccessible(true);
+							itemDbField.set(essentials, new MagicItemDb(me, essentials));
+							log.info("Essentials found, hooked up custom item handler");
+						}
+					} catch (Throwable ex) {
+						ex.printStackTrace();
+					}
+				}
+			}, 5);
 		}
 	}
 

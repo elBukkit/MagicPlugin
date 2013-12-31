@@ -4,7 +4,7 @@ version: 2.7.3
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
-softdepend: [WorldGuard]
+softdepend: [WorldGuard, Essentials]
 load: startup
 commands:
   cast:

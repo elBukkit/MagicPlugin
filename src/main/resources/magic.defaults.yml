@@ -17,6 +17,7 @@ general:
     enable_combining: true
     enable_enchanting: true
     enable_block_populator: true
+    enable_essentials_signs: true
     undo_depth: 256
     max_power_multiplier: 2
     fill_wands: false

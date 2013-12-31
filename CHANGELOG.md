@@ -3,6 +3,7 @@
 ## 2.7.3
 
  - Add a "fill wand" feature which will add all known spells to a wand when creating.
+ - Support buying and selling wands via Essentials.
 
 ## 2.7.2
  
