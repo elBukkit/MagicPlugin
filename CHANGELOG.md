@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2.7.4
+
+
 ## 2.7.3
 
  - Add a "fill wand" feature which will add all known spells to a wand when creating.
