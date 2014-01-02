@@ -117,10 +117,13 @@ public class CastingCost
 		return (item != null && getAmount(reducer) > 0) || getXP(reducer) > 0;
 	}
 
-	public String getDescription()
+	public String getDescription(CostReducer reducer)
 	{
 		if (item != null && getAmount() != 0) {
 			return item.name().toLowerCase().replace("_", " ").replace(" block", "");
+		}
+		if (reducer.usesMana()) {
+			return Messages.get("costs.mana");
 		}
 		return Messages.get("costs.xp");
 	}

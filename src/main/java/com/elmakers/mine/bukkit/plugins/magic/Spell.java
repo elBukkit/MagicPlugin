@@ -85,6 +85,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private MaterialList                        targetThroughMaterials  = new MaterialList();
 	private boolean                             reverseTargeting        = false;
 	private boolean                             usesTargeting           = true;
+	private boolean								isActive				= false;
 
 	protected Object clone()
 	{
@@ -190,12 +191,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		onActivate();
 		
 		playerSpells.activateSpell(this);
+		isActive = true;
 	}
 	
 	protected void deactivate() {
 		onDeactivate();
 		
 		playerSpells.deactivateSpell(this);
+		isActive = false;
 	}
 	
 	protected List<CastingCost> parseCosts(ConfigurationNode node) {
@@ -317,7 +320,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		long currentTime = System.currentTimeMillis();
 		float cooldownReduction = playerSpells.getCooldownReduction();
-		if (cooldownReduction < 1) {
+		if (cooldownReduction < 1 && !isActive) {
 			int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
 			if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
 			{
@@ -332,13 +335,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			}
 		}
 
-		if (costs != null)
+		if (costs != null && !isActive)
 		{
 			for (CastingCost cost : costs)
 			{
 				if (!cost.has(playerSpells))
 				{
-					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription()));
+					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription(playerSpells)));
 					playerSpells.onCast(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}

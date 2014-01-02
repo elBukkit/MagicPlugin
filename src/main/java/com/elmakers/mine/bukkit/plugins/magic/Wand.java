@@ -428,11 +428,19 @@ public class Wand implements CostReducer {
 	protected ItemStack createSpellItem(String spellName) {
 		Spell spell = spells.getSpell(spellName);
 		if (spell == null) return null;
-		
-		ItemStack itemStack = new ItemStack(spell.getMaterial(), 1);
-		itemStack = InventoryUtils.getCopy(itemStack);
+		if (spell.getMaterial() == null) {
+			spells.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
+		}
+		ItemStack itemStack = null;
+		try {
+			itemStack = new ItemStack(spell.getMaterial(), 1);
+			itemStack = InventoryUtils.getCopy(itemStack);
+		} catch (Exception ex) {
+			itemStack = null;
+		}
 		if (itemStack == null) {
-			spells.getPlugin().getLogger().warning("Unable to create spell icon with material " + spell.getMaterial().name());			
+			spells.getPlugin().getLogger().warning("Unable to create spell icon with material " + spell.getMaterial().name());	
+			return null;
 		}
 		updateSpellName(itemStack, spell, true);
 		return itemStack;

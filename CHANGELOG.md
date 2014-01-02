@@ -2,6 +2,8 @@
 
 ## 2.7.4
 
+ - Deactivating a spell bypasses cooldowns and costs.
+ - Fix "Insufficient Mana" message to show mana instead of XP for mana-base wands.
 
 ## 2.7.3
 
