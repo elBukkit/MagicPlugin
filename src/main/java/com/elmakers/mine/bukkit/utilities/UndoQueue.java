@@ -1,11 +1,14 @@
 package com.elmakers.mine.bukkit.utilities;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.block.Block;
 
+import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spells;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class UndoQueue
 {
@@ -77,5 +80,33 @@ public class UndoQueue
 		lastActionOnTarget.undo(spells);
 
 		return true;
+	}
+	
+	public void load(ConfigurationNode node)
+	{
+		List<String> keys = node.getKeys();
+		for (String key : keys) {
+			BlockList list = new BlockList();
+			ConfigurationNode listNode = node.getNode(key);
+			List<String> listKeys = listNode.getKeys();
+			for (String listKey : listKeys) {
+				list.add(listNode.getBlockData(listKey));
+			}
+			blockQueue.add(list);
+		}
+	}
+	
+	public void save(ConfigurationNode node)
+	{
+		int index = 0;
+		for (BlockList list : blockQueue) {
+			ConfigurationNode listNode = node.createChild(((Integer)index).toString());
+			index++;
+			int blockIndex = 0;
+			for (BlockData data : list.getBlockList()) {
+				listNode.setProperty(((Integer)blockIndex).toString(), data);
+				blockIndex++;
+			}
+		}
 	}
 }

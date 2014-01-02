@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PlayerSpells implements CostReducer
@@ -33,6 +34,7 @@ public class PlayerSpells implements CostReducer
 	private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
 	private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
 	private final Set<Spell>					activeSpells				   = new TreeSet<Spell>();
+	private UndoQueue          					undoQueue               	   = null;
 	
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
@@ -463,8 +465,17 @@ public class PlayerSpells implements CostReducer
 		}
 	}
 	
+	public UndoQueue getUndoQueue() {
+		if (undoQueue == null) {
+			undoQueue = new UndoQueue();
+			undoQueue.setMaxSize(master.getUndoQueueDepth());
+		}
+		return undoQueue;
+	}	
+	
 	protected void load(ConfigurationNode configNode)
 	{
+		getUndoQueue().load(configNode.getNode("undo"));
 		List<String> keys = configNode.getKeys();
 		for (String key : keys) {
 			Spell spell = getSpell(key);
@@ -476,6 +487,7 @@ public class PlayerSpells implements CostReducer
 	
 	protected void save(ConfigurationNode configNode)
 	{
+		getUndoQueue().save(configNode.createChild("undo"));
 		for (Spell spell : spells.values()) {
 			spell.save(configNode.createChild(spell.getKey()));
 		}

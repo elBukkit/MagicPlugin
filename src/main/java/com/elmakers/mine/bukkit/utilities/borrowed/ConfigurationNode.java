@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -213,7 +214,8 @@ public class ConfigurationNode {
 		// Convert blocks
 		if (value instanceof BlockData)
 		{
-			value = ((BlockData)value).getBlock();
+			BlockData blockValue = (BlockData)value;
+			value = fromLocation(blockValue.getBlock().getLocation()) + "|" + blockValue.getMaterial().getId() + ":" + blockValue.getMaterialData();
 		}
 		if (value instanceof Block)
 		{
@@ -290,7 +292,7 @@ public class ConfigurationNode {
 		}
 		if (o instanceof String) {
 			try {
-				String[] pieces = ((String)o).split(",");
+				String[] pieces = StringUtils.split((String)o, ',');
 				double x = Double.parseDouble(pieces[0]);
 				double y = Double.parseDouble(pieces[1]);
 				double z = Double.parseDouble(pieces[2]);
@@ -318,9 +320,9 @@ public class ConfigurationNode {
 		}
 		if (o instanceof String) {
 			try {
-				String[] pieces = ((String)o).split("|");
+				String[] pieces = StringUtils.split((String)o, '|');
 				Location location = toLocation(pieces[0]);
-				String[] materialPieces = pieces[1].split(":");
+				String[] materialPieces = StringUtils.split(pieces[1], ':');
 				int materialId = Integer.parseInt(materialPieces[0]);
 				byte dataId = Byte.parseByte(materialPieces[1]);
 				return new BlockData(location, Material.getMaterial(materialId), dataId);
@@ -414,6 +416,17 @@ public class ConfigurationNode {
 	 public int getInteger(String path, int def) {
 		 return getInt(path, def);
 	 }
+	 
+	 public long getLong(String path, long def) {
+		 Long o = castLong(getProperty(path));
+
+		 if (o == null) {
+			 setProperty(path, def);
+			 return def;
+		 } else {
+			 return o;
+		 }
+	 }
 
 	 public Set<Material> getMaterials(String key, String csvList)
 	 {
@@ -501,6 +514,10 @@ public class ConfigurationNode {
 		 } else {
 			 return o;
 		 }
+	 }
+	 
+	 public BlockData getBlockData(String path) {
+		return toBlockData(getProperty(path));
 	 }
 
 	 /**
@@ -823,6 +840,33 @@ public class ConfigurationNode {
 			 try
 			 {
 				 return Integer.parseInt((String)o);
+			 }
+			 catch(NumberFormatException ex)
+			 {
+				 return null;
+			 }
+		 } else {
+			 return null;
+		 }
+	 }
+	 
+	 private static Long castLong(Object o) {
+		 if (o == null) {
+			 return null;
+		 } else if (o instanceof Byte) {
+			 return (long) (Byte) o;
+		 } else if (o instanceof Integer) {
+			 return (long)(Integer) o;
+		 } else if (o instanceof Double) {
+			 return (long) (double) (Double) o;
+		 } else if (o instanceof Float) {
+			 return (long) (float) (Float) o;
+		 } else if (o instanceof Long) {
+			 return (long) (Long) o;
+		 } else if (o instanceof String ) {
+			 try
+			 {
+				 return Long.parseLong((String)o);
 			 }
 			 catch(NumberFormatException ex)
 			 {

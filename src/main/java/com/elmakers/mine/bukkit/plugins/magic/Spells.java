@@ -202,14 +202,11 @@ public class Spells implements Listener
 
 	public UndoQueue getUndoQueue(String playerName)
 	{
-		UndoQueue queue = playerUndoQueues.get(playerName);
-		if (queue == null)
-		{
-			queue = new UndoQueue();
-			queue.setMaxSize(undoQueueDepth);
-			playerUndoQueues.put(playerName, queue);
-		}
-		return queue;
+		return getPlayerSpells(playerName).getUndoQueue();
+	}
+	
+	public int getUndoQueueDepth() {
+		return undoQueueDepth;
 	}
 
 	public void addToUndoQueue(Player player, BlockList blocks)
@@ -226,9 +223,9 @@ public class Spells implements Listener
 
 	public boolean undoAny(Player player, Block target)
 	{
-		for (String playerName : playerUndoQueues.keySet())
+		for (String playerName : playerSpells.keySet())
 		{
-			UndoQueue queue = playerUndoQueues.get(playerName);
+			UndoQueue queue = getPlayerSpells(playerName).getUndoQueue();
 			if (queue.undo(this, target))
 			{
 				if (!player.getName().equals(playerName))
@@ -1265,12 +1262,16 @@ public class Spells implements Listener
 		}
 	}
 	
+	public WandChestPopulator getWandChestPopulator() {
+		return new WandChestPopulator(this, blockPopulatorConfig);
+	}
+	
 	@EventHandler
 	public void onWorldInit(WorldInitEvent event) {
 		// Install our block populator if configured to do so.
 		if (blockPopulatorEnabled && blockPopulatorConfig != null) {
 			World world = event.getWorld();
-			world.getPopulators().add(new WandChestPopulator(this, blockPopulatorConfig));
+			world.getPopulators().add(getWandChestPopulator());
 		}
 	}
 	
@@ -1326,7 +1327,6 @@ public class Spells implements Listener
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	    = 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
-	 private HashMap<String, UndoQueue>          playerUndoQueues               = new HashMap<String, UndoQueue>();
 	 private LinkedList<BlockBatch>				 pendingBatches					= new LinkedList<BlockBatch>();
 	 private int								 maxBlockUpdates				= 100;
 	 

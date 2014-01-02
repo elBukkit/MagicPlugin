@@ -91,6 +91,7 @@ public class BlockData
 	public BlockData(Location location, Material material, byte data)
 	{
 		this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+		this.world = location.getWorld().getName();
 		this.material = material;
 		this.materialData = data;
 	}

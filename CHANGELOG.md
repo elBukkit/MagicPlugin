@@ -4,6 +4,8 @@
 
  - Deactivating a spell bypasses cooldowns and costs.
  - Fix "Insufficient Mana" message to show mana instead of XP for mana-base wands.
+ - Add /magic populate command to populate existing chests with wands
+ - Persist player undo queues to players.yml
 
 ## 2.7.3
 

@@ -70,6 +70,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private int                                 cooldown                = 0;
 	private int                                 duration                = 0;
 	private long                                lastCast                = 0;
+	private long								castCount				= 0;
 	private long 								lastMessageSent 		= 0;
 
 	private int                                 verticalSearchDistance  = 8;
@@ -354,11 +355,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		SpellResult result = onCast(parameters);
 		playerSpells.onCast(result);
 		
-		if (result == SpellResult.SUCCESS && costs != null) {
-			for (CastingCost cost : costs)
-			{
-				cost.use(playerSpells);
+		if (result == SpellResult.SUCCESS) {
+			if (costs != null) {
+				for (CastingCost cost : costs)
+				{
+					cost.use(playerSpells);
+				}
 			}
+			castCount++;
 		}
 		
 		return result == SpellResult.SUCCESS;
@@ -1246,12 +1250,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	}
 	
 	public void load(ConfigurationNode node) {
-		// TODO: Load use count, last use time
+		castCount = node.getLong("cast_count", 0);
+		lastCast = node.getLong("last_cast", 0);
 		onLoad(node);
 	}
 	
 	public void save(ConfigurationNode node) {
-		// TODO: Save use count, last use time
+		node.setProperty("cast_count", castCount);
+		node.setProperty("last_cast", lastCast);
 		onSave(node);
 	}
 
