@@ -10,8 +10,10 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,6 +57,11 @@ public class MagicPlugin extends JavaPlugin
 	{
 		spells.initialize(this);
 	}
+	
+	protected void populateChests(World world, int ymax)
+	{
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WandChestRunnable(spells, world, ymax), 20, 5);
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
@@ -77,6 +84,31 @@ public class MagicPlugin extends JavaPlugin
 			if (subCommand.equalsIgnoreCase("reset"))
 			{   
 				spells.reset();
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("populate"))
+			{   
+				World world = null;
+				int ymax = 50;
+				if (sender instanceof Player) {
+					world = ((Player)sender).getWorld();
+					if (args.length > 1) {
+						ymax = Integer.parseInt(args[1]);
+					}
+				} else {
+					if (args.length > 1) {
+						String worldName = args[1];
+						world = Bukkit.getWorld(worldName);
+					}
+					if (args.length > 2) {
+						ymax = Integer.parseInt(args[2]);
+					}
+				}
+				if (world == null) {
+					getLogger().warning("Usage: magic populate <world> <ymax>");
+					return true;
+				}
+				populateChests(world, ymax);
 				return true;
 			}
 		}
