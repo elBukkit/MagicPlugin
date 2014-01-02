@@ -84,6 +84,7 @@ public class UndoQueue
 	
 	public void load(ConfigurationNode node)
 	{
+		if (node == null) return;
 		List<String> keys = node.getKeys();
 		for (String key : keys) {
 			BlockList list = new BlockList();

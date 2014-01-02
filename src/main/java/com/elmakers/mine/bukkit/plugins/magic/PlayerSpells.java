@@ -475,12 +475,16 @@ public class PlayerSpells implements CostReducer
 	
 	protected void load(ConfigurationNode configNode)
 	{
+		if (configNode == null) return;
 		getUndoQueue().load(configNode.getNode("undo"));
-		List<String> keys = configNode.getKeys();
-		for (String key : keys) {
-			Spell spell = getSpell(key);
-			if (spell != null) {
-				spell.load(configNode.getNode(key));
+		ConfigurationNode spellNode = configNode.getNode("spells");
+		if (spellNode != null) {
+			List<String> keys = spellNode.getKeys();
+			for (String key : keys) {
+				Spell spell = getSpell(key);
+				if (spell != null) {
+					spell.load(spellNode.getNode(key));
+				}
 			}
 		}
 	}
@@ -488,8 +492,9 @@ public class PlayerSpells implements CostReducer
 	protected void save(ConfigurationNode configNode)
 	{
 		getUndoQueue().save(configNode.createChild("undo"));
+		ConfigurationNode spellNode = configNode.createChild("spells");
 		for (Spell spell : spells.values()) {
-			spell.save(configNode.createChild(spell.getKey()));
+			spell.save(spellNode.createChild(spell.getKey()));
 		}
 	}
 }
