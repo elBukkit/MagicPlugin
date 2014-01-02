@@ -60,7 +60,8 @@ public class MagicPlugin extends JavaPlugin
 	
 	protected void populateChests(World world, int ymax)
 	{
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WandChestRunnable(spells, world, ymax), 20, 5);
+		WandChestRunnable runnable = new WandChestRunnable(spells, world, ymax);
+		runnable.runTaskTimer(this, 5, 5);
 	}
 
 	@Override

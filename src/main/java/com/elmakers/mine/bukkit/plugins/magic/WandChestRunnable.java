@@ -7,6 +7,8 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.elmakers.mine.bukkit.utilities.NMSUtils;
+
 public class WandChestRunnable extends BukkitRunnable {
 	World world;
 	int dx = 1;
@@ -30,13 +32,13 @@ public class WandChestRunnable extends BukkitRunnable {
 	
 	public void run() {
 		Chunk chunk = world.getChunkAt(x, z);
-		if (!chunk.isLoaded()) {
-			if (!chunk.load(false)) {
-				this.cancel();
+		if (!NMSUtils.isDone(chunk) || !chunk.isLoaded()) {
+			if (!NMSUtils.isDone(chunk) || !chunk.load(false)) {
 				logger.info("Done populating chests, found ungenerated chunk");
+				this.cancel();
 			}
 		} else {
-			logger.info("Populating chests in chunk at " + x + "," + z);
+			logger.info("Looking for chests in chunk at " + x + "," + z);
 			populator.populate(world, random, chunk);
 			x += dx;
 			z += dz;

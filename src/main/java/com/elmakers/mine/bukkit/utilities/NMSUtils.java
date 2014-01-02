@@ -114,6 +114,19 @@ public class NMSUtils {
 		}
 		return handle;
 	}
+	
+	public static boolean isDone(org.bukkit.Chunk chunk) {
+		Object chunkHandle = getHandle(chunk);
+		boolean done = false;
+		try {
+			Field doneField = chunkHandle.getClass().getDeclaredField("done");
+			doneField.setAccessible(true);
+			done = (Boolean)doneField.get(chunkHandle);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return done;
+	}
 
 	protected static Object getHandle(org.bukkit.Chunk chunk) {
 		Object handle = null;
