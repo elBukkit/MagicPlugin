@@ -32,6 +32,7 @@ messages:
     costs:
         xp_amount: $amount XP
         mana_amount: $amount Mana
+        mana: Mana
         xp: XP
         insufficient_resources: Not enough $cost
     cooldown:
