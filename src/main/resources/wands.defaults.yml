@@ -1,7 +1,5 @@
 wands:
     random:
-        name: Wand of {Spell}
-        description: This will randomly generate a wand
         levels: 1,5,15,40
         property_count:
           0: 100,100, 50,  0
@@ -144,37 +142,27 @@ wands:
           glowstone: 5,10,20,40
           tnt: 1,10,15,2
     demo:
-        name: Demo Wand
-        description: Has a few simple demo spells
         spells:
             - torch
             - blink
             - fling
         cost_reduction: 1
     spawn:
-        name: Return to Spawn
-        description: Returns you to spawn
         xp_regeneration: 2
         xp_max: 10
         spells:
             - spawn
     fireball:
-        name: Fireball Wand
-        description: A temporary fireball wand
         spells:
             - fireball
         uses: 10
         cost_reduction: 1
     arrow:
-        name: Arrow Wand
-        description: A temporary arrow wand
         spells:
             - arrow
         uses: 200
         cost_reduction: 1    
     deuling:
-        name: Deuling Wand
-        description: Made for PVP!
         protection_fire: 0.8
         protection: 0.8
         xp_regeneration: 2
@@ -185,8 +173,6 @@ wands:
             - arrow
             - grenade
     explorer:
-        name: Exploring Wand
-        description: For exploring
         xp_regeneration: 1
         xp_max: 50
         spells:
@@ -195,8 +181,6 @@ wands:
             - leap
             - flare
     psychic:
-        name: Psychic Wand
-        description: Psychic stuff
         protection_falling: 0.9
         xp_regeneration: 1
         xp_max: 50
@@ -208,8 +192,6 @@ wands:
             - pull
             - force
     painter:
-        name: Painting Wand
-        description: For the designer in all of us
         xp_regeneration: 1
         xp_max: 100
         spells:
@@ -248,8 +230,6 @@ wands:
             - stained_clay:14
             - stained_clay:15
     engineer:
-        name: Engineering Wand
-        description: Has powerful building spells
         cost_reduction: 1
         spells:
             - fill
@@ -270,8 +250,6 @@ wands:
             - copy
             - glowstone
     battle:
-        name: Battle Wand
-        description: Has some moderate attack spells
         protection_physical: 0.3
         xp_regeneration: 1
         xp_max: 100
@@ -283,8 +261,6 @@ wands:
             - sniper
             - arrowrain
     mining:
-        name: Mining Wand
-        description: For mining
         xp_regeneration: 1
         xp_max: 100
         spells:
@@ -292,8 +268,6 @@ wands:
             - mine
             - blast
     farming:
-        name: Farming Wand
-        description: For farming
         xp_regeneration: 1
         xp_max: 100
         spells:
@@ -311,8 +285,6 @@ wands:
             - potato
             - water
     alchemist:
-        name: Alchemist Wand
-        description: Full metal!
         xp_regeneration: 1
         xp_max: 100
         spells:
@@ -329,8 +301,6 @@ wands:
             - soul_sand
             - sand
     elementalist:
-        name: Elementalist Wand
-        description: A master of the elements
         xp_regeneration: 1
         xp_max: 100
         spells:
@@ -341,8 +311,6 @@ wands:
             - wolf
             - weather
     necromancer:
-        name: Necromancer Wand
-        description: Evil, evil stuff
         xp_regeneration: 1
         xp_max: 100
         spells:
@@ -352,8 +320,6 @@ wands:
             - portal
             - shrink
     elder:
-        name: Elder Wand
-        description: The Uber Wand
         cost_reduction: 1
         protection: 1
         cooldown_reduction: 1
@@ -413,8 +379,6 @@ wands:
             - stained_glass
             - copy
     airbending:
-        name: Airbending Wand
-        description: Master the element of air
         protection: 0.6
         xp_regeneration: 2
         xp_max: 50
@@ -426,8 +390,6 @@ wands:
             - force
             - leap
     waterbending:
-        name: Waterbending Wand
-        description: Master the element of water
         protection: 0.5
         xp_regeneration: 2
         xp_max: 50
@@ -443,8 +405,6 @@ wands:
             - stationary_water
             - ice
     earthbending:
-        name: Earthbending Wand
-        description: Master the element of earth
         protection: 0.5
         xp_regeneration: 2
         xp_max: 50
@@ -461,8 +421,6 @@ wands:
             - stone
             - sand
     firebending:
-        name: Firebending Wand
-        description: Master the element of fire
         protection_fire: 0.9
         protection: 0.1
         xp_regeneration: 2
@@ -480,8 +438,6 @@ wands:
         materials:
             - stationary_lava
     avatar:
-        name: The Avatar Wand
-        description: Master of all four elements
         protection: 0.9
         fire_protection: 0.9
         xp_regeneration: 40
@@ -521,8 +477,6 @@ wands:
             - ice
             - stationary_water
     camera:
-        name: Camera
-        description: Take a portrait of yourself or others
         xp_regeneration: 1
         xp_max: 5
         spells:

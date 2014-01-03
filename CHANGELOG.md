@@ -3,6 +3,7 @@
 ## 2.7.5
 
  - Fix /magic populate never finishing.
+ - Move all wand and spell names and descriptions to message.yml
 
 ## 2.7.4
 

@@ -1,17 +1,13 @@
 spells:
     light:
-        name: Light
         icon: redstone_torch_on
         category: exploration
-        description: Creates a magical light source
         class: LightSpell
         costs:
             xp: 50
     curse:
-        name: Curse
         icon: spider_eye
         category: combat
-        description: Slows down and weakens the target
         class: PotionEffectSpell
         costs:
             xp: 10
@@ -21,10 +17,8 @@ spells:
             weakness: 600,5
             hunger: 600,5
     boon:
-        name: Boon
         icon: double_plant
         category: psychic
-        description: Makes you temporarily superpowered
         class: PotionEffectSpell
         costs:
             xp: 20
@@ -39,10 +33,8 @@ spells:
             night_vision: 600,5
             saturation: 600,5
     shell:
-        name: Shell
         icon: bowl
         category: construction
-        description: Create a large spherical shell
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -56,10 +48,8 @@ spells:
         costs:
             xp: 10
     tag:
-        name: Tag
         icon: sign
         category: exploration
-        description: Leave a sign with your name
         class: SignSpell
         properties:
             allow_max_range: false
@@ -69,10 +59,8 @@ spells:
         costs:
             xp: 20
     arrow:
-        name: Arrow
         icon: arrow
         category: combat
-        description: Fire a magic arrow
         class: ArrowSpell
         properties:
             cooldown: 0
@@ -82,10 +70,8 @@ spells:
         costs:
             xp: 5 
     toss:
-        name: Toss
         icon: wood_button
         category: construction
-        description: Toss a block
         class: TossSpell
         properties:
             cooldown: 0
@@ -94,10 +80,8 @@ spells:
         costs:
             xp: 10
     volley:
-        name: Volley
         icon: stone_button
         category: construction
-        description: Toss a bunch of blocks
         class: TossSpell
         properties:
             cooldown: 0
@@ -107,10 +91,8 @@ spells:
         costs:
             xp: 10   
     sniper:
-        name: Sniper
         icon: gold_nugget
         category: combat
-        description: Fire a super fast arrow
         class: ArrowSpell
         properties:
             cooldown: 1000
@@ -121,10 +103,8 @@ spells:
         costs:
             xp: 10
     pull:
-        name: Pull
         icon: fishing_rod
         category: psychic
-        description: Pull things toward you
         class: PushSpell
         properties:
             allow_max_range: false
@@ -141,10 +121,8 @@ spells:
         costs:
             xp: 2
     kaboom:
-        name: KaBoom
         icon: ender_pearl
         category: combat
-        description: Create a big explosion
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -156,10 +134,8 @@ spells:
         costs:
             xp: 50
     frost:
-        name: Frost
         icon: snow_ball
         category: alchemy
-        description: Freeze water and create snow
         class: FrostSpell
         properties:
             allow_max_range: false
@@ -175,10 +151,8 @@ spells:
         costs:
             xp: 8
     storm:
-        name: Storm
         icon: grilled_pork
         category: elemental
-        description: Start a lightning storm
         class: LightningSpell
         properties:
             allow_max_range: false
@@ -189,10 +163,8 @@ spells:
         costs:
             xp: 30
     spawn:
-        name: Home
         icon: wood_door
         category: exploration
-        description: Take yourself back home
         class: RecallSpell
         properties:
             recall_marker: redstone_torch_on
@@ -207,10 +179,8 @@ spells:
         costs:
             xp: 2
     leatherskin:
-        name: LeatherSkin
         icon: leather_chestplate
         category: combat
-        description: Protect you from some damage
         class: InvincibleSpell
         properties:
             cooldown: 0
@@ -221,10 +191,8 @@ spells:
         active_costs:
             xp: 2
     tree:
-        name: Tree
         icon: sapling
         category: farming
-        description: Instantly grow a tree
         class: TreeSpell
         properties:
             allow_max_range: false
@@ -235,10 +203,8 @@ spells:
         costs:
             xp: 20
     disarm:
-        name: Disarm
         icon: tripwire_hook
         category: combat
-        description: Disarm your opponent
         class: DisarmSpell
         properties:
             allow_max_range: false
@@ -248,10 +214,8 @@ spells:
         costs:
             xp: 75
     heal:
-        name: Heal
         icon: bread
         category: medic
-        description: Heal yourself or others
         class: HealSpell
         properties:
             allow_max_range: false
@@ -261,10 +225,8 @@ spells:
         costs:
             xp: 50
     gather:
-        name: Gather
         icon: glowstone_dust
         category: master
-        description: Gather groups of players together
         class: GotoSpell
         properties:
             allow_max_range: false
@@ -274,10 +236,8 @@ spells:
         costs:
             xp: 50
     icbm:
-        name: ICBM
         icon: nether_star
         category: combat
-        description: Cast an exploding fireball
         class: FireballSpell
         properties:
             cooldown: 5000
@@ -286,10 +246,8 @@ spells:
         costs:
             xp: 100
     weather:
-        name: Weather
         icon: water
         category: elemental
-        description: Change the weather
         class: WeatherSpell
         properties:
             cooldown: 0
@@ -297,10 +255,8 @@ spells:
         costs:
             xp: 10
     ironskin:
-        name: IronSkin
         icon: iron_chestplate
         category: master
-        description: Protect you from damage
         class: InvincibleSpell
         properties:
             cooldown: 0
@@ -311,20 +267,16 @@ spells:
         active_costs:
             xp: 5
     fling:
-        name: Fling
         icon: feather
         category: psychic
-        description: Sends you flying in the target direction
         class: FlingSpell
         properties:
             cooldown: 0
         costs:
             xp: 5
     leap:
-        name: Leap
         icon: leather_boots
         category: psychic
-        description: Take a big leap
         class: FlingSpell
         properties:
             cooldown: 5000
@@ -335,10 +287,8 @@ spells:
         costs:
             xp: 2
     torch:
-        name: Torch
         icon: torch
         category: exploration
-        description: Shed some light
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -351,10 +301,8 @@ spells:
         costs:
             xp: 10
     monster:
-        name: Monster
         icon: pumpkin
         category: summoner
-        description: Call a monster to your side
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -365,10 +313,8 @@ spells:
         costs:
             xp: 40
     mob:
-        name: Mob
         icon: jack_o_lantern
         category: summoner
-        description: Summon a mob of monsters
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -380,10 +326,8 @@ spells:
         costs:
             xp: 100
     portal:
-        name: Portal
         icon: portal
         category: psychic
-        description: Create two connected portals
         class: PortalSpell
         properties:
             allow_max_range: false
@@ -393,10 +337,8 @@ spells:
         costs:
             xp: 20
     invincible:
-        name: Invincible
         icon: golden_apple
         category: master
-        description: Make yourself impervious to damage
         class: InvincibleSpell
         properties:
             cooldown: 0
@@ -407,10 +349,8 @@ spells:
         active_costs:
             xp: 10
     inferno:
-        name: Inferno
         icon: fire
         category: master
-        description: Burn a wide area
         class: FireSpell
         properties:
             allow_max_range: false
@@ -422,10 +362,8 @@ spells:
         costs:
             xp: 40
     cushion:
-        name: Cushion
         icon: soul_sand
         category: alchemy
-        description: Create a safety bubble
         class: CushionSpell
         properties:
             allow_max_range: false
@@ -437,10 +375,8 @@ spells:
         costs:
             xp: 10
     paint:
-        name: Paint
         icon: painting
         category: alchemy
-        description: Fill a single block
         class: FillSpell
         properties:
             allow_max_range: false
@@ -453,10 +389,8 @@ spells:
         costs:
             xp: 1
     gills:
-        name: Gills
         icon: cooked_fish
         category: medic
-        description: Restores health while moving underwater
         class: GillsSpell
         properties:
             duration: 60
@@ -465,10 +399,8 @@ spells:
             cooldown: 0
         parameters: {}
     arrowrain:
-        name: Arrow Rain
         icon: bow
         category: combat
-        description: Fire a volley of arrows
         class: ArrowSpell
         properties:
             cooldown: 0
@@ -480,10 +412,8 @@ spells:
         costs:
             xp: 20
     lightning:
-        name: Lightning
         icon: blaze_powder
         category: combat
-        description: Strike lighting at your target
         class: LightningSpell
         properties:
             allow_max_range: false
@@ -493,10 +423,8 @@ spells:
         costs:
             xp: 10
     nuke:
-        name: Nuke
         icon: magma_cream
         category: combat
-        description: Create a huge explosino
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -508,10 +436,8 @@ spells:
         costs:
             xp: 100
     day:
-        name: Day
         icon: flint
         category: elemental
-        description: Change the time to day
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -525,10 +451,8 @@ spells:
             xp: 40
 
     time:
-        name: Time
         icon: watch
         category: elemental
-        description: Change the time of day
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -541,10 +465,8 @@ spells:
         costs:
             xp: 40        
     bridge:
-        name: Bridge
         icon: gold_hoe
         category: construction
-        description: Extend the ground underneath you
         class: BridgeSpell
         properties:
             cooldown: 0
@@ -552,10 +474,8 @@ spells:
         costs:
             xp: 5
     ascend:
-        name: Ascend
         icon: red_mushroom
         category: psychic
-        description: Go up to the nearest safe spot
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -569,10 +489,8 @@ spells:
         costs:
             xp: 5
     grenade:
-        name: Grenade
         icon: tnt
         category: combat
-        description: Place a primed grenade
         class: GrenadeSpell
         properties:
             allow_max_range: false
@@ -584,10 +502,8 @@ spells:
         costs:
             xp: 20
     frag:
-        name: Frag Grenade
         icon: redstone_block
         category: combat
-        description: Place a mega frag grenade
         class: GrenadeSpell
         properties:
             allow_max_range: false
@@ -600,10 +516,8 @@ spells:
         costs:
             xp: 20
     superblob:
-        name: SuperBlob
         icon: slime_ball
         category: construction
-        description: Create a large solid sphere
         class: ConstructSpell
         properties:
             allow_max_range: true
@@ -614,10 +528,8 @@ spells:
             radius: '8'
             type: sphere
     kamikazee:
-        name: Kamikazee
         icon: dead_bush
         category: combat
-        description: Kill yourself with an explosion
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -630,10 +542,8 @@ spells:
         costs:
             xp: 5
     superblast:
-        name: Superblast
         icon: sugar
         category: mining
-        description: Mine out a very large area
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -645,10 +555,8 @@ spells:
             radius: '16'
             type: sphere
     blast:
-        name: Blast
         icon: sulphur
         category: mining
-        description: Mine out a large area
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -662,10 +570,8 @@ spells:
         costs:
             xp: 10
     cloak:
-        name: Cloak
         icon: chainmail_chestplate
         category: psychic
-        description: Make yourself invisible while still
         class: InvisibilitySpell
         properties:
             cooldown: 0
@@ -673,10 +579,8 @@ spells:
         costs:
             xp: 15
     undo:
-        name: Undo
         icon: book_and_quill
         category: alchemy
-        description: Undo your last action
         class: UndoSpell
         properties:
             allow_max_range: false
@@ -686,10 +590,8 @@ spells:
         costs:
             xp: 5
     push:
-        name: Push
         icon: rails
         category: psychic
-        description: Push things away from you
         class: PushSpell
         properties:
             allow_max_range: false
@@ -705,10 +607,8 @@ spells:
         costs:
             xp: 3
     farm:
-        name: Herd
         icon: wheat
         category: farming
-        description: Create a herd
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -719,10 +619,8 @@ spells:
         costs:
             xp: 50
     breach:
-        name: Breach
         icon: seeds
         category: alchemy
-        description: Temporarily destroy the target surface
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -738,10 +636,8 @@ spells:
         costs:
             xp: 20
     tesseract:
-        name: Tesseract
         icon: web
         category: psychic
-        description: Blink a short distance
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -754,10 +650,8 @@ spells:
         costs:
             xp: 2
     mine:
-        name: Mine
         icon: gold_pickaxe
         category: mining
-        description: Mines and drops the targeted resources
         class: MineSpell
         properties:
             allow_max_range: false
@@ -768,10 +662,8 @@ spells:
         costs:
             xp: 10
     peek:
-        name: Peek
         icon: sugar_cane
         category: alchemy
-        description: Temporarily glass the target surface
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -787,10 +679,8 @@ spells:
         costs:
             xp: 3
     sandblast:
-        name: Sandblast
         icon: sandstone
         category: combat
-        description: Drop a big block of sand
         class: ConstructSpell
         properties:
             allow_max_range: true
@@ -805,10 +695,8 @@ spells:
         costs:
             xp: 20
     fill:
-        name: Fill
         icon: gold_spade
         category: construction
-        description: Fill a selected area (cast twice)
         class: FillSpell
         properties:
             allow_max_range: false
@@ -820,10 +708,8 @@ spells:
         costs:
             xp: 40
     recurse:
-        name: Recurse
         icon: wood_spade
         category: alchemy
-        description: Recursively fill blocks
         class: FillSpell
         properties:
             allow_max_range: false
@@ -836,10 +722,8 @@ spells:
         costs:
             xp: 30
     fire:
-        name: Fire
         icon: flint_and_steel
         category: elemental
-        description: Light fires from a distance
         class: FireSpell
         properties:
             allow_max_range: false
@@ -851,10 +735,8 @@ spells:
         costs:
             xp: 10
     alter:
-        name: Alter
         icon: ink_sack
         category: construction
-        description: Alter certain objects
         class: AlterSpell
         properties:
             allow_max_range: false
@@ -865,10 +747,8 @@ spells:
         costs:
             xp: 1
     blob:
-        name: Blob
         icon: clay_ball
         category: construction
-        description: Create a solid blob
         class: ConstructSpell
         properties:
             allow_max_range: true
@@ -881,10 +761,8 @@ spells:
         costs:
             xp: 25
     familiar:
-        name: Familiar
         icon: monster_egg
         category: summoner
-        description: Create an animal familiar
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -894,10 +772,8 @@ spells:
         costs:
             xp: 10
     disintegrate:
-        name: Disintegrate
         icon: bone
         category: combat
-        description: Damage your target
         class: DisintegrateSpell
         properties:
             allow_max_range: false
@@ -909,10 +785,8 @@ spells:
         costs:
             xp: 30
     blink:
-        name: Blink
         icon: eye_of_ender
         category: psychic
-        description: Teleport to your target
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -925,10 +799,8 @@ spells:
         costs:
             xp: 50
     absorb:
-        name: Absorb
         icon: bucket
         category: construction
-        description: Absorb some of the target
         class: AbsorbSpell
         properties:
             allow_max_range: false
@@ -938,10 +810,8 @@ spells:
         costs:
             xp: 30
     stalactite:
-        name: Stalactite
         icon: wood_axe
         category: construction
-        description: Create a downward pillar
         class: PillarSpell
         properties:
             allow_max_range: false
@@ -952,10 +822,8 @@ spells:
         costs:
             xp: 5
     lava:
-        name: Lava
         icon: lava
         category: combat
-        description: Fire a stream of lava
         class: LavaSpell
         properties:
             allow_max_range: false
@@ -965,10 +833,8 @@ spells:
         costs:
             xp: 20
     wolf:
-        name: Wolf
         icon: raw_beef
         category: summoner
-        description: Create a wolf familiar to follow you around
         class: WolfSpell
         properties:
             max_wolves: 5
@@ -979,10 +845,8 @@ spells:
         costs:
             xp: 50
     cat:
-        name: Cat
         icon: raw_fish
         category: summoner
-        description: Create a cat familiar to follow you around
         class: OcelotSpell
         properties:
             max_ocelots: 5
@@ -993,10 +857,8 @@ spells:
         costs:
             xp: 30
     shrink:
-        name: Head Shrinker
         icon: skull_item
         category: summoner
-        description: Shrink heads for fun and profit
         class: ShunkenHeadSpell
         properties:
             allow_max_range: false
@@ -1005,10 +867,8 @@ spells:
         costs:
             xp: 20
     flare:
-        name: Flare
         icon: firework
         category: exploration
-        description: Fire off flares
         class: FireworkSpell
         properties:
             allow_max_range: true
@@ -1017,10 +877,8 @@ spells:
         costs:
             xp: 10
     recall:
-        name: Recall
         icon: compass
         category: exploration
-        description: Marks locations for return
         class: RecallSpell
         properties:
             recall_marker: redstone_torch_on
@@ -1034,10 +892,8 @@ spells:
         costs:
             xp: 20
     levitate:
-        name: Levitate
         icon: gold_boots
         category: psychic
-        description: Levitate yourself up into the air
         class: LevitateSpell
         properties:
             cooldown: 0
@@ -1047,10 +903,8 @@ spells:
         active_costs:
             xp: 10
     boom:
-        name: Boom
         icon: baked_potato
         category: combat
-        description: Create an explosion
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -1062,10 +916,8 @@ spells:
         costs:
             xp: 20
     box:
-        name: Box
         icon: gold_helmet
         category: construction
-        description: Create a large hollow box
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -1079,10 +931,8 @@ spells:
         costs:
             xp: 10
     pillar:
-        name: Pillar
         icon: gold_axe
         category: construction
-        description: Raises a pillar up
         class: PillarSpell
         properties:
             allow_max_range: false
@@ -1092,10 +942,8 @@ spells:
         costs:
             xp: 5
     night:
-        name: Night
         icon: coal
         category: elemental
-        description: Change the time to night
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -1108,10 +956,8 @@ spells:
         costs:
             xp: 50
     force:
-        name: Force
         icon: leash
         category: psychic
-        description: Use telekinesis
         class: ForceSpell
         properties:
             allow_max_range: true
@@ -1125,10 +971,8 @@ spells:
         costs:
             xp: 10
     descend:
-        name: Descend
         icon: brown_mushroom
         category: psychic
-        description: Travel underground
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -1142,10 +986,8 @@ spells:
         costs:
             xp: 20
     fireball:
-        name: Fireball
         icon: ghast_tear
         category: combat
-        description: Cast an exploding fireball
         class: FireballSpell
         properties:
             cooldown: 100
@@ -1153,10 +995,8 @@ spells:
         costs:
             xp: 15
     map:
-        name: Map
         icon: map
         category: exploration
-        description: Generate a map
         class: MapSpell
         properties:
             cooldown: 5000
@@ -1164,10 +1004,8 @@ spells:
         costs:
             xp: 15
     camera:
-        name: Camera
         icon: paper
         category: construction
-        description: Take a portrait of yourself or others
         class: CameraSpell
         properties:
             cooldown: 1000

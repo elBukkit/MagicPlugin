@@ -221,8 +221,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		this.key = key;
 		this.name = key;
 		
-		name = node.getString("name", name);
-		description = node.getString("description", description);
+		name = Messages.get("spells." + key + ".name", name);
+		description = Messages.get("spells." + key + ".description", description);
 		material = node.getMaterial("icon", material);
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);

@@ -38,3 +38,317 @@ messages:
     cooldown:
         wait_seconds: You must wait another $seconds seconds.
         wait_moment: You must wait a moment.
+    spells:
+        light:
+            name: Light
+            description: Creates a magical light source
+        curse:
+            name: Curse
+            description: Slows down and weakens the target
+        boon:
+            name: Boon
+            description: Makes you temporarily superpowered
+        shell:
+            name: Shell
+            description: Create a large spherical shell
+        tag:
+            name: Tag
+            description: Leave a sign with your name
+        arrow:
+            name: Arrow
+            description: Fire a magic arrow
+        toss:
+            name: Toss
+            description: Toss a block
+        volley:
+            name: Volley
+            description: Toss a bunch of blocks
+        sniper:
+            name: Sniper
+            description: Fire a super fast arrow
+        pull:
+            name: Pull
+            description: Pull things toward you
+        kaboom:
+            name: KaBoom
+            description: Create a big explosion
+        frost:
+            name: Frost
+            description: Freeze water and create snow
+        storm:
+            name: Storm
+            description: Start a lightning storm
+        spawn:
+            name: Home
+            description: Take yourself back home
+        leatherskin:
+            name: LeatherSkin
+            description: Protect you from some damage
+        tree:
+            name: Tree
+            description: Instantly grow a tree
+        disarm:
+            name: Disarm
+            description: Disarm your opponent
+        heal:
+            name: Heal
+            description: Heal yourself or others
+        gather:
+            name: Gather
+            description: Gather groups of players together
+        icbm:
+            name: ICBM
+            description: Cast an exploding fireball
+        weather:
+            name: Weather
+            description: Change the weather
+        ironskin:
+            name: IronSkin
+            description: Protect you from damage
+        fling:
+            name: Fling
+            description: Sends you flying in the target direction
+        leap:
+            name: Leap
+            description: Take a big leap
+        torch:
+            name: Torch
+            description: Shed some light
+        monster:
+            name: Monster
+            description: Call a monster to your side
+        mob:
+            name: Mob
+            description: Summon a mob of monsters
+        portal:
+            name: Portal
+            description: Create two connected portals
+        invincible:
+            name: Invincible
+            description: Make yourself impervious to damage
+        inferno:
+            name: Inferno
+            description: Burn a wide area
+        cushion:
+            name: Cushion
+            description: Create a safety bubble
+        paint:
+            name: Paint
+            description: Fill a single block
+        gills:
+            name: Gills
+            description: Restores health while moving underwater
+        arrowrain:
+            name: Arrow Rain
+            description: Fire a volley of arrows
+        lightning:
+            name: Lightning
+            description: Strike lighting at your target
+        nuke:
+            name: Nuke
+            description: Create a huge explosino
+        day:
+            name: Day
+            description: Change the time to day
+        time:
+            name: Time
+            description: Change the time of day
+        bridge:
+            name: Bridge
+            description: Extend the ground underneath you
+        ascend:
+            name: Ascend
+            description: Go up to the nearest safe spot
+        grenade:
+            name: Grenade
+            description: Place a primed grenade
+        frag:
+            name: Frag Grenade
+            description: Place a mega frag grenade
+        superblob:
+            name: SuperBlob
+            description: Create a large solid sphere
+        kamikazee:
+            name: Kamikazee
+            description: Kill yourself with an explosion
+        superblast:
+            name: Superblast
+            description: Mine out a very large area
+        blast:
+            name: Blast
+            description: Mine out a large area
+        cloak:
+            name: Cloak
+            description: Make yourself invisible while still
+        undo:
+            name: Undo
+            description: Undo your last action
+        push:
+            name: Push
+            description: Push things away from you
+        farm:
+            name: Herd
+            description: Create a herd
+        breach:
+            name: Breach
+            description: Temporarily destroy the target surface
+        tesseract:
+            name: Tesseract
+            description: Blink a short distance
+        mine:
+            name: Mine
+            description: Mines and drops the targeted resources
+        peek:
+            name: Peek
+            description: Temporarily glass the target surface
+        sandblast:
+            name: Sandblast
+            description: Drop a big block of sand
+        fill:
+            name: Fill
+            description: Fill a selected area (cast twice)
+        recurse:
+            name: Recurse
+            description: Recursively fill blocks
+        fire:
+            name: Fire
+            description: Light fires from a distance
+        alter:
+            name: Alter
+            description: Alter certain objects
+        blob:
+            name: Blob
+            description: Create a solid blob
+        familiar:
+            name: Familiar
+            description: Create an animal familiar
+        disintegrate:
+            name: Disintegrate
+            description: Damage your target
+        blink:
+            name: Blink
+            description: Teleport to your target
+        absorb:
+            name: Absorb
+            description: Absorb some of the target
+        stalactite:
+            name: Stalactite
+            description: Create a downward pillar
+        lava:
+            name: Lava
+            description: Fire a stream of lava
+        wolf:
+            name: Wolf
+            description: Create a wolf familiar to follow you around
+        cat:
+            name: Cat
+            description: Create a cat familiar to follow you around
+        shrink:
+            name: Head Shrinker
+            description: Shrink heads for fun and profit
+        flare:
+            name: Flare
+            description: Fire off flares
+        recall:
+            name: Recall
+            description: Marks locations for return
+        levitate:
+            name: Levitate
+            description: Levitate yourself up into the air
+        boom:
+            name: Boom
+            description: Create an explosion
+        box:
+            name: Box
+            description: Create a large hollow box
+        pillar:
+            name: Pillar
+            description: Raises a pillar up
+        night:
+            name: Night
+            description: Change the time to night
+        force:
+            name: Force
+            description: Use telekinesis
+        descend:
+            name: Descend
+            description: Travel underground
+        fireball:
+            name: Fireball
+            description: Cast an exploding fireball
+        map:
+            name: Map
+            description: Generate a map
+        camera:
+            name: Camera
+            description: Take a portrait of yourself or others
+    wands:
+        random:
+            name: Wand of {Spell}
+            description: This will randomly generate a wand
+        demo:
+            name: Demo Wand
+            description: Has a few simple demo spells
+        spawn:
+            name: Return to Spawn
+            description: Returns you to spawn
+        fireball:
+            name: Fireball Wand
+            description: A temporary fireball wand
+        arrow:
+            name: Arrow Wand
+            description: A temporary arrow wand
+        deuling:
+            name: Deuling Wand
+            description: Made for PVP!
+        explorer:
+            name: Exploring Wand
+            description: For exploring
+        psychic:
+            name: Psychic Wand
+            description: Psychic stuff
+        painter:
+            name: Painting Wand
+            description: For the designer in all of us
+        engineer:
+            name: Engineering Wand
+            description: Has powerful building spells
+        battle:
+            name: Battle Wand
+            description: Has some moderate attack spells
+        mining:
+            name: Mining Wand
+            description: For mining
+        farming:
+            name: Farming Wand
+            description: For farming
+        alchemist:
+            name: Alchemist Wand
+            description: Full metal!
+        elementalist:
+            name: Elementalist Wand
+            description: A master of the elements
+        necromancer:
+            name: Necromancer Wand
+            description: Evil, evil stuff
+        elder:
+            name: Elder Wand
+            description: The Uber Wand
+        airbending:
+            name: Airbending Wand
+            description: Master the element of air
+        waterbending:
+            name: Waterbending Wand
+            description: Master the element of water
+        earthbending:
+            name: Earthbending Wand
+            description: Master the element of earth
+        firebending:
+            name: Firebending Wand
+            description: Master the element of fire
+        avatar:
+            name: The Avatar Wand
+            description: Master of all four elements
+        camera:
+            name: Camera
+            description: Take a portrait of yourself or others

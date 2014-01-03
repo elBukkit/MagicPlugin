@@ -1088,9 +1088,8 @@ public class Wand implements CostReducer {
 	
 	protected void randomize(int level, boolean additive) {
 		if (!wandTemplates.containsKey("random")) return;	
-		ConfigurationNode randomTemplate = wandTemplates.get("random");
-		if (!additive && randomTemplate.containsKey("name")) {
-			wandName = randomTemplate.getString("name");
+		if (!additive) {
+			wandName = Messages.get("wands.random.name", wandName);
 		}
 		WandLevel.randomizeWand(this, additive, level);
 	}
@@ -1115,7 +1114,7 @@ public class Wand implements CostReducer {
 				return null;
 			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
-			wandName = wandConfig.getString("name", wandName);
+			wandName = Messages.get("wands." + templateName + ".name");
 			List<Object> spellList = wandConfig.getList("spells");
 			if (spellList != null) {
 				for (Object spellName : spellList) {			
