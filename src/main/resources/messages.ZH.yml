@@ -1,0 +1,354 @@
+messages:
+    wand:
+        default_name: Wand
+        copy_material_description: Fills with the target material
+        erase_material_description: Fills with Air
+        building_material_description: Magic building material
+        uses_remaining_brief: $count Uses
+        uses_remaining: $count Uses Remaining
+        enchantment_level_1: I
+        enchantment_level_2: II
+        enchantment_level_3: III
+        enchantment_level_4: IV
+        enchantment_level_5: V
+        enchantment_level_max: X
+        spell_count: Knows $count Spells
+        material_count: Has $count Materials
+        mana_amount: "Mana: $amount"
+        mana_regeneration: Mana Regeneration
+        cost_reduction: Cost Reduction
+        cooldown_reduction: Cooldown Reduction
+        power: Power
+        haste: Haste
+        protection: Protection
+        protection_physical: Physical Protection
+        protection_projectile: Projectile Protection
+        protection_fall: Fall Protection
+        protection_fire: Fire Protection
+        protection_blast: Blast Protection
+        health_regeneration: Health Regeneration
+        hunger_regeneration: Anti-Hunger
+        costs_description: Costs $description
+    costs:
+        xp_amount: $amount XP
+        mana_amount: $amount Mana
+        mana: Mana
+        xp: XP
+        insufficient_resources: Not enough $cost
+    cooldown:
+        wait_seconds: You must wait another $seconds seconds.
+        wait_moment: You must wait a moment.
+    spells:
+        light:
+            name: 神说要有光
+            description: 在所在之处创造出光明， 分离出黑暗
+        curse:
+            name: 诅咒之术
+            description: 在代表对方的稻草人上诅咒， 可能会致残
+        boon:
+            name: 超人【圣白莲】
+            description: 打开魔法卷轴， 使得自身能力获得极大提升
+        shell:
+            name: 物理学全方位神盾
+            description: 突破能量守恒定律， 创造出临时的全方位物质神盾
+        tag:
+            name: 到此一游
+            description: 到此一游， 写上自己的名字， 应该不会被人肉吧
+        arrow:
+            name: 47mm黄金加特林半自动装虎式改Mk.VI【连发模式】
+            description: 半自动的加特林！ 虽然名字好像很霸气的样子
+        toss:
+            name: 物品投掷
+            description: 搬起脚下的一个杂物， 向敌人狠狠地砸过去
+        volley:
+            name: 暴走物品投掷
+            description: 搬起脚下的一堆杂物， 向敌人狠狠地砸过去
+        sniper:
+            name: 25mm黄金加特林狙击装鹰式改Mk.II【狙击模式】
+            description: 必中的子弹！ 如果可以爆头的话是可以必杀的
+        pull:
+            name: 精神力【吸引】
+            description: 使用强大的精神力吸引对方！ 对方无法控制自己的行动
+        kaboom:
+            name: 波导弹
+            description: 本技能记载于九阳真经中， 使用者可以发射不可见的富有爆炸性的精神能量波
+        frost:
+            name: 急冻光线
+            description: 在手指指向之处创造出极寒的天气， 有百分之0.00000001的几率可以将范围内人冻死
+        storm:
+            name: 雷神之怒
+            description: 故意激怒雷神， 触发雷神之怒， 不是使用者的愤怒。 雷电可能劈到自己， 叫你不要作死
+        spawn:
+            name: 回城传送
+            description: 虽然/spawn也可以做到同样的目的， 但是用法术总有一种成就感
+        leatherskin:
+            name: 魔法守护罩Lv.I
+            description: 为自己覆盖上特殊波长的不可见能量， 该能量可以保护身体重要部位受到攻击， 重要部位
+        tree:
+            name: 树用金坷垃
+            description: 金坷垃， 金坷垃， 吸收地下两米碳磷钾。 该产品仅对树苗有效， 美国圣地亚哥
+        disarm:
+            name: 放下屠刀， 立地成佛
+            description: 以苦口婆心的不断念叨放下屠刀立地成佛， 劝说敌人放下武器
+        heal:
+            name: 观音的玉枝瓶
+            description: 天降甘露， 万物生长， 人人欢喜
+        gather:
+            name: 自我黑洞
+            description: 使用者的心因为自我的极大空虚和寂寞产生了黑洞， 希望所有人都来见他
+        icbm:
+            name: 洲际弹道导弹
+            description: 洲际弹道导弹， 用来近距离搏斗真是小题大做
+        weather:
+            name: 天气预报
+            description: 谁知道天气是不是天气预报的人操控的呢？ 为了保证他们的准确性
+        ironskin:
+            name: 魔法守护罩Lv.II
+            description: 为自己覆盖上特殊波长的不可见能量， 该能量可以保护全身受到攻击， 全身
+        fling:
+            name: 飞翔
+            description: 有一天， 玩家长出了一对翅膀， 他/她可以扑塌扑塌地飞了
+        leap:
+            name: 弹簧鞋
+            description: 有了这双弹簧鞋， 跳高比赛一定会赢
+        torch:
+            name: 石中火把
+            description: 你没看错， 这是神迹。 这不是你放上去的火把， 是它自己冒出来的
+        monster:
+            name: 召唤术Lv.I
+            description: 用土捏出像生物的东西， 往它的肺里吹气， 它活了
+        mob:
+            name: 召唤术Lv.II
+            description: 用土捏出许多生物， 往它们的肺里吹气， 它们活了
+        portal:
+            name: 虫洞传送门
+            description: 建造两座传送门， 将人粒子化， 通过虫洞传送到另一个传送门。 缺点是人可能会失忆
+        invincible:
+            name: Trans-AM 粒子化
+            description: 可以在每一次受到攻击时瞬间粒子化， 达到不受任何伤害的目的
+        inferno:
+            name: FFFの圣火
+            description: 该火焰仅限处刑脱团者使用， 不准烧女生和团员
+        cushion:
+            name: 魔法泡
+            description: 用魔法创造出安全的泡泡！ 虽然不知道保护效果如何
+        paint:
+            name: 画笔
+            description: 马良的画笔，如果真的画出来什么的话，会变成真的吧
+        gills:
+            name: 身体退化
+            description: 身体退化到海洋生物时代，长出腮。到底是退化还是进化呢
+        arrowrain:
+            name: 35mm黄金加特林霰弹装豹式改Mk.IX【霰弹模式】
+            description: 发射出威力超强的霰弹！ 精度有待提高， 小心不要过热
+        sign:
+            name: 记事牌
+            description: 写下自己的意见， 和到此一游是一个性质， 会被人肉吗
+        lightning:
+            name: 天降神雷
+            description: 祈求雷神劈一道雷， 可惜不是使用者发出的雷
+        nuke:
+            name: 爆符【兆亿耀斑】
+            description: 让一切都融化吧！
+        day:
+            name: 神说让世界充满光
+            description: 神说让太阳升起， 照耀大地
+        time:
+            name: 时符【咲夜的世界】
+            description: 将时间加快或减慢， 也是永存美颜的秘诀吧     
+        bridge:
+            name: 开海【摩西的奇迹】
+            description: 不是开海， 是造桥。 神为玩家造出了桥， 可以过海
+        ascend:
+            name: 救援队
+            description: 救援队拉你到最近的安全地点， 保命要紧
+        grenade:
+            name: 神圣的手榴弹
+            description: 哈利路亚！Fire in the hole！
+        frag:
+            name: C4高爆炸弹
+            description: 扔出一个已点燃的C4炸弹。 什么？ 已点燃的C4？！
+        superblob:
+            name: 神说这里要有山
+            description: 创造地球的力量， 没错， 你创造了一个地球
+        kamikazee:
+            name: 神风特攻队
+            description: 决心和你一起炸得粉身碎骨， 这真是使人周身血液都凝固了
+        superblast:
+            name: 神说那里要有天
+            description: 创造天空的力量， 没错，你创造了一片天空
+        blast:
+            name: 核动力金刚石钻头1000
+            description: 十分强劲的钻头， 比钻石镐要好用很多的感觉
+        cloak:
+            name: 金刚不坏
+            description: 本技能记载于九阳真经中， 使用者只需在原地做马步就可以无视一切攻击
+        undo:
+            name: 后悔药
+            description: 谁说世上没有后悔药？ 这里有。 可以取消刚才所做的事， 虽然好像只是忘记了而已
+        push:
+            name: 精神力【排斥】
+            description: 使用强大的精神力排斥对方
+        farm:
+            name: 神赐的食物
+            description: 你没看错， 这是神迹。 上天赋予的稻草， 可以做面包
+        breach:
+            name: 创造天空【测试版】
+            description: 尝试创造天空的力量，但是因为还不成熟，一会就消失了
+        tesseract:
+            name: 短暂的瞬移
+            description: 学习了瞬移的魔法，可以瞬移到你想要去的目标。但是因为身体原因，一会就累了
+        mine:
+            name: 激光制导金刚石钻头3000
+            description: 极其智能的钻头， 可以精确的制导挖掘指定的矿物
+        peek:
+            name: 透视眼镜【测试版】
+            description: 为什么透视眼镜可以看透东西？ 因为东西是透明的。 但是因为眼镜是测试版， 东西一会就变回不透明了
+        sandblast:
+            name: 沙尘暴
+            description: 寻求天气局的人创造沙尘暴。 本应该覆盖世界的沙尘暴不知为何粘连在一起了， 这是全世界的沙尘啊！ 一会就飘散了
+        fill:
+            name: 移山填海
+            description: 放出两次魔法来选择对角线。 把从不知道哪里拿过来的杂碎都塞进去
+        recurse:
+            name: 土地神之力
+            description: 将一切相邻的物质转化为你所拥有的
+        fire:
+            name: 火眼金睛
+            description: 火眼看见之处， 将被灼热的眼睛光线点燃
+        alter:
+            name: 物质重组
+            description: 将物质分解到原子级别再重组， 不知会重组为什么奇怪的东西
+        blob:
+            name: 土地神之灵
+            description: 地下土地神虚荣心暴涨， 神灵快要把地面拱破的感觉， 一会就恢复正常了
+        familiar:
+            name: 召唤术Lv.III
+            description: 用木头雕刻出友好的生物， 往它的肺里吹气， 它活了
+        disintegrate:
+            name: 阿瓦达索命
+            description: Avada Kedavra!
+        blink:
+            name: 瞬移
+            description: 学习了瞬移的魔法， 可以瞬移到你想要去的目标。
+        absorb:
+            name: 寄生种子【物理】
+            description: 对物质洒下寄生种子， 将物质的能量吸收
+        stalactite:
+            name: 入地
+            description: 往下建一个支柱
+        lava:
+            name: 火魔法Lv.Max
+            description: 危险！ 在这把火焰放射器喷嘴下的一切都会融化！！ 真的是魔法吗
+        wolf:
+            name: 召唤术Lv.IV【狗】
+            description: 用木头雕刻出狗，往它的肺里吹气，它活了。他很喜欢你
+        cat:
+            name: 召唤术Lv.IV【猫】
+            description: 用木头雕刻出猫，往它的肺里吹气，它活了。她很喜欢你
+        shrink:
+            name: 缩尸术
+            description: 将敌人的灵魂和肉体压缩， 填充进虚无的头骨！ 经常使用这个黑魔法的人会受到同样的下场
+        flare:
+            name: 火魔法Lv.I
+            description: 在嘴里放一个打火机， 使用的时候吐出去。 应该还不算是火魔法吧
+        recall:
+            name: 该回家吃饭了
+            description: 在家亮起灯， 告诉你该回家吃饭了
+        levitate:
+            name: 精神力漂浮
+            description: 使用强大的精神力， 使自身漂浮在空中
+        boom:
+            name: 爆符【十万耀斑】
+            description: 创造出核融合之力的爆炸
+        box:
+            name: 快递盒子
+            description: 你的快递到了！ 这是你的盒子。 里面会有宝物箱吗
+        pillar:
+            name: 上天
+            description: 往上建一个支柱
+        night:
+            name: 神说让世界回归暗
+            description: 神说让太阳落下， 回归黑暗
+        force:
+            name: 精神力
+            description: 将一切瞬移
+        descend:
+            name: 土遁
+            description: 和土岩化为一体， 进入地底世界
+        fireball:
+            name: 鹰眼卫国拦截导弹改Mk.VII
+            description: 拦截导弹， 用来近距离搏斗真是小题大做
+        map:
+            name: 念写
+            description: 使用念写的能力画出附近的地图
+        camera:
+            name: 自拍
+            description: 三， 二， 一， 茄子！
+    wands:
+        random:
+            name: Wand of {Spell}
+            description: This will randomly generate a wand
+        demo:
+            name: 演示法杖
+            description: 经过简单附魔之后的法杖，只有几个简易魔法
+        fireball:
+            name: 火属性法杖lv.1
+            description: 勉强算是带点基础火属性魔法吧
+        arrow:
+            name: 弹幕法杖lv.1
+            description: 勉强算是带点基础弹幕魔法吧
+        deuling:
+            name: 武装法杖lv.1
+            description: 魔法战争中研发出来的杀伤性法杖
+        fire:
+            name: 火属性法杖lv.1-a
+            description: 火属性法杖lv.1的同款法杖，拥有点火的能力
+        explorer:
+            name: 冒险法杖
+            description: 冒险家喜爱的法杖，有多种实用功能
+        psychic:
+            name: 精神力法杖
+            description: 拥有念动力与无形咒波的能量
+        painter:
+            name: 画笔法杖
+            description: 发明于和平时期，像素画用法杖
+        engineer:
+            name: 工程法杖
+            description: 发明于和平时期，建筑用法杖
+        battle:
+            name: 武装法杖lv.2
+            description: 武装法杖lv.1的进阶版，在原版上增添了一些魔法。
+        mining:
+            name: 矿工法杖
+            description: 出自矮人矿工之手，挖矿用法杖
+        farming:
+            name: 生命法杖
+            description: 出自森林精灵之手，是一把有生命力的法杖
+        alchemist:
+            name: 炼金术之杖
+            description: 发明于很久前的炼金术时期，虽然时间久远不过还是比较实用
+        elementalist:
+            name: 元素法杖
+            description: 元素哦~
+        necromancer:
+            name: 死灵法杖
+            description: 死灵法师的法杖，小心使用
+        elder:
+            name: 精灵王之杖
+            description: 稀有！拥有操控所有魔法的能力
+        airbending:
+            name: 风元素之杖
+            description: 四大元素法杖之一
+        waterbending:
+            name: 水元素之杖
+            description: 四大元素法杖之一
+        earthbending:
+            name: 土元素之杖
+            description: 四大元素法杖之一
+        firebending:
+            name: 火元素之杖
+            description: 四大元素法杖之一
+        avatar:
+            name: 原力之杖
+            description: 拥有世界原力的法杖
