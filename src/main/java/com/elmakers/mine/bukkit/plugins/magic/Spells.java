@@ -847,7 +847,7 @@ public class Spells implements Listener
 	{
 		if (indestructibleWands && Wand.isWand(event.getEntity().getItemStack()))
 		{
-			event.getEntity().setTicksLived(0);
+			event.getEntity().setTicksLived(1);
 			event.setCancelled(true);
 		}
 	}
