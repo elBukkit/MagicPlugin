@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.7.6
+
+ - Change players.yml undo format to be more sane.
+
 ## 2.7.5
 
  - Fix /magic populate never finishing.

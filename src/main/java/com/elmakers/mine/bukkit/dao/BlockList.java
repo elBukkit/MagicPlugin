@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spells;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.UndoBatch;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**
  * 
@@ -306,5 +309,24 @@ public class BlockList implements Collection<BlockData>, Serializable
 		passesRemaining--;
 		UndoBatch batch = new UndoBatch(this);
 		spells.addPendingBlockBatch(batch);
+	}
+	
+	public void load(ConfigurationNode node) {
+		timeToLive = node.getInt("time_to_live", timeToLive);
+		passesRemaining = node.getInt("passes_remaining", passesRemaining);
+		List<String> blockData = node.getStringList("blocks", null);
+		for (String blockString : blockData) {
+			add(BlockData.fromString(blockString));
+		}
+	}
+	
+	public void save(Map<String, Object> dataMap) {
+		dataMap.put("time_to_live", (Integer)timeToLive);
+		dataMap.put("passes_remaining", (Integer)passesRemaining);
+		List<String> blockData = new ArrayList<String>();
+		for (BlockData block : blockList) {
+			blockData.add(block.toString());
+		}
+		dataMap.put("blocks", blockData);
 	}
 }

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.dao;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -95,6 +96,14 @@ public class BlockData
 		this.material = material;
 		this.materialData = data;
 	}
+	
+	public BlockData(int x, int y, int z, String world, Material material, byte data)
+	{
+		this.location = new BlockVector(x, y, z);
+		this.world = world;
+		this.material = material;
+		this.materialData = data;
+	}
 
 	protected boolean checkBlock()
 	{
@@ -171,5 +180,31 @@ public class BlockData
 		}
 
 		return true;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public String toString() {
+		return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + world + "|" + getMaterial().getId() + ":" + getMaterialData();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static BlockData fromString(String s) {
+		BlockData result = null;
+		if (s == null) return null;
+		try {
+			String[] pieces = StringUtils.split(s, '|');
+			String[] locationPieces = StringUtils.split(pieces[0], ',');
+			int x = Integer.parseInt(locationPieces[0]);
+			int y = Integer.parseInt(locationPieces[1]);
+			int z = Integer.parseInt(locationPieces[2]);
+			String world = locationPieces[3];
+			String[] materialPieces = StringUtils.split(pieces[1], ':');
+			int materialId = Integer.parseInt(materialPieces[0]);
+			byte dataId = Byte.parseByte(materialPieces[1]);
+			return new BlockData(x, y, z, world, Material.getMaterial(materialId), dataId);
+		} catch(Exception ex) {
+		}
+		
+		return result;
 	}
 }

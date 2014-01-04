@@ -185,7 +185,7 @@ public class ConfigurationNode {
 		return null;
 	}
 	
-	protected String fromLocation(Location location) {
+	public static String fromLocation(Location location) {
 		return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorld().getName();
 	}
 
@@ -215,7 +215,7 @@ public class ConfigurationNode {
 		if (value instanceof BlockData)
 		{
 			BlockData blockValue = (BlockData)value;
-			value = fromLocation(blockValue.getBlock().getLocation()) + "|" + blockValue.getMaterial().getId() + ":" + blockValue.getMaterialData();
+			value = blockValue.toString();
 		}
 		if (value instanceof Block)
 		{
@@ -286,7 +286,7 @@ public class ConfigurationNode {
 		return toLocation(o);
 	}
 	
-	protected Location toLocation(Object o) {
+	public static Location toLocation(Object o) {
 		if (o instanceof Location) {
 			return (Location)o;
 		}
@@ -303,29 +303,6 @@ public class ConfigurationNode {
 					world = Bukkit.getWorlds().get(0);
 				}
 				return new Location(world, x, y, z);
-			} catch(Exception ex) {
-				return null;
-			}
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("deprecation")
-	protected BlockData toBlockData(Object o) {
-		if (o instanceof BlockData) {
-			return (BlockData)o;
-		}
-		if (o instanceof Block) {
-			return new BlockData((Block)o);
-		}
-		if (o instanceof String) {
-			try {
-				String[] pieces = StringUtils.split((String)o, '|');
-				Location location = toLocation(pieces[0]);
-				String[] materialPieces = StringUtils.split(pieces[1], ':');
-				int materialId = Integer.parseInt(materialPieces[0]);
-				byte dataId = Byte.parseByte(materialPieces[1]);
-				return new BlockData(location, Material.getMaterial(materialId), dataId);
 			} catch(Exception ex) {
 				return null;
 			}
@@ -517,7 +494,7 @@ public class ConfigurationNode {
 	 }
 	 
 	 public BlockData getBlockData(String path) {
-		return toBlockData(getProperty(path));
+		return BlockData.fromString(getString(path));
 	 }
 
 	 /**

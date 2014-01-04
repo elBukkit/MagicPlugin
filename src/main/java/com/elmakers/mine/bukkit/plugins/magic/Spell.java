@@ -1250,15 +1250,23 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	}
 	
 	public void load(ConfigurationNode node) {
-		castCount = node.getLong("cast_count", 0);
-		lastCast = node.getLong("last_cast", 0);
-		onLoad(node);
+		try {
+			castCount = node.getLong("cast_count", 0);
+			lastCast = node.getLong("last_cast", 0);
+			onLoad(node);
+		} catch (Exception ex) {
+			
+		}
 	}
 	
 	public void save(ConfigurationNode node) {
-		node.setProperty("cast_count", castCount);
-		node.setProperty("last_cast", lastCast);
-		onSave(node);
+		try {
+			node.setProperty("cast_count", castCount);
+			node.setProperty("last_cast", lastCast);
+			onSave(node);
+		} catch (Exception ex) {
+			
+		}
 	}
 
 	/**
