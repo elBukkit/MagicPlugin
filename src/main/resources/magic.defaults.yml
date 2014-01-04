@@ -21,6 +21,7 @@ general:
     undo_depth: 64
     max_power_multiplier: 2
     fill_wands: false
+    keep_wands_on_death: true
     indestructible_wands: true
     right_click_cycles: false
     populate_chests:

@@ -3,6 +3,7 @@
 ## 2.7.7
 
  - Make wands really indestructible (thanks JRL1004 and Jogy34)!
+ - Add "keep_wands_on_death" option, on by default
 
 ## 2.7.6
 

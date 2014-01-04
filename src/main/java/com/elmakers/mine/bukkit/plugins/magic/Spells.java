@@ -577,6 +577,7 @@ public class Spells implements Listener
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 		fillWands = generalNode.getBoolean("fill_wands", fillWands);
 		indestructibleWands = generalNode.getBoolean("indestructible_wands", indestructibleWands);
+		keepWandsOnDeath = generalNode.getBoolean("keep_wands_on_death", keepWandsOnDeath);
 		maxPowerMultiplier = (float)generalNode.getDouble("max_power_multiplier", maxPowerMultiplier);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
@@ -786,27 +787,24 @@ public class Spells implements Listener
 		}
 	}
 
-	public void onPlayerDeath(Player player, EntityDeathEvent event)
+	public void onPlayerDeath(final Player player, EntityDeathEvent event)
 	{
-		PlayerSpells playerSpells = getPlayerSpells(player);
 		String rule = player.getWorld().getGameRuleValue("keepInventory");
+		if (rule.equals("true")) return;
+		
+		PlayerSpells playerSpells = getPlayerSpells(player);
+		List<ItemStack> drops = event.getDrops();
 		Wand wand = playerSpells.getActiveWand();
-		if (wand != null  && !rule.equals("true")) {
-			List<ItemStack> drops = event.getDrops();
-			drops.clear();
-			
-			// Drop the held wand since it does not get stored
-			drops.add(wand.getItem());
-			
+		if (wand != null) {
 			// Retrieve stored inventory before deactiavting the wand
 			if (playerSpells.hasStoredInventory()) {
+				drops.clear();
+
 				ItemStack[] stored = playerSpells.getStoredInventory().getContents();
 				
 				// Deactivate the wand.
 				wand.deactivate();
 	
-				// Clear the inventory, which was just restored by the wand
-				player.getInventory().clear();
 				for (ItemStack stack : stored) {
 					if (stack != null) {
 						drops.add(stack);
@@ -822,6 +820,34 @@ public class Spells implements Listener
 				}
 			} else {
 				wand.deactivate();
+			}
+		}
+		
+		if (keepWandsOnDeath)
+		{
+			List<ItemStack> oldDrops = new ArrayList<ItemStack>(drops);
+			final List<ItemStack> droppedWands = new ArrayList<ItemStack>();
+			drops.clear();
+			for (ItemStack itemStack : oldDrops)
+			{
+				if (Wand.isWand(itemStack))
+				{
+					droppedWands.add(itemStack);
+				}
+				else
+				{
+					drops.add(itemStack);
+				}
+			}
+			if (droppedWands.size() > 0)
+			{
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						for (ItemStack itemStack : droppedWands)
+							player.getInventory().addItem(itemStack);
+						}
+					}
+				, 5);
 			}
 		}
 
@@ -1364,6 +1390,7 @@ public class Spells implements Listener
 	 private boolean                             soundsEnabled                  = true;
 	 private boolean                             fillWands                      = false;
 	 private boolean                             indestructibleWands            = true;
+	 private boolean                             keepWandsOnDeath	            = true;
 	 private int								 messageThrottle				= 0;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
