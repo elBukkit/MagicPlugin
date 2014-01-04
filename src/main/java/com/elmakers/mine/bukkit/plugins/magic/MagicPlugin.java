@@ -131,7 +131,7 @@ public class MagicPlugin extends JavaPlugin
 				return true;
 			}
 			String[] args2 = Arrays.copyOfRange(args, 1, args.length);
-			return processWandCommand(player, args2);
+			return processWandCommand(sender, player, args2);
 		}
 
 		// Everything beyond this point is is-game only
@@ -155,7 +155,7 @@ public class MagicPlugin extends JavaPlugin
 
 		if (commandName.equalsIgnoreCase("wand"))
 		{
-			return processWandCommand(player, args);
+			return processWandCommand(sender, player, args);
 		}
 
 		if (commandName.equalsIgnoreCase("cast"))
@@ -173,7 +173,7 @@ public class MagicPlugin extends JavaPlugin
 		return false;
 	}
 	
-	protected boolean processWandCommand(Player player, String[] args)
+	protected boolean processWandCommand(CommandSender sender, Player player, String[] args)
 	{
 		String subCommand = "";
 		String[] args2 = args;
@@ -187,28 +187,28 @@ public class MagicPlugin extends JavaPlugin
 		}
 		if (subCommand.equalsIgnoreCase("list"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
 
 			onWandList(player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("add"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
 
 			onWandAdd(player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("configure"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
 
 			onWandConfigure(player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("remove"))
 		{   
-			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
 
 			onWandRemove(player, args2);
 			return true;
@@ -216,13 +216,13 @@ public class MagicPlugin extends JavaPlugin
 
 		if (subCommand.equalsIgnoreCase("name"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
 
 			onWandName(player, args2);
 			return true;
 		}
 
-		if (!spells.hasPermission(player, "Magic.commands.wand")) return true;
+		if (!spells.hasPermission(sender, "Magic.commands.wand")) return true;
 		return onWand(player, args);
 	}
 

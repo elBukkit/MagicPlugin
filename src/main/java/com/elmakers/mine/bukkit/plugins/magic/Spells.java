@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -693,6 +694,12 @@ public class Spells implements Listener
 	public boolean hasPermission(Player player, String pNode)
 	{
 		return hasPermission(player, pNode, false);
+	}
+	
+	public boolean hasPermission(CommandSender sender, String pNode)
+	{
+		if (!(sender instanceof Player)) return true;
+		return hasPermission((Player)sender, pNode, false);
 	}
 
 	/*
