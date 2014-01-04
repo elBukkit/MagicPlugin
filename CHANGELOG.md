@@ -6,6 +6,7 @@
  - Add /wandp command for remote wand manipulation, or command blocks.
  - Make wands indestructible (controlled via indestructible_wands config option) - except in lava ;(
  - Fix the camera spell
+ - Persist blocks that are scheduled for cleanup.
 
 ## 2.7.5
 

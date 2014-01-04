@@ -57,7 +57,7 @@ public class CushionSpell extends Spell
 			}
 		}
 
-		spells.scheduleCleanup(cushionBlocks);
+		spells.scheduleCleanup(player.getName(), cushionBlocks);
 		return SpellResult.SUCCESS;
 	}
 

@@ -2,19 +2,26 @@ package com.elmakers.mine.bukkit.utilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.bukkit.Server;
 import org.bukkit.block.Block;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.CleanupBlocksTask;
 import com.elmakers.mine.bukkit.plugins.magic.Spells;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class UndoQueue
 {
 	private final LinkedList<BlockList> blockQueue = new LinkedList<BlockList>();
+	private final Set<BlockList> 		scheduledBlocks = new HashSet<BlockList>();
 	private int                         maxSize    = 0;
 
 	public void add(BlockList blocks)
@@ -24,6 +31,24 @@ public class UndoQueue
 			blockQueue.removeFirst();
 		}
 		blockQueue.add(blocks);
+	}
+	
+	public void scheduleCleanup(Spells spells, BlockList blocks)
+	{
+		scheduledBlocks.add(blocks);
+		
+		Plugin plugin = spells.getPlugin();
+		Server server = plugin.getServer();
+		BukkitScheduler scheduler = server.getScheduler();
+
+		// scheduler works in ticks- 20 ticks per second.
+		long ticksToLive = blocks.getTimeToLive() * 20 / 1000;
+		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(this, spells, blocks), ticksToLive);
+	}
+	
+	public void removeScheduledCleanup(BlockList blockList)
+	{
+		scheduledBlocks.remove(blockList);
 	}
 
 	public BlockList getLast()
@@ -37,7 +62,6 @@ public class UndoQueue
 
 	public BlockList getLast(Block target)
 	{
-
 		if (blockQueue.size() == 0)
 		{
 			return null;
@@ -84,7 +108,7 @@ public class UndoQueue
 		return true;
 	}
 	
-	public void load(ConfigurationNode node)
+	public void load(Spells spells, ConfigurationNode node)
 	{
 		try {
 			if (node == null) return;
@@ -94,12 +118,18 @@ public class UndoQueue
 				list.load(listNode);
 				blockQueue.add(list);
 			}
+			nodeList = node.getNodeList("scheduled", null);
+			for (ConfigurationNode listNode : nodeList) {
+				BlockList list = new BlockList();
+				list.load(listNode);
+				scheduleCleanup(spells, list);
+			}
 		} catch (Exception ex) {
-			
+			spells.getPlugin().getLogger().warning("Failed to load undo data: " + ex.getMessage());
 		}
 	}
 	
-	public void save(ConfigurationNode node)
+	public void save(Spells spells, ConfigurationNode node)
 	{
 		try {
 			List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
@@ -109,8 +139,15 @@ public class UndoQueue
 				nodeList.add(listNode);
 			}
 			node.setProperty("undo", nodeList);
+			nodeList = new ArrayList<Map<String, Object>>();
+			for (BlockList list : scheduledBlocks) {
+				Map<String, Object> listNode = new HashMap<String, Object>();
+				list.save(listNode);
+				nodeList.add(listNode);
+			}
+			node.setProperty("scheduled", nodeList);
 		} catch (Exception ex) {
-			
+			spells.getPlugin().getLogger().warning("Failed to save undo data: " + ex.getMessage());
 		}
 	}
 }

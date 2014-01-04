@@ -1255,7 +1255,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			lastCast = node.getLong("last_cast", 0);
 			onLoad(node);
 		} catch (Exception ex) {
-			
+			spells.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
 		}
 	}
 	
@@ -1265,7 +1265,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			node.setProperty("last_cast", lastCast);
 			onSave(node);
 		} catch (Exception ex) {
-			
+			spells.getPlugin().getLogger().warning("Failed to save data for spell " + name + ": " + ex.getMessage());
 		}
 	}
 

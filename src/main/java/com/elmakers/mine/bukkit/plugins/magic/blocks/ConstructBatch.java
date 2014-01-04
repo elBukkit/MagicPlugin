@@ -76,7 +76,7 @@ public class ConstructBatch implements BlockBatch {
 			else
 			{
 				constructedBlocks.setTimeToLive(timeToLive);
-				spells.scheduleCleanup(constructedBlocks);
+				spells.scheduleCleanup(playerName, constructedBlocks);
 			}
 			spell.castMessage("Constructed " + constructedBlocks.size() + " blocks");
 		}

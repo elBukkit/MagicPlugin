@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -62,7 +61,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -221,8 +219,13 @@ public class Spells implements Listener
 	public void addToUndoQueue(String playerName, BlockList blocks)
 	{
 		UndoQueue queue = getUndoQueue(playerName);
-
 		queue.add(blocks);
+	}
+
+	public void scheduleCleanup(String playerName, BlockList blocks)
+	{
+		UndoQueue queue = getUndoQueue(playerName);
+		queue.scheduleCleanup(this, blocks);
 	}
 
 	public boolean undoAny(Player player, Block target)
@@ -265,18 +268,6 @@ public class Spells implements Listener
 	{
 		UndoQueue queue = getUndoQueue(playerName);
 		return queue.getLast();
-	}
-
-	public void scheduleCleanup(BlockList blocks)
-	{
-		Server server = plugin.getServer();
-		BukkitScheduler scheduler = server.getScheduler();
-
-		// scheduler works in ticks- 20 ticks per second.
-		long ticksToLive = blocks.getTimeToLive() * 20 / 1000;
-		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(this, blocks), ticksToLive);
-		
-		// TODO: Track these so they can be saved and restored.
 	}
 
 	/*

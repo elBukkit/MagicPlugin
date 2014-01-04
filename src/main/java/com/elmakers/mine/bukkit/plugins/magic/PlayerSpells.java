@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class PlayerSpells implements CostReducer
 {
 	protected Player player;
+	protected String playerName;
 	protected Spells master;
 	protected HashMap<String, Spell> 			spells 						  = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
@@ -196,9 +197,14 @@ public class PlayerSpells implements CostReducer
 
 	public void setPlayer(Player player)
 	{
-		this.player = player;
-		for (Spell spell : spells.values()) {
-			spell.setPlayer(player);
+		if (player != this.player) {
+			this.player = player;
+			for (Spell spell : spells.values()) {
+				spell.setPlayer(player);
+			}
+		}
+		if (player != null) {
+			playerName = player.getName();
 		}
 	}
 
@@ -486,7 +492,7 @@ public class PlayerSpells implements CostReducer
 	{
 		try {
 			if (configNode == null) return;
-			getUndoQueue().load(configNode);
+			getUndoQueue().load(master, configNode);
 			ConfigurationNode spellNode = configNode.getNode("spells");
 			if (spellNode != null) {
 				List<String> keys = spellNode.getKeys();
@@ -498,20 +504,20 @@ public class PlayerSpells implements CostReducer
 				}
 			}
 		} catch (Exception ex) {
-			
+			master.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
 		}		
 	}
 	
 	protected void save(ConfigurationNode configNode)
 	{
 		try {
-			getUndoQueue().save(configNode);
+			getUndoQueue().save(master, configNode);
 			ConfigurationNode spellNode = configNode.createChild("spells");
 			for (Spell spell : spells.values()) {
 				spell.save(spellNode.createChild(spell.getKey()));
 			}
 		} catch (Exception ex) {
-			
+			master.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
 		}	
 	}
 }
