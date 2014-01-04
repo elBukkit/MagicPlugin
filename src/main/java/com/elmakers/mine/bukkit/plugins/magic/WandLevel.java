@@ -41,8 +41,8 @@ public class WandLevel {
 	private final LinkedList<WeightedPair<Float>> hasteProbability = new LinkedList<WeightedPair<Float>>();
 	
 	public static final int maxUses = 500;
-	public static final int maxMaxXp = 10000;
-	public static final int maxXpRegeneration = 100;
+	public static final int maxMaxXp = 1000;
+	public static final int maxXpRegeneration = 20;
 	public static final int maxRegeneration = 20;
 	public static final float maxReduction = 0.9f;
 	public static final float maxProtection = 0.9f;
