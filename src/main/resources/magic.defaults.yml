@@ -14,14 +14,14 @@ general:
     crafting_material_upper: nether_star
     crafting_material_lower: blaze_rod
     crafting_output: random(1)
-    enable_combining: true
+    enable_combining: false
     enable_enchanting: true
     enable_block_populator: true
     enable_essentials_signs: true
     undo_depth: 64
     max_power_multiplier: 2
     fill_wands: false
-    keep_wands_on_death: true
+    keep_wands_on_death: false
     indestructible_wands: true
     right_click_cycles: false
     populate_chests:
