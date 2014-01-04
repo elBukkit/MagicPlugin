@@ -114,6 +114,17 @@ public class NMSUtils {
 		}
 		return handle;
 	}
+
+	protected static Object getHandle(org.bukkit.entity.Entity entity) {
+		Object handle = null;
+		try {
+			Method handleMethod = entity.getClass().getMethod("getHandle");
+			handle = handleMethod.invoke(entity);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return handle;
+	}
 	
 	public static boolean isDone(org.bukkit.Chunk chunk) {
 		Object chunkHandle = getHandle(chunk);

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.7.7
+
+ - Make wands really indestructible (thanks JRL1004 and Jogy34)!
+
 ## 2.7.6
 
  - Change players.yml undo format to be more sane.

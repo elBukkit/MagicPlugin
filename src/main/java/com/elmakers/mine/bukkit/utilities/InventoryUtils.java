@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -204,6 +205,17 @@ public class InventoryUtils extends NMSUtils
 			Object dataWatcher = getDataWatcherMethod.invoke(entityLiving);
 			Method watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
 			watchMethod.invoke(dataWatcher, (int)7, Integer.valueOf(color));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void setInvulnerable(Entity entity) {
+		try {
+			Object handle = getHandle(entity);
+			Field invulnerableField = class_Entity.getDeclaredField("invulnerable");
+			invulnerableField.setAccessible(true);
+			invulnerableField.set(handle, true);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

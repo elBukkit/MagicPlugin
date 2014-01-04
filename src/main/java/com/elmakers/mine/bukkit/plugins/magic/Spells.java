@@ -36,6 +36,7 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -67,6 +68,7 @@ import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.URLMap;
@@ -847,6 +849,16 @@ public class Spells implements Listener
 		{
 			event.getEntity().setTicksLived(1);
 			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onItemSpawn(ItemSpawnEvent event)
+	{
+		if (indestructibleWands && Wand.isWand(event.getEntity().getItemStack()))
+		{
+			plugin.getLogger().info("MAKING WAND INVULNERABLE");
+			InventoryUtils.setInvulnerable(event.getEntity());
 		}
 	}
 
