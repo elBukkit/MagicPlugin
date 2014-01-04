@@ -855,7 +855,6 @@ public class Spells implements Listener
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event)
 	{
-		plugin.getLogger().info("Entity Damage: " + event.getEntity().getClass().getName());
 		Entity entity = event.getEntity();
 		if (entity instanceof Player)
 		{
@@ -867,7 +866,6 @@ public class Spells implements Listener
 			Item item = (Item)entity;
 			if (Wand.isWand(item.getItemStack()))
 			{
-				plugin.getLogger().info("PROTECTED WAND");
 				event.setCancelled(true);
 			}
 		}
