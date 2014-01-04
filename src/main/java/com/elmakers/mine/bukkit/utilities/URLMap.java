@@ -308,16 +308,22 @@ public class URLMap extends MapRenderer  {
 	
 	@SuppressWarnings("deprecation")
 	private MapView getMapView() {
-		MapView mapView = Bukkit.getMap(id);;
+		MapView mapView = Bukkit.getMap(id);
 		if (mapView == null) {
 			plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey());
 			return null;
 		}
 		List<MapRenderer> renderers = mapView.getRenderers();
+		boolean needsRenderer = false;
 		for (MapRenderer renderer : renderers) {
-			mapView.removeRenderer(renderer);
+			if (!(renderer instanceof URLMap)) {
+				mapView.removeRenderer(renderer);
+				needsRenderer = true;
+			}
 		}
-		mapView.addRenderer(this);
+		if (needsRenderer) {
+			mapView.addRenderer(this);
+		}
 		return mapView;
 	}
 
