@@ -4,6 +4,7 @@
 
  - Change players.yml undo format to be more sane.
  - Add /wandp command for remote wand manipulation, or command blocks.
+ - Make wands indestructible (controlled via indestructible_wands config option) - except in lava ;(
 
 ## 2.7.5
 

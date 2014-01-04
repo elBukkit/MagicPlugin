@@ -22,7 +22,9 @@ import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,8 +32,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -271,6 +275,8 @@ public class Spells implements Listener
 		// scheduler works in ticks- 20 ticks per second.
 		long ticksToLive = blocks.getTimeToLive() * 20 / 1000;
 		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(this, blocks), ticksToLive);
+		
+		// TODO: Track these so they can be saved and restored.
 	}
 
 	/*
@@ -576,6 +582,7 @@ public class Spells implements Listener
 		maxBlockUpdates = generalNode.getInt("max_block_updates", 100);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 		fillWands = generalNode.getBoolean("fill_wands", fillWands);
+		indestructibleWands = generalNode.getBoolean("indestructible_wands", indestructibleWands);
 		maxPowerMultiplier = (float)generalNode.getDouble("max_power_multiplier", maxPowerMultiplier);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
@@ -826,14 +833,43 @@ public class Spells implements Listener
 		PlayerSpells spells = getPlayerSpells(player);
 		spells.onPlayerDamage(event);
 	}
+	
+	@EventHandler
+	public void onEntityCombust(EntityCombustEvent event)
+	{
+		if (!(event.getEntity() instanceof Player)) return;
+		PlayerSpells spells = getPlayerSpells((Player)event.getEntity());
+		spells.onPlayerCombust(event);
+	}
+	
+	@EventHandler
+	public void onItemDespawn(ItemDespawnEvent event)
+	{
+		if (indestructibleWands && Wand.isWand(event.getEntity().getItemStack()))
+		{
+			event.getEntity().setTicksLived(0);
+			event.setCancelled(true);
+		}
+	}
 
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event)
 	{
-		if (Player.class.isInstance(event.getEntity()))
+		plugin.getLogger().info("Entity Damage: " + event.getEntity().getClass().getName());
+		Entity entity = event.getEntity();
+		if (entity instanceof Player)
 		{
 			Player player = (Player)event.getEntity();
 			onPlayerDamage(player, event);
+		}
+		if (entity instanceof Item && indestructibleWands)
+		{
+			Item item = (Item)entity;
+			if (Wand.isWand(item.getItemStack()))
+			{
+				plugin.getLogger().info("PROTECTED WAND");
+				event.setCancelled(true);
+			}
 		}
 	}
 
@@ -1319,6 +1355,7 @@ public class Spells implements Listener
 	 private boolean                             quiet                          = true;
 	 private boolean                             soundsEnabled                  = true;
 	 private boolean                             fillWands                      = false;
+	 private boolean                             indestructibleWands            = true;
 	 private int								 messageThrottle				= 0;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
