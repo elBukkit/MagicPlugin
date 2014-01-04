@@ -562,7 +562,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		// Added snow here to avoid blink bounciness
 		return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
 	}
-
+	
+	public Location tryFindPlaceToStand(Location playerLoc)
+	{
+		Location location = findPlaceToStand(playerLoc, false);
+		if (location == null) {
+			location = findPlaceToStand(playerLoc, true);
+		}
+		return location == null ? playerLoc : location;
+	}
+	
 	public Location findPlaceToStand(Location playerLoc, boolean goUp)
 	{
 		int step;
@@ -580,7 +589,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		int y = (int) Math.round(playerLoc.getY() + step + step);
 		int z = (int) Math.round(playerLoc.getZ() - 0.5);
 
-		World world = player.getWorld();
+		World world = playerLoc.getWorld();
 
 		// search for a spot to stand
 		while (4 < y && y < 253)
