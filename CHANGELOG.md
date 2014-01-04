@@ -3,6 +3,7 @@
 ## 2.7.6
 
  - Change players.yml undo format to be more sane.
+ - Add /wandp command for remote wand manipulation, or command blocks.
 
 ## 2.7.5
 

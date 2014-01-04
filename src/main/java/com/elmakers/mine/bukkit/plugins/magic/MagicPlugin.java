@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -114,6 +115,25 @@ public class MagicPlugin extends JavaPlugin
 			}
 		}
 
+		if (commandName.equalsIgnoreCase("wandp"))
+		{
+			if (args.length == 0) {
+				sender.sendMessage("Usage: /wandp [player] [wand name/command]");
+				return true;
+			}
+			Player player = Bukkit.getPlayer(args[0]);
+			if (player == null) {
+				sender.sendMessage("Can't find player " + args[0]);
+				return true;
+			}
+			if (!player.isOnline()) {
+				sender.sendMessage("Player " + args[0] + " is not online");
+				return true;
+			}
+			String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+			return processWandCommand(player, args2);
+		}
+
 		// Everything beyond this point is is-game only
 		if (!(sender instanceof Player)) {
 			if (commandName.equalsIgnoreCase("spells"))
@@ -135,55 +155,7 @@ public class MagicPlugin extends JavaPlugin
 
 		if (commandName.equalsIgnoreCase("wand"))
 		{
-			String subCommand = "";
-			String[] args2 = args;
-
-			if (args.length > 0) {
-				subCommand = args[0];;
-				args2 = new String[args.length - 1];
-				for (int i = 1; i < args.length; i++) {
-					args2[i - 1] = args[i];
-				}
-			}
-			if (subCommand.equalsIgnoreCase("list"))
-			{
-				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
-
-				onWandList(player);
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("add"))
-			{
-				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
-
-				onWandAdd(player, args2);
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("configure"))
-			{
-				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
-
-				onWandConfigure(player, args2);
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("remove"))
-			{   
-				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
-
-				onWandRemove(player, args2);
-				return true;
-			}
-
-			if (subCommand.equalsIgnoreCase("name"))
-			{
-				if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
-
-				onWandName(player, args2);
-				return true;
-			}
-
-			if (!spells.hasPermission(player, "Magic.commands.wand")) return true;
-			return onWand(player, args);
+			return processWandCommand(player, args);
 		}
 
 		if (commandName.equalsIgnoreCase("cast"))
@@ -199,6 +171,59 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		return false;
+	}
+	
+	protected boolean processWandCommand(Player player, String[] args)
+	{
+		String subCommand = "";
+		String[] args2 = args;
+
+		if (args.length > 0) {
+			subCommand = args[0];
+			args2 = new String[args.length - 1];
+			for (int i = 1; i < args.length; i++) {
+				args2[i - 1] = args[i];
+			}
+		}
+		if (subCommand.equalsIgnoreCase("list"))
+		{
+			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+
+			onWandList(player);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("add"))
+		{
+			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+
+			onWandAdd(player, args2);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("configure"))
+		{
+			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+
+			onWandConfigure(player, args2);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("remove"))
+		{   
+			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+
+			onWandRemove(player, args2);
+			return true;
+		}
+
+		if (subCommand.equalsIgnoreCase("name"))
+		{
+			if (!spells.hasPermission(player, "Magic.commands.wand." + subCommand)) return true;
+
+			onWandName(player, args2);
+			return true;
+		}
+
+		if (!spells.hasPermission(player, "Magic.commands.wand")) return true;
+		return onWand(player, args);
 	}
 
 	public boolean onWandList(CommandSender sender) {

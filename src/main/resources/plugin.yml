@@ -19,6 +19,10 @@ commands:
     description: Create and modify wands
     usage: /wand [add|remove] [spell]
     permission: Magic.commands.wand
+  wandp:
+    description: Create and modify wands for another player
+    usage: /wand [player] [add|remove] [spell]
+    permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
     usage: /magic [reload|reset]
@@ -56,12 +60,36 @@ permissions:
     description: Player may name a wand
     type: boolean
     default: op
+  Magic.commands.wandp:
+    description: Player may create a wand for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.add:
+    description: Player may add a spell to a wand for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.configure:
+    description: Player may set wand properties for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.remove:
+    description: Player may remove a spell from a wand for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.name:
+    description: Player may name a wand for another player
+    type: boolean
+    default: op
   Magic.commands.magic.reset:
     description: Player may reset spells to defaults
     type: boolean
     default: op
   Magic.commands.magic.reload:
     description: Player may reload the configuration
+    type: boolean
+    default: op
+  Magic.commands.magic.populate:
+    description: Player may populate the world with chests
     type: boolean
     default: op
   Magic.wand.use:
