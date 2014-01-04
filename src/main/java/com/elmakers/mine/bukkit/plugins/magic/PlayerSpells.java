@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -273,6 +274,14 @@ public class PlayerSpells implements CostReducer
 			{
 				listener.onPlayerDeath(event);
 			}
+		}
+	}
+	
+	public void onPlayerCombust(EntityCombustEvent event)
+	{
+		if (activeWand != null && activeWand.getDamageReductionFire() > 0)
+		{
+			event.setCancelled(true);
 		}
 	}
 	
