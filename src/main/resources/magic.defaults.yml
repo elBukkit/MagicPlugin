@@ -18,7 +18,7 @@ general:
     enable_enchanting: true
     enable_block_populator: true
     enable_essentials_signs: true
-    undo_depth: 256
+    undo_depth: 64
     max_power_multiplier: 2
     fill_wands: false
     right_click_cycles: false
