@@ -8,6 +8,10 @@
  - Add stained glass to the painter wand
  - Add click cooldown as a work-around for squirrely interact event behavior
  - Add "commit" spell to clear your undo queue.
+ - Add "modifiable" wand property
+ - Integrates with dynmap for tile updates.
+ - Fix logger to use the standard Plugin logger.
+ - Fix wand names reverting when closing the wand inventory.
 
 ## 2.7.6
 

@@ -1405,6 +1405,9 @@ public class Wand implements CostReducer {
 			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
 			activePlayer.restoreInventory();
 			activePlayer.getPlayer().updateInventory();
+			item =  activePlayer.getPlayer().getInventory().getItemInHand();
+			updateName();
+			updateInventoryNames(true);
 		}
 		saveState();
 	}
