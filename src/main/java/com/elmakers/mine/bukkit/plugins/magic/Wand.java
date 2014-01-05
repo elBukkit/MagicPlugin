@@ -58,6 +58,7 @@ public class Wand implements CostReducer {
 	private float damageReductionExplosions = 0;
 	private float power = 0;
 	private boolean hasInventory = false;
+	private boolean modifiable = true;
 	private int uses = 0;
 	private int xp = 0;
 	
@@ -174,6 +175,10 @@ public class Wand implements CostReducer {
 
 	public float getCostReduction() {
 		return costReduction;
+	}
+	
+	public boolean isModifiable() {
+		return modifiable;
 	}
 	
 	public boolean usesMana() {
@@ -509,6 +514,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration));
 		InventoryUtils.setMeta(wandNode, "uses", Integer.toString(uses));
 		InventoryUtils.setMeta(wandNode, "has_inventory", Integer.toString((hasInventory ? 1 : 0)));
+		InventoryUtils.setMeta(wandNode, "modifiable", Integer.toString((modifiable ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 	}
 	
@@ -548,6 +554,7 @@ public class Wand implements CostReducer {
 		hungerRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration)));
 		uses = Integer.parseInt(InventoryUtils.getMeta(wandNode, "uses", Integer.toString(uses)));
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
+		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
 		
 		// This is done here as an extra safety measure.
@@ -557,6 +564,8 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	public void removeMaterial(Material material, byte data) {
+		if (!modifiable) return;
+		
 		if (isInventoryOpen()) {
 			saveInventory();
 		}
@@ -615,6 +624,8 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean addMaterial(String materialName, boolean makeActive) {
+		if (!modifiable) return false;
+		
 		Integer materialId = null;
 		byte data = 0;
 		try {
@@ -649,6 +660,8 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	public boolean addMaterial(Material material, byte data, boolean makeActive) {
+		if (!modifiable) return false;
+		
 		if (isInventoryOpen()) {
 			saveInventory();
 		}
@@ -664,6 +677,8 @@ public class Wand implements CostReducer {
 	}
 	
 	public void removeSpell(String spellName) {
+		if (!modifiable) return;
+		
 		if (isInventoryOpen()) {
 			saveInventory();
 		}
@@ -700,6 +715,8 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean addSpell(String spellName, boolean makeActive) {
+		if (!modifiable) return false;
+		
 		if (isInventoryOpen()) {
 			saveInventory();
 		}
@@ -728,15 +745,16 @@ public class Wand implements CostReducer {
 
 	private String getActiveWandName(Spell spell, String materialName) {
 		// Build wand name
-		String name = wandName;
+		ChatColor wandColor = modifiable ? ChatColor.AQUA : ChatColor.RED;
+		String name = wandColor + wandName;
 		
 		// Add active spell to description
 		if (spell != null) {
 			if (materialName != null) {
 				materialName = materialName.replace('_', ' ');
-				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandName + ")";
+				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
 			} else {
-				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandName + ")";
+				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
 			}
 		}
 		int remaining = getRemainingUses();
@@ -1112,6 +1130,8 @@ public class Wand implements CostReducer {
 					String randomLevel = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
 					level = Integer.parseInt(randomLevel);
 				}
+				ConfigurationNode randomTemplate = wandTemplates.get("random");
+				wand.modifiable = (boolean)randomTemplate.getBoolean("modifiable", true);
 				wand.randomize(level, false);
 				return wand;
 			}
@@ -1155,6 +1175,8 @@ public class Wand implements CostReducer {
 	}
 	
 	public void add(Wand other) {
+		if (!modifiable || !other.modifiable) return;
+		
 		costReduction = Math.max(costReduction, other.costReduction);
 		power = Math.max(power, other.power);
 		damageReduction = Math.max(damageReduction, other.damageReduction);
@@ -1197,6 +1219,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public void configureProperties(ConfigurationNode wandConfig) {
+		modifiable = (boolean)wandConfig.getBoolean("modifiable", modifiable);
 		costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
 		power = (float)wandConfig.getDouble("power", power);

@@ -262,7 +262,7 @@ public class MagicPlugin extends JavaPlugin
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first (use /wand if needed)");
+			player.sendMessage("Equip a wand first");
 			return true;
 		}
 		ConfigurationNode node = new ConfigurationNode();
@@ -283,8 +283,11 @@ public class MagicPlugin extends JavaPlugin
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first (use /wand if needed)");
+			player.sendMessage("Equip a wand first");
 			return true;
+		}
+		if (!wand.isModifiable()) {
+			player.sendMessage("This wand can not be modified");
 		}
 
 		String spellName = parameters[0];
@@ -335,8 +338,11 @@ public class MagicPlugin extends JavaPlugin
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first (use /wand if needed)");
+			player.sendMessage("Equip a wand first");
 			return true;
+		}
+		if (!wand.isModifiable()) {
+			player.sendMessage("This wand can not be modified");
 		}
 
 		String spellName = parameters[0];
@@ -377,7 +383,7 @@ public class MagicPlugin extends JavaPlugin
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first (use /wand if needed)");
+			player.sendMessage("Equip a wand first");
 			return true;
 		}
 		
