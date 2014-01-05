@@ -1,4 +1,7 @@
 wands:
+    default:
+        xp_regeneration: 5
+        xp_max: 20
     random:
         levels: 1,5,15,40
         property_count:
@@ -229,6 +232,38 @@ wands:
             - stained_clay:13
             - stained_clay:14
             - stained_clay:15
+            - stained_glass:0
+            - stained_glass:1
+            - stained_glass:2
+            - stained_glass:3
+            - stained_glass:4
+            - stained_glass:5
+            - stained_glass:6
+            - stained_glass:7
+            - stained_glass:8
+            - stained_glass:9
+            - stained_glass:10
+            - stained_glass:11
+            - stained_glass:12
+            - stained_glass:13
+            - stained_glass:14
+            - stained_glass_pane:15
+            - stained_glass_pane:0
+            - stained_glass_pane:1
+            - stained_glass_pane:2
+            - stained_glass_pane:3
+            - stained_glass_pane:4
+            - stained_glass_pane:5
+            - stained_glass_pane:6
+            - stained_glass_pane:7
+            - stained_glass_pane:8
+            - stained_glass_pane:9
+            - stained_glass_pane:10
+            - stained_glass_pane:11
+            - stained_glass_pane:12
+            - stained_glass_pane:13
+            - stained_glass_pane:14
+            - stained_glass_pane:15
     engineer:
         cost_reduction: 1
         spells:
