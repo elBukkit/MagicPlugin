@@ -30,6 +30,16 @@ public class UndoSpell extends Spell
 		if (parameters.containsKey("type"))
 		{
 			String typeString = (String)parameters.getString("type");
+			if (typeString.equals("commit"))
+			{
+				if (spells.commit(player.getName())) {
+					castMessage("Undo queue cleared");
+					return SpellResult.SUCCESS;
+				} else {
+					castMessage("Nothing to commit");
+					return SpellResult.FAILURE;
+				}
+			}
 			boolean targetAll = typeString.equals("target_all");
 			if (typeString.equals("target") || targetAll)
 			{

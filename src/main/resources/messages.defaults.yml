@@ -183,6 +183,9 @@ messages:
         undo:
             name: Undo
             description: Undo your last action
+        commit:
+            name: Commit
+            description: Commit your actions (clears undo queue)
         push:
             name: Push
             description: Push things away from you

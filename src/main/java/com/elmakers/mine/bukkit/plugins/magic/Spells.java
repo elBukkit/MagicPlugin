@@ -24,7 +24,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -253,6 +252,14 @@ public class Spells implements Listener
 	{
 		UndoQueue queue = getUndoQueue(playerName);
 		return queue.undo(this);
+	}
+
+	public boolean commit(String playerName)
+	{
+		UndoQueue queue = getUndoQueue(playerName);
+		if (queue.getSize() == 0) return false;
+		queue.commit();
+		return true;
 	}
 
 	public boolean undo(String playerName, Block target)
@@ -572,8 +579,9 @@ public class Spells implements Listener
 		wandCycling = generalNode.getBoolean("right_click_cycles", wandCycling);
 		silent = generalNode.getBoolean("silent", silent);
 		quiet = generalNode.getBoolean("quiet", quiet);
+		clickCooldown = generalNode.getInt("click_cooldown", clickCooldown);
 		messageThrottle = generalNode.getInt("message_throttle", 0);
-		maxBlockUpdates = generalNode.getInt("max_block_updates", 100);
+		maxBlockUpdates = generalNode.getInt("max_block_updates", maxBlockUpdates);
 		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
 		fillWands = generalNode.getBoolean("fill_wands", fillWands);
 		indestructibleWands = generalNode.getBoolean("indestructible_wands", indestructibleWands);
@@ -883,7 +891,6 @@ public class Spells implements Listener
 	{
 		if (indestructibleWands && Wand.isWand(event.getEntity().getItemStack()))
 		{
-			plugin.getLogger().info("MAKING WAND INVULNERABLE");
 			InventoryUtils.setInvulnerable(event.getEntity());
 		}
 	}
@@ -897,14 +904,6 @@ public class Spells implements Listener
 			Player player = (Player)event.getEntity();
 			onPlayerDamage(player, event);
 		}
-		if (entity instanceof Item && indestructibleWands)
-		{
-			Item item = (Item)entity;
-			if (Wand.isWand(item.getItemStack()))
-			{
-				event.setCancelled(true);
-			}
-		}
 	}
 
 	@EventHandler
@@ -912,6 +911,8 @@ public class Spells implements Listener
 	{
 		Player player = event.getPlayer();		
 		PlayerSpells playerSpells = getPlayerSpells(player);
+		if (!playerSpells.checkLastClick(clickCooldown)) return;
+		
 		Wand wand = playerSpells.getActiveWand();
 		
 		if (wand == null && Wand.hasActiveWand(player)) {
@@ -1392,6 +1393,7 @@ public class Spells implements Listener
 	 private boolean                             indestructibleWands            = true;
 	 private boolean                             keepWandsOnDeath	            = true;
 	 private int								 messageThrottle				= 0;
+	 private int								 clickCooldown					= 10;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;

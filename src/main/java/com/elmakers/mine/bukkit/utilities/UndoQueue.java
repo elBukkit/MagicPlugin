@@ -150,4 +150,14 @@ public class UndoQueue
 			spells.getPlugin().getLogger().warning("Failed to save undo data: " + ex.getMessage());
 		}
 	}
+	
+	public int getSize()
+	{
+		return blockQueue.size();
+	}
+	
+	public void commit()
+	{
+		blockQueue.clear();
+	}
 }
