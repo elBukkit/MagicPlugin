@@ -62,6 +62,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -77,6 +78,11 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Spells implements Listener 
 {
+	public Spells(Plugin plugin)
+	{
+		this.log = plugin.getLogger();
+	}
+	
 	/*
 	 * Public API - Use for hooking up a plugin, or calling a spell
 	 */
@@ -419,6 +425,23 @@ public class Spells implements Listener
 		if (regionManager == null) {
 			log.info("WorldGuard not found, not using a region manager.");
 		}
+		
+		// Try to (dynamically) link to dynmap:
+		try {
+			dynmap = plugin.getServer().getPluginManager().getPlugin("dynmap");
+			triggerRenderMethod = dynmap.getClass().getMethod("triggerRenderOfBlock", String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+			if (triggerRenderMethod != null) {
+				log.info("dynmap found, integrating for map updates");
+			} else {
+				dynmap = null;
+				triggerRenderMethod = null;
+			}
+		} catch (Throwable ex) {
+		}
+		
+		if (regionManager == null) {
+			log.info("WorldGuard not found, not using a region manager.");
+		}
 
 		this.plugin = plugin;
 		load();
@@ -446,6 +469,25 @@ public class Spells implements Listener
 				}
 			}
 		}, 0, 1);
+	}
+	
+	public void updateBlock(Block block)
+	{
+		updateBlock(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+	}
+	
+	public void updateBlock(String worldName, int x, int y, int z)
+	{
+		if (triggerRenderMethod != null && dynmap != null)
+		{
+			try {
+				triggerRenderMethod.invoke(dynmap, worldName, x, y, z);
+			} catch (Exception ex) {
+				plugin.getLogger().warning("Error rendering dynmap tile, disabling integration");
+				triggerRenderMethod = null;
+				dynmap = null;
+			}
+		}
 	}
 	
 	public void addPendingBlockBatch(BlockBatch batch) {
@@ -1146,12 +1188,16 @@ public class Spells implements Listener
 				// Make wands into an enchantable item when placing
 				if (Wand.isWand(cursor)) {
 					Wand wand = new Wand(this, cursor);
-					wand.makeEnchantable(true);
+					if (wand.isModifiable()) {
+						wand.makeEnchantable(true);
+					}
 				}
 				// And turn them back when taking out
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(this, current);
-					wand.makeEnchantable(false);
+					if (wand.isModifiable()) {
+						wand.makeEnchantable(false);
+					}
 				}
 			}
 		}
@@ -1186,6 +1232,9 @@ public class Spells implements Listener
 				{
 					Wand firstWand = new Wand(this, firstItem);
 					Wand secondWand = new Wand(this, secondItem);
+					if (!firstWand.isModifiable() || !secondWand.isModifiable()) {
+						return;
+					}
 					Wand newWand = new Wand(this);
 					newWand.setName(firstWand.getName());
 					newWand.add(firstWand);
@@ -1314,6 +1363,9 @@ public class Spells implements Listener
 	@EventHandler
 	public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
 		if (Wand.isWand(event.getItem())) {
+			Wand wandItem = new Wand(this, event.getItem());
+			if (!wandItem.isModifiable()) return;
+			
 			Set<Integer> levelSet = WandLevel.getLevels();
 			ArrayList<Integer> levels = new ArrayList<Integer>();
 			levels.addAll(levelSet);
@@ -1404,7 +1456,7 @@ public class Spells implements Listener
 	 private LinkedList<BlockBatch>				 pendingBatches					= new LinkedList<BlockBatch>();
 	 private int								 maxBlockUpdates				= 100;
 	 
-	 private final Logger                        log                            = Logger.getLogger("Minecraft");
+	 private final Logger                        log                            ;
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
 
@@ -1415,4 +1467,6 @@ public class Spells implements Listener
 	 
 	 private MagicPlugin                         plugin                         = null;
 	 private Object								 regionManager					= null;
+	 private Object								 dynmap							= null;
+	 private Method								 triggerRenderMethod			= null;
 }

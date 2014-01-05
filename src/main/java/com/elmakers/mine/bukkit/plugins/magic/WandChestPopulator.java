@@ -18,14 +18,14 @@ import com.elmakers.mine.bukkit.utilities.WeightedPair;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandChestPopulator extends BlockPopulator {
-
-	private final static Logger log = Logger.getLogger("Minecraft");
+	private final Logger log;
 	private final Spells spells; 
 	private final LinkedList<WeightedPair<Integer>> baseProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<String>> wandProbability = new LinkedList<WeightedPair<String>>();
 	
 	public WandChestPopulator(Spells spells, ConfigurationNode config) {
 		this.spells = spells;
+		this.log = spells.getLog();
 		
 		// Fetch base probabilities
 		Float currentThreshold = 0.0f;
@@ -81,7 +81,7 @@ public class WandChestPopulator extends BlockPopulator {
 					if (block.getType() == Material.CHEST) {
 						Chest chest = (Chest)block.getState();
 						String[] wandNames = populateChest(chest);
-						if (wandNames.length > 0) {
+						if (wandNames.length > 0 && log != null) {
 							log.info("Added wands to chest: " + StringUtils.join(wandNames, ", ") + " at " + (x + source.getX() * 16) + "," + y + "," + (z + source.getZ() * 16));
 						}
 					}	

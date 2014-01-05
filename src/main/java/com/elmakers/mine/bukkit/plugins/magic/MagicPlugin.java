@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -20,7 +19,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,15 +41,14 @@ public class MagicPlugin extends JavaPlugin
 
 	public void onEnable() 
 	{
+		if (spells == null) {
+			spells = new Spells(this);
+		}
 		initialize();
 
 		BlockData.setServer(getServer());
 		PluginManager pm = getServer().getPluginManager();
-
 		pm.registerEvents(spells, this);
-
-		PluginDescriptionFile pdfFile = this.getDescription();
-		log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled");
 	}
 
 	protected void initialize()
@@ -656,6 +653,5 @@ public class MagicPlugin extends JavaPlugin
 	/*
 	 * Private data
 	 */	
-	private final Spells spells = new Spells();
-	private final Logger log = Logger.getLogger("Minecraft");
+	private Spells spells = null;
 }

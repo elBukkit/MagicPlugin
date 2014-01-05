@@ -251,7 +251,6 @@ public class ThrustSpell extends Spell
 		aim.setY(0);
 		scaledForce.add(aim);
 
-		//Logger.getLogger("Minecraft").info("Applying force: (" + scaledForce.getX() + ", " + scaledForce.getY() + ", "+ scaledForce.getZ() + ")");
 		player.setVelocity(scaledForce);
 
 		this.lastTick = System.currentTimeMillis();
