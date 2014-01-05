@@ -4,6 +4,10 @@
 
  - Make wands really indestructible (thanks JRL1004 and Jogy34)!
  - Add "keep_wands_on_death" option, on by default
+ - Add "default" block in wands.yml to control the wand given with /wand
+ - Add stained glass to the painter wand
+ - Add click cooldown as a work-around for squirrely interact event behavior
+ - Add "commit" spell to clear your undo queue.
 
 ## 2.7.6
 

@@ -1098,6 +1098,12 @@ public class Wand implements CostReducer {
 		Wand wand = new Wand(spells);
 		String wandName = Messages.get("wand.default_name");
 
+		// Check for default wand
+		if ((templateName == null || templateName.length() == 0) && wandTemplates.containsKey("default"))
+		{
+			templateName = "default";
+		}
+		
 		// See if there is a template with this key
 		if (templateName != null && templateName.length() > 0) {
 			if ((templateName.equals("random") || templateName.startsWith("random(")) && wandTemplates.containsKey("random")) {

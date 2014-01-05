@@ -3,29 +3,37 @@
 NEW SPELLS:
 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
+ - banish - sets a player's home and spawn?
+ - Fix/finish stairs spell
+ - Fix tunnel spell
  
 OTHER STUFF:
- 
+ - Add click cooldown, maybe remove fill one-block special case
+ - Remove extra wand damage handlers, test
+ - Remove /magic reset
+ - Add /wand fill command
+ - Add /magic instructions to give an instruciton book
  - Persist player spell data
- - Add server commands to create or upgrade wands
  - Localize all spell-specific messages.
+ - Add "modifiable" wand property
 
 LONG-TERM OR INCOMPLETE:
  
  - Maybe data-drive blink's special list of things it will try to target through?
- - Allow adding materials with data e.g. /wand add material stained_glass_blue
-   - support above in config files, too- ideally even for spell icons.
-   - Related to above, refactor so spell materials don't matter, use nbt data.
  - managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?
 
  - invincibility doesn't protect against magic or lightning?
- - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
  - .. update docs, .. make new video
  - .. Factions support .. ?
 
 DONE:
 
+ - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
+ - Allow adding materials with data e.g. /wand add material stained_glass_blue
+   - support above in config files, too- ideally even for spell icons.
+   - Related to above, refactor so spell materials don't matter, use nbt data.
+ - Add server commands to create or upgrade wands
  - Light spell is not temporary anymore! (meh...)
  - Add other visual effects (fireworks, particles, etc)
  - Add sound effects (breaking on wand break... spell-specific)
