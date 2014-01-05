@@ -19,6 +19,7 @@ general:
     enable_block_populator: true
     enable_essentials_signs: true
     undo_depth: 64
+    click_cooldown: 10
     max_power_multiplier: 2
     fill_wands: false
     keep_wands_on_death: false

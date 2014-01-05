@@ -41,6 +41,7 @@ public class PlayerSpells implements CostReducer
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
 	private ItemStack buildingMaterial = null;
+	private long lastClick = 0;
 
 	public void removeExperience(int xp) {
 		
@@ -519,5 +520,13 @@ public class PlayerSpells implements CostReducer
 		} catch (Exception ex) {
 			master.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
 		}	
+	}
+	
+	public boolean checkLastClick(long maxInterval)
+	{
+		long now = System.currentTimeMillis();
+		long previous = lastClick;
+		lastClick = now;
+		return (previous <= 0 || previous + maxInterval < now);
 	}
 }
