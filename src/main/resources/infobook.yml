@@ -1,0 +1,58 @@
+# InfoBook
+
+# Plugin should check for new versions and inform you on server start?
+version-check: false
+
+# Every player will got books from that list on first login
+onlogin:
+  - server
+  - obtaining
+  - using
+
+# Player cannot drop books from that list.
+protected: {}
+   
+# Book definition
+server:
+  author: NathanWolf
+  title: Server Information
+  description:
+    - Information about this server
+  pages:
+    - '&cServer Information&x &x&0This is a development server for the Magic plugin.&x &xIt is mainly for testing and as a demo for the plugin functionality.'
+    - 'This spawn temple is a protected area. Many spells, destructive ones, will not work here.&x &xExplore around, get the hang of wands, then leave the temple to really test them out.'
+    - 'You are free to play here, and build here.&x &xGriefing is tolerated, though not necessarily appreciated.'
+    - 'If you want to build and you behave well, send NathanWolf a message and I will give you a WorldGuard plot and an engineering wand.'
+    - 'Due to the public and destructive nature of this server, heavy griefing may require occasional world rollbacks.'
+    - 'Magic is a very flexible plugin. Many of the possible configurations and uses are on display here, but not all.'
+    - 'See http://mine.elmakers.com for more information.'
+obtaining:
+  author: NathanWolf
+  title: Obtaining Wands
+  description:
+    - How to get a wand
+  pages:
+    - '&cObtaining Wands&x &x&0Wands can be obtained on this server in a variety of ways.&x &xOn other servers, this is left up to the server administrator.'
+    - '&cSurvival Wands&x &x&0Wands can be crafted by obtaining a Nether Star and Blaze Rod.&x &xThese items are provided in the temple for demo purposes.'
+    - 'A crafted wand will be a randomly generated low-powered wand.&x &xWands can be upgraded on an enchanting table. They may be upgraded multiple times.'
+    - 'An XP generator is provided on this server for demo purposes.'
+    - '&cWand Shop&x &x&0Wands can be purchased in an Essentials shop.&x &xFree money is provided on this server for demo purposes.'
+    - 'Wands can also be upgraded directly via console commands, which can be used in other plugins or command blocks.'
+    - 'This could be used as a level progression mechanism, or quest rewards, or any number of other creative things.'
+    - '&cFinding Wands&x &x&0Magic will randomly add wands to naturally-spawned chests found in dungeons, nether fortresses, villages.'
+    - '&cBending&x &x&0I am a big fan of the Avatar cartoon series.&x &xThere are wands specifically meant to emulate bending.'
+using:
+  author: NathanWolf
+  title: Using Wands
+  description:
+    - How to use a wand
+  pages:
+    - '&cUsing Wands&x &x&0Once you have obtained a wand, you may use it to cast spells.&x &xEach wand is unique and may know one or more spells.'
+    - 'A wand is active when you are holding it.&x &xSome wands have special properties, such as protection or haste, that are only granted when active.'
+    - 'While holding a wand, left-click to cast its active spell.&x &xMost spells will target the block or entity at your cursor.'
+    - 'The wand lore, viewable in your inventory, will show the wand properties and active spell.'
+    - 'Wands that have more than one spell will have a "wand inventory".&x &xRight-click while holding a wand to view its inventory.&x &xRight-click again to close the inventory.'
+    - 'With the wand inventory open, you may use the hotbar buttons (1-9) to change the active spell.&x &xEach spell is represented by a material icon.'
+    - 'Information about spells may be viewed in their lore if you open the player inventory while the wand inventory is open.'
+    - 'Some wands may also contain materials.&x &xCertain spells (construction spells) can be modified to work with a selected material.'
+    - 'Materials may be selected in the same way as spells, move them to the hotbar and then use the hotbar buttons (1-9).'
