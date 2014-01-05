@@ -4,7 +4,7 @@ version: 2.7.7
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
-softdepend: [WorldGuard, Essentials]
+softdepend: [WorldGuard, Essentials, dynmap]
 load: startup
 commands:
   cast:

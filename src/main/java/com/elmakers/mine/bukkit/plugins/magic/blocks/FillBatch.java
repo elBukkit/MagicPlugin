@@ -16,6 +16,7 @@ public class FillBatch implements BlockBatch {
 	private final byte data;
 	private final World world;
 	private final PlayerSpells playerSpells;
+	private final Spells spells;
 	private String playerName;
 
 	private final int absx;
@@ -38,6 +39,7 @@ public class FillBatch implements BlockBatch {
 		this.playerSpells = spell.getPlayerSpells();
 		this.playerName = this.playerSpells.getPlayer().getName();
 		this.world = this.playerSpells.getPlayer().getWorld();
+		this.spells = playerSpells.getMaster();
 		
 		int deltax = p2.getBlockX() - p1.getBlockX();
 		int deltay = p2.getBlockY() - p1.getBlockY();
@@ -67,7 +69,7 @@ public class FillBatch implements BlockBatch {
 	@SuppressWarnings("deprecation")
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		Spells spells = playerSpells.getMaster();
+		boolean updated = false; // Only update map once for efficiency.
 		
 		while (processedBlocks <= maxBlocks && ix < absx) {
 			Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
@@ -79,6 +81,11 @@ public class FillBatch implements BlockBatch {
 			processedBlocks++;
 
 			if (!playerSpells.hasBuildPermission(block)) continue;
+
+			if (!updated) {
+				updated = true;
+				spells.updateBlock(world.getName(), x, y, z);
+			}
 			
 			filledBlocks.add(block);
 			block.setType(material);

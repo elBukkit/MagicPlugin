@@ -95,6 +95,7 @@ public class FillSpell extends Spell
 			}
 			blockRecurse.recurse(targetBlock, action);
 			spells.addToUndoQueue(player, action.getBlocks());
+			spells.updateBlock(targetBlock);
 			castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
 			return SpellResult.SUCCESS;
 		}
@@ -107,6 +108,8 @@ public class FillSpell extends Spell
 			filledBlocks.add(targetBlock);
 			targetBlock.setType(material);
 			targetBlock.setData(data);
+			
+			spells.updateBlock(targetBlock);
 
 			castMessage("Painting with " + material.name().toLowerCase());
 			spells.addToUndoQueue(player, filledBlocks);

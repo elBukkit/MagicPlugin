@@ -25,6 +25,7 @@ public class ConstructBatch implements BlockBatch {
 	private final boolean fill;
 	private final PlayerSpells playerSpells;
 	private final Spell spell;
+	private final Spells spells;
 	private final String playerName;
 	
 	private boolean finished = false;
@@ -41,18 +42,20 @@ public class ConstructBatch implements BlockBatch {
 		this.type = type;
 		this.fill = fill;
 		this.playerSpells = spell.getPlayerSpells();
+		this.spells = playerSpells.getMaster();
 		this.spell = spell;
 		this.playerName = this.playerSpells.getPlayer().getName();
 	}
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		Spells spells = playerSpells.getMaster();
+		boolean updated = false; // Only update map once for efficiency.
 		
 		while (processedBlocks <= maxBlocks && x <= radius) {
-			if (!fillBlock(x, y, z)) {
+			if (!fillBlock(x, y, z, !updated)) {
 				return processedBlocks;
 			}
+			updated = true;
 			
 			y++;
 			if (y > radius) {
@@ -84,7 +87,7 @@ public class ConstructBatch implements BlockBatch {
 		return processedBlocks;
 	}
 
-	public boolean fillBlock(int x, int y, int z)
+	public boolean fillBlock(int x, int y, int z, boolean update)
 	{
 		boolean fillBlock = false;
 		switch(type) {
@@ -124,14 +127,14 @@ public class ConstructBatch implements BlockBatch {
 		boolean success = true;
 		if (fillBlock)
 		{
-			success = success && constructBlock(x, y, z);
-			success = success && constructBlock(-x, y, z);
-			success = success && constructBlock(x, -y, z);
-			success = success && constructBlock(x, y, -z);
-			success = success && constructBlock(-x, -y, z);
-			success = success && constructBlock(x, -y, -z);
-			success = success && constructBlock(-x, y, -z);
-			success = success && constructBlock(-x, -y, -z);
+			success = success && constructBlock(x, y, z, update);
+			success = success && constructBlock(-x, y, z, false);
+			success = success && constructBlock(x, -y, z, false);
+			success = success && constructBlock(x, y, -z, false);
+			success = success && constructBlock(-x, -y, z, false);
+			success = success && constructBlock(x, -y, -z, false);
+			success = success && constructBlock(-x, y, -z, false);
+			success = success && constructBlock(-x, -y, -z, false);
 		}
 		return success;
 	}
@@ -142,12 +145,16 @@ public class ConstructBatch implements BlockBatch {
 	}
 
 	@SuppressWarnings("deprecation")
-	public boolean constructBlock(int dx, int dy, int dz)
+	public boolean constructBlock(int dx, int dy, int dz, boolean update)
 	{
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
 		if (y < 0 || y > 255) return true;
+		
+		if (update) {
+			spells.updateBlock(center.getWorld().getName(), x, y, z);
+		}
 		
 		Block block = center.getWorld().getBlockAt(x, y, z);
 		if (!block.getChunk().isLoaded()) {

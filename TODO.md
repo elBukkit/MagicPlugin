@@ -8,14 +8,14 @@ NEW SPELLS:
  - Fix tunnel spell
  
 OTHER STUFF:
- - Add click cooldown, maybe remove fill one-block special case
- - Remove extra wand damage handlers, test
+ - Add click cooldown, maybe remove fill one-block special case (NEEDS TESTING)
+ - Add location to /magic populate when used in-game
+ - Add /magic depopulate, to remove all wands from chests
+ - Remove extra wand damage handlers, NEEDS TESTING
  - Remove /magic reset
  - Add /wand fill command
- - Add /magic instructions to give an instruciton book
  - Persist player spell data
  - Localize all spell-specific messages.
- - Add "modifiable" wand property
 
 LONG-TERM OR INCOMPLETE:
  
@@ -29,6 +29,8 @@ LONG-TERM OR INCOMPLETE:
 
 DONE:
 
+ - Add /magic instructions to give an instruction book (not doing, use InfoBook instead!)
+ - Add "modifiable" wand property
  - somehow broke ALL my wands trading with a villager.. ? (.. changing to creative?)
  - Allow adding materials with data e.g. /wand add material stained_glass_blue
    - support above in config files, too- ideally even for spell icons.

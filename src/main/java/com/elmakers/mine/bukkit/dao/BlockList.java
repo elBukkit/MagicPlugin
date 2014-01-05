@@ -307,7 +307,7 @@ public class BlockList implements Collection<BlockData>, Serializable
 		if (blockList == null) return;
 
 		passesRemaining--;
-		UndoBatch batch = new UndoBatch(this);
+		UndoBatch batch = new UndoBatch(spells, this);
 		spells.addPendingBlockBatch(batch);
 	}
 	
