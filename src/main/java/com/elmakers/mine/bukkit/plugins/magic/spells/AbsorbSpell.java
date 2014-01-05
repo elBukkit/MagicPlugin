@@ -48,7 +48,7 @@ public class AbsorbSpell extends Spell
 		}
 		
 		// Add to the wand
-		wand.addMaterial(material, data);
+		wand.addMaterial(material, data, true);
 		castMessage("Absorbing some " + material.name().toLowerCase());
 		
 		return SpellResult.SUCCESS;

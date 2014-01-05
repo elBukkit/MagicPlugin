@@ -605,8 +605,12 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	public boolean addMaterial(Material material, byte data, boolean force) {
+		return addMaterial(material, data, false, force);
+	}
+	
 	public boolean addMaterial(Material material, byte data) {
-		return addMaterial(material, data, false);
+		return addMaterial(material, data, false, false);
 	}
 	
 	public boolean hasMaterial(int materialId, byte data) {
@@ -623,8 +627,8 @@ public class Wand implements CostReducer {
 		return getSpells().contains(spellName);
 	}
 	
-	public boolean addMaterial(String materialName, boolean makeActive) {
-		if (!modifiable) return false;
+	public boolean addMaterial(String materialName, boolean makeActive, boolean force) {
+		if (!modifiable && !force) return false;
 		
 		Integer materialId = null;
 		byte data = 0;
@@ -659,8 +663,8 @@ public class Wand implements CostReducer {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean addMaterial(Material material, byte data, boolean makeActive) {
-		if (!modifiable) return false;
+	public boolean addMaterial(Material material, byte data, boolean makeActive, boolean force) {
+		if (!modifiable && !force) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
@@ -673,7 +677,7 @@ public class Wand implements CostReducer {
 			materialString = "-1";
 		}
 		materialString += ":" + data;
-		return addMaterial(materialString, makeActive);
+		return addMaterial(materialString, makeActive, force);
 	}
 	
 	public void removeSpell(String spellName) {
@@ -1210,7 +1214,7 @@ public class Wand implements CostReducer {
 		// Add materials
 		Set<String> materials = other.getMaterialNames();
 		for (String material : materials) {
-			addMaterial(material, false);
+			addMaterial(material, false, true);
 		}
 
 		saveState();
@@ -1219,22 +1223,42 @@ public class Wand implements CostReducer {
 	}
 	
 	public void configureProperties(ConfigurationNode wandConfig) {
+		configureProperties(wandConfig, false);
+	}
+	
+	public void configureProperties(ConfigurationNode wandConfig, boolean safe) {
 		modifiable = (boolean)wandConfig.getBoolean("modifiable", modifiable);
-		costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
-		cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
-		power = (float)wandConfig.getDouble("power", power);
-		damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
-		damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
-		damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles", damageReductionPhysical);
-		damageReductionFalling = (float)wandConfig.getDouble("protection_falling", damageReductionFalling);
-		damageReductionFire = (float)wandConfig.getDouble("protection_fire", damageReductionFire);
-		damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
-		xpRegeneration = wandConfig.getInt("xp_regeneration", xpRegeneration);
-		xpMax = wandConfig.getInt("xp_max", xpMax);
-		xp = wandConfig.getInt("xp", xp);
-		healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
-		hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
-		uses = wandConfig.getInt("uses", uses);
+		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
+		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
+		float _cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
+		cooldownReduction = safe ? Math.max(_cooldownReduction, cooldownReduction) : _cooldownReduction;
+		float _power = (float)wandConfig.getDouble("power", power);
+		power = safe ? Math.max(_power, power) : _power;
+		float _damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
+		damageReduction = safe ? Math.max(_damageReduction, damageReduction) : _damageReduction;
+		float _damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
+		damageReductionPhysical = safe ? Math.max(_damageReductionPhysical, damageReductionPhysical) : _damageReductionPhysical;
+		float _damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles", damageReductionProjectiles);
+		damageReductionProjectiles = safe ? Math.max(_damageReductionProjectiles, damageReductionPhysical) : _damageReductionProjectiles;
+		float _damageReductionFalling = (float)wandConfig.getDouble("protection_falling", damageReductionFalling);
+		damageReductionFalling = safe ? Math.max(_damageReductionFalling, damageReductionFalling) : _damageReductionFalling;
+		float _damageReductionFire = (float)wandConfig.getDouble("protection_fire", damageReductionFire);
+		damageReductionFire = safe ? Math.max(_damageReductionFire, damageReductionFire) : _damageReductionFire;
+		float _damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
+		damageReductionExplosions = safe ? Math.max(_damageReductionExplosions, damageReductionExplosions) : _damageReductionExplosions;
+		int _xpRegeneration = wandConfig.getInt("xp_regeneration", xpRegeneration);
+		xpRegeneration = safe ? Math.max(_xpRegeneration, xpRegeneration) : _xpRegeneration;
+		int _xpMax = wandConfig.getInt("xp_max", xpMax);
+		xpMax = safe ? Math.max(_xpMax, xpMax) : _xpMax;
+		int _xp = wandConfig.getInt("xp", xp);
+		xp = safe ? Math.max(_xp, xp) : _xp;
+		int _healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
+		healthRegeneration = safe ? Math.max(_healthRegeneration, healthRegeneration) : _healthRegeneration;
+		int _hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
+		hungerRegeneration = safe ? Math.max(_hungerRegeneration, hungerRegeneration) : _hungerRegeneration;
+		int _uses = wandConfig.getInt("uses", uses);
+		uses = safe ? Math.max(_uses, uses) : _uses;
+		
 		effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
 	
 		// Make sure to adjust the player's walk speed if it changes and this wand is active.
