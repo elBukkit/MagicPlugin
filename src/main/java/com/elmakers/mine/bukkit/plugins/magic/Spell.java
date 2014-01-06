@@ -286,7 +286,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public final String getUsage()
 	{
-		return description;
+		return usage;
 	}
 
 	public final String getCategory()
