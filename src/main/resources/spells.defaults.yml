@@ -47,6 +47,21 @@ spells:
             type: sphere
         costs:
             xp: 10
+    supershell:
+        icon: mushroom_soup
+        category: construction
+        class: ConstructSpell
+        properties:
+            allow_max_range: false
+            range: 200
+            undo: 0
+            cooldown: 0
+        parameters:
+            fill: hollow
+            target: select
+            type: sphere
+        costs:
+            xp: 100
     tag:
         icon: sign
         category: exploration
@@ -523,10 +538,11 @@ spells:
             allow_max_range: true
             range: 200
             undo: 0
-            cooldown: 5000
         parameters:
-            radius: '8'
+            target: select
             type: sphere
+        costs:
+            xp: 100
     kamikazee:
         icon: dead_bush
         category: combat
@@ -942,6 +958,21 @@ spells:
             type: cuboid
         costs:
             xp: 10
+    superbox:
+        icon: gold_helmet
+        category: construction
+        class: ConstructSpell
+        properties:
+            allow_max_range: false
+            range: 200
+            undo: 0
+            cooldown: 0
+        parameters:
+            fill: hollow
+            target: select
+            type: cuboid
+        costs:
+            xp: 100
     pillar:
         icon: gold_axe
         category: construction

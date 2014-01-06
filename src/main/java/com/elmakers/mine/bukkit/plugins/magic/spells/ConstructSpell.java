@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.Set;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -11,6 +12,8 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.ConstructBatch;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.ConstructionType;
+import com.elmakers.mine.bukkit.utilities.EffectUtils;
+import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends Spell
@@ -19,6 +22,7 @@ public class ConstructSpell extends Spell
 	private int				defaultRadius			= 2;
 	private int             timeToLive              = 0;
 	private Set<Material>	indestructible		    = null;
+	private Block targetBlock 						= null;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -39,6 +43,27 @@ public class ConstructSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
+
+
+		int radius = parameters.getInt("radius", defaultRadius);
+		radius = parameters.getInt("size", radius);
+		
+		String targetString = parameters.getString("target", "");
+		if (targetString.equals("select")) {
+			if (targetBlock == null) {
+				targetBlock = target;
+				Location effectLocation = targetBlock.getLocation();
+				effectLocation.add(0.5f, 0.5f, 0.5f);
+				EffectUtils.playEffect(effectLocation, ParticleType.HAPPY_VILLAGER, 0.3f, 0.3f, 0.3f, 1.5f, 10);
+				castMessage("Cast again to construct");
+				return SpellResult.COST_FREE;
+			} else {
+				radius = (int)targetBlock.getLocation().distance(target.getLocation());
+				target = targetBlock;
+				targetBlock = null;
+			}
+		}
+		
 		if (parameters.containsKey("y_offset")) {
 			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
@@ -70,9 +95,6 @@ public class ConstructSpell extends Spell
 			material = materialOverride;
 			data = 0;
 		}
-
-		int radius = parameters.getInt("radius", defaultRadius);
-		radius = parameters.getInt("size", radius);
 		String typeString = parameters.getString("type", "");
 		
 		// radius = (int)(playerSpells.getPowerMultiplier() * radius);
@@ -107,5 +129,18 @@ public class ConstructSpell extends Spell
 	@Override
 	public boolean usesMaterial() {
 		return true;
+	}
+
+	@Override
+	public boolean onCancel()
+	{
+		if (targetBlock != null)
+		{
+			sendMessage("Cancelled construct");
+			targetBlock = null;
+			return true;
+		}
+		
+		return false;
 	}
 }
