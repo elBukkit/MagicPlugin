@@ -42,7 +42,7 @@ messages:
         light:
             name: Light
             description: Creates a magical light source
-            usage: This light is permanent
+            usage: The blast of the light may wipe nearby signs, and is permanent!
         curse:
             name: Curse
             description: Slows down and weakens the target

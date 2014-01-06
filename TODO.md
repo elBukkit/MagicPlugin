@@ -2,13 +2,19 @@
 
 NEW SPELLS:
 
- - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - banish - sets a player's home and spawn?
  - Fix/finish stairs spell
  - Fix tunnel spell
- - Combination of blast and blob
+ - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
+ - Disguise spells / clone spell
  
+ - vortex type spells.. singularity, black hole, tornado - fun ideas there.
+
 OTHER STUFF:
+ - Fix server permissions
+ - Light spell wipes signs! :P
+ - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
+
  - Add comments to yml files
  - Make per-spell, per-wand config files?
  - Add use instructions to spells as additional lore
@@ -21,8 +27,12 @@ OTHER STUFF:
  - Add location to /magic populate when used in-game
  - Add /magic depopulate, to remove all wands from chests
  
+ - See if you can disable the fire from a fireball when not incindiary
+ - Light indindiary tnt on fire? (rename frag to incindiary?)
+
  - Persist player spell data
    - portal
+   - familiar (?)
  - Localize all spell-specific messages.
  
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
