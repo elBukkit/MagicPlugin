@@ -694,25 +694,6 @@ public class Spells implements Listener
 		spells.clear();
 	}
 
-	public void reset()
-	{
-		log.info("Magic: Resetting all spells to default");
-		clear();
-
-		File dataFolder = plugin.getDataFolder();
-		dataFolder.mkdirs();
-
-		File spellsFile = new File(dataFolder, spellsFileName);
-		spellsFile.delete();
-
-		File magicFile = new File(dataFolder, propertiesFileName);
-		magicFile.delete();
-
-		Wand.reset(plugin);
-		
-		load();
-	}
-
 	public List<Spell> getAllSpells()
 	{
 		List<Spell> allSpells = new ArrayList<Spell>();

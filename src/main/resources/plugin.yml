@@ -96,10 +96,6 @@ permissions:
     description: Player may name a wand for another player
     type: boolean
     default: op
-  Magic.commands.magic.reset:
-    description: Player may reset spells to defaults
-    type: boolean
-    default: op
   Magic.commands.magic.reload:
     description: Player may reload the configuration
     type: boolean

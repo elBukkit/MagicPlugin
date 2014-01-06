@@ -7,21 +7,21 @@ NEW SPELLS:
  - Fix/finish stairs spell
  - Fix tunnel spell
  - Combination of blast and blob
- - Targeted version of construction spells for specifying size.
  
 OTHER STUFF:
  - Add comments to yml files
  - Make per-spell, per-wand config files?
  
- - Remove /magic reset
  - Show active spells in a different color
  
  - add wand organize capability.. shift+click or something? Actual use for categories?
  - Add tab completion
  - Add location to /magic populate when used in-game
  - Add /magic depopulate, to remove all wands from chests
+ 
  - Persist player spell data
  - Localize all spell-specific messages.
+ 
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
 

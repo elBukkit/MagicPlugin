@@ -80,11 +80,6 @@ public class MagicPlugin extends JavaPlugin
 				spells.load();
 				return true;
 			}
-			if (subCommand.equalsIgnoreCase("reset"))
-			{   
-				spells.reset();
-				return true;
-			}
 			if (subCommand.equalsIgnoreCase("populate"))
 			{   
 				World world = null;

@@ -15,6 +15,8 @@
  - Make the light spell targeted
  - Add /wand upgrade command
  - Add /wand fill command
+ - Removed /magic reset command
+ - Modified superblob spell to use a new "select" version of construct.
 
 ## 2.7.6
 
