@@ -4,6 +4,7 @@
 
  - The blob spell will now auto-undo after 30 seconds.
  - Some fixes to the Essentials integration.
+ - Add /spellp command, for remotely casting a spell as another player.
 
 ## 2.8.0
 

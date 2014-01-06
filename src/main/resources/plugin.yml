@@ -11,6 +11,10 @@ commands:
     description: Cast a spell directly
     usage: cast <spellname> [parameters]
     permission: Magic.commands.cast
+  castp:
+    description: Cast a spell directly on another player
+    usage: cast <player> <spellname> [parameters]
+    permission: Magic.commands.cast
   spells:
     description: List all the spells you know
     usage: spells [category]
@@ -21,7 +25,7 @@ commands:
     permission: Magic.commands.wand
   wandp:
     description: Create and modify wands for another player
-    usage: /wandp [player] [add|remove|upgrade|configure] [spell]
+    usage: /wandp <player> [add|remove|upgrade|configure] [spell]
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
@@ -34,6 +38,10 @@ permissions:
     default: op
   Magic.commands.cast:
     description: Player may cast command-line spells
+    type: boolean
+    default: op
+  Magic.commands.castp:
+    description: Player may cast command-line spells on behalf of another player
     type: boolean
     default: op
   Magic.commands.wand:

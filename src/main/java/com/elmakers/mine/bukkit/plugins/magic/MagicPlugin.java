@@ -126,6 +126,25 @@ public class MagicPlugin extends JavaPlugin
 			return processWandCommand(sender, player, args2);
 		}
 
+		if (commandName.equalsIgnoreCase("castp"))
+		{
+			if (args.length == 0) {
+				sender.sendMessage("Usage: /castp [player] [spell] <parameters>");
+				return true;
+			}
+			Player player = Bukkit.getPlayer(args[0]);
+			if (player == null) {
+				sender.sendMessage("Can't find player " + args[0]);
+				return true;
+			}
+			if (!player.isOnline()) {
+				sender.sendMessage("Player " + args[0] + " is not online");
+				return true;
+			}
+			String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+			return processCastCommand(sender, player, args2);
+		}
+
 		// Everything beyond this point is is-game only
 		if (!(sender instanceof Player)) {
 			if (commandName.equalsIgnoreCase("spells"))
@@ -153,7 +172,8 @@ public class MagicPlugin extends JavaPlugin
 		if (commandName.equalsIgnoreCase("cast"))
 		{
 			if (!spells.hasPermission(player, "Magic.commands.cast")) return false;
-			return onCast(player, args);
+			return processCastCommand(player, player, args);
+
 		}
 
 		if (commandName.equalsIgnoreCase("spells"))
@@ -460,8 +480,8 @@ public class MagicPlugin extends JavaPlugin
 			}
 		}
 	}
-
-	public boolean onCast(Player player, String[] castParameters)
+	
+	public boolean processCastCommand(CommandSender sender, Player player, String[] castParameters)
 	{
 		if (castParameters.length < 1) return false;
 
@@ -472,8 +492,9 @@ public class MagicPlugin extends JavaPlugin
 			parameters[i - 1] = castParameters[i];
 		}
 
+		Player usePermissions = (sender instanceof Player) ? (Player)sender : player;
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
-		Spell spell = playerSpells.getSpell(spellName);
+		Spell spell = playerSpells.getSpell(spellName, usePermissions);
 		if (spell == null)
 		{
 			return false;

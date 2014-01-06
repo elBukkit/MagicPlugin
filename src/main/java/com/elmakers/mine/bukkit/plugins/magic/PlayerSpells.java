@@ -351,8 +351,13 @@ public class PlayerSpells implements CostReducer
 
 	public Spell getSpell(String name)
 	{
+		return getSpell(name, player);
+	}
+	
+	public Spell getSpell(String name, Player usePermissions)
+	{
 		Spell spell = master.getSpell(name);
-		if (spell == null || !spell.hasSpellPermission(player))
+		if (spell == null || !spell.hasSpellPermission(usePermissions))
 			return null;
 
 		Spell playerSpell = spells.get(spell.getKey());
