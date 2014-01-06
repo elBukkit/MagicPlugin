@@ -677,7 +677,15 @@ public class Spells implements Listener
 							Class<?> essentialsClass = essentials.getClass();
 							Field itemDbField = essentialsClass.getDeclaredField("itemDb");
 							itemDbField.setAccessible(true);
-							itemDbField.set(essentials, new MagicItemDb(me, essentials));
+							Object oldEntry = itemDbField.get(essentials);
+							Object newEntry = new MagicItemDb(me, essentials);
+							itemDbField.set(essentials, newEntry);
+							Field confListField = essentialsClass.getDeclaredField("confList");
+							confListField.setAccessible(true);
+							@SuppressWarnings("unchecked")
+							List<Object> confList = (List<Object>)confListField.get(essentials);
+							confList.remove(oldEntry);
+							confList.add(newEntry);
 							log.info("Essentials found, hooked up custom item handler");
 						}
 					} catch (Throwable ex) {
