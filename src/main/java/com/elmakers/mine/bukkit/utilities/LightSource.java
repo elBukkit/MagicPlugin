@@ -29,7 +29,7 @@ public class LightSource extends NMSUtils {
 	@SuppressWarnings("unchecked")
 	public static void createLightSource (Location l, int level, Collection<Player> players) {
 		// Store the original light level
-		int oLevel = l.getBlock().getLightLevel();
+		// int oLevel = l.getBlock().getLightLevel();
 		
 		// Sets the light source at the location to the level
 		Enum<?> blockEnum = Enum.valueOf(class_EnumSkyBlock, "Block");
@@ -56,6 +56,8 @@ public class LightSource extends NMSUtils {
 		}
 		
 		// Do this separately to make sure we don't permanently set the light if something's gone wrong.
+		// ATTENTION: I've given up on making these temporary.
+		/*
 		try {
 			//If you comment this out it is more likely to get light sources you can't remove
 			// but if you do comment it, light is consistent on relog and what not.
@@ -63,6 +65,7 @@ public class LightSource extends NMSUtils {
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
+		*/
 	}
 	
 	public static void deleteLightSource (Location l) {

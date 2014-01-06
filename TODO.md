@@ -14,6 +14,7 @@ OTHER STUFF:
  - Add use instructions to spells as additional lore
  
  - Show active spells in a different color
+ - Make portal spell portals avoid taking the player to the nether
  
  - add wand organize capability.. shift+click or something? Actual use for categories?
  - Add tab completion
@@ -21,6 +22,7 @@ OTHER STUFF:
  - Add /magic depopulate, to remove all wands from chests
  
  - Persist player spell data
+   - portal
  - Localize all spell-specific messages.
  
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
