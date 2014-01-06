@@ -24,6 +24,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -946,6 +947,14 @@ public class Spells implements Listener
 			Player player = (Player)event.getEntity();
 			onPlayerDamage(player, event);
 		}
+        if (entity instanceof Item && indestructibleWands)
+        {
+                Item item = (Item)entity;
+                if (Wand.isWand(item.getItemStack()))
+                {
+                    event.setCancelled(true);
+                }
+        }
 	}
 
 	@EventHandler
@@ -953,7 +962,9 @@ public class Spells implements Listener
 	{
 		Player player = event.getPlayer();		
 		PlayerSpells playerSpells = getPlayerSpells(player);
-		if (!playerSpells.checkLastClick(clickCooldown)) return;
+		if (!playerSpells.checkLastClick(clickCooldown)) {
+			return;
+		}
 		
 		Wand wand = playerSpells.getActiveWand();
 		
@@ -1445,7 +1456,7 @@ public class Spells implements Listener
 	 private boolean                             indestructibleWands            = true;
 	 private boolean                             keepWandsOnDeath	            = true;
 	 private int								 messageThrottle				= 0;
-	 private int								 clickCooldown					= 10;
+	 private int								 clickCooldown					= 150;
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
