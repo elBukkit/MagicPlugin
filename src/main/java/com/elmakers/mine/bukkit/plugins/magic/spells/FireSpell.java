@@ -86,6 +86,7 @@ public class FireSpell extends Spell
 
 		spells.addToUndoQueue(player, action.getBlocks());
 		castMessage("Burned " + action.getBlocks().size() + " blocks");
+		spells.updateBlock(target);
 
 		return SpellResult.SUCCESS;
 	}

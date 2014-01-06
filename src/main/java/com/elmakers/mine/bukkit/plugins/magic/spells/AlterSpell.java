@@ -83,7 +83,7 @@ public class AlterSpell extends Spell
 		spells.addToUndoQueue(player, undoList);
 
 		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
-
+		spells.updateBlock(targetBlock);
 		return SpellResult.SUCCESS;
 	}
 

@@ -49,6 +49,7 @@ public class TreeSpell extends Spell
 		if (result)
 		{
 			castMessage("You grow a " + getTreeName(treeType) + " tree");
+			spells.updateBlock(target);
 		}
 		else
 		{

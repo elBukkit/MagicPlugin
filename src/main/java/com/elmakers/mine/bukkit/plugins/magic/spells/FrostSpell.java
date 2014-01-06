@@ -142,6 +142,7 @@ public class FrostSpell extends Spell
 		frozenBlocks.setTimeToLive(timeToLive);
 		spells.scheduleCleanup(player.getName(), frozenBlocks);
 		castMessage("Frosted " + action.getBlocks().size() + " blocks");
+		spells.updateBlock(target.getBlock());
 
 		return SpellResult.SUCCESS;
 	}

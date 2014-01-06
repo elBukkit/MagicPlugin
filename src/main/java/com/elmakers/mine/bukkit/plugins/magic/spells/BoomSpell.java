@@ -4,6 +4,7 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -28,9 +29,10 @@ public class BoomSpell extends Spell {
 			return SpellResult.NO_TARGET;
 		}
 
-		Location l = target.getBlock().getLocation();
+		Block block = target.getBlock();
+		Location l = block.getLocation();
 		player.getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
-
+		spells.updateBlock(block);
 		return SpellResult.SUCCESS;
 	}
 

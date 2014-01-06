@@ -115,6 +115,7 @@ public class TorchSpell extends Spell
 		target.setType(targetMaterial);
 		torchBlock.add(target);
 		spells.addToUndoQueue(player, torchBlock);
+		spells.updateBlock(target);
 
 		return SpellResult.SUCCESS;
 	}

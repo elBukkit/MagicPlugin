@@ -73,7 +73,8 @@ public class PillarSpell extends Spell
 
 		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
 		spells.addToUndoQueue(player, pillarBlocks);
-
+		spells.updateBlock(targetBlock);
+		
 		return SpellResult.SUCCESS;
 	}
 	
