@@ -72,7 +72,7 @@ public class MagicPlugin extends JavaPlugin
 			String subCommand = args[0];
 			if (sender instanceof Player)
 			{
-				if (!spells.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return true;
+				if (!spells.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return false;
 			}
 			if (subCommand.equalsIgnoreCase("reload"))
 			{
@@ -152,13 +152,13 @@ public class MagicPlugin extends JavaPlugin
 
 		if (commandName.equalsIgnoreCase("cast"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.cast")) return true;
+			if (!spells.hasPermission(player, "Magic.commands.cast")) return false;
 			return onCast(player, args);
 		}
 
 		if (commandName.equalsIgnoreCase("spells"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.spells")) return true;
+			if (!spells.hasPermission(player, "Magic.commands.spells")) return false;
 			return onSpells(player, args);
 		}
 
