@@ -50,6 +50,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String key;
 	private String name;
 	private String description;
+	private String usage;
 	private String category;
 	private ConfigurationNode parameters = new ConfigurationNode();
 	private Material material;
@@ -223,6 +224,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		name = Messages.get("spells." + key + ".name", name);
 		description = Messages.get("spells." + key + ".description", description);
+		usage = Messages.get("spells." + key + ".usage", usage);
 		material = node.getMaterial("icon", material);
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);
@@ -278,6 +280,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	}
 
 	public final String getDescription()
+	{
+		return description;
+	}
+
+	public final String getUsage()
 	{
 		return description;
 	}

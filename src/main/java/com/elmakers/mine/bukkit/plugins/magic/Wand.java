@@ -1059,7 +1059,14 @@ public class Wand implements CostReducer {
 	}
 	
 	protected void addSpellLore(Spell spell, List<String> lore) {
-		lore.add(spell.getDescription());
+		String description = spell.getDescription();
+		String usage = spell.getUsage();
+		if (description != null && description.length() > 0) {
+			lore.add(description);
+		}
+		if (usage != null && usage.length() > 0) {
+			lore.add(usage);
+		}
 		List<CastingCost> costs = spell.getCosts();
 		if (costs != null) {
 			for (CastingCost cost : costs) {

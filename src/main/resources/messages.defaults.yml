@@ -96,6 +96,7 @@ messages:
         gather:
             name: Gather
             description: Gather groups of players together
+            usage: Cast up to teleport yourself, aim to tp others
         icbm:
             name: ICBM
             description: Cast an exploding fireball
@@ -113,7 +114,7 @@ messages:
             description: Take a big leap
         torch:
             name: Torch
-            description: Shed some light
+            description: Creates a torch or glowstone
         monster:
             name: Monster
             description: Call a monster to your side
@@ -132,6 +133,7 @@ messages:
         cushion:
             name: Cushion
             description: Create a safety bubble
+            usage: Cast underneath yourself while falling
         paint:
             name: Paint
             description: Fill a single block
@@ -156,6 +158,7 @@ messages:
         bridge:
             name: Bridge
             description: Extend the ground underneath you
+            usage: Can be used in mid-air
         ascend:
             name: Ascend
             description: Go up to the nearest safe spot
@@ -168,18 +171,23 @@ messages:
         convert:
             name: Convert
             description: Convert a spherical area of blocks
+            usage: Does not fill air
         superconvert:
             name: SuperConvert
             description: Convert a sphere of blocks between two points
+            usage: Cast once to select a point, again to convert
         superblob:
             name: SuperBlob
             description: Create a large solid sphere between two points
+            usage: Cast once to select a point, again to construct
         supershell:
             name: SuperShell
             description: Create a large hollow sphere between two points
+            usage: Cast once to select a point, again to construct
         superbox:
             name: SuperBox
             description: Create a large hollow box between two points
+            usage: Cast once to select a point, again to construct
         kamikazee:
             name: Kamikazee
             description: Kill yourself with an explosion
@@ -197,7 +205,8 @@ messages:
             description: Undo your last action
         commit:
             name: Commit
-            description: Commit your actions (clears undo queue)
+            description: Commit your actions
+            usage: Clears your undo queue
         push:
             name: Push
             description: Push things away from you
@@ -221,7 +230,8 @@ messages:
             description: Drop a big block of sand
         fill:
             name: Fill
-            description: Fill a selected area (cast twice)
+            description: Fill a selected cuboid area
+            usage: Cast once to select a point, again to fill
         recurse:
             name: Recurse
             description: Recursively fill blocks
@@ -231,6 +241,7 @@ messages:
         alter:
             name: Alter
             description: Alter certain objects
+            usage: Use on wool, clay, stairs, stained glass, etc
         blob:
             name: Blob
             description: Create a temporary solid blob
@@ -240,12 +251,15 @@ messages:
         disintegrate:
             name: Disintegrate
             description: Damage your target
+            usage: Will destroy target block or entity
         blink:
             name: Blink
             description: Teleport to your target
+            usage: Can pass through solid objects
         absorb:
             name: Absorb
             description: Absorb some of the target
+            usage: Adds materials to your wand
         stalactite:
             name: Stalactite
             description: Create a downward pillar
@@ -261,12 +275,14 @@ messages:
         shrink:
             name: Head Shrinker
             description: Shrink heads for fun and profit
+            usage: Must kill the target to receive skull
         flare:
             name: Flare
             description: Fire off flares
         recall:
             name: Recall
             description: Marks locations for return
+            usage: Cast to set marker, aim up and cast to return
         levitate:
             name: Levitate
             description: Levitate yourself up into the air
@@ -285,6 +301,7 @@ messages:
         force:
             name: Force
             description: Use telekinesis
+            usage: Cast once to select an entity, again to throw
         descend:
             name: Descend
             description: Travel underground
