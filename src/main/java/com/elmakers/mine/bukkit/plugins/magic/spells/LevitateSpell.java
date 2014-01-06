@@ -36,7 +36,7 @@ public class LevitateSpell extends Spell
 		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		levitateEnded = System.currentTimeMillis();
 		
-		sendMessage("You feel heavier");
+		castMessage("You feel heavier");
 	}
 	
 	@Override
