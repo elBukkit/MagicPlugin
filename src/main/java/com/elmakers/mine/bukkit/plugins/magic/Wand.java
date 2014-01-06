@@ -1144,7 +1144,7 @@ public class Wand implements CostReducer {
 				return null;
 			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
-			wandName = Messages.get("wands." + templateName + ".name");
+			wandName = Messages.get("wands." + templateName + ".name", wandName);
 			List<Object> spellList = wandConfig.getList("spells");
 			if (spellList != null) {
 				for (Object spellName : spellList) {			
@@ -1405,9 +1405,11 @@ public class Wand implements CostReducer {
 			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
 			activePlayer.restoreInventory();
 			activePlayer.getPlayer().updateInventory();
-			item =  activePlayer.getPlayer().getInventory().getItemInHand();
-			updateName();
-			updateInventoryNames(true);
+			ItemStack newWandItem = activePlayer.getPlayer().getInventory().getItemInHand();
+			if (isWand(newWandItem)) {
+				item = newWandItem;
+				updateName();
+			}
 		}
 		saveState();
 	}

@@ -23,6 +23,7 @@ OTHER STUFF:
  - Test dynmap integration
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
+ - Show active spells in a different color
 
 LONG-TERM OR INCOMPLETE:
  
