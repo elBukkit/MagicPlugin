@@ -13,7 +13,6 @@ OTHER STUFF:
  - Add comments to yml files
  - Make per-spell, per-wand config files?
  - Add /wand fill command
- - Make wand config command "safe"
  
  - Remove /magic reset
  - Show active spells in a different color

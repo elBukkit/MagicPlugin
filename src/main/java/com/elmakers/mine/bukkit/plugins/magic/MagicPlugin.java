@@ -200,7 +200,14 @@ public class MagicPlugin extends JavaPlugin
 		{
 			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
 
-			onWandConfigure(player, args2);
+			onWandConfigure(player, args2, false);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("upgrade"))
+		{
+			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+
+			onWandConfigure(player, args2, true);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("remove"))
@@ -245,7 +252,7 @@ public class MagicPlugin extends JavaPlugin
 		return true;
 	}
 	
-	public boolean onWandConfigure(Player player, String[] parameters)
+	public boolean onWandConfigure(Player player, String[] parameters, boolean safe)
 	{
 		if (parameters.length < 2) {
 			player.sendMessage("Use: /wand configure <property> <value>");
@@ -265,7 +272,7 @@ public class MagicPlugin extends JavaPlugin
 		ConfigurationNode node = new ConfigurationNode();
 		node.setProperty(parameters[0], parameters[1]);
 		wand.deactivate();
-		wand.configureProperties(node);
+		wand.configureProperties(node, safe);
 		wand.activate(playerSpells);
 		return true;
 	}
