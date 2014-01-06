@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 2.7.7
+## 2.8.0
 
  - Make wands really indestructible (thanks JRL1004 and Jogy34)!
  - Add "keep_wands_on_death" option, on by default
@@ -12,6 +12,7 @@
  - Integrates with dynmap for tile updates.
  - Fix logger to use the standard Plugin logger.
  - Fix wand names reverting when closing the wand inventory.
+ - Make the light spell targeted
 
 ## 2.7.6
 
