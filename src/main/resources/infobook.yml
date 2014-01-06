@@ -20,7 +20,9 @@ server:
     - Information about this server
   pages:
     - '&cServer Information&x &x&0This is a development server for the Magic plugin.&x &xIt is mainly for testing and as a demo for the plugin functionality.'
+    - 'Magic is a plugin for Bukkit, a Minecraft server mod.&x &xBukkit is easy to use and set up if you wish to run your own server, or even use for single player.&x &xFor more information, see&x &xbukkit.org'
     - 'This spawn temple is a protected area. Many spells, destructive ones, will not work here.&x &xExplore around, get the hang of wands, then leave the temple to really test them out.'
+    - 'This world is actively being improved, secrets will be added in around the temple over time.'
     - 'You are free to play here, and build here.&x &xGriefing is tolerated, though not necessarily appreciated.'
     - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.'
     - 'If you want to build and you behave well, send NathanWolf a message and I will give you a WorldGuard plot and an engineering wand.'
