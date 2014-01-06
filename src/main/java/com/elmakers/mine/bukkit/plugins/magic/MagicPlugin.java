@@ -210,6 +210,13 @@ public class MagicPlugin extends JavaPlugin
 			onWandConfigure(player, args2, true);
 			return true;
 		}
+		if (subCommand.equalsIgnoreCase("fill"))
+		{
+			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+
+			onWandFill(player);
+			return true;
+		}
 		if (subCommand.equalsIgnoreCase("remove"))
 		{   
 			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
@@ -274,6 +281,20 @@ public class MagicPlugin extends JavaPlugin
 		wand.deactivate();
 		wand.configureProperties(node, safe);
 		wand.activate(playerSpells);
+		return true;
+	}
+
+	public boolean onWandFill(Player player)
+	{
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
+		if (wand == null) {
+			player.sendMessage("Equip a wand first");
+			return true;
+		}
+		
+		fillWand(wand, player);
+		
 		return true;
 	}
 	
@@ -418,15 +439,7 @@ public class MagicPlugin extends JavaPlugin
 		
 		// Check for special "fill wands" configuration
 		if (spells.fillWands() && parameters.length == 0) {
-			List<Spell> allSpells = spells.getAllSpells();
-
-			for (Spell spell : allSpells)
-			{
-				if (spell.hasSpellPermission(player))
-				{
-					wand.addSpell(spell.getKey());
-				}
-			}
+			fillWand(wand, player);
 		}
 	
 		// Place directly in hand if possible
@@ -439,6 +452,18 @@ public class MagicPlugin extends JavaPlugin
 			player.getInventory().addItem(wand.getItem());
 		}
 		return true;
+	}
+	
+	protected void fillWand(Wand wand, Player player) {
+		List<Spell> allSpells = spells.getAllSpells();
+
+		for (Spell spell : allSpells)
+		{
+			if (spell.hasSpellPermission(player))
+			{
+				wand.addSpell(spell.getKey());
+			}
+		}
 	}
 
 	public boolean onCast(Player player, String[] castParameters)

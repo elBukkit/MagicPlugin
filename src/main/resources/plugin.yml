@@ -56,6 +56,10 @@ permissions:
     description: Player may upgrade wand properties
     type: boolean
     default: op
+  Magic.commands.wand.fill:
+    description: Player may fill a wand with all spells
+    type: boolean
+    default: op
   Magic.commands.wand.remove:
     description: Player may remove a spell from a wand
     type: boolean
@@ -78,6 +82,10 @@ permissions:
     default: op
   Magic.commands.wandp.upgrade:
     description: Player may upgrade wand properties for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.fill:
+    description: Player may fill a wand for another player
     type: boolean
     default: op
   Magic.commands.wandp.remove:

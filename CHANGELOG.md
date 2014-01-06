@@ -14,6 +14,7 @@
  - Fix wand names reverting when closing the wand inventory.
  - Make the light spell targeted
  - Add /wand upgrade command
+ - Add /wand fill command
 
 ## 2.7.6
 

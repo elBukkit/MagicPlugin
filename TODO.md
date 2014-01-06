@@ -12,7 +12,6 @@ NEW SPELLS:
 OTHER STUFF:
  - Add comments to yml files
  - Make per-spell, per-wand config files?
- - Add /wand fill command
  
  - Remove /magic reset
  - Show active spells in a different color
