@@ -570,6 +570,33 @@ spells:
         parameters:
             radius: '16'
             type: sphere
+    convert:
+        icon: vine
+        category: alchemy
+        class: ConstructSpell
+        properties:
+            allow_max_range: false
+            range: 200
+            undo: 0
+            cooldown: 5000
+            indestructible:
+              - air
+        parameters:
+            radius: '3'
+    superconvert:
+        icon: iron_fence
+        category: alchemy
+        class: ConstructSpell
+        properties:
+            allow_max_range: false
+            range: 200
+            undo: 0
+            cooldown: 5000
+            indestructible:
+              - air
+        parameters:
+            target: select
+            type: sphere
     blast:
         icon: sulphur
         category: mining

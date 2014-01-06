@@ -165,9 +165,21 @@ messages:
         frag:
             name: Frag Grenade
             description: Place a mega frag grenade
+        convert:
+            name: Convert
+            description: Convert a spherical area of blocks
+        superconvert:
+            name: SuperConvert
+            description: Convert a sphere of blocks between two points
         superblob:
             name: SuperBlob
-            description: Create a large solid sphere
+            description: Create a large solid sphere between two points
+        supershell:
+            name: SuperShell
+            description: Create a large hollow sphere between two points
+        superbox:
+            name: SuperBox
+            description: Create a large hollow box between two points
         kamikazee:
             name: Kamikazee
             description: Kill yourself with an explosion

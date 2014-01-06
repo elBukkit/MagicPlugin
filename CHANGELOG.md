@@ -17,6 +17,7 @@
  - Add /wand fill command
  - Removed /magic reset command
  - Modified superblob spell to use a new "select" version of construct.
+ - Add supershell, superbox, convert and superconvert spells.
 
 ## 2.7.6
 

@@ -177,7 +177,10 @@ public class ConstructBatch implements BlockBatch {
 
 	protected boolean isDestructible(Block block)
 	{
-		return playerSpells.getMaster().getDestructibleMaterials().contains(block.getType()) && !indestructible.contains(block.getType());
+		if (indestructible.isEmpty()) {
+			return playerSpells.getMaster().getDestructibleMaterials().contains(block.getType());
+		}
+		return !indestructible.contains(block.getType());
 	}
 	
 	public void setTimeToLive(int timeToLive) {
