@@ -202,7 +202,7 @@ messages:
             name: Cloak
             description: Make yourself invisible while still
         undo:
-            name: Undo
+            name: Rollback
             description: Undo your last action
         commit:
             name: Commit
