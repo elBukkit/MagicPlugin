@@ -233,7 +233,7 @@ messages:
             description: Alter certain objects
         blob:
             name: Blob
-            description: Create a solid blob
+            description: Create a temporary solid blob
         familiar:
             name: Familiar
             description: Create an animal familiar

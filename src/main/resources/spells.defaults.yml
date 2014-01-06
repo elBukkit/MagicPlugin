@@ -810,6 +810,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 50
+            undo: 30000
         parameters:
             radius: 3
             type: pyramid
