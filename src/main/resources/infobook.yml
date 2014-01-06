@@ -22,10 +22,12 @@ server:
     - '&cServer Information&x &x&0This is a development server for the Magic plugin.&x &xIt is mainly for testing and as a demo for the plugin functionality.'
     - 'This spawn temple is a protected area. Many spells, destructive ones, will not work here.&x &xExplore around, get the hang of wands, then leave the temple to really test them out.'
     - 'You are free to play here, and build here.&x &xGriefing is tolerated, though not necessarily appreciated.'
+    - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.'
     - 'If you want to build and you behave well, send NathanWolf a message and I will give you a WorldGuard plot and an engineering wand.'
     - 'Due to the public and destructive nature of this server, heavy griefing may require occasional world rollbacks.'
     - 'Magic is a very flexible plugin. Many of the possible configurations and uses are on display here, but not all.'
-    - 'See http://mine.elmakers.com for more information.'
+    - '&cPlugins used on this server&x &x&0Magic&xdynmap*&xEssentials*&xWorldGuard*&xInfoBook&xGroupManager&x &x* denotes Magic integration'
+    - 'See&xmine.elmakers.com&xfor more information.'
 obtaining:
   author: NathanWolf
   title: Obtaining Wands
