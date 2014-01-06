@@ -405,7 +405,6 @@ wands:
             - shell
             - shrink
             - box
-            - gather
             - frag
             - volley
             - stalactite
@@ -416,7 +415,6 @@ wands:
             - bridge
             - absorb
             - alter
-            - disarm
             - undo
             - toss
             - curse
