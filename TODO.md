@@ -10,20 +10,22 @@ NEW SPELLS:
  - Targeted version of construction spells for specifying size.
  
 OTHER STUFF:
+ - Add comments to yml files
+ - Make per-spell, per-wand config files?
+ - Add /wand fill command
+ - Make wand config command "safe"
+ 
+ - Remove /magic reset
+ - Show active spells in a different color
+ 
+ - add wand organize capability.. shift+click or something? Actual use for categories?
  - Add tab completion
- - Add click cooldown, maybe remove fill one-block special case (NEEDS TESTING)
  - Add location to /magic populate when used in-game
  - Add /magic depopulate, to remove all wands from chests
- - Remove extra wand damage handlers, NEEDS TESTING
- - Remove /magic reset
- - Add /wand fill command
  - Persist player spell data
  - Localize all spell-specific messages.
- - Make wand config command "safe"
- - Test dynmap integration
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
- - Show active spells in a different color
 
 LONG-TERM OR INCOMPLETE:
  
