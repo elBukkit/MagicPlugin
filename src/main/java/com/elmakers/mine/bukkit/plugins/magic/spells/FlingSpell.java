@@ -30,6 +30,11 @@ public class FlingSpell extends Spell
 		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
 		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
 		double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
+		double yOffset = parameters.getDouble("y_offset", 0);
+		Double yValue = null;
+		if (parameters.containsKey("y_value")) {
+			yValue = parameters.getDouble("y_value", 0);
+		}
 		
 		while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 		{
@@ -41,6 +46,11 @@ public class FlingSpell extends Spell
 		double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * heightModifier));
 
 		Vector velocity = getAimVector();
+		if (yValue != null) {
+			velocity.setY(yValue);
+		} else if (yOffset > 0) {
+			velocity.setY(velocity.getY() + yOffset);
+		}
 
 		if (player.getLocation().getBlockY() >= 256)
 		{
