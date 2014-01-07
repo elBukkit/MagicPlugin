@@ -1729,4 +1729,8 @@ public class Wand implements CostReducer {
 		saveState();
 		openInventory();
 	}
+	
+	public String getId() {
+		return this.id;
+	}
 }

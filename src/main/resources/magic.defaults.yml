@@ -25,6 +25,8 @@ general:
     keep_wands_on_death: false
     indestructible_wands: true
     right_click_cycles: false
+    dynmap_update: true
+    dynmap_show_wands: true
     populate_chests:
       base_probability:
         0: 100

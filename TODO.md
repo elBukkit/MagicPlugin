@@ -2,8 +2,6 @@
 
 IMPORTANT STUFF:
 
- - NPE on creating a "farming" wand sign?
-
 NEW SPELLS:
 
  - banish - sets a player's home and spawn?
@@ -15,6 +13,23 @@ NEW SPELLS:
 
 OTHER STUFF:
 
+ - Add wands to dynmap
+ - Add wand owner data
+   - with option to not be able to use another player's wand?
+ - Make dynmap integration optional
+ - can't alter "null" message from alter on bad target?
+   - fix up alter in general, remove id-based lists
+ - wands show up on dynmap?
+ - curse effects
+ - supershell undo left a ring
+ - boon effects/targeting
+ - Add messages to wandp ?
+ - Fix alter spell with stairs ?
+ - check that limited-use wands break
+ - Add safe undo:
+   - Track falling block entities (sandblast, toss, etc)
+   - Auto-expand?
+   - Save sign text ... chest contents, maybe?
  - Add visual effects to spawn and recall spells
  - prevent pillar from passing through non-air blocks .. ? what about stalactite, though?
  - Some sort of workaround for wands getting killed by the creative inventory
@@ -27,6 +42,7 @@ OTHER STUFF:
  - Add locale option to suffix messages.yml
  - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
  
+ - Test using small fireball for low-powered versions
  - Add comments to yml files
  - Make per-spell, per-wand config files?
  - first spell on wand is getting lost (?) - debug with elder wand and fling. 
@@ -50,10 +66,9 @@ OTHER STUFF:
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
 
 DEMO SERVER STUFF:
- 
- - Need to localize web page... is it totally broken now?
- - Add backup configuration
- - Test permission groups
+
+ - Add buttons to give back the info books (/give @p server, etc)
+ - Build and have fun! ;)
 
 LONG-TERM OR INCOMPLETE:
  

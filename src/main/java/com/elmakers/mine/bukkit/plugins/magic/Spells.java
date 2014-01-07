@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +59,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -65,6 +67,11 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.dynmap.DynmapCommonAPI;
+import org.dynmap.markers.Marker;
+import org.dynmap.markers.MarkerAPI;
+import org.dynmap.markers.MarkerIcon;
+import org.dynmap.markers.MarkerSet;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -430,15 +437,13 @@ public class Spells implements Listener
 		
 		// Try to (dynamically) link to dynmap:
 		try {
-			dynmap = plugin.getServer().getPluginManager().getPlugin("dynmap");
-			triggerRenderMethod = dynmap.getClass().getMethod("triggerRenderOfBlock", String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-			if (triggerRenderMethod != null) {
-				log.info("dynmap found, integrating for map updates");
-			} else {
-				dynmap = null;
-				triggerRenderMethod = null;
+			Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
+			if (!(dynmapPlugin instanceof DynmapCommonAPI)) {
+				throw new Exception("Dynmap plugin found, but class is not DynmapCommonAPI");
 			}
+			dynmap = (DynmapCommonAPI)dynmapPlugin;
 		} catch (Throwable ex) {
+			plugin.getLogger().warning(ex.getMessage());
 		}
 		
 		if (regionManager == null) {
@@ -480,14 +485,40 @@ public class Spells implements Listener
 	
 	public void updateBlock(String worldName, int x, int y, int z)
 	{
-		if (triggerRenderMethod != null && dynmap != null)
+		if (dynmap != null && dynmapUpdate)
 		{
-			try {
-				triggerRenderMethod.invoke(dynmap, worldName, x, y, z);
-			} catch (Exception ex) {
-				plugin.getLogger().warning("Error rendering dynmap tile, disabling integration");
-				triggerRenderMethod = null;
-				dynmap = null;
+			dynmap.triggerRenderOfBlock(worldName, x, y, z);
+		}
+	}
+	
+	public void removeMarker(String id, String group) {
+		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {
+			MarkerAPI markers = dynmap.getMarkerAPI();
+			MarkerSet markerSet = markers.getMarkerSet(group);
+			if (markerSet != null) {
+				Marker marker = markerSet.findMarker(id);
+				if (marker != null) {
+					marker.deleteMarker();
+				}
+			}
+		}
+	}
+	
+	public void addMarker(String id, String group, String title, String world, int x, int y, int z) {
+		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {
+			MarkerAPI markers = dynmap.getMarkerAPI();
+			MarkerSet markerSet = markers.getMarkerSet(group);
+			if (markerSet == null) {
+				markerSet = markers.createMarkerSet(group, "Wands", null, false);
+			}
+			MarkerIcon wandIcon = markers.getMarkerIcon("wand");
+			if (wandIcon == null) {
+				wandIcon = markers.createMarkerIcon("wand", "Wand", plugin.getResource("wand_icon32.png"));
+			}
+			
+			Marker marker = markerSet.findMarker(id);
+			if (marker == null) {
+				marker = markerSet.createMarker(id, title, world, x, y, z, wandIcon, false);
 			}
 		}
 	}
@@ -637,6 +668,8 @@ public class Spells implements Listener
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = generalNode.getBoolean("combining_enabled", combiningEnabled);
 		organizingEnabled = generalNode.getBoolean("organizing_enabled", organizingEnabled);
+		dynmapShowWands = generalNode.getBoolean("dynamp_show_wands", dynmapShowWands);
+		dynmapUpdate = generalNode.getBoolean("dynmap_update", dynmapUpdate);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
@@ -931,9 +964,18 @@ public class Spells implements Listener
 	@EventHandler
 	public void onItemSpawn(ItemSpawnEvent event)
 	{
-		if (indestructibleWands && Wand.isWand(event.getEntity().getItemStack()))
+		if ((indestructibleWands || dynmapShowWands) && Wand.isWand(event.getEntity().getItemStack()))
 		{
-			InventoryUtils.setInvulnerable(event.getEntity());
+			if (indestructibleWands) {
+				InventoryUtils.setInvulnerable(event.getEntity());
+			}
+			if (dynmapShowWands) {
+				Wand wand = new Wand(this, event.getEntity().getItemStack());
+				if (wand != null) {
+					addMarker("wand-" + wand.getId(), "Wands", wand.getName(), event.getLocation().getWorld().getName(), 
+							event.getLocation().getBlockX(), event.getLocation().getBlockY(), event.getLocation().getBlockZ());
+				}
+			}
 		}
 	}
 
@@ -1337,6 +1379,11 @@ public class Spells implements Listener
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
 		PlayerSpells spells = getPlayerSpells(event.getPlayer());
+		ItemStack pickup = event.getItem().getItemStack();
+		if (dynmapShowWands && Wand.isWand(pickup)) {
+			Wand wand = new Wand(this, pickup);
+			removeMarker("wand-" + wand.getId(), "Wands");
+		}
 		if (spells.hasStoredInventory()) {
 			event.setCancelled(true);   		
 			if (spells.addToStoredInventory(event.getItem().getItemStack())) {
@@ -1346,7 +1393,6 @@ public class Spells implements Listener
 			// Hackiness needed because we don't get an equip event for this!
 			PlayerInventory inventory = event.getPlayer().getInventory();
 			ItemStack inHand = inventory.getItemInHand();
-			ItemStack pickup = event.getItem().getItemStack();
 			if (Wand.isWand(pickup) && (inHand == null || inHand.getType() == Material.AIR)) {
 				Wand wand = new Wand(this, pickup);
 				event.setCancelled(true);
@@ -1424,6 +1470,50 @@ public class Spells implements Listener
 		}
 	}
 	
+	public void checkForWands(final World world, final int retries) {
+		if (dynmapShowWands && dynmap != null) {
+			if (!dynmap.markerAPIInitialized()) {
+				if (retries > 0) {
+					final Spells me = this;
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+						public void run() {
+							me.checkForWands(world, retries + 1);
+						}
+					}, 40);
+				}
+				return;
+			}
+			int wandCount = 0;
+			Collection<Item> items = world.getEntitiesByClass(Item.class);
+			for (Item item : items) {
+				ItemStack itemStack = item.getItemStack();
+				if (Wand.isWand(itemStack)) {
+					Wand wand = new Wand(this, itemStack);
+					addMarker("wand-" + wand.getId(), "Wands", wand.getName(), item.getLocation().getWorld().getName(),
+						item.getLocation().getBlockX(), item.getLocation().getBlockY(), item.getLocation().getBlockZ()
+					);
+					wandCount++;
+				}
+			}
+			
+			if (wandCount > 0) {
+				log.info("Found " + wandCount + " wands in world: " + world.getName() + ", added to map");
+			}
+		}
+	}
+
+	@EventHandler
+	public void onWorldLoad(WorldLoadEvent event) {
+		// Look for wands in the world
+		final Spells me = this;
+		final World world = event.getWorld();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				me.checkForWands(world, 10);
+			}
+		}, 40);
+	}
+	
 	public Spell getSpell(String name) {
 		return spells.get(name);
 	}
@@ -1476,9 +1566,11 @@ public class Spells implements Listener
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
 	 private boolean							 organizingEnabled				= false;
+	 private boolean							 dynmapUpdate					= true;
+	 private boolean							 dynmapShowWands				= true;
 	 private float							 	 maxPowerMultiplier			    = 1.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
-	 private float							 	 castCommandCooldownReduction	    = 1.0f;
+	 private float							 	 castCommandCooldownReduction	= 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private LinkedList<BlockBatch>				 pendingBatches					= new LinkedList<BlockBatch>();
 	 private int								 maxBlockUpdates				= 100;
@@ -1494,6 +1586,5 @@ public class Spells implements Listener
 	 
 	 private MagicPlugin                         plugin                         = null;
 	 private Object								 regionManager					= null;
-	 private Object								 dynmap							= null;
-	 private Method								 triggerRenderMethod			= null;
+	 private DynmapCommonAPI					 dynmap							= null;
 }
