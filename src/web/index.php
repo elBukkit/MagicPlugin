@@ -40,8 +40,14 @@ try {
 	$spellsConfiguration = Yaml::parse(getConfigFile('spells'));
 	$magicConfiguratiom = Yaml::parse(getConfigFile('magic'));
 	$wandConfiguratiom = Yaml::parse(getConfigFile('wands'));
+	$messagesConfiguratiom = Yaml::parse(getConfigFile('messages'));
 } catch (Exception $ex) {
 	die($ex->getMessage());
+}
+
+$messages = array();
+if (isset($messagesConfiguratiom['messages'])) {
+	$messages = $messagesConfiguratiom['messages'];
 }
 
 $spells = array();
@@ -50,9 +56,22 @@ if (isset($spellsConfiguration['spells'])) {
 }
 ksort($spells);
 
+// Look up localizations
+foreach ($spells as $key => $spell) {
+	$spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : '';
+	$spell['description'] = isset($messages['spells'][$key]['description']) ? $messages['spells'][$key]['description'] : '';
+	$spell['usage'] = isset($messages['spells'][$key]['usage']) ? $messages['spells'][$key]['usage'] : '';
+	$spells[$key] = $spell;
+}
+
 $wands = array();
 if (isset($wandConfiguratiom['wands'])) {
 	$wands = $wandConfiguratiom['wands'];
+}
+foreach ($wands as $key => $wand) {
+	$wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
+	$wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
+	$wands[$key] = $wand;
 }
 ksort($wands);
 
