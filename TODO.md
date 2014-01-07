@@ -7,18 +7,26 @@ NEW SPELLS:
  - Fix tunnel spell
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
  - Disguise spells / clone spell
- 
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
 
 OTHER STUFF:
- - Fix server permissions
- - Light spell wipes signs! :P
- - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
 
+ - NPE on creating a "farming" wand sign?
+ - Allow tesseract to pass through glass
+ - prevent pillar from passing through non-air blocks .. ? what about stalactite, though?
+ - Some sort of workaround for wands getting killed by the creative inventory
+ - Make spells usable without a player, clean up strong Player references
+ - Add location, direction, target parameters to spell
+ - Migrate all properties to parameters
+ - Look into data values disappearing on materials in wand inventory like stairs
+ - If possible, label more material data like stair direction.
+ - Add log messages about how to use config files, and which ones were loaded
+ - Add locale option to suffix messages.yml
+ - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
+ 
  - Add comments to yml files
  - Make per-spell, per-wand config files?
- - Add use instructions to spells as additional lore
- 
+ - first spell on wand is getting lost (?) - debug with elder wand and fling. 
  - Show active spells in a different color
  - Make portal spell portals avoid taking the player to the nether
  
@@ -38,8 +46,15 @@ OTHER STUFF:
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
 
+DEMO SERVER STUFF:
+
+ - Add backup configuration
+
 LONG-TERM OR INCOMPLETE:
  
+ - Continue work on combining wands on avils
+ - apply potion effects while holding wand? Could replace haste with this.
+ - Specific protection for suffocation damage, underwater breathing (air regeneration)
  - Maybe data-drive blink's special list of things it will try to target through?
  - managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?

@@ -26,6 +26,7 @@ server:
     - 'You are free to play here, and build here.&x &xGriefing is tolerated, though not necessarily appreciated.'
     - 'The server has made you a millionaire. This should let you play with wands for quite a while.&x &xIf you wish to be moved to a survival/building area, your balance will be wiped.'
     - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.'
+    - 'Any special effects or events you see on this server are made with vanilla command blocks and Magic's scripting system.'
     - 'If you want to build and you behave well, send NathanWolf a message and I will give you a WorldGuard plot and an engineering wand.'
     - 'Due to the public and destructive nature of this server, heavy griefing may require occasional world rollbacks.'
     - 'Magic is a very flexible plugin. Many of the possible configurations and uses are on display here, but not all.'

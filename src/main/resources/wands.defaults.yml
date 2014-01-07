@@ -198,7 +198,7 @@ wands:
         xp_max: 50
         spells:
             - fling
-            - blink
+            - tesseract
             - leap
             - push
             - pull
