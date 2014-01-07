@@ -80,16 +80,16 @@ public class FillBatch implements BlockBatch {
 			}
 			processedBlocks++;
 
-			if (!playerSpells.hasBuildPermission(block)) continue;
-
-			if (!updated) {
-				updated = true;
-				spells.updateBlock(world.getName(), x, y, z);
+			if (playerSpells.hasBuildPermission(block)) {
+				if (!updated) {
+					updated = true;
+					spells.updateBlock(world.getName(), x, y, z);
+				}
+				
+				filledBlocks.add(block);
+				block.setType(material);
+				block.setData(data);
 			}
-			
-			filledBlocks.add(block);
-			block.setType(material);
-			block.setData(data);
 			
 			iy++;
 			if (iy >= absy) {
