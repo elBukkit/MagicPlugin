@@ -1,5 +1,9 @@
 # TODO
 
+IMPORTANT STUFF:
+
+ - NPE on creating a "farming" wand sign?
+
 NEW SPELLS:
 
  - banish - sets a player's home and spawn?
@@ -11,8 +15,7 @@ NEW SPELLS:
 
 OTHER STUFF:
 
- - NPE on creating a "farming" wand sign?
- - Allow tesseract to pass through glass
+ - Add visual effects to spawn and recall spells
  - prevent pillar from passing through non-air blocks .. ? what about stalactite, though?
  - Some sort of workaround for wands getting killed by the creative inventory
  - Make spells usable without a player, clean up strong Player references
@@ -47,8 +50,10 @@ OTHER STUFF:
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
 
 DEMO SERVER STUFF:
-
+ 
+ - Need to localize web page... is it totally broken now?
  - Add backup configuration
+ - Test permission groups
 
 LONG-TERM OR INCOMPLETE:
  

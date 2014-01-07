@@ -110,6 +110,13 @@ public class BlinkSpell extends Spell
 				targetThrough(Material.WATER);
 				targetThrough(Material.STATIONARY_WATER);
 			}
+		} else {
+			targetThrough(Material.GLASS);
+			targetThrough(Material.THIN_GLASS);
+			targetThrough(Material.STAINED_GLASS);
+			targetThrough(Material.STAINED_GLASS_PANE);
+			targetThrough(Material.WATER);
+			targetThrough(Material.STATIONARY_WATER);
 		}
 
 		Block target = getTargetBlock();
