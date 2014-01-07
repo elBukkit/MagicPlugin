@@ -457,15 +457,16 @@ public class Wand implements CostReducer {
 			spells.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
 		}
 		ItemStack itemStack = null;
+		ItemStack originalItemStack = null;
 		try {
-			itemStack = new ItemStack(spell.getMaterial(), 1);
-			itemStack = InventoryUtils.getCopy(itemStack);
+			originalItemStack = new ItemStack(spell.getMaterial(), 1);
+			itemStack = InventoryUtils.getCopy(originalItemStack);
 		} catch (Exception ex) {
 			itemStack = null;
 		}
 		if (itemStack == null) {
 			spells.getPlugin().getLogger().warning("Unable to create spell icon with material " + spell.getMaterial().name());	
-			return null;
+			return originalItemStack;
 		}
 		updateSpellName(itemStack, spell, true);
 		return itemStack;
@@ -477,9 +478,13 @@ public class Wand implements CostReducer {
 			typeId = EraseMaterial.getId();
 		} else if (typeId == -1) {
 			typeId = CopyMaterial.getId();
-		}		
-		ItemStack itemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);		
-		itemStack = InventoryUtils.getCopy(itemStack);
+		}
+		ItemStack originalItemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);	
+		ItemStack itemStack = InventoryUtils.getCopy(originalItemStack);
+		if (itemStack == null) {
+			spells.getPlugin().getLogger().warning("Unable to create material icon for id " + typeId + ": " + originalItemStack.getType());	
+			return originalItemStack;
+		}
 		ItemMeta meta = itemStack.getItemMeta();
 		if (typeId == EraseMaterial.getId()) {
 			typeId = EraseMaterial.getId();

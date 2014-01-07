@@ -328,8 +328,6 @@ wands:
         materials:
             - soil
             - wheat
-            - pumpkin_stem
-            - melon_stem
             - carrot
             - potato
             - water

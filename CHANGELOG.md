@@ -8,6 +8,7 @@
  - Add y_offset and y_value parameters to the FlingSpell.
  - Add some additional safety checks to the Essentials integration.
  - WIP: Add double-click-to-reorganize wand inventory functionality.
+ - Fix the farming wand, add additional safety for unusable materials.
 
 ## 2.8.0
 
