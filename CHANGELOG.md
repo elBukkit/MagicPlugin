@@ -6,6 +6,7 @@
  - Some fixes to the Essentials integration.
  - Add /spellp command, for remotely casting a spell as another player.
  - Add y_offset and y_value parameters to the FlingSpell.
+ - Add some additional safety checks to the Essentials integration.
 
 ## 2.8.0
 

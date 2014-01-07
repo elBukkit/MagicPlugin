@@ -678,6 +678,14 @@ public class Spells implements Listener
 							Field itemDbField = essentialsClass.getDeclaredField("itemDb");
 							itemDbField.setAccessible(true);
 							Object oldEntry = itemDbField.get(essentials);
+							if (oldEntry instanceof MagicItemDb) {
+								log.info("Essentials integration already set up, skipping");
+								return;
+							}
+							if (!oldEntry.getClass().getName().equals("com.earth2me.essentials.ItemDb")){
+								log.info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
+								return;
+							}
 							Object newEntry = new MagicItemDb(me, essentials);
 							itemDbField.set(essentials, newEntry);
 							Field confListField = essentialsClass.getDeclaredField("confList");
