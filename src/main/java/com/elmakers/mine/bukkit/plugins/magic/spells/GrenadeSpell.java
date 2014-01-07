@@ -23,9 +23,14 @@ public class GrenadeSpell extends Spell
 		boolean useFire = parameters.getBoolean("fire", false);
 
 		Block target = getNextBlock();
+		if (target == null) {
+			return SpellResult.NO_TARGET;
+		}
 		Location loc = target.getLocation();
 		TNTPrimed grenade = (TNTPrimed)player.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
-
+		if (grenade == null) {
+			return SpellResult.FAILURE;
+		}
 		Vector aim = getAimVector();
 		grenade.setVelocity(aim);
 		grenade.setYield(size);
