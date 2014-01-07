@@ -385,3 +385,6 @@ messages:
         camera:
             name: Camera
             description: Take a portrait of yourself or others
+        default:
+            name: Empty Wand
+            description: The default wand a player receives with the /wand command

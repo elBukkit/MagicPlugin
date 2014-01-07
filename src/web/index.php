@@ -71,6 +71,7 @@ if (isset($wandConfiguratiom['wands'])) {
 foreach ($wands as $key => $wand) {
 	$wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
 	$wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
+	$wand['spells'] = isset($wand['spells']) ? $wand['spells'] : array();
 	$wands[$key] = $wand;
 }
 ksort($wands);
