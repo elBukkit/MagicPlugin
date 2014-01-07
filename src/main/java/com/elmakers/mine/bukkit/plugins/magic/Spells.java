@@ -27,6 +27,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -955,7 +956,7 @@ public class Spells implements Listener
         }
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();		
@@ -1004,7 +1005,12 @@ public class Spells implements Listener
 					|| material == Material.IRON_DOOR_BLOCK || material == Material.ENDER_CHEST
 					|| material == Material.ANVIL || material == Material.BREWING_STAND || material == Material.ENCHANTMENT_TABLE
 					|| material == Material.STONE_BUTTON || material == Material.LEVER || material == Material.FURNACE
-					|| material == Material.BED || material == Material.SIGN_POST || material == Material.COMMAND);
+					|| material == Material.BED || material == Material.SIGN_POST || material == Material.COMMAND || material == Material.WALL_SIGN);
+			
+			// This is to prevent Essentials signs from giving you an item in your wand inventory.
+			if (material== Material.SIGN_POST || material == Material.WALL_SIGN) {
+				wand.closeInventory();
+			}
 		}
 		if (toggleInventory)
 		{

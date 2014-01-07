@@ -10,6 +10,7 @@
  - WIP: Add double-click-to-reorganize wand inventory functionality.
  - Fix the farming wand, add additional safety for unusable materials.
  - Allow tesseract to pass through glass
+ - Fix interaction with Essentials signs and Wands interfering with each other.
 
 ## 2.8.0
 
