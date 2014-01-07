@@ -634,7 +634,8 @@ public class Spells implements Listener
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
-		combiningEnabled = generalNode.getBoolean("combining_enabled", combiningEnabled);		
+		combiningEnabled = generalNode.getBoolean("combining_enabled", combiningEnabled);
+		organizingEnabled = generalNode.getBoolean("organizing_enabled", organizingEnabled);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
@@ -1279,12 +1280,23 @@ public class Spells implements Listener
 				event.setCancelled(true);
 			}
 		}
+		
+		// Check for wand re-organizing
+		if (organizingEnabled && event.getInventory().getType() == InventoryType.CRAFTING && event.getAction() == InventoryAction.PLACE_ALL) {
+			Player player = (Player)event.getWhoClicked();
+			PlayerSpells playerSpells = getPlayerSpells(player);
+			Wand wand = playerSpells.getActiveWand();
+			if (wand != null && wand.isInventoryOpen()) {
+				wand.organizeInventory();
+				event.setCancelled(true);
+			}
+		}
 	}
 
 	@EventHandler
 	public void onInventoryClosed(InventoryCloseEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
-			
+
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
 		PlayerSpells playerSpells = getPlayerSpells(player);
@@ -1457,6 +1469,7 @@ public class Spells implements Listener
 	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
+	 private boolean							 organizingEnabled				= false;
 	 private float							 	 maxPowerMultiplier			    = 1.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	    = 1.0f;

@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -282,34 +283,46 @@ public class Wand implements CostReducer {
 	protected Set<String> getMaterialNames() {
 		return getMaterialNames(false);
 	}
+
+	protected String getMaterialKey(ItemStack itemStack) {
+		return getMaterialKey(itemStack, null);
+	}
 	
 	@SuppressWarnings("deprecation")
+	protected String getMaterialKey(ItemStack itemStack, Integer index) {
+		if (itemStack == null || isSpell(itemStack) || isWand(itemStack)) {
+			return null;
+		}
+		Material material = itemStack.getType();
+		if (material == Material.AIR) {
+			return null;
+		}
+	
+		String materialKey = material.getId() + ":" + itemStack.getData().getData();
+		if (material == EraseMaterial) {
+			materialKey = "0:0"; 
+		} else if (material == CopyMaterial) {
+			materialKey = "-1:0"; 
+		}
+		if (index != null) {
+			materialKey += "@" + index;
+		}
+		return materialKey;
+	}
+	
 	protected Set<String> getMaterialNames(boolean includePositions) {
 		Set<String> materialNames = new TreeSet<String>();
 		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
 		allInventories.add(hotbar);
 		allInventories.addAll(inventories);
-		int index = 0;
+		Integer index = 0;
 		for (Inventory inventory : allInventories) {
 			ItemStack[] items = inventory.getContents();
 			for (int i = 0; i < items.length; i++) {
-				if (items[i] != null && !isWand(items[i])) {
-					if (!isSpell(items[i])) {
-						Material material = items[i].getType();
-						if (material != Material.AIR) {
-							String materialKey = material.getId() + ":" + items[i].getData().getData();
-							if (material == EraseMaterial) {
-								materialKey = "0:0"; 
-							} else if (material == CopyMaterial) {
-								materialKey = "-1:0"; 
-							}
-							if (includePositions) {
-								materialKey += "@" + index;
-							}
-							materialNames.add(materialKey);
-						}
-					}
-				}	
+				String materialKey = getMaterialKey(items[i], includePositions ? index : null);
+				if (materialKey != null) {
+					materialNames.add(materialKey);
+				}
 				index++;
 			}
 		}
@@ -361,14 +374,18 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	protected Inventory getInventoryByIndex(int inventoryIndex) {
+		while (inventoryIndex >= inventories.size()) {
+			inventories.add(InventoryUtils.createInventory(null, inventorySize, "Wand"));
+		}
+		return inventories.get(inventoryIndex);
+	}
+	
 	protected Inventory getInventory(Integer slot) {
 		Inventory inventory = hotbar;
 		if (slot >= hotbarSize) {
 			int inventoryIndex = (slot - hotbarSize) / inventorySize;
-			while (inventoryIndex >= inventories.size()) {
-				inventories.add(InventoryUtils.createInventory(null, inventorySize, "Wand"));
-			}
-			inventory = inventories.get(inventoryIndex);
+			inventory = getInventoryByIndex(inventoryIndex);
 		}
 		
 		return inventory;
@@ -399,7 +416,6 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected void parseInventoryStrings(String spellString, String materialString) {
 		hotbar.clear();
 		inventories.clear();
@@ -415,19 +431,23 @@ public class Wand implements CostReducer {
 		for (String materialName : materialNames) {
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
-			
-			String[] nameParts = StringUtils.split(pieces[0], ":");
-			int typeId = Integer.parseInt(nameParts[0]);
-			if (typeId == 0) {
-				typeId = EraseMaterial.getId();
-			} else if (typeId == -1) {
-				typeId = CopyMaterial.getId();
-			}
-			byte dataId = nameParts.length > 1 ? Byte.parseByte(nameParts[1]) : 0;		
-			ItemStack itemStack = createMaterialItem(typeId, dataId);
+			ItemStack itemStack = createMaterialItem(pieces[0]);
 			addToInventory(itemStack, slot);
 		}
 		hasInventory = spellNames.length + materialNames.length > 1;
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected ItemStack createMaterialItem(String materialKey) {
+		String[] nameParts = StringUtils.split(materialKey, ":");
+		int typeId = Integer.parseInt(nameParts[0]);
+		if (typeId == 0) {
+			typeId = EraseMaterial.getId();
+		} else if (typeId == -1) {
+			typeId = CopyMaterial.getId();
+		}
+		byte dataId = nameParts.length > 1 ? Byte.parseByte(nameParts[1]) : 0;		
+		return createMaterialItem(typeId, dataId);
 	}
 	
 	protected ItemStack createSpellItem(String spellName) {
@@ -1630,5 +1650,78 @@ public class Wand implements CostReducer {
 	
 	public boolean hasExperience() {
 		return xpRegeneration > 0;
+	}
+	
+	public void organizeInventory() {
+		if (activePlayer == null) return;
+		closeInventory();
+		
+		// First collect spells in hotbar
+		Set<String> hotbarSpellNames = new HashSet<String>();
+		Set<String> hotbarMaterialNames = new HashSet<String>();
+		Player player = activePlayer.getPlayer();
+		PlayerInventory playerInventory = player.getInventory();
+		for (int i = 0; i < hotbarSize; i++) {
+			ItemStack playerItem = playerInventory.getItem(i);
+			if (playerItem == null || playerItem.getType() == Material.AIR) continue;
+			
+			String spellName = getSpell(playerItem);
+			if (spellName != null) {
+				hotbarSpellNames.add(spellName);
+			} else {
+				String materialKey = getMaterialKey(playerItem);
+				if (materialKey != null) {
+					hotbarMaterialNames.add(materialKey);
+				}
+			}
+		}
+		
+		Map<String, Collection<String>> groupedSpells = new HashMap<String, Collection<String>>();
+		Set<String> spells = getSpells();
+		for (String spellName : spells) {
+			Spell spell = activePlayer.getSpell(spellName);
+			if (spell != null && !hotbarSpellNames.contains(spellName)) {
+				String category = spell.getCategory();
+				if (category == null || category.length() == 0) {
+					category = "default";
+				}
+				Collection<String> spellList = groupedSpells.get(category);
+				if (spellList == null) {
+					spellList = new TreeSet<String>();
+					groupedSpells.put(category, spellList);
+				}
+				spellList.add(spellName);
+			}
+		}
+		Set<String> materials = getMaterialNames();
+		for (String hotbar : hotbarMaterialNames) {
+			materials.remove(hotbar);
+		}
+		
+		inventories.clear();
+		int currentInventoryIndex = 0;
+		Inventory currentInventory = getInventory(currentInventoryIndex);
+		for (Collection<String> spellGroup : groupedSpells.values()) {
+			for (String spellName : spellGroup) {
+				HashMap<Integer, ItemStack> result = currentInventory.addItem(createSpellItem(spellName));
+				if (result.size() > 0) {
+					currentInventoryIndex++;
+					currentInventory = getInventory(currentInventoryIndex);
+				}
+			}
+			currentInventoryIndex++;
+			currentInventory = getInventory(currentInventoryIndex);
+		}
+		
+		for (String materialName : materials) {
+			HashMap<Integer, ItemStack> result = currentInventory.addItem(createMaterialItem(materialName));
+			if (result.size() > 0) {
+				currentInventoryIndex++;
+				currentInventory = getInventory(currentInventoryIndex);
+			}
+		}
+		
+		saveState();
+		openInventory();
 	}
 }
