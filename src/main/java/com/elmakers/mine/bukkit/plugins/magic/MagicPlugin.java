@@ -123,7 +123,7 @@ public class MagicPlugin extends JavaPlugin
 				return true;
 			}
 			String[] args2 = Arrays.copyOfRange(args, 1, args.length);
-			return processWandCommand(sender, player, args2);
+			return processWandCommand("wandp", sender, player, args2);
 		}
 
 		if (commandName.equalsIgnoreCase("castp"))
@@ -166,7 +166,7 @@ public class MagicPlugin extends JavaPlugin
 
 		if (commandName.equalsIgnoreCase("wand"))
 		{
-			return processWandCommand(sender, player, args);
+			return processWandCommand("wand", sender, player, args);
 		}
 
 		if (commandName.equalsIgnoreCase("cast"))
@@ -185,7 +185,7 @@ public class MagicPlugin extends JavaPlugin
 		return false;
 	}
 	
-	protected boolean processWandCommand(CommandSender sender, Player player, String[] args)
+	protected boolean processWandCommand(String command, CommandSender sender, Player player, String[] args)
 	{
 		String subCommand = "";
 		String[] args2 = args;
@@ -199,42 +199,43 @@ public class MagicPlugin extends JavaPlugin
 		}
 		if (subCommand.equalsIgnoreCase("list"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandList(player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("add"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
-
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (args2.length > 0 && args2[0].equals("material") && !spells.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
+			if (args2.length > 0 && !spells.hasPermission(sender,"Magic.commands.wand.add.spell." + args2[0], true)) return true;
 			onWandAdd(player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("configure"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandConfigure(player, args2, false);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("upgrade"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandConfigure(player, args2, true);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("fill"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandFill(player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("remove"))
 		{   
-			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandRemove(player, args2);
 			return true;
@@ -242,13 +243,15 @@ public class MagicPlugin extends JavaPlugin
 
 		if (subCommand.equalsIgnoreCase("name"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands.wand." + subCommand)) return true;
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandName(player, args2);
 			return true;
 		}
 
-		if (!spells.hasPermission(sender, "Magic.commands.wand")) return true;
+		if (!spells.hasPermission(sender, "Magic.commands." + command + "")) return true;
+		if (subCommand.length() > 0 && !spells.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
+		
 		return onWand(player, args);
 	}
 

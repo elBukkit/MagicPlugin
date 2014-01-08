@@ -12,6 +12,7 @@
  - Allow tesseract to pass through glass
  - Fix interaction with Essentials signs and Wands interfering with each other.
  - Add dropped wands to the dynmap (!)
+ - Add permission nodes for Magic.wand.add.spell.<spellname>, Magic.wand.<wandname> and Magic.wand.add.material.
 
 ## 2.8.0
 

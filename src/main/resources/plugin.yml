@@ -48,12 +48,22 @@ permissions:
     description: Player may create a wand
     type: boolean
     default: op
+  Magic.commands.wand.wand:
+    description: Player may create a specific wand
+    type: list
   Magic.commands.wand.list:
     description: Player may list available wand templates
     type: boolean
     default: op
   Magic.commands.wand.add:
     description: Player may add a spell to a wand
+    type: boolean
+    default: op
+  Magic.commands.wand.add.spell:
+    description: Player may add a specific spell to a wand for another player
+    type: list
+  Magic.commands.wand.add.material:
+    description: Player may add a specific material to a wand
     type: boolean
     default: op
   Magic.commands.wand.configure:
@@ -80,8 +90,18 @@ permissions:
     description: Player may create a wand for another player
     type: boolean
     default: op
+  Magic.commands.wandp.wand:
+    description: Player may create a specific wand for another player
+    type: list
   Magic.commands.wandp.add:
     description: Player may add a spell to a wand for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.add.spell:
+    description: Player may add a specific spell to a wand for another player
+    type: list
+  Magic.commands.wandp.add.material:
+    description: Player may add a specific material to a wand for another player
     type: boolean
     default: op
   Magic.commands.wandp.configure:

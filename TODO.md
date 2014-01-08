@@ -13,6 +13,7 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - Respect WorldGuard's pvp setting, global PvP ?
  - Add feedback to Sender when using wandp, castp, etc.
  - Add wand owner data
    - with option to not be able to use another player's wand?

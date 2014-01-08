@@ -788,6 +788,12 @@ public class Spells implements Listener
 		if (!(sender instanceof Player)) return true;
 		return hasPermission((Player)sender, pNode, false);
 	}
+	
+	public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue)
+	{
+		if (!(sender instanceof Player)) return true;
+		return hasPermission((Player)sender, pNode, defaultValue);
+	}
 
 	/*
 	 * Listeners / callbacks
