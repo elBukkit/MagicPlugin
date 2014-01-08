@@ -504,7 +504,7 @@ public class Spells implements Listener
 		}
 	}
 	
-	public void addMarker(String id, String group, String title, String world, int x, int y, int z) {
+	public void addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
 		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
@@ -520,6 +520,7 @@ public class Spells implements Listener
 			if (marker == null) {
 				marker = markerSet.createMarker(id, title, world, x, y, z, wandIcon, false);
 			}
+			marker.setDescription(description);
 		}
 	}
 	
@@ -954,10 +955,15 @@ public class Spells implements Listener
 	@EventHandler
 	public void onItemDespawn(ItemDespawnEvent event)
 	{
-		if (indestructibleWands && Wand.isWand(event.getEntity().getItemStack()))
+		if ((indestructibleWands || dynmapShowWands) && Wand.isWand(event.getEntity().getItemStack()))
 		{
-			event.getEntity().setTicksLived(1);
-			event.setCancelled(true);
+			if (indestructibleWands) {
+				event.getEntity().setTicksLived(1);
+				event.setCancelled(true);
+			} else if (dynmapShowWands) {
+				Wand wand = new Wand(this, event.getEntity().getItemStack());
+				removeMarker("wand-" + wand.getId(), "Wands");
+			}
 		}
 	}
 	
@@ -972,11 +978,18 @@ public class Spells implements Listener
 			if (dynmapShowWands) {
 				Wand wand = new Wand(this, event.getEntity().getItemStack());
 				if (wand != null) {
-					addMarker("wand-" + wand.getId(), "Wands", wand.getName(), event.getLocation().getWorld().getName(), 
-							event.getLocation().getBlockX(), event.getLocation().getBlockY(), event.getLocation().getBlockZ());
+					addWandMarker(wand, event.getEntity().getLocation());
 				}
 			}
 		}
+	}
+	
+	protected void addWandMarker(Wand wand, Location location) {
+		String description = wand.getHTMLDescription();
+		addMarker("wand-" + wand.getId(), "Wands", wand.getName(), location.getWorld().getName(),
+			location.getBlockX(), location.getBlockY(), location.getBlockZ(),
+			description
+		);
 	}
 
 	@EventHandler
@@ -988,13 +1001,20 @@ public class Spells implements Listener
 			Player player = (Player)event.getEntity();
 			onPlayerDamage(player, event);
 		}
-        if (entity instanceof Item && indestructibleWands)
+        if (entity instanceof Item && (indestructibleWands || dynmapShowWands))
         {
-                Item item = (Item)entity;
-                if (Wand.isWand(item.getItemStack()))
-                {
-                    event.setCancelled(true);
+   		 	Item item = (Item)entity;
+   		 	ItemStack itemStack = item.getItemStack();
+            if (Wand.isWand(itemStack))
+            {
+            	if (indestructibleWands) {
+                     event.setCancelled(true);
+            	} else if(dynmapShowWands && event.getDamage() >= itemStack.getDurability()) {
+                	Wand wand = new Wand(this, item.getItemStack());
+                	removeMarker("wand-" + wand.getId(), "Wands");
+                	plugin.getLogger().info("Wand destroyed, removed from map");
                 }
+			}  
         }
 	}
 
@@ -1489,9 +1509,7 @@ public class Spells implements Listener
 				ItemStack itemStack = item.getItemStack();
 				if (Wand.isWand(itemStack)) {
 					Wand wand = new Wand(this, itemStack);
-					addMarker("wand-" + wand.getId(), "Wands", wand.getName(), item.getLocation().getWorld().getName(),
-						item.getLocation().getBlockX(), item.getLocation().getBlockY(), item.getLocation().getBlockZ()
-					);
+					addWandMarker(wand, item.getLocation());
 					wandCount++;
 				}
 			}

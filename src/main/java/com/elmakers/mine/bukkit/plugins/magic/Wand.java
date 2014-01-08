@@ -910,9 +910,51 @@ public class Wand implements CostReducer {
 	private void updateLore() {
 		updateLore(getSpells().size(), getMaterialNames().size());
 	}
+	
+	protected static String convertToHTML(String line) {
+		int tagCount = 1;
+		line = "<span style=\"color:white\">" + line;
+		for (ChatColor c : ChatColor.values()) {
+			tagCount += StringUtils.countMatches(line, c.toString());
+			String replaceStyle = "";
+			if (c == ChatColor.ITALIC) {
+				replaceStyle = "font-style: italic";
+			} else if (c == ChatColor.BOLD) {
+				replaceStyle = "font-weight: bold";
+			} else if (c == ChatColor.UNDERLINE) {
+				replaceStyle = "text-decoration: underline";
+			} else {
+				String color = c.name().toLowerCase().replace("_", "");
+				if (c == ChatColor.LIGHT_PURPLE) {
+					color = "mediumpurple";
+				}
+				replaceStyle = "color:" + color;
+			}
+			line = line.replace(c.toString(), "<span style=\"" + replaceStyle + "\">");
+		}
+		for (int i = 0; i < tagCount; i++) {
+			line += "</span>";
+		}
+		
+		return line;
+	}
 
-	private void updateLore(int spellCount, int materialCount) {
-		ItemMeta meta = item.getItemMeta();
+	public String getHTMLDescription() {
+		Collection<String> rawLore = getLore();
+		Collection<String> lore = new ArrayList<String>();
+		lore.add("<h2>" + convertToHTML(getActiveWandName()) + "</h2>");
+		for (String line : rawLore) {
+			lore.add(convertToHTML(line));
+		}
+		
+		return "<div style=\"background-color: black; margin: 8px; padding: 8px\">" + StringUtils.join(lore, "<br/>") + "</div>";
+	}
+
+	private List<String> getLore() {
+		return getLore(getSpells().size(), getMaterialNames().size());
+	}
+	
+	private List<String> getLore(int spellCount, int materialCount) {
 		List<String> lore = new ArrayList<String>();
 		
 		Spell spell = spells.getSpell(activeSpell);
@@ -946,6 +988,12 @@ public class Wand implements CostReducer {
 		}
 		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.health_regeneration"), healthRegeneration / WandLevel.maxRegeneration));
 		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.hunger_regeneration"), hungerRegeneration / WandLevel.maxRegeneration));
+		return lore;
+	}
+	
+	private void updateLore(int spellCount, int materialCount) {
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = getLore();
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);

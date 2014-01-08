@@ -12,8 +12,8 @@ NEW SPELLS:
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
 
 OTHER STUFF:
-
- - Add wands to dynmap
+ 
+ - Add feedback to Sender when using wandp, castp, etc.
  - Add wand owner data
    - with option to not be able to use another player's wand?
  - Make dynmap integration optional

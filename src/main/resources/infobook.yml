@@ -45,7 +45,8 @@ obtaining:
     - '&cWand Shop&x &x&0Wands can be purchased in an Essentials shop.&x &xFree money is provided on this server for demo purposes.'
     - 'Wands can also be upgraded directly via console commands, which can be used in other plugins or command blocks.'
     - 'This could be used as a level progression mechanism, or quest rewards, or any number of other creative things.'
-    - '&cFinding Wands&x &x&0Magic will randomly add wands to naturally-spawned chests found in dungeons, nether fortresses, villages.'
+    - '&cFinding Wands&x &x&0Magic will randomly add wands to naturally-spawned chests found in dungeons, nether fortresses, villages.&x &xWands also appear on the dynmap, so keep a look out!&x &xThis is also useful if you die and wish to retrieve your wand.'
+    - 'Wands are indestructible. If you ever lose your wand, you can always retrieve it- unless someone else gets to it first.&x &xPlease use a Disposal to get rid of any wands you no longer want.'
     - '&cBending&x &x&0I am a big fan of the Avatar cartoon series.&x &xThere are wands specifically meant to emulate bending.'
 using:
   author: NathanWolf
