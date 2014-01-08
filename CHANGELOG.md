@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2.8.2
+
+
 ## 2.8.1
 
  - The blob spell will now auto-undo after 30 seconds.

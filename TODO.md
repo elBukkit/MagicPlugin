@@ -10,6 +10,7 @@ NEW SPELLS:
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
+ - separate alter into superalter and alter
 
 OTHER STUFF:
  
