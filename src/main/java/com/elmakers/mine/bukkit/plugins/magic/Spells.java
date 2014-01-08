@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,8 +57,8 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldInitEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -491,25 +490,30 @@ public class Spells implements Listener
 		}
 	}
 	
-	public void removeMarker(String id, String group) {
+	public boolean removeMarker(String id, String group) {
+		boolean removed = false;
 		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
 			if (markerSet != null) {
 				Marker marker = markerSet.findMarker(id);
 				if (marker != null) {
+					removed = true;
 					marker.deleteMarker();
 				}
 			}
 		}
+		
+		return removed;
 	}
 	
-	public void addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
+	public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
+		boolean created = false;
 		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
 			if (markerSet == null) {
-				markerSet = markers.createMarkerSet(group, "Wands", null, false);
+				markerSet = markers.createMarkerSet(group, "Wands", null, true);
 			}
 			MarkerIcon wandIcon = markers.getMarkerIcon("wand");
 			if (wandIcon == null) {
@@ -518,10 +522,13 @@ public class Spells implements Listener
 			
 			Marker marker = markerSet.findMarker(id);
 			if (marker == null) {
-				marker = markerSet.createMarker(id, title, world, x, y, z, wandIcon, false);
+				created = true;
+				marker = markerSet.createMarker(id, title, world, x, y, z, wandIcon, true);
 			}
 			marker.setDescription(description);
 		}
+		
+		return created;
 	}
 	
 	public void addPendingBlockBatch(BlockBatch batch) {
@@ -968,7 +975,9 @@ public class Spells implements Listener
 				event.setCancelled(true);
 			} else if (dynmapShowWands) {
 				Wand wand = new Wand(this, event.getEntity().getItemStack());
-				removeMarker("wand-" + wand.getId(), "Wands");
+				if (removeMarker("wand-" + wand.getId(), "Wands")) {
+					log.info("Wand despawned, removed from map");
+				}
 			}
 		}
 	}
@@ -990,9 +999,9 @@ public class Spells implements Listener
 		}
 	}
 	
-	protected void addWandMarker(Wand wand, Location location) {
+	protected boolean addWandMarker(Wand wand, Location location) {
 		String description = wand.getHTMLDescription();
-		addMarker("wand-" + wand.getId(), "Wands", wand.getName(), location.getWorld().getName(),
+		return addMarker("wand-" + wand.getId(), "Wands", wand.getName(), location.getWorld().getName(),
 			location.getBlockX(), location.getBlockY(), location.getBlockZ(),
 			description
 		);
@@ -1017,8 +1026,9 @@ public class Spells implements Listener
                      event.setCancelled(true);
             	} else if(dynmapShowWands && event.getDamage() >= itemStack.getDurability()) {
                 	Wand wand = new Wand(this, item.getItemStack());
-                	removeMarker("wand-" + wand.getId(), "Wands");
-                	plugin.getLogger().info("Wand destroyed, removed from map");
+                	if (removeMarker("wand-" + wand.getId(), "Wands")) {
+                		plugin.getLogger().info("Wand destroyed, removed from map");
+                	}
                 }
 			}  
         }
@@ -1496,44 +1506,44 @@ public class Spells implements Listener
 		}
 	}
 	
-	public void checkForWands(final World world, final int retries) {
+	public void checkForWands(final Entity[] entities, final int retries) {
 		if (dynmapShowWands && dynmap != null) {
 			if (!dynmap.markerAPIInitialized()) {
 				if (retries > 0) {
 					final Spells me = this;
 					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 						public void run() {
-							me.checkForWands(world, retries + 1);
+							me.checkForWands(entities, retries + 1);
 						}
 					}, 40);
 				}
 				return;
 			}
 			int wandCount = 0;
-			Collection<Item> items = world.getEntitiesByClass(Item.class);
-			for (Item item : items) {
+			for (Entity entity : entities) {
+				if (!(entity instanceof Item)) continue;
+				Item item = (Item)entity;
 				ItemStack itemStack = item.getItemStack();
 				if (Wand.isWand(itemStack)) {
 					Wand wand = new Wand(this, itemStack);
-					addWandMarker(wand, item.getLocation());
-					wandCount++;
+					wandCount += addWandMarker(wand, item.getLocation()) ? 1 : 0;
 				}
 			}
 			
 			if (wandCount > 0) {
-				log.info("Found " + wandCount + " wands in world: " + world.getName() + ", added to map");
+				log.info("Found " + wandCount + " wands, added to map");
 			}
 		}
 	}
 
 	@EventHandler
-	public void onWorldLoad(WorldLoadEvent event) {
-		// Look for wands in the world
+	public void onChunkLoad(ChunkLoadEvent e) {
+		// Look for wands in the chnk
 		final Spells me = this;
-		final World world = event.getWorld();
+		final ChunkLoadEvent event = e;
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				me.checkForWands(world, 10);
+				me.checkForWands(event.getChunk().getEntities(), 10);
 			}
 		}, 40);
 	}

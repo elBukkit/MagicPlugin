@@ -325,6 +325,9 @@ messages:
         spawn:
             name: Return to Spawn
             description: Returns you to spawn
+        recall:
+            name: Recall Wand
+            description: Returns you to a previous location
         fireball:
             name: Fireball Wand
             description: A temporary fireball wand
@@ -388,3 +391,9 @@ messages:
         default:
             name: Empty Wand
             description: The default wand a player receives with the /wand command
+        white:
+            name: The White Wand
+            description: A wand for master white wizards
+        black:
+            name: The Black Wand
+            description: A wand for master dark wizards

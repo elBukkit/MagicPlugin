@@ -153,6 +153,13 @@ wands:
             - blink
             - fling
         cost_reduction: 1
+    recall:
+        modifiable: true
+        xp_regeneration: 2
+        xp_max: 10
+        spells:
+            - recall
+            - spawn
     spawn:
         modifiable: true
         xp_regeneration: 2
@@ -394,6 +401,7 @@ wands:
             - icbm
             - inferno
             - superblob
+            - superconvert
             - push
             - pull
             - force
@@ -417,6 +425,9 @@ wands:
             - toss
             - curse
             - boon
+            - convert
+            - commit
+            - heal
         materials:
             - water
             - lava
@@ -536,3 +547,102 @@ wands:
         xp_max: 5
         spells:
             - camera
+    white:
+        modifiable: true
+        cost_reduction: 0.6
+        protection: 0.9
+        xp_regeneration: 100
+        xp_max: 1000
+        health_regeneration: 1
+        hunger_regeneration: 1
+        haste: 0.1
+        effect_color: FFFFFF
+        spells:
+            - fling
+            - blink
+            - recurse
+            - time
+            - sniper
+            - superblast
+            - superblob
+            - superconvert
+            - push
+            - pull
+            - force
+            - levitate
+            - farm
+            - shell
+            - box
+            - volley
+            - stalactite
+            - fill
+            - blob
+            - blast
+            - pillar
+            - bridge
+            - absorb
+            - alter
+            - undo
+            - toss
+            - boon
+            - convert
+            - commit
+            - heal
+        materials:
+            - water
+            - glowstone
+            - glass
+            - erase
+            - soul_sand
+            - stained_glass
+            - copy
+    black:
+        modifiable: true
+        cost_reduction: 0.6
+        protection: 0.9
+        xp_regeneration: 100
+        xp_max: 1000
+        health_regeneration: 1
+        hunger_regeneration: 1
+        haste: 0.1
+        effect_color: 111111
+        spells:
+            - fling
+            - blink
+            - recurse
+            - sniper
+            - kaboom
+            - fireball
+            - superblast
+            - superblob
+            - superconvert
+            - storm
+            - icbm
+            - inferno
+            - superblob
+            - levitate
+            - mob
+            - shell
+            - shrink
+            - box
+            - frag
+            - volley
+            - stalactite
+            - fill
+            - blob
+            - blast
+            - pillar
+            - bridge
+            - absorb
+            - alter
+            - undo
+            - toss
+            - curse
+            - convert
+            - commit
+        materials:
+            - water
+            - erase
+            - tnt
+            - soul_sand
+            - copy

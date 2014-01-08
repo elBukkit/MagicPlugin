@@ -2,6 +2,11 @@
 
 IMPORTANT STUFF:
 
+ - Add wand icons in chunk load, not world load?
+   - Make them persistent
+ - Map went funky, got broken - getMapView caused NPE .. ?
+   - NPE at:  at com.elmakers.mine.bukkit.utilities.URLMap.getMapItem(URLMap.java:138) ~[?:?]
+
 NEW SPELLS:
 
  - banish - sets a player's home and spawn?
@@ -14,7 +19,11 @@ NEW SPELLS:
 
 OTHER STUFF:
  
- - NPE at:  at com.elmakers.mine.bukkit.utilities.URLMap.getMapItem(URLMap.java:138) ~[?:?]
+ - Add wand combine and combine_upgrade(?) commands
+ - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
+ - Add priorities to maps for throttling
+ - Add max radius to construct spell
+   - Override? Same as fill.. maybe use cooldown reduction?
  - Respect WorldGuard's pvp setting, global PvP ?
  - Add feedback to Sender when using wandp, castp, etc.
  - Add wand owner data
@@ -70,7 +79,7 @@ OTHER STUFF:
 
 DEMO SERVER STUFF:
 
- - Add buttons to give back the info books (/give @p server, etc)
+ - Update WorldGuard, hope item frames are safe?
  - Build and have fun! ;)
 
 LONG-TERM OR INCOMPLETE:
