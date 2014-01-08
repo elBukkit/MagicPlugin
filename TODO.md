@@ -14,6 +14,7 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - NPE at:  at com.elmakers.mine.bukkit.utilities.URLMap.getMapItem(URLMap.java:138) ~[?:?]
  - Respect WorldGuard's pvp setting, global PvP ?
  - Add feedback to Sender when using wandp, castp, etc.
  - Add wand owner data

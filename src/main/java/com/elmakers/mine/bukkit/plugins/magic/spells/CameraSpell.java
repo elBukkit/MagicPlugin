@@ -4,6 +4,7 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -22,6 +23,11 @@ public class CameraSpell extends Spell
 		if (parameters.containsKey("id"))
 		{
 			newMapItem = new ItemStack(Material.MAP, 1, (short)parameters.getInt("id", 0));
+			String mapName = parameters.getString("name", "Image");
+			ItemMeta meta = newMapItem.getItemMeta();
+			// TODO: How to handle names with spaces in them?
+			meta.setDisplayName(mapName);
+			newMapItem.setItemMeta(meta);
 		}
 		
 		// Check for special case url
@@ -32,7 +38,8 @@ public class CameraSpell extends Spell
 				int y = parameters.getInt("y", 0);
 				int width = parameters.getInt("width", 0);
 				int height = parameters.getInt("height", 0);
-				newMapItem = URLMap.getURLItem(url, x, y, width, height, "Photo");
+				String mapName = parameters.getString("name", "Photo");
+				newMapItem = URLMap.getURLItem(url, x, y, width, height, mapName);
 			}
 		}
 		
