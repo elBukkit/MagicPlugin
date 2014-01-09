@@ -12,6 +12,7 @@ spells:
         costs:
             xp: 10
         parameters:
+            target: other
             slow: 600,5  
             confusion: 600,5
             weakness: 600,5
@@ -23,7 +24,6 @@ spells:
         costs:
             xp: 20
         parameters:
-            target: self
             speed: 600,5   
             jump: 600,5
             regeneration: 600,5     

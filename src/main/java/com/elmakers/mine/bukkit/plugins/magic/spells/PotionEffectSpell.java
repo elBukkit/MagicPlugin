@@ -17,11 +17,12 @@ public class PotionEffectSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		LivingEntity targetEntity = null;
+		LivingEntity targetEntity = player;
 		String targetType = (String)parameters.getString("target", "");
 		
-		if (targetType.equals("self"))
-		{
+		if (targetType.equals("other")) {
+			targetEntity = null;
+		} else if (targetType.equals("self")) {
 			targetEntity = player;
 		} else {
 			this.targetEntity(LivingEntity.class);
