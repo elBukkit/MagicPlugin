@@ -524,6 +524,9 @@ public class Spells implements Listener
 			if (marker == null) {
 				created = true;
 				marker = markerSet.createMarker(id, title, world, x, y, z, wandIcon, true);
+			} else {
+				marker.setLocation(world, x, y, z);
+				marker.setLabel(title);
 			}
 			marker.setDescription(description);
 		}
