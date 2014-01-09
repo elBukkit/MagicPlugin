@@ -348,6 +348,9 @@ messages:
         fireball:
             name: Fireball
             description: Cast an exploding fireball
+        wither:
+            name: Wither
+            description: Shoot wither skulls
         map:
             name: Map
             description: Generate a map
