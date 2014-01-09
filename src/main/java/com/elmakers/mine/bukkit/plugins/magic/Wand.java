@@ -1435,12 +1435,15 @@ public class Wand implements CostReducer {
 		File dataFolder = plugin.getDataFolder();
 		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
 		oldDefaults.delete();
+		plugin.getLogger().info("Overwriting file " + propertiesFileNameDefaults);
 		plugin.saveResource(propertiesFileNameDefaults, false);
 		File propertiesFile = new File(dataFolder, propertiesFileName);
 		if (!propertiesFile.exists())
 		{
+			plugin.getLogger().info("Loading default wands from " + propertiesFileNameDefaults);
 			loadProperties(plugin.getResource(propertiesFileNameDefaults));
 		} else {
+			plugin.getLogger().info("Loading wands from " + propertiesFile.getName());
 			loadProperties(propertiesFile);
 		}
 	}

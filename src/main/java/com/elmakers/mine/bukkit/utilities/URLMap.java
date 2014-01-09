@@ -49,6 +49,7 @@ public class URLMap extends MapRenderer  {
 		File configurationFile = getConfigurationFile();
 		if (configurationFile.exists()) {
 			try {
+				plugin.getLogger().info("Loading URL map data from " + configurationFile.getName());
 				configuration.load(configurationFile);
 				Set<String> maps = configuration.getKeys(false);
 				boolean needsUpdate = false;

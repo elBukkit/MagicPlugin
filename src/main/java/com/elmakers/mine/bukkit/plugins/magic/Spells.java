@@ -550,24 +550,30 @@ public class Spells implements Listener
 		// Load main configuration
 		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
 		oldDefaults.delete();
+		log.info("Overwriting file " + propertiesFileNameDefaults);
 		plugin.saveResource(propertiesFileNameDefaults, false);
 		File propertiesFile = new File(dataFolder, propertiesFileName);
 		if (!propertiesFile.exists())
 		{
+			log.info("Loading defaults from: " + propertiesFileNameDefaults);
 			loadProperties(plugin.getResource(propertiesFileNameDefaults));
 		} else {
+			log.info("Loading customizations from: " + propertiesFile.getName());
 			loadProperties(propertiesFile);
 		}
 
 		// Load spells
 		oldDefaults = new File(dataFolder, spellsFileNameDefaults);
 		oldDefaults.delete();
+		log.info("Overwriting file " + spellsFileNameDefaults);
 		plugin.saveResource(spellsFileNameDefaults, false);
 		File spellsFile = new File(dataFolder, spellsFileName);
 		if (!spellsFile.exists())
 		{
+			log.info("Loading default spells from: " + spellsFileNameDefaults);
 			load(plugin.getResource(spellsFileNameDefaults));
 		} else {
+			log.info("Loading spells from: " + spellsFile.getName());
 			load(spellsFile);
 		}
 
@@ -577,6 +583,7 @@ public class Spells implements Listener
 				File playersFile = new File(dataFolder, playersFileName);
 				if (playersFile.exists())
 				{
+					log.info("Loading player data from file " + playersFile.getName());
 					Configuration playerConfiguration = new Configuration(playersFile);
 					playerConfiguration.load();
 					List<String> playerNames = playerConfiguration.getKeys();

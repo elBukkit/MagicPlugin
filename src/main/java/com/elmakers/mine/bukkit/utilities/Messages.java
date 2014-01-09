@@ -33,13 +33,16 @@ public class Messages {
 		File dataFolder = plugin.getDataFolder();
 		File oldDefaults = new File(dataFolder, messagesFileNameDefaults);
 		oldDefaults.delete();
+		plugin.getLogger().info("Overwriting file " + messagesFileNameDefaults);
 		plugin.saveResource(messagesFileNameDefaults, false);
 		
 		// Load default configuration first, then override with custom.
+		plugin.getLogger().info("Loading default localizations from " + messagesFileNameDefaults);
 		loadProperties(plugin.getResource(messagesFileNameDefaults));
 		File propertiesFile = new File(dataFolder, messagesFileName);
 		if (propertiesFile.exists())
 		{
+			plugin.getLogger().info("Overriding default localizations using " + propertiesFile);
 			loadProperties(propertiesFile);
 		}
 	}
