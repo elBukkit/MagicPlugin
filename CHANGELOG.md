@@ -4,6 +4,10 @@
 
  - "name" parameter works with url and id maps.
  - Fix permissions on boom spell.
+ - Enable combining wands on an anvil- WIP, hacky.
+ - Some fixes for the camera spell involving the world not getting saved after a new map was created.
+ - Fix cooldowns on fill and superconstruct spells
+ - Allow casting boon on another player (it's targeted now- aim up for yourself, like heal)
 
 ## 2.8.1
 

@@ -291,9 +291,17 @@ wands:
             - pillar
             - recurse
             - undo
+            - commit
             - blob
             - stalactite
             - alter
+            - shell
+            - box
+            - convert
+            - superblob
+            - superbox
+            - supershell
+            - superconvert
         materials:
             - stone
             - wood
@@ -549,10 +557,10 @@ wands:
             - camera
     white:
         modifiable: true
-        cost_reduction: 0.6
+        cost_reduction: 0.5
         protection: 0.9
-        xp_regeneration: 100
-        xp_max: 1000
+        xp_regeneration: 50
+        xp_max: 600
         health_regeneration: 1
         hunger_regeneration: 1
         haste: 0.1
@@ -598,10 +606,10 @@ wands:
             - copy
     black:
         modifiable: true
-        cost_reduction: 0.6
+        cost_reduction: 0.5
         protection: 0.9
-        xp_regeneration: 100
-        xp_max: 1000
+        xp_regeneration: 50
+        xp_max: 600
         health_regeneration: 1
         hunger_regeneration: 1
         haste: 0.1

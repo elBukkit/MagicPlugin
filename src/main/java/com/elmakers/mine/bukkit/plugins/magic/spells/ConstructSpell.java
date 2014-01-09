@@ -44,7 +44,6 @@ public class ConstructSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
-
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = parameters.getInt("size", radius);
 		
@@ -56,11 +55,11 @@ public class ConstructSpell extends Spell
 				effectLocation.add(0.5f, 0.5f, 0.5f);
 				EffectUtils.playEffect(effectLocation, ParticleType.HAPPY_VILLAGER, 0.3f, 0.3f, 0.3f, 1.5f, 10);
 				castMessage("Cast again to construct");
+				activate();
 				return SpellResult.COST_FREE;
 			} else {
 				radius = (int)targetBlock.getLocation().distance(target.getLocation());
 				target = targetBlock;
-				targetBlock = null;
 			}
 		}
 		
@@ -106,6 +105,7 @@ public class ConstructSpell extends Spell
 		}
 
 		fillArea(target, radius, material, data, !hollow, conType);
+		deactivate();
 
 		return SpellResult.SUCCESS;
 	}
@@ -129,6 +129,11 @@ public class ConstructSpell extends Spell
 	@Override
 	public boolean usesMaterial() {
 		return true;
+	}
+	
+	@Override
+	public void onDeactivate() {
+		targetBlock = null;
 	}
 
 	@Override

@@ -56,6 +56,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 0
+            cooldown: 5000
         parameters:
             fill: hollow
             target: select
@@ -538,6 +539,7 @@ spells:
             allow_max_range: true
             range: 200
             undo: 0
+            cooldown: 5000
         parameters:
             target: select
             type: sphere
@@ -758,7 +760,7 @@ spells:
             range: 200
             max_volume: 1024
             max_dimension: 256
-            cooldown: 0
+            cooldown: 5000
         parameters: {}
         costs:
             xp: 40
@@ -995,6 +997,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 0
+            cooldown: 5000
         parameters:
             fill: hollow
             target: select

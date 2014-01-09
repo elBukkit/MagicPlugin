@@ -68,9 +68,9 @@ public class FillSpell extends Spell
 
 		if (recurse)
 		{
+			deactivate();
 			int size = parameters.getInt("size", 8);
 			blockRecurse.setMaxRecursion(size);
-			this.targetBlock = null;
 
 			PlayerSpells playerSpells = spells.getPlayerSpells(player);
 			Material targetMaterial = targetBlock.getType();
@@ -101,7 +101,7 @@ public class FillSpell extends Spell
 		}
 		else if (singleBlock)
 		{
-			this.targetBlock = null;
+			deactivate();
 
 			BlockList filledBlocks = new BlockList();
 
@@ -145,7 +145,7 @@ public class FillSpell extends Spell
 			
 			spells.addPendingBlockBatch(batch);
 			
-			this.targetBlock = null;
+			deactivate();
 			return SpellResult.SUCCESS;
 		}
 		else
@@ -158,8 +158,9 @@ public class FillSpell extends Spell
 			{
 				material = targetBlock.getType();
 			}
+			activate();
 			castMessage("Cast again to fill with " + material.name().toLowerCase());
-			return SpellResult.COST_FREE;
+			return SpellResult.SUCCESS;
 		}
 	}
 
@@ -186,5 +187,10 @@ public class FillSpell extends Spell
 	@Override
 	public boolean usesMaterial() {
 		return true;
+	}
+	
+	@Override
+	public void onDeactivate() {
+		targetBlock = null;
 	}
 }
