@@ -73,9 +73,13 @@ public class URLMap extends MapRenderer  {
 						if (map == null) {
 							throw new Exception("Failed to load map id " + mapIdString);
 						}
-
-						// Hook up the renderer
-						map.getMapView();
+						
+						// Check for disabled maps
+						if (mapConfig.getBoolean("disabled")) {
+							map.disable();
+						} else {
+							map.getMapView();
+						}
 					} catch (Exception ex) {
 						plugin.getLogger().warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 					}
@@ -105,6 +109,7 @@ public class URLMap extends MapRenderer  {
 			mapConfig.set("y", map.y);
 			mapConfig.set("width", map.width);
 			mapConfig.set("height", map.height);
+			mapConfig.set("enabled", map.isEnabled());
 		}
 		try {
 			configuration.save(configurationFile);
@@ -133,9 +138,8 @@ public class URLMap extends MapRenderer  {
 	 * @param mapView
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
-	public static ItemStack getMapItem(String name, MapView mapView) {
-		ItemStack newMapItem = new ItemStack(Material.MAP, 1, mapView.getId());
+	public static ItemStack getMapItem(String name, short mapId) {
+		ItemStack newMapItem = new ItemStack(Material.MAP, 1, mapId);
 		if (name != null) {
 			ItemMeta meta = newMapItem.getItemMeta();
 			meta.setDisplayName(name);
@@ -153,6 +157,15 @@ public class URLMap extends MapRenderer  {
 	public static ItemStack getPlayerPortrait(String playerName) {
 		MapView mapView = getURL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8);
 		return getMapItem("Photo of " + playerName, mapView);
+	}
+
+	@SuppressWarnings("deprecation")
+	protected static ItemStack getMapItem(String name, MapView mapView) {
+		short id = 0;
+		if (mapView != null) {
+			id = mapView.getId();
+		}
+		return getMapItem(name, id);
 	}
 
 	/**
@@ -262,6 +275,7 @@ public class URLMap extends MapRenderer  {
 	protected int y;
 	protected int width;
 	protected int height;
+	protected boolean enabled = true;
 	protected boolean rendered = false;
 	protected volatile boolean loading = false;
 	protected Set<String> sentToPlayers = new HashSet<String>();
@@ -306,12 +320,24 @@ public class URLMap extends MapRenderer  {
 		return newMap;
 	}
 	
-	@SuppressWarnings("deprecation")
 	private MapView getMapView() {
+		return getMapView(true);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private MapView getMapView(boolean recreateIfNecessary) {
 		MapView mapView = Bukkit.getMap(id);
 		if (mapView == null) {
-			plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey());
-			return null;
+			keyMap.remove(getKey());
+			enabled = false;
+			URLMap replacement = get(url, x, y, width, height);
+			mapView = replacement.getMapView(false);
+			if (mapView == null) {
+				plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey() + ", and failed to re-crate it");				
+			} else {
+				plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey() + ", disabled and re-createted as " + mapView.getId());
+			}
+			return mapView;
 		}
 		List<MapRenderer> renderers = mapView.getRenderers();
 		boolean needsRenderer = false;
@@ -325,6 +351,14 @@ public class URLMap extends MapRenderer  {
 			mapView.addRenderer(this);
 		}
 		return mapView;
+	}
+	
+	private void disable() {
+		enabled = false;
+	}
+	
+	private boolean isEnabled() {
+		return enabled;
 	}
 
 	private static File getConfigurationFile() {
