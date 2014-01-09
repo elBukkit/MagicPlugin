@@ -14,14 +14,18 @@
     - Magic.commands.wand.configure
     - Magic.commands.wand.upgrade
     - Magic.commands.wand.list
+    - Magic.commands.wand.describe
     - Magic.commands.spells
     - Magic.commands.cast
 
   g:magic_admin:
     permissions:
-    - Magic.commands.pwand
-    - Magic.commands.pwand.add
-    - Magic.commands.pwand.remove
-    - Magic.commands.pwand.configure
+    - Magic.commands.wandp
+    - Magic.commands.wandp.add
+    - Magic.commands.wandp.remove
+    - Magic.commands.wandp.configure
+    - Magic.commands.wandp.upgrade
+    - Magic.commands.wandp.describe
+    - Magic.commands.castp
     - Magic.commands.reload
     - Magic.commands.populate

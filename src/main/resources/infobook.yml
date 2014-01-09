@@ -1,3 +1,10 @@
+#
+# This is just the configuration I use on my server for the InfoBook plugin.
+#
+# It's a great plugin, I suggest you check it out, and if you do, feel free to copy+paste from
+# here if you want to provide Wand instruction manuals.
+#
+
 # InfoBook
 
 # Plugin should check for new versions and inform you on server start?
