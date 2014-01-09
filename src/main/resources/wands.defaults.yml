@@ -189,6 +189,7 @@ wands:
             - fling
             - arrow
             - grenade
+            - wither
     explorer:
         modifiable: true
         xp_regeneration: 1
@@ -322,6 +323,7 @@ wands:
             - boom
             - sniper
             - arrowrain
+            - wither
     mining:
         modifiable: true
         xp_regeneration: 1
@@ -384,6 +386,7 @@ wands:
             - disintegrate
             - portal
             - shrink
+            - wither
     elder:
         modifiable: true
         cost_reduction: 1
@@ -436,6 +439,7 @@ wands:
             - convert
             - commit
             - heal
+            - wither
         materials:
             - water
             - lava
@@ -648,6 +652,7 @@ wands:
             - curse
             - convert
             - commit
+            - wither
         materials:
             - water
             - erase

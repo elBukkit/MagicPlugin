@@ -13,10 +13,11 @@ spells:
             xp: 10
         parameters:
             target: other
-            slow: 600,5  
-            confusion: 600,5
-            weakness: 600,5
-            hunger: 600,5
+            particle: townaura
+            slow: 100,5  
+            confusion: 100,5
+            weakness: 100,5
+            hunger: 100,5
     boon:
         icon: double_plant
         category: psychic
@@ -24,6 +25,8 @@ spells:
         costs:
             xp: 20
         parameters:
+            target: any
+            particle: reddust
             speed: 600,5   
             jump: 600,5
             regeneration: 600,5     
@@ -254,13 +257,22 @@ spells:
     icbm:
         icon: nether_star
         category: combat
-        class: FireballSpell
+        class: ProjectileSpell
         properties:
             cooldown: 5000
         parameters:
             size: '10'
+            projectile: SmallFireball
         costs:
             xp: 100
+    wither:
+        icon: flint
+        category: combat
+        class: ProjectileSpell
+        parameters:
+            projectile: WitherSkull
+        costs:
+            xp: 20
     weather:
         icon: water
         category: elemental
@@ -452,7 +464,7 @@ spells:
         costs:
             xp: 100
     day:
-        icon: flint
+        icon: emerald
         category: elemental
         class: TorchSpell
         properties:
@@ -465,7 +477,6 @@ spells:
             time: day
         costs:
             xp: 40
-
     time:
         icon: watch
         category: elemental
@@ -1062,10 +1073,11 @@ spells:
     fireball:
         icon: ghast_tear
         category: combat
-        class: FireballSpell
+        class: ProjectileSpell
         properties:
             cooldown: 100
-        parameters: {}
+        parameters:
+            projectile: SmallFireball
         costs:
             xp: 15
     map:

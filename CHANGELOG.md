@@ -3,15 +3,18 @@
 ## 2.8.2
 
  - "name" parameter works with url and id maps.
- - Fix permissions on boom spell.
+ - Fix WG build permissions on boom spell. (Oops, sorry!)
  - Enable combining wands on an anvil- WIP, hacky.
  - Some fixes for the camera spell involving the world not getting saved after a new map was created.
  - Fix cooldowns on fill and superconstruct spells
  - Allow casting boon on another player (it's targeted now- aim up for yourself, like heal)
  - Implement wand descriptions and ownership
- - Fix limited-use wands
+ - Fix limited-use wands (er, fix it so they break!)
  - Added better feedback to wand and wandp commands
  - Added /wand describe command (technical)
+ - Add visual effects to boon and curse
+ - Added additional projectile spell types (MIGRATION NOTE: the fireball and icbm spells need updating)
+ - Added "wither" spell
 
 ## 2.8.1
 
