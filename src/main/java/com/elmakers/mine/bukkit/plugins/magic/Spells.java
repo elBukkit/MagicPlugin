@@ -677,8 +677,8 @@ public class Spells implements Listener
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
-		combiningEnabled = generalNode.getBoolean("combining_enabled", combiningEnabled);
-		organizingEnabled = generalNode.getBoolean("organizing_enabled", organizingEnabled);
+		combiningEnabled = generalNode.getBoolean("enable_combining", combiningEnabled);
+		organizingEnabled = generalNode.getBoolean("enable_organizing", organizingEnabled);
 		dynmapShowWands = generalNode.getBoolean("dynamp_show_wands", dynmapShowWands);
 		dynmapUpdate = generalNode.getBoolean("dynmap_update", dynmapUpdate);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
@@ -1273,7 +1273,7 @@ public class Spells implements Listener
 	public void onInventoryClick(InventoryClickEvent event) {
 		
 		if (!(event.getWhoClicked() instanceof Player)) return;
-		
+	
 		if (event.getInventory().getType() == InventoryType.ENCHANTING)
 		{
 			SlotType slotType = event.getSlotType();
@@ -1317,7 +1317,7 @@ public class Spells implements Listener
 					wand.updateName(true);
 				}	
 			}
-			
+
 			if (combiningEnabled && slotType == SlotType.RESULT) {
 				// Check for wands in both slots
 				// ...... arg. So close.. and yet, not.
@@ -1328,7 +1328,9 @@ public class Spells implements Listener
 				{
 					Wand firstWand = new Wand(this, firstItem);
 					Wand secondWand = new Wand(this, secondItem);
+					Player player = (Player)event.getWhoClicked();
 					if (!firstWand.isModifiable() || !secondWand.isModifiable()) {
+						player.sendMessage("One of your wands can not be combined");
 						return;
 					}
 					Wand newWand = new Wand(this);
@@ -1339,9 +1341,8 @@ public class Spells implements Listener
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
 					
-					Player player = (Player)event.getWhoClicked();
-					player.sendMessage("Combined wands for free. (WIP, need Anvil API)");
 					player.getInventory().addItem(newWand.getItem());
+					player.sendMessage("Your wands have been combined");
 					
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
