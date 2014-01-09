@@ -6,7 +6,7 @@ IMPORTANT STUFF:
    - NPE at:  at com.elmakers.mine.bukkit.utilities.URLMap.getMapItem(URLMap.java:138) ~[?:?]
  - Debug wands on map on death and pickup, add log messages.
  - [Magic] Failed to save undo data: null, massive server lag :\
-
+ - Update categories, balance them out. Bending may not work.
 
 [17:18:03] [Server thread/WARN]: [Magic] Failed to get map id 147 for key 8,8|8,8|http://s3.amazonaws.com/MinecraftSkins/epikwun.png
 [17:18:03] [Server thread/WARN]: [Magic] Failed to get map id 148 for key 8,8|8,8|http://s3.amazonaws.com/MinecraftSkins/jtm740.png
@@ -24,6 +24,7 @@ NEW SPELLS:
 OTHER STUFF:
  
  - Add visual effects to spawn and recall spells
+ - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
  
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.

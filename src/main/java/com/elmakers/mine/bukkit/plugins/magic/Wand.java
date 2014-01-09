@@ -6,7 +6,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,8 +33,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Wand implements CostReducer {
-	private final static int inventorySize = 27;
-	private final static int hotbarSize = 9;
+	protected final static int inventorySize = 27;
+	protected final static int hotbarSize = 9;
 	
 	private ItemStack item;
 	private Spells spells;
@@ -312,12 +311,12 @@ public class Wand implements CostReducer {
 		return getMaterialNames(false);
 	}
 
-	protected String getMaterialKey(ItemStack itemStack) {
+	protected static String getMaterialKey(ItemStack itemStack) {
 		return getMaterialKey(itemStack, null);
 	}
 	
 	@SuppressWarnings("deprecation")
-	protected String getMaterialKey(ItemStack itemStack, Integer index) {
+	protected static String getMaterialKey(ItemStack itemStack, Integer index) {
 		if (itemStack == null || isSpell(itemStack) || isWand(itemStack)) {
 			return null;
 		}
@@ -1784,92 +1783,23 @@ public class Wand implements CostReducer {
 		if (activePlayer == null) return;
 		if (!isInventoryOpen()) return;
 		
-		// First collect spells in hotbar
-		Set<String> hotbarSpellNames = new HashSet<String>();
-		Set<String> hotbarMaterialNames = new HashSet<String>();
-		Player player = activePlayer.getPlayer();
-		PlayerInventory playerInventory = player.getInventory();
-		for (int i = 0; i < hotbarSize; i++) {
-			ItemStack playerItem = playerInventory.getItem(i);
-			if (playerItem == null || playerItem.getType() == Material.AIR) continue;
-			
-			String spellName = getSpell(playerItem);
-			if (spellName != null) {
-				hotbarSpellNames.add(spellName);
-			} else {
-				String materialKey = getMaterialKey(playerItem);
-				if (materialKey != null) {
-					hotbarMaterialNames.add(materialKey);
-				}
-			}
-		}
-		
-		Map<String, Collection<String>> groupedSpells = new HashMap<String, Collection<String>>();
-		Set<String> spells = getSpells();
-		for (String spellName : spells) {
-			Spell spell = activePlayer.getSpell(spellName);
-			if (spell != null && !hotbarSpellNames.contains(spellName)) {
-				String category = spell.getCategory();
-				if (category == null || category.length() == 0) {
-					category = "default";
-				}
-				Collection<String> spellList = groupedSpells.get(category);
-				if (spellList == null) {
-					spellList = new TreeSet<String>();
-					groupedSpells.put(category, spellList);
-				}
-				spellList.add(spellName);
-			}
-		}
-		
-		// Clear player's top inventory
-		for (int i = hotbarSize; i < playerInventory.getSize(); i++) {
-			playerInventory.setItem(i, null);
-		}
-		
-		Set<String> materials = getMaterialNames();
-		for (String hotbar : hotbarMaterialNames) {
-			materials.remove(hotbar);
-		}
-		
-		inventories.clear();
-		int currentInventoryIndex = 0;
-		Inventory currentInventory = getInventoryByIndex(currentInventoryIndex);
-		for (Collection<String> spellGroup : groupedSpells.values()) {
-			for (String spellName : spellGroup) {
-				HashMap<Integer, ItemStack> result = currentInventory.addItem(createSpellItem(spellName));
-				if (result.size() > 0) {
-					currentInventoryIndex++;
-					currentInventory = getInventoryByIndex(currentInventoryIndex);
-					for (ItemStack skipped : result.values()) {
-						currentInventory.addItem(skipped);
-					}
-				}
-			}
-			
-			currentInventoryIndex++;
-			currentInventory = getInventoryByIndex(currentInventoryIndex);
-		}
-		
-		if (materials.size() > 0) {
-			for (String materialName : materials) {
-				HashMap<Integer, ItemStack> result = currentInventory.addItem(createMaterialItem(materialName));			
-				if (result.size() > 0) {
-					currentInventoryIndex++;
-					currentInventory = getInventoryByIndex(currentInventoryIndex);
-					for (ItemStack skipped : result.values()) {
-						currentInventory.addItem(skipped);
-					}
-				}
-			}
-		}
+		WandOrganizer organizer = new WandOrganizer(this);
+		organizer.organize();
 		
 		openInventoryPage = 0;
-		saveState();
 		updateInventory();
+		saveState();
+	}
+	
+	public PlayerSpells getActivePlayer() {
+		return activePlayer;
 	}
 	
 	public String getId() {
 		return this.id;
+	}
+	
+	protected void clearInventories() {
+		inventories.clear();
 	}
 }

@@ -1276,10 +1276,13 @@ public class Spells implements Listener
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		
 		if (!(event.getWhoClicked() instanceof Player)) return;
+		
+		// log.info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType());
 	
 		if (event.getInventory().getType() == InventoryType.ENCHANTING)
 		{
@@ -1302,6 +1305,7 @@ public class Spells implements Listener
 						wand.makeEnchantable(false);
 					}
 				}
+				return;
 			}
 		}
 		if (event.getInventory().getType() == InventoryType.ANVIL)
@@ -1322,7 +1326,9 @@ public class Spells implements Listener
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(this, current);
 					wand.updateName(true);
-				}	
+				}
+				
+				return;
 			}
 			
 			// Rename wand when taking from result slot
@@ -1332,6 +1338,8 @@ public class Spells implements Listener
 				Wand wand = new Wand(this, current);
 				Player player = (Player)event.getWhoClicked();
 				wand.takeOwnership(player, newName, true);
+				
+				return;
 			}
 
 			if (combiningEnabled && slotType == SlotType.RESULT) {
@@ -1363,6 +1371,8 @@ public class Spells implements Listener
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
 				}
+				
+				return;
 			}
 		}
 		
@@ -1375,10 +1385,14 @@ public class Spells implements Listener
 				wand.cycleInventory();
 				event.setCancelled(true);
 			}
+			
+			return;
 		}
 		
 		// Check for wand re-organizing
-		if (organizingEnabled && event.getInventory().getType() == InventoryType.CRAFTING && event.getAction() == InventoryAction.PLACE_ALL) {
+		// Seems like there's an action for this.. or should be?
+		// Oh, maybe it's nothing because there's nothing to collect. :\
+		if (organizingEnabled && event.getInventory().getType() == InventoryType.CRAFTING && (event.getAction() == InventoryAction.COLLECT_TO_CURSOR || event.getAction() == InventoryAction.NOTHING)) {
 			Player player = (Player)event.getWhoClicked();
 			PlayerSpells playerSpells = getPlayerSpells(player);
 			final Wand wand = playerSpells.getActiveWand();
@@ -1388,8 +1402,11 @@ public class Spells implements Listener
 						wand.organizeInventory();
 					}
 				}, 2);
-				// Don't set the event to cancelled, will make the inventory go screwy.
+				event.setCursor(null);
+				event.setCancelled(true);
 			}
+			
+			return;
 		}
 	}
 
