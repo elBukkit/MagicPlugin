@@ -57,13 +57,13 @@
 spells:
     light:
         icon: redstone_torch_on
-        category: exploration
+        category: xperimental
         class: LightSpell
         costs:
             xp: 50
     curse:
         icon: spider_eye
-        category: combat
+        category: dark
         class: PotionEffectSpell
         costs:
             xp: 10
@@ -76,7 +76,7 @@ spells:
             hunger: 100,5
     boon:
         icon: double_plant
-        category: psychic
+        category: light
         class: PotionEffectSpell
         costs:
             xp: 20
@@ -93,12 +93,12 @@ spells:
             saturation: 600,5
     shell:
         icon: bowl
-        category: construction
+        category: earthbending
         class: ConstructSpell
         properties:
             allow_max_range: false
             range: 200
-            undo: 0
+            undo: 30000
             cooldown: 0
         parameters:
             fill: hollow
@@ -108,7 +108,7 @@ spells:
             xp: 10
     supershell:
         icon: mushroom_soup
-        category: construction
+        category: engineering
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -124,7 +124,7 @@ spells:
             xp: 100
     tag:
         icon: sign
-        category: exploration
+        category: dark
         class: SignSpell
         properties:
             allow_max_range: false
@@ -135,7 +135,7 @@ spells:
             xp: 20
     arrow:
         icon: arrow
-        category: combat
+        category: dark
         class: ArrowSpell
         properties:
             cooldown: 0
@@ -146,7 +146,7 @@ spells:
             xp: 5 
     toss:
         icon: wood_button
-        category: construction
+        category: earthbending
         class: TossSpell
         properties:
             cooldown: 0
@@ -156,7 +156,7 @@ spells:
             xp: 10
     volley:
         icon: stone_button
-        category: construction
+        category: earthbending
         class: TossSpell
         properties:
             cooldown: 0
@@ -167,7 +167,7 @@ spells:
             xp: 10   
     sniper:
         icon: gold_nugget
-        category: combat
+        category: dark
         class: ArrowSpell
         properties:
             cooldown: 1000
@@ -179,7 +179,7 @@ spells:
             xp: 10
     pull:
         icon: fishing_rod
-        category: psychic
+        category: airbending
         class: PushSpell
         properties:
             allow_max_range: false
@@ -197,7 +197,7 @@ spells:
             xp: 2
     kaboom:
         icon: ender_pearl
-        category: combat
+        category: dark
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -210,7 +210,7 @@ spells:
             xp: 50
     frost:
         icon: snow_ball
-        category: alchemy
+        category: waterbending
         class: FrostSpell
         properties:
             allow_max_range: false
@@ -227,7 +227,7 @@ spells:
             xp: 8
     storm:
         icon: grilled_pork
-        category: elemental
+        category: firebending
         class: LightningSpell
         properties:
             allow_max_range: false
@@ -239,7 +239,7 @@ spells:
             xp: 30
     spawn:
         icon: wood_door
-        category: exploration
+        category: light
         class: RecallSpell
         properties:
             recall_marker: redstone_torch_on
@@ -255,7 +255,7 @@ spells:
             xp: 2
     leatherskin:
         icon: leather_chestplate
-        category: combat
+        category: light
         class: InvincibleSpell
         properties:
             cooldown: 0
@@ -267,7 +267,7 @@ spells:
             xp: 2
     tree:
         icon: sapling
-        category: farming
+        category: elemental
         class: TreeSpell
         properties:
             allow_max_range: false
@@ -279,7 +279,7 @@ spells:
             xp: 20
     disarm:
         icon: tripwire_hook
-        category: combat
+        category: light
         class: DisarmSpell
         properties:
             allow_max_range: false
@@ -290,7 +290,7 @@ spells:
             xp: 75
     heal:
         icon: bread
-        category: medic
+        category: light
         class: HealSpell
         properties:
             allow_max_range: false
@@ -312,7 +312,7 @@ spells:
             xp: 50
     icbm:
         icon: nether_star
-        category: combat
+        category: dark
         class: ProjectileSpell
         properties:
             cooldown: 5000
@@ -323,7 +323,7 @@ spells:
             xp: 100
     wither:
         icon: flint
-        category: combat
+        category: dark
         class: ProjectileSpell
         parameters:
             projectile: WitherSkull
@@ -340,7 +340,7 @@ spells:
             xp: 10
     ironskin:
         icon: iron_chestplate
-        category: master
+        category: light
         class: InvincibleSpell
         properties:
             cooldown: 0
@@ -352,7 +352,7 @@ spells:
             xp: 5
     fling:
         icon: feather
-        category: psychic
+        category: airbending
         class: FlingSpell
         properties:
             cooldown: 0
@@ -360,7 +360,7 @@ spells:
             xp: 5
     leap:
         icon: leather_boots
-        category: psychic
+        category: airbending
         class: FlingSpell
         properties:
             cooldown: 5000
@@ -372,7 +372,7 @@ spells:
             xp: 2
     torch:
         icon: torch
-        category: exploration
+        category: engineering
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -386,7 +386,7 @@ spells:
             xp: 10
     monster:
         icon: pumpkin
-        category: summoner
+        category: dark
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -398,7 +398,7 @@ spells:
             xp: 40
     mob:
         icon: jack_o_lantern
-        category: summoner
+        category: dark
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -411,7 +411,7 @@ spells:
             xp: 100
     portal:
         icon: portal
-        category: psychic
+        category: xperimental
         class: PortalSpell
         properties:
             allow_max_range: false
@@ -434,7 +434,7 @@ spells:
             xp: 10
     inferno:
         icon: fire
-        category: master
+        category: firebending
         class: FireSpell
         properties:
             allow_max_range: false
@@ -447,7 +447,7 @@ spells:
             xp: 40
     cushion:
         icon: soul_sand
-        category: alchemy
+        category: waterbending
         class: CushionSpell
         properties:
             allow_max_range: false
@@ -460,7 +460,7 @@ spells:
             xp: 10
     paint:
         icon: painting
-        category: alchemy
+        category: engineering
         class: FillSpell
         properties:
             allow_max_range: false
@@ -474,7 +474,7 @@ spells:
             xp: 1
     gills:
         icon: cooked_fish
-        category: medic
+        category: light
         class: GillsSpell
         properties:
             duration: 60
@@ -484,7 +484,7 @@ spells:
         parameters: {}
     arrowrain:
         icon: bow
-        category: combat
+        category: dark
         class: ArrowSpell
         properties:
             cooldown: 0
@@ -497,7 +497,7 @@ spells:
             xp: 20
     lightning:
         icon: blaze_powder
-        category: combat
+        category: firebending
         class: LightningSpell
         properties:
             allow_max_range: false
@@ -508,7 +508,7 @@ spells:
             xp: 10
     nuke:
         icon: magma_cream
-        category: combat
+        category: master
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -521,7 +521,7 @@ spells:
             xp: 100
     day:
         icon: emerald
-        category: elemental
+        category: master
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -535,7 +535,7 @@ spells:
             xp: 40
     time:
         icon: watch
-        category: elemental
+        category: master
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -549,7 +549,7 @@ spells:
             xp: 40        
     bridge:
         icon: gold_hoe
-        category: construction
+        category: engineering
         class: BridgeSpell
         properties:
             cooldown: 0
@@ -558,7 +558,7 @@ spells:
             xp: 5
     ascend:
         icon: red_mushroom
-        category: psychic
+        category: master
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -573,7 +573,7 @@ spells:
             xp: 5
     grenade:
         icon: tnt
-        category: combat
+        category: firebending
         class: GrenadeSpell
         properties:
             allow_max_range: false
@@ -586,7 +586,7 @@ spells:
             xp: 20
     frag:
         icon: redstone_block
-        category: combat
+        category: dark
         class: GrenadeSpell
         properties:
             allow_max_range: false
@@ -600,7 +600,7 @@ spells:
             xp: 20
     superblob:
         icon: slime_ball
-        category: construction
+        category: engineering
         class: ConstructSpell
         properties:
             allow_max_range: true
@@ -614,7 +614,7 @@ spells:
             xp: 100
     kamikazee:
         icon: dead_bush
-        category: combat
+        category: dark
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -628,7 +628,7 @@ spells:
             xp: 5
     superblast:
         icon: sugar
-        category: mining
+        category: engineering
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -641,7 +641,7 @@ spells:
             type: sphere
     convert:
         icon: vine
-        category: alchemy
+        category: engineering
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -654,7 +654,7 @@ spells:
             radius: '3'
     superconvert:
         icon: iron_fence
-        category: alchemy
+        category: engineering
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -668,7 +668,7 @@ spells:
             type: sphere
     blast:
         icon: sulphur
-        category: mining
+        category: earthbending
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -683,7 +683,7 @@ spells:
             xp: 10
     cloak:
         icon: chainmail_chestplate
-        category: psychic
+        category: master
         class: InvisibilitySpell
         properties:
             cooldown: 0
@@ -692,7 +692,7 @@ spells:
             xp: 15
     undo:
         icon: book_and_quill
-        category: alchemy
+        category: engineering
         class: UndoSpell
         properties:
             allow_max_range: false
@@ -703,7 +703,7 @@ spells:
             xp: 5
     commit:
         icon: book
-        category: alchemy
+        category: engineering
         class: UndoSpell
         properties:
             allow_max_range: false
@@ -715,7 +715,7 @@ spells:
             xp: 5
     push:
         icon: rails
-        category: psychic
+        category: airbending
         class: PushSpell
         properties:
             allow_max_range: false
@@ -732,7 +732,7 @@ spells:
             xp: 3
     farm:
         icon: wheat
-        category: farming
+        category: elemental
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -744,7 +744,7 @@ spells:
             xp: 50
     breach:
         icon: seeds
-        category: alchemy
+        category: earthbending
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -761,7 +761,7 @@ spells:
             xp: 20
     tesseract:
         icon: web
-        category: psychic
+        category: airbending
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -775,7 +775,7 @@ spells:
             xp: 2
     mine:
         icon: gold_pickaxe
-        category: mining
+        category: earthbending
         class: MineSpell
         properties:
             allow_max_range: false
@@ -787,7 +787,7 @@ spells:
             xp: 10
     peek:
         icon: sugar_cane
-        category: alchemy
+        category: earthbending
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -804,7 +804,7 @@ spells:
             xp: 3
     sandblast:
         icon: sandstone
-        category: combat
+        category: earthbending
         class: ConstructSpell
         properties:
             allow_max_range: true
@@ -820,7 +820,7 @@ spells:
             xp: 20
     fill:
         icon: gold_spade
-        category: construction
+        category: engineering
         class: FillSpell
         properties:
             allow_max_range: false
@@ -833,7 +833,7 @@ spells:
             xp: 40
     recurse:
         icon: wood_spade
-        category: alchemy
+        category: engineering
         class: FillSpell
         properties:
             allow_max_range: false
@@ -847,7 +847,7 @@ spells:
             xp: 30
     fire:
         icon: flint_and_steel
-        category: elemental
+        category: firebending
         class: FireSpell
         properties:
             allow_max_range: false
@@ -860,7 +860,7 @@ spells:
             xp: 10
     alter:
         icon: ink_sack
-        category: construction
+        category: engineering
         class: AlterSpell
         properties:
             allow_max_range: false
@@ -872,7 +872,7 @@ spells:
             xp: 1
     blob:
         icon: clay_ball
-        category: construction
+        category: earthbending
         class: ConstructSpell
         properties:
             allow_max_range: true
@@ -887,7 +887,7 @@ spells:
             xp: 25
     familiar:
         icon: monster_egg
-        category: summoner
+        category: elemental
         class: FamiliarSpell
         properties:
             allow_max_range: false
@@ -898,7 +898,7 @@ spells:
             xp: 10
     disintegrate:
         icon: bone
-        category: combat
+        category: dark
         class: DisintegrateSpell
         properties:
             allow_max_range: false
@@ -911,7 +911,7 @@ spells:
             xp: 30
     blink:
         icon: eye_of_ender
-        category: psychic
+        category: master
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -925,7 +925,7 @@ spells:
             xp: 50
     absorb:
         icon: bucket
-        category: construction
+        category: engineering
         class: AbsorbSpell
         properties:
             allow_max_range: false
@@ -936,7 +936,7 @@ spells:
             xp: 30
     stalactite:
         icon: wood_axe
-        category: construction
+        category: engineering
         class: PillarSpell
         properties:
             allow_max_range: false
@@ -948,7 +948,7 @@ spells:
             xp: 5
     lava:
         icon: lava
-        category: combat
+        category: firebending
         class: LavaSpell
         properties:
             allow_max_range: false
@@ -959,7 +959,7 @@ spells:
             xp: 20
     wolf:
         icon: raw_beef
-        category: summoner
+        category: elemental
         class: WolfSpell
         properties:
             max_wolves: 5
@@ -971,7 +971,7 @@ spells:
             xp: 50
     cat:
         icon: raw_fish
-        category: summoner
+        category: elemental
         class: OcelotSpell
         properties:
             max_ocelots: 5
@@ -983,7 +983,7 @@ spells:
             xp: 30
     shrink:
         icon: skull_item
-        category: summoner
+        category: dark
         class: ShunkenHeadSpell
         properties:
             allow_max_range: false
@@ -993,7 +993,7 @@ spells:
             xp: 20
     flare:
         icon: firework
-        category: exploration
+        category: firebending
         class: FireworkSpell
         properties:
             allow_max_range: true
@@ -1003,7 +1003,7 @@ spells:
             xp: 10
     recall:
         icon: compass
-        category: exploration
+        category: master
         class: RecallSpell
         properties:
             recall_marker: redstone_torch_on
@@ -1018,7 +1018,7 @@ spells:
             xp: 20
     levitate:
         icon: gold_boots
-        category: psychic
+        category: master
         class: LevitateSpell
         properties:
             cooldown: 0
@@ -1029,7 +1029,7 @@ spells:
             xp: 10
     boom:
         icon: baked_potato
-        category: combat
+        category: firebending
         class: BoomSpell
         properties:
             allow_max_range: false
@@ -1042,12 +1042,12 @@ spells:
             xp: 20
     box:
         icon: gold_helmet
-        category: construction
+        category: earthbending
         class: ConstructSpell
         properties:
             allow_max_range: false
             range: 200
-            undo: 0
+            undo: 30000
             cooldown: 0
         parameters:
             fill: hollow
@@ -1057,7 +1057,7 @@ spells:
             xp: 10
     superbox:
         icon: gold_helmet
-        category: construction
+        category: engineering
         class: ConstructSpell
         properties:
             allow_max_range: false
@@ -1073,7 +1073,7 @@ spells:
             xp: 100
     pillar:
         icon: gold_axe
-        category: construction
+        category: engineering
         class: PillarSpell
         properties:
             allow_max_range: false
@@ -1084,7 +1084,7 @@ spells:
             xp: 5
     night:
         icon: coal
-        category: elemental
+        category: master
         class: TorchSpell
         properties:
             allow_max_range: false
@@ -1098,7 +1098,7 @@ spells:
             xp: 50
     force:
         icon: leash
-        category: psychic
+        category: airbending
         class: ForceSpell
         properties:
             allow_max_range: true
@@ -1113,7 +1113,7 @@ spells:
             xp: 10
     descend:
         icon: brown_mushroom
-        category: psychic
+        category: master
         class: BlinkSpell
         properties:
             allow_max_range: false
@@ -1128,7 +1128,7 @@ spells:
             xp: 20
     fireball:
         icon: ghast_tear
-        category: combat
+        category: firebending
         class: ProjectileSpell
         properties:
             cooldown: 100
@@ -1138,7 +1138,7 @@ spells:
             xp: 15
     map:
         icon: map
-        category: exploration
+        category: master
         class: MapSpell
         properties:
             cooldown: 5000
@@ -1147,7 +1147,7 @@ spells:
             xp: 15
     camera:
         icon: paper
-        category: construction
+        category: light
         class: CameraSpell
         properties:
             cooldown: 1000

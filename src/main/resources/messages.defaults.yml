@@ -77,6 +77,27 @@ messages:
     cooldown:
         wait_seconds: You must wait another $seconds seconds.
         wait_moment: You must wait a moment.
+    categories:
+        master:
+            name: Master
+        airbending:
+            name: Airbending
+        waterbending:
+            name: Waterbending
+        earthbending:
+            name: Earthbending
+        firebending:
+            name: Firebending
+        xperimental:
+            name: Experimental or Deprecated
+        dark:
+            name: Dark Magic
+        light:
+            name: Light Magic
+        engineering:
+            name: Engineering
+        elemental:
+            name: Elemental
     spells:
         light:
             name: Light
