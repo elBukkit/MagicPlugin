@@ -218,6 +218,14 @@ public class MagicPlugin extends JavaPlugin
 			onWandConfigure(sender, player, args2, false);
 			return true;
 		}
+		if (subCommand.equalsIgnoreCase("combine"))
+		{
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (subCommand.length() > 0 && !spells.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
+			
+			onWandCombine(sender, player, args2);
+			return true;
+		}
 		if (subCommand.equalsIgnoreCase("describe"))
 		{
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -328,6 +336,40 @@ public class MagicPlugin extends JavaPlugin
 		player.sendMessage("Wand reconfigured");
 		if (sender != player) {
 			sender.sendMessage(player.getName() + ",s wand reconfigured");
+		}
+		return true;
+	}
+
+	public boolean onWandCombine(CommandSender sender, Player player, String[] parameters)
+	{
+		if (parameters.length < 1) {
+			sender.sendMessage("Use: /wand combine <wandname>");
+			return true;
+		}
+
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
+		if (wand == null) {
+			player.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
+			return true;
+		}
+
+		String wandName = parameters[0];
+		Wand newWand = Wand.createWand(spells, wandName);
+		if (newWand == null) {
+			sender.sendMessage("Unknown wand name " + wandName);
+			return true;
+		}
+		wand.deactivate();
+		wand.add(newWand);
+		wand.activate(playerSpells);
+		
+		player.sendMessage("Wand upgraded");
+		if (sender != player) {
+			sender.sendMessage(player.getName() + ",s wand upgraded");
 		}
 		return true;
 	}

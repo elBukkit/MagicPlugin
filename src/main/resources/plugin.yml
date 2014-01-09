@@ -74,6 +74,10 @@ permissions:
     description: Player may set wand properties
     type: boolean
     default: op
+  Magic.commands.wand.combine:
+    description: Player may add wand template to their wand
+    type: boolean
+    default: op
   Magic.commands.wand.upgrade:
     description: Player may upgrade wand properties
     type: boolean
@@ -110,6 +114,10 @@ permissions:
     default: op
   Magic.commands.wandp.configure:
     description: Player may set wand properties for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.combine:
+    description: Player may add wand template to another player's wand
     type: boolean
     default: op
   Magic.commands.wandp.describe:

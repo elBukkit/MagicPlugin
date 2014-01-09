@@ -9,23 +9,14 @@
   g:magic_moderator:
     permissions:
     - Magic.commands.wand
-    - Magic.commands.wand.add
-    - Magic.commands.wand.remove
-    - Magic.commands.wand.configure
-    - Magic.commands.wand.upgrade
-    - Magic.commands.wand.list
-    - Magic.commands.wand.describe
+    - Magic.commands.wand.*
     - Magic.commands.spells
     - Magic.commands.cast
 
   g:magic_admin:
     permissions:
     - Magic.commands.wandp
-    - Magic.commands.wandp.add
-    - Magic.commands.wandp.remove
-    - Magic.commands.wandp.configure
-    - Magic.commands.wandp.upgrade
-    - Magic.commands.wandp.describe
+    - Magic.commands.wandp.*
     - Magic.commands.castp
     - Magic.commands.reload
     - Magic.commands.populate

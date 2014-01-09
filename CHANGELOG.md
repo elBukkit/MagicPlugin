@@ -2,6 +2,7 @@
 
 ## 2.8.3
 
+ - Add /wand combine command
 
 ## 2.8.2
 
