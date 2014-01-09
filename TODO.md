@@ -2,12 +2,14 @@
 
 IMPORTANT STUFF:
 
- - Add wand icons in chunk load, not world load?
-   - Make them persistent
  - Map went funky, got broken - getMapView caused NPE .. ?
    - NPE at:  at com.elmakers.mine.bukkit.utilities.URLMap.getMapItem(URLMap.java:138) ~[?:?]
  - Debug wands on map on death and pickup, add log messages.
  - [Magic] Failed to save undo data: null, massive server lag :\
+
+
+[17:18:03] [Server thread/WARN]: [Magic] Failed to get map id 147 for key 8,8|8,8|http://s3.amazonaws.com/MinecraftSkins/epikwun.png
+[17:18:03] [Server thread/WARN]: [Magic] Failed to get map id 148 for key 8,8|8,8|http://s3.amazonaws.com/MinecraftSkins/jtm740.png
 
 NEW SPELLS:
 
@@ -21,6 +23,8 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - Need separate activate/deactivate costs. Fill vs levitate :\
+   - Variable costs would be nice, too- for fill and superconstruct.
  - Add wand combine and combine_upgrade(?) commands
  - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
  - Add priorities to maps for throttling
@@ -28,17 +32,13 @@ OTHER STUFF:
    - Override? Same as fill.. maybe use cooldown reduction?
  - Respect WorldGuard's pvp setting, global PvP ?
  - Add feedback to Sender when using wandp, castp, etc.
- - Add wand owner data
-   - with option to not be able to use another player's wand?
+ - Add option to not be able to use another player's wand
  - Make dynmap integration optional
  - can't alter "null" message from alter on bad target?
    - fix up alter in general, remove id-based lists
- - wands show up on dynmap?
- - curse effects
+ - curse and boon effects
  - supershell undo left a ring
- - boon effects/targeting
  - Add messages to wandp ?
- - Fix alter spell with stairs ?
  - check that limited-use wands break
  - Add safe undo:
    - Track falling block entities (sandblast, toss, etc)

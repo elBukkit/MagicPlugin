@@ -29,6 +29,7 @@ messages:
         health_regeneration: Health Regeneration
         hunger_regeneration: Anti-Hunger
         costs_description: Costs $description
+        owner_description: $name's Wand
     costs:
         xp_amount: $amount XP
         mana_amount: $amount Mana

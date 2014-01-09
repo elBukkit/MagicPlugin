@@ -1317,6 +1317,15 @@ public class Spells implements Listener
 					wand.updateName(true);
 				}	
 			}
+			
+			// Rename wand when taking from result slot
+			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
+				ItemMeta meta = current.getItemMeta();
+				String newName = meta.getDisplayName();
+				Wand wand = new Wand(this, current);
+				Player player = (Player)event.getWhoClicked();
+				wand.takeOwnership(player, newName, true);
+			}
 
 			if (combiningEnabled && slotType == SlotType.RESULT) {
 				// Check for wands in both slots
@@ -1347,14 +1356,6 @@ public class Spells implements Listener
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
 				}
-			}
-			
-			// Rename wand when taking from result slot
-			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
-				ItemMeta meta = current.getItemMeta();
-				String newName = meta.getDisplayName();
-				Wand wand = new Wand(this, current);
-				wand.setName(newName);
 			}
 		}
 		

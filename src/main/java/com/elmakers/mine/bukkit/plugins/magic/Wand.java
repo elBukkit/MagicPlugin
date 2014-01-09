@@ -48,6 +48,8 @@ public class Wand implements CostReducer {
 	private String activeSpell = "";
 	private String activeMaterial = "";
 	private String wandName = "";
+	private String description = "";
+	private String owner = "";
 	
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
@@ -230,9 +232,34 @@ public class Wand implements CostReducer {
 		return wandName;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+	
+	public String getOwner() {
+		return owner;
+	}
+	
 	protected void setName(String name) {
 		wandName = name;
 		updateName();
+	}
+	
+	protected void setDescription(String description) {
+		this.description = description;
+		updateLore();
+	}
+	
+	protected void takeOwnership(Player player) {
+		owner = player.getName();
+	}
+	
+	public void takeOwnership(Player player, String name, boolean updateDescription) {
+		setName(name);
+		takeOwnership(player);
+		if (updateDescription) {
+			setDescription(Messages.get("wand.owner_description", "$name's Wand").replace("$name", owner));
+		}
 	}
 	
 	public ItemStack getItem() {
@@ -521,6 +548,8 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "active_spell", activeSpell);
 		InventoryUtils.setMeta(wandNode, "active_material", activeMaterial);
 		InventoryUtils.setMeta(wandNode, "name", wandName);
+		InventoryUtils.setMeta(wandNode, "description", description);
+		InventoryUtils.setMeta(wandNode, "owner", owner);
 	
 		InventoryUtils.setMeta(wandNode, "cost_reduction", floatFormat.format(costReduction));
 		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
@@ -555,6 +584,8 @@ public class Wand implements CostReducer {
 		id = InventoryUtils.getMeta(wandNode, "id");
 		id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
 		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
+		description = InventoryUtils.getMeta(wandNode, "description", description);
+		owner = InventoryUtils.getMeta(wandNode, "owner", owner);
 		
 		String wandMaterials = InventoryUtils.getMeta(wandNode, "materials", "");
 		String wandSpells = InventoryUtils.getMeta(wandNode, "spells", "");
@@ -907,10 +938,6 @@ public class Wand implements CostReducer {
 		return prefix + " " + suffix;
 	}
 	
-	private void updateLore() {
-		updateLore(getSpells().size(), getMaterialNames().size());
-	}
-	
 	protected static String convertToHTML(String line) {
 		int tagCount = 1;
 		line = "<span style=\"color:white\">" + line;
@@ -943,7 +970,7 @@ public class Wand implements CostReducer {
 		Collection<String> rawLore = getLore();
 		Collection<String> lore = new ArrayList<String>();
 		lore.add("<h2>" + convertToHTML(getActiveWandName()) + "</h2>");
-		for (String line : rawLore) {
+ 		for (String line : rawLore) {
 			lore.add(convertToHTML(line));
 		}
 		
@@ -961,6 +988,10 @@ public class Wand implements CostReducer {
 		if (spell != null && spellCount == 1 && materialCount <= 1) {
 			addSpellLore(spell, lore);
 		} else {
+			if (description.length() > 0) {
+				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+			}
+			
 			lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
 			if (materialCount > 0) {
 				lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
@@ -991,7 +1022,7 @@ public class Wand implements CostReducer {
 		return lore;
 	}
 	
-	private void updateLore(int spellCount, int materialCount) {
+	private void updateLore() {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = getLore();
 		meta.setLore(lore);
@@ -1199,6 +1230,7 @@ public class Wand implements CostReducer {
 	public static Wand createWand(Spells spells, String templateName) {
 		Wand wand = new Wand(spells);
 		String wandName = Messages.get("wand.default_name");
+		String wandDescription = "";
 
 		// Check for default wand
 		if ((templateName == null || templateName.length() == 0) && wandTemplates.containsKey("default"))
@@ -1225,6 +1257,7 @@ public class Wand implements CostReducer {
 			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
 			wandName = Messages.get("wands." + templateName + ".name", wandName);
+			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
 			List<Object> spellList = wandConfig.getList("spells");
 			if (spellList != null) {
 				for (Object spellName : spellList) {			
@@ -1253,6 +1286,7 @@ public class Wand implements CostReducer {
 			wand.configureProperties(wandConfig);
 		}
 
+		wand.setDescription(wandDescription);
 		wand.setName(wandName);
 		
 		return wand;
@@ -1495,6 +1529,9 @@ public class Wand implements CostReducer {
 	}
 	
 	public void activate(PlayerSpells playerSpells) {
+		if (owner.length() == 0) {
+			takeOwnership(playerSpells.getPlayer());
+		}
 		activePlayer = playerSpells;
 		Player player = activePlayer.getPlayer();
 		if (speedIncrease > 0) {
@@ -1600,11 +1637,11 @@ public class Wand implements CostReducer {
 			uses--;
 			if (uses <= 0) {
 				Player player = activePlayer.getPlayer();
-				deactivate();
 				activePlayer.playSound(Sound.ITEM_BREAK, 1.0f, 0.8f);
 				PlayerInventory playerInventory = player.getInventory();
 				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
 				player.updateInventory();
+				deactivate();
 			} else {
 				updateName();
 				updateLore();
