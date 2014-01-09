@@ -125,6 +125,7 @@ public class UndoQueue
 				scheduleCleanup(spells, list);
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			spells.getPlugin().getLogger().warning("Failed to load undo data: " + ex.getMessage());
 		}
 	}
@@ -147,6 +148,7 @@ public class UndoQueue
 			}
 			node.setProperty("scheduled", nodeList);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			spells.getPlugin().getLogger().warning("Failed to save undo data: " + ex.getMessage());
 		}
 	}
