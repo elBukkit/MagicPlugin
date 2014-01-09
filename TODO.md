@@ -23,6 +23,8 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - Add visual effects to spawn and recall spells
+ 
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.
  - Add wand combine and combine_upgrade(?) commands
@@ -31,20 +33,14 @@ OTHER STUFF:
  - Add max radius to construct spell
    - Override? Same as fill.. maybe use cooldown reduction?
  - Respect WorldGuard's pvp setting, global PvP ?
- - Add feedback to Sender when using wandp, castp, etc.
  - Add option to not be able to use another player's wand
- - Make dynmap integration optional
  - can't alter "null" message from alter on bad target?
    - fix up alter in general, remove id-based lists
- - curse and boon effects
  - supershell undo left a ring
- - Add messages to wandp ?
- - check that limited-use wands break
  - Add safe undo:
    - Track falling block entities (sandblast, toss, etc)
    - Auto-expand?
    - Save sign text ... chest contents, maybe?
- - Add visual effects to spawn and recall spells
  - prevent pillar from passing through non-air blocks .. ? what about stalactite, though?
  - Some sort of workaround for wands getting killed by the creative inventory
  - Make spells usable without a player, clean up strong Player references
@@ -52,12 +48,9 @@ OTHER STUFF:
  - Migrate all properties to parameters
  - Look into data values disappearing on materials in wand inventory like stairs
  - If possible, label more material data like stair direction.
- - Add log messages about how to use config files, and which ones were loaded
  - Add locale option to suffix messages.yml
  - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
  
- - Test using small fireball for low-powered versions
- - Add comments to yml files
  - Make per-spell, per-wand config files?
  - first spell on wand is getting lost (?) - debug with elder wand and fling. 
  - Show active spells in a different color
