@@ -19,6 +19,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.TreeSpecies;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
@@ -572,7 +573,6 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 	}
 	
-	
 	protected void loadState() {
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		if (wandNode == null) {
@@ -617,10 +617,43 @@ public class Wand implements CostReducer {
 		// A walk speed too high will cause a server error.
 		speedIncrease = Math.min(WandLevel.maxSpeedIncrease, speedIncrease);
 	}
+
+	protected void describe(CommandSender sender) {
+		Object wandNode = InventoryUtils.getNode(item, "wand");
+		if (wandNode == null) {
+			sender.sendMessage("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
+            return;
+		}
+		ChatColor wandColor = modifiable ? ChatColor.AQUA : ChatColor.RED;
+		sender.sendMessage(wandColor + wandName);
+		if (description.length() > 0) {
+			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+		} else {
+			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + "(No Description)");
+		}
+		if (owner.length() > 0) {
+			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + owner);
+		} else {
+			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + "(No Owner)");
+		}
+		
+		String[] keys = {"active_spell", "active_material", "xp", "xp_regeneration", "xp_max", "health_regeneration", 
+					"hunger_regeneration", "uses", 
+					"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
+					"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
+					"haste", "has_inventory", "modifiable", "effect_color", "materials", "spells"};
+		
+		for (String key : keys) {
+			String value = InventoryUtils.getMeta(wandNode, key);
+			if (value != null && value.length() > 0) {
+				sender.sendMessage(key + ": " + value);
+			}
+		}
+	}
 	
 	@SuppressWarnings("deprecation")
-	public void removeMaterial(Material material, byte data) {
-		if (!modifiable) return;
+	public boolean removeMaterial(Material material, byte data) {
+		if (!modifiable) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
@@ -659,6 +692,7 @@ public class Wand implements CostReducer {
 		if (isInventoryOpen()) {
 			updateInventory();
 		}
+		return found;
 	}
 	
 	public boolean addMaterial(Material material, byte data, boolean force) {
@@ -736,8 +770,8 @@ public class Wand implements CostReducer {
 		return addMaterial(materialString, makeActive, force);
 	}
 	
-	public void removeSpell(String spellName) {
-		if (!modifiable) return;
+	public boolean removeSpell(String spellName) {
+		if (!modifiable) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
@@ -772,6 +806,7 @@ public class Wand implements CostReducer {
 		if (isInventoryOpen()) {
 			updateInventory();
 		}
+		return found;
 	}
 	
 	public boolean addSpell(String spellName, boolean makeActive) {

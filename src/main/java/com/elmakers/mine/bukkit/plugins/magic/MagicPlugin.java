@@ -145,7 +145,6 @@ public class MagicPlugin extends JavaPlugin
 			return processCastCommand(sender, player, args2);
 		}
 
-		// Everything beyond this point is is-game only
 		if (!(sender instanceof Player)) {
 			if (commandName.equalsIgnoreCase("spells"))
 			{
@@ -162,8 +161,8 @@ public class MagicPlugin extends JavaPlugin
 			return false;
 		}
 
+		// Everything beyond this point is is-game only
 		Player player = (Player)sender;
-
 		if (commandName.equalsIgnoreCase("wand"))
 		{
 			return processWandCommand("wand", sender, player, args);
@@ -201,7 +200,7 @@ public class MagicPlugin extends JavaPlugin
 		{
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandList(player);
+			onWandList(sender);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("add"))
@@ -209,35 +208,42 @@ public class MagicPlugin extends JavaPlugin
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 			if (args2.length > 0 && args2[0].equals("material") && !spells.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
 			if (args2.length > 0 && !spells.hasPermission(sender,"Magic.commands.wand.add.spell." + args2[0], true)) return true;
-			onWandAdd(player, args2);
+			onWandAdd(sender, player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("configure"))
 		{
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandConfigure(player, args2, false);
+			onWandConfigure(sender, player, args2, false);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("describe"))
+		{
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandDescribe(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("upgrade"))
 		{
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandConfigure(player, args2, true);
+			onWandConfigure(sender, player, args2, true);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("fill"))
 		{
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandFill(player);
+			onWandFill(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("remove"))
 		{   
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandRemove(player, args2);
+			onWandRemove(sender, player, args2);
 			return true;
 		}
 
@@ -245,14 +251,14 @@ public class MagicPlugin extends JavaPlugin
 		{
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandName(player, args2);
+			onWandName(sender, player, args2);
 			return true;
 		}
 
 		if (!spells.hasPermission(sender, "Magic.commands." + command + "")) return true;
 		if (subCommand.length() > 0 && !spells.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
 		
-		return onWand(player, args);
+		return onWand(sender, player, args);
 	}
 
 	public boolean onWandList(CommandSender sender) {
@@ -276,14 +282,31 @@ public class MagicPlugin extends JavaPlugin
 
 		return true;
 	}
+
+	public boolean onWandDescribe(CommandSender sender, Player player) {
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
+		if (wand == null) {
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			} else {
+				player.sendMessage("Equip a wand first");
+			}
+			return true;
+		}
+		
+		wand.describe(sender);
+
+		return true;
+	}
 	
-	public boolean onWandConfigure(Player player, String[] parameters, boolean safe)
+	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{
 		if (parameters.length < 2) {
-			player.sendMessage("Use: /wand configure <property> <value>");
-			player.sendMessage("Properties: cost_reduction, uses, health_regeneration, hunger_regeneration, xp_regeneration,");
-			player.sendMessage("  xp_max, protection, protection_physical, protection_projectiles,");
-			player.sendMessage("  protection_falling,protection_fire, protection_explosions, haste, power");
+			sender.sendMessage("Use: /wand configure <property> <value>");
+			sender.sendMessage("Properties: cost_reduction, uses, health_regeneration, hunger_regeneration, xp_regeneration,");
+			sender.sendMessage("  xp_max, protection, protection_physical, protection_projectiles,");
+			sender.sendMessage("  protection_falling,protection_fire, protection_explosions, haste, power");
 			
 			return true;
 		}
@@ -292,6 +315,9 @@ public class MagicPlugin extends JavaPlugin
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
 			return true;
 		}
 		ConfigurationNode node = new ConfigurationNode();
@@ -299,27 +325,38 @@ public class MagicPlugin extends JavaPlugin
 		wand.deactivate();
 		wand.configureProperties(node, safe);
 		wand.activate(playerSpells);
+		player.sendMessage("Wand reconfigured");
+		if (sender != player) {
+			sender.sendMessage(player.getName() + ",s wand reconfigured");
+		}
 		return true;
 	}
 
-	public boolean onWandFill(Player player)
+	public boolean onWandFill(CommandSender sender, Player player)
 	{
 		PlayerSpells playerSpells = spells.getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
 			return true;
 		}
 		
 		fillWand(wand, player);
+		player.sendMessage("Your wand now contains all the spells you know");
+		if (sender != player) {
+			sender.sendMessage(player.getName() + "'s wand filled");
+		}
 		
 		return true;
 	}
 	
-	public boolean onWandAdd(Player player, String[] parameters)
+	public boolean onWandAdd(CommandSender sender, Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			player.sendMessage("Use: /wand add <spell|material> [material]");
+			sender.sendMessage("Use: /wand add <spell|material> [material]");
 			return true;
 		}
 
@@ -327,16 +364,22 @@ public class MagicPlugin extends JavaPlugin
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
 			return true;
 		}
 		if (!wand.isModifiable()) {
 			player.sendMessage("This wand can not be modified");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + "'s wand can't be modified");
+			}
 		}
 
 		String spellName = parameters[0];
 		if (spellName.equals("material")) {
 			if (parameters.length < 2) {
-				player.sendMessage("Use: /wand add material <material> [data]");
+				sender.sendMessage("Use: /wand add material <material> [data]");
 				return true;
 			}
 			String materialName = parameters[1];
@@ -349,32 +392,52 @@ public class MagicPlugin extends JavaPlugin
 			} else{
 				material = ConfigurationNode.toMaterial(materialName);
 				if (material == null || material == Material.AIR) {
-					player.sendMessage(materialName + " is not a valid material");
+					sender.sendMessage(materialName + " is not a valid material");
 					return true;
 				}
 				if (parameters.length > 2) {
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.addMaterial(material, data, true);
+			if (wand.addMaterial(material, data, true)) {
+				player.sendMessage("Material '" + materialName + "' has been added to your wand");
+				if (sender != player) {
+					sender.sendMessage("Added material '" + materialName + "' to " + player.getName() + "'s wand");
+				}
+			} else {
+				player.sendMessage("This wand already has " + materialName);
+				if (sender != player) {
+					sender.sendMessage(player.getName() + "'s wand already has material " + materialName);
+				}
+			}
 			return true;
 		}
 		Spell spell = playerSpells.getSpell(spellName);
 		if (spell == null)
 		{
-			player.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
+			sender.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
 			return true;
 		}
 
-		wand.addSpell(spellName, true);
+		if (wand.addSpell(spellName, true)) {
+			player.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
+			if (sender != player) {
+				sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
+			}
+		} else {
+			player.sendMessage("This wand already has " + spell.getName());
+			if (sender != player) {
+				sender.sendMessage(player.getName() + "'s wand already has " + spell.getName());
+			}
+		}
 
 		return true;
 	}
 
-	public boolean onWandRemove(Player player, String[] parameters)
+	public boolean onWandRemove(CommandSender sender, Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			player.sendMessage("Use: /wand remove <spell|material> [material]");
+			sender.sendMessage("Use: /wand remove <spell|material> [material]");
 			return true;
 		}
 
@@ -382,17 +445,23 @@ public class MagicPlugin extends JavaPlugin
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
 			return true;
 		}
 		if (!wand.isModifiable()) {
 			player.sendMessage("This wand can not be modified");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + "'s wand can't be modified");
+			}
 		}
 
 		String spellName = parameters[0];
 		
 		if (spellName.equals("material")) {
 			if (parameters.length < 2) {
-				player.sendMessage("Use: /wand remove material <material> [data]");
+				sender.sendMessage("Use: /wand remove material <material> [data]");
 				return true;
 			}
 			String materialName = parameters[1];
@@ -408,18 +477,36 @@ public class MagicPlugin extends JavaPlugin
 					data = (byte)Integer.parseInt(parameters[2]);
 				}
 			}
-			wand.removeMaterial(material, data);
+			if (wand.removeMaterial(material, data)) {
+				player.sendMessage("Material '" + materialName + "' has been removed from your wand");
+				if (sender != player) {
+					sender.sendMessage("Removed material '" + materialName + "' from " + player.getName() + "'s wand");
+				}
+			} else {
+				if (sender != player) {
+					sender.sendMessage(player.getName() + "'s wand does not have material " + materialName);
+				}
+			}
 			return true;
 		}
-		wand.removeSpell(spellName);
+		if (wand.removeSpell(spellName)) {
+			player.sendMessage("Spell '" + spellName + "' has been removed from your wand");
+			if (sender != player) {
+				sender.sendMessage("Removed '" + spellName + "' from " + player.getName() + "'s wand");
+			}
+		} else {
+			if (sender != player) {
+				sender.sendMessage(player.getName() + "'s wand does not have " + spellName);
+			}
+		}
 
 		return true;
 	}
 
-	public boolean onWandName(Player player, String[] parameters)
+	public boolean onWandName(CommandSender sender, Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			player.sendMessage("Use: /wand name <name>");
+			sender.sendMessage("Use: /wand name <name>");
 			return true;
 		}
 		
@@ -427,15 +514,19 @@ public class MagicPlugin extends JavaPlugin
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
 			return true;
 		}
 		
 		wand.setName(StringUtils.join(parameters, " "));
+		sender.sendMessage("Wand renamed");
 
 		return true;
 	}
 
-	public boolean onWand(Player player, String[] parameters)
+	public boolean onWand(CommandSender sender, Player player, String[] parameters)
 	{
 		String wandName = null;
 		if (parameters.length > 0)
@@ -451,7 +542,7 @@ public class MagicPlugin extends JavaPlugin
 	
 		Wand wand = Wand.createWand(spells, wandName);
 		if (wand == null) {
-			player.sendMessage("No wand defined with key " + wandName);
+			sender.sendMessage("No wand defined with key " + wandName);
 			return true;
 		}
 		
@@ -468,6 +559,9 @@ public class MagicPlugin extends JavaPlugin
 			wand.activate(playerSpells);
 		} else {
 			player.getInventory().addItem(wand.getItem());
+		}
+		if (sender != player) {
+			sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
 		}
 		return true;
 	}
@@ -500,6 +594,7 @@ public class MagicPlugin extends JavaPlugin
 		Spell spell = playerSpells.getSpell(spellName, usePermissions);
 		if (spell == null)
 		{
+			sender.sendMessage("Spell" + spellName + " unknown");
 			return false;
 		}
 
@@ -507,6 +602,9 @@ public class MagicPlugin extends JavaPlugin
 		spells.toggleCastCommandOverrides(playerSpells, true);
 		spell.cast(parameters);
 		spells.toggleCastCommandOverrides(playerSpells, false);
+		if (sender != player) {
+			sender.sendMessage("Cast" + spellName + " on " + player.getName());
+		}
 
 		return true;
 	}

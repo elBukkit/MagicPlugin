@@ -10,6 +10,8 @@
  - Allow casting boon on another player (it's targeted now- aim up for yourself, like heal)
  - Implement wand descriptions and ownership
  - Fix limited-use wands
+ - Added better feedback to wand and wandp commands
+ - Added /wand describe command (technical)
 
 ## 2.8.1
 
