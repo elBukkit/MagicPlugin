@@ -49,4 +49,13 @@ public enum ParticleType {
 		return particleName.replace("{subtype}", subtype);
 	}
 	
+	public static ParticleType fromName(String name, ParticleType particle) {
+		for (ParticleType t : ParticleType.values()) {
+			if (t.getParticleName().replace("_", "").equalsIgnoreCase(name.replace("_", ""))) {
+				particle = t;
+				break;
+			}
+		}
+		return particle;
+	}
 }
