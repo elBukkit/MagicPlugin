@@ -3,6 +3,7 @@
 ## 2.8.2
 
  - "name" parameter works with url and id maps.
+ - Fix permissions on boom spell.
 
 ## 2.8.1
 

@@ -30,6 +30,9 @@ public class BoomSpell extends Spell {
 		}
 
 		Block block = target.getBlock();
+		if (!hasBuildPermission(block)) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		Location l = block.getLocation();
 		player.getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 		spells.updateBlock(block);

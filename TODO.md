@@ -6,6 +6,8 @@ IMPORTANT STUFF:
    - Make them persistent
  - Map went funky, got broken - getMapView caused NPE .. ?
    - NPE at:  at com.elmakers.mine.bukkit.utilities.URLMap.getMapItem(URLMap.java:138) ~[?:?]
+ - Debug wands on map on death and pickup, add log messages.
+ - [Magic] Failed to save undo data: null, massive server lag :\
 
 NEW SPELLS:
 
@@ -84,6 +86,7 @@ DEMO SERVER STUFF:
 
 LONG-TERM OR INCOMPLETE:
  
+ - Cooldowns broken.. ?
  - Continue work on combining wands on avils
  - apply potion effects while holding wand? Could replace haste with this.
  - Specific protection for suffocation damage, underwater breathing (air regeneration)
