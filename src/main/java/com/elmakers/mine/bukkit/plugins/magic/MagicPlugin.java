@@ -374,6 +374,7 @@ public class MagicPlugin extends JavaPlugin
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand can't be modified");
 			}
+			return true;
 		}
 
 		String spellName = parameters[0];
@@ -455,10 +456,10 @@ public class MagicPlugin extends JavaPlugin
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand can't be modified");
 			}
+			return true;
 		}
 
-		String spellName = parameters[0];
-		
+		String spellName = parameters[0];	
 		if (spellName.equals("material")) {
 			if (parameters.length < 2) {
 				sender.sendMessage("Use: /wand remove material <material> [data]");
