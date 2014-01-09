@@ -54,7 +54,7 @@ general:
     crafting_output: random(1)
     enable_combining: true
     enable_enchanting: true
-    enable_organizing: false
+    enable_organizing: true
     enable_block_populator: true
     enable_essentials_signs: true
     undo_depth: 64

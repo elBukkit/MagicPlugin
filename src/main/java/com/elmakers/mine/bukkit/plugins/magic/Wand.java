@@ -1782,7 +1782,7 @@ public class Wand implements CostReducer {
 	
 	public void organizeInventory() {
 		if (activePlayer == null) return;
-		closeInventory();
+		if (!isInventoryOpen()) return;
 		
 		// First collect spells in hotbar
 		Set<String> hotbarSpellNames = new HashSet<String>();
@@ -1821,6 +1821,12 @@ public class Wand implements CostReducer {
 				spellList.add(spellName);
 			}
 		}
+		
+		// Clear player's top inventory
+		for (int i = hotbarSize; i < playerInventory.getSize(); i++) {
+			playerInventory.setItem(i, null);
+		}
+		
 		Set<String> materials = getMaterialNames();
 		for (String hotbar : hotbarMaterialNames) {
 			materials.remove(hotbar);
@@ -1828,29 +1834,39 @@ public class Wand implements CostReducer {
 		
 		inventories.clear();
 		int currentInventoryIndex = 0;
-		Inventory currentInventory = getInventory(currentInventoryIndex);
+		Inventory currentInventory = getInventoryByIndex(currentInventoryIndex);
 		for (Collection<String> spellGroup : groupedSpells.values()) {
 			for (String spellName : spellGroup) {
 				HashMap<Integer, ItemStack> result = currentInventory.addItem(createSpellItem(spellName));
 				if (result.size() > 0) {
 					currentInventoryIndex++;
-					currentInventory = getInventory(currentInventoryIndex);
+					currentInventory = getInventoryByIndex(currentInventoryIndex);
+					for (ItemStack skipped : result.values()) {
+						currentInventory.addItem(skipped);
+					}
 				}
 			}
+			
 			currentInventoryIndex++;
-			currentInventory = getInventory(currentInventoryIndex);
+			currentInventory = getInventoryByIndex(currentInventoryIndex);
 		}
 		
-		for (String materialName : materials) {
-			HashMap<Integer, ItemStack> result = currentInventory.addItem(createMaterialItem(materialName));
-			if (result.size() > 0) {
-				currentInventoryIndex++;
-				currentInventory = getInventory(currentInventoryIndex);
+		if (materials.size() > 0) {
+			for (String materialName : materials) {
+				HashMap<Integer, ItemStack> result = currentInventory.addItem(createMaterialItem(materialName));			
+				if (result.size() > 0) {
+					currentInventoryIndex++;
+					currentInventory = getInventoryByIndex(currentInventoryIndex);
+					for (ItemStack skipped : result.values()) {
+						currentInventory.addItem(skipped);
+					}
+				}
 			}
 		}
 		
+		openInventoryPage = 0;
 		saveState();
-		openInventory();
+		updateInventory();
 	}
 	
 	public String getId() {

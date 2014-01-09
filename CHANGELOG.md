@@ -3,6 +3,7 @@
 ## 2.8.3
 
  - Add /wand combine command
+ - Implement wand organization (double-click in wand inventory)
 
 ## 2.8.2
 

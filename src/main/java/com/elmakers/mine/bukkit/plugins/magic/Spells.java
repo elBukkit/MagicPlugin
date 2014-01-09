@@ -1381,10 +1381,14 @@ public class Spells implements Listener
 		if (organizingEnabled && event.getInventory().getType() == InventoryType.CRAFTING && event.getAction() == InventoryAction.PLACE_ALL) {
 			Player player = (Player)event.getWhoClicked();
 			PlayerSpells playerSpells = getPlayerSpells(player);
-			Wand wand = playerSpells.getActiveWand();
+			final Wand wand = playerSpells.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
-				wand.organizeInventory();
-				event.setCancelled(true);
+				Bukkit.getScheduler().scheduleSyncDelayedTask(playerSpells.getMaster().getPlugin(), new Runnable() {
+					public void run() {
+						wand.organizeInventory();
+					}
+				}, 2);
+				// Don't set the event to cancelled, will make the inventory go screwy.
 			}
 		}
 	}
