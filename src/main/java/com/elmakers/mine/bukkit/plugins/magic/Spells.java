@@ -513,7 +513,7 @@ public class Spells implements Listener
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
 			if (markerSet == null) {
-				markerSet = markers.createMarkerSet(group, "Wands", null, true);
+				markerSet = markers.createMarkerSet(group, "Wands", null, false);
 			}
 			MarkerIcon wandIcon = markers.getMarkerIcon("wand");
 			if (wandIcon == null) {
@@ -523,7 +523,7 @@ public class Spells implements Listener
 			Marker marker = markerSet.findMarker(id);
 			if (marker == null) {
 				created = true;
-				marker = markerSet.createMarker(id, title, world, x, y, z, wandIcon, true);
+				marker = markerSet.createMarker(id, title, world, x, y, z, wandIcon, false);
 			} else {
 				marker.setLocation(world, x, y, z);
 				marker.setLabel(title);
