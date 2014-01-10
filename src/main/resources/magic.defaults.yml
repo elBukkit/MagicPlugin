@@ -17,6 +17,36 @@
 # or wands. This can usually be resolved easily using the github diffs (which I will try to link to when appropriate)
 # adding in whatever is missing to your customized configuration.
 #
+# YES, STILL IMPORTANT
+#
+# The default setup is as follows. If you want to change any of this, you'll have to create a custom configuration (magic.yml)
+#
+# - Wands can be crafted on a crafting table using a blaze rod and nether star
+# - Wands can be found in random naturally-spawned chests
+# - Wands can be upgraded on an enchanting table
+# - Wands can be combined on an anvil
+# - Wands are indestructible (and will show up on a dynmap)
+#
+# By default, all players have access to all spells. Which players have access to what spells is only
+# limited by how players get access to wands. The default wands generated in chests and on an enchanting/crafting table
+# will not get superpowerful, that will be left for admins to control.
+#
+# Fine-grained spell control can be done with permissions, using a group manager, but this will make a lot of the
+# wand behavior a little strange (if players get access to wands with spells they can't cast), and in my opinion
+# takes some of the fun out of it. Magic is meant to be a vanilla add-on, and in vanilla MC items are everything.
+# So the wand has the power, not the player. Anyway, it's up to you!
+#
+# There are other options available, disabled by default. Briefly, some include:
+#
+# - Disabling the wand inventory behavior, favoring right-click-to-cycle
+# - Filling wands will all available spells by default (useful with permissions-based control)
+# - Change the crafting materials
+# - Change the way enchanting and chest populating works (randomization control)
+# - Make wands destructible
+# - Allow players to keep their wands on death
+# - More fine-grained control over general spell behavior
+#
+
 # LOCALIZATION
 #
 # Note that ALL in-game text is contained in messages.yml
@@ -73,13 +103,8 @@ general:
         2: 20
         3: 5
       wand_probability:
-        explorer: 30
         arrow: 50
         fireball: 60
-        psychic: 10
-        battle: 10
-        necromancer: 5
-        fire: 8
         random(1): 200
         random(2): 150
         random(5): 80
