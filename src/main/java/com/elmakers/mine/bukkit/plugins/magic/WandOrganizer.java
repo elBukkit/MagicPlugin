@@ -32,7 +32,7 @@ public class WandOrganizer {
 	
 	protected void addToInventory(ItemStack itemStack) {
 		// Advance when almost full
-		if (currentInventoryCount > currentInventory.getSize() - 3) {
+		if (currentInventoryCount > currentInventory.getSize() - Wand.inventoryOrganizeSize) {
 			nextInventory();
 		}
 		
@@ -110,7 +110,7 @@ public class WandOrganizer {
 		for (Collection<String> spellGroup : groupedSpells.values()) {
 		
 			// Start a new inventory for a new group if the previous inventory is over 2/3 full
-			if (currentInventoryCount > currentInventory.getSize() * 2 / 3) {
+			if (currentInventoryCount > Wand.inventoryOrganizeNewGroupSize) {
 				nextInventory();
 			}
 			
