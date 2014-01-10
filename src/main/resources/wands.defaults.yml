@@ -237,7 +237,7 @@ wands:
     recall:
         modifiable: true
         xp_regeneration: 2
-        xp_max: 10
+        xp_max: 20
         spells:
             - recall
             - spawn
@@ -531,11 +531,34 @@ wands:
             - soul_sand
             - stained_glass
             - copy
-    airbending:
+    air:
         modifiable: true
-        protection: 0.6
+        protection: 0.2
+        protection_falling: 0.7
         xp_regeneration: 2
         xp_max: 50
+        haste: 0.1
+        spells:
+            - pull
+            - leap
+    air_2:
+        modifiable: true
+        protection: 0.4
+        protection_falling: 0.9
+        xp_regeneration: 4
+        xp_max: 75
+        haste: 0.15
+        spells:
+            - fling
+            - push
+            - pull
+            - leap
+    air_3:
+        modifiable: true
+        protection: 0.5
+        protection_falling: 1
+        xp_regeneration: 10
+        xp_max: 150
         haste: 0.1
         spells:
             - fling
@@ -543,14 +566,37 @@ wands:
             - pull
             - force
             - leap
-    waterbending:
+            - levitate
+    water:
         modifiable: true
-        protection: 0.5
+        protection: 0.1
         xp_regeneration: 2
         xp_max: 50
         spells:
+            - cushion
+            - heal
+    water_2:
+        modifiable: true
+        protection: 0.3
+        xp_regeneration: 4
+        xp_max: 75
+        spells:
+            - toss
+            - blob
+            - recurse
+            - cushion
+            - heal
+        materials:
+            - stationary_water
+    water_3:
+        modifiable: true
+        protection: 0.5
+        xp_regeneration: 10
+        xp_max: 150
+        spells:
             - frost
             - toss
+            - volley
             - blob
             - recurse
             - cushion
@@ -559,18 +605,47 @@ wands:
         materials:
             - stationary_water
             - ice
-    earthbending:
+            - packed_ice
+    earth:
         modifiable: true
-        protection: 0.5
-        protection_physical: 0.9
-        protection_blast: 0.7
+        protection: 0.2
+        protection_physical: 0.6
+        protection_blast: 0.5
         xp_regeneration: 2
         xp_max: 50
+        spells:
+            - sandblast
+            - breach
+    earth_2:
+        modifiable: true
+        protection: 0.3
+        protection_physical: 0.8
+        protection_blast: 0.8
+        xp_regeneration: 4
+        xp_max: 75
+        spells:
+            - blob
+            - sandblast
+            - toss
+            - breach
+        materials:
+            - dirt
+            - stone
+            - sand
+    earth_3:
+        modifiable: true
+        protection: 0.4
+        protection_physical: 0.9
+        protection_blast: 0.9
+        xp_regeneration: 10
+        xp_max: 150
         spells:
             - blob
             - sandblast
             - recurse
             - toss
+            - volley
+            - blast
             - pillar
             - bridge
             - breach
@@ -578,12 +653,37 @@ wands:
             - dirt
             - stone
             - sand
-    firebending:
+            - iron_block
+            - soul_sand
+    fire:
         modifiable: true
-        protection_fire: 0.9
-        protection: 0.1
+        protection_fire: 0.5
         xp_regeneration: 2
         xp_max: 40
+        spells:
+            - fire
+            - fireball
+    fire_2:
+        modifiable: true
+        protection_fire: 0.7
+        protection: 0.1
+        xp_regeneration: 4
+        xp_max: 75
+        spells:
+            - fireball
+            - fire
+            - lava
+            - lightning
+            - toss
+            - boom
+        materials:
+            - stationary_lava
+    fire_3:
+        modifiable: true
+        protection_fire: 1
+        protection: 0.3
+        xp_regeneration: 10
+        xp_max: 150
         spells:
             - fireball
             - recurse
@@ -592,8 +692,10 @@ wands:
             - inferno
             - lava
             - lightning
+            - storm
             - toss
             - boom
+            - kaboom
         materials:
             - stationary_lava
     avatar:

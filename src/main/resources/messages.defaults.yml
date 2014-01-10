@@ -453,7 +453,7 @@ messages:
             description: Take a portrait of yourself or others
         default:
             name: Empty Wand
-            description: The default wand a player receives with the /wand command
+            description: The default wand
         white:
             name: The White Wand
             description: A wand for master white wizards
