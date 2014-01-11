@@ -474,6 +474,27 @@ public class ConfigurationNode {
 	 }
 
 	 /**
+	  * Gets a double at a location. This will either return an double
+	  * or the default value. If the object at the particular location is not
+	  * actually a double, the default value will be returned. However, other
+	  * number types will be casted to an double.
+	  *
+	  * @param path path to node (dot notation)
+	  * @param def default value
+	  * @return double or default
+	  */
+	 public Double getDouble(String path, Double def) {
+		 Double o = castDouble(getProperty(path));
+
+		 if (o == null) {
+			 setProperty(path, def);
+			 return def;
+		 } else {
+			 return o;
+		 }
+	 }
+
+	 /**
 	  * Gets a boolean at a location. This will either return an boolean
 	  * or the default value. If the object at the particular location is not
 	  * actually a boolean, the default value will be returned.
