@@ -4,6 +4,9 @@
 
  - Add /wand combine command
  - Implement wand organization (double-click in wand inventory)
+ - Add more scripting ability to fling spell
+ - Combining two wands takes ownership of the new wand
+ - Wand effect colors will mix when combined
 
 ## 2.8.2
 

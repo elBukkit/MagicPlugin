@@ -1357,16 +1357,15 @@ public class Spells implements Listener
 						player.sendMessage("One of your wands can not be combined");
 						return;
 					}
-					Wand newWand = new Wand(this);
-					newWand.setName(firstWand.getName());
-					newWand.add(firstWand);
-					newWand.add(secondWand);
+					// TODO: Can't get the anvil's text from here.
+					firstWand.takeOwnership(player, firstWand.getName(), true);
+					firstWand.add(secondWand);
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
 					
-					player.getInventory().addItem(newWand.getItem());
-					player.sendMessage("Your wands have been combined");
+					player.getInventory().addItem(firstWand.getItem());
+					player.sendMessage("Your wands have been combined!");
 					
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
