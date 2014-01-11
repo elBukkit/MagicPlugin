@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -1345,6 +1346,15 @@ public class Wand implements CostReducer {
 		healthRegeneration = Math.max(healthRegeneration, other.healthRegeneration);
 		hungerRegeneration = Math.max(hungerRegeneration, other.hungerRegeneration);
 		speedIncrease = Math.max(speedIncrease, other.speedIncrease);
+		// Mix colors?
+		if (effectColor == 0) {
+			effectColor = other.effectColor;
+		} else if (other.effectColor != 0){
+			Color color1 = Color.fromBGR(effectColor);
+			Color color2 = Color.fromBGR(other.effectColor);
+			Color newColor = color1.mixColors(color2);
+			effectColor = newColor.asRGB();
+		}
 		effectColor = Math.max(effectColor, other.effectColor);
 		
 		// Eliminate limited-use wands
