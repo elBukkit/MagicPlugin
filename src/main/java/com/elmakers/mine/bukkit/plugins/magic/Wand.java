@@ -1814,4 +1814,8 @@ public class Wand implements CostReducer {
 	protected void clearInventories() {
 		inventories.clear();
 	}
+	
+	public int getEffectColor() {
+		return effectColor;
+	}
 }

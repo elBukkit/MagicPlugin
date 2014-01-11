@@ -42,6 +42,8 @@ public class FireworkSpell extends Spell
 		power = parameters.getInt("size", power);
 		if (parameters.containsKey("color1")) {
 			color1 = getColor(parameters.getString("color1"));
+		} else if (playerSpells.getEffectColor() != null) {
+			color1 = playerSpells.getEffectColor();
 		}
 		if (parameters.containsKey("color2")) {
 			color2 = getColor(parameters.getString("color2"));

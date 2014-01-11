@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -533,5 +534,11 @@ public class PlayerSpells implements CostReducer
 		long previous = lastClick;
 		lastClick = now;
 		return (previous <= 0 || previous + maxInterval < now);
+	}
+	
+	public Color getEffectColor() {
+		int colorValue = activeWand == null ? 0 : activeWand.getEffectColor();
+		if (colorValue == 0) return null;
+		return Color.fromRGB(colorValue);
 	}
 }

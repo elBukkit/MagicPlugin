@@ -7,6 +7,7 @@
  - Add more scripting ability to fling spell
  - Combining two wands takes ownership of the new wand
  - Wand effect colors will mix when combined
+ - Match flare and boom effects to wand color
 
 ## 2.8.2
 
