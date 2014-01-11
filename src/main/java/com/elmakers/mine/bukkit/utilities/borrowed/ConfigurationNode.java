@@ -572,6 +572,17 @@ public class ConfigurationNode {
 		 }
 	 }
 	 
+	 public Boolean getBoolean(String path, Boolean def) {
+		 Boolean o = castBoolean(getProperty(path));
+
+		 if (o == null) {
+			 setProperty(path, def);
+			 return def;
+		 } else {
+			 return o;
+		 }
+	 }
+	 
 	 public BlockData getBlockData(String path) {
 		return BlockData.fromString(getString(path));
 	 }

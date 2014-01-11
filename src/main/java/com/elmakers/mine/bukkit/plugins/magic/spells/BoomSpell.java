@@ -72,12 +72,7 @@ public class BoomSpell extends Spell {
 			effect.setPeriod(effectPeriod);
 			effect.setSpeed(effectSpeed);
 			
-			Color color1 = Color.RED;
-			if (playerSpells.getEffectColor() != null) {
-					color1 = playerSpells.getEffectColor();
-			}
-	        FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(true).
-	        	withColor(color1).withFade(Color.ORANGE).with(Type.BURST).build();
+	        FireworkEffect fireworkEffect = playerSpells.getFireworkEffect(Color.RED, Color.ORANGE, Type.BURST);
 	        effect.setFireworkEffect(fireworkEffect, 1);
 			effect.start();
 		}

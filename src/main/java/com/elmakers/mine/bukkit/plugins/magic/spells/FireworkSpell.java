@@ -14,29 +14,18 @@ import com.elmakers.mine.bukkit.utilities.EffectUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireworkSpell extends Spell
-{ 
-	private Type fireworkType;
-	private Color color1;
-	private Color color2;
-	private int power;
-	private boolean flicker;
-	private boolean trail;
-	
-	static private Type[] types = { Type.BALL, Type.BALL_LARGE, Type.BURST, Type.CREEPER, Type.STAR };
-	static private Color[] colors = {Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
-			Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.OLIVE, Color.ORANGE, Color.PURPLE, 
-			Color.RED, Color.SILVER, Color.TEAL, Color. WHITE, Color.YELLOW };
-	
+{	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Random rand = new Random();
-		color1 = getColor(rand.nextInt(17));
-		color2 = getColor(rand.nextInt(17));
-		power = rand.nextInt(2) + 1;
-		fireworkType = getType(rand.nextInt(5));
-		flicker = rand.nextBoolean();
-		trail = rand.nextBoolean();
+		int power = rand.nextInt(2) + 1;
+		
+		Color color1 = null;
+		Color color2 = null;
+		Type fireworkType = null;
+		Boolean flicker = null;
+		Boolean trail = null;
 		
 		// Configuration overrides
 		power = parameters.getInt("size", power);
@@ -56,10 +45,9 @@ public class FireworkSpell extends Spell
 		
 		int flareCount = parameters.getInt("count", 1);
 		Block target = getTarget().getBlock();
-
 	     
-        FireworkEffect effect = FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
-		
+        FireworkEffect effect = playerSpells.getFireworkEffect(color1, color2, fireworkType, flicker, trail);
+        
 		for (int i = 0; i < flareCount; i++)
 		{
 			// TODO: Spread locations
@@ -70,22 +58,6 @@ public class FireworkSpell extends Spell
 		castMessage("You fire some magical flares");
 
 		return SpellResult.SUCCESS;
-	}
-	
-	protected Type getType(int i) {
-		if (i < types.length) {
-			return types[i];
-		}
-
-		return types[0];
-	}
-
-	protected Color getColor(int i) {
-		if (i < colors.length) {
-			return colors[i];
-		}
-
-		return colors[0];
 	}
 	
 	protected Color getColor(String name) {
