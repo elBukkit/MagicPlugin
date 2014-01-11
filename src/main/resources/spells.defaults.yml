@@ -947,14 +947,45 @@ spells:
         costs:
             xp: 5
     lava:
-        icon: lava
+        icon: ink_sack:14
         category: firebending
-        class: LavaSpell
+        class: IterateSpell
         properties:
-            allow_max_range: false
-            range: 200
+            allow_max_range: true
+            range: 16
             cooldown: 500
-        parameters: {}
+            material: lava
+        parameters:
+            material: lava
+            increment_data: true
+            undo: 2000
+        costs:
+            xp: 30
+    stream:
+        icon: ink_sack:6
+        category: waterbending
+        class: IterateSpell
+        properties:
+            allow_max_range: true
+            range: 16
+            cooldown: 500
+            material: water
+        parameters:
+            material: water
+            increment_data: true
+            undo: 2000
+        costs:
+            xp: 20
+    earth:
+        icon: ink_sack:3
+        category: earthbending
+        class: IterateSpell
+        properties:
+            allow_max_range: true
+            range: 16
+            cooldown: 250
+        parameters:
+            increment_data: false
         costs:
             xp: 20
     wolf:

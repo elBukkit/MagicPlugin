@@ -9,6 +9,7 @@
  - Wand effect colors will mix when combined
  - Match flare and boom effects to wand color
  - Use volume-based rendering triggers in dynmap for large constructions
+ - Add earth and stream spells (MIGRATION NOTE: lava spell needs updating in spells.yml, LavaSpell -> IterateSpell)
 
 ## 2.8.2
 

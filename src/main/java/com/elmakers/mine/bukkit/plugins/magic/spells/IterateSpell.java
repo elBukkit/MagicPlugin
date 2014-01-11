@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
@@ -9,25 +10,27 @@ import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class LavaSpell extends Spell
+public class IterateSpell extends Spell
 {
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		int timeToLive = parameters.getInt("undo", 0);
+		boolean incrementData = parameters.getBoolean("increment_data", false);
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(target)) {
+		if (!hasBuildPermission(target) || !hasBuildPermission(player.getLocation())) {
 			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		int lavaBlocks = (int)player.getLocation().distance(target.getLocation());
-		if (lavaBlocks <= 0) return SpellResult.NO_TARGET;
+		int iterateBlocks = (int)player.getLocation().distance(target.getLocation());
+		if (iterateBlocks <= 0) return SpellResult.NO_TARGET;
 
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
 		Vector playerLoc = new Vector(player.getLocation().getX(), player.getLocation().getY() + 1, player.getLocation().getZ());
@@ -42,29 +45,46 @@ public class LavaSpell extends Spell
 		targetLoc.add(aim);
 		targetLoc.add(aim);
 
-		BlockList burnedBlocks = new BlockList();
-		for (int i = 0; i < lavaBlocks; i++)
+		Material material = Material.DIRT;
+		byte data = 0;
+		ItemStack buildWith = getBuildingMaterial();
+		if (buildWith != null)
+		{
+			material = buildWith.getType();
+			data = getItemData(buildWith);
+		}
+		
+		BlockList iteratedBlocks = new BlockList();
+		for (int i = 0; i < iterateBlocks; i++)
 		{
 			Block currentTarget = target.getWorld().getBlockAt(targetLoc.getBlockX(), targetLoc.getBlockY(), targetLoc.getBlockZ());
 			if (currentTarget.getType() == Material.AIR)
 			{
-				burnedBlocks.add(currentTarget);
-				Material mat = i > 15 ? Material.STATIONARY_LAVA : Material.LAVA;
-				byte data = i > 15 ? 15 : (byte)i;
+				iteratedBlocks.add(currentTarget);
+				if (incrementData) {
+					data = i > 15 ? 15 : (byte)i;
+				}
 
-				currentTarget.setType(mat);
+				currentTarget.setType(material);
 				currentTarget.setData(data);
 			}
 			targetLoc.add(aim);
 		}
 
-		if (burnedBlocks.size() > 0)
+		if (iteratedBlocks.size() > 0)
 		{
-			burnedBlocks.setTimeToLive(2);
-			spells.addToUndoQueue(player, burnedBlocks);
+			if (timeToLive == 0)
+			{
+				spells.addToUndoQueue(player, iteratedBlocks);
+			}
+			else
+			{
+				iteratedBlocks.setTimeToLive(timeToLive);
+				spells.scheduleCleanup(player.getName(), iteratedBlocks);
+			}
 		}
 
-		castMessage("Blasted " + burnedBlocks.size() + " lava blocks");
+		castMessage("Filled " + iteratedBlocks.size() + " blocks");
 
 		return SpellResult.SUCCESS;
 	}
