@@ -23,12 +23,13 @@ public class BlockData
 	// Transient
 	protected Block     block;
 
-	public BlockVector  location;
-	public String       world;
-	public Material     material;
-	public byte         materialData;
+	protected BlockVector  location;
+	protected String       world;
+	protected Material     material;
+	protected byte         materialData;
 
 	protected static Server server;
+	
 	public static void setServer(Server server) {
 		BlockData.server = server;
 	}
@@ -206,5 +207,9 @@ public class BlockData
 		}
 		
 		return result;
+	}
+	
+	public String getWorldName() {
+		return world;
 	}
 }

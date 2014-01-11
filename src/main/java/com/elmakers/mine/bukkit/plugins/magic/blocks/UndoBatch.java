@@ -6,38 +6,31 @@ import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spells;
 
-public class UndoBatch implements BlockBatch {
+public class UndoBatch extends VolumeBatch {
 	private final BlockList blockList;
 	private int blockIndex = 0;
-	private final Spells spells;
 	
 	public UndoBatch(Spells spells, BlockList blockList) {
+		super(spells, blockList.getWorldName());
 		this.blockList = blockList;
-		this.spells = spells;
 	}
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		boolean updated = false; // Only update map once for efficiency.
 		ArrayList<BlockData> undoList = blockList.getBlockList();
 		while (undoList != null && blockIndex < undoList.size()) {
 			BlockData blockData = undoList.get(blockIndex);
 			if (!blockData.undo()) {
-				return processedBlocks;
+				break;
 			}
-			if (!updated) {
-				updated = true;
-				spells.updateBlock(blockData.getBlock());
-			}
+			updateBlock(blockData);
 			blockIndex++;
 			processedBlocks++;
 		}
+		if (undoList == null || blockIndex >= undoList.size()) {
+			finish();
+		}
 		
 		return processedBlocks;
-	}
-	
-	public boolean isFinished() {
-		ArrayList<BlockData> undoList = blockList.getBlockList();
-		return undoList == null || blockIndex >= undoList.size();
 	}
 }

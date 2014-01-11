@@ -141,8 +141,6 @@ public class FillSpell extends Spell
 				return SpellResult.FAILURE;
 			}
 
-			castMessage("Filling " + batch.getXSize() + "x" +  batch.getYSize() + "x" +  batch.getZSize() + " area with " + material.name().toLowerCase());
-			
 			spells.addPendingBlockBatch(batch);
 			
 			deactivate();

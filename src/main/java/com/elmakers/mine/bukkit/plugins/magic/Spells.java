@@ -490,6 +490,14 @@ public class Spells implements Listener
 		}
 	}
 	
+	public void updateVolume(String worldName, int minx, int miny, int minz, int maxx, int maxy, int maxz)
+	{
+		if (dynmap != null && dynmapUpdate)
+		{
+			dynmap.triggerRenderOfVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
+		}
+	}
+	
 	public boolean removeMarker(String id, String group) {
 		boolean removed = false;
 		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {

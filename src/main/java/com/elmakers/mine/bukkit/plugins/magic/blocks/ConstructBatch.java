@@ -9,9 +9,8 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.Spells;
 
-public class ConstructBatch implements BlockBatch {
+public class ConstructBatch extends VolumeBatch {
 	
 	private int             timeToLive              = 0;
 	private final Set<Material>	indestructible;
@@ -25,15 +24,14 @@ public class ConstructBatch implements BlockBatch {
 	private final boolean fill;
 	private final PlayerSpells playerSpells;
 	private final Spell spell;
-	private final Spells spells;
 	private final String playerName;
 	
-	private boolean finished = false;
 	private int x = 0;
 	private int y = 0;
 	private int z = 0;
 	
 	public ConstructBatch(Spell spell, Location center, ConstructionType type, int radius, boolean fill, Material material, byte data, Set<Material> indestructible) {
+		super(spell.getPlayerSpells().getMaster(), center.getWorld().getName());
 		this.indestructible = indestructible;
 		this.center = center;
 		this.radius = radius;
@@ -42,20 +40,17 @@ public class ConstructBatch implements BlockBatch {
 		this.type = type;
 		this.fill = fill;
 		this.playerSpells = spell.getPlayerSpells();
-		this.spells = playerSpells.getMaster();
 		this.spell = spell;
 		this.playerName = this.playerSpells.getPlayer().getName();
 	}
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		boolean updated = false; // Only update map once for efficiency.
 		
 		while (processedBlocks <= maxBlocks && x <= radius) {
-			if (!fillBlock(x, y, z, !updated)) {
+			if (!fillBlock(x, y, z)) {
 				return processedBlocks;
 			}
-			updated = true;
 			
 			y++;
 			if (y > radius) {
@@ -69,25 +64,31 @@ public class ConstructBatch implements BlockBatch {
 			processedBlocks++;
 		}
 		
-		if (!finished && x > radius) 
+		if (x > radius) 
 		{
-			finished = true;
-			if (timeToLive == 0)
-			{
-				spells.addToUndoQueue(playerName, constructedBlocks);
-			}
-			else
-			{
-				constructedBlocks.setTimeToLive(timeToLive);
-				spells.scheduleCleanup(playerName, constructedBlocks);
-			}
-			spell.castMessage("Constructed " + constructedBlocks.size() + " blocks");
+			finish();
 		}
 		
 		return processedBlocks;
 	}
+	
+	@Override
+	protected void finish() {
+		super.finish();
+		
+		if (timeToLive == 0)
+		{
+			spells.addToUndoQueue(playerName, constructedBlocks);
+		}
+		else
+		{
+			constructedBlocks.setTimeToLive(timeToLive);
+			spells.scheduleCleanup(playerName, constructedBlocks);
+		}
+		spell.castMessage("Constructed " + constructedBlocks.size() + " blocks");
+	}
 
-	public boolean fillBlock(int x, int y, int z, boolean update)
+	public boolean fillBlock(int x, int y, int z)
 	{
 		boolean fillBlock = false;
 		switch(type) {
@@ -127,14 +128,14 @@ public class ConstructBatch implements BlockBatch {
 		boolean success = true;
 		if (fillBlock)
 		{
-			success = success && constructBlock(x, y, z, update);
-			success = success && constructBlock(-x, y, z, false);
-			success = success && constructBlock(x, -y, z, false);
-			success = success && constructBlock(x, y, -z, false);
-			success = success && constructBlock(-x, -y, z, false);
-			success = success && constructBlock(x, -y, -z, false);
-			success = success && constructBlock(-x, y, -z, false);
-			success = success && constructBlock(-x, -y, -z, false);
+			success = success && constructBlock(x, y, z);
+			success = success && constructBlock(-x, y, z);
+			success = success && constructBlock(x, -y, z);
+			success = success && constructBlock(x, y, -z);
+			success = success && constructBlock(-x, -y, z);
+			success = success && constructBlock(x, -y, -z);
+			success = success && constructBlock(-x, y, -z);
+			success = success && constructBlock(-x, -y, -z);
 		}
 		return success;
 	}
@@ -145,16 +146,14 @@ public class ConstructBatch implements BlockBatch {
 	}
 
 	@SuppressWarnings("deprecation")
-	public boolean constructBlock(int dx, int dy, int dz, boolean update)
+	public boolean constructBlock(int dx, int dy, int dz)
 	{
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
 		if (y < 0 || y > 255) return true;
 		
-		if (update) {
-			spells.updateBlock(center.getWorld().getName(), x, y, z);
-		}
+		updateBlock(center.getWorld().getName(), x, y, z);
 		
 		Block block = center.getWorld().getBlockAt(x, y, z);
 		if (!block.getChunk().isLoaded()) {
@@ -189,9 +188,5 @@ public class ConstructBatch implements BlockBatch {
 	
 	public void setCheckDestructible(boolean check) {
 		this.checkDestructible = check;
-	}
-	
-	public boolean isFinished() {
-		return finished;
 	}
 }

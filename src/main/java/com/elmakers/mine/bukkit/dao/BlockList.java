@@ -329,4 +329,9 @@ public class BlockList implements Collection<BlockData>, Serializable
 		}
 		dataMap.put("blocks", blockData);
 	}
+	
+	public String getWorldName() {
+		if (blockList.size() == 0) return null;
+		return blockList.get(0).getWorldName();
+	}
 }

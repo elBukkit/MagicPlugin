@@ -3,12 +3,12 @@
 ## 2.8.3
 
  - Add /wand combine command
- - Implement wand organization (double-click in wand inventory)
+ - Implement wand organization (using anvil)
  - Add more scripting ability to fling spell
  - Combining two wands takes ownership of the new wand
  - Wand effect colors will mix when combined
  - Match flare and boom effects to wand color
- - Organize inventory on an anvil, not from double-click.
+ - Use volume-based rendering triggers in dynmap for large constructions
 
 ## 2.8.2
 

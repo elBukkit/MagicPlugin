@@ -8,15 +8,14 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.Spells;
 
-public class FillBatch implements BlockBatch {
+public class FillBatch extends VolumeBatch {
 	private final BlockList filledBlocks = new BlockList();
 	private final Material material;
 	private final byte data;
 	private final World world;
+	private final Spell spell;
 	private final PlayerSpells playerSpells;
-	private final Spells spells;
 	private String playerName;
 
 	private final int absx;
@@ -31,15 +30,15 @@ public class FillBatch implements BlockBatch {
 	private int ix = 0;
 	private int iy = 0;
 	private int iz = 0;
-	private boolean finished = false;
 	
 	public FillBatch(Spell spell, Location p1, Location p2, Material material, byte data) {
+		super(spell.getPlayerSpells().getMaster(), p1.getWorld().getName());
 		this.material = material;
 		this.data = data;
+		this.spell = spell;
 		this.playerSpells = spell.getPlayerSpells();
 		this.playerName = this.playerSpells.getPlayer().getName();
 		this.world = this.playerSpells.getPlayer().getWorld();
-		this.spells = playerSpells.getMaster();
 		
 		int deltax = p2.getBlockX() - p1.getBlockX();
 		int deltay = p2.getBlockY() - p1.getBlockY();
@@ -82,7 +81,7 @@ public class FillBatch implements BlockBatch {
 
 			if (playerSpells.hasBuildPermission(block)) {
 				if (!updated) {
-					updated = true;
+					// updated = true; Testing always updating for now!
 					spells.updateBlock(world.getName(), x, y, z);
 				}
 				
@@ -102,13 +101,21 @@ public class FillBatch implements BlockBatch {
 			}
 		}
 		
-		if (!finished && ix >= absx) 
+		if (ix >= absx) 
 		{
-			finished = true;
-			spells.addToUndoQueue(playerName, filledBlocks);
+			finish();
+			
 		}
 		
 		return processedBlocks;
+	}
+	
+	@Override
+	protected void finish() {
+		super.finish();
+		
+		spells.addToUndoQueue(playerName, filledBlocks);
+		spell.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + material.name().toLowerCase());
 	}
 	
 	public int getXSize() {
@@ -121,9 +128,5 @@ public class FillBatch implements BlockBatch {
 	
 	public int getZSize() {
 		return absz;
-	}
-	
-	public boolean isFinished() {
-		return finished;
 	}
 }
