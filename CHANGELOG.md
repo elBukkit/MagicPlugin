@@ -8,6 +8,7 @@
  - Combining two wands takes ownership of the new wand
  - Wand effect colors will mix when combined
  - Match flare and boom effects to wand color
+ - Organize inventory on an anvil, not from double-click.
 
 ## 2.8.2
 

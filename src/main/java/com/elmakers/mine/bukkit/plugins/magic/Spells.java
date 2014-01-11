@@ -1276,7 +1276,6 @@ public class Spells implements Listener
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		
@@ -1338,7 +1337,7 @@ public class Spells implements Listener
 				Wand wand = new Wand(this, current);
 				Player player = (Player)event.getWhoClicked();
 				wand.takeOwnership(player, newName, true);
-				
+				wand.organizeInventory();
 				return;
 			}
 
@@ -1363,12 +1362,24 @@ public class Spells implements Listener
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
-					
+
+					firstWand.organizeInventory();
 					player.getInventory().addItem(firstWand.getItem());
 					player.sendMessage("Your wands have been combined!");
 					
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
+				} else if (Wand.isWand(firstItem)) {
+					Wand firstWand = new Wand(this, firstItem);
+					Player player = (Player)event.getWhoClicked();
+					// TODO: Can't get the anvil's text from here.
+					anvilInventory.setItem(0,  null);
+					anvilInventory.setItem(1,  null);
+					cursor.setType(Material.AIR);
+
+					firstWand.organizeInventory();
+					player.getInventory().addItem(firstWand.getItem());
+					player.sendMessage("Your wand has been organized!");
 				}
 				
 				return;
@@ -1376,32 +1387,12 @@ public class Spells implements Listener
 		}
 		
 		// Check for wand cycling with active inventory
-		if (event.getInventory().getType() == InventoryType.CRAFTING && event.getAction() == InventoryAction.PICKUP_HALF) {
+		if (event.getInventory().getType() == InventoryType.CRAFTING && (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING)) {
 			Player player = (Player)event.getWhoClicked();
 			PlayerSpells playerSpells = getPlayerSpells(player);
 			Wand wand = playerSpells.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
 				wand.cycleInventory();
-				event.setCancelled(true);
-			}
-			
-			return;
-		}
-		
-		// Check for wand re-organizing
-		// Seems like there's an action for this.. or should be?
-		// Oh, maybe it's nothing because there's nothing to collect. :\
-		if (organizingEnabled && event.getInventory().getType() == InventoryType.CRAFTING && (event.getAction() == InventoryAction.COLLECT_TO_CURSOR || event.getAction() == InventoryAction.NOTHING)) {
-			Player player = (Player)event.getWhoClicked();
-			PlayerSpells playerSpells = getPlayerSpells(player);
-			final Wand wand = playerSpells.getActiveWand();
-			if (wand != null && wand.isInventoryOpen()) {
-				Bukkit.getScheduler().scheduleSyncDelayedTask(playerSpells.getMaster().getPlugin(), new Runnable() {
-					public void run() {
-						wand.organizeInventory();
-					}
-				}, 2);
-				event.setCursor(null);
 				event.setCancelled(true);
 			}
 			

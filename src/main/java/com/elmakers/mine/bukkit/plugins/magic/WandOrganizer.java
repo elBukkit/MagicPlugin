@@ -8,10 +8,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 public class WandOrganizer {
 	private final Wand wand;
@@ -54,30 +52,29 @@ public class WandOrganizer {
 		// First collect spells in hotbar
 		Set<String> hotbarSpellNames = new HashSet<String>();
 		Set<String> hotbarMaterialNames = new HashSet<String>();
-		PlayerSpells activePlayer = wand.getActivePlayer();
-		
-		Player player = activePlayer.getPlayer();
-		PlayerInventory playerInventory = player.getInventory();
+
+		Inventory hotbar = wand.getHotbar();
 		int hotbarSize = Wand.hotbarSize;
 		for (int i = 0; i < hotbarSize; i++) {
-			ItemStack playerItem = playerInventory.getItem(i);
-			if (playerItem == null || playerItem.getType() == Material.AIR) continue;
+			ItemStack hotbarItem = hotbar.getItem(i);
+			if (hotbarItem == null || hotbarItem.getType() == Material.AIR) continue;
 			
-			String spellName = Wand.getSpell(playerItem);
+			String spellName = Wand.getSpell(hotbarItem);
 			if (spellName != null) {
 				hotbarSpellNames.add(spellName);
 			} else {
-				String materialKey = Wand.getMaterialKey(playerItem);
+				String materialKey = Wand.getMaterialKey(hotbarItem);
 				if (materialKey != null) {
 					hotbarMaterialNames.add(materialKey);
 				}
 			}
 		}
 		
+		Spells master = wand.getMaster();
 		Map<String, Collection<String>> groupedSpells = new HashMap<String, Collection<String>>();
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {
-			Spell spell = activePlayer.getSpell(spellName);
+			Spell spell = master.getSpell(spellName);
 			if (spell != null && !hotbarSpellNames.contains(spellName)) {
 				String category = spell.getCategory();
 				if (category == null || category.length() == 0) {
@@ -92,14 +89,9 @@ public class WandOrganizer {
 			}
 		}
 		
-		// Clear player's top inventory
-		for (int i = hotbarSize; i < playerInventory.getSize(); i++) {
-			playerInventory.setItem(i, null);
-		}
-		
 		Set<String> materials = wand.getMaterialNames();
-		for (String hotbar : hotbarMaterialNames) {
-			materials.remove(hotbar);
+		for (String hotbarItemName : hotbarMaterialNames) {
+			materials.remove(hotbarItemName);
 		}
 		
 		wand.clearInventories();
