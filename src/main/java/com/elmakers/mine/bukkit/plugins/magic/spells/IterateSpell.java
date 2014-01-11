@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -67,6 +69,9 @@ public class IterateSpell extends Spell
 
 				currentTarget.setType(material);
 				currentTarget.setData(data);
+				
+				Location effectLocation = currentTarget.getLocation();	
+				effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
 			}
 			targetLoc.add(aim);
 		}

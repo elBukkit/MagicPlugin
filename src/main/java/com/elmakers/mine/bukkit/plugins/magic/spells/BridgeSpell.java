@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -68,7 +70,9 @@ public class BridgeSpell extends Spell
 		castMessage("A bridge extends!");
 		spells.addToUndoQueue(player, bridgeBlocks);
 		spells.updateBlock(targetBlock);
-		
+
+		Location effectLocation = targetBlock.getLocation();	
+		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 
 		return SpellResult.SUCCESS;

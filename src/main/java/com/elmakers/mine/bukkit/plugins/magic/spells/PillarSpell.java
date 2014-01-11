@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -70,6 +72,9 @@ public class PillarSpell extends Spell
 		pillarBlocks.add(pillar);
 		pillar.setType(material);
 		pillar.setData(data);
+		
+		Location effectLocation = pillar.getLocation();
+		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
 
 		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
 		spells.addToUndoQueue(player, pillarBlocks);

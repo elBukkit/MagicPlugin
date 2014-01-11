@@ -329,7 +329,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		long currentTime = System.currentTimeMillis();
 		float cooldownReduction = playerSpells.getCooldownReduction();
-		if (cooldownReduction < 1 && !isActive) {
+		if (cooldownReduction < 1 && !isActive && cooldown > 0) {
 			int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
 			if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
 			{

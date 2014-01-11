@@ -11,6 +11,7 @@
  - Use volume-based rendering triggers in dynmap for large constructions
  - Add earth and stream spells (MIGRATION NOTE: lava spell needs updating in spells.yml, LavaSpell -> IterateSpell)
  - Add "/magic search" and "/magic cancel" commands.
+ - Add effects to pillar, earth, stream, lava, bridge and stalactite spells.
 
 ## 2.8.2
 
