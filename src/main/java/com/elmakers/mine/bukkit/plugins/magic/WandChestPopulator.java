@@ -22,6 +22,7 @@ public class WandChestPopulator extends BlockPopulator {
 	private final Spells spells; 
 	private final LinkedList<WeightedPair<Integer>> baseProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<String>> wandProbability = new LinkedList<WeightedPair<String>>();
+	private int maxy = 255;
 	
 	public WandChestPopulator(Spells spells, ConfigurationNode config) {
 		this.spells = spells;
@@ -72,11 +73,15 @@ public class WandChestPopulator extends BlockPopulator {
 		return wandNames;
 	}
 	
+	public void setMaxY(int maxy) {
+		this.maxy = maxy;
+	}
+	
 	@Override
 	public void populate(World world, Random random, Chunk source) {
 		for (int x = 0; x < 15; x++) {
 			for (int z = 0; z < 15; z++) {
-				for (int y = 0; y < 255; y++) {
+				for (int y = 0; y < maxy; y++) {
 					Block block = source.getBlock(x, y, z);
 					if (block.getType() == Material.CHEST) {
 						Chest chest = (Chest)block.getState();

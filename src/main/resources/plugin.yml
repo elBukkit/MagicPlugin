@@ -29,7 +29,7 @@ commands:
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
-    usage: /magic [reload|populate]
+    usage: /magic [reload|populate|search|cancel]
     permission: Magic.commands.magic
 permissions:
   Magic.commands.spells:
@@ -146,6 +146,14 @@ permissions:
     default: op
   Magic.commands.magic.populate:
     description: Player may populate the world with chests
+    type: boolean
+    default: op
+  Magic.commands.magic.search:
+    description: Search the world for wands
+    type: boolean
+    default: op
+  Magic.commands.magic.cancel:
+    description: Cancel any pending search or populate jobs
     type: boolean
     default: op
   Magic.wand.use:

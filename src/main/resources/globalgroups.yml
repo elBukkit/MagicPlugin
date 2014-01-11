@@ -12,6 +12,8 @@
     - Magic.commands.wand.*
     - Magic.commands.spells
     - Magic.commands.cast
+    - Magic.commands.search
+    - Magic.commands.cancel
 
   g:magic_admin:
     permissions:

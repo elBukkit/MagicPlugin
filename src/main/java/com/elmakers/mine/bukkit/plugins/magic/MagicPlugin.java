@@ -56,10 +56,22 @@ public class MagicPlugin extends JavaPlugin
 		spells.initialize(this);
 	}
 	
-	protected void populateChests(World world, int ymax)
+	protected void checkRunningTask()
 	{
-		WandChestRunnable runnable = new WandChestRunnable(spells, world, ymax);
-		runnable.runTaskTimer(this, 5, 5);
+		if (runningTask != null && runningTask.isFinished()) {
+			runningTask = null;
+		}
+	}
+	
+	protected void populateChests(CommandSender sender, World world, int ymax)
+	{
+		checkRunningTask();
+		if (runningTask != null) {
+			sender.sendMessage("There is already a populate job running");
+			return;
+		}
+		runningTask= new WandChestRunnable(spells, world, ymax);
+		runningTask.runTaskTimer(this, 5, 5);
 	}
 
 	@Override
@@ -80,7 +92,7 @@ public class MagicPlugin extends JavaPlugin
 				spells.load();
 				return true;
 			}
-			if (subCommand.equalsIgnoreCase("populate"))
+			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search"))
 			{   
 				World world = null;
 				int ymax = 50;
@@ -99,10 +111,25 @@ public class MagicPlugin extends JavaPlugin
 					}
 				}
 				if (world == null) {
-					getLogger().warning("Usage: magic populate <world> <ymax>");
+					getLogger().warning("Usage: magic " + subCommand + " <world> <ymax>");
 					return true;
 				}
-				populateChests(world, ymax);
+				if (subCommand.equalsIgnoreCase("search")) {
+					ymax = 0;
+				}
+				populateChests(sender, world, ymax);
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("cancel"))
+			{ 
+				checkRunningTask();
+				if (runningTask != null) {
+					runningTask.cancel();
+					runningTask = null;
+					sender.sendMessage("Job cancelled");
+				} else {
+					sender.sendMessage("There is no job running");
+				}
 				return true;
 			}
 		}
@@ -712,7 +739,7 @@ public class MagicPlugin extends JavaPlugin
 			if (!name.equals(spell.getKey())) {
 				description = name + " : " + description;
 			}
-			player.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
+			player.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getIcon().getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
 		}
 	}
 
@@ -823,7 +850,7 @@ public class MagicPlugin extends JavaPlugin
 					if (!name.equals(spell.getKey())) {
 						description = name + " : " + description;
 					}
-					sender.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
+					sender.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getIcon().getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
 					printedCount++;
 				}
 				lineCount++;
@@ -846,4 +873,5 @@ public class MagicPlugin extends JavaPlugin
 	 * Private data
 	 */	
 	private Spells spells = null;
+	private WandChestRunnable runningTask = null;
 }

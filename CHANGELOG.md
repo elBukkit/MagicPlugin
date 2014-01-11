@@ -10,6 +10,7 @@
  - Match flare and boom effects to wand color
  - Use volume-based rendering triggers in dynmap for large constructions
  - Add earth and stream spells (MIGRATION NOTE: lava spell needs updating in spells.yml, LavaSpell -> IterateSpell)
+ - Add "/magic search" and "/magic cancel" commands.
 
 ## 2.8.2
 
