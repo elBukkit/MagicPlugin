@@ -26,6 +26,9 @@ public class GrenadeSpell extends Spell
 		if (target == null) {
 			return SpellResult.NO_TARGET;
 		}
+		if (!playerSpells.hasBuildPermission(target)) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		Location loc = target.getLocation();
 		TNTPrimed grenade = (TNTPrimed)player.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
 		if (grenade == null) {

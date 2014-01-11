@@ -81,6 +81,9 @@ public class FamiliarSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		if (!playerSpells.hasBuildPermission(player.getLocation())) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
 

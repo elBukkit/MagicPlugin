@@ -18,6 +18,9 @@ public class ProjectileSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		if (!playerSpells.hasBuildPermission(player.getLocation())) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		int size = parameters.getInt("size", defaultSize);
 		size = (int)(playerSpells.getPowerMultiplier() * size);
 		boolean useFire = parameters.getBoolean("fire", true);
