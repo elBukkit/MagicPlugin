@@ -80,7 +80,7 @@ messages:
     categories:
         master:
             name: Master
-        airbending:
+        air:
             name: Airbending
         waterbending:
             name: Waterbending
@@ -433,18 +433,30 @@ messages:
         elder:
             name: Elder Wand
             description: The Uber Wand
-        airbending:
-            name: Airbending Wand
-            description: Master the element of air
-        waterbending:
-            name: Waterbending Wand
-            description: Master the element of water
-        earthbending:
-            name: Earthbending Wand
-            description: Master the element of earth
-        firebending:
-            name: Firebending Wand
-            description: Master the element of fire
+        air:
+            name: Airbending Student
+        water:
+            name: Waterbending Student
+        earth:
+            name: Earthbending Student
+        fire:
+            name: Firebending Student
+        air_2:
+            name: Airbender
+        water_2:
+            name: Waterbender
+        earth_2:
+            name: Earthbender
+        fire_2:
+            name: Firebender
+        air_3:
+            name: Airbending Master
+        water_3:
+            name: Waterbending Master
+        earth_3:
+            name: Earthbending Master
+        fire_3:
+            name: Firebending Master
         avatar:
             name: The Avatar Wand
             description: Master of all four elements

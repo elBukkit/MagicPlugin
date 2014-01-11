@@ -559,7 +559,7 @@ wands:
         protection_falling: 1
         xp_regeneration: 10
         xp_max: 150
-        haste: 0.1
+        haste: 0.2
         spells:
             - fling
             - push
