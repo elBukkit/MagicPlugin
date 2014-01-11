@@ -277,6 +277,15 @@ public class ConfigurationNode {
 		return toMaterial(o);
 	}
 	
+	public MaterialAndData getMaterialAndData(String path) {
+		Object o = getProperty(path);
+		if (o == null) {
+			return null;
+		}
+
+		return toMaterialAndData(o);
+	}
+	
 	public Location getLocation(String path) {
 		Object o = getProperty(path);
 		if (o == null) {
@@ -337,6 +346,55 @@ public class ConfigurationNode {
 		}
 
 		return null;
+	}
+
+	@SuppressWarnings("deprecation")
+	public static MaterialAndData toMaterialAndData(Object o)
+	{
+		if (o instanceof MaterialAndData) {
+			return (MaterialAndData)o;
+		}
+		if (o instanceof String) {
+			String matName = (String)o;
+			Material material = null;
+			byte data = 0;
+			String[] pieces = StringUtils.split(matName, ':');
+			if (pieces.length > 1) {
+				try {
+					data = Byte.parseByte(pieces[1]);
+				}
+				catch(NumberFormatException ex)
+				{
+					data = 0;
+				}
+			}
+			try
+			{
+				Integer value = Integer.parseInt(pieces[0]);
+				if (value != null)
+				{
+					material = Material.getMaterial(value);
+				}
+			}
+			catch(NumberFormatException ex)
+			{
+				material = Material.getMaterial(pieces[0].toUpperCase());
+			}
+			
+			if (material == null) return null;
+			return new MaterialAndData(material, data);
+		}
+
+		return null;
+	}
+	
+	public MaterialAndData getMaterialAndData(String path, Material def) {
+		return getMaterialAndData(path, def, (byte)0);
+	}
+	
+	public MaterialAndData getMaterialAndData(String path, Material def, byte defData) {
+		MaterialAndData o = getMaterialAndData(path);
+		return o == null ? new MaterialAndData(def, defData) : o;
 	}
 
 	public Material getMaterial(String path, Material def) {

@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.utilities.BlockAction;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 /**
  * 
@@ -53,7 +54,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String usage;
 	private String category;
 	private ConfigurationNode parameters = new ConfigurationNode();
-	private Material material;
+	private MaterialAndData icon;
 	private Material materialOverride;
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
@@ -225,7 +226,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		name = Messages.get("spells." + key + ".name", name);
 		description = Messages.get("spells." + key + ".description", description);
 		usage = Messages.get("spells." + key + ".usage", usage);
-		material = node.getMaterial("icon", material);
+		icon = node.getMaterialAndData("icon", Material.AIR);
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);
 		ConfigurationNode properties = node.getNode("properties");
@@ -274,9 +275,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return name;
 	}
 
-	public final Material getMaterial()
+	public final MaterialAndData getIcon()
 	{
-		return material;
+		return icon;
 	}
 
 	public final String getDescription()

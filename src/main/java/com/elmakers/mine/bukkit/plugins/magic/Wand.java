@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 public class Wand implements CostReducer {
 	protected final static int inventorySize = 27;
@@ -480,22 +481,24 @@ public class Wand implements CostReducer {
 		return createMaterialItem(typeId, dataId);
 	}
 	
+	@SuppressWarnings("deprecation")
 	protected ItemStack createSpellItem(String spellName) {
 		Spell spell = spells.getSpell(spellName);
 		if (spell == null) return null;
-		if (spell.getMaterial() == null) {
+		MaterialAndData icon = spell.getIcon();
+		if (icon == null) {
 			spells.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
 		}
 		ItemStack itemStack = null;
 		ItemStack originalItemStack = null;
 		try {
-			originalItemStack = new ItemStack(spell.getMaterial(), 1);
+			originalItemStack = new ItemStack(icon.getMaterial(), 1, (short)0, (byte)icon.getData());
 			itemStack = InventoryUtils.getCopy(originalItemStack);
 		} catch (Exception ex) {
 			itemStack = null;
 		}
 		if (itemStack == null) {
-			spells.getPlugin().getLogger().warning("Unable to create spell icon with material " + spell.getMaterial().name());	
+			spells.getPlugin().getLogger().warning("Unable to create spell icon with material " + icon.getMaterial().name());	
 			return originalItemStack;
 		}
 		updateSpellName(itemStack, spell, true);
