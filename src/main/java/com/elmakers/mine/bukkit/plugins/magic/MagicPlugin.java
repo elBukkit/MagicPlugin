@@ -637,7 +637,7 @@ public class MagicPlugin extends JavaPlugin
 		Spell spell = playerSpells.getSpell(spellName, usePermissions);
 		if (spell == null)
 		{
-			sender.sendMessage("Spell" + spellName + " unknown");
+			sender.sendMessage("Spell " + spellName + " unknown");
 			return false;
 		}
 
@@ -646,7 +646,7 @@ public class MagicPlugin extends JavaPlugin
 		spell.cast(parameters);
 		spells.toggleCastCommandOverrides(playerSpells, false);
 		if (sender != player) {
-			sender.sendMessage("Cast" + spellName + " on " + player.getName());
+			sender.sendMessage("Cast " + spellName + " on " + player.getName());
 		}
 
 		return true;
