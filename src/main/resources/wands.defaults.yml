@@ -548,6 +548,7 @@ wands:
         xp_regeneration: 4
         xp_max: 75
         haste: 0.15
+        effect_color: 888888
         spells:
             - fling
             - push
@@ -560,6 +561,7 @@ wands:
         xp_regeneration: 10
         xp_max: 150
         haste: 0.2
+        effect_color: FFFFFF
         spells:
             - fling
             - push
@@ -580,6 +582,7 @@ wands:
         protection: 0.3
         xp_regeneration: 4
         xp_max: 75
+        effect_color: 000088
         spells:
             - toss
             - blob
@@ -593,6 +596,7 @@ wands:
         protection: 0.5
         xp_regeneration: 10
         xp_max: 150
+        effect_color: 0000FF
         spells:
             - frost
             - toss
@@ -628,6 +632,7 @@ wands:
         protection_blast: 0.8
         xp_regeneration: 4
         xp_max: 75
+        effect_color: CD853F
         spells:
             - blob
             - sandblast
@@ -646,6 +651,7 @@ wands:
         protection_blast: 0.9
         xp_regeneration: 10
         xp_max: 150
+        effect_color: 8B4513
         spells:
             - blob
             - sandblast
@@ -677,6 +683,7 @@ wands:
         protection: 0.1
         xp_regeneration: 4
         xp_max: 75
+        effect_color: 880000
         spells:
             - fireball
             - fire
@@ -692,6 +699,7 @@ wands:
         protection: 0.3
         xp_regeneration: 10
         xp_max: 150
+        effect_color: FF0000
         spells:
             - fireball
             - recurse
