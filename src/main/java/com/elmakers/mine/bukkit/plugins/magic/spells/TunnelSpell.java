@@ -26,6 +26,13 @@ public class TunnelSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		destructibleMaterials = parameters.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
+		defaultDepth = parameters.getInteger("depth", defaultDepth);
+		defaultWidth = parameters.getInteger("width", defaultWidth);
+		defaultHeight = parameters.getInteger("height", defaultHeight);
+		defaultSearchDistance = parameters.getInteger("search_distance", defaultSearchDistance);
+		torchFrequency = parameters.getInteger("torch_frequency", torchFrequency);
+
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 
 		{
@@ -132,16 +139,5 @@ public class TunnelSpell extends Spell
 			return false;
 
 		return destructibleMaterials.contains(block.getType());
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		destructibleMaterials = properties.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
-		defaultDepth = properties.getInteger("depth", defaultDepth);
-		defaultWidth = properties.getInteger("width", defaultWidth);
-		defaultHeight = properties.getInteger("height", defaultHeight);
-		defaultSearchDistance = properties.getInteger("search_distance", defaultSearchDistance);
-		torchFrequency = properties.getInteger("torch_frequency", torchFrequency);
 	}
 }

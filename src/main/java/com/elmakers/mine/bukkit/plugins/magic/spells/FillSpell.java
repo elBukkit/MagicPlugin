@@ -18,8 +18,9 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FillSpell extends Spell 
 {
-	private int defaultMaxDimension = 128;
-	private int defaultMaxVolume = 512;
+	private static final int DEFAULT_MAX_DIMENSION = 128;
+	private static final int DEFAULT_MAX_VOLUME = 512;	
+	
 	private Block targetBlock = null;
 	private final BlockRecurse blockRecurse = new BlockRecurse();
 
@@ -125,8 +126,14 @@ public class FillSpell extends Spell
 
 			FillBatch batch = new FillBatch(this, targetBlock.getLocation(), this.targetBlock.getLocation(), material, data);
 
-			int maxDimension = player.isOp() ? defaultMaxDimension * 10 : defaultMaxDimension;
-			int maxVolume = player.isOp() ? defaultMaxVolume * 10 : defaultMaxVolume;
+			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
+			int maxVolume = parameters.getInteger("max_volume", DEFAULT_MAX_VOLUME);
+			
+			// Special hack, maybe incorporate into code when integration is complete?
+			if (player.isOp()) {
+				maxDimension *= 10;
+				maxVolume *= 100;
+			}
 			
 			if (!batch.checkDimension(maxDimension))
 			{
@@ -172,13 +179,6 @@ public class FillSpell extends Spell
 		}
 		
 		return false;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		defaultMaxDimension = properties.getInteger("max_dimension", defaultMaxDimension);
-		defaultMaxVolume = properties.getInteger("max_volume", defaultMaxVolume);
 	}
 	
 	@Override

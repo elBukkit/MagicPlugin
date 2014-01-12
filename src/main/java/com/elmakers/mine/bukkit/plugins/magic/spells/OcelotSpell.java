@@ -17,7 +17,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class OcelotSpell extends Spell
 {
-	private static int maxOcelots = 30;
+	private static int DEFAULT_MAX_OCELOTS = 30;
+
 	protected List<Ocelot> ocelots = new ArrayList<Ocelot>();
 
 	public Ocelot newOcelot(Target target)
@@ -67,7 +68,8 @@ public class OcelotSpell extends Spell
 		}
 
 		ocelots = newocelots;
-
+		
+		int maxOcelots = parameters.getInt("max_ocelots", DEFAULT_MAX_OCELOTS);
 		if (ocelots.size() >= maxOcelots) 
 		{
 			Ocelot killOcelot = ocelots.remove(0);
@@ -101,11 +103,4 @@ public class OcelotSpell extends Spell
 		Ocelot.setTamed(true);
 		Ocelot.setOwner(player);
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		maxOcelots = node.getInt("max_ocelots", maxOcelots);
-	}
-
 }

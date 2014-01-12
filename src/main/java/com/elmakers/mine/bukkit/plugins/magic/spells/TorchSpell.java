@@ -10,13 +10,10 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TorchSpell extends Spell 
 {
-	private boolean allowDay = false;
-	private boolean allowNight = false;
-	private boolean allowLightstone = false;
-
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		
 		if (parameters.containsKey("time"))
 		{
 			long targetTime = 0;
@@ -53,6 +50,9 @@ public class TorchSpell extends Spell
 			return SpellResult.SUCCESS;
 		}
 
+		
+		boolean allowNight = parameters.getBoolean("allow_night", false);
+		boolean allowDay = parameters.getBoolean("allow_day", false);
 		if (getYRotation() > 80 && allowDay)
 		{
 			castMessage("FLAME ON!");
@@ -93,6 +93,7 @@ public class TorchSpell extends Spell
 			replaceAttachment = true;
 		}
 
+		boolean allowLightstone = parameters.getBoolean("allow_glowstone", false);
 		if 
 		(
 				face == null
@@ -117,13 +118,5 @@ public class TorchSpell extends Spell
 		spells.updateBlock(target);
 
 		return SpellResult.SUCCESS;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		allowNight = properties.getBoolean("allow_night", allowNight);
-		allowDay = properties.getBoolean("allow_day", allowDay);
-		allowLightstone = properties.getBoolean("allow_glowstone", allowLightstone);
 	}
 }

@@ -95,12 +95,11 @@ spells:
         icon: bowl
         category: earthbending
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 30000
             cooldown: 0
-        parameters:
             fill: hollow
             radius: '10'
             type: sphere
@@ -110,13 +109,12 @@ spells:
         icon: mushroom_soup
         category: engineering
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 0
             cooldown: 0
             cooldown: 5000
-        parameters:
             fill: hollow
             target: select
             type: sphere
@@ -126,20 +124,18 @@ spells:
         icon: sign
         category: dark
         class: SignSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 10000
-        parameters: {}
         costs:
             xp: 20
     arrow:
         icon: arrow
         category: dark
         class: ArrowSpell
-        properties:
-            cooldown: 0
         parameters:
+          cooldown: 0
           speed: 2
           spread: 6
         costs:
@@ -148,9 +144,8 @@ spells:
         icon: wood_button
         category: earthbending
         class: TossSpell
-        properties:
-            cooldown: 0
         parameters:
+          cooldown: 0
           speed: 3
         costs:
             xp: 10
@@ -158,9 +153,8 @@ spells:
         icon: stone_button
         category: earthbending
         class: TossSpell
-        properties:
-            cooldown: 0
         parameters:
+          cooldown: 0
           speed: 2
           count: 8
         costs:
@@ -169,9 +163,8 @@ spells:
         icon: gold_nugget
         category: dark
         class: ArrowSpell
-        properties:
-            cooldown: 1000
         parameters:
+          cooldown: 1000
           speed: 6
           spread: 0
           damage: 20
@@ -181,7 +174,7 @@ spells:
         icon: fishing_rod
         category: airbending
         class: PushSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 32
             allow_area: true
@@ -189,7 +182,6 @@ spells:
             area_range: 20
             entity_force: 3
             cooldown: 0
-        parameters:
             range: '32'
             type: pull
             count: 1
@@ -199,11 +191,10 @@ spells:
         icon: ender_pearl
         category: dark
         class: BoomSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 500
-        parameters:
             size: 6
             break_blocks: true
         costs:
@@ -212,7 +203,7 @@ spells:
         icon: snow_ball
         category: waterbending
         class: FrostSpell
-        properties:
+        parameters:
             allow_max_range: false
             duration: 60000
             range: 24
@@ -222,18 +213,16 @@ spells:
             - air
             - snow
             cooldown: 10
-        parameters: {}
         costs:
             xp: 8
     storm:
         icon: grilled_pork
         category: firebending
         class: LightningSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 500
-        parameters:
             radius: '10'
         costs:
             xp: 30
@@ -241,15 +230,13 @@ spells:
         icon: wood_door
         category: light
         class: RecallSpell
-        properties:
-            recall_marker: redstone_torch_on
+        parameters:
             allow_max_range: false
             allow_spawn: true
             auto_resurrect: true
             range: 200
             auto_resurrect_invisible: false
             cooldown: 30000
-        parameters:
             type: spawn
         costs:
             xp: 2
@@ -257,9 +244,8 @@ spells:
         icon: leather_chestplate
         category: light
         class: InvincibleSpell
-        properties:
-            cooldown: 0
         parameters:
+            cooldown: 0
             amount: '50'
         costs:
             xp: 10
@@ -269,54 +255,49 @@ spells:
         icon: sapling
         category: elemental
         class: TreeSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             require_sapling: false
             cooldown: 0
-        parameters: {}
         costs:
             xp: 20
     disarm:
         icon: tripwire_hook
         category: light
         class: DisarmSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 1000
-        parameters: {}
         costs:
             xp: 75
     heal:
         icon: bread
         category: light
         class: HealSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 5000
-        parameters: {}
         costs:
             xp: 50
     gather:
         icon: glowstone_dust
         category: master
         class: GotoSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters: {}
         costs:
             xp: 50
     icbm:
         icon: nether_star
         category: dark
         class: ProjectileSpell
-        properties:
-            cooldown: 5000
         parameters:
+            cooldown: 5000
             size: '10'
             projectile: SmallFireball
         costs:
@@ -333,18 +314,16 @@ spells:
         icon: water
         category: elemental
         class: WeatherSpell
-        properties:
+        parameters:
             cooldown: 0
-        parameters: {}
         costs:
             xp: 10
     ironskin:
         icon: iron_chestplate
         category: light
         class: InvincibleSpell
-        properties:
-            cooldown: 0
         parameters:
+            cooldown: 0
             amount: '99'
         costs:
             xp: 15
@@ -354,7 +333,7 @@ spells:
         icon: feather
         category: airbending
         class: FlingSpell
-        properties:
+        parameters:
             cooldown: 0
         costs:
             xp: 5
@@ -362,9 +341,8 @@ spells:
         icon: leather_boots
         category: airbending
         class: FlingSpell
-        properties:
-            cooldown: 5000
         parameters:
+            cooldown: 5000
             cruising_altitude: 0
             min_speed: 3
             max_speed: 3
@@ -374,25 +352,23 @@ spells:
         icon: torch
         category: engineering
         class: TorchSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_night: true
             range: 200
             allow_day: true
             allow_glowstone: true
             cooldown: 0
-        parameters: {}
         costs:
             xp: 10
     monster:
         icon: pumpkin
         category: dark
         class: FamiliarSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 100
-        parameters:
             type: mob
         costs:
             xp: 40
@@ -400,11 +376,10 @@ spells:
         icon: jack_o_lantern
         category: dark
         class: FamiliarSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 1000
-        parameters:
             count: 20
             type: mob
         costs:
@@ -413,21 +388,19 @@ spells:
         icon: portal
         category: xperimental
         class: PortalSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 50
-        parameters: {}
         costs:
             xp: 20
     invincible:
         icon: golden_apple
         category: master
         class: InvincibleSpell
-        properties:
+        parameters:
             cooldown: 0
             duration: 5000
-        parameters: {}
         costs:
             xp: 30
         active_costs:
@@ -436,59 +409,56 @@ spells:
         icon: fire
         category: firebending
         class: FireSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             radius: 4
             vertical_search_distance: 8
             cooldown: 200
-        parameters: {}
         costs:
             xp: 40
     cushion:
         icon: soul_sand
         category: waterbending
         class: CushionSpell
-        properties:
+        parameters:
             allow_max_range: false
             height: 4
             range: 200
             width: 3
             cooldown: 100
-        parameters: {}
         costs:
             xp: 10
     paint:
         icon: painting
         category: engineering
         class: FillSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             max_volume: 512
             max_dimension: 128
             cooldown: 0
-        parameters:
             type: single
         costs:
             xp: 1
     gills:
         icon: cooked_fish
         category: light
-        class: GillsSpell
-        properties:
-            duration: 60
-            heal_frequency: 1000
-            heal_amount: 4
-            cooldown: 0
-        parameters: {}
+        class: PotionEffectSpell
+        costs:
+            xp: 5
+        parameters:
+            target: any
+            particle: bubbles
+            water_breathing: 6000,5
+            night_vision: 6000,5
     arrowrain:
         icon: bow
         category: dark
         class: ArrowSpell
-        properties:
-            cooldown: 0
         parameters:
+            cooldown: 0
             count: 6
             fire: true
             speed: 3
@@ -499,22 +469,20 @@ spells:
         icon: blaze_powder
         category: firebending
         class: LightningSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters: {}
         costs:
             xp: 10
     nuke:
         icon: magma_cream
         category: master
         class: BoomSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 5000
-        parameters:
             size: '20'
             break_blocks: true
         costs:
@@ -523,13 +491,12 @@ spells:
         icon: emerald
         category: master
         class: TorchSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_night: false
             allow_day: true
             allow_glowstone: false
             cooldown: 1000
-        parameters:
             time: day
         costs:
             xp: 40
@@ -537,13 +504,12 @@ spells:
         icon: watch
         category: master
         class: TorchSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_night: true
             allow_day: true
             allow_glowstone: false
             cooldown: 1000
-        parameters:
             time: toggle
         costs:
             xp: 40        
@@ -551,23 +517,21 @@ spells:
         icon: gold_hoe
         category: engineering
         class: BridgeSpell
-        properties:
+        parameters:
             cooldown: 0
-        parameters: {}
         costs:
             xp: 5
     ascend:
         icon: red_mushroom
         category: master
         class: BlinkSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_ascend: true
             allow_passthrough: true
             range: 200
             allow_descend: true
             cooldown: 0
-        parameters:
             type: ascend
         costs:
             xp: 5
@@ -575,11 +539,10 @@ spells:
         icon: tnt
         category: firebending
         class: GrenadeSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 100
-        parameters:
             size: 6
             fuse: 30
         costs:
@@ -588,11 +551,10 @@ spells:
         icon: redstone_block
         category: dark
         class: GrenadeSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 1000
-        parameters:
             size: 12
             fuse: 60
             fire: true
@@ -602,12 +564,11 @@ spells:
         icon: slime_ball
         category: engineering
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 200
             undo: 0
             cooldown: 5000
-        parameters:
             target: select
             type: sphere
         costs:
@@ -616,11 +577,10 @@ spells:
         icon: dead_bush
         category: dark
         class: BoomSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 5000
-        parameters:
             size: '8'
             target: here
             break_blocks: false
@@ -630,53 +590,49 @@ spells:
         icon: sugar
         category: engineering
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 0
             cooldown: 5000
             material: air
-        parameters:
             radius: '16'
             type: sphere
     convert:
         icon: vine
         category: engineering
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 0
             cooldown: 5000
             indestructible:
               - air
-        parameters:
             radius: '3'
     superconvert:
         icon: iron_fence
         category: engineering
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 0
             cooldown: 5000
             indestructible:
               - air
-        parameters:
             target: select
             type: sphere
     blast:
         icon: sulphur
         category: earthbending
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 0
             cooldown: 0
             material: air
-        parameters:
             radius: 3
             type: pyramid
         costs:
@@ -685,31 +641,28 @@ spells:
         icon: chainmail_chestplate
         category: master
         class: InvisibilitySpell
-        properties:
+        parameters:
             cooldown: 0
-        parameters: {}
         costs:
             xp: 15
     undo:
         icon: book_and_quill
         category: engineering
         class: UndoSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters: {}
         costs:
             xp: 5
     commit:
         icon: book
         category: engineering
         class: UndoSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters:
             type: commit
         costs:
             xp: 5
@@ -717,7 +670,7 @@ spells:
         icon: rails
         category: airbending
         class: PushSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 32
             allow_area: true
@@ -725,7 +678,6 @@ spells:
             area_range: 20
             entity_force: 3
             cooldown: 0
-        parameters:
             range: '16'
             type: push
         costs:
@@ -734,11 +686,10 @@ spells:
         icon: wheat
         category: elemental
         class: FamiliarSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters:
             count: 10
         costs:
             xp: 50
@@ -746,7 +697,7 @@ spells:
         icon: seeds
         category: earthbending
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             indestructible:
@@ -754,7 +705,6 @@ spells:
             undo: 10000
             cooldown: 0
             material: air
-        parameters:
             radius: '4'
             type: sphere
         costs:
@@ -763,33 +713,31 @@ spells:
         icon: web
         category: airbending
         class: BlinkSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_ascend: false
             allow_passthrough: false
             range: 16
             allow_decend: true
             cooldown: 0
-        parameters: {}
         costs:
             xp: 2
     mine:
         icon: gold_pickaxe
         category: earthbending
         class: MineSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             recursion_depth: 16
             cooldown: 0
-        parameters: {}
         costs:
             xp: 10
     peek:
         icon: sugar_cane
         category: earthbending
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             indestructible:
@@ -797,7 +745,6 @@ spells:
             undo: 4000
             cooldown: 0
             material: glass
-        parameters:
             radius: '3'
             type: sphere
         costs:
@@ -806,13 +753,12 @@ spells:
         icon: sandstone
         category: earthbending
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 64
             undo: 0
             cooldown: 500
             material: sand
-        parameters:
             radius: '2'
             type: cuboid
             y_offset: 32
@@ -822,26 +768,24 @@ spells:
         icon: gold_spade
         category: engineering
         class: FillSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             max_volume: 1024
             max_dimension: 256
             cooldown: 5000
-        parameters: {}
         costs:
             xp: 40
     recurse:
         icon: wood_spade
         category: engineering
         class: FillSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             max_volume: 512
             max_dimension: 128
             cooldown: 0
-        parameters:
             type: recurse
         costs:
             xp: 30
@@ -849,38 +793,35 @@ spells:
         icon: flint_and_steel
         category: firebending
         class: FireSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             radius: 2
             vertical_search_distance: 8
             cooldown: 50
-        parameters: {}
         costs:
             xp: 10
     alter:
         icon: ink_sack
         category: engineering
         class: AlterSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
             depth: 32
-        parameters: {}
         costs:
             xp: 1
     blob:
         icon: clay_ball
         category: earthbending
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 200
             undo: 0
             cooldown: 50
             undo: 30000
-        parameters:
             radius: 3
             type: pyramid
         costs:
@@ -889,60 +830,55 @@ spells:
         icon: monster_egg
         category: elemental
         class: FamiliarSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters: {}
         costs:
             xp: 10
     disintegrate:
         icon: bone
         category: dark
         class: DisintegrateSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             player_damage: 2
             cooldown: 100
             entity_damage: 100
-        parameters: {}
         costs:
             xp: 30
     blink:
         icon: eye_of_ender
         category: master
         class: BlinkSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_ascend: true
             allow_passthrough: true
             range: 200
             allow_decend: true
             cooldown: 0
-        parameters: {}
         costs:
             xp: 50
     absorb:
         icon: bucket
         category: engineering
         class: AbsorbSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters: {}
         costs:
             xp: 30
     stalactite:
         icon: wood_axe
         category: engineering
         class: PillarSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters:
             type: down
         costs:
             xp: 5
@@ -950,12 +886,10 @@ spells:
         icon: ink_sack:14
         category: firebending
         class: IterateSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 16
             cooldown: 500
-            material: lava
-        parameters:
             material: lava
             increment_data: true
             undo: 2000
@@ -965,12 +899,10 @@ spells:
         icon: ink_sack:6
         category: waterbending
         class: IterateSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 16
             cooldown: 500
-            material: water
-        parameters:
             material: water
             increment_data: true
             undo: 2000
@@ -980,11 +912,10 @@ spells:
         icon: ink_sack:3
         category: earthbending
         class: IterateSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 16
             cooldown: 250
-        parameters:
             increment_data: false
         costs:
             xp: 20
@@ -992,51 +923,47 @@ spells:
         icon: raw_beef
         category: elemental
         class: WolfSpell
-        properties:
+        parameters:
             max_wolves: 5
             allow_max_range: false
             range: 200
             cooldown: 500
-        parameters: {}
         costs:
             xp: 50
     cat:
         icon: raw_fish
         category: elemental
         class: OcelotSpell
-        properties:
+        parameters:
             max_ocelots: 5
             allow_max_range: false
             range: 200
             cooldown: 500
-        parameters: {}
         costs:
             xp: 30
     shrink:
         icon: skull_item
         category: dark
         class: ShunkenHeadSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
-        parameters: {}
         costs:
             xp: 20
     flare:
         icon: firework
         category: firebending
         class: FireworkSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 10
-        parameters: {}
         costs:
             xp: 10
     recall:
         icon: compass
         category: master
         class: RecallSpell
-        properties:
+        parameters:
             recall_marker: redstone_torch_on
             allow_max_range: false
             allow_spawn: true
@@ -1044,16 +971,14 @@ spells:
             range: 200
             auto_resurrect_invisible: false
             cooldown: 0
-        parameters: {}
         costs:
             xp: 20
     levitate:
         icon: gold_boots
         category: master
         class: LevitateSpell
-        properties:
+        parameters:
             cooldown: 0
-        parameters: {}
         costs:
             xp: 20
         active_costs:
@@ -1062,11 +987,10 @@ spells:
         icon: baked_potato
         category: firebending
         class: BoomSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 50
-        parameters:
             break_blocks: false
             size: 4
         costs:
@@ -1075,12 +999,11 @@ spells:
         icon: gold_helmet
         category: earthbending
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 30000
             cooldown: 0
-        parameters:
             fill: hollow
             radius: '6'
             type: cuboid
@@ -1090,13 +1013,12 @@ spells:
         icon: gold_helmet
         category: engineering
         class: ConstructSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             undo: 0
             cooldown: 0
             cooldown: 5000
-        parameters:
             fill: hollow
             target: select
             type: cuboid
@@ -1106,24 +1028,22 @@ spells:
         icon: gold_axe
         category: engineering
         class: PillarSpell
-        properties:
+        parameters:
             allow_max_range: false
             range: 200
             cooldown: 0
-        parameters: {}
         costs:
             xp: 5
     night:
         icon: coal
         category: master
         class: TorchSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_night: true
             allow_day: false
             allow_glowstone: false
             cooldown: 1000
-        parameters:
             time: night
         costs:
             xp: 50
@@ -1131,7 +1051,7 @@ spells:
         icon: leash
         category: airbending
         class: ForceSpell
-        properties:
+        parameters:
             allow_max_range: true
             range: 48
             allow_area: true
@@ -1139,21 +1059,19 @@ spells:
             area_range: 20
             entity_force: 3
             cooldown: 0
-        parameters: {}
         costs:
             xp: 10
     descend:
         icon: brown_mushroom
         category: master
         class: BlinkSpell
-        properties:
+        parameters:
             allow_max_range: false
             allow_ascend: true
             allow_passthrough: true
             range: 200
             allow_decend: true
             cooldown: 0
-        parameters:
             type: descend
         costs:
             xp: 20
@@ -1161,9 +1079,8 @@ spells:
         icon: ghast_tear
         category: firebending
         class: ProjectileSpell
-        properties:
-            cooldown: 100
         parameters:
+            cooldown: 100
             projectile: SmallFireball
         costs:
             xp: 15
@@ -1171,17 +1088,15 @@ spells:
         icon: map
         category: master
         class: MapSpell
-        properties:
+        parameters:
             cooldown: 5000
-        parameters: {}
         costs:
             xp: 15
     camera:
         icon: paper
         category: light
         class: CameraSpell
-        properties:
+        parameters:
             cooldown: 1000
-        parameters: {}
         costs:
             xp: 5

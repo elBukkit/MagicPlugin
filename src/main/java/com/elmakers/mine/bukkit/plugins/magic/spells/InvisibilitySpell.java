@@ -108,10 +108,4 @@ public class InvisibilitySpell extends Spell
 	{
 		other.showPlayer(player);
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		disableTargeting();
-	}
 }

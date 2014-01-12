@@ -12,7 +12,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class TreeSpell extends Spell
 {
 	private TreeType defaultTreeType = null;
-	private boolean requireSapling = false;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -25,6 +24,7 @@ public class TreeSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
+		boolean requireSapling = parameters.getBoolean("require_sapling", false);
 		if (requireSapling && target.getType() != Material.SAPLING)
 		{
 			castMessage("Plant a sapling first");
@@ -76,11 +76,5 @@ public class TreeSpell extends Spell
 			}
 		}
 		return tree;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		requireSapling = properties.getBoolean("require_sapling", requireSapling);
 	}
 }

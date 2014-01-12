@@ -79,9 +79,4 @@ public class FireworkSpell extends Spell
 		
 		return Type.BALL;
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode parameters)
-	{
-	}
 }

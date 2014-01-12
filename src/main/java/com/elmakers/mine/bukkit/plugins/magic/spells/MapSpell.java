@@ -23,10 +23,4 @@ public class MapSpell extends Spell
 		world.dropItemNaturally(player.getLocation(), newMapItem);
 		return SpellResult.SUCCESS;
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		disableTargeting();
-	}
 }

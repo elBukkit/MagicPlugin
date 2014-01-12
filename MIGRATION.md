@@ -6,6 +6,8 @@
 
  - Added earth and stream spells
  - lava spell needs updating in spells.yml: LavaSpell -> IterateSpell
+ - properties and parameters have been combined into "parameters". This one might be a pain, sorry!
+ - Reconfigured the gills spell to be a PotionEffectSpell. 
  
 ## 2.8.2
  

@@ -11,8 +11,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CushionSpell extends Spell
 {
-	private int cushionWidth = 3;
-	private int cushionHeight = 4;
+	private static final int DEFAULT_CUSHION_WIDTH = 3;
+	private static final int DEFAULT_CUSHION_HEIGHT = 4;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -27,6 +27,9 @@ public class CushionSpell extends Spell
 		if (!hasBuildPermission(targetFace)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		
+		int cushionWidth = parameters.getInteger("width", DEFAULT_CUSHION_WIDTH);
+		int cushionHeight = parameters.getInteger("height", DEFAULT_CUSHION_HEIGHT);
 
 		castMessage("Happy landings");
 
@@ -58,12 +61,5 @@ public class CushionSpell extends Spell
 
 		spells.scheduleCleanup(player.getName(), cushionBlocks);
 		return SpellResult.SUCCESS;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		cushionWidth = properties.getInteger("width", cushionWidth);
-		cushionHeight = properties.getInteger("height", cushionHeight);
 	}
 }

@@ -18,10 +18,9 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PushSpell extends Spell
 {
-	private int itemMagnitude = 1;
-	private int entityMagnitude = 3;
-	private int maxAllDistance = 20;
-	private boolean allowAll = true;
+	private int DEFAULT_ITEM_MAGNITUDE = 1;
+	private int DEFAULT_ENTITY_MAGNITUDE = 3;
+	private int DEFAULT_MAX_ALL_DISTANCE = 20;
 	
 	// Maybe make these configurable for custom effects?
     private final static int effectSpeed = 2;
@@ -30,7 +29,7 @@ public class PushSpell extends Spell
     private final static int maxEffectRange = 16;
     private final static int maxRingEffectRange = 6;
 
-	public void forceAll(double mutliplier, boolean pull)
+	public void forceAll(double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance)
 	{
 		float maxDistance = (float)maxAllDistance * playerSpells.getPowerMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
@@ -53,8 +52,9 @@ public class PushSpell extends Spell
 
 			Location to = pull ? targetLocation : playerLocation;
 			Location from = pull ? playerLocation : targetLocation;
-			
-			forceEntity(target, mutliplier, from, to);
+
+			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
+			forceEntity(target, mutliplier, from, to, magnitude);
 		}
 	}
 
@@ -71,6 +71,11 @@ public class PushSpell extends Spell
 		double multiplier = parameters.getDouble("size", 1);
 		multiplier *= playerSpells.getPowerMultiplier();
 		int count = parameters.getInt("count", 0);
+		
+		boolean allowAll = parameters.getBoolean("allow_area", true);
+		int itemMagnitude = parameters.getInt("item_force", DEFAULT_ITEM_MAGNITUDE);
+		int entityMagnitude = parameters.getInt("entity_force", DEFAULT_ENTITY_MAGNITUDE);
+		int maxAllDistance = parameters.getInt("area_range", DEFAULT_MAX_ALL_DISTANCE);
 
 		targetEntity(Entity.class);
 		List<Target> targets = getAllTargetEntities();
@@ -88,7 +93,7 @@ public class PushSpell extends Spell
 			{
 				castMessage("Gimme!");
 			}
-			forceAll(multiplier, pull);
+			forceAll(multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);
 			return SpellResult.SUCCESS;
 		}
 
@@ -116,7 +121,9 @@ public class PushSpell extends Spell
 			Entity targetEntity = target.getEntity();
 			Location to = pull ? target.getLocation() : player.getLocation();
 			Location from = pull ? player.getLocation() : target.getLocation();
-			forceEntity(targetEntity, multiplier, from, to);
+			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
+
+			forceEntity(targetEntity, multiplier, from, to, magnitude);
 			pushed++;
 			if (count > 0 && pushed >= count) break;
 		}
@@ -132,9 +139,8 @@ public class PushSpell extends Spell
 		return SpellResult.SUCCESS;
 	}
 
-	protected void forceEntity(Entity target, double multiplier, Location from, Location to)
+	protected void forceEntity(Entity target, double multiplier, Location from, Location to, int magnitude)
 	{
-		int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 		magnitude = (int)((double)magnitude * multiplier);
 		Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
 		Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
@@ -143,15 +149,6 @@ public class PushSpell extends Spell
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
 		target.setVelocity(forceVector);
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		itemMagnitude = properties.getInt("item_force", itemMagnitude);
-		entityMagnitude = properties.getInt("entity_force", entityMagnitude);
-		allowAll = properties.getBoolean("allow_area", allowAll);
-		maxAllDistance = properties.getInt("area_range", maxAllDistance);
 	}
 	
 	protected void startEffect(EffectPlayer effect, int effectRange) {

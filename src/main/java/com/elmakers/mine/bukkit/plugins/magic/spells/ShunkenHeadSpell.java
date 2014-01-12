@@ -21,8 +21,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ShunkenHeadSpell extends Spell
 {
-	private int             playerDamage = 1;
-	private int             entityDamage = 100;
+	private int             DEFAULT_PLAYER_DAMAGE = 1;
+	private int             DEFAULT_ENTITY_DAMAGE = 100;
 
 	private final static int 		maxEffectRange = 16;
 	private final static int 		effectSpeed = 1;
@@ -62,7 +62,10 @@ public class ShunkenHeadSpell extends Spell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		
+
+		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
+		int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);
+
 		Entity targetEntity = target.getEntity();
 		LivingEntity li = (LivingEntity)targetEntity;
 		String ownerName = null;
@@ -182,12 +185,4 @@ public class ShunkenHeadSpell extends Spell
 		}
 		location.getWorld().dropItemNaturally(location, shrunkenHead);
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)
-	{
-		playerDamage = properties.getInteger("player_damage", playerDamage);
-		entityDamage = properties.getInteger("entity_damage", entityDamage);
-	}
-
 }

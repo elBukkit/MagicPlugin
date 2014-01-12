@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.DyeColor;
@@ -34,13 +33,7 @@ public class AlterSpell extends Spell
 	static final String DEFAULT_ADJUST_MAX =  "2 ,5, 5 ,15,15,15,15,1 ,15,15 ,3 ,1  ,5 ,2 ,9 ,9 ,5 ,2 ,5 ,15,8 ,8 ,15,15,5, 15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,15,3 ,9 ,3 ,2 ,14,15,5 ,5 ,15,15,15,5 ,0 ,5 ,5 ,15 ,3 ,15,15 ,7  ,7  ,3  ,3  ,3  ,7  ,15 ,15 ,3  ,3  ,3  ,3  ,15 ,7  ,7  ,4  ,4  ,3  ,15 ,15 ,15 ,15 ,6";
 	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0  ,0 ,0  ,2 ,0 ,0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,0  ,0 ,0 ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0";
 	static final String DEFAULT_RECURSABLES = "5,17,18,59,104,105,115,141,142";
-
-	private List<Integer> adjustableMaterials = new ArrayList<Integer>();
-	private List<Integer> maxData = new ArrayList<Integer>();
-	private List<Integer> minData = new ArrayList<Integer>();
-	private List<Integer> recursableMaterials = new ArrayList<Integer>();
-
-	private int recurseDistance = 32;	
+	static final int DEFAULT_RECURSE_DISTANCE = 8;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -56,6 +49,19 @@ public class AlterSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
+		
+		int recurseDistance = parameters.getInteger("depth", DEFAULT_RECURSE_DISTANCE);
+
+		List<Integer> recursableMaterials = csv.parseIntegers(DEFAULT_RECURSABLES);
+		List<Integer> adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
+		List<Integer> maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);
+		List<Integer> minData = csv.parseIntegers(DEFAULT_ADJUST_MIN);
+
+		if (adjustableMaterials.size() != maxData.size() || maxData.size() != minData.size())
+		{
+			spells.getLog().warning("Spells:Alter: Mis-match in adjustable material lists!");
+		}
+		
 		if (!adjustableMaterials.contains(targetBlock.getTypeId()))
 		{
 			castMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
@@ -77,7 +83,7 @@ public class AlterSpell extends Spell
 
 		boolean recursive = recursableMaterials.contains(targetBlock.getTypeId());
 
-		adjust(targetBlock, data, undoList, recursive, 0);
+		adjust(targetBlock, data, undoList, recursive, recurseDistance, 0);
 
 		spells.addToUndoQueue(player, undoList);
 
@@ -87,7 +93,7 @@ public class AlterSpell extends Spell
 	}
 
 	@SuppressWarnings("deprecation")
-	protected void adjust(Block block, byte dataValue, BlockList adjustedBlocks, boolean recursive, int rDepth)
+	protected void adjust(Block block, byte dataValue, BlockList adjustedBlocks, boolean recursive, int recurseDistance, int rDepth)
 	{
 		adjustedBlocks.add(block);
 		block.setData(dataValue);
@@ -95,12 +101,12 @@ public class AlterSpell extends Spell
 		if (recursive && rDepth < recurseDistance)
 		{
 			Material targetMaterial = block.getType();
-			tryAdjust(block.getRelative(BlockFace.NORTH), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.WEST), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.SOUTH), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.EAST), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, adjustedBlocks, rDepth + 1);			
+			tryAdjust(block.getRelative(BlockFace.NORTH), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.WEST), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.SOUTH), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.EAST), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);			
 		}
 	}
 	
@@ -180,29 +186,13 @@ public class AlterSpell extends Spell
 		return SpellResult.SUCCESS;
 	}
 
-	protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, BlockList adjustedBlocks, int rDepth)
+	protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, BlockList adjustedBlocks, int recurseDistance, int rDepth)
 	{
 		if (target.getType() != targetMaterial || adjustedBlocks.contains(target))
 		{
 			return;
 		}
 
-		adjust(target, dataValue, adjustedBlocks, true, rDepth);
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties) 
-	{
-		recurseDistance = properties.getInteger("depth", recurseDistance);
-
-		recursableMaterials = csv.parseIntegers(DEFAULT_RECURSABLES);
-		adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
-		maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);
-		minData = csv.parseIntegers(DEFAULT_ADJUST_MIN);
-
-		if (adjustableMaterials.size() != maxData.size() || maxData.size() != minData.size())
-		{
-			spells.getLog().warning("Spells:Alter: Mis-match in adjustable material lists!");
-		}
+		adjust(target, dataValue, adjustedBlocks, true, recurseDistance, rDepth);
 	}
 }

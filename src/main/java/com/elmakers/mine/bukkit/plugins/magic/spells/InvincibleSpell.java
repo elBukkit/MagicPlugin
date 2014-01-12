@@ -71,10 +71,4 @@ public class InvincibleSpell extends Spell
 			}
 		}
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		disableTargeting();
-	}
 }

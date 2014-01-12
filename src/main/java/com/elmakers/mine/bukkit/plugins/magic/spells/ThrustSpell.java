@@ -296,10 +296,4 @@ public class ThrustSpell extends Spell
 			lastLevitate = 0;
 		}
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		disableTargeting();
-	}
 }

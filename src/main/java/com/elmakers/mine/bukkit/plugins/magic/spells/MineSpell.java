@@ -17,14 +17,10 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MineSpell extends Spell
 {
-	static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 74, 21 ,129,153";
-	static final String		DEFAULT_MINED		= "14,15,263,264,331,331,351,388,406";
-	static final String		DEFAULT_DATA		= "0 ,0 ,0  ,0  ,0  ,0  ,4  ,0  ,1";
-
-	private List<Material>	mineableMaterials	= new ArrayList<Material>();
-	private List<Material>	minedMaterials	= new ArrayList<Material>();
-	private List<Integer>	minedData	= new ArrayList<Integer>();
-	private int maxRecursion = 16;
+	private static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 74, 21 ,129,153";
+	private static final String		DEFAULT_MINED		= "14,15,263,264,331,331,351,388,406";
+	private static final String		DEFAULT_DATA		= "0 ,0 ,0  ,0  ,0  ,0  ,4  ,0  ,1";
+	private final static int DEFAULT_MAX_RECURSION = 16;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -36,7 +32,13 @@ public class MineSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
-		if (!isMineable(target))
+
+		// TODO: Optimize this
+		List<Material> mineableMaterials = new ArrayList<Material>();
+		mineableMaterials.addAll(csv.parseMaterials(DEFAULT_MINEABLE));
+
+		
+		if (!isMineable(target, mineableMaterials))
 		{
 			sendMessage("Can't mine " + target.getType().name().toLowerCase());
 			return SpellResult.NO_TARGET;
@@ -45,12 +47,18 @@ public class MineSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
+		int maxRecursion = parameters.getInteger("recursion_depth", DEFAULT_MAX_RECURSION);
 		BlockList minedBlocks = new BlockList();
 		Material mineMaterial = target.getType();
-		mine(target, mineMaterial, minedBlocks);
+		mine(target, mineMaterial, minedBlocks, maxRecursion);
 
 		World world = player.getWorld();
 
+		// TODO: Optimize this
+		List<Material> minedMaterials = new ArrayList<Material>();
+		minedMaterials.addAll(csv.parseMaterials(DEFAULT_MINED));
+		List<Integer> minedData = csv.parseIntegers(DEFAULT_DATA);
+		
 		int index = mineableMaterials.indexOf(mineMaterial);
 		mineMaterial = minedMaterials.get(index);
 		byte data = (byte)(int)minedData.get(index);
@@ -66,52 +74,42 @@ public class MineSpell extends Spell
 		return SpellResult.SUCCESS;
 	}
 
-	protected void mine(Block block, Material fillMaterial, BlockList minedBlocks)
+	protected void mine(Block block, Material fillMaterial, BlockList minedBlocks, int maxRecursion)
 	{		
-		mine(block, fillMaterial, minedBlocks, 0);
+		mine(block, fillMaterial, minedBlocks, maxRecursion, 0);
 	}
 
-	protected void mine(Block block, Material fillMaterial, BlockList minedBlocks, int rDepth)
+	protected void mine(Block block, Material fillMaterial, BlockList minedBlocks, int maxRecursion, int rDepth)
 	{
 		minedBlocks.add(block);
 		block.setType(Material.AIR);
 
 		if (rDepth < maxRecursion)
 		{
-			tryMine(block.getRelative(BlockFace.NORTH), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getRelative(BlockFace.WEST), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getRelative(BlockFace.SOUTH), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getRelative(BlockFace.EAST), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getRelative(BlockFace.UP), fillMaterial, minedBlocks, rDepth + 1);
-			tryMine(block.getRelative(BlockFace.DOWN), fillMaterial, minedBlocks, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.NORTH), fillMaterial, minedBlocks, maxRecursion, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.WEST), fillMaterial, minedBlocks, maxRecursion, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.SOUTH), fillMaterial, minedBlocks, maxRecursion, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.EAST), fillMaterial, minedBlocks, maxRecursion, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.UP), fillMaterial, minedBlocks, maxRecursion, rDepth + 1);
+			tryMine(block.getRelative(BlockFace.DOWN), fillMaterial, minedBlocks, maxRecursion, rDepth + 1);
 		}
 	}
 
-	protected void tryMine(Block target, Material fillMaterial, BlockList minedBlocks, int rDepth)
+	protected void tryMine(Block target, Material fillMaterial, BlockList minedBlocks, int maxRecursion, int rDepth)
 	{
 		if (target.getType() != fillMaterial || minedBlocks.contains(target))
 		{
 			return;
 		}
 
-		mine(target, fillMaterial, minedBlocks, rDepth);
+		mine(target, fillMaterial, minedBlocks, maxRecursion, rDepth);
 	}
 
-	public boolean isMineable(Block block)
+	public boolean isMineable(Block block, List<Material> mineableMaterials)
 	{
 		if (block.getType() == Material.AIR)
 			return false;
 
 		return mineableMaterials.contains(block.getType());
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		mineableMaterials.addAll(csv.parseMaterials(DEFAULT_MINEABLE));
-		minedMaterials.addAll(csv.parseMaterials(DEFAULT_MINED));
-		minedData = csv.parseIntegers(DEFAULT_DATA);
-
-		maxRecursion = properties.getInteger("recursion_depth", maxRecursion);
 	}
 }

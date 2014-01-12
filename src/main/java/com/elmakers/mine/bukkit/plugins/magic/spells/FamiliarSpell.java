@@ -25,8 +25,6 @@ public class FamiliarSpell extends Spell
 	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow,Snowman,Ozelot,VillagerGolem,HorseEntity";
 	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Ghast,Giant,Silverfish,Enderman,CaveSpider,Blaze,LavaSlime,Bat,Witch";
 
-	private List<String> defaultFamiliars = new ArrayList<String>();
-	private List<String> defaultMonsters = new ArrayList<String>();
 	private final Random rand = new Random();
 	private PlayerFamiliar familiars = new PlayerFamiliar();
 
@@ -174,10 +172,10 @@ public class FamiliarSpell extends Spell
 				}
 				else
 				{
-					List<String> types = defaultFamiliars;
+					List<String> types = csv.parseStrings(DEFAULT_FAMILIARS);
 					if (famClass == FamiliarClass.MONSTER)
 					{
-						types = defaultMonsters;
+						types = csv.parseStrings(DEFAULT_MONSTERS);
 					}
 					int randomFamiliar = rand.nextInt(types.size());
 					famType = EntityType.fromName(types.get(randomFamiliar));
@@ -245,14 +243,7 @@ public class FamiliarSpell extends Spell
 			spells.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
 		}
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		defaultFamiliars = csv.parseStrings(DEFAULT_FAMILIARS);
-		defaultMonsters = csv.parseStrings(DEFAULT_MONSTERS);
-	}
-
+	
 	public void onPlayerQuit(PlayerEvent event)
 	{
 		if (familiars.hasFamiliar())

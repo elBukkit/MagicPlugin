@@ -6,7 +6,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.EffectTrail;
@@ -16,6 +15,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireSpell extends Spell
 {
+	private final static int		DEFAULT_RADIUS	= 4;
+	
     private final static int 		maxEffectRange = 16;
     private final static int 		effectSpeed = 1;
     private final static float 		particleSpeed = 0.2f;
@@ -70,7 +71,7 @@ public class FireSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
-		int radius = parameters.getInt("radius", defaultRadius);
+		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = (int)(playerSpells.getPowerMultiplier() * radius);
 		
 		FireAction action = new FireAction();
@@ -91,63 +92,8 @@ public class FireSpell extends Spell
 		return SpellResult.SUCCESS;
 	}
 
-	public void burnBlock(int dx, int dy, int dz, Block centerPoint, int radius, BlockList burnedBlocks)
-	{
-		int x = centerPoint.getX() + dx - radius;
-		int y = centerPoint.getY() + dy - radius;
-		int z = centerPoint.getZ() + dz - radius;
-		Block block = player.getWorld().getBlockAt(x, y, z);
-		int depth = 0;
-
-		if (block.getType() == Material.AIR)
-		{
-			while (depth < verticalSearchDistance && block.getType() == Material.AIR)
-			{
-				depth++;
-				block = block.getRelative(BlockFace.DOWN);
-			}	
-		}
-		else
-		{
-			while (depth < verticalSearchDistance && block.getType() != Material.AIR)
-			{
-				depth++;
-				block = block.getRelative(BlockFace.UP);
-			}
-			block = block.getRelative(BlockFace.DOWN);
-		}
-
-		if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
-		{
-			return;
-		}
-		Material material = Material.FIRE;
-
-		if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER || block.getType() == Material.ICE || block.getType() == Material.SNOW)
-		{
-			material = Material.AIR;
-		}
-		else
-		{
-			block = block.getRelative(BlockFace.UP);
-		}
-
-		burnedBlocks.add(block);
-		block.setType(material);
-	}
-
 	public int checkPosition(int x, int z, int R)
 	{
 		return (x * x) +  (z * z) - (R * R);
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		defaultRadius = properties.getInteger("radius", defaultRadius);
-		verticalSearchDistance = properties.getInteger("vertical_search_distance", verticalSearchDistance);
-	}
-
-	private int				defaultRadius			= 4;
-	private int				verticalSearchDistance	= 8;
 }

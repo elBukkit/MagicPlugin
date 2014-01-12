@@ -13,6 +13,7 @@
  - Add "/magic search" and "/magic cancel" commands.
  - Add effects to pillar, earth, stream, lava, bridge and stalactite spells.
  - Add build permission check to the grenade, projectile and familiar spells.
+ - Collapse properties and parameters (MIGRATION NOTE)
 
 ## 2.8.2
 

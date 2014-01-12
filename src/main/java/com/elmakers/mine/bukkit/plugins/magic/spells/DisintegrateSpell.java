@@ -18,8 +18,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class DisintegrateSpell extends Spell
 {
-	private int             playerDamage = 1;
-	private int             entityDamage = 100;
+	private final static int             DEFAULT_PLAYER_DAMAGE = 1;
+	private final static int             DEFAULT_ENTITY_DAMAGE = 100;
 
     private final static int 		maxEffectRange = 16;
     private final static int 		effectSpeed = 1;
@@ -48,6 +48,10 @@ public class DisintegrateSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
+		
+		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
+		int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);
+
 		if (target.isEntity())
 		{
 			Entity targetEntity = target.getEntity();
@@ -93,12 +97,5 @@ public class DisintegrateSpell extends Spell
 		castMessage("ZAP!");
 
 		return SpellResult.SUCCESS;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		playerDamage = properties.getInteger("player_damage", playerDamage);
-		entityDamage = properties.getInteger("entity_damage", entityDamage);
 	}
 }

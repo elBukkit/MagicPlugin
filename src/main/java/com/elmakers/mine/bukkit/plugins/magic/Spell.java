@@ -87,7 +87,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private int                                 targetX, targetY, targetZ;
 	private MaterialList                        targetThroughMaterials  = new MaterialList();
 	private boolean                             reverseTargeting        = false;
-	private boolean                             usesTargeting           = true;
 	private boolean								isActive				= false;
 
 	protected Object clone()
@@ -229,20 +228,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		icon = node.getMaterialAndData("icon", Material.AIR);
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);
-		ConfigurationNode properties = node.getNode("properties");
-		if (properties == null) properties = node.createChild("properties");
-		cooldown = properties.getInt("cooldown", cooldown);
-		duration = properties.getInt("duration", duration);
-		materialOverride = properties.getMaterial("material", materialOverride);
-
-		this.onLoadTemplate(properties);
-
-		if (usesTargeting)
-		{            
-			range = properties.getInteger("range", range);
-			allowMaxRange = properties.getBoolean("allow_max_range", allowMaxRange);
-			targetThroughMaterials = new MaterialList(properties.getMaterials("target_through", targetThroughMaterials));
-		}
+		
+		cooldown = parameters.getInt("cooldown", cooldown);
+		duration = parameters.getInt("duration", duration);
+		materialOverride = parameters.getMaterial("material", materialOverride);
+		range = parameters.getInteger("range", range);
+		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
+		targetThroughMaterials = new MaterialList(parameters.getMaterials("target_through", targetThroughMaterials));
 
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
@@ -402,16 +394,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * @return true if the spell worked, false if it failed
 	 */
 	public abstract SpellResult onCast(ConfigurationNode parameters);
-
-	/**
-	 * Called on load, you can load data here and set defaults.
-	 * 
-	 * @param node The configuration node to load data from.
-	 */
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-
-	}
 
 	/**
 	 * Called when a material selection spell is cancelled mid-selection.
@@ -1190,11 +1172,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 
 		return true;
-	}
-
-	protected void disableTargeting()
-	{
-		usesTargeting = false;
 	}
 	
 	public List<CastingCost> getCosts() {

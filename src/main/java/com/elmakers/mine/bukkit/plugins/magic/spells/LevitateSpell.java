@@ -69,10 +69,4 @@ public class LevitateSpell extends Spell
 			levitateEnded = 0;;
 		}
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		disableTargeting();
-	}
 }

@@ -75,12 +75,6 @@ public class BridgeSpell extends Spell
 
 		return SpellResult.SUCCESS;
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		disableTargeting();
-	}
 	
 	@Override
 	public boolean usesMaterial() {

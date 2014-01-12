@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.Inventory;
@@ -195,6 +196,14 @@ public class InventoryUtils extends NMSUtils
 			ex.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static void addPotionEffect(LivingEntity entity, Color color) {
+		addPotionEffect(entity, color.asRGB());
+	}
+	
+	public static void clearPotionEffect(LivingEntity entity) {
+		addPotionEffect(entity, 0);
 	}
 	
 	public static void addPotionEffect(LivingEntity entity, int color) {

@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WolfSpell extends Spell
 {
-	private static int maxWolves = 5;
+	private static int DEFAULT_MAX_WOLVES = 5;
 	protected List<Wolf> wolves = new ArrayList<Wolf>();
 
 	public Wolf newWolf(Target target)
@@ -67,7 +67,8 @@ public class WolfSpell extends Spell
 		}
 
 		wolves = newWolves;
-
+		
+		int maxWolves = parameters.getInt("max_wolves", DEFAULT_MAX_WOLVES);
 		int scaledMaxWolves = (int)(playerSpells.getPowerMultiplier() * maxWolves);
 		if (wolves.size() >= scaledMaxWolves) 
 		{
@@ -104,11 +105,4 @@ public class WolfSpell extends Spell
 		wolfie.setTamed(true);
 		wolfie.setOwner(player);
 	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		maxWolves = node.getInt("max_wolves", maxWolves);
-	}
-
 }

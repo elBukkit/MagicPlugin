@@ -18,12 +18,14 @@ public class RecallSpell extends Spell
 	public Location location;
 	public boolean isActive;
 	private boolean autoDropOnDeath = true;
-	private boolean autoSpawn = true;
 	private int disableDistance = 5;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		autoDropOnDeath = parameters.getBoolean("auto_resurrect", true);
+		boolean autoSpawn = parameters.getBoolean("allow_spawn", true);
+
 		if (autoDropOnDeath)
 		{
 			spells.registerEvent(SpellEventType.PLAYER_DEATH, this);
@@ -117,13 +119,6 @@ public class RecallSpell extends Spell
 		isActive = true;
 
 		return SpellResult.SUCCESS;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		autoDropOnDeath = properties.getBoolean("auto_resurrect", autoDropOnDeath);
-		autoSpawn = properties.getBoolean("allow_spawn", autoSpawn);
 	}
 
 	@Override

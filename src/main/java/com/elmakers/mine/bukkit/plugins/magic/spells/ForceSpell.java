@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -12,9 +13,10 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ForceSpell extends Spell
 {
-	int magnitude = 3;
 	LivingEntity targetEntity = null;
-	int effectColor = 0;
+	private Color effectColor = null;
+	
+	final private static int DEFAULT_MAGNITUDE = 3;
 	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -43,20 +45,27 @@ public class ForceSpell extends Spell
 				targetEntity = null;
 				return SpellResult.NO_TARGET;
 			}
-			
+
+			effectColor = playerSpells.getEffectColor();
+			if (effectColor == null) {
+				effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
+			}
+
 			targetEntity = (LivingEntity)target.getEntity();
-			if (effectColor != 0) {
+			if (effectColor != null) {
 				InventoryUtils.addPotionEffect(targetEntity, effectColor);
 			}
 			return SpellResult.COST_FREE;
 		}
 
 		double multiplier = parameters.getDouble("size", 1);
-		forceEntity(targetEntity, multiplier);
+
+		int magnitude = parameters.getInt("entity_force", DEFAULT_MAGNITUDE);
+		forceEntity(targetEntity, multiplier, magnitude);
 		return SpellResult.SUCCESS;
 	}
 
-	protected void forceEntity(Entity target, double multiplier)
+	protected void forceEntity(Entity target, double multiplier, int magnitude)
 	{
 		magnitude = (int)((double)magnitude * multiplier);
 		Vector forceVector = getAimVector();
@@ -66,8 +75,8 @@ public class ForceSpell extends Spell
 	}
 	
 	protected void releaseTarget() {
-		if (targetEntity != null && effectColor != 0) {
-			InventoryUtils.addPotionEffect(targetEntity, 0);
+		if (targetEntity != null && effectColor != null) {
+			InventoryUtils.clearPotionEffect(targetEntity);
 		}
 		targetEntity = null;
 	}
@@ -92,12 +101,5 @@ public class ForceSpell extends Spell
 		}
 		
 		return false;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		magnitude = properties.getInt("entity_force", magnitude);
-		effectColor = Integer.parseInt(properties.getString("effect_color", "FF0000"), 16);
 	}
 }

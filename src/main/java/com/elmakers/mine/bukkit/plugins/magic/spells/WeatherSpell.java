@@ -40,9 +40,4 @@ public class WeatherSpell extends Spell
 		return SpellResult.SUCCESS;
 	}
 
-	@Override
-	public void onLoadTemplate(ConfigurationNode node)
-	{
-		disableTargeting();
-	}
 }

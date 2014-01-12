@@ -44,6 +44,9 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - Make undo spell first cancel any pending batches for the player (or just one?)
+ - urlmaps.yml got truncated?
+   - Check for duplicate keys when searching for a new one (?)
  - Make sure adding spells/materials never removes any
  - Make LavaSpell a variant that works with any material (earth + water variants)  - undo optional
  - Add block-specific effects for absorb, other construction spells

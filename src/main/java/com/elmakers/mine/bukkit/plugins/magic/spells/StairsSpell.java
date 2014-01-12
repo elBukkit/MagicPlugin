@@ -35,6 +35,13 @@ public class StairsSpell extends Spell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		
+		destructibleMaterials = parameters.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
+		defaultDepth = parameters.getInteger("depth", defaultDepth);
+		defaultWidth = parameters.getInteger("width", defaultWidth);
+		defaultHeight = parameters.getInteger("height", defaultHeight);
+		torchFrequency = parameters.getInteger("torch_frequency", torchFrequency);
+
 		createStairs(targetBlock);
 
 		return SpellResult.SUCCESS;
@@ -143,15 +150,5 @@ public class StairsSpell extends Spell
 			return false;
 
 		return destructibleMaterials.contains(block.getType());
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		destructibleMaterials = properties.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
-		defaultDepth = properties.getInteger("depth", defaultDepth);
-		defaultWidth = properties.getInteger("width", defaultWidth);
-		defaultHeight = properties.getInteger("height", defaultHeight);
-		torchFrequency = properties.getInteger("torch_frequency", torchFrequency);
 	}
 }

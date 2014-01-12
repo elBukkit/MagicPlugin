@@ -15,9 +15,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BlinkSpell extends Spell
 {
-	private boolean autoAscend = true;
-	private boolean autoDescend = true;
-	private boolean autoPassthrough = true;
 	private int verticalSearchDistance = 255;
 
 	protected boolean ascend()
@@ -71,6 +68,10 @@ public class BlinkSpell extends Spell
 			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 			return SpellResult.SUCCESS;
 		}
+		
+		boolean autoAscend = parameters.getBoolean("allow_ascend", true);
+		boolean autoDescend = parameters.getBoolean("allow_descend", true);
+		boolean autoPassthrough = parameters.getBoolean("allow_passthrough", true);
 
 		if (getYRotation() < -80 && autoDescend)
 		{
@@ -204,13 +205,5 @@ public class BlinkSpell extends Spell
 		EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);
 		playerLocation.getWorld().playSound(targetLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 		return SpellResult.SUCCESS;
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)  
-	{
-		autoAscend = properties.getBoolean("allow_ascend", autoAscend);
-		autoDescend = properties.getBoolean("allow_descend", autoDescend);
-		autoPassthrough = properties.getBoolean("allow_passthrough", autoPassthrough);
 	}
 }

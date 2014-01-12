@@ -20,8 +20,6 @@ public class ConstructSpell extends Spell
 {
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
-	private int             timeToLive              = 0;
-	private Set<Material>	indestructible		    = null;
 	private Block targetBlock 						= null;
 
 	@SuppressWarnings("deprecation")
@@ -44,6 +42,8 @@ public class ConstructSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
+		int timeToLive = parameters.getInt("undo", 0);
+		Set<Material> indestructible = parameters.getMaterials("indestructible", "");
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = parameters.getInt("size", radius);
 		
@@ -103,26 +103,19 @@ public class ConstructSpell extends Spell
 			conType = testType;
 		}
 
-		fillArea(target, radius, material, data, !hollow, conType);
+		fillArea(target, radius, material, data, !hollow, conType, timeToLive, indestructible);
 		deactivate();
 
 		return SpellResult.SUCCESS;
 	}
 
-	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type)
+	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible)
 	{
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, material, data, indestructible);
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
 		}
 		spells.addPendingBlockBatch(batch);
-	}
-
-	@Override
-	public void onLoadTemplate(ConfigurationNode properties)
-	{
-		timeToLive = properties.getInt("undo", timeToLive);
-		indestructible = properties.getMaterials("indestructible", "");
 	}
 	
 	@Override
