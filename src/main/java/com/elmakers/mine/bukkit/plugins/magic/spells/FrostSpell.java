@@ -31,7 +31,7 @@ public class FrostSpell extends Spell
 	
     private final static int 		maxEffectRange = 16;
     private final static int 		effectSpeed = 1;
-    private final static float 		particleSpeed = 0.1f;
+    private final static float 		particleData = 0.1f;
     private final static int 		effectPeriod = 2;
     private final static int 		particleCount = 8;
 
@@ -82,7 +82,7 @@ public class FrostSpell extends Spell
 		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.SNOWBALL_POOF);
 		effectTrail.setParticleCount(particleCount);
-		effectTrail.setEffectSpeed(particleSpeed);
+		effectTrail.setEffectData(particleData);
 		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
 		effectTrail.setSpeed(effectSpeed);
 		effectTrail.setPeriod(effectPeriod);

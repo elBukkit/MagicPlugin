@@ -48,7 +48,7 @@ public class PotionEffectSpell extends Spell
 			EffectRing effect = new EffectRing(spells.getPlugin(), effectLocation, 4, 8);
 			effect.setParticleType(particleType);
 			effect.setParticleCount(8);
-			effect.setEffectSpeed(2);
+			effect.setEffectData(2);
 			effect.setInvert(true);
 			effect.start();
 		} else {
@@ -57,7 +57,7 @@ public class PotionEffectSpell extends Spell
 			EffectTrail effect = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, 32);
 			effect.setParticleType(particleType);
 			effect.setParticleCount(8);
-			effect.setEffectSpeed(2);
+			effect.setEffectData(2);
 			effect.setSpeed(3);
 			effect.start();
 		}

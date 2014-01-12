@@ -28,7 +28,7 @@ public class HealSpell extends Spell
 			EffectTrail effect = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, 32);
 			effect.setParticleType(ParticleType.HEART);
 			effect.setParticleCount(2);
-			effect.setEffectSpeed(2);
+			effect.setEffectData(2);
 			effect.setSpeed(3);
 			effect.start();
 			castMessage("You heal your target");
@@ -45,7 +45,7 @@ public class HealSpell extends Spell
 		EffectRing effect = new EffectRing(spells.getPlugin(), effectLocation, 4, 8);
 		effect.setParticleType(ParticleType.HEART);
 		effect.setParticleCount(1);
-		effect.setEffectSpeed(2);
+		effect.setEffectData(2);
 		effect.setInvert(true);
 		effect.start();
 		castMessage("You heal yourself");

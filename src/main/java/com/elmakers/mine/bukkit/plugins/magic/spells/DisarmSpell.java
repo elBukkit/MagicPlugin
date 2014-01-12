@@ -23,7 +23,7 @@ public class DisarmSpell extends Spell
 {
 	private final static int 		maxEffectRange = 16;
 	private final static int 		effectSpeed = 1;
-	private final static float 		particleSpeed = 2f;
+	private final static float 		particleData = 2f;
 	private final static int 		effectPeriod = 2;
 	private final static int 		particleCount = 6;
     
@@ -36,7 +36,7 @@ public class DisarmSpell extends Spell
 		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.MOB_SPELL);
 		effectTrail.setParticleCount(particleCount);
-		effectTrail.setEffectSpeed(particleSpeed);
+		effectTrail.setEffectData(particleData);
 		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
 		effectTrail.setSpeed(effectSpeed);
 		effectTrail.setPeriod(effectPeriod);

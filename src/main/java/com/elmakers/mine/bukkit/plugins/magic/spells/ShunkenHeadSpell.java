@@ -27,7 +27,7 @@ public class ShunkenHeadSpell extends Spell
 	private final static int 		maxEffectRange = 16;
 	private final static int 		effectSpeed = 1;
 	private final static int 		effectPeriod = 2;
-    private final static float 		particleSpeed = 2;
+    private final static float 		particleData = 2;
     private final static int 		particleCount = 6;
 	
 	@Override
@@ -50,7 +50,7 @@ public class ShunkenHeadSpell extends Spell
 		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.INSTANT_SPELL);
 		effectTrail.setParticleCount(particleCount);
-		effectTrail.setEffectSpeed(particleSpeed);
+		effectTrail.setEffectData(particleData);
 		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
 		effectTrail.setSpeed(effectSpeed);
 		effectTrail.setPeriod(effectPeriod);

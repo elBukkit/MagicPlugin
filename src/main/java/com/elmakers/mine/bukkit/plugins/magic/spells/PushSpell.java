@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -154,7 +155,8 @@ public class PushSpell extends Spell
 	protected void startEffect(EffectPlayer effect, int effectRange) {
 		effect.setParticleType(ParticleType.SPELL);
 		effect.setParticleCount(3);
-		effect.setEffectSpeed(2);
+		Color effectColor = playerSpells.getEffectColor();
+		effect.setEffectData(effectColor != null ? effectColor.asRGB() : 2);
 		effect.setParticleOffset(0.2f, 0.2f, 0.2f);
 		effect.setSpeed(effectSpeed);
 		effect.setPeriod(effectPeriod);

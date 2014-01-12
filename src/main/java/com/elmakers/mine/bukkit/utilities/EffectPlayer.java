@@ -19,7 +19,7 @@ public abstract class EffectPlayer implements Runnable {
 	protected float xOffset = 0;
 	protected float yOffset = 0;
 	protected float zOffset = 0;
-	protected float effectSpeed = 20f;
+	protected float effectData = 20f;
 	protected int particleCount = 10;
 	
 	public EffectPlayer(Plugin plugin) {
@@ -67,18 +67,18 @@ public abstract class EffectPlayer implements Runnable {
 			EffectUtils.spawnFireworkEffect(location, fireworkEffect, power);
 		}
 		if (particleType != null) {
-			EffectUtils.playEffect(location, particleType, particleSubType, xOffset, yOffset, zOffset, effectSpeed, particleCount);
+			EffectUtils.playEffect(location, particleType, particleSubType, xOffset, yOffset, zOffset, effectData, particleCount);
 		}
 	}
 	
 	public abstract void setSpeed(float speed);
 
-	public float getEffectSpeed() {
-		return effectSpeed;
+	public float getEffectData() {
+		return effectData;
 	}
 
-	public void setEffectSpeed(float effectSpeed) {
-		this.effectSpeed = effectSpeed;
+	public void setEffectData(float effectData) {
+		this.effectData = effectData;
 	}
 
 	public int getParticleCount() {
