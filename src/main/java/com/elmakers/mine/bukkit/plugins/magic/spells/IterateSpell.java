@@ -92,4 +92,9 @@ public class IterateSpell extends Spell
 
 		return SpellResult.SUCCESS;
 	}
+	
+	@Override
+	public boolean usesMaterial() {
+		return true;
+	}
 }
