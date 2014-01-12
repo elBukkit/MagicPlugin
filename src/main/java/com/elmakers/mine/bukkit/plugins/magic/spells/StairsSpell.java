@@ -33,7 +33,6 @@ public class StairsSpell extends Spell
 		}
 
 		if (!hasBuildPermission(targetBlock)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		createStairs(targetBlock);

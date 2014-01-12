@@ -74,6 +74,7 @@ messages:
         mana: Mana
         xp: XP
         insufficient_resources: Not enough $cost
+        insufficient_permissions: You don't have permission to cast that here
     cooldown:
         wait_seconds: You must wait another $seconds seconds.
         wait_moment: You must wait a moment.

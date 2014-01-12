@@ -62,7 +62,6 @@ public class AlterSpell extends Spell
 			return SpellResult.FAILURE;
 		}
 		if (!hasBuildPermission(targetBlock)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 

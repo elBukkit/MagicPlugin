@@ -33,7 +33,6 @@ public class SignSpell extends Spell
 		{
 			Block targetBlock = getFaceBlock();
 			if (!hasBuildPermission(targetBlock)) {
-				castMessage("You don't have permission to build here.");
 				return SpellResult.INSUFFICIENT_PERMISSION;
 			}
 			if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)

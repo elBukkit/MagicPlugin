@@ -25,7 +25,6 @@ public class CushionSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetFace)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 

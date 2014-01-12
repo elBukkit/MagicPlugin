@@ -21,7 +21,6 @@ public class TowerSpell extends Spell {
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		int MAX_HEIGHT = 255;

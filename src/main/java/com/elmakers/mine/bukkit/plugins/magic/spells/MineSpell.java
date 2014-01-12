@@ -42,7 +42,6 @@ public class MineSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 

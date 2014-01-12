@@ -78,7 +78,6 @@ public class DisintegrateSpell extends Spell
 		disintigrated.add(targetBlock);
 
 		if (!hasBuildPermission(targetBlock)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		if (isUnderwater())

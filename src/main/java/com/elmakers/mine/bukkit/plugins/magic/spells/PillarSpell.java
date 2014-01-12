@@ -38,7 +38,6 @@ public class PillarSpell extends Spell
 		int distance = 0;
 
 		if (!hasBuildPermission(targetBlock)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
@@ -53,7 +52,6 @@ public class PillarSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetBlock)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 

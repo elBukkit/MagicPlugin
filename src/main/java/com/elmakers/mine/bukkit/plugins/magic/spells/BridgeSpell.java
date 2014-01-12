@@ -28,7 +28,6 @@ public class BridgeSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(playerBlock)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
@@ -59,7 +58,6 @@ public class BridgeSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetBlock)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		BlockList bridgeBlocks = new BlockList();

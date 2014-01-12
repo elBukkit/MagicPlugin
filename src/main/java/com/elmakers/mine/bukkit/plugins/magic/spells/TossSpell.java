@@ -17,7 +17,6 @@ public class TossSpell extends Spell
 	{
 		Location location = player.getLocation();
 		if (!hasBuildPermission(location)) {
-			castMessage("You don't have permission to build here.");
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 

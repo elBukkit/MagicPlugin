@@ -436,6 +436,10 @@ public class PlayerSpells implements CostReducer
 				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
 				playSound(Sound.NOTE_BASS, 1, 1);
 				break;
+			case INSUFFICIENT_PERMISSION:
+				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
+				playSound(Sound.NOTE_BASS, 1, 1.5f);
+				break;
 			case COOLDOWN:
 				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
 				playSound(Sound.NOTE_SNARE_DRUM, 1, 1);

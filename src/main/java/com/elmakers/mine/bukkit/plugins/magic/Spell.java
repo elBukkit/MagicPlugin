@@ -371,6 +371,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				}
 			}
 			castCount++;
+		} else if (result == SpellResult.INSUFFICIENT_PERMISSION) {
+			sendMessage(Messages.get("costs.insufficient_permissions"));
 		}
 		
 		return result == SpellResult.SUCCESS;
