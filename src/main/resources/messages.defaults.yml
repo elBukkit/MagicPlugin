@@ -479,3 +479,12 @@ messages:
         black:
             name: The Black Wand
             description: A wand for master dark wizards
+        red:
+            name: The Red Wand
+            description: A powerful destructive wand
+        blue:
+            name: The Blue Wand
+            description: A cool wand
+        green:
+            name: The Green Wand
+            description: A wand for nature lovers

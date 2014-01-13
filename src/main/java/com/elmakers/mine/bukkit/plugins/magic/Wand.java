@@ -1318,7 +1318,12 @@ public class Wand implements CostReducer {
 					} else if (materialName.equals("copy") || materialName.equals("clone")) {
 						wand.addMaterial(CopyMaterial, (byte)0, false);
 					} else {
-						wand.addMaterial(ConfigurationNode.toMaterial(materialName), data, false);
+						Material material = ConfigurationNode.toMaterial(materialName);
+						if (material == null) {
+							spells.getPlugin().getLogger().info("Unknown material: " + materialName);
+						} else {
+							wand.addMaterial(material, data, false);
+						}
 					}
 				}
 			}

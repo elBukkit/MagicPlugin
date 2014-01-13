@@ -366,6 +366,9 @@ wands:
     engineer:
         modifiable: false
         cost_reduction: 1
+        hunger_regeneration: 1
+        health_regeneration: 1
+        protection_falling: 1
         spells:
             - fill
             - absorb
@@ -384,6 +387,7 @@ wands:
             - superbox
             - supershell
             - superconvert
+            - levitate
         materials:
             - stone
             - wood
@@ -392,6 +396,19 @@ wands:
             - erase
             - copy
             - glowstone
+            - sand
+            - cobblestone
+            - stained_glass
+            - thin_glass
+            - stained_glass_pane
+            - stained_clay
+            - quartz_block
+            - iron_block
+            - diamond_block
+            - gold_block
+            - emerald_block
+            - redstone_block
+            - obsidian
     battle:
         modifiable: true
         protection_physical: 0.3
@@ -607,6 +624,7 @@ wands:
             - stream
             - heal
             - force
+            - gills
         materials:
             - stationary_water
             - ice
@@ -860,3 +878,80 @@ wands:
             - tnt
             - soul_sand
             - copy
+    red:
+        modifiable: true
+        protection_fire: 1
+        protection: 0.6
+        xp_regeneration: 40
+        xp_max: 300
+        effect_color: FF0000
+        spells:
+            - fireball
+            - recurse
+            - blob
+            - fire
+            - inferno
+            - lava
+            - toss
+            - boom
+            - kaboom
+            - convert
+            - icbm
+        materials:
+            - stationary_lava    
+            - stained_clay:14    
+            - stained_glass:14    
+            - sand:1
+    blue:
+        modifiable: true
+        protection: 0.8
+        xp_regeneration: 40
+        xp_max: 300
+        effect_color: 0000FF
+        spells:
+            - frost
+            - toss
+            - volley
+            - blob
+            - recurse
+            - cushion
+            - stream
+            - convert
+            - gills
+        materials:
+            - stationary_water
+            - ice
+            - packed_ice    
+            - stained_clay:3 
+            - stained_glass:3
+            - stained_clay:9
+            - stained_glass:9
+            - stained_clay:11
+            - stained_glass:11
+    green:
+        modifiable: true
+        protection: 0.8
+        xp_regeneration: 40
+        xp_max: 300
+        effect_color: 00FF00
+        spells:
+            - tree
+            - farm
+            - familiar
+            - blob
+            - recurse
+            - earth
+            - convert
+        materials:
+            - dirt
+            - grass
+            - wood    
+            - log
+            - vine
+            - mycel
+            - stained_clay:5
+            - stained_glass:5
+            - stained_clay:13
+            - stained_glass:13
+            
+            
