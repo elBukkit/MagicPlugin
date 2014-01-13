@@ -334,6 +334,9 @@ messages:
             description: Fire a stream of lava
         earth:
             name: Earth
+            description: Construct a temporary line of blocks
+        iterate:
+            name: Iterate
             description: Construct a line of blocks
         stream:
             name: Stream

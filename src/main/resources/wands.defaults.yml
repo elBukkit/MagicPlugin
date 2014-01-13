@@ -947,6 +947,7 @@ wands:
             - flare
             - bridge
             - tesseract
+            - iterate
         materials:
             - stationary_water
             - ice

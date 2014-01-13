@@ -917,8 +917,20 @@ spells:
             range: 16
             cooldown: 250
             increment_data: false
+            undo: 2000
         costs:
             xp: 20
+    iterate:
+        icon: ink_sack:2
+        category: engineering
+        class: IterateSpell
+        parameters:
+            allow_max_range: true
+            range: 32
+            cooldown: 250
+            increment_data: false
+        costs:
+            xp: 50
     wolf:
         icon: raw_beef
         category: elemental
