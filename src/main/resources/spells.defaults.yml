@@ -303,7 +303,7 @@ spells:
         costs:
             xp: 100
     wither:
-        icon: flint
+        icon: skull_item:1
         category: dark
         class: ProjectileSpell
         parameters:
@@ -418,7 +418,7 @@ spells:
         costs:
             xp: 40
     cushion:
-        icon: soul_sand
+        icon: bed
         category: waterbending
         class: CushionSpell
         parameters:
@@ -521,20 +521,6 @@ spells:
             cooldown: 0
         costs:
             xp: 5
-    ascend:
-        icon: red_mushroom
-        category: master
-        class: BlinkSpell
-        parameters:
-            allow_max_range: false
-            allow_ascend: true
-            allow_passthrough: true
-            range: 200
-            allow_descend: true
-            cooldown: 0
-            type: ascend
-        costs:
-            xp: 5
     grenade:
         icon: tnt
         category: firebending
@@ -573,8 +559,21 @@ spells:
             type: sphere
         costs:
             xp: 100
+    superpyramid:
+        icon: long_grass:2
+        category: engineering
+        class: ConstructSpell
+        parameters:
+            allow_max_range: true
+            range: 200
+            undo: 0
+            cooldown: 5000
+            target: select
+            type: sphere
+        costs:
+            xp: 100
     kamikazee:
-        icon: dead_bush
+        icon: skull_item:4
         category: dark
         class: BoomSpell
         parameters:
@@ -587,7 +586,7 @@ spells:
         costs:
             xp: 5
     superblast:
-        icon: sugar
+        icon: red_mushroom
         category: engineering
         class: ConstructSpell
         parameters:
@@ -624,7 +623,7 @@ spells:
             target: select
             type: sphere
     blast:
-        icon: sulphur
+        icon: brown_mushroom
         category: earthbending
         class: ConstructSpell
         parameters:
@@ -1061,20 +1060,6 @@ spells:
             cooldown: 0
         costs:
             xp: 10
-    descend:
-        icon: brown_mushroom
-        category: master
-        class: BlinkSpell
-        parameters:
-            allow_max_range: false
-            allow_ascend: true
-            allow_passthrough: true
-            range: 200
-            allow_decend: true
-            cooldown: 0
-            type: descend
-        costs:
-            xp: 20
     fireball:
         icon: ghast_tear
         category: firebending

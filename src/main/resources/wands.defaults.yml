@@ -802,8 +802,6 @@ wands:
             - force
             - levitate
             - farm
-            - shell
-            - box
             - volley
             - stalactite
             - fill
@@ -819,6 +817,8 @@ wands:
             - convert
             - commit
             - heal
+            - fill
+            - absorb
         materials:
             - water
             - glowstone
@@ -877,6 +877,7 @@ wands:
             - convert
             - commit
             - wither
+            - superpyramid
         materials:
             - water
             - erase
@@ -906,6 +907,7 @@ wands:
             - kaboom
             - convert
             - icbm
+            - supershell
         materials:
             - stationary_lava    
             - stained_clay:14    
