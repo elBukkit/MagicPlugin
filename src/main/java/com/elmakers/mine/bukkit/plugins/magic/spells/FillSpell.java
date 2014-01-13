@@ -129,12 +129,6 @@ public class FillSpell extends Spell
 			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
 			int maxVolume = parameters.getInteger("max_volume", DEFAULT_MAX_VOLUME);
 			
-			// Special hack, maybe incorporate into code when integration is complete?
-			if (player.isOp()) {
-				maxDimension *= 10;
-				maxVolume *= 100;
-			}
-			
 			if (!batch.checkDimension(maxDimension))
 			{
 				sendMessage("Dimension is too big!");

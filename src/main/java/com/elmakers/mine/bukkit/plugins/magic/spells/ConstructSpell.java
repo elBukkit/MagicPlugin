@@ -21,6 +21,8 @@ public class ConstructSpell extends Spell
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
 	private Block targetBlock 						= null;
+	
+	private static final int DEFAULT_MAX_DIMENSION = 128;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -64,6 +66,17 @@ public class ConstructSpell extends Spell
 			}
 		}
 		
+		// radius = (int)(playerSpells.getPowerMultiplier() * radius);
+
+		int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
+
+		int diameter = radius * 2;
+		if (diameter > maxDimension)
+		{
+			sendMessage("Dimension is too big!");
+			return SpellResult.FAILURE;
+		}
+		
 		if (parameters.containsKey("y_offset")) {
 			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
@@ -100,8 +113,6 @@ public class ConstructSpell extends Spell
 			data = 0;
 		}
 		String typeString = parameters.getString("type", "");
-		
-		// radius = (int)(playerSpells.getPowerMultiplier() * radius);
 
 		ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
 		if (testType != ConstructionType.UNKNOWN)

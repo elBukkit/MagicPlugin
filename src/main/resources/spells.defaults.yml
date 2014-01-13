@@ -113,8 +113,8 @@ spells:
             allow_max_range: false
             range: 200
             undo: 0
-            cooldown: 0
             cooldown: 5000
+            max_dimension: 128
             fill: hollow
             target: select
             type: sphere
@@ -555,6 +555,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
+            max_dimension: 128
             target: select
             type: sphere
         costs:
@@ -568,6 +569,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
+            max_dimension: 128
             target: select
             fill: hollow
             type: pyramid
@@ -609,6 +611,8 @@ spells:
             indestructible:
               - air
             radius: '3'
+        costs:
+            xp: 20
     superconvert:
         icon: iron_fence
         category: engineering
@@ -618,10 +622,13 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
+            max_dimension: 128
             indestructible:
               - air
             target: select
             type: sphere
+        costs:
+            xp: 100
     collapse:
         icon: iron_plate
         category: earthbending
@@ -635,6 +642,8 @@ spells:
             indestructible:
               - air
             radius: '3'
+        costs:
+            xp: 10
     supercollapse:
         icon: gold_plate
         category: engineering
@@ -644,12 +653,15 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
+            max_dimension: 16
             material: air
             falling: true
             indestructible:
               - air
             target: select
             type: sphere
+        costs:
+            xp: 100
     blast:
         icon: brown_mushroom
         category: earthbending

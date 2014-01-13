@@ -9,6 +9,7 @@
  - Add a work-around for a player placing a block out of their wand inventory.
  - Add Iterate spell. Make Earth spell temporary.
  - Add Collapse and SuperCollapse spells.
+ - Add volume and dimension limits to SuperConstruct spells.
  
 ## 2.8.3
 
