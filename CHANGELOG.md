@@ -8,6 +8,7 @@
  - Add some work-arounds for players using the armor slots to smuggle items in/out of the wand inventory.
  - Add a work-around for a player placing a block out of their wand inventory.
  - Add Iterate spell. Make Earth spell temporary.
+ - Add Collapse and SuperCollapse spells.
  
 ## 2.8.3
 

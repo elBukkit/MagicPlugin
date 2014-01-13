@@ -663,6 +663,7 @@ wands:
             - toss
             - breach
             - earth
+            - collapse
         materials:
             - dirt
             - cobblestone
@@ -687,6 +688,7 @@ wands:
             - bridge
             - breach
             - earth
+            - supercollapse
         materials:
             - dirt
             - stone

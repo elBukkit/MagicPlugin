@@ -46,6 +46,7 @@ public class ConstructSpell extends Spell
 		Set<Material> indestructible = parameters.getMaterials("indestructible", "");
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = parameters.getInt("size", radius);
+		boolean falling = parameters.getBoolean("falling", false);
 		
 		String targetString = parameters.getString("target", "");
 		if (targetString.equals("select")) {
@@ -93,6 +94,11 @@ public class ConstructSpell extends Spell
 			material = materialOverride;
 			data = 0;
 		}
+		if (falling)
+		{
+			material = Material.AIR;
+			data = 0;
+		}
 		String typeString = parameters.getString("type", "");
 		
 		// radius = (int)(playerSpells.getPowerMultiplier() * radius);
@@ -103,15 +109,15 @@ public class ConstructSpell extends Spell
 			conType = testType;
 		}
 
-		fillArea(target, radius, material, data, !hollow, conType, timeToLive, indestructible);
+		fillArea(target, radius, material, data, !hollow, conType, timeToLive, indestructible, falling);
 		deactivate();
 
 		return SpellResult.SUCCESS;
 	}
 
-	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible)
+	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible, boolean falling)
 	{
-		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, material, data, indestructible);
+		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, material, data, indestructible, falling);
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
 		}

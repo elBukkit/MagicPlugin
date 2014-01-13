@@ -25,12 +25,13 @@ public class ConstructBatch extends VolumeBatch {
 	private final PlayerSpells playerSpells;
 	private final Spell spell;
 	private final String playerName;
+	private final boolean spawnFallingBlocks;
 	
 	private int x = 0;
 	private int y = 0;
 	private int z = 0;
 	
-	public ConstructBatch(Spell spell, Location center, ConstructionType type, int radius, boolean fill, Material material, byte data, Set<Material> indestructible) {
+	public ConstructBatch(Spell spell, Location center, ConstructionType type, int radius, boolean fill, Material material, byte data, Set<Material> indestructible, boolean spawnFallingBlocks) {
 		super(spell.getPlayerSpells().getMaster(), center.getWorld().getName());
 		this.indestructible = indestructible;
 		this.center = center;
@@ -39,6 +40,7 @@ public class ConstructBatch extends VolumeBatch {
 		this.data = data;
 		this.type = type;
 		this.fill = fill;
+		this.spawnFallingBlocks = spawnFallingBlocks;
 		this.playerSpells = spell.getPlayerSpells();
 		this.spell = spell;
 		this.playerName = this.playerSpells.getPlayer().getName();
@@ -168,9 +170,14 @@ public class ConstructBatch extends VolumeBatch {
 		{
 			return true;
 		}
+		Material previousMaterial = block.getType();
+		byte previousData = block.getData();
 		constructedBlocks.add(block);
 		block.setType(material);
 		block.setData(data);
+		if (spawnFallingBlocks) {
+			block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+		}
 		return true;
 	}
 

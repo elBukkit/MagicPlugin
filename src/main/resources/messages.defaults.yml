@@ -234,10 +234,17 @@ messages:
             name: Convert
             description: Convert a spherical area of blocks
             usage: Does not fill air
+        collapse:
+            name: Collapse
+            description: Collapse a spherical area of blocks
         superconvert:
             name: SuperConvert
             description: Convert a large sphere of blocks
             usage: Cast once to select a point, again to convert
+        supercollapse:
+            name: SuperCollapse
+            description: Collapse a large sphere of blocks
+            usage: Cast once to select a point, again to collapse
         superblob:
             name: SuperBlob
             description: Create a large solid sphere
