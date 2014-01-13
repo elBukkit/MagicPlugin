@@ -45,7 +45,8 @@ public class PlayerSpells implements CostReducer
 	private float cooldownReduction = 0;
 	private ItemStack buildingMaterial = null;
 	private long lastClick = 0;
-
+	private long blockPlaceTimeout = 0;
+	
 	public void removeExperience(int xp) {
 		
 		if (activeWand != null && activeWand.hasExperience()) {
@@ -397,6 +398,11 @@ public class PlayerSpells implements CostReducer
 	
 	public void setActiveWand(Wand activeWand) {
 		this.activeWand = activeWand;
+		blockPlaceTimeout = System.currentTimeMillis() + 200;
+	}
+	
+	public long getBlockPlaceTimeout() {
+		return blockPlaceTimeout;
 	}
 	
 	@SuppressWarnings("deprecation")

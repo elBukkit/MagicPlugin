@@ -31,6 +31,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
@@ -1395,13 +1396,37 @@ public class Spells implements Listener
 		}
 		
 		// Check for wand cycling with active inventory
-		if (event.getInventory().getType() == InventoryType.CRAFTING && (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING)) {
+		if (event.getInventory().getType() == InventoryType.CRAFTING) {
 			Player player = (Player)event.getWhoClicked();
 			PlayerSpells playerSpells = getPlayerSpells(player);
 			Wand wand = playerSpells.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
-				wand.cycleInventory();
-				event.setCancelled(true);
+				if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
+					wand.cycleInventory();
+					event.setCancelled(true);
+					return;
+				}
+				
+				if (event.getSlotType() == SlotType.ARMOR) {
+					event.setCancelled(true);
+					return;
+				}
+				
+				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+					// Kind of hacky, but prevents players stealing armor
+					ItemStack clickedItem = event.getCurrentItem();
+					if (clickedItem != null) {
+						Material material = clickedItem.getType();
+						if (material == Material.SKULL_ITEM || material == Material.LEATHER_BOOTS || material == Material.LEATHER_LEGGINGS  || material == Material.LEATHER_CHESTPLATE || material == Material.LEATHER_HELMET 
+							|| material == Material.LEATHER_BOOTS || material == Material.LEATHER_LEGGINGS  || material == Material.LEATHER_CHESTPLATE || material == Material.LEATHER_HELMET
+							|| material == Material.GOLD_BOOTS || material == Material.GOLD_LEGGINGS  || material == Material.GOLD_CHESTPLATE || material == Material.GOLD_HELMET
+							|| material == Material.IRON_BOOTS || material == Material.IRON_LEGGINGS  || material == Material.IRON_CHESTPLATE || material == Material.IRON_HELMET
+							|| material == Material.DIAMOND_BOOTS || material == Material.DIAMOND_LEGGINGS  || material == Material.DIAMOND_CHESTPLATE || material == Material.DIAMOND_HELMET) {
+							event .setCancelled(true);
+							return;
+						}	
+					}
+				}
 			}
 			
 			return;
@@ -1467,6 +1492,16 @@ public class Spells implements Listener
 				inventory.setItem(inventory.getHeldItemSlot(), pickup);
 				wand.activate(spells);
 			} 
+		}
+	}
+
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event)
+	{
+		Player player = event.getPlayer();
+		PlayerSpells spells = getPlayerSpells(player);
+		if (spells.hasStoredInventory() || spells.getBlockPlaceTimeout() > System.currentTimeMillis()) {
+			event.setCancelled(true);
 		}
 	}
 
