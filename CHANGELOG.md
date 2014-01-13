@@ -2,7 +2,8 @@
 
 ## 2.8.4
 
-
+ - Added priority to map urls, default is to use mcserver throttling
+ - Added visual effects to absorb spell
 
 ## 2.8.3
 
