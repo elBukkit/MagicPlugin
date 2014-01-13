@@ -4,6 +4,7 @@
 
  - Added priority to map urls, default is to use mcserver throttling
  - Added visual effects to absorb spell
+ - Add permission check to arrow spell
 
 ## 2.8.3
 

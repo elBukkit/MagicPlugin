@@ -16,6 +16,9 @@ public class ArrowSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		if (!hasBuildPermission(player.getLocation())) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
 		int arrowCount = 1;
 		arrowCount = parameters.getInt("count", arrowCount);
 		boolean useFire = parameters.getBoolean("fire", false);
