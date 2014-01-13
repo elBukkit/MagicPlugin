@@ -496,7 +496,7 @@ wands:
         hunger_regeneration: 1
         power: 1
         haste: 0.3
-        effect_color: FF0000
+        effect_color: 8B008B
         spells:
             - fling
             - blink
@@ -827,6 +827,11 @@ wands:
             - soul_sand
             - stained_glass
             - copy
+            - wool
+            - stained_clay
+            - quartz_block
+            - quartz_block:1
+            - quartz_block:2
     black:
         modifiable: true
         cost_reduction: 0.5
@@ -878,6 +883,10 @@ wands:
             - tnt
             - soul_sand
             - copy
+            - obsidian
+            - stained_clay:15
+            - stained_glass:15
+            - wool:15
     red:
         modifiable: true
         protection_fire: 1
@@ -901,7 +910,9 @@ wands:
             - stationary_lava    
             - stained_clay:14    
             - stained_glass:14    
+            - wool:14
             - sand:1
+            - redstone_block
     blue:
         modifiable: true
         protection: 0.8
@@ -918,16 +929,22 @@ wands:
             - stream
             - convert
             - gills
+            - superconvert
         materials:
             - stationary_water
             - ice
             - packed_ice    
             - stained_clay:3 
             - stained_glass:3
+            - wool:3
             - stained_clay:9
             - stained_glass:9
+            - wool:9
             - stained_clay:11
             - stained_glass:11
+            - wool:11
+            - lapis_block
+            - diamond_block
     green:
         modifiable: true
         protection: 0.8
@@ -942,6 +959,7 @@ wands:
             - recurse
             - earth
             - convert
+            - superblob
         materials:
             - dirt
             - grass
@@ -949,9 +967,13 @@ wands:
             - log
             - vine
             - mycel
+            - emerald_block
+            - leaves
             - stained_clay:5
             - stained_glass:5
             - stained_clay:13
             - stained_glass:13
+            - wool:5
+            - wool:13
             
             
