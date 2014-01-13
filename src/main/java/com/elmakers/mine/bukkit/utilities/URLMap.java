@@ -29,11 +29,6 @@ public class URLMap extends MapRenderer  {
 	// Map ids will be saved in /plugins/<yourplugin>/<configurationFileName>
 	private final static String configurationFileName = "urlmaps.yml";
 	
-	// This can be used to avoid a big lag hit on login.
-	// If you have a lot of maps in one place, try making this number larger.
-	// A map has a 1 / staggerSending chance of being sent to a player (that hasn't already received it) every tick.
-	private final int staggerSending = 10;
-	
 	// Public API
 
 	/**
@@ -58,17 +53,21 @@ public class URLMap extends MapRenderer  {
 					try {
 						Short mapId = null;
 						URLMap map = null;
+						Integer priority = null;
+						if (mapConfig.contains("priority")) {
+							priority = mapConfig.getInt("priority");
+						}
 						try {
 							mapId = Short.parseShort(mapIdString);
 						} catch (Exception ex) {
 							map = get(mapConfig.getString("url"), mapConfig.getInt("x"), mapConfig.getInt("y")
-								, mapConfig.getInt("width"), mapConfig.getInt("height"));
+								, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
 							plugin.getLogger().info("Created new map id " + map.id + " for config id " + mapIdString);
 							needsUpdate = true;
 						}
 						if (map == null && mapId != null) {
 							map = get(mapId, mapConfig.getString("url"), mapConfig.getInt("x"), mapConfig.getInt("y")
-									, mapConfig.getInt("width"), mapConfig.getInt("height"));
+									, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
 						}
 						
 						if (map == null) {
@@ -111,6 +110,9 @@ public class URLMap extends MapRenderer  {
 			mapConfig.set("width", map.width);
 			mapConfig.set("height", map.height);
 			mapConfig.set("enabled", map.isEnabled());
+			if (map.priority != null) {
+				mapConfig.set("priority", map.priority);
+			}
 		}
 		try {
 			configuration.save(configurationFile);
@@ -155,9 +157,13 @@ public class URLMap extends MapRenderer  {
 	 * @param playerName
 	 * @return
 	 */
-	public static ItemStack getPlayerPortrait(String playerName) {
-		MapView mapView = getURL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8);
+	public static ItemStack getPlayerPortrait(String playerName, Integer priority) {
+		MapView mapView = getURL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8, priority);
 		return getMapItem("Photo of " + playerName, mapView);
+	}
+	
+	public static ItemStack getPlayerPortrait(String playerName) {
+		return getPlayerPortrait(playerName, null);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -213,12 +219,17 @@ public class URLMap extends MapRenderer  {
 	 * @param width
 	 * @param height
 	 * @param name
+	 * @param priority
 	 * 	The displayName to give the new item.
 	 * @return
 	 */
-	public static ItemStack getURLItem(String url, int x, int y, int width, int height, String name) {
-		MapView mapView = getURL(url, x, y, width, height);
+	public static ItemStack getURLItem(String url, int x, int y, int width, int height, String name, Integer priority) {
+		MapView mapView = getURL(url, x, y, width, height, priority);
 		return getMapItem(name, mapView);
+	}
+	
+	public static ItemStack getURLItem(String url, int x, int y, int width, int height, String name) {
+		return getURLItem(url, x, y, width, height, name, null);
 	}
 
 	/**
@@ -231,9 +242,13 @@ public class URLMap extends MapRenderer  {
 	 * @param height
 	 * @return
 	 */
-	public static MapView getURL(String url, int x, int y, int width, int height) {
-		URLMap map = URLMap.get(url, x, y, width, height);
+	public static MapView getURL(String url, int x, int y, int width, int height, Integer priority) {
+		URLMap map = URLMap.get(url, x, y, width, height, priority);
 		return map.getMapView();
+	}
+	
+	public static MapView getURL(String url, int x, int y, int width, int height) {
+		return getURL(url, x, y, width, height, null);
 	}
 	
 	/**
@@ -250,7 +265,9 @@ public class URLMap extends MapRenderer  {
 	@Override
 	public void render(MapView mapView, MapCanvas canvas, Player player) {
 		if (rendered) {
-			sendToPlayer(player, mapView);
+			if (priority != null) {
+				sendToPlayer(player, mapView);
+			}
 			return;
 		}
 		
@@ -280,8 +297,9 @@ public class URLMap extends MapRenderer  {
 	protected boolean rendered = false;
 	protected volatile boolean loading = false;
 	protected Set<String> sentToPlayers = new HashSet<String>();
+	protected Integer priority;
 	
-	private static URLMap get(short mapId, String url, int x, int y, int width, int height) {
+	private static URLMap get(short mapId, String url, int x, int y, int width, int height, Integer priority) {
 		String key = getKey(url, x, y, width, height);
 		URLMap map = idMap.get(mapId);
 		if (map != null) {
@@ -298,17 +316,23 @@ public class URLMap extends MapRenderer  {
 			return map;
 		}
 		
-		map = new URLMap(mapId, url, x, y, width, height);
+		map = new URLMap(mapId, url, x, y, width, height, priority);
 		keyMap.put(key, map);
 		idMap.put(mapId, map);
 		return map;
 	}
 
-	@SuppressWarnings("deprecation")
 	private static URLMap get(String url, int x, int y, int width, int height) {
+		return get(url, x, y, width, height, null);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private static URLMap get(String url, int x, int y, int width, int height, Integer priority) {
 		String key = getKey(url, x, y, width, height);
 		if (keyMap.containsKey(key)) {
-			return keyMap.get(key);
+			URLMap map = keyMap.get(key);
+			map.priority = priority;
+			return map;
 		}
 		World world = Bukkit.getWorlds().get(0);
 		MapView mapView = Bukkit.createMap(world);
@@ -316,7 +340,7 @@ public class URLMap extends MapRenderer  {
 			plugin.getLogger().warning("Unable to create new map for url key " + key);
 			return null;
 		}
-		URLMap newMap = get(mapView.getId(), url, x, y, width, height);
+		URLMap newMap = get(mapView.getId(), url, x, y, width, height, priority);
 		save();
 		return newMap;
 	}
@@ -331,13 +355,7 @@ public class URLMap extends MapRenderer  {
 		if (mapView == null) {
 			keyMap.remove(getKey());
 			enabled = false;
-			URLMap replacement = get(url, x, y, width, height);
-			mapView = replacement.getMapView(false);
-			if (mapView == null) {
-				plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey() + ", and failed to re-crate it");				
-			} else {
-				plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey() + ", disabled and re-createted as " + mapView.getId());
-			}
+			plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey() + ", disabled, re-enable in config and fix id");
 			return mapView;
 		}
 		List<MapRenderer> renderers = mapView.getRenderers();
@@ -367,13 +385,14 @@ public class URLMap extends MapRenderer  {
 		return new File(dataFolder, configurationFileName);
 	}
 	
-	private URLMap(short mapId, String url, int x, int y, int width, int height) {
+	private URLMap(short mapId, String url, int x, int y, int width, int height, Integer priority) {
 		this.url = url;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.id = mapId;
+		this.priority = priority;
 	}
 	
 	private static String getKey(String url, int x, int y, int width, int height) {
@@ -434,10 +453,20 @@ public class URLMap extends MapRenderer  {
 	
 	private void sendToPlayer(Player player, MapView mapView) {
 		String playerName = player.getName();
+
+		// Safety check
+		if (priority == null) {
+			return;
+		}
+		
 		// Randomly stagger sending to avoid a big hit on login
-		if (!sentToPlayers.contains(playerName) && (Math.random() * staggerSending) <= 1) {
+		if (!sentToPlayers.contains(playerName) && (Math.random() * priority) <= 1) {
 			sentToPlayers.add(playerName);
 			player.sendMap(mapView);
 		}
+	}
+	
+	public void setPriority(Integer priority) {
+		this.priority = priority;
 	}
 }

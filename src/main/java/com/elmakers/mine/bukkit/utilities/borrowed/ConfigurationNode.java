@@ -447,6 +447,17 @@ public class ConfigurationNode {
 			 return o;
 		 }
 	 }
+	 
+	 public Integer getInteger(String path, Integer def) {
+		 Integer o = castInt(getProperty(path));
+
+		 if (o == null) {
+			 setProperty(path, def);
+			 return def;
+		 } else {
+			 return o;
+		 }
+	 }
 
 	 public int getInteger(String path, int def) {
 		 return getInt(path, def);

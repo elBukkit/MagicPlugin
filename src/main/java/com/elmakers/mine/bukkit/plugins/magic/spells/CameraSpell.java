@@ -18,6 +18,7 @@ public class CameraSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		ItemStack newMapItem = null;
+		Integer priority = parameters.getInteger("priority", null);
 		
 		// Check for special case id
 		if (parameters.containsKey("id"))
@@ -39,7 +40,7 @@ public class CameraSpell extends Spell
 				int width = parameters.getInt("width", 0);
 				int height = parameters.getInt("height", 0);
 				String mapName = parameters.getString("name", "Photo");
-				newMapItem = URLMap.getURLItem(url, x, y, width, height, mapName);
+				newMapItem = URLMap.getURLItem(url, x, y, width, height, mapName, priority);
 			}
 		}
 		
@@ -64,7 +65,7 @@ public class CameraSpell extends Spell
 			if (parameters.containsKey("reload")) {
 				URLMap.forceReloadPlayerPortrait(playerName);
 			}
-			newMapItem = URLMap.getPlayerPortrait(playerName);
+			newMapItem = URLMap.getPlayerPortrait(playerName, priority);
 		}
 		if (newMapItem == null) {
 			sendMessage("Failed to load photo");
