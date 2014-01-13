@@ -387,6 +387,7 @@ wands:
             - superbox
             - supershell
             - superconvert
+            - superpyramid
             - levitate
         materials:
             - stone
@@ -403,6 +404,9 @@ wands:
             - stained_glass_pane
             - stained_clay
             - quartz_block
+            - quartz_block:1
+            - quartz_block:2
+            - lapis_block
             - iron_block
             - diamond_block
             - gold_block
@@ -511,6 +515,8 @@ wands:
             - inferno
             - superblob
             - superconvert
+            - supershell
+            - superpyramid
             - push
             - pull
             - force
@@ -819,6 +825,7 @@ wands:
             - heal
             - fill
             - absorb
+            - flare
         materials:
             - water
             - glowstone
@@ -878,6 +885,8 @@ wands:
             - commit
             - wither
             - superpyramid
+            - disintegrate
+            - flare
         materials:
             - water
             - erase
@@ -908,6 +917,9 @@ wands:
             - convert
             - icbm
             - supershell
+            - flare
+            - grenade
+            - flare
         materials:
             - stationary_lava    
             - stained_clay:14    
@@ -932,6 +944,9 @@ wands:
             - convert
             - gills
             - superconvert
+            - flare
+            - bridge
+            - tesseract
         materials:
             - stationary_water
             - ice
@@ -962,6 +977,13 @@ wands:
             - earth
             - convert
             - superblob
+            - flare
+            - heal
+            - leap
+            - pillar
+            - stalactite
+            - wolf
+            - cat
         materials:
             - dirt
             - grass

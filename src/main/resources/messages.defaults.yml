@@ -246,6 +246,10 @@ messages:
             name: SuperShell
             description: Create a large hollow sphere
             usage: Cast once to select a point, again to construct
+        superpyramid:
+            name: SuperPyramid
+            description: Create a large hollow pyramid
+            usage: Cast once to select a point, again to construct
         superbox:
             name: SuperBox
             description: Create a large hollow box

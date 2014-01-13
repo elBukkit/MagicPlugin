@@ -569,7 +569,8 @@ spells:
             undo: 0
             cooldown: 5000
             target: select
-            type: sphere
+            fill: hollow
+            type: pyramid
         costs:
             xp: 100
     kamikazee:
