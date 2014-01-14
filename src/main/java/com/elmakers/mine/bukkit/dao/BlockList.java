@@ -324,10 +324,12 @@ public class BlockList implements Collection<BlockData>, Serializable
 		dataMap.put("time_to_live", (Integer)timeToLive);
 		dataMap.put("passes_remaining", (Integer)passesRemaining);
 		List<String> blockData = new ArrayList<String>();
-		for (BlockData block : blockList) {
-			blockData.add(block.toString());
+		if (blockList != null) {
+			for (BlockData block : blockList) {
+				blockData.add(block.toString());
+			}
+			dataMap.put("blocks", blockData);
 		}
-		dataMap.put("blocks", blockData);
 	}
 	
 	public String getWorldName() {

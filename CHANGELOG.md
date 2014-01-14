@@ -10,6 +10,7 @@
  - Add Iterate spell. Make Earth spell temporary.
  - Add Collapse and SuperCollapse spells.
  - Add volume and dimension limits to SuperConstruct spells.
+ - Fix a potential NPE when saving a player's undo list, if it is empty.
  
 ## 2.8.3
 
