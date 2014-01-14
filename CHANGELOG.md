@@ -12,6 +12,7 @@
  - Add volume and dimension limits to SuperConstruct spells.
  - Fix a potential NPE when saving a player's undo list, if it is empty.
  - Fix ICBM Spell
+ - Some tweaks to wand organizing
  
 ## 2.8.3
 

@@ -36,8 +36,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 public class Wand implements CostReducer {
 	protected final static int inventorySize = 27;
-	protected final static int inventoryOrganizeSize = 20;
-	protected final static int inventoryOrganizeNewGroupSize = 8;
 	protected final static int hotbarSize = 9;
 	
 	private ItemStack item;

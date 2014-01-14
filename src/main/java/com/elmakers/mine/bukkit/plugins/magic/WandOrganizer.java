@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.bukkit.Material;
@@ -13,6 +14,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class WandOrganizer {
 	private final Wand wand;
+
+	protected final static int inventoryOrganizeSize = 23;
+	protected final static int inventoryOrganizeNewGroupSize = 16;
 
 	private int currentInventoryIndex = 0;
 	private int currentInventoryCount = 0;
@@ -30,7 +34,7 @@ public class WandOrganizer {
 	
 	protected void addToInventory(ItemStack itemStack) {
 		// Advance when almost full
-		if (currentInventoryCount > currentInventory.getSize() - Wand.inventoryOrganizeSize) {
+		if (currentInventoryCount > inventoryOrganizeSize) {
 			nextInventory();
 		}
 		
@@ -71,7 +75,7 @@ public class WandOrganizer {
 		}
 		
 		Spells master = wand.getMaster();
-		Map<String, Collection<String>> groupedSpells = new HashMap<String, Collection<String>>();
+		Map<String, Collection<String>> groupedSpells = new TreeMap<String, Collection<String>>();
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {
 			Spell spell = master.getSpell(spellName);
@@ -89,10 +93,12 @@ public class WandOrganizer {
 			}
 		}
 		
-		Set<String> materials = wand.getMaterialNames();
+		Set<String> wandMaterials = wand.getMaterialNames();
 		for (String hotbarItemName : hotbarMaterialNames) {
-			materials.remove(hotbarItemName);
+			wandMaterials.remove(hotbarItemName);
 		}
+		Set<String> materials = new TreeSet<String>();
+		materials.addAll(wandMaterials);
 		
 		wand.clearInventories();
 		currentInventoryIndex = 0;
@@ -102,7 +108,7 @@ public class WandOrganizer {
 		for (Collection<String> spellGroup : groupedSpells.values()) {
 		
 			// Start a new inventory for a new group if the previous inventory is over 2/3 full
-			if (currentInventoryCount > Wand.inventoryOrganizeNewGroupSize) {
+			if (currentInventoryCount > inventoryOrganizeNewGroupSize) {
 				nextInventory();
 			}
 			
