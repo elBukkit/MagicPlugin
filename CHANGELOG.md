@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2.8.5
+
+
 ## 2.8.4
 
  - Added priority to map urls, default is to use mcserver throttling
