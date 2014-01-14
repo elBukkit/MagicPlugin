@@ -18,4 +18,13 @@ public class MaterialAndData {
 	public Material getMaterial() {
 		return material;
 	}
+	
+	public String getKey() {
+		String materialKey = material.name().toLowerCase();
+		if (data != 0) {
+			materialKey += ":" + data;
+		}
+		
+		return materialKey;
+	}
 }

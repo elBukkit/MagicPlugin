@@ -25,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 public class MagicPlugin extends JavaPlugin
 {	
@@ -142,7 +143,7 @@ public class MagicPlugin extends JavaPlugin
 			
 			String subCommandPNode = "Magic.commands." + cmd.getName() + "." + subCommand + "." + subCommand2;
 			
-			if (!spells.hasPermission(sender, subCommandPNode)) {
+			if (!spells.hasPermission(sender, subCommandPNode, true)) {
 				return;
 			}
 			
@@ -151,7 +152,10 @@ public class MagicPlugin extends JavaPlugin
 				if (activeWand != null) {
 					Collection<String> materialNames = activeWand.getMaterialNames();
 					for (String materialName : materialNames) {
-						options.add(materialName);
+						MaterialAndData materialData = ConfigurationNode.toMaterialAndData(materialName);
+						if (materialData != null) {
+							options.add(materialData.getKey());
+						}
 					}
 				}
 			}
@@ -612,7 +616,7 @@ public class MagicPlugin extends JavaPlugin
 	public boolean onWandAdd(CommandSender sender, Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			sender.sendMessage("Use: /wand add <spell|material> [material]");
+			sender.sendMessage("Use: /wand add <spell|material> [material:data]");
 			return true;
 		}
 
@@ -636,10 +640,11 @@ public class MagicPlugin extends JavaPlugin
 		String spellName = parameters[0];
 		if (spellName.equals("material")) {
 			if (parameters.length < 2) {
-				sender.sendMessage("Use: /wand add material <material> [data]");
+				sender.sendMessage("Use: /wand add material <material:data>");
 				return true;
 			}
-			String materialName = parameters[1];
+			String[] pieces = StringUtils.split(parameters[1], ':');
+			String materialName = pieces[0];
 			byte data = 0;
 			Material material = Material.AIR;
 			if (materialName.equals("erase")) {
@@ -652,8 +657,8 @@ public class MagicPlugin extends JavaPlugin
 					sender.sendMessage(materialName + " is not a valid material");
 					return true;
 				}
-				if (parameters.length > 2) {
-					data = (byte)Integer.parseInt(parameters[2]);
+				if (pieces.length > 1) {
+					data = Byte.parseByte(pieces[1]);
 				}
 			}
 			if (wand.addMaterial(material, data, true, false)) {
@@ -694,7 +699,7 @@ public class MagicPlugin extends JavaPlugin
 	public boolean onWandRemove(CommandSender sender, Player player, String[] parameters)
 	{
 		if (parameters.length < 1) {
-			sender.sendMessage("Use: /wand remove <spell|material> [material]");
+			sender.sendMessage("Use: /wand remove <spell|material> [material:data]");
 			return true;
 		}
 
@@ -718,10 +723,11 @@ public class MagicPlugin extends JavaPlugin
 		String spellName = parameters[0];	
 		if (spellName.equals("material")) {
 			if (parameters.length < 2) {
-				sender.sendMessage("Use: /wand remove material <material> [data]");
+				sender.sendMessage("Use: /wand remove material <material:data>");
 				return true;
 			}
-			String materialName = parameters[1];
+			String[] pieces = StringUtils.split(parameters[1], ':');
+			String materialName = pieces[0];
 			Material material = Material.AIR;
 			byte data = 0;
 			if (materialName.equals("erase")) {
@@ -730,8 +736,8 @@ public class MagicPlugin extends JavaPlugin
 				material = Wand.CopyMaterial;
 			} else {
 				material = ConfigurationNode.toMaterial(materialName);
-				if (parameters.length > 2) {
-					data = (byte)Integer.parseInt(parameters[2]);
+				if (pieces.length > 1) {
+					data = Byte.parseByte(pieces[1]);
 				}
 			}
 			if (wand.removeMaterial(material, data)) {

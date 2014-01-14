@@ -656,7 +656,7 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	public boolean removeMaterial(Material material, byte data) {
-		if (!modifiable) return false;
+		if (!modifiable || material == null) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
