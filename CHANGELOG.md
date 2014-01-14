@@ -14,6 +14,7 @@
  - Fix ICBM Spell
  - Some tweaks to wand organizing
  - Make alter pass through entities that can't be altered.
+ - Add tab-completion. Very basic at the moment, but very helpful for /castp and /wandp admin commands.
  
 ## 2.8.3
 

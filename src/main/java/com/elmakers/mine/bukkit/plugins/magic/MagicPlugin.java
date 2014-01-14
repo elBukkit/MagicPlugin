@@ -17,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
@@ -74,6 +75,96 @@ public class MagicPlugin extends JavaPlugin
 		runningTask.runTaskTimer(this, 5, 5);
 	}
 
+	protected void handleWandCommandTab(List<String> options, CommandSender sender, Command cmd, String alias, String[] args)
+	{
+		if (args.length == 1) {
+			options.add("add");
+			options.add("remove");
+			options.add("name");
+			options.add("fill");
+			options.add("configure");
+			options.add("combine");
+			options.add("describe");
+			options.add("upgrade");
+			options.addAll(Wand.getWandKeys());
+			return;
+		}
+		
+		// TODO
+	}
+
+	protected void handleCastCommandTab(List<String> options, CommandSender sender, Command cmd, String alias, String[] args)
+	{
+		if (args.length == 1) {
+			List<Spell> spellList = spells.getAllSpells();
+			for (Spell spell : spellList) {
+				options.add(spell.getKey());
+			}
+			
+			return;
+		}
+		
+		// TODO
+	}
+	
+	@EventHandler
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
+	{
+		String completeCommand = args.length > 0 ? args[args.length - 1] : "";
+		List<String> options = new ArrayList<String>();
+		if (cmd.getName().equalsIgnoreCase("magic"))
+		{
+			if (args.length == 1) {
+				options.add("populate");
+				options.add("search");
+				options.add("cancel");
+				options.add("reload");
+			}
+		}
+		else if (cmd.getName().equalsIgnoreCase("wand")) 
+		{
+			handleWandCommandTab(options, sender, cmd, alias, args);
+		}
+		else if (cmd.getName().equalsIgnoreCase("wandp")) 
+		{
+			if (args.length == 1) {
+				options.addAll(Spells.getPlayerNames());
+			} else {
+				String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+				handleWandCommandTab(options, sender, cmd, alias, args2);
+			}
+		}
+		else if (cmd.getName().equalsIgnoreCase("cast")) 
+		{
+			handleCastCommandTab(options, sender, cmd, alias, args);
+		}
+		else if (cmd.getName().equalsIgnoreCase("castp")) 
+		{
+			if (args.length == 1) {
+				options.addAll(Spells.getPlayerNames());
+			} else {
+				String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+				handleCastCommandTab(options, sender, cmd, alias, args2);
+			}
+		}
+		
+		if (completeCommand.length() > 0) {
+			completeCommand = completeCommand.toLowerCase();
+			List<String> allOptions = options;
+			options = new ArrayList<String>();
+			for (String option : allOptions) {
+				String lowercase = option.toLowerCase();
+				if (lowercase.startsWith(completeCommand)) {
+					options.add(option);
+				}
+			}
+		}
+		
+		Collections.sort(options);
+		
+		return options;
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
 	{
@@ -183,7 +274,6 @@ public class MagicPlugin extends JavaPlugin
 				onWandList(sender);
 				return true;
 			}
-			
 			
 			return false;
 		}

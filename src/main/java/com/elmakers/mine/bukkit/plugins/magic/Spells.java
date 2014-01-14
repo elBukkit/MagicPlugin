@@ -1626,6 +1626,18 @@ public class Spells implements Listener
 		playerSpells.setCostReduction(override ? castCommandCostReduction : 0);
 		playerSpells.setCooldownReduction(override ? castCommandCooldownReduction : 0);
 	}
+	
+	public static List<String> getPlayerNames() {
+		List<String> playerNames = new ArrayList<String>();
+		List<World> worlds = Bukkit.getWorlds();
+		for (World world : worlds) {
+			List<Player> players = world.getPlayers();
+			for (Player player : players) {
+				playerNames.add(player.getName());
+			}
+		}
+		return playerNames;
+	}
 
 	/*
 	 * Private data

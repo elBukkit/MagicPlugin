@@ -1495,6 +1495,10 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	public static Collection<String> getWandKeys() {
+		return wandTemplates.keySet();
+	}
+	
 	public static Collection<ConfigurationNode> getWandTemplates() {
 		return wandTemplates.values();
 	}
