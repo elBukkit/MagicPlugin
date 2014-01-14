@@ -2,6 +2,7 @@
 
 ## 2.8.5
 
+ - Tab completion improvements
 
 ## 2.8.4
 
