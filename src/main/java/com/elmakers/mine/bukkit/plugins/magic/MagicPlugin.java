@@ -78,19 +78,22 @@ public class MagicPlugin extends JavaPlugin
 	protected void handleWandCommandTab(List<String> options, CommandSender sender, Command cmd, String alias, String[] args)
 	{
 		if (args.length == 1) {
-			options.add("add");
-			options.add("remove");
-			options.add("name");
-			options.add("fill");
-			options.add("configure");
-			options.add("combine");
-			options.add("describe");
-			options.add("upgrade");
-			options.addAll(Wand.getWandKeys());
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "add");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "remove");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "name");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "fill");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "configure");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "combine");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "upgrade");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "describe");
+			Collection<String> allWands = Wand.getWandKeys();
+			for (String wandKey : allWands) {
+				addIfPermissible(sender, options, "Magic.commands." + cmd.getName() + ".wand.", wandKey, true);
+			}
 			return;
 		}
 		
-		// TODO
+		// TODO : Custom completion for configure, upgrade, combine, add, remove, etc
 	}
 
 	protected void handleCastCommandTab(List<String> options, CommandSender sender, Command cmd, String alias, String[] args)
@@ -98,27 +101,42 @@ public class MagicPlugin extends JavaPlugin
 		if (args.length == 1) {
 			List<Spell> spellList = spells.getAllSpells();
 			for (Spell spell : spellList) {
-				options.add(spell.getKey());
+				addIfPermissible(sender, options, "Magic." + cmd.getName() + ".", spell.getKey(), true);
 			}
 			
 			return;
 		}
 		
-		// TODO
+		// TODO : Custom completion for spell parameters
+	}
+	
+	protected void addIfPermissible(CommandSender sender, List<String> options, String permissionPrefix, String option, boolean defaultValue)
+	{
+		if (spells.hasPermission(sender, permissionPrefix + option, defaultValue))
+		{
+			options.add(option);
+		}
+	}
+	
+	protected void addIfPermissible(CommandSender sender, List<String> options, String permissionPrefix, String option)
+	{
+		addIfPermissible(sender, options, permissionPrefix, option, false);
 	}
 	
 	@EventHandler
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
 	{
+		// TODO: Permission filtering!
+		
 		String completeCommand = args.length > 0 ? args[args.length - 1] : "";
 		List<String> options = new ArrayList<String>();
 		if (cmd.getName().equalsIgnoreCase("magic"))
 		{
 			if (args.length == 1) {
-				options.add("populate");
-				options.add("search");
-				options.add("cancel");
-				options.add("reload");
+				addIfPermissible(sender, options, "Magic.commands.", "populate");
+				addIfPermissible(sender, options, "Magic.commands.", "search");
+				addIfPermissible(sender, options, "Magic.commands.", "cancel");
+				addIfPermissible(sender, options, "Magic.commands.", "reload");
 			}
 		}
 		else if (cmd.getName().equalsIgnoreCase("wand")) 
