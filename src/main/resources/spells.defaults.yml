@@ -299,7 +299,7 @@ spells:
         parameters:
             cooldown: 5000
             size: '10'
-            projectile: SmallFireball
+            projectile: Fireball
         costs:
             xp: 100
     wither:
