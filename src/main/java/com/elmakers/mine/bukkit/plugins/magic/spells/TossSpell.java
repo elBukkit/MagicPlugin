@@ -59,6 +59,7 @@ public class TossSpell extends Spell
 				return SpellResult.FAILURE;
 			}
 
+			block.setDropItem(false);
 			block.setVelocity(direction);	
 		}
 

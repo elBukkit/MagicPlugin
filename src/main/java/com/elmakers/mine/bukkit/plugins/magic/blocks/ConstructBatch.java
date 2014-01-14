@@ -5,6 +5,7 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
@@ -176,7 +177,8 @@ public class ConstructBatch extends VolumeBatch {
 		block.setType(material);
 		block.setData(data);
 		if (spawnFallingBlocks) {
-			block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+			FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+			falling.setDropItem(false);
 		}
 		return true;
 	}

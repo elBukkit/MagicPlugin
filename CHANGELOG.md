@@ -3,6 +3,7 @@
 ## 2.8.5
 
  - Tab completion improvements
+ - Collapse and Toss will no longer drop blocks (thanks, Drkmaster83!)
 
 ## 2.8.4
 
