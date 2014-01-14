@@ -22,7 +22,7 @@ public class ProjectileSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		int size = parameters.getInt("size", defaultSize);
-		size = (int)(playerSpells.getPowerMultiplier() * size);
+		size = (int)(playerSpells.getRadiusMultiplier() * size);
 		boolean useFire = parameters.getBoolean("fire", true);
 		String projectileClass = parameters.getString("projectile", "Fireball");
 		try {

@@ -134,7 +134,7 @@ public class FrostSpell extends Spell
 		}
 
 		int radius = parameters.getInt("radius", defaultRadius);
-		radius = (int)(playerSpells.getPowerMultiplier() * radius);		
+		radius = (int)(playerSpells.getRadiusMultiplier() * radius);		
 		FrostAction action = new FrostAction();
 
 		if (radius <= 1)

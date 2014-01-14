@@ -1118,7 +1118,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected int getMaxRange()
 	{
-		return Math.min(maxRange, (int)(playerSpells.getPowerMultiplier() * range));
+		return Math.min(maxRange, (int)(playerSpells.getRangeMultiplier() * range));
 	}
 
 	protected int getMaxRangeSquared()

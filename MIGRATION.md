@@ -1,5 +1,15 @@
 # Migration Notes
 
+## 2.8.5
+
+### magic.yml
+
+ - max_power_multiplier removed, replaced with the following:
+   
+    max_power_construction_multiplier: 5.0
+    max_power_radius_multiplier: 1.5
+    max_power_range_multiplier: 3.0
+
 ## 2.8.3
 
 ### spells.yml

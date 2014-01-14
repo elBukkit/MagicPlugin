@@ -64,11 +64,11 @@ public class ConstructSpell extends Spell
 				radius = (int)targetBlock.getLocation().distance(target.getLocation());
 				target = targetBlock;
 			}
+		} else {
+			radius = (int)(playerSpells.getRadiusMultiplier() * (float)radius);			
 		}
-		
-		// radius = (int)(playerSpells.getPowerMultiplier() * radius);
 
-		int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
+		int maxDimension = (int)(playerSpells.getConstructionMultiplier() * (float)parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION));
 
 		int diameter = radius * 2;
 		if (diameter > maxDimension)

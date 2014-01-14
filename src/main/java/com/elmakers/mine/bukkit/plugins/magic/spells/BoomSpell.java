@@ -48,7 +48,7 @@ public class BoomSpell extends Spell {
 		boolean showEffect = parameters.getBoolean("show_effect", true);
 		String targetType = (String)parameters.getString("target", "");
 		
-		size = (int)(playerSpells.getPowerMultiplier() * size);
+		size = (int)(playerSpells.getRadiusMultiplier() * size);
 		
 		if (targetType.equals("here"))
 		{

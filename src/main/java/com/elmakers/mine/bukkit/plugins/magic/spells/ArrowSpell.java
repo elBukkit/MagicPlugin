@@ -21,6 +21,9 @@ public class ArrowSpell extends Spell
 		}
 		int arrowCount = 1;
 		arrowCount = parameters.getInt("count", arrowCount);
+		// Modify with wand power
+		arrowCount *= playerSpells.getRadiusMultiplier();
+		
 		boolean useFire = parameters.getBoolean("fire", false);
 
 		float speed = 0.6f;
@@ -32,10 +35,10 @@ public class ArrowSpell extends Spell
 		damage = parameters.getDouble("damage", damage);
 		
 		// Modify with wand power
-		float powerMultiplier = playerSpells.getPowerMultiplier();
-		speed *= powerMultiplier;
-		damage *= powerMultiplier;
-		spread /= powerMultiplier;
+		float damageMultiplier = playerSpells.getDamageMultiplier();
+		speed *= damageMultiplier;
+		damage *= damageMultiplier;
+		spread /= damageMultiplier;
 		Vector direction = player.getLocation().getDirection();
 		for (int ai = 0; ai < arrowCount; ai++)
 		{

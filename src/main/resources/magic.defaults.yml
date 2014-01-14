@@ -89,7 +89,9 @@ general:
     enable_essentials_signs: true
     undo_depth: 64
     click_cooldown: 150
-    max_power_multiplier: 2
+    max_power_construction_multiplier: 5.0
+    max_power_radius_multiplier: 1.5
+    max_power_range_multiplier: 3.0
     fill_wands: false
     keep_wands_on_death: false
     indestructible_wands: true

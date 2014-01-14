@@ -120,8 +120,23 @@ public class PlayerSpells implements CostReducer
 		return activeWand == null ? false : activeWand.usesMana();
 	}
 	
-	public float getPowerMultiplier() {
-		float maxPowerMultiplier = master.getMaxPowerMultiplier() - 1;
+	public float getDamageMultiplier() {
+		float maxPowerMultiplier = master.getMaxDamagePowerMultiplier() - 1;
+		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+	}
+	
+	public float getRangeMultiplier() {
+		float maxPowerMultiplier = master.getMaxRangePowerMultiplier() - 1;
+		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+	}
+	
+	public float getConstructionMultiplier() {
+		float maxPowerMultiplier = master.getMaxConstructionPowerMultiplier() - 1;
+		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+	}
+	
+	public float getRadiusMultiplier() {
+		float maxPowerMultiplier = master.getMaxRadiusPowerMultiplier() - 1;
 		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
 	}
 	

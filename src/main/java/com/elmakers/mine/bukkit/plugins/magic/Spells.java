@@ -211,8 +211,20 @@ public class Spells implements Listener
 		return targetThroughMaterials;
 	}
 	
-	public float getMaxPowerMultiplier() {
-		return maxPowerMultiplier;
+	public float getMaxDamagePowerMultiplier() {
+		return maxDamagePowerMultiplier;
+	}
+	
+	public float getMaxConstructionPowerMultiplier() {
+		return maxConstructionPowerMultiplier;
+	}
+	
+	public float getMaxRadiusPowerMultiplier() {
+		return maxRadiusPowerMultiplier;
+	}
+	
+	public float getMaxRangePowerMultiplier() {
+		return maxRangePowerMultiplier;
 	}
 	
 	/*
@@ -688,7 +700,10 @@ public class Spells implements Listener
 		fillWands = generalNode.getBoolean("fill_wands", fillWands);
 		indestructibleWands = generalNode.getBoolean("indestructible_wands", indestructibleWands);
 		keepWandsOnDeath = generalNode.getBoolean("keep_wands_on_death", keepWandsOnDeath);
-		maxPowerMultiplier = (float)generalNode.getDouble("max_power_multiplier", maxPowerMultiplier);
+		maxDamagePowerMultiplier = (float)generalNode.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
+		maxConstructionPowerMultiplier = (float)generalNode.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
+		maxRangePowerMultiplier = (float)generalNode.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
+		maxRadiusPowerMultiplier = (float)generalNode.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
@@ -1680,7 +1695,10 @@ public class Spells implements Listener
 	 private boolean							 organizingEnabled				= false;
 	 private boolean							 dynmapUpdate					= true;
 	 private boolean							 dynmapShowWands				= true;
-	 private float							 	 maxPowerMultiplier			    = 1.0f;
+	 private float							 	 maxDamagePowerMultiplier	    = 2.0f;
+	 private float								 maxConstructionPowerMultiplier = 5.0f;
+	 private float								 maxRadiusPowerMultiplier 		= 1.5f;
+	 private float								 maxRangePowerMultiplier 		= 3.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	= 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;

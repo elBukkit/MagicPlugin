@@ -73,12 +73,12 @@ public class ShunkenHeadSpell extends Spell
 		byte data = 3;
 		if (li instanceof Player)
 		{
-			li.damage(playerSpells.getPowerMultiplier() * playerDamage, player);
+			li.damage(playerSpells.getDamageMultiplier() * playerDamage, player);
 			ownerName = ((Player)li).getName();
 		}
 		else
 		{
-			li.damage(playerSpells.getPowerMultiplier() * entityDamage);
+			li.damage(playerSpells.getDamageMultiplier() * entityDamage);
 			switch (li.getType()) {
 				case CREEPER:
 					data = 4;

@@ -70,6 +70,7 @@ public class FillSpell extends Spell
 		{
 			deactivate();
 			int size = parameters.getInt("size", 8);
+			size = (int)(playerSpells.getRadiusMultiplier() * size);
 			blockRecurse.setMaxRecursion(size);
 
 			PlayerSpells playerSpells = spells.getPlayerSpells(player);
@@ -128,6 +129,9 @@ public class FillSpell extends Spell
 
 			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
 			int maxVolume = parameters.getInteger("max_volume", DEFAULT_MAX_VOLUME);
+			
+			maxDimension = (int)(playerSpells.getConstructionMultiplier() * maxDimension);
+			maxVolume = (int)(playerSpells.getConstructionMultiplier() * maxVolume);
 			
 			if (!batch.checkDimension(maxDimension))
 			{

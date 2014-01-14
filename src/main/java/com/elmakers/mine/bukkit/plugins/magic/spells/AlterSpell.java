@@ -53,6 +53,7 @@ public class AlterSpell extends Spell
 		}
 		
 		int recurseDistance = parameters.getInteger("depth", DEFAULT_RECURSE_DISTANCE);
+		recurseDistance = (int)(playerSpells.getRadiusMultiplier() * recurseDistance);
 
 		List<Integer> adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
 		List<Integer> maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);

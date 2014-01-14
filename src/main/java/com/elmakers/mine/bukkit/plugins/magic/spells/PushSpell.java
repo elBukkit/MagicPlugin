@@ -32,7 +32,7 @@ public class PushSpell extends Spell
 
 	public void forceAll(double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance)
 	{
-		float maxDistance = (float)maxAllDistance * playerSpells.getPowerMultiplier();
+		float maxDistance = (float)maxAllDistance * playerSpells.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
 		
 		// Visual effect
@@ -70,7 +70,9 @@ public class PushSpell extends Spell
 		pull = typeString.equals("pull");
 
 		double multiplier = parameters.getDouble("size", 1);
-		multiplier *= playerSpells.getPowerMultiplier();
+		if (push) {
+			multiplier *= playerSpells.getDamageMultiplier();
+		}
 		int count = parameters.getInt("count", 0);
 		
 		boolean allowAll = parameters.getBoolean("allow_area", true);

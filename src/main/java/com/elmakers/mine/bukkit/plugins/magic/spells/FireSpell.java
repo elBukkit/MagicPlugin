@@ -72,7 +72,7 @@ public class FireSpell extends Spell
 		}
 
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
-		radius = (int)(playerSpells.getPowerMultiplier() * radius);
+		radius = (int)(playerSpells.getRadiusMultiplier() * radius);
 		
 		FireAction action = new FireAction();
 
