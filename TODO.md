@@ -2,6 +2,7 @@
 
 IMPORTANT STUFF:
 
+ - Fix icbm and fireball...
  - Fix recall spell with natural spawn.. hook into essentials?
  - Investigate: [Magic] Failed to save undo data: null, massive server lag :\ (see stack trace at end)
  - Fix wand reorganization
@@ -117,3 +118,55 @@ STACK TRACES / EXTRA DEBUG INFO
 [17:26:45 WARN]:        at net.minecraft.server.v1_7_R1.MinecraftServer.run(MinecraftServer.java:488)
 [17:26:45 WARN]:        at net.minecraft.server.v1_7_R1.ThreadServerApplication.run(SourceFile:617)
 [17:26:45 WARN]: [Magic] Failed to save undo data: null
+
+
+
+
+
+
+
+
+        at net.minecraft.server.v1_7_R1.DedicatedServer.u(DedicatedServer.java:250) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.MinecraftServer.t(MinecraftServer.java:545) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.MinecraftServer.run(MinecraftServer.java:457) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.ThreadServerApplication.run(SourceFile:617) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+Caused by: java.lang.NullPointerException
+        at com.elmakers.mine.bukkit.plugins.magic.WandLevel.randomizeWand(WandLevel.java:168) ~[?:?]
+        at com.elmakers.mine.bukkit.plugins.magic.WandLevel.randomizeWand(WandLevel.java:312) ~[?:?]
+        at com.elmakers.mine.bukkit.plugins.magic.Spells.onEnchantItem(Spells.java:1533) ~[?:?]
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.6.0_65]
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39) ~[?:1.6.0_65]
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25) ~[?:1.6.0_65]
+        at java.lang.reflect.Method.invoke(Method.java:597) ~[?:1.6.0_65]
+        at org.bukkit.plugin.java.JavaPluginLoader$1.execute(JavaPluginLoader.java:425) ~[craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        ... 14 more
+
+
+org.bukkit.event.EventException
+        at org.bukkit.plugin.java.JavaPluginLoader$1.execute(JavaPluginLoader.java:427) ~[craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at org.bukkit.plugin.RegisteredListener.callEvent(RegisteredListener.java:62) ~[craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at org.bukkit.plugin.SimplePluginManager.fireEvent(SimplePluginManager.java:481) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at org.bukkit.plugin.SimplePluginManager.callEvent(SimplePluginManager.java:466) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.ContainerEnchantTable.a(ContainerEnchantTable.java:167) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.PlayerConnection.a(PlayerConnection.java:1441) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.PacketPlayInEnchantItem.a(SourceFile:22) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.PacketPlayInEnchantItem.handle(SourceFile:8) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.NetworkManager.a(NetworkManager.java:146) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.ServerConnection.c(SourceFile:134) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.MinecraftServer.u(MinecraftServer.java:655) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.DedicatedServer.u(DedicatedServer.java:250) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.MinecraftServer.t(MinecraftServer.java:545) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.MinecraftServer.run(MinecraftServer.java:457) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        at net.minecraft.server.v1_7_R1.ThreadServerApplication.run(SourceFile:617) [craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+Caused by: java.lang.NullPointerException
+        at com.elmakers.mine.bukkit.plugins.magic.WandLevel.randomizeWand(WandLevel.java:168) ~[?:?]
+        at com.elmakers.mine.bukkit.plugins.magic.WandLevel.randomizeWand(WandLevel.java:312) ~[?:?]
+        at com.elmakers.mine.bukkit.plugins.magic.Spells.onEnchantItem(Spells.java:1533) ~[?:?]
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.6.0_65]
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39) ~[?:1.6.0_65]
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25) ~[?:1.6.0_65]
+        at java.lang.reflect.Method.invoke(Method.java:597) ~[?:1.6.0_65]
+        at org.bukkit.plugin.java.JavaPluginLoader$1.execute(JavaPluginLoader.java:425) ~[craftbukkit.jar:git-Bukkit-1.7.2-R0.2-b2974jnks]
+        ... 14 more
+
+
