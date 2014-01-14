@@ -69,6 +69,8 @@ public class IterateSpell extends Spell
 				currentTarget.setType(material);
 				currentTarget.setData(data);
 				
+				spells.updateBlock(currentTarget);
+				
 				Location effectLocation = currentTarget.getLocation();	
 				effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
 			}
