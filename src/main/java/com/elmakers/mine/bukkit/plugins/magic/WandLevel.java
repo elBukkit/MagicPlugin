@@ -165,8 +165,10 @@ public class WandLevel {
 			if (spell != null) {
 				needsMaterials = needsMaterials || (spell.usesMaterial() && !spell.hasMaterialOverride());
 				List<CastingCost> costs = spell.getCosts();
-				for (CastingCost cost : costs) {
-					maxXpCost = Math.max(maxXpCost, cost.getXP());
+				if (costs != null) {
+					for (CastingCost cost : costs) {
+						maxXpCost = Math.max(maxXpCost, cost.getXP());
+					}
 				}
 			}
 		}
