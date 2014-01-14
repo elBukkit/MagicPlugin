@@ -13,6 +13,7 @@
  - Fix a potential NPE when saving a player's undo list, if it is empty.
  - Fix ICBM Spell
  - Some tweaks to wand organizing
+ - Make alter pass through entities that can't be altered.
  
 ## 2.8.3
 

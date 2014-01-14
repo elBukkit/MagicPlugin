@@ -32,8 +32,7 @@ public class AlterSpell extends Spell
 	static final String DEFAULT_ADJUSTABLES = "3 ,5, 6, 8, 9, 10,11,12,17,162,18,161,23,24,27,28,29,31,33,35,37,38,43,44,50,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,71,75,76,77,81,83,85,86,93,94,95,98,99,100,104,105,108,109,114,115,125,126,128,134,135,136,140,141,142,144,155,156,159,160,171,172,175";
 	static final String DEFAULT_ADJUST_MAX =  "2 ,5, 5 ,15,15,15,15,1 ,15,15 ,3 ,1  ,5 ,2 ,9 ,9 ,5 ,2 ,5 ,15,8 ,8 ,15,15,5, 15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,15,3 ,9 ,3 ,2 ,14,15,5 ,5 ,15,15,15,5 ,0 ,5 ,5 ,15 ,3 ,15,15 ,7  ,7  ,3  ,3  ,3  ,7  ,15 ,15 ,3  ,3  ,3  ,3  ,15 ,7  ,7  ,4  ,4  ,3  ,15 ,15 ,15 ,15 ,6";
 	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0  ,0 ,0  ,2 ,0 ,0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,0  ,0 ,0 ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0";
-	static final String DEFAULT_RECURSABLES = "5,17,18,59,104,105,115,141,142";
-	static final int DEFAULT_RECURSE_DISTANCE = 8;
+	static final int DEFAULT_RECURSE_DISTANCE = 0;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -41,7 +40,10 @@ public class AlterSpell extends Spell
 	{
 		Target target = getTarget();
 		if (target.isEntity()) {
-			return alterEntity(target.getEntity());
+			SpellResult result = alterEntity(target.getEntity());
+			if (result != SpellResult.NO_TARGET) {
+				return result;
+			}
 		}
 		Block targetBlock = target.getBlock();
 		if (targetBlock == null) 
@@ -52,7 +54,6 @@ public class AlterSpell extends Spell
 		
 		int recurseDistance = parameters.getInteger("depth", DEFAULT_RECURSE_DISTANCE);
 
-		List<Integer> recursableMaterials = csv.parseIntegers(DEFAULT_RECURSABLES);
 		List<Integer> adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
 		List<Integer> maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);
 		List<Integer> minData = csv.parseIntegers(DEFAULT_ADJUST_MIN);
@@ -81,7 +82,7 @@ public class AlterSpell extends Spell
 
 		byte data = (byte)((((originalData - minValue) + 1) % dataSize) + minValue);
 
-		boolean recursive = recursableMaterials.contains(targetBlock.getTypeId());
+		boolean recursive = recurseDistance > 0;
 
 		adjust(targetBlock, data, undoList, recursive, recurseDistance, 0);
 
@@ -110,7 +111,6 @@ public class AlterSpell extends Spell
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected SpellResult alterEntity(Entity entity) {
 		EntityType entityType = entity.getType();
 		switch (entityType) {
@@ -179,7 +179,6 @@ public class AlterSpell extends Spell
 				castMessage("You altered a skeleton");
 				break;
 			default:
-				sendMessage("Can't alter " + entityType.getName());
 				return SpellResult.NO_TARGET;
 		};
 		

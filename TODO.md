@@ -4,7 +4,6 @@ IMPORTANT STUFF:
 
  - Fix recall spell with natural spawn.. hook into essentials?
  - Can't alter "null" message from alter on bad target?
-   - fix up alter in general, remove id-based lists
 
 NEW SPELLS:
 
@@ -20,6 +19,7 @@ OTHER STUFF:
  
  - Add tab completion
  
+ - Fix up alter in general, remove id-based lists
  - Make undo spell first cancel any pending batches for the player (or just one?)
  - urlmaps.yml got truncated?
    - Check for duplicate keys when searching for a new one (?)
