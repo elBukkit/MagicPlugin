@@ -46,6 +46,9 @@ public class MineSpell extends Spell
 		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		if (isIndestructible(target)) {
+			return SpellResult.NO_TARGET;
+		}
 
 		int maxRecursion = parameters.getInteger("recursion_depth", DEFAULT_MAX_RECURSION);
 		BlockList minedBlocks = new BlockList();

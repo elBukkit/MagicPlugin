@@ -396,16 +396,22 @@ public class Spells implements Listener
 	{
 		return plugin;
 	}
+
+	public boolean isIndestructible(Player player, Location location) {
+		return isIndestructible(player, location.getBlock());
+	}
+
+	public boolean isIndestructible(Player player, Block block) {
+		// TODO: Player/wand-based overrides?
+		return (indestructibleMaterials.contains(block.getType()));		
+	}
 	
 	public boolean hasBuildPermission(Player player, Location location) {
 		return hasBuildPermission(player, location.getBlock());
 	}
 
 	public boolean hasBuildPermission(Player player, Block block) {
-		// First check the indestructible list
-		if (indestructibleMaterials.contains(block.getType())) return false;
-
-		// Now check the region manager.
+		// Check the region manager.
 		// TODO: We need to be able to do WG permission checks while a player is offline.
 		if (regionManager == null || player == null) return true;
 		
@@ -418,7 +424,6 @@ public class Spells implements Listener
 		}
 		
 		return true;
-		
 	}
 	
 	/*

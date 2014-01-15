@@ -163,6 +163,10 @@ public class ConstructBatch extends VolumeBatch {
 			block.getChunk().load();
 			return false;
 		}
+		if (playerSpells.isIndestructible(block)) 
+		{
+			return true;
+		}
 		if (checkDestructible && !isDestructible(block))
 		{
 			return true;

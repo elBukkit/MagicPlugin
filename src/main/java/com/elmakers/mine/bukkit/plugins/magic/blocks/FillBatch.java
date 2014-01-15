@@ -68,7 +68,6 @@ public class FillBatch extends VolumeBatch {
 	@SuppressWarnings("deprecation")
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		boolean updated = false; // Only update map once for efficiency.
 		
 		while (processedBlocks <= maxBlocks && ix < absx) {
 			Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
@@ -79,12 +78,8 @@ public class FillBatch extends VolumeBatch {
 			}
 			processedBlocks++;
 
-			if (playerSpells.hasBuildPermission(block)) {
-				if (!updated) {
-					// updated = true; Testing always updating for now!
-					spells.updateBlock(world.getName(), x, y, z);
-				}
-				
+			if (playerSpells.hasBuildPermission(block) && !playerSpells.isIndestructible(block)) {
+				spells.updateBlock(world.getName(), x, y, z);
 				filledBlocks.add(block);
 				block.setType(material);
 				block.setData(data);

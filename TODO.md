@@ -4,6 +4,7 @@ IMPORTANT STUFF:
 
  - Fix recall spell with natural spawn.. hook into essentials?
  - Can't alter "null" message from alter on bad target?
+ - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
 
 NEW SPELLS:
 

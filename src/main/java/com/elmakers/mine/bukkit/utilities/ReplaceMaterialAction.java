@@ -46,6 +46,11 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		
+		if (playerSpells.isIndestructible(block))
+		{
+			return SpellResult.FAILURE;
+		}
 
 		if (replaceable == null || replaceable.contains(block.getType()))
 		{

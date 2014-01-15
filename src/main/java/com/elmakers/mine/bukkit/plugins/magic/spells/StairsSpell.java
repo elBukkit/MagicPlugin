@@ -80,7 +80,7 @@ public class StairsSpell extends Spell
 				targetBlock = bottomBlock;
 				for (int h = 0; h < height; h++)
 				{
-					if (isDestructible(targetBlock))
+					if (isDestructible(targetBlock) && !isIndestructible(targetBlock) && hasBuildPermission(targetBlock))
 					{
 						// Check to see if the torch will stick to the wall
 						// TODO: Check for glass, other non-sticky types.

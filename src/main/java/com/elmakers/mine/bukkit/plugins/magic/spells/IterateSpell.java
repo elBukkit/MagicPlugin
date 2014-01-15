@@ -59,7 +59,7 @@ public class IterateSpell extends Spell
 		for (int i = 0; i < iterateBlocks; i++)
 		{
 			Block currentTarget = target.getWorld().getBlockAt(targetLoc.getBlockX(), targetLoc.getBlockY(), targetLoc.getBlockZ());
-			if (currentTarget.getType() == Material.AIR)
+			if (currentTarget.getType() == Material.AIR && !isIndestructible(currentTarget) && hasBuildPermission(currentTarget))
 			{
 				iteratedBlocks.add(currentTarget);
 				if (incrementData) {

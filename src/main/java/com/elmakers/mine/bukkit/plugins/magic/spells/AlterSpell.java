@@ -72,6 +72,9 @@ public class AlterSpell extends Spell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		if (isIndestructible(targetBlock)) {
+			return SpellResult.NO_TARGET;
+		}
 
 		BlockList undoList = new BlockList();
 		int originalData = targetBlock.getData();

@@ -448,6 +448,14 @@ public class PlayerSpells implements CostReducer
 		return master.hasBuildPermission(player, block);
 	}
 	
+	public boolean isIndestructible(Location location) {
+		return master.isIndestructible(player, location);
+	}
+	
+	public boolean isIndestructible(Block block) {
+		return master.isIndestructible(player, block);
+	}
+	
 	public void onCast(SpellResult result) {
 		switch(result) {
 			case SUCCESS:

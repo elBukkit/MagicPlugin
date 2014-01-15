@@ -65,10 +65,12 @@ public class TowerSpell extends Spell {
 					// Leave the middle empty
 					if (dx != 0 || dz != 0)
 					{
-						blocksCreated++;
 						Block block = getBlockAt(x, y, z);
-						towerBlocks.add(block);
-						block.setTypeId(material);
+						if (!isIndestructible(block) && hasBuildPermission(block)) {
+							blocksCreated++;
+							towerBlocks.add(block);
+							block.setTypeId(material);
+						}
 					}					
 				}
 			}

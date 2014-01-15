@@ -18,11 +18,11 @@ public class UndoSpell extends Spell
 			boolean undone = spells.undo(undoPlayer);
 			if (undone)
 			{
-				castMessage("You revert " + undoPlayer + "'s construction");
+				sendMessage("You revert " + undoPlayer + "'s construction");
 			}
 			else
 			{
-				castMessage("There is nothing to undo for " + undoPlayer);
+				sendMessage("There is nothing to undo for " + undoPlayer);
 			}
 			return undone ? SpellResult.SUCCESS : SpellResult.FAILURE;
 		}

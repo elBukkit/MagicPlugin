@@ -5,6 +5,7 @@
  - Tab completion improvements
  - Collapse and Toss will no longer drop blocks (thanks, Drkmaster83!)
  - Break max_power_multiplier up, allow a wider range of wand power effects (MIGRATION NOTE)
+ - Separate out permission and indestructibility tests- weird behavior with bedrock, etc.
 
 ## 2.8.4
 

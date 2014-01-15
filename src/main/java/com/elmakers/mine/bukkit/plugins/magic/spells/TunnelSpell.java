@@ -79,7 +79,7 @@ public class TunnelSpell extends Spell
 				targetBlock = bottomBlock;
 				for (int h = 0; h < height; h++)
 				{
-					if (isDestructible(targetBlock))
+					if (isDestructible(targetBlock) && !isIndestructible(targetBlock) && hasBuildPermission(targetBlock))
 					{
 						// Put torches on the left and right wall 
 						/*
