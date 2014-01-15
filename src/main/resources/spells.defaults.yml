@@ -167,7 +167,7 @@ spells:
           cooldown: 1000
           speed: 6
           spread: 0
-          damage: 20
+          damage: 6
         costs:
             xp: 10
     pull:
@@ -882,9 +882,9 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            player_damage: 2
+            player_damage: 5
             cooldown: 100
-            entity_damage: 100
+            entity_damage: 50
         costs:
             xp: 30
     blink:
@@ -999,6 +999,9 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
+            player_damage: 2
+            cooldown: 100
+            entity_damage: 20
         costs:
             xp: 20
     flare:
