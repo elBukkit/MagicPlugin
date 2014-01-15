@@ -1002,5 +1002,29 @@ wands:
             - stained_glass:13
             - wool:5
             - wool:13
-            
+    admin:
+        modifiable: true
+        cost_reduction: 1
+        protection: 1
+        cooldown_reduction: 1
+        health_regeneration: 1
+        hunger_regeneration: 1
+        power: 1
+        haste: 0.3
+        effect_color: 888888
+        spells:
+            - levitate
+            - blink
+            - recurse
+            - time
+            - sniper
+            - rewind
+            - fill
+            - heal
+        materials:
+            - water
+            - lava
+            - glowstone
+            - erase
+            - copy            
             
