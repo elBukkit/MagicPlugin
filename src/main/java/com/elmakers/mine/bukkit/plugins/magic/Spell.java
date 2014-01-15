@@ -483,7 +483,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public boolean isIndestructible(Block block)
 	{
-		return playerSpells.hasBuildPermission(block);
+		return playerSpells.isIndestructible(block);
 	}
 
 	public void targetEntity(Class<? extends Entity> typeOf)
