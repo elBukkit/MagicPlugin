@@ -280,6 +280,10 @@ messages:
             name: Commit
             description: Commit your actions
             usage: Clears your undo queue
+        rewind:
+            name: Rewind
+            description: Undo the target action
+            usage: Will undo another player's actions
         push:
             name: Push
             description: Push things away from you
@@ -454,6 +458,9 @@ messages:
         elder:
             name: Elder Wand
             description: The Uber Wand
+        admin:
+            name: Admin Wand
+            description: Has admin-level spells
         air:
             name: Airbending Student
         water:

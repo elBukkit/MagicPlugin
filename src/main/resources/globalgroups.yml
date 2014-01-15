@@ -14,6 +14,9 @@
     - Magic.commands.cast
     - Magic.commands.search
     - Magic.commands.cancel
+    - Magic.cast.rewind
+    - Magic.cast.disarm
+    - Magic.cast.gather
 
   g:magic_admin:
     permissions:

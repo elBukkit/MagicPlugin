@@ -705,6 +705,17 @@ spells:
             type: commit
         costs:
             xp: 5
+    rewind:
+        icon: written_book
+        category: engineering
+        class: UndoSpell
+        parameters:
+            allow_max_range: false
+            range: 200
+            cooldown: 0
+            type: target_all
+        costs:
+            xp: 100
     push:
         icon: rails
         category: airbending

@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -33,7 +32,7 @@ public class UndoSpell extends Spell
 			if (typeString.equals("commit"))
 			{
 				if (spells.commit(player.getName())) {
-					castMessage("Undo queue cleared");
+					sendMessage("Undo queue cleared");
 					return SpellResult.SUCCESS;
 				} else {
 					castMessage("Nothing to commit");
@@ -43,7 +42,7 @@ public class UndoSpell extends Spell
 			boolean targetAll = typeString.equals("target_all");
 			if (typeString.equals("target") || targetAll)
 			{
-				targetThrough(Material.GLASS);
+				// targetThrough(Material.GLASS);
 				Block target = getTargetBlock();
 				if (target != null)
 				{
@@ -55,11 +54,13 @@ public class UndoSpell extends Spell
 					else
 					{
 						undone = spells.undo(player.getName(), target);
+						if (undone) {
+							sendMessage("You revert your construction");
+						}
 					}
 
 					if (undone)
 					{
-						castMessage("You revert your construction");
 						return SpellResult.SUCCESS;
 					}
 				}
