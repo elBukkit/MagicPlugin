@@ -31,7 +31,7 @@ public class InvisibilitySpell extends Spell
 		cloak();
 		castMessage("You are invisible");
 
-		spells.registerEvent(SpellEventType.PLAYER_MOVE, this);
+		controller.registerEvent(SpellEventType.PLAYER_MOVE, this);
 		return SpellResult.SUCCESS;
 	}
 
@@ -42,7 +42,7 @@ public class InvisibilitySpell extends Spell
 
 		sendMessage("You are visible again");
 		uncloak();
-		spells.unregisterEvent(SpellEventType.PLAYER_MOVE, this);
+		controller.unregisterEvent(SpellEventType.PLAYER_MOVE, this);
 	}
 
 	public boolean hasMoved()

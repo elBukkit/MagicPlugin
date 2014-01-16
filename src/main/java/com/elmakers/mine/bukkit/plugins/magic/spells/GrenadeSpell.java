@@ -18,7 +18,7 @@ public class GrenadeSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int size = parameters.getInt("size", defaultSize);
-		size = (int)(playerSpells.getRadiusMultiplier() * size);		
+		size = (int)(mage.getRadiusMultiplier() * size);		
 		int fuse = parameters.getInt("fuse", 80);
 		boolean useFire = parameters.getBoolean("fire", false);
 
@@ -26,7 +26,7 @@ public class GrenadeSpell extends Spell
 		if (target == null) {
 			return SpellResult.NO_TARGET;
 		}
-		if (!playerSpells.hasBuildPermission(target)) {
+		if (!mage.hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		Location loc = target.getLocation();

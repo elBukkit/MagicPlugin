@@ -33,7 +33,7 @@ public class LevitateSpell extends Spell
 		player.setAllowFlight(false);
 		
 		// Prevent the player from death by fall
-		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		levitateEnded = System.currentTimeMillis();
 		
 		castMessage("You feel heavier");
@@ -44,7 +44,7 @@ public class LevitateSpell extends Spell
 		Vector velocity = player.getVelocity();
 		velocity.setY(velocity.getY() + 2);
 		player.setVelocity(velocity);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(spells.getPlugin(), new Runnable() {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			public void run() {
 				player.setAllowFlight(true);
 				player.setFlying(true);
@@ -59,7 +59,7 @@ public class LevitateSpell extends Spell
 	{
 		if (event.getCause() != DamageCause.FALL) return;
 
-		spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+		controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
 
 		if (levitateEnded == 0) return;
 

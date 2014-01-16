@@ -67,7 +67,7 @@ public class ThrustSpell extends Spell
 
 		public void activate(ThrustSpell spell)
 		{
-			spell.spells.registerEvent(SpellEventType.PLAYER_DAMAGE, spell);
+			spell.controller.registerEvent(SpellEventType.PLAYER_DAMAGE, spell);
 
 			players.put(spell.getPlayer().getName(), spell);
 
@@ -82,7 +82,7 @@ public class ThrustSpell extends Spell
 
 		public void deactivate(ThrustSpell spell)
 		{
-			spell.spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, spell);
+			spell.controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, spell);
 
 			players.remove(spell.getPlayer().getName());
 			player.setVelocity(new Vector(0,0,0));
@@ -264,7 +264,7 @@ public class ThrustSpell extends Spell
 
 		if (action == null)
 		{
-			action = new LevitateAction(spells.getPlugin());
+			action = new LevitateAction(controller.getPlugin());
 		}
 
 		if (action.isActive(player))

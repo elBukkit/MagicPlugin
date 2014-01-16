@@ -85,9 +85,9 @@ import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class Spells implements Listener 
+public class MagicController implements Listener 
 {
-	public Spells(Plugin plugin)
+	public MagicController(Plugin plugin)
 	{
 		this.log = plugin.getLogger();
 	}
@@ -96,12 +96,12 @@ public class Spells implements Listener
 	 * Public API - Use for hooking up a plugin, or calling a spell
 	 */
 
-	public PlayerSpells getPlayerSpells(Player player)
+	public Mage getPlayerSpells(Player player)
 	{
-		PlayerSpells spells = playerSpells.get(player.getName());
+		Mage spells = playerSpells.get(player.getName());
 		if (spells == null)
 		{
-			spells = new PlayerSpells(this, player);
+			spells = new Mage(this, player);
 			playerSpells.put(player.getName(), spells);
 		}
 
@@ -110,9 +110,9 @@ public class Spells implements Listener
 		return spells;
 	}
 	
-	public PlayerSpells getPlayerSpells(String playerName) {
+	public Mage getPlayerSpells(String playerName) {
 		if (!playerSpells.containsKey(playerName)) {
-			playerSpells.put(playerName, new PlayerSpells(this, null));
+			playerSpells.put(playerName, new Mage(this, null));
 		}
 		
 		return playerSpells.get(playerName);
@@ -313,13 +313,13 @@ public class Spells implements Listener
 
 	public void registerEvent(SpellEventType type, Spell spell)
 	{
-		PlayerSpells spells = getPlayerSpells(spell.getPlayer());
+		Mage spells = getPlayerSpells(spell.getPlayer());
 		spells.registerEvent(type, spell);
 	}
 
 	public void unregisterEvent(SpellEventType type, Spell spell)
 	{
-		PlayerSpells spells = getPlayerSpells(spell.getPlayer());
+		Mage spells = getPlayerSpells(spell.getPlayer());
 		spells.unregisterEvent(type, spell);
 	}
 
@@ -329,7 +329,7 @@ public class Spells implements Listener
 
 	public boolean cancel(Player player)
 	{
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		return playerSpells.cancel();
 	}
 
@@ -473,7 +473,7 @@ public class Spells implements Listener
 		// Set up the PlayerSpells timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
-				for (PlayerSpells spells : playerSpells.values()) {
+				for (Mage spells : playerSpells.values()) {
 					spells.tick();
 				}
 			}
@@ -641,7 +641,7 @@ public class Spells implements Listener
 		
 		File playersFile = new File(dataFolder, playersFileName);
 		Configuration playerConfiguration = new Configuration(playersFile);
-		for (Entry<String, PlayerSpells> spellsEntry : playerSpells.entrySet()) {
+		for (Entry<String, Mage> spellsEntry : playerSpells.entrySet()) {
 			ConfigurationNode playerNode = playerConfiguration.createChild(spellsEntry.getKey());
 			spellsEntry.getValue().save(playerNode);
 		}
@@ -750,7 +750,7 @@ public class Spells implements Listener
 		
 		// Try to link to Essentials:
 		if (generalNode.getBoolean("enable_essentials_signs", false)) {
-			final Spells me = this;
+			final MagicController me = this;
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				public void run() {
 					try {
@@ -869,7 +869,7 @@ public class Spells implements Listener
 		ItemStack next = inventory.getItem(event.getNewSlot());
 		ItemStack previous = inventory.getItem(event.getPreviousSlot());
 
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		Wand activeWand = playerSpells.getActiveWand();
 		
 		// Check for active Wand
@@ -911,7 +911,7 @@ public class Spells implements Listener
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		PlayerSpells spells = getPlayerSpells(event.getPlayer());
+		Mage spells = getPlayerSpells(event.getPlayer());
 		spells.onPlayerMove(event);
 	}
 
@@ -928,7 +928,7 @@ public class Spells implements Listener
 		String rule = player.getWorld().getGameRuleValue("keepInventory");
 		if (rule.equals("true")) return;
 		
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		List<ItemStack> drops = event.getDrops();
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
@@ -992,7 +992,7 @@ public class Spells implements Listener
 
 	public void onPlayerDamage(Player player, EntityDamageEvent event)
 	{
-		PlayerSpells spells = getPlayerSpells(player);
+		Mage spells = getPlayerSpells(player);
 		spells.onPlayerDamage(event);
 	}
 	
@@ -1000,7 +1000,7 @@ public class Spells implements Listener
 	public void onEntityCombust(EntityCombustEvent event)
 	{
 		if (!(event.getEntity() instanceof Player)) return;
-		PlayerSpells spells = getPlayerSpells((Player)event.getEntity());
+		Mage spells = getPlayerSpells((Player)event.getEntity());
 		spells.onPlayerCombust(event);
 	}
 	
@@ -1077,7 +1077,7 @@ public class Spells implements Listener
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();		
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		if (!playerSpells.checkLastClick(clickCooldown)) {
 			return;
 		}
@@ -1171,7 +1171,7 @@ public class Spells implements Listener
 	{
 		// Check for wand re-activation.
 		Player player = event.getPlayer();
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		Wand wand = Wand.getActiveWand(this, player);
 		if (wand != null) {
 			wand.activate(playerSpells);
@@ -1185,7 +1185,7 @@ public class Spells implements Listener
 		if (event.getAmount() <= 0) return;
 		
 		Player player = event.getPlayer();
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
 			wand.onPlayerExpChange(event);
@@ -1200,7 +1200,7 @@ public class Spells implements Listener
 		// Make sure they get their portraits back right away on relogin.
 		URLMap.resend(player.getName());
 		
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
 			wand.deactivate();
@@ -1221,7 +1221,7 @@ public class Spells implements Listener
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event)
 	{
-		for (PlayerSpells spells : playerSpells.values()) {
+		for (Mage spells : playerSpells.values()) {
 			Player player = spells.getPlayer();
 			if (player == null) continue;
 			
@@ -1242,7 +1242,7 @@ public class Spells implements Listener
 		for (Player player : players) {
 			Wand wand = Wand.getActiveWand(this, player);
 			if (wand != null) {
-				PlayerSpells spells = getPlayerSpells(player);
+				Mage spells = getPlayerSpells(player);
 				wand.activate(spells);
 				player.updateInventory();
 			}
@@ -1279,7 +1279,7 @@ public class Spells implements Listener
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		
 		Player player = (Player)event.getWhoClicked();
-		PlayerSpells spells = getPlayerSpells(player);
+		Mage spells = getPlayerSpells(player);
 		
 		// Don't allow crafting in the wand inventory.
 		if (spells.hasStoredInventory()) {
@@ -1293,7 +1293,7 @@ public class Spells implements Listener
 		if (!(event.getPlayer() instanceof Player)) return;
 		
 		Player player = (Player)event.getPlayer();
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
 			// NOTE: This never actually happens, unfortunately opening the player's inventory is client-side.
@@ -1418,7 +1418,7 @@ public class Spells implements Listener
 		// Check for wand cycling with active inventory
 		if (event.getInventory().getType() == InventoryType.CRAFTING) {
 			Player player = (Player)event.getWhoClicked();
-			PlayerSpells playerSpells = getPlayerSpells(player);
+			Mage playerSpells = getPlayerSpells(player);
 			Wand wand = playerSpells.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
 				if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
@@ -1459,7 +1459,7 @@ public class Spells implements Listener
 
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
-		PlayerSpells playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getPlayerSpells(player);
 		
 		// Save the inventory state the the current wand if its spell inventory is open
 		// This is just to make sure we don't lose changes made to the inventory
@@ -1490,7 +1490,7 @@ public class Spells implements Listener
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
-		PlayerSpells spells = getPlayerSpells(event.getPlayer());
+		Mage spells = getPlayerSpells(event.getPlayer());
 		ItemStack pickup = event.getItem().getItemStack();
 		if (dynmapShowWands && Wand.isWand(pickup)) {
 			Wand wand = new Wand(this, pickup);
@@ -1519,7 +1519,7 @@ public class Spells implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Player player = event.getPlayer();
-		PlayerSpells spells = getPlayerSpells(player);
+		Mage spells = getPlayerSpells(player);
 		if (spells.hasStoredInventory() || spells.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
 		}
@@ -1529,7 +1529,7 @@ public class Spells implements Listener
 	public void onPlayerDropItem(PlayerDropItemEvent event)
 	{
 		Player player = event.getPlayer();
-		PlayerSpells spells = getPlayerSpells(player);
+		Mage spells = getPlayerSpells(player);
 		Wand activeWand = spells.getActiveWand();
 		if (activeWand != null) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
@@ -1596,7 +1596,7 @@ public class Spells implements Listener
 		if (dynmapShowWands && dynmap != null) {
 			if (!dynmap.markerAPIInitialized()) {
 				if (retries > 0) {
-					final Spells me = this;
+					final MagicController me = this;
 					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 						public void run() {
 							me.checkForWands(entities, retries + 1);
@@ -1625,7 +1625,7 @@ public class Spells implements Listener
 	@EventHandler
 	public void onChunkLoad(ChunkLoadEvent e) {
 		// Look for wands in the chnk
-		final Spells me = this;
+		final MagicController me = this;
 		final ChunkLoadEvent event = e;
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
@@ -1642,7 +1642,7 @@ public class Spells implements Listener
 		log.info(message);
 	}
 	
-	public void toggleCastCommandOverrides(PlayerSpells playerSpells, boolean override) {
+	public void toggleCastCommandOverrides(Mage playerSpells, boolean override) {
 		playerSpells.setCostReduction(override ? castCommandCostReduction : 0);
 		playerSpells.setCooldownReduction(override ? castCommandCooldownReduction : 0);
 	}
@@ -1712,7 +1712,7 @@ public class Spells implements Listener
 	 
 	 private final Logger                        log                            ;
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
-	 private final HashMap<String, PlayerSpells> playerSpells                   = new HashMap<String, PlayerSpells>();
+	 private final HashMap<String, Mage> playerSpells                   = new HashMap<String, Mage>();
 
 	 private Recipe								 wandRecipe						= null;
 	 private Material							 wandRecipeUpperMaterial		= Material.DIAMOND;

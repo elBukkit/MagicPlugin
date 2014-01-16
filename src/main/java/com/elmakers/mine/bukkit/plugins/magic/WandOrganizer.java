@@ -74,7 +74,7 @@ public class WandOrganizer {
 			}
 		}
 		
-		Spells master = wand.getMaster();
+		MagicController master = wand.getMaster();
 		Map<String, Collection<String>> groupedSpells = new TreeMap<String, Collection<String>>();
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {

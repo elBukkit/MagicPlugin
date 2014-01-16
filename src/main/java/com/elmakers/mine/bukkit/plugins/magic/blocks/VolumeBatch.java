@@ -3,10 +3,10 @@ package com.elmakers.mine.bukkit.plugins.magic.blocks;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.dao.BlockData;
-import com.elmakers.mine.bukkit.plugins.magic.Spells;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 
 public abstract class VolumeBatch implements BlockBatch {
-	protected final Spells spells;
+	protected final MagicController spells;
 	private String worldName;
 	private boolean finished = false;
 
@@ -17,7 +17,7 @@ public abstract class VolumeBatch implements BlockBatch {
 	private Integer maxy = null;
 	private Integer maxz = null;
 	
-	public VolumeBatch(Spells spells, String worldName) {
+	public VolumeBatch(MagicController spells, String worldName) {
 		this.spells = spells;
 		this.worldName = worldName;
 	}

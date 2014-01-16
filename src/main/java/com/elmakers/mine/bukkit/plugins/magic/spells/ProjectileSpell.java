@@ -18,11 +18,11 @@ public class ProjectileSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!playerSpells.hasBuildPermission(player.getLocation())) {
+		if (!mage.hasBuildPermission(player.getLocation())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		int size = parameters.getInt("size", defaultSize);
-		size = (int)(playerSpells.getRadiusMultiplier() * size);
+		size = (int)(mage.getRadiusMultiplier() * size);
 		boolean useFire = parameters.getBoolean("fire", true);
 		String projectileClass = parameters.getString("projectile", "Fireball");
 		try {

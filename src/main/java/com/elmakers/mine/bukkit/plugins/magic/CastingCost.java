@@ -56,7 +56,7 @@ public class CastingCost
 		return cost;
 	}
 
-	public boolean has(PlayerSpells playerSpells)
+	public boolean has(Mage playerSpells)
 	{
 		Inventory inventory = playerSpells.getInventory();
 		boolean hasItem = item == null || inventory.contains(item, getAmount(playerSpells));
@@ -64,7 +64,7 @@ public class CastingCost
 		return hasItem && hasXp;
 	}
 
-	public void use(PlayerSpells playerSpells)
+	public void use(Mage playerSpells)
 	{
 		Inventory inventory = playerSpells.getInventory();
 		if (item != null) {

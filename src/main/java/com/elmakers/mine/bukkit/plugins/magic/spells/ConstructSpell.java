@@ -65,10 +65,10 @@ public class ConstructSpell extends Spell
 				target = targetBlock;
 			}
 		} else {
-			radius = (int)(playerSpells.getRadiusMultiplier() * (float)radius);			
+			radius = (int)(mage.getRadiusMultiplier() * (float)radius);			
 		}
 
-		int maxDimension = (int)(playerSpells.getConstructionMultiplier() * (float)parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION));
+		int maxDimension = (int)(mage.getConstructionMultiplier() * (float)parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION));
 
 		int diameter = radius * 2;
 		if (diameter > maxDimension)
@@ -132,7 +132,7 @@ public class ConstructSpell extends Spell
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
 		}
-		spells.addPendingBlockBatch(batch);
+		controller.addPendingBlockBatch(batch);
 	}
 	
 	@Override

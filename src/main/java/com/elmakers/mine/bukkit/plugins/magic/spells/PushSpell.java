@@ -32,13 +32,13 @@ public class PushSpell extends Spell
 
 	public void forceAll(double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance)
 	{
-		float maxDistance = (float)maxAllDistance * playerSpells.getRangeMultiplier();
+		float maxDistance = (float)maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
 		
 		// Visual effect
 		int effectRange = Math.min((int)maxRingEffectRange, maxEffectRange / effectSpeed);
 		Location effectLocation = player.getLocation();
-		EffectRing effectRing = new EffectRing(spells.getPlugin(), effectLocation, effectRange, ringEffectAmount);
+		EffectRing effectRing = new EffectRing(controller.getPlugin(), effectLocation, effectRange, ringEffectAmount);
 		if (pull) effectRing.setInvert(true);
 		startEffect(effectRing, effectRange);
 		
@@ -71,7 +71,7 @@ public class PushSpell extends Spell
 
 		double multiplier = parameters.getDouble("size", 1);
 		if (push) {
-			multiplier *= playerSpells.getDamageMultiplier();
+			multiplier *= mage.getDamageMultiplier();
 		}
 		int count = parameters.getInt("count", 0);
 		
@@ -110,7 +110,7 @@ public class PushSpell extends Spell
 			effectLocation.add(effectDirection);
 			effectDirection.multiply(-1);
 		}
-		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		startEffect(effectTrail, effectRange);
 
 		// Don't deduct costs for not doing anything but still show the effect.
@@ -157,7 +157,7 @@ public class PushSpell extends Spell
 	protected void startEffect(EffectPlayer effect, int effectRange) {
 		effect.setParticleType(ParticleType.SPELL);
 		effect.setParticleCount(3);
-		Color effectColor = playerSpells.getEffectColor();
+		Color effectColor = mage.getEffectColor();
 		effect.setEffectData(effectColor != null ? effectColor.asRGB() : 2);
 		effect.setParticleOffset(0.2f, 0.2f, 0.2f);
 		effect.setSpeed(effectSpeed);

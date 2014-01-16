@@ -22,7 +22,7 @@ public class ArrowSpell extends Spell
 		int arrowCount = 1;
 		arrowCount = parameters.getInt("count", arrowCount);
 		// Modify with wand power
-		arrowCount *= playerSpells.getRadiusMultiplier();
+		arrowCount *= mage.getRadiusMultiplier();
 		
 		boolean useFire = parameters.getBoolean("fire", false);
 
@@ -35,7 +35,7 @@ public class ArrowSpell extends Spell
 		damage = parameters.getDouble("damage", damage);
 		
 		// Modify with wand power
-		float damageMultiplier = playerSpells.getDamageMultiplier();
+		float damageMultiplier = mage.getDamageMultiplier();
 		speed *= damageMultiplier;
 		damage *= damageMultiplier;
 		spread /= damageMultiplier;

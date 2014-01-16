@@ -47,7 +47,7 @@ public class ShunkenHeadSpell extends Spell
 		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
 		Location effectLocation = player.getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.INSTANT_SPELL);
 		effectTrail.setParticleCount(particleCount);
 		effectTrail.setEffectData(particleData);
@@ -73,12 +73,12 @@ public class ShunkenHeadSpell extends Spell
 		byte data = 3;
 		if (li instanceof Player)
 		{
-			li.damage(playerSpells.getDamageMultiplier() * playerDamage, player);
+			li.damage(mage.getDamageMultiplier() * playerDamage, player);
 			ownerName = ((Player)li).getName();
 		}
 		else
 		{
-			li.damage(playerSpells.getDamageMultiplier() * entityDamage);
+			li.damage(mage.getDamageMultiplier() * entityDamage);
 			switch (li.getType()) {
 				case CREEPER:
 					data = 4;

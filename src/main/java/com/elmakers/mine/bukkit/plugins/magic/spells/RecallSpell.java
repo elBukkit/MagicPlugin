@@ -32,7 +32,7 @@ public class RecallSpell extends Spell
 		}
 		if (typeString.equals("death") || getYRotation() < -70  && autoResurrect)
 		{
-			Location deathLocation = playerSpells.getLastDeathLocation();
+			Location deathLocation = mage.getLastDeathLocation();
 			if (deathLocation == null)
 			{
 				return SpellResult.NO_TARGET;

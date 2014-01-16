@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.FillBatch;
@@ -70,10 +70,10 @@ public class FillSpell extends Spell
 		{
 			deactivate();
 			int size = parameters.getInt("size", 8);
-			size = (int)(playerSpells.getRadiusMultiplier() * size);
+			size = (int)(mage.getRadiusMultiplier() * size);
 			blockRecurse.setMaxRecursion(size);
 
-			PlayerSpells playerSpells = spells.getPlayerSpells(player);
+			Mage playerSpells = controller.getPlayerSpells(player);
 			Material targetMaterial = targetBlock.getType();
 			ReplaceMaterialAction action = new ReplaceMaterialAction(playerSpells, targetBlock, material, data);
 
@@ -95,8 +95,8 @@ public class FillSpell extends Spell
 				action.addReplaceable(Material.STATIONARY_LAVA);
 			}
 			blockRecurse.recurse(targetBlock, action);
-			spells.addToUndoQueue(player, action.getBlocks());
-			spells.updateBlock(targetBlock);
+			controller.addToUndoQueue(player, action.getBlocks());
+			controller.updateBlock(targetBlock);
 			castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
 			return SpellResult.SUCCESS;
 		}
@@ -110,10 +110,10 @@ public class FillSpell extends Spell
 			targetBlock.setType(material);
 			targetBlock.setData(data);
 			
-			spells.updateBlock(targetBlock);
+			controller.updateBlock(targetBlock);
 
 			castMessage("Painting with " + material.name().toLowerCase());
-			spells.addToUndoQueue(player, filledBlocks);
+			controller.addToUndoQueue(player, filledBlocks);
 			return SpellResult.SUCCESS;
 		}
 
@@ -130,8 +130,8 @@ public class FillSpell extends Spell
 			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
 			int maxVolume = parameters.getInteger("max_volume", DEFAULT_MAX_VOLUME);
 			
-			maxDimension = (int)(playerSpells.getConstructionMultiplier() * maxDimension);
-			maxVolume = (int)(playerSpells.getConstructionMultiplier() * maxVolume);
+			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
+			maxVolume = (int)(mage.getConstructionMultiplier() * maxVolume);
 			
 			if (!batch.checkDimension(maxDimension))
 			{
@@ -145,7 +145,7 @@ public class FillSpell extends Spell
 				return SpellResult.FAILURE;
 			}
 
-			spells.addPendingBlockBatch(batch);
+			controller.addPendingBlockBatch(batch);
 			
 			deactivate();
 			return SpellResult.SUCCESS;

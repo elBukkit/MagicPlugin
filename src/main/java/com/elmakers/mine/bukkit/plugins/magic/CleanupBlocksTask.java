@@ -6,10 +6,10 @@ import com.elmakers.mine.bukkit.utilities.UndoQueue;
 public class CleanupBlocksTask implements Runnable
 {
 	protected BlockList undoBlocks;
-	protected Spells spells;
+	protected MagicController spells;
 	protected UndoQueue queue;
 
-	public CleanupBlocksTask(UndoQueue queue, Spells spells, BlockList cleanup)
+	public CleanupBlocksTask(UndoQueue queue, MagicController spells, BlockList cleanup)
 	{
 		this.undoBlocks = cleanup;
 		this.spells = spells;

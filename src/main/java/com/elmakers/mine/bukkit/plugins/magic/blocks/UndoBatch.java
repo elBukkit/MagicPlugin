@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import com.elmakers.mine.bukkit.dao.BlockData;
 import com.elmakers.mine.bukkit.dao.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spells;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 
 public class UndoBatch extends VolumeBatch {
 	private final BlockList blockList;
 	private int blockIndex = 0;
 	
-	public UndoBatch(Spells spells, BlockList blockList) {
+	public UndoBatch(MagicController spells, BlockList blockList) {
 		super(spells, blockList.getWorldName());
 		this.blockList = blockList;
 	}

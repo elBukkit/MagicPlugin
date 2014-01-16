@@ -35,7 +35,7 @@ public class CushionSpell extends Spell
 
 		BlockList cushionBlocks = new BlockList();
 		cushionBlocks.setTimeToLive(7000);
-		spells.disablePhysics(8000);
+		controller.disablePhysics(8000);
 
 		int bubbleStart = -cushionWidth  / 2;
 		int bubbleEnd = cushionWidth  / 2;
@@ -59,7 +59,7 @@ public class CushionSpell extends Spell
 			}
 		}
 
-		spells.scheduleCleanup(player.getName(), cushionBlocks);
+		controller.scheduleCleanup(player.getName(), cushionBlocks);
 		return SpellResult.SUCCESS;
 	}
 }

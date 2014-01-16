@@ -19,12 +19,12 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandChestPopulator extends BlockPopulator {
 	private final Logger log;
-	private final Spells spells; 
+	private final MagicController spells; 
 	private final LinkedList<WeightedPair<Integer>> baseProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<String>> wandProbability = new LinkedList<WeightedPair<String>>();
 	private int maxy = 255;
 	
-	public WandChestPopulator(Spells spells, ConfigurationNode config) {
+	public WandChestPopulator(MagicController spells, ConfigurationNode config) {
 		this.spells = spells;
 		this.log = spells.getLog();
 		

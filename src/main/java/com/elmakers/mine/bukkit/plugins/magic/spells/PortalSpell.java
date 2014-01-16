@@ -76,7 +76,7 @@ public class PortalSpell extends Spell
 
 		public void remove()
 		{
-			portalBlocks.undo(spells);
+			portalBlocks.undo(controller);
 			portalBlocks = null;
 			PortalSpell.allPortals.remove(this);
 		}
@@ -252,7 +252,7 @@ public class PortalSpell extends Spell
 			return SpellResult.NO_TARGET;		
 		}
 
-		spells.disablePhysics(10000);
+		controller.disablePhysics(10000);
 		create(player.getLocation(), portalBase.getLocation());
 
 		checkListener();
@@ -264,7 +264,7 @@ public class PortalSpell extends Spell
 	{
 		if (destructible == null)
 		{
-			destructible = new MaterialList(spells.getDestructibleMaterials());
+			destructible = new MaterialList(controller.getDestructibleMaterials());
 		}
 	}
 
@@ -291,7 +291,7 @@ public class PortalSpell extends Spell
 					PlayerPortal portal = findPortal(playerLocation);
 					if (portal != null)
 					{
-						portal.teleport(player, spells.getPlugin(), this);
+						portal.teleport(player, controller.getPlugin(), this);
 					}
 				}
 				setPortalling(true);
@@ -316,11 +316,11 @@ public class PortalSpell extends Spell
 	{
 		if (allPortals.size() == 0)
 		{
-			spells.unregisterEvent(SpellEventType.PLAYER_MOVE, this);
+			controller.unregisterEvent(SpellEventType.PLAYER_MOVE, this);
 		}
 		else
 		{
-			spells.registerEvent(SpellEventType.PLAYER_MOVE, this);
+			controller.registerEvent(SpellEventType.PLAYER_MOVE, this);
 		}
 	}
 }

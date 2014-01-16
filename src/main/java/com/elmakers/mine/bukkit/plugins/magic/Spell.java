@@ -41,8 +41,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * protected members that are helpful to use
 	 */
 	protected Player						player;
-	protected Spells						spells;
-	protected PlayerSpells					playerSpells;
+	protected MagicController				controller;
+	protected Mage 							mage;
 	protected static CSVParser              csv = new CSVParser();
 
 	/*
@@ -116,7 +116,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return baseClass.substring(0, baseClass.lastIndexOf('.'));
 	}
 
-	public static Spell loadSpell(String name, ConfigurationNode node, Spells spells)
+	public static Spell loadSpell(String name, ConfigurationNode node, MagicController spells)
 	{
 		String builtinClassPath = getBuiltinClasspath();
 
@@ -173,13 +173,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		for (CastingCost cost : activeCosts)
 		{
-			if (!cost.has(playerSpells))
+			if (!cost.has(mage))
 			{
 				deactivate();
 				return;
 			}
 			
-			cost.use(playerSpells);
+			cost.use(mage);
 		}
 	}
 	
@@ -192,14 +192,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	protected void activate() {
 		onActivate();
 		
-		playerSpells.activateSpell(this);
+		mage.activateSpell(this);
 		isActive = true;
 	}
 	
 	protected void deactivate() {
 		onDeactivate();
 		
-		playerSpells.deactivateSpell(this);
+		mage.deactivateSpell(this);
 		isActive = false;
 	}
 	
@@ -239,7 +239,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
 
-		Set<Material> defaultTargetThrough = spells.getTargetThroughMaterials();
+		Set<Material> defaultTargetThrough = controller.getTargetThroughMaterials();
 		for (Material defMat : defaultTargetThrough) {
 			targetThrough(defMat);
 		}
@@ -251,9 +251,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		this.player = player;
 		if (player == null) {
-			playerSpells = null;
+			mage = null;
 		} else {
-			playerSpells = spells.getPlayerSpells(player);
+			mage = controller.getPlayerSpells(player);
 		}
 	}
 
@@ -320,7 +320,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		addParameters(extraParameters, parameters);
 
 		long currentTime = System.currentTimeMillis();
-		float cooldownReduction = playerSpells.getCooldownReduction();
+		float cooldownReduction = mage.getCooldownReduction();
 		if (cooldownReduction < 1 && !isActive && cooldown > 0) {
 			int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
 			if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
@@ -331,7 +331,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				} else {
 					sendMessage(Messages.get("cooldown.wait_moment"));
 				}
-				playerSpells.onCast(SpellResult.COOLDOWN);
+				mage.onCast(SpellResult.COOLDOWN);
 				return false;
 			}
 		}
@@ -340,10 +340,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		{
 			for (CastingCost cost : costs)
 			{
-				if (!cost.has(playerSpells))
+				if (!cost.has(mage))
 				{
-					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription(playerSpells)));
-					playerSpells.onCast(SpellResult.INSUFFICIENT_RESOURCES);
+					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription(mage)));
+					mage.onCast(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}
 			}
@@ -353,13 +353,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		initializeTargeting(player);
 
 		SpellResult result = onCast(parameters);
-		playerSpells.onCast(result);
+		mage.onCast(result);
 		
 		if (result == SpellResult.SUCCESS) {
 			if (costs != null) {
 				for (CastingCost cost : costs)
 				{
-					cost.use(playerSpells);
+					cost.use(mage);
 				}
 			}
 			castCount++;
@@ -379,7 +379,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		if (player == null) return true;
 
-		return spells.hasPermission(player, getPermissionNode(), true);
+		return controller.hasPermission(player, getPermissionNode(), true);
 	}
 
 	/**
@@ -407,7 +407,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * Listener method, called on player move for registered spells.
 	 * 
 	 * @param event The original player move event
-	 * @see Spells#registerEvent(SpellEventType, Spell)
+	 * @see MagicController#registerEvent(SpellEventType, Spell)
 	 */
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
@@ -418,7 +418,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * Listener method, called on player quit for registered spells.
 	 * 
 	 * @param event The player who just quit
-	 * @see Spells#registerEvent(SpellEventType, Spell)
+	 * @see MagicController#registerEvent(SpellEventType, Spell)
 	 */
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
@@ -430,7 +430,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * 
 	 * @param player The player that died
 	 * @param event The original entity death event
-	 * @see Spells#registerEvent(SpellEventType, Spell)
+	 * @see MagicController#registerEvent(SpellEventType, Spell)
 	 */
 	public void onPlayerDeath(EntityDeathEvent event)
 	{
@@ -463,27 +463,27 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			return new ItemStack(materialOverride, 1);
 		}
 		
-		return playerSpells.getBuildingMaterial();
+		return mage.getBuildingMaterial();
 	}
 	
 	public boolean hasBuildPermission(Location location)
 	{
-		return playerSpells.hasBuildPermission(location);
+		return mage.hasBuildPermission(location);
 	}
 	
 	public boolean hasBuildPermission(Block block)
 	{
-		return playerSpells.hasBuildPermission(block);
+		return mage.hasBuildPermission(block);
 	}
 	
 	public boolean isIndestructible(Location location)
 	{
-		return playerSpells.hasBuildPermission(location);
+		return mage.hasBuildPermission(location);
 	}
 	
 	public boolean isIndestructible(Block block)
 	{
-		return playerSpells.isIndestructible(block);
+		return mage.isIndestructible(block);
 	}
 
 	public void targetEntity(Class<? extends Entity> typeOf)
@@ -988,7 +988,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public void castMessage(String message)
 	{
-		if (!spells.isQuiet() && !spells.isSilent() && canSendMessage())
+		if (!controller.isQuiet() && !controller.isSilent() && canSendMessage())
 		{
 			player.sendMessage(message);
 			lastMessageSent = System.currentTimeMillis();
@@ -1007,7 +1007,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public void sendMessage(String message)
 	{
-		if (!spells.isSilent() && canSendMessage())
+		if (!controller.isSilent() && canSendMessage())
 		{
 			player.sendMessage(message);
 			lastMessageSent = System.currentTimeMillis();
@@ -1017,7 +1017,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private boolean canSendMessage()
 	{
 		if (lastMessageSent == 0) return true;
-		int throttle = spells.getMessageThrottle();
+		int throttle = controller.getMessageThrottle();
 		long now = System.currentTimeMillis();
 		return (lastMessageSent < now - throttle);
 	}
@@ -1063,9 +1063,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * 
 	 * @param instance The spells instance
 	 */
-	public void initialize(Spells instance)
+	public void initialize(MagicController instance)
 	{
-		this.spells = instance;
+		this.controller = instance;
 	}
 
 	/**
@@ -1128,7 +1128,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected int getMaxRange()
 	{
-		return Math.min(maxRange, (int)(playerSpells.getRangeMultiplier() * range));
+		return Math.min(maxRange, (int)(mage.getRangeMultiplier() * range));
 	}
 
 	protected int getMaxRangeSquared()
@@ -1251,8 +1251,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	}
 	
-	public PlayerSpells getPlayerSpells() {
-		return playerSpells;
+	public Mage getPlayerSpells() {
+		return mage;
 	}
 	
 	public void load(ConfigurationNode node) {
@@ -1261,7 +1261,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			lastCast = node.getLong("last_cast", 0);
 			onLoad(node);
 		} catch (Exception ex) {
-			spells.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
+			controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
 		}
 	}
 	
@@ -1271,7 +1271,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			node.setProperty("last_cast", lastCast);
 			onSave(node);
 		} catch (Exception ex) {
-			spells.getPlugin().getLogger().warning("Failed to save data for spell " + name + ": " + ex.getMessage());
+			controller.getPlugin().getLogger().warning("Failed to save data for spell " + name + ": " + ex.getMessage());
 		}
 	}
 

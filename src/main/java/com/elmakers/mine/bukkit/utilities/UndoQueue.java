@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.CleanupBlocksTask;
-import com.elmakers.mine.bukkit.plugins.magic.Spells;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class UndoQueue
@@ -33,7 +33,7 @@ public class UndoQueue
 		blockQueue.add(blocks);
 	}
 	
-	public void scheduleCleanup(Spells spells, BlockList blocks)
+	public void scheduleCleanup(MagicController spells, BlockList blocks)
 	{
 		scheduledBlocks.add(blocks);
 		
@@ -81,7 +81,7 @@ public class UndoQueue
 		maxSize = size;
 	}
 
-	public boolean undo(Spells spells)
+	public boolean undo(MagicController spells)
 	{
 		if (blockQueue.size() == 0)
 		{
@@ -93,7 +93,7 @@ public class UndoQueue
 		return true;
 	}
 
-	public boolean undo(Spells spells, Block target)
+	public boolean undo(MagicController spells, Block target)
 	{
 		BlockList lastActionOnTarget = getLast(target);
 
@@ -108,7 +108,7 @@ public class UndoQueue
 		return true;
 	}
 	
-	public void load(Spells spells, ConfigurationNode node)
+	public void load(MagicController spells, ConfigurationNode node)
 	{
 		try {
 			if (node == null) return;
@@ -130,7 +130,7 @@ public class UndoQueue
 		}
 	}
 	
-	public void save(Spells spells, ConfigurationNode node)
+	public void save(MagicController spells, ConfigurationNode node)
 	{
 		try {
 			List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();

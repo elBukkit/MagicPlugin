@@ -70,7 +70,7 @@ public class OcelotSpell extends Spell
 		ocelots = newocelots;
 		
 		int maxOcelots = parameters.getInt("max_ocelots", DEFAULT_MAX_OCELOTS);
-		int scaledMaxOcelots = (int)(playerSpells.getRadiusMultiplier() * maxOcelots);
+		int scaledMaxOcelots = (int)(mage.getRadiusMultiplier() * maxOcelots);
 		if (ocelots.size() >= scaledMaxOcelots) 
 		{
 			Ocelot killOcelot = ocelots.remove(0);

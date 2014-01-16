@@ -46,7 +46,7 @@ public class ForceSpell extends Spell
 				return SpellResult.NO_TARGET;
 			}
 
-			effectColor = playerSpells.getEffectColor();
+			effectColor = mage.getEffectColor();
 			if (effectColor == null) {
 				effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
 			}

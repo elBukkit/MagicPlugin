@@ -134,8 +134,8 @@ public class StairsSpell extends Spell
 			bottomLeftBlock = bottomLeftBlock.getRelative(vertDirection);
 		}
 
-		spells.addToUndoQueue(player, tunneledBlocks);
-		spells.addToUndoQueue(player, stairBlocks);
+		controller.addToUndoQueue(player, tunneledBlocks);
+		controller.addToUndoQueue(player, stairBlocks);
 		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks and created " + stairBlocks.size() + " stairs");
 	}	
 

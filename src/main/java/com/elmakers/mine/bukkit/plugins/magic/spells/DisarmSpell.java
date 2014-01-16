@@ -10,7 +10,7 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
@@ -33,7 +33,7 @@ public class DisarmSpell extends Spell
 		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
 		Location effectLocation = player.getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.MOB_SPELL);
 		effectTrail.setParticleCount(particleCount);
 		effectTrail.setEffectData(particleData);
@@ -60,7 +60,7 @@ public class DisarmSpell extends Spell
 		// Special case for wands
 		if (Wand.isWand(stack) && entity instanceof Player) {
 			Player targetPlayer = (Player)entity;
-			PlayerSpells playerSpells = spells.getPlayerSpells(targetPlayer);
+			Mage playerSpells = controller.getPlayerSpells(targetPlayer);
 			if (playerSpells != null && playerSpells.getActiveWand() != null) {
 				playerSpells.getActiveWand().deactivate();
 			}

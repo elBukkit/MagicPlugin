@@ -69,7 +69,7 @@ public class IterateSpell extends Spell
 				currentTarget.setType(material);
 				currentTarget.setData(data);
 				
-				spells.updateBlock(currentTarget);
+				controller.updateBlock(currentTarget);
 				
 				Location effectLocation = currentTarget.getLocation();	
 				effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
@@ -81,12 +81,12 @@ public class IterateSpell extends Spell
 		{
 			if (timeToLive == 0)
 			{
-				spells.addToUndoQueue(player, iteratedBlocks);
+				controller.addToUndoQueue(player, iteratedBlocks);
 			}
 			else
 			{
 				iteratedBlocks.setTimeToLive(timeToLive);
-				spells.scheduleCleanup(player.getName(), iteratedBlocks);
+				controller.scheduleCleanup(player.getName(), iteratedBlocks);
 			}
 		}
 

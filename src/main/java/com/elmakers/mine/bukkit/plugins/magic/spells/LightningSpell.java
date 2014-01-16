@@ -52,7 +52,7 @@ public class LightningSpell extends Spell
 		}
 
 		int radius = parameters.getInt("radius", 1);
-		radius = (int)(playerSpells.getRadiusMultiplier() * radius);	
+		radius = (int)(mage.getRadiusMultiplier() * radius);	
 
 		double ratio = (radius < 2) ? 1.0 : (radius < 4) ? 0.5 : 0.25;
 		ShockAction action = new ShockAction(player, ratio, 5);
@@ -66,7 +66,7 @@ public class LightningSpell extends Spell
 			this.coverSurface(target.getLocation(), radius, action);
 		}
 
-		spells.addToUndoQueue(player, action.getBlocks());
+		controller.addToUndoQueue(player, action.getBlocks());
 		castMessage("Zapped " + action.getBlocks().size() + " blocks");
 
 		return SpellResult.SUCCESS;

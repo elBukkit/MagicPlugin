@@ -20,7 +20,7 @@ public class GotoSpell extends Spell
 		Player targetPlayer = null;
 		if (playerName != null)
 		{
-			targetPlayer = spells.getPlugin().getServer().getPlayer(playerName);
+			targetPlayer = controller.getPlugin().getServer().getPlayer(playerName);
 		}
 
 		targetEntity(Player.class);

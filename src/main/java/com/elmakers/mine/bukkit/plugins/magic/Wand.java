@@ -39,8 +39,8 @@ public class Wand implements CostReducer {
 	protected final static int hotbarSize = 9;
 	
 	private ItemStack item;
-	private Spells spells;
-	private PlayerSpells activePlayer;
+	private MagicController spells;
+	private Mage activePlayer;
 	
 	// Cached state
 	private String id;
@@ -103,7 +103,7 @@ public class Wand implements CostReducer {
 		inventories = new ArrayList<Inventory>();
 	}
 	
-	public Wand(Spells spells) {
+	public Wand(MagicController spells) {
 		this();
 		this.spells = spells;
 		item = new ItemStack(WandMaterial);
@@ -119,7 +119,7 @@ public class Wand implements CostReducer {
 		saveState();
 	}
 	
-	public Wand(Spells spells, ItemStack item) {
+	public Wand(MagicController spells, ItemStack item) {
 		this();
 		this.item = item;
 		this.spells = spells;
@@ -1086,7 +1086,7 @@ public class Wand implements CostReducer {
 		return isWand(activeItem);
 	}
 	
-	public static Wand getActiveWand(Spells spells, Player player) {
+	public static Wand getActiveWand(MagicController spells, Player player) {
 		ItemStack activeItem =  player.getInventory().getItemInHand();
 		if (isWand(activeItem)) {
 			return new Wand(spells, activeItem);
@@ -1265,7 +1265,7 @@ public class Wand implements CostReducer {
 		WandLevel.randomizeWand(this, additive, level);
 	}
 	
-	public static Wand createWand(Spells spells, String templateName) {
+	public static Wand createWand(MagicController spells, String templateName) {
 		Wand wand = new Wand(spells);
 		String wandName = Messages.get("wand.default_name");
 		String wandDescription = "";
@@ -1587,7 +1587,7 @@ public class Wand implements CostReducer {
 		saveState();
 	}
 	
-	public void activate(PlayerSpells playerSpells) {
+	public void activate(Mage playerSpells) {
 		if (owner.length() == 0) {
 			takeOwnership(playerSpells.getPlayer());
 		}
@@ -1751,7 +1751,7 @@ public class Wand implements CostReducer {
 		return otherWand.id.equals(this.id);
 	}
 	
-	public Spells getMaster() {
+	public MagicController getMaster() {
 		return spells;
 	}
 	
@@ -1808,7 +1808,7 @@ public class Wand implements CostReducer {
 		saveState();
 	}
 	
-	public PlayerSpells getActivePlayer() {
+	public Mage getActivePlayer() {
 		return activePlayer;
 	}
 	

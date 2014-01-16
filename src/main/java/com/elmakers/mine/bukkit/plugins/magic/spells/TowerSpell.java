@@ -75,7 +75,7 @@ public class TowerSpell extends Spell {
 				}
 			}
 		}
-		spells.addToUndoQueue(player, towerBlocks);
+		controller.addToUndoQueue(player, towerBlocks);
 		castMessage("Made tower " + height + " high with " + blocksCreated + " blocks");
 		return SpellResult.SUCCESS;
 	}

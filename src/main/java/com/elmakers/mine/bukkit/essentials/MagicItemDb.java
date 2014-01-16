@@ -5,14 +5,14 @@ import net.ess3.api.IEssentials;
 import org.bukkit.inventory.ItemStack;
 
 import com.earth2me.essentials.ItemDb;
-import com.elmakers.mine.bukkit.plugins.magic.Spells;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.Wand;
 
 public class MagicItemDb extends ItemDb {
 	
-	private final Spells spells;
+	private final MagicController spells;
 	
-	public MagicItemDb(final Spells spells, final Object ess) {
+	public MagicItemDb(final MagicController spells, final Object ess) {
 		super((IEssentials)ess);
 		this.spells = spells;
 	}

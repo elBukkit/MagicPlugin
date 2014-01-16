@@ -53,7 +53,7 @@ public class AlterSpell extends Spell
 		}
 		
 		int recurseDistance = parameters.getInteger("depth", DEFAULT_RECURSE_DISTANCE);
-		recurseDistance = (int)(playerSpells.getRadiusMultiplier() * recurseDistance);
+		recurseDistance = (int)(mage.getRadiusMultiplier() * recurseDistance);
 
 		List<Integer> adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
 		List<Integer> maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);
@@ -61,7 +61,7 @@ public class AlterSpell extends Spell
 
 		if (adjustableMaterials.size() != maxData.size() || maxData.size() != minData.size())
 		{
-			spells.getLog().warning("Spells:Alter: Mis-match in adjustable material lists!");
+			controller.getLog().warning("Spells:Alter: Mis-match in adjustable material lists!");
 		}
 		
 		if (!adjustableMaterials.contains(targetBlock.getTypeId()))
@@ -90,10 +90,10 @@ public class AlterSpell extends Spell
 
 		adjust(targetBlock, data, undoList, recursive, recurseDistance, 0);
 
-		spells.addToUndoQueue(player, undoList);
+		controller.addToUndoQueue(player, undoList);
 
 		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
-		spells.updateBlock(targetBlock);
+		controller.updateBlock(targetBlock);
 		return SpellResult.SUCCESS;
 	}
 

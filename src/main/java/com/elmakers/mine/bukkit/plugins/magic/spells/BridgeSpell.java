@@ -66,8 +66,8 @@ public class BridgeSpell extends Spell
 		targetBlock.setData(data);
 
 		castMessage("A bridge extends!");
-		spells.addToUndoQueue(player, bridgeBlocks);
-		spells.updateBlock(targetBlock);
+		controller.addToUndoQueue(player, bridgeBlocks);
+		controller.updateBlock(targetBlock);
 
 		Location effectLocation = targetBlock.getLocation();	
 		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	

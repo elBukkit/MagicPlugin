@@ -79,7 +79,7 @@ public class FamiliarSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!playerSpells.hasBuildPermission(player.getLocation())) {
+		if (!mage.hasBuildPermission(player.getLocation())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		noTargetThrough(Material.STATIONARY_WATER);
@@ -236,11 +236,11 @@ public class FamiliarSpell extends Spell
 	{
 		if (familiars.hasFamiliar())
 		{
-			spells.registerEvent(SpellEventType.PLAYER_QUIT, this);
+			controller.registerEvent(SpellEventType.PLAYER_QUIT, this);
 		}
 		else
 		{
-			spells.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
+			controller.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
 		}
 	}
 	

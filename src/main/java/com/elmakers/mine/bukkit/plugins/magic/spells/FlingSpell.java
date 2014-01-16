@@ -66,7 +66,7 @@ public class FlingSpell extends Spell
 		player.setVelocity(velocity);
 		castMessage("Whee!");
 
-		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling = System.currentTimeMillis();
 		return SpellResult.SUCCESS;
 	}
@@ -76,7 +76,7 @@ public class FlingSpell extends Spell
 	{
 		if (event.getCause() != DamageCause.FALL) return;
 
-		spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+		controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
 
 		if (lastFling == 0) return;
 

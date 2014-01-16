@@ -69,7 +69,7 @@ public class WolfSpell extends Spell
 		wolves = newWolves;
 		
 		int maxWolves = parameters.getInt("max_wolves", DEFAULT_MAX_WOLVES);
-		int scaledMaxWolves = (int)(playerSpells.getRadiusMultiplier() * maxWolves);
+		int scaledMaxWolves = (int)(mage.getRadiusMultiplier() * maxWolves);
 		if (wolves.size() >= scaledMaxWolves) 
 		{
 			Wolf killWolf = wolves.remove(0);

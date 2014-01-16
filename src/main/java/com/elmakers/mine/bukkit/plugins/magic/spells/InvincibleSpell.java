@@ -33,14 +33,14 @@ public class InvincibleSpell extends Spell
 	public void onDeactivate()
 	{
 		sendMessage("You feel normal.");
-		spells.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
+		controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
 		protectAmount = 0;
 	}
 	
 	@Override
 	public void onActivate()
 	{
-		spells.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 
 		if (amount >= 100)
 		{

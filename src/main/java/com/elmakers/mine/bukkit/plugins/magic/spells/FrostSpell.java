@@ -79,7 +79,7 @@ public class FrostSpell extends Spell
 		int effectRange = Math.min(getMaxRange(), maxEffectRange);
 		Location effectLocation = player.getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.SNOWBALL_POOF);
 		effectTrail.setParticleCount(particleCount);
 		effectTrail.setEffectData(particleData);
@@ -134,7 +134,7 @@ public class FrostSpell extends Spell
 		}
 
 		int radius = parameters.getInt("radius", defaultRadius);
-		radius = (int)(playerSpells.getRadiusMultiplier() * radius);		
+		radius = (int)(mage.getRadiusMultiplier() * radius);		
 		FrostAction action = new FrostAction();
 
 		if (radius <= 1)
@@ -149,9 +149,9 @@ public class FrostSpell extends Spell
 
 		BlockList frozenBlocks = action.getBlocks();
 		frozenBlocks.setTimeToLive(timeToLive);
-		spells.scheduleCleanup(player.getName(), frozenBlocks);
+		controller.scheduleCleanup(player.getName(), frozenBlocks);
 		castMessage("Frosted " + action.getBlocks().size() + " blocks");
-		spells.updateBlock(target.getBlock());
+		controller.updateBlock(target.getBlock());
 
 		return SpellResult.SUCCESS;
 	}

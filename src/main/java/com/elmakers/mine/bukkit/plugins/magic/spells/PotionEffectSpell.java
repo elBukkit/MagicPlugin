@@ -45,7 +45,7 @@ public class PotionEffectSpell extends Spell
 		ParticleType particleType = ParticleType.fromName((String)parameters.getString("particle", ""), ParticleType.INSTANT_SPELL);
 		if (targetEntity == player) {
 			Location effectLocation = player.getEyeLocation();
-			EffectRing effect = new EffectRing(spells.getPlugin(), effectLocation, 4, 8);
+			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 4, 8);
 			effect.setParticleType(particleType);
 			effect.setParticleCount(8);
 			effect.setEffectData(2);
@@ -54,7 +54,7 @@ public class PotionEffectSpell extends Spell
 		} else {
 			Location effectLocation = player.getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
-			EffectTrail effect = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, 32);
+			EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, 32);
 			effect.setParticleType(particleType);
 			effect.setParticleCount(8);
 			effect.setEffectData(2);

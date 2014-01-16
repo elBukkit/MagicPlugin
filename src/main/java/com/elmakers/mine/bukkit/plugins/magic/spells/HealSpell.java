@@ -25,7 +25,7 @@ public class HealSpell extends Spell
 		{
 			Location effectLocation = player.getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
-			EffectTrail effect = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, 32);
+			EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, 32);
 			effect.setParticleType(ParticleType.HEART);
 			effect.setParticleCount(2);
 			effect.setEffectData(2);
@@ -42,7 +42,7 @@ public class HealSpell extends Spell
 			return SpellResult.SUCCESS;
 		}
 		Location effectLocation = player.getEyeLocation();
-		EffectRing effect = new EffectRing(spells.getPlugin(), effectLocation, 4, 8);
+		EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 4, 8);
 		effect.setParticleType(ParticleType.HEART);
 		effect.setParticleCount(1);
 		effect.setEffectData(2);

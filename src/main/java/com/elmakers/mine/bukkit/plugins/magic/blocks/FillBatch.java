@@ -6,7 +6,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class FillBatch extends VolumeBatch {
@@ -15,7 +15,7 @@ public class FillBatch extends VolumeBatch {
 	private final byte data;
 	private final World world;
 	private final Spell spell;
-	private final PlayerSpells playerSpells;
+	private final Mage playerSpells;
 	private String playerName;
 
 	private final int absx;
@@ -32,7 +32,7 @@ public class FillBatch extends VolumeBatch {
 	private int iz = 0;
 	
 	public FillBatch(Spell spell, Location p1, Location p2, Material material, byte data) {
-		super(spell.getPlayerSpells().getMaster(), p1.getWorld().getName());
+		super(spell.getPlayerSpells().getController(), p1.getWorld().getName());
 		this.material = material;
 		this.data = data;
 		this.spell = spell;

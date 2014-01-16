@@ -33,7 +33,7 @@ public class DisintegrateSpell extends Spell
 		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
 		Location effectLocation = player.getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.LAVA_DRIPPING);
 		effectTrail.setParticleCount(particleCount);
 		effectTrail.setEffectData(particleData);
@@ -60,11 +60,11 @@ public class DisintegrateSpell extends Spell
 				LivingEntity li = (LivingEntity)targetEntity;
 				if (li instanceof Player)
 				{
-					li.damage(playerSpells.getDamageMultiplier() * playerDamage, player);
+					li.damage(mage.getDamageMultiplier() * playerDamage, player);
 				}
 				else
 				{
-					li.damage(playerSpells.getDamageMultiplier() * entityDamage, player);
+					li.damage(mage.getDamageMultiplier() * entityDamage, player);
 				}
 				castMessage("ZOT!");
 				return SpellResult.SUCCESS;
@@ -96,7 +96,7 @@ public class DisintegrateSpell extends Spell
 			targetBlock.setType(Material.AIR);
 		}
 
-		spells.addToUndoQueue(player, disintigrated);
+		controller.addToUndoQueue(player, disintigrated);
 		castMessage("ZAP!");
 
 		return SpellResult.SUCCESS;

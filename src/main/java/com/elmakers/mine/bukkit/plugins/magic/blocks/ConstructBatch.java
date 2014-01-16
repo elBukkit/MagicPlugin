@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.dao.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.PlayerSpells;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class ConstructBatch extends VolumeBatch {
@@ -23,7 +23,7 @@ public class ConstructBatch extends VolumeBatch {
 	private boolean checkDestructible = true;
 	private final ConstructionType type;
 	private final boolean fill;
-	private final PlayerSpells playerSpells;
+	private final Mage playerSpells;
 	private final Spell spell;
 	private final String playerName;
 	private final boolean spawnFallingBlocks;
@@ -33,7 +33,7 @@ public class ConstructBatch extends VolumeBatch {
 	private int z = 0;
 	
 	public ConstructBatch(Spell spell, Location center, ConstructionType type, int radius, boolean fill, Material material, byte data, Set<Material> indestructible, boolean spawnFallingBlocks) {
-		super(spell.getPlayerSpells().getMaster(), center.getWorld().getName());
+		super(spell.getPlayerSpells().getController(), center.getWorld().getName());
 		this.indestructible = indestructible;
 		this.center = center;
 		this.radius = radius;
@@ -190,7 +190,7 @@ public class ConstructBatch extends VolumeBatch {
 	protected boolean isDestructible(Block block)
 	{
 		if (indestructible.isEmpty()) {
-			return playerSpells.getMaster().getDestructibleMaterials().contains(block.getType());
+			return playerSpells.getController().getDestructibleMaterials().contains(block.getType());
 		}
 		return !indestructible.contains(block.getType());
 	}

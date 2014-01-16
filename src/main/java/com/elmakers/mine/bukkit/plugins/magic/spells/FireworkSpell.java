@@ -31,8 +31,8 @@ public class FireworkSpell extends Spell
 		power = parameters.getInt("size", power);
 		if (parameters.containsKey("color1")) {
 			color1 = getColor(parameters.getString("color1"));
-		} else if (playerSpells.getEffectColor() != null) {
-			color1 = playerSpells.getEffectColor();
+		} else if (mage.getEffectColor() != null) {
+			color1 = mage.getEffectColor();
 		}
 		if (parameters.containsKey("color2")) {
 			color2 = getColor(parameters.getString("color2"));
@@ -46,7 +46,7 @@ public class FireworkSpell extends Spell
 		int flareCount = parameters.getInt("count", 1);
 		Block target = getTarget().getBlock();
 	     
-        FireworkEffect effect = playerSpells.getFireworkEffect(color1, color2, fireworkType, flicker, trail);
+        FireworkEffect effect = mage.getFireworkEffect(color1, color2, fireworkType, flicker, trail);
         
 		for (int i = 0; i < flareCount; i++)
 		{

@@ -35,7 +35,7 @@ public class BoomSpell extends Spell {
 		}
 		Location l = block.getLocation();
 		player.getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
-		spells.updateBlock(block);
+		controller.updateBlock(block);
 		return SpellResult.SUCCESS;
 	}
 
@@ -48,7 +48,7 @@ public class BoomSpell extends Spell {
 		boolean showEffect = parameters.getBoolean("show_effect", true);
 		String targetType = (String)parameters.getString("target", "");
 		
-		size = (int)(playerSpells.getRadiusMultiplier() * size);
+		size = (int)(mage.getRadiusMultiplier() * size);
 		
 		if (targetType.equals("here"))
 		{
@@ -68,11 +68,11 @@ public class BoomSpell extends Spell {
 			int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
 			Location effectLocation = player.getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
-			EffectTrail effect = new EffectTrail(spells.getPlugin(), effectLocation, effectDirection, effectRange);
+			EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 			effect.setPeriod(effectPeriod);
 			effect.setSpeed(effectSpeed);
 			
-	        FireworkEffect fireworkEffect = playerSpells.getFireworkEffect(Color.RED, Color.ORANGE, Type.BURST);
+	        FireworkEffect fireworkEffect = mage.getFireworkEffect(Color.RED, Color.ORANGE, Type.BURST);
 	        effect.setFireworkEffect(fireworkEffect, 1);
 			effect.start();
 		}

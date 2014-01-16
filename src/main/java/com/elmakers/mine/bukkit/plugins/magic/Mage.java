@@ -26,11 +26,11 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class PlayerSpells implements CostReducer
+public class Mage implements CostReducer
 {
-	protected Player player;
-	protected String playerName;
-	protected Spells master;
+	protected Player 							player;
+	protected String 							playerName;
+	protected MagicController					controller;
 	protected HashMap<String, Spell> 			spells 						  = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
 	private Wand								activeWand					   = null;
@@ -41,12 +41,12 @@ public class PlayerSpells implements CostReducer
 	private final Set<Spell>					activeSpells				   = new TreeSet<Spell>();
 	private UndoQueue          					undoQueue               	   = null;
 	
-	private float costReduction = 0;
-	private float cooldownReduction = 0;
-	private ItemStack buildingMaterial = null;
-	private long lastClick = 0;
-	private long blockPlaceTimeout = 0;
-	private Location lastDeathLocation = null;
+	private float 				costReduction = 0;
+	private float 				cooldownReduction = 0;
+	private ItemStack 			buildingMaterial = null;
+	private long 				lastClick = 0;
+	private long 				blockPlaceTimeout = 0;
+	private Location 			lastDeathLocation = null;
 	
 	public void removeExperience(int xp) {
 		
@@ -122,22 +122,22 @@ public class PlayerSpells implements CostReducer
 	}
 	
 	public float getDamageMultiplier() {
-		float maxPowerMultiplier = master.getMaxDamagePowerMultiplier() - 1;
+		float maxPowerMultiplier = controller.getMaxDamagePowerMultiplier() - 1;
 		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
 	}
 	
 	public float getRangeMultiplier() {
-		float maxPowerMultiplier = master.getMaxRangePowerMultiplier() - 1;
+		float maxPowerMultiplier = controller.getMaxRangePowerMultiplier() - 1;
 		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
 	}
 	
 	public float getConstructionMultiplier() {
-		float maxPowerMultiplier = master.getMaxConstructionPowerMultiplier() - 1;
+		float maxPowerMultiplier = controller.getMaxConstructionPowerMultiplier() - 1;
 		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
 	}
 	
 	public float getRadiusMultiplier() {
-		float maxPowerMultiplier = master.getMaxRadiusPowerMultiplier() - 1;
+		float maxPowerMultiplier = controller.getMaxRadiusPowerMultiplier() - 1;
 		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
 	}
 	
@@ -248,9 +248,9 @@ public class PlayerSpells implements CostReducer
 		}
 	}
 
-	public PlayerSpells(Spells master, Player player)
+	public Mage(MagicController master, Player player)
 	{
-		this.master = master;
+		this.controller = master;
 		this.player = player;
 	}
 	
@@ -377,7 +377,7 @@ public class PlayerSpells implements CostReducer
 	
 	public Spell getSpell(String name, Player usePermissions)
 	{
-		Spell spell = master.getSpell(name);
+		Spell spell = controller.getSpell(name);
 		if (spell == null || !spell.hasSpellPermission(usePermissions))
 			return null;
 
@@ -395,8 +395,8 @@ public class PlayerSpells implements CostReducer
 		return playerSpell;
 	}
 	
-	public Spells getMaster() {
-		return master;
+	public MagicController getController() {
+		return controller;
 	}
 	
 	public Inventory getInventory() {
@@ -443,19 +443,19 @@ public class PlayerSpells implements CostReducer
 	}
 	
 	public boolean hasBuildPermission(Location location) {
-		return master.hasBuildPermission(player, location);
+		return controller.hasBuildPermission(player, location);
 	}
 	
 	public boolean hasBuildPermission(Block block) {
-		return master.hasBuildPermission(player, block);
+		return controller.hasBuildPermission(player, block);
 	}
 	
 	public boolean isIndestructible(Location location) {
-		return master.isIndestructible(player, location);
+		return controller.isIndestructible(player, location);
 	}
 	
 	public boolean isIndestructible(Block block) {
-		return master.isIndestructible(player, block);
+		return controller.isIndestructible(player, block);
 	}
 	
 	public void onCast(SpellResult result) {
@@ -487,7 +487,7 @@ public class PlayerSpells implements CostReducer
 	}
 	
 	public void playSound(Sound sound, float volume, float pitch) {
-		if (master.soundsEnabled()) {
+		if (controller.soundsEnabled()) {
 			player.playSound(player.getLocation(), sound, volume, pitch);
 		}
 	}
@@ -527,7 +527,7 @@ public class PlayerSpells implements CostReducer
 	public UndoQueue getUndoQueue() {
 		if (undoQueue == null) {
 			undoQueue = new UndoQueue();
-			undoQueue.setMaxSize(master.getUndoQueueDepth());
+			undoQueue.setMaxSize(controller.getUndoQueueDepth());
 		}
 		return undoQueue;
 	}	
@@ -539,7 +539,7 @@ public class PlayerSpells implements CostReducer
 
 			lastDeathLocation = configNode.getLocation("last_death_location");
 			
-			getUndoQueue().load(master, configNode);
+			getUndoQueue().load(controller, configNode);
 			ConfigurationNode spellNode = configNode.getNode("spells");
 			if (spellNode != null) {
 				List<String> keys = spellNode.getKeys();
@@ -551,7 +551,7 @@ public class PlayerSpells implements CostReducer
 				}
 			}
 		} catch (Exception ex) {
-			master.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
+			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
 		}		
 	}
 	
@@ -560,13 +560,13 @@ public class PlayerSpells implements CostReducer
 		try {
 			configNode.setProperty("last_death_location", lastDeathLocation);
 			
-			getUndoQueue().save(master, configNode);
+			getUndoQueue().save(controller, configNode);
 			ConfigurationNode spellNode = configNode.createChild("spells");
 			for (Spell spell : spells.values()) {
 				spell.save(spellNode.createChild(spell.getKey()));
 			}
 		} catch (Exception ex) {
-			master.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
+			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
 		}	
 	}
 	
