@@ -46,6 +46,7 @@ public class PlayerSpells implements CostReducer
 	private ItemStack buildingMaterial = null;
 	private long lastClick = 0;
 	private long blockPlaceTimeout = 0;
+	private Location lastDeathLocation = null;
 	
 	public void removeExperience(int xp) {
 		
@@ -292,6 +293,7 @@ public class PlayerSpells implements CostReducer
 
 	public void onPlayerDeath(EntityDeathEvent event)
 	{
+		lastDeathLocation = player.getLocation();
 		List<Spell> active = new ArrayList<Spell>();
 		active.addAll(deathListeners);
 		for (Spell listener : active)
@@ -534,6 +536,9 @@ public class PlayerSpells implements CostReducer
 	{
 		try {
 			if (configNode == null) return;
+
+			lastDeathLocation = configNode.getLocation("last_death_location");
+			
 			getUndoQueue().load(master, configNode);
 			ConfigurationNode spellNode = configNode.getNode("spells");
 			if (spellNode != null) {
@@ -553,6 +558,8 @@ public class PlayerSpells implements CostReducer
 	protected void save(ConfigurationNode configNode)
 	{
 		try {
+			configNode.setProperty("last_death_location", lastDeathLocation);
+			
 			getUndoQueue().save(master, configNode);
 			ConfigurationNode spellNode = configNode.createChild("spells");
 			for (Spell spell : spells.values()) {
@@ -610,5 +617,10 @@ public class PlayerSpells implements CostReducer
 		}
 		
 		return FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
+	}
+	
+	public Location getLastDeathLocation()
+	{
+		return lastDeathLocation;
 	}
 }

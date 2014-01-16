@@ -5,6 +5,7 @@ IMPORTANT STUFF:
  - Fix recall spell with natural spawn.. hook into essentials?
  - Can't alter "null" message from alter on bad target?
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
+ - Iterate doesn't work with the copy material
 
 NEW SPELLS:
 
@@ -15,6 +16,8 @@ NEW SPELLS:
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - separate alter into superalter and alter
+ - Add "all" parameter to commit spell (and undo spell?)
+ - Test larger undo queue sizes, or count size in blocks?
 
 OTHER STUFF:
  

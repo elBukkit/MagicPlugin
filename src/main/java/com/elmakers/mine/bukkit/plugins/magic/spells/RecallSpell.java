@@ -4,10 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.EffectUtils;
 import com.elmakers.mine.bukkit.utilities.ParticleType;
@@ -17,19 +15,13 @@ public class RecallSpell extends Spell
 {
 	public Location location;
 	public boolean isActive;
-	private boolean autoDropOnDeath = true;
 	private int disableDistance = 5;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		autoDropOnDeath = parameters.getBoolean("auto_resurrect", true);
+		boolean autoResurrect = parameters.getBoolean("auto_resurrect", true);
 		boolean autoSpawn = parameters.getBoolean("allow_spawn", true);
-
-		if (autoDropOnDeath)
-		{
-			spells.registerEvent(SpellEventType.PLAYER_DEATH, this);
-		}
 
 		String typeString = parameters.getString("type", "");
 		if (typeString.equals("spawn"))
@@ -38,8 +30,19 @@ public class RecallSpell extends Spell
 			player.teleport(tryFindPlaceToStand(player.getWorld().getSpawnLocation()));
 			return SpellResult.SUCCESS; 
 		}
-
-		if (getYRotation() > 80)
+		if (typeString.equals("death") || getYRotation() < -70  && autoResurrect)
+		{
+			Location deathLocation = playerSpells.getLastDeathLocation();
+			if (deathLocation == null)
+			{
+				return SpellResult.NO_TARGET;
+			}
+			
+			player.teleport(tryFindPlaceToStand(deathLocation));
+			return SpellResult.SUCCESS; 
+		}
+		
+		if (getYRotation() > 70)
 		{
 			if (!isActive && autoSpawn)
 			{
@@ -120,20 +123,7 @@ public class RecallSpell extends Spell
 
 		return SpellResult.SUCCESS;
 	}
-
-	@Override
-	public void onPlayerDeath(EntityDeathEvent event)
-	{
-		if (autoDropOnDeath)
-		{
-			if (!isActive)
-			{
-				sendMessage("Use recall to return to where you died");
-				placeMarker(getPlayerBlock());
-			}
-		}
-	}
-
+	
 	@Override
 	public void onLoad(ConfigurationNode node)
 	{
