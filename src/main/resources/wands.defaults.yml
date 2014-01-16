@@ -1103,6 +1103,8 @@ wands:
             - monster
             - arrow
             - arrowrain
+            - flare
+            - tree
         materials:
             - water
             - lava

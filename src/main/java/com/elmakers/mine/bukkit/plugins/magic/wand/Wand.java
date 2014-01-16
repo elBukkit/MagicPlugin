@@ -1332,6 +1332,10 @@ public class Wand implements CostReducer {
 			}
 			
 			wand.configureProperties(wandConfig);
+			
+			if (wandConfig.getBoolean("organize", false)) {
+				wand.organizeInventory();
+			}
 		}
 
 		wand.setDescription(wandDescription);
