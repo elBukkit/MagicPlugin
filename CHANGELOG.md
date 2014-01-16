@@ -4,6 +4,7 @@
 
  - Add /wand organize command
  - Override shift+click in wand inventory to quick-select a spell or material
+ - Add "mail" spell, not made for wands, but for setting up "polling stations".
 
 ## 2.8.5
 

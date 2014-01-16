@@ -403,6 +403,9 @@ messages:
         camera:
             name: Camera
             description: Take a portrait of yourself or others
+        mail:
+            name: Mail
+            description: Send a mail to a player. Not meant for wand use.
     wands:
         random:
             name: Wand of {Spell}

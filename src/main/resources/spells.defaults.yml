@@ -1151,3 +1151,9 @@ spells:
             cooldown: 1000
         costs:
             xp: 5
+    mail:
+        class: MailSpell
+        parameters:
+            cooldown: 60000
+        costs:
+            xp: 100

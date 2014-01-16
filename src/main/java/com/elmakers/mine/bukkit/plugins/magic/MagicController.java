@@ -74,6 +74,7 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
+import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
@@ -753,6 +754,11 @@ public class MagicController implements Listener
 		}
 		
 		// Try to link to Essentials:
+		Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
+		if (essentials != null) {
+			mailer = new Mailer(essentials);
+		}
+		
 		if (generalNode.getBoolean("enable_essentials_signs", false)) {
 			final MagicController me = this;
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -1678,6 +1684,14 @@ public class MagicController implements Listener
 		}
 		return playerNames;
 	}
+	
+	public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message) {
+		if (mailer != null) {
+			return mailer.sendMail(sender, fromPlayer, toPlayer, message);
+		}
+		
+		return false;
+	}
 
 	/*
 	 * Private data
@@ -1741,4 +1755,5 @@ public class MagicController implements Listener
 	 private MagicPlugin                         plugin                         = null;
 	 private Object								 regionManager					= null;
 	 private DynmapCommonAPI					 dynmap							= null;
+	 private Mailer								 mailer							= null;
 }
