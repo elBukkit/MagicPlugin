@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.8.6
+
+ - ... large code refactor.
+
 ## 2.8.5
 
  - Tab completion improvements

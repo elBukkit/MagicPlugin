@@ -1,6 +1,6 @@
 name: Magic
 main: com.elmakers.mine.bukkit.plugins.magic.MagicPlugin
-version: 2.8.5
+version: 2.8.6
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
@@ -21,7 +21,7 @@ commands:
     permission: Magic.commands.spells
   wand:
     description: Create and modify wands
-    usage: /wand [add|remove|upgrade|configure|describe] [<spellname>|material] <materialname>
+    usage: /wand [add|remove|upgrade|configure|describe|organize] [<spellname>|material] <materialname>
     permission: Magic.commands.wand
   wandp:
     description: Create and modify wands for another player
@@ -70,6 +70,10 @@ permissions:
     description: Player may add a specific material to a wand
     type: boolean
     default: op
+  Magic.commands.wand.organize:
+    description: Player may organize their wand
+    type: boolean
+    default: op
   Magic.commands.wand.configure:
     description: Player may set wand properties
     type: boolean
@@ -114,6 +118,10 @@ permissions:
     default: op
   Magic.commands.wandp.configure:
     description: Player may set wand properties for another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.organize:
+    description: Player may organize another player's wand
     type: boolean
     default: op
   Magic.commands.wandp.combine:
