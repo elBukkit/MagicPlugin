@@ -21,7 +21,8 @@ NEW SPELLS:
 
 OTHER STUFF:
  
- - Add tab completion
+ - Complete work on tab completion
+ - Test reloads- not duplicating undo queues, etc
  
  - Fix up alter in general, remove id-based lists
  - Make undo spell first cancel any pending batches for the player (or just one?)

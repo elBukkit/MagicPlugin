@@ -403,20 +403,24 @@ public class MagicController implements Listener
 		return plugin;
 	}
 
-	public boolean isIndestructible(Player player, Location location) {
+	public boolean isIndestructible(Player player, Location location) 
+	{
 		return isIndestructible(player, location.getBlock());
 	}
 
-	public boolean isIndestructible(Player player, Block block) {
+	public boolean isIndestructible(Player player, Block block) 
+	{
 		// TODO: Player/wand-based overrides?
 		return (indestructibleMaterials.contains(block.getType()));		
 	}
 	
-	public boolean hasBuildPermission(Player player, Location location) {
+	public boolean hasBuildPermission(Player player, Location location) 
+	{
 		return hasBuildPermission(player, location.getBlock());
 	}
 
-	public boolean hasBuildPermission(Player player, Block block) {
+	public boolean hasBuildPermission(Player player, Block block) 
+	{
 		// Check the region manager.
 		// TODO: We need to be able to do WG permission checks while a player is offline.
 		if (regionManager == null || player == null) return true;
@@ -521,9 +525,11 @@ public class MagicController implements Listener
 		}
 	}
 	
-	public boolean removeMarker(String id, String group) {
+	public boolean removeMarker(String id, String group)
+	{
 		boolean removed = false;
-		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {
+		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) 
+		{
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
 			if (markerSet != null) {
@@ -538,9 +544,11 @@ public class MagicController implements Listener
 		return removed;
 	}
 	
-	public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
+	public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description)
+	{
 		boolean created = false;
-		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized()) {
+		if (dynmap != null && dynmapShowWands && dynmap.markerAPIInitialized())
+		{
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
 			if (markerSet == null) {
@@ -796,7 +804,7 @@ public class MagicController implements Listener
 		}
 	}
 
-	public void clear()
+	protected void clear()
 	{
 		mages.clear();
 		spells.clear();
@@ -809,7 +817,7 @@ public class MagicController implements Listener
 		return allSpells;
 	}
 	
-	public boolean allowPhysics(Block block)
+	protected boolean allowPhysics(Block block)
 	{
 		if (physicsDisableTimeout == 0)
 			return true;
@@ -940,7 +948,7 @@ public class MagicController implements Listener
 		}
 	}
 
-	public void onPlayerDeath(final Player player, EntityDeathEvent event)
+	protected void onPlayerDeath(final Player player, EntityDeathEvent event)
 	{
 		String rule = player.getWorld().getGameRuleValue("keepInventory");
 		if (rule.equals("true")) return;
@@ -1053,14 +1061,6 @@ public class MagicController implements Listener
 				}
 			}
 		}
-	}
-	
-	protected boolean addWandMarker(Wand wand, Location location) {
-		String description = wand.getHTMLDescription();
-		return addMarker("wand-" + wand.getId(), "Wands", wand.getName(), location.getWorld().getName(),
-			location.getBlockX(), location.getBlockY(), location.getBlockZ(),
-			description
-		);
 	}
 
 	@EventHandler
@@ -1229,7 +1229,6 @@ public class MagicController implements Listener
 		mage.onPlayerQuit(event);
 		
 		// Let the GC collect these
-		// TODO: See how deep the rabbit-hole goes here. Probably need to clear spells too.
 		mage.setActiveWand(null);
 		mage.setPlayer(null);
 	}
@@ -1324,7 +1323,6 @@ public class MagicController implements Listener
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		
 		// log.info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType());
@@ -1618,7 +1616,15 @@ public class MagicController implements Listener
 		}
 	}
 	
-	public void checkForWands(final Entity[] entities, final int retries) {
+	protected boolean addWandMarker(Wand wand, Location location) {
+		String description = wand.getHTMLDescription();
+		return addMarker("wand-" + wand.getId(), "Wands", wand.getName(), location.getWorld().getName(),
+			location.getBlockX(), location.getBlockY(), location.getBlockZ(),
+			description
+		);
+	}
+	
+	protected void checkForWands(final Entity[] entities, final int retries) {
 		if (dynmapShowWands && dynmap != null) {
 			if (!dynmap.markerAPIInitialized()) {
 				if (retries > 0) {
@@ -1662,10 +1668,6 @@ public class MagicController implements Listener
 	
 	public Spell getSpell(String name) {
 		return spells.get(name);
-	}
-	
-	public void info(String message) {
-		getLogger().info(message);
 	}
 	
 	public void toggleCastCommandOverrides(Mage mage, boolean override) {
