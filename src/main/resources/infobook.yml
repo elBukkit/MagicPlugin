@@ -70,5 +70,6 @@ using:
     - 'Information about spells may be viewed in their lore if you open the player inventory while the wand inventory is open.'
     - 'Some wands may also contain materials.&x &xCertain spells (construction spells) can be modified to work with a selected material.'
     - 'Materials may be selected in the same way as spells, move them to the hotbar and then use the hotbar buttons (1-9).'
+    - 'Spells and materials may also be quick-selected from the wand inventory using shift+click.'
     - 'Wands that have many spells or materials may have more than one inventory "page".&x &xRight-click on an item in the wand inventory to go to the next page.'
     - 'If your wand gets disorganized, use an anvil to organize its inventory.'

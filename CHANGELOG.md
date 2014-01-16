@@ -3,6 +3,7 @@
 ## 2.8.6
 
  - Add /wand organize command
+ - Override shift+click in wand inventory to quick-select a spell or material
 
 ## 2.8.5
 

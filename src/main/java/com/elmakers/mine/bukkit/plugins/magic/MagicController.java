@@ -865,6 +865,23 @@ public class MagicController implements Listener
 	}
 	
 	@SuppressWarnings("deprecation")
+	protected void onPlayerActivateIcon(Mage mage, Wand activeWand, ItemStack icon)
+	{
+		// Check for spell or material selection
+		if (icon != null && icon.getType() != Material.AIR) {
+			Spell spell = mage.getSpell(Wand.getSpell(icon));
+			if (spell != null) {
+				mage.cancel();
+				activeWand.setActiveSpell(spell.getKey());
+			} else {
+				Material material = icon.getType();
+				if (buildingMaterials.contains(material) || material == Wand.EraseMaterial || material == Wand.CopyMaterial) {
+					activeWand.setActiveMaterial(material, icon.getData().getData());
+				}
+			}
+		}
+	}
+	
 	@EventHandler
 	public void onPlayerEquip(PlayerItemHeldEvent event)
 	{
@@ -884,18 +901,8 @@ public class MagicController implements Listener
 				activeWand.setItem(previous);
 				
 				// Check for spell or material selection
-				if (next != null && next.getType() != Material.AIR) {
-					Spell spell = mage.getSpell(Wand.getSpell(next));
-					if (spell != null) {
-						mage.cancel();
-						activeWand.setActiveSpell(spell.getKey());
-					} else {
-						Material material = next.getType();
-						if (buildingMaterials.contains(material) || material == Wand.EraseMaterial || material == Wand.CopyMaterial) {
-							activeWand.setActiveMaterial(material, next.getData().getData());
-						}
-					}
-				}
+				onPlayerActivateIcon(mage, activeWand, next);
+				
 				// Cancelling the event causes some name bouncing. Trying out just resetting the item slot in a tick.
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new SetActiveItemSlotTask(player, event.getPreviousSlot()), 1);
 				return;	
@@ -1437,18 +1444,27 @@ public class MagicController implements Listener
 				}
 				
 				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
-					// Kind of hacky, but prevents players stealing armor
 					ItemStack clickedItem = event.getCurrentItem();
 					if (clickedItem != null) {
+						boolean quickActivate = event.getSlot() >= Wand.hotbarSize;
+						
+						// Kind of hacky, but prevents players stealing armor
 						Material material = clickedItem.getType();
 						if (material == Material.SKULL_ITEM || material == Material.LEATHER_BOOTS || material == Material.LEATHER_LEGGINGS  || material == Material.LEATHER_CHESTPLATE || material == Material.LEATHER_HELMET 
 							|| material == Material.LEATHER_BOOTS || material == Material.LEATHER_LEGGINGS  || material == Material.LEATHER_CHESTPLATE || material == Material.LEATHER_HELMET
 							|| material == Material.GOLD_BOOTS || material == Material.GOLD_LEGGINGS  || material == Material.GOLD_CHESTPLATE || material == Material.GOLD_HELMET
 							|| material == Material.IRON_BOOTS || material == Material.IRON_LEGGINGS  || material == Material.IRON_CHESTPLATE || material == Material.IRON_HELMET
-							|| material == Material.DIAMOND_BOOTS || material == Material.DIAMOND_LEGGINGS  || material == Material.DIAMOND_CHESTPLATE || material == Material.DIAMOND_HELMET) {
-							event .setCancelled(true);
-							return;
-						}	
+							|| material == Material.DIAMOND_BOOTS || material == Material.DIAMOND_LEGGINGS  || material == Material.DIAMOND_CHESTPLATE || material == Material.DIAMOND_HELMET
+						) {
+							quickActivate = true;
+						}
+						
+						if (quickActivate) {
+							onPlayerActivateIcon(mage, wand, clickedItem);
+							player.closeInventory();
+							event.setCancelled(true);
+						}
+						return;
 					}
 				}
 			}
