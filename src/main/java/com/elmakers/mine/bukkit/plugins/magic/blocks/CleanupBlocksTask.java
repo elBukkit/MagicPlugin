@@ -1,6 +1,6 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.plugins.magic.blocks;
 
-import com.elmakers.mine.bukkit.dao.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 
 public class CleanupBlocksTask implements Runnable

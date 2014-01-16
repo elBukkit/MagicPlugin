@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.plugins.magic.populator;
 
 import java.util.Random;
 import java.util.logging.Logger;
@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.NMSUtils;
 
 public class WandChestRunnable extends BukkitRunnable {

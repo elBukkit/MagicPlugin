@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.plugins.magic.wand;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,6 +11,9 @@ import java.util.TreeSet;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class WandOrganizer {
 	private final Wand wand;

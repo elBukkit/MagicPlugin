@@ -2,8 +2,8 @@ package com.elmakers.mine.bukkit.utilities;
 
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
 
 public interface BlockAction
 {

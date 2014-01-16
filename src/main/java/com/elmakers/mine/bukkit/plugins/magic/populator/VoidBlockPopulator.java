@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.plugins.magic.populator;
 
 import java.util.Random;
 

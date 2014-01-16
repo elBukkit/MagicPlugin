@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.plugins.magic.wand;
 
 import java.io.File;
 import java.io.InputStream;
@@ -28,6 +28,11 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
+import com.elmakers.mine.bukkit.plugins.magic.CostReducer;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
@@ -242,7 +247,7 @@ public class Wand implements CostReducer {
 		return owner;
 	}
 	
-	protected void setName(String name) {
+	public void setName(String name) {
 		wandName = name;
 		updateName();
 	}
@@ -279,7 +284,7 @@ public class Wand implements CostReducer {
 		return allInventories;
 	}
 	
-	protected Set<String> getSpells() {
+	public Set<String> getSpells() {
 		return getSpells(false);
 	}
 	
@@ -309,7 +314,7 @@ public class Wand implements CostReducer {
 		return StringUtils.join(getSpells(true), "|");
 	}
 
-	protected Set<String> getMaterialNames() {
+	public Set<String> getMaterialNames() {
 		return getMaterialNames(false);
 	}
 
@@ -621,7 +626,7 @@ public class Wand implements CostReducer {
 		speedIncrease = Math.min(WandLevel.maxSpeedIncrease, speedIncrease);
 	}
 
-	protected void describe(CommandSender sender) {
+	public void describe(CommandSender sender) {
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		if (wandNode == null) {
 			sender.sendMessage("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
@@ -1653,9 +1658,9 @@ public class Wand implements CostReducer {
 		activePlayer.restoreInventory();
 		
 		if (xpRegeneration > 0) {
-			activePlayer.player.setExp(storedXpProgress);
-			activePlayer.player.setLevel(storedXpLevel);
-			activePlayer.player.giveExp(storedXp);
+			activePlayer.getPlayer().setExp(storedXpProgress);
+			activePlayer.getPlayer().setLevel(storedXpLevel);
+			activePlayer.getPlayer().giveExp(storedXp);
 			storedXp = 0;
 			storedXpProgress = 0;
 			storedXpLevel = 0;

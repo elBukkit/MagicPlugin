@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.dao;
+package com.elmakers.mine.bukkit.plugins.magic.blocks;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Chunk;

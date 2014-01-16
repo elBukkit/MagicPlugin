@@ -2,8 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.blocks;
 
 import java.util.ArrayList;
 
-import com.elmakers.mine.bukkit.dao.BlockData;
-import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 
 public class UndoBatch extends VolumeBatch {

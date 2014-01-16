@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.dao;
+package com.elmakers.mine.bukkit.plugins.magic.blocks;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.UndoBatch;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**

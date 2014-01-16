@@ -6,9 +6,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
-import com.elmakers.mine.bukkit.dao.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ExtendSpell extends Spell 

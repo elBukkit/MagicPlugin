@@ -83,12 +83,12 @@ public class CastingCost
 		return new ItemStack(item, getAmount(), (short)0, data);
 	}
 
-	protected int getAmount()
+	public int getAmount()
 	{
 		return (int)Math.ceil(amount);
 	}
 
-	protected int getXP()
+	public int getXP()
 	{
 		return xp;
 	}

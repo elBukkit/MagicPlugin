@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.dao;
+package com.elmakers.mine.bukkit.plugins.magic.blocks;
 
 import java.util.Collection;
 import java.util.HashSet;

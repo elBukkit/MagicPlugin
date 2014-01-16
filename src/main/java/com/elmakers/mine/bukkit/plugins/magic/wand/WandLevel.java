@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.plugins.magic.wand;
 
 import java.util.List;
 import java.util.Set;
@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 
+import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
+import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.WeightedPair;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;

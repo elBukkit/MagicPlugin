@@ -14,12 +14,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.dao.BlockList;
-import com.elmakers.mine.bukkit.dao.BoundingBox;
-import com.elmakers.mine.bukkit.dao.MaterialList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.BoundingBox;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.MaterialList;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PortalSpell extends Spell

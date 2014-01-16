@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 import org.bukkit.Material;
 
-import com.elmakers.mine.bukkit.dao.MaterialList;
+import com.elmakers.mine.bukkit.plugins.magic.blocks.MaterialList;
 
 public class CSVParser
 {

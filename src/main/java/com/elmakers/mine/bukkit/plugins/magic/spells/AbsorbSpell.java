@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.Wand;
+import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.EffectTrail;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
