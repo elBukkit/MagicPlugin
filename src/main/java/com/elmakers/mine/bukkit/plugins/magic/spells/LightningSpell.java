@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -16,11 +15,9 @@ public class LightningSpell extends Spell
 	{
 		protected double density;
 		protected int    thunderThreshold;
-		protected Player player;
 
-		public ShockAction(Player player, double density, int thunderThreshold)
+		public ShockAction(double density, int thunderThreshold)
 		{
-			this.player = player;
 			this.density = density;
 			this.thunderThreshold = thunderThreshold;
 		}
@@ -29,7 +26,7 @@ public class LightningSpell extends Spell
 		{
 			if (Math.random() > density) return SpellResult.COST_FREE;
 
-			World world = player.getWorld();
+			World world = block.getWorld();
 			world.strikeLightning(block.getLocation());
 			super.perform(block);
 			if (blocks.size() > thunderThreshold)
@@ -55,7 +52,7 @@ public class LightningSpell extends Spell
 		radius = (int)(mage.getRadiusMultiplier() * radius);	
 
 		double ratio = (radius < 2) ? 1.0 : (radius < 4) ? 0.5 : 0.25;
-		ShockAction action = new ShockAction(getPlayer(), ratio, 5);
+		ShockAction action = new ShockAction(ratio, 5);
 
 		if (radius <= 1)
 		{
