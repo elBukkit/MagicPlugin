@@ -37,16 +37,16 @@ public class PushSpell extends Spell
 		
 		// Visual effect
 		int effectRange = Math.min((int)maxRingEffectRange, maxEffectRange / effectSpeed);
-		Location effectLocation = player.getLocation();
+		Location effectLocation = getPlayer().getLocation();
 		EffectRing effectRing = new EffectRing(controller.getPlugin(), effectLocation, effectRange, ringEffectAmount);
 		if (pull) effectRing.setInvert(true);
 		startEffect(effectRing, effectRange);
 		
-		List<Entity> entities = player.getWorld().getEntities();
+		List<Entity> entities = getPlayer().getWorld().getEntities();
 		for (Entity target : entities)
 		{
-			if (target == player) continue;
-			Location playerLocation = player.getLocation();
+			if (target == getPlayer()) continue;
+			Location playerLocation = getPlayer().getLocation();
 			Location targetLocation = target.getLocation();
 
 			if (playerLocation.distanceSquared(targetLocation) >maxDistanceSquared) continue;
@@ -102,7 +102,7 @@ public class PushSpell extends Spell
 
 		// Visual effect
 		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = player.getEyeLocation();
+		Location effectLocation = getPlayer().getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
 		if (pull) {
 			effectDirection.normalize();
@@ -122,8 +122,8 @@ public class PushSpell extends Spell
 		int pushed = 0;
 		for (Target target : targets) {
 			Entity targetEntity = target.getEntity();
-			Location to = pull ? target.getLocation() : player.getLocation();
-			Location from = pull ? player.getLocation() : target.getLocation();
+			Location to = pull ? target.getLocation() : getPlayer().getLocation();
+			Location from = pull ? getPlayer().getLocation() : target.getLocation();
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 
 			forceEntity(targetEntity, multiplier, from, to, magnitude);

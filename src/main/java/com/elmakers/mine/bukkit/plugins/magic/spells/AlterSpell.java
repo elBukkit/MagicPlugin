@@ -69,10 +69,10 @@ public class AlterSpell extends Spell
 			castMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
 			return SpellResult.FAILURE;
 		}
-		if (!hasBuildPermission(targetBlock)) {
+		if (!mage.hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		if (isIndestructible(targetBlock)) {
+		if (mage.isIndestructible(targetBlock)) {
 			return SpellResult.NO_TARGET;
 		}
 
@@ -90,7 +90,7 @@ public class AlterSpell extends Spell
 
 		adjust(targetBlock, data, undoList, recursive, recurseDistance, 0);
 
-		controller.addToUndoQueue(player, undoList);
+		controller.addToUndoQueue(getPlayer(), undoList);
 
 		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
 		controller.updateBlock(targetBlock);

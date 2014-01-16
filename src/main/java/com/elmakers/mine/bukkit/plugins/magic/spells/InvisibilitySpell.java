@@ -20,7 +20,7 @@ public class InvisibilitySpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		this.location = player.getLocation();
+		this.location = getPlayer().getLocation();
 
 		String typeString = parameters.getString("type", "");
 		if (typeString.equals("decoy"))
@@ -47,7 +47,7 @@ public class InvisibilitySpell extends Spell
 
 	public boolean hasMoved()
 	{
-		Location current = player.getLocation();
+		Location current = getPlayer().getLocation();
 
 		return (current.getBlockX() != location.getBlockX() || current.getBlockY() != location.getBlockY() || current.getBlockZ() != location.getBlockZ());
 	}
@@ -62,10 +62,10 @@ public class InvisibilitySpell extends Spell
 	{
 		uncloak();
 
-		List<Player> others = player.getWorld().getPlayers();
+		List<Player> others = getPlayer().getWorld().getPlayers();
 		for (Player other : others)
 		{
-			if (other != player && inRange(other))
+			if (other != getPlayer() && inRange(other))
 			{
 				cloaked.add(other);
 				cloakFrom(other);
@@ -86,7 +86,7 @@ public class InvisibilitySpell extends Spell
 
 	protected boolean inRange(Player other) 
 	{
-		Location playerLocation = player.getLocation();
+		Location playerLocation = getPlayer().getLocation();
 		Location otherLocation = other.getLocation();
 
 		// hide from players under 256 blocks away
@@ -101,11 +101,11 @@ public class InvisibilitySpell extends Spell
 
 	protected void cloakFrom(Player other)
 	{
-		other.hidePlayer(player);   
+		other.hidePlayer(getPlayer());   
 	}
 
 	protected void uncloakFrom(Player other)
 	{
-		other.showPlayer(player);
+		other.showPlayer(getPlayer());
 	}
 }

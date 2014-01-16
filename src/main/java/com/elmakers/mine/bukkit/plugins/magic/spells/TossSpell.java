@@ -15,8 +15,8 @@ public class TossSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Location location = player.getLocation();
-		if (!hasBuildPermission(location)) {
+		Location location = getPlayer().getLocation();
+		if (!hasBuildPermission(location.getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
@@ -37,7 +37,7 @@ public class TossSpell extends Spell
 		float speed = 0.6f;
 		speed = (float)parameters.getDouble("speed", speed);
 		
-		Vector direction = player.getLocation().getDirection();
+		Vector direction = getPlayer().getLocation().getDirection();
 		direction.normalize().multiply(speed);
 		Vector up = new Vector(0, 1, 0);
 		Vector perp = new Vector();
@@ -47,11 +47,11 @@ public class TossSpell extends Spell
 		for (int i = 0; i < tossCount; i++)
 		{
 			FallingBlock block = null;
-			location = player.getEyeLocation();
+			location = getPlayer().getEyeLocation();
 			location.setX(location.getX() + perp.getX() * (Math.random() * tossCount / 4 - tossCount / 8));
 			location.setY(location.getY());
 			location.setZ(location.getZ() + perp.getZ() * (Math.random() * tossCount / 4 - tossCount / 8));
-			block = player.getWorld().spawnFallingBlock(location, material, data);
+			block = getPlayer().getWorld().spawnFallingBlock(location, material, data);
 
 			if (block == null)
 			{

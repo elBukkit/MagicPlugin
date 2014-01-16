@@ -127,7 +127,7 @@ public class TunnelSpell extends Spell
 			bottomLeftBlock = bottomLeftBlock.getRelative(direction);
 		}
 
-		controller.addToUndoQueue(player, tunneledBlocks);
+		controller.addToUndoQueue(getPlayer(), tunneledBlocks);
 		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks");
 
 		return SpellResult.SUCCESS;

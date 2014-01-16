@@ -25,7 +25,7 @@ public class FlingSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int height = 0;
-		Block playerBlock = player.getLocation().getBlock();
+		Block playerBlock = getPlayer().getLocation().getBlock();
 
 		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
 		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
@@ -57,13 +57,13 @@ public class FlingSpell extends Spell
 			velocity.setZ(zValue);
 		}
 
-		if (player.getLocation().getBlockY() >= 256)
+		if (getPlayer().getLocation().getBlockY() >= 256)
 		{
 			velocity.setY(0);
 		}
 
 		velocity.multiply(magnitude);
-		player.setVelocity(velocity);
+		getPlayer().setVelocity(velocity);
 		castMessage("Whee!");
 
 		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);

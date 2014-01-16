@@ -18,7 +18,7 @@ public class ProjectileSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!mage.hasBuildPermission(player.getLocation())) {
+		if (!mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		int size = parameters.getInt("size", defaultSize);
@@ -26,10 +26,10 @@ public class ProjectileSpell extends Spell
 		boolean useFire = parameters.getBoolean("fire", true);
 		String projectileClass = parameters.getString("projectile", "Fireball");
 		try {
-			Location playerLocation = player.getLocation();
+			Location playerLocation = getPlayer().getLocation();
 			Class<? extends Projectile> projectileType = (Class<? extends Projectile>)Class.forName("org.bukkit.entity." + projectileClass);
-			Projectile projectile = player.launchProjectile(projectileType);
-			projectile.setShooter(player);
+			Projectile projectile = getPlayer().launchProjectile(projectileType);
+			projectile.setShooter(getPlayer());
 			if (projectile instanceof WitherSkull) {
 				playerLocation.getWorld().playSound(playerLocation, Sound.WITHER_SHOOT, 1.0f, 1.5f);		
 			}

@@ -19,11 +19,11 @@ public class BlinkSpell extends Spell
 
 	protected boolean ascend()
 	{
-		Location location = findPlaceToStand(player.getLocation(), true);
+		Location location = findPlaceToStand(getPlayer().getLocation(), true);
 		if (location != null) 
 		{
 			castMessage("You ascend");
-			player.teleport(location);
+			getPlayer().teleport(location);
 			return true;
 		}
 		return false;
@@ -31,11 +31,11 @@ public class BlinkSpell extends Spell
 
 	protected boolean descend()
 	{
-		Location location = findPlaceToStand(player.getLocation(), false);
+		Location location = findPlaceToStand(getPlayer().getLocation(), false);
 		if (location != null) 
 		{
 			castMessage("You descend");
-			player.teleport(location);
+			getPlayer().teleport(location);
 			return true;
 		}
 		return false;
@@ -44,7 +44,7 @@ public class BlinkSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Location playerLocation = player.getEyeLocation();
+		Location playerLocation = getPlayer().getEyeLocation();
 		String elevateType = parameters.getString("type", "");
 		if (elevateType.equals("descend"))
 		{
@@ -129,7 +129,7 @@ public class BlinkSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
-		World world = player.getWorld();
+		World world = getPlayer().getWorld();
 
 		// Don't drop the player too far, and make sure there is somewhere to stand
 		Block destination = face;
@@ -196,10 +196,10 @@ public class BlinkSpell extends Spell
 			destination.getX() + 0.5,
 			destination.getY(),
 			destination.getZ() + 0.5,
-			player.getLocation().getYaw(),
-			player.getLocation().getPitch()
+			getPlayer().getLocation().getYaw(),
+			getPlayer().getLocation().getPitch()
 		);
-		player.teleport(targetLocation);
+		getPlayer().teleport(targetLocation);
 		EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 		playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 		EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);

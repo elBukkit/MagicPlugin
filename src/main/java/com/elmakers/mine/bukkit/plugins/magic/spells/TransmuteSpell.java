@@ -27,13 +27,13 @@ public class TransmuteSpell extends Spell
 
 		if (target != null)
 		{
-			transmuteAction = controller.getLastBlockList(player.getName(), target);
+			transmuteAction = controller.getLastBlockList(getPlayer().getName(), target);
 			usedTarget = transmuteAction != null;
 		}
 
 		if (transmuteAction == null)
 		{
-			transmuteAction = controller.getLastBlockList(player.getName());
+			transmuteAction = controller.getLastBlockList(getPlayer().getName());
 		}
 
 		if (transmuteAction == null)

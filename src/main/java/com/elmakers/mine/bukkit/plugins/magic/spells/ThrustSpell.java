@@ -85,7 +85,7 @@ public class ThrustSpell extends Spell
 			spell.controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, spell);
 
 			players.remove(spell.getPlayer().getName());
-			player.setVelocity(new Vector(0,0,0));
+			getPlayer().setVelocity(new Vector(0,0,0));
 		}
 
 		public void run()
@@ -118,7 +118,7 @@ public class ThrustSpell extends Spell
 	{
 		checkCounter = 0;
 
-		Location playerLocation = player.getLocation();
+		Location playerLocation = getPlayer().getLocation();
 		World world = playerLocation.getWorld();
 		Block targetBlock = world.getBlockAt(playerLocation);
 		targetBlock = targetBlock.getRelative(BlockFace.DOWN);
@@ -134,7 +134,7 @@ public class ThrustSpell extends Spell
 		// if the terrain has changed more than the auto-hover tolerance, re-adjust hover height and keep level.
 		if (groundHeight == 0 || targetHeight == 0)
 		{
-			hoverHeight = player.getLocation().getBlockY() - newGroundHeight;
+			hoverHeight = getPlayer().getLocation().getBlockY() - newGroundHeight;
 			if (hoverHeight < defaultHoverHeight)
 			{
 				hoverHeight = defaultHoverHeight;
@@ -161,7 +161,7 @@ public class ThrustSpell extends Spell
 
 	public boolean isActive()
 	{
-		return (player != null && !player.isDead() && player.isOnline());
+		return (getPlayer() != null && !getPlayer().isDead() && getPlayer().isOnline());
 	}
 
 	protected void applyForce()
@@ -189,7 +189,7 @@ public class ThrustSpell extends Spell
 		float speedMinMagnitude =  (float)minSpeed * timeDeltaSeconds;
 		float speedMaxMagnitude =  (float)maxSpeed * timeDeltaSeconds;
 
-		Location playerLocation = player.getLocation();
+		Location playerLocation = getPlayer().getLocation();
 
 		float pitch = playerLocation.getPitch();
 		float yaw = playerLocation.getYaw();
@@ -241,7 +241,7 @@ public class ThrustSpell extends Spell
 
 		// Steer- faster at higher altitudes, and scaled based on angle away from center (look up or down to stop)
 		float multiplier = speedMinMagnitude;
-		if (!player.isSneaking())
+		if (!getPlayer().isSneaking())
 		{
 			int heightFactor = hoverHeight > maxSpeedAtElevation ? maxSpeedAtElevation : (int)hoverHeight;
 			multiplier *= (float)speedMaxMagnitude * heightFactor / maxSpeedAtElevation;
@@ -251,7 +251,7 @@ public class ThrustSpell extends Spell
 		aim.setY(0);
 		scaledForce.add(aim);
 
-		player.setVelocity(scaledForce);
+		getPlayer().setVelocity(scaledForce);
 
 		this.lastTick = System.currentTimeMillis();
 	}
@@ -267,7 +267,7 @@ public class ThrustSpell extends Spell
 			action = new LevitateAction(controller.getPlugin());
 		}
 
-		if (action.isActive(player))
+		if (action.isActive(getPlayer()))
 		{
 			action.deactivate(this);
 			castMessage("You feel heavier");

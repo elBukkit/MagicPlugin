@@ -231,7 +231,7 @@ public class PortalSpell extends Spell
 		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		if (defaultSearchDistance > 0 && player.getLocation().distanceSquared(target.getLocation()) > defaultSearchDistance* defaultSearchDistance)
+		if (defaultSearchDistance > 0 && getPlayer().getLocation().distanceSquared(target.getLocation()) > defaultSearchDistance* defaultSearchDistance)
 		{
 			castMessage("Can't create a portal that far away");
 			return SpellResult.NO_TARGET;
@@ -253,7 +253,7 @@ public class PortalSpell extends Spell
 		}
 
 		controller.disablePhysics(10000);
-		create(player.getLocation(), portalBase.getLocation());
+		create(getPlayer().getLocation(), portalBase.getLocation());
 
 		checkListener();
 
@@ -271,7 +271,7 @@ public class PortalSpell extends Spell
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		Location playerLocation = player.getLocation();
+		Location playerLocation = getPlayer().getLocation();
 		BlockVector lastLoc = getLastLocation();
 		BlockVector currentLoc = new BlockVector(playerLocation.getBlockX(), playerLocation.getBlockY(), playerLocation.getBlockZ());
 		if (lastLoc != null && currentLoc.getBlockX() == lastLoc.getBlockX() && currentLoc.getBlockY() == lastLoc.getBlockY() && currentLoc.getBlockZ() == lastLoc.getBlockZ())
@@ -291,7 +291,7 @@ public class PortalSpell extends Spell
 					PlayerPortal portal = findPortal(playerLocation);
 					if (portal != null)
 					{
-						portal.teleport(player, controller.getPlugin(), this);
+						portal.teleport(getPlayer(), controller.getPlugin(), this);
 					}
 				}
 				setPortalling(true);

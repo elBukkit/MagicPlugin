@@ -75,7 +75,7 @@ public class PillarSpell extends Spell
 		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
 
 		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
-		controller.addToUndoQueue(player, pillarBlocks);
+		controller.addToUndoQueue(getPlayer(), pillarBlocks);
 		controller.updateBlock(targetBlock);
 		
 		return SpellResult.SUCCESS;

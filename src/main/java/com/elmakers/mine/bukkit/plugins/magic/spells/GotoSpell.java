@@ -27,9 +27,9 @@ public class GotoSpell extends Spell
 
 		if (getYRotation() > 80)
 		{
-			Player destination = getFarthestPlayer(player);
+			Player destination = getFarthestPlayer(getPlayer());
 			if (destination == null) return SpellResult.NO_TARGET;
-			player.teleport(destination);
+			getPlayer().teleport(destination);
 			castMessage("Teleporting you to " + destination.getName());
 			return SpellResult.SUCCESS;
 		}
@@ -47,7 +47,7 @@ public class GotoSpell extends Spell
 			return SpellResult.SUCCESS;
 		}
 
-		Location destination = player.getLocation();
+		Location destination = getPlayer().getLocation();
 		if (target.isBlock())
 		{
 			destination = target.getLocation();
@@ -56,7 +56,7 @@ public class GotoSpell extends Spell
 
 		if (targetPlayer == null)
 		{
-			targetPlayer = getFarthestPlayer(player);
+			targetPlayer = getFarthestPlayer(getPlayer());
 		}
 
 		if (targetPlayer == null) return SpellResult.NO_TARGET;

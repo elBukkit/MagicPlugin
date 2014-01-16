@@ -35,17 +35,17 @@ public class ShunkenHeadSpell extends Spell
 	{
 		String castType = parameters.getString("type");
 		if (castType != null && castType.equalsIgnoreCase("self")) {
-			dropHead(player.getLocation(), player.getName(), null, (byte)3);
+			dropHead(getPlayer().getLocation(), getPlayer().getName(), null, (byte)3);
 			return SpellResult.SUCCESS;
 		}
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
-			dropHead(player.getLocation(), giveName, null, (byte)3);
+			dropHead(getPlayer().getLocation(), giveName, null, (byte)3);
 			return SpellResult.SUCCESS;
 		}
 		
 		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = player.getEyeLocation();
+		Location effectLocation = getPlayer().getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
 		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.INSTANT_SPELL);
@@ -73,7 +73,7 @@ public class ShunkenHeadSpell extends Spell
 		byte data = 3;
 		if (li instanceof Player)
 		{
-			li.damage(mage.getDamageMultiplier() * playerDamage, player);
+			li.damage(mage.getDamageMultiplier() * playerDamage, getPlayer());
 			ownerName = ((Player)li).getName();
 		}
 		else

@@ -69,7 +69,7 @@ public class ExtendSpell extends Spell
 		targetBlock.setData(data);
 
 		castMessage("A bridge extends!");
-		controller.addToUndoQueue(player, bridgeBlocks);
+		controller.addToUndoQueue(getPlayer(), bridgeBlocks);
 		controller.updateBlock(targetBlock);
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 

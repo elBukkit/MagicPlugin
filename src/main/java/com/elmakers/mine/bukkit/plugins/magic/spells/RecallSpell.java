@@ -27,7 +27,7 @@ public class RecallSpell extends Spell
 		if (typeString.equals("spawn"))
 		{
 			castMessage("Returning you home");
-			player.teleport(tryFindPlaceToStand(player.getWorld().getSpawnLocation()));
+			getPlayer().teleport(tryFindPlaceToStand(getPlayer().getWorld().getSpawnLocation()));
 			return SpellResult.SUCCESS; 
 		}
 		if (typeString.equals("death") || getYRotation() < -70  && autoResurrect)
@@ -38,7 +38,7 @@ public class RecallSpell extends Spell
 				return SpellResult.NO_TARGET;
 			}
 			
-			player.teleport(tryFindPlaceToStand(deathLocation));
+			getPlayer().teleport(tryFindPlaceToStand(deathLocation));
 			return SpellResult.SUCCESS; 
 		}
 		
@@ -47,23 +47,23 @@ public class RecallSpell extends Spell
 			if (!isActive && autoSpawn)
 			{
 				castMessage("Returning you home");
-				player.teleport(tryFindPlaceToStand(player.getWorld().getSpawnLocation()));
+				getPlayer().teleport(tryFindPlaceToStand(getPlayer().getWorld().getSpawnLocation()));
 			}
 			else
 			{
 				if (!isActive) return SpellResult.NO_TARGET;
 
-				double distanceSquared = player.getLocation().distanceSquared(location);
+				double distanceSquared = getPlayer().getLocation().distanceSquared(location);
 
 				if (distanceSquared < disableDistance * disableDistance && autoSpawn)
 				{
 					castMessage("Returning you home");
-					player.teleport(tryFindPlaceToStand(player.getWorld().getSpawnLocation()));
+					getPlayer().teleport(tryFindPlaceToStand(getPlayer().getWorld().getSpawnLocation()));
 				}
 				else
 				{
 					castMessage("Returning you to your marker");
-					player.teleport(location);
+					getPlayer().teleport(location);
 				}
 			}
 			return SpellResult.SUCCESS;
@@ -111,12 +111,12 @@ public class RecallSpell extends Spell
 			castMessage("You place a recall marker");
 		}
 
-		location = player.getLocation();
+		location = getPlayer().getLocation();
 		location.setX(targetBlock.getX());
 		location.setY(targetBlock.getY());
 		location.setZ(targetBlock.getZ());
 
-		player.setCompassTarget(location);
+		getPlayer().setCompassTarget(location);
 		EffectUtils.playEffect(targetBlock.getLocation(), ParticleType.CLOUD, 1, 1);
 		
 		isActive = true;

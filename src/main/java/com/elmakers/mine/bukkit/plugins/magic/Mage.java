@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -29,7 +31,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Mage implements CostReducer
 {
-	protected Player 							player;
+	protected WeakReference<Player> 			player;
+	protected WeakReference<CommandSender>		commandSender;
 	protected String 							playerName;
 	protected MagicController					controller;
 	protected HashMap<String, Spell> 			spells 						  = new HashMap<String, Spell>();
@@ -55,6 +58,9 @@ public class Mage implements CostReducer
 			activeWand.removeExperience(xp);
 			return;
 		}
+		
+		Player player = getPlayer();
+		if (player == null) return;
 		
 		float expProgress = player.getExp();
 		int expLevel = player.getLevel();
@@ -83,7 +89,7 @@ public class Mage implements CostReducer
 		player.setLevel(expLevel);
 	}
 	
-	// Taken from mc Player
+	// Taken from NMS Player
     public static int getExpToLevel(int expLevel) {
         return expLevel >= 30 ? 62 + (expLevel - 30) * 7 : (expLevel >= 15 ? 17 + (expLevel - 15) * 3 : 17);
     }
@@ -92,6 +98,9 @@ public class Mage implements CostReducer
 		if (activeWand != null && activeWand.hasExperience()) {
 			return activeWand.getExperience();
 		}
+		
+		Player player = getPlayer();
+		if (player == null) return 0;
 		
 		int xp = 0;
 		float expProgress = player.getExp();
@@ -154,20 +163,29 @@ public class Mage implements CostReducer
 		if (storedInventory == null) {
 			return false;
 		}
-
+		
+		Player player = getPlayer();
 		HashMap<Integer, ItemStack> remainder = storedInventory.addItem(item);
+		
 		for (ItemStack remains : remainder.values()) {
-			player.getWorld().dropItemNaturally(player.getLocation(), remains);
+			if (player != null) {
+				player.getWorld().dropItemNaturally(player.getLocation(), remains);
+			}
 		}
 
 		return true;
 	}
 
 	public boolean storeInventory() {
-		Inventory inventory = player.getInventory();
 		if (storedInventory != null) {
 			return false;
 		}
+
+		Player player = getPlayer();
+		if (player == null) {
+			return false;
+		}
+		Inventory inventory = player.getInventory();
 		storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
 		
 		// Make sure we don't store any spells or magical materials, just in case
@@ -184,7 +202,11 @@ public class Mage implements CostReducer
 	}
 
 	public boolean restoreInventory() {
-		if (storedInventory == null || player == null) {
+		if (storedInventory == null) {
+			return false;
+		}
+		Player player = getPlayer();
+		if (player == null) {
 			return false;
 		}
 		Inventory inventory = player.getInventory();
@@ -217,19 +239,6 @@ public class Mage implements CostReducer
 		}
 	}
 
-	public void setPlayer(Player player)
-	{
-		if (player != this.player) {
-			this.player = player;
-			for (Spell spell : spells.values()) {
-				spell.setPlayer(player);
-			}
-		}
-		if (player != null) {
-			playerName = player.getName();
-		}
-	}
-
 	public void unregisterEvent(SpellEventType type, Spell spell)
 	{
 		switch (type)
@@ -248,16 +257,15 @@ public class Mage implements CostReducer
 			break;
 		}
 	}
-
-	public Mage(MagicController master, Player player)
-	{
-		this.controller = master;
-		this.player = player;
-	}
 	
 	public Player getPlayer()
 	{
-		return player;
+		return player.get();
+	}
+	
+	public CommandSender getCommandSender()
+	{
+		return commandSender.get();
 	}
 
 	public boolean cancel()
@@ -294,6 +302,10 @@ public class Mage implements CostReducer
 
 	public void onPlayerDeath(EntityDeathEvent event)
 	{
+		Player player = getPlayer();
+		if (player == null) {
+			return;
+		}
 		lastDeathLocation = player.getLocation();
 		List<Spell> active = new ArrayList<Spell>();
 		active.addAll(deathListeners);
@@ -316,6 +328,11 @@ public class Mage implements CostReducer
 	
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
+		Player player = getPlayer();
+		if (player == null) {
+			return;
+		}
+		
 		// Send on to any registered spells
 		List<Spell> active = new ArrayList<Spell>();
 		active.addAll(damageListeners);
@@ -373,7 +390,7 @@ public class Mage implements CostReducer
 
 	public Spell getSpell(String name)
 	{
-		return getSpell(name, player);
+		return getSpell(name, getPlayer());
 	}
 	
 	public Spell getSpell(String name, Player usePermissions)
@@ -388,10 +405,7 @@ public class Mage implements CostReducer
 			playerSpell = (Spell)spell.clone();
 			spells.put(spell.getKey(), playerSpell);
 		}
-
-		if (player != null) {
-			playerSpell.setPlayer(player);
-		}
+		playerSpell.setMage(this);
 
 		return playerSpell;
 	}
@@ -401,10 +415,12 @@ public class Mage implements CostReducer
 	}
 	
 	public Inventory getInventory() {
-		return hasStoredInventory() ? getStoredInventory() : player.getInventory();
+		Player player = getPlayer();
+		return hasStoredInventory() ? getStoredInventory() : (player == null ? null : player.getInventory());
 	}
 	
 	public Wand getActiveWand() {
+		Player player = getPlayer();
 		if (activeWand != null && player != null) {
 			ItemStack currentItem = player.getItemInHand();
 			if (Wand.isWand(currentItem)) {
@@ -443,20 +459,12 @@ public class Mage implements CostReducer
 		return buildingMaterial;
 	}
 	
-	public boolean hasBuildPermission(Location location) {
-		return controller.hasBuildPermission(player, location);
-	}
-	
 	public boolean hasBuildPermission(Block block) {
-		return controller.hasBuildPermission(player, block);
-	}
-	
-	public boolean isIndestructible(Location location) {
-		return controller.isIndestructible(player, location);
+		return controller.hasBuildPermission(getPlayer(), block);
 	}
 	
 	public boolean isIndestructible(Block block) {
-		return controller.isIndestructible(player, block);
+		return controller.isIndestructible(getPlayer(), block);
 	}
 	
 	public void onCast(SpellResult result) {
@@ -488,40 +496,9 @@ public class Mage implements CostReducer
 	}
 	
 	public void playSound(Sound sound, float volume, float pitch) {
-		if (controller.soundsEnabled()) {
+		Player player = getPlayer();
+		if (player != null && controller.soundsEnabled()) {
 			player.playSound(player.getLocation(), sound, volume, pitch);
-		}
-	}
-	
-	public void activateSpell(Spell spell) {
-		activeSpells.add(spell);
-	}
-	
-	public void deactivateSpell(Spell spell) {
-		activeSpells.remove(spell);
-	}
-	
-	public void deactivateAllSpells() {
-		// Copy this set since spells will get removed while iterating!
-		List<Spell> active = new ArrayList<Spell>(activeSpells);
-		for (Spell spell : active) {
-			spell.deactivate();
-		}
-	}
-	
-	// This gets called every second (or so - 20 ticks)
-	public void tick() {
-		// TODO: Won't need this online check once we're cleaning up on logout, I think.
-		// Also this theoretically should never happen since we deactive wands on logout. Shrug.
-		if (activeWand != null && player.isOnline()) {
-			activeWand.processRegeneration();
-		}
-		
-		// Copy this set since spells may get removed while iterating!
-		List<Spell> active = new ArrayList<Spell>(activeSpells);
-		for (Spell spell : active) {
-			spell.checkActiveDuration();
-			spell.checkActiveCosts();
 		}
 	}
 	
@@ -531,52 +508,6 @@ public class Mage implements CostReducer
 			undoQueue.setMaxSize(controller.getUndoQueueDepth());
 		}
 		return undoQueue;
-	}	
-	
-	protected void load(ConfigurationNode configNode)
-	{
-		try {
-			if (configNode == null) return;
-
-			lastDeathLocation = configNode.getLocation("last_death_location");
-			
-			getUndoQueue().load(controller, configNode);
-			ConfigurationNode spellNode = configNode.getNode("spells");
-			if (spellNode != null) {
-				List<String> keys = spellNode.getKeys();
-				for (String key : keys) {
-					Spell spell = getSpell(key);
-					if (spell != null) {
-						spell.load(spellNode.getNode(key));
-					}
-				}
-			}
-		} catch (Exception ex) {
-			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
-		}		
-	}
-	
-	protected void save(ConfigurationNode configNode)
-	{
-		try {
-			configNode.setProperty("last_death_location", lastDeathLocation);
-			
-			getUndoQueue().save(controller, configNode);
-			ConfigurationNode spellNode = configNode.createChild("spells");
-			for (Spell spell : spells.values()) {
-				spell.save(spellNode.createChild(spell.getKey()));
-			}
-		} catch (Exception ex) {
-			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
-		}	
-	}
-	
-	public boolean checkLastClick(long maxInterval)
-	{
-		long now = System.currentTimeMillis();
-		long previous = lastClick;
-		lastClick = now;
-		return (previous <= 0 || previous + maxInterval < now);
 	}
 	
 	public Color getEffectColor() {
@@ -623,5 +554,111 @@ public class Mage implements CostReducer
 	public Location getLastDeathLocation()
 	{
 		return lastDeathLocation;
+	}
+
+	protected Mage(MagicController master, Player player)
+	{
+		this.controller = master;
+		this.player = new WeakReference<Player>(player);
+	}
+
+	protected void setPlayer(Player player)
+	{
+		if (player != null) {
+			playerName = player.getName();
+			this.player = new WeakReference<Player>(player);
+			this.commandSender = new WeakReference<CommandSender>(player);
+		} else {
+			this.player.clear();
+			this.commandSender.clear();
+		}
+	}
+	
+	protected void setCommandSender(CommandSender sender)
+	{
+		if (sender != null) {
+			this.commandSender = new WeakReference<CommandSender>(sender);
+		} else {
+			this.commandSender.clear();
+		}
+	}
+	
+	protected void load(ConfigurationNode configNode)
+	{
+		try {
+			if (configNode == null) return;
+
+			lastDeathLocation = configNode.getLocation("last_death_location");
+			
+			getUndoQueue().load(controller, configNode);
+			ConfigurationNode spellNode = configNode.getNode("spells");
+			if (spellNode != null) {
+				List<String> keys = spellNode.getKeys();
+				for (String key : keys) {
+					Spell spell = getSpell(key);
+					if (spell != null) {
+						spell.load(spellNode.getNode(key));
+					}
+				}
+			}
+		} catch (Exception ex) {
+			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
+		}		
+	}
+	
+	protected void save(ConfigurationNode configNode)
+	{
+		try {
+			configNode.setProperty("last_death_location", lastDeathLocation);
+			
+			getUndoQueue().save(controller, configNode);
+			ConfigurationNode spellNode = configNode.createChild("spells");
+			for (Spell spell : spells.values()) {
+				spell.save(spellNode.createChild(spell.getKey()));
+			}
+		} catch (Exception ex) {
+			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
+		}	
+	}
+	
+	protected boolean checkLastClick(long maxInterval)
+	{
+		long now = System.currentTimeMillis();
+		long previous = lastClick;
+		lastClick = now;
+		return (previous <= 0 || previous + maxInterval < now);
+	}
+	
+	protected void activateSpell(Spell spell) {
+		activeSpells.add(spell);
+	}
+	
+	protected void deactivateSpell(Spell spell) {
+		activeSpells.remove(spell);
+	}
+	
+	public void deactivateAllSpells() {
+		// Copy this set since spells will get removed while iterating!
+		List<Spell> active = new ArrayList<Spell>(activeSpells);
+		for (Spell spell : active) {
+			spell.deactivate();
+		}
+	}
+	
+	// This gets called every second (or so - 20 ticks)
+	protected void tick() {
+		// TODO: Won't need this online check once we're cleaning up on logout, I think.
+		// Also this theoretically should never happen since we deactive wands on logout. Shrug.
+		Player player = getPlayer();
+		if (activeWand != null && player != null && player.isOnline()) {
+			activeWand.processRegeneration();
+		}
+		
+		// Copy this set since spells may get removed while iterating!
+		List<Spell> active = new ArrayList<Spell>(activeSpells);
+		for (Spell spell : active) {
+			spell.checkActiveDuration();
+			spell.checkActiveCosts();
+		}
 	}
 }

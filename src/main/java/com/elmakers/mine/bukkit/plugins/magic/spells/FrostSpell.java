@@ -77,7 +77,7 @@ public class FrostSpell extends Spell
 		noTargetThrough(Material.STATIONARY_WATER);
 		
 		int effectRange = Math.min(getMaxRange(), maxEffectRange);
-		Location effectLocation = player.getEyeLocation();
+		Location effectLocation = getPlayer().getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
 		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.SNOWBALL_POOF);
@@ -115,11 +115,11 @@ public class FrostSpell extends Spell
 				}
 				if (li instanceof Player)
 				{
-					li.damage(playerDamage, player);
+					li.damage(playerDamage, getPlayer());
 				}
 				else
 				{
-					li.damage(entityDamage, player);
+					li.damage(entityDamage, getPlayer());
 				}
 			}
 		}
@@ -149,7 +149,7 @@ public class FrostSpell extends Spell
 
 		BlockList frozenBlocks = action.getBlocks();
 		frozenBlocks.setTimeToLive(timeToLive);
-		controller.scheduleCleanup(player.getName(), frozenBlocks);
+		controller.scheduleCleanup(getPlayer().getName(), frozenBlocks);
 		castMessage("Frosted " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target.getBlock());
 

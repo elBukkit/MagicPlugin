@@ -29,7 +29,7 @@ public class ForceSpell extends Spell
 				{
 					releaseTarget();
 				}
-				if (targetEntity != null && player.getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
+				if (targetEntity != null && getPlayer().getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
 				{
 					releaseTarget();
 				}
@@ -90,7 +90,7 @@ public class ForceSpell extends Spell
             (
                     (targetEntity instanceof LivingEntity) 
             &&      !targetEntity.isDead() 
-            &&      player.getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared()
+            &&      getPlayer().getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared()
             )
             {
                 castMessage("Released target");

@@ -16,7 +16,7 @@ public class ArrowSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!hasBuildPermission(player.getLocation())) {
+		if (!hasBuildPermission(getPlayer().getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		int arrowCount = 1;
@@ -39,16 +39,16 @@ public class ArrowSpell extends Spell
 		speed *= damageMultiplier;
 		damage *= damageMultiplier;
 		spread /= damageMultiplier;
-		Vector direction = player.getLocation().getDirection();
+		Vector direction = getPlayer().getLocation().getDirection();
 		for (int ai = 0; ai < arrowCount; ai++)
 		{
 			Arrow arrow = null;
-			Location location = player.getLocation();
+			Location location = getPlayer().getLocation();
 			location.setX(location.getX() + direction.getX() * (1 + Math.random() * arrowCount));
 			location.setY(location.getY() + 1.5f);
 			location.setZ(location.getZ() + direction.getZ() * (1 + Math.random() * arrowCount));
 			
-			arrow = player.getWorld().spawnArrow(location, direction, speed, spread);
+			arrow = getPlayer().getWorld().spawnArrow(location, direction, speed, spread);
 
 			if (arrow == null)
 			{
@@ -56,7 +56,7 @@ public class ArrowSpell extends Spell
 				return SpellResult.FAILURE;
 			}
 
-			arrow.setShooter(player);
+			arrow.setShooter(getPlayer());
 
 			if (useFire) {
 				arrow.setFireTicks(300);

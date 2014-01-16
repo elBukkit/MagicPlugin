@@ -66,7 +66,7 @@ public class BridgeSpell extends Spell
 		targetBlock.setData(data);
 
 		castMessage("A bridge extends!");
-		controller.addToUndoQueue(player, bridgeBlocks);
+		controller.addToUndoQueue(getPlayer(), bridgeBlocks);
 		controller.updateBlock(targetBlock);
 
 		Location effectLocation = targetBlock.getLocation();	

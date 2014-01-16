@@ -34,7 +34,7 @@ public class BoomSpell extends Spell {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		Location l = block.getLocation();
-		player.getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
+		getPlayer().getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 		controller.updateBlock(block);
 		return SpellResult.SUCCESS;
 	}
@@ -52,8 +52,8 @@ public class BoomSpell extends Spell {
 		
 		if (targetType.equals("here"))
 		{
-			player.damage(player.getMaxHealth() * 10);
-			return createExplosionAt(player.getLocation(), size, useFire, breakBlocks);
+			getPlayer().damage(getPlayer().getMaxHealth() * 10);
+			return createExplosionAt(getPlayer().getLocation(), size, useFire, breakBlocks);
 		}
 
 		Target target = getTarget();
@@ -66,7 +66,7 @@ public class BoomSpell extends Spell {
 		// Visual effect
 		if (showEffect) {
 			int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-			Location effectLocation = player.getEyeLocation();
+			Location effectLocation = getPlayer().getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
 			EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 			effect.setPeriod(effectPeriod);

@@ -34,7 +34,7 @@ public class PotionEffectSpell extends Spell
 			}
 		}
 		if (targetEntity == null && !targetType.equals("other")) {
-			targetEntity = player;
+			targetEntity = getPlayer();
 		} 
 		
 		if (targetEntity == null)
@@ -43,8 +43,8 @@ public class PotionEffectSpell extends Spell
 		}
 		
 		ParticleType particleType = ParticleType.fromName((String)parameters.getString("particle", ""), ParticleType.INSTANT_SPELL);
-		if (targetEntity == player) {
-			Location effectLocation = player.getEyeLocation();
+		if (targetEntity == getPlayer()) {
+			Location effectLocation = getPlayer().getEyeLocation();
 			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 4, 8);
 			effect.setParticleType(particleType);
 			effect.setParticleCount(8);
@@ -52,7 +52,7 @@ public class PotionEffectSpell extends Spell
 			effect.setInvert(true);
 			effect.start();
 		} else {
-			Location effectLocation = player.getEyeLocation();
+			Location effectLocation = getPlayer().getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
 			EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, 32);
 			effect.setParticleType(particleType);

@@ -25,7 +25,7 @@ public class AbsorbSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Mage playerSpells = controller.getPlayerSpells(player);
+		Mage playerSpells = controller.getPlayerSpells(getPlayer());
 		Wand wand = playerSpells.getActiveWand();
 		if (wand == null) {
 			castMessage("This spell requires a wand");
@@ -53,7 +53,7 @@ public class AbsorbSpell extends Spell
 		
 		// Visual effect
 		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = player.getEyeLocation();
+		Location effectLocation = getPlayer().getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
 
 		effectDirection.normalize();

@@ -31,7 +31,7 @@ public class UndoSpell extends Spell
 			String typeString = (String)parameters.getString("type");
 			if (typeString.equals("commit"))
 			{
-				if (controller.commit(player.getName())) {
+				if (controller.commit(getPlayer().getName())) {
 					sendMessage("Undo queue cleared");
 					return SpellResult.SUCCESS;
 				} else {
@@ -49,11 +49,11 @@ public class UndoSpell extends Spell
 					boolean undone = false;
 					if (targetAll)
 					{
-						undone = controller.undoAny(player, target);
+						undone = controller.undoAny(getPlayer(), target);
 					}
 					else
 					{
-						undone = controller.undo(player.getName(), target);
+						undone = controller.undo(getPlayer().getName(), target);
 						if (undone) {
 							sendMessage("You revert your construction");
 						}
@@ -71,7 +71,7 @@ public class UndoSpell extends Spell
 		/*
 		 * No target, or target isn't yours- just undo last
 		 */
-		boolean undone = controller.undo(player.getName());
+		boolean undone = controller.undo(getPlayer().getName());
 		if (undone)
 		{
 			castMessage("You revert your construction");

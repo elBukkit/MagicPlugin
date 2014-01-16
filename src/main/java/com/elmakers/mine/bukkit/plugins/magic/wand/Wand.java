@@ -44,8 +44,8 @@ public class Wand implements CostReducer {
 	protected final static int hotbarSize = 9;
 	
 	private ItemStack item;
-	private MagicController spells;
-	private Mage activePlayer;
+	private MagicController controller;
+	private Mage mage;
 	
 	// Cached state
 	private String id;
@@ -110,7 +110,7 @@ public class Wand implements CostReducer {
 	
 	public Wand(MagicController spells) {
 		this();
-		this.spells = spells;
+		this.controller = spells;
 		item = new ItemStack(WandMaterial);
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
 		item = InventoryUtils.getCopy(item);
@@ -127,7 +127,7 @@ public class Wand implements CostReducer {
 	public Wand(MagicController spells, ItemStack item) {
 		this();
 		this.item = item;
-		this.spells = spells;
+		this.controller = spells;
 		loadState();
 	}
 
@@ -387,8 +387,8 @@ public class Wand implements CostReducer {
 		boolean added = false;
 		// Set the wand item
 		Integer selectedItem = null;
-		if (activePlayer != null && activePlayer.getPlayer() != null) {
-			selectedItem = activePlayer.getPlayer().getInventory().getHeldItemSlot();
+		if (mage != null && mage.getPlayer() != null) {
+			selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
 			hotbar.setItem(selectedItem, item);
 		}
 		for (Inventory inventory : allInventories) {
@@ -486,11 +486,11 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	protected ItemStack createSpellItem(String spellName) {
-		Spell spell = spells.getSpell(spellName);
+		Spell spell = controller.getSpell(spellName);
 		if (spell == null) return null;
 		MaterialAndData icon = spell.getIcon();
 		if (icon == null) {
-			spells.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
+			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
 		}
 		ItemStack itemStack = null;
 		ItemStack originalItemStack = null;
@@ -501,7 +501,7 @@ public class Wand implements CostReducer {
 			itemStack = null;
 		}
 		if (itemStack == null) {
-			spells.getPlugin().getLogger().warning("Unable to create spell icon with material " + icon.getMaterial().name());	
+			controller.getPlugin().getLogger().warning("Unable to create spell icon with material " + icon.getMaterial().name());	
 			return originalItemStack;
 		}
 		updateSpellName(itemStack, spell, true);
@@ -518,7 +518,7 @@ public class Wand implements CostReducer {
 		ItemStack originalItemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);	
 		ItemStack itemStack = InventoryUtils.getCopy(originalItemStack);
 		if (itemStack == null) {
-			spells.getPlugin().getLogger().warning("Unable to create material icon for id " + typeId + ": " + originalItemStack.getType());	
+			controller.getPlugin().getLogger().warning("Unable to create material icon for id " + typeId + ": " + originalItemStack.getType());	
 			return originalItemStack;
 		}
 		ItemMeta meta = itemStack.getItemMeta();
@@ -584,7 +584,7 @@ public class Wand implements CostReducer {
 	protected void loadState() {
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		if (wandNode == null) {
-			spells.getPlugin().getLogger().warning("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
+			controller.getPlugin().getLogger().warning("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
 		}
 		
@@ -928,7 +928,7 @@ public class Wand implements CostReducer {
 	}
 	
 	private String getActiveWandName(Material material) {
-		Spell spell = spells.getSpell(activeSpell);
+		Spell spell = controller.getSpell(activeSpell);
 		String materialName = null;
 		
 		if (spell != null && spell.usesMaterial() && !spell.hasMaterialOverride() && material != null) {
@@ -940,7 +940,7 @@ public class Wand implements CostReducer {
 	private String getActiveWandName() {
 		Spell spell = null;
 		if (hasInventory) {
-			spell = spells.getSpell(activeSpell);
+			spell = controller.getSpell(activeSpell);
 		}
 		return getActiveWandName(spell);
 	}
@@ -1027,7 +1027,7 @@ public class Wand implements CostReducer {
 	private List<String> getLore(int spellCount, int materialCount) {
 		List<String> lore = new ArrayList<String>();
 		
-		Spell spell = spells.getSpell(activeSpell);
+		Spell spell = controller.getSpell(activeSpell);
 		if (spell != null && spellCount == 1 && materialCount <= 1) {
 			addSpellLore(spell, lore);
 		} else {
@@ -1117,9 +1117,9 @@ public class Wand implements CostReducer {
 	}
 	
 	public void updateInventoryNames(boolean activeNames) {
-		if (activePlayer == null || !isInventoryOpen()) return;
+		if (mage == null || !isInventoryOpen()) return;
 		
-		ItemStack[] contents = activePlayer.getPlayer().getInventory().getContents();
+		ItemStack[] contents = mage.getPlayer().getInventory().getContents();
 		for (ItemStack item : contents) {
 			if (item == null || item.getType() == Material.AIR || isWand(item)) continue;
 			updateInventoryName(item, activeNames);
@@ -1128,7 +1128,7 @@ public class Wand implements CostReducer {
 
 	protected void updateInventoryName(ItemStack item, boolean activeName) {
 		if (isSpell(item)) {
-			Spell spell = activePlayer.getSpell(getSpell(item));
+			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
 				updateSpellName(item, spell, activeName);
 			}
@@ -1166,13 +1166,13 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	private void updateInventory() {
-		if (activePlayer == null) return;
+		if (mage == null) return;
 		if (!isInventoryOpen()) return;
-		if (activePlayer.getPlayer() == null) return;
-		if (!activePlayer.hasStoredInventory()) return;
+		if (mage.getPlayer() == null) return;
+		if (!mage.hasStoredInventory()) return;
 		
 		// Clear the player's inventory
-		Player player = activePlayer.getPlayer();
+		Player player = mage.getPlayer();
 		PlayerInventory playerInventory = player.getInventory();
 		playerInventory.clear();
 		
@@ -1232,14 +1232,14 @@ public class Wand implements CostReducer {
 	}
 	
 	public void saveInventory() {
-		if (activePlayer == null) return;
-		if (activePlayer == null) return;
+		if (mage == null) return;
+		if (mage == null) return;
 		if (!isInventoryOpen()) return;
-		if (activePlayer.getPlayer() == null) return;
-		if (!activePlayer.hasStoredInventory()) return;
+		if (mage.getPlayer() == null) return;
+		if (!mage.hasStoredInventory()) return;
 		
 		// Fill in the hotbar
-		Player player = activePlayer.getPlayer();
+		Player player = mage.getPlayer();
 		PlayerInventory playerInventory = player.getInventory();
 		for (int i = 0; i < hotbarSize; i++) {
 			ItemStack playerItem = playerInventory.getItem(i);
@@ -1435,8 +1435,8 @@ public class Wand implements CostReducer {
 		// Make sure to adjust the player's walk speed if it changes and this wand is active.
 		float oldWalkSpeedIncrease = speedIncrease;
 		speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
-		if (activePlayer != null && speedIncrease != oldWalkSpeedIncrease) {
-			Player player = activePlayer.getPlayer();
+		if (mage != null && speedIncrease != oldWalkSpeedIncrease) {
+			Player player = mage.getPlayer();
 			player.setWalkSpeed(defaultWalkSpeed + speedIncrease);
 			player.setFlySpeed(defaultFlySpeed + speedIncrease);
 		}
@@ -1510,10 +1510,10 @@ public class Wand implements CostReducer {
 
 	@SuppressWarnings("deprecation")
 	private void updateActiveMaterial() {
-		if (activePlayer == null) return;
+		if (mage == null) return;
 		
 		if (activeMaterial == null) {
-			activePlayer.clearBuildingMaterial();
+			mage.clearBuildingMaterial();
 		} else {
 			String[] pieces = StringUtils.split(activeMaterial, ":");
 			if (pieces.length > 0) {
@@ -1530,7 +1530,7 @@ public class Wand implements CostReducer {
 				} else {
 					material = Material.getMaterial(materialId);
 				}
-				activePlayer.setBuildingMaterial(material, data);
+				mage.setBuildingMaterial(material, data);
 			}
 		}
 	}
@@ -1555,22 +1555,22 @@ public class Wand implements CostReducer {
 			saveInventory();
 			openInventoryPage = (openInventoryPage + 1) % inventories.size();
 			updateInventory();
-			if (activePlayer != null && inventories.size() > 1) {
-				activePlayer.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
-				activePlayer.getPlayer().updateInventory();
+			if (mage != null && inventories.size() > 1) {
+				mage.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
+				mage.getPlayer().updateInventory();
 			}
 		}
 	}
 	
 	@SuppressWarnings("deprecation")
 	private void openInventory() {
-		if (activePlayer == null) return;
-		if (activePlayer.hasStoredInventory()) return;
-		if (activePlayer.storeInventory()) {
+		if (mage == null) return;
+		if (mage.hasStoredInventory()) return;
+		if (mage.storeInventory()) {
 			inventoryIsOpen = true;
-			activePlayer.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
+			mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 			updateInventory();
-			activePlayer.getPlayer().updateInventory();
+			mage.getPlayer().updateInventory();
 		}
 	}
 	
@@ -1579,11 +1579,11 @@ public class Wand implements CostReducer {
 		if (!isInventoryOpen()) return;
 		saveInventory();
 		inventoryIsOpen = false;
-		if (activePlayer != null) {
-			activePlayer.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
-			activePlayer.restoreInventory();
-			activePlayer.getPlayer().updateInventory();
-			ItemStack newWandItem = activePlayer.getPlayer().getInventory().getItemInHand();
+		if (mage != null) {
+			mage.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+			mage.restoreInventory();
+			mage.getPlayer().updateInventory();
+			ItemStack newWandItem = mage.getPlayer().getInventory().getItemInHand();
 			if (isWand(newWandItem)) {
 				item = newWandItem;
 				updateName();
@@ -1596,8 +1596,8 @@ public class Wand implements CostReducer {
 		if (owner.length() == 0) {
 			takeOwnership(playerSpells.getPlayer());
 		}
-		activePlayer = playerSpells;
-		Player player = activePlayer.getPlayer();
+		mage = playerSpells;
+		Player player = mage.getPlayer();
 		if (speedIncrease > 0) {
 			try {
 				player.setWalkSpeed(defaultWalkSpeed + speedIncrease);
@@ -1611,7 +1611,7 @@ public class Wand implements CostReducer {
 				}
 			}
 		}
-		activePlayer.setActiveWand(this);
+		mage.setActiveWand(this);
 		if (xpRegeneration > 0) {
 			storedXpLevel = player.getLevel();
 			storedXpProgress = player.getExp();
@@ -1627,59 +1627,59 @@ public class Wand implements CostReducer {
 	}
 	
 	protected void updateMana() {
-		if (activePlayer != null && xpMax > 0 && xpRegeneration > 0) {
-			Player player = activePlayer.getPlayer();
+		if (mage != null && xpMax > 0 && xpRegeneration > 0) {
+			Player player = mage.getPlayer();
 			player.setLevel(0);
 			player.setExp((float)xp / (float)xpMax);
 		}
 	}
 	
 	public boolean isInventoryOpen() {
-		return activePlayer != null && inventoryIsOpen;
+		return mage != null && inventoryIsOpen;
 	}
 	
 	public void deactivate() {
-		if (activePlayer == null) return;
+		if (mage == null) return;
 		saveState();
 
 		if (effectColor > 0) {
-			InventoryUtils.removePotionEffect(activePlayer.getPlayer());
+			InventoryUtils.removePotionEffect(mage.getPlayer());
 		}
 		
 		// This is a tying wands together with other spells, potentially
 		// But with the way the mana system works, this seems like the safest route.
-		activePlayer.deactivateAllSpells();
+		mage.deactivateAllSpells();
 		
 		if (isInventoryOpen()) {
 			closeInventory();
 		}
 		
 		// Extra just-in-case
-		activePlayer.restoreInventory();
+		mage.restoreInventory();
 		
 		if (xpRegeneration > 0) {
-			activePlayer.getPlayer().setExp(storedXpProgress);
-			activePlayer.getPlayer().setLevel(storedXpLevel);
-			activePlayer.getPlayer().giveExp(storedXp);
+			mage.getPlayer().setExp(storedXpProgress);
+			mage.getPlayer().setLevel(storedXpLevel);
+			mage.getPlayer().giveExp(storedXp);
 			storedXp = 0;
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
 		if (speedIncrease > 0) {
 			try {
-				activePlayer.getPlayer().setWalkSpeed(defaultWalkSpeed);
-				activePlayer.getPlayer().setFlySpeed(defaultFlySpeed);
+				mage.getPlayer().setWalkSpeed(defaultWalkSpeed);
+				mage.getPlayer().setFlySpeed(defaultFlySpeed);
 			}  catch(Exception ex) {
 				
 			}
 		}
-		activePlayer.setActiveWand(null);
-		activePlayer = null;
+		mage.setActiveWand(null);
+		mage = null;
 	}
 	
 	public Spell getActiveSpell() {
-		if (activePlayer == null) return null;
-		return activePlayer.getSpell(activeSpell);
+		if (mage == null) return null;
+		return mage.getSpell(activeSpell);
 	}
 	
 	public boolean cast() {
@@ -1696,12 +1696,12 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	protected void use() {
-		if (activePlayer == null) return;
+		if (mage == null) return;
 		if (uses > 0) {
 			uses--;
 			if (uses <= 0) {
-				Player player = activePlayer.getPlayer();
-				activePlayer.playSound(Sound.ITEM_BREAK, 1.0f, 0.8f);
+				Player player = mage.getPlayer();
+				mage.playSound(Sound.ITEM_BREAK, 1.0f, 0.8f);
 				PlayerInventory playerInventory = player.getInventory();
 				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
 				player.updateInventory();
@@ -1715,7 +1715,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public void onPlayerExpChange(PlayerExpChangeEvent event) {
-		if (activePlayer == null) return;
+		if (mage == null) return;
 		
 		if (xpRegeneration > 0) {
 			storedXp += event.getAmount();
@@ -1724,9 +1724,9 @@ public class Wand implements CostReducer {
 	}
 	
 	public void processRegeneration() {
-		if (activePlayer == null) return;
+		if (mage == null) return;
 		
-		Player player = activePlayer.getPlayer();
+		Player player = mage.getPlayer();
 		if (xpRegeneration > 0) {
 			xp = Math.min(xpMax, xp + xpRegeneration);
 			updateMana();
@@ -1757,7 +1757,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public MagicController getMaster() {
-		return spells;
+		return controller;
 	}
 	
 	public void cycleSpells() {
@@ -1814,7 +1814,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public Mage getActivePlayer() {
-		return activePlayer;
+		return mage;
 	}
 	
 	public String getId() {

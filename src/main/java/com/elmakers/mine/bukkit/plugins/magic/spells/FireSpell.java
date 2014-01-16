@@ -53,7 +53,7 @@ public class FireSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int effectRange = Math.min(getMaxRange(), maxEffectRange);
-		Location effectLocation = player.getEyeLocation();
+		Location effectLocation = getPlayer().getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
 		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.FLAME);
@@ -85,7 +85,7 @@ public class FireSpell extends Spell
 			this.coverSurface(target.getLocation(), radius, action);
 		}
 
-		controller.addToUndoQueue(player, action.getBlocks());
+		controller.addToUndoQueue(getPlayer(), action.getBlocks());
 		castMessage("Burned " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target);
 

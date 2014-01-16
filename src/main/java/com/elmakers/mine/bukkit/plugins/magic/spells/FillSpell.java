@@ -73,7 +73,7 @@ public class FillSpell extends Spell
 			size = (int)(mage.getRadiusMultiplier() * size);
 			blockRecurse.setMaxRecursion(size);
 
-			Mage playerSpells = controller.getPlayerSpells(player);
+			Mage playerSpells = controller.getPlayerSpells(getPlayer());
 			Material targetMaterial = targetBlock.getType();
 			ReplaceMaterialAction action = new ReplaceMaterialAction(playerSpells, targetBlock, material, data);
 
@@ -95,7 +95,7 @@ public class FillSpell extends Spell
 				action.addReplaceable(Material.STATIONARY_LAVA);
 			}
 			blockRecurse.recurse(targetBlock, action);
-			controller.addToUndoQueue(player, action.getBlocks());
+			controller.addToUndoQueue(getPlayer(), action.getBlocks());
 			controller.updateBlock(targetBlock);
 			castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
 			return SpellResult.SUCCESS;
@@ -113,7 +113,7 @@ public class FillSpell extends Spell
 			controller.updateBlock(targetBlock);
 
 			castMessage("Painting with " + material.name().toLowerCase());
-			controller.addToUndoQueue(player, filledBlocks);
+			controller.addToUndoQueue(getPlayer(), filledBlocks);
 			return SpellResult.SUCCESS;
 		}
 

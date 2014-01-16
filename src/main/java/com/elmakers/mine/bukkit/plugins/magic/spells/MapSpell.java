@@ -16,11 +16,11 @@ public class MapSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		World world = player.getWorld();
+		World world = getPlayer().getWorld();
 		MapView newMap = Bukkit.createMap(world);
 		castMessage("Here's a map!");
 		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
-		world.dropItemNaturally(player.getLocation(), newMapItem);
+		world.dropItemNaturally(getPlayer().getLocation(), newMapItem);
 		return SpellResult.SUCCESS;
 	}
 }

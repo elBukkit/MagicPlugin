@@ -79,7 +79,7 @@ public class FamiliarSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!mage.hasBuildPermission(player.getLocation())) {
+		if (!mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		noTargetThrough(Material.STATIONARY_WATER);
@@ -218,7 +218,7 @@ public class FamiliarSpell extends Spell
 	{
 		Creature familiar = null;
 		try {
-			Entity famEntity = player.getWorld().spawnEntity(target, famType);
+			Entity famEntity = getPlayer().getWorld().spawnEntity(target, famType);
 			if (!(famEntity instanceof Creature)) return null;
 	
 			familiar = (Creature)famEntity;

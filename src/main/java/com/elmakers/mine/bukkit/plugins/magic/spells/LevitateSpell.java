@@ -18,7 +18,7 @@ public class LevitateSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (player.getAllowFlight()) {
+		if (getPlayer().getAllowFlight()) {
 			deactivate();
 			return SpellResult.COST_FREE;
 		}
@@ -29,8 +29,8 @@ public class LevitateSpell extends Spell
 	
 	@Override
 	public void onDeactivate() {
-		player.setFlying(false);
-		player.setAllowFlight(false);
+		getPlayer().setFlying(false);
+		getPlayer().setAllowFlight(false);
 		
 		// Prevent the player from death by fall
 		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
@@ -41,13 +41,13 @@ public class LevitateSpell extends Spell
 	
 	@Override
 	public void onActivate() {
-		Vector velocity = player.getVelocity();
+		Vector velocity = getPlayer().getVelocity();
 		velocity.setY(velocity.getY() + 2);
-		player.setVelocity(velocity);
+		getPlayer().setVelocity(velocity);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			public void run() {
-				player.setAllowFlight(true);
-				player.setFlying(true);
+				getPlayer().setAllowFlight(true);
+				getPlayer().setFlying(true);
 			}
 		}, 2);
 

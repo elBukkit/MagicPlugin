@@ -26,15 +26,15 @@ public class IterateSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(target) || !hasBuildPermission(player.getLocation())) {
+		if (!hasBuildPermission(target) || !hasBuildPermission(getPlayer().getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		int iterateBlocks = (int)player.getLocation().distance(target.getLocation());
+		int iterateBlocks = (int)getPlayer().getLocation().distance(target.getLocation());
 		if (iterateBlocks <= 0) return SpellResult.NO_TARGET;
 
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
-		Vector playerLoc = new Vector(player.getLocation().getX(), player.getLocation().getY() + 1, player.getLocation().getZ());
+		Vector playerLoc = new Vector(getPlayer().getLocation().getX(), getPlayer().getLocation().getY() + 1, getPlayer().getLocation().getZ());
 
 		// Create aim vector - this should probably replace Spell.getAimVector, which seems broken!
 		Vector aim = targetLoc;
@@ -81,12 +81,12 @@ public class IterateSpell extends Spell
 		{
 			if (timeToLive == 0)
 			{
-				controller.addToUndoQueue(player, iteratedBlocks);
+				controller.addToUndoQueue(getPlayer(), iteratedBlocks);
 			}
 			else
 			{
 				iteratedBlocks.setTimeToLive(timeToLive);
-				controller.scheduleCleanup(player.getName(), iteratedBlocks);
+				controller.scheduleCleanup(getPlayer().getName(), iteratedBlocks);
 			}
 		}
 

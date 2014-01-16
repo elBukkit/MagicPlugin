@@ -114,7 +114,7 @@ public class TorchSpell extends Spell
 		BlockList torchBlock = new BlockList();
 		target.setType(targetMaterial);
 		torchBlock.add(target);
-		controller.addToUndoQueue(player, torchBlock);
+		controller.addToUndoQueue(getPlayer(), torchBlock);
 		controller.updateBlock(target);
 
 		return SpellResult.SUCCESS;

@@ -33,7 +33,7 @@ public class ConstructSpell extends Spell
 
 		if (target == null)
 		{
-			initializeTargeting(player);
+			initializeTargeting(getPlayer());
 			noTargetThrough(Material.GLASS);
 			target = getTarget().getBlock();
 		}

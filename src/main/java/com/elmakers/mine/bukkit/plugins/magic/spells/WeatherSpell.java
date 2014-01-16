@@ -11,7 +11,7 @@ public class WeatherSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		World world = player.getWorld();
+		World world = getPlayer().getWorld();
 		boolean hasStorm = world.hasStorm();
 
 		if (hasStorm)

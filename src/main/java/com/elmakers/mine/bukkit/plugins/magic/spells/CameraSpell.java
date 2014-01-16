@@ -50,7 +50,7 @@ public class CameraSpell extends Spell
 			String playerName = parameters.getString("name");
 			if (playerName == null) 
 			{
-				Player targetPlayer = player;
+				Player targetPlayer = getPlayer();
 				if (target != null && target.isEntity() && (target.getEntity() instanceof Player))
 				{
 					castMessage("CLICK!");
@@ -71,8 +71,8 @@ public class CameraSpell extends Spell
 			sendMessage("Failed to load photo");
 			return SpellResult.FAILURE;
 		}
-		player.getWorld().dropItemNaturally(player.getLocation(), newMapItem);
-		player.getWorld().playEffect(player.getEyeLocation(), Effect.SMOKE, 0);
+		getPlayer().getWorld().dropItemNaturally(getPlayer().getLocation(), newMapItem);
+		getPlayer().getWorld().playEffect(getPlayer().getEyeLocation(), Effect.SMOKE, 0);
 		
 		return SpellResult.SUCCESS;
 	}

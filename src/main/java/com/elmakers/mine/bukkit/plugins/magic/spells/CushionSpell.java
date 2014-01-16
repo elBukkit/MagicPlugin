@@ -17,7 +17,7 @@ public class CushionSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		World world = player.getWorld();
+		World world = getPlayer().getWorld();
 		Block targetFace = getTargetBlock();
 		if (targetFace == null)
 		{
@@ -59,7 +59,7 @@ public class CushionSpell extends Spell
 			}
 		}
 
-		controller.scheduleCleanup(player.getName(), cushionBlocks);
+		controller.scheduleCleanup(getPlayer().getName(), cushionBlocks);
 		return SpellResult.SUCCESS;
 	}
 }

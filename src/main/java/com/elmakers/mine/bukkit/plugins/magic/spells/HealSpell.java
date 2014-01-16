@@ -23,7 +23,7 @@ public class HealSpell extends Spell
 		Entity targetEntity = target.getEntity();
 		if (targetEntity != null && targetEntity instanceof LivingEntity)
 		{
-			Location effectLocation = player.getEyeLocation();
+			Location effectLocation = getPlayer().getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
 			EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, 32);
 			effect.setParticleType(ParticleType.HEART);
@@ -41,7 +41,7 @@ public class HealSpell extends Spell
 			}
 			return SpellResult.SUCCESS;
 		}
-		Location effectLocation = player.getEyeLocation();
+		Location effectLocation = getPlayer().getEyeLocation();
 		EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 4, 8);
 		effect.setParticleType(ParticleType.HEART);
 		effect.setParticleCount(1);
@@ -49,9 +49,9 @@ public class HealSpell extends Spell
 		effect.setInvert(true);
 		effect.start();
 		castMessage("You heal yourself");
-		player.setHealth(player.getMaxHealth());
-		player.setExhaustion(0);
-		player.setFoodLevel(20);
+		getPlayer().setHealth(getPlayer().getMaxHealth());
+		getPlayer().setExhaustion(0);
+		getPlayer().setFoodLevel(20);
 		return SpellResult.SUCCESS;
 	}
 }

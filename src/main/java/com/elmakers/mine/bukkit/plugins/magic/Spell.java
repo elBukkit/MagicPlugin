@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,7 +41,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	/*
 	 * protected members that are helpful to use
 	 */
-	protected Player						player;
 	protected MagicController				controller;
 	protected Mage 							mage;
 	protected static CSVParser              csv = new CSVParser();
@@ -107,7 +107,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Spell()
 	{
-		this.player = null;
 	}
 
 	protected static String getBuiltinClasspath()
@@ -245,16 +244,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 	}
 
-	public void setPlayer(Player player)
+	public void setMage(Mage mage)
 	{
-		if (player == this.player) return;
-		
-		this.player = player;
-		if (player == null) {
-			mage = null;
-		} else {
-			mage = controller.getPlayerSpells(player);
-		}
+		this.mage = mage;
 	}
 
 	public final String getKey()
@@ -350,7 +342,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 
 		lastCast = currentTime;
-		initializeTargeting(player);
+		initializeTargeting(getPlayer());
 
 		SpellResult result = onCast(parameters);
 		mage.onCast(result);
@@ -450,7 +442,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public Player getPlayer()
 	{
-		return player;
+		return mage.getPlayer();
+	}
+
+	public CommandSender getCommandSender()
+	{
+		return mage.getCommandSender();
 	}
 
 	/*
@@ -466,19 +463,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return mage.getBuildingMaterial();
 	}
 	
-	public boolean hasBuildPermission(Location location)
-	{
-		return mage.hasBuildPermission(location);
-	}
-	
 	public boolean hasBuildPermission(Block block)
 	{
 		return mage.hasBuildPermission(block);
-	}
-	
-	public boolean isIndestructible(Location location)
-	{
-		return mage.hasBuildPermission(location);
 	}
 	
 	public boolean isIndestructible(Block block)
@@ -627,14 +614,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public Block getPlayerBlock()
 	{
 		Block playerBlock = null;
-		Location playerLoc = player.getLocation();
+		Location playerLoc = getPlayer().getLocation();
 		int x = (int) Math.round(playerLoc.getX() - 0.5);
 		int y = (int) Math.round(playerLoc.getY() - 0.5);
 		int z = (int) Math.round(playerLoc.getZ() - 0.5);
 		int dy = 0;
 		while (dy > -3 && (playerBlock == null || isOkToStandIn(playerBlock.getType())))
 		{
-			playerBlock = player.getWorld().getBlockAt(x, y + dy, z);
+			playerBlock = getPlayer().getWorld().getBlockAt(x, y + dy, z);
 			dy--;
 		}
 		return playerBlock;
@@ -739,8 +726,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		Vector aimVector = new Vector(xOffset + 0.5, height + 0.5, zOffset + 0.5);
 
-		Location location = new Location(player.getWorld(), spawnBlock.getX() + aimVector.getX(), spawnBlock.getY()
-				+ aimVector.getY(), spawnBlock.getZ() + aimVector.getZ(), player.getLocation().getYaw(), player
+		Location location = new Location(getPlayer().getWorld(), spawnBlock.getX() + aimVector.getX(), spawnBlock.getY()
+				+ aimVector.getY(), spawnBlock.getZ() + aimVector.getZ(), getPlayer().getLocation().getYaw(), getPlayer()
 				.getLocation().getPitch());
 
 		return location;
@@ -805,7 +792,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public float getPlayerRotation()
 	{
-		float playerRot = player.getLocation().getYaw();
+		float playerRot = getPlayer().getLocation().getYaw();
 		while (playerRot < 0)
 			playerRot += 360;
 		while (playerRot > 360)
@@ -825,7 +812,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public Target getTarget()
 	{
 		Block block = getTargetBlock();
-		Target targetBlock = new Target(player, block);
+		Target targetBlock = new Target(getPlayer(), block);
 		Target targetEntity = getTargetEntity();
 		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance())
 		{
@@ -849,14 +836,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	}
 	
 	protected List<Target> getAllTargetEntities() {
-		List<Entity> entities = player.getWorld().getEntities();
+		List<Entity> entities = getPlayer().getWorld().getEntities();
 		List<Target> scored = new ArrayList<Target>();
 		for (Entity entity : entities)
 		{
-			if (entity == player) continue;
+			if (entity == getPlayer()) continue;
 			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 
-			Target newScore = new Target(player, entity, getMaxRange());
+			Target newScore = new Target(getPlayer(), entity, getMaxRange());
 			if (newScore.getScore() > 0)
 			{
 				scored.add(newScore);
@@ -970,7 +957,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Block getBlockAt(int x, int y, int z)
 	{
-		World world = player.getWorld();
+		World world = getPlayer().getWorld();
 		return world.getBlockAt(x, y, z);
 	}	
 
@@ -988,9 +975,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public void castMessage(String message)
 	{
-		if (!controller.isQuiet() && !controller.isSilent() && canSendMessage())
+		CommandSender sender = getCommandSender();
+		if (sender != null && !controller.isQuiet() && !controller.isSilent() && canSendMessage())
 		{
-			player.sendMessage(message);
+			sender.sendMessage(message);
 			lastMessageSent = System.currentTimeMillis();
 		}
 	}
@@ -1007,9 +995,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public void sendMessage(String message)
 	{
-		if (!controller.isSilent() && canSendMessage())
+		CommandSender sender = getCommandSender();
+		if (sender != null && !controller.isSilent() && canSendMessage())
 		{
-			player.sendMessage(message);
+			getPlayer().sendMessage(message);
 			lastMessageSent = System.currentTimeMillis();
 		}
 	}
@@ -1033,7 +1022,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public void setTime(long time)
 	{
-		player.getWorld().setTime(time);
+		getPlayer().getWorld().setTime(time);
 	}
 
 	/**
@@ -1043,7 +1032,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public long getTime()
 	{
-		return player.getWorld().getTime();
+		return getPlayer().getWorld().getTime();
 	}
 
 	/**
@@ -1167,10 +1156,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		boolean active = false;
 		for (int i = 8; i >= 0; i--)
 		{
-			ItemStack current = player.getInventory().getItem(i);
+			ItemStack current = getPlayer().getInventory().getItem(i);
 			if (current == null || current.getType() == Material.AIR)
 			{
-				player.getInventory().setItem(i, itemStack);
+				getPlayer().getInventory().setItem(i, itemStack);
 				active = true;
 				break;
 			}
@@ -1178,7 +1167,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		if (!active)
 		{
-			player.getInventory().addItem(itemStack);
+			getPlayer().getInventory().addItem(itemStack);
 		}
 
 		return true;
@@ -1204,7 +1193,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				{
 					int x = center.getBlockX() + dx;
 					int z = center.getBlockZ() + dz;
-					Block block = player.getWorld().getBlockAt(x, y, z);
+					Block block = getPlayer().getWorld().getBlockAt(x, y, z);
 					int depth = 0;
 
 					if (block.getType() == Material.AIR)

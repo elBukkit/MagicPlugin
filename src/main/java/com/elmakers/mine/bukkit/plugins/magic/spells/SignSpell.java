@@ -60,14 +60,14 @@ public class SignSpell extends Spell
 			else
 			{
 				targetBlock.setType(Material.SIGN_POST);
-				float yaw = player.getLocation().getYaw();
+				float yaw = getPlayer().getLocation().getYaw();
 				yaw = yaw < 180 ? yaw + 180 : yaw - 180;
 				targetBlock.setData((byte)(yaw * 15 / 360));
 			}
 			if (targetBlock.getState() instanceof Sign)
 			{
 				Sign sign = (Sign)targetBlock.getState();
-				sign.setLine(0, player.getName());
+				sign.setLine(0, getPlayer().getName());
 				sign.setLine(1, "was here");
 				Date currentDate = new Date();
 				sign.setLine(3, DateFormat.getInstance().format(currentDate));
@@ -84,7 +84,7 @@ public class SignSpell extends Spell
 		else if (target.isEntity() && target.getEntity() instanceof Player)
 		{
 			Player targetPlayer = (Player)target.getEntity();
-			targetPlayer.sendMessage(player.getName() + " says hi!");
+			targetPlayer.sendMessage(getPlayer().getName() + " says hi!");
 			sendMessage("You send " + targetPlayer.getName() + " a message");
 			return SpellResult.SUCCESS;
 		}

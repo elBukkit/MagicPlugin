@@ -34,7 +34,7 @@ public class TreeSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		Location treeLoc = new Location(player.getWorld(), target.getX(), target.getY() + 1, target.getZ(), 0, 0);
+		Location treeLoc = new Location(getPlayer().getWorld(), target.getX(), target.getY() + 1, target.getZ(), 0, 0);
 		TreeType treeType = defaultTreeType;
 		String typeString = parameters.getString("type", "");
 		treeType = parseTreeString(typeString, defaultTreeType);
@@ -43,7 +43,7 @@ public class TreeSpell extends Spell
 		{
 			treeType = TreeType.values()[(int)(Math.random() * TreeType.values().length)];
 		}
-		boolean result = player.getWorld().generateTree(treeLoc, treeType);
+		boolean result = getPlayer().getWorld().generateTree(treeLoc, treeType);
 
 		if (result)
 		{

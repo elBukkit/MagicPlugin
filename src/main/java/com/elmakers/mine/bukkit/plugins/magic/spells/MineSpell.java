@@ -55,7 +55,7 @@ public class MineSpell extends Spell
 		Material mineMaterial = target.getType();
 		mine(target, mineMaterial, minedBlocks, maxRecursion);
 
-		World world = player.getWorld();
+		World world = getPlayer().getWorld();
 
 		// TODO: Optimize this
 		List<Material> minedMaterials = new ArrayList<Material>();
@@ -68,7 +68,7 @@ public class MineSpell extends Spell
 
 		Location itemDrop = new Location(world, target.getX(), target.getY(), target.getZ(), 0, 0);
 		ItemStack items = new ItemStack(mineMaterial, (int)minedBlocks.size(), (short)0 , data);
-		player.getWorld().dropItemNaturally(itemDrop, items);
+		getPlayer().getWorld().dropItemNaturally(itemDrop, items);
 
 		// This isn't undoable, since we can't pick the items back up!
 		// So, don't add it to the undo queue.

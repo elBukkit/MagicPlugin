@@ -31,7 +31,7 @@ public class DisarmSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = player.getEyeLocation();
+		Location effectLocation = getPlayer().getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();
 		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
 		effectTrail.setParticleType(ParticleType.MOB_SPELL);
