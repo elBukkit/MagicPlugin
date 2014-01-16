@@ -494,13 +494,12 @@ wands:
         cost_reduction: 1
         protection: 1
         cooldown_reduction: 1
-        xp_regeneration: 100
-        xp_max: 1000
         health_regeneration: 1
         hunger_regeneration: 1
         power: 1
         haste: 0.3
         effect_color: 8B008B
+        organize: true
         spells:
             - fling
             - blink
@@ -795,6 +794,7 @@ wands:
         health_regeneration: 1
         hunger_regeneration: 1
         haste: 0.1
+        power: 0.5
         effect_color: FFFFFF
         spells:
             - fling
@@ -850,6 +850,7 @@ wands:
         health_regeneration: 1
         hunger_regeneration: 1
         haste: 0.1
+        power: 0.5
         effect_color: 111111
         spells:
             - fling
@@ -905,6 +906,7 @@ wands:
         protection: 0.6
         xp_regeneration: 40
         xp_max: 300
+        power: 0.2
         effect_color: FF0000
         spells:
             - fireball
@@ -934,6 +936,7 @@ wands:
         protection: 0.8
         xp_regeneration: 40
         xp_max: 300
+        power: 0.2
         effect_color: 0000FF
         spells:
             - frost
@@ -970,6 +973,7 @@ wands:
         protection: 0.8
         xp_regeneration: 40
         xp_max: 300
+        power: 0.2
         effect_color: 00FF00
         spells:
             - tree
@@ -1010,7 +1014,7 @@ wands:
         health_regeneration: 1
         hunger_regeneration: 1
         power: 1
-        haste: 0.3
+        haste: 0.1
         effect_color: 888888
         spells:
             - levitate
@@ -1027,4 +1031,167 @@ wands:
             - glowstone
             - erase
             - copy            
-            
+    wolf:
+        modifiable: true
+        cost_reduction: 1
+        protection: 1
+        cooldown_reduction: 1
+        health_regeneration: 1
+        hunger_regeneration: 1
+        power: 1
+        haste: 0.3
+        effect_color: CD853F
+        organize: true
+        spells:
+            - fling
+            - blink
+            - levitate
+            - time
+            - gather
+            - disarm
+            - sniper 
+            - rewind
+            - recurse
+            - kaboom
+            - fireball
+            - superblast
+            - storm
+            - icbm
+            - inferno
+            - superblob
+            - superconvert
+            - supershell
+            - superpyramid
+            - superbox
+            - push
+            - pull
+            - force
+            - mob
+            - farm
+            - shell
+            - shrink
+            - box
+            - frag
+            - volley
+            - stalactite
+            - fill
+            - blob
+            - blast
+            - pillar
+            - bridge
+            - absorb
+            - alter
+            - undo
+            - toss
+            - curse
+            - boon
+            - convert
+            - commit
+            - heal
+            - wither
+            - camera
+            - collapse
+            - supercollapse
+            - iterate
+            - lava
+            - stream
+            - nuke
+            - light
+            - recall
+            - commit
+            - familiar
+            - monster
+            - arrow
+            - arrowrain
+        materials:
+            - water
+            - lava
+            - glowstone
+            - glass
+            - erase
+            - tnt
+            - soul_sand
+            - copy
+            - wool:0
+            - wool:1
+            - wool:2
+            - wool:3
+            - wool:4
+            - wool:5
+            - wool:6
+            - wool:7
+            - wool:8
+            - wool:9
+            - wool:10
+            - wool:11
+            - wool:12
+            - wool:13
+            - wool:14
+            - wool:15
+            - stained_clay:0
+            - stained_clay:1
+            - stained_clay:2
+            - stained_clay:3
+            - stained_clay:4
+            - stained_clay:5
+            - stained_clay:6
+            - stained_clay:7
+            - stained_clay:8
+            - stained_clay:9
+            - stained_clay:10
+            - stained_clay:11
+            - stained_clay:12
+            - stained_clay:13
+            - stained_clay:14
+            - stained_clay:15
+            - stained_glass:0
+            - stained_glass:1
+            - stained_glass:2
+            - stained_glass:3
+            - stained_glass:4
+            - stained_glass:5
+            - stained_glass:6
+            - stained_glass:7
+            - stained_glass:8
+            - stained_glass:9
+            - stained_glass:10
+            - stained_glass:11
+            - stained_glass:12
+            - stained_glass:13
+            - stained_glass:14
+            - stained_glass_pane:15
+            - stained_glass_pane:0
+            - stained_glass_pane:1
+            - stained_glass_pane:2
+            - stained_glass_pane:3
+            - stained_glass_pane:4
+            - stained_glass_pane:5
+            - stained_glass_pane:6
+            - stained_glass_pane:7
+            - stained_glass_pane:8
+            - stained_glass_pane:9
+            - stained_glass_pane:10
+            - stained_glass_pane:11
+            - stained_glass_pane:12
+            - stained_glass_pane:13
+            - stained_glass_pane:14
+            - stained_glass_pane:15
+            - dirt
+            - grass
+            - wood    
+            - log
+            - vine
+            - mycel
+            - emerald_block
+            - leaves   
+            - stationary_lava
+            - stationary_water
+            - ice
+            - packed_ice    
+            - lapis_block
+            - diamond_block
+            - gold_block
+            - emerald_block
+            - obsidian
+            - bedrock
+            - redstone_block
