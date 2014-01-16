@@ -334,8 +334,8 @@ public class MagicController implements Listener
 
 	public boolean cancel(Player player)
 	{
-		Mage playerSpells = getMage(player);
-		return playerSpells.cancel();
+		Mage mage = getMage(player);
+		return mage.cancel();
 	}
 
 	public boolean isQuiet()
@@ -873,8 +873,8 @@ public class MagicController implements Listener
 		ItemStack next = inventory.getItem(event.getNewSlot());
 		ItemStack previous = inventory.getItem(event.getPreviousSlot());
 
-		Mage playerSpells = getMage(player);
-		Wand activeWand = playerSpells.getActiveWand();
+		Mage mage = getMage(player);
+		Wand activeWand = mage.getActiveWand();
 		
 		// Check for active Wand
 		if (activeWand != null && Wand.isWand(previous)) {
@@ -885,9 +885,9 @@ public class MagicController implements Listener
 				
 				// Check for spell or material selection
 				if (next != null && next.getType() != Material.AIR) {
-					Spell spell = playerSpells.getSpell(Wand.getSpell(next));
+					Spell spell = mage.getSpell(Wand.getSpell(next));
 					if (spell != null) {
-						playerSpells.cancel();
+						mage.cancel();
 						activeWand.setActiveSpell(spell.getKey());
 					} else {
 						Material material = next.getType();
@@ -908,7 +908,7 @@ public class MagicController implements Listener
 		// If we're switching to a wand, activate it.
 		if (next != null && Wand.isWand(next)) {
 			Wand newWand = new Wand(this, next);
-			newWand.activate(playerSpells);
+			newWand.activate(mage);
 		}
 	}
 
@@ -932,15 +932,15 @@ public class MagicController implements Listener
 		String rule = player.getWorld().getGameRuleValue("keepInventory");
 		if (rule.equals("true")) return;
 		
-		Mage playerSpells = getMage(player);
+		Mage mage = getMage(player);
 		List<ItemStack> drops = event.getDrops();
-		Wand wand = playerSpells.getActiveWand();
+		Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			// Retrieve stored inventory before deactiavting the wand
-			if (playerSpells.hasStoredInventory()) {
+			if (mage.hasStoredInventory()) {
 				drops.clear();
 
-				ItemStack[] stored = playerSpells.getStoredInventory().getContents();
+				ItemStack[] stored = mage.getStoredInventory().getContents();
 				
 				// Deactivate the wand.
 				wand.deactivate();
@@ -991,7 +991,7 @@ public class MagicController implements Listener
 			}
 		}
 
-		playerSpells.onPlayerDeath(event);
+		mage.onPlayerDeath(event);
 	}
 
 	public void onPlayerDamage(Player player, EntityDamageEvent event)
@@ -1081,25 +1081,25 @@ public class MagicController implements Listener
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();		
-		Mage playerSpells = getMage(player);
-		if (!playerSpells.checkLastClick(clickCooldown)) {
+		Mage mage = getMage(player);
+		if (!mage.checkLastClick(clickCooldown)) {
 			return;
 		}
 		
-		Wand wand = playerSpells.getActiveWand();
+		Wand wand = mage.getActiveWand();
 		
 		if (wand == null && Wand.hasActiveWand(player)) {
-			if (playerSpells.hasStoredInventory()) {
-				playerSpells.restoreInventory();
+			if (mage.hasStoredInventory()) {
+				mage.restoreInventory();
 			}
 			wand = Wand.getActiveWand(this, player);
-			wand.activate(playerSpells);
+			wand.activate(mage);
 		}
 		
 		// Another hacky double-check for wands getting accidentally deactivated?
-		if (wand == null && playerSpells.hasStoredInventory())
+		if (wand == null && mage.hasStoredInventory())
 		{
-			playerSpells.restoreInventory();
+			mage.restoreInventory();
 			return;
 		}
 		
@@ -1136,7 +1136,7 @@ public class MagicController implements Listener
 		if (toggleInventory)
 		{
 			// Check for spell cancel first, e.g. fill or force
-			if (!playerSpells.cancel()) {
+			if (!mage.cancel()) {
 				
 				// Check for wand cycling
 				if (wandCycling) {
@@ -1156,7 +1156,7 @@ public class MagicController implements Listener
 					}
 				}
 			} else {
-				playerSpells.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
+				mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
 			}
 		}
 	}
@@ -1175,10 +1175,10 @@ public class MagicController implements Listener
 	{
 		// Check for wand re-activation.
 		Player player = event.getPlayer();
-		Mage playerSpells = getMage(player);
+		Mage mage = getMage(player);
 		Wand wand = Wand.getActiveWand(this, player);
 		if (wand != null) {
-			wand.activate(playerSpells);
+			wand.activate(mage);
 		}
 	}
 	
@@ -1189,8 +1189,8 @@ public class MagicController implements Listener
 		if (event.getAmount() <= 0) return;
 		
 		Player player = event.getPlayer();
-		Mage playerSpells = getMage(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			wand.onPlayerExpChange(event);
 		}
@@ -1204,21 +1204,21 @@ public class MagicController implements Listener
 		// Make sure they get their portraits back right away on relogin.
 		URLMap.resend(player.getName());
 		
-		Mage playerSpells = getMage(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			wand.deactivate();
 		}
 		
 		// Just in case...
-		playerSpells.restoreInventory();
+		mage.restoreInventory();
 		
-		playerSpells.onPlayerQuit(event);
+		mage.onPlayerQuit(event);
 		
 		// Let the GC collect these
 		// TODO: See how deep the rabbit-hole goes here. Probably need to clear spells too.
-		playerSpells.setActiveWand(null);
-		playerSpells.setPlayer(null);
+		mage.setActiveWand(null);
+		mage.setPlayer(null);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -1297,8 +1297,8 @@ public class MagicController implements Listener
 		if (!(event.getPlayer() instanceof Player)) return;
 		
 		Player player = (Player)event.getPlayer();
-		Mage playerSpells = getMage(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			// NOTE: This never actually happens, unfortunately opening the player's inventory is client-side.
 			if (event.getView().getType() == InventoryType.CRAFTING) {
@@ -1422,8 +1422,8 @@ public class MagicController implements Listener
 		// Check for wand cycling with active inventory
 		if (event.getInventory().getType() == InventoryType.CRAFTING) {
 			Player player = (Player)event.getWhoClicked();
-			Mage playerSpells = getMage(player);
-			Wand wand = playerSpells.getActiveWand();
+			Mage mage = getMage(player);
+			Wand wand = mage.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
 				if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
 					wand.cycleInventory();
@@ -1463,11 +1463,11 @@ public class MagicController implements Listener
 
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
-		Mage playerSpells = getMage(player);
+		Mage mage = getMage(player);
 		
 		// Save the inventory state the the current wand if its spell inventory is open
 		// This is just to make sure we don't lose changes made to the inventory
-		Wand previousWand = playerSpells.getActiveWand();
+		Wand previousWand = mage.getActiveWand();
 		if (previousWand != null && previousWand.isInventoryOpen()) {
 			previousWand.saveInventory();
 		}
@@ -1482,7 +1482,7 @@ public class MagicController implements Listener
 				previousWand.deactivate();
 			}
 			if (wand != null) {
-				wand.activate(playerSpells);
+				wand.activate(mage);
 			}
 		}
 		
@@ -1646,9 +1646,9 @@ public class MagicController implements Listener
 		getLogger().info(message);
 	}
 	
-	public void toggleCastCommandOverrides(Mage playerSpells, boolean override) {
-		playerSpells.setCostReduction(override ? castCommandCostReduction : 0);
-		playerSpells.setCooldownReduction(override ? castCommandCooldownReduction : 0);
+	public void toggleCastCommandOverrides(Mage mage, boolean override) {
+		mage.setCostReduction(override ? castCommandCostReduction : 0);
+		mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
 	}
 	
 	public static List<String> getPlayerNames() {
