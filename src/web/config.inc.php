@@ -11,7 +11,7 @@ $title = "elMakers Magic Development Site";
 $youTubeVideo = 'hzolCW_VLis';
 
 // How players get wands, other than view the configured ways in magic.yml (crafting, random chests)
-$howToGetWands = 'You can find wands in chests near spawn';
+$howToGetWands = array('You can purchase wands in an Essentials Shop', 'You can find wands on the ground using the dynmap');
 
 // Page overview - this will get put in a Header at the top of the page.
 $pageOverview = <<<EOT

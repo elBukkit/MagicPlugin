@@ -150,7 +150,11 @@ function printMaterial($materialKey, $iconOnly = null) {
 				special properties and materials. Players do not "know" spells- if you lose your wand, you have no magic.<br/><br/>
 				You may find a wand in one of the following ways:
 				<ul>
-					<?php if ($howToGetWands) echo "<li>$howToGetWands</li>"; ?>
+					<?php if ($howToGetWands) {
+						foreach ($howToGetWands as $item) {
+							echo "<li>$item</li>"; 
+						}
+					}?>
 					<?php if ($craftingEnabled) {
 						echo '<li>Craft a wand with ' . printMaterial($craftingMaterialUpper) . ' and ' . 
 								printMaterial($craftingMaterialLower);
@@ -198,7 +202,10 @@ function printMaterial($materialKey, $iconOnly = null) {
 						collected while the wand inventory was active will be in your surivival inventory.
 						<br/><br/>
 						For wands with more than 35 spells, right-clicking an additional time will cycle to the next "page" of spells. You may also
-						right-click on an item in the inventory to cycle the inventory page.
+						right-click on an item in the inventory to cycle the inventory page. Renaming a wand on an anvil will also organize its inventory,
+						should it get too cluttered.
+						<br/><br/>
+						A spell or material can be quick-selected from an open wand inventory using shift+click.
 						<br/><br/>
 						For detailed instructions, see this video: (TODO: Updated Video!)<br/><br/>
 						<iframe width="640" height="360" src="//www.youtube.com/embed/<?= $youTubeVideo ?>" frameborder="0" allowfullscreen></iframe>

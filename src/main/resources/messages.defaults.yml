@@ -509,3 +509,6 @@ messages:
         green:
             name: The Green Wand
             description: A wand for nature lovers
+        wolf:
+            name: The Wolf
+            description: NathanWolf's Mega-Wand
