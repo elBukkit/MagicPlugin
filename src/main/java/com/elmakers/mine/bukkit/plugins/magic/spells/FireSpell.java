@@ -71,6 +71,11 @@ public class FireSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
+		if (!hasBuildPermission(target)) 
+		{
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
+
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = (int)(mage.getRadiusMultiplier() * radius);
 		
