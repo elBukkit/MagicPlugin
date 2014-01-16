@@ -531,7 +531,7 @@ public class MagicPlugin extends JavaPlugin
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			} else {
-				player.sendMessage("Equip a wand first");
+				mage.sendMessage("Equip a wand first");
 			}
 			return true;
 		}
@@ -546,7 +546,7 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first");
+			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
@@ -556,9 +556,9 @@ public class MagicPlugin extends JavaPlugin
 		wand.deactivate();
 		wand.organizeInventory();
 		wand.activate(mage);
-		player.sendMessage("Wand reorganized");
+		mage.sendMessage("Wand reorganized");
 		if (sender != player) {
-			sender.sendMessage(player.getName() + ",s wand reorganized");
+			sender.sendMessage(player.getName() + "'s wand reorganized");
 		}
 		
 		return true;
@@ -578,7 +578,7 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first");
+			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
@@ -589,7 +589,7 @@ public class MagicPlugin extends JavaPlugin
 		wand.deactivate();
 		wand.configureProperties(node, safe);
 		wand.activate(mage);
-		player.sendMessage("Wand reconfigured");
+		mage.sendMessage("Wand reconfigured");
 		if (sender != player) {
 			sender.sendMessage(player.getName() + ",s wand reconfigured");
 		}
@@ -606,7 +606,7 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first");
+			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
@@ -623,7 +623,7 @@ public class MagicPlugin extends JavaPlugin
 		wand.add(newWand);
 		wand.activate(mage);
 		
-		player.sendMessage("Wand upgraded");
+		mage.sendMessage("Wand upgraded");
 		if (sender != player) {
 			sender.sendMessage(player.getName() + ",s wand upgraded");
 		}
@@ -635,7 +635,7 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first");
+			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
@@ -643,7 +643,7 @@ public class MagicPlugin extends JavaPlugin
 		}
 		
 		fillWand(wand, player);
-		player.sendMessage("Your wand now contains all the spells you know");
+		mage.sendMessage("Your wand now contains all the spells you know");
 		if (sender != player) {
 			sender.sendMessage(player.getName() + "'s wand filled");
 		}
@@ -661,14 +661,14 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first");
+			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
 			return true;
 		}
 		if (!wand.isModifiable()) {
-			player.sendMessage("This wand can not be modified");
+			mage.sendMessage("This wand can not be modified");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand can't be modified");
 			}
@@ -700,12 +700,12 @@ public class MagicPlugin extends JavaPlugin
 				}
 			}
 			if (wand.addMaterial(material, data, true, false)) {
-				player.sendMessage("Material '" + materialName + "' has been added to your wand");
+				mage.sendMessage("Material '" + materialName + "' has been added to your wand");
 				if (sender != player) {
 					sender.sendMessage("Added material '" + materialName + "' to " + player.getName() + "'s wand");
 				}
 			} else {
-				player.sendMessage("Material activated: " + materialName);
+				mage.sendMessage("Material activated: " + materialName);
 				if (sender != player) {
 					sender.sendMessage(player.getName() + "'s wand already has material " + materialName);
 				}
@@ -720,12 +720,12 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		if (wand.addSpell(spellName, true)) {
-			player.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
+			mage.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
 			if (sender != player) {
 				sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
 			}
 		} else {
-			player.sendMessage(spell.getName() + " activated");
+			mage.sendMessage(spell.getName() + " activated");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand already has " + spell.getName());
 			}
@@ -744,14 +744,14 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first");
+			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
 			return true;
 		}
 		if (!wand.isModifiable()) {
-			player.sendMessage("This wand can not be modified");
+			mage.sendMessage("This wand can not be modified");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand can't be modified");
 			}
@@ -779,7 +779,7 @@ public class MagicPlugin extends JavaPlugin
 				}
 			}
 			if (wand.removeMaterial(material, data)) {
-				player.sendMessage("Material '" + materialName + "' has been removed from your wand");
+				mage.sendMessage("Material '" + materialName + "' has been removed from your wand");
 				if (sender != player) {
 					sender.sendMessage("Removed material '" + materialName + "' from " + player.getName() + "'s wand");
 				}
@@ -791,7 +791,7 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		if (wand.removeSpell(spellName)) {
-			player.sendMessage("Spell '" + spellName + "' has been removed from your wand");
+			mage.sendMessage("Spell '" + spellName + "' has been removed from your wand");
 			if (sender != player) {
 				sender.sendMessage("Removed '" + spellName + "' from " + player.getName() + "'s wand");
 			}
@@ -814,7 +814,7 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			player.sendMessage("Equip a wand first");
+			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}

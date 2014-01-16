@@ -968,17 +968,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	/**
 	 * Send a message to a player when a spell is cast.
 	 * 
-	 * Respects the "quiet" and "silent" properties settings.
-	 * 
 	 * @param player The player to send a message to 
 	 * @param message The message to send
 	 */
 	public void castMessage(String message)
 	{
-		CommandSender sender = getCommandSender();
-		if (sender != null && !controller.isQuiet() && !controller.isSilent() && canSendMessage())
+		if (canSendMessage())
 		{
-			sender.sendMessage(message);
+			mage.castMessage(message);
 			lastMessageSent = System.currentTimeMillis();
 		}
 	}
@@ -988,17 +985,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 * 
 	 * Use this to send messages to the player that are important.
 	 * 
-	 * Only respects the "silent" properties setting.
-	 * 
 	 * @param player The player to send the message to
 	 * @param message The message to send
 	 */
 	public void sendMessage(String message)
 	{
-		CommandSender sender = getCommandSender();
-		if (sender != null && !controller.isSilent() && canSendMessage())
+		if (canSendMessage())
 		{
-			getPlayer().sendMessage(message);
+			mage.sendMessage(message);
 			lastMessageSent = System.currentTimeMillis();
 		}
 	}

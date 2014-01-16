@@ -67,8 +67,10 @@
 #
 
 general:
-    silent: false
-    quiet: true
+    show_messages: true
+    show_cast_messages: false
+    message_prefix: §d§o
+    cast_message_prefix: §5§o
     sounds: true
     message_throttle: 5000
     max_block_updates: 1000

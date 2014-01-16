@@ -1,5 +1,13 @@
 # Migration Notes
 
+## 2.8.6
+
+### magic.yml
+ 
+ quiet changed to show_cast_messages
+ silent changed to show_messages
+ message_prefix and cast_message prefix added
+
 ## 2.8.5
 
 ### magic.yml

@@ -450,6 +450,38 @@ public class Mage implements CostReducer
 		}
 		buildingMaterial = new ItemStack(material, 1, (short)0, data);
 	}
+
+	/**
+	 * Send a message to a player when a spell is cast.
+	 * 
+	 * @param player The player to send a message to 
+	 * @param message The message to send
+	 */
+	public void castMessage(String message)
+	{
+		CommandSender sender = getCommandSender();
+		if (sender != null && controller.showCastMessages() && controller.showMessages())
+		{
+			sender.sendMessage(controller.getCastMessagePrefix() + message);
+		}
+	}
+
+	/**
+	 * Send a message to a player. 
+	 * 
+	 * Use this to send messages to the player that are important.
+	 * 
+	 * @param player The player to send the message to
+	 * @param message The message to send
+	 */
+	public void sendMessage(String message)
+	{
+		CommandSender sender = getCommandSender();
+		if (sender != null && controller.showMessages())
+		{
+			sender.sendMessage(controller.getMessagePrefix() + message);
+		}
+	}
 	
 	public void clearBuildingMaterial() {
 		buildingMaterial = null;

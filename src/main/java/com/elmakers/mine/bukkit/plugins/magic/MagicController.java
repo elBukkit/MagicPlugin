@@ -339,19 +339,29 @@ public class MagicController implements Listener
 		return mage.cancel();
 	}
 
-	public boolean isQuiet()
+	public String getMessagePrefix()
 	{
-		return quiet;
+		return messagePrefix;
+	}
+
+	public String getCastMessagePrefix()
+	{
+		return castMessagePrefix;
+	}
+	
+	public boolean showCastMessages()
+	{
+		return showCastMessages;
+	}
+
+	public boolean showMessages()
+	{
+		return showMessages;
 	}
 	
 	public int getMessageThrottle()
 	{
 		return messageThrottle;
-	}
-
-	public boolean isSilent()
-	{
-		return silent;
 	}
 
 	public boolean soundsEnabled()
@@ -709,8 +719,10 @@ public class MagicController implements Listener
 		ConfigurationNode generalNode = properties.getNode("general");
 		undoQueueDepth = generalNode.getInteger("undo_depth", undoQueueDepth);
 		wandCycling = generalNode.getBoolean("right_click_cycles", wandCycling);
-		silent = generalNode.getBoolean("silent", silent);
-		quiet = generalNode.getBoolean("quiet", quiet);
+		showMessages = generalNode.getBoolean("show_messages", showMessages);
+		showCastMessages = generalNode.getBoolean("show_cast_messages", showCastMessages);
+		messagePrefix = generalNode.getString("message_prefix", messagePrefix);
+		castMessagePrefix = generalNode.getString("cast_message_prefix", castMessagePrefix);
 		clickCooldown = generalNode.getInt("click_cooldown", clickCooldown);
 		messageThrottle = generalNode.getInt("message_throttle", 0);
 		maxBlockUpdates = generalNode.getInt("max_block_updates", maxBlockUpdates);
@@ -1722,8 +1734,10 @@ public class MagicController implements Listener
 	 private long                                physicsDisableTimeout          = 0;
 	 private int                                 undoQueueDepth                 = 256;
 	 private boolean							 wandCycling					= false;
-	 private boolean                             silent                         = false;
-	 private boolean                             quiet                          = true;
+	 private boolean                             showMessages                   = true;
+	 private boolean                             showCastMessages               = false;
+	 private String								 messagePrefix					= "";
+	 private String								 castMessagePrefix				= "";
 	 private boolean                             soundsEnabled                  = true;
 	 private boolean                             fillWands                      = false;
 	 private boolean                             indestructibleWands            = true;
