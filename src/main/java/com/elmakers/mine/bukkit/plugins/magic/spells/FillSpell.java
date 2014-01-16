@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
@@ -73,9 +72,8 @@ public class FillSpell extends Spell
 			size = (int)(mage.getRadiusMultiplier() * size);
 			blockRecurse.setMaxRecursion(size);
 
-			Mage playerSpells = controller.getPlayerSpells(getPlayer());
 			Material targetMaterial = targetBlock.getType();
-			ReplaceMaterialAction action = new ReplaceMaterialAction(playerSpells, targetBlock, material, data);
+			ReplaceMaterialAction action = new ReplaceMaterialAction(mage, targetBlock, material, data);
 
 			// A bit hacky, but is very handy!
 			if (targetMaterial == Material.STATIONARY_WATER)

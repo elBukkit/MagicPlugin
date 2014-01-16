@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
@@ -25,8 +24,7 @@ public class AbsorbSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Mage playerSpells = controller.getPlayerSpells(getPlayer());
-		Wand wand = playerSpells.getActiveWand();
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			castMessage("This spell requires a wand");
 			return SpellResult.NO_TARGET;

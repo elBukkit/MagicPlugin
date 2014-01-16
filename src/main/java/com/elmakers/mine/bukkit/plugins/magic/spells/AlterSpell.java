@@ -61,7 +61,7 @@ public class AlterSpell extends Spell
 
 		if (adjustableMaterials.size() != maxData.size() || maxData.size() != minData.size())
 		{
-			controller.getLog().warning("Spells:Alter: Mis-match in adjustable material lists!");
+			controller.getLogger().warning("Spells:Alter: Mis-match in adjustable material lists!");
 		}
 		
 		if (!adjustableMaterials.contains(targetBlock.getTypeId()))

@@ -90,35 +90,37 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MagicController implements Listener 
 {
-	public MagicController(Plugin plugin)
+	public MagicController(final MagicPlugin plugin)
 	{
-		this.log = plugin.getLogger();
+		this.plugin = plugin;
 	}
 	
 	/*
 	 * Public API - Use for hooking up a plugin, or calling a spell
 	 */
 
-	public Mage getPlayerSpells(Player player)
+	public Mage getMage(Player player)
 	{
-		Mage spells = playerSpells.get(player.getName());
-		if (spells == null)
+		Mage mage = mages.get(player.getName());
+		if (mage == null)
 		{
-			spells = new Mage(this, player);
-			playerSpells.put(player.getName(), spells);
+			mage = new Mage(this, player);
+			mages.put(player.getName(), mage);
 		}
 
-		spells.setPlayer(player);
+		mage.setPlayer(player);
 
-		return spells;
+		return mage;
 	}
 	
-	public Mage getPlayerSpells(String playerName) {
-		if (!playerSpells.containsKey(playerName)) {
-			playerSpells.put(playerName, new Mage(this, null));
+	public Mage getMage(String playerName) 
+	{
+		if (!mages.containsKey(playerName)) 
+		{
+			mages.put(playerName, new Mage(this, null));
 		}
 		
-		return playerSpells.get(playerName);
+		return mages.get(playerName);
 	}
 
 	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
@@ -187,7 +189,7 @@ public class MagicController implements Listener
 		Spell conflict = spells.get(variant.getKey());
 		if (conflict != null)
 		{
-			log.log(Level.WARNING, "Duplicate spell name: '" + conflict.getKey() + "'");
+			getLogger().log(Level.WARNING, "Duplicate spell name: '" + conflict.getKey() + "'");
 		}
 		else
 		{
@@ -236,7 +238,7 @@ public class MagicController implements Listener
 
 	public UndoQueue getUndoQueue(String playerName)
 	{
-		return getPlayerSpells(playerName).getUndoQueue();
+		return getMage(playerName).getUndoQueue();
 	}
 	
 	public int getUndoQueueDepth() {
@@ -262,9 +264,9 @@ public class MagicController implements Listener
 
 	public boolean undoAny(Player player, Block target)
 	{
-		for (String playerName : playerSpells.keySet())
+		for (String playerName : mages.keySet())
 		{
-			UndoQueue queue = getPlayerSpells(playerName).getUndoQueue();
+			UndoQueue queue = getMage(playerName).getUndoQueue();
 			if (queue.undo(this, target))
 			{
 				if (!player.getName().equals(playerName))
@@ -316,13 +318,13 @@ public class MagicController implements Listener
 
 	public void registerEvent(SpellEventType type, Spell spell)
 	{
-		Mage spells = getPlayerSpells(spell.getPlayer());
+		Mage spells = getMage(spell.getPlayer());
 		spells.registerEvent(type, spell);
 	}
 
 	public void unregisterEvent(SpellEventType type, Spell spell)
 	{
-		Mage spells = getPlayerSpells(spell.getPlayer());
+		Mage spells = getMage(spell.getPlayer());
 		spells.unregisterEvent(type, spell);
 	}
 
@@ -332,7 +334,7 @@ public class MagicController implements Listener
 
 	public boolean cancel(Player player)
 	{
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		return playerSpells.cancel();
 	}
 
@@ -390,9 +392,9 @@ public class MagicController implements Listener
 	/*
 	 * Get the log, if you need to debug or log errors.
 	 */
-	public Logger getLog()
+	public Logger getLogger()
 	{
-		return log;
+		return plugin.getLogger();
 	}
 
 	public MagicPlugin getPlugin()
@@ -437,14 +439,14 @@ public class MagicController implements Listener
 	 * Saving and loading
 	 */
 
-	public void initialize(MagicPlugin plugin)
+	public void initialize()
 	{
 		// Try to (dynamically) link to WorldGuard:
 		try {
 			regionManager = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
 			Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
 			if (canBuildMethod != null) {
-				log.info("WorldGuard found, will respect build permissions for construction spells");
+				getLogger().info("WorldGuard found, will respect build permissions for construction spells");
 			} else {
 				regionManager = null;
 			}
@@ -452,7 +454,7 @@ public class MagicController implements Listener
 		}
 		
 		if (regionManager == null) {
-			log.info("WorldGuard not found, not using a region manager.");
+			getLogger().info("WorldGuard not found, not using a region manager.");
 		}
 		
 		// Try to (dynamically) link to dynmap:
@@ -467,16 +469,15 @@ public class MagicController implements Listener
 		}
 		
 		if (regionManager == null) {
-			log.info("WorldGuard not found, not using a region manager.");
+			getLogger().info("WorldGuard not found, not using a region manager.");
 		}
 
-		this.plugin = plugin;
 		load();
 		
 		// Set up the PlayerSpells timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
-				for (Mage spells : playerSpells.values()) {
+				for (Mage spells : mages.values()) {
 					spells.tick();
 				}
 			}
@@ -579,30 +580,30 @@ public class MagicController implements Listener
 		// Load main configuration
 		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
 		oldDefaults.delete();
-		log.info("Overwriting file " + propertiesFileNameDefaults);
+		getLogger().info("Overwriting file " + propertiesFileNameDefaults);
 		plugin.saveResource(propertiesFileNameDefaults, false);
 		File propertiesFile = new File(dataFolder, propertiesFileName);
 		if (!propertiesFile.exists())
 		{
-			log.info("Loading defaults from: " + propertiesFileNameDefaults);
+			getLogger().info("Loading defaults from: " + propertiesFileNameDefaults);
 			loadProperties(plugin.getResource(propertiesFileNameDefaults));
 		} else {
-			log.info("Loading customizations from: " + propertiesFile.getName());
+			getLogger().info("Loading customizations from: " + propertiesFile.getName());
 			loadProperties(propertiesFile);
 		}
 
 		// Load spells
 		oldDefaults = new File(dataFolder, spellsFileNameDefaults);
 		oldDefaults.delete();
-		log.info("Overwriting file " + spellsFileNameDefaults);
+		getLogger().info("Overwriting file " + spellsFileNameDefaults);
 		plugin.saveResource(spellsFileNameDefaults, false);
 		File spellsFile = new File(dataFolder, spellsFileName);
 		if (!spellsFile.exists())
 		{
-			log.info("Loading default spells from: " + spellsFileNameDefaults);
+			getLogger().info("Loading default spells from: " + spellsFileNameDefaults);
 			load(plugin.getResource(spellsFileNameDefaults));
 		} else {
-			log.info("Loading spells from: " + spellsFile.getName());
+			getLogger().info("Loading spells from: " + spellsFile.getName());
 			load(spellsFile);
 		}
 
@@ -612,12 +613,12 @@ public class MagicController implements Listener
 				File playersFile = new File(dataFolder, playersFileName);
 				if (playersFile.exists())
 				{
-					log.info("Loading player data from file " + playersFile.getName());
+					getLogger().info("Loading player data from file " + playersFile.getName());
 					Configuration playerConfiguration = new Configuration(playersFile);
 					playerConfiguration.load();
 					List<String> playerNames = playerConfiguration.getKeys();
 					for (String playerName : playerNames) {
-						getPlayerSpells(playerName).load(playerConfiguration.getNode(playerName));
+						getMage(playerName).load(playerConfiguration.getNode(playerName));
 					}
 				}
 			}
@@ -634,7 +635,7 @@ public class MagicController implements Listener
 		// Load wand templates
 		Wand.load(plugin);
 
-		log.info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
+		getLogger().info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
 	}
 	
 	public void save()
@@ -644,7 +645,7 @@ public class MagicController implements Listener
 		
 		File playersFile = new File(dataFolder, playersFileName);
 		Configuration playerConfiguration = new Configuration(playersFile);
-		for (Entry<String, Mage> spellsEntry : playerSpells.entrySet()) {
+		for (Entry<String, Mage> spellsEntry : mages.entrySet()) {
 			ConfigurationNode playerNode = playerConfiguration.createChild(spellsEntry.getKey());
 			spellsEntry.getValue().save(playerNode);
 		}
@@ -675,7 +676,7 @@ public class MagicController implements Listener
 			Spell newSpell = Spell.loadSpell(key, spellNode, this);
 			if (newSpell == null)
 			{
-				log.warning("Magic: Error loading spell " + key);
+				getLogger().warning("Magic: Error loading spell " + key);
 				continue;
 			}
 			addSpell(newSpell);
@@ -764,11 +765,11 @@ public class MagicController implements Listener
 							itemDbField.setAccessible(true);
 							Object oldEntry = itemDbField.get(essentials);
 							if (oldEntry instanceof MagicItemDb) {
-								log.info("Essentials integration already set up, skipping");
+								getLogger().info("Essentials integration already set up, skipping");
 								return;
 							}
 							if (!oldEntry.getClass().getName().equals("com.earth2me.essentials.ItemDb")){
-								log.info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
+								getLogger().info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
 								return;
 							}
 							Object newEntry = new MagicItemDb(me, essentials);
@@ -779,7 +780,7 @@ public class MagicController implements Listener
 							List<Object> confList = (List<Object>)confListField.get(essentials);
 							confList.remove(oldEntry);
 							confList.add(newEntry);
-							log.info("Essentials found, hooked up custom item handler");
+							getLogger().info("Essentials found, hooked up custom item handler");
 						}
 					} catch (Throwable ex) {
 						ex.printStackTrace();
@@ -791,7 +792,7 @@ public class MagicController implements Listener
 
 	public void clear()
 	{
-		playerSpells.clear();
+		mages.clear();
 		spells.clear();
 	}
 
@@ -872,7 +873,7 @@ public class MagicController implements Listener
 		ItemStack next = inventory.getItem(event.getNewSlot());
 		ItemStack previous = inventory.getItem(event.getPreviousSlot());
 
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		Wand activeWand = playerSpells.getActiveWand();
 		
 		// Check for active Wand
@@ -914,7 +915,7 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		Mage spells = getPlayerSpells(event.getPlayer());
+		Mage spells = getMage(event.getPlayer());
 		spells.onPlayerMove(event);
 	}
 
@@ -931,7 +932,7 @@ public class MagicController implements Listener
 		String rule = player.getWorld().getGameRuleValue("keepInventory");
 		if (rule.equals("true")) return;
 		
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		List<ItemStack> drops = event.getDrops();
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
@@ -995,7 +996,7 @@ public class MagicController implements Listener
 
 	public void onPlayerDamage(Player player, EntityDamageEvent event)
 	{
-		Mage spells = getPlayerSpells(player);
+		Mage spells = getMage(player);
 		spells.onPlayerDamage(event);
 	}
 	
@@ -1003,7 +1004,7 @@ public class MagicController implements Listener
 	public void onEntityCombust(EntityCombustEvent event)
 	{
 		if (!(event.getEntity() instanceof Player)) return;
-		Mage spells = getPlayerSpells((Player)event.getEntity());
+		Mage spells = getMage((Player)event.getEntity());
 		spells.onPlayerCombust(event);
 	}
 	
@@ -1018,7 +1019,7 @@ public class MagicController implements Listener
 			} else if (dynmapShowWands) {
 				Wand wand = new Wand(this, event.getEntity().getItemStack());
 				if (removeMarker("wand-" + wand.getId(), "Wands")) {
-					log.info("Wand despawned, removed from map");
+					getLogger().info("Wand despawned, removed from map");
 				}
 			}
 		}
@@ -1080,7 +1081,7 @@ public class MagicController implements Listener
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		Player player = event.getPlayer();		
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		if (!playerSpells.checkLastClick(clickCooldown)) {
 			return;
 		}
@@ -1174,7 +1175,7 @@ public class MagicController implements Listener
 	{
 		// Check for wand re-activation.
 		Player player = event.getPlayer();
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		Wand wand = Wand.getActiveWand(this, player);
 		if (wand != null) {
 			wand.activate(playerSpells);
@@ -1188,7 +1189,7 @@ public class MagicController implements Listener
 		if (event.getAmount() <= 0) return;
 		
 		Player player = event.getPlayer();
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
 			wand.onPlayerExpChange(event);
@@ -1203,7 +1204,7 @@ public class MagicController implements Listener
 		// Make sure they get their portraits back right away on relogin.
 		URLMap.resend(player.getName());
 		
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
 			wand.deactivate();
@@ -1224,7 +1225,7 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event)
 	{
-		for (Mage spells : playerSpells.values()) {
+		for (Mage spells : mages.values()) {
 			Player player = spells.getPlayer();
 			if (player == null) continue;
 			
@@ -1245,7 +1246,7 @@ public class MagicController implements Listener
 		for (Player player : players) {
 			Wand wand = Wand.getActiveWand(this, player);
 			if (wand != null) {
-				Mage spells = getPlayerSpells(player);
+				Mage spells = getMage(player);
 				wand.activate(spells);
 				player.updateInventory();
 			}
@@ -1282,7 +1283,7 @@ public class MagicController implements Listener
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		
 		Player player = (Player)event.getWhoClicked();
-		Mage spells = getPlayerSpells(player);
+		Mage spells = getMage(player);
 		
 		// Don't allow crafting in the wand inventory.
 		if (spells.hasStoredInventory()) {
@@ -1296,7 +1297,7 @@ public class MagicController implements Listener
 		if (!(event.getPlayer() instanceof Player)) return;
 		
 		Player player = (Player)event.getPlayer();
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		Wand wand = playerSpells.getActiveWand();
 		if (wand != null) {
 			// NOTE: This never actually happens, unfortunately opening the player's inventory is client-side.
@@ -1421,7 +1422,7 @@ public class MagicController implements Listener
 		// Check for wand cycling with active inventory
 		if (event.getInventory().getType() == InventoryType.CRAFTING) {
 			Player player = (Player)event.getWhoClicked();
-			Mage playerSpells = getPlayerSpells(player);
+			Mage playerSpells = getMage(player);
 			Wand wand = playerSpells.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
 				if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
@@ -1462,7 +1463,7 @@ public class MagicController implements Listener
 
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
-		Mage playerSpells = getPlayerSpells(player);
+		Mage playerSpells = getMage(player);
 		
 		// Save the inventory state the the current wand if its spell inventory is open
 		// This is just to make sure we don't lose changes made to the inventory
@@ -1493,7 +1494,7 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
-		Mage spells = getPlayerSpells(event.getPlayer());
+		Mage spells = getMage(event.getPlayer());
 		ItemStack pickup = event.getItem().getItemStack();
 		if (dynmapShowWands && Wand.isWand(pickup)) {
 			Wand wand = new Wand(this, pickup);
@@ -1522,7 +1523,7 @@ public class MagicController implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Player player = event.getPlayer();
-		Mage spells = getPlayerSpells(player);
+		Mage spells = getMage(player);
 		if (spells.hasStoredInventory() || spells.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
 		}
@@ -1532,7 +1533,7 @@ public class MagicController implements Listener
 	public void onPlayerDropItem(PlayerDropItemEvent event)
 	{
 		Player player = event.getPlayer();
-		Mage spells = getPlayerSpells(player);
+		Mage spells = getMage(player);
 		Wand activeWand = spells.getActiveWand();
 		if (activeWand != null) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
@@ -1620,7 +1621,7 @@ public class MagicController implements Listener
 			}
 			
 			if (wandCount > 0) {
-				log.info("Found " + wandCount + " wands, added to map");
+				getLogger().info("Found " + wandCount + " wands, added to map");
 			}
 		}
 	}
@@ -1642,7 +1643,7 @@ public class MagicController implements Listener
 	}
 	
 	public void info(String message) {
-		log.info(message);
+		getLogger().info(message);
 	}
 	
 	public void toggleCastCommandOverrides(Mage playerSpells, boolean override) {
@@ -1713,9 +1714,8 @@ public class MagicController implements Listener
 	 private LinkedList<BlockBatch>				 pendingBatches					= new LinkedList<BlockBatch>();
 	 private int								 maxBlockUpdates				= 100;
 	 
-	 private final Logger                        log                            ;
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
-	 private final HashMap<String, Mage> playerSpells                   = new HashMap<String, Mage>();
+	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();
 
 	 private Recipe								 wandRecipe						= null;
 	 private Material							 wandRecipeUpperMaterial		= Material.DIAMOND;

@@ -27,12 +27,12 @@ public class WandChestRunnable extends BukkitRunnable {
 	Logger logger;
 	boolean finished = false;
 	
-	public WandChestRunnable(MagicController spells, World world, int maxy) {
+	public WandChestRunnable(MagicController controller, World world, int maxy) {
 		this.world = world;
 		this.random = new Random();
-		logger = spells.getPlugin().getLogger();
+		logger = controller.getLogger();
 		if (maxy > 0) {
-			populator = spells.getWandChestPopulator();
+			populator = controller.getWandChestPopulator();
 			populator.setMaxY(maxy);
 		}
 	}

@@ -60,9 +60,9 @@ public class DisarmSpell extends Spell
 		// Special case for wands
 		if (Wand.isWand(stack) && entity instanceof Player) {
 			Player targetPlayer = (Player)entity;
-			Mage playerSpells = controller.getPlayerSpells(targetPlayer);
-			if (playerSpells != null && playerSpells.getActiveWand() != null) {
-				playerSpells.getActiveWand().deactivate();
+			Mage targetMage = controller.getMage(targetPlayer);
+			if (targetMage != null && targetMage.getActiveWand() != null) {
+				targetMage.getActiveWand().deactivate();
 			}
 		}
 		

@@ -21,14 +21,14 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandChestPopulator extends BlockPopulator {
 	private final Logger log;
-	private final MagicController spells; 
+	private final MagicController controller; 
 	private final LinkedList<WeightedPair<Integer>> baseProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<String>> wandProbability = new LinkedList<WeightedPair<String>>();
 	private int maxy = 255;
 	
-	public WandChestPopulator(MagicController spells, ConfigurationNode config) {
-		this.spells = spells;
-		this.log = spells.getLog();
+	public WandChestPopulator(MagicController controller, ConfigurationNode config) {
+		this.controller = controller;
+		this.log = controller.getLogger();
 		
 		// Fetch base probabilities
 		Float currentThreshold = 0.0f;
@@ -63,7 +63,7 @@ public class WandChestPopulator extends BlockPopulator {
 		String[] wandNames = new String[wandCount];
 		for (int i = 0; i < wandCount; i++) {
 			String wandName = RandomUtils.weightedRandom(wandProbability);
-			Wand wand = Wand.createWand(spells, wandName);
+			Wand wand = Wand.createWand(controller, wandName);
 			if (wand != null) {
 				chest.getInventory().addItem(wand.getItem());
 			} else {

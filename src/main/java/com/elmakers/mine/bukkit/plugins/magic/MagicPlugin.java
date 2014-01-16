@@ -34,9 +34,9 @@ public class MagicPlugin extends JavaPlugin
 	/*
 	 * Public API
 	 */
-	public MagicController getSpells()
+	public MagicController getController()
 	{
-		return spells;
+		return controller;
 	}
 
 	/*
@@ -45,19 +45,19 @@ public class MagicPlugin extends JavaPlugin
 
 	public void onEnable() 
 	{
-		if (spells == null) {
-			spells = new MagicController(this);
+		if (controller == null) {
+			controller = new MagicController(this);
 		}
 		initialize();
 
 		BlockData.setServer(getServer());
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(spells, this);
+		pm.registerEvents(controller, this);
 	}
 
 	protected void initialize()
 	{
-		spells.initialize(this);
+		controller.initialize();
 	}
 	
 	protected void checkRunningTask()
@@ -74,7 +74,7 @@ public class MagicPlugin extends JavaPlugin
 			sender.sendMessage("There is already a populate job running");
 			return;
 		}
-		runningTask= new WandChestRunnable(spells, world, ymax);
+		runningTask= new WandChestRunnable(controller, world, ymax);
 		runningTask.runTaskTimer(this, 5, 5);
 	}
 
@@ -105,14 +105,14 @@ public class MagicPlugin extends JavaPlugin
 			String subCommand = args[0];
 			String subCommandPNode = "Magic.commands." + cmd.getName() + "." + subCommand;
 			
-			if (!spells.hasPermission(sender, subCommandPNode)) {
+			if (!controller.hasPermission(sender, subCommandPNode)) {
 				return;
 			}
 			
 			subCommandPNode += ".";
 			
 			if (subCommand.equalsIgnoreCase("add")) {
-				List<Spell> spellList = spells.getAllSpells();
+				List<Spell> spellList = controller.getAllSpells();
 				for (Spell spell : spellList) {
 					addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
 				}
@@ -146,7 +146,7 @@ public class MagicPlugin extends JavaPlugin
 			
 			String subCommandPNode = "Magic.commands." + cmd.getName() + "." + subCommand + "." + subCommand2;
 			
-			if (!spells.hasPermission(sender, subCommandPNode, true)) {
+			if (!controller.hasPermission(sender, subCommandPNode, true)) {
 				return;
 			}
 			
@@ -180,7 +180,7 @@ public class MagicPlugin extends JavaPlugin
 	protected void handleCastCommandTab(List<String> options, CommandSender sender, Command cmd, String alias, String[] args)
 	{
 		if (args.length == 1) {
-			List<Spell> spellList = spells.getAllSpells();
+			List<Spell> spellList = controller.getAllSpells();
 			for (Spell spell : spellList) {
 				addIfPermissible(sender, options, "Magic." + cmd.getName() + ".", spell.getKey(), true);
 			}
@@ -193,7 +193,7 @@ public class MagicPlugin extends JavaPlugin
 	
 	protected void addIfPermissible(CommandSender sender, List<String> options, String permissionPrefix, String option, boolean defaultValue)
 	{
-		if (spells.hasPermission(sender, permissionPrefix + option, defaultValue))
+		if (controller.hasPermission(sender, permissionPrefix + option, defaultValue))
 		{
 			options.add(option);
 		}
@@ -207,11 +207,9 @@ public class MagicPlugin extends JavaPlugin
 	@EventHandler
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
 	{
-		// TODO: Permission filtering!
-		
-		Mage playerSpells = null;
+		Mage mage = null;
 		if (sender instanceof Player) {
-			playerSpells = spells.getPlayerSpells((Player)sender);
+			mage = controller.getMage((Player)sender);
 		}
 		String completeCommand = args.length > 0 ? args[args.length - 1] : "";
 		List<String> options = new ArrayList<String>();
@@ -226,16 +224,16 @@ public class MagicPlugin extends JavaPlugin
 		}
 		else if (cmd.getName().equalsIgnoreCase("wand")) 
 		{
-			handleWandCommandTab(options, playerSpells, sender, cmd, alias, args);
+			handleWandCommandTab(options, mage, sender, cmd, alias, args);
 		}
 		else if (cmd.getName().equalsIgnoreCase("wandp")) 
 		{
 			if (args.length == 1) {
 				options.addAll(MagicController.getPlayerNames());
 			} else if (args.length > 1) {
-				playerSpells = spells.getPlayerSpells(args[0]);
+				mage = controller.getMage(args[0]);
 				String[] args2 = Arrays.copyOfRange(args, 1, args.length);
-				handleWandCommandTab(options, playerSpells, sender, cmd, alias, args2);
+				handleWandCommandTab(options, mage, sender, cmd, alias, args2);
 			}
 		}
 		else if (cmd.getName().equalsIgnoreCase("cast")) 
@@ -279,12 +277,12 @@ public class MagicPlugin extends JavaPlugin
 			String subCommand = args[0];
 			if (sender instanceof Player)
 			{
-				if (!spells.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return false;
+				if (!controller.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return false;
 			}
 			if (subCommand.equalsIgnoreCase("reload"))
 			{
-				spells.clear();
-				spells.load();
+				controller.clear();
+				controller.load();
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search"))
@@ -391,14 +389,14 @@ public class MagicPlugin extends JavaPlugin
 
 		if (commandName.equalsIgnoreCase("cast"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.cast")) return false;
+			if (!controller.hasPermission(player, "Magic.commands.cast")) return false;
 			return processCastCommand(player, player, args);
 
 		}
 
 		if (commandName.equalsIgnoreCase("spells"))
 		{
-			if (!spells.hasPermission(player, "Magic.commands.spells")) return false;
+			if (!controller.hasPermission(player, "Magic.commands.spells")) return false;
 			return onSpells(player, args);
 		}
 
@@ -419,72 +417,72 @@ public class MagicPlugin extends JavaPlugin
 		}
 		if (subCommand.equalsIgnoreCase("list"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandList(sender);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("add"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-			if (args2.length > 0 && args2[0].equals("material") && !spells.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
-			if (args2.length > 0 && !spells.hasPermission(sender,"Magic.commands.wand.add.spell." + args2[0], true)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (args2.length > 0 && args2[0].equals("material") && !controller.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
+			if (args2.length > 0 && !controller.hasPermission(sender,"Magic.commands.wand.add.spell." + args2[0], true)) return true;
 			onWandAdd(sender, player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("configure"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandConfigure(sender, player, args2, false);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("organize"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandOrganize(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("combine"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-			if (args.length > 0 && !spells.hasPermission(sender,"Magic.commands." + command + ".combine." + args[0], true)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (args.length > 0 && !controller.hasPermission(sender,"Magic.commands." + command + ".combine." + args[0], true)) return true;
 			
 			onWandCombine(sender, player, args2);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("describe"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandDescribe(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("upgrade"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandConfigure(sender, player, args2, true);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("organize"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandOrganize(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("fill"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandFill(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("remove"))
 		{   
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandRemove(sender, player, args2);
 			return true;
@@ -492,14 +490,14 @@ public class MagicPlugin extends JavaPlugin
 
 		if (subCommand.equalsIgnoreCase("name"))
 		{
-			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandName(sender, player, args2);
 			return true;
 		}
 
-		if (!spells.hasPermission(sender, "Magic.commands." + command + "")) return true;
-		if (subCommand.length() > 0 && !spells.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
+		if (!controller.hasPermission(sender, "Magic.commands." + command + "")) return true;
+		if (subCommand.length() > 0 && !controller.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
 		
 		return onWand(sender, player, args);
 	}
@@ -527,8 +525,8 @@ public class MagicPlugin extends JavaPlugin
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player) {
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
@@ -545,8 +543,8 @@ public class MagicPlugin extends JavaPlugin
 	
 	public boolean onWandOrganize(CommandSender sender, Player player)
 	{
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
 			if (sender != player) {
@@ -557,7 +555,7 @@ public class MagicPlugin extends JavaPlugin
 		
 		wand.deactivate();
 		wand.organizeInventory();
-		wand.activate(playerSpells);
+		wand.activate(mage);
 		player.sendMessage("Wand reorganized");
 		if (sender != player) {
 			sender.sendMessage(player.getName() + ",s wand reorganized");
@@ -577,8 +575,8 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
 			if (sender != player) {
@@ -590,7 +588,7 @@ public class MagicPlugin extends JavaPlugin
 		node.setProperty(parameters[0], parameters[1]);
 		wand.deactivate();
 		wand.configureProperties(node, safe);
-		wand.activate(playerSpells);
+		wand.activate(mage);
 		player.sendMessage("Wand reconfigured");
 		if (sender != player) {
 			sender.sendMessage(player.getName() + ",s wand reconfigured");
@@ -605,8 +603,8 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
 			if (sender != player) {
@@ -616,14 +614,14 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		String wandName = parameters[0];
-		Wand newWand = Wand.createWand(spells, wandName);
+		Wand newWand = Wand.createWand(controller, wandName);
 		if (newWand == null) {
 			sender.sendMessage("Unknown wand name " + wandName);
 			return true;
 		}
 		wand.deactivate();
 		wand.add(newWand);
-		wand.activate(playerSpells);
+		wand.activate(mage);
 		
 		player.sendMessage("Wand upgraded");
 		if (sender != player) {
@@ -634,8 +632,8 @@ public class MagicPlugin extends JavaPlugin
 
 	public boolean onWandFill(CommandSender sender, Player player)
 	{
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
 			if (sender != player) {
@@ -660,8 +658,8 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
 			if (sender != player) {
@@ -714,7 +712,7 @@ public class MagicPlugin extends JavaPlugin
 			}
 			return true;
 		}
-		Spell spell = playerSpells.getSpell(spellName);
+		Spell spell = mage.getSpell(spellName);
 		if (spell == null)
 		{
 			sender.sendMessage("Spell '" + spellName + "' unknown, Use /spells for spell list");
@@ -743,8 +741,8 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
 			if (sender != player) {
@@ -813,8 +811,8 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand wand = playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		if (wand == null) {
 			player.sendMessage("Equip a wand first");
 			if (sender != player) {
@@ -837,20 +835,20 @@ public class MagicPlugin extends JavaPlugin
 			wandName = parameters[0];
 		}
 
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Wand currentWand =  playerSpells.getActiveWand();
+		Mage mage = controller.getMage(player);
+		Wand currentWand =  mage.getActiveWand();
 		if (currentWand != null) {
 			currentWand.closeInventory();
 		}
 	
-		Wand wand = Wand.createWand(spells, wandName);
+		Wand wand = Wand.createWand(controller, wandName);
 		if (wand == null) {
 			sender.sendMessage("No wand defined with key " + wandName);
 			return true;
 		}
 		
 		// Check for special "fill wands" configuration
-		if (spells.fillWands() && parameters.length == 0) {
+		if (controller.fillWands() && parameters.length == 0) {
 			fillWand(wand, player);
 		}
 	
@@ -859,7 +857,7 @@ public class MagicPlugin extends JavaPlugin
 		ItemStack inHand = inventory.getItemInHand();
 		if (inHand == null || inHand.getType() == Material.AIR) {
 			inventory.setItem(inventory.getHeldItemSlot(), wand.getItem());
-			wand.activate(playerSpells);
+			wand.activate(mage);
 		} else {
 			player.getInventory().addItem(wand.getItem());
 		}
@@ -870,7 +868,7 @@ public class MagicPlugin extends JavaPlugin
 	}
 	
 	protected void fillWand(Wand wand, Player player) {
-		List<Spell> allSpells = spells.getAllSpells();
+		List<Spell> allSpells = controller.getAllSpells();
 
 		for (Spell spell : allSpells)
 		{
@@ -893,8 +891,8 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		Player usePermissions = (sender instanceof Player) ? (Player)sender : player;
-		Mage playerSpells = spells.getPlayerSpells(player);
-		Spell spell = playerSpells.getSpell(spellName, usePermissions);
+		Mage mage = controller.getMage(player);
+		Spell spell = mage.getSpell(spellName, usePermissions);
 		if (spell == null)
 		{
 			sender.sendMessage("Spell " + spellName + " unknown");
@@ -902,9 +900,9 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		// Make it free and skip cooldowns, if configured to do so.
-		spells.toggleCastCommandOverrides(playerSpells, true);
+		controller.toggleCastCommandOverrides(mage, true);
 		spell.cast(parameters);
-		spells.toggleCastCommandOverrides(playerSpells, false);
+		controller.toggleCastCommandOverrides(mage, false);
 		if (sender != player) {
 			sender.sendMessage("Cast " + spellName + " on " + player.getName());
 		}
@@ -914,7 +912,7 @@ public class MagicPlugin extends JavaPlugin
 
 	public boolean onReload(CommandSender sender, String[] parameters)
 	{
-		spells.load();
+		controller.load();
 		sender.sendMessage("Configuration reloaded.");
 		return true;
 	}
@@ -948,7 +946,7 @@ public class MagicPlugin extends JavaPlugin
 	public void listSpellsByCategory(CommandSender sender, String category)
 	{
 		List<Spell> categorySpells = new ArrayList<Spell>();
-		List<Spell> spellVariants = spells.getAllSpells();
+		List<Spell> spellVariants = controller.getAllSpells();
 		Player player = sender instanceof Player ? (Player)sender : null;
 		for (Spell spell : spellVariants)
 		{
@@ -980,7 +978,7 @@ public class MagicPlugin extends JavaPlugin
 	{
 		HashMap<String, Integer> spellCounts = new HashMap<String, Integer>();
 		List<String> spellGroups = new ArrayList<String>();
-		List<Spell> spellVariants = spells.getAllSpells();
+		List<Spell> spellVariants = controller.getAllSpells();
 
 		for (Spell spell : spellVariants)
 		{
@@ -1020,7 +1018,7 @@ public class MagicPlugin extends JavaPlugin
 		Player player = sender instanceof Player ? (Player)sender : null;
 
 		HashMap<String, SpellGroup> spellGroups = new HashMap<String, SpellGroup>();
-		List<Spell> spellVariants = spells.getAllSpells();
+		List<Spell> spellVariants = controller.getAllSpells();
 
 		int spellCount = 0;
 		for (Spell spell : spellVariants)
@@ -1098,13 +1096,13 @@ public class MagicPlugin extends JavaPlugin
 
 	public void onDisable() 
 	{
-		spells.save();
-		spells.clear();
+		controller.save();
+		controller.clear();
 	}
 
 	/*
 	 * Private data
 	 */	
-	private MagicController spells = null;
+	private MagicController controller = null;
 	private WandChestRunnable runningTask = null;
 }
