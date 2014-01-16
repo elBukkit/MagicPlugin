@@ -2,7 +2,7 @@
 
 ## 2.8.6
 
- - ... large code refactor.
+ - Add /wand organize command
 
 ## 2.8.5
 

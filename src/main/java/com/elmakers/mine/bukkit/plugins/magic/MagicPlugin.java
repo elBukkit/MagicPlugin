@@ -88,6 +88,7 @@ public class MagicPlugin extends JavaPlugin
 			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "name");
 			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "fill");
 			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "configure");
+			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "organize");
 			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "combine");
 			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "upgrade");
 			addIfPermissible(sender, options, "Magic.commands." + cmd + ".", "describe");
@@ -436,6 +437,13 @@ public class MagicPlugin extends JavaPlugin
 			onWandConfigure(sender, player, args2, false);
 			return true;
 		}
+		if (subCommand.equalsIgnoreCase("organize"))
+		{
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandOrganize(sender, player);
+			return true;
+		}
 		if (subCommand.equalsIgnoreCase("combine"))
 		{
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -456,6 +464,13 @@ public class MagicPlugin extends JavaPlugin
 			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandConfigure(sender, player, args2, true);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("organize"))
+		{
+			if (!spells.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandOrganize(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("fill"))
@@ -523,6 +538,29 @@ public class MagicPlugin extends JavaPlugin
 		
 		wand.describe(sender);
 
+		return true;
+	}
+	
+	public boolean onWandOrganize(CommandSender sender, Player player)
+	{
+		PlayerSpells playerSpells = spells.getPlayerSpells(player);
+		Wand wand = playerSpells.getActiveWand();
+		if (wand == null) {
+			player.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
+			return true;
+		}
+		
+		wand.deactivate();
+		wand.organizeInventory();
+		wand.activate(playerSpells);
+		player.sendMessage("Wand reorganized");
+		if (sender != player) {
+			sender.sendMessage(player.getName() + ",s wand reorganized");
+		}
+		
 		return true;
 	}
 	
