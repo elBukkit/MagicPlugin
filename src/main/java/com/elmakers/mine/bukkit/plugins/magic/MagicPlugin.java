@@ -872,7 +872,7 @@ public class MagicPlugin extends JavaPlugin
 
 		for (Spell spell : allSpells)
 		{
-			if (spell.hasSpellPermission(player))
+			if (spell.hasSpellPermission(player) && spell.getIcon().getMaterial() != Material.AIR)
 			{
 				wand.addSpell(spell.getKey());
 			}
@@ -982,8 +982,9 @@ public class MagicPlugin extends JavaPlugin
 
 		for (Spell spell : spellVariants)
 		{
-			if (!spell.hasSpellPermission(player)) continue;
-
+			if (player != null && !spell.hasSpellPermission(player)) continue;
+			if (spell.getCategory() == null) continue;
+			
 			Integer spellCount = spellCounts.get(spell.getCategory());
 			if (spellCount == null || spellCount == 0)
 			{
@@ -1027,6 +1028,7 @@ public class MagicPlugin extends JavaPlugin
 			{
 				continue;
 			}
+			if (spell.getCategory() == null) continue;
 			spellCount++;
 			SpellGroup group = spellGroups.get(spell.getCategory());
 			if (group == null)
