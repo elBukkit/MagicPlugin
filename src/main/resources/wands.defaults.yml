@@ -1042,7 +1042,7 @@ wands:
         cooldown_reduction: 1
         health_regeneration: 1
         hunger_regeneration: 1
-        power: 1
+        power: 5
         haste: 0.3
         effect_color: CD853F
         organize: true

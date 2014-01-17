@@ -114,7 +114,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
-            max_dimension: 128
+            max_dimension: 16
             fill: hollow
             target: select
             type: sphere
@@ -436,8 +436,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            max_volume: 512
-            max_dimension: 128
             cooldown: 0
             type: single
         costs:
@@ -555,7 +553,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
-            max_dimension: 128
+            max_dimension: 16
             target: select
             type: sphere
         costs:
@@ -569,7 +567,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
-            max_dimension: 128
+            max_dimension: 16
             target: select
             fill: hollow
             type: pyramid
@@ -600,7 +598,7 @@ spells:
             speed: 3
             falling: true
             material: air
-            radius: 8
+            radius: 5
             type: sphere
     convert:
         icon: vine
@@ -624,7 +622,7 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
-            max_dimension: 128
+            max_dimension: 16
             indestructible:
               - air
             target: select
@@ -676,7 +674,7 @@ spells:
             speed: 2
             falling: true
             material: air
-            radius: 3
+            radius: 2
             type: pyramid
         costs:
             xp: 10
@@ -825,8 +823,8 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            max_volume: 1024
-            max_dimension: 256
+            max_volume: 256
+            max_dimension: 64
             cooldown: 5000
         costs:
             xp: 40
@@ -1088,6 +1086,7 @@ spells:
             undo: 0
             cooldown: 0
             cooldown: 5000
+            max-dimension: 16
             fill: hollow
             target: select
             type: cuboid
