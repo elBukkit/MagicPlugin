@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -76,7 +77,7 @@ public class MaterialBrush extends MaterialAndData {
 		if (cloneLocation != null) {
 			Location materialTarget = cloneLocation.clone();
 			materialTarget.subtract(cloneTarget);
-			cloneTarget.add(target);
+			materialTarget.add(target);
 			
 			Block block = materialTarget.getBlock();
 			if (!block.getChunk().isLoaded()) return false;
