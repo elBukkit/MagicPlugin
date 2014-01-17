@@ -10,6 +10,7 @@
  - Add message colorization (MIGRATION NOTE)
  - Make the blast spell a little more interesting.
  - Add "commitall" variant to UndoSpell, to clear everyone's undo queue.
+ - Fix tag spell to use a better date formatter.
 
 ## 2.8.5
 

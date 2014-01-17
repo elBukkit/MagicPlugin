@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bukkit.Material;
@@ -67,10 +67,15 @@ public class SignSpell extends Spell
 			if (targetBlock.getState() instanceof Sign)
 			{
 				Sign sign = (Sign)targetBlock.getState();
-				sign.setLine(0, getPlayer().getName());
+				String playerName = getPlayer().getName();
+				playerName = mage.getController().getMessagePrefix() + playerName;
+				sign.setLine(0, playerName);
 				sign.setLine(1, "was here");
 				Date currentDate = new Date();
-				sign.setLine(3, DateFormat.getInstance().format(currentDate));
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+				sign.setLine(2, dateFormat.format(currentDate));
+				sign.setLine(3, timeFormat.format(currentDate));
 				sign.update();
 				castMessage("You leave a tag");
 				return SpellResult.SUCCESS;
