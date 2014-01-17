@@ -606,6 +606,9 @@ public class Wand implements CostReducer {
 		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
 		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
 		
+		// Temporary-ish migration step
+		activeMaterial = getMaterialKey(parseMaterialKey(activeMaterial));
+		
 		costReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cost_reduction", floatFormat.format(costReduction)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
 		power = Float.parseFloat(InventoryUtils.getMeta(wandNode, "power", floatFormat.format(power)));
@@ -883,6 +886,10 @@ public class Wand implements CostReducer {
 		}
 		
 		return materialKey;
+	}
+
+	private static String getMaterialKey(MaterialAndData material) {
+		return getMaterialKey(material.getMaterial(), material.getData());
 	}
 	
 	private static String getMaterialName(Material material) {

@@ -396,6 +396,8 @@ wands:
             - dirt
             - erase
             - copy
+            - clone
+            - replicate
             - glowstone
             - sand
             - cobblestone
@@ -553,6 +555,8 @@ wands:
             - soul_sand
             - stained_glass
             - copy
+            - clone
+            - replicate
     air:
         modifiable: true
         protection: 0.2
@@ -1114,6 +1118,8 @@ wands:
             - tnt
             - soul_sand
             - copy
+            - clone
+            - replicate
             - wool:0
             - wool:1
             - wool:2
