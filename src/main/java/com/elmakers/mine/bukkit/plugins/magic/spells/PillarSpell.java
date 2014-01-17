@@ -5,8 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
@@ -55,15 +55,11 @@ public class PillarSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		Material material = attachBlock.getType();
-		byte data = attachBlock.getData();
+		MaterialBrush buildWith = getMaterialBrush();
+		buildWith.setTarget(attachBlock.getLocation());
 
-		ItemStack buildWith = getBuildingMaterial();
-		if (buildWith != null)
-		{
-			material = buildWith.getType();
-			data = getItemData(buildWith);
-		}
+		Material material = buildWith.getMaterial();
+		byte data = buildWith.getData();
 
 		BlockList pillarBlocks = new BlockList();
 		Block pillar = getBlockAt(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ());
@@ -82,7 +78,7 @@ public class PillarSpell extends Spell
 	}
 	
 	@Override
-	public boolean usesMaterial() {
+	public boolean usesBrush() {
 		return true;
 	}
 }

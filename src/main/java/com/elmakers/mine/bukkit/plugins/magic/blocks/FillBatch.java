@@ -1,17 +1,16 @@
 package com.elmakers.mine.bukkit.plugins.magic.blocks;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class FillBatch extends VolumeBatch {
 	private final BlockList filledBlocks = new BlockList();
-	private final Material material;
-	private final byte data;
+	private final MaterialBrush brush;
 	private final World world;
 	private final Spell spell;
 	private final Mage playerSpells;
@@ -30,12 +29,11 @@ public class FillBatch extends VolumeBatch {
 	private int iy = 0;
 	private int iz = 0;
 	
-	public FillBatch(Spell spell, Location p1, Location p2, Material material, byte data) {
-		super(spell.getPlayerSpells().getController(), p1.getWorld().getName());
-		this.material = material;
-		this.data = data;
+	public FillBatch(Spell spell, Location p1, Location p2, MaterialBrush brush) {
+		super(spell.getMage().getController(), p1.getWorld().getName());
+		this.brush = brush;
 		this.spell = spell;
-		this.playerSpells = spell.getPlayerSpells();
+		this.playerSpells = spell.getMage();
 		this.playerName = this.playerSpells.getPlayer().getName();
 		this.world = this.playerSpells.getPlayer().getWorld();
 		
@@ -75,13 +73,17 @@ public class FillBatch extends VolumeBatch {
 				block.getChunk().load();
 				return processedBlocks;
 			}
+			if (!brush.isReady()) {
+				brush.prepare();
+				return processedBlocks;
+			}
 			processedBlocks++;
 
 			if (playerSpells.hasBuildPermission(block) && !playerSpells.isIndestructible(block)) {
-				spells.updateBlock(world.getName(), x, y, z);
+				updateBlock(world.getName(), x, y, z);
 				filledBlocks.add(block);
-				block.setType(material);
-				block.setData(data);
+				block.setType(brush.getMaterial());
+				block.setData(brush.getData());
 			}
 			
 			iy++;
@@ -109,7 +111,7 @@ public class FillBatch extends VolumeBatch {
 		super.finish();
 		
 		spells.addToUndoQueue(playerName, filledBlocks);
-		spell.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + material.name().toLowerCase());
+		spell.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + brush.getMaterial().name().toLowerCase());
 	}
 	
 	public int getXSize() {

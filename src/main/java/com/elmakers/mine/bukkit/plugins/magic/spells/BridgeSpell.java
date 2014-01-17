@@ -5,8 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
@@ -35,16 +35,6 @@ public class BridgeSpell extends Spell
 		Block attachBlock = playerBlock;
 		Block targetBlock = attachBlock.getRelative(direction);
 
-		Material material = targetBlock.getType();
-		byte data = targetBlock.getData();
-
-		ItemStack buildWith = getBuildingMaterial();
-		if (buildWith != null)
-		{
-			material = buildWith.getType();
-			data = getItemData(buildWith);
-		}
-
 		int distance = 0;
 		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
 		{
@@ -60,12 +50,20 @@ public class BridgeSpell extends Spell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+
+		MaterialBrush buildWith = getMaterialBrush();
+		buildWith.setTarget(targetBlock.getLocation());
+
+		Material material = buildWith.getMaterial();
+		byte data = buildWith.getData();
+		
 		BlockList bridgeBlocks = new BlockList();
 		bridgeBlocks.add(targetBlock);
 		targetBlock.setType(material);
 		targetBlock.setData(data);
 
 		castMessage("A bridge extends!");
+		
 		controller.addToUndoQueue(getPlayer(), bridgeBlocks);
 		controller.updateBlock(targetBlock);
 
@@ -77,7 +75,7 @@ public class BridgeSpell extends Spell
 	}
 	
 	@Override
-	public boolean usesMaterial() {
+	public boolean usesBrush() {
 		return true;
 	}
 }

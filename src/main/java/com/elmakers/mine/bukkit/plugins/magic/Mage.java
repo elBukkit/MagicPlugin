@@ -47,10 +47,10 @@ public class Mage implements CostReducer
 	
 	private float 				costReduction = 0;
 	private float 				cooldownReduction = 0;
-	private ItemStack 			buildingMaterial = null;
 	private long 				lastClick = 0;
 	private long 				blockPlaceTimeout = 0;
 	private Location 			lastDeathLocation = null;
+	private MaterialBrush		brush = new MaterialBrush(Material.DIRT, (byte)0);
 	
 	public void removeExperience(int xp) {
 		
@@ -439,16 +439,20 @@ public class Mage implements CostReducer
 		return blockPlaceTimeout;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public void setBuildingMaterial(Material material, byte data) {
+	public void setBrush(Material material, byte data) {
 		if (material == Wand.CopyMaterial) {
-			buildingMaterial = null;
+			brush.enableCopying(true);
 			return;
 		}
+		brush.enableCopying(false);
 		if (material == Wand.EraseMaterial) {
 			material = Material.AIR;
 		}
-		buildingMaterial = new ItemStack(material, 1, (short)0, data);
+		brush.setMaterial(material, data);
+	}
+	
+	public MaterialBrush getBrush() {
+		return brush;
 	}
 
 	/**
@@ -484,11 +488,9 @@ public class Mage implements CostReducer
 	}
 	
 	public void clearBuildingMaterial() {
-		buildingMaterial = null;
-	}
-	
-	public ItemStack getBuildingMaterial() {
-		return buildingMaterial;
+		brush.disableCloning();
+		brush.enableCopying(false);
+		brush.setMaterial(Material.DIRT, (byte)1);
 	}
 	
 	public boolean hasBuildPermission(Block block) {

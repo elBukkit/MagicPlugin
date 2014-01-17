@@ -4,9 +4,9 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
@@ -46,14 +46,11 @@ public class IterateSpell extends Spell
 		targetLoc.add(aim);
 		targetLoc.add(aim);
 
-		Material material = Material.DIRT;
-		byte data = 0;
-		ItemStack buildWith = getBuildingMaterial();
-		if (buildWith != null)
-		{
-			material = buildWith.getType();
-			data = getItemData(buildWith);
-		}
+		MaterialBrush buildWith = getMaterialBrush();
+		buildWith.setTarget(target.getLocation());
+
+		Material material = buildWith.getMaterial();
+		byte data = buildWith.getData();
 		
 		BlockList iteratedBlocks = new BlockList();
 		for (int i = 0; i < iterateBlocks; i++)
@@ -96,7 +93,7 @@ public class IterateSpell extends Spell
 	}
 	
 	@Override
-	public boolean usesMaterial() {
+	public boolean usesBrush() {
 		return true;
 	}
 }

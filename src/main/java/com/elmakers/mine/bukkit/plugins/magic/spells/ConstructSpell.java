@@ -6,9 +6,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.ConstructBatch;
@@ -25,7 +25,6 @@ public class ConstructSpell extends Spell
 	
 	private static final int DEFAULT_MAX_DIMENSION = 128;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -88,35 +87,18 @@ public class ConstructSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		Material material = target.getType();
-		byte data = target.getData();
-
-		ItemStack buildWith = getBuildingMaterial();
-		if (buildWith != null)
-		{
-			material = buildWith.getType();
-			data = getItemData(buildWith);
-		}
+		MaterialBrush buildWith = getMaterialBrush();
+		buildWith.setTarget(target.getLocation());
 
 		ConstructionType conType = defaultConstructionType;
 
 		boolean hollow = false;
 		String fillType = (String)parameters.getString("fill", "");
 		hollow = fillType.equals("hollow");
-
-		Material materialOverride = parameters.getMaterial("material");
-		if (materialOverride != null)
-		{
-			material = materialOverride;
-			data = 0;
-		}
 		
 		Vector forceVector = null;
 		if (falling)
 		{
-			material = Material.AIR;
-			data = 0;
-			
 			if (force != 0) {
 				forceVector = getPlayer().getLocation().getDirection();
 				forceVector.setY(-forceVector.getY()).normalize().multiply(force);
@@ -130,15 +112,15 @@ public class ConstructSpell extends Spell
 			conType = testType;
 		}
 
-		fillArea(target, radius, material, data, !hollow, conType, timeToLive, indestructible, falling, forceVector);
+		fillArea(target, radius, buildWith, !hollow, conType, timeToLive, indestructible, falling, forceVector);
 		deactivate();
 
 		return SpellResult.SUCCESS;
 	}
 
-	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible, boolean falling, Vector forceVector)
+	public void fillArea(Block target, int radius, MaterialBrush brush, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible, boolean falling, Vector forceVector)
 	{
-		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, material, data, indestructible, falling);
+		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, brush, indestructible, falling);
 		if (forceVector != null) {
 			batch.setFallingBlockVelocity(forceVector);
 		}
@@ -149,7 +131,7 @@ public class ConstructSpell extends Spell
 	}
 	
 	@Override
-	public boolean usesMaterial() {
+	public boolean usesBrush() {
 		return true;
 	}
 	

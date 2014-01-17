@@ -9,6 +9,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class ConstructBatch extends VolumeBatch {
@@ -18,8 +19,7 @@ public class ConstructBatch extends VolumeBatch {
 	private final BlockList constructedBlocks = new BlockList();
 	private final Location 		center;
 	private final int radius;
-	private final Material material;
-	private final byte data;
+	private final MaterialBrush brush;
 	private boolean checkDestructible = true;
 	private final ConstructionType type;
 	private final boolean fill;
@@ -33,17 +33,16 @@ public class ConstructBatch extends VolumeBatch {
 	private int y = 0;
 	private int z = 0;
 	
-	public ConstructBatch(Spell spell, Location center, ConstructionType type, int radius, boolean fill, Material material, byte data, Set<Material> indestructible, boolean spawnFallingBlocks) {
-		super(spell.getPlayerSpells().getController(), center.getWorld().getName());
+	public ConstructBatch(Spell spell, Location center, ConstructionType type, int radius, boolean fill, MaterialBrush brush, Set<Material> indestructible, boolean spawnFallingBlocks) {
+		super(spell.getMage().getController(), center.getWorld().getName());
 		this.indestructible = indestructible;
 		this.center = center;
 		this.radius = radius;
-		this.material = material;
-		this.data = data;
+		this.brush = brush;
 		this.type = type;
 		this.fill = fill;
 		this.spawnFallingBlocks = spawnFallingBlocks;
-		this.playerSpells = spell.getPlayerSpells();
+		this.playerSpells = spell.getMage();
 		this.spell = spell;
 		this.playerName = this.playerSpells.getPlayer().getName();
 	}
@@ -161,11 +160,14 @@ public class ConstructBatch extends VolumeBatch {
 		int z = center.getBlockZ() + dz;
 		if (y < 0 || y > 255) return true;
 		
-		updateBlock(center.getWorld().getName(), x, y, z);
-		
 		Block block = center.getWorld().getBlockAt(x, y, z);
+		brush.update(block.getLocation());
 		if (!block.getChunk().isLoaded()) {
 			block.getChunk().load();
+			return false;
+		}
+		if (!brush.isReady()) {
+			brush.prepare();
 			return false;
 		}
 		if (playerSpells.isIndestructible(block)) 
@@ -180,11 +182,14 @@ public class ConstructBatch extends VolumeBatch {
 		{
 			return true;
 		}
+		
+		updateBlock(center.getWorld().getName(), x, y, z);
+		
 		Material previousMaterial = block.getType();
 		byte previousData = block.getData();
 		constructedBlocks.add(block);
-		block.setType(material);
-		block.setData(data);
+		block.setType(brush.getMaterial());
+		block.setData(brush.getData());
 		if (spawnFallingBlocks) {
 			FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
 			falling.setDropItem(false);

@@ -3,9 +3,9 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -21,15 +21,11 @@ public class TossSpell extends Spell
 		}
 
 		location.setY(location.getY() - 1);
-		Material material = location.getBlock().getType();
-		if (material == Material.AIR) material = Material.SAND;
-		byte data = 0;
-		ItemStack buildWith = getBuildingMaterial();
-		if (buildWith != null)
-		{
-			material = buildWith.getType();
-			data = getItemData(buildWith);
-		}
+		MaterialBrush buildWith = getMaterialBrush();
+		buildWith.setTarget(location);
+
+		Material material = buildWith.getMaterial();
+		byte data = buildWith.getData();
 		
 		int tossCount = 1;
 		tossCount = parameters.getInt("count", tossCount);
@@ -69,7 +65,7 @@ public class TossSpell extends Spell
 	}
 	
 	@Override
-	public boolean usesMaterial() {
+	public boolean usesBrush() {
 		return true;
 	}
 }

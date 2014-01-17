@@ -888,7 +888,7 @@ public class Wand implements CostReducer {
 		String[] pieces = StringUtils.split(activeMaterial, ":");
 		String materialName = null;
 		
-		if (spell != null && spell.usesMaterial() && !spell.hasMaterialOverride() && pieces.length > 0 && pieces[0].length() > 0) {
+		if (spell != null && spell.usesBrush() && !spell.hasBrushOverride() && pieces.length > 0 && pieces[0].length() > 0) {
 			int materialId = Integer.parseInt(pieces[0]);
 			if (materialId == 0) {
 				materialName = "erase";
@@ -949,7 +949,7 @@ public class Wand implements CostReducer {
 		Spell spell = controller.getSpell(activeSpell);
 		String materialName = null;
 		
-		if (spell != null && spell.usesMaterial() && !spell.hasMaterialOverride() && material != null) {
+		if (spell != null && spell.usesBrush() && !spell.hasBrushOverride() && material != null) {
 			materialName = getMaterialName(material);
 		}
 		return getActiveWandName(spell, materialName);
@@ -1556,7 +1556,7 @@ public class Wand implements CostReducer {
 				} else {
 					material = Material.getMaterial(materialId);
 				}
-				mage.setBuildingMaterial(material, data);
+				mage.setBrush(material, data);
 			}
 		}
 	}

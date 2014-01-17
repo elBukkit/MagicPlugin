@@ -3,9 +3,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
@@ -34,19 +33,11 @@ public class ExtendSpell extends Spell
 		Block attachBlock = playerBlock;
 		Block targetBlock = attachBlock.getRelative(direction);
 
-		Material material = targetBlock.getType();
-		byte data = targetBlock.getData();
+		MaterialBrush buildWith = getMaterialBrush();
+		buildWith.setTarget(targetBlock.getLocation());
 
-		ItemStack buildWith = getBuildingMaterial();
-		if (buildWith != null)
-		{
-			material = buildWith.getType();
-			MaterialData targetData = buildWith.getData();
-			if (targetData != null)
-			{
-				data = targetData.getData();
-			}
-		}
+		Material material = buildWith.getMaterial();
+		byte data = buildWith.getData();
 
 		int distance = 0;
 		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
@@ -77,7 +68,7 @@ public class ExtendSpell extends Spell
 	}
 	
 	@Override
-	public boolean usesMaterial() {
+	public boolean usesBrush() {
 		return true;
 	}
 }

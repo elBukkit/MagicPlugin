@@ -165,7 +165,7 @@ public class WandLevel {
 		for (String spellName : spells) {
 			Spell spell = wand.getMaster().getSpell(spellName);
 			if (spell != null) {
-				needsMaterials = needsMaterials || (spell.usesMaterial() && !spell.hasMaterialOverride());
+				needsMaterials = needsMaterials || (spell.usesBrush() && !spell.hasBrushOverride());
 				List<CastingCost> costs = spell.getCosts();
 				if (costs != null) {
 					for (CastingCost cost : costs) {

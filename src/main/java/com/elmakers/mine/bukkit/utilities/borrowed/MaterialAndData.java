@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.utilities.borrowed;
 import org.bukkit.Material;
 
 public class MaterialAndData {
-	private Material material;
-	private byte data;
+	protected Material material;
+	protected byte data;
 	
 	public MaterialAndData(final Material material, final  byte data) {
 		this.material = material;

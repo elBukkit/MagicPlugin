@@ -2,8 +2,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockData;
@@ -42,16 +42,10 @@ public class TransmuteSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
-		ItemStack targetItem = getBuildingMaterial();
-		if (targetItem == null)
-		{
-			sendMessage("Nothing to transmute with");
-			return SpellResult.NO_TARGET;
-		}
-
-		Material material = targetItem.getType();
-		byte data = getItemData(targetItem);
-
+		MaterialBrush buildWith = getMaterialBrush();
+		Material material = buildWith.getMaterial();
+		byte data = buildWith.getData();
+		
 		for (BlockData undoBlock : transmuteAction)
 		{
 			Block block = undoBlock.getBlock();

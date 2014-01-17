@@ -55,7 +55,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String category;
 	private ConfigurationNode parameters = new ConfigurationNode();
 	private MaterialAndData icon;
-	private Material materialOverride;
+	private MaterialBrush brushOverride;
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
 
@@ -230,7 +230,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		cooldown = parameters.getInt("cooldown", cooldown);
 		duration = parameters.getInt("duration", duration);
-		materialOverride = parameters.getMaterial("material", materialOverride);
+		Material override = parameters.getMaterial("material", null);
+		if (override != null) {
+			brushOverride = new MaterialBrush(override, (byte)0);
+		}
 		range = parameters.getInteger("range", range);
 		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 		targetThroughMaterials = new MaterialList(parameters.getMaterials("target_through", targetThroughMaterials));
@@ -453,14 +456,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	/*
 	 * General helper functions
 	 */
-	public ItemStack getBuildingMaterial()
+	public MaterialBrush getMaterialBrush()
 	{
-		if (materialOverride != null)
+		if (brushOverride != null)
 		{
-			return new ItemStack(materialOverride, 1);
+			return brushOverride;
 		}
 		
-		return mage.getBuildingMaterial();
+		return mage.getBrush();
 	}
 	
 	public boolean hasBuildPermission(Block block)
@@ -1218,12 +1221,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 	}
 	
-	public boolean usesMaterial() {
+	public boolean usesBrush() 
+	{
 		return false;
 	}
 	
-	public boolean hasMaterialOverride() {
-		return materialOverride != null;
+	public boolean hasBrushOverride() 
+	{
+		return brushOverride != null;
 	}
 	
 	public void onActivate() {
@@ -1234,7 +1239,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	}
 	
-	public Mage getPlayerSpells() {
+	public Mage getMage() {
 		return mage;
 	}
 	

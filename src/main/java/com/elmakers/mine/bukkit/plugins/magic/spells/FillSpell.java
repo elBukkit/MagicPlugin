@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
@@ -30,31 +30,12 @@ public class FillSpell extends Spell
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
 		Block targetBlock = getTargetBlock();
-		Material material = Material.AIR;
-		byte data = 0;
 		boolean singleBlock = false;
 		boolean recurse = false;
 
-		boolean overrideMaterial = false;
-
-		ItemStack buildWith = getBuildingMaterial();
-		if (buildWith != null)
-		{
-			material = buildWith.getType();
-			data = getItemData(buildWith);
-			overrideMaterial = true;
-		}
 		String typeString = parameters.getString("type", "");
 		singleBlock = typeString.equals("single");
 		recurse = typeString.equals("recurse");
-
-		Material materialOverride = parameters.getMaterial("material");
-		if (materialOverride != null)
-		{
-			material = materialOverride;
-			data = 0;
-			overrideMaterial = true;
-		}
 
 		if (targetBlock == null) 
 		{
@@ -64,6 +45,11 @@ public class FillSpell extends Spell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		
+		MaterialBrush buildWith = getMaterialBrush();
+
+		Material material = buildWith.getMaterial();
+		byte data = buildWith.getData();
 
 		if (recurse)
 		{
@@ -117,13 +103,7 @@ public class FillSpell extends Spell
 
 		if (this.targetBlock != null)
 		{
-			if (!overrideMaterial)
-			{
-				material = this.targetBlock.getType();
-				data = this.targetBlock.getData();
-			}
-
-			FillBatch batch = new FillBatch(this, targetBlock.getLocation(), this.targetBlock.getLocation(), material, data);
+			FillBatch batch = new FillBatch(this, targetBlock.getLocation(), this.targetBlock.getLocation(), buildWith);
 
 			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
 			int maxVolume = parameters.getInteger("max_volume", DEFAULT_MAX_VOLUME);
@@ -154,11 +134,8 @@ public class FillSpell extends Spell
 			effectLocation.add(0.5f, 0.5f, 0.5f);
 			EffectUtils.playEffect(effectLocation, ParticleType.HAPPY_VILLAGER, 0.3f, 0.3f, 0.3f, 1, 16);
 			this.targetBlock = targetBlock;
-			if (!overrideMaterial)
-			{
-				material = targetBlock.getType();
-			}
 			activate();
+			buildWith.setTarget(targetBlock.getLocation());
 			castMessage("Cast again to fill with " + material.name().toLowerCase());
 			return SpellResult.SUCCESS;
 		}
@@ -178,7 +155,7 @@ public class FillSpell extends Spell
 	}
 	
 	@Override
-	public boolean usesMaterial() {
+	public boolean usesBrush() {
 		return true;
 	}
 	
