@@ -587,7 +587,7 @@ public class MagicPlugin extends JavaPlugin
 		wand.activate(mage);
 		mage.sendMessage("Wand reconfigured");
 		if (sender != player) {
-			sender.sendMessage(player.getName() + ",s wand reconfigured");
+			sender.sendMessage(player.getName() + "'s wand reconfigured");
 		}
 		return true;
 	}
@@ -621,7 +621,7 @@ public class MagicPlugin extends JavaPlugin
 		
 		mage.sendMessage("Wand upgraded");
 		if (sender != player) {
-			sender.sendMessage(player.getName() + ",s wand upgraded");
+			sender.sendMessage(player.getName() + "'s wand upgraded");
 		}
 		return true;
 	}
