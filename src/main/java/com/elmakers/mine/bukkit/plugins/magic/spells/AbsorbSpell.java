@@ -8,10 +8,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.utilities.EffectTrail;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AbsorbSpell extends Spell 

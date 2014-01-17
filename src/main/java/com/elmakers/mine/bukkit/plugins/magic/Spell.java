@@ -21,8 +21,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.blocks.MaterialList;
-import com.elmakers.mine.bukkit.utilities.BlockAction;
+import com.elmakers.mine.bukkit.blocks.BlockAction;
+import com.elmakers.mine.bukkit.blocks.MaterialList;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;

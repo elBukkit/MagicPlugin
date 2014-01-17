@@ -1,11 +1,9 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.blocks;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockData;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
 
 public class BlockRecurse
 {

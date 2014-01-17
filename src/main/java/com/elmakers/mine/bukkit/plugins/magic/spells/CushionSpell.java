@@ -4,9 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CushionSpell extends Spell

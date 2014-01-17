@@ -16,7 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockData;
+import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 
 /**

@@ -13,9 +13,9 @@ import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.blocks.CleanupBlocksTask;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.CleanupBlocksTask;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class UndoQueue

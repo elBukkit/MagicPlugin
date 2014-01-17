@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic.blocks;
+package com.elmakers.mine.bukkit.blocks;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

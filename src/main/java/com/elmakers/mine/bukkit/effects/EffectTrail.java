@@ -1,8 +1,9 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.effects;
 
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
+
 
 public class EffectTrail extends EffectPlayer {
 	

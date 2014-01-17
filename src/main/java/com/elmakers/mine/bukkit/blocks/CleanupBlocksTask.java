@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic.blocks;
+package com.elmakers.mine.bukkit.blocks;
 
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;

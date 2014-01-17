@@ -4,15 +4,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.blocks.BlockRecurse;
+import com.elmakers.mine.bukkit.blocks.FillBatch;
+import com.elmakers.mine.bukkit.blocks.ReplaceMaterialAction;
+import com.elmakers.mine.bukkit.effects.EffectUtils;
+import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.FillBatch;
-import com.elmakers.mine.bukkit.utilities.BlockRecurse;
-import com.elmakers.mine.bukkit.utilities.EffectUtils;
-import com.elmakers.mine.bukkit.utilities.ParticleType;
-import com.elmakers.mine.bukkit.utilities.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FillSpell extends Spell 

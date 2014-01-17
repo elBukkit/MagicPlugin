@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.blocks;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -8,7 +8,6 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.MaterialList;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {

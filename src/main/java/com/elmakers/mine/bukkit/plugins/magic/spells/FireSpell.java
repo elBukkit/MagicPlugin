@@ -6,11 +6,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.blocks.SimpleBlockAction;
+import com.elmakers.mine.bukkit.effects.EffectTrail;
+import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.EffectTrail;
-import com.elmakers.mine.bukkit.utilities.ParticleType;
-import com.elmakers.mine.bukkit.utilities.SimpleBlockAction;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireSpell extends Spell

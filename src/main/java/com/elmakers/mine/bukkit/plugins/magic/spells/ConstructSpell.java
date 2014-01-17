@@ -8,13 +8,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.blocks.ConstructBatch;
+import com.elmakers.mine.bukkit.blocks.ConstructionType;
+import com.elmakers.mine.bukkit.effects.EffectUtils;
+import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.ConstructBatch;
-import com.elmakers.mine.bukkit.plugins.magic.blocks.ConstructionType;
-import com.elmakers.mine.bukkit.utilities.EffectUtils;
-import com.elmakers.mine.bukkit.utilities.ParticleType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends Spell

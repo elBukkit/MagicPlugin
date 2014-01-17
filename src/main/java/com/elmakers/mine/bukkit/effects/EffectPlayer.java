@@ -1,10 +1,11 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.effects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
+
 
 public abstract class EffectPlayer implements Runnable {
 	
