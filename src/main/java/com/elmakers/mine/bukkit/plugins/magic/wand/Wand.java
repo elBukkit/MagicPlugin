@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -1117,14 +1118,20 @@ public class Wand implements CostReducer {
 		return InventoryUtils.getMeta(spellNode, "key");
 	}
 	
-	public void updateInventoryNames(boolean activeNames) {
+	public void updateInventoryNames(boolean activeHotbarNames, boolean activeAllNames) {
 		if (mage == null || !isInventoryOpen()) return;
 		
 		ItemStack[] contents = mage.getPlayer().getInventory().getContents();
-		for (ItemStack item : contents) {
+		for (int i = 0; i < contents.length; i++) {
+			ItemStack item = contents[i];
 			if (item == null || item.getType() == Material.AIR || isWand(item)) continue;
-			updateInventoryName(item, activeNames);
+			boolean activeName = activeAllNames || (activeHotbarNames && i < Wand.hotbarSize);
+			updateInventoryName(item, activeName);
 		}
+	}
+	
+	public void updateInventoryNames(boolean activeHotbarNames) {
+		updateInventoryNames(activeHotbarNames, false);
 	}
 
 	protected void updateInventoryName(ItemStack item, boolean activeName) {
@@ -1141,11 +1148,13 @@ public class Wand implements CostReducer {
 	
 	protected void updateSpellName(ItemStack itemStack, Spell spell, boolean activeName) {
 		ItemMeta meta = itemStack.getItemMeta();
+		String displayName = null;
 		if (activeName) {
-			meta.setDisplayName(getActiveWandName(spell));
+			displayName = getActiveWandName(spell);
 		} else {
-			meta.setDisplayName(ChatColor.GOLD + spell.getName());
+			displayName = ChatColor.GOLD + spell.getName();
 		}
+		meta.setDisplayName(displayName);
 		List<String> lore = new ArrayList<String>();
 		addSpellLore(spell, lore);
 		meta.setLore(lore);

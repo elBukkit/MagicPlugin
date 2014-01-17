@@ -13,6 +13,8 @@
  - Fix tag spell to use a better date formatter.
  - Refactor wands to not store materials by id (though the data byte is still rate)
  - Implement replicate and clone materials (!)
+ - Nerf a lot of the construction spells. Wand's "power" can be used to create larger constructions.
+ - Better labelling of spells in the wand inventory.
 
 ## 2.8.5
 

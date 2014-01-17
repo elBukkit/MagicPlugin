@@ -1535,8 +1535,8 @@ public class MagicController implements Listener
 			}
 		}
 		
-		if (wand != null && !changedWands) {
-			wand.updateInventoryNames(true);
+		if (previousWand != null && !changedWands && previousWand.isInventoryOpen()) {
+			previousWand.updateInventoryNames(true);
 		}
 	}
 

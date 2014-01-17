@@ -2,7 +2,8 @@
 
 IMPORTANT STUFF:
 
- - Investigate MaterialBrush NPE
+ - Save off dynmap marker chunks on disable, load chunks on startup
+ - Investigate MaterialBrush NPE (Maybe pre-world-fix, but keep an eye out when testing)
  - Fix /wand list (localization, broken, NPE)
  - Copy material showing up as "sugar"
  - Persist material brush .. make sure it doesn't reset on load (might be tricky given current structure)
