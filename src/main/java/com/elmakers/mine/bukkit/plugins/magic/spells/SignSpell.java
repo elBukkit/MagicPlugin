@@ -73,7 +73,7 @@ public class SignSpell extends Spell
 				sign.setLine(1, "was here");
 				Date currentDate = new Date();
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 				sign.setLine(2, dateFormat.format(currentDate));
 				sign.setLine(3, timeFormat.format(currentDate));
 				sign.update();
