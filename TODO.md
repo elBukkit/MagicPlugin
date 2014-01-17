@@ -90,7 +90,8 @@ OTHER STUFF:
 
 DEMO SERVER STUFF:
 
- - Update WorldGuard, hope item frames are safe?
+ - Add "wand properties" infobook
+ - Move spawn?
  - Build and have fun! ;)
 
 LONG-TERM OR INCOMPLETE:
