@@ -2,11 +2,15 @@
 
 IMPORTANT STUFF:
 
+ - Investigate MaterialBrush NPE
+ - Fix /wand list (localization, broken, NPE)
+ - Copy material showing up as "sugar"
+ - Persist material brush .. make sure it doesn't reset on load (might be tricky given current structure)
+ - Debug replicate... seems to sometimes fail to copy parts?
  - Fix recall spell with natural spawn.. hook into essentials?
  - Can't alter "null" message from alter on bad target?
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
  - Iterate doesn't work with the copy material
- - Column and Disc building spells
 
 NEW SPELLS:
 
@@ -18,10 +22,14 @@ NEW SPELLS:
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - separate alter into superalter and alter
  - Add "all" parameter to commit spell (and undo spell?)
- - Test larger undo queue sizes, or count size in blocks?
+ - Phase spell
+ - Column and Disc building spells
 
 OTHER STUFF:
  
+ - Test larger undo queue sizes, or count size in blocks?
+ - Add "wand duplicate" command
+ - Organize inventory by spell usage (favorites page)
  - Add "clone" material. Likely to take a lot of work, refactoring...
  - Complete work on tab completion
  - Make /wand name take ownership
@@ -102,4 +110,6 @@ LONG-TERM OR INCOMPLETE:
 STACK TRACES / EXTRA DEBUG INFO
 
 
-
+[10:44:07] [Server thread/WARN]: [Magic] Task #6 for Magic v2.8.6 generated an exception
+java.lang.NullPointerException
+	at com.elmakers.mine.bukkit.plugins.magic.MaterialBrush.update(MaterialBrush.java:88) ~[?:?]

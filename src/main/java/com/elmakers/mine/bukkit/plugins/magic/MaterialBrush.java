@@ -69,7 +69,7 @@ public class MaterialBrush extends MaterialAndData {
 
 	@SuppressWarnings("deprecation")
 	public void setTarget(Location target) {
-		if (cloneTarget == null || !targetLocked) {
+		if (cloneTarget == null || !targetLocked || !target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
 			cloneTarget = target;
 		}
 		if (copyEnabled) {
@@ -85,8 +85,8 @@ public class MaterialBrush extends MaterialAndData {
 	public boolean update(Location target) {
 		if (cloneLocation != null) {
 			Location materialTarget = cloneLocation.clone();
-			materialTarget.subtract(cloneTarget);
-			materialTarget.add(target);
+			materialTarget.subtract(cloneTarget.toVector());
+			materialTarget.add(target.toVector());
 			
 			Block block = materialTarget.getBlock();
 			if (!block.getChunk().isLoaded()) return false;
