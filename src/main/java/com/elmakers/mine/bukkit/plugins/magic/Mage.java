@@ -439,18 +439,6 @@ public class Mage implements CostReducer
 		return blockPlaceTimeout;
 	}
 	
-	public void setBrush(Material material, byte data) {
-		if (material == Wand.CopyMaterial) {
-			brush.enableCopying(true);
-			return;
-		}
-		brush.enableCopying(false);
-		if (material == Wand.EraseMaterial) {
-			material = Material.AIR;
-		}
-		brush.setMaterial(material, data);
-	}
-	
 	public MaterialBrush getBrush() {
 		return brush;
 	}
@@ -694,5 +682,9 @@ public class Mage implements CostReducer
 			spell.checkActiveDuration();
 			spell.checkActiveCosts();
 		}
+	}
+	
+	public Location getLocation() {
+		return getPlayer().getLocation();
 	}
 }

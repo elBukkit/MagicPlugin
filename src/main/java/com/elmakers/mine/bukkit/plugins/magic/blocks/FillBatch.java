@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic.blocks;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
@@ -28,6 +31,9 @@ public class FillBatch extends VolumeBatch {
 	private int ix = 0;
 	private int iy = 0;
 	private int iz = 0;
+	
+	private boolean spawnFallingBlocks = false;
+	private Vector fallingBlockVelocity = null;
 	
 	public FillBatch(Spell spell, Location p1, Location p2, MaterialBrush brush) {
 		super(spell.getMage().getController(), p1.getWorld().getName());
@@ -68,7 +74,7 @@ public class FillBatch extends VolumeBatch {
 		
 		while (processedBlocks <= maxBlocks && ix < absx) {
 			Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
-			
+			brush.update(block.getLocation());
 			if (!block.getChunk().isLoaded()) {
 				block.getChunk().load();
 				return processedBlocks;
@@ -80,10 +86,23 @@ public class FillBatch extends VolumeBatch {
 			processedBlocks++;
 
 			if (playerSpells.hasBuildPermission(block) && !playerSpells.isIndestructible(block)) {
-				updateBlock(world.getName(), x, y, z);
-				filledBlocks.add(block);
-				block.setType(brush.getMaterial());
-				block.setData(brush.getData());
+				Material previousMaterial = block.getType();
+				byte previousData = block.getData();
+				
+				if (previousMaterial != brush.getMaterial() || previousData != brush.getData()) {
+					updateBlock(world.getName(), x, y, z);
+					filledBlocks.add(block);
+					block.setType(brush.getMaterial());
+					block.setData(brush.getData());
+					
+					if (spawnFallingBlocks) {
+						FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+						falling.setDropItem(false);
+						if (fallingBlockVelocity != null) {
+							falling.setVelocity(fallingBlockVelocity);
+						}
+					}
+				}
 			}
 			
 			iy++;

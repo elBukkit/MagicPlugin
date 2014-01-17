@@ -19,11 +19,14 @@ public class MaterialBrush extends MaterialAndData {
 	
 	public void setMaterial(Material material) {
 		this.material = material;
+		this.data = 0;
 	}
 	
 	public void setMaterial(Material material, byte data) {
 		this.material = material;
 		this.data = data;
+		copyEnabled = false;
+		disableCloning();
 	}
 	
 	public void setData(byte data) {
@@ -38,9 +41,13 @@ public class MaterialBrush extends MaterialAndData {
 		copyEnabled = enable;
 	}
 	
+	public void enableCopying() {
+		copyEnabled = true;
+	}
+	
 	public void disableCloning() {
 		cloneLocation = null;
-		
+		cloneTarget = null;
 	}
 	
 	public boolean isReady() {
@@ -67,11 +74,11 @@ public class MaterialBrush extends MaterialAndData {
 	@SuppressWarnings("deprecation")
 	public boolean update(Location target) {
 		if (cloneLocation != null) {
-			Location cloneTarget = cloneLocation.clone();
-			cloneTarget.subtract(cloneTarget);
+			Location materialTarget = cloneLocation.clone();
+			materialTarget.subtract(cloneTarget);
 			cloneTarget.add(target);
 			
-			Block block = cloneTarget.getBlock();
+			Block block = materialTarget.getBlock();
 			if (!block.getChunk().isLoaded()) return false;
 			
 			material = block.getType();

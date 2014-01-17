@@ -2,31 +2,34 @@ package com.elmakers.mine.bukkit.utilities;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.blocks.MaterialList;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {
-	protected Mage playerSpells;
-	protected Material replace;
-	protected byte replaceData;
-	protected MaterialList replaceable = new MaterialList();
-
-	public ReplaceMaterialAction(Mage playerSpells, Block targetBlock, Material replaceMaterial, byte replaceData)
+	protected Mage mage;
+	protected MaterialBrush brush;
+	protected MaterialList replaceable = new MaterialList();	
+	
+	private boolean spawnFallingBlocks = false;
+	private Vector fallingBlockVelocity = null;
+	
+	public ReplaceMaterialAction(Mage mage, Block targetBlock, MaterialBrush brush)
 	{
-		this.playerSpells = playerSpells;
+		this.mage = mage;
 		replaceable.add(targetBlock.getType());
-		replace = replaceMaterial;
-		this.replaceData = replaceData;
+		this.brush = brush;
 	}
 
-	public ReplaceMaterialAction(Mage playerSpells, Material replaceMaterial, byte replaceData)
+	public ReplaceMaterialAction(Mage playerSpells, MaterialBrush brush)
 	{
-		this.playerSpells = playerSpells;
-		replace = replaceMaterial;
-		this.replaceData = replaceData;
+		this.mage = playerSpells;
+		this.brush = brush;
 	}
 
 	public void addReplaceable(Material material)
@@ -37,25 +40,40 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 	@SuppressWarnings("deprecation")
 	public SpellResult perform(Block block)
 	{
-		if (replace == null)
+		if (brush == null)
 		{
 			return SpellResult.FAILURE;
 		}
 		
-		if (!playerSpells.hasBuildPermission(block))
+		if (!mage.hasBuildPermission(block))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		if (playerSpells.isIndestructible(block))
+		if (mage.isIndestructible(block))
 		{
 			return SpellResult.FAILURE;
 		}
 
 		if (replaceable == null || replaceable.contains(block.getType()))
 		{
-			block.setType(replace);
-			block.setData(replaceData);
+			Material previousMaterial = block.getType();
+			byte previousData = block.getData();
+			
+			if (previousMaterial != brush.getMaterial() || previousData != brush.getData()) {
+				brush.update(block.getLocation());
+				block.setType(brush.getMaterial());
+				block.setData(brush.getData());
+				mage.getController().updateBlock(block);
+				
+				if (spawnFallingBlocks) {
+					FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+					falling.setDropItem(false);
+					if (fallingBlockVelocity != null) {
+						falling.setVelocity(fallingBlockVelocity);
+					}
+				}
+			}
 			super.perform(block);
 			return SpellResult.SUCCESS;
 		}

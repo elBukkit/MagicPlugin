@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
 import com.elmakers.mine.bukkit.plugins.magic.CostReducer;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
@@ -95,6 +96,10 @@ public class Wand implements CostReducer {
 	public static Material CopyMaterial = Material.PUMPKIN_SEEDS;
 	public static Material CloneMaterial = Material.NETHER_STALK;
 	
+	public static int ERASE_MATERIAL_ID = 0;
+	public static int COPY_MATERIAL_ID = -1;
+	public static int CLONE_MATERIAL_ID = -2;
+	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
 	private static final String propertiesFileName = "wands.yml";
@@ -139,20 +144,11 @@ public class Wand implements CostReducer {
 		saveState();
 	}
 
-	@SuppressWarnings("deprecation")
 	public void setActiveMaterial(Material material, byte data) {
-		String materialKey = "";
-		if (material == CopyMaterial) {
-			materialKey = "-1:0";
-		} else if (material == EraseMaterial) {
-			materialKey = "0:0";
-		} else if (material == CloneMaterial) {
-			materialKey = "-2:0";
-		} else {
-			materialKey = material.getId() + ":" + data;
-		}
+		String materialKey = getMaterialKey(material, data);
 		setActiveMaterial(materialKey);
 	}
+	
 	protected void setActiveMaterial(String materialKey) {
 		this.activeMaterial = materialKey;
 		updateName();
@@ -335,17 +331,28 @@ public class Wand implements CostReducer {
 			return null;
 		}
 	
-		String materialKey = material.getId() + ":" + itemStack.getData().getData();
-		if (material == EraseMaterial) {
-			materialKey = "0:0"; 
-		} else if (material == CopyMaterial) {
-			materialKey = "-1:0"; 
-		} else if (material == CloneMaterial) {
-			materialKey = "-2:0"; 
-		}
+		String materialKey = getMaterialKey(material, itemStack.getData().getData());
+
 		if (index != null) {
 			materialKey += "@" + index;
 		}
+		
+		return materialKey;
+	}
+
+	@SuppressWarnings("deprecation")
+	protected static String getMaterialKey(Material material, byte data) {
+		String materialKey = null;
+		if (material == CopyMaterial) {
+			materialKey = COPY_MATERIAL_ID + ":0";
+		} else if (material == EraseMaterial) {
+			materialKey = ERASE_MATERIAL_ID + ":0";
+		} else if (material == CloneMaterial) {
+			materialKey = CLONE_MATERIAL_ID + ":0";
+		} else {
+			materialKey = material.getId() + ":" + data;
+		}
+		
 		return materialKey;
 	}
 	
@@ -480,11 +487,11 @@ public class Wand implements CostReducer {
 	protected ItemStack createMaterialItem(String materialKey) {
 		String[] nameParts = StringUtils.split(materialKey, ":");
 		int typeId = Integer.parseInt(nameParts[0]);
-		if (typeId == 0) {
+		if (typeId == ERASE_MATERIAL_ID) {
 			typeId = EraseMaterial.getId();
-		} else if (typeId == -1) {
+		} else if (typeId == COPY_MATERIAL_ID) {
 			typeId = CopyMaterial.getId();
-		} else if (typeId == -2) {
+		} else if (typeId == CLONE_MATERIAL_ID) {
 			typeId = CloneMaterial.getId();
 		}
 		byte dataId = nameParts.length > 1 ? Byte.parseByte(nameParts[1]) : 0;		
@@ -517,11 +524,11 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	protected ItemStack createMaterialItem(int typeId, byte dataId) {
-		if (typeId == 0) {
+		if (typeId == ERASE_MATERIAL_ID) {
 			typeId = EraseMaterial.getId();
-		} else if (typeId == -1) {
+		} else if (typeId == COPY_MATERIAL_ID) {
 			typeId = CopyMaterial.getId();
-		} else if (typeId == -2) {
+		} else if (typeId == CLONE_MATERIAL_ID) {
 			typeId = CloneMaterial.getId();
 		}
 		ItemStack originalItemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);	
@@ -784,11 +791,11 @@ public class Wand implements CostReducer {
 		Integer id = material.getId();
 		String materialString = id.toString();
 		if (material == EraseMaterial) {
-			materialString = "0";
+			materialString = "" + ERASE_MATERIAL_ID;
 		} else if (material == CopyMaterial) {
-			materialString = "-1";
+			materialString = "" + COPY_MATERIAL_ID;
 		} else if (material == CloneMaterial) {
-			materialString = "-2";
+			materialString = "" + CLONE_MATERIAL_ID;
 		}
 		materialString += ":" + data;
 		return addMaterial(materialString, makeActive, force);
@@ -890,10 +897,12 @@ public class Wand implements CostReducer {
 		
 		if (spell != null && spell.usesBrush() && !spell.hasBrushOverride() && pieces.length > 0 && pieces[0].length() > 0) {
 			int materialId = Integer.parseInt(pieces[0]);
-			if (materialId == 0) {
+			if (materialId == ERASE_MATERIAL_ID) {
 				materialName = "erase";
-			} else if (materialId == -1) {
+			} else if (materialId == COPY_MATERIAL_ID) {
 				materialName = "copy";
+			} else if (materialId == CLONE_MATERIAL_ID) {
+				materialName = "clone";
 			} else {
 				Material material = Material.getMaterial(materialId);
 				materialName = material.name().toLowerCase();;
@@ -1541,22 +1550,22 @@ public class Wand implements CostReducer {
 		} else {
 			String[] pieces = StringUtils.split(activeMaterial, ":");
 			if (pieces.length > 0) {
-				byte data = 0;
-				if (pieces.length > 1) {
-					data = Byte.parseByte(pieces[1]);
-				}
+				MaterialBrush brush = mage.getBrush();
 				int materialId = Integer.parseInt(pieces[0]);
-				Material material = null;
-				if (materialId == 0) {
-					material = EraseMaterial;
-				} else if (materialId == -1) {
-					material = CopyMaterial;
-				} else if (materialId == -2) {
-					material = CloneMaterial;
+				if (materialId == ERASE_MATERIAL_ID) {
+					brush.setMaterial(Material.AIR);
+				} else if (materialId == COPY_MATERIAL_ID) {
+					brush.enableCopying();
+				} else if (materialId == CLONE_MATERIAL_ID) {
+					brush.enableCloning(mage.getLocation());
 				} else {
-					material = Material.getMaterial(materialId);
+					byte data = 0;
+					if (pieces.length > 1) {
+						data = Byte.parseByte(pieces[1]);
+					}
+					Material material = Material.getMaterial(materialId);
+					brush.setMaterial(material, data);
 				}
-				mage.setBrush(material, data);
 			}
 		}
 	}

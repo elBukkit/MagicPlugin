@@ -59,7 +59,7 @@ public class FillSpell extends Spell
 			blockRecurse.setMaxRecursion(size);
 
 			Material targetMaterial = targetBlock.getType();
-			ReplaceMaterialAction action = new ReplaceMaterialAction(mage, targetBlock, material, data);
+			ReplaceMaterialAction action = new ReplaceMaterialAction(mage, targetBlock, buildWith);
 
 			// A bit hacky, but is very handy!
 			if (targetMaterial == Material.STATIONARY_WATER)

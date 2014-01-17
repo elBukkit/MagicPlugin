@@ -48,7 +48,8 @@ public class IterateSpell extends Spell
 
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(target.getLocation());
-
+		buildWith.update(target.getLocation());
+		
 		Material material = buildWith.getMaterial();
 		byte data = buildWith.getData();
 		
@@ -66,6 +67,7 @@ public class IterateSpell extends Spell
 				currentTarget.setType(material);
 				currentTarget.setData(data);
 				
+				buildWith.update(currentTarget.getLocation());
 				controller.updateBlock(currentTarget);
 				
 				Location effectLocation = currentTarget.getLocation();	

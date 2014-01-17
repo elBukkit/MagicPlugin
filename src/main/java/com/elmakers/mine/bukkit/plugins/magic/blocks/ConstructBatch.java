@@ -183,18 +183,20 @@ public class ConstructBatch extends VolumeBatch {
 			return true;
 		}
 		
-		updateBlock(center.getWorld().getName(), x, y, z);
-		
 		Material previousMaterial = block.getType();
 		byte previousData = block.getData();
-		constructedBlocks.add(block);
-		block.setType(brush.getMaterial());
-		block.setData(brush.getData());
-		if (spawnFallingBlocks) {
-			FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
-			falling.setDropItem(false);
-			if (fallingBlockVelocity != null) {
-				falling.setVelocity(fallingBlockVelocity);
+		
+		if (previousMaterial != brush.getMaterial() || previousData != brush.getData()) {			
+			updateBlock(center.getWorld().getName(), x, y, z);
+			constructedBlocks.add(block);
+			block.setType(brush.getMaterial());
+			block.setData(brush.getData());
+			if (spawnFallingBlocks) {
+				FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+				falling.setDropItem(false);
+				if (fallingBlockVelocity != null) {
+					falling.setVelocity(fallingBlockVelocity);
+				}
 			}
 		}
 		return true;
