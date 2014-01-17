@@ -41,6 +41,7 @@ messages:
         default_name: Wand
         copy_material_description: Fills with the target material
         erase_material_description: Fills with Air
+        clone_material_description: Copies blocks from a target
         building_material_description: Magic building material
         uses_remaining_brief: $count Uses
         uses_remaining: $count Uses Remaining

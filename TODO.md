@@ -6,6 +6,7 @@ IMPORTANT STUFF:
  - Can't alter "null" message from alter on bad target?
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
  - Iterate doesn't work with the copy material
+ - Column and Disc building spells
 
 NEW SPELLS:
 
@@ -21,7 +22,9 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - Add "clone" material. Likely to take a lot of work, refactoring...
  - Complete work on tab completion
+ - Make /wand name take ownership
  - Separate material list for "super" building materials?
  - Test reloads- not duplicating undo queues, etc
  - Scale fling and levitate falling effects based on distance fallen

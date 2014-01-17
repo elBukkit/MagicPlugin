@@ -9,6 +9,7 @@
  - Add visual effects to fling and levitate
  - Add message colorization (MIGRATION NOTE)
  - Make the blast spell a little more interesting.
+ - Add "commitall" variant to UndoSpell, to clear everyone's undo queue.
 
 ## 2.8.5
 

@@ -295,6 +295,19 @@ public class MagicController implements Listener
 		return true;
 	}
 
+	public boolean commitAll()
+	{
+		boolean undid = false;
+		for (Mage mage : mages.values()) {
+			UndoQueue queue = mage.getUndoQueue();
+			if (queue.getSize() == 0) {
+				undid = true;
+				queue.commit();
+			}
+		}
+		return undid;
+	}
+
 	public boolean undo(String playerName, Block target)
 	{
 		UndoQueue queue = getUndoQueue(playerName);
@@ -757,6 +770,7 @@ public class MagicController implements Listener
 		Wand.WandMaterial = generalNode.getMaterial("wand_item", Wand.WandMaterial);
 		Wand.CopyMaterial = generalNode.getMaterial("copy_item", Wand.CopyMaterial);
 		Wand.EraseMaterial = generalNode.getMaterial("erase_item", Wand.EraseMaterial);
+		Wand.CloneMaterial = generalNode.getMaterial("clone_item", Wand.CloneMaterial);
 		Wand.EnchantableWandMaterial = generalNode.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings

@@ -93,6 +93,7 @@ public class Wand implements CostReducer {
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static Material EraseMaterial = Material.SULPHUR;
 	public static Material CopyMaterial = Material.PUMPKIN_SEEDS;
+	public static Material CloneMaterial = Material.NETHER_STALK;
 	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
@@ -145,6 +146,8 @@ public class Wand implements CostReducer {
 			materialKey = "-1:0";
 		} else if (material == EraseMaterial) {
 			materialKey = "0:0";
+		} else if (material == CloneMaterial) {
+			materialKey = "-2:0";
 		} else {
 			materialKey = material.getId() + ":" + data;
 		}
@@ -337,6 +340,8 @@ public class Wand implements CostReducer {
 			materialKey = "0:0"; 
 		} else if (material == CopyMaterial) {
 			materialKey = "-1:0"; 
+		} else if (material == CloneMaterial) {
+			materialKey = "-2:0"; 
 		}
 		if (index != null) {
 			materialKey += "@" + index;
@@ -479,6 +484,8 @@ public class Wand implements CostReducer {
 			typeId = EraseMaterial.getId();
 		} else if (typeId == -1) {
 			typeId = CopyMaterial.getId();
+		} else if (typeId == -2) {
+			typeId = CloneMaterial.getId();
 		}
 		byte dataId = nameParts.length > 1 ? Byte.parseByte(nameParts[1]) : 0;		
 		return createMaterialItem(typeId, dataId);
@@ -514,6 +521,8 @@ public class Wand implements CostReducer {
 			typeId = EraseMaterial.getId();
 		} else if (typeId == -1) {
 			typeId = CopyMaterial.getId();
+		} else if (typeId == -2) {
+			typeId = CloneMaterial.getId();
 		}
 		ItemStack originalItemStack = new ItemStack(typeId, 1, (short)0, (byte)dataId);	
 		ItemStack itemStack = InventoryUtils.getCopy(originalItemStack);
@@ -528,9 +537,14 @@ public class Wand implements CostReducer {
 			lore.add(Messages.get("wand.erase_material_description"));
 			meta.setLore(lore);
 		} else if (typeId == CopyMaterial.getId()) {
-			typeId = EraseMaterial.getId();
+			typeId = CopyMaterial.getId();
 			List<String> lore = new ArrayList<String>();
 			lore.add(Messages.get("wand.copy_material_description"));
+			meta.setLore(lore);
+		} else if (typeId == CloneMaterial.getId()) {
+			typeId = CloneMaterial.getId();
+			List<String> lore = new ArrayList<String>();
+			lore.add(Messages.get("wand.clone_material_description"));
 			meta.setLore(lore);
 		} else {
 			List<String> lore = new ArrayList<String>();
@@ -773,6 +787,8 @@ public class Wand implements CostReducer {
 			materialString = "0";
 		} else if (material == CopyMaterial) {
 			materialString = "-1";
+		} else if (material == CloneMaterial) {
+			materialString = "-2";
 		}
 		materialString += ":" + data;
 		return addMaterial(materialString, makeActive, force);
@@ -898,6 +914,8 @@ public class Wand implements CostReducer {
 			materialName = "erase";
 		} else if (material == CopyMaterial) {
 			materialName = "copy";
+		} else if (material == CloneMaterial) {
+			materialName = "clone";
 		} else {
 			materialName = material.name().toLowerCase();
 			// I started doing this the "right" way by looking at MaterialData
@@ -1318,8 +1336,10 @@ public class Wand implements CostReducer {
 					}
 					if (materialName.equals("erase")) {
 						wand.addMaterial(EraseMaterial, (byte)0, false);
-					} else if (materialName.equals("copy") || materialName.equals("clone")) {
+					} else if (materialName.equals("copy")) {
 						wand.addMaterial(CopyMaterial, (byte)0, false);
+					} else if (materialName.equals("clone")) {
+						wand.addMaterial(CloneMaterial, (byte)0, false);
 					} else {
 						Material material = ConfigurationNode.toMaterial(materialName);
 						if (material == null) {
@@ -1531,6 +1551,8 @@ public class Wand implements CostReducer {
 					material = EraseMaterial;
 				} else if (materialId == -1) {
 					material = CopyMaterial;
+				} else if (materialId == -2) {
+					material = CloneMaterial;
 				} else {
 					material = Material.getMaterial(materialId);
 				}

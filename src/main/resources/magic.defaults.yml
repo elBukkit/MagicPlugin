@@ -80,6 +80,7 @@ general:
     wand_item_enchantable: wood_sword
     erase_item: sulphur
     copy_item: sugar
+    clone_item: nether_stalk
     enable_crafting: true
     crafting_material_upper: nether_star
     crafting_material_lower: blaze_rod

@@ -687,8 +687,10 @@ public class MagicPlugin extends JavaPlugin
 			Material material = Material.AIR;
 			if (materialName.equals("erase")) {
 				material = Wand.EraseMaterial;
-			} else if (materialName.equals("clone") || materialName.equals("copy")) {
+			} else if (materialName.equals("copy")) {
 				material = Wand.CopyMaterial;
+			} else if (materialName.equals("clone")) {
+				material = Wand.CloneMaterial;
 			} else{
 				material = ConfigurationNode.toMaterial(materialName);
 				if (material == null || material == Material.AIR) {
@@ -770,8 +772,10 @@ public class MagicPlugin extends JavaPlugin
 			byte data = 0;
 			if (materialName.equals("erase")) {
 				material = Wand.EraseMaterial;
-			} else if (materialName.equals("copy") || materialName.equals("clone")) {
+			} else if (materialName.equals("copy")) {
 				material = Wand.CopyMaterial;
+			} else if (materialName.equals("clone")) {
+				material = Wand.CloneMaterial;
 			} else {
 				material = ConfigurationNode.toMaterial(materialName);
 				if (pieces.length > 1) {
