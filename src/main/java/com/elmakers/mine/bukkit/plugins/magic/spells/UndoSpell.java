@@ -39,6 +39,16 @@ public class UndoSpell extends Spell
 					return SpellResult.FAILURE;
 				}
 			}
+			else if (typeString.equals("commitall"))
+			{
+				if (controller.commitAll()) {
+					sendMessage("All undo queues cleared");
+					return SpellResult.SUCCESS;
+				} else {
+					castMessage("Nothing in any undo queues");
+					return SpellResult.FAILURE;
+				}
+			}
 			boolean targetAll = typeString.equals("target_all");
 			if (typeString.equals("target") || targetAll)
 			{
