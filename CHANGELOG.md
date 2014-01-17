@@ -8,6 +8,7 @@
  - Fix permission on fire spell
  - Add visual effects to fling and levitate
  - Add message colorization (MIGRATION NOTE)
+ - Make the blast spell a little more interesting.
 
 ## 2.8.5
 

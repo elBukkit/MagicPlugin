@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -26,6 +27,7 @@ public class ConstructBatch extends VolumeBatch {
 	private final Spell spell;
 	private final String playerName;
 	private final boolean spawnFallingBlocks;
+	private Vector fallingBlockVelocity = null;
 	
 	private int x = 0;
 	private int y = 0;
@@ -44,6 +46,10 @@ public class ConstructBatch extends VolumeBatch {
 		this.playerSpells = spell.getPlayerSpells();
 		this.spell = spell;
 		this.playerName = this.playerSpells.getPlayer().getName();
+	}
+	
+	public void setFallingBlockVelocity(Vector velocity) {
+		fallingBlockVelocity = velocity;
 	}
 	
 	public int process(int maxBlocks) {
@@ -182,6 +188,9 @@ public class ConstructBatch extends VolumeBatch {
 		if (spawnFallingBlocks) {
 			FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
 			falling.setDropItem(false);
+			if (fallingBlockVelocity != null) {
+				falling.setVelocity(fallingBlockVelocity);
+			}
 		}
 		return true;
 	}

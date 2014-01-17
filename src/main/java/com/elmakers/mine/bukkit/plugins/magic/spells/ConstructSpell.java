@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -49,6 +50,8 @@ public class ConstructSpell extends Spell
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
+		float force = 0;
+		force = (float)parameters.getDouble("speed", force);
 		
 		String targetString = parameters.getString("target", "");
 		if (targetString.equals("select")) {
@@ -107,10 +110,17 @@ public class ConstructSpell extends Spell
 			material = materialOverride;
 			data = 0;
 		}
+		
+		Vector forceVector = null;
 		if (falling)
 		{
 			material = Material.AIR;
 			data = 0;
+			
+			if (force != 0) {
+				forceVector = getPlayer().getLocation().getDirection();
+				forceVector.setY(-forceVector.getY()).normalize().multiply(force);
+			}
 		}
 		String typeString = parameters.getString("type", "");
 
@@ -120,15 +130,18 @@ public class ConstructSpell extends Spell
 			conType = testType;
 		}
 
-		fillArea(target, radius, material, data, !hollow, conType, timeToLive, indestructible, falling);
+		fillArea(target, radius, material, data, !hollow, conType, timeToLive, indestructible, falling, forceVector);
 		deactivate();
 
 		return SpellResult.SUCCESS;
 	}
 
-	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible, boolean falling)
+	public void fillArea(Block target, int radius, Material material, byte data, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible, boolean falling, Vector forceVector)
 	{
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, material, data, indestructible, falling);
+		if (forceVector != null) {
+			batch.setFallingBlockVelocity(forceVector);
+		}
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
 		}

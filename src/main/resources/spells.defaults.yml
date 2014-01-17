@@ -146,7 +146,7 @@ spells:
         class: TossSpell
         parameters:
           cooldown: 0
-          speed: 3
+          speed: 2
         costs:
             xp: 10
     volley:
@@ -155,7 +155,7 @@ spells:
         class: TossSpell
         parameters:
           cooldown: 0
-          speed: 2
+          speed: 1.5
           count: 8
         costs:
             xp: 10   
@@ -597,8 +597,10 @@ spells:
             range: 200
             undo: 0
             cooldown: 5000
+            speed: 3
+            falling: true
             material: air
-            radius: '16'
+            radius: 8
             type: sphere
     convert:
         icon: vine
@@ -671,6 +673,8 @@ spells:
             range: 200
             undo: 0
             cooldown: 0
+            speed: 2
+            falling: true
             material: air
             radius: 3
             type: pyramid
