@@ -81,6 +81,7 @@ general:
     erase_item: sulphur
     copy_item: sugar
     clone_item: nether_stalk
+    replicate_item: pumpkin_seeds
     enable_crafting: true
     crafting_material_upper: nether_star
     crafting_material_lower: blaze_rod

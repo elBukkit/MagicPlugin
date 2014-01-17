@@ -771,6 +771,7 @@ public class MagicController implements Listener
 		Wand.CopyMaterial = generalNode.getMaterial("copy_item", Wand.CopyMaterial);
 		Wand.EraseMaterial = generalNode.getMaterial("erase_item", Wand.EraseMaterial);
 		Wand.CloneMaterial = generalNode.getMaterial("clone_item", Wand.CloneMaterial);
+		Wand.ReplicateMaterial = generalNode.getMaterial("replicate_item", Wand.ReplicateMaterial);
 		Wand.EnchantableWandMaterial = generalNode.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings
@@ -915,7 +916,9 @@ public class MagicController implements Listener
 				activeWand.setActiveSpell(spell.getKey());
 			} else {
 				Material material = icon.getType();
-				if (buildingMaterials.contains(material) || material == Wand.EraseMaterial || material == Wand.CopyMaterial || material == Wand.CloneMaterial) {
+				if (buildingMaterials.contains(material) || 
+					material == Wand.EraseMaterial || material == Wand.CopyMaterial || 
+					material == Wand.CloneMaterial || material == Wand.ReplicateMaterial) {
 					activeWand.setActiveMaterial(material, icon.getData().getData());
 				}
 			}
@@ -1181,7 +1184,7 @@ public class MagicController implements Listener
 				if (wandCycling) {
 					if (player.isSneaking()) {
 						Spell activeSpell = wand.getActiveSpell();
-						if (activeSpell != null && activeSpell.usesBrush() && !activeSpell.hasBrushOverride() && wand.getMaterialNames().size() > 0) {
+						if (activeSpell != null && activeSpell.usesBrush() && !activeSpell.hasBrushOverride() && wand.getMaterialKeys().size() > 0) {
 							wand.cycleMaterials();
 						} else {
 							wand.cycleSpells();
@@ -1720,6 +1723,10 @@ public class MagicController implements Listener
 		
 		return false;
 	}
+	
+	public Material getDefaultMaterial() {
+		return defaultMaterial;
+	}
 
 	/*
 	 * Private data
@@ -1786,4 +1793,5 @@ public class MagicController implements Listener
 	 private Object								 regionManager					= null;
 	 private DynmapCommonAPI					 dynmap							= null;
 	 private Mailer								 mailer							= null;
+	 private Material							 defaultMaterial				= Material.DIRT;
 }

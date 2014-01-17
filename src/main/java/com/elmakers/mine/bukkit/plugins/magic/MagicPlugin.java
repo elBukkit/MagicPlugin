@@ -27,7 +27,6 @@ import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
-import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 public class MagicPlugin extends JavaPlugin
 {	
@@ -153,12 +152,9 @@ public class MagicPlugin extends JavaPlugin
 			if (subCommand.equalsIgnoreCase("remove") && subCommand2.equalsIgnoreCase("material")) {
 				Wand activeWand = player == null ? null : player.getActiveWand();
 				if (activeWand != null) {
-					Collection<String> materialNames = activeWand.getMaterialNames();
+					Collection<String> materialNames = activeWand.getMaterialKeys();
 					for (String materialName : materialNames) {
-						MaterialAndData materialData = ConfigurationNode.toMaterialAndData(materialName);
-						if (materialData != null) {
-							options.add(materialData.getKey());
-						}
+						options.add(materialName);
 					}
 				}
 			}
@@ -681,35 +677,22 @@ public class MagicPlugin extends JavaPlugin
 				sender.sendMessage("Use: /wand add material <material:data>");
 				return true;
 			}
-			String[] pieces = StringUtils.split(parameters[1], ':');
-			String materialName = pieces[0];
-			byte data = 0;
-			Material material = Material.AIR;
-			if (materialName.equals("erase")) {
-				material = Wand.EraseMaterial;
-			} else if (materialName.equals("copy")) {
-				material = Wand.CopyMaterial;
-			} else if (materialName.equals("clone")) {
-				material = Wand.CloneMaterial;
-			} else{
-				material = ConfigurationNode.toMaterial(materialName);
-				if (material == null || material == Material.AIR) {
-					sender.sendMessage(materialName + " is not a valid material");
-					return true;
-				}
-				if (pieces.length > 1) {
-					data = Byte.parseByte(pieces[1]);
-				}
+			
+			String materialKey = parameters[1];
+			if (!Wand.isValidMaterial(materialKey)) {
+				sender.sendMessage(materialKey + " is not a valid material");
+				return true;
 			}
-			if (wand.addMaterial(material, data, true, false)) {
-				mage.sendMessage("Material '" + materialName + "' has been added to your wand");
+			
+			if (wand.addMaterial(materialKey, true, false)) {
+				mage.sendMessage("Material '" + materialKey + "' has been added to your wand");
 				if (sender != player) {
-					sender.sendMessage("Added material '" + materialName + "' to " + player.getName() + "'s wand");
+					sender.sendMessage("Added material '" + materialKey + "' to " + player.getName() + "'s wand");
 				}
 			} else {
-				mage.sendMessage("Material activated: " + materialName);
+				mage.sendMessage("Material activated: " + materialKey);
 				if (sender != player) {
-					sender.sendMessage(player.getName() + "'s wand already has material " + materialName);
+					sender.sendMessage(player.getName() + "'s wand already has material " + materialKey);
 				}
 			}
 			return true;
@@ -766,30 +749,15 @@ public class MagicPlugin extends JavaPlugin
 				sender.sendMessage("Use: /wand remove material <material:data>");
 				return true;
 			}
-			String[] pieces = StringUtils.split(parameters[1], ':');
-			String materialName = pieces[0];
-			Material material = Material.AIR;
-			byte data = 0;
-			if (materialName.equals("erase")) {
-				material = Wand.EraseMaterial;
-			} else if (materialName.equals("copy")) {
-				material = Wand.CopyMaterial;
-			} else if (materialName.equals("clone")) {
-				material = Wand.CloneMaterial;
-			} else {
-				material = ConfigurationNode.toMaterial(materialName);
-				if (pieces.length > 1) {
-					data = Byte.parseByte(pieces[1]);
-				}
-			}
-			if (wand.removeMaterial(material, data)) {
-				mage.sendMessage("Material '" + materialName + "' has been removed from your wand");
+			String materialKey = parameters[1];
+			if (wand.removeMaterial(materialKey)) {
+				mage.sendMessage("Material '" + materialKey + "' has been removed from your wand");
 				if (sender != player) {
-					sender.sendMessage("Removed material '" + materialName + "' from " + player.getName() + "'s wand");
+					sender.sendMessage("Removed material '" + materialKey + "' from " + player.getName() + "'s wand");
 				}
 			} else {
 				if (sender != player) {
-					sender.sendMessage(player.getName() + "'s wand does not have material " + materialName);
+					sender.sendMessage(player.getName() + "'s wand does not have material " + materialKey);
 				}
 			}
 			return true;

@@ -177,7 +177,7 @@ public class WandLevel {
 		
 		// Add random materials
 		if (needsMaterials) {
-			int currentMaterialCount = wand.getMaterialNames().size();
+			int currentMaterialCount = wand.getMaterialKeys().size();
 			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
 			
 			// Make sure the wand has at least one material.

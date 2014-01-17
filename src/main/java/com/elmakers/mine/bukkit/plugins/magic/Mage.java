@@ -476,9 +476,7 @@ public class Mage implements CostReducer
 	}
 	
 	public void clearBuildingMaterial() {
-		brush.disableCloning();
-		brush.enableCopying(false);
-		brush.setMaterial(Material.DIRT, (byte)1);
+		brush.setMaterial(controller.getDefaultMaterial(), (byte)1);
 	}
 	
 	public boolean hasBuildPermission(Block block) {

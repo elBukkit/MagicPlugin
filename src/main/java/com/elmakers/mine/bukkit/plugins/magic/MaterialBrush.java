@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,22 +11,29 @@ public class MaterialBrush extends MaterialAndData {
 	Location cloneLocation = null;
 	Location cloneTarget = null;
 	
+	boolean targetLocked = false;
 	boolean copyEnabled = false;
 	
 	public MaterialBrush(final Material material, final  byte data) {
 		super(material, data);
 	}
 	
+	protected void reset() {
+		targetLocked = false;
+		copyEnabled = false;
+		cloneLocation = null;
+		cloneTarget = null;
+	}
+	
 	public void setMaterial(Material material) {
 		this.material = material;
 		this.data = 0;
+		reset();
 	}
 	
 	public void setMaterial(Material material, byte data) {
-		this.material = material;
+		setMaterial(material);
 		this.data = data;
-		copyEnabled = false;
-		disableCloning();
 	}
 	
 	public void setData(byte data) {
@@ -35,20 +41,21 @@ public class MaterialBrush extends MaterialAndData {
 	}
 	
 	public void enableCloning(Location cloneFrom) {
+		reset();
 		cloneLocation = cloneFrom;
 	}
 	
+	public void lockTarget() {
+		targetLocked = true;
+	}
+	
 	public void enableCopying(boolean enable) {
+		reset();
 		copyEnabled = enable;
 	}
 	
 	public void enableCopying() {
-		copyEnabled = true;
-	}
-	
-	public void disableCloning() {
-		cloneLocation = null;
-		cloneTarget = null;
+		enableCopying(true);
 	}
 	
 	public boolean isReady() {
@@ -62,7 +69,9 @@ public class MaterialBrush extends MaterialAndData {
 
 	@SuppressWarnings("deprecation")
 	public void setTarget(Location target) {
-		cloneTarget = target;
+		if (cloneTarget == null || !targetLocked) {
+			cloneTarget = target;
+		}
 		if (copyEnabled) {
 			Block block = target.getBlock();
 			if (block.getChunk().isLoaded()) {

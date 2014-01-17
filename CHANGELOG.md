@@ -11,6 +11,8 @@
  - Make the blast spell a little more interesting.
  - Add "commitall" variant to UndoSpell, to clear everyone's undo queue.
  - Fix tag spell to use a better date formatter.
+ - Refactor wands to not store materials by id (though the data byte is still rate)
+ - Implement replicate and clone materials (!)
 
 ## 2.8.5
 
