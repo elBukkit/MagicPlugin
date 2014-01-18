@@ -8,54 +8,53 @@ import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 public class MaterialBrush extends MaterialAndData {
 	
+	private enum BrushMode {
+		MATERIAL,
+		COPY,
+		CLONE,
+		REPLICATE
+	};
+	
+	BrushMode mode = BrushMode.MATERIAL;
 	Location cloneLocation = null;
 	Location cloneTarget = null;
-	
-	boolean targetLocked = false;
-	boolean copyEnabled = false;
 	
 	public MaterialBrush(final Material material, final  byte data) {
 		super(material, data);
 	}
 	
-	protected void reset() {
-		targetLocked = false;
-		copyEnabled = false;
-		cloneLocation = null;
-		cloneTarget = null;
-	}
-	
 	public void setMaterial(Material material) {
 		this.material = material;
 		this.data = 0;
-		reset();
+		mode = BrushMode.MATERIAL;
 	}
 	
 	public void setMaterial(Material material, byte data) {
 		setMaterial(material);
 		this.data = data;
+		mode = BrushMode.MATERIAL;
+	}
+	
+	public void enableCloning() {
+		this.mode = BrushMode.CLONE;
+	}
+	
+	public void enableReplication() {
+		this.mode = BrushMode.REPLICATE;
 	}
 	
 	public void setData(byte data) {
 		this.data = data;
 	}
 	
-	public void enableCloning(Location cloneFrom) {
-		reset();
+	public void setCloneLocation(Location cloneFrom) {
+		mode = BrushMode.CLONE;
 		cloneLocation = cloneFrom;
-	}
-	
-	public void lockTarget() {
-		targetLocked = true;
-	}
-	
-	public void enableCopying(boolean enable) {
-		reset();
-		copyEnabled = enable;
+		cloneTarget = null;
 	}
 	
 	public void enableCopying() {
-		enableCopying(true);
+		mode = BrushMode.COPY;
 	}
 	
 	public boolean isReady() {
@@ -69,10 +68,11 @@ public class MaterialBrush extends MaterialAndData {
 
 	@SuppressWarnings("deprecation")
 	public void setTarget(Location target) {
-		if (cloneTarget == null || !targetLocked || !target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
+		if (cloneTarget == null || mode != BrushMode.REPLICATE || 
+			!target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
 			cloneTarget = target;
 		}
-		if (copyEnabled) {
+		if (mode == BrushMode.COPY) {
 			Block block = target.getBlock();
 			if (block.getChunk().isLoaded()) {
 				material = block.getType();

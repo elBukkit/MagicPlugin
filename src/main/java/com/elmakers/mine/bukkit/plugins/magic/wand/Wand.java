@@ -156,9 +156,20 @@ public class Wand implements CostReducer {
 		setActiveMaterial(materialKey);
 	}
 	
+	public void activateMaterial(Material material, byte data) {
+		setActiveMaterial(material, data);
+		if (activeMaterial != null) {
+			MaterialBrush brush = mage.getBrush();
+			if (activeMaterial.equals(CLONE_MATERIAL_KEY) || activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
+				brush.setCloneLocation(mage.getLocation());
+			}
+		}
+	}
+	
 	protected void setActiveMaterial(String materialKey) {
 		this.activeMaterial = materialKey;
 		updateName();
+		
 		updateActiveMaterial();
 		updateInventoryNames(true);
 		saveState();
@@ -1139,7 +1150,6 @@ public class Wand implements CostReducer {
 			if (spell != null) {
 				updateSpellName(item, spell, activeName);
 			}
-			
 		} else {
 			updateMaterialName(item, activeName);
 		}
@@ -1569,15 +1579,12 @@ public class Wand implements CostReducer {
 			mage.clearBuildingMaterial();
 		} else {
 			MaterialBrush brush = mage.getBrush();
-			if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
-				brush.setMaterial(Material.AIR);
-			} else if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
+			if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
 				brush.enableCopying();
 			} else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
-				brush.enableCloning(mage.getLocation());
+				brush.enableCloning();
 			} else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
-				brush.enableCloning(mage.getLocation());
-				brush.lockTarget();
+				brush.enableReplication();
 			} else {
 				MaterialAndData material = parseMaterialKey(activeMaterial);
 				brush.setMaterial(material.getMaterial(), material.getData());
