@@ -533,30 +533,22 @@ public class Wand implements CostReducer {
 			return originalItemStack;
 		}
 		ItemMeta meta = itemStack.getItemMeta();
-		if (material == EraseMaterial) {
-			List<String> lore = new ArrayList<String>();
-			lore.add(Messages.get("wand.erase_material_description"));
-			meta.setLore(lore);
-		} else if (material == CopyMaterial) {
-			List<String> lore = new ArrayList<String>();
-			lore.add(Messages.get("wand.copy_material_description"));
-			meta.setLore(lore);
-		} else if (material == CloneMaterial) {
-			List<String> lore = new ArrayList<String>();
-			lore.add(Messages.get("wand.clone_material_description"));
-			meta.setLore(lore);
-		} else if (material == ReplicateMaterial) {
-			List<String> lore = new ArrayList<String>();
-			lore.add(Messages.get("wand.replicate_material_description"));
-			meta.setLore(lore);
-		} else {
-			List<String> lore = new ArrayList<String>();
-			if (material != null) {
-				lore.add(ChatColor.GRAY + getMaterialName(material, (byte)dataId));
+		List<String> lore = new ArrayList<String>();
+		if (material != null) {
+			lore.add(ChatColor.GRAY + Messages.get("wand.building_material_info").replace("$material", getMaterialName(material, (byte)dataId)));
+			if (material == EraseMaterial) {
+				lore.add(Messages.get("wand.erase_material_description"));
+			} else if (material == CopyMaterial) {
+				lore.add(Messages.get("wand.copy_material_description"));
+			} else if (material == CloneMaterial) {
+				lore.add(Messages.get("wand.clone_material_description"));
+			} else if (material == ReplicateMaterial) {
+				lore.add(Messages.get("wand.replicate_material_description"));
+			} else {
+				lore.add(ChatColor.LIGHT_PURPLE + Messages.get("wand.building_material_description"));
 			}
-			lore.add(ChatColor.LIGHT_PURPLE + Messages.get("wand.building_material_description"));
-			meta.setLore(lore);
 		}
+		meta.setLore(lore);
 		meta.setDisplayName(getActiveWandName(material));
 		itemStack.setItemMeta(meta);
 		return itemStack;
@@ -911,7 +903,6 @@ public class Wand implements CostReducer {
 	private static String getMaterialName(Material material, byte data) {
 		String materialName = getMaterialKey(material, data);
 		
-		materialName = material.name().toLowerCase();
 		// I started doing this the "right" way by looking at MaterialData
 		// But I don't feel like waiting for Bukkit to update their classes.
 		// This also seems super ugly and messy.. if this is the replacement for "magic numbers", count me out :P
@@ -1140,6 +1131,10 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	public void updateInventoryNames() {
+		updateInventoryNames(true, false);
+	}
+	
 	public void updateInventoryNames(boolean activeHotbarNames) {
 		updateInventoryNames(activeHotbarNames, false);
 	}
@@ -1175,11 +1170,13 @@ public class Wand implements CostReducer {
 	
 	protected void updateMaterialName(ItemStack itemStack, boolean activeName) {
 		ItemMeta meta = itemStack.getItemMeta();
+		String displayName = null;
 		if (activeName) {
-			meta.setDisplayName(getActiveWandName(itemStack.getType()));
+			displayName = getActiveWandName(itemStack.getType());
 		} else {
-			meta.setDisplayName(getMaterialName(itemStack.getType()));
+			displayName = getMaterialName(itemStack.getType());
 		}
+		meta.setDisplayName(displayName);
 		itemStack.setItemMeta(meta);
 	}
 	
@@ -1627,6 +1624,7 @@ public class Wand implements CostReducer {
 			inventoryIsOpen = true;
 			mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 			updateInventory();
+			updateInventoryNames();
 			mage.getPlayer().updateInventory();
 		}
 	}

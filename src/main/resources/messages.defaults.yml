@@ -44,6 +44,7 @@ messages:
         clone_material_description: Copies blocks from a target
         replicate_material_description: Replicates the clone target
         building_material_description: Magic building material
+        building_material_info: Build with $material
         uses_remaining_brief: $count Uses
         uses_remaining: $count Uses Remaining
         enchantment_level_1: I
