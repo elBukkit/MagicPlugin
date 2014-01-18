@@ -836,15 +836,16 @@ public class Wand implements CostReducer {
 		return addSpell(spellName, false);
 	}
 
-	private String getActiveWandName(Spell spell, String materialName) {
+	private String getActiveWandName(Spell spell, Material material, byte data) {
+
 		// Build wand name
 		ChatColor wandColor = modifiable ? ChatColor.AQUA : ChatColor.RED;
 		String name = wandColor + wandName;
 		
 		// Add active spell to description
 		if (spell != null) {
-			if (materialName != null) {
-				materialName = materialName.replace('_', ' ');
+			if (material != null && spell.usesBrush() && !spell.hasBrushOverride()) {
+				String materialName = getMaterialName(material, data);
 				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
 			} else {
 				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
@@ -858,13 +859,14 @@ public class Wand implements CostReducer {
 	}
 	
 	private String getActiveWandName(Spell spell) {
-		String[] pieces = StringUtils.split(activeMaterial, ":");
-		String materialName = null;
-		
-		if (spell != null && spell.usesBrush() && !spell.hasBrushOverride() && pieces.length > 0 && pieces[0].length() > 0) {
-			materialName = activeMaterial;
+		Material material = null;
+		byte data = 0;
+		if (activeMaterial != null && activeMaterial.length() > 0) {
+			MaterialAndData active = parseMaterialKey(activeMaterial);
+			material = active.getMaterial();
+			data = active.getData();
 		}
-		return getActiveWandName(spell, materialName);
+		return getActiveWandName(spell, material, data);
 	}
 	
 	private static String getMaterialKey(Material material) {
@@ -920,6 +922,9 @@ public class Wand implements CostReducer {
 		}
 		*/
 		
+		String[] pieces = StringUtils.split(materialName, ":");
+		materialName = pieces[0];
+		
 		if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
 			// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
 			DyeColor color = DyeColor.getByWoolData(data);
@@ -935,12 +940,8 @@ public class Wand implements CostReducer {
 	
 	private String getActiveWandName(Material material) {
 		Spell spell = controller.getSpell(activeSpell);
-		String materialName = null;
 		
-		if (spell != null && spell.usesBrush() && !spell.hasBrushOverride() && material != null) {
-			materialName = getMaterialName(material);
-		}
-		return getActiveWandName(spell, materialName);
+		return getActiveWandName(spell, material, (byte)0);
 	}
 	
 	private String getActiveWandName() {
