@@ -919,7 +919,7 @@ public class MagicController implements Listener
 				if (buildingMaterials.contains(material) || 
 					material == Wand.EraseMaterial || material == Wand.CopyMaterial || 
 					material == Wand.CloneMaterial || material == Wand.ReplicateMaterial) {
-					activeWand.setActiveMaterial(material, icon.getData().getData());
+					activeWand.activateMaterial(material, icon.getData().getData());
 				}
 			}
 		}
@@ -1479,24 +1479,9 @@ public class MagicController implements Listener
 				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
 					ItemStack clickedItem = event.getCurrentItem();
 					if (clickedItem != null) {
-						boolean quickActivate = event.getSlot() >= Wand.hotbarSize;
-						
-						// Kind of hacky, but prevents players stealing armor
-						Material material = clickedItem.getType();
-						if (material == Material.SKULL_ITEM || material == Material.LEATHER_BOOTS || material == Material.LEATHER_LEGGINGS  || material == Material.LEATHER_CHESTPLATE || material == Material.LEATHER_HELMET 
-							|| material == Material.LEATHER_BOOTS || material == Material.LEATHER_LEGGINGS  || material == Material.LEATHER_CHESTPLATE || material == Material.LEATHER_HELMET
-							|| material == Material.GOLD_BOOTS || material == Material.GOLD_LEGGINGS  || material == Material.GOLD_CHESTPLATE || material == Material.GOLD_HELMET
-							|| material == Material.IRON_BOOTS || material == Material.IRON_LEGGINGS  || material == Material.IRON_CHESTPLATE || material == Material.IRON_HELMET
-							|| material == Material.DIAMOND_BOOTS || material == Material.DIAMOND_LEGGINGS  || material == Material.DIAMOND_CHESTPLATE || material == Material.DIAMOND_HELMET
-						) {
-							quickActivate = true;
-						}
-						
-						if (quickActivate) {
-							onPlayerActivateIcon(mage, wand, clickedItem);
-							player.closeInventory();
-							event.setCancelled(true);
-						}
+						onPlayerActivateIcon(mage, wand, clickedItem);
+						player.closeInventory();
+						event.setCancelled(true);
 						return;
 					}
 				}
