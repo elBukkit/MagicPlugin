@@ -940,7 +940,8 @@ spells:
         class: IterateSpell
         parameters:
             allow_max_range: true
-            range: 16
+            range: 64
+            size: 16
             cooldown: 500
             material: lava
             increment_data: true
@@ -953,7 +954,8 @@ spells:
         class: IterateSpell
         parameters:
             allow_max_range: true
-            range: 16
+            range: 64
+            size: 16
             cooldown: 500
             material: water
             increment_data: true
@@ -966,7 +968,8 @@ spells:
         class: IterateSpell
         parameters:
             allow_max_range: true
-            range: 16
+            range: 64
+            size: 16
             cooldown: 250
             increment_data: false
             undo: 2000
@@ -978,7 +981,8 @@ spells:
         class: IterateSpell
         parameters:
             allow_max_range: true
-            range: 32
+            range: 64
+            size: 16
             cooldown: 250
             increment_data: false
         costs:

@@ -14,12 +14,17 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class IterateSpell extends Spell
 {
+	private int				DEFAULT_SIZE			= 16;
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int timeToLive = parameters.getInt("undo", 0);
 		boolean incrementData = parameters.getBoolean("increment_data", false);
+		int size = parameters.getInt("size", DEFAULT_SIZE);
+		size = (int)(mage.getConstructionMultiplier() * (float)size);
+		
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
@@ -32,6 +37,7 @@ public class IterateSpell extends Spell
 
 		int iterateBlocks = (int)getPlayer().getLocation().distance(target.getLocation());
 		if (iterateBlocks <= 0) return SpellResult.NO_TARGET;
+		iterateBlocks = Math.min(iterateBlocks, size);
 
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
 		Vector playerLoc = new Vector(getPlayer().getLocation().getX(), getPlayer().getLocation().getY() + 1, getPlayer().getLocation().getZ());

@@ -7,6 +7,7 @@
  quiet changed to show_cast_messages
  silent changed to show_messages
  message_prefix and cast_message prefix added
+ "size" parameter added to IterateSpell, though the default is the same
 
 ## 2.8.5
 
