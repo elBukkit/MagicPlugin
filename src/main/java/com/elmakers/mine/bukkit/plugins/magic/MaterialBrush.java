@@ -18,6 +18,7 @@ public class MaterialBrush extends MaterialAndData {
 	BrushMode mode = BrushMode.MATERIAL;
 	Location cloneLocation = null;
 	Location cloneTarget = null;
+	Location materialTarget = null;
 	
 	public MaterialBrush(final Material material, final  byte data) {
 		super(material, data);
@@ -32,7 +33,6 @@ public class MaterialBrush extends MaterialAndData {
 	public void setMaterial(Material material, byte data) {
 		setMaterial(material);
 		this.data = data;
-		mode = BrushMode.MATERIAL;
 	}
 	
 	public void enableCloning() {
@@ -50,6 +50,7 @@ public class MaterialBrush extends MaterialAndData {
 	public void setCloneLocation(Location cloneFrom) {
 		mode = BrushMode.CLONE;
 		cloneLocation = cloneFrom;
+		materialTarget = cloneFrom;
 		cloneTarget = null;
 	}
 	
@@ -58,8 +59,8 @@ public class MaterialBrush extends MaterialAndData {
 	}
 	
 	public boolean isReady() {
-		if (cloneLocation != null) {
-			Block block = cloneLocation.getBlock();
+		if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && materialTarget != null) {
+			Block block = materialTarget.getBlock();
 			return (block.getChunk().isLoaded());
 		}
 		
@@ -68,9 +69,11 @@ public class MaterialBrush extends MaterialAndData {
 
 	@SuppressWarnings("deprecation")
 	public void setTarget(Location target) {
-		if (cloneTarget == null || mode != BrushMode.REPLICATE || 
-			!target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
-			cloneTarget = target;
+		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE) {
+			if (cloneTarget == null || mode == BrushMode.CLONE || 
+				!target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
+				cloneTarget = target;
+			}
 		}
 		if (mode == BrushMode.COPY) {
 			Block block = target.getBlock();
@@ -83,8 +86,8 @@ public class MaterialBrush extends MaterialAndData {
 	
 	@SuppressWarnings("deprecation")
 	public boolean update(Location target) {
-		if (cloneLocation != null) {
-			Location materialTarget = cloneLocation.clone();
+		if (cloneLocation != null && (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)) {
+			materialTarget = cloneLocation.clone();
 			materialTarget.subtract(cloneTarget.toVector());
 			materialTarget.add(target.toVector());
 			

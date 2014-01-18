@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.TreeSpecies;
@@ -161,7 +162,9 @@ public class Wand implements CostReducer {
 		if (activeMaterial != null) {
 			MaterialBrush brush = mage.getBrush();
 			if (activeMaterial.equals(CLONE_MATERIAL_KEY) || activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
-				brush.setCloneLocation(mage.getLocation());
+				Location cloneLocation = mage.getLocation();
+				cloneLocation.setY(cloneLocation.getY() - 1);
+				brush.setCloneLocation(cloneLocation);
 			}
 		}
 	}
