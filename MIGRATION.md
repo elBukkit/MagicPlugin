@@ -8,6 +8,7 @@
  silent changed to show_messages
  message_prefix and cast_message prefix added
  "size" parameter added to IterateSpell, though the default is the same
+ "effect_color" in wands.yml changed to a string
 
 ## 2.8.5
 

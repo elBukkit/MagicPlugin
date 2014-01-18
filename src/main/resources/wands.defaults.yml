@@ -571,7 +571,7 @@ wands:
         hunger_regeneration: 1
         power: 1
         haste: 0.3
-        effect_color: 8B008B
+        effect_color: "8B008B"
         organize: true
         spells:
             - fling
@@ -645,7 +645,7 @@ wands:
         xp_regeneration: 4
         xp_max: 75
         haste: 0.15
-        effect_color: 888888
+        effect_color: "888888"
         spells:
             - fling
             - push
@@ -658,7 +658,7 @@ wands:
         xp_regeneration: 10
         xp_max: 150
         haste: 0.2
-        effect_color: FFFFFF
+        effect_color: "FFFFFF"
         spells:
             - fling
             - push
@@ -679,7 +679,7 @@ wands:
         protection: 0.3
         xp_regeneration: 4
         xp_max: 75
-        effect_color: 000088
+        effect_color: "000088"
         spells:
             - toss
             - blob
@@ -693,7 +693,7 @@ wands:
         protection: 0.5
         xp_regeneration: 10
         xp_max: 150
-        effect_color: 0000FF
+        effect_color: "0000FF"
         spells:
             - frost
             - toss
@@ -730,7 +730,7 @@ wands:
         protection_blast: 0.8
         xp_regeneration: 4
         xp_max: 75
-        effect_color: CD853F
+        effect_color: "CD853F"
         spells:
             - blob
             - sandblast
@@ -750,7 +750,7 @@ wands:
         protection_blast: 0.9
         xp_regeneration: 10
         xp_max: 150
-        effect_color: 8B4513
+        effect_color: "8B4513"
         spells:
             - blob
             - sandblast
@@ -783,7 +783,7 @@ wands:
         protection: 0.1
         xp_regeneration: 4
         xp_max: 75
-        effect_color: 880000
+        effect_color: "880000"
         spells:
             - fireball
             - fire
@@ -799,7 +799,7 @@ wands:
         protection: 0.3
         xp_regeneration: 10
         xp_max: 150
-        effect_color: FF0000
+        effect_color: "FF0000"
         spells:
             - fireball
             - recurse
@@ -821,7 +821,7 @@ wands:
         xp_regeneration: 40
         xp_max: 500
         power: 0.5
-        effect_color: 0000FF
+        effect_color: "0000FF"
         haste: 0.1
         spells:
             - fling
@@ -870,7 +870,7 @@ wands:
         hunger_regeneration: 1
         haste: 0.1
         power: 0.5
-        effect_color: FFFFFF
+        effect_color: "FFFFFF"
         spells:
             - fling
             - blink
@@ -926,7 +926,7 @@ wands:
         hunger_regeneration: 1
         haste: 0.1
         power: 0.5
-        effect_color: 111111
+        effect_color: "111111"
         spells:
             - fling
             - blink
@@ -982,7 +982,7 @@ wands:
         xp_regeneration: 40
         xp_max: 300
         power: 0.2
-        effect_color: FF0000
+        effect_color: "FF0000"
         spells:
             - fireball
             - recurse
@@ -1012,7 +1012,7 @@ wands:
         xp_regeneration: 40
         xp_max: 300
         power: 0.2
-        effect_color: 0000FF
+        effect_color: "0000FF"
         spells:
             - frost
             - toss
@@ -1049,7 +1049,7 @@ wands:
         xp_regeneration: 40
         xp_max: 300
         power: 0.2
-        effect_color: 00FF00
+        effect_color: "00FF00"
         spells:
             - tree
             - farm
@@ -1090,7 +1090,7 @@ wands:
         hunger_regeneration: 1
         power: 1
         haste: 0.1
-        effect_color: 888888
+        effect_color: "888888"
         spells:
             - levitate
             - blink
@@ -1115,7 +1115,7 @@ wands:
         hunger_regeneration: 1
         power: 5
         haste: 0.3
-        effect_color: CD853F
+        effect_color: "CD853F"
         organize: true
         spells:
             - fling
