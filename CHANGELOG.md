@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.8.8
+
 ## 2.8.7
 
  - Add /wand organize command
