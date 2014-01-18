@@ -518,3 +518,6 @@ messages:
         wolf:
             name: The Wolf
             description: NathanWolf's Mega-Wand
+        decorator:
+            name: Decorator
+            description: Temporarily Decorates

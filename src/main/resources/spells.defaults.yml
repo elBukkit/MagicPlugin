@@ -607,10 +607,10 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
+            undo: 5000
             indestructible:
               - air
-            radius: '3'
+            radius: 2
         costs:
             xp: 20
     superconvert:
