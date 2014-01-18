@@ -1180,6 +1180,8 @@ wands:
             - arrowrain
             - flare
             - tree
+            - wolf
+            - cat
         materials:
             - water
             - lava

@@ -1122,6 +1122,9 @@ public class MagicController implements Listener
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
+		// Block block = event.getClickedBlock();
+		// getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
+		
 		Player player = event.getPlayer();		
 		Mage mage = getMage(player);
 		if (!mage.checkLastClick(clickCooldown)) {
