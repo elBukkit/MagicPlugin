@@ -15,6 +15,7 @@
  - Implement replicate and clone materials (!)
  - Nerf a lot of the construction spells. Wand's "power" can be used to create larger constructions.
  - Better labelling of spells in the wand inventory.
+ - Fix "disabled map" spam
 
 ## 2.8.5
 

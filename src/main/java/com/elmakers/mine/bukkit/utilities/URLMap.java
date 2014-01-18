@@ -75,7 +75,7 @@ public class URLMap extends MapRenderer  {
 						}
 						
 						// Check for disabled maps
-						if (mapConfig.getBoolean("disabled")) {
+						if (!mapConfig.getBoolean("enabled")) {
 							map.disable();
 						} else {
 							map.getMapView();
@@ -351,11 +351,15 @@ public class URLMap extends MapRenderer  {
 	
 	@SuppressWarnings("deprecation")
 	private MapView getMapView(boolean recreateIfNecessary) {
+		if (!enabled) {
+			return null;
+		}
 		MapView mapView = Bukkit.getMap(id);
 		if (mapView == null) {
 			keyMap.remove(getKey());
 			enabled = false;
 			plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey() + ", disabled, re-enable in config and fix id");
+			save();
 			return mapView;
 		}
 		List<MapRenderer> renderers = mapView.getRenderers();
@@ -415,7 +419,7 @@ public class URLMap extends MapRenderer  {
 	}
 
 	private BufferedImage getImage() {
-		if (loading) {
+		if (loading || !enabled) {
 			return null;
 		}
 		if (image == null) {
@@ -452,12 +456,12 @@ public class URLMap extends MapRenderer  {
 	}
 	
 	private void sendToPlayer(Player player, MapView mapView) {
-		String playerName = player.getName();
-
 		// Safety check
-		if (priority == null) {
+		if (priority == null || !enabled) {
 			return;
 		}
+
+		String playerName = player.getName();
 		
 		// Randomly stagger sending to avoid a big hit on login
 		if (!sentToPlayers.contains(playerName) && (Math.random() * priority) <= 1) {
