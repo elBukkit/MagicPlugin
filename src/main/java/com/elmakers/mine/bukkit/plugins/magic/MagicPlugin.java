@@ -26,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MagicPlugin extends JavaPlugin
@@ -508,8 +509,8 @@ public class MagicPlugin extends JavaPlugin
 		for (ConfigurationNode templateConfig : nameMap.values())
 		{
 			String key = templateConfig.getString("key");
-			String name = templateConfig.getString("name");
-			String description = templateConfig.getString("description");
+			String name = Messages.get("wands." + key + ".name", Messages.get("wand.default_name"));
+			String description = Messages.get("wands." + key + ".description", "");
 			description = ChatColor.YELLOW + description; 
 			if (!name.equals(key)) {
 				description = ChatColor.BLUE + name + ChatColor.WHITE + " : " + description;

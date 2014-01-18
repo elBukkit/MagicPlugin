@@ -4,14 +4,10 @@ IMPORTANT STUFF:
 
  - Save off dynmap marker chunks on disable, load chunks on startup
  - Investigate MaterialBrush NPE (Maybe pre-world-fix, but keep an eye out when testing)
- - Fix /wand list (localization, broken, NPE)
- - Copy material showing up as "sugar"
  - Persist material brush .. make sure it doesn't reset on load (might be tricky given current structure)
- - Debug replicate... seems to sometimes fail to copy parts?
  - Fix recall spell with natural spawn.. hook into essentials?
  - Can't alter "null" message from alter on bad target?
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
- - Iterate doesn't work with the copy material
 
 NEW SPELLS:
 
@@ -111,7 +107,4 @@ LONG-TERM OR INCOMPLETE:
 
 STACK TRACES / EXTRA DEBUG INFO
 
-
-[10:44:07] [Server thread/WARN]: [Magic] Task #6 for Magic v2.8.6 generated an exception
-java.lang.NullPointerException
-	at com.elmakers.mine.bukkit.plugins.magic.MaterialBrush.update(MaterialBrush.java:88) ~[?:?]
+	
