@@ -60,7 +60,7 @@ public class ConstructBatch extends VolumeBatch {
 			}
 			
 			y++;
-			if (y > radius) {
+			if (y > radius || y > 255) {
 				y = 0;
 				z++;
 				if (z > radius) {
