@@ -66,7 +66,7 @@ public class TowerSpell extends BlockSpell {
 					if (dx != 0 || dz != 0)
 					{
 						Block block = getBlockAt(x, y, z);
-						if (!isIndestructible(block) && hasBuildPermission(block)) {
+						if (isDestructible(block) && hasBuildPermission(block)) {
 							blocksCreated++;
 							towerBlocks.add(block);
 							block.setTypeId(material);

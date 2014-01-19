@@ -84,7 +84,7 @@ public class DisintegrateSpell extends BlockSpell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		if (isIndestructible(targetBlock)) {
+		if (isDestructible(targetBlock)) {
 			return SpellResult.NO_TARGET;
 		}
 		if (isUnderwater())

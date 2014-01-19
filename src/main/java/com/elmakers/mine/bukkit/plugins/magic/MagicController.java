@@ -370,15 +370,19 @@ public class MagicController implements Listener
 		return plugin;
 	}
 
-	public boolean isIndestructible(Player player, Location location) 
+	public boolean isIndestructible(Location location) 
 	{
-		return isIndestructible(player, location.getBlock());
+		return isIndestructible(location.getBlock());
 	}
 
-	public boolean isIndestructible(Player player, Block block) 
+	public boolean isIndestructible(Block block) 
 	{
-		// TODO: Player/wand-based overrides?
 		return (indestructibleMaterials.contains(block.getType()));		
+	}
+
+	public boolean isDestructible(Block block) 
+	{
+		return (destructibleMaterials.contains(block.getType()));		
 	}
 	
 	public boolean hasBuildPermission(Player player, Location location) 

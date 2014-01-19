@@ -15,7 +15,6 @@ public class ConstructBatch extends VolumeBatch {
 	private final BlockList constructedBlocks = new BlockList();
 	private final Location center;
 	private final int radius;
-	private boolean checkDestructible = true;
 	private final ConstructionType type;
 	private final boolean fill;
 	private final Mage mage;
@@ -156,11 +155,7 @@ public class ConstructBatch extends VolumeBatch {
 			brush.prepare();
 			return false;
 		}
-		if (spell.isIndestructible(block)) 
-		{
-			return true;
-		}
-		if (checkDestructible && !spell.isDestructible(block))
+		if (!spell.isDestructible(block))
 		{
 			return true;
 		}

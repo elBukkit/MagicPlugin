@@ -11,17 +11,21 @@ public abstract class BlockSpell extends Spell {
 	
 	private Set<Material>	indestructible;
 	private Set<Material>	destructible;
+	private boolean checkDestructible = true;
 	
-	public boolean isIndestructible(Block block)
+	private boolean isIndestructible(Block block)
 	{
 		if (indestructible == null) {
 			return mage.isIndestructible(block);
 		}
-		return indestructible.contains(block.getType());
+		return indestructible.contains(block.getType()) || mage.isIndestructible(block);
 	}
 	
 	public boolean isDestructible(Block block)
 	{
+		if (isIndestructible(block)) return false;
+		
+		if (!checkDestructible) return true;
 		if (destructible == null) {
 			return mage.isDestructible(block);
 		}
@@ -39,5 +43,6 @@ public abstract class BlockSpell extends Spell {
 		if (parameters.containsKey("destructible")) {
 			destructible = parameters.getMaterials("destructible", "");
 		}
+		checkDestructible = parameters.getBoolean("check_destructible", checkDestructible);
 	}
 }

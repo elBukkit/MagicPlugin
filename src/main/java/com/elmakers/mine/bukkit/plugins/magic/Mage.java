@@ -489,11 +489,11 @@ public class Mage implements CostReducer
 	}
 	
 	public boolean isIndestructible(Block block) {
-		return controller.isIndestructible(getPlayer(), block);
+		return controller.isIndestructible(block);
 	}
 	
 	public boolean isDestructible(Block block) {
-		return controller.isIndestructible(getPlayer(), block);
+		return controller.isDestructible(block);
 	}
 	
 	public void onCast(SpellResult result) {

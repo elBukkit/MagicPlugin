@@ -436,6 +436,7 @@ spells:
             range: 200
             cooldown: 0
             type: single
+            check_destructible: false
         costs:
             xp: 1
     gills:
@@ -602,6 +603,7 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
+            check_destructible: false
             indestructible:
               - air
             radius: 2
@@ -615,6 +617,7 @@ spells:
             allow_max_range: false
             range: 200
             max_dimension: 16
+            check_destructible: false
             indestructible:
               - air
             target: select
@@ -630,6 +633,7 @@ spells:
             range: 200
             material: air
             falling: true
+            check_destructible: false
             indestructible:
               - air
             radius: '3'
@@ -646,6 +650,7 @@ spells:
             max_dimension: 16
             material: air
             falling: true
+            check_destructible: false
             indestructible:
               - air
             target: select
@@ -814,6 +819,7 @@ spells:
             max_volume: 256
             max_dimension: 64
             cooldown: 5000
+            check_destructible: false
         costs:
             xp: 40
     recurse:
@@ -827,6 +833,7 @@ spells:
             max_dimension: 128
             cooldown: 0
             type: recurse
+            check_destructible: false
         costs:
             xp: 30
     fire:
@@ -884,6 +891,7 @@ spells:
             player_damage: 5
             cooldown: 100
             entity_damage: 50
+            check_destructible: false
         costs:
             xp: 30
     blink:

@@ -63,7 +63,7 @@ public class IterateSpell extends BrushSpell
 		for (int i = 0; i < iterateBlocks; i++)
 		{
 			Block currentTarget = target.getWorld().getBlockAt(targetLoc.getBlockX(), targetLoc.getBlockY(), targetLoc.getBlockZ());
-			if (currentTarget.getType() == Material.AIR && !isIndestructible(currentTarget) && hasBuildPermission(currentTarget))
+			if (currentTarget.getType() == Material.AIR && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
 			{
 				iteratedBlocks.add(currentTarget);
 				if (incrementData) {

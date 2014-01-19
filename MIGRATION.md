@@ -1,6 +1,16 @@
 # Migration Notes
 
-## 2.8.6
+## 2.8.8
+
+### spells.yml
+
+ All FillSpell variants need
+ 
+            check_destructible: false
+            
+ To continue to be able to fill all materials.
+
+## 2.8.7
 
 ### magic.yml
  
