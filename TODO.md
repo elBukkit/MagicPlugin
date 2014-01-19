@@ -38,7 +38,6 @@ OTHER STUFF:
  - Scale fling and levitate falling effects based on distance fallen
  
  - Fix up alter in general, remove id-based lists
- - Make undo spell first cancel any pending batches for the player (or just one?)
  - urlmaps.yml got truncated?
    - Check for duplicate keys when searching for a new one (?)
  - Make sure adding spells/materials never removes any

@@ -11,7 +11,7 @@ import java.util.Map;
 import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**
@@ -301,13 +301,13 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return blockList.toArray(arg0);
 	}
 
-	public void undo(MagicController spells)
+	public void undo(Mage mage)
 	{
 		if (blockList == null) return;
 
 		passesRemaining--;
-		UndoBatch batch = new UndoBatch(spells, this);
-		spells.addPendingBlockBatch(batch);
+		UndoBatch batch = new UndoBatch(mage.getController(), this);
+		mage.addPendingBlockBatch(batch);
 	}
 	
 	public void load(ConfigurationNode node) {

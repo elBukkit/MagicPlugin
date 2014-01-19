@@ -6,7 +6,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -73,7 +72,6 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
-import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
@@ -84,7 +82,6 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.URLMap;
-import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -248,8 +245,8 @@ public class MagicController implements Listener
 	{
 		for (String playerName : mages.keySet())
 		{
-			UndoQueue queue = getMage(playerName).getUndoQueue();
-			if (queue.undo(this, target))
+			Mage mage = getMage(playerName);
+			if (mage.undo(target))
 			{
 				return playerName;
 			}
@@ -260,19 +257,15 @@ public class MagicController implements Listener
 
 	public boolean undo(String playerName)
 	{
-		UndoQueue queue = getMage(playerName).getUndoQueue();
-		return queue.undo(this);
+		Mage mage = getMage(playerName);
+		return mage.undo();
 	}
 
 	public boolean commitAll()
 	{
 		boolean undid = false;
 		for (Mage mage : mages.values()) {
-			UndoQueue queue = mage.getUndoQueue();
-			if (queue.getSize() == 0) {
-				undid = true;
-				queue.commit();
-			}
+			undid = undid || mage.commit();
 		}
 		return undid;
 	}
@@ -465,14 +458,8 @@ public class MagicController implements Listener
 		// Set up the Block update timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
-				int updated = 0;
-				while (updated < maxBlockUpdates && pendingBatches.size() > 0) {
-					BlockBatch batch = pendingBatches.getFirst();
-					int batchUpdated = batch.process(maxBlockUpdates);
-					updated += batchUpdated;
-					if (batch.isFinished()) {
-						pendingBatches.removeFirst();
-					}
+				for (Mage mage : mages.values()) {
+					mage.processPendingBatches(maxBlockUpdates);
 				}
 			}
 		}, 0, 1);
@@ -545,10 +532,6 @@ public class MagicController implements Listener
 		}
 		
 		return created;
-	}
-	
-	public void addPendingBlockBatch(BlockBatch batch) {
-		pendingBatches.addLast(batch);
 	}
 
 	public void load()
@@ -1727,7 +1710,6 @@ public class MagicController implements Listener
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	= 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
-	 private LinkedList<BlockBatch>				 pendingBatches					= new LinkedList<BlockBatch>();
 	 private int								 maxBlockUpdates				= 100;
 	 private int								 autoUndo						= 0;
 	 

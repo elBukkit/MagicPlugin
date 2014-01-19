@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -24,7 +25,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.blocks.UndoBatch;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
@@ -45,6 +48,7 @@ public class Mage implements CostReducer
 	private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
 	private final Set<Spell>					activeSpells				   = new TreeSet<Spell>();
 	private UndoQueue          					undoQueue               	   = null;
+	private LinkedList<BlockBatch>				pendingBatches					= new LinkedList<BlockBatch>();
 	
 	private float 				costReduction = 0;
 	private float 				cooldownReduction = 0;
@@ -536,8 +540,27 @@ public class Mage implements CostReducer
 	}
 	
 	public boolean undo(Block target) {
-		return getUndoQueue().undo(getController(), target);
+		return getUndoQueue().undo(this, target);
 	}
+	
+	public boolean undo() {
+		if (pendingBatches.size() > 0) {
+			List<BlockBatch> batches = new ArrayList<BlockBatch>();
+			batches.addAll(pendingBatches);
+			boolean cancelled = false;
+			for (BlockBatch batch : batches) {
+				if (!(batch instanceof UndoBatch)) {
+					pendingBatches.remove(batch);
+					cancelled = true;
+				}
+			}
+			if (cancelled) {
+				return true;
+			}
+		}
+		return getUndoQueue().undo(this);
+	}
+	
 	
 	public boolean commit() {
 		return getUndoQueue().commit();
@@ -550,7 +573,7 @@ public class Mage implements CostReducer
 			blockList.setTimeToLive(autoUndo);
 		}
 		if (blockList.getTimeToLive() > 0) {
-			queue.scheduleCleanup(controller, blockList);
+			queue.scheduleCleanup(this, blockList);
 		} else {
 			queue.add(blockList);
 		}
@@ -636,7 +659,7 @@ public class Mage implements CostReducer
 
 			lastDeathLocation = configNode.getLocation("last_death_location");
 			
-			getUndoQueue().load(controller, configNode);
+			getUndoQueue().load(this, configNode);
 			ConfigurationNode spellNode = configNode.getNode("spells");
 			if (spellNode != null) {
 				List<String> keys = spellNode.getKeys();
@@ -714,5 +737,21 @@ public class Mage implements CostReducer
 	
 	public String getName() {
 		return playerName;
+	}
+	
+	public void addPendingBlockBatch(BlockBatch batch) {
+		pendingBatches.addLast(batch);
+	}
+	
+	public void processPendingBatches(int maxBlockUpdates) {
+		int updated = 0;
+		while (updated < maxBlockUpdates && pendingBatches.size() > 0) {
+			BlockBatch batch = pendingBatches.getFirst();
+			int batchUpdated = batch.process(maxBlockUpdates);
+			updated += batchUpdated;
+			if (batch.isFinished()) {
+				pendingBatches.removeFirst();
+			}
+		}
 	}
 }

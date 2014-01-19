@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.CleanupBlocksTask;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -33,17 +34,17 @@ public class UndoQueue
 		blockQueue.add(blocks);
 	}
 	
-	public void scheduleCleanup(MagicController spells, BlockList blocks)
+	public void scheduleCleanup(Mage mage, BlockList blocks)
 	{
 		scheduledBlocks.add(blocks);
 		
-		Plugin plugin = spells.getPlugin();
+		Plugin plugin = mage.getController().getPlugin();
 		Server server = plugin.getServer();
 		BukkitScheduler scheduler = server.getScheduler();
 
 		// scheduler works in ticks- 20 ticks per second.
 		long ticksToLive = blocks.getTimeToLive() * 20 / 1000;
-		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(this, spells, blocks), ticksToLive);
+		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(mage, blocks), ticksToLive);
 	}
 	
 	public void removeScheduledCleanup(BlockList blockList)
@@ -81,7 +82,7 @@ public class UndoQueue
 		maxSize = size;
 	}
 
-	public boolean undo(MagicController spells)
+	public boolean undo(Mage mage)
 	{
 		if (blockQueue.size() == 0)
 		{
@@ -89,11 +90,11 @@ public class UndoQueue
 		}
 
 		BlockList blocks = blockQueue.removeLast();
-		blocks.undo(spells);
+		blocks.undo(mage);
 		return true;
 	}
 
-	public boolean undo(MagicController spells, Block target)
+	public boolean undo(Mage mage, Block target)
 	{
 		BlockList lastActionOnTarget = getLast(target);
 
@@ -103,12 +104,12 @@ public class UndoQueue
 		}
 
 		blockQueue.remove(lastActionOnTarget);
-		lastActionOnTarget.undo(spells);
+		lastActionOnTarget.undo(mage);
 
 		return true;
 	}
 	
-	public void load(MagicController spells, ConfigurationNode node)
+	public void load(Mage mage, ConfigurationNode node)
 	{
 		try {
 			if (node == null) return;
@@ -122,11 +123,11 @@ public class UndoQueue
 			for (ConfigurationNode listNode : nodeList) {
 				BlockList list = new BlockList();
 				list.load(listNode);
-				scheduleCleanup(spells, list);
+				scheduleCleanup(mage, list);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			spells.getPlugin().getLogger().warning("Failed to load undo data: " + ex.getMessage());
+			mage.getController().getPlugin().getLogger().warning("Failed to load undo data: " + ex.getMessage());
 		}
 	}
 	

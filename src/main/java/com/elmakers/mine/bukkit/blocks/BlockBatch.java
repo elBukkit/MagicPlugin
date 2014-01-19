@@ -5,4 +5,5 @@ public interface BlockBatch {
 	public int process(int maxBlocks);
 	
 	public boolean isFinished();
+	public void finish();
 }

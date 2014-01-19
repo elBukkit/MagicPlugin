@@ -4,6 +4,7 @@
 
  - Add log to destructible material list
  - Implement global "auto_undo" configuration option. Disable undo on most spells by default.
+ - Undo will now cancel any pending constructions before undoing a finished one.
  
 ## 2.8.7
 

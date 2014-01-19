@@ -1,24 +1,21 @@
 package com.elmakers.mine.bukkit.blocks;
 
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.utilities.UndoQueue;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 
 public class CleanupBlocksTask implements Runnable
 {
+	protected Mage mage;
 	protected BlockList undoBlocks;
-	protected MagicController spells;
-	protected UndoQueue queue;
 
-	public CleanupBlocksTask(UndoQueue queue, MagicController spells, BlockList cleanup)
+	public CleanupBlocksTask(Mage mage, BlockList cleanup)
 	{
 		this.undoBlocks = cleanup;
-		this.spells = spells;
-		this.queue = queue;
+		this.mage = mage;
 	}
 
 	public void run()
 	{
-		this.undoBlocks.undo(spells);
-		queue.removeScheduledCleanup(undoBlocks);
+		this.undoBlocks.undo(mage);
+		mage.getUndoQueue().removeScheduledCleanup(undoBlocks);
 	}
 }

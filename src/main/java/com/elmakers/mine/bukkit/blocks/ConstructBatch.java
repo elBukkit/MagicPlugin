@@ -71,11 +71,13 @@ public class ConstructBatch extends VolumeBatch {
 	}
 	
 	@Override
-	protected void finish() {
-		super.finish();
-		
-		mage.registerForUndo(constructedBlocks);
-		mage.castMessage("Constructed " + constructedBlocks.size() + " blocks");
+	public void finish() {
+		if (!finished) {
+			super.finish();
+			
+			mage.registerForUndo(constructedBlocks);
+			mage.castMessage("Constructed " + constructedBlocks.size() + " blocks");
+		}
 	}
 
 	public boolean fillBlock(int x, int y, int z)

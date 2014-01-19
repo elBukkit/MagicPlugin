@@ -7,7 +7,8 @@ import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 public abstract class VolumeBatch implements BlockBatch {
 	protected final MagicController controller;
 	private String worldName;
-	private boolean finished = false;
+	
+	protected boolean finished = false;
 
 	private Integer minx = null;
 	private Integer miny = null;
@@ -50,7 +51,7 @@ public abstract class VolumeBatch implements BlockBatch {
 		updateBlock(x, y, z);
 	}
 	
-	protected void finish() {
+	public void finish() {
 		if (!finished) {
 			if (worldName != null && minx !=null && miny != null && minz != null && maxx !=null && maxy != null && maxz != null) {
 				controller.updateVolume(worldName, minx, miny, minz, maxx, maxy, maxz);

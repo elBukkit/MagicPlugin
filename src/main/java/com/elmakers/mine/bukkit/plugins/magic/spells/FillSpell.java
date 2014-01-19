@@ -123,7 +123,7 @@ public class FillSpell extends BrushSpell
 				return SpellResult.FAILURE;
 			}
 
-			controller.addPendingBlockBatch(batch);
+			mage.addPendingBlockBatch(batch);
 			
 			deactivate();
 			return SpellResult.SUCCESS;

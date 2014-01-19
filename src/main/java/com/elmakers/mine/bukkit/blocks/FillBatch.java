@@ -122,11 +122,13 @@ public class FillBatch extends VolumeBatch {
 	}
 	
 	@Override
-	protected void finish() {
-		super.finish();
-		
-		mage.registerForUndo(filledBlocks);
-		mage.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + brush.getMaterial().name().toLowerCase());
+	public void finish() {
+		if (!finished) {
+			super.finish();
+			
+			mage.registerForUndo(filledBlocks);
+			mage.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + brush.getMaterial().name().toLowerCase());
+		}
 	}
 	
 	public int getXSize() {
