@@ -5,12 +5,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class ExtendSpell extends Spell 
+public class ExtendSpell extends BrushSpell 
 {
 	int MAX_SEARCH_DISTANCE = 16;
 
@@ -65,10 +65,5 @@ public class ExtendSpell extends Spell
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 
 		return SpellResult.SUCCESS;
-	}
-	
-	@Override
-	public boolean usesBrush() {
-		return true;
 	}
 }

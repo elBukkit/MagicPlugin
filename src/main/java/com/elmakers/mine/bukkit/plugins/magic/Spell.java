@@ -53,11 +53,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String description;
 	private String usage;
 	private String category;
-	private ConfigurationNode parameters = new ConfigurationNode();
 	private MaterialAndData icon;
-	private MaterialBrush brushOverride;
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
+	
+	protected ConfigurationNode parameters = new ConfigurationNode();
 
 	/*
 	 * private data
@@ -230,10 +230,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		cooldown = parameters.getInt("cooldown", cooldown);
 		duration = parameters.getInt("duration", duration);
-		Material override = parameters.getMaterial("material", null);
-		if (override != null) {
-			brushOverride = new MaterialBrush(override, (byte)0);
-		}
 		range = parameters.getInteger("range", range);
 		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 		targetThroughMaterials = new MaterialList(parameters.getMaterials("target_through", targetThroughMaterials));
@@ -347,6 +343,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		lastCast = currentTime;
 		initializeTargeting(getPlayer());
 
+		processParameters(parameters);
 		SpellResult result = onCast(parameters);
 		mage.onCast(result);
 		
@@ -363,6 +360,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		
 		return result == SpellResult.SUCCESS;
+	}
+	
+	protected void processParameters(ConfigurationNode parameters) {
+		
 	}
 
 	public String getPermissionNode()
@@ -452,28 +453,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		return mage.getCommandSender();
 	}
-
-	/*
-	 * General helper functions
-	 */
-	public MaterialBrush getMaterialBrush()
-	{
-		if (brushOverride != null)
-		{
-			return brushOverride;
-		}
-		
-		return mage.getBrush();
-	}
 	
 	public boolean hasBuildPermission(Block block)
 	{
 		return mage.hasBuildPermission(block);
-	}
-	
-	public boolean isIndestructible(Block block)
-	{
-		return mage.isIndestructible(block);
 	}
 
 	public void targetEntity(Class<? extends Entity> typeOf)
@@ -1219,16 +1202,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				} 
 			}
 		}
-	}
-	
-	public boolean usesBrush() 
-	{
-		return false;
-	}
-	
-	public boolean hasBrushOverride() 
-	{
-		return brushOverride != null;
 	}
 	
 	public void onActivate() {

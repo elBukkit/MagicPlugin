@@ -11,12 +11,12 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class DisintegrateSpell extends Spell
+public class DisintegrateSpell extends BlockSpell
 {
 	private final static int             DEFAULT_PLAYER_DAMAGE = 1;
 	private final static int             DEFAULT_ENTITY_DAMAGE = 100;

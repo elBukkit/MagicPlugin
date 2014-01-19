@@ -7,17 +7,15 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class FillBatch extends VolumeBatch {
 	private final BlockList filledBlocks = new BlockList();
 	private final MaterialBrush brush;
 	private final World world;
-	private final Spell spell;
-	private final Mage playerSpells;
-	private String playerName;
+	private final Mage mage;
 
 	private final int absx;
 	private final int absy;
@@ -35,13 +33,11 @@ public class FillBatch extends VolumeBatch {
 	private boolean spawnFallingBlocks = false;
 	private Vector fallingBlockVelocity = null;
 	
-	public FillBatch(Spell spell, Location p1, Location p2, MaterialBrush brush) {
+	public FillBatch(BrushSpell spell, Location p1, Location p2, MaterialBrush brush) {
 		super(spell.getMage().getController(), p1.getWorld().getName());
 		this.brush = brush;
-		this.spell = spell;
-		this.playerSpells = spell.getMage();
-		this.playerName = this.playerSpells.getPlayer().getName();
-		this.world = this.playerSpells.getPlayer().getWorld();
+		this.mage = spell.getMage();
+		this.world = this.mage.getPlayer().getWorld();
 		
 		int deltax = p2.getBlockX() - p1.getBlockX();
 		int deltay = p2.getBlockY() - p1.getBlockY();
@@ -85,7 +81,7 @@ public class FillBatch extends VolumeBatch {
 			}
 			processedBlocks++;
 
-			if (playerSpells.hasBuildPermission(block) && !playerSpells.isIndestructible(block)) {
+			if (mage.hasBuildPermission(block) && !mage.isIndestructible(block)) {
 				Material previousMaterial = block.getType();
 				byte previousData = block.getData();
 				
@@ -129,8 +125,8 @@ public class FillBatch extends VolumeBatch {
 	protected void finish() {
 		super.finish();
 		
-		spells.addToUndoQueue(playerName, filledBlocks);
-		spell.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + brush.getMaterial().name().toLowerCase());
+		mage.registerForUndo(filledBlocks);
+		mage.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + brush.getMaterial().name().toLowerCase());
 	}
 	
 	public int getXSize() {

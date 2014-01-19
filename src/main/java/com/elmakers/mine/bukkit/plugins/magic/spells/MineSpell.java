@@ -11,11 +11,11 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class MineSpell extends Spell
+public class MineSpell extends BlockSpell
 {
 	private static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 74, 21 ,129,153";
 	private static final String		DEFAULT_MINED		= "14,15,263,264,331,331,351,388,406";
@@ -37,7 +37,6 @@ public class MineSpell extends Spell
 		List<Material> mineableMaterials = new ArrayList<Material>();
 		mineableMaterials.addAll(csv.parseMaterials(DEFAULT_MINEABLE));
 
-		
 		if (!isMineable(target, mineableMaterials))
 		{
 			sendMessage("Can't mine " + target.getType().name().toLowerCase());

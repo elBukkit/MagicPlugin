@@ -5,12 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class TossSpell extends Spell
+public class TossSpell extends BrushSpell
 { 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -62,10 +62,5 @@ public class TossSpell extends Spell
 		castMessage("You toss some blocks");
 
 		return SpellResult.SUCCESS;
-	}
-	
-	@Override
-	public boolean usesBrush() {
-		return true;
 	}
 }

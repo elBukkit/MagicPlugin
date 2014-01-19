@@ -10,12 +10,12 @@ import com.elmakers.mine.bukkit.blocks.FillBatch;
 import com.elmakers.mine.bukkit.blocks.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.effects.EffectUtils;
 import com.elmakers.mine.bukkit.effects.ParticleType;
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class FillSpell extends Spell 
+public class FillSpell extends BrushSpell 
 {
 	private static final int DEFAULT_MAX_DIMENSION = 128;
 	private static final int DEFAULT_MAX_VOLUME = 512;	
@@ -152,11 +152,6 @@ public class FillSpell extends Spell
 		}
 		
 		return false;
-	}
-	
-	@Override
-	public boolean usesBrush() {
-		return true;
 	}
 	
 	@Override

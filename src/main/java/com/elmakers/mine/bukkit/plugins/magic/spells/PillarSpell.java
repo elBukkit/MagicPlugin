@@ -7,12 +7,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class PillarSpell extends Spell 
+public class PillarSpell extends BrushSpell 
 {
 	int MAX_SEARCH_DISTANCE = 255;
 
@@ -75,10 +75,5 @@ public class PillarSpell extends Spell
 		controller.updateBlock(targetBlock);
 		
 		return SpellResult.SUCCESS;
-	}
-	
-	@Override
-	public boolean usesBrush() {
-		return true;
 	}
 }

@@ -1,8 +1,7 @@
 package com.elmakers.mine.bukkit.blocks;
 
 public interface BlockBatch {
-	// Return the number of blocks processed. The batch is assumed to be complete
-	// if it returns 0.
+	// Return the number of blocks processed.
 	public int process(int maxBlocks);
 	
 	public boolean isFinished();

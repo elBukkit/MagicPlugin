@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
@@ -487,6 +488,10 @@ public class Mage implements CostReducer
 		return controller.isIndestructible(getPlayer(), block);
 	}
 	
+	public boolean isDestructible(Block block) {
+		return controller.isIndestructible(getPlayer(), block);
+	}
+	
 	public void onCast(SpellResult result) {
 		switch(result) {
 			case SUCCESS:
@@ -528,6 +533,16 @@ public class Mage implements CostReducer
 			undoQueue.setMaxSize(controller.getUndoQueueDepth());
 		}
 		return undoQueue;
+	}
+	
+	public void registerForUndo(BlockList blockList) {
+		// TODO: Handle global auto-undo settings
+		UndoQueue queue = getUndoQueue();
+		if (blockList.getTimeToLive() > 0) {
+			queue.scheduleCleanup(controller, blockList);
+		} else {
+			queue.add(blockList);
+		}
 	}
 	
 	public Color getEffectColor() {

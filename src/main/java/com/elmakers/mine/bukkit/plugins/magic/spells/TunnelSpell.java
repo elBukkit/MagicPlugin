@@ -1,22 +1,16 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class TunnelSpell extends Spell
+public class TunnelSpell extends BlockSpell
 {
-	static final String DEFAULT_DESTRUCTIBLES = "1,3,10,11,12,13,87,88";
-
-	private Set<Material> destructibleMaterials = new TreeSet<Material>();
 	private int defaultDepth = 8;
 	private int defaultWidth = 3;
 	private int defaultHeight = 3;
@@ -26,7 +20,6 @@ public class TunnelSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		destructibleMaterials = parameters.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
 		defaultDepth = parameters.getInteger("depth", defaultDepth);
 		defaultWidth = parameters.getInteger("width", defaultWidth);
 		defaultHeight = parameters.getInteger("height", defaultHeight);
@@ -131,13 +124,5 @@ public class TunnelSpell extends Spell
 		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks");
 
 		return SpellResult.SUCCESS;
-	}
-
-	public boolean isDestructible(Block block)
-	{
-		if (block.getType() == Material.AIR)
-			return false;
-
-		return destructibleMaterials.contains(block.getType());
 	}
 }

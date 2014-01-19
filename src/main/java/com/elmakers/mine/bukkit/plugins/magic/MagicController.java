@@ -1187,7 +1187,12 @@ public class MagicController implements Listener
 				if (wandCycling) {
 					if (player.isSneaking()) {
 						Spell activeSpell = wand.getActiveSpell();
-						if (activeSpell != null && activeSpell.usesBrush() && !activeSpell.hasBrushOverride() && wand.getMaterialKeys().size() > 0) {
+						boolean cycleMaterials = false;
+						if (activeSpell != null && activeSpell instanceof BrushSpell) {
+							BrushSpell brushSpell = (BrushSpell)activeSpell;
+							cycleMaterials = brushSpell.hasBrushOverride() && wand.getMaterialKeys().size() > 0;
+						}
+						if (cycleMaterials) {
 							wand.cycleMaterials();
 						} else {
 							wand.cycleSpells();

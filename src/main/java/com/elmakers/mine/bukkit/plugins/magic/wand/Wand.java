@@ -29,6 +29,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
 import com.elmakers.mine.bukkit.plugins.magic.CostReducer;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
@@ -844,7 +845,7 @@ public class Wand implements CostReducer {
 		
 		// Add active spell to description
 		if (spell != null) {
-			if (material != null && spell.usesBrush() && !spell.hasBrushOverride()) {
+			if (material != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
 				String materialName = getMaterialName(material, data);
 				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
 			} else {

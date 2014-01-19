@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Set;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,12 +10,12 @@ import com.elmakers.mine.bukkit.blocks.ConstructBatch;
 import com.elmakers.mine.bukkit.blocks.ConstructionType;
 import com.elmakers.mine.bukkit.effects.EffectUtils;
 import com.elmakers.mine.bukkit.effects.ParticleType;
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class ConstructSpell extends Spell
+public class ConstructSpell extends BrushSpell
 {
 	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
 	private int				defaultRadius			= 2;
@@ -45,7 +43,6 @@ public class ConstructSpell extends Spell
 		}
 
 		int timeToLive = parameters.getInt("undo", 0);
-		Set<Material> indestructible = parameters.getMaterials("indestructible", "");
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
@@ -112,15 +109,15 @@ public class ConstructSpell extends Spell
 			conType = testType;
 		}
 
-		fillArea(target, radius, buildWith, !hollow, conType, timeToLive, indestructible, falling, forceVector);
+		fillArea(target, radius, buildWith, !hollow, conType, timeToLive, falling, forceVector);
 		deactivate();
 
 		return SpellResult.SUCCESS;
 	}
 
-	public void fillArea(Block target, int radius, MaterialBrush brush, boolean fill, ConstructionType type, int timeToLive, Set<Material> indestructible, boolean falling, Vector forceVector)
+	public void fillArea(Block target, int radius, MaterialBrush brush, boolean fill, ConstructionType type, int timeToLive, boolean falling, Vector forceVector)
 	{
-		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, brush, indestructible, falling);
+		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, falling);
 		if (forceVector != null) {
 			batch.setFallingBlockVelocity(forceVector);
 		}
@@ -130,10 +127,6 @@ public class ConstructSpell extends Spell
 		controller.addPendingBlockBatch(batch);
 	}
 	
-	@Override
-	public boolean usesBrush() {
-		return true;
-	}
 	
 	@Override
 	public void onDeactivate() {

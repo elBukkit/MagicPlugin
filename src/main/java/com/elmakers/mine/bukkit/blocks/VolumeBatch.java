@@ -5,7 +5,7 @@ import org.bukkit.util.BlockVector;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 
 public abstract class VolumeBatch implements BlockBatch {
-	protected final MagicController spells;
+	protected final MagicController controller;
 	private String worldName;
 	private boolean finished = false;
 
@@ -16,8 +16,8 @@ public abstract class VolumeBatch implements BlockBatch {
 	private Integer maxy = null;
 	private Integer maxz = null;
 	
-	public VolumeBatch(MagicController spells, String worldName) {
-		this.spells = spells;
+	public VolumeBatch(MagicController controller, String worldName) {
+		this.controller = controller;
 		this.worldName = worldName;
 	}
 	
@@ -53,7 +53,7 @@ public abstract class VolumeBatch implements BlockBatch {
 	protected void finish() {
 		if (!finished) {
 			if (worldName != null && minx !=null && miny != null && minz != null && maxx !=null && maxy != null && maxz != null) {
-				spells.updateVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
+				controller.updateVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
 			}
 			finished = true;
 		}

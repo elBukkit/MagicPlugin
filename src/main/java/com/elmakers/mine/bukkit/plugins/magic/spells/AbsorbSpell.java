@@ -9,12 +9,12 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.effects.EffectTrail;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class AbsorbSpell extends Spell 
+public class AbsorbSpell extends BrushSpell 
 {
     private final static int effectSpeed = 1;
     private final static int effectPeriod = 1;
@@ -76,10 +76,5 @@ public class AbsorbSpell extends Spell
 		castMessage("Absorbing some " + material.name().toLowerCase());
 		
 		return SpellResult.SUCCESS;
-	}
-	
-	@Override
-	public boolean usesBrush() {
-		return true;
 	}
 }

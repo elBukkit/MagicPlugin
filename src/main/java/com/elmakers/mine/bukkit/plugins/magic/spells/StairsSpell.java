@@ -1,22 +1,16 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class StairsSpell extends Spell
+public class StairsSpell extends BlockSpell
 {
-	static final String DEFAULT_DESTRUCTIBLES = "1,3,10,11,12,13";
-
-	private Set<Material> destructibleMaterials = new TreeSet<Material>();
 	private int defaultDepth = 4;
 	private int defaultWidth = 3;
 	private int defaultHeight = 3;
@@ -36,7 +30,6 @@ public class StairsSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		destructibleMaterials = parameters.getMaterials("destructible", DEFAULT_DESTRUCTIBLES);
 		defaultDepth = parameters.getInteger("depth", defaultDepth);
 		defaultWidth = parameters.getInteger("width", defaultWidth);
 		defaultHeight = parameters.getInteger("height", defaultHeight);
@@ -142,13 +135,5 @@ public class StairsSpell extends Spell
 	protected void createSpiralStairs(Block targetBlock)
 	{
 		// TODO
-	}
-
-	public boolean isDestructible(Block block)
-	{
-		if (block.getType() == Material.AIR)
-			return false;
-
-		return destructibleMaterials.contains(block.getType());
 	}
 }

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
@@ -165,7 +166,7 @@ public class WandLevel {
 		for (String spellName : spells) {
 			Spell spell = wand.getMaster().getSpell(spellName);
 			if (spell != null) {
-				needsMaterials = needsMaterials || (spell.usesBrush() && !spell.hasBrushOverride());
+				needsMaterials = needsMaterials || (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride();
 				List<CastingCost> costs = spell.getCosts();
 				if (costs != null) {
 					for (CastingCost cost : costs) {

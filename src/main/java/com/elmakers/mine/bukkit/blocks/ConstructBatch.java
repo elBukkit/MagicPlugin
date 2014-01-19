@@ -1,31 +1,25 @@
 package com.elmakers.mine.bukkit.blocks;
 
-import java.util.Set;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class ConstructBatch extends VolumeBatch {
 	
-	private int             timeToLive              = 0;
-	private final Set<Material>	indestructible;
 	private final BlockList constructedBlocks = new BlockList();
-	private final Location 		center;
+	private final Location center;
 	private final int radius;
-	private final MaterialBrush brush;
 	private boolean checkDestructible = true;
 	private final ConstructionType type;
 	private final boolean fill;
-	private final Mage playerSpells;
-	private final Spell spell;
-	private final String playerName;
+	private final Mage mage;
+	private final BrushSpell spell;
 	private final boolean spawnFallingBlocks;
 	private Vector fallingBlockVelocity = null;
 	
@@ -33,18 +27,15 @@ public class ConstructBatch extends VolumeBatch {
 	private int y = 0;
 	private int z = 0;
 	
-	public ConstructBatch(Spell spell, Location center, ConstructionType type, int radius, boolean fill, MaterialBrush brush, Set<Material> indestructible, boolean spawnFallingBlocks) {
+	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, boolean fill, boolean spawnFallingBlocks) {
 		super(spell.getMage().getController(), center.getWorld().getName());
-		this.indestructible = indestructible;
 		this.center = center;
 		this.radius = radius;
-		this.brush = brush;
 		this.type = type;
 		this.fill = fill;
 		this.spawnFallingBlocks = spawnFallingBlocks;
-		this.playerSpells = spell.getMage();
+		this.mage = spell.getMage();
 		this.spell = spell;
-		this.playerName = this.playerSpells.getPlayer().getName();
 	}
 	
 	public void setFallingBlockVelocity(Vector velocity) {
@@ -83,16 +74,8 @@ public class ConstructBatch extends VolumeBatch {
 	protected void finish() {
 		super.finish();
 		
-		if (timeToLive == 0)
-		{
-			spells.addToUndoQueue(playerName, constructedBlocks);
-		}
-		else
-		{
-			constructedBlocks.setTimeToLive(timeToLive);
-			spells.scheduleCleanup(playerName, constructedBlocks);
-		}
-		spell.castMessage("Constructed " + constructedBlocks.size() + " blocks");
+		mage.registerForUndo(constructedBlocks);
+		mage.castMessage("Constructed " + constructedBlocks.size() + " blocks");
 	}
 
 	public boolean fillBlock(int x, int y, int z)
@@ -161,6 +144,7 @@ public class ConstructBatch extends VolumeBatch {
 		if (y < 0 || y > 255) return true;
 		
 		Block block = center.getWorld().getBlockAt(x, y, z);
+		MaterialBrush brush = spell.getMaterialBrush();
 		brush.update(block.getLocation());
 		if (!block.getChunk().isLoaded()) {
 			block.getChunk().load();
@@ -170,15 +154,15 @@ public class ConstructBatch extends VolumeBatch {
 			brush.prepare();
 			return false;
 		}
-		if (playerSpells.isIndestructible(block)) 
+		if (spell.isIndestructible(block)) 
 		{
 			return true;
 		}
-		if (checkDestructible && !isDestructible(block))
+		if (checkDestructible && !spell.isDestructible(block))
 		{
 			return true;
 		}
-		if (!playerSpells.hasBuildPermission(block)) 
+		if (!spell.hasBuildPermission(block)) 
 		{
 			return true;
 		}
@@ -201,20 +185,8 @@ public class ConstructBatch extends VolumeBatch {
 		}
 		return true;
 	}
-
-	protected boolean isDestructible(Block block)
-	{
-		if (indestructible.isEmpty()) {
-			return playerSpells.getController().getDestructibleMaterials().contains(block.getType());
-		}
-		return !indestructible.contains(block.getType());
-	}
 	
 	public void setTimeToLive(int timeToLive) {
-		this.timeToLive = timeToLive;
-	}
-	
-	public void setCheckDestructible(boolean check) {
-		this.checkDestructible = check;
+		this.constructedBlocks.setTimeToLive(timeToLive);
 	}
 }
