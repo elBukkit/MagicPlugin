@@ -285,7 +285,11 @@ public class MagicPlugin extends JavaPlugin
 			}
 			if (subCommand.equalsIgnoreCase("commit"))
 			{
-				controller.commitAll();
+				if (controller.commitAll()) {
+					sender.sendMessage("All changes committed");
+				} else {
+					sender.sendMessage("Nothing to commit");
+				}
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search"))
