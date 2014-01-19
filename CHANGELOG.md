@@ -6,6 +6,7 @@
  - Implement global "auto_undo" configuration option. Disable undo on most spells by default.
  - Undo will now cancel any pending constructions before undoing a finished one.
  - Add "check_destructible" spell property to clearly indicate which construction spells use the destructible list.
+ - Add /magic commit command
  
 ## 2.8.7
 

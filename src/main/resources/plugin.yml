@@ -29,7 +29,7 @@ commands:
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
-    usage: /magic [reload|populate|search|cancel]
+    usage: /magic [reload|populate|search|cancel|commit]
     permission: Magic.commands.magic
 permissions:
   Magic.commands.spells:
@@ -162,6 +162,10 @@ permissions:
     default: op
   Magic.commands.magic.cancel:
     description: Cancel any pending search or populate jobs
+    type: boolean
+    default: op
+  Magic.commands.magic.commit:
+    description: Clear all player undo queues
     type: boolean
     default: op
   Magic.wand.use:

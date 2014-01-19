@@ -217,6 +217,7 @@ public class MagicPlugin extends JavaPlugin
 				addIfPermissible(sender, options, "Magic.commands.", "search");
 				addIfPermissible(sender, options, "Magic.commands.", "cancel");
 				addIfPermissible(sender, options, "Magic.commands.", "reload");
+				addIfPermissible(sender, options, "Magic.commands.", "commit");
 			}
 		}
 		else if (cmd.getName().equalsIgnoreCase("wand")) 
@@ -280,6 +281,11 @@ public class MagicPlugin extends JavaPlugin
 			{
 				controller.clear();
 				controller.load();
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("commit"))
+			{
+				controller.commitAll();
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search"))
