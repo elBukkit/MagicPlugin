@@ -132,6 +132,7 @@ general:
     - red_mushroom
     destructible:
     - air
+    - log
     - stone
     - grass
     - dirt

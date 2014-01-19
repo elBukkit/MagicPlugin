@@ -2,6 +2,8 @@
 
 ## 2.8.8
 
+ - Add log to destructible material list
+ 
 ## 2.8.7
 
  - Add /wand organize command

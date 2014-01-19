@@ -2,12 +2,15 @@
 
 IMPORTANT STUFF:
 
+ - Optimize constructs for max min y
+ - Investigate long disable lag after undo queues are cleared
  - Save off dynmap marker chunks on disable, load chunks on startup
  - Investigate MaterialBrush NPE (Maybe pre-world-fix, but keep an eye out when testing)
  - Persist material brush .. make sure it doesn't reset on load (might be tricky given current structure)
  - Fix recall spell with natural spawn.. hook into essentials?
  - Can't alter "null" message from alter on bad target?
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
+ - Add console logging of massive construction spell casting
 
 NEW SPELLS:
 
