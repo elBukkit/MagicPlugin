@@ -17,7 +17,7 @@ public abstract class BlockSpell extends Spell {
 		if (indestructible == null) {
 			return mage.isIndestructible(block);
 		}
-		return indestructible.contains(block);
+		return indestructible.contains(block.getType());
 	}
 	
 	public boolean isDestructible(Block block)
@@ -25,7 +25,7 @@ public abstract class BlockSpell extends Spell {
 		if (destructible == null) {
 			return mage.isDestructible(block);
 		}
-		return destructible.contains(block);
+		return destructible.contains(block.getType());
 	}
 
 	@Override
