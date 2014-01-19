@@ -161,6 +161,9 @@ general:
     # Update dynmap when constructing, if dynmap is present.
     dynmap_update: true
     
+    # Enable worldguard protection against construction spells
+    region_manager_enabled: true
+    
     # Show wands as dynmap markers, if dynmap is present
     dynmap_show_wands: true
     

@@ -7,6 +7,7 @@
  - Undo will now cancel any pending constructions before undoing a finished one.
  - Add "check_destructible" spell property to clearly indicate which construction spells use the destructible list.
  - Add /magic commit command
+ - Add flag to disable WG protection
  
 ## 2.8.7
 

@@ -279,6 +279,7 @@ public class MagicPlugin extends JavaPlugin
 			}
 			if (subCommand.equalsIgnoreCase("reload"))
 			{
+				controller.save();
 				controller.clear();
 				controller.load();
 				return true;

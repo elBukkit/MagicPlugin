@@ -394,7 +394,7 @@ public class MagicController implements Listener
 	{
 		// Check the region manager.
 		// TODO: We need to be able to do WG permission checks while a player is offline.
-		if (regionManager == null || player == null) return true;
+		if (!regionManagerEnabled || regionManager == null || player == null) return true;
 		
 		try {
 			Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
@@ -417,20 +417,26 @@ public class MagicController implements Listener
 
 	public void initialize()
 	{
-		// Try to (dynamically) link to WorldGuard:
-		try {
-			regionManager = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-			Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
-			if (canBuildMethod != null) {
-				getLogger().info("WorldGuard found, will respect build permissions for construction spells");
-			} else {
-				regionManager = null;
-			}
-		} catch (Throwable ex) {
-		}
+		load();
 		
-		if (regionManager == null) {
-			getLogger().info("WorldGuard not found, not using a region manager.");
+		// Try to (dynamically) link to WorldGuard:
+		if (regionManagerEnabled) {
+			try {
+				regionManager = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
+				Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
+				if (canBuildMethod != null) {
+					getLogger().info("WorldGuard found, will respect build permissions for construction spells");
+				} else {
+					regionManager = null;
+				}
+			} catch (Throwable ex) {
+			}
+			
+			if (regionManager == null) {
+				getLogger().info("WorldGuard not found, not using a region manager.");
+			}
+		} else {
+			getLogger().info("Region manager disabled");
 		}
 		
 		// Try to (dynamically) link to dynmap:
@@ -444,11 +450,9 @@ public class MagicController implements Listener
 			plugin.getLogger().warning(ex.getMessage());
 		}
 		
-		if (regionManager == null) {
-			getLogger().info("WorldGuard not found, not using a region manager.");
+		if (dynmap == null) {
+			getLogger().info("dynmap not found, not integrating.");
 		}
-
-		load();
 		
 		// Set up the PlayerSpells timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -694,6 +698,7 @@ public class MagicController implements Listener
 		organizingEnabled = generalNode.getBoolean("enable_organizing", organizingEnabled);
 		dynmapShowWands = generalNode.getBoolean("dynamp_show_wands", dynmapShowWands);
 		dynmapUpdate = generalNode.getBoolean("dynmap_update", dynmapUpdate);
+		regionManagerEnabled = generalNode.getBoolean("region_manager_enabled", regionManagerEnabled);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
 		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
@@ -1726,6 +1731,7 @@ public class MagicController implements Listener
 	 private String								 recipeOutputTemplate			= "random(1)";
 	 
 	 private MagicPlugin                         plugin                         = null;
+	 private boolean							 regionManagerEnabled           = true;
 	 private Object								 regionManager					= null;
 	 private DynmapCommonAPI					 dynmap							= null;
 	 private Mailer								 mailer							= null;

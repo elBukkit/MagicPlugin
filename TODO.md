@@ -2,6 +2,7 @@
 
 IMPORTANT STUFF:
 
+ - Fix underwater targeting on non-construction spells, or generally if in the water
  - Optimize constructs for max min y
  - Investigate long disable lag after undo queues are cleared
  - Save off dynmap marker chunks on disable, load chunks on startup
