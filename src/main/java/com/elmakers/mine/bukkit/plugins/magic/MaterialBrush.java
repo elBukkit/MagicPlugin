@@ -48,7 +48,6 @@ public class MaterialBrush extends MaterialAndData {
 	}
 	
 	public void setCloneLocation(Location cloneFrom) {
-		mode = BrushMode.CLONE;
 		cloneLocation = cloneFrom;
 		materialTarget = cloneFrom;
 		cloneTarget = null;
