@@ -59,7 +59,7 @@ public class CushionSpell extends Spell
 			}
 		}
 
-		controller.scheduleCleanup(getPlayer().getName(), cushionBlocks);
+		mage.registerForUndo(cushionBlocks);
 		return SpellResult.SUCCESS;
 	}
 }

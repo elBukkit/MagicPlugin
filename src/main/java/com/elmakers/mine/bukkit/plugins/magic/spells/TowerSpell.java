@@ -75,7 +75,7 @@ public class TowerSpell extends BlockSpell {
 				}
 			}
 		}
-		controller.addToUndoQueue(getPlayer(), towerBlocks);
+		mage.registerForUndo(towerBlocks);
 		castMessage("Made tower " + height + " high with " + blocksCreated + " blocks");
 		return SpellResult.SUCCESS;
 	}

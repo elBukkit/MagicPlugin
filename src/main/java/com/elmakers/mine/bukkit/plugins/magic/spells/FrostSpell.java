@@ -149,7 +149,7 @@ public class FrostSpell extends Spell
 
 		BlockList frozenBlocks = action.getBlocks();
 		frozenBlocks.setTimeToLive(timeToLive);
-		controller.scheduleCleanup(getPlayer().getName(), frozenBlocks);
+		mage.registerForUndo(frozenBlocks);
 		castMessage("Frosted " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target.getBlock());
 

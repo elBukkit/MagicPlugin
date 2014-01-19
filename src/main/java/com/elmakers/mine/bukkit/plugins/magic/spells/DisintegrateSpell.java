@@ -96,7 +96,7 @@ public class DisintegrateSpell extends BlockSpell
 			targetBlock.setType(Material.AIR);
 		}
 
-		controller.addToUndoQueue(getPlayer(), disintigrated);
+		mage.registerForUndo(disintigrated);
 		castMessage("ZAP!");
 
 		return SpellResult.SUCCESS;

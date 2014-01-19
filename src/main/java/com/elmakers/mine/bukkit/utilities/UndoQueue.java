@@ -158,8 +158,11 @@ public class UndoQueue
 		return blockQueue.size();
 	}
 	
-	public void commit()
+	public boolean commit()
 	{
+		if (blockQueue.size() == 0) return false;
+		
 		blockQueue.clear();
+		return true;
 	}
 }

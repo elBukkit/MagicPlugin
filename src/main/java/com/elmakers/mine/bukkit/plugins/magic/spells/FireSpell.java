@@ -90,7 +90,7 @@ public class FireSpell extends Spell
 			this.coverSurface(target.getLocation(), radius, action);
 		}
 
-		controller.addToUndoQueue(getPlayer(), action.getBlocks());
+		mage.registerForUndo(action.getBlocks());
 		castMessage("Burned " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target);
 

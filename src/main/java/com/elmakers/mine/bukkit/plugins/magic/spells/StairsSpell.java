@@ -127,8 +127,8 @@ public class StairsSpell extends BlockSpell
 			bottomLeftBlock = bottomLeftBlock.getRelative(vertDirection);
 		}
 
-		controller.addToUndoQueue(getPlayer(), tunneledBlocks);
-		controller.addToUndoQueue(getPlayer(), stairBlocks);
+		mage.registerForUndo(tunneledBlocks);
+		mage.registerForUndo(stairBlocks);
 		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks and created " + stairBlocks.size() + " stairs");
 	}	
 

@@ -79,7 +79,7 @@ public class FillSpell extends BrushSpell
 				action.addReplaceable(Material.STATIONARY_LAVA);
 			}
 			blockRecurse.recurse(targetBlock, action);
-			controller.addToUndoQueue(getPlayer(), action.getBlocks());
+			mage.registerForUndo(action.getBlocks());
 			controller.updateBlock(targetBlock);
 			castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
 			return SpellResult.SUCCESS;
@@ -97,7 +97,7 @@ public class FillSpell extends BrushSpell
 			controller.updateBlock(targetBlock);
 
 			castMessage("Painting with " + material.name().toLowerCase());
-			controller.addToUndoQueue(getPlayer(), filledBlocks);
+			mage.registerForUndo(filledBlocks);
 			return SpellResult.SUCCESS;
 		}
 

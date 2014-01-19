@@ -64,7 +64,7 @@ public class BridgeSpell extends BrushSpell
 
 		castMessage("A bridge extends!");
 		
-		controller.addToUndoQueue(getPlayer(), bridgeBlocks);
+		mage.registerForUndo(bridgeBlocks);
 		controller.updateBlock(targetBlock);
 
 		Location effectLocation = targetBlock.getLocation();	

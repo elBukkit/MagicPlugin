@@ -3,6 +3,7 @@
 ## 2.8.8
 
  - Add log to destructible material list
+ - Implement global "auto_undo" configuration option. Disable undo on most spells by default.
  
 ## 2.8.7
 

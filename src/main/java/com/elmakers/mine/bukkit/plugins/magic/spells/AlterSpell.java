@@ -90,7 +90,7 @@ public class AlterSpell extends Spell
 
 		adjust(targetBlock, data, undoList, recursive, recurseDistance, 0);
 
-		controller.addToUndoQueue(getPlayer(), undoList);
+		mage.registerForUndo(undoList);
 
 		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
 		controller.updateBlock(targetBlock);

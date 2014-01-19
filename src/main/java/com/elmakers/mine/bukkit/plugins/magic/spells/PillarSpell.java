@@ -71,7 +71,7 @@ public class PillarSpell extends BrushSpell
 		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
 
 		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
-		controller.addToUndoQueue(getPlayer(), pillarBlocks);
+		mage.registerForUndo(pillarBlocks);
 		controller.updateBlock(targetBlock);
 		
 		return SpellResult.SUCCESS;

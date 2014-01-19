@@ -63,7 +63,6 @@ public class LightningSpell extends Spell
 			this.coverSurface(target.getLocation(), radius, action);
 		}
 
-		controller.addToUndoQueue(getPlayer(), action.getBlocks());
 		castMessage("Zapped " + action.getBlocks().size() + " blocks");
 
 		return SpellResult.SUCCESS;

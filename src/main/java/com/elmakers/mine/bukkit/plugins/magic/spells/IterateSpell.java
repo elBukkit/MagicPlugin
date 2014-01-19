@@ -84,15 +84,8 @@ public class IterateSpell extends BrushSpell
 
 		if (iteratedBlocks.size() > 0)
 		{
-			if (timeToLive == 0)
-			{
-				controller.addToUndoQueue(getPlayer(), iteratedBlocks);
-			}
-			else
-			{
-				iteratedBlocks.setTimeToLive(timeToLive);
-				controller.scheduleCleanup(getPlayer().getName(), iteratedBlocks);
-			}
+			iteratedBlocks.setTimeToLive(timeToLive);
+			mage.registerForUndo(iteratedBlocks);
 		}
 
 		castMessage("Filled " + iteratedBlocks.size() + " blocks");

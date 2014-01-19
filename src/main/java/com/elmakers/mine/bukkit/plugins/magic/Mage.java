@@ -535,9 +535,20 @@ public class Mage implements CostReducer
 		return undoQueue;
 	}
 	
+	public boolean undo(Block target) {
+		return getUndoQueue().undo(getController(), target);
+	}
+	
+	public boolean commit() {
+		return getUndoQueue().commit();
+	}
+	
 	public void registerForUndo(BlockList blockList) {
-		// TODO: Handle global auto-undo settings
 		UndoQueue queue = getUndoQueue();
+		int autoUndo = controller.getAutoUndoInterval();
+		if (autoUndo > 0 && blockList.getTimeToLive() == 0) {
+			blockList.setTimeToLive(autoUndo);
+		}
 		if (blockList.getTimeToLive() > 0) {
 			queue.scheduleCleanup(controller, blockList);
 		} else {
@@ -699,5 +710,9 @@ public class Mage implements CostReducer
 	
 	public Location getLocation() {
 		return getPlayer().getLocation();
+	}
+	
+	public String getName() {
+		return playerName;
 	}
 }

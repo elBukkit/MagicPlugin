@@ -98,7 +98,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 30000
             cooldown: 0
             fill: hollow
             radius: '10'
@@ -112,7 +111,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
             cooldown: 5000
             max_dimension: 16
             fill: hollow
@@ -551,7 +549,6 @@ spells:
         parameters:
             allow_max_range: true
             range: 200
-            undo: 0
             cooldown: 5000
             max_dimension: 16
             target: select
@@ -565,7 +562,6 @@ spells:
         parameters:
             allow_max_range: true
             range: 200
-            undo: 0
             cooldown: 5000
             max_dimension: 16
             target: select
@@ -593,7 +589,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
             cooldown: 5000
             speed: 3
             falling: true
@@ -607,7 +602,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 5000
             indestructible:
               - air
             radius: 2
@@ -620,8 +614,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
-            cooldown: 5000
             max_dimension: 16
             indestructible:
               - air
@@ -636,7 +628,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
             material: air
             falling: true
             indestructible:
@@ -651,7 +642,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
             cooldown: 5000
             max_dimension: 16
             material: air
@@ -669,7 +659,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
             cooldown: 0
             speed: 2
             falling: true
@@ -808,7 +797,6 @@ spells:
         parameters:
             allow_max_range: true
             range: 64
-            undo: 0
             cooldown: 500
             material: sand
             radius: '2'
@@ -871,9 +859,7 @@ spells:
         parameters:
             allow_max_range: true
             range: 200
-            undo: 0
             cooldown: 50
-            undo: 30000
             radius: 3
             type: pyramid
         costs:
@@ -1073,7 +1059,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 30000
             cooldown: 0
             fill: hollow
             radius: '6'
@@ -1087,8 +1072,6 @@ spells:
         parameters:
             allow_max_range: false
             range: 200
-            undo: 0
-            cooldown: 0
             cooldown: 5000
             max-dimension: 16
             fill: hollow

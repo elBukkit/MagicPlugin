@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TransmuteSpell extends BrushSpell
@@ -27,13 +28,15 @@ public class TransmuteSpell extends BrushSpell
 
 		if (target != null)
 		{
-			transmuteAction = controller.getLastBlockList(getPlayer().getName(), target);
+			UndoQueue undoQueue = mage.getUndoQueue();
+			transmuteAction = undoQueue.getLast(target);
 			usedTarget = transmuteAction != null;
 		}
 
 		if (transmuteAction == null)
 		{
-			transmuteAction = controller.getLastBlockList(getPlayer().getName());
+			UndoQueue undoQueue = mage.getUndoQueue();
+			transmuteAction = undoQueue.getLast();
 		}
 
 		if (transmuteAction == null)

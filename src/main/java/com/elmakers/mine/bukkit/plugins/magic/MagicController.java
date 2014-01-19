@@ -74,7 +74,6 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
-import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
@@ -233,66 +232,36 @@ public class MagicController implements Listener
 		return maxRangePowerMultiplier;
 	}
 	
+	public int getAutoUndoInterval() {
+		return autoUndo;
+	}
+	
 	/*
 	 * Undo system
 	 */
 
-	public UndoQueue getUndoQueue(String playerName)
-	{
-		return getMage(playerName).getUndoQueue();
-	}
-	
 	public int getUndoQueueDepth() {
 		return undoQueueDepth;
 	}
 
-	public void addToUndoQueue(Player player, BlockList blocks)
-	{
-		addToUndoQueue(player.getName(), blocks);
-	}
-
-	public void addToUndoQueue(String playerName, BlockList blocks)
-	{
-		UndoQueue queue = getUndoQueue(playerName);
-		queue.add(blocks);
-	}
-
-	public void scheduleCleanup(String playerName, BlockList blocks)
-	{
-		UndoQueue queue = getUndoQueue(playerName);
-		queue.scheduleCleanup(this, blocks);
-	}
-
-	public boolean undoAny(Player player, Block target)
+	public String undoAny(Block target)
 	{
 		for (String playerName : mages.keySet())
 		{
 			UndoQueue queue = getMage(playerName).getUndoQueue();
 			if (queue.undo(this, target))
 			{
-				if (!player.getName().equals(playerName))
-				{
-					player.sendMessage("Undid one of " + playerName + "'s spells");
-				}
-				return true;
+				return playerName;
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	public boolean undo(String playerName)
 	{
-		UndoQueue queue = getUndoQueue(playerName);
+		UndoQueue queue = getMage(playerName).getUndoQueue();
 		return queue.undo(this);
-	}
-
-	public boolean commit(String playerName)
-	{
-		UndoQueue queue = getUndoQueue(playerName);
-		if (queue.getSize() == 0) return false;
-		queue.commit();
-		return true;
 	}
 
 	public boolean commitAll()
@@ -306,24 +275,6 @@ public class MagicController implements Listener
 			}
 		}
 		return undid;
-	}
-
-	public boolean undo(String playerName, Block target)
-	{
-		UndoQueue queue = getUndoQueue(playerName);
-		return queue.undo(this, target);
-	}
-
-	public BlockList getLastBlockList(String playerName, Block target)
-	{
-		UndoQueue queue = getUndoQueue(playerName);
-		return queue.getLast(target);
-	}
-
-	public BlockList getLastBlockList(String playerName)
-	{
-		UndoQueue queue = getUndoQueue(playerName);
-		return queue.getLast();
 	}
 
 	/*
@@ -749,6 +700,7 @@ public class MagicController implements Listener
 		maxRadiusPowerMultiplier = (float)generalNode.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
 		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
+		autoUndo = generalNode.getInteger("auto_undo", autoUndo);
 		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = generalNode.getBoolean("enable_combining", combiningEnabled);
@@ -1418,7 +1370,9 @@ public class MagicController implements Listener
 				Wand wand = new Wand(this, current);
 				Player player = (Player)event.getWhoClicked();
 				wand.takeOwnership(player, newName, true);
-				wand.organizeInventory();
+				if (organizingEnabled) {
+					wand.organizeInventory();
+				}
 				return;
 			}
 
@@ -1444,13 +1398,15 @@ public class MagicController implements Listener
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
 
-					firstWand.organizeInventory();
+					if (organizingEnabled) {
+						firstWand.organizeInventory();
+					}
 					player.getInventory().addItem(firstWand.getItem());
 					player.sendMessage("Your wands have been combined!");
 					
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
-				} else if (Wand.isWand(firstItem)) {
+				} else if (organizingEnabled && Wand.isWand(firstItem)) {
 					Wand firstWand = new Wand(this, firstItem);
 					Player player = (Player)event.getWhoClicked();
 					// TODO: Can't get the anvil's text from here.
@@ -1773,6 +1729,7 @@ public class MagicController implements Listener
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private LinkedList<BlockBatch>				 pendingBatches					= new LinkedList<BlockBatch>();
 	 private int								 maxBlockUpdates				= 100;
+	 private int								 autoUndo						= 0;
 	 
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();

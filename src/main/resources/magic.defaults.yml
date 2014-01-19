@@ -67,42 +67,105 @@
 #
 
 general:
+    # Whether or not to show any messages (in chat) 
     show_messages: true
+    
+    # Whether or not to show messages on every spell cast (in chat)
     show_cast_messages: false
+    
+    # A prefix to use for any important messages
     message_prefix: §d§o
+    
+    # A prefix to use for cast messages
     cast_message_prefix: §5§o
+    
+    # Enable/Disable Sound Effects
     sounds: true
-    message_throttle: 5000
+    
+    # Prevent rapid sending of chat messages from the plugin (in milliseconds)
+    message_throttle: 3000
+    
+    # How many blocks to update per tick
     max_block_updates: 1000
+    
+    # How much to reduce costs and cooldowns when using /cast (versus a wand)
     cast_command_cost_reduction: 1.0
     cast_command_cooldown_reduction: 0.0
+    
+    # Wand appearance
     wand_item: blaze_rod
+    # Used as a work-around for enchanting since the main item may not be enchantable.
     wand_item_enchantable: wood_sword
+    
+    # Special materials used to represent icons in the material system
+    
+    # Represents erase (fill with air)
     erase_item: sulphur
+    # Represents copy (fill with the target material)
     copy_item: sugar
+    # Clone will copy the area you are standing in when the clone material is actiavted
     clone_item: nether_stalk
+    # Replicate works like clone, but will sample a moving area, allowing you to "paint"
+    # in a section of the world across multiple spell casts.
     replicate_item: pumpkin_seeds
+    
+    # Crafting settings for crafting wands
     enable_crafting: true
     crafting_material_upper: nether_star
     crafting_material_lower: blaze_rod
     crafting_output: random(1)
+    
+    # Whether wands can be combined on an anvil
     enable_combining: true
+    
+    # Whether wands can be upgraded on an enchanting table
     enable_enchanting: true
+    
+    # Whether or not using a wand on an anvil will organize its inventory
     enable_organizing: true
+    
+    # Whether or not to add random wands to naturally spawned chests
     enable_block_populator: true
+    
+    # Allow wands to be purchased on Essentials' signs, if present.
     enable_essentials_signs: true
+    
+    # How many casts to track in the undo queue
     undo_depth: 64
+    
+    # If set to non-zero, represents a time (in milliseconds) after which all construction
+    # spells will be reversed.
+    auto_undo: 0
+    
+    # A cooldown value in milliseconds between clicks. Mainly used to prevent Bukkit/MC double-event bugs.
     click_cooldown: 150
+    
+    # Control wands' "Power" settings
     max_power_damage_multiplier: 3.0
     max_power_construction_multiplier: 2.0
     max_power_radius_multiplier: 1.5
     max_power_range_multiplier: 4.0
+    
+    # If true, fill wands with all known spells on creation
     fill_wands: false
+    
+    # Players keep their wands when they die
     keep_wands_on_death: false
+    
+    # Wands are indestructible
     indestructible_wands: true
+    
+    # Disable wand inventory, right-click-to-cycle spells. Not recommended for large wands.
     right_click_cycles: false
+    
+    # Update dynmap when constructing, if dynmap is present.
     dynmap_update: true
+    
+    # Show wands as dynmap markers, if dynmap is present
     dynmap_show_wands: true
+    
+    # If the block populator is enabled, the following is used to randomly choose
+    # wands to add to chests.
     populate_chests:
       base_probability:
         0: 100
@@ -118,6 +181,9 @@ general:
         random(10): 10
         random(20): 5
         random(30): 1
+        
+    # What materials will be targeted through by default
+    # Some spells will modify this behavior slightly, but most respect this list.
     target_through:
     - water
     - air
@@ -130,6 +196,11 @@ general:
     - red_rose
     - brown_mushroom
     - red_mushroom
+    
+    # Which materials are inherently "destructible". Most construction spells will
+    # respect this list, and only destroy the materials on this list. There are some
+    # exceptions, depending on spell configuration. Some spells
+    # will only exclude the indestructible list below.
     destructible:
     - air
     - log
@@ -154,12 +225,18 @@ general:
     - red_mushroom
     - leaves
     - sandstone
+    
+    # Which materials are always considered indestructible.
+    # No spell will ever modify a block of this type.
     indestructible:
     - bedrock
     - chest
     - ender_chest
     - sign_post
     - wall_sign
+    
+    # Which materials are acceptable as building materials. This
+    # affects what can be absorbed and added to a wand.
     building:
     - air
     - stone
