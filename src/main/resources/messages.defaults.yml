@@ -188,7 +188,7 @@ messages:
             description: Summon a mob of monsters
         portal:
             name: Portal
-            description: Create two connected portals
+            description: Create a temporary portal
         invincible:
             name: Invincible
             description: Make yourself impervious to damage

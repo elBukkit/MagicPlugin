@@ -390,6 +390,7 @@ spells:
             allow_max_range: false
             range: 200
             cooldown: 50
+            undo: 10000
         costs:
             xp: 20
     invincible:

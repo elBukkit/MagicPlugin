@@ -1,222 +1,19 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.BoundingBox;
 import com.elmakers.mine.bukkit.blocks.MaterialList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PortalSpell extends Spell
 {
-	private int             defaultSearchDistance   = 255;
-	public static MaterialList destructible          = null;
-	public static int                               teleportCooldown = 500;
-
-	PlayerPortal    a;
-	PlayerPortal    b;
-	BlockVector     lastLocation;
-	boolean         portalling = false;
-	long            lastTeleport = 0;
-
-	protected static List<PlayerPortal>    allPortals = new ArrayList<PlayerPortal>();
-
-	public class TeleportPlayerTask implements Runnable
-	{
-		protected Location  targetLocation;
-		protected PortalSpell   spell;
-
-		public TeleportPlayerTask(Location target, PortalSpell spell)
-		{
-			this.targetLocation = target;
-			this.spell = spell;
-		}
-
-		public void run()
-		{
-			spell.startTeleporting();
-			spell.getPlayer().teleport(targetLocation);
-		}
-	}
-
-	public class PlayerPortal
-	{
-		protected Location base;
-		protected BlockList portalBlocks;
-		protected PlayerPortal target;
-
-		public PlayerPortal(Location targetLocation)
-		{
-			base = targetLocation;
-			portalBlocks = new BlockList();
-			buildPortalBlocks(base, BlockFace.NORTH, portalBlocks);
-			PortalSpell.allPortals.add(this);
-		}
-
-		protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)
-		{
-			BoundingBox container = new BoundingBox(centerBlock.getBlockX(), centerBlock.getBlockY(), centerBlock.getBlockZ(), centerBlock.getBlockX() + 2, centerBlock.getBlockY() + 3, centerBlock.getBlockZ() + 1);
-			container.fill(centerBlock.getWorld(), Material.PORTAL, destructible, blockList);
-		}
-
-		public void remove()
-		{
-			portalBlocks.undo(mage);
-			portalBlocks = null;
-			PortalSpell.allPortals.remove(this);
-		}
-
-		public Location getLocation()
-		{
-			return base;
-		}
-
-		public boolean contains(Location location)
-		{
-			int lx = location.getBlockX();
-			int ly = location.getBlockY();
-			int lz = location.getBlockZ();
-			int bx = base.getBlockX();
-			int by = base.getBlockY();
-			int bz = base.getBlockZ();
-			return lx >= bx - 3 && lx <= bx + 3 && ly >= by && ly <= by + 4 && lz >= bz - 3 && lz <= bz + 3;
-		}
-
-		public void teleport(Player player, Plugin plugin, PortalSpell spell)
-		{
-			if (target == null) return;
-
-			Location targetLocation = target.getLocation();
-			Location playerLocation = player.getLocation();
-			Location destination = new Location
-					(
-							targetLocation.getWorld(),
-							targetLocation.getX(),
-							targetLocation.getY() + 1,
-							targetLocation.getZ(),
-							playerLocation.getYaw(),
-							playerLocation.getPitch()
-							);
-
-			Server server = plugin.getServer();
-			BukkitScheduler sched = server.getScheduler();
-			sched.scheduleSyncDelayedTask(plugin, new TeleportPlayerTask(destination, spell), 0);
-		}
-
-		public void link(PlayerPortal target)
-		{
-			this.target = target;
-		}
-
-		public void unlink()
-		{
-			this.target = null;
-		}
-	}
-
-	public void create(Location fromLocation, Location targetLocation)
-	{
-		if (a == null)
-		{
-			a = new PlayerPortal(targetLocation);
-			relink();
-			return;
-		}
-		if (b == null)
-		{
-			b = new PlayerPortal(targetLocation);
-			relink();
-			return;
-		}
-
-		double dist_a = a.getLocation().distanceSquared(fromLocation);
-		double dist_b = b.getLocation().distanceSquared(fromLocation);
-
-		if (dist_a < dist_b)
-		{
-			b.remove();
-			b = new PlayerPortal(targetLocation);
-		}
-		else
-		{        
-			a.remove();
-			a = new PlayerPortal(targetLocation);   
-		}
-
-		relink();
-	}
-
-	public void relink()
-	{
-		if (a != null)
-		{
-			a.link(b);
-		}
-
-		if (b != null)
-		{
-			b.link(a);
-		}
-	}
-
-	public boolean hasPortals()
-	{
-		return a != null || b != null;
-	}
-
-	public BlockVector getLastLocation()
-	{
-		return lastLocation;
-	}
-
-	public void setLastLocation(BlockVector location)
-	{
-		lastLocation = location;
-	}
-
-	public void setPortalling(boolean p)
-	{
-		portalling = p;
-	}
-
-	public void startTeleporting()
-	{
-		portalling = true;
-		lastTeleport = System.currentTimeMillis();
-	}
-
-	public boolean readyForTeleport()
-	{
-		return !portalling && (lastTeleport == 0 || lastTeleport + teleportCooldown < System.currentTimeMillis());
-	}
-
-	public boolean isPortalling()
-	{
-		return portalling;
-	}
-
-	public PlayerPortal getPortal(Location target)
-	{
-		if (a != null && a.contains(target)) return a;
-		if (b != null && b.contains(target)) return b;
-		return null;
-	}
-
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -228,13 +25,9 @@ public class PortalSpell extends Spell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(target)) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
-		if (defaultSearchDistance > 0 && getPlayer().getLocation().distanceSquared(target.getLocation()) > defaultSearchDistance* defaultSearchDistance)
+		if (!hasBuildPermission(target)) 
 		{
-			castMessage("Can't create a portal that far away");
-			return SpellResult.NO_TARGET;
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		Material blockType = target.getType();
@@ -252,75 +45,20 @@ public class PortalSpell extends Spell
 			return SpellResult.NO_TARGET;		
 		}
 
-		controller.disablePhysics(10000);
-		create(getPlayer().getLocation(), portalBase.getLocation());
-
-		checkListener();
+		int timeToLive = parameters.getInt("undo", 5000);
+		BlockList portalBlocks = new BlockList();
+		portalBlocks.setTimeToLive(timeToLive);
+		controller.disablePhysics(1000);
+		buildPortalBlocks(portalBase.getLocation(), BlockFace.NORTH, portalBlocks);
+		mage.registerForUndo(portalBlocks);
 
 		return SpellResult.SUCCESS;
 	}
 
-	public void onLoadTemplate(ConfigurationNode properties)  
+	protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)
 	{
-		if (destructible == null)
-		{
-			destructible = new MaterialList(controller.getDestructibleMaterials());
-		}
-	}
-
-	@Override
-	public void onPlayerMove(PlayerMoveEvent event)
-	{
-		Location playerLocation = getPlayer().getLocation();
-		BlockVector lastLoc = getLastLocation();
-		BlockVector currentLoc = new BlockVector(playerLocation.getBlockX(), playerLocation.getBlockY(), playerLocation.getBlockZ());
-		if (lastLoc != null && currentLoc.getBlockX() == lastLoc.getBlockX() && currentLoc.getBlockY() == lastLoc.getBlockY() && currentLoc.getBlockZ() == lastLoc.getBlockZ())
-		{
-			return;
-		}
-
-		setLastLocation(currentLoc);
-		playerLocation.setY(playerLocation.getY() + 2);
-		Block locationBlock = playerLocation.getBlock();
-		if (locationBlock.getType() == Material.PORTAL)
-		{
-			if (!isPortalling())
-			{
-				if (readyForTeleport())
-				{
-					PlayerPortal portal = findPortal(playerLocation);
-					if (portal != null)
-					{
-						portal.teleport(getPlayer(), controller.getPlugin(), this);
-					}
-				}
-				setPortalling(true);
-			}
-		}
-		else
-		{
-			setPortalling(false);
-		}
-	}
-
-	protected PlayerPortal findPortal(Location targetLocation)
-	{
-		for (PlayerPortal portal : allPortals)
-		{
-			if (portal.contains(targetLocation)) return portal;
-		}
-		return null;
-	}
-
-	protected void checkListener()
-	{
-		if (allPortals.size() == 0)
-		{
-			controller.unregisterEvent(SpellEventType.PLAYER_MOVE, this);
-		}
-		else
-		{
-			controller.registerEvent(SpellEventType.PLAYER_MOVE, this);
-		}
+		MaterialList destructible = new MaterialList(mage.getController().getDestructibleMaterials());
+		BoundingBox container = new BoundingBox(centerBlock.getBlockX(), centerBlock.getBlockY(), centerBlock.getBlockZ(), centerBlock.getBlockX() + 2, centerBlock.getBlockY() + 3, centerBlock.getBlockZ() + 1);
+		container.fill(centerBlock.getWorld(), Material.PORTAL, destructible, blockList);
 	}
 }
