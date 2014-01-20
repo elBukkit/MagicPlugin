@@ -75,6 +75,7 @@ import org.dynmap.markers.MarkerSet;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
+import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
@@ -658,6 +659,26 @@ public class MagicController implements Listener
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		// Load lost wands
+		File lostWandsFile = new File(dataFolder, lostWandsFileName);
+		if (lostWandsFile.exists())
+		{
+			getLogger().info("Loading lost wands data from file " + lostWandsFile.getName());
+			Configuration lostWandConfiguration = new Configuration(lostWandsFile);
+			lostWandConfiguration.load();
+			List<String> wandIds = lostWandConfiguration.getKeys();
+			for (String wandId : wandIds) {
+				LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getNode(wandId));
+				lostWands.put(wandId, lostWand);
+				
+				if (dynmapShowWands) {
+					addLostWandMarker(lostWand);
+					Location dropLocation = lostWand.getLocation();
+					getLogger().info("Wand " + lostWand.getName() + " added to map at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+				}
+			}
+		}
 
 		// Load player data
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -690,6 +711,33 @@ public class MagicController implements Listener
 		getLogger().info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
 	}
 	
+	public boolean addLostWand(Wand wand, Location dropLocation) {
+		if (lostWands.containsKey(wand.getId())) {
+			LostWand lostWand = lostWands.get(wand.getId());
+			lostWand.setLocation(dropLocation);
+			return false;
+		}
+		LostWand lostWand = new LostWand(wand, dropLocation);
+		lostWands.put(wand.getId(), lostWand);
+		
+		if (dynmapShowWands) {
+			addWandMarker(wand, dropLocation);
+			getLogger().info("Wand " + wand.getName() + " added to map at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());;
+		}
+		
+		return true;
+	}
+	
+	public void removeLostWand(Wand wand) {
+		lostWands.remove(wand.getId());
+		
+		if (dynmapShowWands) {
+			if (removeMarker("wand-" + wand.getId(), "Wands")) {
+				getLogger().info("Wand removed from map");
+			}
+		}
+	}
+	
 	public void save()
 	{
 		File dataFolder = plugin.getDataFolder();
@@ -702,6 +750,14 @@ public class MagicController implements Listener
 			spellsEntry.getValue().save(playerNode);
 		}
 		playerConfiguration.save();
+		
+		File lostWandsFile = new File(dataFolder, lostWandsFileName);
+		Configuration lostWandsConfiguration = new Configuration(lostWandsFile);
+		for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
+			ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
+			wandEntry.getValue().save(wandNode);
+		}
+		lostWandsConfiguration.save();
 	}
 
 	protected void load(File spellsFile)
@@ -1039,9 +1095,7 @@ public class MagicController implements Listener
 				event.setCancelled(true);
 			} else if (dynmapShowWands) {
 				Wand wand = new Wand(this, event.getEntity().getItemStack());
-				if (removeMarker("wand-" + wand.getId(), "Wands")) {
-					getLogger().info("Wand despawned, removed from map");
-				}
+				removeLostWand(wand);
 			}
 		}
 	}
@@ -1057,7 +1111,7 @@ public class MagicController implements Listener
 			if (dynmapShowWands) {
 				Wand wand = new Wand(this, event.getEntity().getItemStack());
 				if (wand != null) {
-					addWandMarker(wand, event.getEntity().getLocation());
+					addLostWand(wand, event.getEntity().getLocation());
 				}
 			}
 		}
@@ -1621,6 +1675,13 @@ public class MagicController implements Listener
 		);
 	}
 	
+	protected boolean addLostWandMarker(LostWand lostWand) {
+		Location location = lostWand.getLocation();
+		return addMarker("wand-" + lostWand.getId(), "Wands", lostWand.getName(), location.getWorld().getName(),
+			location.getBlockX(), location.getBlockY(), location.getBlockZ(), ""
+		);
+	}
+	
 	protected void checkForWands(final Entity[] entities, final int retries) {
 		if (dynmapShowWands && dynmap != null) {
 			if (!dynmap.markerAPIInitialized()) {
@@ -1641,7 +1702,7 @@ public class MagicController implements Listener
 				ItemStack itemStack = item.getItemStack();
 				if (Wand.isWand(itemStack)) {
 					Wand wand = new Wand(this, itemStack);
-					wandCount += addWandMarker(wand, item.getLocation()) ? 1 : 0;
+					wandCount += addLostWand(wand, item.getLocation()) ? 1 : 0;
 				}
 			}
 			
@@ -1702,6 +1763,7 @@ public class MagicController implements Listener
 	 private final String                        spellsFileName                 = "spells.yml";
 	 private final String                        propertiesFileName             = "magic.yml";
 	 private final String                        playersFileName                = "players.yml";
+	 private final String						 lostWandsFileName				= "lostwands.yml";
 	 private final String                        spellsFileNameDefaults         = "spells.defaults.yml";
 	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
 
@@ -1765,4 +1827,6 @@ public class MagicController implements Listener
 	 private DynmapCommonAPI					 dynmap							= null;
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;
+	 
+	 private Map<String, LostWand>				lostWands						= new HashMap<String, LostWand>();
 }
