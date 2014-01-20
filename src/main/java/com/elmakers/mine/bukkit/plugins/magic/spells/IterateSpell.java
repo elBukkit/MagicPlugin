@@ -55,10 +55,6 @@ public class IterateSpell extends BrushSpell
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(target.getLocation());
 		buildWith.update(target.getLocation());
-		
-		Material material = buildWith.getMaterial();
-		byte data = buildWith.getData();
-		
 		BlockList iteratedBlocks = new BlockList();
 		for (int i = 0; i < iterateBlocks; i++)
 		{
@@ -66,14 +62,19 @@ public class IterateSpell extends BrushSpell
 			if (currentTarget.getType() == Material.AIR && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
 			{
 				iteratedBlocks.add(currentTarget);
+
+				buildWith.update(currentTarget.getLocation());
+				
+				Material material = buildWith.getMaterial();
+				byte data = buildWith.getData();
+
 				if (incrementData) {
 					data = i > 15 ? 15 : (byte)i;
 				}
-
+				
 				currentTarget.setType(material);
 				currentTarget.setData(data);
 				
-				buildWith.update(currentTarget.getLocation());
 				controller.updateBlock(currentTarget);
 				
 				Location effectLocation = currentTarget.getLocation();	
