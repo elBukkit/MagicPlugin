@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +41,6 @@ public class Mage implements CostReducer
 	protected HashMap<String, Spell> 			spells 						  = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
 	private Wand								activeWand					   = null;
-	private final List<Spell>                   movementListeners              = new ArrayList<Spell>();
 	private final List<Spell>                   quitListeners                  = new ArrayList<Spell>();
 	private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
 	private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
@@ -225,10 +223,6 @@ public class Mage implements CostReducer
 	{
 		switch (type)
 		{
-		case PLAYER_MOVE:
-			if (!movementListeners.contains(spell))
-				movementListeners.add(spell);
-			break;
 		case PLAYER_QUIT:
 			if (!quitListeners.contains(spell))
 				quitListeners.add(spell);
@@ -248,9 +242,6 @@ public class Mage implements CostReducer
 	{
 		switch (type)
 		{
-		case PLAYER_MOVE:
-			movementListeners.remove(spell);
-			break;
 		case PLAYER_DAMAGE:
 			damageListeners.remove(spell);
 			break;
@@ -291,17 +282,6 @@ public class Mage implements CostReducer
 		for (Spell listener : active)
 		{
 			listener.onPlayerQuit(event);
-		}
-	}
-
-	public void onPlayerMove(PlayerMoveEvent event)
-	{
-		// Must allow listeners to remove themselves during the event!
-		List<Spell> active = new ArrayList<Spell>();
-		active.addAll(movementListeners);
-		for (Spell listener : active)
-		{
-			listener.onPlayerMove(event);
 		}
 	}
 

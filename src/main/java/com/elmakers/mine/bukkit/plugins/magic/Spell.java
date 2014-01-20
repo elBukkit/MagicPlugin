@@ -16,7 +16,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -397,17 +396,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean onCancel()
 	{
 		return false;
-	}
-
-	/**
-	 * Listener method, called on player move for registered spells.
-	 * 
-	 * @param event The original player move event
-	 * @see MagicController#registerEvent(SpellEventType, Spell)
-	 */
-	public void onPlayerMove(PlayerMoveEvent event)
-	{
-
 	}
 
 	/**

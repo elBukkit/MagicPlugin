@@ -52,7 +52,6 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -998,13 +997,6 @@ public class MagicController implements Listener
 			Wand newWand = new Wand(this, next);
 			newWand.activate(mage);
 		}
-	}
-
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event)
-	{
-		Mage spells = getMage(event.getPlayer());
-		spells.onPlayerMove(event);
 	}
 
 	@EventHandler
