@@ -41,14 +41,21 @@ public class DisarmSpell extends Spell
 		effectTrail.setSpeed(effectSpeed);
 		effectTrail.setPeriod(effectPeriod);
 		effectTrail.start();
-		
-		Target target = getTarget();
-		Entity targetEntity = target.getEntity();
-		if (targetEntity == null || !(targetEntity instanceof LivingEntity))
-		{
-			return SpellResult.NO_TARGET;    
+
+		LivingEntity entity = null;
+		String targetType = (String)parameters.getString("target", "other");
+		if (targetType.equals("self")) {
+			entity = getPlayer();
+		} else {
+			Target target = getTarget();
+			Entity targetEntity = target.getEntity();
+			if (targetEntity == null || !(targetEntity instanceof LivingEntity))
+			{
+				return SpellResult.NO_TARGET;    
+			}
+			entity = (LivingEntity)targetEntity;
 		}
-		LivingEntity entity = (LivingEntity)targetEntity;
+		
 		EntityEquipment equipment = entity.getEquipment();
 		ItemStack stack = equipment.getItemInHand();
 		
