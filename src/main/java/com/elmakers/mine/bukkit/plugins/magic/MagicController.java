@@ -1698,20 +1698,15 @@ public class MagicController implements Listener
 				}
 				return;
 			}
-			int wandCount = 0;
 			for (Entity entity : entities) {
 				if (!(entity instanceof Item)) continue;
 				Item item = (Item)entity;
 				ItemStack itemStack = item.getItemStack();
 				if (Wand.isWand(itemStack)) {
 					Wand wand = new Wand(this, itemStack);
-					wandCount += addLostWand(wand, item.getLocation()) ? 1 : 0;
+					addLostWand(wand, item.getLocation());
 				}
-			}
-			
-			if (wandCount > 0) {
-				getLogger().info("Found " + wandCount + " wands, added to map");
-			}
+			}			
 		}
 	}
 
