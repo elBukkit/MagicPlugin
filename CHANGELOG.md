@@ -8,6 +8,7 @@
  - Add "check_destructible" spell property to clearly indicate which construction spells use the destructible list.
  - Add /magic commit command
  - Add flag to disable WG protection
+ - magic.yml is now additive to magic.defaults.yml, if present (MIGRATION NOTE)
  
 ## 2.8.7
 

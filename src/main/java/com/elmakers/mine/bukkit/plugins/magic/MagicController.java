@@ -417,7 +417,67 @@ public class MagicController implements Listener
 
 	public void initialize()
 	{
+		CSVParser csv = new CSVParser();
+		stickyMaterials = csv.parseMaterials(STICKY_MATERIALS);
+		stickyMaterialsDoubleHeight = csv.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
+
+		buildingMaterials = csv.parseMaterials(DEFAULT_BUILDING_MATERIALS);
+		indestructibleMaterials = csv.parseMaterials(DEFAULT_INDESTRUCTIBLE_MATERIALS);
+		destructibleMaterials = csv.parseMaterials(DEFAULT_DESTRUCTIBLE_MATERIALS);
+		targetThroughMaterials = csv.parseMaterials(DEFAULT_TARGET_THROUGH_MATERIALS);
+		
 		load();
+		
+		if (craftingEnabled) {
+			Wand wand = new Wand(this);
+			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
+			recipe.shape("o", "i").
+					setIngredient('o', wandRecipeUpperMaterial).
+					setIngredient('i', wandRecipeLowerMaterial);
+			wandRecipe = recipe;
+		}
+		
+		// Try to link to Essentials:
+		Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
+		if (essentials != null) {
+			mailer = new Mailer(essentials);
+		}
+		
+		if (essentialsSignsEnabled) {
+			final MagicController me = this;
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				public void run() {
+					try {
+						Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
+						if (essentials != null) {
+							Class<?> essentialsClass = essentials.getClass();
+							Field itemDbField = essentialsClass.getDeclaredField("itemDb");
+							itemDbField.setAccessible(true);
+							Object oldEntry = itemDbField.get(essentials);
+							if (oldEntry instanceof MagicItemDb) {
+								getLogger().info("Essentials integration already set up, skipping");
+								return;
+							}
+							if (!oldEntry.getClass().getName().equals("com.earth2me.essentials.ItemDb")){
+								getLogger().info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
+								return;
+							}
+							Object newEntry = new MagicItemDb(me, essentials);
+							itemDbField.set(essentials, newEntry);
+							Field confListField = essentialsClass.getDeclaredField("confList");
+							confListField.setAccessible(true);
+							@SuppressWarnings("unchecked")
+							List<Object> confList = (List<Object>)confListField.get(essentials);
+							confList.remove(oldEntry);
+							confList.add(newEntry);
+							getLogger().info("Essentials found, hooked up custom item handler");
+						}
+					} catch (Throwable ex) {
+						ex.printStackTrace();
+					}
+				}
+			}, 5);
+		}
 		
 		// Try to (dynamically) link to WorldGuard:
 		if (regionManagerEnabled) {
@@ -557,10 +617,15 @@ public class MagicController implements Listener
 		getLogger().info("Overwriting file " + propertiesFileNameDefaults);
 		plugin.saveResource(propertiesFileNameDefaults, false);
 		File propertiesFile = new File(dataFolder, propertiesFileName);
+
+		getLogger().info("Loading defaults from: " + propertiesFileNameDefaults);
+		loadProperties(plugin.getResource(propertiesFileNameDefaults));
+		
 		if (!propertiesFile.exists())
 		{
-			getLogger().info("Loading defaults from: " + propertiesFileNameDefaults);
-			loadProperties(plugin.getResource(propertiesFileNameDefaults));
+			getLogger().info("Saving template " + propertiesFileName + ", edit to customize configuration.");
+			plugin.saveResource(propertiesFileName, false);
+			
 		} else {
 			getLogger().info("Loading customizations from: " + propertiesFile.getName());
 			loadProperties(propertiesFile);
@@ -696,19 +761,16 @@ public class MagicController implements Listener
 		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = generalNode.getBoolean("enable_combining", combiningEnabled);
 		organizingEnabled = generalNode.getBoolean("enable_organizing", organizingEnabled);
+		essentialsSignsEnabled = generalNode.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
 		dynmapShowWands = generalNode.getBoolean("dynamp_show_wands", dynmapShowWands);
 		dynmapUpdate = generalNode.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = generalNode.getBoolean("region_manager_enabled", regionManagerEnabled);
 		blockPopulatorConfig = generalNode.getNode("populate_chests");
 
-		buildingMaterials = generalNode.getMaterials("building", DEFAULT_BUILDING_MATERIALS);
-		indestructibleMaterials = generalNode.getMaterials("indestructible", DEFAULT_INDESTRUCTIBLE_MATERIALS);
-		destructibleMaterials = generalNode.getMaterials("destructible", DEFAULT_DESTRUCTIBLE_MATERIALS);
-		targetThroughMaterials = generalNode.getMaterials("target_through", DEFAULT_TARGET_THROUGH_MATERIALS);
-
-		CSVParser csv = new CSVParser();
-		stickyMaterials = csv.parseMaterials(STICKY_MATERIALS);
-		stickyMaterialsDoubleHeight = csv.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
+		buildingMaterials = generalNode.getMaterials("building", buildingMaterials);
+		indestructibleMaterials = generalNode.getMaterials("indestructible", indestructibleMaterials);
+		destructibleMaterials = generalNode.getMaterials("destructible", destructibleMaterials);
+		targetThroughMaterials = generalNode.getMaterials("target_through", targetThroughMaterials);
 		
 		// Parse wand settings
 		Wand.WandMaterial = generalNode.getMaterial("wand_item", Wand.WandMaterial);
@@ -719,59 +781,11 @@ public class MagicController implements Listener
 		Wand.EnchantableWandMaterial = generalNode.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings
-		boolean craftingEnabled = generalNode.getBoolean("enable_crafting", false);
+		craftingEnabled = generalNode.getBoolean("enable_crafting", craftingEnabled);
 		if (craftingEnabled) {
 			recipeOutputTemplate = generalNode.getString("crafting_output", recipeOutputTemplate);
 			wandRecipeUpperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
 			wandRecipeLowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
-			Wand wand = new Wand(this);
-			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
-			recipe.shape("o", "i").
-					setIngredient('o', wandRecipeUpperMaterial).
-					setIngredient('i', wandRecipeLowerMaterial);
-			wandRecipe = recipe;
-		}
-		
-		// Try to link to Essentials:
-		Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
-		if (essentials != null) {
-			mailer = new Mailer(essentials);
-		}
-		
-		if (generalNode.getBoolean("enable_essentials_signs", false)) {
-			final MagicController me = this;
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				public void run() {
-					try {
-						Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
-						if (essentials != null) {
-							Class<?> essentialsClass = essentials.getClass();
-							Field itemDbField = essentialsClass.getDeclaredField("itemDb");
-							itemDbField.setAccessible(true);
-							Object oldEntry = itemDbField.get(essentials);
-							if (oldEntry instanceof MagicItemDb) {
-								getLogger().info("Essentials integration already set up, skipping");
-								return;
-							}
-							if (!oldEntry.getClass().getName().equals("com.earth2me.essentials.ItemDb")){
-								getLogger().info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
-								return;
-							}
-							Object newEntry = new MagicItemDb(me, essentials);
-							itemDbField.set(essentials, newEntry);
-							Field confListField = essentialsClass.getDeclaredField("confList");
-							confListField.setAccessible(true);
-							@SuppressWarnings("unchecked")
-							List<Object> confList = (List<Object>)confListField.get(essentials);
-							confList.remove(oldEntry);
-							confList.add(newEntry);
-							getLogger().info("Essentials found, hooked up custom item handler");
-						}
-					} catch (Throwable ex) {
-						ex.printStackTrace();
-					}
-				}
-			}, 5);
 		}
 	}
 
@@ -1255,7 +1269,7 @@ public class MagicController implements Listener
 	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
 		Recipe recipe = event.getRecipe();
-		if (wandRecipe != null && recipe.getResult().getType() == Wand.WandMaterial) {
+		if (craftingEnabled && wandRecipe != null && recipe.getResult().getType() == Wand.WandMaterial) {
 			// Verify that this was our recipe
 			// Just in case something else can craft our base material (e.g. stick)
 			Inventory inventory = event.getInventory();
@@ -1308,7 +1322,7 @@ public class MagicController implements Listener
 		
 		// log.info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType());
 	
-		if (event.getInventory().getType() == InventoryType.ENCHANTING)
+		if (enchantingEnabled && event.getInventory().getType() == InventoryType.ENCHANTING)
 		{
 			SlotType slotType = event.getSlotType();
 			if (slotType == SlotType.CRAFTING) {
@@ -1550,7 +1564,7 @@ public class MagicController implements Listener
 	
 	@EventHandler
 	public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
-		if (Wand.isWand(event.getItem())) {
+		if (enchantingEnabled && Wand.isWand(event.getItem())) {
 			Wand wandItem = new Wand(this, event.getItem());
 			if (!wandItem.isModifiable()) return;
 			
@@ -1707,9 +1721,11 @@ public class MagicController implements Listener
 	 private int								 messageThrottle				= 0;
 	 private int								 clickCooldown					= 150;
 	 private boolean							 blockPopulatorEnabled			= false;
+	 private boolean							 craftingEnabled				= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
 	 private boolean							 organizingEnabled				= false;
+	 private boolean							 essentialsSignsEnabled			= false;
 	 private boolean							 dynmapUpdate					= true;
 	 private boolean							 dynmapShowWands				= true;
 	 private float							 	 maxDamagePowerMultiplier	    = 2.0f;

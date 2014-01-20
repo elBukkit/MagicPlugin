@@ -10,6 +10,11 @@
             
  To continue to be able to fill all materials.
 
+### magic.yml
+
+ This config file is now additive. See the notes in magic.defaults.yml
+ You only need to set what you wish to change from the default in magic.yml
+
 ## 2.8.7
 
 ### magic.yml

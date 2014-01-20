@@ -1,0 +1,48 @@
+#
+# This setup is meant to demo Magic in a safe way.
+#
+# - Wands can NOT be crafted on a crafting table
+# - Wands can NOT be found in random naturally-spawned chests
+# - Wands can NOT be upgraded on an enchanting table
+# - Wands can NOT be combined on an anvil
+# - Wands are NOT indestructible (and will show NOT up on a dynmap)
+# - Wands can NOT be purchased in Essentials shops
+# - WorldGuard building protection will prevent construction spell use
+# - All spells auto-undo after 30 seconds
+#
+
+general:
+
+    # Crafting settings for crafting wands
+    enable_crafting: false
+    
+    # Whether wands can be combined on an anvil
+    enable_combining: false
+    
+    # Whether wands can be upgraded on an enchanting table
+    enable_enchanting: false
+    
+    # Whether or not using a wand on an anvil will organize its inventory
+    enable_organizing: false
+    
+    # Whether or not to add random wands to naturally spawned chests
+    enable_block_populator: false
+    
+    # Allow wands to be purchased on Essentials' signs, if present.
+    enable_essentials_signs: false
+    
+    # If set to non-zero, represents a time (in milliseconds) after which all construction
+    # spells will be reversed.
+    auto_undo: 30000
+    
+    # Wands are indestructible
+    indestructible_wands: false
+    
+    # Update dynmap when constructing, if dynmap is present.
+    dynmap_update: false
+    
+    # Show wands as dynmap markers, if dynmap is present
+    dynmap_show_wands: false
+    
+    # Enable worldguard protection against construction spells
+    region_manager_enabled: true

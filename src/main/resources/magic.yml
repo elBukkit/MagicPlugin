@@ -1,0 +1,24 @@
+#
+# Modify this file to change the overall behavior of the Magic plugin.
+# only include the options you want to modify.
+#
+
+#
+# This is the general configuration file for the magic plugin.
+# 
+# Wand and Spell configurations are separate, in wands.yml and spells.yml.
+# Localizations are also separate, in messages.yml.
+#
+
+# For example, to make it so all construction spells automatically undo their effects
+# after ten seconds:
+#
+# general:
+#   auto-undo: 10000
+#
+# More examples can be found at
+# 
+# https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples
+#
+
+general: []
