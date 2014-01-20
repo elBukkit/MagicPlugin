@@ -617,18 +617,26 @@ public class MagicController implements Listener
 		getLogger().info("Overwriting file " + propertiesFileNameDefaults);
 		plugin.saveResource(propertiesFileNameDefaults, false);
 		File propertiesFile = new File(dataFolder, propertiesFileName);
-
-		getLogger().info("Loading defaults from: " + propertiesFileNameDefaults);
-		loadProperties(plugin.getResource(propertiesFileNameDefaults));
 		
-		if (!propertiesFile.exists())
-		{
-			getLogger().info("Saving template " + propertiesFileName + ", edit to customize configuration.");
-			plugin.saveResource(propertiesFileName, false);
-			
-		} else {
-			getLogger().info("Loading customizations from: " + propertiesFile.getName());
-			loadProperties(propertiesFile);
+		try {
+			getLogger().info("Loading defaults from: " + propertiesFileNameDefaults);
+			loadProperties(plugin.getResource(propertiesFileNameDefaults));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		try {
+			if (!propertiesFile.exists())
+			{
+				getLogger().info("Saving template " + propertiesFileName + ", edit to customize configuration.");
+				plugin.saveResource(propertiesFileName, false);
+				
+			} else {
+				getLogger().info("Loading customizations from: " + propertiesFile.getName());
+				loadProperties(propertiesFile);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		// Load spells
@@ -637,13 +645,18 @@ public class MagicController implements Listener
 		getLogger().info("Overwriting file " + spellsFileNameDefaults);
 		plugin.saveResource(spellsFileNameDefaults, false);
 		File spellsFile = new File(dataFolder, spellsFileName);
-		if (!spellsFile.exists())
-		{
-			getLogger().info("Loading default spells from: " + spellsFileNameDefaults);
-			load(plugin.getResource(spellsFileNameDefaults));
-		} else {
-			getLogger().info("Loading spells from: " + spellsFile.getName());
-			load(spellsFile);
+		
+		try {
+			if (!spellsFile.exists())
+			{
+				getLogger().info("Loading default spells from: " + spellsFileNameDefaults);
+				load(plugin.getResource(spellsFileNameDefaults));
+			} else {
+				getLogger().info("Loading spells from: " + spellsFile.getName());
+				load(spellsFile);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		// Load player data
