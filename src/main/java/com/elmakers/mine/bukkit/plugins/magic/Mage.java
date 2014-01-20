@@ -555,6 +555,7 @@ public class Mage implements CostReducer
 				}
 			}
 			if (cancelled) {
+				controller.removePending(this);
 				return true;
 			}
 		}
@@ -741,6 +742,7 @@ public class Mage implements CostReducer
 	
 	public void addPendingBlockBatch(BlockBatch batch) {
 		pendingBatches.addLast(batch);
+		controller.addPending(this);
 	}
 	
 	public void processPendingBatches(int maxBlockUpdates) {
@@ -752,6 +754,10 @@ public class Mage implements CostReducer
 			if (batch.isFinished()) {
 				pendingBatches.removeFirst();
 			}
+		}
+		
+		if (pendingBatches.size() == 0) {
+			controller.removePending(this);
 		}
 	}
 }

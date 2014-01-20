@@ -527,11 +527,21 @@ public class MagicController implements Listener
 		// Set up the Block update timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
-				for (Mage mage : mages.values()) {
+				List<Mage> pending = new ArrayList<Mage>();
+				pending.addAll(pendingConstruction.values());
+				for (Mage mage : pending) {
 					mage.processPendingBatches(maxBlockUpdates);
 				}
 			}
 		}, 0, 1);
+	}
+	
+	protected void addPending(Mage mage) {
+		pendingConstruction.put(mage.getName(), mage);
+	}
+	
+	protected void removePending(Mage mage) {
+		pendingConstruction.remove(mage.getName());
 	}
 	
 	public void updateBlock(Block block)
@@ -861,6 +871,7 @@ public class MagicController implements Listener
 	protected void clear()
 	{
 		mages.clear();
+		pendingConstruction.clear();
 		spells.clear();
 	}
 
@@ -1815,6 +1826,7 @@ public class MagicController implements Listener
 	 
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();
+	 private final HashMap<String, Mage>		 pendingConstruction			= new HashMap<String, Mage>();
 
 	 private Recipe								 wandRecipe						= null;
 	 private Material							 wandRecipeUpperMaterial		= Material.DIAMOND;

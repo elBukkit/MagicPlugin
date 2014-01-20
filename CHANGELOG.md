@@ -4,6 +4,8 @@
 
  - Add "self" parameter to disarm spell (for remote disarming with castp)
  - Fix the iterate spell using the replicate material. Strange effects though :)
+ - Save lost wands for easier re-location.
+ - Optimize the pending block construction task
 
 ## 2.8.8
 
