@@ -364,9 +364,8 @@ wands:
             - stained_glass_pane:14
             - stained_glass_pane:15
     decorator:
-        modifiable: true
-        xp_regeneration: 10
-        xp_max: 100
+        modifiable: false
+        cost_reduction: 1
         spells:
             - convert
         materials:

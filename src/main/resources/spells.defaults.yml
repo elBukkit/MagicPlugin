@@ -606,7 +606,7 @@ spells:
             check_destructible: false
             indestructible:
               - air
-            radius: 2
+            radius: 3
         costs:
             xp: 20
     superconvert:
