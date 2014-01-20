@@ -21,4 +21,41 @@
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples
 #
 
-general: {}
+# Some common fields that you might like to override:
+
+# Whether or not to show any messages (in chat) 
+#show_messages: true
+
+# Whether or not to show messages on every spell cast (in chat)
+#show_cast_messages: false
+
+# A prefix to use for any important messages
+#message_prefix: ¤d¤o
+
+# A prefix to use for cast messages
+#cast_message_prefix: ¤5¤o
+
+# Enable/Disable Sound Effects
+#sounds: true
+
+# Prevent rapid sending of chat messages from the plugin (in milliseconds)
+#message_throttle: 3000
+
+# How much to reduce costs and cooldowns when using /cast (versus a wand)
+#cast_command_cost_reduction: 1.0
+#cast_command_cooldown_reduction: 0.0
+
+# Whether wands can be crafted on a crafting table
+#enable_crafting: true
+
+# Whether wands can be combined on an anvil
+#enable_combining: true
+
+# Whether wands can be upgraded on an enchanting table
+#enable_enchanting: true
+
+# Whether or not to add random wands to naturally spawned chests
+#enable_block_populator: false
+
+# Whether or not using a wand on an anvil will organize its inventory
+#enable_organizing: true

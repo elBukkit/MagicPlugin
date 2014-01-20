@@ -231,8 +231,8 @@ messages:
             name: Grenade
             description: Place a primed grenade
         frag:
-            name: Frag Grenade
-            description: Place a mega frag grenade
+            name: Incendiary Grenade
+            description: Toss a fire grenade
         convert:
             name: Convert
             description: Convert a spherical area of blocks

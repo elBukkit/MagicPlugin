@@ -22,6 +22,10 @@ public class LostWand {
 		this.owner = wand.getOwner();
 	}
 	
+	public boolean isValid() {
+		return location != null && id != null && id.length() > 0;
+	}
+	
 	public void save(ConfigurationNode configNode)
 	{
 		try {

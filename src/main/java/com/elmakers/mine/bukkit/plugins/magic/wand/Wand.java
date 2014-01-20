@@ -1497,13 +1497,11 @@ public class Wand implements CostReducer {
 		properties.load();
 		wandTemplates.clear();
 
-		ConfigurationNode wandList = properties.getNode("wands");
-		if (wandList == null) return;
-
-		List<String> wandKeys = wandList.getKeys();
+		// TODO: Make this additive!
+		List<String> wandKeys = properties.getKeys();
 		for (String key : wandKeys)
 		{
-			ConfigurationNode wandNode = wandList.getNode(key);
+			ConfigurationNode wandNode = properties.getNode(key);
 			wandNode.setProperty("key", key);
 			wandTemplates.put(key,  wandNode);
 			if (key.equals("random")) {

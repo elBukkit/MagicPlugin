@@ -6,6 +6,7 @@
  - Fix the iterate spell using the replicate material. Strange effects though :)
  - Save lost wands for easier re-location.
  - Optimize the pending block construction task
+ - Simplify config files. (MIGRATION NOTE!!)
 
 ## 2.8.8
 

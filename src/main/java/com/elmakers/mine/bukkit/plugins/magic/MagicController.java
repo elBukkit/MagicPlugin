@@ -669,29 +669,22 @@ public class MagicController implements Listener
 			ex.printStackTrace();
 		}
 		
-		// Load lost wands
-		File lostWandsFile = new File(dataFolder, lostWandsFileName);
-		if (lostWandsFile.exists())
-		{
-			getLogger().info("Loading lost wands data from file " + lostWandsFile.getName());
-			Configuration lostWandConfiguration = new Configuration(lostWandsFile);
-			lostWandConfiguration.load();
-			List<String> wandIds = lostWandConfiguration.getKeys();
-			for (String wandId : wandIds) {
-				LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getNode(wandId));
-				lostWands.put(wandId, lostWand);
-				
-				if (dynmapShowWands) {
-					addLostWandMarker(lostWand);
-					Location dropLocation = lostWand.getLocation();
-					getLogger().info("Wand " + lostWand.getName() + " added to map at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
-				}
-			}
+		// Load wand templates
+		try {
+			Wand.load(plugin);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-
-		// Load player data
+		
+		getLogger().info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
+		
+		// Delay some loading, in particular world lookups by name seem to fail at onEnable time
+		// I'm guessing this is because I force Magic to run prior to inialization
+		// This is pretty hacky, but I'd hope everything is OK on the next time anyway.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
+				
+				// Load Player Data
 				File playersFile = new File(dataFolder, playersFileName);
 				if (playersFile.exists())
 				{
@@ -703,21 +696,44 @@ public class MagicController implements Listener
 						getMage(playerName).load(playerConfiguration.getNode(playerName));
 					}
 				}
+				
+				// Load lost wands
+				try {
+					File lostWandsFile = new File(dataFolder, lostWandsFileName);
+					if (lostWandsFile.exists())
+					{
+						getLogger().info("Loading lost wands data from file " + lostWandsFile.getName());
+						Configuration lostWandConfiguration = new Configuration(lostWandsFile);
+						lostWandConfiguration.load();
+						List<String> wandIds = lostWandConfiguration.getKeys();
+						for (String wandId : wandIds) {
+							LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getNode(wandId));
+							if (!lostWand.isValid()) {
+								getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
+								continue;
+							}
+							lostWands.put(wandId, lostWand);
+							Location dropLocation = lostWand.getLocation();
+							getLogger().info("Wand " + lostWand.getName() + " found at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+							
+							if (dynmapShowWands) {
+								addLostWandMarker(lostWand);
+							}
+						}
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				
+				// Load URL Map Data
+				try {
+					URLMap.resetAll();
+					URLMap.load(plugin);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
-		}, 5);
-	
-		// Load URL map data
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			public void run() {
-				URLMap.resetAll();
-				URLMap.load(plugin);
-			}
-		}, 20);
-		
-		// Load wand templates
-		Wand.load(plugin);
-
-		getLogger().info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
+		}, 10);
 	}
 	
 	public boolean addLostWand(Wand wand, Location dropLocation) {
@@ -782,14 +798,12 @@ public class MagicController implements Listener
 	protected void load(Configuration config)
 	{
 		config.load();
-
-		ConfigurationNode spellsNode = config.getNode("spells");
-		if (spellsNode == null) return;
-
-		List<String> spellKeys = spellsNode.getKeys();
+		
+		// TODO: Make this additive
+		List<String> spellKeys = config.getKeys();
 		for (String key : spellKeys)
 		{
-			ConfigurationNode spellNode = spellsNode.getNode(key);
+			ConfigurationNode spellNode = config.getNode(key);
 			Spell newSpell = Spell.loadSpell(key, spellNode, this);
 			if (newSpell == null)
 			{
@@ -813,57 +827,60 @@ public class MagicController implements Listener
 	protected void loadProperties(Configuration properties)
 	{
 		properties.load();
+		
+		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
+		wandCycling = properties.getBoolean("right_click_cycles", wandCycling);
+		showMessages = properties.getBoolean("show_messages", showMessages);
+		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
+		messagePrefix = properties.getString("message_prefix", messagePrefix);
+		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
+		clickCooldown = properties.getInt("click_cooldown", clickCooldown);
+		messageThrottle = properties.getInt("message_throttle", 0);
+		maxBlockUpdates = properties.getInt("max_block_updates", maxBlockUpdates);
+		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
+		fillWands = properties.getBoolean("fill_wands", fillWands);
+		indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
+		keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", keepWandsOnDeath);
+		maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
+		maxConstructionPowerMultiplier = (float)properties.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
+		maxRangePowerMultiplier = (float)properties.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
+		maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
+		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
+		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
+		autoUndo = properties.getInteger("auto_undo", autoUndo);
+		blockPopulatorEnabled = properties.getBoolean("enable_block_populator", blockPopulatorEnabled);
+		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
+		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
+		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
+		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
+		dynmapShowWands = properties.getBoolean("dynamp_show_wands", dynmapShowWands);
+		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
+		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
+		blockPopulatorConfig = properties.getNode("populate_chests");
 
-		ConfigurationNode generalNode = properties.getNode("general");
-		undoQueueDepth = generalNode.getInteger("undo_depth", undoQueueDepth);
-		wandCycling = generalNode.getBoolean("right_click_cycles", wandCycling);
-		showMessages = generalNode.getBoolean("show_messages", showMessages);
-		showCastMessages = generalNode.getBoolean("show_cast_messages", showCastMessages);
-		messagePrefix = generalNode.getString("message_prefix", messagePrefix);
-		castMessagePrefix = generalNode.getString("cast_message_prefix", castMessagePrefix);
-		clickCooldown = generalNode.getInt("click_cooldown", clickCooldown);
-		messageThrottle = generalNode.getInt("message_throttle", 0);
-		maxBlockUpdates = generalNode.getInt("max_block_updates", maxBlockUpdates);
-		soundsEnabled = generalNode.getBoolean("sounds", soundsEnabled);
-		fillWands = generalNode.getBoolean("fill_wands", fillWands);
-		indestructibleWands = generalNode.getBoolean("indestructible_wands", indestructibleWands);
-		keepWandsOnDeath = generalNode.getBoolean("keep_wands_on_death", keepWandsOnDeath);
-		maxDamagePowerMultiplier = (float)generalNode.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
-		maxConstructionPowerMultiplier = (float)generalNode.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
-		maxRangePowerMultiplier = (float)generalNode.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
-		maxRadiusPowerMultiplier = (float)generalNode.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
-		castCommandCostReduction = (float)generalNode.getDouble("cast_command_cost_reduction", castCommandCostReduction);
-		castCommandCooldownReduction = (float)generalNode.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
-		autoUndo = generalNode.getInteger("auto_undo", autoUndo);
-		blockPopulatorEnabled = generalNode.getBoolean("enable_block_populator", blockPopulatorEnabled);
-		enchantingEnabled = generalNode.getBoolean("enable_enchanting", enchantingEnabled);
-		combiningEnabled = generalNode.getBoolean("enable_combining", combiningEnabled);
-		organizingEnabled = generalNode.getBoolean("enable_organizing", organizingEnabled);
-		essentialsSignsEnabled = generalNode.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
-		dynmapShowWands = generalNode.getBoolean("dynamp_show_wands", dynmapShowWands);
-		dynmapUpdate = generalNode.getBoolean("dynmap_update", dynmapUpdate);
-		regionManagerEnabled = generalNode.getBoolean("region_manager_enabled", regionManagerEnabled);
-		blockPopulatorConfig = generalNode.getNode("populate_chests");
-
-		buildingMaterials = generalNode.getMaterials("building", buildingMaterials);
-		indestructibleMaterials = generalNode.getMaterials("indestructible", indestructibleMaterials);
-		destructibleMaterials = generalNode.getMaterials("destructible", destructibleMaterials);
-		targetThroughMaterials = generalNode.getMaterials("target_through", targetThroughMaterials);
+		// TODO: Turn this into flexible lists
+		ConfigurationNode materialNode = properties.getNode("materials");
+		if (materialNode != null) {
+			buildingMaterials = materialNode.getMaterials("building", buildingMaterials);
+			indestructibleMaterials = materialNode.getMaterials("indestructible", indestructibleMaterials);
+			destructibleMaterials = materialNode.getMaterials("destructible", destructibleMaterials);
+			targetThroughMaterials = materialNode.getMaterials("transparent", targetThroughMaterials);
+		}
 		
 		// Parse wand settings
-		Wand.WandMaterial = generalNode.getMaterial("wand_item", Wand.WandMaterial);
-		Wand.CopyMaterial = generalNode.getMaterial("copy_item", Wand.CopyMaterial);
-		Wand.EraseMaterial = generalNode.getMaterial("erase_item", Wand.EraseMaterial);
-		Wand.CloneMaterial = generalNode.getMaterial("clone_item", Wand.CloneMaterial);
-		Wand.ReplicateMaterial = generalNode.getMaterial("replicate_item", Wand.ReplicateMaterial);
-		Wand.EnchantableWandMaterial = generalNode.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
+		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
+		Wand.CopyMaterial = properties.getMaterial("copy_item", Wand.CopyMaterial);
+		Wand.EraseMaterial = properties.getMaterial("erase_item", Wand.EraseMaterial);
+		Wand.CloneMaterial = properties.getMaterial("clone_item", Wand.CloneMaterial);
+		Wand.ReplicateMaterial = properties.getMaterial("replicate_item", Wand.ReplicateMaterial);
+		Wand.EnchantableWandMaterial = properties.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings
-		craftingEnabled = generalNode.getBoolean("enable_crafting", craftingEnabled);
+		craftingEnabled = properties.getBoolean("enable_crafting", craftingEnabled);
 		if (craftingEnabled) {
-			recipeOutputTemplate = generalNode.getString("crafting_output", recipeOutputTemplate);
-			wandRecipeUpperMaterial = generalNode.getMaterial("crafting_material_upper", wandRecipeUpperMaterial);
-			wandRecipeLowerMaterial = generalNode.getMaterial("crafting_material_lower", wandRecipeLowerMaterial);
+			recipeOutputTemplate = properties.getString("crafting_output", recipeOutputTemplate);
+			wandRecipeUpperMaterial = properties.getMaterial("crafting_material_upper", wandRecipeUpperMaterial);
+			wandRecipeLowerMaterial = properties.getMaterial("crafting_material_lower", wandRecipeLowerMaterial);
 		}
 	}
 

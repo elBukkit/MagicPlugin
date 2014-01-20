@@ -1,5 +1,21 @@
 # Migration Notes
 
+## 2.8.9
+
+ BIG ONE: All config files have had their root removed. So there is no "general" in magic.yml, it's all flat.
+ 
+ Additional note: in magic.yml the material lists (destructible, indestructible, etc) have moved under a "materials" 
+ node. 
+ 
+ This should be easy enough to fix in your customized configurations, but otherwise they will be ignored- so make
+ sure you catch this on upgrade.
+ 
+ Note that now you only need to modify what you want to have different now. So it might be a good time to review your
+ custom configurations!
+ 
+ I'm trying to get the config formats more or less solidified by 2.9.0, and I hope the overall format won't change at all
+ after official release (3.0). 
+
 ## 2.8.8
 
 ### spells.yml

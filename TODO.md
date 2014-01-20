@@ -9,9 +9,16 @@ IMPORTANT STUFF:
  - Persist material brush
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
  - Add console logging of massive construction spell casting
+ - Make ores destructible by most spells (except blast?)
+ - Raise default construction limits again.. or mess with power?
 
 NEW SPELLS:
 
+ - level - levels the ground
+ - avatar - Goes into "avatar" state- free spells, super power, levitating, special effects- but rapidly decreasing mana while active.
+    - will need a spell-based power/protection system, or use potion effects? 
+    - would be nice if this could extend from potioneffect and levitate- maybe refactor?
+    - will need a separate "active cost reduction" property
  - banish - sets a player's home and spawn?
  - Fix/finish stairs spell
  - Fix tunnel spell

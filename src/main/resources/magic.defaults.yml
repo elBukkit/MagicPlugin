@@ -65,314 +65,374 @@
 # Localizations are also separate, in messages.yml.
 #
 
-general:
-    # Whether or not to show any messages (in chat) 
-    show_messages: true
-    
-    # Whether or not to show messages on every spell cast (in chat)
-    show_cast_messages: false
-    
-    # A prefix to use for any important messages
-    message_prefix: §d§o
-    
-    # A prefix to use for cast messages
-    cast_message_prefix: §5§o
-    
-    # Enable/Disable Sound Effects
-    sounds: true
-    
-    # Prevent rapid sending of chat messages from the plugin (in milliseconds)
-    message_throttle: 3000
-    
-    # How many blocks to update per tick
-    max_block_updates: 1000
-    
-    # How much to reduce costs and cooldowns when using /cast (versus a wand)
-    cast_command_cost_reduction: 1.0
-    cast_command_cooldown_reduction: 0.0
-    
-    # Wand appearance
-    wand_item: blaze_rod
-    # Used as a work-around for enchanting since the main item may not be enchantable.
-    wand_item_enchantable: wood_sword
-    
-    # Special materials used to represent icons in the material system
-    
-    # Represents erase (fill with air)
-    erase_item: sulphur
-    # Represents copy (fill with the target material)
-    copy_item: sugar
-    # Clone will copy the area you are standing in when the clone material is actiavted
-    clone_item: nether_stalk
-    # Replicate works like clone, but will sample a moving area, allowing you to "paint"
-    # in a section of the world across multiple spell casts.
-    replicate_item: pumpkin_seeds
-    
-    # Crafting settings for crafting wands
-    enable_crafting: true
-    crafting_material_upper: nether_star
-    crafting_material_lower: blaze_rod
-    crafting_output: random(1)
-    
-    # Whether wands can be combined on an anvil
-    enable_combining: true
-    
-    # Whether wands can be upgraded on an enchanting table
-    enable_enchanting: true
-    
-    # Whether or not using a wand on an anvil will organize its inventory
-    enable_organizing: true
-    
-    # Whether or not to add random wands to naturally spawned chests
-    enable_block_populator: false
-    
-    # Allow wands to be purchased on Essentials' signs, if present.
-    enable_essentials_signs: true
-    
-    # How many casts to track in the undo queue
-    undo_depth: 64
-    
-    # If set to non-zero, represents a time (in milliseconds) after which all construction
-    # spells will be reversed.
-    auto_undo: 0
-    
-    # A cooldown value in milliseconds between clicks. Mainly used to prevent Bukkit/MC double-event bugs.
-    click_cooldown: 150
-    
-    # Control wands' "Power" settings
-    max_power_damage_multiplier: 3.0
-    max_power_construction_multiplier: 2.0
-    max_power_radius_multiplier: 1.5
-    max_power_range_multiplier: 4.0
-    
-    # If true, fill wands with all known spells on creation
-    fill_wands: false
-    
-    # Players keep their wands when they die
-    keep_wands_on_death: false
-    
-    # Wands are indestructible
-    indestructible_wands: true
-    
-    # Disable wand inventory, right-click-to-cycle spells. Not recommended for large wands.
-    right_click_cycles: false
-    
-    # Update dynmap when constructing, if dynmap is present.
-    dynmap_update: true
-    
-    # Show wands as dynmap markers, if dynmap is present
-    dynmap_show_wands: true
-    
-    # Enable worldguard protection against construction spells
-    region_manager_enabled: true
-    
-    # If the block populator is enabled, the following is used to randomly choose
-    # wands to add to chests.
-    populate_chests:
-      base_probability:
-        0: 100
-        1: 70
-        2: 20
-        3: 5
-      wand_probability:
-        arrow: 50
-        fireball: 60
-        random(1): 200
-        random(2): 150
-        random(5): 80
-        random(10): 10
-        random(20): 5
-        random(30): 1
-        
-    # What materials will be targeted through by default
-    # Some spells will modify this behavior slightly, but most respect this list.
-    target_through:
-    - water
-    - air
-    - snow
-    - wooden_door
-    - iron_door_block
-    - long_grass
-    - dead_bush
-    - yellow_flower
-    - red_rose
-    - brown_mushroom
-    - red_mushroom
-    
-    # Which materials are inherently "destructible". Most construction spells will
-    # respect this list, and only destroy the materials on this list. There are some
-    # exceptions, depending on spell configuration. Some spells
-    # will only exclude the indestructible list below.
-    destructible:
-    - air
-    - log
-    - stone
-    - grass
-    - dirt
-    - cobblestone
-    - water
-    - stationary_water
-    - lava
-    - stationary_lava
-    - sand
-    - gravel
-    - netherrack
-    - soul_sand
-    - snow
-    - long_grass
-    - dead_bush
-    - yellow_flower
-    - red_rose
-    - brown_mushroom
-    - red_mushroom
-    - leaves
-    - sandstone
-    
-    # Which materials are always considered indestructible.
-    # No spell will ever modify a block of this type.
-    indestructible:
-    - bedrock
-    - chest
-    - ender_chest
-    - sign_post
-    - wall_sign
-    
-    # Which materials are acceptable as building materials. This
-    # affects what can be absorbed and added to a wand.
-    building:
-    - air
-    - stone
-    - grass
-    - dirt
-    - cobblestone
-    - wood
-    - water
-    - stationary_water
-    - lava
-    - stationary_lava
-    - sand
-    - gravel
-    - gold_ore
-    - iron_ore
-    - coal_ore
-    - log
-    - leaves
-    - sponge
-    - glass
-    - lapis_ore
-    - lapis_block
-    - dispenser
-    - sandstone
-    - note_block
-    - bed_block
-    - powered_rail
-    - detector_rail
-    - piston_sticky_base
-    - piston_base
-    - piston_extension
-    - long_grass
-    - dead_bush
-    - piston_moving_piece
-    - yellow_flower
-    - red_rose
-    - brown_mushroom
-    - red_mushroom
-    - wool
-    - gold_block
-    - iron_block
-    - double_step
-    - step
-    - brick
-    - tnt
-    - bookshelf
-    - mossy_cobblestone
-    - obsidian
-    - mob_spawner
-    - wood_stairs
-    - redstone_wire
-    - diamond_ore
-    - diamond_block
-    - workbench
-    - soil
-    - furnace
-    - burning_furnace
-    - ladder
-    - rails
-    - cobblestone_stairs
-    - redstone_ore
-    - glowing_redstone_ore
-    - ice
-    - snow_block
-    - cactus
-    - clay
-    - sugar_cane_block
-    - jukebox
-    - fence
-    - pumpkin
-    - netherrack
-    - soul_sand
-    - glowstone
-    - portal
-    - jack_o_lantern
-    - cake_block
-    - diode_block_off
-    - diode_block_on
-    - locked_chest
-    - trap_door
-    - smooth_brick
-    - huge_mushroom_1
-    - huge_mushroom_2
-    - iron_fence
-    - thin_glass
-    - melon_block
-    - pumpkin_stem
-    - melon_stem
-    - vine
-    - fence_gate
-    - brick_stairs
-    - smooth_stairs
-    - mycel
-    - water_lily
-    - nether_brick
-    - nether_fence
-    - nether_brick_stairs
-    - nether_warts
-    - cauldron
-    - ender_portal
-    - ender_portal_frame
-    - ender_stone
-    - redstone_lamp_off
-    - redstone_lamp_on
-    - wood_double_step
-    - wood_step
-    - cocoa
-    - sandstone_stairs
-    - emerald_ore
-    - emerald_block
-    - spruce_wood_stairs
-    - birch_wood_stairs
-    - jungle_wood_stairs
-    - beacon
-    - cobble_wall
-    - flower_pot
-    - carrot
-    - potato
-    - skull
-    - anvil
-    - gold_plate
-    - iron_plate
-    - redstone_block
-    - quartz_ore
-    - hopper
-    - quartz_block
-    - quartz_stairs
-    - activator_rail
-    - dropper
-    - stained_clay
-    - hay_block
-    - carpet
-    - hard_clay
-    - coal_block
-    - stained_glass_pane
-    - stained_glass
-    - packed_ice
+#
+# General Properties
+#
+
+# Whether or not to show any messages (in chat) 
+show_messages: true
+
+# Whether or not to show messages on every spell cast (in chat)
+show_cast_messages: false
+
+# A prefix to use for any important messages
+message_prefix: §d§o
+
+# A prefix to use for cast messages
+cast_message_prefix: §5§o
+
+# Enable/Disable Sound Effects
+sounds: true
+
+# Prevent rapid sending of chat messages from the plugin (in milliseconds)
+message_throttle: 3000
+
+# How much to reduce costs and cooldowns when using /cast (versus a wand)
+cast_command_cost_reduction: 1.0
+cast_command_cooldown_reduction: 0.0
+
+# Whether wands can be crafted on a crafting table
+enable_crafting: true
+
+# Whether wands can be combined on an anvil
+enable_combining: true
+
+# Whether wands can be upgraded on an enchanting table
+enable_enchanting: true
+
+# Whether or not to add random wands to naturally spawned chests
+enable_block_populator: false
+
+# Whether or not using a wand on an anvil will organize its inventory
+enable_organizing: true
+
+#
+# Wand configuration
+# 
+
+# Wand appearance
+wand_item: blaze_rod
+
+# Used as a work-around for enchanting since the main item may not be enchantable (client-side).
+wand_item_enchantable: wood_sword
+
+# If true, fill wands with all known spells on creation
+fill_wands: false
+
+# Players keep their wands when they die
+keep_wands_on_death: false
+
+# Wands are indestructible
+indestructible_wands: true
+
+# Disable wand inventory, right-click-to-cycle spells. Not recommended for large wands.
+right_click_cycles: false
+
+# Crafting settings for crafting wands
+crafting_material_upper: nether_star
+crafting_material_lower: blaze_rod
+crafting_output: random(1)
+
+# A cooldown value in milliseconds between clicks. Mainly used to prevent Bukkit/MC double-event bugs.
+click_cooldown: 150
+
+#
+# Construction System Tweaking
+#
+
+# How many blocks to update per tick
+max_block_updates: 1000
+
+#
+# Special materials used to represent icons in the material brush system
+#
+
+# Represents erase (fill with air)
+erase_item: sulphur
+# Represents copy (fill with the target material)
+copy_item: sugar
+# Clone will copy the area you are standing in when the clone material is activated
+clone_item: nether_stalk
+# Replicate works like clone, but will sample a moving area, allowing you to "paint"
+# in a section of the world across multiple spell casts.
+replicate_item: pumpkin_seeds
+
+# How many casts to track in the undo queue
+undo_depth: 64
+
+# If set to non-zero, represents a time (in milliseconds) after which all construction
+# spells will be reversed.
+auto_undo: 0
+
+#
+# Control wands' "Power" settings
+#
+# Wands have a power (from 0-1) that will change the effects of many spells:
+# - Direct-damage spells (arrow, disintegrate, shrink) will increase their damage
+# - "Super" construction spells (the two-click variants) will allow for larger dimension selections
+# - Radius-based spells (inferno, storm, blob, blast, arrowrain, mob) will have a larger radius, 
+#   generally meaning "more" of whatever they do. Be careful with this one.
+# - Additionally, all spells will have a longer range.
+# All of these aspects can be controlled individually.
+# Be aware that a wand can be "overclocked", meaning it has a power greater than 1. Spell properties
+# will continue to scale up. This will never happen naturally, only via the "wand configure" command
+# or a wand template with a pre-defined power greater than 1
+#
+max_power_damage_multiplier: 3.0
+max_power_construction_multiplier: 5.0
+max_power_radius_multiplier: 1.5
+max_power_range_multiplier: 4.0
+
+### Plugin Integration
+
+# Allow wands to be purchased on Essentials' signs, if present.
+enable_essentials_signs: true
+
+# Update dynmap when constructing, if dynmap is present.
+dynmap_update: true
+
+# Show wands as dynmap markers, if dynmap is present
+dynmap_show_wands: true
+
+# Enable worldguard protection against construction spells
+region_manager_enabled: true
+
+#
+# Define material sets.
+# These can be used with the targeting and construction system to fine-tune behavior.
+#
+materials:
+  # What materials can be targeted through by default
+  transparent:
+  - water
+  - stationary_water
+  - air
+  - snow
+  - wooden_door
+  - iron_door_block
+  - long_grass
+  - dead_bush
+  - yellow_flower
+  - red_rose
+  - brown_mushroom
+  - red_mushroom  
+  # Which materials are inherently "destructible". This list includes anything is
+  # can be naturally generated, except by structures (strongholds, villages, etc).
+  # Most construction spells will use this material list for destructibility tests by
+  # default.
+  destructible:
+  - air
+  - log
+  - stone
+  - grass
+  - dirt
+  - cobblestone
+  - water
+  - stationary_water
+  - lava
+  - stationary_lava
+  - sand
+  - gravel
+  - netherrack
+  - soul_sand
+  - snow
+  - long_grass
+  - dead_bush
+  - yellow_flower
+  - red_rose
+  - brown_mushroom
+  - red_mushroom
+  - leaves
+  - sandstone
+  - gold_ore
+  - iron_ore
+  - coal_ore
+  - lapis_ore
+  - diamond_ore
+  - redstone_ore
+  - glowing_redstone_ore
+  - emerald_ore
+  - quartz_ore
+  
+  # Which materials are defined as ores
+  # This can be used to make "erasure" spells that avoid destroying ore,
+  # or otherwise make spells that act specifically on ores.
+  ores:
+  - gold_ore
+  - iron_ore
+  - coal_ore
+  - lapis_ore
+  - diamond_ore
+  - redstone_ore
+  - glowing_redstone_ore
+  - emerald_ore
+  - quartz_ore
+  
+  # Which materials are always considered indestructible.
+  # No spell will ever modify a block of this type.
+  # (The exception being accidental destruction via explosion or
+  # removal of attached block)
+  indestructible:
+  - bedrock
+  - chest
+  - ender_chest
+  - sign_post
+  - wall_sign
+  
+  # Which materials are acceptable as building materials. This
+  # affects what can be absorbed and added to a wand.
+  building:
+  - air
+  - stone
+  - grass
+  - dirt
+  - cobblestone
+  - wood
+  - water
+  - stationary_water
+  - lava
+  - stationary_lava
+  - sand
+  - gravel
+  - gold_ore
+  - iron_ore
+  - coal_ore
+  - log
+  - leaves
+  - sponge
+  - glass
+  - lapis_ore
+  - lapis_block
+  - dispenser
+  - sandstone
+  - note_block
+  - bed_block
+  - powered_rail
+  - detector_rail
+  - piston_sticky_base
+  - piston_base
+  - piston_extension
+  - long_grass
+  - dead_bush
+  - piston_moving_piece
+  - yellow_flower
+  - red_rose
+  - brown_mushroom
+  - red_mushroom
+  - wool
+  - gold_block
+  - iron_block
+  - double_step
+  - step
+  - brick
+  - tnt
+  - bookshelf
+  - mossy_cobblestone
+  - obsidian
+  - mob_spawner
+  - wood_stairs
+  - redstone_wire
+  - diamond_ore
+  - diamond_block
+  - workbench
+  - soil
+  - furnace
+  - burning_furnace
+  - ladder
+  - rails
+  - cobblestone_stairs
+  - redstone_ore
+  - glowing_redstone_ore
+  - ice
+  - snow_block
+  - cactus
+  - clay
+  - sugar_cane_block
+  - jukebox
+  - fence
+  - pumpkin
+  - netherrack
+  - soul_sand
+  - glowstone
+  - portal
+  - jack_o_lantern
+  - cake_block
+  - diode_block_off
+  - diode_block_on
+  - locked_chest
+  - trap_door
+  - smooth_brick
+  - huge_mushroom_1
+  - huge_mushroom_2
+  - iron_fence
+  - thin_glass
+  - melon_block
+  - pumpkin_stem
+  - melon_stem
+  - vine
+  - fence_gate
+  - brick_stairs
+  - smooth_stairs
+  - mycel
+  - water_lily
+  - nether_brick
+  - nether_fence
+  - nether_brick_stairs
+  - nether_warts
+  - cauldron
+  - ender_portal
+  - ender_portal_frame
+  - ender_stone
+  - redstone_lamp_off
+  - redstone_lamp_on
+  - wood_double_step
+  - wood_step
+  - cocoa
+  - sandstone_stairs
+  - emerald_ore
+  - emerald_block
+  - spruce_wood_stairs
+  - birch_wood_stairs
+  - jungle_wood_stairs
+  - beacon
+  - cobble_wall
+  - flower_pot
+  - carrot
+  - potato
+  - skull
+  - anvil
+  - gold_plate
+  - iron_plate
+  - redstone_block
+  - quartz_ore
+  - hopper
+  - quartz_block
+  - quartz_stairs
+  - activator_rail
+  - dropper
+  - stained_clay
+  - hay_block
+  - carpet
+  - hard_clay
+  - coal_block
+  - stained_glass_pane
+  - stained_glass
+  - packed_ice
+
+# If the block populator is enabled, the following is used to randomly choose
+# wands to add to chests.
+populate_chests:
+  base_probability:
+    0: 100
+    1: 70
+    2: 20
+    3: 5
+  wand_probability:
+    arrow: 50
+    fireball: 60
+    random(1): 200
+    random(2): 150
+    random(5): 80
+    random(10): 10
+    random(20): 5
+    random(30): 1
