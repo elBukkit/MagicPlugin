@@ -265,7 +265,7 @@ public class MagicController implements Listener
 	{
 		boolean undid = false;
 		for (Mage mage : mages.values()) {
-			undid = undid || mage.commit();
+			undid = mage.commit() || undid;
 		}
 		return undid;
 	}
