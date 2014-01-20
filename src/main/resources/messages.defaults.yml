@@ -275,7 +275,7 @@ messages:
             description: Mine out a large area
         cloak:
             name: Cloak
-            description: Make yourself invisible while still
+            description: Make yourself invisible
         undo:
             name: Rollback
             description: Undo your last action

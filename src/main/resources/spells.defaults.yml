@@ -675,11 +675,13 @@ spells:
     cloak:
         icon: chainmail_chestplate
         category: master
-        class: InvisibilitySpell
-        parameters:
-            cooldown: 0
+        class: PotionEffectSpell
         costs:
-            xp: 15
+            xp: 10
+        parameters:
+            target: any
+            particle: reddust
+            invisibility: 600,5
     undo:
         icon: book_and_quill
         category: engineering
