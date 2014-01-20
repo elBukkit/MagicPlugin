@@ -520,4 +520,4 @@ messages:
             description: NathanWolf's Mega-Wand
         decorator:
             name: Decorator
-            description: Temporarily Decorates
+            description:Decorates large areas at a time
