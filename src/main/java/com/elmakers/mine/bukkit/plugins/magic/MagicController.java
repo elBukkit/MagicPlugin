@@ -797,8 +797,8 @@ public class MagicController implements Listener
 		craftingEnabled = generalNode.getBoolean("enable_crafting", craftingEnabled);
 		if (craftingEnabled) {
 			recipeOutputTemplate = generalNode.getString("crafting_output", recipeOutputTemplate);
-			wandRecipeUpperMaterial = generalNode.getMaterial("crafting_material_upper", Material.DIAMOND);
-			wandRecipeLowerMaterial = generalNode.getMaterial("crafting_material_lower", Material.BLAZE_ROD);
+			wandRecipeUpperMaterial = generalNode.getMaterial("crafting_material_upper", wandRecipeUpperMaterial);
+			wandRecipeLowerMaterial = generalNode.getMaterial("crafting_material_lower", wandRecipeLowerMaterial);
 		}
 	}
 
