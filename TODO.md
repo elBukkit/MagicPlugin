@@ -3,13 +3,9 @@
 IMPORTANT STUFF:
 
  - Fix underwater targeting on non-construction spells, or generally if in the water
- - Optimize constructs for max min y
  - Investigate long disable lag after undo queues are cleared
  - Save off dynmap marker chunks on disable, load chunks on startup
- - Investigate MaterialBrush NPE (Maybe pre-world-fix, but keep an eye out when testing)
- - Persist material brush .. make sure it doesn't reset on load (might be tricky given current structure)
- - Fix recall spell with natural spawn.. hook into essentials?
- - Can't alter "null" message from alter on bad target?
+ - Persist material brush
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
  - Add console logging of massive construction spell casting
 
@@ -21,8 +17,6 @@ NEW SPELLS:
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
- - separate alter into superalter and alter
- - Add "all" parameter to commit spell (and undo spell?)
  - Phase spell
  - Column and Disc building spells
 
@@ -31,21 +25,19 @@ OTHER STUFF:
  - Test larger undo queue sizes, or count size in blocks?
  - Add "wand duplicate" command
  - Organize inventory by spell usage (favorites page)
- - Add "clone" material. Likely to take a lot of work, refactoring...
  - Complete work on tab completion
  - Make /wand name take ownership
  - Separate material list for "super" building materials?
  - Test reloads- not duplicating undo queues, etc
  - Scale fling and levitate falling effects based on distance fallen
  
- - Fix up alter in general, remove id-based lists
+ - Fix up alter spell, remove id-based lists
  - urlmaps.yml got truncated?
    - Check for duplicate keys when searching for a new one (?)
- - Make sure adding spells/materials never removes any
-  - first spell on wand is getting lost (?) - debug with elder wand and fling. 
+ - Make sure adding spells/materials never removes any, also opening/closing the inventory
+  - first spell on wand is getting lost (?) - debug with elder wand and fling. (haven't seen this in a while) 
   
  - Add option to bypass all costs to magic.yml
- - Add target=self parameter to disarm
  - Add visual effects to spawn and recall spells
  
  - Need separate activate/deactivate costs. Fill vs levitate :\

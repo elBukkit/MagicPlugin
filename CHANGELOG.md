@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.8.9
+
+ - Add "self" parameter to disarm spell (for remote disarming with castp)
+ - Fix the iterate spell using the replicate material. Strange effects though :)
+
 ## 2.8.8
 
  - Add log to destructible material list
