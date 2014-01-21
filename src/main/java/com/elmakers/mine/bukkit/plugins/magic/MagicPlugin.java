@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -25,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
+import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -218,6 +220,7 @@ public class MagicPlugin extends JavaPlugin
 				addIfPermissible(sender, options, "Magic.commands.", "cancel");
 				addIfPermissible(sender, options, "Magic.commands.", "reload");
 				addIfPermissible(sender, options, "Magic.commands.", "commit");
+				addIfPermissible(sender, options, "Magic.commands.", "list");
 			}
 		}
 		else if (cmd.getName().equalsIgnoreCase("wand")) 
@@ -290,6 +293,17 @@ public class MagicPlugin extends JavaPlugin
 					sender.sendMessage("All changes committed");
 				} else {
 					sender.sendMessage("Nothing to commit");
+				}
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("list"))
+			{
+				// TODO: Other kinds of lists.
+				Collection<LostWand> lostWands = controller.getLostWands();
+				for (LostWand lostWand : lostWands) {
+					Location location = lostWand.getLocation();
+					getLogger().info(lostWand.getName() + " (" + lostWand.getOwner() + ") @ " + location.getWorld().getName() + " " +
+							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
 				}
 				return true;
 			}

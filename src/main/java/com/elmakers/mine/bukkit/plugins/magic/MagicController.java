@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -502,7 +503,7 @@ public class MagicController implements Listener
 		// Try to (dynamically) link to dynmap:
 		try {
 			Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
-			if (!(dynmapPlugin instanceof DynmapCommonAPI)) {
+			if (dynmapPlugin != null && !(dynmapPlugin instanceof DynmapCommonAPI)) {
 				throw new Exception("Dynmap plugin found, but class is not DynmapCommonAPI");
 			}
 			dynmap = (DynmapCommonAPI)dynmapPlugin;
@@ -512,6 +513,8 @@ public class MagicController implements Listener
 		
 		if (dynmap == null) {
 			getLogger().info("dynmap not found, not integrating.");
+		} else {
+			getLogger().info("dynmap found, integrating.");
 		}
 		
 		// Set up the PlayerSpells timer
@@ -713,8 +716,7 @@ public class MagicController implements Listener
 								continue;
 							}
 							lostWands.put(wandId, lostWand);
-							Location dropLocation = lostWand.getLocation();
-							getLogger().info("Wand " + lostWand.getName() + " found at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+							// getLogger().info("Wand " + lostWand.getName() + " found at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 							
 							if (dynmapShowWands) {
 								addLostWandMarker(lostWand);
@@ -744,16 +746,18 @@ public class MagicController implements Listener
 		}
 		LostWand lostWand = new LostWand(wand, dropLocation);
 		lostWands.put(wand.getId(), lostWand);
+		getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " dropped at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 		
 		if (dynmapShowWands) {
 			addWandMarker(wand, dropLocation);
-			getLogger().info("Wand " + wand.getName() + " added to map at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());;
 		}
 		
 		return true;
 	}
 	
-	public void removeLostWand(Wand wand) {
+	public boolean removeLostWand(Wand wand) {
+		if (!lostWands.containsKey(wand.getId())) return false;
+		
 		lostWands.remove(wand.getId());
 		
 		if (dynmapShowWands) {
@@ -761,6 +765,8 @@ public class MagicController implements Listener
 				getLogger().info("Wand removed from map");
 			}
 		}
+		
+		return true;
 	}
 	
 	public void save()
@@ -853,7 +859,7 @@ public class MagicController implements Listener
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
 		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
-		dynmapShowWands = properties.getBoolean("dynamp_show_wands", dynmapShowWands);
+		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
 		blockPopulatorConfig = properties.getNode("populate_chests");
@@ -1123,16 +1129,14 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onItemSpawn(ItemSpawnEvent event)
 	{
-		if ((indestructibleWands || dynmapShowWands) && Wand.isWand(event.getEntity().getItemStack()))
+		if (Wand.isWand(event.getEntity().getItemStack()))
 		{
 			if (indestructibleWands) {
 				InventoryUtils.setInvulnerable(event.getEntity());
 			}
-			if (dynmapShowWands) {
-				Wand wand = new Wand(this, event.getEntity().getItemStack());
-				if (wand != null) {
-					addLostWand(wand, event.getEntity().getLocation());
-				}
+			Wand wand = new Wand(this, event.getEntity().getItemStack());
+			if (wand != null) {
+				addLostWand(wand, event.getEntity().getLocation());
 			}
 		}
 	}
@@ -1154,10 +1158,10 @@ public class MagicController implements Listener
             {
             	if (indestructibleWands) {
                      event.setCancelled(true);
-            	} else if(dynmapShowWands && event.getDamage() >= itemStack.getDurability()) {
+            	} else if(event.getDamage() >= itemStack.getDurability()) {
                 	Wand wand = new Wand(this, item.getItemStack());
-                	if (removeMarker("wand-" + wand.getId(), "Wands")) {
-                		plugin.getLogger().info("Wand destroyed, removed from map");
+                	if (removeLostWand(wand)) {
+                		plugin.getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " destroyed");
                 	}
                 }
 			}  
@@ -1585,15 +1589,16 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
-		Mage spells = getMage(event.getPlayer());
+		Mage mage = getMage(event.getPlayer());
 		ItemStack pickup = event.getItem().getItemStack();
 		if (dynmapShowWands && Wand.isWand(pickup)) {
 			Wand wand = new Wand(this, pickup);
-			removeMarker("wand-" + wand.getId(), "Wands");
+			plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getId());
+			removeLostWand(wand);
 		}
-		if (spells.hasStoredInventory()) {
+		if (mage.hasStoredInventory()) {
 			event.setCancelled(true);   		
-			if (spells.addToStoredInventory(event.getItem().getItemStack())) {
+			if (mage.addToStoredInventory(event.getItem().getItemStack())) {
 				event.getItem().remove();
 			}
 		} else {
@@ -1605,7 +1610,7 @@ public class MagicController implements Listener
 				event.setCancelled(true);
 				event.getItem().remove();
 				inventory.setItem(inventory.getHeldItemSlot(), pickup);
-				wand.activate(spells);
+				wand.activate(mage);
 			} 
 		}
 	}
@@ -1770,6 +1775,10 @@ public class MagicController implements Listener
 	
 	public Material getDefaultMaterial() {
 		return defaultMaterial;
+	}
+	
+	public Collection<LostWand> getLostWands() {
+		return lostWands.values();
 	}
 
 	/*

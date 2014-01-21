@@ -2,6 +2,8 @@
 
 IMPORTANT STUFF:
 
+ - Disintegrate block damage is broken (?)
+ - Familiar- my cast kills their familiars?
  - Investigate performance, maybe remove move listener (and also portal, gills spells)
  - Fix underwater targeting on non-construction spells, or generally if in the water
  - Investigate long disable lag after undo queues are cleared
@@ -30,6 +32,7 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - Alter names sheep "_jeb"
  - Test larger undo queue sizes, or count size in blocks?
  - Add "wand duplicate" command
  - Organize inventory by spell usage (favorites page)

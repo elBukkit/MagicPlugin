@@ -23,11 +23,11 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class FrostSpell extends Spell
 {
 	private static final int			DEFAULT_RADIUS			= 2;
-	private static final int            DEFAULT_TIME_TO_LIVE = 60000;
+	private static final int            DEFAULT_TIME_TO_LIVE = 0;
 	private static final int            DEFAULT_PLAYER_DAMAGE = 1;
 	private static final int            DEFALT_ENTITY_DAMAGE = 10;
 	private static final int			DEFAULT_SLOWNESS = 1;
-	private static final int			DEFAULT_DURATION = 200;
+	private static final int			DEFAULT_SLOWNESS_DURATION = 200;
 	
     private final static int 		maxEffectRange = 16;
     private final static int 		effectSpeed = 1;
@@ -99,9 +99,9 @@ public class FrostSpell extends Spell
 		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
 		int entityDamage = parameters.getInteger("entity_damage", DEFALT_ENTITY_DAMAGE);
 		int defaultRadius = parameters.getInteger("radius", DEFAULT_RADIUS);
-		int timeToLive = parameters.getInt("duration", DEFAULT_TIME_TO_LIVE);
+		int timeToLive = parameters.getInt("undo", DEFAULT_TIME_TO_LIVE);
 		int slowness = parameters.getInt("slowness", DEFAULT_SLOWNESS);
-		int slownessDuration = parameters.getInt("slowness_duration", DEFAULT_DURATION);
+		int slownessDuration = parameters.getInt("slowness_duration", DEFAULT_SLOWNESS_DURATION);
 
 		if (target.isEntity())
 		{

@@ -7,6 +7,7 @@
  - Save lost wands for easier re-location.
  - Optimize the pending block construction task
  - Simplify config files. (MIGRATION NOTE!!)
+ - Add /magic list command (WIP, currently lists lost
 
 ## 2.8.8
 
