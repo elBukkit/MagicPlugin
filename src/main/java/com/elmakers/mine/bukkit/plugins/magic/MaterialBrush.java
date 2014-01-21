@@ -86,6 +86,7 @@ public class MaterialBrush extends MaterialAndData {
 	@SuppressWarnings("deprecation")
 	public boolean update(Location target) {
 		if (cloneLocation != null && (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)) {
+			if (cloneTarget == null) cloneTarget = target;
 			materialTarget = cloneLocation.clone();
 			materialTarget.subtract(cloneTarget.toVector());
 			materialTarget.add(target.toVector());

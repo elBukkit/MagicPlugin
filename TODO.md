@@ -2,17 +2,18 @@
 
 IMPORTANT STUFF:
 
- - Disintegrate block damage is broken (?)
+ - Effect color getting lost on wands?
  - Familiar- my cast kills their familiars?
+
  - Investigate performance, maybe remove move listener (and also portal, gills spells)
  - Fix underwater targeting on non-construction spells, or generally if in the water
- - Investigate long disable lag after undo queues are cleared
- - Save off dynmap marker chunks on disable, load chunks on startup
  - Persist material brush
- - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
  - Add console logging of massive construction spell casting
  - Make ores destructible by most spells (except blast?)
  - Raise default construction limits again.. or mess with power?
+
+ - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
+
 
 NEW SPELLS:
 
@@ -27,7 +28,6 @@ NEW SPELLS:
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
- - Phase spell
  - Column and Disc building spells
 
 OTHER STUFF:
