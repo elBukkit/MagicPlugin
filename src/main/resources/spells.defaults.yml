@@ -555,6 +555,7 @@ superblob:
     class: ConstructSpell
     parameters:
         allow_max_range: true
+        check_destructible: false
         range: 200
         cooldown: 5000
         max_dimension: 16

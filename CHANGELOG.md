@@ -9,6 +9,7 @@
  - Simplify config files. (MIGRATION NOTE!!)
  - Add /magic list command (WIP, currently lists lost
  - Add phase spell
+ - Superblob will now replace more block types. Blob remains the same.
 
 ## 2.8.8
 
