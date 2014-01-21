@@ -72,7 +72,7 @@ public class PhaseSpell extends Spell
 		Player player = getPlayer();
 		if (player != null) {
 			Location playerLocation = player.getLocation();
-			player.teleport(targetLocation);
+			player.teleport(tryFindPlaceToStand(targetLocation));
 			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 			EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);

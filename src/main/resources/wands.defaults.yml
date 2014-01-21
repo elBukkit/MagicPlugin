@@ -712,6 +712,7 @@ elder:
         - commit
         - heal
         - wither
+        - phase
     materials:
         - water
         - lava
@@ -1280,6 +1281,7 @@ wolf:
         - tree
         - wolf
         - cat
+        - phase
     materials:
         - water
         - lava

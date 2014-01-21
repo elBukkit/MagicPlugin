@@ -391,7 +391,7 @@ portal:
     costs:
         xp: 20
 phase:
-    icon: end_portal
+    icon: ender_portal
     category: master
     class: PhaseSpell
     parameters:
