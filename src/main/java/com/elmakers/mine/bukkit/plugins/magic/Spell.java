@@ -498,21 +498,21 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean isOkToStandIn(Material mat)
 	{
 		return 
-				(
-						mat == Material.AIR 
-						||    mat == Material.WATER 
-						||    mat == Material.STATIONARY_WATER 
-						||    mat == Material.SNOW
-						||    mat == Material.TORCH
-						||    mat == Material.SIGN_POST
-						||    mat == Material.REDSTONE_TORCH_ON
-						||    mat == Material.REDSTONE_TORCH_OFF
-						||    mat == Material.YELLOW_FLOWER
-						||    mat == Material.RED_ROSE
-						||    mat == Material.RED_MUSHROOM
-						||    mat == Material.BROWN_MUSHROOM
-						||    mat == Material.LONG_GRASS
-						);
+		(
+			mat == Material.AIR 
+			||    mat == Material.WATER 
+			||    mat == Material.STATIONARY_WATER 
+			||    mat == Material.SNOW
+			||    mat == Material.TORCH
+			||    mat == Material.SIGN_POST
+			||    mat == Material.REDSTONE_TORCH_ON
+			||    mat == Material.REDSTONE_TORCH_OFF
+			||    mat == Material.YELLOW_FLOWER
+			||    mat == Material.RED_ROSE
+			||    mat == Material.RED_MUSHROOM
+			||    mat == Material.BROWN_MUSHROOM
+			||    mat == Material.LONG_GRASS
+		);
 	}
 
 	public boolean isWater(Material mat)
@@ -522,58 +522,67 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public boolean isOkToStandOn(Material mat)
 	{
-		// Added snow here to avoid blink bounciness
 		return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
 	}
 	
-	public Location tryFindPlaceToStand(Location playerLoc)
+	public boolean isSafeLocation(Block block)
 	{
-		Location location = findPlaceToStand(playerLoc, false);
-		if (location == null) {
-			location = findPlaceToStand(playerLoc, true);
+		if (!block.getChunk().isLoaded()) {
+			block.getChunk().load(true);
+			return false;
 		}
-		return location == null ? playerLoc : location;
+
+		if (block.getY() > 255) {
+			return false;
+		}
+		
+		Block blockOneUp = block.getRelative(BlockFace.UP);
+		Block blockTwoUp = blockOneUp.getRelative(BlockFace.UP);
+		return (
+				isOkToStandOn(block.getType())
+				&&	isOkToStandIn(blockOneUp.getType())
+				&& 	isOkToStandIn(blockTwoUp.getType())
+		);
 	}
 	
-	public Location findPlaceToStand(Location playerLoc, boolean goUp)
+	public boolean isSafeLocation(Location loc)
 	{
-		int step;
-		if (goUp)
-		{
-			step = 1;
+		return isSafeLocation(loc.getBlock());
+	}
+	
+	public Location tryFindPlaceToStand(Location targetLoc)
+	{
+		if (!targetLoc.getBlock().getChunk().isLoaded()) return targetLoc;
+		
+		if (isSafeLocation(targetLoc)) return targetLoc;
+		Location location = findPlaceToStand(targetLoc, true);
+		
+		if (location == null) {
+			location = findPlaceToStand(targetLoc, false);
 		}
-		else
-		{
-			step = -1;
-		}
-
-		// get player position
-		int x = (int) Math.round(playerLoc.getX() - 0.5);
-		int y = (int) Math.round(playerLoc.getY() + step + step);
-		int z = (int) Math.round(playerLoc.getZ() - 0.5);
-
-		World world = playerLoc.getWorld();
-
+		return location == null ? targetLoc : location;
+	}
+	
+	public Location findPlaceToStand(Location targetLocation, boolean goUp)
+	{
+		int direction = goUp ? 1 : -1;
+		
 		// search for a spot to stand
-		while (4 < y && y < 253)
+		while (4 < targetLocation.getY() && targetLocation.getY() < 253)
 		{
-			Block block = world.getBlockAt(x, y, z);
-			Block blockOneUp = world.getBlockAt(x, y + 1, z);
-			Block blockTwoUp = world.getBlockAt(x, y + 2, z);
+			Block block = targetLocation.getBlock();
 			if 
 			(
-					isOkToStandOn(block.getType())
-					&&	isOkToStandIn(blockOneUp.getType())
-					&& 	isOkToStandIn(blockTwoUp.getType())
-					&&   (!goUp || !isUnderwater() || !isWater(blockOneUp.getType())) // rise to surface of water
-					)
+				isSafeLocation(block)
+				&&   !(goUp && isUnderwater() && isWater(block.getType())) // rise to surface of water
+			)
 			{
 				// spot found - return location
-				return new Location(world, (double) x + 0.5, (double) y + 1, (double) z + 0.5, playerLoc.getYaw(),
-						playerLoc.getPitch());
-
+				targetLocation.setY(targetLocation.getY() + 1);
+				return targetLocation;
 			}
-			y += step;
+			
+			targetLocation.setY(targetLocation.getY() + direction);
 		}
 
 		// no spot found

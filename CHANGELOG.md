@@ -10,6 +10,7 @@
  - Add /magic list command (WIP, currently lists lost
  - Add phase spell
  - Superblob will now replace more block types. Blob remains the same.
+ - Some general fixes to the "find place to stand" code (ascend, descend, phase)
 
 ## 2.8.8
 

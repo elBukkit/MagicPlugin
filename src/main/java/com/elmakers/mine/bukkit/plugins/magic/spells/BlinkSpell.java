@@ -17,28 +17,50 @@ public class BlinkSpell extends Spell
 {
 	private int verticalSearchDistance = 255;
 
-	protected boolean ascend()
+	protected SpellResult ascend()
 	{
-		Location location = findPlaceToStand(getPlayer().getLocation(), true);
+		Location targetLocation = getPlayer().getLocation();
+		targetLocation.setY(targetLocation.getY() + 2);
+		Location location = findPlaceToStand(targetLocation, true);
 		if (location != null) 
 		{
 			castMessage("You ascend");
 			getPlayer().teleport(location);
-			return true;
+			
+			Location playerLocation = mage.getLocation();
+			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+			
+			EffectUtils.playEffect(location, ParticleType.PORTAL, 1, 16);
+			location.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+			
+			return SpellResult.SUCCESS;
 		}
-		return false;
+		mage.castMessage("Nowhere to go up");
+		return SpellResult.NO_TARGET;
 	}
 
-	protected boolean descend()
+	protected SpellResult descend()
 	{
-		Location location = findPlaceToStand(getPlayer().getLocation(), false);
+		Location targetLocation = getPlayer().getLocation();
+		targetLocation.setY(targetLocation.getY() - 2);
+		Location location = findPlaceToStand(targetLocation, false);
 		if (location != null) 
 		{
 			castMessage("You descend");
 			getPlayer().teleport(location);
-			return true;
+			
+			Location playerLocation = mage.getLocation();
+			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+			
+			EffectUtils.playEffect(location, ParticleType.PORTAL, 1, 16);
+			location.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+			
+			return SpellResult.SUCCESS;
 		}
-		return false;
+		mage.castMessage("Nowhere to go down");
+		return SpellResult.NO_TARGET;
 	}
 
 	@Override
@@ -46,53 +68,20 @@ public class BlinkSpell extends Spell
 	{
 		Location playerLocation = getPlayer().getEyeLocation();
 		String elevateType = parameters.getString("type", "");
-		if (elevateType.equals("descend"))
-		{
-			if (!descend())
-			{
-				castMessage("Nowhere to go down");
-				return SpellResult.NO_TARGET;
-			}
-			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-			return SpellResult.SUCCESS;
-		}
-		else if (elevateType.equals("ascend"))
-		{
-			if (!ascend())
-			{
-				castMessage("Nowhere to go up");
-				return SpellResult.NO_TARGET;
-			}
-			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-			return SpellResult.SUCCESS;
-		}
-		
+
 		boolean autoAscend = parameters.getBoolean("allow_ascend", true);
 		boolean autoDescend = parameters.getBoolean("allow_descend", true);
 		boolean autoPassthrough = parameters.getBoolean("allow_passthrough", true);
 
-		if (getYRotation() < -80 && autoDescend)
+		if (elevateType.equals("descend") || (getYRotation() < -80 && autoDescend))
 		{
-			if (descend())
-			{
-				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-				playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-				return SpellResult.SUCCESS;
-			}
+			return descend();
 		}
-
-		if (getYRotation() > 80 && autoAscend)
+		else if (elevateType.equals("ascend") || getYRotation() > 80 && autoAscend)
 		{
-			if (ascend())
-			{
-				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-				playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-				return SpellResult.SUCCESS;
-			}
+			return ascend();
 		}
-
+		
 		if (autoPassthrough)
 		{
 			Block firstBlock = getNextBlock();
