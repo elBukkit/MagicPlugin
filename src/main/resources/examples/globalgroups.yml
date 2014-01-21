@@ -12,16 +12,18 @@
     - Magic.commands.wand.*
     - Magic.commands.spells
     - Magic.commands.cast
-    - Magic.commands.search
-    - Magic.commands.cancel
     - Magic.cast.rewind
     - Magic.cast.disarm
     - Magic.cast.gather
+    - Magic.commands.magic
+    - Magic.commands.magic.list
 
   g:magic_admin:
     permissions:
     - Magic.commands.wandp
     - Magic.commands.wandp.*
     - Magic.commands.castp
-    - Magic.commands.reload
-    - Magic.commands.populate
+    - Magic.commands.magic.reload
+    - Magic.commands.magic.populate
+    - Magic.commands.magic.search
+    - Magic.commands.magic.cancel
