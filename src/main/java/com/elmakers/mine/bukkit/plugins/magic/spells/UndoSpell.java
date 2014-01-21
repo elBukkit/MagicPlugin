@@ -49,7 +49,7 @@ public class UndoSpell extends Spell
 					return SpellResult.FAILURE;
 				}
 			}
-			boolean targetAll = typeString.equals("target_all");
+			boolean targetAll = typeString.equals("targetall");
 			if (typeString.equals("target") || targetAll)
 			{
 				// targetThrough(Material.GLASS);

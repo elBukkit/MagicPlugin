@@ -201,7 +201,6 @@ frost:
     class: FrostSpell
     parameters:
         allow_max_range: false
-        duration: 60000
         range: 24
         radius: 2
         vertical_search_distance: 8
@@ -710,7 +709,7 @@ rewind:
         allow_max_range: false
         range: 200
         cooldown: 0
-        type: target_all
+        type: targetall
     costs:
         xp: 100
 push:
