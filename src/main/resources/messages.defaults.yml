@@ -189,6 +189,9 @@ messages:
         portal:
             name: Portal
             description: Create a temporary portal
+        phase:
+            name: Phase
+            description: Phase to another dimension
         invincible:
             name: Invincible
             description: Make yourself impervious to damage

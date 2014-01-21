@@ -1000,6 +1000,8 @@ white:
         - absorb
         - flare
     materials:
+        - replicate
+        - clone
         - water
         - glowstone
         - glass

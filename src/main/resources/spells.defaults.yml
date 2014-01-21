@@ -381,7 +381,7 @@ mob:
         xp: 100
 portal:
     icon: portal
-    category: xperimental
+    category: master
     class: PortalSpell
     parameters:
         allow_max_range: false
@@ -390,6 +390,14 @@ portal:
         undo: 10000
     costs:
         xp: 20
+phase:
+    icon: end_portal
+    category: master
+    class: PhaseSpell
+    parameters:
+        cooldown: 100
+    costs:
+        xp: 50
 invincible:
     icon: golden_apple
     category: master
