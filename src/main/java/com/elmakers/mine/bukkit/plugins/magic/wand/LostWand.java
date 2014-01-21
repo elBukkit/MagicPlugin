@@ -21,7 +21,7 @@ public class LostWand {
 		this.id = wand.getId();
 		this.name = wand.getName();
 		this.owner = wand.getOwner();
-		this.description = wand.getDescription();
+		this.description = wand.getHTMLDescription();
 	}
 	
 	public boolean isValid() {

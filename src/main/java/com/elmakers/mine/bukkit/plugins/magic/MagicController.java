@@ -743,6 +743,12 @@ public class MagicController implements Listener
 	
 	protected boolean addLostWand(LostWand lostWand) {
 		if (lostWands.containsKey(lostWand.getId())) {
+			lostWands.put(lostWand.getId(), lostWand);
+
+			if (dynmapShowWands) {
+				addLostWandMarker(lostWand);
+			}
+			
 			return false;
 		}
 		lostWands.put(lostWand.getId(), lostWand);
@@ -1724,14 +1730,6 @@ if (!lostWands.containsKey(wandId)) return false;
 			World world = event.getWorld();
 			world.getPopulators().add(getWandChestPopulator());
 		}
-	}
-	
-	protected boolean addWandMarker(Wand wand, Location location) {
-		String description = wand.getHTMLDescription();
-		return addMarker("wand-" + wand.getId(), "Wands", wand.getName(), location.getWorld().getName(),
-			location.getBlockX(), location.getBlockY(), location.getBlockZ(),
-			description
-		);
 	}
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {

@@ -32,7 +32,8 @@ NEW SPELLS:
 
 OTHER STUFF:
  
- - Alter names sheep "_jeb"
+ - Show spell casting on dynmap
+ - Alter names sheep "_jeb", - others "Dinnerbone" ?
  - Test larger undo queue sizes, or count size in blocks?
  - Add "wand duplicate" command
  - Organize inventory by spell usage (favorites page)
