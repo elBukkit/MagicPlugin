@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -715,12 +717,7 @@ public class MagicController implements Listener
 								getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
 								continue;
 							}
-							lostWands.put(wandId, lostWand);
-							// getLogger().info("Wand " + lostWand.getName() + " found at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
-							
-							if (dynmapShowWands) {
-								addLostWandMarker(lostWand);
-							}
+							addLostWand(lostWand);
 						}
 					}
 				} catch (Exception ex) {
@@ -738,6 +735,30 @@ public class MagicController implements Listener
 		}, 10);
 	}
 	
+	protected String getChunkKey(Chunk chunk) {
+		return chunk.getWorld().getName() + "|" + chunk.getX() + "," + chunk.getZ();
+	}
+	
+	protected boolean addLostWand(LostWand lostWand) {
+		if (lostWands.containsKey(lostWand.getId())) {
+			return false;
+		}
+		lostWands.put(lostWand.getId(), lostWand);
+		String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
+		Set<String> chunkWands = lostWandChunks.get(chunkKey);
+		if (chunkWands == null) {
+			chunkWands = new HashSet<String>();
+			lostWandChunks.put(chunkKey, chunkWands);
+		}
+		chunkWands.add(lostWand.getId());
+		
+		if (dynmapShowWands) {
+			addLostWandMarker(lostWand);
+		}
+		
+		return true;
+	}
+	
 	public boolean addLostWand(Wand wand, Location dropLocation) {
 		if (lostWands.containsKey(wand.getId())) {
 			LostWand lostWand = lostWands.get(wand.getId());
@@ -745,28 +766,36 @@ public class MagicController implements Listener
 			return false;
 		}
 		LostWand lostWand = new LostWand(wand, dropLocation);
-		lostWands.put(wand.getId(), lostWand);
-		getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " dropped at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+		addLostWand(lostWand);
+		
+		return true;
+	}
+
+	public boolean removeLostWand(String wandId) {
+if (!lostWands.containsKey(wandId)) return false;
+		
+		LostWand lostWand = lostWands.get(wandId);
+		lostWands.remove(wandId);
+		String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
+		Set<String> chunkWands = lostWandChunks.get(chunkKey);
+		if (chunkWands != null) {
+			chunkWands.remove(wandId);
+			if (chunkWands.size() == 0) {
+				lostWandChunks.remove(chunkKey);
+			}
+		}
 		
 		if (dynmapShowWands) {
-			addWandMarker(wand, dropLocation);
+			if (removeMarker("wand-" + wandId, "Wands")) {
+				getLogger().info("Wand removed from map");
+			}
 		}
 		
 		return true;
 	}
 	
 	public boolean removeLostWand(Wand wand) {
-		if (!lostWands.containsKey(wand.getId())) return false;
-		
-		lostWands.remove(wand.getId());
-		
-		if (dynmapShowWands) {
-			if (removeMarker("wand-" + wand.getId(), "Wands")) {
-				getLogger().info("Wand removed from map");
-			}
-		}
-		
-		return true;
+		return removeLostWand(wand.getId());
 	}
 	
 	public void save()
@@ -1136,7 +1165,10 @@ public class MagicController implements Listener
 			}
 			Wand wand = new Wand(this, event.getEntity().getItemStack());
 			if (wand != null) {
-				addLostWand(wand, event.getEntity().getLocation());
+				addLostWand(wand, event.getEntity().getLocation());		
+				Location dropLocation = event.getLocation();
+				getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+
 			}
 		}
 	}
@@ -1707,19 +1739,21 @@ public class MagicController implements Listener
 		);
 	}
 	
-	protected void checkForWands(final Entity[] entities, final int retries) {
+	protected void checkForWands(final Chunk chunk, final int retries) {
 		if (dynmapShowWands && dynmap != null) {
 			if (!dynmap.markerAPIInitialized()) {
 				if (retries > 0) {
 					final MagicController me = this;
 					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 						public void run() {
-							me.checkForWands(entities, retries + 1);
+							me.checkForWands(chunk, retries + 1);
 						}
 					}, 40);
 				}
 				return;
 			}
+			Entity[] entities = chunk.getEntities();
+			Set<String> presentWandIds = new HashSet<String>();
 			for (Entity entity : entities) {
 				if (!(entity instanceof Item)) continue;
 				Item item = (Item)entity;
@@ -1727,19 +1761,33 @@ public class MagicController implements Listener
 				if (Wand.isWand(itemStack)) {
 					Wand wand = new Wand(this, itemStack);
 					addLostWand(wand, item.getLocation());
+					presentWandIds.add(wand.getId());
 				}
-			}			
+			}
+			
+			// Remove missing lost wands
+			String chunkKey = getChunkKey(chunk);
+			Set<String> chunkWands = lostWandChunks.get(chunkKey);
+			if (chunkWands != null) {
+				List<String> iterateWands = new ArrayList<String>(chunkWands);
+				for (String wandId : iterateWands) {
+					if (!presentWandIds.contains(wandId)) {
+						plugin.getLogger().info("Wand " + wandId + " not found in chunk, presumed lost");
+						removeLostWand(wandId);
+					}
+				}
+			}
 		}
 	}
 
 	@EventHandler
 	public void onChunkLoad(ChunkLoadEvent e) {
-		// Look for wands in the chnk
+		// Look for wands in the chunk
 		final MagicController me = this;
 		final ChunkLoadEvent event = e;
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				me.checkForWands(event.getChunk().getEntities(), 10);
+				me.checkForWands(event.getChunk(), 10);
 			}
 		}, 40);
 	}
@@ -1853,5 +1901,6 @@ public class MagicController implements Listener
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;
 	 
-	 private Map<String, LostWand>				lostWands						= new HashMap<String, LostWand>();
+	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
+	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();
 }
