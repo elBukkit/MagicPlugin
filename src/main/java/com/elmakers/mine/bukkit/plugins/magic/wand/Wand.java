@@ -1453,6 +1453,9 @@ public class Wand implements CostReducer {
 			player.setFlySpeed(defaultFlySpeed + speedIncrease);
 		}
 		
+		owner = wandConfig.getString("owner", owner);
+		description = wandConfig.getString("description", description);
+		
 		saveState();
 		updateName();
 		updateLore();

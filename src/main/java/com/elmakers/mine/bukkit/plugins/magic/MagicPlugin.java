@@ -607,7 +607,11 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		ConfigurationNode node = new ConfigurationNode();
-		node.setProperty(parameters[0], parameters[1]);
+		String value = parameters[1];
+		for (int i = 2; i < parameters.length; i++) {
+			value = value + " " + parameters[i];
+		}
+		node.setProperty(parameters[0], value);
 		wand.deactivate();
 		wand.configureProperties(node, safe);
 		wand.activate(mage);

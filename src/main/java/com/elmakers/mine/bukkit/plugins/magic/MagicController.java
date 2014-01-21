@@ -1782,7 +1782,16 @@ public class MagicController implements Listener
 				List<String> iterateWands = new ArrayList<String>(chunkWands);
 				for (String wandId : iterateWands) {
 					if (!presentWandIds.contains(wandId)) {
-						plugin.getLogger().info("Wand " + wandId + " not found in chunk, presumed lost");
+						LostWand lostWand = lostWands.get(wandId);
+						String name = null;
+						String owner = null;
+						if (lostWand != null) {
+							name = lostWand.getName();
+							owner = lostWand.getOwner();
+						}
+						name = name == null ? "(Unknown)" : name;
+						owner = owner == null ? "(Unknown)" : owner;
+						plugin.getLogger().info("Wand " + wandId + ": " + name + "@" + owner + ", not found in chunk, presumed lost");
 						removeLostWand(wandId);
 					}
 				}
