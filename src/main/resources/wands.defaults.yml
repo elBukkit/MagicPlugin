@@ -94,7 +94,7 @@
 #       # Applies a potioneffect to the player while holding the wand
 #       # also used by many spells that have visual effects when cast with this wand
 #
-#       effect_color: <hex color, eg "FF0000")
+#       effect_color: <hex color, eg 'FF0000')
 #       spells:
 #           - <spellname>
 #       materials:
@@ -667,7 +667,7 @@ elder:
     hunger_regeneration: 1
     power: 1
     haste: 0.3
-    effect_color: "8B008B"
+    effect_color: '8B008B'
     organize: true
     spells:
         - fling
@@ -713,6 +713,7 @@ elder:
         - heal
         - wither
         - phase
+        - portal
     materials:
         - water
         - lava
@@ -742,7 +743,7 @@ air_2:
     xp_regeneration: 4
     xp_max: 75
     haste: 0.15
-    effect_color: "888888"
+    effect_color: '888888'
     spells:
         - fling
         - push
@@ -755,7 +756,7 @@ air_3:
     xp_regeneration: 10
     xp_max: 150
     haste: 0.2
-    effect_color: "FFFFFF"
+    effect_color: 'FFFFFF'
     spells:
         - fling
         - push
@@ -776,7 +777,7 @@ water_2:
     protection: 0.3
     xp_regeneration: 4
     xp_max: 75
-    effect_color: "000088"
+    effect_color: '000088'
     spells:
         - toss
         - blob
@@ -790,7 +791,7 @@ water_3:
     protection: 0.5
     xp_regeneration: 10
     xp_max: 150
-    effect_color: "0000FF"
+    effect_color: '0000FF'
     spells:
         - frost
         - toss
@@ -827,7 +828,7 @@ earth_2:
     protection_blast: 0.8
     xp_regeneration: 4
     xp_max: 75
-    effect_color: "CD853F"
+    effect_color: 'CD853F'
     spells:
         - blob
         - sandblast
@@ -847,7 +848,7 @@ earth_3:
     protection_blast: 0.9
     xp_regeneration: 10
     xp_max: 150
-    effect_color: "8B4513"
+    effect_color: '8B4513'
     spells:
         - blob
         - sandblast
@@ -880,7 +881,7 @@ fire_2:
     protection: 0.1
     xp_regeneration: 4
     xp_max: 75
-    effect_color: "880000"
+    effect_color: '880000'
     spells:
         - fireball
         - fire
@@ -896,7 +897,7 @@ fire_3:
     protection: 0.3
     xp_regeneration: 10
     xp_max: 150
-    effect_color: "FF0000"
+    effect_color: 'FF0000'
     spells:
         - fireball
         - recurse
@@ -918,7 +919,7 @@ avatar:
     xp_regeneration: 40
     xp_max: 500
     power: 0.5
-    effect_color: "0000FF"
+    effect_color: '0000FF'
     haste: 0.1
     spells:
         - fling
@@ -967,7 +968,7 @@ white:
     hunger_regeneration: 1
     haste: 0.1
     power: 0.5
-    effect_color: "FFFFFF"
+    effect_color: 'FFFFFF'
     spells:
         - fling
         - blink
@@ -1025,7 +1026,7 @@ black:
     hunger_regeneration: 1
     haste: 0.1
     power: 0.5
-    effect_color: "111111"
+    effect_color: '111111'
     spells:
         - fling
         - blink
@@ -1064,6 +1065,7 @@ black:
         - superpyramid
         - disintegrate
         - flare
+        - portal
     materials:
         - water
         - erase
@@ -1081,7 +1083,7 @@ red:
     xp_regeneration: 40
     xp_max: 300
     power: 0.2
-    effect_color: "FF0000"
+    effect_color: 'FF0000'
     spells:
         - fireball
         - recurse
@@ -1111,7 +1113,7 @@ blue:
     xp_regeneration: 40
     xp_max: 300
     power: 0.2
-    effect_color: "0000FF"
+    effect_color: '0000FF'
     spells:
         - frost
         - toss
@@ -1127,6 +1129,7 @@ blue:
         - bridge
         - tesseract
         - iterate
+        - portal
     materials:
         - stationary_water
         - ice
@@ -1148,7 +1151,7 @@ green:
     xp_regeneration: 40
     xp_max: 300
     power: 0.2
-    effect_color: "00FF00"
+    effect_color: '00FF00'
     spells:
         - tree
         - farm
@@ -1189,7 +1192,7 @@ admin:
     hunger_regeneration: 1
     power: 1
     haste: 0.1
-    effect_color: "888888"
+    effect_color: '888888'
     spells:
         - levitate
         - blink
@@ -1199,6 +1202,7 @@ admin:
         - rewind
         - fill
         - heal
+        - phase
     materials:
         - water
         - lava
@@ -1214,7 +1218,7 @@ wolf:
     hunger_regeneration: 1
     power: 5
     haste: 0.3
-    effect_color: "CD853F"
+    effect_color: 'CD853F'
     organize: true
     spells:
         - fling
@@ -1282,6 +1286,7 @@ wolf:
         - wolf
         - cat
         - phase
+        - portal
     materials:
         - water
         - lava
