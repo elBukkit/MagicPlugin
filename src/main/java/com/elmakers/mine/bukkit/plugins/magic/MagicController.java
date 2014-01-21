@@ -743,11 +743,7 @@ public class MagicController implements Listener
 	
 	protected boolean addLostWand(LostWand lostWand) {
 		if (lostWands.containsKey(lostWand.getId())) {
-			lostWands.put(lostWand.getId(), lostWand);
-
-			if (dynmapShowWands) {
-				addLostWandMarker(lostWand);
-			}
+			updateLostWand(lostWand);
 			
 			return false;
 		}
@@ -767,10 +763,24 @@ public class MagicController implements Listener
 		return true;
 	}
 	
+	protected void updateLostWand(Wand wand, Location dropLocation) {
+		LostWand lostWand = lostWands.get(wand.getId());
+		lostWand.update(wand, dropLocation);
+		addLostWandMarker(lostWand);
+	}
+
+	protected void updateLostWand(LostWand newLost) {
+		LostWand currentLostWand = lostWands.get(newLost.getId());
+		currentLostWand.update(newLost);
+		
+		if (dynmapShowWands) {
+			addLostWandMarker(currentLostWand);
+		}
+	}
+	
 	public boolean addLostWand(Wand wand, Location dropLocation) {
 		if (lostWands.containsKey(wand.getId())) {
-			LostWand lostWand = lostWands.get(wand.getId());
-			lostWand.setLocation(dropLocation);
+			updateLostWand(wand, dropLocation);
 			return false;
 		}
 		LostWand lostWand = new LostWand(wand, dropLocation);
@@ -780,7 +790,7 @@ public class MagicController implements Listener
 	}
 
 	public boolean removeLostWand(String wandId) {
-if (!lostWands.containsKey(wandId)) return false;
+		if (!lostWands.containsKey(wandId)) return false;
 		
 		LostWand lostWand = lostWands.get(wandId);
 		lostWands.remove(wandId);
@@ -1748,7 +1758,7 @@ if (!lostWands.containsKey(wandId)) return false;
 						public void run() {
 							me.checkForWands(chunk, retries + 1);
 						}
-					}, 40);
+					}, 10);
 				}
 				return;
 			}
@@ -1789,7 +1799,7 @@ if (!lostWands.containsKey(wandId)) return false;
 			public void run() {
 				me.checkForWands(event.getChunk(), 10);
 			}
-		}, 40);
+		}, 5);
 	}
 	
 	public Spell getSpell(String name) {

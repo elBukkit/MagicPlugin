@@ -17,11 +17,25 @@ public class LostWand {
 	}
 	
 	public LostWand(Wand wand, Location location) {
+		update(wand, location);
+	}
+	
+	public void update(Wand wand, Location location) {
 		this.location = location;
 		this.id = wand.getId();
 		this.name = wand.getName();
 		this.owner = wand.getOwner();
 		this.description = wand.getHTMLDescription();
+	}
+	
+	public void update(LostWand other) {
+		this.location = other.location;
+		this.name = other.getName();
+		this.owner = other.getOwner();
+		String description = other.getDescription();
+		if (description != null && description.length() > 0) {
+			this.description = description;
+		}
 	}
 	
 	public boolean isValid() {
@@ -79,8 +93,16 @@ public class LostWand {
 		return name;
 	}
 	
+	public void setName(String name) {
+		this.name =  name;
+	}
+	
 	public String getDescription() {
 		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description =  description;
 	}
 	
 	public Location getLocation() {
