@@ -611,7 +611,9 @@ public class MagicController implements Listener
 				marker.setLocation(world, x, y, z);
 				marker.setLabel(title);
 			}
-			marker.setDescription(description);
+			if (description != null) {
+				marker.setDescription(description);
+			}
 		}
 		
 		return created;
@@ -1735,7 +1737,7 @@ if (!lostWands.containsKey(wandId)) return false;
 	protected boolean addLostWandMarker(LostWand lostWand) {
 		Location location = lostWand.getLocation();
 		return addMarker("wand-" + lostWand.getId(), "Wands", lostWand.getName(), location.getWorld().getName(),
-			location.getBlockX(), location.getBlockY(), location.getBlockZ(), ""
+			location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
 		);
 	}
 	

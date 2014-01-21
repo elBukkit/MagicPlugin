@@ -8,6 +8,7 @@ public class LostWand {
 	private Location location;
 	private String id;
 	private String name;
+	private String description;
 	private String owner;
 	
 	public LostWand(String id, ConfigurationNode config) {
@@ -20,6 +21,7 @@ public class LostWand {
 		this.id = wand.getId();
 		this.name = wand.getName();
 		this.owner = wand.getOwner();
+		this.description = wand.getDescription();
 	}
 	
 	public boolean isValid() {
@@ -31,6 +33,7 @@ public class LostWand {
 		try {
 			configNode.setProperty("location", location);
 			configNode.setProperty("name", name);
+			configNode.setProperty("description", description);
 			configNode.setProperty("owner", owner);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -44,6 +47,7 @@ public class LostWand {
 
 			location = configNode.getLocation("location");
 			name = configNode.getString("name");
+			description = configNode.getString("description");
 			owner = configNode.getString("owner");
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -73,6 +77,10 @@ public class LostWand {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 	
 	public Location getLocation() {
