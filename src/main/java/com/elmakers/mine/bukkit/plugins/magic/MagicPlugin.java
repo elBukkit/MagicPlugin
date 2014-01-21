@@ -302,7 +302,7 @@ public class MagicPlugin extends JavaPlugin
 				Collection<LostWand> lostWands = controller.getLostWands();
 				for (LostWand lostWand : lostWands) {
 					Location location = lostWand.getLocation();
-					getLogger().info(lostWand.getName() + " (" + lostWand.getOwner() + ") @ " + location.getWorld().getName() + " " +
+					sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
 							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
 				}
 				return true;
