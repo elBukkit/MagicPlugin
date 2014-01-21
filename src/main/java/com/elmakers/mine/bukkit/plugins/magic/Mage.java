@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.UndoBatch;
+import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
@@ -739,5 +741,17 @@ public class Mage implements CostReducer
 		if (pendingBatches.size() == 0) {
 			controller.removePending(this);
 		}
+	}
+	
+	public List<LostWand> getLostWands() {
+		Collection<LostWand> allWands = controller.getLostWands();
+		List<LostWand> mageWands = new ArrayList<LostWand>();
+		for (LostWand lostWand : allWands) {
+			String owner = lostWand.getOwner();
+			if (owner != null && owner.equals(playerName)) {
+				mageWands.add(lostWand);
+			}
+		}
+		return mageWands;
 	}
 }

@@ -563,11 +563,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return location == null ? targetLoc : location;
 	}
 	
-	public Location findPlaceToStand(Location targetLocation, boolean goUp)
+	public Location findPlaceToStand(Location target, boolean goUp)
 	{
 		int direction = goUp ? 1 : -1;
 		
 		// search for a spot to stand
+		Location targetLocation = target.clone();
 		while (4 < targetLocation.getY() && targetLocation.getY() < 253)
 		{
 			Block block = targetLocation.getBlock();
