@@ -2,10 +2,8 @@
 
 IMPORTANT STUFF:
 
- - Effect color getting lost on wands?
  - Familiar- my cast kills their familiars?
 
- - Investigate performance, maybe remove move listener (and also portal, gills spells)
  - Fix underwater targeting on non-construction spells, or generally if in the water
  - Persist material brush
  - Add console logging of massive construction spell casting
@@ -13,7 +11,8 @@ IMPORTANT STUFF:
  - Raise default construction limits again.. or mess with power?
 
  - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
-
+  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
+  - BlockData tracks only the first recorded materialdata, commit will replace
 
 NEW SPELLS:
 

@@ -478,10 +478,13 @@ public class Mage implements CostReducer
 		return controller.isDestructible(block);
 	}
 	
-	public void onCast(SpellResult result) {
+	public void onCast(Spell spell, SpellResult result) {
 		switch(result) {
 			case SUCCESS:
 				// No sound on success
+				
+				// Show on dynmap
+				controller.onCast(this, spell);
 				break;
 			case INSUFFICIENT_RESOURCES:
 				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);

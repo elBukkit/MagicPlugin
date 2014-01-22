@@ -12,6 +12,7 @@
  - Superblob will now replace more block types. Blob remains the same.
  - Some general fixes to the "find place to stand" code (ascend, descend, phase)
  - Add "wand" recall type, some general recall improvements.
+ - Add spell casts to dynmap (WIP)
 
 ## 2.8.8
 

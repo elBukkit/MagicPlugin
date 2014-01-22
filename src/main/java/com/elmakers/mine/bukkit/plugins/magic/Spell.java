@@ -87,6 +87,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private MaterialList                        targetThroughMaterials  = new MaterialList();
 	private boolean                             reverseTargeting        = false;
 	private boolean								isActive				= false;
+	
+	private Target								target					= null;
 
 	protected Object clone()
 	{
@@ -306,6 +308,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public boolean cast(String[] extraParameters)
 	{
+		target = null;
+		
 		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
 
@@ -321,7 +325,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				} else {
 					sendMessage(Messages.get("cooldown.wait_moment"));
 				}
-				mage.onCast(SpellResult.COOLDOWN);
+				mage.onCast(this, SpellResult.COOLDOWN);
 				return false;
 			}
 		}
@@ -333,7 +337,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				if (!cost.has(mage))
 				{
 					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription(mage)));
-					mage.onCast(SpellResult.INSUFFICIENT_RESOURCES);
+					mage.onCast(this, SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}
 			}
@@ -344,7 +348,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		processParameters(parameters);
 		SpellResult result = onCast(parameters);
-		mage.onCast(result);
+		mage.onCast(this, result);
 		
 		if (result == SpellResult.SUCCESS) {
 			if (costs != null) {
@@ -800,10 +804,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		Target targetEntity = getTargetEntity();
 		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance())
 		{
-			return targetBlock;
+			target = targetBlock;
+		} else {
+			target = targetEntity;
 		}
-
-		return targetEntity;
+		return target;
+	}
+	
+	public Target getCurrentTarget()
+	{
+		return target;
 	}
 
 	public Block getTargetBlock()

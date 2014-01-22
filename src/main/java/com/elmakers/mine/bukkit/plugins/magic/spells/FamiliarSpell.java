@@ -62,6 +62,22 @@ public class FamiliarSpell extends Spell
 			}
 		}
 
+		public void releaseFamiliar(Entity entity)
+		{
+			if (familiars != null)
+			{
+				List<Creature> iterate = new ArrayList<Creature>(familiars);
+				for (Creature familiar : iterate)
+				{
+					if (familiar.getUniqueId() == entity.getUniqueId()) {
+						familiar.setHealth(0);
+						familiars.remove(familiar);
+					}
+				}
+				familiars = null;
+			}
+		}
+
 		public boolean isFamiliar(Entity e)
 		{
 			if (familiars == null) return false;
@@ -105,6 +121,7 @@ public class FamiliarSpell extends Spell
 			{
 				castMessage("You release your familiar(s)");
 				checkListener();
+				familiars.releaseFamiliar(target.getEntity());
 				return SpellResult.SUCCESS;
 			}
 

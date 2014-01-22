@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -68,11 +69,13 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
+import org.dynmap.markers.PolyLineMarker;
 
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
@@ -380,12 +383,12 @@ public class MagicController implements Listener
 
 	public boolean isIndestructible(Block block) 
 	{
-		return (indestructibleMaterials.contains(block.getType()));		
+		return indestructibleMaterials.contains(block.getType());
 	}
 
 	public boolean isDestructible(Block block) 
 	{
-		return (destructibleMaterials.contains(block.getType()));		
+		return destructibleMaterials.contains(block.getType());		
 	}
 	
 	public boolean hasBuildPermission(Player player, Location location) 
@@ -596,7 +599,7 @@ public class MagicController implements Listener
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet markerSet = markers.getMarkerSet(group);
 			if (markerSet == null) {
-				markerSet = markers.createMarkerSet(group, "Wands", null, false);
+				markerSet = markers.createMarkerSet(group, group, null, false);
 			}
 			MarkerIcon wandIcon = markers.getMarkerIcon("wand");
 			if (wandIcon == null) {
@@ -907,6 +910,7 @@ public class MagicController implements Listener
 		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
+		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
 		blockPopulatorConfig = properties.getNode("populate_chests");
@@ -1847,6 +1851,58 @@ public class MagicController implements Listener
 	public Collection<LostWand> getLostWands() {
 		return lostWands.values();
 	}
+	
+	public void onCast(Mage mage, Spell spell) {
+		if (dynmapShowSpells && dynmap != null && dynmap.markerAPIInitialized()) {
+			MarkerAPI markers = dynmap.getMarkerAPI();
+			MarkerSet spellSet = markers.getMarkerSet("Spells");
+			if (spellSet == null) {
+				spellSet = markers.createMarkerSet("Spells", "Spell Casts", null, false);
+			}
+			final String markerId = "Spell-" + mage.getName();
+			PolyLineMarker existing = spellSet.findPolyLineMarker(markerId);
+			if (existing != null) {
+				// This never seems to fire?
+				existing.deleteMarker();
+			}
+			
+			int range = 32;
+			final Location location = mage.getLocation();
+			Location target = null;
+			Target spellTarget = spell.getTarget();
+			if (spellTarget != null) {
+				target = spellTarget.getLocation();
+			}
+			
+			if (target == null) {
+				target = location.clone();
+				Vector direction = location.getDirection();
+				direction.normalize().multiply(range);
+				target.add(direction);
+			}
+			Color color = mage.getEffectColor();
+			color = color == null ? Color.PURPLE : color;
+			double[] x = {location.getX(), target.getX()};
+			double[] y = {location.getY(), target.getY()};
+			double[] z = {location.getZ(), target.getZ()};
+			
+			final MarkerSet markerSet = spellSet;
+			final String worldName = location.getWorld().getName();
+			final PolyLineMarker marker = spellSet.createPolyLineMarker(markerId, spell.getName(), false, worldName, x, y, z, false);
+			marker.setLineStyle((int)(mage.getDamageMultiplier() * 2), 0.8, color.asRGB());
+			
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				public void run() {
+					marker.deleteMarker();
+					// deleteMarker does not seem to work. :\
+					double[] x = {location.getX(), location.getX()};
+					double[] y = {location.getY(), location.getY()};
+					double[] z = {location.getZ(), location.getZ()};
+					markerSet.createPolyLineMarker(markerId, "(None)", false, location.getWorld().getName(), x, y, z, false);
+				}
+			}, 20 * 5);
+		}
+	}
 
 	/*
 	 * Private data
@@ -1894,6 +1950,7 @@ public class MagicController implements Listener
 	 private boolean							 essentialsSignsEnabled			= false;
 	 private boolean							 dynmapUpdate					= true;
 	 private boolean							 dynmapShowWands				= true;
+	 private boolean							 dynmapShowSpells				= true;
 	 private float							 	 maxDamagePowerMultiplier	    = 2.0f;
 	 private float								 maxConstructionPowerMultiplier = 5.0f;
 	 private float								 maxRadiusPowerMultiplier 		= 1.5f;

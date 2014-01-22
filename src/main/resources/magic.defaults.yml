@@ -194,6 +194,9 @@ dynmap_update: true
 # Show wands as dynmap markers, if dynmap is present
 dynmap_show_wands: true
 
+# Show spell casts as dynmap polylines, if dynmap is present
+dynmap_show_spells: true
+
 # Enable worldguard protection against construction spells
 region_manager_enabled: true
 
