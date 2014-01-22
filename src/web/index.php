@@ -23,37 +23,28 @@ spl_autoload_register('autoload');
 
 use Symfony\Component\Yaml\Yaml;
 
-function getConfigFile($name) {
+function parseConfigFile($name) {
 	global $magicRootFolder;
+
+	$config = Yaml::parse("$magicRootFolder/$name.defaults.yml");
 	$configFile = "$magicRootFolder/$name.yml";
-	if (!file_exists($configFile)) {
-		$configFile = "$magicRootFolder/$name.defaults.yml";
+	if (file_exists($configFile)) {
+		$override = Yaml::parse("$magicRootFolder/$name.defaults.yml");
+		$config = array_merge_recursive($config, $override);
 	}
-	if (!file_exists($configFile)) {
-		die('Could not locate file: ' . $configFile);
-	}
-	return $configFile;
+	return $config;
 }
 
 // Load and parse Magic configuration files
 try {
-	$spellsConfiguration = Yaml::parse(getConfigFile('spells'));
-	$magicConfiguratiom = Yaml::parse(getConfigFile('magic'));
-	$wandConfiguratiom = Yaml::parse(getConfigFile('wands'));
-	$messagesConfiguratiom = Yaml::parse(getConfigFile('messages'));
+	$spells = parseConfigFile('spells');
+	$general = parseConfigFile('magic');
+	$wands = parseConfigFile('wands');
+	$messages = parseConfigFile('messages');
 } catch (Exception $ex) {
 	die($ex->getMessage());
 }
 
-$messages = array();
-if (isset($messagesConfiguratiom['messages'])) {
-	$messages = $messagesConfiguratiom['messages'];
-}
-
-$spells = array();
-if (isset($spellsConfiguration['spells'])) {
-	$spells = $spellsConfiguration['spells'];
-}
 ksort($spells);
 
 // Look up localizations
@@ -64,10 +55,6 @@ foreach ($spells as $key => $spell) {
 	$spells[$key] = $spell;
 }
 
-$wands = array();
-if (isset($wandConfiguratiom['wands'])) {
-	$wands = $wandConfiguratiom['wands'];
-}
 foreach ($wands as $key => $wand) {
 	$wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
 	$wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
@@ -76,12 +63,6 @@ foreach ($wands as $key => $wand) {
 }
 ksort($wands);
 
-// Look for important config options
-$general = array();
-
-if (isset($magicConfiguratiom['general'])) {
-	$general = $magicConfiguratiom['general'];
-}
 $enchantingEnabled = isset($general['enable_enchanting']) ? $general['enable_enchanting'] : false;
 $combiningEnabled = isset($general['enable_combining']) ? $general['enable_combining'] : false;
 $blockPopulatorEnabled = isset($general['enable_block_populator']) ? $general['enable_block_populator'] : false;
