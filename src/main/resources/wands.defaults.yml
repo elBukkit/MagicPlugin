@@ -537,6 +537,7 @@ engineer:
     health_regeneration: 1
     protection_falling: 1
     spells:
+        - torch
         - fill
         - absorb
         - bridge
