@@ -356,7 +356,7 @@ arrow:
         - arrow
     uses: 200
     cost_reduction: 1    
-deuling:
+dueling:
     modifiable: true
     protection_fire: 0.8
     protection: 0.8

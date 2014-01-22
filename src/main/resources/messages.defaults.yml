@@ -430,8 +430,8 @@ wands:
     arrow:
         name: Arrow Wand
         description: A temporary arrow wand
-    deuling:
-        name: Deuling Wand
+    dueling:
+        name: Dueling Wand
         description: Made for PVP!
     explorer:
         name: Exploring Wand
