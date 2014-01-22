@@ -17,12 +17,7 @@ public class Messages {
 
 	public static Map<String, String> messageMap = new HashMap<String, String>();
 	
-	public static void loadProperties(Configuration root) {
-		root.load();
-		
-		ConfigurationNode messages = root.getNode("messages");
-		if (messages == null) return;
-
+	public static void loadProperties(ConfigurationNode messages) {
 		Map<String, Object> allMap = messages.getAll();
 		for (Entry<String, Object> entry : allMap.entrySet()) {
 			messageMap.put(entry.getKey(), (String)entry.getValue());
@@ -55,6 +50,12 @@ public class Messages {
 	private static void loadProperties(InputStream properties)
 	{
 		loadProperties(new Configuration(properties));
+	}
+	
+	private static void loadProperties(Configuration properties)
+	{
+		properties.load();
+		loadProperties((ConfigurationNode)properties);
 	}
 	
 	public static void reset() {
