@@ -88,6 +88,16 @@ boon:
         water_breathing: 600,5
         night_vision: 600,5
         saturation: 600,5
+bounce:
+    icon: double_plant:1
+    category: light
+    class: PotionEffectSpell
+    costs:
+        xp: 10
+    parameters:
+        target: any
+        particle: reddust
+        jump: 600,20
 shell:
     icon: bowl
     category: earthbending

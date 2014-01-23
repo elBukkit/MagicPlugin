@@ -19,6 +19,7 @@
  - Add a hard limit to range and radius multipliers
  - Make wands.yml and spells.yml additive
  - Restore 1.6 support. The blink spell needs some cleanup.
+ - Add "bounce" spell
 
 ## 2.8.8
 

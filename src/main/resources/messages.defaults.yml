@@ -113,6 +113,9 @@ spells:
     boon:
         name: Boon
         description: Makes you temporarily superpowered
+    bounce:
+        name: Bounce
+        description: Gives super jump power
     shell:
         name: Shell
         description: Create a large spherical shell
