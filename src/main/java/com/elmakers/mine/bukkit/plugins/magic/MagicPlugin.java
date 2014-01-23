@@ -25,7 +25,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.blocks.BlockData;
+import com.elmakers.mine.bukkit.plugins.magic.populator.MagicRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
+import com.elmakers.mine.bukkit.plugins.magic.populator.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.Messages;
@@ -67,17 +69,6 @@ public class MagicPlugin extends JavaPlugin
 		if (runningTask != null && runningTask.isFinished()) {
 			runningTask = null;
 		}
-	}
-	
-	protected void populateChests(CommandSender sender, World world, int ymax)
-	{
-		checkRunningTask();
-		if (runningTask != null) {
-			sender.sendMessage("There is already a populate job running");
-			return;
-		}
-		runningTask= new WandChestRunnable(controller, world, ymax);
-		runningTask.runTaskTimer(this, 5, 5);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -217,6 +208,7 @@ public class MagicPlugin extends JavaPlugin
 			if (args.length == 1) {
 				addIfPermissible(sender, options, "Magic.commands.", "populate");
 				addIfPermissible(sender, options, "Magic.commands.", "search");
+				addIfPermissible(sender, options, "Magic.commands.", "clean");
 				addIfPermissible(sender, options, "Magic.commands.", "cancel");
 				addIfPermissible(sender, options, "Magic.commands.", "reload");
 				addIfPermissible(sender, options, "Magic.commands.", "commit");
@@ -309,6 +301,11 @@ public class MagicPlugin extends JavaPlugin
 			}
 			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search"))
 			{   
+				checkRunningTask();
+				if (runningTask != null) {
+					sender.sendMessage("Cancel current job first");
+					return true;
+				}
 				World world = null;
 				int ymax = 50;
 				if (sender instanceof Player) {
@@ -326,13 +323,17 @@ public class MagicPlugin extends JavaPlugin
 					}
 				}
 				if (world == null) {
-					getLogger().warning("Usage: magic " + subCommand + " <world> <ymax>");
+					sender.sendMessage("Usage: magic " + subCommand + " <world> <ymax>");
 					return true;
 				}
 				if (subCommand.equalsIgnoreCase("search")) {
 					ymax = 0;
+					sender.sendMessage("Searching for wands in " + world.getName());
+				} else {
+					sender.sendMessage("Populating chests with wands in " + world.getName() + " below y=" + ymax);
 				}
-				populateChests(sender, world, ymax);
+				runningTask = new WandChestRunnable(controller, world, ymax);
+				runningTask.runTaskTimer(this, 5, 5);
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("cancel"))
@@ -345,6 +346,38 @@ public class MagicPlugin extends JavaPlugin
 				} else {
 					sender.sendMessage("There is no job running");
 				}
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("clean"))
+			{ 
+				checkRunningTask();
+				if (runningTask != null) {
+					sender.sendMessage("Cancel current job first");
+					return true;
+				}
+				World world = null;
+				String owner = null;
+				if (args.length > 1) {
+					owner = args[1];
+				}
+				if (sender instanceof Player) {
+					world = ((Player)sender).getWorld();
+				} else {
+					if (args.length > 2) {
+						String worldName = args[2];
+						world = Bukkit.getWorld(worldName);
+					}
+				}
+
+				String ownerName = owner == null ? "(Unowned)" : owner;
+				if (world == null) {
+					sender.sendMessage("Cleaning up lost wands in all worlds for owner: " + ownerName);
+				} else {
+					sender.sendMessage("Cleaning up lost wands in world " + world.getName() + " for owner " + ownerName);
+				}
+				runningTask = new WandCleanupRunnable(controller, world, owner);
+				runningTask.runTaskTimer(this, 5, 5);
+				
 				return true;
 			}
 		}
@@ -1108,5 +1141,5 @@ public class MagicPlugin extends JavaPlugin
 	 * Private data
 	 */	
 	private MagicController controller = null;
-	private WandChestRunnable runningTask = null;
+	private MagicRunnable runningTask = null;
 }

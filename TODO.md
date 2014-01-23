@@ -1,5 +1,20 @@
 # TODO
 
+## For 2.9.0
+
+ - Separate player data files
+ - Async player data save/load (... undo queue locking?)
+ - PvP permissions
+
+ - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
+  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
+  - BlockData tracks only the first recorded materialdata, commit will replace
+
+
+## For 3.0.0
+ - Persist material brush
+ - Make ores destructible by most spells (except blast?)
+
 IMPORTANT STUFF:
 
  - investigate lag/slowdown - new dynmap stuff?
@@ -8,14 +23,8 @@ IMPORTANT STUFF:
  - Familiar- my cast kills their familiars?
 
  - Fix underwater targeting on non-construction spells, or generally if in the water
- - Persist material brush
  - Add console logging of massive construction spell casting
- - Make ores destructible by most spells (except blast?)
  - Raise default construction limits again.. or mess with power?
-
- - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
-  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
-  - BlockData tracks only the first recorded materialdata, commit will replace
 
 NEW SPELLS:
 

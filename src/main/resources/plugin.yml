@@ -29,7 +29,7 @@ commands:
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
-    usage: /magic [reload|populate|search|cancel|commit|list]
+    usage: /magic [reload|populate|search|cancel|commit|list|clean]
     permission: Magic.commands.magic
 permissions:
   Magic.commands.spells:
@@ -170,6 +170,10 @@ permissions:
     default: op
   Magic.commands.magic.list:
     description: Player may list stats, lost wands, etc
+    type: boolean
+    default: op
+  Magic.commands.magic.clean:
+    description: Player may remove lost wands from the world
     type: boolean
     default: op
   Magic.wand.use:

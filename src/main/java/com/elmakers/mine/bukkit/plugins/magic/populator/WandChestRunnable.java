@@ -1,16 +1,14 @@
 package com.elmakers.mine.bukkit.plugins.magic.populator;
 
 import java.util.Random;
-import java.util.logging.Logger;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.NMSUtils;
 
-public class WandChestRunnable extends BukkitRunnable {
+public class WandChestRunnable extends MagicRunnable {
 	private World world;
 	private int dx = 1;
 	private int dz = 0;
@@ -24,21 +22,21 @@ public class WandChestRunnable extends BukkitRunnable {
 	
 	WandChestPopulator populator;
 	Random random;
-	Logger logger;
-	boolean finished = false;
 	
 	public WandChestRunnable(MagicController controller, World world, int maxy) {
+		super(controller.getLogger());
 		this.world = world;
 		this.random = new Random();
-		logger = controller.getLogger();
 		if (maxy > 0) {
 			populator = controller.getWandChestPopulator();
 			populator.setMaxY(maxy);
 		}
 	}
 	
-	public boolean isFinished() {
-		return finished;
+	public void finish() {
+		super.finish();
+		populator = null;
+		world = null;
 	}
 	
 	public void run() {
@@ -46,8 +44,7 @@ public class WandChestRunnable extends BukkitRunnable {
 		if (!NMSUtils.isDone(chunk) || !chunk.isLoaded()) {
 			if (!NMSUtils.isDone(chunk) || !chunk.load(false)) {
 				logger.info("Done populating chests, found ungenerated chunk");
-				finished = true;
-				this.cancel();
+				finish();
 			}
 		} else {
 			if ((chunksProcessed % messageInterval) == 0) {
