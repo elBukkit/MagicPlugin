@@ -1625,6 +1625,11 @@ public class MagicController implements Listener
 						return;
 					}
 				}
+				
+				// Prevent wand duplication
+				if (Wand.isWand(event.getCursor()) || Wand.isWand(event.getCurrentItem())) {
+					event.setCancelled(true);
+				}
 			}
 			
 			return;
