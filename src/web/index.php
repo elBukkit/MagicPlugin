@@ -30,7 +30,8 @@ function parseConfigFile($name) {
 	$configFile = "$magicRootFolder/$name.yml";
 	if (file_exists($configFile)) {
 		$override = Yaml::parse("$magicRootFolder/$name.defaults.yml");
-		$config = array_merge_recursive($config, $override);
+		// Hrm.
+		// $config = array_merge_recursive($config, $override);
 	}
 	return $config;
 }
@@ -78,7 +79,7 @@ $copyMaterial = isset($general['copy_item']) ? $general['copy_item'] : 'sugar';
 function underscoreToReadable($s) {
 	if (!$s) return $s;
 	$convertFunction = create_function('$c', 'return " " . strtoupper($c[1]);');
-	return strtoupper($s[0]).  preg_replace_callback('/_([a-z])/', $convertFunction, substr($s, 1));
+	return strtoupper($s[0]) . preg_replace_callback('/_([a-z])/', $convertFunction, substr($s, 1));
 }
 
 function printMaterial($materialKey, $iconOnly = null) {
