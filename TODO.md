@@ -35,6 +35,7 @@ NEW SPELLS:
 OTHER STUFF:
  
  - Add count parameter to projectile spell, make wither shoot a few
+ - Make volley multi-sample?
  - Make Phase return from the End
  - Alter names sheep "_jeb", - others "Dinnerbone" ?
  - Test larger undo queue sizes, or count size in blocks?
