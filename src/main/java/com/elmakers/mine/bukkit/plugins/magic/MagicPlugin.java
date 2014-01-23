@@ -290,10 +290,17 @@ public class MagicPlugin extends JavaPlugin
 			}
 			if (subCommand.equalsIgnoreCase("list"))
 			{
+				String owner = "";
+				if (args.length > 1) {
+					owner = args[1];
+				}
 				// TODO: Other kinds of lists.
 				Collection<LostWand> lostWands = controller.getLostWands();
 				for (LostWand lostWand : lostWands) {
 					Location location = lostWand.getLocation();
+					if (owner.length() > 0 && !owner.equals(lostWand.getOwner())) {
+						continue;
+					}
 					sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
 							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
 				}
