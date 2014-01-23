@@ -1468,20 +1468,29 @@ public class Wand implements CostReducer {
 	}
 	
 	public static void load(Plugin plugin) {
+		wandTemplates.clear();
+		
 		// Load properties file with wand templates
 		File dataFolder = plugin.getDataFolder();
 		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
 		oldDefaults.delete();
 		plugin.getLogger().info("Overwriting file " + propertiesFileNameDefaults);
 		plugin.saveResource(propertiesFileNameDefaults, false);
+		plugin.getLogger().info("Loading default wands from " + propertiesFileNameDefaults);
+		loadProperties(plugin.getResource(propertiesFileNameDefaults));
+		
 		File propertiesFile = new File(dataFolder, propertiesFileName);
-		if (!propertiesFile.exists())
-		{
-			plugin.getLogger().info("Loading default wands from " + propertiesFileNameDefaults);
-			loadProperties(plugin.getResource(propertiesFileNameDefaults));
-		} else {
-			plugin.getLogger().info("Loading wands from " + propertiesFile.getName());
-			loadProperties(propertiesFile);
+		try {
+			if (!propertiesFile.exists())
+			{
+				plugin.getLogger().info("Saving template " + propertiesFileName + ", edit to customize wands.");
+				plugin.saveResource(propertiesFileName, false);
+			} else {
+				plugin.getLogger().info("Loading customized wands from " + propertiesFile.getName());
+				loadProperties(propertiesFile);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -1498,15 +1507,24 @@ public class Wand implements CostReducer {
 	private static void loadProperties(Configuration properties)
 	{
 		properties.load();
-		wandTemplates.clear();
 
-		// TODO: Make this additive!
 		List<String> wandKeys = properties.getKeys();
 		for (String key : wandKeys)
 		{
 			ConfigurationNode wandNode = properties.getNode(key);
 			wandNode.setProperty("key", key);
-			wandTemplates.put(key,  wandNode);
+			ConfigurationNode existing = wandTemplates.get(key);
+			if (existing != null) {
+				List<String> overrideKeys = existing.getKeys();
+				for (String propertyKey : overrideKeys) {
+					existing.setProperty(propertyKey, existing.getProperty(key));
+				}
+			} else {
+				wandTemplates.put(key,  wandNode);
+			}
+			if (!wandNode.getBoolean("enabled", true)) {
+				wandTemplates.remove(key);
+			}
 			if (key.equals("random")) {
 				WandLevel.mapLevels(wandNode);
 			}

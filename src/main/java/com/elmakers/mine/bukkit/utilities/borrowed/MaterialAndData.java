@@ -6,6 +6,11 @@ public class MaterialAndData {
 	protected Material material;
 	protected byte data;
 	
+	public MaterialAndData(final Material material) {
+		this.material = material;
+		this.data = 0;
+	}
+	
 	public MaterialAndData(final Material material, final  byte data) {
 		this.material = material;
 		this.data = data;

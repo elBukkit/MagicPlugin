@@ -52,7 +52,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private String description;
 	private String usage;
 	private String category;
-	private MaterialAndData icon;
+	private MaterialAndData icon = new MaterialAndData(Material.AIR);
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
 	
@@ -116,7 +116,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return baseClass.substring(0, baseClass.lastIndexOf('.'));
 	}
 
-	public static Spell loadSpell(String name, ConfigurationNode node, MagicController spells)
+	public static Spell loadSpell(String name, ConfigurationNode node, MagicController controller)
 	{
 		String builtinClassPath = getBuiltinClasspath();
 
@@ -162,8 +162,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 
 		Spell newSpell = (Spell)newObject;
-		newSpell.initialize(spells);
+		newSpell.initialize(controller);
 		newSpell.loadTemplate(name, node);
+
+		Set<Material> defaultTargetThrough = controller.getTargetThroughMaterials();
+		for (Material defMat : defaultTargetThrough) {
+			newSpell.targetThrough(defMat);
+		}
 
 		return newSpell;
 	}
@@ -216,16 +221,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		return castingCosts;
 	}
-
-	protected void loadTemplate(String key, ConfigurationNode node)
-	{
-		this.key = key;
-		this.name = key;
-		
-		name = Messages.get("spells." + key + ".name", name);
-		description = Messages.get("spells." + key + ".description", description);
-		usage = Messages.get("spells." + key + ".usage", usage);
-		icon = node.getMaterialAndData("icon", Material.AIR);
+	
+	public void configure(ConfigurationNode node) {
+		icon = node.getMaterialAndData("icon", icon.getMaterial());
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);
 		
@@ -237,11 +235,18 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
+	}
 
-		Set<Material> defaultTargetThrough = controller.getTargetThroughMaterials();
-		for (Material defMat : defaultTargetThrough) {
-			targetThrough(defMat);
-		}
+	protected void loadTemplate(String key, ConfigurationNode node)
+	{
+		this.key = key;
+		this.name = key;
+		
+		name = Messages.get("spells." + key + ".name", name);
+		description = Messages.get("spells." + key + ".description", description);
+		usage = Messages.get("spells." + key + ".usage", usage);
+		
+		configure(node);
 	}
 
 	public void setMage(Mage mage)

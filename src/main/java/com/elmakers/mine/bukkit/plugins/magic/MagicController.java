@@ -658,7 +658,6 @@ public class MagicController implements Listener
 			{
 				getLogger().info("Saving template " + propertiesFileName + ", edit to customize configuration.");
 				plugin.saveResource(propertiesFileName, false);
-				
 			} else {
 				getLogger().info("Loading customizations from: " + propertiesFile.getName());
 				loadProperties(propertiesFile);
@@ -672,15 +671,23 @@ public class MagicController implements Listener
 		oldDefaults.delete();
 		getLogger().info("Overwriting file " + spellsFileNameDefaults);
 		plugin.saveResource(spellsFileNameDefaults, false);
-		File spellsFile = new File(dataFolder, spellsFileName);
 		
+		try {
+			getLogger().info("Loading default spells from: " + spellsFileNameDefaults);
+			load(plugin.getResource(spellsFileNameDefaults));
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		File spellsFile = new File(dataFolder, spellsFileName);
 		try {
 			if (!spellsFile.exists())
 			{
-				getLogger().info("Loading default spells from: " + spellsFileNameDefaults);
-				load(plugin.getResource(spellsFileNameDefaults));
+				getLogger().info("Saving template " + spellsFileName + ", edit to customize spells.");
+				plugin.saveResource(spellsFileName, false);
 			} else {
-				getLogger().info("Loading spells from: " + spellsFile.getName());
+				getLogger().info("Loading spell customizations from: " + spellsFile.getName());
 				load(spellsFile);
 			}
 		} catch (Exception ex) {
@@ -863,18 +870,26 @@ public class MagicController implements Listener
 	{
 		config.load();
 		
-		// TODO: Make this additive
 		List<String> spellKeys = config.getKeys();
 		for (String key : spellKeys)
 		{
 			ConfigurationNode spellNode = config.getNode(key);
-			Spell newSpell = Spell.loadSpell(key, spellNode, this);
-			if (newSpell == null)
-			{
-				getLogger().warning("Magic: Error loading spell " + key);
-				continue;
+			Spell existing = spells.get(key);
+			if (existing != null) {
+				 existing.configure(spellNode);
+			} else {
+				Spell newSpell = Spell.loadSpell(key, spellNode, this);
+				if (newSpell == null)
+				{
+					getLogger().warning("Magic: Error loading spell " + key);
+					continue;
+				}
+				addSpell(newSpell);
 			}
-			addSpell(newSpell);
+			
+			if (!config.getBoolean("enabled", true)) {
+				spells.remove(key);
+			}
 		}
 	}
 
