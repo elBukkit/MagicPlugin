@@ -29,12 +29,6 @@
 # Whether or not to show messages on every spell cast (in chat)
 #show_cast_messages: false
 
-# A prefix to use for any important messages
-#message_prefix: ¤d¤o
-
-# A prefix to use for cast messages
-#cast_message_prefix: ¤5¤o
-
 # Enable/Disable Sound Effects
 #sounds: true
 

@@ -222,6 +222,22 @@ materials:
   - yellow_flower
   - red_rose
   - brown_mushroom
+  - red_mushroom
+  - glass
+  - thin_glass
+  - stained_glass
+  - stained_glass_pane
+  # What materials are not targeted by construction spells
+  ignored:
+  - air
+  - snow
+  - wooden_door
+  - iron_door_block
+  - long_grass
+  - dead_bush
+  - yellow_flower
+  - red_rose
+  - brown_mushroom
   - red_mushroom  
   # Which materials are inherently "destructible". This list includes anything is
   # can be naturally generated, except by structures (strongholds, villages, etc).

@@ -93,18 +93,20 @@ public class BlinkSpell extends Spell
 			}
 			else
 			{
+				// TODO: Load this from a special material list.
 				targetThrough(Material.GLASS);
 				targetThrough(Material.THIN_GLASS);
-				targetThrough(Material.STAINED_GLASS);
-				targetThrough(Material.STAINED_GLASS_PANE);
+				// targetThrough(Material.STAINED_GLASS);
+				// targetThrough(Material.STAINED_GLASS_PANE);
 				targetThrough(Material.WATER);
 				targetThrough(Material.STATIONARY_WATER);
 			}
 		} else {
+			// TODO: Load this from a special material list.
 			targetThrough(Material.GLASS);
 			targetThrough(Material.THIN_GLASS);
-			targetThrough(Material.STAINED_GLASS);
-			targetThrough(Material.STAINED_GLASS_PANE);
+			// targetThrough(Material.STAINED_GLASS);
+			// targetThrough(Material.STAINED_GLASS_PANE);
 			targetThrough(Material.WATER);
 			targetThrough(Material.STATIONARY_WATER);
 		}

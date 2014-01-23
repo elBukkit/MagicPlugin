@@ -908,13 +908,18 @@ public class Wand implements CostReducer {
 	@SuppressWarnings("deprecation")
 	private static String getMaterialName(Material material, byte data) {
 		String materialName = getMaterialKey(material, data);
+
+		String[] pieces = StringUtils.split(materialName, ":");
+		materialName = pieces[0];
 		
-		// I started doing this the "right" way by looking at MaterialData
-		// But I don't feel like waiting for Bukkit to update their classes.
-		// This also seems super ugly and messy.. if this is the replacement for "magic numbers", count me out :P
+		// This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
 		/*
 		Class<? extends MaterialData> materialData = material.getData();
-		if (Dye.class.isAssignableFrom(materialData)) {
+		Bukkit.getLogger().info("Material " + material + " has " + materialData);
+		if (Wool.class.isAssignableFrom(materialData)) {
+			Wool wool = new Wool(material, data);
+			materialName += " " + wool.getColor().name();
+		} else if (Dye.class.isAssignableFrom(materialData)) {
 			Dye dye = new Dye(material, data);
 			materialName += " " + dye.getColor().name();
 		} else if (Dye.class.isAssignableFrom(materialData)) {
@@ -923,10 +928,10 @@ public class Wand implements CostReducer {
 		}
 		*/
 		
-		String[] pieces = StringUtils.split(materialName, ":");
-		materialName = pieces[0];
+		// Using raw id's for 1.6 support... because... bukkit... bleh.
 		
-		if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
+		//if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
+		if (material == Material.CARPET || material.getId() == 95 || material.getId() ==159 || material.getId() == 160 || material == Material.WOOL) {
 			// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
 			DyeColor color = DyeColor.getByWoolData(data);
 			materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
@@ -935,7 +940,7 @@ public class Wand implements CostReducer {
 			materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
 		}
 		
-		materialName = materialName.replace('_', ' ');
+		materialName = materialName.toLowerCase().replace('_', ' ');
 		return materialName;
 	}
 	

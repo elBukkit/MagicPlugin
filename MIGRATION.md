@@ -13,6 +13,8 @@
  Note that now you only need to modify what you want to have different now. So it might be a good time to review your
  custom configurations!
  
+ If you want to disable a wand or spell, set the "enabled" property to "false" (instead of removing it)
+ 
  I'm trying to get the config formats more or less solidified by 2.9.0, and I hope the overall format won't change at all
  after official release (3.0). 
 
