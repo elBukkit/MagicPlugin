@@ -1046,9 +1046,12 @@ public class Wand implements CostReducer {
 		} else {
 			if (description.length() > 0) {
 				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+				if (owner.length() > 0) {
+					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + owner);
+				}
 			} else if (owner.length() > 0) {
 				String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
-				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + ownerDescription);
+				lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
 			}
 			
 			lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
