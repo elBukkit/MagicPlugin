@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.9.0
+
 ## 2.8.9
 
  - Add "self" parameter to disarm spell (for remote disarming with castp)
