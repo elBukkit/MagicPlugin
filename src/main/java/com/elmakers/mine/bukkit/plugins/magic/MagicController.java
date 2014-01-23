@@ -290,14 +290,14 @@ public class MagicController implements Listener
 
 	public void registerEvent(SpellEventType type, Spell spell)
 	{
-		Mage spells = getMage(spell.getPlayer());
-		spells.registerEvent(type, spell);
+		Mage mage = getMage(spell.getPlayer());
+		mage.registerEvent(type, spell);
 	}
 
 	public void unregisterEvent(SpellEventType type, Spell spell)
 	{
-		Mage spells = getMage(spell.getPlayer());
-		spells.unregisterEvent(type, spell);
+		Mage mage = getMage(spell.getPlayer());
+		mage.unregisterEvent(type, spell);
 	}
 
 	/*
@@ -533,8 +533,8 @@ public class MagicController implements Listener
 		// Set up the PlayerSpells timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
-				for (Mage spells : mages.values()) {
-					spells.tick();
+				for (Mage mage : mages.values()) {
+					mage.tick();
 				}
 			}
 		}, 0, 20);
@@ -1175,16 +1175,16 @@ public class MagicController implements Listener
 
 	public void onPlayerDamage(Player player, EntityDamageEvent event)
 	{
-		Mage spells = getMage(player);
-		spells.onPlayerDamage(event);
+		Mage mage = getMage(player);
+		mage.onPlayerDamage(event);
 	}
 	
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent event)
 	{
 		if (!(event.getEntity() instanceof Player)) return;
-		Mage spells = getMage((Player)event.getEntity());
-		spells.onPlayerCombust(event);
+		Mage mage = getMage((Player)event.getEntity());
+		mage.onPlayerCombust(event);
 	}
 	
 	@EventHandler
@@ -1402,15 +1402,15 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event)
 	{
-		for (Mage spells : mages.values()) {
-			Player player = spells.getPlayer();
+		for (Mage mage : mages.values()) {
+			Player player = mage.getPlayer();
 			if (player == null) continue;
 			
-			Wand wand = spells.getActiveWand();
+			Wand wand = mage.getActiveWand();
 			if (wand != null) {
 				wand.deactivate();
 			}
-			spells.restoreInventory();
+			mage.restoreInventory();
 			player.updateInventory();
 		}
 	}
@@ -1423,8 +1423,8 @@ public class MagicController implements Listener
 		for (Player player : players) {
 			Wand wand = Wand.getActiveWand(this, player);
 			if (wand != null) {
-				Mage spells = getMage(player);
-				wand.activate(spells);
+				Mage mage = getMage(player);
+				wand.activate(mage);
 				player.updateInventory();
 			}
 		}
@@ -1460,10 +1460,10 @@ public class MagicController implements Listener
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		
 		Player player = (Player)event.getWhoClicked();
-		Mage spells = getMage(player);
+		Mage mage = getMage(player);
 		
 		// Don't allow crafting in the wand inventory.
-		if (spells.hasStoredInventory()) {
+		if (mage.hasStoredInventory()) {
 			event.setCancelled(true); 
 			return;
 		}
@@ -1703,8 +1703,8 @@ public class MagicController implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Player player = event.getPlayer();
-		Mage spells = getMage(player);
-		if (spells.hasStoredInventory() || spells.getBlockPlaceTimeout() > System.currentTimeMillis()) {
+		Mage mage = getMage(player);
+		if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
 		}
 	}
@@ -1713,8 +1713,8 @@ public class MagicController implements Listener
 	public void onPlayerDropItem(PlayerDropItemEvent event)
 	{
 		Player player = event.getPlayer();
-		Mage spells = getMage(player);
-		Wand activeWand = spells.getActiveWand();
+		Mage mage = getMage(player);
+		Wand activeWand = mage.getActiveWand();
 		if (activeWand != null) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
 			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
