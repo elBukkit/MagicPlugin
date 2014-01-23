@@ -1690,9 +1690,12 @@ public class MagicController implements Listener
 			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
 			if (Wand.isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
 				activeWand.deactivate();
-				// Clear after inventory restore, since that will put the wand back
+				// Clear after inventory restore (potentially with deactivate), since that will put the wand back
 				player.setItemInHand(new ItemStack(Material.AIR, 1));
-			} else {
+			} else if (activeWand.isInventoryOpen()) {
+				// Don't allow dropping anything out of the wand inventory, 
+				// but this will close the ivnentory.
+				activeWand.closeInventory();
 				event.setCancelled(true);
 			}
 		}

@@ -13,6 +13,7 @@
  - Some general fixes to the "find place to stand" code (ascend, descend, phase)
  - Add "wand" recall type, some general recall improvements.
  - Add spell casts to dynmap (WIP)
+ - Fix not being able to drop items with a wand active.
 
 ## 2.8.8
 
