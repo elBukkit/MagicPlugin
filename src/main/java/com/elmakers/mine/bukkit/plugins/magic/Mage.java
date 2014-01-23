@@ -541,6 +541,7 @@ public class Mage implements CostReducer
 			boolean cancelled = false;
 			for (BlockBatch batch : batches) {
 				if (!(batch instanceof UndoBatch)) {
+					batch.finish();
 					pendingBatches.remove(batch);
 					cancelled = true;
 				}
