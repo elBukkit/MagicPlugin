@@ -4,8 +4,6 @@ IMPORTANT STUFF:
 
  - investigate lag/slowdown - new dynmap stuff?
  - Essentials signs add to wand...
- - Add active costs to cost lists(s)
- - Clear xp_max and xp_regeneration when cost_reduction is 1
 
  - Familiar- my cast kills their familiars?
 
@@ -36,6 +34,7 @@ NEW SPELLS:
 
 OTHER STUFF:
  
+ - Add count parameter to projectile spell, make wither shoot a few
  - Make Phase return from the End
  - Alter names sheep "_jeb", - others "Dinnerbone" ?
  - Test larger undo queue sizes, or count size in blocks?
