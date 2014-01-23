@@ -404,7 +404,6 @@ materials:
   - nether_brick_stairs
   - nether_warts
   - cauldron
-  - ender_portal
   - ender_portal_frame
   - ender_stone
   - redstone_lamp_off
