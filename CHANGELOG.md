@@ -1,12 +1,9 @@
 # CHANGELOG
 
-## 2.9.0
- 
- - Fix cancelled batches (via undo) not being undoable after cancelling.
- - Add active (mana per second) casting costs to spell descriptions
-
 ## 2.8.9
 
+ - Fix cancelled batches (via undo) not being undoable after cancelling.
+ - Add active (mana per second) casting costs to spell descriptions
  - Add "self" parameter to disarm spell (for remote disarming with castp)
  - Fix the iterate spell using the replicate material. Strange effects though :)
  - Save lost wands for easier re-location.
