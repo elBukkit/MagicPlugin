@@ -231,8 +231,16 @@ public class MagicController implements Listener
 		return maxRadiusPowerMultiplier;
 	}
 	
+	public float getMaxRadiusPowerMultiplierMax() {
+		return maxRadiusPowerMultiplierMax;
+	}
+	
 	public float getMaxRangePowerMultiplier() {
 		return maxRangePowerMultiplier;
+	}
+	
+	public float getMaxRangePowerMultiplierMax() {
+		return maxRangePowerMultiplierMax;
 	}
 	
 	public int getAutoUndoInterval() {
@@ -900,7 +908,9 @@ public class MagicController implements Listener
 		maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
 		maxConstructionPowerMultiplier = (float)properties.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
 		maxRangePowerMultiplier = (float)properties.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
+		maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
 		maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
+		maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		autoUndo = properties.getInteger("auto_undo", autoUndo);
@@ -1956,8 +1966,10 @@ public class MagicController implements Listener
 	 private boolean							 dynmapShowSpells				= true;
 	 private float							 	 maxDamagePowerMultiplier	    = 2.0f;
 	 private float								 maxConstructionPowerMultiplier = 5.0f;
-	 private float								 maxRadiusPowerMultiplier 		= 1.5f;
+	 private float								 maxRadiusPowerMultiplier 		= 2.5f;
+	 private float								 maxRadiusPowerMultiplierMax    = 4.0f;
 	 private float								 maxRangePowerMultiplier 		= 3.0f;
+	 private float								 maxRangePowerMultiplierMax 	= 5.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	= 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;

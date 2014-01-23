@@ -14,6 +14,7 @@
  - Add "wand" recall type, some general recall improvements.
  - Add spell casts to dynmap (WIP)
  - Fix not being able to drop items with a wand active.
+ - Add a hard limit to range and radius multipliers
 
 ## 2.8.8
 

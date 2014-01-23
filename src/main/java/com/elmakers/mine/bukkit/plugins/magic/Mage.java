@@ -143,7 +143,10 @@ public class Mage implements CostReducer
 	
 	public float getRangeMultiplier() {
 		float maxPowerMultiplier = controller.getMaxRangePowerMultiplier() - 1;
-		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+		float maxPowerMultiplierMax = controller.getMaxRangePowerMultiplierMax();
+		float multiplier = (maxPowerMultiplier * activeWand.getPower());
+		multiplier = Math.min(multiplier, maxPowerMultiplierMax);
+		return activeWand == null ? 1 : 1 + multiplier;
 	}
 	
 	public float getConstructionMultiplier() {
@@ -152,8 +155,11 @@ public class Mage implements CostReducer
 	}
 	
 	public float getRadiusMultiplier() {
-		float maxPowerMultiplier = controller.getMaxRadiusPowerMultiplier() - 1;
-		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+		float maxPowerMultiplier = controller.getMaxRadiusPowerMultiplier();
+		float maxPowerMultiplierMax = controller.getMaxRadiusPowerMultiplierMax();
+		float multiplier = (maxPowerMultiplier * activeWand.getPower());
+		multiplier = Math.min(multiplier, maxPowerMultiplierMax);
+		return activeWand == null ? 1 : 1 + multiplier;
 	}
 	
 	public float getCooldownReduction() {
