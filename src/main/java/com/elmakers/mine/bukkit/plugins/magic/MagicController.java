@@ -1223,28 +1223,35 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event)
 	{
-		Entity entity = event.getEntity();
-		if (entity instanceof Player)
-		{
-			Player player = (Player)event.getEntity();
-			onPlayerDamage(player, event);
+		try {
+			Entity entity = event.getEntity();
+			if (entity instanceof Player)
+			{
+				Player player = (Player)event.getEntity();
+				onPlayerDamage(player, event);
+			}
+	        if (entity instanceof Item && (indestructibleWands || dynmapShowWands))
+	        {
+	   		 	Item item = (Item)entity;
+	   		 	ItemStack itemStack = item.getItemStack();
+	            if (Wand.isWand(itemStack))
+	            {
+	            	if (indestructibleWands) {
+	                     event.setCancelled(true);
+	            	} else if (event.getDamage() >= itemStack.getDurability()) {
+	                	Wand wand = new Wand(this, item.getItemStack());
+	                	if (removeLostWand(wand)) {
+	                		plugin.getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " destroyed");
+	                	}
+	                }
+				}  
+	        }
+		} catch (Exception ex) {
+			// TODO: Trying to track down a stacktrace-less NPE that seemed to come from here:
+			// [06:22:34] [Server thread/ERROR]: Could not pass event EntityDamageEvent to Magic v2.9.0
+			// Caused by: java.lang.NullPointerException
+			ex.printStackTrace();
 		}
-        if (entity instanceof Item && (indestructibleWands || dynmapShowWands))
-        {
-   		 	Item item = (Item)entity;
-   		 	ItemStack itemStack = item.getItemStack();
-            if (Wand.isWand(itemStack))
-            {
-            	if (indestructibleWands) {
-                     event.setCancelled(true);
-            	} else if(event.getDamage() >= itemStack.getDurability()) {
-                	Wand wand = new Wand(this, item.getItemStack());
-                	if (removeLostWand(wand)) {
-                		plugin.getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " destroyed");
-                	}
-                }
-			}  
-        }
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST)
