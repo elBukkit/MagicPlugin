@@ -204,14 +204,15 @@ public class WandLevel {
 		// Add random wand properties
 		Integer propertyCount = RandomUtils.weightedRandom(propertyCountProbability);
 		ConfigurationNode wandProperties = new ConfigurationNode();
+		double costReduction = wand.getCostReduction();
 		
 		while (propertyCount-- > 0) {
 			int randomProperty = (int)(Math.random() * 10);
 			switch (randomProperty) {
 			case 0: 
-				float costReduction = wand.getCostReduction();
 				if (costReduction < maxReduction) {
-					wandProperties.setProperty("cost_reduction", (Double)(double)(Math.min(maxReduction, costReduction + RandomUtils.weightedRandom(costReductionProbability))));
+					costReduction = Math.min(maxReduction, costReduction + RandomUtils.weightedRandom(costReductionProbability));
+					wandProperties.setProperty("cost_reduction", costReduction);
 				}
 				break;
 			case 1:
@@ -273,20 +274,27 @@ public class WandLevel {
 		
 		// The mana system is considered separate from other properties
 
-		int xpRegeneration = wand.getXpRegeneration();
-		if (xpRegeneration < maxXpRegeneration) {
-			wandProperties.setProperty("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
+		if (costReduction >= 1) {
+			// Cost-Free wands don't need mana.
+			wandProperties.setProperty("xp_regeneration", 0);
+			wandProperties.setProperty("xp_max", 0);
+			wandProperties.setProperty("xp", 0);
+		} else {
+			int xpRegeneration = wand.getXpRegeneration();
+			if (xpRegeneration < maxXpRegeneration) {
+				wandProperties.setProperty("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
+			}
+			int xpMax = wand.getXpMax();
+			if (xpMax < maxMaxXp) {
+				// Make sure the wand has at least enough xp to cast the highest costing spell it has.
+				xpMax = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
+				xpMax = Math.max(maxXpCost, xpMax);
+				wandProperties.setProperty("xp_max", xpMax);
+			}
+			
+			// Refill the wand's xp, why not
+			wandProperties.setProperty("xp", xpMax);
 		}
-		int xpMax = wand.getXpMax();
-		if (xpMax < maxMaxXp) {
-			// Make sure the wand has at least enough xp to cast the highest costing spell it has.
-			xpMax = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
-			xpMax = Math.max(maxXpCost, xpMax);
-			wandProperties.setProperty("xp_max", xpMax);
-		}
-		
-		// Refill the wand's xp, why not
-		wandProperties.setProperty("xp", xpMax);
 		
 		// Add or set uses to the wand
 		if (additive) {

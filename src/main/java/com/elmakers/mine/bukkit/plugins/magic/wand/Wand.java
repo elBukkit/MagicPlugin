@@ -1376,9 +1376,6 @@ public class Wand implements CostReducer {
 		damageReductionFalling = Math.max(damageReductionFalling, other.damageReductionFalling);
 		damageReductionFire = Math.max(damageReductionFire, other.damageReductionFire);
 		damageReductionExplosions = Math.max(damageReductionExplosions, other.damageReductionExplosions);
-		xpRegeneration = Math.max(xpRegeneration, other.xpRegeneration);
-		xpMax = Math.max(xpMax, other.xpMax);
-		xp = Math.max(xp, other.xp);
 		healthRegeneration = Math.max(healthRegeneration, other.healthRegeneration);
 		hungerRegeneration = Math.max(hungerRegeneration, other.hungerRegeneration);
 		speedIncrease = Math.max(speedIncrease, other.speedIncrease);
@@ -1392,6 +1389,17 @@ public class Wand implements CostReducer {
 			effectColor = newColor.asRGB();
 		}
 		effectColor = Math.max(effectColor, other.effectColor);
+		
+		// Don't need mana if cost-free
+		if (costReduction >= 1) {
+			xpRegeneration = 0;
+			xpMax = 0;
+			xp = 0;
+		} else {
+			xpRegeneration = Math.max(xpRegeneration, other.xpRegeneration);
+			xpMax = Math.max(xpMax, other.xpMax);
+			xp = Math.max(xp, other.xp);
+		}
 		
 		// Eliminate limited-use wands
 		if (uses == 0 || other.uses == 0) {
