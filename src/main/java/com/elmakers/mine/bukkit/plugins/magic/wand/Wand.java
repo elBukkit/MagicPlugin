@@ -286,7 +286,7 @@ public class Wand implements CostReducer {
 		setName(name);
 		takeOwnership(player);
 		if (updateDescription) {
-			setDescription(Messages.get("wand.owner_description", "$name's Wand").replace("$name", owner));
+			setDescription("");
 		}
 	}
 	
@@ -1046,6 +1046,9 @@ public class Wand implements CostReducer {
 		} else {
 			if (description.length() > 0) {
 				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+			} else if (owner.length() > 0) {
+				String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
+				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + ownerDescription);
 			}
 			
 			lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));

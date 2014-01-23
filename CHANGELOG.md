@@ -3,6 +3,7 @@
 ## 2.9.0
 
  - Add "/magic clean" command to remove unowned lost wands.
+ - Add owner to wand description, if no other description is present.
 
 ## 2.8.9
 
