@@ -2,6 +2,11 @@
 
 IMPORTANT STUFF:
 
+ - investigate lag/slowdown - new dynmap stuff?
+ - Essentials signs add to wand...
+ - Add active costs to cost lists(s)
+ - Clear xp_max and xp_regeneration when cost_reduction is 1
+
  - Familiar- my cast kills their familiars?
 
  - Fix underwater targeting on non-construction spells, or generally if in the water
@@ -31,7 +36,7 @@ NEW SPELLS:
 
 OTHER STUFF:
  
- - Show spell casting on dynmap
+ - Make Phase return from the End
  - Alter names sheep "_jeb", - others "Dinnerbone" ?
  - Test larger undo queue sizes, or count size in blocks?
  - Add "wand duplicate" command
@@ -92,6 +97,7 @@ OTHER STUFF:
 
 DEMO SERVER STUFF:
 
+ - Fix web site- spells and wands list missing?
  - Add "wand properties" infobook
  - Move spawn?
  - Build and have fun! ;)
