@@ -3,6 +3,7 @@
 ## 2.9.0
  
  - Fix cancelled batches (via undo) not being undoable after cancelling.
+ - Add active (mana per second) casting costs to spell descriptions
 
 ## 2.8.9
 

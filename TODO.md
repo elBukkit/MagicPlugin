@@ -2,10 +2,6 @@
 
 IMPORTANT STUFF:
 
- - cancelling an undo batch needs to still add it to the undo queue!
- - Fix wand duplication issue
- - Remove stained_glass references for 1.6 compatiblity!
- 
  - investigate lag/slowdown - new dynmap stuff?
  - Essentials signs add to wand...
  - Add active costs to cost lists(s)

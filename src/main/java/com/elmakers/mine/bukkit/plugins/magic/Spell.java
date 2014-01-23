@@ -1169,6 +1169,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public List<CastingCost> getCosts() {
 		return costs;
 	}
+	
+	public List<CastingCost> getActiveCosts() {
+		return activeCosts;
+	}
 
 	public boolean isInCircle(int x, int z, int R)
 	{

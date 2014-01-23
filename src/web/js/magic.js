@@ -72,6 +72,27 @@ function getSpellDetails(key, showTitle, useMana, costReduction)
 		}
 		detailsDiv.append(costList);
 	}
+	if ('active_costs' in spell) {
+		detailsDiv.append($('<div class="spellHeading"/>').text('Active Costs (per Second)'));
+		var costList = $('<ul/>');
+		for (var costKey in spell.active_costs) {
+			var amount = spell.active_costs[costKey];
+			if (costReduction > 0) {
+				if (costReduction > 1) costReduction = 1;
+				amount = amount * (1 - costReduction);
+			}
+			if (costKey == 'xp') {
+				if (useMana) {
+					costList.append($('<li/>').text("Mana: " + amount));
+				} else {
+					costList.append($('<li/>').text("XP: " + amount));
+				}
+			} else {
+				costList.append($('<li/>').append(getMaterial(costKey, true)).append($('<span/>').text(': ' + amount)));
+			}
+		}
+		detailsDiv.append(costList);
+	}
 	
 	if (showTitle) {
 		var admin = $('<div class="adminuse"/>').text("Admin use: /wand add " + key);

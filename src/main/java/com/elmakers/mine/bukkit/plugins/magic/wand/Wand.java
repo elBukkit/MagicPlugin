@@ -1248,6 +1248,14 @@ public class Wand implements CostReducer {
 				}
 			}
 		}
+		List<CastingCost> activeCosts = spell.getActiveCosts();
+		if (activeCosts != null) {
+			for (CastingCost cost : activeCosts) {
+				if (cost.hasCosts(this)) {
+					lore.add(ChatColor.YELLOW + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(this)));
+				}
+			}
+		}
 	}
 	
 	protected Inventory getOpenInventory() {
