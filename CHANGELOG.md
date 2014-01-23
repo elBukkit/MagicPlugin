@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.9.0
+
+
+
 ## 2.8.9
 
  - Fix cancelled batches (via undo) not being undoable after cancelling.
