@@ -1,14 +1,23 @@
 package com.elmakers.mine.bukkit.blocks;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Painting;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 public class ConstructBatch extends VolumeBatch {
 	
@@ -21,6 +30,7 @@ public class ConstructBatch extends VolumeBatch {
 	private final BrushSpell spell;
 	private final boolean spawnFallingBlocks;
 	private Vector fallingBlockVelocity = null;
+	private boolean copyEntities = true;
 	
 	private int x = 0;
 	private int y = 0;
@@ -74,9 +84,62 @@ public class ConstructBatch extends VolumeBatch {
 		if (!finished) {
 			super.finish();
 			
+			MaterialBrush brush = spell.getMaterialBrush();
+			if (copyEntities && brush != null && brush.hasCloneTarget()) {
+				Location cloneLocation = brush.toTargetLocation(center);
+				World sourceWorld = cloneLocation.getWorld();
+				// TODO: Non-spherical types...
+				int radiusSquared = radius * radius;
+				List<Entity> entities = sourceWorld.getEntities();
+				for (Entity entity : entities) {
+					if (entity instanceof Painting) {
+						if (entity.getLocation().distanceSquared(cloneLocation) > radiusSquared) continue;
+						Painting painting = (Painting)entity;
+						Location attachedLocation = painting.getLocation().getBlock().getRelative(painting.getAttachedFace()).getLocation();
+						Location targetLocation = brush.fromTargetLocation(center.getWorld(), attachedLocation);
+						try {
+							Painting newPainting = (Painting)center.getWorld().spawnEntity(targetLocation, EntityType.PAINTING);
+							if (newPainting != null) {
+								newPainting.setArt(painting.getArt());
+								newPainting.setFacingDirection(painting.getFacing());
+							}
+						} catch (Exception ex) {
+							// controller.getLogger().warning(ex.getMessage());
+							center.getWorld().dropItemNaturally(targetLocation, new ItemStack(Material.PAINTING, 1));
+						}
+					} else if (entity instanceof ItemFrame) {
+						if (entity.getLocation().distanceSquared(cloneLocation) > radiusSquared) continue;
+						ItemFrame itemFrame = (ItemFrame)entity;
+						Location attachedLocation = itemFrame.getLocation().getBlock().getRelative(itemFrame.getAttachedFace()).getLocation();
+						Location targetLocation = brush.fromTargetLocation(center.getWorld(), attachedLocation);
+						ItemStack itemStack = InventoryUtils.getCopy(itemFrame.getItem());
+						try {
+							ItemFrame newItemFrame = (ItemFrame)center.getWorld().spawnEntity(targetLocation, EntityType.ITEM_FRAME);
+							if (newItemFrame != null) {
+								newItemFrame.setFacingDirection(itemFrame.getFacing());
+								newItemFrame.setRotation(itemFrame.getRotation());
+								if (itemStack != null) {
+									newItemFrame.setItem(itemStack);
+								}
+							}
+						} catch (Exception ex) {
+							// controller.getLogger().warning(ex.getMessage());
+							if (itemStack != null) {
+								center.getWorld().dropItemNaturally(targetLocation, itemStack);
+							}
+							center.getWorld().dropItemNaturally(targetLocation, new ItemStack(Material.ITEM_FRAME, 1));
+						}
+					}
+				}
+			}
+			
 			mage.registerForUndo(constructedBlocks);
 			mage.castMessage("Constructed " + constructedBlocks.size() + " blocks");
 		}
+	}
+	
+	public void  setCopyEntities(boolean doCopy) {
+		copyEntities = doCopy;
 	}
 
 	public boolean fillBlock(int x, int y, int z)

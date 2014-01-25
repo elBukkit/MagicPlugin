@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
@@ -94,12 +95,15 @@ public class MaterialBrush extends MaterialAndData {
 	}
 	
 	public Location fromTargetLocation(World targetWorld, Location target) {
-		
-		/// TODO FIX THIS!
 		if (cloneLocation == null || cloneTarget == null) return null;
 		Location translated = target.clone();
-		translated.subtract(cloneLocation.toVector());
-		translated.add(cloneTarget.toVector());
+		translated.setX(translated.getBlockX());
+		translated.setY(translated.getBlockY());
+		translated.setZ(translated.getBlockZ());
+		Vector cloneVector = new Vector(cloneLocation.getBlockX(), cloneLocation.getBlockY(), cloneLocation.getBlockZ());
+		translated.subtract(cloneVector);
+		Vector cloneTargetVector = new Vector(cloneTarget.getBlockX(), cloneTarget.getBlockY(), cloneTarget.getBlockZ());
+		translated.add(cloneTargetVector);
 		translated.setWorld(targetWorld);
 		return translated;
 	}
