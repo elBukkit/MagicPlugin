@@ -305,6 +305,8 @@ materials:
   
   # Which materials are acceptable as building materials. This
   # affects what can be absorbed and added to a wand.
+  # Any spells not on this list can not be copied, cloned, replicated
+  # or otherwise built with using a Wand brush.
   building:
   - air
   - stone

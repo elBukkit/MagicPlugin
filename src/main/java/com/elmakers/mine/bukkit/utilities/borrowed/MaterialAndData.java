@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utilities.borrowed;
 
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -53,8 +55,21 @@ public class MaterialAndData {
 		setMaterial(material, (byte)0);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void updateFrom(Block block) {
+		updateFrom(block, null);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void updateFrom(Block block, Set<Material> buildableMaterials) {
+		if (!block.getChunk().isLoaded()) {
+			block.getChunk().load(true);
+			return;
+		}
+
+		Material blockMaterial = block.getType();
+		if (buildableMaterials != null && !buildableMaterials.contains(blockMaterial)) {
+			return;
+		}
 		// Look for special block states
 		signLines = null;
 		commandLine = null;
@@ -80,7 +95,7 @@ public class MaterialAndData {
 			}
 		}
 		
-		material = block.getType();
+		material = blockMaterial;
 		data = block.getData();
 	}
 	

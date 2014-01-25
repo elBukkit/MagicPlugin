@@ -14,7 +14,7 @@ public abstract class BrushSpell extends BlockSpell{
 		super.loadTemplate(key, node);
 		Material override = parameters.getMaterial("material", null);
 		if (override != null) {
-			brush = new MaterialBrush(override, (byte)0);
+			brush = new MaterialBrush(controller, override, (byte)0);
 		}
 	}
 	

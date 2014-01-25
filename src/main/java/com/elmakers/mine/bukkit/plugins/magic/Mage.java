@@ -39,7 +39,7 @@ public class Mage implements CostReducer
 	protected WeakReference<Player> 			player;
 	protected WeakReference<CommandSender>		commandSender;
 	protected String 							playerName;
-	protected MagicController					controller;
+	protected final MagicController				controller;
 	protected HashMap<String, Spell> 			spells 						  = new HashMap<String, Spell>();
 	private Inventory							storedInventory  			   = null;
 	private Wand								activeWand					   = null;
@@ -55,7 +55,7 @@ public class Mage implements CostReducer
 	private long 				lastClick = 0;
 	private long 				blockPlaceTimeout = 0;
 	private Location 			lastDeathLocation = null;
-	private MaterialBrush		brush = new MaterialBrush(Material.DIRT, (byte)0);
+	private final MaterialBrush		brush;
 	
 	public void removeExperience(int xp) {
 		
@@ -624,6 +624,7 @@ public class Mage implements CostReducer
 	{
 		this.controller = master;
 		this.player = new WeakReference<Player>(player);
+		this.brush = new MaterialBrush(controller, Material.DIRT, (byte)0);
 	}
 
 	protected void setPlayer(Player player)

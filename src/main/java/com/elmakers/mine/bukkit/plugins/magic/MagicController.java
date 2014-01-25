@@ -399,6 +399,11 @@ public class MagicController implements Listener
 	{
 		return destructibleMaterials.contains(block.getType());		
 	}
+
+	public boolean isBuildable(Material material) 
+	{
+		return buildingMaterials.contains(material);		
+	}
 	
 	public boolean hasBuildPermission(Player player, Location location) 
 	{

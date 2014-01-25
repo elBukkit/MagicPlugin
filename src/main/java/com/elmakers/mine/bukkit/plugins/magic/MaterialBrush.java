@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
@@ -15,18 +16,24 @@ public class MaterialBrush extends MaterialAndData {
 		REPLICATE
 	};
 	
-	BrushMode mode = BrushMode.MATERIAL;
-	Location cloneLocation = null;
-	Location cloneTarget = null;
-	Location materialTarget = null;
 	
-	public MaterialBrush(final Material material, final  byte data) {
+	
+	private BrushMode mode = BrushMode.MATERIAL;
+	private Location cloneLocation = null;
+	private Location cloneTarget = null;
+	private Location materialTarget = null;
+	private final MagicController controller;
+	
+	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
 		super(material, data);
+		this.controller = controller;
 	}
 	
 	@Override
 	public void setMaterial(Material material, byte data) {
-		super.setMaterial(material, data);
+		if (controller.isBuildable(material)) {
+			super.setMaterial(material, data);
+		}
 		mode = BrushMode.MATERIAL;
 	}
 	
@@ -48,6 +55,10 @@ public class MaterialBrush extends MaterialAndData {
 		cloneTarget = null;
 	}
 	
+	public boolean hasCloneTarget() {
+		return cloneLocation != null && cloneTarget != null;
+	}
+	
 	public void enableCopying() {
 		mode = BrushMode.COPY;
 	}
@@ -61,7 +72,6 @@ public class MaterialBrush extends MaterialAndData {
 		return true;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void setTarget(Location target) {
 		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE) {
 			if (cloneTarget == null || mode == BrushMode.CLONE || 
@@ -71,24 +81,38 @@ public class MaterialBrush extends MaterialAndData {
 		}
 		if (mode == BrushMode.COPY) {
 			Block block = target.getBlock();
-			if (block.getChunk().isLoaded()) {
-				material = block.getType();
-				data = block.getData();
-			}
+			updateFrom(block, controller.getBuildingMaterials());
 		}
+	}
+	
+	public Location toTargetLocation(Location target) {
+		if (cloneLocation == null || cloneTarget == null) return null;
+		Location translated = cloneLocation.clone();
+		translated.subtract(cloneTarget.toVector());
+		translated.add(target.toVector());
+		return translated;
+	}
+	
+	public Location fromTargetLocation(World targetWorld, Location target) {
+		
+		/// TODO FIX THIS!
+		if (cloneLocation == null || cloneTarget == null) return null;
+		Location translated = target.clone();
+		translated.subtract(cloneLocation.toVector());
+		translated.add(cloneTarget.toVector());
+		translated.setWorld(targetWorld);
+		return translated;
 	}
 	
 	public boolean update(Location target) {
 		if (cloneLocation != null && (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)) {
 			if (cloneTarget == null) cloneTarget = target;
-			materialTarget = cloneLocation.clone();
-			materialTarget.subtract(cloneTarget.toVector());
-			materialTarget.add(target.toVector());
+			materialTarget = toTargetLocation(target);
 			
 			Block block = materialTarget.getBlock();
 			if (!block.getChunk().isLoaded()) return false;
 
-			updateFrom(block);
+			updateFrom(block, controller.getBuildingMaterials());
 		}
 		
 		return true;
