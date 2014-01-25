@@ -2,29 +2,38 @@
 
 ## For 2.9.0
 
+ - Check into wands dropping spells from the inventory?
+ - Fix right-click-to-cycle
  - Separate player data files
  - Async player data save/load (... undo queue locking?)
- - PvP permissions
-
- - Undo fails in some cases (overlapping construction jobs? - Need to implement cancel)
+ - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
+ - Add option for removing building material Items? (set ticksLived)
+ - Undo fails in some cases (overlapping undo queues)
   - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
   - BlockData tracks only the first recorded materialdata, commit will replace
-
+ - Configurable effects system
+ - Retry limit on construction batches
+ 
 
 ## For 3.0.0
+
+ - Fix wand inventory glitches and special-cases
+ - URLMap image file cache
+ - Replicate entities, attachables, signs, chest contents
+ - Same as above, for undo?
  - Persist material brush
  - Make ores destructible by most spells (except blast?)
+ - Magic stats (that persist) - block modified, etc.
 
-IMPORTANT STUFF:
+NEAR-FUTURE STUFF:
 
+ - make push spell reflect projectiles (set fireball velocity)
  - investigate lag/slowdown - new dynmap stuff?
  - Essentials signs add to wand...
 
  - Familiar- my cast kills their familiars?
 
  - Fix underwater targeting on non-construction spells, or generally if in the water
- - Add console logging of massive construction spell casting
- - Raise default construction limits again.. or mess with power?
 
 NEW SPELLS:
 
@@ -40,18 +49,21 @@ NEW SPELLS:
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Column and Disc building spells
+ - Biome modification (mega-frost). Chunk regeneration would be awesome.
 
 OTHER STUFF:
  
+ - Wand auto-colorization (via spell categories)
+ - Apply potion effects while holding wand Could replace haste with this.
+ - Add fall protection to bounce spell (generalize it)
+ - Add option to open chest on right-click (for wand inventory)
  - Add count parameter to projectile spell, make wither shoot a few
  - Make volley multi-sample?
  - Make Phase return from the End
  - Alter names sheep "_jeb", - others "Dinnerbone" ?
- - Test larger undo queue sizes, or count size in blocks?
  - Add "wand duplicate" command
  - Organize inventory by spell usage (favorites page)
  - Complete work on tab completion
- - Make /wand name take ownership
  - Separate material list for "super" building materials?
  - Test reloads- not duplicating undo queues, etc
  - Scale fling and levitate falling effects based on distance fallen
@@ -68,9 +80,6 @@ OTHER STUFF:
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.
  - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
- - Add max radius to construct spell
-   - Override? Same as fill.. maybe use cooldown reduction?
- - Respect WorldGuard's pvp setting, global PvP ?
  - Add option to not be able to use another player's wand
  - supershell undo left a ring
  - Add safe undo:
@@ -84,11 +93,8 @@ OTHER STUFF:
  - Look into data values disappearing on materials in wand inventory like stairs
  - If possible, label more material data like stair direction.
  - Add locale option to suffix messages.yml
- - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
  
- - Make per-spell, per-wand config files?
  - Show active spells in a different color
- - Make portal spell portals avoid taking the player to the nether
  
  - Add location to /magic populate when used in-game
  - Add /magic depopulate, to remove all wands from chests
@@ -97,33 +103,31 @@ OTHER STUFF:
  - Light incendiary tnt on fire? (rename frag to incendiary?)
 
  - Persist player spell data
-   - portal
-   - familiar (?)
+   - familiar
  - Localize all spell-specific messages.
  
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
-
-DEMO SERVER STUFF:
-
- - Fix web site- spells and wands list missing?
- - Add "wand properties" infobook
- - Move spawn?
- - Build and have fun! ;)
-
-LONG-TERM OR INCOMPLETE:
  
  - Continue work on combining wands on avils
- - apply potion effects while holding wand? Could replace haste with this.
  - Specific protection for suffocation damage, underwater breathing (air regeneration)
  - Maybe data-drive blink's special list of things it will try to target through?
- - managed to shoot myself with sniper :(
  - Maybe make wands regenerate while you're not holding them (timer-based)?
-
- - invincibility doesn't protect against magic or lightning?
- - .. update docs, .. make new video
  - .. Factions support .. ?
+ 
+ TESTING / TWEAKING:
+ 
+ - Test larger undo queue sizes, or count size in blocks?
+ - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
+ - Add console logging of massive construction spell casting
+ - Raise default construction limits again.. or mess with power?
 
+DEMO SERVER / DOCS STUFF:
+
+ - Add "wand properties" infobook
+ - Build and have fun! ;)
+
+ - .. update docs, .. make new video
  - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
 
 STACK TRACES / EXTRA DEBUG INFO

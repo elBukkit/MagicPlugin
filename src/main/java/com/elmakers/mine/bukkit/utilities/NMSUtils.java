@@ -115,7 +115,7 @@ public class NMSUtils {
 		return handle;
 	}
 
-	protected static Object getHandle(org.bukkit.entity.Entity entity) {
+	public static Object getHandle(org.bukkit.entity.Entity entity) {
 		Object handle = null;
 		try {
 			Method handleMethod = entity.getClass().getMethod("getHandle");

@@ -86,6 +86,7 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utilities.NMSUtils;
 import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
@@ -916,6 +917,7 @@ public class MagicController implements Listener
 		clickCooldown = properties.getInt("click_cooldown", clickCooldown);
 		messageThrottle = properties.getInt("message_throttle", 0);
 		maxBlockUpdates = properties.getInt("max_block_updates", maxBlockUpdates);
+		ageDroppedItems = properties.getInt("age_dropped_items", ageDroppedItems);
 		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
 		fillWands = properties.getBoolean("fill_wands", fillWands);
 		indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
@@ -1216,6 +1218,17 @@ public class MagicController implements Listener
 				Location dropLocation = event.getLocation();
 				getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 
+			}
+		} else if (ageDroppedItems > 0) {
+			try {
+				Class<?> itemClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityItem");
+				Item item = event.getEntity();
+				Object handle = NMSUtils.getHandle(item);
+				Field ageField = itemClass.getDeclaredField("age");
+				ageField.setAccessible(true);
+				ageField.set(handle, ageDroppedItems);
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -2001,6 +2014,7 @@ public class MagicController implements Listener
 	 private float							 	 castCommandCooldownReduction	= 1.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private int								 maxBlockUpdates				= 100;
+	 private int								 ageDroppedItems				= 0;
 	 private int								 autoUndo						= 0;
 	 
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
