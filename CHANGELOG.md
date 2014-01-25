@@ -7,6 +7,7 @@
  - Add owner filtering to "/magic list" command.
  - Make arrows fired with the arrow spell short-lived. Kinda hacky.
  - Add option to age dropped items. Might try to make more specific in the future.
+ - Tag spell adds to undo queue.
 
 ## 2.8.9.1
 

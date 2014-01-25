@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Target;
@@ -78,6 +79,12 @@ public class SignSpell extends Spell
 				sign.setLine(3, timeFormat.format(currentDate));
 				sign.update();
 				castMessage("You leave a tag");
+				
+				BlockList signBlocks = new BlockList();
+				signBlocks.add(targetBlock);
+				mage.registerForUndo(signBlocks);
+				controller.updateBlock(targetBlock);
+				
 				return SpellResult.SUCCESS;
 			}
 			else
