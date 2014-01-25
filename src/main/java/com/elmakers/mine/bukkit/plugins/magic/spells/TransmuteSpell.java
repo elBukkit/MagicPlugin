@@ -13,7 +13,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TransmuteSpell extends BrushSpell
 {
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{	
@@ -52,8 +51,7 @@ public class TransmuteSpell extends BrushSpell
 		for (BlockData undoBlock : transmuteAction)
 		{
 			Block block = undoBlock.getBlock();
-			block.setType(material);
-			block.setData(data);
+			buildWith.modify(block);
 		}
 
 		if (usedTarget)

@@ -85,11 +85,10 @@ public class FillBatch extends VolumeBatch {
 				Material previousMaterial = block.getType();
 				byte previousData = block.getData();
 				
-				if (previousMaterial != brush.getMaterial() || previousData != brush.getData()) {
+				if (brush.isDifferent(block)) {
 					updateBlock(world.getName(), x, y, z);
 					filledBlocks.add(block);
-					block.setType(brush.getMaterial());
-					block.setData(brush.getData());
+					brush.modify(block);
 					
 					if (spawnFallingBlocks) {
 						FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);

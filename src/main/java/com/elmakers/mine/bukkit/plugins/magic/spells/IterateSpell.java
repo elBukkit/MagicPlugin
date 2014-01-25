@@ -64,20 +64,20 @@ public class IterateSpell extends BrushSpell
 				iteratedBlocks.add(currentTarget);
 
 				buildWith.update(currentTarget.getLocation());
-				
-				Material material = buildWith.getMaterial();
-				byte data = buildWith.getData();
 
 				if (incrementData) {
+					byte data = buildWith.getData();
 					data = i > 15 ? 15 : (byte)i;
+					buildWith.setData(data);
 				}
 				
-				currentTarget.setType(material);
-				currentTarget.setData(data);
+				buildWith.modify(currentTarget);
 				
 				controller.updateBlock(currentTarget);
 				
 				Location effectLocation = currentTarget.getLocation();	
+				
+				Material material = buildWith.getMaterial();
 				effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
 			}
 			targetLoc.add(aim);

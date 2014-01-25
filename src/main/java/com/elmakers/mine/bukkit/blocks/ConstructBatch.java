@@ -167,11 +167,10 @@ public class ConstructBatch extends VolumeBatch {
 		Material previousMaterial = block.getType();
 		byte previousData = block.getData();
 		
-		if (previousMaterial != brush.getMaterial() || previousData != brush.getData()) {			
+		if (brush.isDifferent(block)) {			
 			updateBlock(center.getWorld().getName(), x, y, z);
 			constructedBlocks.add(block);
-			block.setType(brush.getMaterial());
-			block.setData(brush.getData());
+			brush.modify(block);
 			if (spawnFallingBlocks) {
 				FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
 				falling.setDropItem(false);

@@ -58,16 +58,14 @@ public class PillarSpell extends BrushSpell
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(attachBlock.getLocation());
 
-		Material material = buildWith.getMaterial();
-		byte data = buildWith.getData();
 
 		BlockList pillarBlocks = new BlockList();
 		Block pillar = getBlockAt(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ());
 		pillarBlocks.add(pillar);
-		pillar.setType(material);
-		pillar.setData(data);
+		buildWith.modify(pillar);
 		
 		Location effectLocation = pillar.getLocation();
+		Material material = buildWith.getMaterial();
 		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
 
 		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());

@@ -59,10 +59,9 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 			Material previousMaterial = block.getType();
 			byte previousData = block.getData();
 			
-			if (previousMaterial != brush.getMaterial() || previousData != brush.getData()) {
+			if (brush.isDifferent(block)) {
 				brush.update(block.getLocation());
-				block.setType(brush.getMaterial());
-				block.setData(brush.getData());
+				brush.modify(block);
 				mage.getController().updateBlock(block);
 				
 				if (spawnFallingBlocks) {

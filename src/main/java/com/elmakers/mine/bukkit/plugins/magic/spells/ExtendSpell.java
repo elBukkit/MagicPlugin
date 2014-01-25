@@ -36,9 +36,6 @@ public class ExtendSpell extends BrushSpell
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(targetBlock.getLocation());
 
-		Material material = buildWith.getMaterial();
-		byte data = buildWith.getData();
-
 		int distance = 0;
 		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
 		{
@@ -56,8 +53,7 @@ public class ExtendSpell extends BrushSpell
 		}
 		BlockList bridgeBlocks = new BlockList();
 		bridgeBlocks.add(targetBlock);
-		targetBlock.setType(material);
-		targetBlock.setData(data);
+		buildWith.modify(targetBlock);
 
 		castMessage("A bridge extends!");
 		mage.registerForUndo(bridgeBlocks);

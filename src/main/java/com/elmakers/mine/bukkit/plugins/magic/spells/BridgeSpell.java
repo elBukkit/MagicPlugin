@@ -55,12 +55,10 @@ public class BridgeSpell extends BrushSpell
 		buildWith.setTarget(targetBlock.getLocation());
 
 		Material material = buildWith.getMaterial();
-		byte data = buildWith.getData();
 		
 		BlockList bridgeBlocks = new BlockList();
 		bridgeBlocks.add(targetBlock);
-		targetBlock.setType(material);
-		targetBlock.setData(data);
+		brush.modify(targetBlock);
 
 		castMessage("A bridge extends!");
 		
