@@ -17,7 +17,7 @@ public class InventoryUtils extends NMSUtils
 	protected static Object getNMSCopy(ItemStack stack) {
     	Object nms = null;
     	try {
-			Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", stack.getClass());
+			Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
 			nms = copyMethod.invoke(null, stack);
 		} catch (Throwable ex) {
 			ex.printStackTrace();

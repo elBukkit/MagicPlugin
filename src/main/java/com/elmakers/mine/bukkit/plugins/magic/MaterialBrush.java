@@ -4,9 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
 import org.bukkit.block.CommandBlock;
+import org.bukkit.block.Sign;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 public class MaterialBrush extends MaterialAndData {
@@ -24,6 +28,7 @@ public class MaterialBrush extends MaterialAndData {
 	Location materialTarget = null;
 	String[] signLines = null;
 	String commandLine = null;
+	Inventory inventory = null;
 	
 	public MaterialBrush(final Material material, final  byte data) {
 		super(material, data);
@@ -35,6 +40,7 @@ public class MaterialBrush extends MaterialAndData {
 		mode = BrushMode.MATERIAL;
 		signLines = null;
 		commandLine = null;
+		inventory = null;
 	}
 	
 	public void setMaterial(Material material, byte data) {
@@ -104,6 +110,7 @@ public class MaterialBrush extends MaterialAndData {
 			// Look for special block states
 			signLines = null;
 			commandLine = null;
+			inventory = null;
 			
 			BlockState blockState = block.getState();
 			if (blockState instanceof Sign) {
@@ -112,6 +119,9 @@ public class MaterialBrush extends MaterialAndData {
 			} else if (blockState instanceof CommandBlock){
 				CommandBlock command = (CommandBlock)blockState;
 				commandLine = command.getCommand();
+			} else if (blockState instanceof InventoryHolder) {
+				InventoryHolder holder = (InventoryHolder)blockState;
+				inventory = holder.getInventory();
 			}
 			
 			material = block.getType();
@@ -136,6 +146,17 @@ public class MaterialBrush extends MaterialAndData {
 			CommandBlock command = (CommandBlock)blockState;
 			command.setCommand(commandLine);
 			command.update();
+		} else if (blockState instanceof InventoryHolder && inventory != null) {
+			InventoryHolder holder = (InventoryHolder)blockState;
+			Inventory newInventory = holder.getInventory();
+			int maxSize = Math.min(newInventory.getSize(), inventory.getSize());
+			for (int i = 0; i < maxSize; i++) {
+				ItemStack item = inventory.getItem(i);
+				item = InventoryUtils.getCopy(item);
+				if (item != null) {
+					newInventory.setItem(i, item);
+				}
+			}
 		}
 	}
 	
