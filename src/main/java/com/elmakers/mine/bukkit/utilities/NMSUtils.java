@@ -72,7 +72,7 @@ public class NMSUtils {
 		}
 	}
 	
-	protected static Class getBukkitClass(String className) {
+	public static Class getBukkitClass(String className) {
 		Class<?> ret = null;
 		try { 	
 			ret = fixBukkitClass(className);
@@ -81,7 +81,7 @@ public class NMSUtils {
 		}
 		return ret;
 	}
-
+	
 	protected static Class<?> fixBukkitClass(String className) {
 		className = className.replace("org.bukkit.craftbukkit.", "org.bukkit.craftbukkit." + versionPrefix);
 		className = className.replace("net.minecraft.server.", "net.minecraft.server." + versionPrefix);

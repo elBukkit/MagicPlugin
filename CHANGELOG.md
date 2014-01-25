@@ -5,6 +5,11 @@
  - Add "/magic clean" command to remove unowned lost wands.
  - Add owner to wand description, if no other description is present.
  - Add owner filtering to "/magic list" command.
+ - Make arrows fired with the arrow spell short-lived. Kinda hacky.
+
+## 2.8.9.1
+
+ - Fix right-click-to-cycle option.
 
 ## 2.8.9
 
