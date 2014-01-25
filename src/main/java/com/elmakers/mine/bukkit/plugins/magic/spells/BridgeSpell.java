@@ -58,7 +58,7 @@ public class BridgeSpell extends BrushSpell
 		
 		BlockList bridgeBlocks = new BlockList();
 		bridgeBlocks.add(targetBlock);
-		brush.modify(targetBlock);
+		buildWith.modify(targetBlock);
 
 		castMessage("A bridge extends!");
 		

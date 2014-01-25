@@ -6,7 +6,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public abstract class BrushSpell extends BlockSpell{
 
-	protected MaterialBrush brush;
+	private MaterialBrush brush;
 
 	@Override
 	protected void loadTemplate(String key, ConfigurationNode node)
