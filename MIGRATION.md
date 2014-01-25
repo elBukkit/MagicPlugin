@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 2.9.0
+
+ Chests and signs are no longer indestructible. The undo system will save their contents (though not across a reload, yet).
+ You can modify the indestructible material list in magic.yml.
+
 ## 2.8.9
 
  BIG ONE: All config files have had their root removed. So there is no "general" in magic.yml, it's all flat.

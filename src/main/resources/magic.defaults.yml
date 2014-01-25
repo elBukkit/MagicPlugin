@@ -302,11 +302,6 @@ materials:
   # removal of attached block)
   indestructible:
   - bedrock
-  - chest
-  - ender_chest
-  - sign_post
-  - wall_sign
-  - command
   
   # Which materials are acceptable as building materials. This
   # affects what can be absorbed and added to a wand.

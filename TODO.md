@@ -13,7 +13,6 @@
   - BlockData tracks only the first recorded materialdata, commit will replace
  - Configurable effects system
  - Retry limit on construction batches
- 
 
 ## For 3.0.0
 

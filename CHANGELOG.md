@@ -8,6 +8,7 @@
  - Make arrows fired with the arrow spell short-lived. Kinda hacky.
  - Add option to age dropped items. Might try to make more specific in the future.
  - Tag spell adds to undo queue.
+ - Undo system (and clone+replicate) handle signs, chests, and command blocks. Remove those from the indestructible list.
 
 ## 2.8.9.1
 

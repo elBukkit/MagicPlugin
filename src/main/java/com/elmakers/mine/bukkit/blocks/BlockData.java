@@ -9,13 +9,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.BlockVector;
 
+import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
+
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
  * 
  * @author NathanWolf
  *
  */
-public class BlockData
+public class BlockData extends MaterialAndData
 {
 	public static final BlockFace[] FACES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN };
 	public static final BlockFace[] SIDES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST };
@@ -25,8 +27,6 @@ public class BlockData
 
 	protected BlockVector  location;
 	protected String       world;
-	protected Material     material;
-	protected byte         materialData;
 
 	protected static Server server;
 	
@@ -69,41 +69,35 @@ public class BlockData
 	{
 	}
 
-	@SuppressWarnings("deprecation")
 	public BlockData(Block block)
 	{
+		updateFrom(block);
 		this.block = block;
 
 		location = new BlockVector(block.getX(), block.getY(), block.getZ());
 		world = block.getWorld().getName();
-		material = block.getType();
-		materialData = block.getData();
 	}
 
 	public BlockData(BlockData copy)
 	{
+		super(copy);
 		location = copy.location;
 		world = copy.world;
-		material = copy.material;
-		materialData = copy.materialData;
-
 		block = copy.block;
 	}
 	
 	public BlockData(Location location, Material material, byte data)
 	{
+		super(material, data);
 		this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 		this.world = location.getWorld().getName();
-		this.material = material;
-		this.materialData = data;
 	}
 	
 	public BlockData(int x, int y, int z, String world, Material material, byte data)
 	{
+		super(material, data);
 		this.location = new BlockVector(x, y, z);
 		this.world = world;
-		this.material = material;
-		this.materialData = data;
 	}
 
 	protected boolean checkBlock()
@@ -134,32 +128,11 @@ public class BlockData
 		return location;
 	}
 
-	public Material getMaterial()
-	{
-		return material;
-	}
-
-	public byte getMaterialData()
-	{
-		return materialData;
-	}
-
 	public void setPosition(BlockVector location)
 	{
 		this.location = location;
 	}
 
-	public void setMaterial(Material material)
-	{
-		this.material = material;
-	}
-
-	public void setMaterialData(byte materialData)
-	{
-		this.materialData = materialData;
-	}
-
-	@SuppressWarnings("deprecation")
 	public boolean undo()
 	{
 		if (!checkBlock())
@@ -174,10 +147,9 @@ public class BlockData
 			return false;
 		}
 
-		if (block.getType() != material || block.getData() != materialData)
+		if (isDifferent(block))
 		{
-			block.setType(material);
-			block.setData(materialData);
+			modify(block);
 		}
 
 		return true;
@@ -185,7 +157,7 @@ public class BlockData
 	
 	@SuppressWarnings("deprecation")
 	public String toString() {
-		return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + world + "|" + getMaterial().getId() + ":" + getMaterialData();
+		return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + world + "|" + getMaterial().getId() + ":" + getData();
 	}
 	
 	@SuppressWarnings("deprecation")
