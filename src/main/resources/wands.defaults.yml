@@ -557,6 +557,7 @@ engineer:
         - superconvert
         - superpyramid
         - levitate
+        - paint
     materials:
         - stone
         - wood
@@ -1204,6 +1205,8 @@ admin:
         - fill
         - heal
         - phase
+        - disarm
+        - gather
     materials:
         - water
         - lava
