@@ -1862,44 +1862,44 @@ public class Wand implements CostReducer {
 	
 	public void cycleSpells() {
 		Set<String> spellsSet = getSpells();
-		String[] spells = (String[])spellsSet.toArray();
-		if (spells.length == 0) return;
+		ArrayList<String> spells = new ArrayList<String>(spellsSet);
+		if (spells.size() == 0) return;
 		if (activeSpell == null) {
-			activeSpell = spells[0].split("@")[0];
+			activeSpell = spells.get(0).split("@")[0];
 			return;
 		}
 		
 		int spellIndex = 0;
-		for (int i = 0; i < spells.length; i++) {
-			if (spells[i].split("@")[0].equals(activeSpell)) {
+		for (int i = 0; i < spells.size(); i++) {
+			if (spells.get(i).split("@")[0].equals(activeSpell)) {
 				spellIndex = i;
 				break;
 			}
 		}
 		
-		spellIndex = (spellIndex + 1) % spells.length;
-		setActiveSpell(spells[spellIndex].split("@")[0]);
+		spellIndex = (spellIndex + 1) % spells.size();
+		setActiveSpell(spells.get(spellIndex).split("@")[0]);
 	}
 	
 	public void cycleMaterials() {
 		Set<String> materialsSet = getMaterialKeys();
-		String[] materials = (String[])materialsSet.toArray();
-		if (materials.length == 0) return;
+		ArrayList<String> materials = new ArrayList<String>(materialsSet);
+		if (materials.size() == 0) return;
 		if (activeMaterial == null) {
-			activeMaterial = materials[0].split("@")[0];
+			activeMaterial = materials.get(0).split("@")[0];
 			return;
 		}
 		
 		int materialIndex = 0;
-		for (int i = 0; i < materials.length; i++) {
-			if (materials[i].split("@")[0].equals(activeMaterial)) {
+		for (int i = 0; i < materials.size(); i++) {
+			if (materials.get(i).split("@")[0].equals(activeMaterial)) {
 				materialIndex = i;
 				break;
 			}
 		}
 		
-		materialIndex = (materialIndex + 1) % materials.length;
-		setActiveMaterial(materials[materialIndex].split("@")[0]);
+		materialIndex = (materialIndex + 1) % materials.size();
+		setActiveMaterial(materials.get(materialIndex).split("@")[0]);
 	}
 	
 	public boolean hasExperience() {
