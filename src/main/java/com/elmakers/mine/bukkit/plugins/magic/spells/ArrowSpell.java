@@ -111,7 +111,7 @@ public class ArrowSpell extends Spell
 			public void run() {
 				killArrows(arrows, tickIncrease, arrowClass, craftArrowClass, retries);
 			}
-		}, 10);
+		}, 40);
 	}
 	
 	protected void killArrows(final Collection<Arrow> arrows, final int tickIncrease, final Class<?> arrowClass, final Class<?> craftArrowClass, int retries) {
