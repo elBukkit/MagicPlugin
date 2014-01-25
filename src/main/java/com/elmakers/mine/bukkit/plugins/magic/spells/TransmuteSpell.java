@@ -46,7 +46,6 @@ public class TransmuteSpell extends BrushSpell
 
 		MaterialBrush buildWith = getMaterialBrush();
 		Material material = buildWith.getMaterial();
-		byte data = buildWith.getData();
 		
 		for (BlockData undoBlock : transmuteAction)
 		{

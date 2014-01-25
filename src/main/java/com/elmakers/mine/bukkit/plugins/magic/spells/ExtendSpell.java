@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -14,7 +13,6 @@ public class ExtendSpell extends BrushSpell
 {
 	int MAX_SEARCH_DISTANCE = 16;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{

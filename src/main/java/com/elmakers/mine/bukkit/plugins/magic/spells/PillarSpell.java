@@ -58,7 +58,6 @@ public class PillarSpell extends BrushSpell
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(attachBlock.getLocation());
 
-
 		BlockList pillarBlocks = new BlockList();
 		Block pillar = getBlockAt(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ());
 		pillarBlocks.add(pillar);
