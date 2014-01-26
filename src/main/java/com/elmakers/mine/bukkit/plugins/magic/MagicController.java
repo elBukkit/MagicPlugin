@@ -1756,8 +1756,11 @@ public class MagicController implements Listener
 			} else if (activeWand.isInventoryOpen()) {
 				// Don't allow dropping anything out of the wand inventory, 
 				// but this will close the inventory.
-				
-				activeWand.closeInventory();
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						activeWand.closeInventory();
+					}
+				}, 1);
 				event.setCancelled(true);
 			}
 		}
