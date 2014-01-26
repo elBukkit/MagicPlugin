@@ -100,6 +100,8 @@ public class ConstructBatch extends VolumeBatch {
 						try {
 							Painting newPainting = (Painting)center.getWorld().spawnEntity(targetLocation, EntityType.PAINTING);
 							if (newPainting != null) {
+								targetLocation = brush.fromTargetLocation(center.getWorld(), painting.getLocation());								
+								newPainting.teleport(targetLocation);
 								newPainting.setArt(painting.getArt());
 								newPainting.setFacingDirection(painting.getFacing());
 							}
@@ -116,6 +118,8 @@ public class ConstructBatch extends VolumeBatch {
 						try {
 							ItemFrame newItemFrame = (ItemFrame)center.getWorld().spawnEntity(targetLocation, EntityType.ITEM_FRAME);
 							if (newItemFrame != null) {
+								targetLocation = brush.fromTargetLocation(center.getWorld(), itemFrame.getLocation());
+								newItemFrame.teleport(targetLocation);
 								newItemFrame.setFacingDirection(itemFrame.getFacing());
 								newItemFrame.setRotation(itemFrame.getRotation());
 								if (itemStack != null) {
