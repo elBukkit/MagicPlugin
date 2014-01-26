@@ -349,7 +349,7 @@ public class Wand implements CostReducer {
 			return null;
 		}
 		Material material = itemStack.getType();
-		if (material == Material.AIR || !material.isBlock()) {
+		if (material == Material.AIR) {
 			return null;
 		}
 	
