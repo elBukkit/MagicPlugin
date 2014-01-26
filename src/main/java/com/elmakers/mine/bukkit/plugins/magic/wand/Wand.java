@@ -1316,8 +1316,8 @@ public class Wand implements CostReducer {
 		WandLevel.randomizeWand(this, additive, level);
 	}
 	
-	public static Wand createWand(MagicController spells, String templateName) {
-		Wand wand = new Wand(spells);
+	public static Wand createWand(MagicController controller, String templateName) {
+		Wand wand = new Wand(controller);
 		String wandName = Messages.get("wand.default_name");
 		String wandDescription = "";
 
@@ -1357,7 +1357,7 @@ public class Wand implements CostReducer {
 			if (materialList != null) {
 				for (Object materialKey : materialList) {
 					if (!isValidMaterial((String)materialKey)) {
-						spells.getPlugin().getLogger().info("Unknown material: " + materialKey);
+						controller.getPlugin().getLogger().info("Unknown material: " + materialKey);
 					} else {
 						wand.addMaterial((String)materialKey, false, true);
 					}
