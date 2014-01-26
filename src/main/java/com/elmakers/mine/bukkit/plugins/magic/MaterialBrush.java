@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,8 +18,6 @@ public class MaterialBrush extends MaterialAndData {
 		REPLICATE
 	};
 	
-	
-	
 	private BrushMode mode = BrushMode.MATERIAL;
 	private Location cloneLocation = null;
 	private Location cloneTarget = null;
@@ -34,12 +33,16 @@ public class MaterialBrush extends MaterialAndData {
 	public void setMaterial(Material material, byte data) {
 		if (!controller.isRestricted(material) && material.isBlock()) {
 			super.setMaterial(material, data);
+			mode = BrushMode.MATERIAL;
 		}
-		mode = BrushMode.MATERIAL;
 	}
 	
 	public void enableCloning() {
 		this.mode = BrushMode.CLONE;
+	}
+	
+	public void enableErase() {
+		this.setMaterial(Material.AIR);
 	}
 	
 	public void enableReplication() {

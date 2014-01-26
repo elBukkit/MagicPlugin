@@ -1065,7 +1065,7 @@ public class MagicController implements Listener
 				activeWand.setActiveSpell(spell.getKey());
 			} else {
 				Material material = icon.getType();
-				if (buildingMaterials.contains(material) || 
+				if (material.isBlock() || 
 					material == Wand.EraseMaterial || material == Wand.CopyMaterial || 
 					material == Wand.CloneMaterial || material == Wand.ReplicateMaterial) {
 					activeWand.activateMaterial(material, icon.getData().getData());

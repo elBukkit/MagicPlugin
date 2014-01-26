@@ -161,8 +161,8 @@ public class Wand implements CostReducer {
 	public void activateMaterial(Material material, byte data) {
 		setActiveMaterial(material, data);
 		if (activeMaterial != null) {
-			MaterialBrush brush = mage.getBrush();
 			if (activeMaterial.equals(CLONE_MATERIAL_KEY) || activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
+				MaterialBrush brush = mage.getBrush();
 				Location cloneLocation = mage.getLocation();
 				cloneLocation.setY(cloneLocation.getY() - 1);
 				brush.setCloneLocation(cloneLocation);
@@ -354,7 +354,10 @@ public class Wand implements CostReducer {
 		}
 	
 		String materialKey = getMaterialKey(material, itemStack.getData().getData());
-
+		if (materialKey == null) {
+			return null;
+		}
+		
 		if (index != null) {
 			materialKey += "@" + index;
 		}
@@ -881,7 +884,7 @@ public class Wand implements CostReducer {
 			materialKey = "clone";
 		} else if (material == ReplicateMaterial) {
 			materialKey = "replicate";
-		} else {
+		} else if (material.isBlock()) {
 			materialKey = material.name().toLowerCase();
 		}
 		
@@ -890,6 +893,9 @@ public class Wand implements CostReducer {
 
 	private static String getMaterialKey(Material material, byte data) {
 		String materialKey = getMaterialKey(material);
+		if (materialKey == null) {
+			return null;
+		}
 		if (data != 0) {
 			materialKey += ":" + data;
 		}
@@ -1633,7 +1639,9 @@ public class Wand implements CostReducer {
 				brush.enableCloning();
 			} else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
 				brush.enableReplication();
-			} else {
+			} else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
+				brush.enableErase();
+			}else {
 				MaterialAndData material = parseMaterialKey(activeMaterial);
 				brush.setMaterial(material.getMaterial(), material.getData());
 			}
