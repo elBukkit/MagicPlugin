@@ -307,7 +307,6 @@ random:
       gravel: 20,30,40,60
       glass: 10,20,30,50
       glowstone: 5,10,20,40
-      tnt: 0,0,5,15
       quartz_block: 0,0,25,35
       lapis_block: 0,0,25,35
       stained_clay: 1,5,15,45
@@ -722,7 +721,6 @@ elder:
         - glowstone
         - glass
         - erase
-        - tnt
         - soul_sand
         - stained_glass
         - copy
@@ -1071,7 +1069,6 @@ black:
     materials:
         - water
         - erase
-        - tnt
         - soul_sand
         - copy
         - obsidian
@@ -1297,7 +1294,6 @@ wolf:
         - glowstone
         - glass
         - erase
-        - tnt
         - soul_sand
         - copy
         - clone

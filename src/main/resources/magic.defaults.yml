@@ -312,6 +312,7 @@ materials:
   - bedrock
   - ender_portal_frame
   - ender_portal
+  - tnt
   
   # Which materials are acceptable as building materials. This
   # affects what can be absorbed and added to a wand.
@@ -359,7 +360,6 @@ materials:
   - double_step
   - step
   - brick
-  - tnt
   - bookshelf
   - mossy_cobblestone
   - obsidian

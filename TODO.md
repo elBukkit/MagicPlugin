@@ -2,6 +2,11 @@
 
 ## For 2.9.0
 
+ - erase is broken??
+ - randomly generating wands is broken?
+ - Need to fix targeting and construction (water, glass)
+ - Fix phase in the nether, return to end
+
  - Separate player data files
  - Async player data save/load (... undo queue locking?)
  - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
