@@ -32,7 +32,7 @@ public class MaterialBrush extends MaterialAndData {
 	
 	@Override
 	public void setMaterial(Material material, byte data) {
-		if (controller.isBuildable(material)) {
+		if (!controller.isRestricted(material) && material.isBlock()) {
 			super.setMaterial(material, data);
 		}
 		mode = BrushMode.MATERIAL;
@@ -82,7 +82,7 @@ public class MaterialBrush extends MaterialAndData {
 		}
 		if (mode == BrushMode.COPY) {
 			Block block = target.getBlock();
-			updateFrom(block, controller.getBuildingMaterials());
+			updateFrom(block, controller.getRestrictedMaterials());
 		}
 	}
 	
@@ -116,7 +116,7 @@ public class MaterialBrush extends MaterialAndData {
 			Block block = materialTarget.getBlock();
 			if (!block.getChunk().isLoaded()) return false;
 
-			updateFrom(block, controller.getBuildingMaterials());
+			updateFrom(block, controller.getRestrictedMaterials());
 		}
 		
 		return true;

@@ -60,14 +60,14 @@ public class MaterialAndData {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void updateFrom(Block block, Set<Material> buildableMaterials) {
+	public void updateFrom(Block block, Set<Material> restrictedMaterials) {
 		if (!block.getChunk().isLoaded()) {
 			block.getChunk().load(true);
 			return;
 		}
 
 		Material blockMaterial = block.getType();
-		if (buildableMaterials != null && !buildableMaterials.contains(blockMaterial)) {
+		if (restrictedMaterials != null && restrictedMaterials.contains(blockMaterial)) {
 			return;
 		}
 		// Look for special block states

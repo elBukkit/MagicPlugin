@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.utilities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.bukkit.Material;
 
@@ -81,7 +81,7 @@ public class CSVParser
 
 	public Set<Material> parseMaterials(String csvList)
 	{
-		Set<Material> materials = new TreeSet<Material>();
+		Set<Material> materials = new HashSet<Material>();
 		parseMaterials(materials, csvList);
 		return materials;
 

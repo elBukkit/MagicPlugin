@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -215,6 +214,11 @@ public class MagicController implements Listener
 		return destructibleMaterials;
 	}
 
+	public Set<Material> getRestrictedMaterials()
+	{
+		return restrictedMaterials;
+	}
+
 	public Set<Material> getTargetThroughMaterials()
 	{
 		return targetThroughMaterials;
@@ -400,9 +404,9 @@ public class MagicController implements Listener
 		return destructibleMaterials.contains(block.getType());		
 	}
 
-	public boolean isBuildable(Material material) 
+	public boolean isRestricted(Material material) 
 	{
-		return buildingMaterials.contains(material);		
+		return restrictedMaterials.contains(material);		
 	}
 	
 	public boolean hasBuildPermission(Player player, Location location) 
@@ -443,6 +447,7 @@ public class MagicController implements Listener
 
 		buildingMaterials = csv.parseMaterials(DEFAULT_BUILDING_MATERIALS);
 		indestructibleMaterials = csv.parseMaterials(DEFAULT_INDESTRUCTIBLE_MATERIALS);
+		restrictedMaterials = csv.parseMaterials(DEFAULT_RESTRICTED_MATERIALS);
 		destructibleMaterials = csv.parseMaterials(DEFAULT_DESTRUCTIBLE_MATERIALS);
 		targetThroughMaterials = csv.parseMaterials(DEFAULT_TARGET_THROUGH_MATERIALS);
 		
@@ -952,6 +957,7 @@ public class MagicController implements Listener
 		if (materialNode != null) {
 			buildingMaterials = materialNode.getMaterials("building", buildingMaterials);
 			indestructibleMaterials = materialNode.getMaterials("indestructible", indestructibleMaterials);
+			restrictedMaterials = materialNode.getMaterials("restricted", restrictedMaterials);
 			destructibleMaterials = materialNode.getMaterials("destructible", destructibleMaterials);
 			targetThroughMaterials = materialNode.getMaterials("transparent", targetThroughMaterials);
 		}
@@ -1739,7 +1745,7 @@ public class MagicController implements Listener
 	{
 		Player player = event.getPlayer();
 		Mage mage = getMage(player);
-		Wand activeWand = mage.getActiveWand();
+		final Wand activeWand = mage.getActiveWand();
 		if (activeWand != null) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
 			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
@@ -1749,7 +1755,8 @@ public class MagicController implements Listener
 				player.setItemInHand(new ItemStack(Material.AIR, 1));
 			} else if (activeWand.isInventoryOpen()) {
 				// Don't allow dropping anything out of the wand inventory, 
-				// but this will close the ivnentory.
+				// but this will close the inventory.
+				
 				activeWand.closeInventory();
 				event.setCancelled(true);
 			}
@@ -1973,19 +1980,21 @@ public class MagicController implements Listener
 	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
 
 	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
-	 static final String                         DEFAULT_INDESTRUCTIBLE_MATERIALS = "7,54,130";
+	 static final String                         DEFAULT_INDESTRUCTIBLE_MATERIALS = "7,120";
+	 static final String                         DEFAULT_RESTRICTED_MATERIALS   = "7,119,120";
      static final String						 DEFAULT_DESTRUCTIBLE_MATERIALS	= "0,1,2,3,4,8,9,10,11,12,13,87,88";
 	 static final String                         DEFAULT_TARGET_THROUGH_MATERIALS = "0";
 	 
 	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
 	 static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
 
-	 private Set<Material>                      buildingMaterials              = new TreeSet<Material>();
-	 private Set<Material>                      indestructibleMaterials        = new TreeSet<Material>();
-	 private Set<Material>                      destructibleMaterials        = new TreeSet<Material>();
-	 private Set<Material>                      stickyMaterials                = new TreeSet<Material>();
-	 private Set<Material>                      stickyMaterialsDoubleHeight    = new TreeSet<Material>();
-	 private Set<Material>                      targetThroughMaterials  	   = new TreeSet<Material>();
+	 private Set<Material>                      buildingMaterials              = new HashSet<Material>();
+	 private Set<Material>                      indestructibleMaterials        = new HashSet<Material>();
+	 private Set<Material>                      restrictedMaterials	 	       = new HashSet<Material>();
+	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
+	 private Set<Material>                      stickyMaterials                = new HashSet<Material>();
+	 private Set<Material>                      stickyMaterialsDoubleHeight    = new HashSet<Material>();
+	 private Set<Material>                      targetThroughMaterials  	   = new HashSet<Material>();
 
 	 private long                                physicsDisableTimeout          = 0;
 	 private int                                 undoQueueDepth                 = 256;

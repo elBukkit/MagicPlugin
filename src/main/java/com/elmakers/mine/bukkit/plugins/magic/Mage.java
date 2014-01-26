@@ -4,11 +4,11 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -46,7 +46,7 @@ public class Mage implements CostReducer
 	private final List<Spell>                   quitListeners                  = new ArrayList<Spell>();
 	private final List<Spell>                   deathListeners                 = new ArrayList<Spell>();
 	private final List<Spell>                   damageListeners                = new ArrayList<Spell>();
-	private final Set<Spell>					activeSpells				   = new TreeSet<Spell>();
+	private final Set<Spell>					activeSpells				   = new HashSet<Spell>();
 	private UndoQueue          					undoQueue               	   = null;
 	private LinkedList<BlockBatch>				pendingBatches					= new LinkedList<BlockBatch>();
 	

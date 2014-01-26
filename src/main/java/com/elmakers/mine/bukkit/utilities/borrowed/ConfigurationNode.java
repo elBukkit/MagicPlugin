@@ -3,11 +3,11 @@ package com.elmakers.mine.bukkit.utilities.borrowed;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -478,8 +478,8 @@ public class ConfigurationNode {
 	 {
 		 List<String> defaultMatNames = csv.parseStrings(csvList);
 		 List<String> materialData = getStringList(key, defaultMatNames);
-		 Set<String> matNames = new TreeSet<String>();
-		 Set<Material> materials = new TreeSet<Material>();
+		 Set<String> matNames = new HashSet<String>();
+		 Set<Material> materials = new HashSet<Material>();
 
 		 for (String matName : materialData)
 		 {
@@ -504,8 +504,8 @@ public class ConfigurationNode {
 		 }
 		 List<String> materialData = getStringList(key, defaultMatNames);
 		 
-		 Set<String> matNames = new TreeSet<String>();
-		 Set<Material> materials = new TreeSet<Material>();
+		 Set<String> matNames = new HashSet<String>();
+		 Set<Material> materials = new HashSet<Material>();
 
 		 for (String matName : materialData)
 		 {
