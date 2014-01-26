@@ -2,8 +2,6 @@
 
 ## For 2.9.0
 
- - Check into wands dropping spells from the inventory?
- - Fix right-click-to-cycle
  - Separate player data files
  - Async player data save/load (... undo queue locking?)
  - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
@@ -120,6 +118,7 @@ OTHER STUFF:
  - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
  - Add console logging of massive construction spell casting
  - Raise default construction limits again.. or mess with power?
+ - Test block populator - doesn't seem to work anymore?
 
 DEMO SERVER / DOCS STUFF:
 
