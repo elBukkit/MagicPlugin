@@ -633,11 +633,11 @@ superconvert:
         allow_max_range: false
         range: 200
         max_dimension: 16
-        check_destructible: false
         indestructible:
           - air
         target: select
         type: sphere
+        replace: true
     costs:
         xp: 100
 collapse:

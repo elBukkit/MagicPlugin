@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -76,17 +79,26 @@ public class ConstructSpell extends BrushSpell
 			return SpellResult.FAILURE;
 		}
 		
-		if (parameters.containsKey("y_offset")) {
-			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
-		}
-		
 		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
+		if (parameters.getBoolean("replace", false)) {
+			Set<Material> destructible = new HashSet<Material>();
+			if (targetBlock != null) {
+				destructible.add(targetBlock.getType());
+			} else {
+				destructible.add(target.getType());
+			}
+			setDestructible(destructible);
+		}
+		
+		if (parameters.containsKey("y_offset")) {
+			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
 
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(target.getLocation());
-
+		
 		ConstructionType conType = defaultConstructionType;
 
 		boolean hollow = false;

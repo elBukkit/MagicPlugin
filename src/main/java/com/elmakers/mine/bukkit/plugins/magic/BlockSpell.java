@@ -31,6 +31,11 @@ public abstract class BlockSpell extends Spell {
 		}
 		return destructible.contains(block.getType());
 	}
+	
+	protected void setDestructible(Set<Material> materials) {
+		checkDestructible = true;
+		destructible = materials;
+	}
 
 	@Override
 	protected void processParameters(ConfigurationNode parameters) {
