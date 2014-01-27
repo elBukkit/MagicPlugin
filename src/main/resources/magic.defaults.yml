@@ -169,6 +169,10 @@ undo_depth: 64
 # spells will be reversed.
 auto_undo: 0
 
+# Throttle TNT explosions
+# this is important if you allow building with tnt, especially with griefers.
+max_tnt_per_chunk: 16
+
 #
 # Control wands' "Power" settings
 #
@@ -302,17 +306,19 @@ materials:
   # removal of attached block)
   indestructible:
   - bedrock
-  - ender_portal_frame
+  # if you don't want people destroying your end portals:
+#  - ender_portal_frame 
   
   # Which materials are always completely off-limits.
   # Any spells not on this list can not be copied, cloned, replicated
   # or otherwise built with using a Wand brush.
   # Note that ender_portal blocks can horribly lag the server and client, keep that one on here.
   restricted:
-  - bedrock
-  - ender_portal_frame
-  - ender_portal
-  - tnt
+  # It's a good idea to put any indestructibles in here, since they can't be removed.
+  - bedrock  
+#  - ender_portal_frame
+  # Ender portals can cause some really nasty client lag.
+#  - ender_portal
   
   # Which materials are acceptable as building materials. This
   # affects what can be absorbed and added to a wand.
@@ -450,6 +456,7 @@ materials:
   - stained_glass_pane
   - stained_glass
   - packed_ice
+  - tnt
 
 # If the block populator is enabled, the following is used to randomly choose
 # wands to add to chests.

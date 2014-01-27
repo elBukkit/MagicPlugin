@@ -39,6 +39,7 @@ import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -918,6 +919,7 @@ public class MagicController implements Listener
 	{
 		properties.load();
 		
+		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
 		wandCycling = properties.getBoolean("right_click_cycles", wandCycling);
 		showMessages = properties.getBoolean("show_messages", showMessages);
@@ -1039,7 +1041,7 @@ public class MagicController implements Listener
 	 * Listeners / callbacks
 	 */
 	@EventHandler
-	public void onContainerClick(InventoryDragEvent event) {
+	public void onInventoryDrag(InventoryDragEvent event) {
 		// this is a huge hack! :\
 		// I apologize for any weird behavior this causes.
 		// Bukkit, unfortunately, will blow away NBT data for anything you drag
@@ -1051,6 +1053,23 @@ public class MagicController implements Listener
 		if (oldStack != null && oldStack.hasItemMeta()) {
 			event.setCancelled(true);
 			return;
+		}
+	}
+	
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent event) {
+		if (maxTNTPerChunk > 0 && event.getEntity().getType() == EntityType.PRIMED_TNT) {
+			Chunk chunk = event.getEntity().getLocation().getChunk();
+			int tntCount = 0;
+			Entity[] entities = chunk.getEntities();
+			for (Entity entity : entities) {
+				if (entity.getType() == EntityType.PRIMED_TNT) {
+					tntCount++;
+				}
+			}
+			if (tntCount > maxTNTPerChunk) {
+				event.setCancelled(true);
+			}
 		}
 	}
 	
@@ -2000,6 +2019,7 @@ public class MagicController implements Listener
 	 private Set<Material>                      targetThroughMaterials  	   = new HashSet<Material>();
 
 	 private long                                physicsDisableTimeout          = 0;
+	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;
 	 private boolean							 wandCycling					= false;
 	 private boolean                             showMessages                   = true;
