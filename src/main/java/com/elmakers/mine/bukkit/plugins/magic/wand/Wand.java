@@ -812,8 +812,13 @@ public class Wand implements CostReducer {
 			saveInventory();
 		}
 		boolean addedNew = !hasSpell(spellName);
+		ItemStack spellItem = createSpellItem(spellName);
+		if (spellItem == null) {
+			controller.getPlugin().getLogger().info("Unknown spell: " + spellName);
+			return false;
+		}
 		if (addedNew) {
-			addToInventory(createSpellItem(spellName));
+			addToInventory(spellItem);
 		}
 		if (activeSpell == null || activeSpell.length() == 0 || makeActive) {
 			activeSpell = spellName;
