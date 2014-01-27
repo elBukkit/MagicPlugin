@@ -660,6 +660,10 @@ public class MagicController implements Listener
 
 		// Migration - TODO: Remove
 		File legacyFile = new File(configFolder, fileName + ".yml");
+		// Extra-special hacky migration!
+		if (fileName.equals(URL_MAPS_FILE)) {
+			legacyFile = new File(configFolder,"urlmaps.yml");
+		}
 		if (legacyFile.exists() && !dataFile.exists()) {
 			getLogger().info("MIGRATING " + legacyFile.getName() + ", you should only see this once.");
 			legacyFile.renameTo(dataFile);
@@ -2043,7 +2047,7 @@ public class MagicController implements Listener
 	 private final String                        MATERIALS_FILE             	= "materials";
 	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
-	 private final String						 URL_MAPS_FILE					= "urlmaps";
+	 private final String						 URL_MAPS_FILE					= "imagemaps";
 
 	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
 	 static final String                         DEFAULT_INDESTRUCTIBLE_MATERIALS = "7,120";
