@@ -1,22 +1,15 @@
 # TODO
 
 ## For 2.9.0
-
- - Fix configuration files, additive configs:
-   - Test wands.yml and spells.yml overrides
-   - Move data files to data/
-   - Move default files to defaults/
- - Separate player data files
- - Add configurabl persist block limit for undo queue
  - Replace reload command with save/load
+   - Fix up reload issues in general   
+   - Test reloads- not duplicating undo queues, etc
+ - Add configurable persist block limit for undo queue
 
  - Configurable effects system
  
  - Fix dynmap spell markers
  
- - Test block populator - doesn't seem to work anymore?
- - Test reloads- not duplicating undo queues, etc
-   
  - Fix mine spell (maybe just make it more flexible?)
  - Need to fix targeting and construction (water, glass)
  - Fix underwater targeting on non-construction spells, or generally if in the water

@@ -36,13 +36,16 @@ public class URLMap extends MapRenderer  {
 	 * This should be called in your plugin's onEnable.
 	 * 
 	 * @param callingPlugin
+	 * @param configFile
 	 */
-	public static void load(File configFile) {
+	public static void load(Plugin callingPlugin, File configFile) {
+		
+		plugin = callingPlugin;
 		YamlConfiguration configuration = new YamlConfiguration();
 		File configurationFile = configFile;
 		if (configurationFile.exists()) {
 			try {
-				plugin.getLogger().info("Loading URL map data from " + configurationFile.getName());
+				info("Loading URL map data from " + configurationFile.getName());
 				configuration.load(configurationFile);
 				Set<String> maps = configuration.getKeys(false);
 				boolean needsUpdate = false;
@@ -60,7 +63,7 @@ public class URLMap extends MapRenderer  {
 						} catch (Exception ex) {
 							map = get(mapConfig.getString("url"), mapConfig.getInt("x"), mapConfig.getInt("y")
 								, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
-							plugin.getLogger().info("Created new map id " + map.id + " for config id " + mapIdString);
+							info("Created new map id " + map.id + " for config id " + mapIdString);
 							needsUpdate = true;
 						}
 						if (map == null && mapId != null) {
@@ -79,7 +82,7 @@ public class URLMap extends MapRenderer  {
 							map.getMapView();
 						}
 					} catch (Exception ex) {
-						plugin.getLogger().warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
+						warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 					}
 				}
 
@@ -87,7 +90,7 @@ public class URLMap extends MapRenderer  {
 					save();
 				}
 			} catch (Exception ex) {
-				plugin.getLogger().warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
+				warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 			}
 		}
 	}
@@ -116,7 +119,21 @@ public class URLMap extends MapRenderer  {
 		try {
 			configuration.save(configFile);
 		} catch (Exception ex) {
-			plugin.getLogger().warning("Failed to save file " + configFile.getAbsolutePath());
+			warning("Failed to save file " + configFile.getAbsolutePath());
+		}
+	}
+	
+	private static void info(String message)
+	{
+		if (plugin != null){
+			plugin.getLogger().info(message);
+		}
+	}
+	
+	private static void warning(String message)
+	{
+		if (plugin != null){
+			plugin.getLogger().warning(message);
 		}
 	}
 	
@@ -303,14 +320,14 @@ public class URLMap extends MapRenderer  {
 		URLMap map = idMap.get(mapId);
 		if (map != null) {
 			if (!map.getKey().equals(key)) {
-				plugin.getLogger().warning("Two maps with the same id but different keys: " + mapId + ": " + key + ", " + map.getKey());
+				warning("Two maps with the same id but different keys: " + mapId + ": " + key + ", " + map.getKey());
 			}
 			return map;
 		}
 		map = keyMap.get(key);
 		if (map != null) {
 			if (map.id != mapId) {
-				plugin.getLogger().warning("Two maps with the same key but different ids: " + key + ": " + mapId + ", " + map.id);
+				warning("Two maps with the same key but different ids: " + key + ": " + mapId + ", " + map.id);
 			}
 			return map;
 		}
@@ -336,7 +353,7 @@ public class URLMap extends MapRenderer  {
 		World world = Bukkit.getWorlds().get(0);
 		MapView mapView = Bukkit.createMap(world);
 		if (mapView == null) {
-			plugin.getLogger().warning("Unable to create new map for url key " + key);
+			warning("Unable to create new map for url key " + key);
 			return null;
 		}
 		URLMap newMap = get(mapView.getId(), url, x, y, width, height, priority);
@@ -357,7 +374,7 @@ public class URLMap extends MapRenderer  {
 		if (mapView == null) {
 			keyMap.remove(getKey());
 			enabled = false;
-			plugin.getLogger().warning("Failed to get map id " + id + " for key " + getKey() + ", disabled, re-enable in config and fix id");
+			warning("Failed to get map id " + id + " for key " + getKey() + ", disabled, re-enable in config and fix id");
 			save();
 			return mapView;
 		}
@@ -419,10 +436,12 @@ public class URLMap extends MapRenderer  {
 		if (image == null) {
 			loading = true;
 			image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+			if (plugin == null) return null;
+			
 			Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 				public void run() {
 					try {
-						plugin.getLogger().info("Loading " + url);
+						info("Loading " + url);
 						URL connection = new URL(url);
 						BufferedImage rawImage = ImageIO.read(connection);
 						width = width <= 0 ? rawImage.getWidth() + width : width;
@@ -433,7 +452,7 @@ public class URLMap extends MapRenderer  {
 					    graphics.drawRenderedImage(croppedImage, transform);
 					    loading = false;
 					} catch (Exception ex) {
-						plugin.getLogger().warning("Failed to load url " + url + ": " + ex.getMessage());
+						warning("Failed to load url " + url + ": " + ex.getMessage());
 					}
 				}
 			});

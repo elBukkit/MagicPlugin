@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -1042,8 +1043,21 @@ public class ConfigurationNode {
 		 }
 	 }
 	 
-	 protected void combine(Map<String, Object> to, Map<String, Object> from) {
-		 
+	 @SuppressWarnings("unchecked")
+	protected void combine(Map<String, Object> to, Map<String, Object> from) {
+		 Set<Entry<String, Object>> fromEntries  = from.entrySet();
+		 for (Entry<String, Object> entry : fromEntries) {
+			 Object value = entry.getValue();
+			 String key = entry.getKey();
+			 if (value instanceof Map && to.containsKey(key)) {
+				 Object toValue = to.get(key);
+				 if (toValue instanceof Map) {
+					 combine((Map<String, Object>)toValue, (Map<String, Object>)value);
+					 continue;
+				 }
+			 }
+			 to.put(key, value);
+		 }
 	 }
 	 
 	 /**

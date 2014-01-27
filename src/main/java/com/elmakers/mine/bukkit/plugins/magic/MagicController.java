@@ -696,9 +696,9 @@ public class MagicController implements Listener
 			plugin.saveResource(configFileName, false);
 		}
 		Configuration config = new Configuration(configFile);
+		getLogger().info("Loading " + configFile.getName());
 		config.load();
 		
-		getLogger().info("Overwriting file " + defaultsFileName);
 		plugin.saveResource(defaultsFileName, true);
 		Configuration defaultConfig = new Configuration(plugin.getResource(defaultsFileName));
 		defaultConfig.load();
@@ -709,13 +709,17 @@ public class MagicController implements Listener
 	
 	public void load()
 	{
-		// Load localizations
-		Messages.reset();
-		Messages.load(plugin);
-		
 		// Load main configuration
 		try {
 			loadProperties(loadConfigFile(CONFIG_FILE));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// Load localizations
+		try {
+			Messages.reset();
+			Messages.load(loadConfigFile(MESSAGES_FILE));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -791,6 +795,7 @@ public class MagicController implements Listener
 				
 				// Load lost wands
 				try {
+					getLogger().info("Loading lost wand data");
 					ConfigurationNode lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
 					if (lostWandConfiguration != null)
 					{
@@ -812,7 +817,7 @@ public class MagicController implements Listener
 				try {
 					URLMap.resetAll();
 					File urlMapFile = getDataFile(URL_MAPS_FILE);
-					URLMap.load(urlMapFile);
+					URLMap.load(plugin, urlMapFile);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -920,26 +925,23 @@ public class MagicController implements Listener
 	{
 		if (config == null) return;
 		
+		// TODO: Need to reset spells here, somehow.
+		
 		List<String> spellKeys = config.getKeys();
 		for (String key : spellKeys)
 		{
 			ConfigurationNode spellNode = config.getNode(key);
-			Spell existing = spells.get(key);
-			if (existing != null) {
-				 existing.configure(spellNode);
-			} else {
-				Spell newSpell = Spell.loadSpell(key, spellNode, this);
-				if (newSpell == null)
-				{
-					getLogger().warning("Magic: Error loading spell " + key);
-					continue;
-				}
-				addSpell(newSpell);
+			if (!spellNode.getBoolean("enabled", true)) {
+				continue;
 			}
 			
-			if (!config.getBoolean("enabled", true)) {
-				spells.remove(key);
+			Spell newSpell = Spell.loadSpell(key, spellNode, this);
+			if (newSpell == null)
+			{
+				getLogger().warning("Magic: Error loading spell " + key);
+				continue;
 			}
+			addSpell(newSpell);
 		}
 	}
 	
@@ -992,7 +994,7 @@ public class MagicController implements Listener
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
-
+		
 		// Parse wand settings
 		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
 		Wand.CopyMaterial = properties.getMaterial("copy_item", Wand.CopyMaterial);
@@ -1863,6 +1865,9 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onWorldInit(WorldInitEvent event) {
 		// Install our block populator if configured to do so.
+		if (blockPopulatorEnabled && blockPopulatorConfig == null) {
+			plugin.getLogger().warning("Block populator is enabled, but missing config");
+		}
 		if (blockPopulatorEnabled && blockPopulatorConfig != null) {
 			World world = event.getWorld();
 			world.getPopulators().add(getWandChestPopulator());
@@ -2034,6 +2039,7 @@ public class MagicController implements Listener
 	 private final String                        SPELLS_FILE                 	= "spells";
 	 private final String                        CONFIG_FILE             		= "config";
 	 private final String                        WANDS_FILE             		= "wands";
+	 private final String                        MESSAGES_FILE             		= "messages";
 	 private final String                        MATERIALS_FILE             	= "materials";
 	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
