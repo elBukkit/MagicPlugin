@@ -24,17 +24,25 @@ public class PhaseSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		int maxY = 255;
 		Location playerLocation = getPlayer().getEyeLocation();
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
-		
-		if (worldName.contains("_nether")) {
+		if (worldName.contains("_the_end")) {
+			worldName = worldName.replace("_the_end", "");
+			World targetWorld = Bukkit.getWorld(worldName);
+			if (targetWorld != null) {
+				// No scaling here?
+				targetLocation = new Location(targetWorld, playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+			}
+		} else if (worldName.contains("_nether")) {
 			worldName = worldName.replace("_nether", "");
 			World targetWorld = Bukkit.getWorld(worldName);
 			if (targetWorld != null) {
 				targetLocation = new Location(targetWorld, playerLocation.getX() * 8, playerLocation.getY(), playerLocation.getZ() * 8);
 			}
 		} else {
+			maxY = 125;
 			worldName = worldName + "_nether";
 			World targetWorld = Bukkit.getWorld(worldName);
 			if (targetWorld != null) {
@@ -47,12 +55,12 @@ public class PhaseSpell extends Spell
 		}
 		
 		retryCount = 0;
-		tryPhase(targetLocation);
+		tryPhase(targetLocation, maxY);
 		
 		return SpellResult.SUCCESS;
 	}
 	
-	protected void tryPhase(final Location targetLocation) {
+	protected void tryPhase(final Location targetLocation, final int maxY) {
 		Chunk chunk = targetLocation.getBlock().getChunk();
 		if (!chunk.isLoaded()) {
 			chunk.load(true);
@@ -61,7 +69,7 @@ public class PhaseSpell extends Spell
 				final PhaseSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
-						me.tryPhase(targetLocation);
+						me.tryPhase(targetLocation, maxY);
 					}
 				}, RETRY_INTERVAL);
 				
@@ -74,7 +82,7 @@ public class PhaseSpell extends Spell
 			Location playerLocation = player.getLocation();
 			targetLocation.setYaw(playerLocation.getYaw());
 			targetLocation.setPitch(playerLocation.getPitch());
-			player.teleport(tryFindPlaceToStand(targetLocation));
+			player.teleport(tryFindPlaceToStand(targetLocation, 4, maxY));
 			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
 			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 			EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);

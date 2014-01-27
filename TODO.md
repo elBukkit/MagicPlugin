@@ -15,7 +15,6 @@
  - Fix mine spell (maybe just make it more flexible?)
  - Need to fix targeting and construction (water, glass)
  - Fix underwater targeting on non-construction spells, or generally if in the water
- - Fix phase in the nether, return to end
 
 ## For 3.0.0
 

@@ -14,6 +14,7 @@
  - Don't allow building anything at all from the building list. Affects copy, clone and replicate.
  - Superconvert now only replaces the target block's material.
  - Fix a glitch involving dropping spells out of wands.
+ - The phase spell will return you from The End, should work better in general.
 
 ## 2.8.9.1
 

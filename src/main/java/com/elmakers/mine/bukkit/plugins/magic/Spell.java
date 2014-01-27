@@ -561,30 +561,40 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public Location tryFindPlaceToStand(Location targetLoc)
 	{
+		return tryFindPlaceToStand(targetLoc, 4, 253);
+	}
+	
+	public Location tryFindPlaceToStand(Location targetLoc, int minY, int maxY)
+	{
 		if (!targetLoc.getBlock().getChunk().isLoaded()) return targetLoc;
 		
 		if (isSafeLocation(targetLoc)) return targetLoc;
-		Location location = findPlaceToStand(targetLoc, true);
+		Location location = findPlaceToStand(targetLoc, true, minY, maxY);
 		
 		if (location == null) {
-			location = findPlaceToStand(targetLoc, false);
+			location = findPlaceToStand(targetLoc, false, minY, maxY);
 		}
 		return location == null ? targetLoc : location;
 	}
 	
 	public Location findPlaceToStand(Location target, boolean goUp)
 	{
+		return findPlaceToStand(target, goUp, 4, 253);
+	}
+	
+	public Location findPlaceToStand(Location target, boolean goUp, int minY, int maxY)
+	{
 		int direction = goUp ? 1 : -1;
 		
 		// search for a spot to stand
 		Location targetLocation = target.clone();
-		while (4 < targetLocation.getY() && targetLocation.getY() < 253)
+		while (minY < targetLocation.getY() && targetLocation.getY() < maxY)
 		{
 			Block block = targetLocation.getBlock();
 			if 
 			(
 				isSafeLocation(block)
-				&&   !(goUp && isUnderwater() && isWater(block.getType())) // rise to surface of water
+			&&   !(goUp && isUnderwater() && isWater(block.getType())) // rise to surface of water
 			)
 			{
 				// spot found - return location
