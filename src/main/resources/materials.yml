@@ -1,0 +1,10 @@
+#
+# Modify this file to change the behavior of various materials.
+#
+# This controls how magic deals with individual materials in a variety of ways,
+# such as which are indestructible, destructible, transparent, etc.
+#
+# To see all available options, look in the defaults/materials.defaults.yml file.
+#
+# You only need to edit this file if you want to change the default configuration.
+#

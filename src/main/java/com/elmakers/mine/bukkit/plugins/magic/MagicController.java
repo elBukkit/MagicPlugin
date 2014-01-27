@@ -654,9 +654,23 @@ public class MagicController implements Listener
 		return created;
 	}
 	
-	protected ConfigurationNode loadDataFile(String fileName)
+	protected File getDataFile(String fileName)
 	{
 		File dataFile = new File(dataFolder, fileName + ".yml");
+
+		// Migration - TODO: Remove
+		File legacyFile = new File(configFolder, fileName + ".yml");
+		if (legacyFile.exists() && !dataFile.exists()) {
+			getLogger().info("MIGRATING " + legacyFile.getName() + ", you should only see this once.");
+			legacyFile.renameTo(dataFile);
+		}
+		
+		return dataFile;
+	}
+	
+	protected ConfigurationNode loadDataFile(String fileName)
+	{
+		File dataFile = getDataFile(fileName);
 		if (!dataFile.exists()) {
 			return null;
 		}
@@ -702,6 +716,20 @@ public class MagicController implements Listener
 		// Load main configuration
 		try {
 			loadProperties(loadConfigFile(CONFIG_FILE));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		// Load materials configuration
+		try {
+			loadMaterials(loadConfigFile(MATERIALS_FILE));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		// Load block populator configuration
+		try {
+			loadPopulator(loadConfigFile(BLOCK_POPULATOR_FILE));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -783,7 +811,8 @@ public class MagicController implements Listener
 				// Load URL Map Data
 				try {
 					URLMap.resetAll();
-					URLMap.load(plugin);
+					File urlMapFile = getDataFile(URL_MAPS_FILE);
+					URLMap.load(urlMapFile);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -889,6 +918,8 @@ public class MagicController implements Listener
 	
 	protected void loadSpells(ConfigurationNode config)
 	{
+		if (config == null) return;
+		
 		List<String> spellKeys = config.getKeys();
 		for (String key : spellKeys)
 		{
@@ -912,8 +943,22 @@ public class MagicController implements Listener
 		}
 	}
 	
+	protected void loadMaterials(ConfigurationNode materialNode)
+	{
+		if (materialNode == null) return;
+		
+		// TODO: Turn this into flexible lists
+		buildingMaterials = materialNode.getMaterials("building", buildingMaterials);
+		indestructibleMaterials = materialNode.getMaterials("indestructible", indestructibleMaterials);
+		restrictedMaterials = materialNode.getMaterials("restricted", restrictedMaterials);
+		destructibleMaterials = materialNode.getMaterials("destructible", destructibleMaterials);
+		targetThroughMaterials = materialNode.getMaterials("transparent", targetThroughMaterials);
+	}
+	
 	protected void loadProperties(ConfigurationNode properties)
 	{
+		if (properties == null) return;
+		
 		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
 		wandCycling = properties.getBoolean("right_click_cycles", wandCycling);
@@ -947,18 +992,7 @@ public class MagicController implements Listener
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
-		blockPopulatorConfig = properties.getNode("populate_chests");
 
-		// TODO: Turn this into flexible lists
-		ConfigurationNode materialNode = properties.getNode("materials");
-		if (materialNode != null) {
-			buildingMaterials = materialNode.getMaterials("building", buildingMaterials);
-			indestructibleMaterials = materialNode.getMaterials("indestructible", indestructibleMaterials);
-			restrictedMaterials = materialNode.getMaterials("restricted", restrictedMaterials);
-			destructibleMaterials = materialNode.getMaterials("destructible", destructibleMaterials);
-			targetThroughMaterials = materialNode.getMaterials("transparent", targetThroughMaterials);
-		}
-		
 		// Parse wand settings
 		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
 		Wand.CopyMaterial = properties.getMaterial("copy_item", Wand.CopyMaterial);
@@ -974,6 +1008,13 @@ public class MagicController implements Listener
 			wandRecipeUpperMaterial = properties.getMaterial("crafting_material_upper", wandRecipeUpperMaterial);
 			wandRecipeLowerMaterial = properties.getMaterial("crafting_material_lower", wandRecipeLowerMaterial);
 		}
+	}
+	
+	protected void loadPopulator(ConfigurationNode properties)
+	{		
+		if (properties == null) return;
+	
+		blockPopulatorConfig = properties.getNode("populate_chests");
 	}
 
 	protected void clear()
@@ -1996,6 +2037,7 @@ public class MagicController implements Listener
 	 private final String                        MATERIALS_FILE             	= "materials";
 	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
+	 private final String						 URL_MAPS_FILE					= "urlmaps";
 
 	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
 	 static final String                         DEFAULT_INDESTRUCTIBLE_MATERIALS = "7,120";

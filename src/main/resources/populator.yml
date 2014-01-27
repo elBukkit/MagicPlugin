@@ -1,0 +1,10 @@
+#
+# Modify this file to change the behavior of the block populator.
+#
+# This populator, if enabled in config.yml, will populate chests with
+# random wands on chunk generation.
+#
+# To see all available options, look in the defaults/populator.defaults.yml file.
+#
+# You only need to edit this file if you want to change the default configuration.
+#

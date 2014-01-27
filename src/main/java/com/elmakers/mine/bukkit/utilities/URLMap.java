@@ -26,8 +26,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
 public class URLMap extends MapRenderer  {
-	// Map ids will be saved in /plugins/<yourplugin>/<configurationFileName>
-	private final static String configurationFileName = "urlmaps.yml";
+	private static File configFile = null;
 	
 	// Public API
 
@@ -38,10 +37,9 @@ public class URLMap extends MapRenderer  {
 	 * 
 	 * @param callingPlugin
 	 */
-	public static void load(Plugin callingPlugin) {
-		plugin = callingPlugin;
+	public static void load(File configFile) {
 		YamlConfiguration configuration = new YamlConfiguration();
-		File configurationFile = getConfigurationFile();
+		File configurationFile = configFile;
 		if (configurationFile.exists()) {
 			try {
 				plugin.getLogger().info("Loading URL map data from " + configurationFile.getName());
@@ -100,8 +98,9 @@ public class URLMap extends MapRenderer  {
 	 * This is called automatically as changes are made, but you can call it in onDisable to be safe.
 	 */
 	public static void save() {
+		if (configFile == null) return;
+		
 		YamlConfiguration configuration = new YamlConfiguration();
-		File configurationFile = getConfigurationFile();
 		for (URLMap map : idMap.values()) {
 			ConfigurationSection mapConfig = configuration.createSection(Short.toString(map.id));
 			mapConfig.set("url", map.url);
@@ -115,9 +114,9 @@ public class URLMap extends MapRenderer  {
 			}
 		}
 		try {
-			configuration.save(configurationFile);
+			configuration.save(configFile);
 		} catch (Exception ex) {
-			plugin.getLogger().warning("Failed to save file " + configurationFile.getAbsolutePath());
+			plugin.getLogger().warning("Failed to save file " + configFile.getAbsolutePath());
 		}
 	}
 	
@@ -382,11 +381,6 @@ public class URLMap extends MapRenderer  {
 	
 	private boolean isEnabled() {
 		return enabled;
-	}
-
-	private static File getConfigurationFile() {
-		File dataFolder = plugin.getDataFolder();
-		return new File(dataFolder, configurationFileName);
 	}
 	
 	private URLMap(short mapId, String url, int x, int y, int width, int height, Integer priority) {
