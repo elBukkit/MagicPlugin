@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.FilenameFilter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -97,6 +97,18 @@ public class MagicController implements Listener
 	public MagicController(final MagicPlugin plugin)
 	{
 		this.plugin = plugin;
+		
+		configFolder = plugin.getDataFolder();
+		configFolder.mkdirs();
+
+		dataFolder = new File(configFolder, "data");
+		dataFolder.mkdirs();
+		
+		playerDataFolder = new File(dataFolder, "players");
+		playerDataFolder.mkdirs();
+
+		defaultsFolder = new File(configFolder, "defaults");
+		defaultsFolder.mkdirs();	
 	}
 	
 	/*
@@ -641,74 +653,69 @@ public class MagicController implements Listener
 		
 		return created;
 	}
+	
+	protected ConfigurationNode loadDataFile(String fileName)
+	{
+		File dataFile = new File(dataFolder, fileName + ".yml");
+		if (!dataFile.exists()) {
+			return null;
+		}
+		Configuration configuration = new Configuration(dataFile);
+		configuration.load();
+		return configuration;
+	}
+	
+	protected Configuration createDataFile(String fileName)
+	{
+		File dataFile = new File(dataFolder, fileName + ".yml");
+		Configuration configuration = new Configuration(dataFile);
+		return configuration;
+	}
 
+	protected ConfigurationNode loadConfigFile(String fileName)
+	{
+		String configFileName = fileName + ".yml";
+		String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
+		File configFile = new File(configFolder, configFileName);
+		if (!configFile.exists()) {
+			getLogger().info("Saving template " + configFileName + ", edit to customize configuration.");
+			plugin.saveResource(configFileName, false);
+		}
+		Configuration config = new Configuration(configFile);
+		config.load();
+		
+		getLogger().info("Overwriting file " + defaultsFileName);
+		plugin.saveResource(defaultsFileName, true);
+		Configuration defaultConfig = new Configuration(plugin.getResource(defaultsFileName));
+		defaultConfig.load();
+		defaultConfig.add(config);
+		
+		return defaultConfig;
+	}
+	
 	public void load()
 	{
-		final File dataFolder = plugin.getDataFolder();
-		dataFolder.mkdirs();
-		
 		// Load localizations
 		Messages.reset();
 		Messages.load(plugin);
 		
 		// Load main configuration
-		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
-		oldDefaults.delete();
-		getLogger().info("Overwriting file " + propertiesFileNameDefaults);
-		plugin.saveResource(propertiesFileNameDefaults, false);
-		File propertiesFile = new File(dataFolder, propertiesFileName);
-		
 		try {
-			getLogger().info("Loading defaults from: " + propertiesFileNameDefaults);
-			loadProperties(plugin.getResource(propertiesFileNameDefaults));
+			loadProperties(loadConfigFile(CONFIG_FILE));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		
-		try {
-			if (!propertiesFile.exists())
-			{
-				getLogger().info("Saving template " + propertiesFileName + ", edit to customize configuration.");
-				plugin.saveResource(propertiesFileName, false);
-			} else {
-				getLogger().info("Loading customizations from: " + propertiesFile.getName());
-				loadProperties(propertiesFile);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
 		// Load spells
-		oldDefaults = new File(dataFolder, spellsFileNameDefaults);
-		oldDefaults.delete();
-		getLogger().info("Overwriting file " + spellsFileNameDefaults);
-		plugin.saveResource(spellsFileNameDefaults, false);
-		
 		try {
-			getLogger().info("Loading default spells from: " + spellsFileNameDefaults);
-			load(plugin.getResource(spellsFileNameDefaults));
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		File spellsFile = new File(dataFolder, spellsFileName);
-		try {
-			if (!spellsFile.exists())
-			{
-				getLogger().info("Saving template " + spellsFileName + ", edit to customize spells.");
-				plugin.saveResource(spellsFileName, false);
-			} else {
-				getLogger().info("Loading spell customizations from: " + spellsFile.getName());
-				load(spellsFile);
-			}
+			loadSpells(loadConfigFile(SPELLS_FILE));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		
 		// Load wand templates
 		try {
-			Wand.load(plugin);
+			Wand.loadTemplates(loadConfigFile(WANDS_FILE));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -722,26 +729,43 @@ public class MagicController implements Listener
 			public void run() {
 				
 				// Load Player Data
-				File playersFile = new File(dataFolder, playersFileName);
-				if (playersFile.exists())
-				{
-					getLogger().info("Loading player data from file " + playersFile.getName());
+
+				// Legacy migration
+				File playersFile = new File(configFolder, "players.yml");
+				if (playersFile.exists()) {
+					getLogger().info("MIGRATING player data from file " + playersFile.getName());
 					Configuration playerConfiguration = new Configuration(playersFile);
 					playerConfiguration.load();
 					List<String> playerNames = playerConfiguration.getKeys();
 					for (String playerName : playerNames) {
 						getMage(playerName).load(playerConfiguration.getNode(playerName));
 					}
+					
+					playersFile.renameTo(new File("players.yml.bak"));
+					getLogger().info("Migration complete, you should not see this message again.");
+				} else {
+					// TODO: Remove the above, make this the only path.
+					File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
+					    public boolean accept(File dir, String name) {
+					        return name.toLowerCase().endsWith(".yml");
+					    }
+					});
+					
+					for (File playerFile : playerFiles)
+					{
+						Configuration playerData = new Configuration(playerFile);
+						getLogger().info("Loading player data from file " + playerFile.getName());
+						playerData.load();
+						String playerName = playerFile.getName().replaceFirst("[.][^.]+$", "");
+						getMage(playerName).load(playerData);
+					}
 				}
 				
 				// Load lost wands
 				try {
-					File lostWandsFile = new File(dataFolder, lostWandsFileName);
-					if (lostWandsFile.exists())
+					ConfigurationNode lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
+					if (lostWandConfiguration != null)
 					{
-						getLogger().info("Loading lost wands data from file " + lostWandsFile.getName());
-						Configuration lostWandConfiguration = new Configuration(lostWandsFile);
-						lostWandConfiguration.load();
 						List<String> wandIds = lostWandConfiguration.getKeys();
 						for (String wandId : wandIds) {
 							LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getNode(wandId));
@@ -848,40 +872,23 @@ public class MagicController implements Listener
 	
 	public void save()
 	{
-		File dataFolder = plugin.getDataFolder();
-		dataFolder.mkdirs();
-		
-		File playersFile = new File(dataFolder, playersFileName);
-		Configuration playerConfiguration = new Configuration(playersFile);
-		for (Entry<String, Mage> spellsEntry : mages.entrySet()) {
-			ConfigurationNode playerNode = playerConfiguration.createChild(spellsEntry.getKey());
-			spellsEntry.getValue().save(playerNode);
+		for (Entry<String, Mage> mageEntry : mages.entrySet()) {
+			File playerData = new File(playerDataFolder, mageEntry.getKey() + ".yml");
+			Configuration playerConfig = new Configuration(playerData);
+			mageEntry.getValue().save(playerConfig);
+			playerConfig.save();
 		}
-		playerConfiguration.save();
 		
-		File lostWandsFile = new File(dataFolder, lostWandsFileName);
-		Configuration lostWandsConfiguration = new Configuration(lostWandsFile);
+		Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
 		for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
 			ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
 			wandEntry.getValue().save(wandNode);
 		}
 		lostWandsConfiguration.save();
 	}
-
-	protected void load(File spellsFile)
-	{
-		load(new Configuration(spellsFile));
-	}
-
-	protected void load(InputStream spellsConfig)
-	{
-		load(new Configuration(spellsConfig));
-	}
 	
-	protected void load(Configuration config)
+	protected void loadSpells(ConfigurationNode config)
 	{
-		config.load();
-		
 		List<String> spellKeys = config.getKeys();
 		for (String key : spellKeys)
 		{
@@ -904,21 +911,9 @@ public class MagicController implements Listener
 			}
 		}
 	}
-
-	protected void loadProperties(File propertiesFile)
-	{
-		loadProperties(new Configuration(propertiesFile));
-	}
 	
-	protected void loadProperties(InputStream properties)
+	protected void loadProperties(ConfigurationNode properties)
 	{
-		loadProperties(new Configuration(properties));
-	}
-	
-	protected void loadProperties(Configuration properties)
-	{
-		properties.load();
-		
 		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
 		wandCycling = properties.getBoolean("right_click_cycles", wandCycling);
@@ -1830,6 +1825,7 @@ public class MagicController implements Listener
 		if (blockPopulatorEnabled && blockPopulatorConfig != null) {
 			World world = event.getWorld();
 			world.getPopulators().add(getWandChestPopulator());
+			plugin.getLogger().info("Installing chest populator in " + world.getName());
 		}
 	}
 	
@@ -1994,12 +1990,12 @@ public class MagicController implements Listener
 	/*
 	 * Private data
 	 */
-	 private final String                        spellsFileName                 = "spells.yml";
-	 private final String                        propertiesFileName             = "magic.yml";
-	 private final String                        playersFileName                = "players.yml";
-	 private final String						 lostWandsFileName				= "lostwands.yml";
-	 private final String                        spellsFileNameDefaults         = "spells.defaults.yml";
-	 private final String                        propertiesFileNameDefaults     = "magic.defaults.yml";
+	 private final String                        SPELLS_FILE                 	= "spells";
+	 private final String                        CONFIG_FILE             		= "config";
+	 private final String                        WANDS_FILE             		= "wands";
+	 private final String                        MATERIALS_FILE             	= "materials";
+	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
+	 private final String						 LOST_WANDS_FILE				= "lostwands";
 
 	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
 	 static final String                         DEFAULT_INDESTRUCTIBLE_MATERIALS = "7,120";
@@ -2064,6 +2060,11 @@ public class MagicController implements Listener
 	 private String								 recipeOutputTemplate			= "random(1)";
 	 
 	 private MagicPlugin                         plugin                         = null;
+	 private final File							 configFolder;
+	 private final File							 dataFolder;
+	 private final File							 defaultsFolder;
+	 private final File							 playerDataFolder;
+	 
 	 private boolean							 regionManagerEnabled           = true;
 	 private Object								 regionManager					= null;
 	 private DynmapCommonAPI					 dynmap							= null;

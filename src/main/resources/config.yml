@@ -2,12 +2,17 @@
 # Modify this file to change the overall behavior of the Magic plugin.
 # only include the options you want to modify.
 #
+# To see all available options, look in the defaults/config.defaults.yml file.
+#
+# Options for sub-components (spells, wand templates, chest populator, etc) are 
+# found in separate files.
+#
 
 #
 # This is the general configuration file for the magic plugin.
 # 
 # Wand and Spell configurations are separate, in wands.yml and spells.yml.
-# Localizations are also separate, in messages.yml.
+# Localizations are also separate, in messages.yml. 
 #
 
 # For example, to make it so all construction spells automatically undo their effects

@@ -2,40 +2,56 @@
 
 ## For 2.9.0
 
- - erase is broken??
- - randomly generating wands is broken?
- - Need to fix targeting and construction (water, glass)
- - Fix phase in the nether, return to end
-
+ - Fix configuration files, additive configs:
+   - Test wands.yml and spells.yml overrides
+   - Move data files to data/
+   - Move default files to defaults/
  - Separate player data files
- - Async player data save/load (... undo queue locking?)
- - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
- - Add option for removing building material Items? (set ticksLived)
- - Undo fails in some cases (overlapping undo queues)
-  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
-  - BlockData tracks only the first recorded materialdata, commit will replace
+ - Add configurabl persist block limit for undo queue
+ - Replace reload command with save/load
+
  - Configurable effects system
- - Retry limit on construction batches
+ 
+ - Fix dynmap spell markers
+ 
+ - Test block populator - doesn't seem to work anymore?
+ - Test reloads- not duplicating undo queues, etc
+   
+ - Fix mine spell (maybe just make it more flexible?)
+ - Need to fix targeting and construction (water, glass)
+ - Fix underwater targeting on non-construction spells, or generally if in the water
+ - Fix phase in the nether, return to end
 
 ## For 3.0.0
 
+ - Add option to bypass all costs to magic.yml
+ - Add visual effects to spawn and recall spells
+ - Make sure adding spells/materials never removes any, also opening/closing the inventory
+ - Add "wand duplicate" command
+ - Tweaking/Balancing - haste, cooldowns, etc
+ - Retry limit on construction batches
+ - Undo fails in some cases (overlapping undo queues)
+  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
+  - BlockData tracks only the first recorded materialdata, commit will replace
+ - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
+ - Replicate/clone should delete entities in area
  - Fix wand inventory glitches and special-cases
  - URLMap image file cache
- - Replicate entities, attachables, signs, chest contents
- - Same as above, for undo?
  - Persist material brush
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc.
+ 
+ - Make spells usable without a player, clean up strong Player references
+ - Add location, direction, target parameters to spell
 
 NEAR-FUTURE STUFF:
 
+ - Async player data save/load (... undo queue locking?)
  - make push spell reflect projectiles (set fireball velocity)
  - investigate lag/slowdown - new dynmap stuff?
  - Essentials signs add to wand...
 
  - Familiar- my cast kills their familiars?
-
- - Fix underwater targeting on non-construction spells, or generally if in the water
 
 NEW SPELLS:
 
@@ -53,45 +69,37 @@ NEW SPELLS:
  - Column and Disc building spells
  - Biome modification (mega-frost). Chunk regeneration would be awesome.
 
+WAND PROGRESSION:
+
+ - Wand auto-colorization (via spell categories)
+ - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
+ - Add option to not be able to use another player's wand
+
 OTHER STUFF:
  
- - Wand auto-colorization (via spell categories)
  - Apply potion effects while holding wand Could replace haste with this.
  - Add fall protection to bounce spell (generalize it)
  - Add option to open chest on right-click (for wand inventory)
  - Add count parameter to projectile spell, make wither shoot a few
  - Make volley multi-sample?
- - Make Phase return from the End
  - Alter names sheep "_jeb", - others "Dinnerbone" ?
- - Add "wand duplicate" command
  - Organize inventory by spell usage (favorites page)
  - Complete work on tab completion
  - Separate material list for "super" building materials?
- - Test reloads- not duplicating undo queues, etc
  - Scale fling and levitate falling effects based on distance fallen
  
  - Fix up alter spell, remove id-based lists
  - urlmaps.yml got truncated?
    - Check for duplicate keys when searching for a new one (?)
- - Make sure adding spells/materials never removes any, also opening/closing the inventory
   - first spell on wand is getting lost (?) - debug with elder wand and fling. (haven't seen this in a while) 
-  
- - Add option to bypass all costs to magic.yml
- - Add visual effects to spawn and recall spells
  
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.
- - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
- - Add option to not be able to use another player's wand
- - supershell undo left a ring
  - Add safe undo:
    - Track falling block entities (sandblast, toss, etc)
    - Auto-expand?
-   - Save sign text ... chest contents, maybe?
- - prevent pillar from passing through non-air blocks .. ? what about stalactite, though?
+ - prevent pillar from passing through non-air blocks of different materials than the target
  - Some sort of workaround for wands getting killed by the creative inventory
- - Make spells usable without a player, clean up strong Player references
- - Add location, direction, target parameters to spell
  - Look into data values disappearing on materials in wand inventory like stairs
  - If possible, label more material data like stair direction.
  - Add locale option to suffix messages.yml
@@ -115,7 +123,8 @@ OTHER STUFF:
  - Specific protection for suffocation damage, underwater breathing (air regeneration)
  - Maybe data-drive blink's special list of things it will try to target through?
  - Maybe make wands regenerate while you're not holding them (timer-based)?
- - .. Factions support .. ?
+ 
+ - Factions support .. ?
  
  TESTING / TWEAKING:
  
@@ -123,7 +132,6 @@ OTHER STUFF:
  - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
  - Add console logging of massive construction spell casting
  - Raise default construction limits again.. or mess with power?
- - Test block populator - doesn't seem to work anymore?
 
 DEMO SERVER / DOCS STUFF:
 

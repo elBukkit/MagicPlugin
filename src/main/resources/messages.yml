@@ -1,0 +1,11 @@
+#
+# This is the localization file for the Magic plugin.
+#
+# All in-game text can be controlled from this file.
+#
+# The default will always be loaded first, so the English messages will be used for any
+# keys you do not provide in this file.
+#
+# See the defaults file (defaults/messages.defaults.yml) for all available localization keys.
+#
+#

@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.wand;
 
-import java.io.File;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +25,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
@@ -38,7 +35,6 @@ import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
-import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
@@ -111,8 +107,6 @@ public class Wand implements CostReducer {
 	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
-	private static final String propertiesFileName = "wands.yml";
-	private static final String propertiesFileNameDefaults = "wands.defaults.yml";
 	
 	// Inventory functionality
 	int openInventoryPage = 0;
@@ -1495,53 +1489,9 @@ public class Wand implements CostReducer {
 		updateLore();
 	}
 	
-	public static void reset(Plugin plugin) {
-		File dataFolder = plugin.getDataFolder();
-		File propertiesFile = new File(dataFolder, propertiesFileName);
-		propertiesFile.delete();
-	}
-	
-	public static void load(Plugin plugin) {
+	public static void loadTemplates(ConfigurationNode properties) {
 		wandTemplates.clear();
 		
-		// Load properties file with wand templates
-		File dataFolder = plugin.getDataFolder();
-		File oldDefaults = new File(dataFolder, propertiesFileNameDefaults);
-		oldDefaults.delete();
-		plugin.getLogger().info("Overwriting file " + propertiesFileNameDefaults);
-		plugin.saveResource(propertiesFileNameDefaults, false);
-		plugin.getLogger().info("Loading default wands from " + propertiesFileNameDefaults);
-		loadProperties(plugin.getResource(propertiesFileNameDefaults));
-		
-		File propertiesFile = new File(dataFolder, propertiesFileName);
-		try {
-			if (!propertiesFile.exists())
-			{
-				plugin.getLogger().info("Saving template " + propertiesFileName + ", edit to customize wands.");
-				plugin.saveResource(propertiesFileName, false);
-			} else {
-				plugin.getLogger().info("Loading customized wands from " + propertiesFile.getName());
-				loadProperties(propertiesFile);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	private static void loadProperties(File propertiesFile)
-	{
-		loadProperties(new Configuration(propertiesFile));
-	}
-	
-	private static void loadProperties(InputStream properties)
-	{
-		loadProperties(new Configuration(properties));
-	}
-	
-	private static void loadProperties(Configuration properties)
-	{
-		properties.load();
-
 		List<String> wandKeys = properties.getKeys();
 		for (String key : wandKeys)
 		{

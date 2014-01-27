@@ -9,6 +9,8 @@
 # This defines all of the wand "templates" that can be created with the
 # /wand and /wandp commands.
 #
+# To see the default wands and configurations, look in defaults/wands.defaults.yml
+#
 # Once a wand is created, it is its own unique item. It may be modified after that,
 # and has no direct relationship back to the template that created it
 # (TODO: Update after implementing wand progression system)

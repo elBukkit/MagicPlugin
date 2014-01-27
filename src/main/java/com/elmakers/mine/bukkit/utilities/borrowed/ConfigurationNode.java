@@ -1041,4 +1041,16 @@ public class ConfigurationNode {
 			 node = (Map<String, Object>) o;
 		 }
 	 }
+	 
+	 protected void combine(Map<String, Object> to, Map<String, Object> from) {
+		 
+	 }
+	 
+	 /**
+	  * Adds a configuration node to this one, recursively.
+	  * @param other
+	  */
+	 public void add(ConfigurationNode other) {
+		 combine(root, other.root);
+	 }
 }
