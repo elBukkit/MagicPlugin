@@ -914,7 +914,8 @@ public class Wand implements CostReducer {
 	@SuppressWarnings("deprecation")
 	private static String getMaterialName(Material material, byte data) {
 		String materialName = getMaterialKey(material, data);
-
+		if (materialName == null) return null;
+		
 		String[] pieces = StringUtils.split(materialName, ":");
 		materialName = pieces[0];
 		
@@ -1605,6 +1606,11 @@ public class Wand implements CostReducer {
 					} catch (Exception ex) {
 						material = Material.getMaterial(pieces[0].toUpperCase());
 					}
+				}
+				
+				// Prevent building with items
+				if (material != null && !material.isBlock()) {
+					material = null;
 				}
 			} catch (Exception ex) {
 				material = null;
