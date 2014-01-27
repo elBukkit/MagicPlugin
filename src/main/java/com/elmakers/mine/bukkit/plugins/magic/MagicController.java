@@ -711,7 +711,7 @@ public class MagicController implements Listener
 		return defaultConfig;
 	}
 	
-	public void load()
+	public void loadConfiguration()
 	{
 		// Load main configuration
 		try {
@@ -757,6 +757,11 @@ public class MagicController implements Listener
 		}
 		
 		getLogger().info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
+	}
+	
+	public void load()
+	{
+		loadConfiguration();
 		
 		// Delay some loading, in particular world lookups by name seem to fail at onEnable time
 		// I'm guessing this is because I force Magic to run prior to inialization
@@ -912,26 +917,34 @@ public class MagicController implements Listener
 	
 	public void save()
 	{
+		getLogger().info("Saving player data");
 		for (Entry<String, Mage> mageEntry : mages.entrySet()) {
 			File playerData = new File(playerDataFolder, mageEntry.getKey() + ".yml");
 			Configuration playerConfig = new Configuration(playerData);
 			mageEntry.getValue().save(playerConfig);
 			playerConfig.save();
 		}
-		
+
+		getLogger().info("Saving lost wands data");
 		Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
 		for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
 			ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
 			wandEntry.getValue().save(wandNode);
 		}
 		lostWandsConfiguration.save();
+
+		getLogger().info("Saving image map data");
+		URLMap.save();
 	}
 	
 	protected void loadSpells(ConfigurationNode config)
 	{
 		if (config == null) return;
 		
-		// TODO: Need to reset spells here, somehow.
+		// Reset existing spells.
+		// Existing Mages might have references to these, though.
+		// Not sure how to handle that.
+		spells.clear();
 		
 		List<String> spellKeys = config.getKeys();
 		for (String key : spellKeys)

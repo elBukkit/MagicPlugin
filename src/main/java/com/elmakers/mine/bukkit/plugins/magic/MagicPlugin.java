@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.plugins.magic.populator.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MagicPlugin extends JavaPlugin
@@ -210,7 +211,8 @@ public class MagicPlugin extends JavaPlugin
 				addIfPermissible(sender, options, "Magic.commands.", "search");
 				addIfPermissible(sender, options, "Magic.commands.", "clean");
 				addIfPermissible(sender, options, "Magic.commands.", "cancel");
-				addIfPermissible(sender, options, "Magic.commands.", "reload");
+				addIfPermissible(sender, options, "Magic.commands.", "load");
+				addIfPermissible(sender, options, "Magic.commands.", "save");
 				addIfPermissible(sender, options, "Magic.commands.", "commit");
 				addIfPermissible(sender, options, "Magic.commands.", "list");
 			}
@@ -272,11 +274,18 @@ public class MagicPlugin extends JavaPlugin
 			{
 				if (!controller.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return false;
 			}
-			if (subCommand.equalsIgnoreCase("reload"))
+			if (subCommand.equalsIgnoreCase("save"))
 			{
 				controller.save();
-				controller.clear();
-				controller.load();
+				URLMap.save();
+				sender.sendMessage("Data saved.");
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("load"))
+			{		
+				controller.loadConfiguration();
+				URLMap.loadConfiguration();
+				sender.sendMessage("Configuration reloaded.");
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("commit"))
@@ -951,14 +960,7 @@ public class MagicPlugin extends JavaPlugin
 
 		return true;
 	}
-
-	public boolean onReload(CommandSender sender, String[] parameters)
-	{
-		controller.load();
-		sender.sendMessage("Configuration reloaded.");
-		return true;
-	}
-
+	
 	public boolean onSpells(Player player, String[] parameters)
 	{
 		int pageNumber = 1;

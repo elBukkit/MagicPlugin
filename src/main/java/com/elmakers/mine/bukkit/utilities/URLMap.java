@@ -36,23 +36,13 @@ public class URLMap extends MapRenderer  {
 	
 	// Public API
 
-	/**
-	 * This loads the configuration file and sets up map renderers.
-	 * 
-	 * This should be called in your plugin's onEnable.
-	 * 
-	 * @param callingPlugin
-	 * @param configFile
-	 */
-	public static void load(Plugin callingPlugin, File configFile, File cache) {
-		cacheFolder = cache;
-		plugin = callingPlugin;
-		configurationFile = configFile;
+	public static void loadConfiguration() {
+		if (configurationFile == null) return;
 		
 		YamlConfiguration configuration = new YamlConfiguration();
 		if (configurationFile.exists()) {
 			try {
-				info("Loading URL map data from " + configurationFile.getName());
+				info("Loading image map data from " + configurationFile.getName());
 				configuration.load(configurationFile);
 				Set<String> maps = configuration.getKeys(false);
 				boolean needsUpdate = false;
@@ -100,6 +90,21 @@ public class URLMap extends MapRenderer  {
 				warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 			}
 		}
+	}
+	
+	/**
+	 * This loads the configuration file and sets up map renderers.
+	 * 
+	 * This should be called in your plugin's onEnable.
+	 * 
+	 * @param callingPlugin
+	 * @param configFile
+	 */
+	public static void load(Plugin callingPlugin, File configFile, File cache) {
+		cacheFolder = cache;
+		plugin = callingPlugin;
+		configurationFile = configFile;
+		loadConfiguration();
 	}
 	
 	/**

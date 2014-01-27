@@ -23,7 +23,9 @@
     - Magic.commands.wandp
     - Magic.commands.wandp.*
     - Magic.commands.castp
-    - Magic.commands.magic.reload
+    - Magic.commands.magic.load
+    - Magic.commands.magic.save
     - Magic.commands.magic.populate
     - Magic.commands.magic.search
     - Magic.commands.magic.cancel
+    - Magic.commands.magic.clean

@@ -1,10 +1,6 @@
 # TODO
 
 ## For 2.9.0
- - Replace reload command with save/load
-   - Fix up reload issues in general   
-   - Test reloads- not duplicating undo queues, etc
-   
  - Add configurable persist block limit for undo queue
 
  - Configurable effects system

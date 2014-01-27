@@ -29,7 +29,7 @@ commands:
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
-    usage: /magic [reload|populate|search|cancel|commit|list|clean]
+    usage: /magic [load|save|populate|search|cancel|commit|list|clean]
     permission: Magic.commands.magic
 permissions:
   Magic.commands.spells:
@@ -148,8 +148,12 @@ permissions:
     description: Player may name a wand for another player
     type: boolean
     default: op
-  Magic.commands.magic.reload:
+  Magic.commands.magic.load:
     description: Player may reload the configuration
+    type: boolean
+    default: op
+  Magic.commands.magic.save:
+    description: Player may save data
     type: boolean
     default: op
   Magic.commands.magic.populate:
