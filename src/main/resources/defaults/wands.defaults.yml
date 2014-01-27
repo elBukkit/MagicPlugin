@@ -616,7 +616,7 @@ farming:
         - alter
     materials:
         - soil
-        - wheat
+        - crops
         - carrot
         - potato
         - water
