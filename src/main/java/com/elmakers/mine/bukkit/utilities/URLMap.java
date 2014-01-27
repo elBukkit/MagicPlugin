@@ -4,7 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +31,8 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
 public class URLMap extends MapRenderer  {
-	private static File configFile = null;
+	private static File configurationFile = null;
+	private static File cacheFolder = null;
 	
 	// Public API
 
@@ -38,11 +44,12 @@ public class URLMap extends MapRenderer  {
 	 * @param callingPlugin
 	 * @param configFile
 	 */
-	public static void load(Plugin callingPlugin, File configFile) {
-		
+	public static void load(Plugin callingPlugin, File configFile, File cache) {
+		cacheFolder = cache;
 		plugin = callingPlugin;
+		configurationFile = configFile;
+		
 		YamlConfiguration configuration = new YamlConfiguration();
-		File configurationFile = configFile;
 		if (configurationFile.exists()) {
 			try {
 				info("Loading URL map data from " + configurationFile.getName());
@@ -101,7 +108,7 @@ public class URLMap extends MapRenderer  {
 	 * This is called automatically as changes are made, but you can call it in onDisable to be safe.
 	 */
 	public static void save() {
-		if (configFile == null) return;
+		if (configurationFile == null) return;
 		
 		YamlConfiguration configuration = new YamlConfiguration();
 		for (URLMap map : idMap.values()) {
@@ -117,9 +124,9 @@ public class URLMap extends MapRenderer  {
 			}
 		}
 		try {
-			configuration.save(configFile);
+			configuration.save(configurationFile);
 		} catch (Exception ex) {
-			warning("Failed to save file " + configFile.getAbsolutePath());
+			warning("Failed to save file " + configurationFile.getAbsolutePath());
 		}
 	}
 	
@@ -441,9 +448,39 @@ public class URLMap extends MapRenderer  {
 			Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 				public void run() {
 					try {
-						info("Loading " + url);
-						URL connection = new URL(url);
-						BufferedImage rawImage = ImageIO.read(connection);
+						BufferedImage rawImage = null;
+						@SuppressWarnings("deprecation")
+						String cacheFileName = URLEncoder.encode(url);
+						File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
+						if (cacheFile != null) {
+							if (cacheFile.exists()) {
+								info("Loading from cache: " + cacheFile.getName());
+								rawImage = ImageIO.read(cacheFile);
+							} else {
+								info("Loading " + url);
+								URL imageUrl = new URL(url);
+								HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
+					            conn.setConnectTimeout(30000);
+					            conn.setReadTimeout(30000);
+					            conn.setInstanceFollowRedirects(true);
+					            InputStream in = conn.getInputStream();
+					            OutputStream out = new FileOutputStream(cacheFile);
+					            byte[] buffer = new byte[10 * 1024];
+					            int len;
+					            while ((len = in.read(buffer)) != -1) {
+					                out.write(buffer, 0, len);
+					            }
+					            out.close();
+					            in.close();
+					            
+					            rawImage = ImageIO.read(cacheFile);
+							}
+						} else {
+							info("Loading " + url);
+							URL imageUrl = new URL(url);
+							rawImage = ImageIO.read(imageUrl);
+						}
+						
 						width = width <= 0 ? rawImage.getWidth() + width : width;
 						height = height <= 0 ? rawImage.getHeight() + height : height;
 						BufferedImage croppedImage = rawImage.getSubimage(x, y, width, height);

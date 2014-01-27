@@ -4,12 +4,14 @@
  - Replace reload command with save/load
    - Fix up reload issues in general   
    - Test reloads- not duplicating undo queues, etc
+   
  - Add configurable persist block limit for undo queue
 
  - Configurable effects system
  
+ - Paint is broken with/clone and/or replicate?
  - Fix dynmap spell markers
- 
+
  - Fix mine spell (maybe just make it more flexible?)
  - Need to fix targeting and construction (water, glass)
  - Fix underwater targeting on non-construction spells, or generally if in the water
@@ -29,7 +31,6 @@
  - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
  - Replicate/clone should delete entities in area
  - Fix wand inventory glitches and special-cases
- - URLMap image file cache
  - Persist material brush
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc.

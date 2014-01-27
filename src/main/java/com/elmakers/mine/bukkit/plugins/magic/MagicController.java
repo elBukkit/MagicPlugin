@@ -821,7 +821,9 @@ public class MagicController implements Listener
 				try {
 					URLMap.resetAll();
 					File urlMapFile = getDataFile(URL_MAPS_FILE);
-					URLMap.load(plugin, urlMapFile);
+					File imageCache = new File(dataFolder, "imagemapcache");
+					imageCache.mkdirs();
+					URLMap.load(plugin, urlMapFile, imageCache);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

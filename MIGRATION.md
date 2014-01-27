@@ -2,8 +2,28 @@
 
 ## 2.9.0
 
+ BIG BIG ONE:
+ 
+ The configuration files have been split up and reorganized, and magic.yml has been renamed to config.yml.
+ The defaults have moved to a separate folder, as have the data files (which you generally shouldn't edit).
+ 
+ Specific material list and block populator configurations have been moved into separate files for clarity.
+ 
+ Now would be a really good time to start with a clean, fresh install of Magic, and then re-apply your customizations, if any.
+ 
+ I am going to make a big effort from here out to keep the configuration format consistent, and only have a few things planned
+ before 3.0. The new additive configuration system, if used properly (only change what you need to change) will make migration
+ in the future much, much easier.
+ 
+ Also:
+
  Chests and signs are no longer indestructible. The undo system will save their contents (though not across a reload, yet).
  You can modify the indestructible material list in magic.yml.
+ 
+ Additionally, player data and image map data has changed, but this should be automatically migrated on first run.
+ Make sure you run some version of Magic 2.9.X before 3.0, I plan on removing the migration in 3.0. (Only really
+ important if you have image maps).
+ 
 
 ## 2.8.9
 
