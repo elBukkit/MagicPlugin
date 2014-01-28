@@ -17,6 +17,7 @@ public class WandChestRunnable extends MagicRunnable {
 	private int z;
 	private int segmentPassed = 0;
 	private int chunksProcessed = 0;
+	private boolean generate = false;
 	
 	final static int messageInterval = 100;
 	
@@ -39,14 +40,35 @@ public class WandChestRunnable extends MagicRunnable {
 		world = null;
 	}
 	
+	public void setGenerate(boolean generate) {
+		this.generate = generate;
+	}
+	
 	public void run() {
 		Chunk chunk = world.getChunkAt(x, z);
-		if (!NMSUtils.isDone(chunk) || !chunk.isLoaded()) {
-			if (!NMSUtils.isDone(chunk) || !chunk.load(false)) {
-				logger.info("Done populating chests, found ungenerated chunk");
-				finish();
+		if (!chunk.isLoaded()) {
+			chunk.load(generate);
+			if (generate) {
+				logger.info("Loading/Generating chunk at " + chunk.getX() + ", " + chunk.getZ());
 			}
 		} else {
+			if (!NMSUtils.isDone(chunk)) {
+				if (generate) {
+					if (!chunk.load(true)) {
+						logger.info("Failed to generate chunk at " + chunk.getX() + ", " + chunk.getZ());
+						finish();
+					} else {
+						logger.info("Generating chunk at " + chunk.getX() + ", " + chunk.getZ());
+						// This doesn't work.
+						finish();
+					}
+				} else {
+					logger.info("Done populating chests, found ungenerated chunk");
+					finish();
+				}
+				return;
+			}
+			
 			if ((chunksProcessed % messageInterval) == 0) {
 				if (populator != null) {
 					logger.info("Looking for chests, processed " + chunksProcessed + " chunks");

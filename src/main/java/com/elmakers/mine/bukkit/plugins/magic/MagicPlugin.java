@@ -208,6 +208,7 @@ public class MagicPlugin extends JavaPlugin
 		{
 			if (args.length == 1) {
 				addIfPermissible(sender, options, "Magic.commands.", "populate");
+				addIfPermissible(sender, options, "Magic.commands.", "generate");
 				addIfPermissible(sender, options, "Magic.commands.", "search");
 				addIfPermissible(sender, options, "Magic.commands.", "clean");
 				addIfPermissible(sender, options, "Magic.commands.", "cancel");
@@ -315,7 +316,7 @@ public class MagicPlugin extends JavaPlugin
 				}
 				return true;
 			}
-			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search"))
+			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search") || subCommand.equalsIgnoreCase("generate"))
 			{   
 				checkRunningTask();
 				if (runningTask != null) {
@@ -342,13 +343,17 @@ public class MagicPlugin extends JavaPlugin
 					sender.sendMessage("Usage: magic " + subCommand + " <world> <ymax>");
 					return true;
 				}
+				WandChestRunnable chestRunnable = new WandChestRunnable(controller, world, ymax);
+				runningTask = chestRunnable;
 				if (subCommand.equalsIgnoreCase("search")) {
 					ymax = 0;
 					sender.sendMessage("Searching for wands in " + world.getName());
+				} else if (subCommand.equalsIgnoreCase("generate")) {
+					sender.sendMessage("Generating chunks, and adding wands in " + world.getName() + " below y=" + ymax);
+					chestRunnable.setGenerate(true);
 				} else {
 					sender.sendMessage("Populating chests with wands in " + world.getName() + " below y=" + ymax);
 				}
-				runningTask = new WandChestRunnable(controller, world, ymax);
 				runningTask.runTaskTimer(this, 5, 5);
 				return true;
 			}
