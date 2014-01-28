@@ -20,6 +20,7 @@
  - Some improvements to the frost spell.
  - Reset player walk/fly speed each wand tick (to override Essentials :P)
  - Fix wands losing their effect colors.
+ - Dynmap will now show spell casts (enabled by default)
  
 ## 2.8.9.1
 

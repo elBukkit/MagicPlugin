@@ -71,6 +71,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.dynmap.DynmapCommonAPI;
+import org.dynmap.markers.CircleMarker;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
@@ -2008,9 +2009,31 @@ public class MagicController implements Listener
 				spellSet = markers.createMarkerSet("Spells", "Spell Casts", null, false);
 			}
 			final String markerId = "Spell-" + mage.getName();
+			final String targetId = "SpellTarget-" + mage.getName();
 			
 			int range = 32;
+			double radius = 3.0 * mage.getDamageMultiplier();
+			int width = (int)(2.0 * mage.getDamageMultiplier());
+			width = Math.min(8, width);
 			final Location location = mage.getLocation();
+			Color color = mage.getEffectColor();
+			color = color == null ? Color.PURPLE : color;
+			final String worldName = location.getWorld().getName();
+			String label = spell.getName() + " : " + mage.getName();
+			
+			// Create a circular disc for a spell cast
+			CircleMarker marker = spellSet.findCircleMarker(markerId);
+			if (marker != null) {
+				marker.setCenter(worldName, location.getX(), location.getY(), location.getZ());
+				marker.setLabel(label);
+			} else {
+				marker = spellSet.createCircleMarker(markerId, label, false, worldName, location.getX(), location.getY(), location.getZ(), radius, radius, false);
+			}
+			marker.setRadius(radius, radius);
+			marker.setLineStyle(width, 0.9, color.asRGB());
+			marker.setFillStyle(0.5, color.asRGB());
+			
+			// Create a targeting indicator line
 			Location target = null;
 			Target spellTarget = spell.getTarget();
 			if (spellTarget != null) {
@@ -2023,23 +2046,20 @@ public class MagicController implements Listener
 				direction.normalize().multiply(range);
 				target.add(direction);
 			}
-			Color color = mage.getEffectColor();
-			color = color == null ? Color.PURPLE : color;
-			final String worldName = location.getWorld().getName();
 						
-			PolyLineMarker marker = spellSet.findPolyLineMarker(markerId);
-			if (marker != null) {
-				marker.setCornerLocation(0, location.getX(), location.getY(), location.getZ());
-				marker.setCornerLocation(1, target.getX(), target.getY(), target.getZ());
-				marker.setLabel(spell.getName());
+			PolyLineMarker targetMarker = spellSet.findPolyLineMarker(targetId);
+			if (targetMarker != null) {
+				targetMarker.setCornerLocation(0, location.getX(), location.getY(), location.getZ());
+				targetMarker.setCornerLocation(1, target.getX(), target.getY(), target.getZ());
+				targetMarker.setLabel(label);
 			} else {
 				double[] x = {location.getX(), target.getX()};
 				double[] y = {location.getY(), target.getY()};
 				double[] z = {location.getZ(), target.getZ()};
 				
-				marker = spellSet.createPolyLineMarker(markerId, spell.getName(), false, worldName, x, y, z, false);			
+				targetMarker = spellSet.createPolyLineMarker(targetId, label, false, worldName, x, y, z, false);
 			}
-			marker.setLineStyle((int)(mage.getDamageMultiplier() * 2), 0.8, color.asRGB());
+			targetMarker.setLineStyle(width, 0.8, color.asRGB());
 			
 			/*
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {

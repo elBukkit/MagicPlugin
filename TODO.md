@@ -5,12 +5,10 @@
  - I broke my build queue using cancel/undo? Command-line??
 
  - Configurable effects system
- 
- - Paint is broken with/clone and/or replicate?
- - Fix dynmap spell markers
 
 ## For 3.0.0
 
+ - Paint is broken with/clone and/or replicate?
  - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
  - Add option to bypass all costs to magic.yml
