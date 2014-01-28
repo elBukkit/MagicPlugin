@@ -790,6 +790,7 @@ breach:
     class: ConstructSpell
     parameters:
         allow_max_range: false
+        check_destructible: false
         range: 32
         indestructible:
         - air
@@ -827,6 +828,7 @@ peek:
     class: ConstructSpell
     parameters:
         allow_max_range: false
+        check_destructible: false
         range: 32
         indestructible:
         - air
