@@ -26,7 +26,7 @@ use Symfony\Component\Yaml\Yaml;
 function parseConfigFile($name) {
 	global $magicRootFolder;
 
-	$config = Yaml::parse("$magicRootFolder/$name.defaults.yml");
+	$config = Yaml::parse("$magicRootFolder/defaults/$name.defaults.yml");
 	$configFile = "$magicRootFolder/$name.yml";
 	if (file_exists($configFile)) {
 		$override = Yaml::parse("$magicRootFolder/$name.defaults.yml");
@@ -39,7 +39,7 @@ function parseConfigFile($name) {
 // Load and parse Magic configuration files
 try {
 	$spells = parseConfigFile('spells');
-	$general = parseConfigFile('magic');
+	$general = parseConfigFile('config');
 	$wands = parseConfigFile('wands');
 	$messages = parseConfigFile('messages');
 } catch (Exception $ex) {
