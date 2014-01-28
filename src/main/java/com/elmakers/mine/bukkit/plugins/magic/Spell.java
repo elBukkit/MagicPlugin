@@ -165,11 +165,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		newSpell.initialize(controller);
 		newSpell.loadTemplate(name, node);
 
-		Set<Material> defaultTargetThrough = controller.getTargetThroughMaterials();
-		for (Material defMat : defaultTargetThrough) {
-			newSpell.targetThrough(defMat);
-		}
-
 		return newSpell;
 	}
 	
@@ -231,7 +226,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		duration = parameters.getInt("duration", duration);
 		range = parameters.getInteger("range", range);
 		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
-		targetThroughMaterials = new MaterialList(parameters.getMaterials("target_through", targetThroughMaterials));
+		
+		if (parameters.containsKey("target_through")) {
+			targetThroughMaterials = new MaterialList(parameters.getMaterials("target_through"));
+		} else if (parameters.containsKey("transparent")) {
+			targetThroughMaterials.clear();
+			targetThroughMaterials.addAll(controller.getMaterialSet(parameters.getString("transparent")));
+		} else {
+			targetThroughMaterials.clear();
+			targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));			
+		}
 
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
@@ -464,6 +468,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void targetThrough(Material mat)
 	{
 		targetThroughMaterials.add(mat);
+	}
+
+	public void targetThrough(Set<Material> mat)
+	{
+		targetThroughMaterials.clear();
+		targetThroughMaterials.addAll(mat);
 	}
 
 	public void noTargetThrough(Material mat)
@@ -1058,6 +1068,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void initialize(MagicController instance)
 	{
 		this.controller = instance;
+		
+		targetThroughMaterials.clear();
 	}
 
 	/**

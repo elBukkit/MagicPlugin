@@ -73,9 +73,6 @@ public class FrostSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		noTargetThrough(Material.WATER);
-		noTargetThrough(Material.STATIONARY_WATER);
-		
 		int effectRange = Math.min(getMaxRange(), maxEffectRange);
 		Location effectLocation = getPlayer().getEyeLocation();
 		Vector effectDirection = effectLocation.getDirection();

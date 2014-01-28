@@ -29,15 +29,7 @@ public class ConstructSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		targetThrough(Material.GLASS);
 		Block target = getTarget().getBlock();
-
-		if (target == null)
-		{
-			initializeTargeting(getPlayer());
-			noTargetThrough(Material.GLASS);
-			target = getTarget().getBlock();
-		}
 
 		if (target == null)
 		{

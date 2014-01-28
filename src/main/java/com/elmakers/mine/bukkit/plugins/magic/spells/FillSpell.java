@@ -27,8 +27,6 @@ public class FillSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		noTargetThrough(Material.STATIONARY_WATER);
-		noTargetThrough(Material.WATER);
 		Block targetBlock = getTargetBlock();
 		boolean singleBlock = false;
 		boolean recurse = false;

@@ -108,6 +108,7 @@ shell:
         fill: hollow
         radius: 3
         type: sphere
+        transparent: transparent_to_construction
     costs:
         xp: 50
 dome:
@@ -121,6 +122,7 @@ dome:
         radius: 6
         type: sphere
         y_min: 1
+        transparent: transparent_to_construction
     costs:
         xp: 60
 disc:
@@ -134,6 +136,7 @@ disc:
         type: sphere
         y_max: 0
         y_min: 0
+        transparent: transparent_to_construction
     costs:
         xp: 10
 superdisc:
@@ -148,6 +151,7 @@ superdisc:
         type: sphere
         y_max: 0
         y_min: 0
+        transparent: transparent_to_construction
     costs:
         xp: 50   
 supershell:
@@ -161,6 +165,7 @@ supershell:
         fill: hollow
         target: select
         type: sphere
+        transparent: transparent_to_construction
     costs:
         xp: 100
 superdome:
@@ -175,6 +180,7 @@ superdome:
         target: select
         type: sphere
         y_min: 1
+        transparent: transparent_to_construction
     costs:
         xp: 100
 tag:
@@ -185,6 +191,7 @@ tag:
         allow_max_range: false
         range: 32
         cooldown: 10000
+        transparent: transparent_to_construction
     costs:
         xp: 20
 arrow:
@@ -259,9 +266,7 @@ frost:
         range: 24
         radius: 2
         vertical_search_distance: 8
-        target_through:
-        - air
-        - snow
+        transparent: transparent_to_construction
     costs:
         xp: 8
 storm:
@@ -478,6 +483,7 @@ paint:
         range: 64
         type: single
         check_destructible: false
+        transparent: transparent_to_construction
     costs:
         xp: 1
 gills:
@@ -586,6 +592,7 @@ superblob:
         max_dimension: 16
         target: select
         type: sphere
+        transparent: transparent_to_construction
     costs:
         xp: 100
 superpyramid:
@@ -599,6 +606,7 @@ superpyramid:
         target: select
         fill: hollow
         type: pyramid
+        transparent: transparent_to_construction
     costs:
         xp: 100
 kamikazee:
@@ -624,6 +632,7 @@ superblast:
         material: air
         radius: 5
         type: sphere
+        transparent: transparent_to_construction
     costs:
         xp: 100
 convert:
@@ -637,6 +646,7 @@ convert:
         indestructible:
           - air
         radius: 3
+        transparent: transparent_to_construction
     costs:
         xp: 20
 superconvert:
@@ -652,6 +662,7 @@ superconvert:
         target: select
         type: sphere
         replace: true
+        transparent: transparent_to_construction
     costs:
         xp: 100
 collapse:
@@ -666,7 +677,8 @@ collapse:
         check_destructible: false
         indestructible:
           - air
-        radius: '3'
+        radius: 3
+        transparent: transparent_to_construction
     costs:
         xp: 10
 supercollapse:
@@ -685,6 +697,7 @@ supercollapse:
           - air
         target: select
         type: sphere
+        transparent: transparent_to_construction
     costs:
         xp: 100
 blast:
@@ -738,6 +751,7 @@ rewind:
         allow_max_range: false
         range: 128
         type: targetall
+        transparent: transparent_to_construction
     costs:
         xp: 100
 push:
@@ -840,6 +854,7 @@ fill:
         max_volume: 256
         max_dimension: 64
         check_destructible: false
+        transparent: transparent_to_construction
     costs:
         xp: 100
 recurse:
@@ -853,6 +868,7 @@ recurse:
         max_dimension: 128
         type: recurse
         check_destructible: false
+        transparent: transparent_to_construction
     costs:
         xp: 30
 fire:
@@ -874,6 +890,7 @@ alter:
         allow_max_range: false
         range: 64
         depth: 32
+        transparent: transparent_to_construction
     costs:
         xp: 1
 blob:
@@ -885,6 +902,7 @@ blob:
         range: 32
         radius: 3
         type: pyramid
+        transparent: transparent_to_construction
     costs:
         xp: 25
 familiar:
@@ -906,6 +924,7 @@ disintegrate:
         player_damage: 5
         entity_damage: 50
         check_destructible: false
+        transparent: transparent_to_construction
     costs:
         xp: 30
 blink:
@@ -927,6 +946,7 @@ absorb:
     parameters:
         allow_max_range: false
         range: 64
+        transparent: transparent_to_construction
     costs:
         xp: 30
 stalactite:
@@ -937,6 +957,7 @@ stalactite:
         allow_max_range: false
         range: 64
         type: down
+        transparent: transparent_to_construction
     costs:
         xp: 5
 lava:
@@ -1069,6 +1090,7 @@ box:
         fill: hollow
         radius: 5
         type: cuboid
+        transparent: transparent_to_construction
     costs:
         xp: 10
 superbox:
@@ -1082,6 +1104,7 @@ superbox:
         fill: hollow
         target: select
         type: cuboid
+        transparent: transparent_to_construction
     costs:
         xp: 100
 pillar:
@@ -1091,6 +1114,7 @@ pillar:
     parameters:
         allow_max_range: false
         range: 64
+        transparent: transparent_to_construction
     costs:
         xp: 5
 night:

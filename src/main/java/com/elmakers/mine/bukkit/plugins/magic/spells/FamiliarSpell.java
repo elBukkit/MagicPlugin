@@ -98,6 +98,8 @@ public class FamiliarSpell extends Spell
 		if (!mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+		
+		// For squid spawning
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
 

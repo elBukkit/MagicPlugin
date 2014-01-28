@@ -83,7 +83,6 @@ import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
-import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.NMSUtils;
@@ -232,9 +231,12 @@ public class MagicController implements Listener
 		return restrictedMaterials;
 	}
 
-	public Set<Material> getTargetThroughMaterials()
+	public Set<Material> getMaterialSet(String name)
 	{
-		return targetThroughMaterials;
+		if (!materialSets.containsKey(name)) {
+			return new HashSet<Material>();
+		}
+		return materialSets.get(name);
 	}
 	
 	public float getMaxDamagePowerMultiplier() {
@@ -368,16 +370,6 @@ public class MagicController implements Listener
 		return (mat != Material.AIR && mat != Material.WATER && mat != Material.STATIONARY_WATER && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
 	}
 
-	public boolean isSticky(Material mat)
-	{
-		return stickyMaterials.contains(mat);
-	}
-
-	public boolean isStickyAndTall(Material mat)
-	{
-		return stickyMaterialsDoubleHeight.contains(mat);
-	}
-
 	public boolean isAffectedByGravity(Material mat)
 	{
 		// DOORS are on this list, it's a bit of a hack, but if you consider
@@ -454,16 +446,6 @@ public class MagicController implements Listener
 
 	public void initialize()
 	{
-		CSVParser csv = new CSVParser();
-		stickyMaterials = csv.parseMaterials(STICKY_MATERIALS);
-		stickyMaterialsDoubleHeight = csv.parseMaterials(STICKY_MATERIALS_DOUBLE_HEIGHT);
-
-		buildingMaterials = csv.parseMaterials(DEFAULT_BUILDING_MATERIALS);
-		indestructibleMaterials = csv.parseMaterials(DEFAULT_INDESTRUCTIBLE_MATERIALS);
-		restrictedMaterials = csv.parseMaterials(DEFAULT_RESTRICTED_MATERIALS);
-		destructibleMaterials = csv.parseMaterials(DEFAULT_DESTRUCTIBLE_MATERIALS);
-		targetThroughMaterials = csv.parseMaterials(DEFAULT_TARGET_THROUGH_MATERIALS);
-		
 		load();
 		
 		if (craftingEnabled) {
@@ -968,12 +950,22 @@ public class MagicController implements Listener
 	{
 		if (materialNode == null) return;
 		
-		// TODO: Turn this into flexible lists
-		buildingMaterials = materialNode.getMaterials("building", buildingMaterials);
-		indestructibleMaterials = materialNode.getMaterials("indestructible", indestructibleMaterials);
-		restrictedMaterials = materialNode.getMaterials("restricted", restrictedMaterials);
-		destructibleMaterials = materialNode.getMaterials("destructible", destructibleMaterials);
-		targetThroughMaterials = materialNode.getMaterials("transparent", targetThroughMaterials);
+		List<String> keys = materialNode.getKeys();
+		for (String key : keys) {
+			materialSets.put(key,  materialNode.getMaterials(key));
+		}
+		if (materialSets.containsKey("building")) {
+			buildingMaterials = materialSets.get("building");
+		}
+		if (materialSets.containsKey("indestructible")) {
+			indestructibleMaterials = materialSets.get("indestructible");
+		}
+		if (materialSets.containsKey("restricted")) {
+			restrictedMaterials = materialSets.get("restricted");
+		}
+		if (materialSets.containsKey("destructible")) {
+			destructibleMaterials = materialSets.get("destructible");
+		}
 	}
 	
 	protected void loadProperties(ConfigurationNode properties)
@@ -2064,12 +2056,6 @@ public class MagicController implements Listener
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
 	 private final String						 URL_MAPS_FILE					= "imagemaps";
 
-	 static final String                         DEFAULT_BUILDING_MATERIALS     = "0,1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,33,34,35,41,42,43,45,46,47,48,49,52,53,55,56,57,58,60,61,62,65,66,67,73,74,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109";
-	 static final String                         DEFAULT_INDESTRUCTIBLE_MATERIALS = "7,120";
-	 static final String                         DEFAULT_RESTRICTED_MATERIALS   = "7,119,120";
-     static final String						 DEFAULT_DESTRUCTIBLE_MATERIALS	= "0,1,2,3,4,8,9,10,11,12,13,87,88";
-	 static final String                         DEFAULT_TARGET_THROUGH_MATERIALS = "0";
-	 
 	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
 	 static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
 
@@ -2077,10 +2063,8 @@ public class MagicController implements Listener
 	 private Set<Material>                      indestructibleMaterials        = new HashSet<Material>();
 	 private Set<Material>                      restrictedMaterials	 	       = new HashSet<Material>();
 	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
-	 private Set<Material>                      stickyMaterials                = new HashSet<Material>();
-	 private Set<Material>                      stickyMaterialsDoubleHeight    = new HashSet<Material>();
-	 private Set<Material>                      targetThroughMaterials  	   = new HashSet<Material>();
-
+	 private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
+	 
 	 private long                                physicsDisableTimeout          = 0;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;

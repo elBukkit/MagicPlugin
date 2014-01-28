@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.utilities.borrowed;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -496,28 +495,21 @@ public class ConfigurationNode {
 		 return materials;
 	 }
 
-	 public Set<Material> getMaterials(String key, Collection<Material> def)
+	 public Set<Material> getMaterials(String key)
 	 {
-		 List<String> defaultMatNames = new ArrayList<String>();
-		 for (Material mat : def)
-		 {
-			 defaultMatNames.add(mat.name().toLowerCase());
+		 List<String> materialData = getStringList(key);
+		 if (materialData == null) {
+			 return null;
 		 }
-		 List<String> materialData = getStringList(key, defaultMatNames);
 		 
-		 Set<String> matNames = new HashSet<String>();
 		 Set<Material> materials = new HashSet<Material>();
-
 		 for (String matName : materialData)
 		 {
 			 Material material = toMaterial(matName);
 			 if (material != null) {
 				 materials.add(material);
-				 matNames.add(material.name().toLowerCase());
 			 }
 		 }
-
-		 setProperty(key, matNames);
 
 		 return materials;
 	 }
@@ -675,15 +667,25 @@ public class ConfigurationNode {
 	  * @return list of strings
 	  */
 	 public List<String> getStringList(String path, List<String> def) {
-		 List<Object> raw = getList(path);
+		 List<String> list = getStringList(path);
 
-		 if (raw == null) {
+		 if (list == null) {
 			 if (def != null)
 			 {
 				 setProperty(path, def);
 				 return def;
 			 }
 			 return new ArrayList<String>();
+		 }
+
+		 return list;
+	 }
+	 
+	 public List<String> getStringList(String path) {
+		 List<Object> raw = getList(path);
+
+		 if (raw == null) {
+			 return null;
 		 }
 
 		 List<String> list = new ArrayList<String>();

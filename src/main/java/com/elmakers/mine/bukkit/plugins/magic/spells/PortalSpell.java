@@ -17,8 +17,6 @@ public class PortalSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		targetThrough(Material.GLASS);
-
 		Block target = getTargetBlock();
 		if (target == null)
 		{

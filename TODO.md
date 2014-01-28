@@ -1,7 +1,8 @@
 # TODO
 
 ## For 2.9.0
- - Add configurable persist block limit for undo queue
+
+ - I broke my build queue using cancel/undo? Command-line??
 
  - Configurable effects system
  
@@ -9,11 +10,10 @@
  - Fix dynmap spell markers
 
  - Fix mine spell (maybe just make it more flexible?)
- - Need to fix targeting and construction (water, glass)
- - Fix underwater targeting on non-construction spells, or generally if in the water
 
 ## For 3.0.0
 
+ - Add configurable persist block limit for undo queue
  - Add option to bypass all costs to magic.yml
  - Add visual effects to spawn and recall spells
  - Make sure adding spells/materials never removes any, also opening/closing the inventory
@@ -71,7 +71,7 @@ OTHER STUFF:
  - Add option to open chest on right-click (for wand inventory)
  - Add count parameter to projectile spell, make wither shoot a few
  - Make volley multi-sample?
- - Alter names sheep "_jeb", - others "Dinnerbone" ?
+ - Alter names sheep "jeb_", - others "Dinnerbone" ?
  - Organize inventory by spell usage (favorites page)
  - Complete work on tab completion
  - Separate material list for "super" building materials?

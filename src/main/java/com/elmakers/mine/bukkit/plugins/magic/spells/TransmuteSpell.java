@@ -22,7 +22,6 @@ public class TransmuteSpell extends BrushSpell
 		 * Use target if targeting
 		 */
 		boolean usedTarget = false;
-		targetThrough(Material.GLASS);
 		Block target = getTargetBlock();
 
 		if (target != null)
