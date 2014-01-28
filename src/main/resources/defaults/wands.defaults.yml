@@ -245,8 +245,15 @@ random:
       3: 0,  5,   20,   70
       4: 0,  0,   10,   60
     spells:
+      alter: 0,10,20,30
       arrow: 100,80,70,30
       arrowrain: 10,30,50,40
+      blast: 30,40,50,30
+      blink: 0,0,0,20
+      blob: 0,10,40,10
+      camera: 0,10,30,40
+      cat: 5,20,50,10
+      cloak: 10,20,30,20
       fireball: 60,70,80,50
       fire: 50,70,60,50
       tesseract: 80,50,40,20
@@ -255,13 +262,11 @@ random:
       fling: 0,5,70,80
       flare: 110,80,60,20
       frost: 80,70,50,10
-      blink: 0,0,10,40
       push: 10,20,40,30
       pull: 10,20,40,30
       force: 5,10,20,60
       sniper: 0,0,30,40
       disintegrate: 0,10,40,50
-      blast: 30,40,50,30
       boom: 20,50,60,40
       peek: 10,30,40,30
       cushion: 10,40,20,10
@@ -270,16 +275,18 @@ random:
       familiar: 10,30,40,20
       monster: 5,20,30,30
       wolf: 0,10,20,50
-      cat: 5,20,50,10
       lightning: 40,50,30,5
       storm: 0,0,10,90
       inferno: 0,0,10,90
       frag: 0,0,10,90
       sandblast: 20,30,40,10
       lava: 5,20,50,20
-      blob: 0,10,40,10
+      earth: 5,20,50,20
       recurse: 0,5,20,40
       paint: 1,20,45,15
+      phase: 0,5,15,25
+      portal: 0,5,25,35
+      recall: 0,5,15,25
       toss: 2,25,35,50
       volley: 0,0,45,70
       shrink: 5,20,30,90
@@ -289,16 +296,43 @@ random:
       ironskin: 0,5,10,20
       boon: 0,5,10,20
       curse: 0,1,10,25
-      iterate: 0,10,40,10
+      gills: 10,11,20,25
+      iterate: 0,0,40,10
+      lava: 0,10,30,20
+      stream: 0,10,30,20
       collapse: 0,5,30,50
       box: 0,5,40,50
       shell: 0,5,40,50
       convert: 0,5,40,50
+      pyramid: 0,5,40,50
+      dome: 0,5,40,50
+      supershell: 0,0,1,10
+      superblast: 0,0,1,5
+      superbox: 0,0,1,10
+      superpyramid: 0,0,1,10
+      superblob: 0,0,1,10
+      superdisc: 0,0,1,10
+      superconvert: 0,0,1,10
+      superdome: 0,0,1,10
+      undo: 0,0,1,10
+      fill: 0,0,1,5
+      pillar: 0,5,10,15
+      stalactite: 0,5,10,15
+      bridge: 0,5,10,15
+      kaboom: 0,0,1,5
+      absorb: 0,0,0,1
+      kaboom: 0,0,1,5
+      icbm: 0,0,1,5
+      wither: 5,10,20,30
     material_count:
       0: 100,100, 100,  100
       1: 1,  10,  60,   100
       2: 0,  5,   20,   70
     materials:
+      erase: 0,0,0,1
+      copy: 0,0,0,1
+      clone: 0,0,0,1
+      replicate: 0,0,0,1
       lava: 0,0,15,30
       water: 0,0,30,90
       stone: 50,70,80,100
@@ -312,6 +346,22 @@ random:
       stained_clay: 1,5,15,45
       stained_glass: 0,5,15,45
       stained_glass_pane: 0,5,15,45
+      soul_sand: 5,10,20,40
+      grass: 5,10,20,40
+      wood: 5,10,20,40 
+      log: 5,10,20,40
+      vine: 0,5,10,30
+      mycel: 0,5,10,30
+      emerald_block: 0,0,5,20
+      leaves: 0,5,10,30
+      ice: 10,20,25,30
+      packed_ice: 10,20,25,30
+      lapis_block: 0,0,5,20
+      diamond_block: 0,0,5,20
+      gold_block: 0,0,5,20
+      emerald_block: 0,0,5,20
+      obsidian: 0,0,15,30
+      redstone_block: 0,0,5,10
       
 #
 #
@@ -549,12 +599,16 @@ engineer:
         - alter
         - shell
         - box
+        - dome
+        - disc
         - convert
         - superblob
         - superbox
         - supershell
         - superconvert
         - superpyramid
+        - superdome
+        - superdisc
         - levitate
         - paint
     materials:
@@ -1242,6 +1296,10 @@ wolf:
         - supershell
         - superpyramid
         - superbox
+        - superdisc
+        - disc
+        - superdome
+        - dome
         - push
         - pull
         - force
@@ -1288,6 +1346,7 @@ wolf:
         - cat
         - phase
         - portal
+        - disintegrate
     materials:
         - water
         - lava
