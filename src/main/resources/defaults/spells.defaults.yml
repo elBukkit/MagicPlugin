@@ -197,10 +197,12 @@ tag:
 arrow:
     icon: arrow
     category: dark
-    class: ArrowSpell
+    class: ProjectileSpell
     parameters:
+      projectile: Arrow
       speed: 2
       spread: 6
+      fire: false
     costs:
         xp: 5 
 toss:
@@ -223,14 +225,15 @@ volley:
 sniper:
     icon: gold_nugget
     category: dark
-    class: ArrowSpell
+    class: ProjectileSpell
     parameters:
-      cooldown: 3000
+      projectile: Arrow
+      fire: false
       speed: 6
       spread: 0
       damage: 5
     costs:
-        xp: 10
+        xp: 100
 pull:
     icon: fishing_rod
     category: airbending

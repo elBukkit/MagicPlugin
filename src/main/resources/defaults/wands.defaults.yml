@@ -640,7 +640,7 @@ engineer:
 battle:
     modifiable: true
     protection_physical: 0.3
-    xp_regeneration: 1
+    xp_regeneration: 10
     xp_max: 100
     spells:
         - arrow
@@ -652,7 +652,7 @@ battle:
         - wither
 mining:
     modifiable: true
-    xp_regeneration: 1
+    xp_regeneration: 10
     xp_max: 100
     spells:
         - peek
@@ -660,7 +660,7 @@ mining:
         - blast
 farming:
     modifiable: true
-    xp_regeneration: 1
+    xp_regeneration: 10
     xp_max: 100
     spells:
         - farm
@@ -676,7 +676,7 @@ farming:
         - water
 alchemist:
     modifiable: true
-    xp_regeneration: 1
+    xp_regeneration: 10
     xp_max: 100
     spells:
         - alter
@@ -693,7 +693,7 @@ alchemist:
         - sand
 elementalist:
     modifiable: true
-    xp_regeneration: 1
+    xp_regeneration: 10
     xp_max: 100
     spells:
         - fire
@@ -704,7 +704,7 @@ elementalist:
         - weather
 necromancer:
     modifiable: true
-    xp_regeneration: 1
+    xp_regeneration: 10
     xp_max: 100
     spells:
         - fire
@@ -717,7 +717,7 @@ elder:
     modifiable: true
     protection: 1
     xp_max: 1000
-    max_regeneration: 100
+    xp_regeneration: 100
     health_regeneration: 1
     hunger_regeneration: 1
     power: 1
