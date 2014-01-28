@@ -371,14 +371,14 @@ public class Mage implements CostReducer
 			}
 		}
 		
-		if (reduction >= 1) {
+		if (reduction > 1) {
 			event.setCancelled(true);
 			return;
 		}
 		
 		if (reduction > 0) {
-			int newDamage = (int)Math.floor((1.0f - reduction) * event.getDamage());
-			if (newDamage == 0) newDamage = 1;
+			double newDamage = (1.0f - reduction) * event.getDamage();
+			if (newDamage <= 0) newDamage = 0.1;
 			event.setDamage(newDamage);
 		}
 	}
@@ -716,7 +716,7 @@ public class Mage implements CostReducer
 		// Also this theoretically should never happen since we deactive wands on logout. Shrug.
 		Player player = getPlayer();
 		if (activeWand != null && player != null && player.isOnline()) {
-			activeWand.processRegeneration();
+			activeWand.tick();
 		}
 		
 		// Copy this set since spells may get removed while iterating!

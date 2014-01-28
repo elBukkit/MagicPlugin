@@ -632,10 +632,6 @@ public class Wand implements CostReducer {
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
-		
-		// This is done here as an extra safety measure.
-		// A walk speed too high will cause a server error.
-		speedIncrease = Math.min(WandLevel.maxSpeedIncrease, speedIncrease);
 	}
 
 	public void describe(CommandSender sender) {
@@ -984,7 +980,7 @@ public class Wand implements CostReducer {
 	private String getLevelString(String prefix, float amount) {
 		String suffix = "";
 
-		if (amount >= 1) {
+		if (amount > 1) {
 			suffix = Messages.get("wand.enchantment_level_max");
 		} else if (amount > 0.8) {
 			suffix = Messages.get("wand.enchantment_level_5");
@@ -1076,7 +1072,7 @@ public class Wand implements CostReducer {
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cost_reduction"), costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cooldown_reduction"), cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.power"), power));
-		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.haste"), speedIncrease / WandLevel.maxSpeedIncrease));
+		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.haste"), speedIncrease));
 		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection"), damageReduction));
 		if (damageReduction < 1) {
 			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_physical"), damageReductionPhysical));
@@ -1474,16 +1470,11 @@ public class Wand implements CostReducer {
 		hungerRegeneration = safe ? Math.max(_hungerRegeneration, hungerRegeneration) : _hungerRegeneration;
 		int _uses = wandConfig.getInt("uses", uses);
 		uses = safe ? Math.max(_uses, uses) : _uses;
+		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
+		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
 		
-		effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
-	
-		// Make sure to adjust the player's walk speed if it changes and this wand is active.
-		float oldWalkSpeedIncrease = speedIncrease;
-		speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
-		if (mage != null && speedIncrease != oldWalkSpeedIncrease) {
-			Player player = mage.getPlayer();
-			player.setWalkSpeed(defaultWalkSpeed + speedIncrease);
-			player.setFlySpeed(defaultFlySpeed + speedIncrease);
+		if (wandConfig.containsKey("effect_color") && !safe) {
+			effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
 		}
 		
 		owner = wandConfig.getString("owner", owner);
@@ -1667,16 +1658,19 @@ public class Wand implements CostReducer {
 		saveState();
 	}
 	
-	public void activate(Mage playerSpells) {
-		if (owner.length() == 0) {
-			takeOwnership(playerSpells.getPlayer());
-		}
-		mage = playerSpells;
-		Player player = mage.getPlayer();
+	protected void updateSpeed(Player player) {
 		if (speedIncrease > 0) {
 			try {
-				player.setWalkSpeed(defaultWalkSpeed + speedIncrease);
-				player.setFlySpeed(defaultFlySpeed + speedIncrease);
+				float newWalkSpeed = defaultWalkSpeed + (speedIncrease * WandLevel.maxWalkSpeedIncrease);
+				newWalkSpeed = Math.min(WandLevel.maxWalkSpeed, newWalkSpeed);
+				if (newWalkSpeed != player.getWalkSpeed()) {
+					player.setWalkSpeed(newWalkSpeed);
+				}
+				float newFlySpeed = defaultFlySpeed + (speedIncrease * WandLevel.maxFlySpeedIncrease);
+				newFlySpeed = Math.min(WandLevel.maxFlySpeed, newFlySpeed);
+				if (newFlySpeed != player.getFlySpeed()) {
+					player.setFlySpeed(newFlySpeed);
+				}
 			} catch(Exception ex2) {
 				try {
 					player.setWalkSpeed(defaultWalkSpeed);
@@ -1686,6 +1680,15 @@ public class Wand implements CostReducer {
 				}
 			}
 		}
+	}
+	
+	public void activate(Mage playerSpells) {
+		if (owner.length() == 0) {
+			takeOwnership(playerSpells.getPlayer());
+		}
+		mage = playerSpells;
+		Player player = mage.getPlayer();
+		updateSpeed(player);
 		mage.setActiveWand(this);
 		if (xpRegeneration > 0) {
 			storedXpLevel = player.getLevel();
@@ -1798,10 +1801,11 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	public void processRegeneration() {
+	public void tick() {
 		if (mage == null) return;
 		
 		Player player = mage.getPlayer();
+		updateSpeed(player);
 		if (xpRegeneration > 0) {
 			xp = Math.min(xpMax, xp + xpRegeneration);
 			updateMana();

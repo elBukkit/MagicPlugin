@@ -18,6 +18,8 @@
  - The phase spell will return you from The End, should work better in general.
  - Replace reload command with save/load
  - Some improvements to the frost spell.
+ - Reset player walk/fly speed each wand tick (to override Essentials :P)
+ - Fix wands losing their effect colors.
  
 ## 2.8.9.1
 

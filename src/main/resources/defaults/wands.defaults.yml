@@ -229,9 +229,9 @@ random:
       4: 0 , 15, 20, 40
     haste:
       0:    100,100,80, 60
-      0.01: 0 ,  0, 20, 30
-      0.02: 0 ,  0, 10, 20
-      0.05: 0 ,  0,  0, 10
+      0.1:  0 ,  0, 20, 30
+      0.2:  0 ,  0, 10, 20
+      0.3:  0 ,  0,  0, 10
     uses: 
       0: 100,100,100,100
     add_uses: 
@@ -715,13 +715,13 @@ necromancer:
         - wither
 elder:
     modifiable: true
-    cost_reduction: 1
     protection: 1
-    cooldown_reduction: 1
+    xp_max: 1000
+    max_regeneration: 100
     health_regeneration: 1
     hunger_regeneration: 1
     power: 1
-    haste: 0.3
+    haste: 1
     effect_color: '8B008B'
     organize: true
     spells:
@@ -1017,7 +1017,7 @@ white:
     cost_reduction: 0.5
     protection: 0.9
     xp_regeneration: 50
-    xp_max: 600
+    xp_max: 300
     health_regeneration: 1
     hunger_regeneration: 1
     haste: 0.1
@@ -1075,7 +1075,7 @@ black:
     cost_reduction: 0.5
     protection: 0.9
     xp_regeneration: 50
-    xp_max: 600
+    xp_max: 300
     health_regeneration: 1
     hunger_regeneration: 1
     haste: 0.1
@@ -1238,13 +1238,13 @@ green:
         - wool:13
 admin:
     modifiable: true
-    cost_reduction: 1
-    protection: 1
-    cooldown_reduction: 1
-    health_regeneration: 1
-    hunger_regeneration: 1
+    cost_reduction: 2
+    protection: 2
+    cooldown_reduction: 2
+    health_regeneration: 2
+    hunger_regeneration: 2
     power: 1
-    haste: 0.1
+    haste: 0.5
     effect_color: '888888'
     spells:
         - levitate
@@ -1266,19 +1266,21 @@ admin:
         - copy            
 wolf:
     modifiable: true
-    cost_reduction: 1
-    protection: 1
-    cooldown_reduction: 1
+    cost_reduction: 2
+    protection: 2
+    fire_protection: 2
+    cooldown_reduction: 2
     health_regeneration: 1
     hunger_regeneration: 1
     power: 5
-    haste: 0.3
+    haste: 1
     effect_color: 'CD853F'
     organize: true
     spells:
         - fling
         - blink
         - levitate
+        - torch
         - time
         - gather
         - disarm

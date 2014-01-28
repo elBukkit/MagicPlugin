@@ -43,14 +43,18 @@ public class WandLevel {
 	
 	private final LinkedList<WeightedPair<Float>> hasteProbability = new LinkedList<WeightedPair<Float>>();
 	
+	// TODO- Config-driven!
 	public static final int maxUses = 500;
 	public static final int maxMaxXp = 1000;
-	public static final int maxXpRegeneration = 20;
-	public static final int maxRegeneration = 20;
+	public static final int maxXpRegeneration = 50;
+	public static final int maxRegeneration = 5;
 	public static final float maxReduction = 0.9f;
 	public static final float maxProtection = 0.9f;
-	public static float maxSpeedIncrease = 0.7f;
-	public static float maxPower = 0.9f;
+	public static float maxFlySpeedIncrease = 0.1f;
+	public static float maxWalkSpeedIncrease = 0.4f;
+	public static float maxFlySpeed = 0.8f;
+	public static float maxWalkSpeed = 0.8f;
+	public static float maxPower = 1.0f;
 	
 	public static WandLevel getLevel(int level) {
 		if (levelMap == null) return null;

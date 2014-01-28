@@ -11,6 +11,7 @@
 
 ## For 3.0.0
 
+ - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
  - Add option to bypass all costs to magic.yml
  - Add visual effects to spawn and recall spells
