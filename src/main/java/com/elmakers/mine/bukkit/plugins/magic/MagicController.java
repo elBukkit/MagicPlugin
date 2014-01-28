@@ -1360,17 +1360,22 @@ public class MagicController implements Listener
 		
 		Wand wand = mage.getActiveWand();
 		
+		// Hacky check for immediately activating a wand if for some reason it was
+		// not active
 		if (wand == null && Wand.hasActiveWand(player)) {
 			if (mage.hasStoredInventory()) {
 				mage.restoreInventory();
 			}
 			wand = Wand.getActiveWand(this, player);
 			wand.activate(mage);
+			getLogger().warning("Player was holding an inactive wand on interact- activating.");			
 		}
 		
-		// Another hacky double-check for wands getting accidentally deactivated?
+		// Safety check, we don't want to lose the player's inventory.
+		// In theory, this should never happen though!
 		if (wand == null && mage.hasStoredInventory())
 		{
+			getLogger().warning("Player had no active wand, but a stored inventory- restoring.");
 			mage.restoreInventory();
 			return;
 		}
@@ -1382,10 +1387,13 @@ public class MagicController implements Listener
 		
 		// An extra double-check for a bug that is hard to reproduce, where the wand is no
 		// longer the active item, but we never deactivated it.
+		// Don't do this- it may happen semi-normally while lagging.
+		/*
 		if (!Wand.hasActiveWand(player)) 
 		{
 			wand.deactivate();
 		}
+		*/
 		
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
 		{
