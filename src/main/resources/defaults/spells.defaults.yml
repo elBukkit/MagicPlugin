@@ -353,8 +353,9 @@ wither:
     class: ProjectileSpell
     parameters:
         projectile: WitherSkull
+        count: 3
     costs:
-        xp: 20
+        xp: 60
 weather:
     icon: water
     category: elemental
@@ -503,14 +504,15 @@ gills:
 arrowrain:
     icon: bow
     category: dark
-    class: ArrowSpell
+    class: ProjectileSpell
     parameters:
+        projectile: Arrow
         count: 6
         fire: true
         speed: 3
         spread: 30
     costs:
-        xp: 20
+        xp: 30
 lightning:
     icon: raw_fish:3
     category: firebending

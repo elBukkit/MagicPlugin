@@ -31,13 +31,23 @@ public class ProjectileSpell extends Spell
 		if (!mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+
+		int count = parameters.getInt("count", 1);
 		int size = parameters.getInt("size", defaultSize);
-		size = (int)(mage.getRadiusMultiplier() * size);
-		boolean useFire = parameters.getBoolean("fire", true);
-		int tickIncrease = parameters.getInteger("tick_increase", 1180);
 		double damage = parameters.getDouble("damage", 0);
 		float speed = (float)parameters.getDouble("speed", 0.6f);
 		float spread = (float)parameters.getDouble("spread", 12);
+
+		// Modify with wand power
+		count *= mage.getRadiusMultiplier();
+		size = (int)(mage.getRadiusMultiplier() * size);
+		float damageMultiplier = mage.getDamageMultiplier();
+		speed *= damageMultiplier;
+		damage *= damageMultiplier;
+		spread /= damageMultiplier;
+		
+		boolean useFire = parameters.getBoolean("fire", true);
+		int tickIncrease = parameters.getInteger("tick_increase", 1180);
 		
 		String projectileClass = parameters.getString("projectile", "Fireball");
 		final Class<?> arrowClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
@@ -45,62 +55,70 @@ public class ProjectileSpell extends Spell
 		
 		// Track projectiles to remove them after some time.
 		List<Arrow> arrows = new ArrayList<Arrow>();
-		
+		Class<? extends Projectile> projectileType = null;
 		try {
-			Location playerLocation = getPlayer().getLocation();
-			Class<? extends Projectile> projectileType = (Class<? extends Projectile>)Class.forName("org.bukkit.entity." + projectileClass);
-			Projectile projectile = getPlayer().launchProjectile(projectileType);
-			if (projectile == null) {
-				throw new Exception("A projectile fizzled");
-			}
-			projectile.setShooter(getPlayer());
-			if (projectile instanceof WitherSkull) {
-				playerLocation.getWorld().playSound(playerLocation, Sound.WITHER_SHOOT, 1.0f, 1.5f);		
-			}
-			if (projectile instanceof Fireball) {
-				Fireball fireball = (Fireball)projectile;
-				fireball.setIsIncendiary(useFire);
-				fireball.setYield(size);
-				if (!(projectile instanceof WitherSkull)) {
-					playerLocation.getWorld().playSound(playerLocation, Sound.GHAST_FIREBALL, 1.0f, 1.5f);
-				}
-			}
-			if (projectile instanceof Arrow) {
-				Arrow arrow = (Arrow)projectile;
-				arrows.add(arrow);
-				if (useFire) {
-					arrow.setFireTicks(300);
-				}
-				// Hackily make this an infinite arrow and set damage
-				try {
-					if (arrowClass == null || craftArrowClass == null) {
-						controller.getLogger().warning("Can not access NMS EntityArrow class");
-					} else {
-						Method getHandleMethod = arrow.getClass().getMethod("getHandle");
-						Object handle = getHandleMethod.invoke(arrow);
-						
-						Method shootMethod = arrowClass.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-						Vector velocity = getPlayer().getLocation().getDirection();
-						shootMethod.invoke(handle, velocity.getX(), velocity.getY(), velocity.getZ(), speed, spread);
-						
-						Field fromPlayerField = arrowClass.getField("fromPlayer");
-						fromPlayerField.setInt(handle, 2);
-						if (damage > 0) {
-							Field damageField = arrowClass.getDeclaredField("damage");
-							damageField.setAccessible(true);
-							damageField.set(handle, damage);
-						}
-					}
-				} catch (Throwable ex) {
-					ex.printStackTrace();
-				}
-				
-				playerLocation.getWorld().playSound(playerLocation, Sound.SHOOT_ARROW, 1.0f, 1.5f);
-			}
-		} catch(Exception ex) {
-			sendMessage("Failed to fire projectile class " + projectileClass);
+			projectileType = (Class<? extends Projectile>)Class.forName("org.bukkit.entity." + projectileClass);
+		} catch (Exception ex) {
+			castMessage("Your projectile fizzled");
 			controller.getLogger().warning(ex.getMessage());
 			return SpellResult.FAILURE;
+		}
+
+		Location playerLocation = getPlayer().getLocation();
+		for (int i = 0; i < count; i++) {
+			try {
+				Projectile projectile = getPlayer().launchProjectile(projectileType);
+				if (projectile == null) {
+					throw new Exception("A projectile fizzled");
+				}
+				projectile.setShooter(getPlayer());
+				if (projectile instanceof WitherSkull) {
+					playerLocation.getWorld().playSound(playerLocation, Sound.WITHER_SHOOT, 1.0f, 1.5f);		
+				}
+				if (projectile instanceof Fireball) {
+					Fireball fireball = (Fireball)projectile;
+					fireball.setIsIncendiary(useFire);
+					fireball.setYield(size);
+					if (!(projectile instanceof WitherSkull)) {
+						playerLocation.getWorld().playSound(playerLocation, Sound.GHAST_FIREBALL, 1.0f, 1.5f);
+					}
+				}
+				if (projectile instanceof Arrow) {
+					Arrow arrow = (Arrow)projectile;
+					arrows.add(arrow);
+					if (useFire) {
+						arrow.setFireTicks(300);
+					}
+					
+					// Hackily make this an infinite arrow and set damage
+					try {
+						if (arrowClass == null || craftArrowClass == null) {
+							controller.getLogger().warning("Can not access NMS EntityArrow class");
+						} else {
+							Method getHandleMethod = arrow.getClass().getMethod("getHandle");
+							Object handle = getHandleMethod.invoke(arrow);
+							
+							Method shootMethod = arrowClass.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+							Vector velocity = getPlayer().getLocation().getDirection();
+							shootMethod.invoke(handle, velocity.getX(), velocity.getY(), velocity.getZ(), speed, spread);
+							
+							Field fromPlayerField = arrowClass.getField("fromPlayer");
+							fromPlayerField.setInt(handle, 2);
+							if (damage > 0) {
+								Field damageField = arrowClass.getDeclaredField("damage");
+								damageField.setAccessible(true);
+								damageField.set(handle, damage);
+							}
+						}
+					} catch (Throwable ex) {
+						ex.printStackTrace();
+					}
+					
+					playerLocation.getWorld().playSound(playerLocation, Sound.SHOOT_ARROW, 1.0f, 1.5f);
+				}
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 
 		if (tickIncrease > 0 && arrows.size() > 0 && arrowClass != null) {
