@@ -120,23 +120,26 @@ public class ConstructSpell extends BrushSpell
 		{
 			conType = testType;
 		}
-
-		fillArea(target, radius, buildWith, !hollow, conType, timeToLive, falling, forceVector);
-		deactivate();
-
-		return SpellResult.SUCCESS;
-	}
-
-	public void fillArea(Block target, int radius, MaterialBrush brush, boolean fill, ConstructionType type, int timeToLive, boolean falling, Vector forceVector)
-	{
-		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), type, radius, fill, falling);
+					
+		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, !hollow, falling);
 		if (forceVector != null) {
 			batch.setFallingBlockVelocity(forceVector);
+		}
+		if (parameters.containsKey("y_max")) {
+			batch.setYMax(parameters.getInteger("y_max", null));
+		}
+
+		if (parameters.containsKey("y_min")) {
+			batch.setYMin(parameters.getInteger("y_min", null));
 		}
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
 		}
 		mage.addPendingBlockBatch(batch);
+		
+		deactivate();
+
+		return SpellResult.SUCCESS;
 	}
 	
 	

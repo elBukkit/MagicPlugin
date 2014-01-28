@@ -32,6 +32,9 @@ public class ConstructBatch extends VolumeBatch {
 	private Vector fallingBlockVelocity = null;
 	private boolean copyEntities = true;
 	
+	private Integer maxDY = null;
+	private Integer minDY = null;
+	
 	private int x = 0;
 	private int y = 0;
 	private int z = 0;
@@ -51,8 +54,21 @@ public class ConstructBatch extends VolumeBatch {
 		fallingBlockVelocity = velocity;
 	}
 	
+	public void setYMax(int maxDY) {
+		this.maxDY = maxDY;
+	}
+	
+	public void setYMin(int minDY) {
+		this.minDY = minDY;
+	}
+	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
+		int yBounds = radius;
+		if (maxDY != null || minDY != null) {
+			yBounds = Math.max(minDY == null ? radius : minDY, maxDY == null ? radius : maxDY);
+		}
+		yBounds = Math.min(yBounds,255);
 		
 		while (processedBlocks <= maxBlocks && x <= radius) {
 			if (!fillBlock(x, y, z)) {
@@ -60,7 +76,7 @@ public class ConstructBatch extends VolumeBatch {
 			}
 			
 			y++;
-			if (y > radius || y > 255) {
+			if (y > yBounds) {
 				y = 0;
 				z++;
 				if (z > radius) {
@@ -206,6 +222,9 @@ public class ConstructBatch extends VolumeBatch {
 	@SuppressWarnings("deprecation")
 	public boolean constructBlock(int dx, int dy, int dz)
 	{
+		if (minDY != null && dy < minDY) return true;
+		if (maxDY != null && dy > maxDY) return true;
+		
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;

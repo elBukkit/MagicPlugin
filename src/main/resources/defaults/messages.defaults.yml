@@ -116,6 +116,12 @@ spells:
     bounce:
         name: Bounce
         description: Gives super jump power
+    disc:
+        name: Disc
+        description: Create a platform in front of you
+    dome:
+        name: Dome
+        description: Create a large dome
     shell:
         name: Shell
         description: Create a large spherical shell
@@ -261,6 +267,14 @@ spells:
     supershell:
         name: SuperShell
         description: Create a large hollow sphere
+        usage: Cast once to select a point, again to construct
+    superdisc:
+        name: SuperDisc
+        description: Create a large circular disc
+        usage: Cast once to select a point, again to construct
+    superdome:
+        name: SuperDome
+        description: Create a very large dome
         usage: Cast once to select a point, again to construct
     superpyramid:
         name: SuperPyramid

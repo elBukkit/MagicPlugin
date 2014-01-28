@@ -4,6 +4,7 @@
 
  - Completely re-organize the config files. (MIGRATION NOTE!)
  - Add file cache for URLMap images.
+ - Added disc, superdisc, dome and superdome spells.
  - Add "/magic clean" command to remove unowned lost wands.
  - Add owner to wand description, if no other description is present.
  - Add owner filtering to "/magic list" command.
