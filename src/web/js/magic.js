@@ -119,6 +119,95 @@ function getLevelString(prefix, amount)
 	return prefix + " " + suffix;
 }
 
+function getBookDetails(key)
+{
+	if (!(key in books)) {
+		return $('<span/>').text("Sorry, something went wrong!");
+	}
+	var book = books[key];
+	var detailsDiv = $('<div/>');
+	var title = $('<div class="bookTitleBanner"/>').text(book.title);
+	var scrollingContainer = $('<div class="bookContainer"/>');	
+	
+	detailsDiv.append(title);
+	detailsDiv.append(scrollingContainer);
+
+	if ('description' in book && book.description.length > 0) {
+		var description = $('<div class="bookDescription"/>');
+		for (var descriptionIndex in book.description) {
+			var descriptionLine = book.description[descriptionIndex];
+			description.append(descriptionLine).append(jQuery('<br/>'));
+		}
+		scrollingContainer.append(description);
+	}
+	
+	var pages = $('<div class="bookPages"/>');
+	for (var pageIndex in book.pages) {
+		var page = book.pages[pageIndex];
+		var lines = page.split("&x");
+		for (var lineIndex in lines) {
+			var line = lines[lineIndex];
+			var lineStyle = "";
+			line = line.replace(/\&(.)/g, function (match, capture) {
+				lineStyle += getLineStyle(capture);
+				return "";
+			});
+
+			var lineSpan = jQuery('<span style="' + lineStyle + '"/>');
+			lineSpan.text(line);
+			pages.append(lineSpan).append(jQuery('<br/>'));
+		}
+		
+		pages.append(jQuery('<br/>')).append(jQuery('<hr/>')).append(jQuery('<br/>'));
+	}
+	scrollingContainer.append(pages);
+
+	return detailsDiv;
+}
+
+function getLineStyle(chatChar)
+{
+	if (chatChar == 'l') {
+		return 'font-weight: bold;';
+	}
+	if (chatChar == 'n') {
+		return 'text-decoration: underline;';
+	}
+	if (chatChar == 'o') {
+		return 'font-style: italic;';
+	}
+	var color = chatColorToHex(chatChar.toLowerCase());
+	if (color.length > 0) {
+		return 'color: #' + color + ';';
+	}
+	
+	return '';
+}
+
+function chatColorToHex(chatChar)
+{
+	switch (chatChar) {
+		case '0': return '000000';
+		case '1': return '0000AA';
+		case '2': return '00AA00';
+		case '3': return '00AAAA';
+		case '4': return 'AA0000';
+		case '5': return 'AA00AA';
+		case '6': return 'FFAA00';
+		case '7': return 'AAAAAA';
+		case '8': return '555555';
+		case '9': return '5555FF';
+		case 'a': return '55FF55';
+		case 'b': return '55FFFF';
+		case 'c': return 'FF5555';
+		case 'd': return 'FF55FF';
+		case 'e': return 'FFFF55';
+		case 'f': return 'FFFFFF';
+	}
+	
+	return '';
+}
+
 function getWandDetails(key)
 {
 	if (!(key in wands)) {
@@ -223,6 +312,18 @@ function getWandDetails(key)
  
 $(document).ready(function() {
 	$("#tabs").tabs();
+	if (books.length == 0) {
+		$('#booksTab').hide(); 
+	} else {
+		$("#bookList").selectable({
+			selected: function(event, ui) {
+				var selected = jQuery(".ui-selected", this);
+				var key = selected.prop('id').substr(5);
+				$('#bookDetails').empty();
+				$('#bookDetails').append(getBookDetails(key));
+			}
+	    });
+	}
     $("#spellList").selectable({
 		selected: function(event, ui) {
 			var selected = jQuery(".ui-selected", this);

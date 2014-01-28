@@ -76,6 +76,18 @@ $rightClickCycles = isset($general['right_click_cycles']) ? $general['right_clic
 $eraseMaterial = isset($general['erase_item']) ? $general['erase_item'] : 'sulphur';
 $copyMaterial = isset($general['copy_item']) ? $general['copy_item'] : 'sugar';
 
+$books = array();
+if (file_exists($infoBookRootConfig)) {
+	$booksConfigKeys = array('version-check', 'onlogin', 'protected');
+	$booksConfig = Yaml::parse($infoBookRootConfig);
+	foreach ($booksConfig as $key => $book) {
+		// Hacky.. InfoBook has a weird config :\
+		if (!in_array($booksConfig, $booksConfigKeys)) {
+			$books[$key] = $book;
+		}
+	}
+}
+
 function underscoreToReadable($s) {
 	if (!$s) return $s;
 	$convertFunction = create_function('$c', 'return " " . strtoupper($c[1]);');
@@ -112,6 +124,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 			var wands = <?= json_encode($wands); ?>;
 			var eraseMaterial = '<?= $eraseMaterial ?>';
 			var copyMaterial = '<?= $copyMaterial ?>';
+			var books = <?= json_encode($books); ?>;
 		</script>
 		<script src="js/magic.js"></script>
 		<?php if ($analytics) echo $analytics; ?>
@@ -123,6 +136,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<li><a href="#overview">Overview</a></li>
 				<li><a href="#spells">Spells</a></li>
 				<li><a href="#wands">Wands</a></li>
+				<li id="booksTab"><a href="#books">Books</a></li>
 			</ul>
 			<div id="overview">
 			  <div class="scrollingTab">
@@ -211,7 +225,8 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<ol id="spellList">
 				<?php 
 					foreach ($spells as $key => $spell) {
-						echo '<li class="ui-widget-content" id="spell-' . $key . '">' . printMaterial($spell['icon'], true) . '<span class="spellTitle">' . $spell['name'] . '</span></li>';
+						$icon = isset($spell['icon']) ? printMaterial($spell['icon'], true) : '';
+						echo '<li class="ui-widget-content" id="spell-' . $key . '">' . $icon . '<span class="spellTitle">' . $spell['name'] . '</span></li>';
 					}
 				?>
 				</ol>
@@ -227,7 +242,15 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<ol id="wandList">
 				<?php 
 					foreach ($wands as $key => $wand) {
-						echo '<li class="ui-widget-content" id="wand-' . $key . '">' .'<span class="wandTitle">' . $wand['name'] . '</span></li>';
+						$extraStyle = '';
+						if (isset($wand['effect_color'])) {
+							$effectColor = $wand['effect_color'];
+							if ($effectColor == 'FFFFFF') {
+								$effectColor = 'DDDDDD';
+							}
+							$extraStyle = 'font-weight: bold; color: #' . $effectColor;
+						}
+						echo '<li class="ui-widget-content" style="' . $extraStyle . '" id="wand-' . $key . '">' .'<span class="wandTitle">' . $wand['name'] . '</span></li>';
 					}
 				?>
 				</ol>
@@ -235,6 +258,23 @@ function printMaterial($materialKey, $iconOnly = null) {
 			  </div>
 			  <div class="details" id="wandDetails">
 			  	Select a wand for details.
+			  </div>
+			</div>
+			<div id="books">
+			  <div class="scrollingTab">
+				<div class="navigation">
+				<ol id="bookList">
+				<?php 
+					foreach ($books as $key => $book) {
+						if (!isset($book['title'])) continue;
+						echo '<li class="ui-widget-content" id="book-' . $key . '">' .'<span class="bookTitle">' . $book['title'] . '</span></li>';
+					}
+				?>
+				</ol>
+			  </div>
+			  </div>
+			  <div class="details" id="bookDetails">
+			  	Select a book to read.
 			  </div>
 			</div>
 		</div>

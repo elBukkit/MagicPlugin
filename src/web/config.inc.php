@@ -2,7 +2,10 @@
 
 // Magic configuration file path
 // You can set up a symlink for this, or handle it however you like
-$magicRootFolder = dirname(__FILE__) . '/Magic';
+$magicRootFolder = dirname(__FILE__) . '/../main/resources/';
+
+// Configure InfoBook integration (external plugin)
+$infoBookRootConfig = dirname(__FILE__) . '/../main/resources/examples/infobook.yml';
 
 // Page title
 $title = "elMakers Magic Development Site";

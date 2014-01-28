@@ -103,6 +103,15 @@
 	background-color: #228888;"
 }
 
+.bookTitleBanner
+{
+	width: 600px;
+	padding: 5px;
+	font-size: 1.2em;
+	color: white;
+	background-color: #888822;"
+}
+
 .spellDescription
 {
 	color: #222222;
@@ -111,6 +120,13 @@
 }
 
 .wandDescription
+{
+	color: #222222;
+	font-style: italic;
+	margin-bottom: 2px;
+}
+
+.bookDescription
 {
 	color: #222222;
 	font-style: italic;
@@ -146,6 +162,16 @@
 }
 
 .wandContainer
+{
+	position:absolute;
+	top: 40px;
+	bottom: 20px;
+	left: 0px;
+	right: 0px;
+	overflow: auto;
+}
+
+.bookContainer
 {
 	position:absolute;
 	top: 40px;

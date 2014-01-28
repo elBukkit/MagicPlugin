@@ -6,6 +6,8 @@
 
 ## For 3.0.0
 
+ - Column building spells
+ - "map" brush type (!)
  - Paint is broken with/clone and/or replicate?
  - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
@@ -51,7 +53,6 @@ NEW SPELLS:
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
- - Column and Disc building spells
  - Biome modification (mega-frost). Chunk regeneration would be awesome.
 
 WAND PROGRESSION:
@@ -65,7 +66,6 @@ OTHER STUFF:
  - Apply potion effects while holding wand Could replace haste with this.
  - Add fall protection to bounce spell (generalize it)
  - Add option to open chest on right-click (for wand inventory)
- - Add count parameter to projectile spell, make wither shoot a few
  - Make volley multi-sample?
  - Alter names sheep "jeb_", - others "Dinnerbone" ?
  - Organize inventory by spell usage (favorites page)
