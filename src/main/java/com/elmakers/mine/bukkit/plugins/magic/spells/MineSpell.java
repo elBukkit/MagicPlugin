@@ -17,9 +17,9 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MineSpell extends BlockSpell
 {
-	private static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 74, 21 ,129,153";
-	private static final String		DEFAULT_MINED		= "14,15,263,264,331,331,351,388,406";
-	private static final String		DEFAULT_DATA		= "0 ,0 ,0  ,0  ,0  ,0  ,4  ,0  ,1";
+	private static final String		DEFAULT_MINEABLE	= "14,15,16, 56, 73, 21 ,129,153";
+	private static final String		DEFAULT_MINED		= "14,15,263,264,331,351,388,406";
+	private static final String		DEFAULT_DATA		= "0 ,0 ,0  ,0  ,0  ,0  ,4  ,0  ,0";
 	private final static int DEFAULT_MAX_RECURSION = 16;
 
 	@SuppressWarnings("deprecation")
