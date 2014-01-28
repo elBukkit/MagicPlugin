@@ -1060,6 +1060,15 @@ public class MagicController implements Listener
 
 	public boolean hasPermission(Player player, String pNode, boolean defaultValue)
 	{
+		// Seems like the GM should handle this, but no?
+		if (defaultValue && pNode.contains(".")) {
+			String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";
+			boolean isParentSet = player.isPermissionSet(parentNode);
+			if (isParentSet) {
+				defaultValue = player.hasPermission(parentNode);
+			}
+		}
+		
 		boolean isSet = player.isPermissionSet(pNode);
 		return isSet ? player.hasPermission(pNode) : defaultValue;
 	}
