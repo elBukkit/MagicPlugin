@@ -2,8 +2,6 @@
 
 ## For 2.9.0
 
- - I broke my build queue using cancel/undo? Command-line??
-
  - Configurable effects system
 
 ## For 3.0.0

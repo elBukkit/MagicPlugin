@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,6 +11,7 @@ import com.elmakers.mine.bukkit.blocks.FillBatch;
 import com.elmakers.mine.bukkit.blocks.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.effects.EffectUtils;
 import com.elmakers.mine.bukkit.effects.ParticleType;
+import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -80,6 +82,14 @@ public class FillSpell extends BrushSpell
 			mage.registerForUndo(action.getBlocks());
 			controller.updateBlock(targetBlock);
 			castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
+
+			SpellEffect effect = getEffect("cast");
+			// Hacked until config-driven.
+			effect.particleType = null;
+			effect.effect = Effect.STEP_SOUND;
+			effect.data = buildWith.getMaterial().getId();
+			effect.startTrailEffect(mage, getEyeLocation(), targetBlock.getLocation());
+			
 			return SpellResult.SUCCESS;
 		}
 		else if (singleBlock)
@@ -96,6 +106,14 @@ public class FillSpell extends BrushSpell
 
 			castMessage("Painting with " + material.name().toLowerCase());
 			mage.registerForUndo(filledBlocks);
+
+			SpellEffect effect = getEffect("cast");
+			// Hacked until config-driven.
+			effect.particleType = null;
+			effect.effect = Effect.STEP_SOUND;
+			effect.data = buildWith.getMaterial().getId();
+			effect.startTrailEffect(mage, getEyeLocation(), targetBlock.getLocation());
+			
 			return SpellResult.SUCCESS;
 		}
 
@@ -123,6 +141,14 @@ public class FillSpell extends BrushSpell
 
 			mage.addPendingBlockBatch(batch);
 			
+			SpellEffect effect = getEffect("cast");
+			// Hacked until config-driven.
+			effect.particleType = null;
+			effect.effect = Effect.STEP_SOUND;
+			effect.data = buildWith.getMaterial().getId();
+			effect.startTrailEffect(mage, getEyeLocation(), this.targetBlock.getLocation());
+			effect.startTrailEffect(mage, getEyeLocation(), targetBlock.getLocation());
+			
 			deactivate();
 			return SpellResult.SUCCESS;
 		}
@@ -135,6 +161,12 @@ public class FillSpell extends BrushSpell
 			activate();
 			buildWith.setTarget(targetBlock.getLocation());
 			castMessage("Cast again to fill with " + material.name().toLowerCase());
+						
+			SpellEffect effect = getEffect("target");
+			// Hacked until config-driven.
+			effect.particleType = ParticleType.WATER_DRIPPING;
+			effect.startTrailEffect(mage, getEyeLocation(), effectLocation);
+			
 			return SpellResult.SUCCESS;
 		}
 	}
@@ -145,7 +177,7 @@ public class FillSpell extends BrushSpell
 		if (targetBlock != null)
 		{
 			sendMessage("Cancelled fill");
-			targetBlock = null;
+			deactivate();
 			return true;
 		}
 		

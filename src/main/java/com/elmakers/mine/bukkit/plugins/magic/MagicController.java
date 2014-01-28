@@ -325,12 +325,6 @@ public class MagicController implements Listener
 	 * Random utility functions
 	 */
 
-	public boolean cancel(Player player)
-	{
-		Mage mage = getMage(player);
-		return mage.cancel();
-	}
-
 	public String getMessagePrefix()
 	{
 		return messagePrefix;

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,6 +23,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockAction;
 import com.elmakers.mine.bukkit.blocks.MaterialList;
+import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -775,6 +777,32 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return aimVector;
 	}
 
+	protected Location getLocation()
+	{
+		Player player = getPlayer();
+		if (player != null)
+		{
+			return player.getLocation();
+		}
+		
+		// TODO: Configurable locations
+		return Bukkit.getWorlds().get(0).getSpawnLocation();
+	}
+
+	protected Location getEyeLocation()
+	{
+		Player player = getPlayer();
+		if (player != null)
+		{
+			return player.getEyeLocation();
+		}
+		
+		// TODO: Configurable locations
+		Location location = getLocation();
+		location.setY(location.getY() + 1.5);
+		return location;
+	}
+	
 	/**
 	 * Get the (simplified) player pitch.
 	 * 
@@ -1257,6 +1285,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public Mage getMage() {
 		return mage;
+	}
+	
+	// Effects
+	
+	protected SpellEffect getEffect(String effectName) {
+		// TODO: config-driven
+		SpellEffect effect = new SpellEffect();
+		return effect;
 	}
 	
 	public void load(ConfigurationNode node) {
