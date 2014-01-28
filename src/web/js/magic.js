@@ -5,6 +5,8 @@ var maxRegeneration = 20;
 	
 function getMaterial(materialKey, iconOnly)
 {
+	if (materialKey == null || materialKey.length == 0) return "";
+	
 	iconOnly = (typeof iconOnly === 'undefined') ? false : iconOnly;
 	var materialName = materialKey.replace(/_/g, ' ');
 	if (materialKey == 'copy') {
@@ -15,9 +17,17 @@ function getMaterial(materialKey, iconOnly)
 		materialKey = eraseMaterial;
 		materialName = 'Erase';
 		iconOnly = false;
+	} else if (materialKey == 'replicate') {
+		materialKey = replicateMaterial;
+		materialName = 'Replicate';
+		iconOnly = false;
+	} else if (materialKey == 'clone') {
+		materialKey = cloneMaterial;
+		materialName = 'Clone';
+		iconOnly = false;
 	}
 	var imagePath = 'image/material';
-	var materialIcon = materialKey.replace(/_/g, '') + '_icon32.png';
+	var materialIcon = materialKey.replace(/[_:]/g, '') + '_icon32.png';
 	var enclosingSpan = $('<span/>');
 	var icon = $('<span title="' + materialName + '" class="materal_icon" style="background-image: url(' + imagePath + '/' + materialIcon + ')">&nbsp;</span>');
 	enclosingSpan.append(icon);

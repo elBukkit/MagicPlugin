@@ -75,6 +75,8 @@ $rightClickCycles = isset($general['right_click_cycles']) ? $general['right_clic
 
 $eraseMaterial = isset($general['erase_item']) ? $general['erase_item'] : 'sulphur';
 $copyMaterial = isset($general['copy_item']) ? $general['copy_item'] : 'sugar';
+$replicateMaterial = isset($general['replicate_item']) ? $general['replicate_item'] : 'nether_stalk';
+$cloneMaterial = isset($general['clone_item']) ? $general['clone_item'] : 'pumpkin_seeds';
 
 $books = array();
 if (file_exists($infoBookRootConfig)) {
@@ -98,7 +100,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 	$materialName = underscoreToReadable($materialKey);
 	$imagePath = 'image/material';
 	$imageDir = dirname(__FILE__) . '/' . $imagePath;
-	$materialIcon = str_replace('_', '', $materialKey) . '_icon32.png';
+	$materialIcon = str_replace('_', '', str_replace(':', '', $materialKey)) . '_icon32.png';
 	$materialFilename = $imageDir . '/' . $materialIcon;
 	if (file_exists($materialFilename)) {
 		return $icon = '<span title="' . $materialName . '" class="materal_icon" style="background-image: url(' . $imagePath . '/' . $materialIcon . ')">&nbsp;</span>';
@@ -124,6 +126,8 @@ function printMaterial($materialKey, $iconOnly = null) {
 			var wands = <?= json_encode($wands); ?>;
 			var eraseMaterial = '<?= $eraseMaterial ?>';
 			var copyMaterial = '<?= $copyMaterial ?>';
+			var cloneMaterial = '<?= $cloneMaterial ?>';
+			var replicateMaterial = '<?= $replicateMaterial ?>';
 			var books = <?= json_encode($books); ?>;
 		</script>
 		<script src="js/magic.js"></script>
