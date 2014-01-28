@@ -37,9 +37,10 @@ public class FrostSpell extends Spell
 
 	public class FrostAction extends SimpleBlockAction
 	{
+		@SuppressWarnings("deprecation")
 		public SpellResult perform(Block block)
 		{
-			if (block.getType() == Material.AIR || block.getType() == Material.SNOW)
+			if (isTransparent(block.getType()))
 			{
 				return SpellResult.NO_TARGET;
 			}
@@ -65,7 +66,13 @@ public class FrostSpell extends Spell
 				block = block.getRelative(BlockFace.UP);
 			}
 			super.perform(block);
-			block.setType(material);
+			if (block.getType() == Material.SNOW && material == Material.SNOW) {
+				if (block.getData() < 7) {
+					block.setData((byte)(block.getData() + 1));
+				}
+			} else {
+				block.setType(material);
+			}
 			return SpellResult.SUCCESS;
 		}
 	}

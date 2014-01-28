@@ -17,6 +17,7 @@
  - Fix a glitch involving dropping spells out of wands.
  - The phase spell will return you from The End, should work better in general.
  - Replace reload command with save/load
+ - Some improvements to the frost spell.
  
 ## 2.8.9.1
 

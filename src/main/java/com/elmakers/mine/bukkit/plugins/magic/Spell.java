@@ -1215,9 +1215,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 					Block block = getPlayer().getWorld().getBlockAt(x, y, z);
 					int depth = 0;
 
-					if (block.getType() == Material.AIR)
+					if (targetThroughMaterials.contains(block.getType()))
 					{
-						while (depth < verticalSearchDistance && block.getType() == Material.AIR)
+						while (depth < verticalSearchDistance && targetThroughMaterials.contains(block.getType()))
 						{
 							depth++;
 							block = block.getRelative(BlockFace.DOWN);
@@ -1225,22 +1225,26 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 					}
 					else
 					{
-						while (depth < verticalSearchDistance && block.getType() != Material.AIR)
+						while (depth < verticalSearchDistance && !targetThroughMaterials.contains(block.getType()))
 						{
 							depth++;
 							block = block.getRelative(BlockFace.UP);
 						}
 						block = block.getRelative(BlockFace.DOWN);
 					}
-
 					Block coveringBlock = block.getRelative(BlockFace.UP);
-					if (block.getType() != Material.AIR && coveringBlock.getType() == Material.AIR)
+					if (!targetThroughMaterials.contains(block.getType()) && targetThroughMaterials.contains(coveringBlock.getType()))
 					{
 						action.perform(block);
 					}  
 				} 
 			}
 		}
+	}
+	
+	protected boolean isTransparent(Material material)
+	{
+		return targetThroughMaterials.contains(material);
 	}
 	
 	public void onActivate() {

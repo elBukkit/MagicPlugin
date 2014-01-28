@@ -9,8 +9,6 @@
  - Paint is broken with/clone and/or replicate?
  - Fix dynmap spell markers
 
- - Fix mine spell (maybe just make it more flexible?)
-
 ## For 3.0.0
 
  - Add configurable persist block limit for undo queue
@@ -32,6 +30,7 @@
  
  - Make spells usable without a player, clean up strong Player references
  - Add location, direction, target parameters to spell
+ - Make the mine spell more flexible
 
 NEAR-FUTURE STUFF:
 
