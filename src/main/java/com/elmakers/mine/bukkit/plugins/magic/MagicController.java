@@ -2000,11 +2000,6 @@ public class MagicController implements Listener
 				spellSet = markers.createMarkerSet("Spells", "Spell Casts", null, false);
 			}
 			final String markerId = "Spell-" + mage.getName();
-			PolyLineMarker existing = spellSet.findPolyLineMarker(markerId);
-			if (existing != null) {
-				// This never seems to fire?
-				existing.deleteMarker();
-			}
 			
 			int range = 32;
 			final Location location = mage.getLocation();
@@ -2022,15 +2017,23 @@ public class MagicController implements Listener
 			}
 			Color color = mage.getEffectColor();
 			color = color == null ? Color.PURPLE : color;
-			double[] x = {location.getX(), target.getX()};
-			double[] y = {location.getY(), target.getY()};
-			double[] z = {location.getZ(), target.getZ()};
-			
-			final MarkerSet markerSet = spellSet;
 			final String worldName = location.getWorld().getName();
-			final PolyLineMarker marker = spellSet.createPolyLineMarker(markerId, spell.getName(), false, worldName, x, y, z, false);
+						
+			PolyLineMarker marker = spellSet.findPolyLineMarker(markerId);
+			if (marker != null) {
+				marker.setCornerLocation(0, location.getX(), location.getY(), location.getZ());
+				marker.setCornerLocation(1, target.getX(), target.getY(), target.getZ());
+				marker.setLabel(spell.getName());
+			} else {
+				double[] x = {location.getX(), target.getX()};
+				double[] y = {location.getY(), target.getY()};
+				double[] z = {location.getZ(), target.getZ()};
+				
+				marker = spellSet.createPolyLineMarker(markerId, spell.getName(), false, worldName, x, y, z, false);			
+			}
 			marker.setLineStyle((int)(mage.getDamageMultiplier() * 2), 0.8, color.asRGB());
 			
+			/*
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				public void run() {
 					marker.deleteMarker();
@@ -2041,6 +2044,7 @@ public class MagicController implements Listener
 					markerSet.createPolyLineMarker(markerId, "(None)", false, location.getWorld().getName(), x, y, z, false);
 				}
 			}, 20 * 5);
+			*/
 		}
 	}
 
