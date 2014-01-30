@@ -973,6 +973,7 @@ lava:
     category: firebending
     class: IterateSpell
     parameters:
+        transparent: transparent_to_construction
         allow_max_range: true
         range: 64
         size: 16
@@ -986,6 +987,7 @@ stream:
     category: waterbending
     class: IterateSpell
     parameters:
+        transparent: transparent_to_construction
         allow_max_range: true
         range: 64
         size: 16
@@ -999,6 +1001,7 @@ earth:
     category: earthbending
     class: IterateSpell
     parameters:
+        transparent: transparent_to_construction
         allow_max_range: true
         range: 64
         size: 16
@@ -1011,6 +1014,7 @@ superiterate:
     category: engineering
     class: IterateSpell
     parameters:
+        transparent: transparent_to_construction
         allow_max_range: true
         range: 64
         size: 32
@@ -1024,6 +1028,7 @@ iterate:
     category: engineering
     class: IterateSpell
     parameters:
+        transparent: transparent_to_construction
         allow_max_range: true
         range: 64
         size: 32
