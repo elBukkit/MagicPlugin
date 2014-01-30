@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.blocks.MaterialList;
 import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 

@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.blocks.SimpleBlockAction;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.Target;
+import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class LightningSpell extends Spell

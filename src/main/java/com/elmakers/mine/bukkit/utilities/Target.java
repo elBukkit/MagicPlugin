@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.utilities;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
