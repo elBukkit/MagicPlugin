@@ -33,7 +33,9 @@ public class PhaseSpell extends Spell
 			World targetWorld = Bukkit.getWorld(worldName);
 			if (targetWorld != null) {
 				// No scaling here?
-				targetLocation = new Location(targetWorld, playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+				// Just send them to spawn... this is kind of to fix players finding the real spawn
+				// on my own server, but I'm not just sure how best to handle this anyway.
+				targetLocation = targetWorld.getSpawnLocation();
 			}
 		} else if (worldName.contains("_nether")) {
 			worldName = worldName.replace("_nether", "");
