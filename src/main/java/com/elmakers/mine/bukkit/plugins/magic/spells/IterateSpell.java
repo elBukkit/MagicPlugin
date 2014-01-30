@@ -22,7 +22,10 @@ public class IterateSpell extends BrushSpell
 	{
 		int timeToLive = parameters.getInt("undo", 0);
 		boolean incrementData = parameters.getBoolean("increment_data", false);
+		int radius = parameters.getInt("radius", 0);
+		radius = (int)(radius * mage.getRadiusMultiplier());
 		int size = parameters.getInt("size", DEFAULT_SIZE);
+		boolean reverse = parameters.getBoolean("reverse", false);
 		size = (int)(mage.getConstructionMultiplier() * (float)size);
 		
 		Block target = getTargetBlock();
@@ -42,45 +45,105 @@ public class IterateSpell extends BrushSpell
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
 		Vector playerLoc = new Vector(getPlayer().getLocation().getX(), getPlayer().getLocation().getY() + 1, getPlayer().getLocation().getZ());
 
-		// Create aim vector - this should probably replace Spell.getAimVector, which seems broken!
-		Vector aim = targetLoc;
-		aim.subtract(playerLoc);
-		aim.normalize();
-		targetLoc = playerLoc;
+		Vector aim = null;
+		if (reverse) {
+			aim = playerLoc;
+			aim.subtract(targetLoc);
+			aim.normalize();
+		} else {
+			aim = targetLoc;
+			aim.subtract(playerLoc);
+			aim.normalize();
+			
+			targetLoc = playerLoc;
 
-		// Move out a bit for safety!
-		targetLoc.add(aim);
-		targetLoc.add(aim);
+			// Move out a bit for safety!
+			targetLoc.add(aim);
+			targetLoc.add(aim);
+		}
 
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(target.getLocation());
 		buildWith.update(target.getLocation());
 		BlockList iteratedBlocks = new BlockList();
-		for (int i = 0; i < iterateBlocks; i++)
-		{
-			Block currentTarget = target.getWorld().getBlockAt(targetLoc.getBlockX(), targetLoc.getBlockY(), targetLoc.getBlockZ());
-			if (currentTarget.getType() == Material.AIR && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
-			{
-				iteratedBlocks.add(currentTarget);
-
-				buildWith.update(currentTarget.getLocation());
-
-				if (incrementData) {
-					byte data = buildWith.getData();
-					data = i > 15 ? 15 : (byte)i;
-					buildWith.setData(data);
+		for (int dr = 0; dr <= radius; dr++) {
+			int spokes = 1;
+			// TODO: Handle radius > 1 algorithmically....
+			if (dr > 0) {
+				if (radius == 2) {
+					spokes = dr == 1 ? 8 : 12;
+				} else {
+					spokes = 4;
 				}
-				
-				buildWith.modify(currentTarget);
-				
-				controller.updateBlock(currentTarget);
-				
-				Location effectLocation = currentTarget.getLocation();	
-				
-				Material material = buildWith.getMaterial();
-				effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
 			}
-			targetLoc.add(aim);
+			for (int dspoke = 0; dspoke < spokes; dspoke++) {
+				// TODO: Handle radius > 1
+				Vector currentLoc = targetLoc.clone();
+				if (dr > 0) {
+					// Arbitrary axis rotation would be better, but... math is hard! :P
+					// TODO: Arbitrary axis rotation.
+					double q = (double)dspoke * Math.PI * 2 / spokes;
+					if (aim.getY() > 0.7) {
+						Vector axis = new Vector(1, 0 ,0);
+						Vector perp = aim.clone().crossProduct(axis).multiply(dr);
+
+						double x = perp.getZ() * Math.sin(q) - perp.getX() * Math.cos(q);
+						double z = perp.getZ() * Math.cos(q) - perp.getX() * Math.sin(q);
+						perp.setX(x);
+						perp.setZ(z);
+						
+						currentLoc.add(perp);
+					} else if (aim.getX() > 0.7) {
+						Vector axis = new Vector(0, 1 ,0);
+						Vector perp = aim.clone().crossProduct(axis).multiply(dr);
+						
+						double y = perp.getZ() * Math.sin(q) - perp.getY() * Math.cos(q);
+						double z = perp.getZ() * Math.cos(q) - perp.getY() * Math.sin(q);
+						perp.setY(y);
+						perp.setZ(z);
+
+						currentLoc.add(perp);
+					} else {
+						Vector axis = new Vector(0, 1 ,0);
+						Vector perp = aim.clone().crossProduct(axis).multiply(dr);
+						
+						double y = perp.getX() * Math.sin(q) - perp.getY() * Math.cos(q);
+						double x = perp.getX() * Math.cos(q) - perp.getY() * Math.sin(q);
+						perp.setY(y);
+						perp.setX(x);
+
+						currentLoc.add(perp);
+					}
+				}
+				for (int i = 0; i < iterateBlocks; i++)
+				{
+					Block currentTarget = target.getWorld().getBlockAt(currentLoc.getBlockX(), currentLoc.getBlockY(), currentLoc.getBlockZ());
+					if (currentTarget.getType() == Material.AIR && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
+					{
+						iteratedBlocks.add(currentTarget);
+		
+						buildWith.update(currentTarget.getLocation());
+		
+						if (incrementData) {
+							byte data = buildWith.getData();
+							data = i > 15 ? 15 : (byte)i;
+							buildWith.setData(data);
+						}
+						
+						buildWith.modify(currentTarget);
+						
+						controller.updateBlock(currentTarget);
+						
+						Location effectLocation = currentTarget.getLocation();	
+						
+						if (dr == 0) {
+							Material material = buildWith.getMaterial();
+							effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
+						}	
+					}					
+					currentLoc.add(aim);
+				}
+			}
 		}
 
 		if (iteratedBlocks.size() > 0)

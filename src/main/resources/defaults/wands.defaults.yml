@@ -609,6 +609,7 @@ engineer:
         - stalactite
         - alter
         - shell
+        - iterate
         - box
         - dome
         - disc
@@ -620,6 +621,7 @@ engineer:
         - superpyramid
         - superdome
         - superdisc
+        - superiterate
         - levitate
         - paint
     materials:
@@ -751,6 +753,7 @@ elder:
         - superconvert
         - supershell
         - superpyramid
+        - superiterate
         - push
         - pull
         - force
@@ -1362,6 +1365,7 @@ wolf:
         - phase
         - portal
         - disintegrate
+        - superiterate
     materials:
         - water
         - lava

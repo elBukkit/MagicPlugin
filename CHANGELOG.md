@@ -21,6 +21,8 @@
  - Reset player walk/fly speed each wand tick (to override Essentials :P)
  - Fix wands losing their effect colors.
  - Dynmap will now show spell casts (enabled by default)
+ - Allow wand randomization for levels past 40 - e.g. "80 levels" will add level-40 enchants twice.
+ - Added "Column" (superiterate) spell.
  
 ## 2.8.9.1
 

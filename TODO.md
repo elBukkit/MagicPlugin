@@ -14,7 +14,6 @@ Caused by: java.lang.NullPointerException
 
 ## For 3.0.0
 
- - Column building spells
  - "map" brush type (!)
  - Paint is broken with/clone and/or replicate?
  - Config-driven WandLevel limits.

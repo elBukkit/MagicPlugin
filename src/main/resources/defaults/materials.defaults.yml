@@ -38,6 +38,7 @@ transparent:
 - thin_glass
 - stained_glass
 - stained_glass_pane
+- double_plant
 transparent_to_construction:
 - air
 - long_grass
@@ -46,6 +47,7 @@ transparent_to_construction:
 - red_rose
 - brown_mushroom
 - red_mushroom
+- double_plant
 # What materials are not targeted by construction spells
 ignored:
 - air

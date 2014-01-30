@@ -372,6 +372,9 @@ spells:
     iterate:
         name: Iterate
         description: Construct a line of blocks
+    superiterate:
+        name: Column
+        description: Construct a large column of blocks
     stream:
         name: Stream
         description: Spray a stream of water

@@ -565,6 +565,7 @@ bridge:
     category: engineering
     class: BridgeSpell
     parameters:
+        transparent: transparent_to_construction
     costs:
         xp: 5
 grenade:
@@ -1005,6 +1006,19 @@ earth:
         undo: 2000
     costs:
         xp: 20
+superiterate:
+    icon: ink_sack:4
+    category: engineering
+    class: IterateSpell
+    parameters:
+        allow_max_range: true
+        range: 64
+        size: 32
+        radius: 1
+        reverse: true
+        increment_data: false
+    costs:
+        xp: 200
 iterate:
     icon: ink_sack:2
     category: engineering
@@ -1180,3 +1194,13 @@ mail:
         cooldown: 60000
     costs:
         xp: 100
+tunnel:
+    icon: brown_mushroom
+    category: earthbending
+    class: TunnelSpell
+    parameters:
+        allow_max_range: false
+        range: 32
+    costs:
+        xp: 30
+        
