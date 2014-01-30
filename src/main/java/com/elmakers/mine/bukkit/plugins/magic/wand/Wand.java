@@ -870,6 +870,7 @@ public class Wand implements CostReducer {
 	
 	private static String getMaterialKey(Material material) {
 		String materialKey = null;
+		if (material == null) return null;
 
 		if (material == EraseMaterial) {
 			materialKey = "erase";

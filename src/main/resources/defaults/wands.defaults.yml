@@ -304,7 +304,6 @@ random:
       box: 0,5,40,50
       shell: 0,5,40,50
       convert: 0,5,40,50
-      pyramid: 0,5,40,50
       dome: 0,5,40,50
       supershell: 0,0,1,10
       superblast: 0,0,1,5
@@ -341,8 +340,6 @@ random:
       gravel: 20,30,40,60
       glass: 10,20,30,50
       glowstone: 5,10,20,40
-      quartz_block: 0,0,25,35
-      lapis_block: 0,0,25,35
       stained_clay: 1,5,15,45
       stained_glass: 0,5,15,45
       stained_glass_pane: 0,5,15,45
@@ -352,11 +349,11 @@ random:
       log: 5,10,20,40
       vine: 0,5,10,30
       mycel: 0,5,10,30
-      emerald_block: 0,0,5,20
+      quartz_block: 0,0,25,35
+      lapis_block: 0,0,25,35
       leaves: 0,5,10,30
       ice: 10,20,25,30
       packed_ice: 10,20,25,30
-      lapis_block: 0,0,5,20
       diamond_block: 0,0,5,20
       gold_block: 0,0,5,20
       emerald_block: 0,0,5,20
@@ -1236,6 +1233,8 @@ green:
         - stained_glass:13
         - wool:5
         - wool:13
+        - huge_mushroom_1
+        - huge_mushroom_2
 admin:
     modifiable: true
     cost_reduction: 2

@@ -1,12 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic.wand;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Material;
 
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
@@ -192,13 +191,7 @@ public class WandLevel {
 			retries = 30;
 			for (int i = 0; i < materialCount; i++) {
 				String materialName = RandomUtils.weightedRandom(materialProbability);
-				byte data = 0;
-				String[] pieces = materialName.split(":");
-				if (pieces.length > 1) {
-					data = Byte.parseByte(pieces[1]);
-				}
-				Material material = ConfigurationNode.toMaterial(materialName);
-				if (!wand.addMaterial(material, data, false)) {
+				if (!wand.addMaterial(materialName, false, false)) {
 					// Try again up to a certain number if we picked one the wand already had.
 					if (retries-- > 0) i--;
 				}
