@@ -34,7 +34,7 @@ public class GrenadeSpell extends Spell
 		if (grenade == null) {
 			return SpellResult.FAILURE;
 		}
-		Vector aim = getAimVector();
+		Vector aim = mage.getLocation().getDirection();
 		grenade.setVelocity(aim);
 		grenade.setYield(size);
 		grenade.setFuseTicks(fuse);

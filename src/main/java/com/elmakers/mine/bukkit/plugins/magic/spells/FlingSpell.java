@@ -56,7 +56,7 @@ public class FlingSpell extends Spell
 		double heightModifier = maxSpeedAtElevation > 0 ? ((double)height / maxSpeedAtElevation) : 1;
 		double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * heightModifier));
 
-		Vector velocity = getAimVector();
+		Vector velocity = mage.getLocation().getDirection();
 		if (yValue != null) {
 			velocity.setY(yValue);
 		} else if (yOffset > 0) {

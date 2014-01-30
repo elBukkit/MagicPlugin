@@ -68,7 +68,7 @@ public class ForceSpell extends Spell
 	protected void forceEntity(Entity target, double multiplier, int magnitude)
 	{
 		magnitude = (int)((double)magnitude * multiplier);
-		Vector forceVector = getAimVector();
+		Vector forceVector = mage.getLocation().getDirection();
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
 		target.setVelocity(forceVector);
