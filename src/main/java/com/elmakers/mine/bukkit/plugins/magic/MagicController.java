@@ -1852,7 +1852,9 @@ public class MagicController implements Listener
 			event.getEnchantsToAdd().clear();
 			int level = event.getExpLevelCost();
 			Wand wand = new Wand(this, event.getItem());
-			WandLevel.randomizeWand(wand, true, level);
+			if (!WandLevel.randomizeWand(wand, true, level)) {
+				event.getEnchanter().sendMessage("No more spells can be added to that wand!");
+			}
 		}
 	}
 	

@@ -1068,7 +1068,7 @@ public class Wand implements CostReducer {
 		}
 		if (xpRegeneration > 0) {
 			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + Messages.get("wand.mana_amount").replace("$amount", ((Integer)xpMax).toString()));
-			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(Messages.get("wand.mana_regeneration"), xpRegeneration / WandLevel.maxXpRegeneration));
+			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(Messages.get("wand.mana_regeneration"), (float)xpRegeneration / (float)WandLevel.maxXpRegeneration));
 		}
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cost_reduction"), costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cooldown_reduction"), cooldownReduction));
@@ -1305,12 +1305,20 @@ public class Wand implements CostReducer {
 		return isWand(activeItem);
 	}
 	
-	protected void randomize(int level, boolean additive) {
+	protected void randomize(int totalLevels, boolean additive) {
 		if (!wandTemplates.containsKey("random")) return;	
 		if (!additive) {
 			wandName = Messages.get("wands.random.name", wandName);
 		}
-		WandLevel.randomizeWand(this, additive, level);
+		
+		int maxLevel = WandLevel.getMaxLevel();
+		int addLevels = Math.min(totalLevels, maxLevel);
+		while (addLevels > 0) {
+			WandLevel.randomizeWand(this, additive, addLevels);
+			totalLevels -= maxLevel;
+			addLevels = Math.min(totalLevels, maxLevel);
+			additive = true;
+		}
 	}
 	
 	public static Wand createWand(MagicController controller, String templateName) {

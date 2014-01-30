@@ -143,21 +143,33 @@ public class WandLevel {
 		RandomUtils.populateFloatProbabilityMap(powerProbability, template.getNode("power"), levelIndex, nextLevelIndex, distance);		
 	}
 	
-	private void randomizeWand(Wand wand, boolean additive) {
+	private boolean randomizeWand(Wand wand, boolean additive) {
 		// Add random spells to the wand
+		boolean addedSpells = false;
+		Set<String> wandSpells = wand.getSpells();
+		LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();
+		for (WeightedPair<String> spell : spellProbability) {
+			if (!wandSpells.contains(spell.getValue())) {
+				remainingSpells.add(spell);
+			}
+		}
+		
 		Spell firstSpell = null;		
-		Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
-		int retries = 30;
-		for (int i = 0; i < spellCount; i++) {
-			String spellKey = RandomUtils.weightedRandom(spellProbability);
-			
-			if (wand.addSpell(spellKey, false)) {	
-				if (firstSpell == null) {
-					firstSpell = wand.getMaster().getSpell(spellKey);
+		if (remainingSpells.size() > 0) {
+			Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
+			int retries = 10;
+			for (int i = 0; i < spellCount; i++) {
+				String spellKey = RandomUtils.weightedRandom(remainingSpells);
+				
+				if (wand.addSpell(spellKey, false)) {	
+					if (firstSpell == null) {
+						firstSpell = wand.getMaster().getSpell(spellKey);
+					}
+					addedSpells = true;
+				} else {
+					// Try again up to a certain number if we picked one the wand already had.
+					if (retries-- > 0) i--;
 				}
-			} else {
-				// Try again up to a certain number if we picked one the wand already had.
-				if (retries-- > 0) i--;
 			}
 		}
 		
@@ -180,7 +192,15 @@ public class WandLevel {
 		}
 		
 		// Add random materials
-		if (needsMaterials) {
+		boolean addedMaterials = false;
+		Set<String> wandMaterials = wand.getMaterialKeys();
+		LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<WeightedPair<String>>();
+		for (WeightedPair<String> material : materialProbability) {
+			if (!wandMaterials.contains(material.getValue())) {
+				remainingMaterials.add(material);
+			}
+		}
+		if (needsMaterials && remainingMaterials.size() > 0) {
 			int currentMaterialCount = wand.getMaterialKeys().size();
 			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
 			
@@ -188,12 +208,14 @@ public class WandLevel {
 			if (currentMaterialCount == 0) {
 				materialCount = Math.max(1, materialCount);
 			}
-			retries = 30;
+			int retries = 100;
 			for (int i = 0; i < materialCount; i++) {
-				String materialName = RandomUtils.weightedRandom(materialProbability);
+				String materialName = RandomUtils.weightedRandom(remainingMaterials);
 				if (!wand.addMaterial(materialName, false, false)) {
 					// Try again up to a certain number if we picked one the wand already had.
 					if (retries-- > 0) i--;
+				} else {
+					addedMaterials = true;
 				}
 			}
 		}
@@ -315,16 +337,24 @@ public class WandLevel {
 
 		// Set properties. This also updates name and lore.
 		wand.configureProperties(wandProperties);
+		
+		return addedMaterials || addedSpells;
 	}
 	
-	public static void randomizeWand(Wand wand, boolean additive, int level) {
+	public static boolean randomizeWand(Wand wand, boolean additive, int level) {
 		WandLevel wandLevel = getLevel(level);
-		wandLevel.randomizeWand(wand, additive);
+		return wandLevel.randomizeWand(wand, additive);
 	}
 	
 	public static Set<Integer> getLevels() {
 		if (levels == null) return null;
 		
 		return levelMap.keySet();
+	}
+	
+	public static int getMaxLevel() {
+		if (levels == null) return 0;
+		
+		return levels[levels.length - 1];
 	}
 }
