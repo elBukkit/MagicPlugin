@@ -1112,12 +1112,15 @@ public class MagicController implements Listener
 	
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event) {
-		if (maxTNTPerChunk > 0 && event.getEntity().getType() == EntityType.PRIMED_TNT) {
-			Chunk chunk = event.getEntity().getLocation().getChunk();
+		Entity expodingEntity = event.getEntity();
+		if (maxTNTPerChunk > 0 && expodingEntity != null && expodingEntity.getType() == EntityType.PRIMED_TNT) {
+			Chunk chunk = expodingEntity.getLocation().getChunk();
+			if (chunk == null || !chunk.isLoaded()) return;
+			
 			int tntCount = 0;
 			Entity[] entities = chunk.getEntities();
 			for (Entity entity : entities) {
-				if (entity.getType() == EntityType.PRIMED_TNT) {
+				if (entity != null && entity.getType() == EntityType.PRIMED_TNT) {
 					tntCount++;
 				}
 			}

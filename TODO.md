@@ -1,13 +1,5 @@
 # TODO
 
-Caused by: java.lang.NullPointerException
-        at com.elmakers.mine.bukkit.plugins.magic.MagicController.onEntityExplode(MagicController.java:1105) ~[?:?]
-        at sun.reflect.GeneratedMethodAccessor75.invoke(Unknown Source) ~[?:?]
-        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25) ~[?:1.6.0_65]
-        at java.lang.reflect.Method.invoke(Method.java:597) ~[?:1.6.0_65]
-        at org.bukkit.plugin.java.JavaPluginLoader$1.execute(JavaPluginLoader.java:318) ~[cr
-
-
 ## For 2.9.0
 
  - Configurable effects system
