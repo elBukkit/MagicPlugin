@@ -67,10 +67,8 @@ curse:
     parameters:
         target: other
         particle: townaura
-        slow: 100,5  
-        confusion: 100,5
-        weakness: 100,5
-        hunger: 100,5
+        effect_slow: 100,5  
+        effect_confusion: 100,5
 boon:
     icon: double_plant
     category: light
@@ -80,14 +78,10 @@ boon:
     parameters:
         target: any
         particle: reddust
-        speed: 600,5   
-        jump: 600,5
-        regeneration: 600,5     
-        damage_resistance: 600,10
-        fire_resistance: 600,100
-        water_breathing: 600,5
-        night_vision: 600,5
-        saturation: 600,5
+        effect_speed: 600,5   
+        effect_jump: 600,5
+        effect_water_breathing: 600,5
+        effect_night_vision: 600,5
 bounce:
     icon: double_plant:1
     category: light
@@ -97,7 +91,7 @@ bounce:
     parameters:
         target: any
         particle: reddust
-        jump: 600,20
+        effect_jump: 600,20
 shell:
     icon: ender_pearl
     category: earthbending
@@ -347,12 +341,25 @@ icbm:
         projectile: Fireball
     costs:
         xp: 100
+neutron:
+    icon: poisonous_potato
+    category: dark
+    class: ProjectileSpell
+    parameters:
+        projectile: Snowball
+        effect_harm: 10,5
+        effect_heal: 20,6
+        radius: 32  
+    costs:
+        xp: 80
 wither:
     icon: skull_item:1
     category: dark
     class: ProjectileSpell
     parameters:
         projectile: WitherSkull
+        effect_wither: 160,2
+        radius: 8
         count: 3
     costs:
         xp: 60

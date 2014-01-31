@@ -13,6 +13,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.WitherSkull;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -22,7 +23,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ProjectileSpell extends Spell 
 {
-	int defaultSize = 1;
+	private int defaultSize = 1;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -34,9 +35,16 @@ public class ProjectileSpell extends Spell
 
 		int count = parameters.getInt("count", 1);
 		int size = parameters.getInt("size", defaultSize);
+		int radius = parameters.getInt("radius", 0);
 		double damage = parameters.getDouble("damage", 0);
 		float speed = (float)parameters.getDouble("speed", 0.6f);
 		float spread = (float)parameters.getDouble("spread", 12);
+		Collection<PotionEffect> effects = null;
+		
+		if (radius > 0) {
+			effects = getPotionEffects(parameters);
+			radius = (int)(mage.getRadiusMultiplier() * radius);
+		}
 
 		// Modify with wand power
 		count *= mage.getRadiusMultiplier();
@@ -54,7 +62,7 @@ public class ProjectileSpell extends Spell
 		final Class<?> craftArrowClass = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
 		
 		// Track projectiles to remove them after some time.
-		List<Arrow> arrows = new ArrayList<Arrow>();
+		List<Projectile> projectiles = new ArrayList<Projectile>();
 		Class<? extends Projectile> projectileType = null;
 		try {
 			projectileType = (Class<? extends Projectile>)Class.forName("org.bukkit.entity." + projectileClass);
@@ -71,6 +79,7 @@ public class ProjectileSpell extends Spell
 				if (projectile == null) {
 					throw new Exception("A projectile fizzled");
 				}
+				projectiles.add(projectile);
 				projectile.setShooter(getPlayer());
 				if (projectile instanceof WitherSkull) {
 					playerLocation.getWorld().playSound(playerLocation, Sound.WITHER_SHOOT, 1.0f, 1.5f);		
@@ -85,7 +94,6 @@ public class ProjectileSpell extends Spell
 				}
 				if (projectile instanceof Arrow) {
 					Arrow arrow = (Arrow)projectile;
-					arrows.add(arrow);
 					if (useFire) {
 						arrow.setFireTicks(300);
 					}
@@ -121,38 +129,44 @@ public class ProjectileSpell extends Spell
 			}
 		}
 
-		if (tickIncrease > 0 && arrows.size() > 0 && arrowClass != null) {
-			scheduleKillArrows(arrows, tickIncrease, arrowClass, craftArrowClass, 5);
+		if (tickIncrease > 0 && projectiles.size() > 0 && arrowClass != null) {
+			scheduleProjectileCheck(projectiles, tickIncrease, effects, radius, arrowClass, craftArrowClass, 5);
 		}
 		return SpellResult.SUCCESS;
 	}
 	
-	protected void scheduleKillArrows(final Collection<Arrow> arrows, final int tickIncrease, final Class<?> arrowClass, final Class<?> craftArrowClass, final int retries) {
+	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles, final int tickIncrease, 
+			final Collection<PotionEffect> effects, final int radius, final Class<?> arrowClass, final Class<?> craftArrowClass, final int retries) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			public void run() {
-				killArrows(arrows, tickIncrease, arrowClass, craftArrowClass, retries);
+				checkProjectiles(projectiles, tickIncrease, effects, radius, arrowClass, craftArrowClass, retries);
 			}
 		}, 40);
 	}
 	
-	protected void killArrows(final Collection<Arrow> arrows, final int tickIncrease, final Class<?> arrowClass, final Class<?> craftArrowClass, int retries) {
+	protected void checkProjectiles(final Collection<Projectile> projectiles, final int tickIncrease, 
+			final Collection<PotionEffect> effects, final int radius, final Class<?> arrowClass, final Class<?> craftArrowClass, int retries) {
 		try {
 			Field lifeField = arrowClass.getDeclaredField("j");
 			Method getHandleMethod = craftArrowClass.getMethod("getHandle");
-			boolean done = true;
-			for (Arrow arrow : arrows) {
-				if (!arrow.isDead()) {
-					Object handle = getHandleMethod.invoke(arrow);
+			final Collection<Projectile> remaining = new ArrayList<Projectile>();
+			for (Projectile projectile : projectiles) {
+				if (projectile.isDead()) {
+					// Apply potion effects if configured
+					applyPotionEffects(projectile.getLocation(), radius, effects);
+				} else if (projectile instanceof Arrow){
+					Object handle = getHandleMethod.invoke(projectile);
 					lifeField.setAccessible(true);
 					int currentLife = (Integer)lifeField.get(handle);
 					if (currentLife < tickIncrease) {
 						lifeField.set(handle, tickIncrease);
-						done = false;
 					}
+					
+					remaining.add(projectile);
 				}
 			}
-			if (!done && retries > 0) {
-				scheduleKillArrows(arrows, tickIncrease, arrowClass, craftArrowClass, retries - 1);
+			if (remaining.size() > 0 && retries > 0) {
+				scheduleProjectileCheck(remaining, tickIncrease, effects, radius, arrowClass, craftArrowClass, retries - 1);
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();

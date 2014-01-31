@@ -174,6 +174,9 @@ spells:
     icbm:
         name: ICBM
         description: Cast an exploding fireball
+    neutron:
+        name: Neutron Bomb
+        description: Kill all entities in a wide radius
     weather:
         name: Weather
         description: Change the weather

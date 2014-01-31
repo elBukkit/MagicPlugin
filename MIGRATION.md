@@ -24,6 +24,11 @@
  Make sure you run some version of Magic 2.9.X before 3.0, I plan on removing the migration in 3.0. (Only really
  important if you have image maps).
  
+ Detailed notes:
+ 
+ - Potion effects (boon, curse) parameters now prefixed with "effect_"
+ - Arrow, Sniper and ArrowRain spells now use ProjectileSpell
+ 
 
 ## 2.8.9
 

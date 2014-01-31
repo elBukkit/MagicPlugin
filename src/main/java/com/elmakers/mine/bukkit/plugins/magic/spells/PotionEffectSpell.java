@@ -1,12 +1,10 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.effects.EffectRing;
@@ -62,24 +60,7 @@ public class PotionEffectSpell extends Spell
 			effect.start();
 		}
 		
-		List<PotionEffect> effects = new ArrayList<PotionEffect>();
-		PotionEffectType[] effectTypes = PotionEffectType.values();
-		for (PotionEffectType effectType : effectTypes) {
-			// Why is there a null entry in this list? Maybe a 1.7 bug?
-			if (effectType == null) continue;
-			String typeName = effectType.getName().toLowerCase();
-			if (parameters.containsKey(typeName)) {
-				String value = parameters.getString(typeName);
-				String[] pieces = value.split(",");
-				Integer ticks = Integer.parseInt(pieces[0]);
-				Integer power = 1;
-				if (pieces.length > 0) {
-					power = Integer.parseInt(pieces[1]);
-				}
-				PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
-				effects.add(effect);
-			}
-		}
+		Collection<PotionEffect> effects = getPotionEffects(parameters);
 		targetEntity.addPotionEffects(effects);
 		return SpellResult.SUCCESS;
 	}

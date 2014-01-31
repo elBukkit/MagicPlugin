@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockAction;
@@ -1303,5 +1306,54 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void onSave(ConfigurationNode node)
 	{
 
+	}
+	
+	protected static Collection<PotionEffect> getPotionEffects(ConfigurationNode parameters)
+	{		
+		List<PotionEffect> effects = new ArrayList<PotionEffect>();
+		PotionEffectType[] effectTypes = PotionEffectType.values();
+		for (PotionEffectType effectType : effectTypes) {
+			// Why is there a null entry in this list? Maybe a 1.7 bug?
+			if (effectType == null) continue;
+			
+			String parameterName = "effect_" + effectType.getName().toLowerCase();
+			if (parameters.containsKey(parameterName)) {
+				String value = parameters.getString(parameterName);
+				String[] pieces = value.split(",");
+				try {
+					Integer ticks = Integer.parseInt(pieces[0]);
+					Integer power = 1;
+					if (pieces.length > 0) {
+						power = Integer.parseInt(pieces[1]);
+					}
+					PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
+					effects.add(effect);
+				} catch (Exception ex) {
+					Bukkit.getLogger().warning("Error parsing potion effect for " + effectType + ": " + value + ": " + parameters.getKeys());
+				}
+			}
+		}
+		return effects;
+	}
+	
+	protected void applyPotionEffects(Location location, int radius, Collection<PotionEffect> potionEffects) {
+		if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
+		
+		int radiusSquared = radius * 2;
+		List<Entity> entities = location.getWorld().getEntities();
+		for (Entity entity : entities) {
+			if (entity instanceof LivingEntity) {
+				if (entity instanceof Player) {
+					if (((Player)entity).getName().equals(mage.getName())) {
+						continue;
+					}
+				}
+				
+				if (entity.getLocation().distanceSquared(location) < radiusSquared) {
+					LivingEntity living = (LivingEntity)entity;
+					living.addPotionEffects(potionEffects);
+				}
+			}
+		}
 	}
 }
