@@ -1605,11 +1605,19 @@ public class MagicController implements Listener
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		
-		// log.info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType());
+		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType());
 	
-		if (enchantingEnabled && event.getInventory().getType() == InventoryType.ENCHANTING)
+		// Check for wand clicks to prevent grinding them to dust, or whatever.
+		InventoryType inventoryType = event.getInventory().getType();
+		SlotType slotType = event.getSlotType();
+		if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
+			if (Wand.isWand(event.getCursor())) {
+				event.setCancelled(true);
+			}
+		}
+		
+		if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
 		{
-			SlotType slotType = event.getSlotType();
 			if (slotType == SlotType.CRAFTING) {
 				ItemStack cursor = event.getCursor();
 				ItemStack current = event.getCurrentItem();
@@ -1631,9 +1639,8 @@ public class MagicController implements Listener
 				return;
 			}
 		}
-		if (event.getInventory().getType() == InventoryType.ANVIL)
+		if (inventoryType == InventoryType.ANVIL)
 		{
-			SlotType slotType = event.getSlotType();
 			ItemStack cursor = event.getCursor();
 			ItemStack current = event.getCurrentItem();
 			Inventory anvilInventory = event.getInventory();
@@ -1715,7 +1722,7 @@ public class MagicController implements Listener
 		}
 		
 		// Check for wand cycling with active inventory
-		if (event.getInventory().getType() == InventoryType.CRAFTING) {
+		if (inventoryType == InventoryType.CRAFTING) {
 			Player player = (Player)event.getWhoClicked();
 			Mage mage = getMage(player);
 			Wand wand = mage.getActiveWand();

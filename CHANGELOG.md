@@ -24,6 +24,7 @@
  - Allow wand randomization for levels past 40 - e.g. "80 levels" will add level-40 enchants twice.
  - Added "Column" (superiterate) spell.
  - Added "Neutron Bomb" spell, make wither apply wither effects (MIGRATION NOTE)
+ - Prevent destroying wands via crafting.
  
 ## 2.8.9.1
 
