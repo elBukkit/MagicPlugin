@@ -76,7 +76,7 @@ public class DisintegrateSpell extends BlockSpell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
-
+		
 		Block targetBlock = target.getBlock();
 		if (!hasBuildPermission(targetBlock)) 
 		{
@@ -86,6 +86,10 @@ public class DisintegrateSpell extends BlockSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
+
+		BlockList disintigrated = new BlockList();
+		disintigrated.add(targetBlock);
+		
 		if (isUnderwater())
 		{
 			targetBlock.setType(Material.STATIONARY_WATER);
@@ -94,10 +98,7 @@ public class DisintegrateSpell extends BlockSpell
 		{
 			targetBlock.setType(Material.AIR);
 		}
-
 		
-		BlockList disintigrated = new BlockList();
-		disintigrated.add(targetBlock);
 		mage.registerForUndo(disintigrated);
 		castMessage("ZAP!");
 
