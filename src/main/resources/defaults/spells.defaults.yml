@@ -790,6 +790,7 @@ farm:
         allow_max_range: false
         range: 64
         count: 10
+        cooldown: 30000
     costs:
         xp: 50
 breach:
