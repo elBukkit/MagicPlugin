@@ -24,11 +24,13 @@ public class WolfSpell extends Spell
 	{
 		if (target == null)
 		{
-			castMessage("No target");
 			return null;
 		}
 
 		Block targetBlock = target.getBlock();
+		if (targetBlock == null) {
+			return null;
+		}
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
 		if (target.isEntity())
 		{      
