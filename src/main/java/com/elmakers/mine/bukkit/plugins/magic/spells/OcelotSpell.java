@@ -30,6 +30,10 @@ public class OcelotSpell extends Spell
 		}
 
 		Block targetBlock = target.getBlock();
+		if (targetBlock == null)
+		{
+			return null;
+		}
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
 		if (target.isEntity())
 		{      
