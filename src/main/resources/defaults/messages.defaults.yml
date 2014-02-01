@@ -547,3 +547,6 @@ wands:
     decorator:
         name: Decorator
         description: Decorates large areas at a time
+    tunnel:
+        name: Tunnel
+        description: Mine out a tunnel in front of you

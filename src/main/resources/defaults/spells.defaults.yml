@@ -410,7 +410,7 @@ torch:
         allow_day: true
         allow_glowstone: true
     costs:
-        xp: 10
+        xp: 25
 monster:
     icon: pumpkin
     category: dark
@@ -506,8 +506,8 @@ gills:
     parameters:
         target: any
         particle: bubbles
-        water_breathing: 6000,5
-        night_vision: 6000,5
+        effect_water_breathing: 6000,5
+        effect_night_vision: 6000,5
 arrowrain:
     icon: bow
     category: dark
@@ -650,7 +650,7 @@ superblast:
         xp: 100
 convert:
     icon: vine
-    category: engineering
+    category: earthbending
     class: ConstructSpell
     parameters:
         allow_max_range: false
@@ -758,7 +758,7 @@ commit:
         xp: 5
 rewind:
     icon: written_book
-    category: engineering
+    category: master
     class: UndoSpell
     parameters:
         allow_max_range: false
@@ -1208,7 +1208,7 @@ mail:
     costs:
         xp: 100
 tunnel:
-    icon: brown_mushroom
+    icon: iron_pickaxe
     category: earthbending
     class: TunnelSpell
     parameters:

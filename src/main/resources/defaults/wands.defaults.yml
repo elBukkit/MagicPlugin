@@ -323,6 +323,7 @@ random:
       superconvert: 0,0,1,10
       superiterate: 0,0,1,10
       superdome: 0,0,1,10
+      tunnel: 5,10,20,30
       undo: 0,0,1,10
       pillar: 0,5,10,15
       stalactite: 0,5,10,15
@@ -673,6 +674,8 @@ mining:
         - peek
         - mine
         - blast
+        - tunnel
+        - torch
 farming:
     modifiable: true
     xp_regeneration: 10
