@@ -93,6 +93,7 @@ public class WandCleanupRunnable extends MagicRunnable {
 		}
 		
 		lostWands.removeFirst();
-		logger.info("Could not find wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + ", skipping");
+		controller.removeLostWand(lostWand.getId());
+		logger.info("Could not find wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + ", removing from list");
 	}
 }
