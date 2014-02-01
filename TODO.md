@@ -1,26 +1,32 @@
 # TODO
 
-## For 2.9.0
+## For 2.9.1
 
  - Configurable effects system
+   - Add visual effects to spawn and recall spells
+ 
+ - Camera work on mobs?
+ - Make shrink give you soemting random if no target? Work on chests, etc?
+
+## For 2.9.2
+
+ - Undo fails in some cases (overlapping undo queues)
+ - "map" brush type (!)
+ - Replicate/clone should delete entities in area
+ - Paint is broken with/clone and/or replicate?
+ - Add option to bypass all costs to magic.yml
 
 ## For 3.0.0
 
- - "map" brush type (!)
- - Paint is broken with/clone and/or replicate?
  - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
- - Add option to bypass all costs to magic.yml
- - Add visual effects to spawn and recall spells
  - Make sure adding spells/materials never removes any, also opening/closing the inventory
  - Add "wand duplicate" command
  - Tweaking/Balancing - haste, cooldowns, etc
  - Retry limit on construction batches
- - Undo fails in some cases (overlapping undo queues)
   - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
   - BlockData tracks only the first recorded materialdata, commit will replace
  - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
- - Replicate/clone should delete entities in area
  - Fix wand inventory glitches and special-cases
  - Persist material brush
  - Make ores destructible by most spells (except blast?)
