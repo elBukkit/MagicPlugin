@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.9.1
+
 ## 2.9.0
 
  - Completely re-organize the config files. (MIGRATION NOTE!)
