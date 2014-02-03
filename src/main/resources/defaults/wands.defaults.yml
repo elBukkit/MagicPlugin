@@ -310,7 +310,8 @@ random:
       levitate: 0,0,10,30
       leatherskin: 5,10,30,10
       ironskin: 0,5,10,20
-      iterate: 0,0,40,10
+      iterate: 0,0,40,20
+      laser: 0,0,10,5
       lava: 0,10,30,20
       stream: 0,10,30,20
       shell: 0,5,40,50
@@ -789,6 +790,7 @@ elder:
         - phase
         - portal
         - neutron
+        - laser
     materials:
         - water
         - lava
@@ -1297,7 +1299,7 @@ wolf:
     hunger_regeneration: 1
     power: 5
     haste: 1
-    effect_color: 'CD853F'
+    effect_color: '2EFEC8'
     organize: true
     spells:
         - fling
@@ -1374,6 +1376,7 @@ wolf:
         - disintegrate
         - superiterate
         - neutron
+        - laser
     materials:
         - water
         - lava

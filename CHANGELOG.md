@@ -2,6 +2,8 @@
 
 ## 2.9.1
 
+ - Add Laser spell
+
 ## 2.9.0
 
  - Completely re-organize the config files. (MIGRATION NOTE!)

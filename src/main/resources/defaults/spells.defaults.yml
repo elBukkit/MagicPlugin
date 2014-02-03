@@ -1031,6 +1031,21 @@ superiterate:
         increment_data: false
     costs:
         xp: 200
+laser:
+    icon: ink_sack:11
+    category: dark
+    class: IterateSpell
+    parameters:
+        transparent: none
+        transparent_reverse: true
+        allow_max_range: true
+        range: 16
+        size: 32
+        increment_data: false
+        material: air
+        radius: 1
+    costs:
+        xp: 200
 iterate:
     icon: ink_sack:2
     category: engineering

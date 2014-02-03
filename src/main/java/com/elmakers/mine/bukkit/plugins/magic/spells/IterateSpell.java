@@ -7,6 +7,8 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.effects.EffectUtils;
+import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -27,6 +29,11 @@ public class IterateSpell extends BrushSpell
 		int size = parameters.getInt("size", DEFAULT_SIZE);
 		boolean reverse = parameters.getBoolean("reverse", false);
 		size = (int)(mage.getConstructionMultiplier() * (float)size);
+		
+		boolean reverseTargeting = parameters.getBoolean("transparent_reverse", false);
+		if (reverseTargeting) {
+			setReverseTargeting(true);
+		}
 		
 		Block target = getTargetBlock();
 		if (target == null) 
@@ -118,7 +125,7 @@ public class IterateSpell extends BrushSpell
 				for (int i = 0; i < iterateBlocks; i++)
 				{
 					Block currentTarget = target.getWorld().getBlockAt(currentLoc.getBlockX(), currentLoc.getBlockY(), currentLoc.getBlockZ());
-					if (currentTarget.getType() == Material.AIR && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
+					if (!isTargetable(currentTarget.getType()) && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
 					{
 						iteratedBlocks.add(currentTarget);
 		
@@ -135,10 +142,17 @@ public class IterateSpell extends BrushSpell
 						controller.updateBlock(currentTarget);
 						
 						Location effectLocation = currentTarget.getLocation();	
+						effectLocation.add(0.5f, 0.5f, 0.5f);
 						
 						if (dr == 0) {
 							Material material = buildWith.getMaterial();
-							effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
+							// Kinda hacky.
+							// TODO: Customize with effects system
+							if (material == Material.AIR) {
+								EffectUtils.playEffect(effectLocation, ParticleType.LARGE_EXPLOSION, 0.3f, 0.3f, 0.3f, 1, 1);
+							} else {
+								effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
+							}
 						}	
 					}					
 					currentLoc.add(aim);

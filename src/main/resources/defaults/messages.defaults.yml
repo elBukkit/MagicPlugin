@@ -378,6 +378,9 @@ spells:
     superiterate:
         name: Column
         description: Construct a large column of blocks
+    laser:
+        name: Laser
+        description: Destroy a line of blocks
     stream:
         name: Stream
         description: Spray a stream of water
