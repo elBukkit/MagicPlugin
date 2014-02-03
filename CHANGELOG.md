@@ -3,6 +3,7 @@
 ## 2.9.1
 
  - Add Laser spell
+ - Add some hacks to prevent using wands while in creative mode.
 
 ## 2.9.0
 

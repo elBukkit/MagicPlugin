@@ -1042,6 +1042,7 @@ laser:
         range: 16
         size: 32
         increment_data: false
+        check_destructible: false
         material: air
         radius: 1
     costs:

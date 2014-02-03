@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -53,6 +54,7 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -1791,13 +1793,49 @@ public class MagicController implements Listener
 			previousWand.updateInventoryNames(true);
 		}
 	}
+	
+	@EventHandler
+	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event)
+	{
+		if (event.getNewGameMode() == GameMode.CREATIVE) {
+			boolean ejected = false;
+			Player player = event.getPlayer();
+			Mage mage = getMage(player);
+			Wand activeWand = mage.getActiveWand();
+			if (activeWand != null) {
+				activeWand.deactivate();
+			}
+			Inventory inventory = player.getInventory();
+			ItemStack[] contents = inventory.getContents();
+			for (int i = 0; i < contents.length; i++) {
+				ItemStack item = contents[i];
+				if (Wand.isWand(item)) {
+					ejected = true;
+					inventory.setItem(i, null);
+					player.getWorld().dropItemNaturally(player.getLocation(), item);
+				}
+			}
+			if (ejected) {
+				mage.sendMessage("Ejecting wands, creative mode will destroy them!");
+				
+			}
+		}
+	}
 
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
 		Mage mage = getMage(event.getPlayer());
 		ItemStack pickup = event.getItem().getItemStack();
-		if (dynmapShowWands && Wand.isWand(pickup)) {
+		boolean isWand = Wand.isWand(pickup);
+		
+		// Creative mode inventory hacky work-around :\
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand) {
+			event.setCancelled(true);
+			return;
+		}
+		
+		if (dynmapShowWands && isWand) {
 			Wand wand = new Wand(this, pickup);
 			plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getId());
 			removeLostWand(wand);
