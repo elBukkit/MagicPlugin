@@ -405,9 +405,9 @@ torch:
     class: TorchSpell
     parameters:
         allow_max_range: false
-        allow_night: true
-        range: 64
-        allow_day: true
+        allow_night: false
+        range: 32
+        allow_day: false
         allow_glowstone: true
     costs:
         xp: 25
