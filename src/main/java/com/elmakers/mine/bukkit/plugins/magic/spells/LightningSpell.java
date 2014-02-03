@@ -29,10 +29,13 @@ public class LightningSpell extends Spell
 			World world = block.getWorld();
 			world.strikeLightning(block.getLocation());
 			super.perform(block);
+			// TODO: Make this a special parameter
+			/*
 			if (blocks.size() > thunderThreshold)
 			{
 				world.setThundering(true);
 			}
+			*/
 
 			return SpellResult.SUCCESS;
 		}
