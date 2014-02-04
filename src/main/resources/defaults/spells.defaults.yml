@@ -1215,7 +1215,7 @@ camera:
     category: light
     class: CameraSpell
     parameters:
-        cooldown: 5000
+        cooldown: 1000
     costs:
         xp: 5
 mail:
