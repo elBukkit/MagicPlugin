@@ -335,8 +335,7 @@ random:
       mine: 1,20,30,40
       tree: 5,20,35,45
       nuke: 0,0,0,1
-      day: 0,0,0,5
-      night: 0,0,0,5
+      sunnyday: 0,5,10,30
       time: 0,0,0,1
       weather: 0,0,0,1
     material_count:
@@ -936,7 +935,7 @@ earth_3:
         - bridge
         - breach
         - earth
-        - supercollapse
+        - collapse
     materials:
         - dirt
         - stone

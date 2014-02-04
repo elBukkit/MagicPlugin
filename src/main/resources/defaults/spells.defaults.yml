@@ -541,7 +541,7 @@ nuke:
         break_blocks: true
     costs:
         xp: 100
-day:
+sunnyday:
     icon: emerald
     category: master
     class: TorchSpell
@@ -1167,19 +1167,6 @@ pillar:
         transparent: transparent_to_construction
     costs:
         xp: 5
-night:
-    icon: coal
-    category: master
-    class: TorchSpell
-    parameters:
-        allow_max_range: false
-        allow_night: true
-        allow_day: false
-        allow_glowstone: false
-        cooldown: 60000
-        time: night
-    costs:
-        xp: 50
 force:
     icon: leash
     category: airbending

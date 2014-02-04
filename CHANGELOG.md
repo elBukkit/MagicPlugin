@@ -5,6 +5,7 @@
  - Add Laser spell
  - Add some hacks to prevent using wands while in creative mode.
  - Material brushes will copy player skulls (clone, copy, replicate- not absorb though)
+ - Add "Sunny Day" spell, remove day and night spells.
 
 ## 2.9.0
 

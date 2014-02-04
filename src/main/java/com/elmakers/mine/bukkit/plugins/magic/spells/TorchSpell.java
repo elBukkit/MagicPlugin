@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
@@ -13,7 +14,18 @@ public class TorchSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		
+		if (parameters.containsKey("weather"))
+		{
+			String weatherString = parameters.getString("weather");
+			World world = getLocation().getWorld();
+			if (weatherString.equals("storm")) {
+				world.setStorm(true);
+				world.setThundering(true);
+			} else {
+				world.setStorm(false);
+				world.setThundering(false);
+			}
+		}
 		if (parameters.containsKey("time"))
 		{
 			long targetTime = 0;

@@ -232,9 +232,9 @@ spells:
     nuke:
         name: Nuke
         description: Create a huge explosion
-    day:
-        name: Day
-        description: Change the time to day
+    sunnyday:
+        name: Sunny Day
+        description: Make it a lovely day
     time:
         name: Time
         description: Change the time of day
@@ -416,9 +416,6 @@ spells:
     pillar:
         name: Pillar
         description: Raises a pillar up
-    night:
-        name: Night
-        description: Change the time to night
     force:
         name: Force
         description: Use telekinesis
