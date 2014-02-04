@@ -26,6 +26,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.effects.EffectRing;
+import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
 import com.elmakers.mine.bukkit.plugins.magic.CostReducer;
@@ -77,6 +79,7 @@ public class Wand implements CostReducer {
 	private int hungerRegeneration = 0;
 	
 	private int effectColor = 0;
+	private ParticleType effectParticle = null;
 	
 	private float defaultWalkSpeed = 0.2f;
 	private float defaultFlySpeed = 0.1f;
@@ -588,6 +591,9 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "has_inventory", Integer.toString((hasInventory ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "modifiable", Integer.toString((modifiable ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
+		if (effectParticle != null) {
+			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
+		}
 	}
 	
 	protected void loadState() {
@@ -632,6 +638,19 @@ public class Wand implements CostReducer {
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
+		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
+	}
+
+	protected void parseParticleEffect(String effectParticleName) {
+		if (effectParticleName.length() > 0) {
+			try {
+				effectParticle = ParticleType.fromName(effectParticleName, null);
+			} catch (Exception ex) {
+				effectParticle = null;
+			}
+		} else {
+			effectParticle = null;
+		}
 	}
 
 	public void describe(CommandSender sender) {
@@ -657,7 +676,7 @@ public class Wand implements CostReducer {
 					"hunger_regeneration", "uses", 
 					"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
 					"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
-					"haste", "has_inventory", "modifiable", "effect_color", "materials", "spells"};
+					"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "materials", "spells"};
 		
 		for (String key : keys) {
 			String value = InventoryUtils.getMeta(wandNode, key);
@@ -1396,7 +1415,8 @@ public class Wand implements CostReducer {
 		healthRegeneration = Math.max(healthRegeneration, other.healthRegeneration);
 		hungerRegeneration = Math.max(hungerRegeneration, other.hungerRegeneration);
 		speedIncrease = Math.max(speedIncrease, other.speedIncrease);
-		// Mix colors?
+		
+		// Mix colors
 		if (effectColor == 0) {
 			effectColor = other.effectColor;
 		} else if (other.effectColor != 0){
@@ -1484,6 +1504,9 @@ public class Wand implements CostReducer {
 		
 		if (wandConfig.containsKey("effect_color") && !safe) {
 			effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
+		}
+		if (wandConfig.containsKey("effect_particle") && !safe) {
+			parseParticleEffect(wandConfig.getString("effect_particle"));
 		}
 		
 		owner = wandConfig.getString("owner", owner);
@@ -1830,6 +1853,19 @@ public class Wand implements CostReducer {
 		}
 		if (damageReductionFire > 0 && player.getFireTicks() > 0) {
 			player.setFireTicks(0);
+		}
+		
+		// Update effects
+		if (effectColor != 0) {
+			InventoryUtils.addPotionEffect(player, effectColor);
+		}
+		// TODO: More customization?
+		if (effectParticle != null) {
+			Location effectLocation = player.getEyeLocation();
+			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 1, 8);
+			effect.setParticleType(effectParticle);
+			effect.setParticleCount(1);
+			effect.start();
 		}
 	}
 	
