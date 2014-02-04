@@ -1152,7 +1152,7 @@ box:
         allow_max_range: false
         range: 32
         fill: hollow
-        radius: 5
+        radius: 4
         type: cuboid
         transparent: transparent_to_construction
     costs:

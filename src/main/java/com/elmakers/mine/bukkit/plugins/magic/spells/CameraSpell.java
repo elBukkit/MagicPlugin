@@ -54,17 +54,24 @@ public class CameraSpell extends Spell
 			if (playerName == null) 
 			{
 				Player player = getPlayer();
-				if (target != null && target.isEntity())
+				if (target != null)
 				{
-					if (target instanceof Player) {
-						playerName = ((Player)target.getEntity()).getName();
+					if (target.isEntity()) {
+						if (target instanceof Player) {
+							playerName = ((Player)target.getEntity()).getName();
+						} else {
+							playerName = getMobSkin(target.getEntity().getType());
+							if (playerName != null) {
+								metaName = target.getEntity().getType().getName();
+							}
+						}
 					} else {
-						playerName = getMobSkin(target.getEntity().getType());
+						playerName = getBlockSkin(target.getBlock().getType());
 						if (playerName != null) {
-							metaName = target.getEntity().getType().getName();
+							metaName = target.getBlock().getType().name();
 						}
 					}
-				} 
+				}
 				
 				if (playerName == null && player != null)
 				{

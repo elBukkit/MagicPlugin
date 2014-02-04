@@ -397,8 +397,8 @@ spells:
         name: Cat
         description: Create a cat familiar to follow you around
     shrink:
-        name: Head Shrinker
-        description: Shrink heads for fun and profit
+        name: Shrink
+        description: Hurts entities, shrinks various things
         usage: Must kill the target to receive skull
     flare:
         name: Flare

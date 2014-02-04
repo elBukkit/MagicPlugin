@@ -7,6 +7,7 @@
  - Material brushes will copy player skulls (clone, copy, replicate- not absorb though)
  - Add "Sunny Day" spell, remove day and night spells.
  - The camera spell will now work on most mobs (not zombies or creepers or skeletons, though...)
+ - Shrink and camera will now work on some blocks (cactus, tnt, chests, melons, logs and pumpkins)
 
 ## 2.9.0
 

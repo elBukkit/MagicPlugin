@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -59,53 +61,80 @@ public class ShrinkSpell extends Spell
 		
 		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
-		if (target == null || ! target.isEntity() || !(target.getEntity() instanceof LivingEntity))
+		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
 
-		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
-		int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);
-
-		Entity targetEntity = target.getEntity();
-		LivingEntity li = (LivingEntity)targetEntity;
-		String ownerName = null;
-		String itemName = null;
-		byte data = 3;
-		if (li instanceof Player)
-		{
-			li.damage(mage.getDamageMultiplier() * playerDamage, getPlayer());
-			ownerName = ((Player)li).getName();
-		}
-		else
-		{
-			li.damage(mage.getDamageMultiplier() * entityDamage);
-			switch (li.getType()) {
-				case CREEPER:
-					data = 4;
-					ownerName = null;
-				break;
-				case ZOMBIE:
-					data = 2;
-					ownerName = null;
-				break;
-				case SKELETON:
-					Skeleton skeleton = (Skeleton)li;
-					data = (byte)(skeleton.getSkeletonType() == SkeletonType.NORMAL ? 0 : 1);
-					ownerName = null;
-				break;
-				default:
-					ownerName = getMobSkin(li.getType());
-					if (ownerName != null) {
-						itemName = li.getType().getName() + " Head";
-					}
-			}
+		if (target.isEntity()) {
+			if (!(target.getEntity() instanceof LivingEntity)) return SpellResult.NO_TARGET;
 			
+			int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
+			int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);
+
+			Entity targetEntity = target.getEntity();
+			LivingEntity li = (LivingEntity)targetEntity;
+			String ownerName = null;
+			String itemName = null;
+			byte data = 3;
+			if (li instanceof Player)
+			{
+				li.damage(mage.getDamageMultiplier() * playerDamage, getPlayer());
+				ownerName = ((Player)li).getName();
+			}
+			else
+			{
+				li.damage(mage.getDamageMultiplier() * entityDamage);
+				switch (li.getType()) {
+					case CREEPER:
+						data = 4;
+						ownerName = null;
+					break;
+					case ZOMBIE:
+						data = 2;
+						ownerName = null;
+					break;
+					case SKELETON:
+						Skeleton skeleton = (Skeleton)li;
+						data = (byte)(skeleton.getSkeletonType() == SkeletonType.NORMAL ? 0 : 1);
+						ownerName = null;
+					break;
+					default:
+						ownerName = getMobSkin(li.getType());
+						if (ownerName != null) {
+							itemName = li.getType().getName() + " Head";
+						}
+				}
+				
+			}
+			if ((ownerName != null || data != 3) && li.isDead()) {
+				dropHead(targetEntity.getLocation(), ownerName, itemName, data);
+			}
+			castMessage("Boogidie Boogidie");
+		} else {
+			Block targetBlock = target.getBlock();
+			String blockSkin = getBlockSkin(targetBlock.getType());
+			if (blockSkin == null) return SpellResult.NO_TARGET;
+			
+			if (!hasBuildPermission(targetBlock)) 
+			{
+				return SpellResult.INSUFFICIENT_PERMISSION;
+			}
+			if (mage.isIndestructible(targetBlock)) 
+			{
+				return SpellResult.NO_TARGET;
+			}
+
+			BlockList shrunk = new BlockList();
+			shrunk.add(targetBlock);
+
+			dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
+			targetBlock.setType(Material.AIR);
+			mage.registerForUndo(shrunk);
+			
+			castMessage("Shrink!");
 		}
-		if ((ownerName != null || data != 3) && li.isDead()) {
-			dropHead(targetEntity.getLocation(), ownerName, itemName, data);
-		}
-		castMessage("Boogidie Boogidie");
+		
 		return SpellResult.SUCCESS;
 	}
 	

@@ -1358,6 +1358,48 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 	}
 	
+	protected String getBlockSkin(Material blockType) {
+		String skinName = null;
+		switch (blockType) {
+		case CACTUS:
+			skinName = "MHF_Cactus";
+			break;
+		case CHEST:
+			skinName = "MHF_Chest";
+			break;
+		case MELON_BLOCK:
+			skinName = "MHF_Melon";
+			break;
+		case TNT:
+			if (Math.random() > 0.5) {
+				skinName = "MHF_TNT";
+			} else {
+				skinName = "MHF_TNT2";
+			}
+			break;
+		case LOG:
+			skinName = "MHF_OakLog";
+			break;
+		case PUMPKIN:
+			skinName = "MHF_Pumpkin";
+			break;
+		default:
+			// TODO .. ?
+			/*
+			 * Blocks:
+				Bonus:
+				MHF_ArrowUp
+				MHF_ArrowDown
+				MHF_ArrowLeft
+				MHF_ArrowRight
+				MHF_Exclamation
+				MHF_Question
+			 */
+		}
+		
+		return skinName;
+	}
+	
 	protected String getMobSkin(EntityType mobType)
 	{
 		String mobSkin = null;
@@ -1413,6 +1455,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			case VILLAGER:
 				mobSkin = "MHF_Villager";
 			default:
+				// TODO: Find skins for SKELETON, CREEPER and ZOMBIE .. ?
 		}
 		
 		return mobSkin;
