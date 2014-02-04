@@ -29,6 +29,10 @@ public class ForceSpell extends Spell
 				{
 					releaseTarget();
 				}
+				if (!targetEntity.getWorld().getName().equals(getLocation().getWorld().getName())) 
+				{
+					releaseTarget();
+				}
 				if (targetEntity != null && getPlayer().getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
 				{
 					releaseTarget();
