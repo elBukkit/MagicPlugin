@@ -232,9 +232,12 @@ spells:
     nuke:
         name: Nuke
         description: Create a huge explosion
-    sunnyday:
+    day:
         name: Sunny Day
         description: Make it a lovely day
+    night:
+        name: Night
+        description: Make it dark
     time:
         name: Time
         description: Change the time of day

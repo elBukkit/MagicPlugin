@@ -335,7 +335,8 @@ random:
       mine: 1,20,30,40
       tree: 5,20,35,45
       nuke: 0,0,0,1
-      sunnyday: 0,5,10,30
+      day: 0,5,10,30
+      night: 0,0,1,5
       time: 0,0,0,1
       weather: 0,0,0,1
     material_count:
@@ -790,6 +791,7 @@ elder:
         - portal
         - neutron
         - laser
+        - day
     materials:
         - water
         - lava
@@ -1142,6 +1144,7 @@ black:
         - flare
         - portal
         - neutron
+        - night
     materials:
         - water
         - erase
@@ -1305,7 +1308,7 @@ wolf:
         - blink
         - levitate
         - torch
-        - time
+        - day
         - gather
         - disarm
         - sniper 

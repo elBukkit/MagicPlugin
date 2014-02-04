@@ -552,6 +552,20 @@ day:
         allow_glowstone: false
         cooldown: 60000
         time: day
+        weather: clear
+    costs:
+        xp: 40
+night:
+    icon: coal
+    category: master
+    class: TorchSpell
+    parameters:
+        allow_max_range: false
+        allow_night: false
+        allow_day: true
+        allow_glowstone: false
+        cooldown: 60000
+        time: night
     costs:
         xp: 40
 time:
