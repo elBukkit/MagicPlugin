@@ -131,6 +131,8 @@ restricted:
 #- ender_portal_frame
 # Ender portals can cause some really nasty client lag.
 #- ender_portal
+# Mob spawners are glitched and make perma-particles
+- mob_spawner
 
 # Which materials are acceptable as building materials. This
 # affects what can be absorbed and added to a wand.
@@ -181,7 +183,6 @@ building:
 - bookshelf
 - mossy_cobblestone
 - obsidian
-- mob_spawner
 - wood_stairs
 - redstone_wire
 - diamond_ore
