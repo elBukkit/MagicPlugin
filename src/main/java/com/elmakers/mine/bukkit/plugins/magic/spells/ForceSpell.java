@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -25,15 +27,17 @@ public class ForceSpell extends Spell
 		{
 			if (targetEntity instanceof LivingEntity)
 			{
+				Location location = getLocation();
+				World targetWorld = targetEntity.getWorld();
 				if (!targetEntity.isValid() || targetEntity.isDead())
 				{
 					releaseTarget();
-				}
-				if (!targetEntity.getWorld().getName().equals(getLocation().getWorld().getName())) 
+				} 
+				else if (targetWorld == null || location == null || !targetWorld.getName().equals(location.getWorld().getName())) 
 				{
 					releaseTarget();
-				}
-				if (targetEntity != null && getPlayer().getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
+				} 
+				else if (location.distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared())
 				{
 					releaseTarget();
 				}
@@ -89,16 +93,8 @@ public class ForceSpell extends Spell
 	public boolean onCancel()
 	{
 		if (targetEntity != null)
-		{
-            if 
-            (
-                    (targetEntity instanceof LivingEntity) 
-            &&      !targetEntity.isDead() 
-            &&      getPlayer().getLocation().distanceSquared(targetEntity.getLocation()) > getMaxRangeSquared()
-            )
-            {
-                castMessage("Released target");
-            }
+		{       
+			castMessage("Released target");
 
             releaseTarget();
 			return true;
