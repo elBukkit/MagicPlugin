@@ -192,6 +192,9 @@ spells:
     torch:
         name: Torch
         description: Creates a torch or glowstone
+    tunnel:
+        name: Tunnel
+        description: Mine out a tunnel in front of you
     monster:
         name: Monster
         description: Call a monster to your side
@@ -228,7 +231,7 @@ spells:
         description: Strike lighting at your target
     nuke:
         name: Nuke
-        description: Create a huge explosino
+        description: Create a huge explosion
     day:
         name: Day
         description: Change the time to day
@@ -550,6 +553,3 @@ wands:
     decorator:
         name: Decorator
         description: Decorates large areas at a time
-    tunnel:
-        name: Tunnel
-        description: Mine out a tunnel in front of you
