@@ -20,7 +20,7 @@ public abstract class EffectPlayer implements Runnable {
 	protected float xOffset = 0;
 	protected float yOffset = 0;
 	protected float zOffset = 0;
-	protected float effectData = 20f;
+	protected float effectData = 0f;
 	protected int particleCount = 10;
 	
 	public EffectPlayer(Plugin plugin) {
