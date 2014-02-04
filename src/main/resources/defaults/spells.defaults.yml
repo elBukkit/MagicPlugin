@@ -736,7 +736,7 @@ cloak:
     parameters:
         target: any
         particle: reddust
-        invisibility: 600,5
+        effect_invisibility: 600,5
 undo:
     icon: book_and_quill
     category: engineering
@@ -1039,14 +1039,14 @@ laser:
         transparent: none
         transparent_reverse: true
         allow_max_range: true
-        range: 16
+        range: 32
         size: 32
         increment_data: false
         check_destructible: false
         material: air
         radius: 1
     costs:
-        xp: 200
+        xp: 30
 iterate:
     icon: ink_sack:2
     category: engineering
