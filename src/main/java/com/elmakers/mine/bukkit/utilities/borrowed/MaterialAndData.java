@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +19,7 @@ public class MaterialAndData {
 	protected byte data;
 	String[] signLines = null;
 	String commandLine = null;
+	String skullName = null;
 	Inventory inventory = null;
 
 	public MaterialAndData() {
@@ -31,6 +33,7 @@ public class MaterialAndData {
 		commandLine = other.commandLine;
 		inventory = other.inventory;
 		signLines = other.signLines;
+		skullName = other.skullName;
 	}
 	
 	public MaterialAndData(final Material material) {
@@ -49,6 +52,7 @@ public class MaterialAndData {
 		signLines = null;
 		commandLine = null;
 		inventory = null;
+		skullName = null;
 	}
 	
 	public void setMaterial(Material material) {
@@ -74,6 +78,7 @@ public class MaterialAndData {
 		signLines = null;
 		commandLine = null;
 		inventory = null;
+		skullName = null;
 		
 		BlockState blockState = block.getState();
 		if (blockState instanceof Sign) {
@@ -93,6 +98,9 @@ public class MaterialAndData {
 					inventory.setItem(i, item);
 				}
 			}
+		} else if (blockState instanceof Skull) {
+			Skull skull = (Skull)blockState;
+			skullName = skull.getOwner();
 		}
 		
 		material = blockMaterial;
@@ -133,6 +141,10 @@ public class MaterialAndData {
 					newInventory.setItem(i, item);
 				}
 			}
+		} else if (blockState instanceof Skull && skullName != null) {
+			Skull skull = (Skull)blockState;
+			skull.setOwner(skullName);
+			skull.update();
 		}
 	}
 	
