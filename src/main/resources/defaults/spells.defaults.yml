@@ -541,7 +541,7 @@ nuke:
         break_blocks: true
     costs:
         xp: 100
-sunnyday:
+day:
     icon: emerald
     category: master
     class: TorchSpell
@@ -1082,7 +1082,7 @@ cat:
 shrink:
     icon: skull_item
     category: dark
-    class: ShunkenHeadSpell
+    class: ShrinkSpell
     parameters:
         allow_max_range: false
         range: 16

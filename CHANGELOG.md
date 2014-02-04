@@ -6,6 +6,7 @@
  - Add some hacks to prevent using wands while in creative mode.
  - Material brushes will copy player skulls (clone, copy, replicate- not absorb though)
  - Add "Sunny Day" spell, remove day and night spells.
+ - The camera spell will now work on most mobs (not zombies or creepers or skeletons, though...)
 
 ## 2.9.0
 

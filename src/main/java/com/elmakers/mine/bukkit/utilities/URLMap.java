@@ -185,9 +185,14 @@ public class URLMap extends MapRenderer  {
 	 * @param playerName
 	 * @return
 	 */
-	public static ItemStack getPlayerPortrait(String playerName, Integer priority) {
+	public static ItemStack getPlayerPortrait(String playerName, Integer priority, String photoName) {
+		photoName = photoName == null ? playerName : photoName;
 		MapView mapView = getURL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8, priority);
-		return getMapItem("Photo of " + playerName, mapView);
+		return getMapItem("Photo of " + photoName, mapView);
+	}
+	
+	public static ItemStack getPlayerPortrait(String playerName, Integer priority) {
+		return getPlayerPortrait(playerName, priority, playerName);
 	}
 	
 	public static ItemStack getPlayerPortrait(String playerName) {

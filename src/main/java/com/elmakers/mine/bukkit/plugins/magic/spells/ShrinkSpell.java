@@ -19,7 +19,7 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class ShunkenHeadSpell extends Spell
+public class ShrinkSpell extends Spell
 {
 	private int             DEFAULT_PLAYER_DAMAGE = 1;
 	private int             DEFAULT_ENTITY_DAMAGE = 100;
@@ -30,6 +30,7 @@ public class ShunkenHeadSpell extends Spell
     private final static float 		particleData = 2;
     private final static int 		particleCount = 6;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -93,74 +94,11 @@ public class ShunkenHeadSpell extends Spell
 					data = (byte)(skeleton.getSkeletonType() == SkeletonType.NORMAL ? 0 : 1);
 					ownerName = null;
 				break;
-				case BLAZE:
-					ownerName = "MHF_Blaze";
-					itemName = "Blaze Head";
-					break;
-				case CAVE_SPIDER:
-					ownerName = "MHF_CaveSpider";
-					itemName = "Cave Spider Head";
-					break;
-				case CHICKEN:
-					ownerName = "MHF_Chicken";
-					itemName = "Chicken Head";
-					break;
-				case COW:
-					ownerName = "MHF_Cow";
-					itemName = "Cow Head";
-					break;
-				case ENDERMAN:
-					ownerName = "MHF_Enderman";
-					itemName = "Enderman Head";
-					break;
-				case GHAST:
-					ownerName = "MHF_Ghast";
-					itemName = "Ghast Head";
-					break;
-				case IRON_GOLEM:
-					ownerName = "MHF_Golem";
-					itemName = "Golem Head";
-					break;
-				case MAGMA_CUBE:
-					ownerName = "MHF_LavaSlime";
-					itemName = "Magma Cube Head";
-					break;
-				case MUSHROOM_COW:
-					ownerName = "MHF_MushroomCow";
-					itemName = "Mushroom Cow Head";
-					break;
-				case OCELOT:
-					ownerName = "MHF_Ocelot";
-					itemName = "Ocelot Head";
-					break;
-				case PIG:
-					ownerName = "MHF_Pig";
-					itemName = "Pig Head";
-					break;
-				case PIG_ZOMBIE:
-					ownerName = "MHF_PigZombie";
-					itemName = "Zombie Pigman Head";
-					break;
-				case SHEEP:
-					ownerName = "MHF_Sheep";
-					itemName = "Sheep Head";
-					break;
-				case SLIME:
-					ownerName = "MHF_Slime";
-					itemName = "Slime Head";
-					break;
-				case SPIDER:
-					ownerName = "MHF_Spider";
-					itemName = "Spider Head";
-					break;
-				case SQUID:
-					ownerName = "MHF_Squid";
-					itemName = "Squid Head";
-					break;
-				case VILLAGER:
-					ownerName = "MHF_Villager";
-					itemName = "Villager Head";
 				default:
+					ownerName = getMobSkin(li.getType());
+					if (ownerName != null) {
+						itemName = li.getType().getName() + " Head";
+					}
 			}
 			
 		}

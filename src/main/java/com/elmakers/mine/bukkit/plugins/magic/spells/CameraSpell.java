@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,6 +15,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CameraSpell extends Spell
 {
+	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -45,27 +47,37 @@ public class CameraSpell extends Spell
 		}
 		
 		if (newMapItem == null) {
-			this.targetEntity(Player.class);
+			this.targetEntity(LivingEntity.class);
 			Target target = getTarget();
 			String playerName = parameters.getString("name");
+			String metaName = null;
 			if (playerName == null) 
 			{
-				Player targetPlayer = getPlayer();
-				if (target != null && target.isEntity() && (target.getEntity() instanceof Player))
+				Player player = getPlayer();
+				if (target != null && target.isEntity())
 				{
-					castMessage("CLICK!");
-					targetPlayer = (Player)target.getEntity();
+					if (target instanceof Player) {
+						playerName = ((Player)target.getEntity()).getName();
+					} else {
+						playerName = getMobSkin(target.getEntity().getType());
+						if (playerName != null) {
+							metaName = target.getEntity().getType().getName();
+						}
+					}
 				} 
-				else 
+				
+				if (playerName == null && player != null)
 				{
 					castMessage("Selfie!");
+					playerName = player.getName();
+				} else {
+					castMessage("CLICK!");
 				}
-				playerName = targetPlayer.getName();
 			}
 			if (parameters.containsKey("reload")) {
 				URLMap.forceReloadPlayerPortrait(playerName);
 			}
-			newMapItem = URLMap.getPlayerPortrait(playerName, priority);
+			newMapItem = URLMap.getPlayerPortrait(playerName, priority, metaName);
 		}
 		if (newMapItem == null) {
 			sendMessage("Failed to load photo");

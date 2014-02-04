@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -1355,5 +1356,65 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				}
 			}
 		}
+	}
+	
+	protected String getMobSkin(EntityType mobType)
+	{
+		String mobSkin = null;
+		switch (mobType) {
+			case BLAZE:
+				mobSkin = "MHF_Blaze";
+				break;
+			case CAVE_SPIDER:
+				mobSkin = "MHF_CaveSpider";
+				break;
+			case CHICKEN:
+				mobSkin = "MHF_Chicken";
+				break;
+			case COW:
+				mobSkin = "MHF_Cow";
+				break;
+			case ENDERMAN:
+				mobSkin = "MHF_Enderman";
+				break;
+			case GHAST:
+				mobSkin = "MHF_Ghast";
+				break;
+			case IRON_GOLEM:
+				mobSkin = "MHF_Golem";
+				break;
+			case MAGMA_CUBE:
+				mobSkin = "MHF_LavaSlime";
+				break;
+			case MUSHROOM_COW:
+				mobSkin = "MHF_MushroomCow";
+				break;
+			case OCELOT:
+				mobSkin = "MHF_Ocelot";
+				break;
+			case PIG:
+				mobSkin = "MHF_Pig";
+				break;
+			case PIG_ZOMBIE:
+				mobSkin = "MHF_PigZombie";
+				break;
+			case SHEEP:
+				mobSkin = "MHF_Sheep";
+				break;
+			case SLIME:
+				mobSkin = "MHF_Slime";
+				break;
+			case SPIDER:
+				mobSkin = "MHF_Spider";
+				break;
+			case SQUID:
+				mobSkin = "MHF_Squid";
+				break;
+			case VILLAGER:
+				mobSkin = "MHF_Villager";
+			default:
+		}
+		
+		return mobSkin;
 	}
 }
