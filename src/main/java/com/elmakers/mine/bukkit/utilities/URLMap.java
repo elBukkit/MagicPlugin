@@ -55,17 +55,27 @@ public class URLMap extends MapRenderer  {
 						if (mapConfig.contains("priority")) {
 							priority = mapConfig.getInt("priority");
 						}
+						Integer xOverlay = null;
+						if (mapConfig.contains("x_overlay")) {
+							xOverlay = mapConfig.getInt("x_overlay");
+						}
+						Integer yOverlay = null;
+						if (mapConfig.contains("y_overlay")) {
+							yOverlay = mapConfig.getInt("y_overlay");
+						}
 						try {
 							mapId = Short.parseShort(mapIdString);
 						} catch (Exception ex) {
-							map = get(mapConfig.getString("url"), mapConfig.getInt("x"), mapConfig.getInt("y")
-								, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
+							map = get(mapConfig.getString("url"), mapConfig.getString("name"), 
+								mapConfig.getInt("x"), mapConfig.getInt("y"), xOverlay, yOverlay,
+								mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
 							info("Created new map id " + map.id + " for config id " + mapIdString);
 							needsUpdate = true;
 						}
 						if (map == null && mapId != null) {
-							map = get(mapId, mapConfig.getString("url"), mapConfig.getInt("x"), mapConfig.getInt("y")
-									, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
+							map = get(mapId, mapConfig.getString("url"), mapConfig.getString("name"), 
+									mapConfig.getInt("x"), mapConfig.getInt("y"),
+									xOverlay, yOverlay, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
 						}
 						
 						if (map == null) {
@@ -124,8 +134,15 @@ public class URLMap extends MapRenderer  {
 			mapConfig.set("width", map.width);
 			mapConfig.set("height", map.height);
 			mapConfig.set("enabled", map.isEnabled());
+			mapConfig.set("name", map.name);
 			if (map.priority != null) {
 				mapConfig.set("priority", map.priority);
+			}
+			if (map.xOverlay != null) {
+				mapConfig.set("x_overlay", map.xOverlay);
+			}
+			if (map.yOverlay != null) {
+				mapConfig.set("y_overlay", map.yOverlay);
 			}
 		}
 		try {
@@ -187,8 +204,9 @@ public class URLMap extends MapRenderer  {
 	 */
 	public static ItemStack getPlayerPortrait(String playerName, Integer priority, String photoName) {
 		photoName = photoName == null ? playerName : photoName;
-		MapView mapView = getURL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8, priority);
-		return getMapItem("Photo of " + photoName, mapView);
+		String photoLabel = "Photo of " + photoName;
+		MapView mapView = getURL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", photoLabel, 8, 8, 40, 8, 8, 8, priority);
+		return getMapItem(photoLabel, mapView);
 	}
 	
 	public static ItemStack getPlayerPortrait(String playerName, Integer priority) {
@@ -280,6 +298,11 @@ public class URLMap extends MapRenderer  {
 		return map.getMapView();
 	}
 	
+	public static MapView getURL(String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+		URLMap map = URLMap.get(url, name, x, y, xOverlay, yOverlay, width, height, priority);
+		return map.getMapView();
+	}
+	
 	public static MapView getURL(String url, int x, int y, int width, int height) {
 		return getURL(url, x, y, width, height, null);
 	}
@@ -326,13 +349,16 @@ public class URLMap extends MapRenderer  {
 	protected int y;
 	protected int width;
 	protected int height;
+	protected Integer xOverlay;
+	protected Integer yOverlay;
+	protected String name;
 	protected boolean enabled = true;
 	protected boolean rendered = false;
 	protected volatile boolean loading = false;
 	protected Set<String> sentToPlayers = new HashSet<String>();
 	protected Integer priority;
 	
-	private static URLMap get(short mapId, String url, int x, int y, int width, int height, Integer priority) {
+	private static URLMap get(short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
 		String key = getKey(url, x, y, width, height);
 		URLMap map = idMap.get(mapId);
 		if (map != null) {
@@ -349,7 +375,7 @@ public class URLMap extends MapRenderer  {
 			return map;
 		}
 		
-		map = new URLMap(mapId, url, x, y, width, height, priority);
+		map = new URLMap(mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority);
 		keyMap.put(key, map);
 		idMap.put(mapId, map);
 		return map;
@@ -360,11 +386,14 @@ public class URLMap extends MapRenderer  {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static URLMap get(String url, int x, int y, int width, int height, Integer priority) {
+	private static URLMap get(String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
 		String key = getKey(url, x, y, width, height);
 		if (keyMap.containsKey(key)) {
 			URLMap map = keyMap.get(key);
 			map.priority = priority;
+			map.name = name;
+			map.xOverlay = xOverlay;
+			map.yOverlay = yOverlay;
 			return map;
 		}
 		World world = Bukkit.getWorlds().get(0);
@@ -373,9 +402,13 @@ public class URLMap extends MapRenderer  {
 			warning("Unable to create new map for url key " + key);
 			return null;
 		}
-		URLMap newMap = get(mapView.getId(), url, x, y, width, height, priority);
+		URLMap newMap = get(mapView.getId(), url, name, x, y, xOverlay, yOverlay, width, height, priority);
 		save();
 		return newMap;
+	}
+	
+	private static URLMap get(String url, int x, int y, int width, int height, Integer priority) {
+		return get(url, null, x, y, null, null, width, height, priority);
 	}
 	
 	private MapView getMapView() {
@@ -417,10 +450,13 @@ public class URLMap extends MapRenderer  {
 		return enabled;
 	}
 	
-	private URLMap(short mapId, String url, int x, int y, int width, int height, Integer priority) {
+	private URLMap(short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
 		this.url = url;
+		this.name = name;
 		this.x = x;
 		this.y = y;
+		this.xOverlay = xOverlay;
+		this.yOverlay = yOverlay;
 		this.width = width;
 		this.height = height;
 		this.id = mapId;
@@ -497,6 +533,12 @@ public class URLMap extends MapRenderer  {
 					    Graphics2D graphics = image.createGraphics();
 					    AffineTransform transform = AffineTransform.getScaleInstance((float)128 / width, (float)128 / height);
 					    graphics.drawRenderedImage(croppedImage, transform);
+					    
+					    if (xOverlay != null && yOverlay != null) {
+					    	BufferedImage croppedOverlay = rawImage.getSubimage(xOverlay, yOverlay, width, height);
+						    graphics.drawRenderedImage(croppedOverlay, transform);
+					    }
+					    
 					    loading = false;
 					} catch (Exception ex) {
 						warning("Failed to load url " + url + ": " + ex.getMessage());
