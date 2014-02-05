@@ -354,6 +354,10 @@ spells:
         name: Alter
         description: Alter certain objects
         usage: Use on wool, clay, stairs, stained glass, etc
+    superalter:
+        name: SuperAlter
+        description: Alter objects recursively
+        usage: Use on wool, clay, stairs, stained glass, etc
     blob:
         name: Blob
         description: Create a solid blob

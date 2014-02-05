@@ -855,7 +855,7 @@ chop:
     parameters:
         allow_max_range: false
         range: 32
-        recursion_depth: 64
+        recursion_depth: 128
         drop: trees
     costs:
         xp: 10
@@ -932,11 +932,22 @@ alter:
     class: AlterSpell
     parameters:
         allow_max_range: false
+        range: 32
+        depth: 0
+        transparent: transparent_to_construction
+    costs:
+        xp: 1
+superalter:
+    icon: ink_sack:1
+    category: engineering
+    class: AlterSpell
+    parameters:
+        allow_max_range: false
         range: 64
         depth: 32
         transparent: transparent_to_construction
     costs:
-        xp: 1
+        xp: 40
 blob:
     icon: clay_ball
     category: earthbending

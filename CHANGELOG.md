@@ -11,6 +11,7 @@
  - Gather, push, push, force and disarm will ignore targets with Protection X
  - Add "Chop" spell. Also make "Box" sit on the target. (MIGRATION NOTE)
  - Some improvements to replicate and clone, safety checks for attachable blocks
+ - Split alter up into SuperAlter and Alter
 
 ## 2.9.0
 

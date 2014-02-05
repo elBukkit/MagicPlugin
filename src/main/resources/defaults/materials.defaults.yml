@@ -115,6 +115,8 @@ ores:
 trees:
 - log
 - leaves
+- vine
+- cocoa
 
 # Destructible list minus ores, for mining spells.
 #

@@ -250,6 +250,7 @@ random:
     spells:
       absorb: 0,0,0,1
       alter: 0,10,20,30
+      superalter: 0,1,5,10
       arrow: 100,80,70,30
       arrowrain: 10,30,50,40
       blast: 30,40,50,30
@@ -613,7 +614,6 @@ engineer:
         - commit
         - blob
         - stalactite
-        - alter
         - shell
         - iterate
         - box
@@ -630,6 +630,8 @@ engineer:
         - superiterate
         - levitate
         - paint
+        - alter
+        - superalter
     materials:
         - stone
         - wood
@@ -689,6 +691,7 @@ farming:
         - weather
         - tree
         - alter
+        - superalter
         - chop
     materials:
         - soil
@@ -699,6 +702,7 @@ alchemist:
     xp_max: 100
     spells:
         - alter
+        - superalter
         - sandblast
         - recurse
         - fire
@@ -779,6 +783,7 @@ elder:
         - bridge
         - absorb
         - alter
+        - superalter
         - undo
         - toss
         - curse
@@ -1069,7 +1074,6 @@ white:
         - pillar
         - bridge
         - absorb
-        - alter
         - undo
         - toss
         - boon
@@ -1133,7 +1137,6 @@ black:
         - pillar
         - bridge
         - absorb
-        - alter
         - undo
         - toss
         - curse
@@ -1248,6 +1251,8 @@ green:
         - wolf
         - cat
         - chop
+        - alter
+        - superalter
     materials:
         - dirt
         - grass
@@ -1350,6 +1355,7 @@ wolf:
         - bridge
         - absorb
         - alter
+        - superalter
         - undo
         - toss
         - curse
