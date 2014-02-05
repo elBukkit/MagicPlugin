@@ -36,8 +36,12 @@ public class EffectRing extends EffectPlayer {
 		float radius = invert ? (float)(1 + length - iteration) * speed : (float)iteration * speed;
 		float fullRing = (1 + radius * 2) * (1 + radius * 2);
 		int scaledCount = Math.min((int)Math.ceil(fullRing), count);
+		
+		// Randomization
+		double startRadians = Math.random() * Math.PI * 2;
+		
 		for (int i = 0; i < scaledCount; i++) {
-			double radians = (double)i / scaledCount * Math.PI * 2;
+			double radians = (double)i / scaledCount * Math.PI * 2 + startRadians;
 			Vector direction = new Vector(Math.cos(radians) * radius, 0, Math.sin(radians) * radius);
 			Location loc = start.clone();
 			loc.add(direction);
