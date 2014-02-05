@@ -114,6 +114,8 @@ ores:
 
 trees:
 - log
+- log_2
+- leaves_2
 - leaves
 - vine
 - cocoa
