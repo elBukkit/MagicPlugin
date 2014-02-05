@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.plugins.magic.wand;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -12,21 +14,25 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class WandOrganizer {
 	private final Wand wand;
+	private final Mage mage;
 
-	protected final static int inventoryOrganizeSize = 23;
+	protected final static int inventoryOrganizeSize = 22;
 	protected final static int inventoryOrganizeNewGroupSize = 16;
+	protected final static int favoriteCastCountThreshold = 20;
 
 	private int currentInventoryIndex = 0;
 	private int currentInventoryCount = 0;
 	private Inventory currentInventory = null;
 	
-	public WandOrganizer(Wand wand) {
+	public WandOrganizer(Wand wand, Mage mage) {
 		this.wand = wand;
+		this.mage = mage;
 	}
 
 	protected void nextInventory() {
@@ -78,21 +84,36 @@ public class WandOrganizer {
 		}
 		
 		MagicController master = wand.getMaster();
+		TreeMap<Long, List<String>> favoriteSpells = new TreeMap<Long, List<String>>();
 		Map<String, Collection<String>> groupedSpells = new TreeMap<String, Collection<String>>();
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {
-			Spell spell = master.getSpell(spellName);
+			Spell spell = mage == null ? master.getSpell(spellName) : mage.getSpell(spellName);
 			if (spell != null && !hotbarSpellNames.contains(spellName)) {
-				String category = spell.getCategory();
-				if (category == null || category.length() == 0) {
-					category = "default";
+				long castCount = spell.getCastCount();
+				if (castCount > favoriteCastCountThreshold) {
+					List<String> favorites = null;
+					if (!favoriteSpells.containsKey(castCount)) {
+						favorites = new ArrayList<String>();
+						favoriteSpells.put(castCount, favorites);
+					} else {
+						favorites = favoriteSpells.get(castCount);
+					}
+					favorites.add(spellName);
+					spell = null;
 				}
-				Collection<String> spellList = groupedSpells.get(category);
-				if (spellList == null) {
-					spellList = new TreeSet<String>();
-					groupedSpells.put(category, spellList);
+				if (spell != null) {
+					String category = spell.getCategory();
+					if (category == null || category.length() == 0) {
+						category = "default";
+					}
+					Collection<String> spellList = groupedSpells.get(category);
+					if (spellList == null) {
+						spellList = new TreeSet<String>();
+						groupedSpells.put(category, spellList);
+					}
+					spellList.add(spellName);
 				}
-				spellList.add(spellName);
 			}
 		}
 		
@@ -100,14 +121,29 @@ public class WandOrganizer {
 		for (String hotbarItemName : hotbarMaterialNames) {
 			wandMaterials.remove(hotbarItemName);
 		}
-		Set<String> materials = new TreeSet<String>();
-		materials.addAll(wandMaterials);
+		Map<String, String> materials = new TreeMap<String, String>();
+		for (String materialKey : wandMaterials) {
+			if (materialKey.equals(Wand.ERASE_MATERIAL_KEY) || materialKey.equals(Wand.COPY_MATERIAL_KEY) ||
+				materialKey.equals(Wand.CLONE_MATERIAL_KEY) || materialKey.equals(Wand.REPLICATE_MATERIAL_KEY)) {
+				materials.put(" " + materialKey, materialKey);
+			} else {
+				materials.put(materialKey, materialKey);
+			}
+		}
 		
 		wand.clearInventories();
 		currentInventoryIndex = 0;
 		currentInventoryCount = 0;
 		currentInventory = wand.getInventoryByIndex(currentInventoryIndex);
 		
+		// Put favorites first
+		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
+			for (String spellName : favorites) {
+				addToInventory(wand.createSpellItem(spellName));
+			}
+		}
+		
+		// Add unused spells by category
 		for (Collection<String> spellGroup : groupedSpells.values()) {
 		
 			// Start a new inventory for a new group if the previous inventory is over 2/3 full
@@ -123,7 +159,7 @@ public class WandOrganizer {
 		if (materials.size() > 0) {
 			nextInventory();
 			
-			for (String materialName : materials) {
+			for (String materialName : materials.values()) {
 				addToInventory(wand.createMaterialItem(materialName));
 			}
 		}

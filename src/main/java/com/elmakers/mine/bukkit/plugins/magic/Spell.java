@@ -1134,6 +1134,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		targetingComplete = true;
 	}
 
+	public long getCastCount()
+	{
+		return castCount;
+	}
+	
 	protected int getMaxRange()
 	{
 		return Math.min(maxRange, (int)(mage.getRangeMultiplier() * range));

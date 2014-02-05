@@ -82,6 +82,7 @@ public class Wand implements CostReducer {
 	
 	private int effectColor = 0;
 	private ParticleType effectParticle = null;
+	private boolean effectBubbles = true;
 	
 	private float defaultWalkSpeed = 0.2f;
 	private float defaultFlySpeed = 0.1f;
@@ -593,6 +594,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "has_inventory", Integer.toString((hasInventory ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "modifiable", Integer.toString((modifiable ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
+		InventoryUtils.setMeta(wandNode, "effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
 		if (effectParticle != null) {
 			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
 		}
@@ -640,6 +642,8 @@ public class Wand implements CostReducer {
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
+		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
+		
 		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
 	}
 
@@ -685,7 +689,7 @@ public class Wand implements CostReducer {
 					"hunger_regeneration", "uses", 
 					"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
 					"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
-					"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "materials", "spells"};
+					"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_bubbles", "materials", "spells"};
 		
 		for (String key : keys) {
 			String value = InventoryUtils.getMeta(wandNode, key);
@@ -1077,10 +1081,8 @@ public class Wand implements CostReducer {
 		} else {
 			if (description.length() > 0) {
 				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
-				if (owner.length() > 0) {
-					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + owner);
-				}
-			} else if (owner.length() > 0) {
+			}
+			if (owner.length() > 0) {
 				String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
 				lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
 			}
@@ -1350,6 +1352,10 @@ public class Wand implements CostReducer {
 	}
 	
 	public static Wand createWand(MagicController controller, String templateName) {
+		return createWand(controller, templateName, null);
+	}
+	
+	public static Wand createWand(MagicController controller, String templateName, Mage owner) {
 		Wand wand = new Wand(controller);
 		String wandName = Messages.get("wand.default_name");
 		String wandDescription = "";
@@ -1400,10 +1406,13 @@ public class Wand implements CostReducer {
 			wand.configureProperties(wandConfig);
 			
 			if (wandConfig.getBoolean("organize", false)) {
-				wand.organizeInventory();
+				wand.organizeInventory(owner);
 			}
 		}
 
+		if (owner != null) {	
+			wand.takeOwnership(owner.getPlayer());
+		}
 		wand.setDescription(wandDescription);
 		wand.setName(wandName);
 		
@@ -1435,6 +1444,10 @@ public class Wand implements CostReducer {
 			effectColor = newColor.asRGB();
 		}
 		effectColor = Math.max(effectColor, other.effectColor);
+		effectBubbles = effectBubbles || other.effectBubbles;
+		if (effectParticle == null) {
+			effectParticle = other.effectParticle;
+		}
 		
 		// Don't need mana if cost-free
 		if (costReduction >= 1) {
@@ -1512,7 +1525,15 @@ public class Wand implements CostReducer {
 		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
 		
 		if (wandConfig.containsKey("effect_color") && !safe) {
-			effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
+			try {
+				effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
+			} catch (Exception ex) {
+				
+			}
+		}
+		if (wandConfig.containsKey("effect_bubbles")) {
+			boolean _effectBubbles = (boolean)wandConfig.getBoolean("effect_bubbles", effectBubbles);
+			effectBubbles = safe ? _effectBubbles || effectBubbles : _effectBubbles;
 		}
 		if (wandConfig.containsKey("effect_particle") && !safe) {
 			parseParticleEffect(wandConfig.getString("effect_particle"));
@@ -1740,8 +1761,38 @@ public class Wand implements CostReducer {
 		updateActiveMaterial();
 		updateName();
 		
-		if (effectColor != 0) {
+		updateEffects();
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected void updateEffects() {
+		if (mage == null) return;
+		Player player = mage.getPlayer();
+		if (player == null) return;
+		
+		// Update Bubble effects effects
+		if (effectColor != 0 && effectBubbles) {
 			InventoryUtils.addPotionEffect(player, effectColor);
+		}
+		
+		// TODO: More customization?
+		if (effectParticle != null) {
+			Location effectLocation = player.getEyeLocation();
+			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 1, 8);
+			effect.setParticleType(effectParticle);
+			if (effectParticle == ParticleType.BLOCK_BREAKING) {
+				Block block = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
+				Material blockType = block.getType();
+				// Filter to prevent client crashing... hopefully this is enough?
+				if (blockType.isSolid()) {
+					effect.setParticleSubType("" + blockType.getId());
+					effect.setParticleCount(3);
+					effect.start();
+				}
+			} else {
+				effect.setParticleCount(1);
+				effect.start();
+			}
 		}
 	}
 	
@@ -1842,7 +1893,6 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void tick() {
 		if (mage == null) return;
 		
@@ -1865,29 +1915,7 @@ public class Wand implements CostReducer {
 			player.setFireTicks(0);
 		}
 		
-		// Update effects
-		if (effectColor != 0) {
-			InventoryUtils.addPotionEffect(player, effectColor);
-		}
-		// TODO: More customization?
-		if (effectParticle != null) {
-			Location effectLocation = player.getEyeLocation();
-			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 1, 8);
-			effect.setParticleType(effectParticle);
-			if (effectParticle == ParticleType.BLOCK_BREAKING) {
-				Block block = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
-				Material blockType = block.getType();
-				// Filter to prevent client crashing... hopefully this is enough?
-				if (blockType.isSolid()) {
-					effect.setParticleSubType("" + blockType.getId());
-					effect.setParticleCount(3);
-					effect.start();
-				}
-			} else {
-				effect.setParticleCount(1);
-				effect.start();
-			}
-		}
+		updateEffects();
 	}
 	
 	@Override
@@ -1951,8 +1979,15 @@ public class Wand implements CostReducer {
 		return xpRegeneration > 0;
 	}
 	
+	public void organizeInventory(Mage mage) {
+		WandOrganizer organizer = new WandOrganizer(this, mage);
+		organizer.organize();
+		openInventoryPage = 0;
+		saveState();
+	}
+	
 	public void organizeInventory() {
-		WandOrganizer organizer = new WandOrganizer(this);
+		WandOrganizer organizer = new WandOrganizer(this, null);
 		organizer.organize();
 		openInventoryPage = 0;
 		saveState();

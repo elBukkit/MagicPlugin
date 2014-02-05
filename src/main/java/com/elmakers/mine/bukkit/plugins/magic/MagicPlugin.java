@@ -630,7 +630,7 @@ public class MagicPlugin extends JavaPlugin
 		}
 		
 		wand.deactivate();
-		wand.organizeInventory();
+		wand.organizeInventory(mage);
 		wand.activate(mage);
 		mage.sendMessage("Wand reorganized");
 		if (sender != player) {
@@ -897,7 +897,7 @@ public class MagicPlugin extends JavaPlugin
 			currentWand.closeInventory();
 		}
 	
-		Wand wand = Wand.createWand(controller, wandName);
+		Wand wand = Wand.createWand(controller, wandName, mage);
 		if (wand == null) {
 			sender.sendMessage("No wand defined with key " + wandName);
 			return true;

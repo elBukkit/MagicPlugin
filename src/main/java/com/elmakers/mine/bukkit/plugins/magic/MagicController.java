@@ -1671,7 +1671,7 @@ public class MagicController implements Listener
 				Player player = (Player)event.getWhoClicked();
 				wand.takeOwnership(player, newName, true);
 				if (organizingEnabled) {
-					wand.organizeInventory();
+					wand.organizeInventory(getMage(player));
 				}
 				return;
 			}

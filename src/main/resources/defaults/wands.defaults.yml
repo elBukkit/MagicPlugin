@@ -1310,15 +1310,16 @@ wolf:
     haste: 1
     effect_color: '2EFEC8'
     effect_particle: magic_runes
+    effect_bubbles: false
     organize: true
     spells:
         - fling
         - blink
         - levitate
-        - torch
-        - day
-        - gather
         - disarm
+        - superblob
+        - day
+        - undo
         - sniper 
         - rewind
         - recurse
@@ -1327,8 +1328,9 @@ wolf:
         - superblast
         - storm
         - icbm
+        - torch
+        - gather
         - inferno
-        - superblob
         - superconvert
         - supershell
         - superpyramid
@@ -1356,7 +1358,6 @@ wolf:
         - absorb
         - alter
         - superalter
-        - undo
         - toss
         - curse
         - boon
@@ -1371,7 +1372,6 @@ wolf:
         - lava
         - stream
         - nuke
-        - light
         - recall
         - commit
         - familiar
