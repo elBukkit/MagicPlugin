@@ -592,7 +592,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "modifiable", Integer.toString((modifiable ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 		if (effectParticle != null) {
-			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
+			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.getParticleName());
 		}
 	}
 	
@@ -638,7 +638,7 @@ public class Wand implements CostReducer {
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
-		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
+		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.getParticleName()));
 	}
 
 	protected void parseParticleEffect(String effectParticleName) {
