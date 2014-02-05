@@ -10,6 +10,7 @@
  - Shrink and camera will now work on some blocks (cactus, tnt, chests, melons, logs and pumpkins) (MIGRATION NOTE)
  - Gather, push, push, force and disarm will ignore targets with Protection X
  - Add "Chop" spell. Also make "Box" sit on the target. (MIGRATION NOTE)
+ - Some improvements to replicate and clone, safety checks for attachable blocks
 
 ## 2.9.0
 

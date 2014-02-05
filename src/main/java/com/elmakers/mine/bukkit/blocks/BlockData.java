@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.

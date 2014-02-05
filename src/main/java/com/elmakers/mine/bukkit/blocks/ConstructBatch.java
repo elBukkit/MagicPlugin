@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.blocks;
 
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
@@ -21,6 +23,9 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 public class ConstructBatch extends VolumeBatch {
 	
+	// TODO: Global max-y config value
+	private final static int MAX_Y = 255;
+	
 	private final BlockList constructedBlocks = new BlockList();
 	private final Location center;
 	private final int radius;
@@ -31,7 +36,12 @@ public class ConstructBatch extends VolumeBatch {
 	private final boolean spawnFallingBlocks;
 	private Vector fallingBlockVelocity = null;
 	private boolean copyEntities = true;
+	private final BlockList attachedBlocks = new BlockList();
+	private final Set<Material> attachables;
+	private final Set<Material> attachablesWall;
 	
+	private boolean finishedNonAttached = false;
+	private int attachedBlockIndex = 0;
 	private Integer maxDY = null;
 	private Integer minDY = null;
 	
@@ -48,6 +58,8 @@ public class ConstructBatch extends VolumeBatch {
 		this.spawnFallingBlocks = spawnFallingBlocks;
 		this.mage = spell.getMage();
 		this.spell = spell;
+		this.attachables = mage.getController().getMaterialSet("attachable");
+		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
 	}
 	
 	public void setFallingBlockVelocity(Vector velocity) {
@@ -62,34 +74,88 @@ public class ConstructBatch extends VolumeBatch {
 		this.minDY = minDY;
 	}
 	
+	protected boolean canAttachTo(Material material) {
+		// Should I use my own list for this? This one seems good and efficient.
+		if (material.isTransparent()) return false;
+		
+		// Can't attach to any attachables either- some of these (like signs) aren't transparent.
+		return !attachables.contains(material);
+	}
+	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		int yBounds = radius;
-		if (maxDY != null || minDY != null) {
-			yBounds = Math.max(minDY == null ? radius : minDY, maxDY == null ? radius : maxDY);
-		}
-		yBounds = Math.min(yBounds,255);
-		
-		while (processedBlocks <= maxBlocks && x <= radius) {
-			if (!fillBlock(x, y, z)) {
-				return processedBlocks;
+		if (finishedNonAttached) {
+			while (attachedBlockIndex < attachedBlocks.size() && processedBlocks <  maxBlocks) {
+				BlockData attach = attachedBlocks.get(attachedBlockIndex);
+				Block block = attach.getBlock();
+				if (!block.getChunk().isLoaded()) {
+					block.getChunk().load();
+					return processedBlocks;
+				}
+				
+				// TODO: Port all this to fill... or move to BlockSpell?
+				
+				// Always check the the block underneath the target
+				Block underneath = block.getRelative(BlockFace.DOWN);
+				
+				boolean ok = canAttachTo(underneath.getType());
+				
+				// TODO : More specific checks: crops, potato, carrot, melon/pumpkin, cactus, etc.
+				
+				if (!ok) {
+					// Check for a wall attachable. These are assumed to also be ok
+					// on the ground.
+					Material material = attach.getMaterial();
+					boolean canAttachToWall = attachablesWall.contains(material);
+					if (canAttachToWall) {
+						final BlockFace[] faces = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH};
+						for (BlockFace face : faces) {
+							if (canAttachTo(block.getRelative(face).getType())) {
+								ok = true;
+								break;
+							}
+						}
+					}
+				}
+				
+				if (ok) {
+					constructedBlocks.add(block);
+					attach.modify(block);
+				}
+				
+				attachedBlockIndex++;
+			}
+			if (attachedBlockIndex >= attachedBlocks.size()) {
+				finish();
+			}
+		} else {
+			int yBounds = radius;
+			if (maxDY != null || minDY != null) {
+				yBounds = Math.max(minDY == null ? radius : minDY, maxDY == null ? radius : maxDY);
+			}
+			yBounds = Math.min(yBounds,255);
+			
+			while (processedBlocks <= maxBlocks && x <= radius) {
+				if (!fillBlock(x, y, z)) {
+					return processedBlocks;
+				}
+				
+				y++;
+				if (y > yBounds) {
+					y = 0;
+					z++;
+					if (z > radius) {
+						z = 0;
+						x++;
+					}
+				}
+				processedBlocks++;
 			}
 			
-			y++;
-			if (y > yBounds) {
-				y = 0;
-				z++;
-				if (z > radius) {
-					z = 0;
-					x++;
-				}
+			if (x > radius) 
+			{
+				finishedNonAttached = true;
 			}
-			processedBlocks++;
-		}
-		
-		if (x > radius) 
-		{
-			finish();
 		}
 		
 		return processedBlocks;
@@ -102,10 +168,24 @@ public class ConstructBatch extends VolumeBatch {
 			
 			MaterialBrush brush = spell.getMaterialBrush();
 			if (copyEntities && brush != null && brush.hasCloneTarget()) {
+				// TODO: Handle Non-spherical construction types!
+				int radiusSquared = radius * radius;
+				World targetWorld = center.getWorld();
+
+				// First clear all hanging entitiesfrom the area.
+				List<Entity> targetEntities = targetWorld.getEntities();
+				for (Entity entity : targetEntities) {
+					// Specific check only for what we copy. This could be more abstract.
+					if (entity instanceof Painting || entity instanceof ItemFrame) {
+						if (entity.getLocation().distanceSquared(center) <= radiusSquared) {
+							entity.remove();
+						}
+					}
+				}
+				
+				// Now copy all hanging entities from the source location
 				Location cloneLocation = brush.toTargetLocation(center);
 				World sourceWorld = cloneLocation.getWorld();
-				// TODO: Non-spherical types...
-				int radiusSquared = radius * radius;
 				List<Entity> entities = sourceWorld.getEntities();
 				for (Entity entity : entities) {
 					if (entity instanceof Painting) {
@@ -123,7 +203,7 @@ public class ConstructBatch extends VolumeBatch {
 							}
 						} catch (Exception ex) {
 							// controller.getLogger().warning(ex.getMessage());
-							center.getWorld().dropItemNaturally(targetLocation, new ItemStack(Material.PAINTING, 1));
+							targetWorld.dropItemNaturally(targetLocation, new ItemStack(Material.PAINTING, 1));
 						}
 					} else if (entity instanceof ItemFrame) {
 						if (entity.getLocation().distanceSquared(cloneLocation) > radiusSquared) continue;
@@ -145,9 +225,9 @@ public class ConstructBatch extends VolumeBatch {
 						} catch (Exception ex) {
 							// controller.getLogger().warning(ex.getMessage());
 							if (itemStack != null) {
-								center.getWorld().dropItemNaturally(targetLocation, itemStack);
+								targetWorld.dropItemNaturally(targetLocation, itemStack);
 							}
-							center.getWorld().dropItemNaturally(targetLocation, new ItemStack(Material.ITEM_FRAME, 1));
+							targetWorld.dropItemNaturally(targetLocation, new ItemStack(Material.ITEM_FRAME, 1));
 						}
 					}
 				}
@@ -222,25 +302,41 @@ public class ConstructBatch extends VolumeBatch {
 	@SuppressWarnings("deprecation")
 	public boolean constructBlock(int dx, int dy, int dz)
 	{
+		// Initial range checks, we skip everything if this is not sane.
 		if (minDY != null && dy < minDY) return true;
 		if (maxDY != null && dy > maxDY) return true;
 		
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
-		if (y < 0 || y > 255) return true;
 		
+		if (y < 0 || y > MAX_Y) return true;
+		
+		// Prepare material brush, it may update
+		// given the current target (clone, replicate)
 		Block block = center.getWorld().getBlockAt(x, y, z);
 		MaterialBrush brush = spell.getMaterialBrush();
 		brush.update(block.getLocation());
-		if (!block.getChunk().isLoaded()) {
-			block.getChunk().load();
-			return false;
-		}
+		
+		// Make sure the brush is ready, it may need to load chunks.
 		if (!brush.isReady()) {
 			brush.prepare();
 			return false;
 		}
+		
+		// Postpone attachable blocks to a second batch
+		if (attachables.contains(brush.getMaterial())) {
+			BlockData attachBlock = new BlockData(block);
+			attachBlock.updateFrom(brush);
+			attachedBlocks.add(attachBlock);
+			return true;
+		}
+		
+		if (!block.getChunk().isLoaded()) {
+			block.getChunk().load();
+			return false;
+		}
+		
 		if (!spell.isDestructible(block))
 		{
 			return true;

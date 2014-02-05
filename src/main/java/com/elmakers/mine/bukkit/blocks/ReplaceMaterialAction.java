@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.blocks;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
@@ -13,7 +16,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 {
 	protected Mage mage;
 	protected MaterialBrush brush;
-	protected MaterialList replaceable = new MaterialList();	
+	protected Set<Material> replaceable = new HashSet<Material>();
 	
 	private boolean spawnFallingBlocks = false;
 	private Vector fallingBlockVelocity = null;

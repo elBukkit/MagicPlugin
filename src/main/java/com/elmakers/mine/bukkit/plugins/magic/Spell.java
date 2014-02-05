@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,13 +27,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockAction;
-import com.elmakers.mine.bukkit.blocks.MaterialList;
+import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
-import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
 
 /**
  * 
@@ -91,7 +91,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private double                              xOffset, yOffset, zOffset;
 	private int                                 lastX, lastY, lastZ;
 	private int                                 targetX, targetY, targetZ;
-	private MaterialList                        targetThroughMaterials  = new MaterialList();
+	private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
 	private boolean                             reverseTargeting        = false;
 	private boolean								isActive				= false;
 	
@@ -235,7 +235,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 		
 		if (parameters.containsKey("target_through")) {
-			targetThroughMaterials = new MaterialList(parameters.getMaterials("target_through"));
+			targetThroughMaterials = parameters.getMaterials("target_through");
 		} else if (parameters.containsKey("transparent")) {
 			targetThroughMaterials.clear();
 			targetThroughMaterials.addAll(controller.getMaterialSet(parameters.getString("transparent")));

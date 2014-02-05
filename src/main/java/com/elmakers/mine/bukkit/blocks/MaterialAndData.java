@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utilities.borrowed;
+package com.elmakers.mine.bukkit.blocks;
 
 import java.util.Set;
 
@@ -28,6 +28,10 @@ public class MaterialAndData {
 	}
 	
 	public MaterialAndData(MaterialAndData other) {
+		updateFrom(other);
+	}
+	
+	public void updateFrom(MaterialAndData other) {
 		material = other.material;
 		data = other.data;
 		commandLine = other.commandLine;

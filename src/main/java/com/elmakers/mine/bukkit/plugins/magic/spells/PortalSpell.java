@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -7,7 +9,6 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.BoundingBox;
-import com.elmakers.mine.bukkit.blocks.MaterialList;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -55,7 +56,7 @@ public class PortalSpell extends Spell
 
 	protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)
 	{
-		MaterialList destructible = new MaterialList(mage.getController().getDestructibleMaterials());
+		Set<Material> destructible =mage.getController().getDestructibleMaterials();
 		BoundingBox container = new BoundingBox(centerBlock.getBlockX(), centerBlock.getBlockY(), centerBlock.getBlockZ(), centerBlock.getBlockX() + 2, centerBlock.getBlockY() + 3, centerBlock.getBlockZ() + 1);
 		container.fill(centerBlock.getWorld(), Material.PORTAL, destructible, blockList);
 	}

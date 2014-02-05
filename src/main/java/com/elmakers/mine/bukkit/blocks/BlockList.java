@@ -283,6 +283,15 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return blockList.size();
 	}
 
+	public BlockData get(int index)
+	{
+		if (blockList == null || index >= blockList.size())
+		{
+			return null;
+		}
+		return blockList.get(index);
+	}
+
 	public Object[] toArray()
 	{
 		if (blockList == null)

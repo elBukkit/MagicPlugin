@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.blocks;
 
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -142,7 +143,7 @@ public class BoundingBox
 	 * @param destructable
 	 *            A MaterialList describing which blocks are okay to replace
 	 */
-	public void fill(World world, Material material, MaterialList destructable)
+	public void fill(World world, Material material, Set<Material> destructable)
 	{
 		fill(world, material, destructable, null);
 	}
@@ -168,7 +169,7 @@ public class BoundingBox
 	 *            A BlockList, which will be filled with the blocks that are
 	 *            replaced
 	 */
-	public void fill(World world, Material material, MaterialList destructable, BlockList affected)
+	public void fill(World world, Material material, Set<Material> destructable, BlockList affected)
 	{
 		for (int x = min.getBlockX(); x < max.getBlockX(); x++)
 		{

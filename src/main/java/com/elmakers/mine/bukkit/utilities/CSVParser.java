@@ -7,8 +7,6 @@ import java.util.TreeSet;
 
 import org.bukkit.Material;
 
-import com.elmakers.mine.bukkit.blocks.MaterialList;
-
 public class CSVParser
 {
 	public List<Integer> parseIntegers(String csvList)
@@ -44,24 +42,6 @@ public class CSVParser
 	}
 
 	@SuppressWarnings("deprecation")
-	public void parseMaterials(MaterialList materials, String csvList)
-	{
-		String[] matIds = csvList.split(",");
-		for (String matId : matIds)
-		{
-			try
-			{
-				int typeId = Integer.parseInt(matId.trim());
-				materials.add(Material.getMaterial(typeId));
-			}
-			catch (NumberFormatException ex)
-			{
-
-			}
-		}
-	}
-
-	@SuppressWarnings("deprecation")
 	public void parseMaterials(Set<Material> materials, String csvList)
 	{
 		String[] matIds = csvList.split(",");
@@ -85,12 +65,5 @@ public class CSVParser
 		parseMaterials(materials, csvList);
 		return materials;
 
-	}
-
-	public MaterialList parseMaterials(String listId, String csvList)
-	{
-		MaterialList materials = new MaterialList(listId);
-		parseMaterials(materials, csvList);
-		return materials;
 	}
 }

@@ -143,6 +143,78 @@ destructible_mining:
 - leaves
 - sandstone
 
+# Materials that must attach to another material when cloning or replicating
+# These are done in a second pass so they attach properly after whatever they've
+# attached to has copied over.
+# This also prevents server issues when trying to clone items that will not "stick",
+# which results in spawning thousands (or more) of item entities when they break and drop.
+attachable:
+- snow
+- long_grass
+- dead_bush
+- yellow_flower
+- red_rose
+- brown_mushroom
+- red_mushroom
+- carrot
+- potato
+- crops
+- melon_stem
+- pumpkin_stem
+- wall_sign
+- sign_post
+- stone_button
+- lever
+- bed_block
+- piston_moving_piece
+- torch
+- redstone_wire
+- ladder
+- rails
+- stone_plate
+- iron_door_block
+- wood_plate
+- redstone_torch_off
+- redstone_torch_on
+- cactus
+- sugar_cane_block
+- diode_block_on
+- diode_block_off
+- vine
+- cocoa
+- tripwire
+- tripwire_hook
+- wood_button
+- gold_plate
+- iron_plate
+- redstone_comparator_off
+- redstone_comparator_on
+- daylight_detector
+- activator_rail
+- powered_rail
+- detector_rail
+- piston_sticky_base
+- piston_base
+- piston_extension
+
+# Things that can specifically be attached to walls. 
+# this will be a more complex check in construction, otherwise
+# for an attachable, only the floor block is checked.
+attachable_wall:
+- vine
+- piston_extension
+- wood_button
+- vine
+- cocoa
+- redstone_torch_off
+- redstone_torch_on
+- ladder
+- piston_moving_piece
+- torch
+- wall_sign
+- stone_button
+- lever
+
 # Which materials are always considered indestructible.
 # No spell will ever modify a block of this type.
 # (The exception being accidental destruction via explosion or

@@ -6,7 +6,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.MaterialAndData;
+import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 
 public class MaterialBrush extends MaterialAndData {
 	
