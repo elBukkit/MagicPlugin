@@ -5,8 +5,13 @@
  - Configurable effects system
    - Add visual effects to spawn and recall spells
  
- - Camera work on mobs?
  - Make shrink give you soemting random if no target? Work on chests, etc?
+ - Clarify text when enchanting a "full" wand
+
+ - Config updates don't work due to players having Spell objects already... ?
+ 
+ - Fix box spell
+
 
 ## For 2.9.2
 
@@ -36,6 +41,7 @@
  - Make spells usable without a player, clean up strong Player references
  - Add location, direction, target parameters to spell
  - Make the mine spell more flexible
+ - Config-driven wand particle effects
 
 NEAR-FUTURE STUFF:
 
@@ -60,6 +66,7 @@ NEW SPELLS:
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Biome modification (mega-frost). Chunk regeneration would be awesome.
+ - Fireball / grenade "rain" spells (Meteor Shower, Carpet Bomb?)
 
 WAND PROGRESSION:
 
