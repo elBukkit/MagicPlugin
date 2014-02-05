@@ -5,12 +5,9 @@
  - Configurable effects system
    - Add visual effects to spawn and recall spells
  
- - Make shrink give you soemting random if no target? Work on chests, etc?
  - Clarify text when enchanting a "full" wand
 
  - Config updates don't work due to players having Spell objects already... ?
- 
- - Fix box spell
 
 
 ## For 2.9.2

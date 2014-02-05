@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 2.9.1
+
+ - ShrunkenHeadSpell changed to ShrinkSpell
+ - MineSpell changed to DropSpell (and "chop" variant added)
+
 ## 2.9.0
 
  BIG BIG ONE:

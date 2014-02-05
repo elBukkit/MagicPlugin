@@ -333,6 +333,7 @@ random:
       neutron: 0,0,10,15
       wither: 5,10,20,30
       mine: 1,20,30,40
+      chop: 1,20,30,40
       tree: 5,20,35,45
       nuke: 0,0,0,1
       day: 0,5,10,30
@@ -688,6 +689,7 @@ farming:
         - weather
         - tree
         - alter
+        - chop
     materials:
         - soil
         - water
@@ -1245,6 +1247,7 @@ green:
         - stalactite
         - wolf
         - cat
+        - chop
     materials:
         - dirt
         - grass

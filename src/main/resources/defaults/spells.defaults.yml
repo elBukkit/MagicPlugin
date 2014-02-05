@@ -649,7 +649,7 @@ kamikazee:
         xp: 5
 superblast:
     icon: red_mushroom
-    category: engineering
+    category: mining
     class: ConstructSpell
     parameters:
         allow_max_range: false
@@ -657,9 +657,10 @@ superblast:
         speed: 3
         falling: true
         material: air
-        radius: 5
+        radius: 4
         type: sphere
         transparent: transparent_to_construction
+        destructible: destructible_mining
     costs:
         xp: 100
 convert:
@@ -729,7 +730,7 @@ supercollapse:
         xp: 100
 blast:
     icon: brown_mushroom
-    category: earthbending
+    category: mining
     class: ConstructSpell
     parameters:
         allow_max_range: false
@@ -739,6 +740,7 @@ blast:
         material: air
         radius: 2
         type: sphere
+        destructible: destructible_mining
     costs:
         xp: 10
 cloak:
@@ -836,18 +838,30 @@ tesseract:
     costs:
         xp: 2
 mine:
-    icon: gold_pickaxe
-    category: earthbending
-    class: MineSpell
+    icon: iron_pickaxe
+    category: mining
+    class: DropSpell
     parameters:
         allow_max_range: false
         range: 32
         recursion_depth: 16
+        drop: ores
+    costs:
+        xp: 10
+chop:
+    icon: iron_axe
+    category: farming
+    class: DropSpell
+    parameters:
+        allow_max_range: false
+        range: 32
+        recursion_depth: 64
+        drop: trees
     costs:
         xp: 10
 peek:
     icon: sugar_cane
-    category: earthbending
+    category: mining
     class: ConstructSpell
     parameters:
         allow_max_range: false
@@ -869,7 +883,7 @@ sandblast:
         allow_max_range: true
         range: 32
         material: sand
-        radius: '2'
+        radius: 2
         type: cuboid
         y_offset: 32
     costs:
@@ -1152,9 +1166,10 @@ box:
         allow_max_range: false
         range: 32
         fill: hollow
-        radius: 4
+        radius: 3
         type: cuboid
         transparent: transparent_to_construction
+        y_offset: 4
     costs:
         xp: 10
 superbox:
@@ -1225,7 +1240,7 @@ mail:
     costs:
         xp: 100
 tunnel:
-    icon: iron_pickaxe
+    icon: gold_pickaxe
     category: earthbending
     class: TunnelSpell
     parameters:

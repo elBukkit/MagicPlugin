@@ -331,6 +331,9 @@ spells:
     mine:
         name: Mine
         description: Mines and drops the targeted resources
+    chop:
+        name: Chop
+        description: Fell a tree in one cast
     peek:
         name: Peek
         description: Temporarily glass the target surface
