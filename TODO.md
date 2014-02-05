@@ -81,7 +81,6 @@ OTHER STUFF:
  - Organize inventory by spell usage (favorites page)
  - Complete work on tab completion
  - Separate material list for "super" building materials?
- - Scale fling and levitate falling effects based on distance fallen
  
  - Fix up alter spell, remove id-based lists
  - urlmaps.yml got truncated?

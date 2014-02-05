@@ -26,8 +26,10 @@ public class LevitateSpell extends Spell
     private final static int effectSpeed = 2;
     private final static int effectPeriod = 2;
     private final static int maxEffectRange = 16;
-    private final static int maxRingEffectRange = 4;
-    private final static int ringEffectAmount = 6;
+    private final static int minRingEffectRange = 1;
+    private final static int maxRingEffectRange = 8;
+    private final static int maxDamageAmount = 150;
+    private final static int ringEffectAmount = 8;
 	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -103,7 +105,10 @@ public class LevitateSpell extends Spell
 			Location effectLocation = event.getEntity().getLocation();
 			Block block = event.getEntity().getLocation().getBlock();
 			block = block.getRelative(BlockFace.DOWN);
-			int effectRange = Math.min(getMaxRange(), maxRingEffectRange / effectSpeed);
+			int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
+			int effectRange = Math.min(maxRingEffectRange, ringEffectRange);
+			effectRange = Math.min(getMaxRange(), effectRange / effectSpeed);
+			
 			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, effectRange, ringEffectAmount);
 			effect.setEffect(Effect.STEP_SOUND);
 			effect.setData(block.getTypeId());
