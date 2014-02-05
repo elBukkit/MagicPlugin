@@ -1316,12 +1316,13 @@ wolf:
         - fling
         - blink
         - levitate
-        - disarm
         - superblob
         - day
         - undo
-        - sniper 
+        - disarm
+        - gather
         - rewind
+        - sniper 
         - recurse
         - kaboom
         - fireball
@@ -1329,7 +1330,6 @@ wolf:
         - storm
         - icbm
         - torch
-        - gather
         - inferno
         - superconvert
         - supershell

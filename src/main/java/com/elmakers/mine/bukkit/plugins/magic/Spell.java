@@ -583,15 +583,33 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public Location tryFindPlaceToStand(Location targetLoc, int minY, int maxY)
 	{
-		if (!targetLoc.getBlock().getChunk().isLoaded()) return targetLoc;
-		
-		if (isSafeLocation(targetLoc)) return targetLoc;
-		Location location = findPlaceToStand(targetLoc, true, minY, maxY);
-		
-		if (location == null) {
-			location = findPlaceToStand(targetLoc, false, minY, maxY);
-		}
+		Location location = findPlaceToStand(targetLoc, minY, maxY);
 		return location == null ? targetLoc : location;
+	}
+	
+	public Location findPlaceToStand(Location targetLoc, int minY, int maxY)
+	{
+		if (!targetLoc.getBlock().getChunk().isLoaded()) return null;
+		
+		int targetY = targetLoc.getBlockY();
+		if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) return targetLoc;
+		Location location = null;
+		if (targetY < minY) {
+			location = targetLoc.clone();
+			location.setY(minY);
+			location = findPlaceToStand(location, true, minY, maxY);
+		} else if (targetY > maxY) {
+			location = targetLoc.clone();
+			location.setY(maxY);
+			location = findPlaceToStand(location, false, minY, maxY);
+		} else {
+			location = findPlaceToStand(targetLoc, true, minY, maxY);
+			
+			if (location == null) {
+				location = findPlaceToStand(targetLoc, false, minY, maxY);
+			}
+		}
+		return location;
 	}
 	
 	public Location findPlaceToStand(Location target, boolean goUp)
@@ -605,7 +623,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		// search for a spot to stand
 		Location targetLocation = target.clone();
-		while (minY < targetLocation.getY() && targetLocation.getY() < maxY)
+		while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY)
 		{
 			Block block = targetLocation.getBlock();
 			if 

@@ -48,7 +48,7 @@ public class PhaseSpell extends Spell
 			worldName = worldName + "_nether";
 			World targetWorld = Bukkit.getWorld(worldName);
 			if (targetWorld != null) {
-				targetLocation = new Location(targetWorld, playerLocation.getX() / 8, playerLocation.getY(), playerLocation.getZ() / 8);
+				targetLocation = new Location(targetWorld, playerLocation.getX() / 8, Math.min(125, playerLocation.getY()), playerLocation.getZ() / 8);
 			}
 		}
 		
@@ -84,11 +84,17 @@ public class PhaseSpell extends Spell
 			Location playerLocation = player.getLocation();
 			targetLocation.setYaw(playerLocation.getYaw());
 			targetLocation.setPitch(playerLocation.getPitch());
-			player.teleport(tryFindPlaceToStand(targetLocation, 4, maxY));
-			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-			EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);
-			playerLocation.getWorld().playSound(targetLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+			
+			Location destination = tryFindPlaceToStand(targetLocation, 4, maxY);
+			
+			// TODO : Failure notification? Sounds at least? The async nature is difficult.
+			if (destination != null) {
+				player.teleport(destination);
+				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
+				playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+				EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);
+				playerLocation.getWorld().playSound(targetLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
+			}
 		}
 	}
 }
