@@ -338,6 +338,7 @@ random:
       day: 0,5,10,30
       night: 0,0,1,5
       time: 0,0,0,1
+      disarm: 0,0,0,1
       weather: 0,0,0,1
     material_count:
       0: 50, 20, 20,    0
@@ -789,6 +790,7 @@ elder:
         - neutron
         - laser
         - day
+        - disarm
     materials:
         - water
         - lava

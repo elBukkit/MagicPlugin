@@ -68,6 +68,12 @@ public class DisarmSpell extends Spell
 		if (Wand.isWand(stack) && entity instanceof Player) {
 			Player targetPlayer = (Player)entity;
 			Mage targetMage = controller.getMage(targetPlayer);
+			
+			// Check for protected players (admins, generally...)
+			if (targetMage.isProtected()) {
+				return SpellResult.NO_TARGET;
+			}
+			
 			if (targetMage != null && targetMage.getActiveWand() != null) {
 				targetMage.getActiveWand().deactivate();
 			}

@@ -5,8 +5,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
@@ -41,6 +43,15 @@ public class ForceSpell extends Spell
 				{
 					releaseTarget();
 				}
+				
+				// Check for protected Mages
+				if (targetEntity != null && targetEntity instanceof Player) {
+					Mage targetMage = controller.getMage((Player)targetEntity);
+					// Check for protected players (admins, generally...)
+					if (targetMage.isProtected()) {
+						releaseTarget();
+					}
+				}
 			}
 		}
 		
@@ -54,12 +65,22 @@ public class ForceSpell extends Spell
 				return SpellResult.NO_TARGET;
 			}
 
+			targetEntity = (LivingEntity)target.getEntity();
+			
+			// Check for protected Mages
+			if (targetEntity instanceof Player) {
+				Mage targetMage = controller.getMage((Player)targetEntity);
+				// Check for protected players (admins, generally...)
+				if (targetMage.isProtected()) {
+					return SpellResult.NO_TARGET;
+				}
+			}
+
 			effectColor = mage.getEffectColor();
 			if (effectColor == null) {
 				effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
 			}
 
-			targetEntity = (LivingEntity)target.getEntity();
 			if (effectColor != null) {
 				InventoryUtils.addPotionEffect(targetEntity, effectColor);
 			}

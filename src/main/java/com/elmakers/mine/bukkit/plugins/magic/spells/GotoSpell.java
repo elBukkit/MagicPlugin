@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -76,6 +77,12 @@ public class GotoSpell extends Spell
 		{
 			if (d != fromPlayer)
 			{
+				Mage targetMage = controller.getMage((Player)d);
+				// Check for protected players (admins, generally...)
+				if (targetMage.isProtected()) {
+					continue;
+				}
+				
 				double dd = d.getLocation().distanceSquared(fromPlayer.getLocation());
 				if (destinationPlayer == null || dd > targetToDestinationDistance)
 				{

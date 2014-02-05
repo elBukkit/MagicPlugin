@@ -6,12 +6,14 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectRing;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -144,6 +146,15 @@ public class PushSpell extends Spell
 
 	protected void forceEntity(Entity target, double multiplier, Location from, Location to, int magnitude)
 	{
+		// Check for protected Mages
+		if (target instanceof Player) {
+			Mage targetMage = controller.getMage((Player)target);
+			// Check for protected players (admins, generally...)
+			if (targetMage.isProtected()) {
+				return;
+			}
+		}
+		
 		magnitude = (int)((double)magnitude * multiplier);
 		Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
 		Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
