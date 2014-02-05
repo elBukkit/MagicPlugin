@@ -1309,7 +1309,7 @@ wolf:
     power: 5
     haste: 1
     effect_color: '2EFEC8'
-    effect_particle: enchantmenttable
+    effect_particle: magic_runes
     organize: true
     spells:
         - fling

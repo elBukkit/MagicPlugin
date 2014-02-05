@@ -18,6 +18,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.TreeSpecies;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -592,7 +594,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "modifiable", Integer.toString((modifiable ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 		if (effectParticle != null) {
-			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.getParticleName());
+			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
 		}
 	}
 	
@@ -638,13 +640,20 @@ public class Wand implements CostReducer {
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
-		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.getParticleName()));
+		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
 	}
 
 	protected void parseParticleEffect(String effectParticleName) {
 		if (effectParticleName.length() > 0) {
+			String testName = effectParticleName.toUpperCase().replace("_", "");
 			try {
-				effectParticle = ParticleType.fromName(effectParticleName, null);
+				for (ParticleType testType : ParticleType.values()) {
+					String testTypeName = testType.name().replace("_", "");
+					if (testTypeName.equals(testName)) {
+						effectParticle = testType;
+						break;
+					}
+				}
 			} catch (Exception ex) {
 				effectParticle = null;
 			}
@@ -1833,6 +1842,7 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void tick() {
 		if (mage == null) return;
 		
@@ -1864,8 +1874,19 @@ public class Wand implements CostReducer {
 			Location effectLocation = player.getEyeLocation();
 			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 1, 8);
 			effect.setParticleType(effectParticle);
-			effect.setParticleCount(1);
-			effect.start();
+			if (effectParticle == ParticleType.BLOCK_BREAKING) {
+				Block block = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
+				Material blockType = block.getType();
+				// Filter to prevent client crashing... hopefully this is enough?
+				if (blockType.isSolid()) {
+					effect.setParticleSubType("" + blockType.getId());
+					effect.setParticleCount(3);
+					effect.start();
+				}
+			} else {
+				effect.setParticleCount(1);
+				effect.start();
+			}
 		}
 	}
 	
