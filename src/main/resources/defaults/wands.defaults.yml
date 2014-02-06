@@ -353,6 +353,7 @@ random:
       copy: 0,0,0,1
       clone: 0,0,0,1
       replicate: 0,0,0,1
+      map: 0,0,0,1
       lava: 0,0,15,30
       water: 0,0,30,90
       stone: 50,70,80,100
@@ -641,6 +642,7 @@ engineer:
         - copy
         - clone
         - replicate
+        - map
         - glowstone
         - sand
         - cobblestone
@@ -798,6 +800,7 @@ elder:
         - laser
         - day
         - disarm
+        - camera
     materials:
         - water
         - lava
@@ -809,6 +812,7 @@ elder:
         - copy
         - clone
         - replicate
+        - map
 air:
     modifiable: true
     protection: 0.2
@@ -1393,6 +1397,7 @@ wolf:
         - erase
         - copy
         - clone
+        - map
         - replicate
         - soul_sand
         - wool
