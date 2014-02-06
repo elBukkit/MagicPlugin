@@ -4,12 +4,14 @@ import java.util.Collection;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.effects.EffectRing;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -50,6 +52,17 @@ public class PotionEffectSpell extends Spell
 			effect.setInvert(true);
 			effect.start();
 		} else {
+			
+			// Check for superprotected mages
+			if (targetEntity instanceof Player) {
+				Mage targetMage = controller.getMage((Player)targetEntity);
+				
+				// Check for protected players
+				if (targetMage.isSuperProtected()) {
+					return SpellResult.NO_TARGET;
+				}
+			}
+			
 			Location effectLocation = getPlayer().getEyeLocation();
 			Vector effectDirection = effectLocation.getDirection();
 			EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, 32);

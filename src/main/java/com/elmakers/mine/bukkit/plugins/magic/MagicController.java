@@ -1909,7 +1909,7 @@ public class MagicController implements Listener
 			int level = event.getExpLevelCost();
 			Wand wand = new Wand(this, event.getItem());
 			if (!WandLevel.randomizeWand(wand, true, level)) {
-				event.getEnchanter().sendMessage("No more spells can be added to that wand!");
+				event.getEnchanter().sendMessage("This wand is fully enchanted (for now)");
 			}
 		}
 	}

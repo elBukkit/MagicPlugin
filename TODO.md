@@ -4,11 +4,8 @@
 
  - Configurable effects system
    - Add visual effects to spawn and recall spells
- 
- - Clarify text when enchanting a "full" wand
 
  - Config updates don't work due to players having Spell objects already... ?
-
 
 ## For 2.9.2
 
