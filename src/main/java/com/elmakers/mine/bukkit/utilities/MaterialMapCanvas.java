@@ -12,7 +12,6 @@ import org.bukkit.map.MapFont;
 import org.bukkit.map.MapFont.CharacterSprite;
 import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapView;
-import org.bukkit.util.Vector;
 
 public class MaterialMapCanvas implements MapCanvas {
 
@@ -45,24 +44,34 @@ public class MaterialMapCanvas implements MapCanvas {
 		if (color != MapPalette.TRANSPARENT && !dyeColors.containsKey(color)) {
 			java.awt.Color mapColor = MapPalette.getColor(color);
 			Color targetColor = Color.fromRGB(mapColor.getRed(), mapColor.getGreen(), mapColor.getBlue());
-			Vector targetVector = new Vector(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue());
 			
 			// Find best dyeColor
 			DyeColor bestDyeColor = null;
-			Double distanceSquared = null;
+			Double bestDistance = null;
 			for (DyeColor testDyeColor : DyeColor.values()) {
-				Vector testVector = new Vector(testDyeColor.getColor().getRed(), testDyeColor.getColor().getGreen(), testDyeColor.getColor().getBlue());
-				double testDistanceSquared = testVector.distanceSquared(targetVector);
-				if (distanceSquared == null || testDistanceSquared < distanceSquared) {
-					distanceSquared = testDistanceSquared;
+				Color testColor = testDyeColor.getColor();
+				double testDistance = getDistance(testColor, targetColor);
+				if (bestDistance == null || testDistance < bestDistance) {
+					bestDistance = testDistance;
 					bestDyeColor = testDyeColor;
-					if (distanceSquared == 0) break;
+					if (testDistance == 0) break;
 				}
 			}
 			
 			dyeColors.put(color, bestDyeColor);
 		}
 	}
+	
+	private static double getDistance(Color c1, Color c2) {
+        double rmean = (c1.getRed() + c2.getRed()) / 2.0;
+        double r = c1.getRed() - c2.getRed();
+        double g = c1.getGreen() - c2.getGreen();
+        int b = c1.getBlue() - c2.getBlue();
+        double weightR = 2 + rmean / 256.0;
+        double weightG = 4.0;
+        double weightB = 2 + (255 - rmean) / 256.0;
+        return weightR * r * r + weightG * g * g + weightB * b * b;
+    }
 
 	public byte getPixel(int x, int y) {
 		if (x < 0 || y < 0 || x > CANVAS_WIDTH || y > CANVAS_HEIGHT) return 0;
