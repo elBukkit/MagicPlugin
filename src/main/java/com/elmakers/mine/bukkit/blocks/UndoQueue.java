@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.blocks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +13,6 @@ import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.blocks.CleanupBlocksTask;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;

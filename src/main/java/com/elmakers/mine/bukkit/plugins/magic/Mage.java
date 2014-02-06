@@ -28,10 +28,10 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.UndoBatch;
+import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
-import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Mage implements CostReducer
@@ -671,8 +671,12 @@ public class Mage implements CostReducer
 					}
 				}
 			}
+			
+			if (configNode.containsKey("brush")) {
+				brush.load(configNode.getNode("brush"));
+			}
 		} catch (Exception ex) {
-			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
+			controller.getPlugin().getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
 		}		
 	}
 	
@@ -680,6 +684,9 @@ public class Mage implements CostReducer
 	{
 		try {
 			configNode.setProperty("last_death_location", lastDeathLocation);
+			
+			ConfigurationNode brushNode = configNode.createChild("brush");
+			brush.save(brushNode);
 			
 			getUndoQueue().save(controller, configNode);
 			ConfigurationNode spellNode = configNode.createChild("spells");

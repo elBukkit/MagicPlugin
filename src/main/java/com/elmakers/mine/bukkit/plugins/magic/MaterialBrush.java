@@ -14,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MaterialBrush extends MaterialAndData {
 	
@@ -196,6 +197,42 @@ public class MaterialBrush extends MaterialAndData {
 			if (!block.getChunk().isLoaded()) {
 				block.getChunk().load(true);
 			}
+		}
+	}
+
+	public void load(ConfigurationNode node)
+	{
+		try {
+			cloneLocation = node.getLocation("clone_location");
+			cloneTarget = node.getLocation("clone_target");
+			materialTarget = node.getLocation("material_target");
+			mapId = (short)node.getInt("map_id", mapId);
+			material = node.getMaterial("material", material);
+			data = (byte)node.getInt("data", data);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			controller.getPlugin().getLogger().warning("Failed to load brush data: " + ex.getMessage());
+		}
+	}
+	
+	public void save(ConfigurationNode node)
+	{
+		try {
+			if (cloneLocation != null) {
+				node.setProperty("clone_location", cloneLocation);
+			}
+			if (cloneTarget != null) {
+				node.setProperty("clone_target", cloneTarget);
+			}
+			if (materialTarget != null) {
+				node.setProperty("material_target", materialTarget);
+			}
+			node.setProperty("map_id", (int)mapId);
+			node.setProperty("material", material);
+			node.setProperty("data", data);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			controller.getLogger().warning("Failed to save brush data: " + ex.getMessage());
 		}
 	}
 }

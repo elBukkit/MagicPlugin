@@ -28,7 +28,6 @@
   - BlockData tracks only the first recorded materialdata, commit will replace
  - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
  - Fix wand inventory glitches and special-cases
- - Persist material brush
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc.
  
