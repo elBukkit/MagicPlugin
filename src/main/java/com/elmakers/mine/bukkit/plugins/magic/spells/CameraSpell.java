@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -57,24 +59,32 @@ public class CameraSpell extends Spell
 				if (target != null)
 				{
 					if (target.isEntity()) {
-						if (target instanceof Player) {
-							playerName = ((Player)target.getEntity()).getName();
+						Entity targetEntity = target.getEntity();
+						if (targetEntity instanceof Player) {
+							playerName = ((Player)targetEntity).getName();
 						} else {
-							playerName = getMobSkin(target.getEntity().getType());
+							playerName = getMobSkin(targetEntity.getType());
 							if (playerName != null) {
-								metaName = target.getEntity().getType().getName();
+								metaName = targetEntity.getType().getName();
 							}
 						}
 					} else {
-						playerName = getBlockSkin(target.getBlock().getType());
+						Block targetBlock = target.getBlock();
+						if (targetBlock == null) {
+							return SpellResult.NO_TARGET;
+						}
+						playerName = getBlockSkin(targetBlock.getType());
 						if (playerName != null) {
 							metaName = target.getBlock().getType().name();
 						}
 					}
 				}
 				
-				if (playerName == null && player != null)
+				if (playerName == null)
 				{
+					if (player == null) {
+						return SpellResult.NO_TARGET;
+					}
 					castMessage("Selfie!");
 					playerName = player.getName();
 				} else {
