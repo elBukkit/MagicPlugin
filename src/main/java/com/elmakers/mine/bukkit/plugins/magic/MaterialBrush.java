@@ -179,7 +179,9 @@ public class MaterialBrush extends MaterialAndData {
 				Vector diff = target.toVector().subtract(cloneTarget.toVector());
 				
 				// TODO : Different orientations
-				DyeColor mapColor = mapCanvas.getDyeColor(Math.abs(diff.getBlockX()) % MaterialMapCanvas.CANVAS_WIDTH, Math.abs(diff.getBlockZ()) % MaterialMapCanvas.CANVAS_HEIGHT);
+				DyeColor mapColor = mapCanvas.getDyeColor(
+						Math.abs(diff.getBlockX() + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
+						Math.abs(diff.getBlockZ() + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
 				if (mapColor != null) {
 					updateTo(mapMaterialBase, mapColor.getData());
 				} else {
