@@ -773,4 +773,8 @@ public class Mage implements CostReducer
 		}
 		return mageWands;
 	}
+	
+	public void setLastHeldMapId(short mapId) {
+		brush.setMapId(mapId);
+	}
 }

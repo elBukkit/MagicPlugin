@@ -71,7 +71,7 @@ public class IterateSpell extends BrushSpell
 
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(target.getLocation());
-		buildWith.update(target.getLocation());
+		buildWith.update(mage, target.getLocation());
 		BlockList iteratedBlocks = new BlockList();
 		for (int dr = 0; dr <= radius; dr++) {
 			int spokes = 1;
@@ -129,7 +129,7 @@ public class IterateSpell extends BrushSpell
 					{
 						iteratedBlocks.add(currentTarget);
 		
-						buildWith.update(currentTarget.getLocation());
+						buildWith.update(mage, currentTarget.getLocation());
 		
 						if (incrementData) {
 							byte data = buildWith.getData();

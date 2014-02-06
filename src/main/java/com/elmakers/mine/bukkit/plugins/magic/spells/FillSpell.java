@@ -49,7 +49,6 @@ public class FillSpell extends BrushSpell
 		MaterialBrush buildWith = getMaterialBrush();
 
 		Material material = buildWith.getMaterial();
-		byte data = buildWith.getData();
 
 		if (recurse)
 		{
@@ -99,8 +98,10 @@ public class FillSpell extends BrushSpell
 			BlockList filledBlocks = new BlockList();
 
 			filledBlocks.add(targetBlock);
-			targetBlock.setType(material);
-			targetBlock.setData(data);
+
+			buildWith.setTarget(targetBlock.getLocation());
+			buildWith.update(mage, targetBlock.getLocation());
+			buildWith.modify(targetBlock);
 			
 			controller.updateBlock(targetBlock);
 

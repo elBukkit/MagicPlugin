@@ -1,12 +1,19 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.map.MapRenderer;
+import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
+import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
 
 public class MaterialBrush extends MaterialAndData {
 	
@@ -14,7 +21,8 @@ public class MaterialBrush extends MaterialAndData {
 		MATERIAL,
 		COPY,
 		CLONE,
-		REPLICATE
+		REPLICATE,
+		MAP
 	};
 	
 	private BrushMode mode = BrushMode.MATERIAL;
@@ -22,6 +30,9 @@ public class MaterialBrush extends MaterialAndData {
 	private Location cloneTarget = null;
 	private Location materialTarget = null;
 	private final MagicController controller;
+	private short mapId = -1;
+	private MaterialMapCanvas mapCanvas = null;
+	private Material mapMaterialBase = Material.STAINED_CLAY;
 	
 	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
 		super(material, data);
@@ -44,6 +55,15 @@ public class MaterialBrush extends MaterialAndData {
 		this.setMaterial(Material.AIR);
 	}
 	
+	public void enableMap() {
+		this.mode = BrushMode.MAP;
+		if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
+			|| this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
+			|| this.material == Material.CARPET) {
+			this.mapMaterialBase = this.material;
+		}
+	}
+	
 	public void enableReplication() {
 		this.mode = BrushMode.REPLICATE;
 	}
@@ -52,9 +72,18 @@ public class MaterialBrush extends MaterialAndData {
 		this.data = data;
 	}
 	
+	public void setMapId(short mapId) {
+		this.mapCanvas = null;
+		this.mapId = mapId;
+	}
+	
 	public void setCloneLocation(Location cloneFrom) {
 		cloneLocation = cloneFrom;
 		materialTarget = cloneFrom;
+		cloneTarget = null;
+	}
+	
+	public void clearCloneTarget() {
 		cloneTarget = null;
 	}
 	
@@ -76,7 +105,7 @@ public class MaterialBrush extends MaterialAndData {
 	}
 
 	public void setTarget(Location target) {
-		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE) {
+		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP) {
 			if (cloneTarget == null || mode == BrushMode.CLONE || 
 				!target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
 				cloneTarget = target;
@@ -110,7 +139,8 @@ public class MaterialBrush extends MaterialAndData {
 		return translated;
 	}
 	
-	public boolean update(Location target) {
+	@SuppressWarnings("deprecation")
+	public boolean update(Mage fromMage, Location target) {
 		if (cloneLocation != null && (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)) {
 			if (cloneTarget == null) cloneTarget = target;
 			materialTarget = toTargetLocation(target);
@@ -119,6 +149,42 @@ public class MaterialBrush extends MaterialAndData {
 			if (!block.getChunk().isLoaded()) return false;
 
 			updateFrom(block, controller.getRestrictedMaterials());
+		}
+		
+		if (mode == BrushMode.MAP && mapId >= 0) {
+			if (mapCanvas == null&& fromMage != null) {
+				
+				try {
+					MapView mapView = Bukkit.getMap(mapId);
+					if (mapView != null) {
+						List<MapRenderer> renderers = mapView.getRenderers();
+						if (renderers.size() > 0) {
+							mapCanvas = new MaterialMapCanvas();
+							MapRenderer renderer = renderers.get(0);
+							// This is mainly here as a hack for my own urlmaps that do their own caching
+							// Bukkit *seems* to want to do caching at the MapView level, but looking at the code-
+							// they cache but never use the cache?
+							// Anyway render gets called constantly so I'm not re-rendering on each render... but then
+							// how to force a render to a canvas? So we re-initialize.
+							renderer.initialize(mapView);
+							renderer.render(mapView, mapCanvas, fromMage.getPlayer());
+						}
+					}
+				} catch (Exception ex) {
+					
+				}
+			}
+			if (mapCanvas != null && cloneTarget != null) {
+				Vector diff = target.toVector().subtract(cloneTarget.toVector());
+				
+				// TODO : Different orientations
+				DyeColor mapColor = mapCanvas.getDyeColor(Math.abs(diff.getBlockX()) % MaterialMapCanvas.CANVAS_WIDTH, Math.abs(diff.getBlockZ()) % MaterialMapCanvas.CANVAS_HEIGHT);
+				if (mapColor != null) {
+					updateTo(mapMaterialBase, mapColor.getData());
+				} else {
+					updateTo(Material.AIR, (byte)0);
+				}
+			}
 		}
 		
 		return true;

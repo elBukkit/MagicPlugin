@@ -14,6 +14,7 @@
  - Split alter up into SuperAlter and Alter
  - Some improvements to wand organization and owner display
  - Fix facial accessories not showing up in player portraits.
+ - Add "map" material brush. Experimental :)
 
 ## 2.9.0
 

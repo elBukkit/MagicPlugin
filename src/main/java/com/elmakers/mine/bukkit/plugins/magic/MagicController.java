@@ -1010,6 +1010,7 @@ public class MagicController implements Listener
 		Wand.EraseMaterial = properties.getMaterial("erase_item", Wand.EraseMaterial);
 		Wand.CloneMaterial = properties.getMaterial("clone_item", Wand.CloneMaterial);
 		Wand.ReplicateMaterial = properties.getMaterial("replicate_item", Wand.ReplicateMaterial);
+		Wand.MapMaterial = properties.getMaterial("map_item", Wand.MapMaterial);
 		Wand.EnchantableWandMaterial = properties.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings
@@ -1143,9 +1144,7 @@ public class MagicController implements Listener
 				activeWand.setActiveSpell(spell.getKey());
 			} else {
 				Material material = icon.getType();
-				if (material.isBlock() || 
-					material == Wand.EraseMaterial || material == Wand.CopyMaterial || 
-					material == Wand.CloneMaterial || material == Wand.ReplicateMaterial) {
+				if (material.isBlock() || Wand.isSpecialMaterialIcon(material)) {
 					activeWand.activateMaterial(material, icon.getData().getData());
 				}
 			}
@@ -1186,6 +1185,14 @@ public class MagicController implements Listener
 		if (next != null && Wand.isWand(next)) {
 			Wand newWand = new Wand(this, next);
 			newWand.activate(mage);
+		}
+		
+		// Check for map selection if no wand is active
+		activeWand = mage.getActiveWand();
+		if (activeWand == null && next != null) {
+			if (next.getType() == Material.MAP) {
+				mage.setLastHeldMapId(next.getDurability());
+			}
 		}
 	}
 

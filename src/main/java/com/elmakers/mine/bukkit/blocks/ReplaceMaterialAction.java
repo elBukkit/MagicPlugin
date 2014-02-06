@@ -63,7 +63,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 			byte previousData = block.getData();
 			
 			if (brush.isDifferent(block)) {
-				brush.update(block.getLocation());
+				brush.update(mage, block.getLocation());
 				brush.modify(block);
 				mage.getController().updateBlock(block);
 				

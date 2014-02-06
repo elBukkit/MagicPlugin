@@ -70,7 +70,7 @@ public class FillBatch extends VolumeBatch {
 		
 		while (processedBlocks <= maxBlocks && ix < absx) {
 			Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
-			brush.update(block.getLocation());
+			brush.update(mage, block.getLocation());
 			if (!block.getChunk().isLoaded()) {
 				block.getChunk().load();
 				return processedBlocks;

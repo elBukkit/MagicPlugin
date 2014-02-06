@@ -123,8 +123,7 @@ public class WandOrganizer {
 		}
 		Map<String, String> materials = new TreeMap<String, String>();
 		for (String materialKey : wandMaterials) {
-			if (materialKey.equals(Wand.ERASE_MATERIAL_KEY) || materialKey.equals(Wand.COPY_MATERIAL_KEY) ||
-				materialKey.equals(Wand.CLONE_MATERIAL_KEY) || materialKey.equals(Wand.REPLICATE_MATERIAL_KEY)) {
+			if (Wand.isSpecialMaterialKey(materialKey)) {
 				materials.put(" " + materialKey, materialKey);
 			} else {
 				materials.put(materialKey, materialKey);

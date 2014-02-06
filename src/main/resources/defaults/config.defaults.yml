@@ -161,6 +161,10 @@ clone_item: nether_stalk
 # Replicate works like clone, but will sample a moving area, allowing you to "paint"
 # in a section of the world across multiple spell casts.
 replicate_item: pumpkin_seeds
+# The map material brush will fill in blocks from the last Map item you held. (Pixel art)
+# It will use stained clay, wool or stained glass. The default is stained clay, but it will
+# use one of the other types if it was the last material on your brush.
+map_item: map
 
 # How many casts to track in the undo queue
 undo_depth: 64

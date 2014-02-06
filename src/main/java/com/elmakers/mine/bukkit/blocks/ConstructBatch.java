@@ -316,7 +316,7 @@ public class ConstructBatch extends VolumeBatch {
 		// given the current target (clone, replicate)
 		Block block = center.getWorld().getBlockAt(x, y, z);
 		MaterialBrush brush = spell.getMaterialBrush();
-		brush.update(block.getLocation());
+		brush.update(mage, block.getLocation());
 		
 		// Make sure the brush is ready, it may need to load chunks.
 		if (!brush.isReady()) {

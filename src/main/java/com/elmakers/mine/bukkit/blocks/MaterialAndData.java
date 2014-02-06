@@ -67,6 +67,16 @@ public class MaterialAndData {
 		updateFrom(block, null);
 	}
 	
+	public void updateTo(Material material, byte data) {
+		signLines = null;
+		commandLine = null;
+		inventory = null;
+		skullName = null;
+		
+		this.material = material;
+		this.data = data;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void updateFrom(Block block, Set<Material> restrictedMaterials) {
 		if (!block.getChunk().isLoaded()) {

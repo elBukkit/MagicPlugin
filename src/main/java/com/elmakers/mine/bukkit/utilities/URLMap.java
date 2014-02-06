@@ -334,6 +334,12 @@ public class URLMap extends MapRenderer  {
 		}
 	}
 	
+	@Override
+	public void initialize(MapView mapView) {
+		// This is here mainly as a hack to be able to force render to canvas.
+		rendered = false;
+	}
+	
 	// Private Functions and data
 	
 	private static Plugin plugin;

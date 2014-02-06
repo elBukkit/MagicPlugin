@@ -42,6 +42,7 @@ wand:
     erase_material_description: Fills with Air
     clone_material_description: Copies blocks from a target
     replicate_material_description: Replicates the clone target
+    map_material_description: Creates pixel art from last held map
     building_material_description: Magic building material
     building_material_info: Build with $material
     uses_remaining_brief: $count Uses
