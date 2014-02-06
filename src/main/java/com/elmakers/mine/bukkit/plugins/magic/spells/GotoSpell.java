@@ -79,7 +79,7 @@ public class GotoSpell extends Spell
 			{
 				Mage targetMage = controller.getMage((Player)d);
 				// Check for protected players (admins, generally...)
-				if (targetMage.isProtected()) {
+				if (targetMage.isSuperProtected()) {
 					continue;
 				}
 				

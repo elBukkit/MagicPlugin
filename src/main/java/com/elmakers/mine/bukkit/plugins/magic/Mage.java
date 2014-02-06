@@ -30,7 +30,6 @@ import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.UndoBatch;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.UndoQueue;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -322,9 +321,9 @@ public class Mage implements CostReducer
 		}
 	}
 	
-	public boolean isProtected()
+	public boolean isSuperProtected()
 	{
-		return activeWand != null && activeWand.getDamageReduction() > WandLevel.maxProtection;
+		return activeWand != null && activeWand.getDamageReduction() > 1;
 	}
 	
 	public void onPlayerDamage(EntityDamageEvent event)

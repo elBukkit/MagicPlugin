@@ -150,7 +150,7 @@ public class PushSpell extends Spell
 		if (target instanceof Player) {
 			Mage targetMage = controller.getMage((Player)target);
 			// Check for protected players (admins, generally...)
-			if (targetMage.isProtected()) {
+			if (targetMage.isSuperProtected()) {
 				return;
 			}
 		}

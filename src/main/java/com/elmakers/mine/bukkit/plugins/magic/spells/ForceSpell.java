@@ -48,7 +48,7 @@ public class ForceSpell extends Spell
 				if (targetEntity != null && targetEntity instanceof Player) {
 					Mage targetMage = controller.getMage((Player)targetEntity);
 					// Check for protected players (admins, generally...)
-					if (targetMage.isProtected()) {
+					if (targetMage.isSuperProtected()) {
 						releaseTarget();
 					}
 				}
@@ -71,7 +71,7 @@ public class ForceSpell extends Spell
 			if (targetEntity instanceof Player) {
 				Mage targetMage = controller.getMage((Player)targetEntity);
 				// Check for protected players (admins, generally...)
-				if (targetMage.isProtected()) {
+				if (targetMage.isSuperProtected()) {
 					return SpellResult.NO_TARGET;
 				}
 			}

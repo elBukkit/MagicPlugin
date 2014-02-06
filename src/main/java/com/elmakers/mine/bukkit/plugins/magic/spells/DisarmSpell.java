@@ -70,7 +70,7 @@ public class DisarmSpell extends Spell
 			Mage targetMage = controller.getMage(targetPlayer);
 			
 			// Check for protected players (admins, generally...)
-			if (targetMage.isProtected()) {
+			if (targetMage.isSuperProtected()) {
 				return SpellResult.NO_TARGET;
 			}
 			
