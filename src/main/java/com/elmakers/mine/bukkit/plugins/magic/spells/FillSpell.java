@@ -20,7 +20,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class FillSpell extends BrushSpell 
 {
 	private static final int DEFAULT_MAX_DIMENSION = 128;
-	private static final int DEFAULT_MAX_VOLUME = 512;	
 	
 	private Block targetBlock = null;
 	private final BlockRecurse blockRecurse = new BlockRecurse();
@@ -123,20 +122,12 @@ public class FillSpell extends BrushSpell
 			FillBatch batch = new FillBatch(this, targetBlock.getLocation(), this.targetBlock.getLocation(), buildWith);
 
 			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
-			int maxVolume = parameters.getInteger("max_volume", DEFAULT_MAX_VOLUME);
 			
 			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
-			maxVolume = (int)(mage.getConstructionMultiplier() * maxVolume);
 			
 			if (!batch.checkDimension(maxDimension))
 			{
 				sendMessage("Dimension is too big!");
-				return SpellResult.FAILURE;
-			}
-
-			if (!batch.checkVolume(maxVolume))
-			{
-				sendMessage("Volume is too big!");
 				return SpellResult.FAILURE;
 			}
 

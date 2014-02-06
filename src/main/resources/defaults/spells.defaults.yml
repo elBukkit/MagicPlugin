@@ -895,7 +895,6 @@ fill:
     parameters:
         allow_max_range: false
         range: 64
-        max_volume: 256
         max_dimension: 64
         check_destructible: false
         transparent: transparent_to_construction
@@ -1242,6 +1241,8 @@ camera:
     class: CameraSpell
     parameters:
         cooldown: 1000
+        allow_max_range: false
+        range: 32
     costs:
         xp: 5
 mail:
