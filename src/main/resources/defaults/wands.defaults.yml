@@ -1362,15 +1362,12 @@ wolf:
         - curse
         - boon
         - convert
-        - commit
         - heal
         - wither
         - camera
         - collapse
         - supercollapse
         - iterate
-        - lava
-        - stream
         - nuke
         - recall
         - commit
@@ -1380,8 +1377,6 @@ wolf:
         - arrowrain
         - flare
         - tree
-        - wolf
-        - cat
         - phase
         - portal
         - disintegrate
@@ -1390,94 +1385,38 @@ wolf:
         - laser
     materials:
         - water
+        - stationary_water
+        - stationary_lava
         - lava
         - glowstone
         - glass
         - erase
-        - soul_sand
         - copy
         - clone
         - replicate
-        - wool:0
-        - wool:1
-        - wool:2
-        - wool:3
-        - wool:4
-        - wool:5
-        - wool:6
-        - wool:7
-        - wool:8
-        - wool:9
-        - wool:10
-        - wool:11
-        - wool:12
-        - wool:13
-        - wool:14
-        - wool:15
-        - stained_clay:0
-        - stained_clay:1
-        - stained_clay:2
-        - stained_clay:3
-        - stained_clay:4
-        - stained_clay:5
-        - stained_clay:6
-        - stained_clay:7
-        - stained_clay:8
-        - stained_clay:9
-        - stained_clay:10
-        - stained_clay:11
-        - stained_clay:12
-        - stained_clay:13
-        - stained_clay:14
-        - stained_clay:15
-        - stained_glass:0
-        - stained_glass:1
-        - stained_glass:2
-        - stained_glass:3
-        - stained_glass:4
-        - stained_glass:5
-        - stained_glass:6
-        - stained_glass:7
-        - stained_glass:8
-        - stained_glass:9
-        - stained_glass:10
-        - stained_glass:11
-        - stained_glass:12
-        - stained_glass:13
-        - stained_glass:14
-        - stained_glass_pane:15
-        - stained_glass_pane:0
-        - stained_glass_pane:1
-        - stained_glass_pane:2
-        - stained_glass_pane:3
-        - stained_glass_pane:4
-        - stained_glass_pane:5
-        - stained_glass_pane:6
-        - stained_glass_pane:7
-        - stained_glass_pane:8
-        - stained_glass_pane:9
-        - stained_glass_pane:10
-        - stained_glass_pane:11
-        - stained_glass_pane:12
-        - stained_glass_pane:13
-        - stained_glass_pane:14
-        - stained_glass_pane:15
+        - soul_sand
+        - wool
+        - stained_clay
+        - stained_glass
+        - stained_glass_pane
         - dirt
         - grass
         - wood    
         - log
         - vine
         - mycel
+        - quart_block
+        - quart_block:1
+        - quart_block:2
         - emerald_block
         - leaves   
-        - stationary_lava
-        - stationary_water
         - ice
         - packed_ice    
         - lapis_block
         - diamond_block
         - gold_block
         - emerald_block
+        - iron_block
         - obsidian
         - bedrock
         - redstone_block
