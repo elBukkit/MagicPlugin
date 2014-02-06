@@ -178,10 +178,10 @@ public class MaterialBrush extends MaterialAndData {
 			if (mapCanvas != null && cloneTarget != null) {
 				Vector diff = target.toVector().subtract(cloneTarget.toVector());
 				
-				// TODO : Different orientations
+				// TODO : Different orientations, centering, etc
 				DyeColor mapColor = mapCanvas.getDyeColor(
-						Math.abs(diff.getBlockX() + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
-						Math.abs(diff.getBlockZ() + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+						Math.abs(diff.getBlockX()) % MaterialMapCanvas.CANVAS_WIDTH, 
+						Math.abs(diff.getBlockZ()) % MaterialMapCanvas.CANVAS_HEIGHT);
 				if (mapColor != null) {
 					updateTo(mapMaterialBase, mapColor.getData());
 				} else {
@@ -236,5 +236,10 @@ public class MaterialBrush extends MaterialAndData {
 			ex.printStackTrace();
 			controller.getLogger().warning("Failed to save brush data: " + ex.getMessage());
 		}
+	}
+	
+	public boolean isReplicating()
+	{
+		return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE;
 	}
 }

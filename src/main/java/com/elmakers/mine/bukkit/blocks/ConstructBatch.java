@@ -167,7 +167,7 @@ public class ConstructBatch extends VolumeBatch {
 			super.finish();
 			
 			MaterialBrush brush = spell.getMaterialBrush();
-			if (copyEntities && brush != null && brush.hasCloneTarget()) {
+			if (copyEntities && fill && brush != null && brush.isReplicating()) {
 				// TODO: Handle Non-spherical construction types!
 				int radiusSquared = radius * radius;
 				World targetWorld = center.getWorld();
