@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.WandMode;
 
 public class WandOrganizer {
 	private final Wand wand;
@@ -29,10 +30,12 @@ public class WandOrganizer {
 	private int currentInventoryIndex = 0;
 	private int currentInventoryCount = 0;
 	private Inventory currentInventory = null;
+	private boolean addToHotbar = true;
 	
 	public WandOrganizer(Wand wand, Mage mage) {
 		this.wand = wand;
 		this.mage = mage;
+		addToHotbar = wand.getMode() == WandMode.INVENTORY;
 	}
 
 	protected void nextInventory() {
@@ -42,6 +45,24 @@ public class WandOrganizer {
 	}
 	
 	protected void addToInventory(ItemStack itemStack) {
+		// First add to hotbar until almost full- leave one space for the wand.
+		if (addToHotbar) {
+			addToHotbar = false;
+			Inventory hotbar = wand.getHotbar();
+			int emptyCount = 0;
+			for (int i = Wand.HOTBAR_SIZE - 1; i >= 0; i--) {
+				ItemStack hotbarItem = hotbar.getItem(i);
+				if (hotbarItem == null || hotbarItem.getType() == Material.AIR) {
+					emptyCount++;
+					if (emptyCount > 1) {
+						addToHotbar = true;
+						hotbar.setItem(i, itemStack);
+						break;
+					}
+				}
+			}
+		}
+		
 		// Advance when almost full
 		if (currentInventoryCount > inventoryOrganizeSize) {
 			nextInventory();
