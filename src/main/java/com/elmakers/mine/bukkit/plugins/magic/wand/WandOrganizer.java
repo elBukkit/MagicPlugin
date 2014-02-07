@@ -67,7 +67,7 @@ public class WandOrganizer {
 		Set<String> hotbarMaterialNames = new HashSet<String>();
 
 		Inventory hotbar = wand.getHotbar();
-		int hotbarSize = Wand.hotbarSize;
+		int hotbarSize = Wand.HOTBAR_SIZE;
 		for (int i = 0; i < hotbarSize; i++) {
 			ItemStack hotbarItem = hotbar.getItem(i);
 			if (hotbarItem == null || hotbarItem.getType() == Material.AIR) continue;

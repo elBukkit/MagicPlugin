@@ -1403,9 +1403,9 @@ wolf:
         - log
         - vine
         - mycel
-        - quart_block
-        - quart_block:1
-        - quart_block:2
+        - quartz_block
+        - quartz_block:1
+        - quartz_block:2
         - emerald_block
         - leaves   
         - ice

@@ -1,6 +1,20 @@
 # Migration Notes
 
+## 2.9.2
+
+### config.yml
+
+If you are using right-click-to-cycle, change the following
+
+right_click_cycles: false
+
+to
+
+default_wand_mode: cycle
+
 ## 2.9.1
+
+### spells.yml
 
  - ShrunkenHeadSpell changed to ShrinkSpell
  - MineSpell changed to DropSpell (and "chop" variant added)

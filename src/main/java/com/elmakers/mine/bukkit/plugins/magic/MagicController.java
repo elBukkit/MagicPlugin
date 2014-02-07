@@ -928,6 +928,10 @@ public class MagicController implements Listener
 		return removeLostWand(wand.getId());
 	}
 	
+	public WandMode getDefaultWandMode() {
+		return defaultWandMode;
+	}
+	
 	public void save()
 	{
 		getLogger().info("Saving player data");
@@ -999,13 +1003,23 @@ public class MagicController implements Listener
 		}
 	}
 	
+	protected WandMode parseWandMode(String modeString, WandMode defaultValue) {
+		for (WandMode testMode : WandMode.values()) {
+			if (testMode.name().equalsIgnoreCase(modeString)) {
+				return testMode;
+			}
+		}
+		
+		return defaultValue;
+	}
+	
 	protected void loadProperties(ConfigurationNode properties)
 	{
 		if (properties == null) return;
 		
 		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
-		wandCycling = properties.getBoolean("right_click_cycles", wandCycling);
+		defaultWandMode = parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
 		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
@@ -1471,7 +1485,7 @@ public class MagicController implements Listener
 			if (!mage.cancel()) {
 				
 				// Check for wand cycling
-				if (wandCycling) {
+				if (mage.getWandMode() == WandMode.CYCLE) {
 					if (player.isSneaking()) {
 						Spell activeSpell = wand.getActiveSpell();
 						boolean cycleMaterials = false;
@@ -1640,7 +1654,9 @@ public class MagicController implements Listener
 			if (event.getView().getType() == InventoryType.CRAFTING) {
 				wand.updateInventoryNames(false);
 			} else {
-				wand.deactivate();
+				if (mage.getWandMode() == WandMode.INVENTORY || !wand.isInventoryOpen()) {
+					wand.deactivate();
+				}
 			}
 		}
 	}
@@ -1649,7 +1665,7 @@ public class MagicController implements Listener
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (!(event.getWhoClicked() instanceof Player)) return;
 		
-		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType());
+		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 	
 		// Check for wand clicks to prevent grinding them to dust, or whatever.
 		InventoryType inventoryType = event.getInventory().getType();
@@ -1766,9 +1782,11 @@ public class MagicController implements Listener
 		}
 		
 		// Check for wand cycling with active inventory
-		if (inventoryType == InventoryType.CRAFTING) {
-			Player player = (Player)event.getWhoClicked();
-			Mage mage = getMage(player);
+		Player player = (Player)event.getWhoClicked();
+		Mage mage = getMage(player);
+		WandMode wandMode = mage.getWandMode();
+		if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
+		    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
 			Wand wand = mage.getActiveWand();
 			if (wand != null && wand.isInventoryOpen()) {
 				if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
@@ -1782,14 +1800,15 @@ public class MagicController implements Listener
 					return;
 				}
 				
-				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+				// Chest mode falls back to selection from here.
+				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST) {
 					ItemStack clickedItem = event.getCurrentItem();
-					if (clickedItem != null) {
+					if (clickedItem != null && event.getRawSlot() < Wand.INVENTORY_SIZE) {
 						onPlayerActivateIcon(mage, wand, clickedItem);
-						player.closeInventory();
-						event.setCancelled(true);
-						return;
 					}
+					player.closeInventory();
+					event.setCancelled(true);
+					return;
 				}
 				
 				// Prevent wand duplication
@@ -1810,11 +1829,18 @@ public class MagicController implements Listener
 		Player player = (Player)event.getPlayer();
 		Mage mage = getMage(player);
 		
+		Wand previousWand = mage.getActiveWand();
+		
 		// Save the inventory state the the current wand if its spell inventory is open
 		// This is just to make sure we don't lose changes made to the inventory
-		Wand previousWand = mage.getActiveWand();
 		if (previousWand != null && previousWand.isInventoryOpen()) {
-			previousWand.saveInventory();
+			if (mage.getWandMode() == WandMode.INVENTORY) {
+				previousWand.saveInventory();
+			} else if (mage.getWandMode() == WandMode.CHEST) {
+				// First check for chest inventory mode, we may just be closing a display inventory.
+				previousWand.closeInventory();
+				return;
+			}
 		}
 		
 		Wand wand = Wand.getActiveWand(this, player);
@@ -2204,7 +2230,7 @@ public class MagicController implements Listener
 	 private long                                physicsDisableTimeout          = 0;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;
-	 private boolean							 wandCycling					= false;
+	 private WandMode							 defaultWandMode				= WandMode.INVENTORY;
 	 private boolean                             showMessages                   = true;
 	 private boolean                             showCastMessages               = false;
 	 private String								 messagePrefix					= "";

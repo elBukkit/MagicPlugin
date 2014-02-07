@@ -137,8 +137,12 @@ keep_wands_on_death: false
 # Wands are indestructible
 indestructible_wands: true
 
-# Disable wand inventory, right-click-to-cycle spells. Not recommended for large wands.
-right_click_cycles: false
+# Prefer alternate modes for wand mechanics.
+# Possible vales are:
+# "inventory" : The default, toggles the wand inventory in/out of your player inventory
+# "chest" : Bring up a Wand inventory on right-click.
+# "cycle" : Right-click will cycle to the next active spell (no inventory or icons)
+default_wand_mode: chest
 
 # Crafting settings for crafting wands
 crafting_material_upper: nether_star

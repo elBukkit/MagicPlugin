@@ -44,8 +44,8 @@ import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Wand implements CostReducer {
-	public final static int inventorySize = 27;
-	public final static int hotbarSize = 9;
+	public final static int INVENTORY_SIZE = 27;
+	public final static int HOTBAR_SIZE = 9;
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -414,16 +414,10 @@ public class Wand implements CostReducer {
 		return slot;
 	}
 	
-	protected void addToInventory(ItemStack itemStack) {
-		List<Inventory> allInventories = getAllInventories();
+	protected void addToInventories(ItemStack itemStack, List<Inventory> checkInventories) {
 		boolean added = false;
-		// Set the wand item
-		Integer selectedItem = null;
-		if (mage != null && mage.getPlayer() != null) {
-			selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
-			hotbar.setItem(selectedItem, item);
-		}
-		for (Inventory inventory : allInventories) {
+		
+		for (Inventory inventory : checkInventories) {
 			HashMap<Integer, ItemStack> returned = inventory.addItem(itemStack);
 			if (returned.size() == 0) {
 				added = true;
@@ -431,10 +425,23 @@ public class Wand implements CostReducer {
 			}
 		}
 		if (!added) {
-			Inventory newInventory = InventoryUtils.createInventory(null, inventorySize, "Wand");
+			Inventory newInventory = InventoryUtils.createInventory(null, INVENTORY_SIZE, "Wand");
 			newInventory.addItem(itemStack);
 			inventories.add(newInventory);
 		}
+	}
+	
+	protected void addToInventory(ItemStack itemStack) {
+		// Set the wand item
+		Integer selectedItem = null;
+		if (mage != null && mage.getPlayer() != null) {
+			selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
+			hotbar.setItem(selectedItem, item);
+		}
+		
+		addToInventories(itemStack, getAllInventories());
+		
+		// Restore empty wand slot
 		if (selectedItem != null) {
 			hotbar.setItem(selectedItem, null);
 		}
@@ -442,7 +449,7 @@ public class Wand implements CostReducer {
 	
 	protected Inventory getDisplayInventory() {
 		if (displayInventory == null) {
-			displayInventory = InventoryUtils.createInventory(null, inventorySize, "Wand");
+			displayInventory = InventoryUtils.createInventory(null, INVENTORY_SIZE, "Wand");
 		}
 		
 		return displayInventory;
@@ -450,15 +457,15 @@ public class Wand implements CostReducer {
 	
 	protected Inventory getInventoryByIndex(int inventoryIndex) {
 		while (inventoryIndex >= inventories.size()) {
-			inventories.add(InventoryUtils.createInventory(null, inventorySize, "Wand"));
+			inventories.add(InventoryUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
 		}
 		return inventories.get(inventoryIndex);
 	}
 	
 	protected Inventory getInventory(Integer slot) {
 		Inventory inventory = hotbar;
-		if (slot >= hotbarSize) {
-			int inventoryIndex = (slot - hotbarSize) / inventorySize;
+		if (slot >= HOTBAR_SIZE) {
+			int inventoryIndex = (slot - HOTBAR_SIZE) / INVENTORY_SIZE;
 			inventory = getInventoryByIndex(inventoryIndex);
 		}
 		
@@ -466,11 +473,11 @@ public class Wand implements CostReducer {
 	}
 	
 	protected int getInventorySlot(Integer slot) {
-		if (slot < hotbarSize) {
+		if (slot < HOTBAR_SIZE) {
 			return slot;
 		}
 		
-		return ((slot - hotbarSize) % inventorySize);
+		return ((slot - HOTBAR_SIZE) % INVENTORY_SIZE);
 	}
 	
 	protected void addToInventory(ItemStack itemStack, Integer slot) {
@@ -1207,7 +1214,7 @@ public class Wand implements CostReducer {
 		for (int i = 0; i < contents.length; i++) {
 			ItemStack item = contents[i];
 			if (item == null || item.getType() == Material.AIR || isWand(item)) continue;
-			boolean activeName = activeAllNames || (activeHotbarNames && i < Wand.hotbarSize);
+			boolean activeName = activeAllNames || (activeHotbarNames && i < Wand.HOTBAR_SIZE);
 			updateInventoryName(item, activeName);
 		}
 	}
@@ -1274,7 +1281,7 @@ public class Wand implements CostReducer {
 			PlayerInventory inventory = player.getInventory();
 			inventory.clear();
 			updateHotbar(inventory);
-			updateInventory(inventory, hotbarSize);
+			updateInventory(inventory, HOTBAR_SIZE);
 			updateName();
 			player.updateInventory();
 		} else if (wandMode == WandMode.CHEST) {
@@ -1299,7 +1306,7 @@ public class Wand implements CostReducer {
 		playerInventory.setItem(currentSlot, item);
 		
 		// Set hotbar items from remaining list
-		for (int hotbarSlot = 0; hotbarSlot < hotbarSize; hotbarSlot++) {
+		for (int hotbarSlot = 0; hotbarSlot < HOTBAR_SIZE; hotbarSlot++) {
 			if (hotbarSlot != currentSlot) {
 				playerInventory.setItem(hotbarSlot, hotbar.getItem(hotbarSlot));
 			}
@@ -1346,7 +1353,7 @@ public class Wand implements CostReducer {
 	
 	protected Inventory getOpenInventory() {
 		while (openInventoryPage >= inventories.size()) {
-			inventories.add(InventoryUtils.createInventory(null, inventorySize, "Wand"));
+			inventories.add(InventoryUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
 		}
 		return inventories.get(openInventoryPage);
 	}
@@ -1362,7 +1369,7 @@ public class Wand implements CostReducer {
 		// Fill in the hotbar
 		Player player = mage.getPlayer();
 		PlayerInventory playerInventory = player.getInventory();
-		for (int i = 0; i < hotbarSize; i++) {
+		for (int i = 0; i < HOTBAR_SIZE; i++) {
 			ItemStack playerItem = playerInventory.getItem(i);
 			if (isWand(playerItem)) {
 				playerItem = null;
@@ -1373,7 +1380,7 @@ public class Wand implements CostReducer {
 		// Fill in the active inventory page
 		Inventory openInventory = getOpenInventory();
 		for (int i = 0; i < openInventory.getSize(); i++) {
-			openInventory.setItem(i, playerInventory.getItem(i + hotbarSize));
+			openInventory.setItem(i, playerInventory.getItem(i + HOTBAR_SIZE));
 		}
 		saveState();
 	}
@@ -1746,6 +1753,16 @@ public class Wand implements CostReducer {
 		if (mage == null) return;
 		
 		if (mage.getWandMode() == WandMode.CHEST) {
+			// Hacky work-around for switching between modes. This mode has no hotbar!
+			for (int i = 0; i < HOTBAR_SIZE; i++) {
+				// Put hotbar items in main inventory since we don't show the hotbar in chest mode.
+				ItemStack hotbarItem = hotbar.getItem(i);
+				if (hotbarItem != null && hotbarItem.getType() != Material.AIR) {
+					hotbar.setItem(i, null);
+					addToInventories(hotbarItem, inventories);
+				}
+			}	
+			
 			inventoryIsOpen = true;
 			mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 			updateInventory();

@@ -2,6 +2,8 @@
 
 ## 2.9.2
 
+ - Added a new wand mode for interaction using a chest inventory. Start the basics of per-player wand mechanics.
+
 ## 2.9.1
 
  - Respect PVP flags for WorldGuard regions.

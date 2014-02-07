@@ -786,6 +786,7 @@ public class Mage implements CostReducer
 	
 	public WandMode getWandMode()
 	{
-		return WandMode.CHEST;
+		// TODO: Player-data overrides for this?
+		return controller.getDefaultWandMode();
 	}
 }
