@@ -431,7 +431,40 @@ public class MagicController implements Listener
 		} catch (Throwable ex) {
 		}
 		
-		return true;
+		return false;
+	}
+	
+	public boolean isPVPAllowed(Location location)
+	{
+		if (!regionManagerEnabled || regionManager == null || location == null) return true;
+		
+		try {
+			Method getRegionManagerMethod = regionManager.getClass().getMethod("getRegionManager", World.class);
+			if (getRegionManagerMethod == null) throw new Exception("Can't hook to getRegionManager method");
+			Object worldManager = getRegionManagerMethod.invoke(regionManager, location.getWorld());
+			if (worldManager == null) return true;
+			Class<?> regionManagerClass = Class.forName("com.sk89q.worldguard.protection.managers.RegionManager");
+			Method getApplicableRegionsMethod = regionManagerClass.getMethod("getApplicableRegions", Location.class);
+			if (getApplicableRegionsMethod == null) throw new Exception("Can't hook to getApplicableRegions method");
+			Object applicableSet = getApplicableRegionsMethod.invoke(worldManager, location);
+			if (applicableSet == null) return true;
+			Class<?> stateFlagClass = Class.forName("com.sk89q.worldguard.protection.flags.StateFlag");
+			Method allowsMethod = applicableSet.getClass().getMethod("allows", stateFlagClass);
+			if (allowsMethod == null) throw new Exception("Can't hook to allows method");
+			
+			// This is super-duper hacky :\
+			// There's no real API for worldguard though, and I don't want a hard dependency. Maybe I could
+			// encapsulate somehow?
+			Class<?> defaultFlagClass = Class.forName("com.sk89q.worldguard.protection.flags.DefaultFlag");
+			Field pvpField = defaultFlagClass.getField("PVP");
+			if (pvpField == null) throw new Exception("Can't find PVP field");
+			Object pvpFlag = pvpField.get(null);
+			return (Boolean)allowsMethod.invoke(applicableSet, pvpFlag);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/*
@@ -991,6 +1024,8 @@ public class MagicController implements Listener
 		maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
 		maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
 		maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
+		costReduction = (float)properties.getDouble("cost_reduction", costReduction);
+		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		autoUndo = properties.getInteger("auto_undo", autoUndo);
@@ -2034,6 +2069,14 @@ public class MagicController implements Listener
 		mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
 	}
 	
+	public float getCooldownReduction() {
+		return cooldownReduction;
+	}
+	
+	public float getCostReduction() {
+		return costReduction;
+	}
+	
 	public static List<String> getPlayerNames() {
 		List<String> playerNames = new ArrayList<String>();
 		List<World> worlds = Bukkit.getWorlds();
@@ -2189,6 +2232,8 @@ public class MagicController implements Listener
 	 private float								 maxRangePowerMultiplierMax 	= 5.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	= 1.0f;
+	 private float							 	 costReduction	    			= 0.0f;
+	 private float							 	 cooldownReduction				= 0.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private int								 maxBlockUpdates				= 100;
 	 private int								 ageDroppedItems				= 0;

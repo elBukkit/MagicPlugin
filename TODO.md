@@ -1,13 +1,13 @@
 # TODO
 
-## For 2.9.1
+## For 2.9.2
 
  - Configurable effects system
    - Add visual effects to spawn and recall spells
 
  - Config updates don't work due to players having Spell objects already... ?
 
-## For 2.9.2
+## For 2.9.3
 
  - Undo fails in some cases (overlapping undo queues)
  - "map" brush type (!)
@@ -26,7 +26,6 @@
  - Retry limit on construction batches
   - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
   - BlockData tracks only the first recorded materialdata, commit will replace
- - PvP permissions (Respect WorldGuard's pvp setting, global PvP)
  - Fix wand inventory glitches and special-cases
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc.

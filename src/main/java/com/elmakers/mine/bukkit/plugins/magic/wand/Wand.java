@@ -208,21 +208,25 @@ public class Wand implements CostReducer {
 	public int getHungerRegeneration() {
 		return hungerRegeneration;
 	}
-
-	public float getCostReduction() {
-		return costReduction;
-	}
 	
 	public boolean isModifiable() {
 		return modifiable;
 	}
 	
 	public boolean usesMana() {
-		return xpMax > 0 && xpRegeneration > 0;
+		return xpMax > 0 && xpRegeneration > 0 && getCostReduction() < 1;
 	}
 
 	public float getCooldownReduction() {
-		return cooldownReduction;
+		return controller.getCooldownReduction() + cooldownReduction;
+	}
+
+	public float getCostReduction() {
+		return controller.getCostReduction() + costReduction;
+	}
+	
+	public void setCooldownReduction(float reduction) {
+		cooldownReduction = reduction;
 	}
 	
 	public boolean getHasInventory() {
@@ -1105,7 +1109,7 @@ public class Wand implements CostReducer {
 		if (remaining > 0) {
 			lore.add(ChatColor.RED + Messages.get("wand.uses_remaining").replace("$count", ((Integer)remaining).toString()));
 		}
-		if (xpRegeneration > 0) {
+		if (usesMana()) {
 			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + Messages.get("wand.mana_amount").replace("$amount", ((Integer)xpMax).toString()));
 			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(Messages.get("wand.mana_regeneration"), (float)xpRegeneration / (float)WandLevel.maxXpRegeneration));
 		}
@@ -1774,7 +1778,7 @@ public class Wand implements CostReducer {
 		Player player = mage.getPlayer();
 		updateSpeed(player);
 		mage.setActiveWand(this);
-		if (xpRegeneration > 0) {
+		if (usesMana()) {
 			storedXpLevel = player.getLevel();
 			storedXpProgress = player.getExp();
 			storedXp = 0;
@@ -1849,7 +1853,7 @@ public class Wand implements CostReducer {
 		// Extra just-in-case
 		mage.restoreInventory();
 		
-		if (xpRegeneration > 0) {
+		if (usesMana()) {
 			mage.getPlayer().setExp(storedXpProgress);
 			mage.getPlayer().setLevel(storedXpLevel);
 			mage.getPlayer().giveExp(storedXp);
@@ -1909,7 +1913,7 @@ public class Wand implements CostReducer {
 	public void onPlayerExpChange(PlayerExpChangeEvent event) {
 		if (mage == null) return;
 		
-		if (xpRegeneration > 0) {
+		if (usesMana()) {
 			storedXp += event.getAmount();
 			event.setAmount(0);
 		}
@@ -1920,7 +1924,7 @@ public class Wand implements CostReducer {
 		
 		Player player = mage.getPlayer();
 		updateSpeed(player);
-		if (xpRegeneration > 0) {
+		if (usesMana()) {
 			xp = Math.min(xpMax, xp + xpRegeneration);
 			updateMana();
 		}

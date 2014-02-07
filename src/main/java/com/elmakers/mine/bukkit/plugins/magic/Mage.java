@@ -129,7 +129,15 @@ public class Mage implements CostReducer
 	}
 	
 	public float getCostReduction() {
-		return activeWand == null ? costReduction : activeWand.getCostReduction() + costReduction;
+		return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
+	}
+	
+	public float getCooldownReduction() {
+		return activeWand == null ? cooldownReduction + controller.getCooldownReduction() : activeWand.getCooldownReduction() + cooldownReduction;
+	}
+	
+	public void setCooldownReduction(float reduction) {
+		cooldownReduction = reduction;
 	}
 	
 	public boolean usesMana() {
@@ -162,14 +170,6 @@ public class Mage implements CostReducer
 		float maxPowerMultiplierMax = controller.getMaxRadiusPowerMultiplierMax();
 		float multiplier = 1 + (maxPowerMultiplier * activeWand.getPower());
 		return Math.min(multiplier, maxPowerMultiplierMax);
-	}
-	
-	public float getCooldownReduction() {
-		return activeWand == null ? cooldownReduction : activeWand.getCooldownReduction() + cooldownReduction;
-	}
-	
-	public void setCooldownReduction(float reduction) {
-		cooldownReduction = reduction;
 	}
 
 	public boolean addToStoredInventory(ItemStack item) {

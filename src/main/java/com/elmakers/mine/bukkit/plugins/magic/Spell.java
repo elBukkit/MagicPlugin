@@ -62,7 +62,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private MaterialAndData icon = new MaterialAndData(Material.AIR);
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
-	
+
 	protected ConfigurationNode parameters = new ConfigurationNode();
 
 	/*
@@ -70,6 +70,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 
 	private boolean                             allowMaxRange           = false;
+	private boolean                             pvpRestricted           = false;
 	private int                                 range                   = 200;
 	private static int                          maxRange                = 511;
 	private double                              viewHeight              = 1.65;
@@ -228,6 +229,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		icon = node.getMaterialAndData("icon", icon.getMaterial());
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);
+		pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
 		
 		cooldown = parameters.getInt("cooldown", cooldown);
 		duration = parameters.getInt("duration", duration);
@@ -325,6 +327,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean cast(String[] extraParameters)
 	{
 		target = null;
+		
+		if (pvpRestricted && !controller.isPVPAllowed(mage.getLocation())) {
+			return false;
+		}
 		
 		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
@@ -852,9 +858,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance())
 		{
 			target = targetBlock;
-		} else {
-			target = targetEntity;
+		} 
+		else 
+		{
+			// Don't allow targeting entities in no-PVP areas.
+			if (!pvpRestricted || controller.isPVPAllowed(targetEntity.getLocation())) 
+			{
+				target = targetEntity;
+			}
 		}
+		
 		return target;
 	}
 	

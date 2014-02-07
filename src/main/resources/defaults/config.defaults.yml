@@ -87,6 +87,13 @@ sounds: true
 # Prevent rapid sending of chat messages from the plugin (in milliseconds)
 message_throttle: 3000
 
+# Set this to 1 to just turn costs off, or you can use it to scale costs down.
+cost_reduction: 0.0
+
+# Disabling cooldowns is not a great idea. I generally only put cooldowns on spells
+# that can hurt the server via spamming- generally by creating too many entities or explosions.
+cooldown_reduction: 0.0
+
 # How much to reduce costs and cooldowns when using /cast (versus a wand)
 cast_command_cost_reduction: 1.0
 cast_command_cooldown_reduction: 0.0

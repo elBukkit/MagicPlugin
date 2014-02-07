@@ -2,19 +2,21 @@
 
 ## 2.9.1
 
- - Add Laser spell
+ - Respect PVP flags for WorldGuard regions.
+ - Add global cost_reduction and cooldown_reduction parameters to config.yml
  - Add some hacks to prevent using wands while in creative mode.
+ - Add "map" material brush. Experimental :)
+ - Add Laser spell
+ - Add "Chop" spell. Also make "Box" sit on the target. (MIGRATION NOTE)
+ - Gather, push, push, force and disarm will ignore targets with Protection X
  - Material brushes will copy player skulls (clone, copy, replicate- not absorb though)
  - Add "Sunny Day" spell, remove day and night spells.
  - The camera spell will now work on most mobs (not zombies or creepers or skeletons, though...)
  - Shrink and camera will now work on some blocks (cactus, tnt, chests, melons, logs and pumpkins) (MIGRATION NOTE)
- - Gather, push, push, force and disarm will ignore targets with Protection X
- - Add "Chop" spell. Also make "Box" sit on the target. (MIGRATION NOTE)
  - Some improvements to replicate and clone, safety checks for attachable blocks
  - Split alter up into SuperAlter and Alter
  - Some improvements to wand organization and owner display
  - Fix facial accessories not showing up in player portraits.
- - Add "map" material brush. Experimental :)
 
 ## 2.9.0
 

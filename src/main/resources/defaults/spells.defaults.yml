@@ -309,6 +309,7 @@ disarm:
     icon: tripwire_hook
     category: light
     class: DisarmSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 16
@@ -336,6 +337,7 @@ icbm:
     icon: nether_star
     category: dark
     class: ProjectileSpell
+    pvp_restricted: true
     parameters:
         size: 10
         projectile: Fireball
@@ -345,6 +347,7 @@ neutron:
     icon: poisonous_potato
     category: dark
     class: ProjectileSpell
+    pvp_restricted: true
     parameters:
         projectile: Snowball
         effect_harm: 10,5
@@ -356,6 +359,7 @@ wither:
     icon: skull_item:1
     category: dark
     class: ProjectileSpell
+    pvp_restricted: true
     parameters:
         projectile: WitherSkull
         effect_wither: 160,2
@@ -415,6 +419,7 @@ monster:
     icon: pumpkin
     category: dark
     class: FamiliarSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 32
@@ -425,6 +430,7 @@ mob:
     icon: jack_o_lantern
     category: dark
     class: FamiliarSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 32
@@ -466,6 +472,7 @@ inferno:
     icon: fire
     category: firebending
     class: FireSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 64
@@ -512,6 +519,7 @@ arrowrain:
     icon: bow
     category: dark
     class: ProjectileSpell
+    pvp_restricted: true
     parameters:
         projectile: Arrow
         count: 6
@@ -524,6 +532,7 @@ lightning:
     icon: raw_fish:3
     category: firebending
     class: LightningSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 32
@@ -533,6 +542,7 @@ nuke:
     icon: fireball
     category: master
     class: BoomSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 64
@@ -592,6 +602,7 @@ bridge:
 grenade:
     icon: tnt
     category: firebending
+    pvp_restricted: true
     class: GrenadeSpell
     parameters:
         size: 6
@@ -602,6 +613,7 @@ frag:
     icon: redstone_block
     category: dark
     class: GrenadeSpell
+    pvp_restricted: true
     parameters:
         size: 8
         fuse: 60
@@ -612,6 +624,7 @@ superblob:
     icon: slime_ball
     category: engineering
     class: ConstructSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: true
         check_destructible: false
@@ -787,6 +800,7 @@ push:
     icon: rails
     category: airbending
     class: PushSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 32
@@ -879,6 +893,7 @@ sandblast:
     icon: sandstone
     category: earthbending
     class: ConstructSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: true
         range: 32
@@ -918,6 +933,7 @@ fire:
     icon: flint_and_steel
     category: firebending
     class: FireSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 32
@@ -971,6 +987,7 @@ familiar:
 disintegrate:
     icon: bone
     category: dark
+    pvp_restricted: true
     class: DisintegrateSpell
     parameters:
         allow_max_range: false
@@ -1018,6 +1035,7 @@ lava:
     icon: ink_sack:14
     category: firebending
     class: IterateSpell
+    pvp_restricted: true
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -1032,6 +1050,7 @@ stream:
     icon: ink_sack:6
     category: waterbending
     class: IterateSpell
+    pvp_restricted: true
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -1046,6 +1065,7 @@ earth:
     icon: ink_sack:3
     category: earthbending
     class: IterateSpell
+    pvp_restricted: true
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -1101,6 +1121,7 @@ wolf:
     icon: raw_beef
     category: elemental
     class: WolfSpell
+    pvp_restricted: true
     parameters:
         max_wolves: 5
         allow_max_range: false
@@ -1121,6 +1142,7 @@ shrink:
     icon: skull_item
     category: dark
     class: ShrinkSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 16
@@ -1161,6 +1183,7 @@ boom:
     icon: fermented_spider_eye
     category: firebending
     class: BoomSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 32
@@ -1210,6 +1233,7 @@ force:
     icon: leash
     category: airbending
     class: ForceSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: true
         range: 64
@@ -1223,6 +1247,7 @@ fireball:
     icon: ghast_tear
     category: firebending
     class: ProjectileSpell
+    pvp_restricted: true
     parameters:
         projectile: SmallFireball
     costs:
