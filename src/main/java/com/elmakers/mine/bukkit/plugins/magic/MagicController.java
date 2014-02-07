@@ -1775,35 +1775,37 @@ public class MagicController implements Listener
 		Player player = (Player)event.getWhoClicked();
 		Mage mage = getMage(player);
 		Wand wand = mage.getActiveWand();
-		WandMode wandMode = wand.getMode();
-		if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
-		    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
-			if (wand != null && wand.isInventoryOpen()) {
-				if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
-					wand.cycleInventory();
-					event.setCancelled(true);
-					return;
-				}
-				
-				if (event.getSlotType() == SlotType.ARMOR) {
-					event.setCancelled(true);
-					return;
-				}
-				
-				// Chest mode falls back to selection from here.
-				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST) {
-					ItemStack clickedItem = event.getCurrentItem();
-					if (clickedItem != null && (wandMode == WandMode.INVENTORY || event.getRawSlot() < Wand.INVENTORY_SIZE)) {
-						onPlayerActivateIcon(mage, wand, clickedItem);
+		if (wand != null) {
+			WandMode wandMode = wand.getMode();
+			if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
+			    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
+				if (wand != null && wand.isInventoryOpen()) {
+					if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
+						wand.cycleInventory();
+						event.setCancelled(true);
+						return;
 					}
-					player.closeInventory();
-					event.setCancelled(true);
-					return;
-				}
-				
-				// Prevent wand duplication
-				if (Wand.isWand(event.getCursor()) || Wand.isWand(event.getCurrentItem())) {
-					event.setCancelled(true);
+					
+					if (event.getSlotType() == SlotType.ARMOR) {
+						event.setCancelled(true);
+						return;
+					}
+					
+					// Chest mode falls back to selection from here.
+					if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST) {
+						ItemStack clickedItem = event.getCurrentItem();
+						if (clickedItem != null && (wandMode == WandMode.INVENTORY || event.getRawSlot() < Wand.INVENTORY_SIZE)) {
+							onPlayerActivateIcon(mage, wand, clickedItem);
+						}
+						player.closeInventory();
+						event.setCancelled(true);
+						return;
+					}
+					
+					// Prevent wand duplication
+					if (Wand.isWand(event.getCursor()) || Wand.isWand(event.getCurrentItem())) {
+						event.setCancelled(true);
+					}
 				}
 			}
 			
