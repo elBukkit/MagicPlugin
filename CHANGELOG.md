@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.9.2
+
 ## 2.9.1
 
  - Respect PVP flags for WorldGuard regions.
