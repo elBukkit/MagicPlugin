@@ -783,4 +783,9 @@ public class Mage implements CostReducer
 	public void setLastHeldMapId(short mapId) {
 		brush.setMapId(mapId);
 	}
+	
+	public WandMode getWandMode()
+	{
+		return WandMode.CHEST;
+	}
 }

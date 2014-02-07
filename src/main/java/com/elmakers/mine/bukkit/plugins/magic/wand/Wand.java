@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.WandMode;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -119,6 +120,7 @@ public class Wand implements CostReducer {
 	// Inventory functionality
 	int openInventoryPage = 0;
 	boolean inventoryIsOpen = false;
+	Inventory displayInventory = null;
 	
 	private Wand() {
 		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
@@ -436,6 +438,14 @@ public class Wand implements CostReducer {
 		if (selectedItem != null) {
 			hotbar.setItem(selectedItem, null);
 		}
+	}
+	
+	protected Inventory getDisplayInventory() {
+		if (displayInventory == null) {
+			displayInventory = InventoryUtils.createInventory(null, inventorySize, "Wand");
+		}
+		
+		return displayInventory;
 	}
 	
 	protected Inventory getInventoryByIndex(int inventoryIndex) {
@@ -1191,7 +1201,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public void updateInventoryNames(boolean activeHotbarNames, boolean activeAllNames) {
-		if (mage == null || !isInventoryOpen()) return;
+		if (mage == null || !isInventoryOpen() || !mage.hasStoredInventory()) return;
 		
 		ItemStack[] contents = mage.getPlayer().getInventory().getContents();
 		for (int i = 0; i < contents.length; i++) {
@@ -1250,46 +1260,61 @@ public class Wand implements CostReducer {
 		meta.setDisplayName(displayName);
 		itemStack.setItemMeta(meta);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void updateInventory() {
 		if (mage == null) return;
 		if (!isInventoryOpen()) return;
-		if (mage.getPlayer() == null) return;
-		if (!mage.hasStoredInventory()) return;
-		
-		// Clear the player's inventory
 		Player player = mage.getPlayer();
-		PlayerInventory playerInventory = player.getInventory();
-		playerInventory.clear();
+		if (player == null) return;
 		
-		// First add the wand and check the hotbar for conflicts
+		WandMode wandMode = mage.getWandMode();
+		if (wandMode == WandMode.INVENTORY) {
+			if (!mage.hasStoredInventory()) return;
+			PlayerInventory inventory = player.getInventory();
+			inventory.clear();
+			updateHotbar(inventory);
+			updateInventory(inventory, hotbarSize);
+			updateName();
+			player.updateInventory();
+		} else if (wandMode == WandMode.CHEST) {
+			Inventory inventory = getDisplayInventory();
+			inventory.clear();
+			updateInventory(inventory, 0);
+			player.updateInventory();
+		}
+	}
+	
+	private void updateHotbar(PlayerInventory playerInventory) {
+		// Check for an item already in the player's held slot, which
+		// we are about to replace with the wand.
 		int currentSlot = playerInventory.getHeldItemSlot();
 		ItemStack existingHotbar = hotbar.getItem(currentSlot);
 		if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
+			// Toss the item back into the wand inventory, it'll find a home somewhere.
 			addToInventory(existingHotbar);
 			hotbar.setItem(currentSlot, null);
 		}
+		// Put the wand in the player's active slot.
 		playerInventory.setItem(currentSlot, item);
 		
-		// Set hotbar
+		// Set hotbar items from remaining list
 		for (int hotbarSlot = 0; hotbarSlot < hotbarSize; hotbarSlot++) {
 			if (hotbarSlot != currentSlot) {
 				playerInventory.setItem(hotbarSlot, hotbar.getItem(hotbarSlot));
 			}
 		}
-		
+	}
+	
+	private void updateInventory(Inventory targetInventory, int startOffset) {
 		// Set inventory from current page
 		if (openInventoryPage < inventories.size()) {
 			Inventory inventory = inventories.get(openInventoryPage);
 			ItemStack[] contents = inventory.getContents();
 			for (int i = 0; i < contents.length; i++) {
-				playerInventory.setItem(i + hotbarSize, contents[i]);
+				targetInventory.setItem(i + startOffset, contents[i]);
 			}	
 		}
-
-		updateName();
-		player.updateInventory();
 	}
 	
 	protected void addSpellLore(Spell spell, List<String> lore) {
@@ -1331,6 +1356,7 @@ public class Wand implements CostReducer {
 		if (mage == null) return;
 		if (!isInventoryOpen()) return;
 		if (mage.getPlayer() == null) return;
+		if (mage.getWandMode() != WandMode.INVENTORY) return;
 		if (!mage.hasStoredInventory()) return;
 		
 		// Fill in the hotbar
@@ -1718,13 +1744,21 @@ public class Wand implements CostReducer {
 	@SuppressWarnings("deprecation")
 	private void openInventory() {
 		if (mage == null) return;
-		if (mage.hasStoredInventory()) return;
-		if (mage.storeInventory()) {
+		
+		if (mage.getWandMode() == WandMode.CHEST) {
 			inventoryIsOpen = true;
 			mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 			updateInventory();
-			updateInventoryNames();
-			mage.getPlayer().updateInventory();
+			mage.getPlayer().openInventory(getDisplayInventory());
+		} else if (mage.getWandMode() == WandMode.INVENTORY) {
+			if (mage.hasStoredInventory()) return;
+			if (mage.storeInventory()) {
+				inventoryIsOpen = true;
+				mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
+				updateInventory();
+				updateInventoryNames();
+				mage.getPlayer().updateInventory();
+			}
 		}
 	}
 	
@@ -1735,12 +1769,16 @@ public class Wand implements CostReducer {
 		inventoryIsOpen = false;
 		if (mage != null) {
 			mage.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
-			mage.restoreInventory();
-			mage.getPlayer().updateInventory();
-			ItemStack newWandItem = mage.getPlayer().getInventory().getItemInHand();
-			if (isWand(newWandItem)) {
-				item = newWandItem;
-				updateName();
+			if (mage.getWandMode() == WandMode.INVENTORY) {
+				mage.restoreInventory();
+				mage.getPlayer().updateInventory();
+				ItemStack newWandItem = mage.getPlayer().getInventory().getItemInHand();
+				if (isWand(newWandItem)) {
+					item = newWandItem;
+					updateName();
+				}
+			} else {
+				mage.getPlayer().closeInventory();
 			}
 		}
 		saveState();
