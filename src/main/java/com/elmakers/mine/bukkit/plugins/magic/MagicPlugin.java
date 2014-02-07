@@ -113,6 +113,12 @@ public class MagicPlugin extends JavaPlugin
 				addIfPermissible(sender, options, subCommandPNode, "material", true);
 			}
 			
+			if (subCommand.equalsIgnoreCase("configure")) {
+				for (String key : Wand.PROPERTY_KEYS) {
+					options.add(key);
+				}
+			}
+			
 			if (subCommand.equalsIgnoreCase("remove")) {
 				Wand activeWand = player == null ? null : player.getActiveWand();
 				if (activeWand != null) {
@@ -644,10 +650,7 @@ public class MagicPlugin extends JavaPlugin
 	{
 		if (parameters.length < 2) {
 			sender.sendMessage("Use: /wand configure <property> <value>");
-			sender.sendMessage("Properties: cost_reduction, uses, health_regeneration, hunger_regeneration, xp_regeneration,");
-			sender.sendMessage("  xp_max, protection, protection_physical, protection_projectiles,");
-			sender.sendMessage("  protection_falling,protection_fire, protection_explosions, haste, power");
-			
+			sender.sendMessage("Properties: " + StringUtils.join(Wand.PROPERTY_KEYS, ", "));
 			return true;
 		}
 

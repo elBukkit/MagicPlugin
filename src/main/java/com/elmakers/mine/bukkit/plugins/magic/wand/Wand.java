@@ -46,6 +46,13 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class Wand implements CostReducer {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
+	public final static String[] PROPERTY_KEYS = {
+		"active_spell", "active_material", "xp", "xp_regeneration", "xp_max", "health_regeneration", 
+		"hunger_regeneration", "uses", 
+		"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
+		"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
+		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", 
+		"effect_bubbles", "materials", "spells", "mode"};
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -118,6 +125,7 @@ public class Wand implements CostReducer {
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
 	
 	// Inventory functionality
+	WandMode mode = null;
 	int openInventoryPage = 0;
 	boolean inventoryIsOpen = false;
 	Inventory displayInventory = null;
@@ -414,7 +422,18 @@ public class Wand implements CostReducer {
 		return slot;
 	}
 	
-	protected void addToInventories(ItemStack itemStack, List<Inventory> checkInventories) {
+	protected void addToInventory(ItemStack itemStack) {
+		// Set the wand item
+		WandMode wandMode = getMode();
+		Integer selectedItem = null;
+		if (wandMode == WandMode.INVENTORY)  {
+			if (mage != null && mage.getPlayer() != null) {
+				selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
+				hotbar.setItem(selectedItem, item);
+			}
+		}
+		
+		List<Inventory> checkInventories = wandMode == WandMode.INVENTORY ? getAllInventories() : inventories;
 		boolean added = false;
 		
 		for (Inventory inventory : checkInventories) {
@@ -429,17 +448,6 @@ public class Wand implements CostReducer {
 			newInventory.addItem(itemStack);
 			inventories.add(newInventory);
 		}
-	}
-	
-	protected void addToInventory(ItemStack itemStack) {
-		// Set the wand item
-		Integer selectedItem = null;
-		if (mage != null && mage.getPlayer() != null) {
-			selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
-			hotbar.setItem(selectedItem, item);
-		}
-		
-		addToInventories(itemStack, getAllInventories());
 		
 		// Restore empty wand slot
 		if (selectedItem != null) {
@@ -626,6 +634,9 @@ public class Wand implements CostReducer {
 		if (effectParticle != null) {
 			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
 		}
+		if (mode != null) {
+			InventoryUtils.setMeta(wandNode, "mode", mode.name());
+		}
 	}
 	
 	protected void loadState() {
@@ -673,6 +684,7 @@ public class Wand implements CostReducer {
 		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
 		
 		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
+		mode = parseWandMode(InventoryUtils.getMeta(wandNode, "mode", ""), mode);
 	}
 
 	protected void parseParticleEffect(String effectParticleName) {
@@ -713,13 +725,7 @@ public class Wand implements CostReducer {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + "(No Owner)");
 		}
 		
-		String[] keys = {"active_spell", "active_material", "xp", "xp_regeneration", "xp_max", "health_regeneration", 
-					"hunger_regeneration", "uses", 
-					"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
-					"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
-					"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_bubbles", "materials", "spells"};
-		
-		for (String key : keys) {
+		for (String key : PROPERTY_KEYS) {
 			String value = InventoryUtils.getMeta(wandNode, key);
 			if (value != null && value.length() > 0) {
 				sender.sendMessage(key + ": " + value);
@@ -1275,7 +1281,7 @@ public class Wand implements CostReducer {
 		Player player = mage.getPlayer();
 		if (player == null) return;
 		
-		WandMode wandMode = mage.getWandMode();
+		WandMode wandMode = getMode();
 		if (wandMode == WandMode.INVENTORY) {
 			if (!mage.hasStoredInventory()) return;
 			PlayerInventory inventory = player.getInventory();
@@ -1360,10 +1366,9 @@ public class Wand implements CostReducer {
 	
 	public void saveInventory() {
 		if (mage == null) return;
-		if (mage == null) return;
 		if (!isInventoryOpen()) return;
 		if (mage.getPlayer() == null) return;
-		if (mage.getWandMode() != WandMode.INVENTORY) return;
+		if (getMode() != WandMode.INVENTORY) return;
 		if (!mage.hasStoredInventory()) return;
 		
 		// Fill in the hotbar
@@ -1593,6 +1598,7 @@ public class Wand implements CostReducer {
 		if (wandConfig.containsKey("effect_particle") && !safe) {
 			parseParticleEffect(wandConfig.getString("effect_particle"));
 		}
+		mode = parseWandMode(wandConfig.getString("mode"), mode);
 		
 		owner = wandConfig.getString("owner", owner);
 		description = wandConfig.getString("description", description);
@@ -1634,6 +1640,16 @@ public class Wand implements CostReducer {
 	
 	public static Collection<ConfigurationNode> getWandTemplates() {
 		return wandTemplates.values();
+	}
+	
+	public static WandMode parseWandMode(String modeString, WandMode defaultValue) {
+		for (WandMode testMode : WandMode.values()) {
+			if (testMode.name().equalsIgnoreCase(modeString)) {
+				return testMode;
+			}
+		}
+		
+		return defaultValue;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -1752,14 +1768,15 @@ public class Wand implements CostReducer {
 	private void openInventory() {
 		if (mage == null) return;
 		
-		if (mage.getWandMode() == WandMode.CHEST) {
+		WandMode wandMode = getMode();
+		if (wandMode == WandMode.CHEST) {
 			// Hacky work-around for switching between modes. This mode has no hotbar!
 			for (int i = 0; i < HOTBAR_SIZE; i++) {
 				// Put hotbar items in main inventory since we don't show the hotbar in chest mode.
 				ItemStack hotbarItem = hotbar.getItem(i);
 				if (hotbarItem != null && hotbarItem.getType() != Material.AIR) {
 					hotbar.setItem(i, null);
-					addToInventories(hotbarItem, inventories);
+					addToInventory(hotbarItem);
 				}
 			}	
 			
@@ -1767,7 +1784,7 @@ public class Wand implements CostReducer {
 			mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 			updateInventory();
 			mage.getPlayer().openInventory(getDisplayInventory());
-		} else if (mage.getWandMode() == WandMode.INVENTORY) {
+		} else if (wandMode == WandMode.INVENTORY) {
 			if (mage.hasStoredInventory()) return;
 			if (mage.storeInventory()) {
 				inventoryIsOpen = true;
@@ -1786,7 +1803,7 @@ public class Wand implements CostReducer {
 		inventoryIsOpen = false;
 		if (mage != null) {
 			mage.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
-			if (mage.getWandMode() == WandMode.INVENTORY) {
+			if (getMode() == WandMode.INVENTORY) {
 				mage.restoreInventory();
 				mage.getPlayer().updateInventory();
 				ItemStack newWandItem = mage.getPlayer().getInventory().getItemInHand();
@@ -2092,5 +2109,9 @@ public class Wand implements CostReducer {
 	
 	public Inventory getHotbar() {
 		return hotbar;
+	}
+	
+	public WandMode getMode() {
+		return mode != null ? mode : controller.getDefaultWandMode();
 	}
 }
