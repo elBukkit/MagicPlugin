@@ -624,7 +624,6 @@ superblob:
     icon: slime_ball
     category: engineering
     class: ConstructSpell
-    pvp_restricted: true
     parameters:
         allow_max_range: true
         check_destructible: false
