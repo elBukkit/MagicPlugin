@@ -405,13 +405,6 @@ recall:
     xp_max: 20
     spells:
         - recall
-        - spawn
-spawn:
-    modifiable: true
-    xp_regeneration: 2
-    xp_max: 10
-    spells:
-        - spawn
 fireball:
     modifiable: false
     spells:

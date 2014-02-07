@@ -153,9 +153,6 @@ spells:
     storm:
         name: Storm
         description: Start a lightning storm
-    spawn:
-        name: Home
-        description: Take yourself back home
     leatherskin:
         name: LeatherSkin
         description: Protect you from some damage

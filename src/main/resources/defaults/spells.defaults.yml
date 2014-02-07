@@ -62,6 +62,7 @@ curse:
     icon: spider_eye
     category: dark
     class: PotionEffectSpell
+    pvp_restricted: true
     costs:
         xp: 10
     parameters:
@@ -192,6 +193,7 @@ arrow:
     icon: arrow
     category: dark
     class: ProjectileSpell
+    pvp_restricted: true
     parameters:
       projectile: Arrow
       speed: 2
@@ -203,6 +205,7 @@ toss:
     icon: wood_button
     category: earthbending
     class: TossSpell
+    pvp_restricted: true
     parameters:
       speed: 2
     costs:
@@ -211,6 +214,7 @@ volley:
     icon: stone_button
     category: earthbending
     class: TossSpell
+    pvp_restricted: true
     parameters:
       speed: 1.5
       count: 8
@@ -220,6 +224,7 @@ sniper:
     icon: gold_nugget
     category: dark
     class: ProjectileSpell
+    pvp_restricted: true
     parameters:
       projectile: Arrow
       fire: false
@@ -232,6 +237,7 @@ pull:
     icon: fishing_rod
     category: airbending
     class: PushSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 32
@@ -248,6 +254,7 @@ kaboom:
     icon: blaze_powder
     category: dark
     class: BoomSpell
+    pvp_restricted: true
     parameters:
         cooldown: 5000
         size: 6
@@ -258,6 +265,7 @@ frost:
     icon: snow_ball
     category: waterbending
     class: FrostSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 24
@@ -270,21 +278,13 @@ storm:
     icon: quartz
     category: firebending
     class: LightningSpell
+    pvp_restricted: true
     parameters:
         allow_max_range: false
         range: 64
         radius: '10'
     costs:
         xp: 100
-spawn:
-    icon: wood_door
-    category: light
-    class: RecallSpell
-    parameters:
-        cooldown: 30000
-        type: spawn
-    costs:
-        xp: 10
 leatherskin:
     icon: leather_chestplate
     category: light
