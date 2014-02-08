@@ -110,6 +110,7 @@ default:
     xp_regeneration: 5
     xp_max: 20
     modifiable: true
+    effect_color: 'FFFFFF'
     
 #
 # The "random" entry is used by the wand randomizer.
@@ -403,22 +404,26 @@ recall:
     modifiable: true
     xp_regeneration: 2
     xp_max: 20
+    effect_color: 'FFFFFF'
     spells:
         - recall
 fireball:
     modifiable: false
+    effect_color: 'FF0000'
     spells:
         - fireball
     uses: 10
     cost_reduction: 1
 arrow:
     modifiable: false
+    effect_color: '880000'
     spells:
         - arrow
     uses: 200
     cost_reduction: 1    
 dueling:
     modifiable: true
+    effect_color: '880000'
     protection_fire: 0.8
     protection: 0.8
     xp_regeneration: 2
@@ -432,6 +437,7 @@ dueling:
 explorer:
     modifiable: true
     xp_regeneration: 1
+    effect_color: '008800'
     xp_max: 50
     spells:
         - tesseract
@@ -442,6 +448,7 @@ psychic:
     modifiable: true
     protection_falling: 0.9
     xp_regeneration: 1
+    effect_color: '000088'
     xp_max: 50
     spells:
         - fling
@@ -453,6 +460,7 @@ psychic:
 painter:
     modifiable: true
     xp_regeneration: 1
+    effect_color: '118811'
     xp_max: 100
     spells:
         - paint
@@ -524,6 +532,7 @@ painter:
 decorator:
     modifiable: false
     cost_reduction: 1
+    effect_color: '118811'
     spells:
         - convert
     materials:
@@ -594,6 +603,7 @@ decorator:
 engineer:
     modifiable: false
     cost_reduction: 1
+    effect_color: '00FF00'
     hunger_regeneration: 1
     health_regeneration: 1
     protection_falling: 1
@@ -657,6 +667,7 @@ battle:
     modifiable: true
     protection_physical: 0.3
     xp_regeneration: 10
+    effect_color: 'DD0000'
     xp_max: 100
     spells:
         - arrow
@@ -669,6 +680,7 @@ battle:
 mining:
     modifiable: true
     xp_regeneration: 10
+    effect_color: '888888'
     xp_max: 100
     spells:
         - peek
@@ -679,6 +691,7 @@ mining:
 farming:
     modifiable: true
     xp_regeneration: 10
+    effect_color: '0000EE'
     xp_max: 100
     spells:
         - farm
@@ -694,6 +707,7 @@ farming:
 alchemist:
     modifiable: true
     xp_regeneration: 10
+    effect_color: 'EE00EE'
     xp_max: 100
     spells:
         - alter
@@ -712,6 +726,7 @@ alchemist:
 elementalist:
     modifiable: true
     xp_regeneration: 10
+    effect_color: '0000FF'
     xp_max: 100
     spells:
         - fire
@@ -723,6 +738,7 @@ elementalist:
 necromancer:
     modifiable: true
     xp_regeneration: 10
+    effect_color: '111111'
     xp_max: 100
     spells:
         - fire
@@ -741,6 +757,7 @@ elder:
     power: 1
     haste: 1
     effect_color: '8B008B'
+    effect_bubbles: true
     organize: true
     spells:
         - fling
@@ -811,6 +828,7 @@ air:
     protection: 0.2
     protection_falling: 0.7
     xp_regeneration: 2
+    effect_color: '888888'
     xp_max: 50
     haste: 0.1
     spells:
@@ -837,6 +855,7 @@ air_3:
     xp_max: 150
     haste: 0.2
     effect_color: 'FFFFFF'
+    effect_bubbles: true
     spells:
         - fling
         - push
@@ -848,6 +867,7 @@ water:
     modifiable: true
     protection: 0.1
     xp_regeneration: 2
+    effect_color: '000088'
     xp_max: 50
     spells:
         - cushion
@@ -872,6 +892,7 @@ water_3:
     xp_regeneration: 10
     xp_max: 150
     effect_color: '0000FF'
+    effect_bubbles: true
     spells:
         - frost
         - toss
@@ -893,6 +914,7 @@ earth:
     protection_physical: 0.6
     protection_blast: 0.5
     xp_regeneration: 2
+    effect_color: 'CD853F'
     xp_max: 50
     spells:
         - sandblast
@@ -929,6 +951,7 @@ earth_3:
     xp_regeneration: 10
     xp_max: 150
     effect_color: '8B4513'
+    effect_bubbles: true
     spells:
         - blob
         - sandblast
@@ -951,6 +974,7 @@ fire:
     modifiable: true
     protection_fire: 0.5
     xp_regeneration: 2
+    effect_color: '880000'
     xp_max: 40
     spells:
         - fire
@@ -978,6 +1002,7 @@ fire_3:
     xp_regeneration: 10
     xp_max: 150
     effect_color: 'FF0000'
+    effect_bubbles: true
     spells:
         - fireball
         - recurse
@@ -1000,6 +1025,7 @@ avatar:
     xp_max: 500
     power: 0.5
     effect_color: '0000FF'
+    effect_bubbles: true
     haste: 0.1
     spells:
         - fling
@@ -1034,6 +1060,7 @@ avatar:
         - stationary_water
 camera:
     modifiable: true
+    effect_color: 'FFFFFF'
     xp_regeneration: 1
     xp_max: 5
     spells:
@@ -1049,6 +1076,7 @@ white:
     haste: 0.1
     power: 0.5
     effect_color: 'FFFFFF'
+    effect_bubbles: true
     spells:
         - fling
         - blink
@@ -1106,6 +1134,7 @@ black:
     haste: 0.1
     power: 0.5
     effect_color: '111111'
+    effect_bubbles: true
     spells:
         - fling
         - blink
@@ -1163,6 +1192,7 @@ red:
     xp_max: 300
     power: 0.2
     effect_color: 'FF0000'
+    effect_bubbles: true
     spells:
         - fireball
         - recurse
@@ -1193,6 +1223,7 @@ blue:
     xp_max: 300
     power: 0.2
     effect_color: '0000FF'
+    effect_bubbles: true
     spells:
         - frost
         - toss
@@ -1231,6 +1262,7 @@ green:
     xp_max: 300
     power: 0.2
     effect_color: '00FF00'
+    effect_bubbles: true
     spells:
         - tree
         - farm
@@ -1277,6 +1309,7 @@ admin:
     power: 1
     haste: 0.5
     effect_color: '888888'
+    effect_bubbles: true
     spells:
         - levitate
         - blink
@@ -1307,7 +1340,6 @@ wolf:
     haste: 1
     effect_color: '2EFEC8'
     effect_particle: magic_runes
-    effect_bubbles: false
     organize: true
     spells:
         - fling

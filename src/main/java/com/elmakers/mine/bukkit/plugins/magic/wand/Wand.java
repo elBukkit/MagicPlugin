@@ -90,7 +90,7 @@ public class Wand implements CostReducer {
 	
 	private int effectColor = 0;
 	private ParticleType effectParticle = null;
-	private boolean effectBubbles = true;
+	private boolean effectBubbles = false;
 	
 	private float defaultWalkSpeed = 0.2f;
 	private float defaultFlySpeed = 0.1f;
