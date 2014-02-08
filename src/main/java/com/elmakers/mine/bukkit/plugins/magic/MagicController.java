@@ -1609,12 +1609,12 @@ public class MagicController implements Listener
 			if (!inventory.contains(wandRecipeLowerMaterial) || !inventory.contains(wandRecipeUpperMaterial)) {
 				return;
 			}
-			Wand wand = Wand.createWand(this, null);
+			Wand defaultWand = Wand.createWand(this, null);
+			Wand wand = defaultWand;
 			if (recipeOutputTemplate != null && recipeOutputTemplate.length() > 0) {
-				Wand addWand = Wand.createWand(this, recipeOutputTemplate);
-				if (wand != null) {
-					wand.add(addWand);
-				}
+				Wand templateWand = Wand.createWand(this, recipeOutputTemplate);
+				templateWand.add(defaultWand);
+				wand = templateWand;
 			}
 			event.getInventory().setResult(wand.getItem());
 		}
