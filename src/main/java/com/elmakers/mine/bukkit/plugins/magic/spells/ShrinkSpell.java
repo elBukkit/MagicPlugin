@@ -113,6 +113,9 @@ public class ShrinkSpell extends Spell
 			castMessage("Boogidie Boogidie");
 		} else {
 			Block targetBlock = target.getBlock();
+			if (targetBlock == null) {
+				return SpellResult.NO_TARGET;
+			}
 			String blockSkin = getBlockSkin(targetBlock.getType());
 			if (blockSkin == null) return SpellResult.NO_TARGET;
 			
