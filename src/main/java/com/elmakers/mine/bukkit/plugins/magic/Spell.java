@@ -141,9 +141,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		{
 			spellClass = Class.forName(className);
 		}
-		catch(ClassNotFoundException ex)
+		catch (Throwable ex)
 		{
-			// TODO Log errors
+			controller.getLogger().warning("Error loading spell: " + name);
+			ex.printStackTrace();
 			return null;
 		}
 
