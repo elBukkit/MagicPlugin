@@ -491,7 +491,12 @@ public class MagicController implements Listener
 		// Try to link to Essentials:
 		Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
 		if (essentials != null) {
-			mailer = new Mailer(essentials);
+			try {
+				mailer = new Mailer(essentials);
+			} catch (Exception ex) {
+				getLogger().warning("Essentials found, but failed to hook up to Mailer");
+				mailer = null;
+			}
 		}
 		
 		if (essentialsSignsEnabled) {
