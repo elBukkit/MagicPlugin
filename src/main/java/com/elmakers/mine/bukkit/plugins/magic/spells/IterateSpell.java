@@ -7,10 +7,10 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectUtils;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 

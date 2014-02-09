@@ -5,9 +5,9 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 

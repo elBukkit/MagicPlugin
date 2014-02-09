@@ -691,23 +691,23 @@ public class MagicController implements Listener
 		return configuration;
 	}
 
-	protected ConfigurationNode loadConfigFile(String fileName)
+	protected ConfigurationNode loadConfigFile(String fileName, boolean loadDefaults)
 	{
 		String configFileName = fileName + ".yml";
-		String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 		File configFile = new File(configFolder, configFileName);
 		if (!configFile.exists()) {
 			getLogger().info("Saving template " + configFileName + ", edit to customize configuration.");
 			plugin.saveResource(configFileName, false);
 		}
+
+		String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
+		plugin.saveResource(defaultsFileName, true);
 		
 		Configuration config = new Configuration(configFile);
 		getLogger().info("Loading " + configFile.getName());
 		config.load();
 		
-		plugin.saveResource(defaultsFileName, true);
-		
-		if (!config.getBoolean("load_defaults", true)) {
+		if (!loadDefaults) {
 			return config;
 		}
 		
@@ -722,7 +722,7 @@ public class MagicController implements Listener
 	{
 		// Load main configuration
 		try {
-			loadProperties(loadConfigFile(CONFIG_FILE));
+			loadProperties(loadConfigFile(CONFIG_FILE, true));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -730,35 +730,35 @@ public class MagicController implements Listener
 		// Load localizations
 		try {
 			Messages.reset();
-			Messages.load(loadConfigFile(MESSAGES_FILE));
+			Messages.load(loadConfigFile(MESSAGES_FILE, true));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
 		// Load materials configuration
 		try {
-			loadMaterials(loadConfigFile(MATERIALS_FILE));
+			loadMaterials(loadConfigFile(MATERIALS_FILE, true));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
 		// Load block populator configuration
 		try {
-			loadPopulator(loadConfigFile(BLOCK_POPULATOR_FILE));
+			loadPopulator(loadConfigFile(BLOCK_POPULATOR_FILE, true));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		
 		// Load spells
 		try {
-			loadSpells(loadConfigFile(SPELLS_FILE));
+			loadSpells(loadConfigFile(SPELLS_FILE, loadDefaultSpells));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		
 		// Load wand templates
 		try {
-			Wand.loadTemplates(loadConfigFile(WANDS_FILE));
+			Wand.loadTemplates(loadConfigFile(WANDS_FILE, loadDefaultWands));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1001,6 +1001,8 @@ public class MagicController implements Listener
 	{
 		if (properties == null) return;
 		
+		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
+		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
 		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
 		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
@@ -1043,6 +1045,7 @@ public class MagicController implements Listener
 		Wand.EraseMaterial = properties.getMaterial("erase_item", Wand.EraseMaterial);
 		Wand.CloneMaterial = properties.getMaterial("clone_item", Wand.CloneMaterial);
 		Wand.ReplicateMaterial = properties.getMaterial("replicate_item", Wand.ReplicateMaterial);
+		Wand.SchematicMaterial = properties.getMaterial("schematic_item", Wand.SchematicMaterial);
 		Wand.MapMaterial = properties.getMaterial("map_item", Wand.MapMaterial);
 		Wand.EnchantableWandMaterial = properties.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
@@ -2198,6 +2201,9 @@ public class MagicController implements Listener
 	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
 	 private final String						 URL_MAPS_FILE					= "imagemaps";
+	 
+	 private boolean 							loadDefaultSpells				= true;
+	 private boolean 							loadDefaultWands				= true;
 
 	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
 	 static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";

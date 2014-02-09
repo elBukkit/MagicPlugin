@@ -40,10 +40,6 @@
 #
 # General format:
 #
-# # Use "load_defaults" to turn off loading the spells in defaults/spells.defaults.yml, if you
-# # want a completely custom experience. You would also need to customize all the wands in wands.yml.
-# load_defaults: false
-#
 # <spellkey>:
 #       icon:  <material name>
 #       enabled: <true|false>

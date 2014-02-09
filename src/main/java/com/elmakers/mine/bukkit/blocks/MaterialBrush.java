@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.blocks;
 
 import java.util.List;
 
@@ -12,18 +12,20 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.blocks.MaterialAndData;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class MaterialBrush extends MaterialAndData {
+public class MaterialBrush extends MaterialBrushData {
 	
 	private enum BrushMode {
 		MATERIAL,
 		COPY,
 		CLONE,
 		REPLICATE,
-		MAP
+		MAP,
+		SCHEMATIC
 	};
 	
 	private BrushMode mode = BrushMode.MATERIAL;
@@ -63,6 +65,11 @@ public class MaterialBrush extends MaterialAndData {
 			|| this.material == Material.CARPET) {
 			this.mapMaterialBase = this.material;
 		}
+	}
+	
+	public void enableSchematic(String name) {
+		this.mode = BrushMode.SCHEMATIC;
+		this.schematicName = name;
 	}
 	
 	public void enableReplication() {
@@ -106,7 +113,7 @@ public class MaterialBrush extends MaterialAndData {
 	}
 
 	public void setTarget(Location target) {
-		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP) {
+		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP || mode == BrushMode.SCHEMATIC) {
 			if (cloneTarget == null || mode == BrushMode.CLONE || 
 				!target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
 				cloneTarget = target;
@@ -150,6 +157,10 @@ public class MaterialBrush extends MaterialAndData {
 			if (!block.getChunk().isLoaded()) return false;
 
 			updateFrom(block, controller.getRestrictedMaterials());
+		}
+		
+		if (mode == BrushMode.SCHEMATIC && schematicName.length() > 0) {
+			// TODO!
 		}
 		
 		if (mode == BrushMode.MAP && mapId >= 0) {
@@ -211,6 +222,7 @@ public class MaterialBrush extends MaterialAndData {
 			mapId = (short)node.getInt("map_id", mapId);
 			material = node.getMaterial("material", material);
 			data = (byte)node.getInt("data", data);
+			schematicName = node.getString("schematic", schematicName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			controller.getPlugin().getLogger().warning("Failed to load brush data: " + ex.getMessage());
@@ -232,6 +244,7 @@ public class MaterialBrush extends MaterialAndData {
 			node.setProperty("map_id", (int)mapId);
 			node.setProperty("material", material);
 			node.setProperty("data", data);
+			node.setProperty("schematic", schematicName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			controller.getLogger().warning("Failed to save brush data: " + ex.getMessage());

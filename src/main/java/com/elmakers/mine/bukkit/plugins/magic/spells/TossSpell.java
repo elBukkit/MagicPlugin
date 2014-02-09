@@ -5,8 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 

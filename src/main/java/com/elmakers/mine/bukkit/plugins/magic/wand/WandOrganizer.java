@@ -139,6 +139,7 @@ public class WandOrganizer {
 		}
 		
 		Set<String> wandMaterials = wand.getMaterialKeys();
+		
 		for (String hotbarItemName : hotbarMaterialNames) {
 			wandMaterials.remove(hotbarItemName);
 		}

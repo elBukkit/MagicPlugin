@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.UndoBatch;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
