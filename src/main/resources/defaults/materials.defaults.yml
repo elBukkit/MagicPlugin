@@ -170,7 +170,6 @@ attachable:
 - stone_button
 - lever
 - bed_block
-- piston_moving_piece
 - torch
 - redstone_wire
 - ladder
@@ -197,8 +196,7 @@ attachable:
 - activator_rail
 - powered_rail
 - detector_rail
-- piston_sticky_base
-- piston_base
+- piston_moving_piece
 - piston_extension
 
 # Things that can specifically be attached to walls. 
