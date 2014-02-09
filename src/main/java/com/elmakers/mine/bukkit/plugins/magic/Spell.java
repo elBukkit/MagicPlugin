@@ -867,6 +867,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			{
 				target = targetEntity;
 			}
+			else 
+			{
+				// Don't let the target the block, either.
+				target = new Target(getPlayer(), null);
+			}
 		}
 		
 		return target;
