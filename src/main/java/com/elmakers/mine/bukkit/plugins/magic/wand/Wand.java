@@ -116,11 +116,6 @@ public class Wand implements CostReducer {
 	public static final String REPLICATE_MATERIAL_KEY = "replicate";
 	public static final String MAP_MATERIAL_KEY = "map";
 	
-	// Legacy
-	private static final int ERASE_MATERIAL_ID = 0;
-	private static final int COPY_MATERIAL_ID = -1;
-	private static final int CLONE_MATERIAL_ID = -2;
-	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
 	
@@ -159,14 +154,11 @@ public class Wand implements CostReducer {
 		updateInventoryNames(true);
 		saveState();
 	}
-
-	public void setActiveMaterial(Material material, byte data) {
-		String materialKey = getMaterialKey(material, data);
-		setActiveMaterial(materialKey);
-	}
 	
-	public void activateMaterial(Material material, byte data) {
-		setActiveMaterial(material, data);
+	public void activateBrush(ItemStack itemStack) {
+		if (!isBrush(itemStack)) return;
+		
+		setActiveMaterial(getMaterialKey(itemStack));
 		if (activeMaterial != null) {
 			if (activeMaterial.equals(CLONE_MATERIAL_KEY) || activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
 				MaterialBrush brush = mage.getBrush();
@@ -348,32 +340,6 @@ public class Wand implements CostReducer {
 	public Set<String> getMaterialKeys() {
 		return getMaterialKeys(false);
 	}
-
-	protected static String getMaterialKey(ItemStack itemStack) {
-		return getMaterialKey(itemStack, null);
-	}
-	
-	@SuppressWarnings("deprecation")
-	protected static String getMaterialKey(ItemStack itemStack, Integer index) {
-		if (itemStack == null || isSpell(itemStack) || isWand(itemStack)) {
-			return null;
-		}
-		Material material = itemStack.getType();
-		if (material == Material.AIR) {
-			return null;
-		}
-	
-		String materialKey = getMaterialKey(material, itemStack.getData().getData());
-		if (materialKey == null) {
-			return null;
-		}
-		
-		if (index != null) {
-			materialKey += "@" + index;
-		}
-		
-		return materialKey;
-	}
 	
 	protected Set<String> getMaterialKeys(boolean includePositions) {
 		Set<String> materialNames = new TreeSet<String>();
@@ -524,14 +490,6 @@ public class Wand implements CostReducer {
 		hasInventory = spellNames.length + materialNames.length > 1;
 	}
 	
-	protected ItemStack createMaterialItem(String materialKey) {
-		MaterialAndData material = parseMaterialKey(materialKey);
-		if (material == null) {
-			return null;
-		}
-		return createMaterialItem(material.getMaterial(), material.getData());
-	}
-	
 	@SuppressWarnings("deprecation")
 	protected ItemStack createSpellItem(String spellName) {
 		Spell spell = controller.getSpell(spellName);
@@ -556,8 +514,16 @@ public class Wand implements CostReducer {
 		return itemStack;
 	}
 	
+	private String getActiveWandName(String materialKey) {
+		Spell spell = controller.getSpell(activeSpell);
+		return getActiveWandName(spell, materialKey);
+	}
+	
 	@SuppressWarnings("deprecation")
-	protected ItemStack createMaterialItem(Material material, byte dataId) {
+	protected ItemStack createMaterialItem(String materialKey) {
+		MaterialAndData materialAndData = parseMaterialKey(materialKey);
+		Material material = materialAndData.getMaterial();
+		byte dataId = materialAndData.getData();
 		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);	
 		ItemStack itemStack = InventoryUtils.getCopy(originalItemStack);
 		if (itemStack == null) {
@@ -567,7 +533,7 @@ public class Wand implements CostReducer {
 		ItemMeta meta = itemStack.getItemMeta();
 		List<String> lore = new ArrayList<String>();
 		if (material != null) {
-			lore.add(ChatColor.GRAY + Messages.get("wand.building_material_info").replace("$material", getMaterialName(material, (byte)dataId)));
+			lore.add(ChatColor.GRAY + Messages.get("wand.building_material_info").replace("$material", getMaterialName(materialKey)));
 			if (material == EraseMaterial) {
 				lore.add(Messages.get("wand.erase_material_description"));
 			} else if (material == CopyMaterial) {
@@ -583,7 +549,7 @@ public class Wand implements CostReducer {
 			}
 		}
 		meta.setLore(lore);
-		meta.setDisplayName(getActiveWandName(material));
+		meta.setDisplayName(getActiveWandName(materialKey));
 		itemStack.setItemMeta(meta);
 		return itemStack;
 	}
@@ -649,9 +615,6 @@ public class Wand implements CostReducer {
 		parseInventoryStrings(wandSpells, wandMaterials);
 		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
 		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
-		
-		// Temporary-ish migration step
-		activeMaterial = getMaterialKey(parseMaterialKey(activeMaterial));
 		
 		costReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cost_reduction", floatFormat.format(costReduction)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
@@ -766,18 +729,6 @@ public class Wand implements CostReducer {
 		return found;
 	}
 	
-	public boolean removeMaterial(Material material, byte data) {
-		return removeMaterial(getMaterialKey(material, data));
-	}
-	
-	public boolean addMaterial(Material material, byte data, boolean force) {
-		return addMaterial(material, data, false, force);
-	}
-	
-	public boolean addMaterial(Material material, byte data) {
-		return addMaterial(material, data, false, false);
-	}
-
 	public boolean hasMaterial(String materialKey) {
 		return getMaterialKeys().contains(materialKey);
 	}
@@ -892,7 +843,7 @@ public class Wand implements CostReducer {
 		return addSpell(spellName, false);
 	}
 
-	private String getActiveWandName(Spell spell, Material material, byte data) {
+	private String getActiveWandName(Spell spell, String materialKey) {
 
 		// Build wand name
 		ChatColor wandColor = modifiable ? ChatColor.AQUA : ChatColor.RED;
@@ -900,8 +851,8 @@ public class Wand implements CostReducer {
 		
 		// Add active spell to description
 		if (spell != null) {
-			if (material != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
-				String materialName = getMaterialName(material, data);
+			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
+				String materialName = getMaterialName(materialKey);
 				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
 			} else {
 				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
@@ -915,14 +866,7 @@ public class Wand implements CostReducer {
 	}
 	
 	private String getActiveWandName(Spell spell) {
-		Material material = null;
-		byte data = 0;
-		if (activeMaterial != null && activeMaterial.length() > 0) {
-			MaterialAndData active = parseMaterialKey(activeMaterial);
-			material = active.getMaterial();
-			data = active.getData();
-		}
-		return getActiveWandName(spell, material, data);
+		return getActiveWandName(spell, activeMaterial);
 	}
 	
 	private static String getMaterialKey(Material material) {
@@ -958,21 +902,14 @@ public class Wand implements CostReducer {
 		return materialKey;
 	}
 
-	private static String getMaterialKey(MaterialAndData material) {
-		return getMaterialKey(material.getMaterial(), material.getData());
-	}
-	
-	private static String getMaterialName(Material material) {
-		return getMaterialName(material, (byte)0);
-	}
-	
 	@SuppressWarnings("deprecation")
-	private static String getMaterialName(Material material, byte data) {
-		String materialName = getMaterialKey(material, data);
-		if (materialName == null) return null;
+	private static String getMaterialName(String materialKey) {
+		if (materialKey == null) return null;
 		
-		String[] pieces = StringUtils.split(materialName, ":");
-		materialName = pieces[0];
+		MaterialAndData materialAndData = parseMaterialKey(materialKey);
+		Material material = materialAndData.getMaterial();
+		byte data = materialAndData.getData();
+		String materialName = material.name().toLowerCase();
 		
 		// This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
 		/*
@@ -1004,12 +941,6 @@ public class Wand implements CostReducer {
 		
 		materialName = materialName.toLowerCase().replace('_', ' ');
 		return materialName;
-	}
-	
-	private String getActiveWandName(Material material) {
-		Spell spell = controller.getSpell(activeSpell);
-		
-		return getActiveWandName(spell, material, (byte)0);
 	}
 	
 	private String getActiveWandName() {
@@ -1179,13 +1110,10 @@ public class Wand implements CostReducer {
 		return null;
 	}
 	
-	public static boolean isSpecialMaterialIcon(Material icon) {
-		return icon == CloneMaterial || icon == CopyMaterial || icon == EraseMaterial || icon == ReplicateMaterial || icon == MapMaterial;
-	}
-	
 	public static boolean isSpecialMaterialKey(String materialKey) {
 		return COPY_MATERIAL_KEY.equals(materialKey) || ERASE_MATERIAL_KEY.equals(materialKey) || 
-			   REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) || MAP_MATERIAL_KEY.equals(materialKey);
+			   REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) || 
+			   MAP_MATERIAL_KEY.equals(materialKey);
 	}
 
 	public static boolean isWand(ItemStack item) {
@@ -1194,14 +1122,36 @@ public class Wand implements CostReducer {
 	}
 
 	public static boolean isSpell(ItemStack item) {
-		return item != null && item.getType() != WandMaterial && InventoryUtils.hasMeta(item, "spell");
+		return item != null && InventoryUtils.hasMeta(item, "spell");
 	}
 
+	public static boolean isBrush(ItemStack item) {
+		return item != null && InventoryUtils.hasMeta(item, "brush");
+	}
+	
 	public static String getSpell(ItemStack item) {
 		if (!isSpell(item)) return null;
 		
 		Object spellNode = InventoryUtils.getNode(item, "spell");
 		return InventoryUtils.getMeta(spellNode, "key");
+	}
+
+	public static String getMaterialKey(ItemStack item) {
+		if (!isBrush(item)) return null;
+		
+		Object brushNode = InventoryUtils.getNode(item, "brush");
+		return InventoryUtils.getMeta(brushNode, "key");
+	}
+	
+	protected static String getMaterialKey(ItemStack itemStack, Integer index) {
+		String materialKey = getMaterialKey(itemStack);
+		if (materialKey == null) return null;
+		
+		if (index != null) {
+			materialKey += "@" + index;
+		}
+		
+		return materialKey;
 	}
 	
 	public void updateInventoryNames(boolean activeHotbarNames, boolean activeAllNames) {
@@ -1230,8 +1180,8 @@ public class Wand implements CostReducer {
 			if (spell != null) {
 				updateSpellName(item, spell, activeName);
 			}
-		} else {
-			updateMaterialName(item, activeName);
+		} else if (isBrush(item)) {
+			updateMaterialName(item, getMaterialKey(item), activeName);
 		}
 	}
 	
@@ -1253,16 +1203,18 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(spellNode, "key", spell.getKey());
 	}
 	
-	protected void updateMaterialName(ItemStack itemStack, boolean activeName) {
+	protected void updateMaterialName(ItemStack itemStack, String materialKey, boolean activeName) {
 		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
 		if (activeName) {
-			displayName = getActiveWandName(itemStack.getType());
+			displayName = getActiveWandName(materialKey);
 		} else {
-			displayName = getMaterialName(itemStack.getType());
+			displayName = getMaterialName(materialKey);
 		}
 		meta.setDisplayName(displayName);
 		itemStack.setItemMeta(meta);
+		Object brushNode = InventoryUtils.createNode(itemStack, "brush");
+		InventoryUtils.setMeta(brushNode, "key", materialKey);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -1666,15 +1618,7 @@ public class Wand implements CostReducer {
 					// Legacy material id loading
 					try {
 						Integer id = Integer.parseInt(pieces[0]);
-						if (id == ERASE_MATERIAL_ID) {
-							material = EraseMaterial;
-						} else if (id == COPY_MATERIAL_ID) {
-							material = CopyMaterial;
-						} else if (id == CLONE_MATERIAL_ID) {
-							material = CloneMaterial;
-						} else {
-							material = Material.getMaterial(id);
-						}
+						material = Material.getMaterial(id);
 					} catch (Exception ex) {
 						material = Material.getMaterial(pieces[0].toUpperCase());
 					}

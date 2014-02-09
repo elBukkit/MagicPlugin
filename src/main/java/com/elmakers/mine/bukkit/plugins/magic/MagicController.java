@@ -1166,7 +1166,6 @@ public class MagicController implements Listener
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected void onPlayerActivateIcon(Mage mage, Wand activeWand, ItemStack icon)
 	{
 		// Check for spell or material selection
@@ -1178,11 +1177,8 @@ public class MagicController implements Listener
 				
 				// Reset the held item, Bukkit may have replaced it (?)
 				mage.getPlayer().setItemInHand(activeWand.getItem());
-			} else {
-				Material material = icon.getType();
-				if (material.isBlock() || Wand.isSpecialMaterialIcon(material)) {
-					activeWand.activateMaterial(material, icon.getData().getData());
-				}
+			} else if (Wand.isBrush(icon)){
+				activeWand.activateBrush(icon);
 				
 				// Reset the held item, Bukkit may have replaced it (?)
 				mage.getPlayer().setItemInHand(activeWand.getItem());
