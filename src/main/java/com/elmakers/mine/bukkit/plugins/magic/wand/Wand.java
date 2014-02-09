@@ -54,7 +54,7 @@ public class Wand implements CostReducer {
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", 
 		"effect_bubbles", "materials", "spells", "mode"};
 	
-	private ItemStack item;
+	private final ItemStack item;
 	private MagicController controller;
 	private Mage mage;
 	
@@ -130,21 +130,17 @@ public class Wand implements CostReducer {
 	boolean inventoryIsOpen = false;
 	Inventory displayInventory = null;
 	
-	private Wand() {
+	private Wand(ItemStack itemStack) {
 		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
 		inventories = new ArrayList<Inventory>();
+		item = itemStack;
 	}
 	
 	public Wand(MagicController spells) {
-		this();
-		this.controller = spells;
-		item = new ItemStack(WandMaterial);
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
-		item = InventoryUtils.getCopy(item);
-		ItemMeta itemMeta = item.getItemMeta();
-		item.setItemMeta(itemMeta);
-
+		this(InventoryUtils.getCopy(new ItemStack(WandMaterial)));
 		InventoryUtils.addGlow(item);
+		this.controller = spells;
 		id = UUID.randomUUID().toString();
 		wandName = Messages.get("wand.default_name");
 		updateName();
@@ -152,8 +148,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public Wand(MagicController spells, ItemStack item) {
-		this();
-		this.item = item;
+		this(item);
 		this.controller = spells;
 		loadState();
 	}
@@ -311,10 +306,6 @@ public class Wand implements CostReducer {
 	
 	public ItemStack getItem() {
 		return item;
-	}
-	
-	public void setItem(ItemStack item) {
-		this.item = item;
 	}
 	
 	protected List<Inventory> getAllInventories() {
@@ -1805,12 +1796,9 @@ public class Wand implements CostReducer {
 			mage.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
 			if (getMode() == WandMode.INVENTORY) {
 				mage.restoreInventory();
-				mage.getPlayer().updateInventory();
-				ItemStack newWandItem = mage.getPlayer().getInventory().getItemInHand();
-				if (isWand(newWandItem)) {
-					item = newWandItem;
-					updateName();
-				}
+				Player player = mage.getPlayer();
+				player.setItemInHand(item);
+				player.updateInventory();
 			} else {
 				mage.getPlayer().closeInventory();
 			}

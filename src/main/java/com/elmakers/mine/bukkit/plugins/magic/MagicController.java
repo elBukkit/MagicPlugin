@@ -89,7 +89,6 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.NMSUtils;
-import com.elmakers.mine.bukkit.utilities.SetActiveItemSlotTask;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
@@ -361,22 +360,6 @@ public class MagicController implements Listener
 	public boolean fillWands()
 	{
 		return fillWands;
-	}
-
-	public boolean isSolid(Material mat)
-	{
-		return (mat != Material.AIR && mat != Material.WATER && mat != Material.STATIONARY_WATER && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
-	}
-
-	public boolean isAffectedByGravity(Material mat)
-	{
-		// DOORS are on this list, it's a bit of a hack, but if you consider
-		// them
-		// as two separate blocks, the top one of which "breaks" when the bottom
-		// one does,
-		// it applies- but only really in the context of the auto-undo system,
-		// so this should probably be its own mat list, ultimately.
-		return (mat == Material.GRAVEL || mat == Material.SAND || mat == Material.WOOD_DOOR || mat == Material.IRON_DOOR);
 	}
 
 	/*
@@ -1186,11 +1169,17 @@ public class MagicController implements Listener
 			if (spell != null) {
 				mage.cancel();
 				activeWand.setActiveSpell(spell.getKey());
+				
+				// Reset the held item, Bukkit may have replaced it (?)
+				mage.getPlayer().setItemInHand(activeWand.getItem());
 			} else {
 				Material material = icon.getType();
 				if (material.isBlock() || Wand.isSpecialMaterialIcon(material)) {
 					activeWand.activateMaterial(material, icon.getData().getData());
 				}
+				
+				// Reset the held item, Bukkit may have replaced it (?)
+				mage.getPlayer().setItemInHand(activeWand.getItem());
 			}
 		}
 	}
@@ -1208,17 +1197,19 @@ public class MagicController implements Listener
 		
 		// Check for active Wand
 		if (activeWand != null && Wand.isWand(previous)) {
+			
+			Bukkit.getLogger().info("Active: " + Integer.toHexString(System.identityHashCode(activeWand.getItem()))
+					+ ", inventory: " + Integer.toHexString(System.identityHashCode(previous))
+					+ " .. Wand: " + Integer.toHexString(System.identityHashCode(activeWand))
+					);
+			
 			// If the wand inventory is open, we're going to let them select a spell or material
 			if (activeWand.isInventoryOpen()) {
-				// Update the wand item, Bukkit has probably made a copy
-				activeWand.setItem(previous);
-				
 				// Check for spell or material selection
 				onPlayerActivateIcon(mage, activeWand, next);
 				
-				// Cancelling the event causes some name bouncing. Trying out just resetting the item slot in a tick.
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new SetActiveItemSlotTask(player, event.getPreviousSlot()), 1);
-				return;	
+				event.setCancelled(true);
+				return;
 			} else {
 				// Otherwise, we're switching away from the wand, so deactivate it.
 				activeWand.deactivate();
@@ -1474,19 +1465,10 @@ public class MagicController implements Listener
 			return;
 		}
 		
-		// An extra double-check for a bug that is hard to reproduce, where the wand is no
-		// longer the active item, but we never deactivated it.
-		// Don't do this- it may happen semi-normally while lagging.
-		/*
-		if (!Wand.hasActiveWand(player)) 
-		{
-			wand.deactivate();
-		}
-		*/
-		
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
 		{
 			wand.cast();
+			return;
 		}
 		boolean toggleInventory = (event.getAction() == Action.RIGHT_CLICK_AIR);
 		if (!toggleInventory && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
