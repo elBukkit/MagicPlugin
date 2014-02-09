@@ -1223,7 +1223,7 @@ public class MagicController implements Listener
 		// If we're switching to a wand, activate it.
 		if (next != null && Wand.isWand(next)) {
 			Wand newWand = new Wand(this, next);
-			newWand.activate(mage);
+			newWand.activate(mage);			
 		}
 		
 		// Check for map selection if no wand is active
@@ -1235,6 +1235,34 @@ public class MagicController implements Listener
 		}
 	}
 
+	@EventHandler
+	public void onPlayerDropItem(PlayerDropItemEvent event)
+	{
+		Player player = event.getPlayer();
+		Mage mage = getMage(player);
+		final Wand activeWand = mage.getActiveWand();
+		if (activeWand != null) {
+			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
+			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
+			if (Wand.isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
+				activeWand.deactivate();
+				// Clear after inventory restore (potentially with deactivate), since that will put the wand back
+				if (Wand.hasActiveWand(player)) {
+					player.setItemInHand(new ItemStack(Material.AIR, 1));
+				}
+			} else if (activeWand.isInventoryOpen()) {
+				// Don't allow dropping anything out of the wand inventory, 
+				// but this will close the inventory.
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						activeWand.closeInventory();
+					}
+				}, 1);
+				event.setCancelled(true);
+			}
+		}
+	}
+	
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
 	{
@@ -1904,6 +1932,7 @@ public class MagicController implements Listener
 			removeLostWand(wand);
 		}
 		if (mage.hasStoredInventory()) {
+			
 			event.setCancelled(true);   		
 			if (mage.addToStoredInventory(event.getItem().getItemStack())) {
 				event.getItem().remove();
@@ -1929,32 +1958,6 @@ public class MagicController implements Listener
 		Mage mage = getMage(player);
 		if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler
-	public void onPlayerDropItem(PlayerDropItemEvent event)
-	{
-		Player player = event.getPlayer();
-		Mage mage = getMage(player);
-		final Wand activeWand = mage.getActiveWand();
-		if (activeWand != null) {
-			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
-			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
-			if (Wand.isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
-				activeWand.deactivate();
-				// Clear after inventory restore (potentially with deactivate), since that will put the wand back
-				player.setItemInHand(new ItemStack(Material.AIR, 1));
-			} else if (activeWand.isInventoryOpen()) {
-				// Don't allow dropping anything out of the wand inventory, 
-				// but this will close the inventory.
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-					public void run() {
-						activeWand.closeInventory();
-					}
-				}, 1);
-				event.setCancelled(true);
-			}
 		}
 	}
 	

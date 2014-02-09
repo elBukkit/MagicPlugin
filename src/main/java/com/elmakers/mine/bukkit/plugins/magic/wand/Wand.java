@@ -1214,7 +1214,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public void updateInventoryNames(boolean activeHotbarNames, boolean activeAllNames) {
-		if (mage == null || !isInventoryOpen() || !mage.hasStoredInventory()) return;
+		if (mage == null || !isInventoryOpen() || !mage.hasStoredInventory() || mode != WandMode.INVENTORY) return;
 		
 		ItemStack[] contents = mage.getPlayer().getInventory().getContents();
 		for (int i = 0; i < contents.length; i++) {
@@ -1842,14 +1842,14 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	public void activate(Mage playerSpells) {
+	public void activate(Mage mage) {
+		this.mage = mage;
+		mage.setActiveWand(this);
 		if (owner.length() == 0) {
-			takeOwnership(playerSpells.getPlayer());
+			takeOwnership(mage.getPlayer());
 		}
-		mage = playerSpells;
 		Player player = mage.getPlayer();
 		updateSpeed(player);
-		mage.setActiveWand(this);
 		if (usesMana()) {
 			storedXpLevel = player.getLevel();
 			storedXpProgress = player.getExp();

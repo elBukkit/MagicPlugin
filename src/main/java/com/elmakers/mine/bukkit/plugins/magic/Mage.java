@@ -420,13 +420,6 @@ public class Mage implements CostReducer
 	}
 	
 	public Wand getActiveWand() {
-		Player player = getPlayer();
-		if (activeWand != null && player != null) {
-			ItemStack currentItem = player.getItemInHand();
-			if (Wand.isWand(currentItem)) {
-				activeWand.setItem(currentItem);
-			}
-		}
 		return activeWand;
 	}
 	

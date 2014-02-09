@@ -17,7 +17,7 @@
 
 ## For 3.0.0
 
- - Overlay functionality for camera spell (mainly for skins, but.. other stuff too?)
+ - Optimize wand state saving
  - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
  - Make sure adding spells/materials never removes any, also opening/closing the inventory
