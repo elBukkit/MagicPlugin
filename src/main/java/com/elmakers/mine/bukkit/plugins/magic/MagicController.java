@@ -1196,13 +1196,7 @@ public class MagicController implements Listener
 		Wand activeWand = mage.getActiveWand();
 		
 		// Check for active Wand
-		if (activeWand != null && Wand.isWand(previous)) {
-			
-			Bukkit.getLogger().info("Active: " + Integer.toHexString(System.identityHashCode(activeWand.getItem()))
-					+ ", inventory: " + Integer.toHexString(System.identityHashCode(previous))
-					+ " .. Wand: " + Integer.toHexString(System.identityHashCode(activeWand))
-					);
-			
+		if (activeWand != null && Wand.isWand(previous)) {			
 			// If the wand inventory is open, we're going to let them select a spell or material
 			if (activeWand.isInventoryOpen()) {
 				// Check for spell or material selection
