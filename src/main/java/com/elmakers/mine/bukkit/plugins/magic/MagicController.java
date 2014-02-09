@@ -700,11 +700,17 @@ public class MagicController implements Listener
 			getLogger().info("Saving template " + configFileName + ", edit to customize configuration.");
 			plugin.saveResource(configFileName, false);
 		}
+		
 		Configuration config = new Configuration(configFile);
 		getLogger().info("Loading " + configFile.getName());
 		config.load();
 		
 		plugin.saveResource(defaultsFileName, true);
+		
+		if (!config.getBoolean("load_defaults", true)) {
+			return config;
+		}
+		
 		Configuration defaultConfig = new Configuration(plugin.getResource(defaultsFileName));
 		defaultConfig.load();
 		defaultConfig.add(config);

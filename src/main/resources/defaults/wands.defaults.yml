@@ -53,6 +53,10 @@
 #
 # General format:
 #
+# # Use "load_defaults" to turn off loading the wands in defaults/wands.defaults.yml, if you
+# # want a completely custom experience.
+# load_defaults: false
+#
 # <wandkey>:
 #
 #       # If true, this wand can not be enchanted, combined or otherwise modified

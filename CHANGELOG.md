@@ -3,6 +3,7 @@
 ## 2.9.3
 
  - Make superconvert work better for cleaning up lava and water.
+ - Implement "load_defaults" parameter for spells.yml and wands.yml, if you don't want any of the default spells or wands.
 
 ## 2.9.2
 
