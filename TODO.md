@@ -1,6 +1,8 @@
 # TODO
 
-## For 2.9.2
+## For 2.9.3
+
+ - Add "load_defaults" option to spells and wands.yml
 
  - Configurable effects system
    - Add visual effects to spawn and recall spells
