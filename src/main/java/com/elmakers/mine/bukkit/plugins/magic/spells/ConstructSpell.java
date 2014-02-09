@@ -85,11 +85,27 @@ public class ConstructSpell extends BrushSpell
 		}
 		if (parameters.getBoolean("replace", false)) {
 			Set<Material> destructible = new HashSet<Material>();
-			if (targetBlock != null) {
-				destructible.add(targetBlock.getType());
-			} else {
-				destructible.add(target.getType());
+			Material targetMaterial = targetBlock != null ? targetBlock.getType() : target.getType();
+			destructible.add(targetMaterial);
+			
+			// A bit hacky, but is very handy!
+			if (targetMaterial == Material.STATIONARY_WATER)
+			{
+				destructible.add(Material.WATER);
 			}
+			else if (targetMaterial == Material.WATER)
+			{
+				destructible.add(Material.STATIONARY_WATER);
+			}
+			else if (targetMaterial == Material.STATIONARY_LAVA)
+			{
+				destructible.add(Material.LAVA);
+			}
+			else if (targetMaterial == Material.LAVA)
+			{
+				destructible.add(Material.STATIONARY_LAVA);
+			}
+			
 			setDestructible(destructible);
 		}
 		

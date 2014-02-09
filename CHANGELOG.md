@@ -5,6 +5,7 @@
  - Added a new wand mode for interaction using a chest inventory. Start the basics of per-player wand mechanics.
  - Fixed a really bad bug that could cause a wand to overwrite another wand when dropped. This may or
    may not have been a recent bug, but I'm releasing this as a patch fix for it just in case.
+ - Several fixes for lesser wand inventory glitches.
  - Add a safety check for the Essentials Mailer integration. (for @ghosttractor's issue)
 
 ## 2.9.1
