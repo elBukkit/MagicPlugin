@@ -446,6 +446,7 @@ random:
       stained_glass_pane|13: 60,40,30,20
       stained_glass_pane|14: 60,40,30,20
       stained_glass_pane|15: 60,40,30,20
+      schematic|rainbow: 0,2,5,10
               
 #
 #
@@ -727,6 +728,7 @@ engineer:
         - emerald_block
         - redstone_block
         - obsidian
+        - schematic:rainbow
 battle:
     modifiable: true
     protection_physical: 0.3
