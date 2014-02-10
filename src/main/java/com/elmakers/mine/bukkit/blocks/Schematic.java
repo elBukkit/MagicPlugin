@@ -62,7 +62,7 @@ public class Schematic {
 		if (checkClasses()) {
 			try {
 				Object weSize = getSizeMethod.invoke(weSchematic);
-				size = new Vector((Integer)getBlockXMethod.invoke(weSize) / 2, (Integer)getBlockYMethod.invoke(weSize) / 2, (Integer)getBlockZMethod.invoke(weSize) / 2); 
+				size = new Vector((Integer)getBlockXMethod.invoke(weSize), (Integer)getBlockYMethod.invoke(weSize), (Integer)getBlockZMethod.invoke(weSize)); 
 				center = new Vector(Math.floor(size.getBlockX() / 2), 0, 
 				Math.floor(size.getBlockZ() / 2));
 			} catch (Exception ex) {
@@ -84,7 +84,7 @@ public class Schematic {
 		int y = v.getBlockY() + center.getBlockY();
 		int z = v.getBlockZ() + center.getBlockZ();
 		
-		return (x >= 0 && x < size.getBlockX() && y >= 0 && y < size.getBlockY() && z >= 0 && z < size.getBlockZ());
+		return (x >= 0 && x <= size.getBlockX() && y >= 0 && y <= size.getBlockY() && z >= 0 && z <= size.getBlockZ());
 	}
 	
 	@SuppressWarnings("deprecation")
