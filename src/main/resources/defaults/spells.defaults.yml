@@ -71,7 +71,7 @@ curse:
         effect_slow: 100,5  
         effect_confusion: 100,5
 boon:
-    icon: double_plant
+    icon: double_plant:5
     category: light
     class: PotionEffectSpell
     costs:
@@ -1260,7 +1260,7 @@ map:
     costs:
         xp: 15
 camera:
-    icon: paper
+    icon: double_plant
     category: light
     class: CameraSpell
     parameters:
