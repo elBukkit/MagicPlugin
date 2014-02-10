@@ -2,6 +2,7 @@
 
 ## For 2.9.3
 
+ - Trying to upgrade a non-modifiable wand doesn't print a message?
  - Add "load_defaults" option to spells and wands.yml
 
  - Configurable effects system

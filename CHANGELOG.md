@@ -1,13 +1,10 @@
 # CHANGELOG
 
-## 2.9.3
+## 2.9.2
 
  - Make superconvert work better for cleaning up lava and water.
  - Implement "load_defaults" parameter for spells.yml and wands.yml, if you don't want any of the default spells or wands.
  - Add "schematic" brushes, requires WorldEdit for schematic loading.
-
-## 2.9.2
-
  - Added a new wand mode for interaction using a chest inventory. Start the basics of per-player wand mechanics.
  - Fixed a really bad bug that could cause a wand to overwrite another wand when dropped. This may or
    may not have been a recent bug, but I'm releasing this as a patch fix for it just in case.
