@@ -923,9 +923,12 @@ public class Wand implements CostReducer {
 	private static String getMaterialName(String materialKey) {
 		if (materialKey == null) return null;
 		String materialName = materialKey;
+		String[] namePieces = StringUtils.split(materialName, ":");
+		if (namePieces.length == 0) return null;
+		
+		materialName = namePieces[0];
 		
 		if (!isSpecialMaterialKey(materialKey)) {
-			
 			MaterialBrushData brushData = parseMaterialKey(materialKey);
 			if (brushData == null) return null;
 			
@@ -963,6 +966,8 @@ public class Wand implements CostReducer {
 			}
 			
 			materialName = materialName.toLowerCase().replace('_', ' ');
+		} else if (materialName.startsWith(SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
+			materialName = namePieces[1];
 		}
 		
 		return materialName;
