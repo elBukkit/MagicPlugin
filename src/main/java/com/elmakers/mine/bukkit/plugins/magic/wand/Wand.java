@@ -52,7 +52,7 @@ public class Wand implements CostReducer {
 		"hunger_regeneration", "uses", 
 		"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
 		"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
-		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", 
+		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
 		"effect_bubbles", "materials", "spells", "mode"};
 	
 	private final ItemStack item;
@@ -91,6 +91,7 @@ public class Wand implements CostReducer {
 	
 	private int effectColor = 0;
 	private ParticleType effectParticle = null;
+	private float effectParticleData = 0;
 	private boolean effectBubbles = false;
 	
 	private float defaultWalkSpeed = 0.2f;
@@ -598,6 +599,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "modifiable", Integer.toString((modifiable ? 1 : 0)));
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 		InventoryUtils.setMeta(wandNode, "effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
+		InventoryUtils.setMeta(wandNode, "effect_particle_data", Float.toString(effectParticleData));
 		if (effectParticle != null) {
 			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
 		}
@@ -647,7 +649,7 @@ public class Wand implements CostReducer {
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
 		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
-		
+		effectParticleData = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_particle_data", floatFormat.format(effectParticleData)));
 		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
 		mode = parseWandMode(InventoryUtils.getMeta(wandNode, "mode", ""), mode);
 	}
@@ -1484,6 +1486,7 @@ public class Wand implements CostReducer {
 		effectBubbles = effectBubbles || other.effectBubbles;
 		if (effectParticle == null) {
 			effectParticle = other.effectParticle;
+			effectParticleData = other.effectParticleData;
 		}
 		
 		// Don't need mana if cost-free
@@ -1574,6 +1577,9 @@ public class Wand implements CostReducer {
 		}
 		if (wandConfig.containsKey("effect_particle") && !safe) {
 			parseParticleEffect(wandConfig.getString("effect_particle"));
+		}
+		if (wandConfig.containsKey("effect_particle_data") && !safe) {
+			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data"));
 		}
 		mode = parseWandMode(wandConfig.getString("mode"), mode);
 		
@@ -1853,6 +1859,7 @@ public class Wand implements CostReducer {
 			Location effectLocation = player.getEyeLocation();
 			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 1, 8);
 			effect.setParticleType(effectParticle);
+			effect.setEffectData(effectParticleData);
 			if (effectParticle == ParticleType.BLOCK_BREAKING) {
 				Block block = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
 				Material blockType = block.getType();
