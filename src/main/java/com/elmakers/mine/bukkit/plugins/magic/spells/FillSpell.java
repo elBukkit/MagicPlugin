@@ -119,7 +119,16 @@ public class FillSpell extends BrushSpell
 
 		if (this.targetBlock != null)
 		{
-			FillBatch batch = new FillBatch(this, targetBlock.getLocation(), this.targetBlock.getLocation(), buildWith);
+			// Update the brush using the center of the fill volume. This is to make
+			// Replicate, clone, map and schematic work consistently with the construction spells.
+			Location centerLocation = targetBlock.getLocation();
+			Location secondLocation = targetBlock.getLocation();
+			centerLocation.setX(Math.floor(centerLocation.getX() + secondLocation.getX() / 2));
+			centerLocation.setY(Math.floor(centerLocation.getY() + secondLocation.getY() / 2));
+			centerLocation.setZ(Math.floor(centerLocation.getZ() + secondLocation.getZ() / 2));
+			buildWith.setTarget(centerLocation);
+			
+			FillBatch batch = new FillBatch(this, secondLocation, this.targetBlock.getLocation(), buildWith);
 
 			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
 			
@@ -138,8 +147,7 @@ public class FillSpell extends BrushSpell
 			effect.particleType = null;
 			effect.effect = Effect.STEP_SOUND;
 			effect.data = buildWith.getMaterial().getId();
-			effect.startTrailEffect(mage, getEyeLocation(), this.targetBlock.getLocation());
-			effect.startTrailEffect(mage, getEyeLocation(), targetBlock.getLocation());
+			effect.startTrailEffect(mage, getEyeLocation(), centerLocation);
 			
 			deactivate();
 			return SpellResult.SUCCESS;
@@ -151,7 +159,8 @@ public class FillSpell extends BrushSpell
 			EffectUtils.playEffect(effectLocation, ParticleType.HAPPY_VILLAGER, 0.3f, 0.3f, 0.3f, 1, 16);
 			this.targetBlock = targetBlock;
 			activate();
-			buildWith.setTarget(targetBlock.getLocation());
+			
+			// Note we don't set the target until the second cast.
 			castMessage("Cast again to fill with " + material.name().toLowerCase());
 						
 			SpellEffect effect = getEffect("target");
