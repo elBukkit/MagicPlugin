@@ -107,6 +107,9 @@ public class MagicController implements Listener
 
 		dataFolder = new File(configFolder, "data");
 		dataFolder.mkdirs();
+
+		schematicFolder = new File(configFolder, "schematics");
+		schematicFolder.mkdirs();
 		
 		playerDataFolder = new File(dataFolder, "players");
 		playerDataFolder.mkdirs();
@@ -453,8 +456,7 @@ public class MagicController implements Listener
 	}
 	
 	public boolean schematicsEnabled() {
-		return (schematicFilePath != null && cuboidClipboardClass != null &&
-				schematicFilePath.length() > 0);
+		return cuboidClipboardClass != null;
 	}
 	
 	public Schematic loadSchematic(String schematicName) {
@@ -469,9 +471,25 @@ public class MagicController implements Listener
 				}
 			}
 		}
-		
-		String fileName = schematicFilePath.replace("$name", schematicName);
-		File schematicFile = new File(configFolder, "../" + fileName);
+
+		String fileName = schematicName + ".schematic";
+		File schematicFile = new File(schematicFolder, fileName);
+		if (!schematicFile.exists()) {
+			try {
+				plugin.saveResource("schematics/" + fileName, true);
+			} catch (Exception ex) {
+				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+					String extraFileName = extraSchematicFilePath.replace("$name", schematicName);
+					File extraSchematicFile = new File(configFolder, "../" + extraFileName);
+					if (extraSchematicFile.exists()) {
+						schematicFile = extraSchematicFile;
+					} else {
+						getLogger().warning("Could not load file: " + extraSchematicFile.getAbsolutePath());
+					}
+				}
+			}
+		}
+
 		if (!schematicFile.exists()) {
 			getLogger().warning("Could not load file: " + schematicFile.getAbsolutePath());
 			return null;
@@ -1099,7 +1117,7 @@ public class MagicController implements Listener
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
-		schematicFilePath = properties.getString("schematic_files", schematicFilePath);
+		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		
 		// Parse wand settings
 		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
@@ -2327,12 +2345,13 @@ public class MagicController implements Listener
 	 private MagicPlugin                         plugin                         = null;
 	 private final File							 configFolder;
 	 private final File							 dataFolder;
+	 private final File							 schematicFolder;
 	 private final File							 defaultsFolder;
 	 private final File							 playerDataFolder;
 	 
 	 private boolean							 regionManagerEnabled           = true;
 	 private Object								 regionManager					= null;
-	 private String								 schematicFilePath				= null;
+	 private String								 extraSchematicFilePath			= null;
 	 private Class<?>							 cuboidClipboardClass           = null;
 	 private DynmapCommonAPI					 dynmap							= null;
 	 private Mailer								 mailer							= null;
