@@ -191,6 +191,14 @@ map_item: map
 # schematic files that have been defined in schematics.yml (WIP)
 schematic_item: paper
 
+# The folder and file path to use for loading schematics. This will be relative to 
+# The server's /plugins folder.
+# You can use WorldEdit's schematics folder for easy access to saved schematics, but if you do
+# note that wands may be configured for default Magic schematics, so you may want to copy those 
+# to the WordEdit schemetics folder.
+# schematic_files: WorldEdit/schematics/$name.schematic
+schematic_files: Magic/schematics/$name.schematic
+
 # How many casts to track in the undo queue
 undo_depth: 64
 

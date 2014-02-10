@@ -103,6 +103,7 @@ public class Wand implements CostReducer {
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
+	public static boolean SchematicsEnabled = false;
 	public static Material WandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static Material EraseMaterial = Material.SULPHUR;
@@ -163,12 +164,16 @@ public class Wand implements CostReducer {
 		
 		setActiveMaterial(getMaterialKey(itemStack));
 		if (activeMaterial != null) {
-			if (activeMaterial.equals(CLONE_MATERIAL_KEY) || activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
+			String materialKey = activeMaterial;
+			if (materialKey.contains(":")) {
+				materialKey = StringUtils.split(materialKey, ":")[0];
+			}
+			if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY)) {
 				MaterialBrush brush = mage.getBrush();
 				Location cloneLocation = mage.getLocation();
 				cloneLocation.setY(cloneLocation.getY() - 1);
 				brush.setCloneLocation(cloneLocation);
-			} else if (activeMaterial.equals(MAP_MATERIAL_KEY) || activeMaterial.equals(SCHEMATIC_MATERIAL_KEY)) {
+			} else if (materialKey.equals(MAP_MATERIAL_KEY) || materialKey.equals(SCHEMATIC_MATERIAL_KEY)) {
 				MaterialBrush brush = mage.getBrush();
 				brush.clearCloneTarget();
 			} 
@@ -614,12 +619,13 @@ public class Wand implements CostReducer {
 		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
 		description = InventoryUtils.getMeta(wandNode, "description", description);
 		owner = InventoryUtils.getMeta(wandNode, "owner", owner);
+
+		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
+		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
 		
 		String wandMaterials = InventoryUtils.getMeta(wandNode, "materials", "");
 		String wandSpells = InventoryUtils.getMeta(wandNode, "spells", "");
 		parseInventoryStrings(wandSpells, wandMaterials);
-		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
-		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
 		
 		costReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cost_reduction", floatFormat.format(costReduction)));
 		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
@@ -856,6 +862,9 @@ public class Wand implements CostReducer {
 		if (spell != null) {
 			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
 				String materialName = getMaterialName(materialKey);
+				if (materialName == null) {
+					materialName = "none";
+				}
 				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
 			} else {
 				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
@@ -886,7 +895,7 @@ public class Wand implements CostReducer {
 			materialKey = MAP_MATERIAL_KEY;
 		} else if (material == ReplicateMaterial) {
 			materialKey = REPLICATE_MATERIAL_KEY;
-		} else if (material == SchematicMaterial) {
+		} else if (SchematicsEnabled && material == SchematicMaterial) {
 			// This would be kinda broken.. might want to revisit all this.
 			// This method is only called by addMaterial at this point,
 			// which should only be called with real materials anyway.
@@ -1133,7 +1142,7 @@ public class Wand implements CostReducer {
 		}
 		return COPY_MATERIAL_KEY.equals(materialKey) || ERASE_MATERIAL_KEY.equals(materialKey) || 
 			   REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) || 
-			   MAP_MATERIAL_KEY.equals(materialKey) || SCHEMATIC_MATERIAL_KEY.equals(materialKey);
+			   MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
 	}
 
 	public static boolean isWand(ItemStack item) {
@@ -1634,7 +1643,7 @@ public class Wand implements CostReducer {
 			material = ReplicateMaterial;
 		} else if (materialKey.equals(MAP_MATERIAL_KEY)) {
 			material = MapMaterial;
-		} else if (pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
+		} else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
 			material = SchematicMaterial;
 			schematicName = pieces[1];
 		} else {
@@ -1678,7 +1687,7 @@ public class Wand implements CostReducer {
 		if (activeMaterial == null) {
 			mage.clearBuildingMaterial();
 		} else {
-			String pieces[] = StringUtils.split(":");
+			String pieces[] = StringUtils.split(activeMaterial, ":");
 			MaterialBrush brush = mage.getBrush();
 			if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
 				brush.enableCopying();
@@ -1694,7 +1703,9 @@ public class Wand implements CostReducer {
 				brush.enableSchematic(pieces[1]);
 			} else {
 				MaterialAndData material = parseMaterialKey(activeMaterial);
-				brush.setMaterial(material.getMaterial(), material.getData());
+				if (material != null) {
+					brush.setMaterial(material.getMaterial(), material.getData());
+				}
 			}
 		}
 	}

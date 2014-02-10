@@ -36,6 +36,7 @@ public class MaterialBrush extends MaterialBrushData {
 	private short mapId = -1;
 	private MaterialMapCanvas mapCanvas = null;
 	private Material mapMaterialBase = Material.STAINED_CLAY;
+	private Schematic schematic;
 	
 	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
 		super(material, data);
@@ -47,6 +48,9 @@ public class MaterialBrush extends MaterialBrushData {
 		if (!controller.isRestricted(material) && material.isBlock()) {
 			super.setMaterial(material, data);
 			mode = BrushMode.MATERIAL;
+			isValid = true;
+		} else {
+			isValid = false;
 		}
 	}
 	
@@ -70,6 +74,7 @@ public class MaterialBrush extends MaterialBrushData {
 	public void enableSchematic(String name) {
 		this.mode = BrushMode.SCHEMATIC;
 		this.schematicName = name;
+		schematic = null;
 	}
 	
 	public void enableReplication() {
@@ -117,6 +122,15 @@ public class MaterialBrush extends MaterialBrushData {
 			if (cloneTarget == null || mode == BrushMode.CLONE || 
 				!target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
 				cloneTarget = target;
+			} else if (mode == BrushMode.SCHEMATIC) {
+				if (schematic == null) {
+					cloneTarget = target;
+				} else {
+					Vector diff = target.toVector().subtract(cloneTarget.toVector());
+					if (!schematic.contains(diff)) {
+						cloneTarget = target;
+					}
+				}
 			}
 		}
 		if (mode == BrushMode.COPY) {
@@ -149,7 +163,11 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	@SuppressWarnings("deprecation")
 	public boolean update(Mage fromMage, Location target) {
-		if (cloneLocation != null && (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)) {
+		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
+			if (cloneLocation != null) {
+				isValid = false;
+				return true;
+			}
 			if (cloneTarget == null) cloneTarget = target;
 			materialTarget = toTargetLocation(target);
 			
@@ -157,15 +175,39 @@ public class MaterialBrush extends MaterialBrushData {
 			if (!block.getChunk().isLoaded()) return false;
 
 			updateFrom(block, controller.getRestrictedMaterials());
+			isValid = true;
 		}
 		
-		if (mode == BrushMode.SCHEMATIC && schematicName.length() > 0) {
-			// TODO!
+		if (mode == BrushMode.SCHEMATIC) {
+			if (schematic == null) {
+				if (schematicName.length() == 0) {
+					isValid = false;
+					return true;
+				}
+				
+				schematic = controller.loadSchematic(schematicName);
+				if (schematic == null) {
+					schematicName = "";
+					isValid = false;
+					return true;
+				}
+			}
+			if (cloneTarget == null) {
+				isValid = false;
+				return true;
+			}
+			Vector diff = target.toVector().subtract(cloneTarget.toVector());
+			MaterialAndData newMaterial = schematic.getBlock(diff);
+			if (newMaterial == null) {
+				isValid = false;
+			} else {
+				updateFrom(newMaterial);
+				isValid = true;
+			}
 		}
 		
 		if (mode == BrushMode.MAP && mapId >= 0) {
-			if (mapCanvas == null&& fromMage != null) {
-				
+			if (mapCanvas == null && fromMage != null) {
 				try {
 					MapView mapView = Bukkit.getMap(mapId);
 					if (mapView != null) {
@@ -186,18 +228,18 @@ public class MaterialBrush extends MaterialBrushData {
 					
 				}
 			}
+			isValid = false;
 			if (mapCanvas != null && cloneTarget != null) {
 				Vector diff = target.toVector().subtract(cloneTarget.toVector());
 				
 				// TODO : Different orientations, centering, etc
 				DyeColor mapColor = mapCanvas.getDyeColor(
-						Math.abs(diff.getBlockX()) % MaterialMapCanvas.CANVAS_WIDTH, 
-						Math.abs(diff.getBlockZ()) % MaterialMapCanvas.CANVAS_HEIGHT);
+						Math.abs(diff.getBlockX() + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
+						Math.abs(diff.getBlockZ() + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
 				if (mapColor != null) {
-					updateTo(mapMaterialBase, mapColor.getData());
-				} else {
-					updateTo(Material.AIR, (byte)0);
-				}
+					super.setMaterial(mapMaterialBase, mapColor.getData());
+					isValid = true;
+				} 
 			}
 		}
 		

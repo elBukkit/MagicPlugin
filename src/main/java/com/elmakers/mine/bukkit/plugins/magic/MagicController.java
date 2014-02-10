@@ -80,6 +80,7 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
+import com.elmakers.mine.bukkit.blocks.Schematic;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
@@ -450,6 +451,34 @@ public class MagicController implements Listener
 		return false;
 	}
 	
+	public boolean schematicsEnabled() {
+		return (schematicFilePath != null && cuboidClipboardClass != null &&
+				schematicFilePath.length() > 0);
+	}
+	
+	public Schematic loadSchematic(String schematicName) {
+		if (schematicName == null || schematicName.length() == 0 || !schematicsEnabled()) return null;
+		
+		String fileName = schematicFilePath.replace("$name", schematicName);
+		File schematicFile = new File(configFolder, "../" + fileName);
+		if (!schematicFile.exists()) {
+			getLogger().warning("Could not load file: " + schematicFile.getAbsolutePath());
+			return null;
+		}
+				
+		try {
+			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
+			getLogger().info("Loading schematic file: " + schematicFile.getAbsolutePath());
+			Schematic schematic = new Schematic(loadSchematicMethod.invoke(null, schematicFile));
+			getLogger().info("... done.");
+			return schematic;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	/*
 	 * Internal functions - don't call these, or really anything below here.
 	 */
@@ -516,6 +545,24 @@ public class MagicController implements Listener
 					}
 				}
 			}, 5);
+		}
+		
+		// Try to link to WorldEdit (no API...)
+		try {
+			cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
+			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
+			if (loadSchematicMethod != null) {
+				getLogger().info("WorldEdit found, schematic brushes enabled.");
+				Wand.SchematicsEnabled = true;
+			} else {
+				cuboidClipboardClass = null;
+			}
+		} catch (Throwable ex) {
+		}
+		
+		if (cuboidClipboardClass == null) {
+			getLogger().info("WorldEdit not found, schematic brushes will not work.");
+			Wand.SchematicsEnabled = false;
 		}
 		
 		// Try to (dynamically) link to WorldGuard:
@@ -1038,6 +1085,7 @@ public class MagicController implements Listener
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
+		schematicFilePath = properties.getString("schematic_files", schematicFilePath);
 		
 		// Parse wand settings
 		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
@@ -2269,6 +2317,8 @@ public class MagicController implements Listener
 	 
 	 private boolean							 regionManagerEnabled           = true;
 	 private Object								 regionManager					= null;
+	 private String								 schematicFilePath				= null;
+	 private Class<?>							 cuboidClipboardClass           = null;
 	 private DynmapCommonAPI					 dynmap							= null;
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;

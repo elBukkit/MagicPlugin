@@ -17,10 +17,11 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 public class MaterialAndData {
 	protected Material material;
 	protected byte data;
-	String[] signLines = null;
-	String commandLine = null;
-	String skullName = null;
-	Inventory inventory = null;
+	protected String[] signLines = null;
+	protected String commandLine = null;
+	protected String skullName = null;
+	protected Inventory inventory = null;
+	protected boolean isValid = true;
 
 	public MaterialAndData() {
 		material = Material.AIR;
@@ -38,6 +39,7 @@ public class MaterialAndData {
 		inventory = other.inventory;
 		signLines = other.signLines;
 		skullName = other.skullName;
+		isValid = other.isValid;
 	}
 	
 	public MaterialAndData(final Material material) {
@@ -57,6 +59,7 @@ public class MaterialAndData {
 		commandLine = null;
 		inventory = null;
 		skullName = null;
+		isValid = true;
 	}
 	
 	public void setMaterial(Material material) {
@@ -65,16 +68,6 @@ public class MaterialAndData {
 	
 	public void updateFrom(Block block) {
 		updateFrom(block, null);
-	}
-	
-	public void updateTo(Material material, byte data) {
-		signLines = null;
-		commandLine = null;
-		inventory = null;
-		skullName = null;
-		
-		this.material = material;
-		this.data = data;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -86,6 +79,7 @@ public class MaterialAndData {
 
 		Material blockMaterial = block.getType();
 		if (restrictedMaterials != null && restrictedMaterials.contains(blockMaterial)) {
+			isValid = false;
 			return;
 		}
 		// Look for special block states
@@ -119,10 +113,13 @@ public class MaterialAndData {
 		
 		material = blockMaterial;
 		data = block.getData();
+		isValid = true;
 	}
 	
 	@SuppressWarnings("deprecation")
 	public void modify(Block block) {
+		if (!isValid) return;
+		
 		// Clear chests so they don't dump their contents.
 		BlockState oldState = block.getState();
 		if (oldState instanceof InventoryHolder) {

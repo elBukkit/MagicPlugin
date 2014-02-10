@@ -4,6 +4,7 @@
 
  - Make superconvert work better for cleaning up lava and water.
  - Implement "load_defaults" parameter for spells.yml and wands.yml, if you don't want any of the default spells or wands.
+ - Add "schematic" brushes, requires WorldEdit for schematic loading.
 
 ## 2.9.2
 
