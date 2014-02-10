@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -459,6 +460,16 @@ public class MagicController implements Listener
 	public Schematic loadSchematic(String schematicName) {
 		if (schematicName == null || schematicName.length() == 0 || !schematicsEnabled()) return null;
 		
+		if (schematics.containsKey(schematicName)) {
+			WeakReference<Schematic> schematic = schematics.get(schematicName);
+			if (schematic != null) {
+				Schematic cached = schematic.get();
+				if (cached != null) {
+					return cached;
+				}
+			}
+		}
+		
 		String fileName = schematicFilePath.replace("$name", schematicName);
 		File schematicFile = new File(configFolder, "../" + fileName);
 		if (!schematicFile.exists()) {
@@ -470,7 +481,7 @@ public class MagicController implements Listener
 			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
 			getLogger().info("Loading schematic file: " + schematicFile.getAbsolutePath());
 			Schematic schematic = new Schematic(loadSchematicMethod.invoke(null, schematicFile));
-			getLogger().info("... done.");
+			schematics.put(schematicName, new WeakReference<Schematic>(schematic));
 			return schematic;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -767,6 +778,9 @@ public class MagicController implements Listener
 	
 	public void loadConfiguration()
 	{
+		// Clear some cache stuff... mainly this is for debuggin/testing.
+		schematics.clear();
+		
 		// Load main configuration
 		try {
 			loadProperties(loadConfigFile(CONFIG_FILE, true));
@@ -2303,6 +2317,7 @@ public class MagicController implements Listener
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();
 	 private final HashMap<String, Mage>		 pendingConstruction			= new HashMap<String, Mage>();
+	 private final Map<String, WeakReference<Schematic>>	 schematics			= new HashMap<String, WeakReference<Schematic>>();
 
 	 private Recipe								 wandRecipe						= null;
 	 private Material							 wandRecipeUpperMaterial		= Material.DIAMOND;
