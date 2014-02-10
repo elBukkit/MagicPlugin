@@ -196,7 +196,10 @@ public class WandLevel {
 		Set<String> wandMaterials = wand.getMaterialKeys();
 		LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<WeightedPair<String>>();
 		for (WeightedPair<String> material : materialProbability) {
-			if (!wandMaterials.contains(material.getValue())) {
+			String materialKey = material.getValue();
+			// Fixup @'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
+			materialKey = materialKey.replace("|", ":");
+			if (!wandMaterials.contains(material.getValue()) && Wand.isValidMaterial(materialKey)) {
 				remainingMaterials.add(material);
 			}
 		}
@@ -210,8 +213,9 @@ public class WandLevel {
 			}
 			int retries = 100;
 			for (int i = 0; i < materialCount; i++) {
-				String materialName = RandomUtils.weightedRandom(remainingMaterials);
-				if (!wand.addMaterial(materialName, false, false)) {
+				String materialKey = RandomUtils.weightedRandom(remainingMaterials);
+				materialKey = materialKey.replace("|", ":");
+				if (!wand.addMaterial(materialKey, false, false)) {
 					// Try again up to a certain number if we picked one the wand already had.
 					if (retries-- > 0) i--;
 				} else {
