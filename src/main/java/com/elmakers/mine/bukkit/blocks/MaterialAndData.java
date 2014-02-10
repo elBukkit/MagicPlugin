@@ -120,42 +120,46 @@ public class MaterialAndData {
 	public void modify(Block block) {
 		if (!isValid) return;
 		
-		// Clear chests so they don't dump their contents.
-		BlockState oldState = block.getState();
-		if (oldState instanceof InventoryHolder) {
-			InventoryHolder holder = (InventoryHolder)oldState;
-			Inventory inventory = holder.getInventory();
-			inventory.clear();
-		}
-		
-		block.setType(material);
-		block.setData(data);
-		BlockState blockState = block.getState();
-		if (blockState instanceof Sign && signLines != null) {
-			Sign sign = (Sign)blockState;
-			for (int i = 0; i < signLines.length; i++) {
-				sign.setLine(i, signLines[i]);
+		try {
+			// Clear chests so they don't dump their contents.
+			BlockState oldState = block.getState();
+			if (oldState instanceof InventoryHolder) {
+				InventoryHolder holder = (InventoryHolder)oldState;
+				Inventory inventory = holder.getInventory();
+				inventory.clear();
 			}
-			sign.update();
-		} else if (blockState instanceof CommandBlock && commandLine != null) {
-			CommandBlock command = (CommandBlock)blockState;
-			command.setCommand(commandLine);
-			command.update();
-		} else if (blockState instanceof InventoryHolder && inventory != null) {
-			InventoryHolder holder = (InventoryHolder)blockState;
-			Inventory newInventory = holder.getInventory();
-			int maxSize = Math.min(newInventory.getSize(), inventory.getSize());
-			for (int i = 0; i < maxSize; i++) {
-				ItemStack item = inventory.getItem(i);
-				item = InventoryUtils.getCopy(item);
-				if (item != null) {
-					newInventory.setItem(i, item);
+			
+			block.setType(material);
+			block.setData(data);
+			BlockState blockState = block.getState();
+			if (blockState instanceof Sign && signLines != null) {
+				Sign sign = (Sign)blockState;
+				for (int i = 0; i < signLines.length; i++) {
+					sign.setLine(i, signLines[i]);
 				}
+				sign.update();
+			} else if (blockState instanceof CommandBlock && commandLine != null) {
+				CommandBlock command = (CommandBlock)blockState;
+				command.setCommand(commandLine);
+				command.update();
+			} else if (blockState instanceof InventoryHolder && inventory != null) {
+				InventoryHolder holder = (InventoryHolder)blockState;
+				Inventory newInventory = holder.getInventory();
+				int maxSize = Math.min(newInventory.getSize(), inventory.getSize());
+				for (int i = 0; i < maxSize; i++) {
+					ItemStack item = inventory.getItem(i);
+					item = InventoryUtils.getCopy(item);
+					if (item != null) {
+						newInventory.setItem(i, item);
+					}
+				}
+			} else if (blockState instanceof Skull && skullName != null) {
+				Skull skull = (Skull)blockState;
+				skull.setOwner(skullName);
+				skull.update();
 			}
-		} else if (blockState instanceof Skull && skullName != null) {
-			Skull skull = (Skull)blockState;
-			skull.setOwner(skullName);
-			skull.update();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
