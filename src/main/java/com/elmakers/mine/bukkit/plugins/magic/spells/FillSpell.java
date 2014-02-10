@@ -126,7 +126,7 @@ public class FillSpell extends BrushSpell
 			centerLocation.setX(Math.floor(centerLocation.getX() + secondLocation.getX() / 2));
 			centerLocation.setY(Math.floor(centerLocation.getY() + secondLocation.getY() / 2));
 			centerLocation.setZ(Math.floor(centerLocation.getZ() + secondLocation.getZ() / 2));
-			buildWith.setTarget(centerLocation);
+			buildWith.setTarget(this.targetBlock.getLocation(), centerLocation);
 			
 			FillBatch batch = new FillBatch(this, secondLocation, this.targetBlock.getLocation(), buildWith);
 

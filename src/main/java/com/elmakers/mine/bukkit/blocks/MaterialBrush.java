@@ -116,19 +116,23 @@ public class MaterialBrush extends MaterialBrushData {
 		
 		return true;
 	}
-
+	
 	public void setTarget(Location target) {
+		setTarget(target, target);
+	}
+	
+	public void setTarget(Location target, Location center) {
 		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP || mode == BrushMode.SCHEMATIC) {
 			if (cloneTarget == null || mode == BrushMode.CLONE || 
-				!target.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
-				cloneTarget = target;
+				!center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
+				cloneTarget = center;
 			} else if (mode == BrushMode.SCHEMATIC) {
 				if (schematic == null) {
-					cloneTarget = target;
+					cloneTarget = center;
 				} else {
 					Vector diff = target.toVector().subtract(cloneTarget.toVector());
 					if (!schematic.contains(diff)) {
-						cloneTarget = target;
+						cloneTarget = center;
 					}
 				}
 			}
