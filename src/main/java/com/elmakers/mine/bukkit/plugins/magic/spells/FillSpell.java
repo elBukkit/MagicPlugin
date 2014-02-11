@@ -122,13 +122,13 @@ public class FillSpell extends BrushSpell
 			// Update the brush using the center of the fill volume. This is to make
 			// Replicate, clone, map and schematic work consistently with the construction spells.
 			Location centerLocation = targetBlock.getLocation();
-			Location secondLocation = targetBlock.getLocation();
-			centerLocation.setX(Math.floor(centerLocation.getX() + secondLocation.getX() / 2));
-			centerLocation.setY(Math.floor(centerLocation.getY() + secondLocation.getY() / 2));
-			centerLocation.setZ(Math.floor(centerLocation.getZ() + secondLocation.getZ() / 2));
+			Location secondLocation = this.targetBlock.getLocation();
+			centerLocation.setX(Math.floor((centerLocation.getX() + secondLocation.getX()) / 2));
+			centerLocation.setY(Math.floor((centerLocation.getY() + secondLocation.getY()) / 2));
+			centerLocation.setZ(Math.floor((centerLocation.getZ() + secondLocation.getZ()) / 2));
 			buildWith.setTarget(this.targetBlock.getLocation(), centerLocation);
 			
-			FillBatch batch = new FillBatch(this, secondLocation, this.targetBlock.getLocation(), buildWith);
+			FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
 
 			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
 			
