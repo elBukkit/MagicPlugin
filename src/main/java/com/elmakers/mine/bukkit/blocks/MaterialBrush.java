@@ -58,13 +58,17 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 	
 	public void enableCloning() {
-		fillAir = this.mode == BrushMode.ERASE;
-		this.mode = BrushMode.CLONE;
+		if (this.mode != BrushMode.CLONE) {
+			fillAir = this.mode == BrushMode.ERASE;
+			this.mode = BrushMode.CLONE;
+		}
 	}
 	
 	public void enableErase() {
-		this.mode = BrushMode.ERASE;
-		this.setMaterial(Material.AIR);
+		if (this.mode != BrushMode.ERASE) {
+			this.setMaterial(Material.AIR);
+			this.mode = BrushMode.ERASE;
+		}
 	}
 	
 	public void enableMap() {
@@ -78,15 +82,19 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 	
 	public void enableSchematic(String name) {
-		fillAir = this.mode == BrushMode.ERASE;
-		this.mode = BrushMode.SCHEMATIC;
+		if (this.mode != BrushMode.SCHEMATIC) {
+			fillAir = this.mode == BrushMode.ERASE;
+			this.mode = BrushMode.SCHEMATIC;
+		}
 		this.schematicName = name;
 		schematic = null;
 	}
 	
 	public void enableReplication() {
-		fillAir = this.mode == BrushMode.ERASE;
-		this.mode = BrushMode.REPLICATE;
+		if (this.mode != BrushMode.REPLICATE) {
+			fillAir = this.mode == BrushMode.ERASE;
+			this.mode = BrushMode.REPLICATE;
+		}
 	}
 	
 	public void setData(byte data) {
