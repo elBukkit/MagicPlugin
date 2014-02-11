@@ -21,6 +21,7 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	private enum BrushMode {
 		MATERIAL,
+		ERASE,
 		COPY,
 		CLONE,
 		REPLICATE,
@@ -37,6 +38,7 @@ public class MaterialBrush extends MaterialBrushData {
 	private MaterialMapCanvas mapCanvas = null;
 	private Material mapMaterialBase = Material.STAINED_CLAY;
 	private Schematic schematic;
+	private boolean fillAir = true;
 	
 	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
 		super(material, data);
@@ -52,17 +54,21 @@ public class MaterialBrush extends MaterialBrushData {
 		} else {
 			isValid = false;
 		}
+		fillAir = true;
 	}
 	
 	public void enableCloning() {
+		fillAir = this.mode == BrushMode.ERASE;
 		this.mode = BrushMode.CLONE;
 	}
 	
 	public void enableErase() {
+		this.mode = BrushMode.ERASE;
 		this.setMaterial(Material.AIR);
 	}
 	
 	public void enableMap() {
+		fillAir = false;
 		this.mode = BrushMode.MAP;
 		if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
 			|| this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
@@ -72,12 +78,14 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 	
 	public void enableSchematic(String name) {
+		fillAir = this.mode == BrushMode.ERASE;
 		this.mode = BrushMode.SCHEMATIC;
 		this.schematicName = name;
 		schematic = null;
 	}
 	
 	public void enableReplication() {
+		fillAir = this.mode == BrushMode.ERASE;
 		this.mode = BrushMode.REPLICATE;
 	}
 	
@@ -179,7 +187,7 @@ public class MaterialBrush extends MaterialBrushData {
 			if (!block.getChunk().isLoaded()) return false;
 
 			updateFrom(block, controller.getRestrictedMaterials());
-			isValid = true;
+			isValid = fillAir || material != Material.AIR;
 		}
 		
 		if (mode == BrushMode.SCHEMATIC) {
@@ -206,7 +214,7 @@ public class MaterialBrush extends MaterialBrushData {
 				isValid = false;
 			} else {
 				updateFrom(newMaterial);
-				isValid = true;
+				isValid = fillAir || newMaterial.getMaterial() != Material.AIR;
 			}
 		}
 		
