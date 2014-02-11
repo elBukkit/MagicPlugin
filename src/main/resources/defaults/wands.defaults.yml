@@ -447,7 +447,14 @@ random:
       stained_glass_pane|14: 60,40,30,20
       stained_glass_pane|15: 60,40,30,20
       schematic|rainbow: 0,2,5,10
-              
+      schematic|creeper_rug: 0,0,5,10
+      schematic|wolf_house: 0,0,0,1
+      schematic|elder_tree: 0,0,0,1
+      schematic|church: 0,0,5,10
+      schematic|blacksmith: 0,0,5,10
+      schematic|garden_house: 0,5,10,15
+      schematic|compact_house: 5,10,15,20
+
 #
 #
 # Wand templates
@@ -595,6 +602,7 @@ painter:
         - stained_glass_pane:13
         - stained_glass_pane:14
         - stained_glass_pane:15
+        - schematic:rainbow
 decorator:
     modifiable: false
     cost_reduction: 1
@@ -736,6 +744,13 @@ engineer:
         - redstone_block
         - obsidian
         - schematic:rainbow
+        - schematic:creeper_rug
+        - schematic:wolf_house
+        - schematic:church
+        - schematic:blacksmith
+        - schematic:compact_house
+        - schematic:elder_tree
+        - schematic:garden_house
 battle:
     modifiable: true
     protection_physical: 0.3
