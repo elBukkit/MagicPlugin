@@ -184,7 +184,7 @@ public class MaterialBrush extends MaterialBrushData {
 	@SuppressWarnings("deprecation")
 	public boolean update(Mage fromMage, Location target) {
 		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
-			if (cloneLocation != null) {
+			if (cloneLocation == null) {
 				isValid = false;
 				return true;
 			}
