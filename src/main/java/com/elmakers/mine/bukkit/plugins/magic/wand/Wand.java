@@ -102,6 +102,9 @@ public class Wand implements CostReducer {
 	private int storedXp = 0;
 	private float storedXpProgress = 0;
 	
+	// Kinda of a hacky initialization optimization :\
+	private boolean suspendSave = false;
+	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	public static boolean SchematicsEnabled = false;
@@ -565,7 +568,14 @@ public class Wand implements CostReducer {
 		return itemStack;
 	}
 
+	protected void saveState(boolean force) {
+		if (force) suspendSave = false;
+		saveState();
+	}
+
 	protected void saveState() {
+		if (suspendSave) return;
+		
 		Object wandNode = InventoryUtils.createNode(item, "wand");
 		
 		InventoryUtils.setMeta(wandNode, "id", id);
@@ -1396,6 +1406,7 @@ public class Wand implements CostReducer {
 	
 	public static Wand createWand(MagicController controller, String templateName, Mage owner) {
 		Wand wand = new Wand(controller);
+		wand.suspendSave = true;
 		String wandName = Messages.get("wand.default_name");
 		String wandDescription = "";
 
@@ -1414,8 +1425,9 @@ public class Wand implements CostReducer {
 					level = Integer.parseInt(randomLevel);
 				}
 				ConfigurationNode randomTemplate = wandTemplates.get("random");
-				wand.modifiable = (boolean)randomTemplate.getBoolean("modifiable", true);
 				wand.randomize(level, false);
+				wand.modifiable = (boolean)randomTemplate.getBoolean("modifiable", true);
+				wand.saveState(true);
 				return wand;
 			}
 			
@@ -1454,6 +1466,7 @@ public class Wand implements CostReducer {
 		}
 		wand.setDescription(wandDescription);
 		wand.setName(wandName);
+		wand.saveState(true);
 		
 		return wand;
 	}
