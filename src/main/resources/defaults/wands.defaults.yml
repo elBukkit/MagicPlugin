@@ -667,12 +667,18 @@ decorator:
         - stained_glass_pane:14
         - stained_glass_pane:15
 engineer:
-    modifiable: false
-    cost_reduction: 1
+    modifiable: true
     effect_color: '00FF00'
     hunger_regeneration: 1
     health_regeneration: 1
     protection_falling: 1
+    protection: 0.2
+    xp_max: 1000
+    xp_regeneration: 100
+    power: 1
+    effect_color: '8B008B'
+    effect_bubbles: true
+    organize: true
     spells:
         - torch
         - fill
