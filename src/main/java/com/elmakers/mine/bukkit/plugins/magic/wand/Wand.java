@@ -976,11 +976,11 @@ public class Wand implements CostReducer {
 			} else {
 				materialName = material.name();				
 			}
-			
-			materialName = materialName.toLowerCase().replace('_', ' ');
 		} else if (materialName.startsWith(SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
 			materialName = namePieces[1];
 		}
+		
+		materialName = materialName.toLowerCase().replace('_', ' ');
 		
 		return materialName;
 	}
