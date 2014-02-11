@@ -95,10 +95,12 @@ public class Schematic {
 		int y = v.getBlockY() + center.getBlockY();
 		int z = v.getBlockZ() + center.getBlockZ();
 		
-		// Y mirroring, just for fun...
+		// TODO: Support Y-mirroring
+		/*
 		if (y < 0) {
 			y = -y;
 		}
+		*/
 		
 		try {
 			Object vector = vectorConstructor.newInstance(x, y, z);
