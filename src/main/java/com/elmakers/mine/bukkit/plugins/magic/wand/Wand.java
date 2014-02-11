@@ -55,7 +55,7 @@ public class Wand implements CostReducer {
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
 		"effect_bubbles", "materials", "spells", "mode"};
 	
-	private final ItemStack item;
+	private ItemStack item;
 	private MagicController controller;
 	private Mage mage;
 	
@@ -898,7 +898,7 @@ public class Wand implements CostReducer {
 		if (material == null) return null;
 
 		if (material == EraseMaterial) {
-			materialKey =  ERASE_MATERIAL_KEY;
+			materialKey = ERASE_MATERIAL_KEY;
 		} else if (material == CopyMaterial) {
 			materialKey = COPY_MATERIAL_KEY;
 		} else if (material == CloneMaterial) {
@@ -1838,11 +1838,20 @@ public class Wand implements CostReducer {
 	
 	public void activate(Mage mage) {
 		this.mage = mage;
+		Player player = mage.getPlayer();
+		if (!Wand.hasActiveWand(player)) {
+			controller.getLogger().warning("Wand activated without holding a wand!");
+			return;
+		}
+		
+		// Update held item, it may have been copied since this wand was created.
+		item = player.getItemInHand();
+		saveState();
+		
 		mage.setActiveWand(this);
 		if (owner.length() == 0) {
-			takeOwnership(mage.getPlayer());
+			takeOwnership(player);
 		}
-		Player player = mage.getPlayer();
 		updateSpeed(player);
 		if (usesMana()) {
 			storedXpLevel = player.getLevel();
@@ -1852,6 +1861,7 @@ public class Wand implements CostReducer {
 		}
 		updateActiveMaterial();
 		updateName();
+		updateLore();
 		
 		updateEffects();
 	}
