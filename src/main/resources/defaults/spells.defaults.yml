@@ -1175,9 +1175,9 @@ levitate:
     class: LevitateSpell
     parameters:
     costs:
-        xp: 20
+        xp: 100
     active_costs:
-        xp: 10
+        xp: 50
 boom:
     icon: fermented_spider_eye
     category: firebending
