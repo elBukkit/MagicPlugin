@@ -210,4 +210,8 @@ public class MaterialAndData {
 		
 		return false;
 	}
+	
+	public void setSignLines(String[] lines) {
+		signLines = lines.clone();
+	}
 }

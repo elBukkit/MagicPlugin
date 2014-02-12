@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
@@ -11,6 +12,9 @@ public class Schematic {
 	private static Class<?> vectorClass;
 	private static Class<?> cuboidClipboardClass;
 	private static Class<?> blockClass;
+	private static Class<?> signClass;
+	private static Class<?> compoundTagClass;
+	private static Constructor<?> signConstructor;
 	private static Constructor<?> vectorConstructor;
 	private static Method getBlockMethod;
 	private static Method getIdMethod;
@@ -19,39 +23,60 @@ public class Schematic {
 	private static Method getBlockXMethod;
 	private static Method getBlockYMethod;
 	private static Method getBlockZMethod;
+	private static Method getLinesMethod;
+	private static Method getNBTDataMethod;
+	private static Method hasNBTDataMethod;
+	private static Method signSetNBTDataMethod;
 	
 	private final Object weSchematic;
 	private Vector center;
 	private Vector size;
+	private static Boolean classesValid = null;
 	
 	private static boolean checkClasses() {
+		if (classesValid != null) {
+			return classesValid;
+		}
 		try {
-			if (vectorClass == null) vectorClass = Class.forName("com.sk89q.worldedit.Vector");
+			vectorClass = Class.forName("com.sk89q.worldedit.Vector");
 			if (vectorClass != null) {
-				if (vectorConstructor == null) vectorConstructor = vectorClass.getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE);
-				if (getBlockXMethod == null) getBlockXMethod = vectorClass.getMethod("getBlockX");				
-				if (getBlockYMethod == null) getBlockYMethod = vectorClass.getMethod("getBlockY");				
-				if (getBlockZMethod == null) getBlockZMethod = vectorClass.getMethod("getBlockZ");
+				vectorConstructor = vectorClass.getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE);
+				getBlockXMethod = vectorClass.getMethod("getBlockX");				
+				getBlockYMethod = vectorClass.getMethod("getBlockY");				
+				getBlockZMethod = vectorClass.getMethod("getBlockZ");
 			}
-			if (cuboidClipboardClass == null) cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
+			cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
 			if (cuboidClipboardClass != null) {
-				if (getBlockMethod == null) getBlockMethod = cuboidClipboardClass.getMethod("getBlock", vectorClass);
-				if (getSizeMethod == null) getSizeMethod = cuboidClipboardClass.getMethod("getSize");				
+				getBlockMethod = cuboidClipboardClass.getMethod("getBlock", vectorClass);
+				getSizeMethod = cuboidClipboardClass.getMethod("getSize");				
 			}
-			if (blockClass == null) {
-				blockClass = Class.forName("com.sk89q.worldedit.foundation.Block");
+			compoundTagClass = Class.forName("com.sk89q.jnbt.CompoundTag");
+			blockClass = Class.forName("com.sk89q.worldedit.foundation.Block");
+			if (blockClass != null) {
+				getNBTDataMethod = blockClass.getMethod("getNbtData");
+				hasNBTDataMethod = blockClass.getMethod("hasNbtData");
+			}
+			signClass = Class.forName("com.sk89q.worldedit.blocks.SignBlock");
+			if (signClass != null) {
+				getLinesMethod = signClass.getMethod("getText");
+				signSetNBTDataMethod = signClass.getMethod("setNbtData", compoundTagClass);
+				signConstructor = signClass.getConstructor(Integer.TYPE, Integer.TYPE);
 			}
 			if (blockClass != null) {
-				if (getIdMethod == null) getIdMethod = blockClass.getMethod("getId");
-				if (getDataMethod == null) getDataMethod = blockClass.getMethod("getData");
+				getIdMethod = blockClass.getMethod("getId");
+				getDataMethod = blockClass.getMethod("getData");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		
-		return vectorClass != null && vectorConstructor != null && cuboidClipboardClass != null 
+		classesValid = vectorClass != null && vectorConstructor != null && cuboidClipboardClass != null 
 				&& getBlockMethod != null && blockClass != null && getSizeMethod != null
-				&& getBlockXMethod != null && getBlockYMethod != null && getBlockZMethod != null;
+				&& getBlockXMethod != null && getBlockYMethod != null && getBlockZMethod != null
+				&& getLinesMethod != null && signClass != null && compoundTagClass != null
+				&& getNBTDataMethod != null && signSetNBTDataMethod != null && hasNBTDataMethod != null;
+		
+		return classesValid;
 	}
 	
 	public Schematic(Object schematic) {
@@ -105,7 +130,26 @@ public class Schematic {
 		try {
 			Object vector = vectorConstructor.newInstance(x, y, z);
 			Object baseBlock = getBlockMethod.invoke(weSchematic, vector);
-			return new MaterialAndData(Material.getMaterial((Integer)getIdMethod.invoke(baseBlock)), (byte)(int)(Integer)getDataMethod.invoke(baseBlock));
+			Material material = Material.getMaterial((Integer)getIdMethod.invoke(baseBlock));
+			int materialData = (int)(Integer)getDataMethod.invoke(baseBlock);
+			MaterialAndData blockData = new MaterialAndData(material, (byte)materialData);
+			
+			// Note.. we don't actually get a SignBlock here, for some reason.
+			// May have something to do with loading schematics not actually supporting sign
+			// text, it doesn't work with //schematic and //paste, either.
+			// It looks like //paste works in a dev build of WE, but it still doesn't give me the blocks
+			// Looking at WE's code, it seems like the part that's needed is commented out... ??
+			if (material == Material.SIGN_POST || material == Material.WALL_SIGN) {
+				if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
+					Object signBlock = signConstructor.newInstance(material.getId(), materialData);
+					Object nbtData = getNBTDataMethod.invoke(baseBlock);
+					signSetNBTDataMethod.invoke(signBlock, nbtData);
+					Bukkit.getLogger().info("Adding sign text");
+					blockData.setSignLines((String[])getLinesMethod.invoke(signBlock));
+				}
+			}
+			
+			return blockData;
 		} catch (ArrayIndexOutOfBoundsException ignore) {
 		} catch (InvocationTargetException ignoreReferenced) {
 		} catch (Throwable ex) {
