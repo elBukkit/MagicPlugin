@@ -28,10 +28,6 @@
 	</dependencies>
 	<repositories>
        <repository>
-            <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
-       </repository>
-       <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
       </repository>
