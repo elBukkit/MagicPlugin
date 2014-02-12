@@ -1578,12 +1578,12 @@ public class MagicController implements Listener
 							cycleMaterials = brushSpell.hasBrushOverride() && wand.getMaterialKeys().size() > 0;
 						}
 						if (cycleMaterials) {
-							wand.cycleMaterials();
+							wand.cycleMaterials(player.getItemInHand());
 						} else {
-							wand.cycleSpells();
+							wand.cycleSpells(player.getItemInHand());
 						}
 					} else { 
-						wand.cycleSpells();
+						wand.cycleSpells(player.getItemInHand());
 					}
 				} else {
 					if (wand.getHasInventory()) {

@@ -163,12 +163,9 @@ public class Wand implements CostReducer {
 		saveState();
 	}
 	
-	public void activateBrush(ItemStack itemStack) {
-		if (!isBrush(itemStack)) return;
-		
-		setActiveMaterial(getMaterialKey(itemStack));
-		if (activeMaterial != null) {
-			String materialKey = activeMaterial;
+	protected void activateBrush(String materialKey) {
+		setActiveMaterial(materialKey);
+		if (materialKey != null) {
 			if (materialKey.contains(":")) {
 				materialKey = StringUtils.split(materialKey, ":")[0];
 			}
@@ -182,6 +179,11 @@ public class Wand implements CostReducer {
 				brush.clearCloneTarget();
 			} 
 		}
+	}
+	
+	public void activateBrush(ItemStack itemStack) {
+		if (!isBrush(itemStack)) return;
+		activateBrush(getMaterialKey(itemStack));
 	}
 	
 	protected void setActiveMaterial(String materialKey) {
@@ -2031,7 +2033,9 @@ public class Wand implements CostReducer {
 		return controller;
 	}
 	
-	public void cycleSpells() {
+	public void cycleSpells(ItemStack newItem) {
+		if (isWand(newItem)) item = newItem;
+		
 		Set<String> spellsSet = getSpells();
 		ArrayList<String> spells = new ArrayList<String>(spellsSet);
 		if (spells.size() == 0) return;
@@ -2052,7 +2056,9 @@ public class Wand implements CostReducer {
 		setActiveSpell(spells.get(spellIndex).split("@")[0]);
 	}
 	
-	public void cycleMaterials() {
+	public void cycleMaterials(ItemStack newItem) {
+		if (isWand(newItem)) item = newItem;
+		
 		Set<String> materialsSet = getMaterialKeys();
 		ArrayList<String> materials = new ArrayList<String>(materialsSet);
 		if (materials.size() == 0) return;
@@ -2070,7 +2076,7 @@ public class Wand implements CostReducer {
 		}
 		
 		materialIndex = (materialIndex + 1) % materials.size();
-		setActiveMaterial(materials.get(materialIndex).split("@")[0]);
+		activateBrush(materials.get(materialIndex).split("@")[0]);
 	}
 	
 	public boolean hasExperience() {
