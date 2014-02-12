@@ -449,6 +449,7 @@ random:
       schematic|rainbow: 0,2,5,10
       schematic|creeper_rug: 0,0,5,10
       schematic|wolf_house: 0,0,0,1
+      schematic|stash_chest: 0,0,0,1
       schematic|elder_tree: 0,0,0,1
       schematic|church: 0,0,5,10
       schematic|blacksmith: 0,0,5,10
@@ -1426,7 +1427,7 @@ wolf:
     hunger_regeneration: 1
     power: 5
     haste: 1
-    effect_color: '2EFEC8'
+    effect_color: '00AACC'
     effect_particle: magic_runes
     organize: true
     spells:
@@ -1538,3 +1539,12 @@ wolf:
         - obsidian
         - bedrock
         - redstone_block
+        - schematic:rainbow
+        - schematic:creeper_rug
+        - schematic:wolf_house
+        - schematic:church
+        - schematic:blacksmith
+        - schematic:compact_house
+        - schematic:elder_tree
+        - schematic:garden_house
+        - schematic:stash_chest

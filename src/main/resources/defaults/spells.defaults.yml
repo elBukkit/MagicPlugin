@@ -239,13 +239,11 @@ pull:
     class: PushSpell
     pvp_restricted: true
     parameters:
-        allow_max_range: false
-        range: 32
+        range: 16
         allow_area: true
         item_force: 2
-        area_range: 20
+        area_range: 16
         entity_force: 3
-        range: '32'
         type: pull
         count: 1
     costs:
@@ -801,13 +799,11 @@ push:
     class: PushSpell
     pvp_restricted: true
     parameters:
-        allow_max_range: false
-        range: 32
+        range: 16
         allow_area: true
         item_force: 1
-        area_range: 20
+        area_range: 8
         entity_force: 3
-        range: '16'
         type: push
     costs:
         xp: 3
@@ -1234,11 +1230,8 @@ force:
     class: ForceSpell
     pvp_restricted: true
     parameters:
-        allow_max_range: true
-        range: 64
-        allow_area: true
+        range: 32
         item_force: 1
-        area_range: 20
         entity_force: 3
     costs:
         xp: 10
