@@ -20,7 +20,7 @@ public class MaterialAndData {
 	protected String[] signLines = null;
 	protected String commandLine = null;
 	protected String skullName = null;
-	protected Inventory inventory = null;
+	protected ItemStack[] inventoryContents = null;
 	protected boolean isValid = true;
 
 	public MaterialAndData() {
@@ -36,7 +36,7 @@ public class MaterialAndData {
 		material = other.material;
 		data = other.data;
 		commandLine = other.commandLine;
-		inventory = other.inventory;
+		inventoryContents = other.inventoryContents;
 		signLines = other.signLines;
 		skullName = other.skullName;
 		isValid = other.isValid;
@@ -57,7 +57,7 @@ public class MaterialAndData {
 		this.data = data;
 		signLines = null;
 		commandLine = null;
-		inventory = null;
+		inventoryContents = null;
 		skullName = null;
 		isValid = true;
 	}
@@ -85,7 +85,7 @@ public class MaterialAndData {
 		// Look for special block states
 		signLines = null;
 		commandLine = null;
-		inventory = null;
+		inventoryContents = null;
 		skullName = null;
 		
 		BlockState blockState = block.getState();
@@ -98,14 +98,7 @@ public class MaterialAndData {
 		} else if (blockState instanceof InventoryHolder) {
 			InventoryHolder holder = (InventoryHolder)blockState;
 			Inventory holderInventory = holder.getInventory();
-			inventory = InventoryUtils.createInventory(holder, holderInventory.getSize(), holderInventory.getName());
-			ItemStack[] items = holderInventory.getContents();
-			for (int i = 0; i < items.length; i++) {
-				ItemStack item = items[i];
-				if (item != null) {
-					inventory.setItem(i, item);
-				}
-			}
+			inventoryContents = holderInventory.getContents();
 		} else if (blockState instanceof Skull) {
 			Skull skull = (Skull)blockState;
 			skullName = skull.getOwner();
@@ -142,12 +135,12 @@ public class MaterialAndData {
 				CommandBlock command = (CommandBlock)blockState;
 				command.setCommand(commandLine);
 				command.update();
-			} else if (blockState instanceof InventoryHolder && inventory != null) {
+			} else if (blockState instanceof InventoryHolder && inventoryContents != null) {
 				InventoryHolder holder = (InventoryHolder)blockState;
 				Inventory newInventory = holder.getInventory();
-				int maxSize = Math.min(newInventory.getSize(), inventory.getSize());
+				int maxSize = Math.min(newInventory.getSize(), inventoryContents.length);
 				for (int i = 0; i < maxSize; i++) {
-					ItemStack item = inventory.getItem(i);
+					ItemStack item = inventoryContents[i];
 					item = InventoryUtils.getCopy(item);
 					if (item != null) {
 						newInventory.setItem(i, item);
@@ -203,7 +196,7 @@ public class MaterialAndData {
 			if (!command.getCommand().equals(commandLine)) {
 				return true;
 			}
-		} else if (blockState instanceof InventoryHolder && inventory != null) {
+		} else if (blockState instanceof InventoryHolder && inventoryContents != null) {
 			// Just copy it over.... not going to compare inventories :P
 			return true;
 		}
@@ -213,5 +206,9 @@ public class MaterialAndData {
 	
 	public void setSignLines(String[] lines) {
 		signLines = lines.clone();
+	}
+	
+	public void setInventoryContents(ItemStack[] contents) {
+		inventoryContents = contents;
 	}
 }

@@ -3,9 +3,12 @@ package com.elmakers.mine.bukkit.blocks;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 public class Schematic {
@@ -13,8 +16,13 @@ public class Schematic {
 	private static Class<?> cuboidClipboardClass;
 	private static Class<?> blockClass;
 	private static Class<?> signClass;
+	private static Class<?> chestClass;
+	private static Class<?> containerClass;
+	private static Class<?> itemStackClass;
+	private static Class<?> itemClass;
 	private static Class<?> compoundTagClass;
 	private static Constructor<?> signConstructor;
+	private static Constructor<?> chestConstructor;
 	private static Constructor<?> vectorConstructor;
 	private static Method getBlockMethod;
 	private static Method getIdMethod;
@@ -27,6 +35,12 @@ public class Schematic {
 	private static Method getNBTDataMethod;
 	private static Method hasNBTDataMethod;
 	private static Method signSetNBTDataMethod;
+	private static Method chestSetNBTDataMethod;
+	private static Method getItemsMethod;
+	private static Method getItemAmountMethod;
+	private static Method getItemIdMethod;
+	private static Method getItemDataMethod;
+	private static Method getItemEnchantmentsMethod;
 	
 	private final Object weSchematic;
 	private Vector center;
@@ -66,6 +80,26 @@ public class Schematic {
 				getIdMethod = blockClass.getMethod("getId");
 				getDataMethod = blockClass.getMethod("getData");
 			}
+			chestClass = Class.forName("com.sk89q.worldedit.blocks.ChestBlock");
+			if (chestClass != null) {
+				chestSetNBTDataMethod = chestClass.getMethod("setNbtData", compoundTagClass);
+				chestConstructor = chestClass.getConstructor(Integer.TYPE);
+			}
+			containerClass = Class.forName("com.sk89q.worldedit.blocks.ContainerBlock");
+			if (containerClass != null) {
+				getItemsMethod = containerClass.getMethod("getItems");
+			}
+			itemClass = Class.forName("com.sk89q.worldedit.blocks.BaseItem");
+			if (itemClass != null) {
+				getItemDataMethod = itemClass.getMethod("getData");
+				getItemIdMethod = itemClass.getMethod("getType");
+				getItemEnchantmentsMethod = itemClass.getMethod("getEnchantments");
+			}
+			itemStackClass = Class.forName("com.sk89q.worldedit.blocks.BaseItemStack");
+			if (itemStackClass != null) {
+				getItemAmountMethod = itemStackClass.getMethod("getAmount");
+			}
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -74,7 +108,11 @@ public class Schematic {
 				&& getBlockMethod != null && blockClass != null && getSizeMethod != null
 				&& getBlockXMethod != null && getBlockYMethod != null && getBlockZMethod != null
 				&& getLinesMethod != null && signClass != null && compoundTagClass != null
-				&& getNBTDataMethod != null && signSetNBTDataMethod != null && hasNBTDataMethod != null;
+				&& getNBTDataMethod != null && signSetNBTDataMethod != null && hasNBTDataMethod != null
+				&& chestClass != null && containerClass != null && itemClass != null && itemStackClass != null
+				&& getItemDataMethod != null && getItemIdMethod != null && getItemEnchantmentsMethod != null
+				&& getItemAmountMethod != null && getItemsMethod != null && chestSetNBTDataMethod != null
+				&& chestConstructor != null;
 		
 		return classesValid;
 	}
@@ -144,8 +182,40 @@ public class Schematic {
 					Object signBlock = signConstructor.newInstance(material.getId(), materialData);
 					Object nbtData = getNBTDataMethod.invoke(baseBlock);
 					signSetNBTDataMethod.invoke(signBlock, nbtData);
-					Bukkit.getLogger().info("Adding sign text");
 					blockData.setSignLines((String[])getLinesMethod.invoke(signBlock));
+				}
+			} else if (material == Material.CHEST) {
+				if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
+					Object chestBlock = chestConstructor.newInstance(materialData);
+					Object nbtData = getNBTDataMethod.invoke(baseBlock);
+					chestSetNBTDataMethod.invoke(chestBlock, nbtData);
+					Object[] items = (Object[])getItemsMethod.invoke(chestBlock);
+					if (items != null && items.length > 0) {
+						ItemStack[] contents = new ItemStack[items.length];
+						for (int i = 0; i < items.length; i++) {
+							if (items[i] != null) {
+								Material itemMaterial = Material.getMaterial((Integer)getItemIdMethod.invoke(items[i]));
+								short itemData = (short)(Short)getItemDataMethod.invoke(items[i]);
+								int itemAmount = (int)(Integer)getItemAmountMethod.invoke(items[i]);			
+								ItemStack newStack = new ItemStack(itemMaterial, itemAmount,itemData);
+								
+								@SuppressWarnings("unchecked")
+								Map<Integer, Integer> enchantments = (Map<Integer, Integer>)getItemEnchantmentsMethod.invoke(items[i]);
+								if (enchantments != null && enchantments.size() > 0) {
+									for (Entry<Integer, Integer> enchantment : enchantments.entrySet()) {
+										try {
+											Enchantment enchantmentType = Enchantment.getById(enchantment.getKey());
+											newStack.addEnchantment(enchantmentType, enchantment.getValue());
+										} catch (Exception ex) {
+											ex.printStackTrace();
+										}
+									}
+								}
+								contents[i] = newStack;
+							}
+						}
+						blockData.setInventoryContents(contents);
+					}
 				}
 			}
 			
