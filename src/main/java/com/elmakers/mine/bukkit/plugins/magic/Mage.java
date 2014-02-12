@@ -327,6 +327,11 @@ public class Mage implements CostReducer
 		return activeWand != null && activeWand.getDamageReduction() > 1;
 	}
 	
+	public boolean isSuperPowered()
+	{
+		return activeWand != null && activeWand.getPower() > 1;
+	}
+	
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
 		Player player = getPlayer();
