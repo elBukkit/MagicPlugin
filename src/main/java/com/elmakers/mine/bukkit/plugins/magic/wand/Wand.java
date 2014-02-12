@@ -533,6 +533,8 @@ public class Wand implements CostReducer {
 	@SuppressWarnings("deprecation")
 	protected ItemStack createMaterialItem(String materialKey) {
 		MaterialBrushData brushData = parseMaterialKey(materialKey);
+		if (brushData == null) return null;
+		
 		Material material = brushData.getMaterial();
 		byte dataId = brushData.getData();
 		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);	
