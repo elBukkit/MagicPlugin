@@ -60,7 +60,8 @@ public class BridgeSpell extends BrushSpell
 		buildWith.modify(targetBlock);
 
 		castMessage("A bridge extends!");
-		
+
+		bridgeBlocks.setTimeToLive(parameters.getInt("undo", 0));
 		mage.registerForUndo(bridgeBlocks);
 		controller.updateBlock(targetBlock);
 

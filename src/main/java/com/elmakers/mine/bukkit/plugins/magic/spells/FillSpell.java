@@ -95,7 +95,7 @@ public class FillSpell extends BrushSpell
 			deactivate();
 
 			BlockList filledBlocks = new BlockList();
-
+			filledBlocks.setTimeToLive(parameters.getInt("undo", 0));
 			filledBlocks.add(targetBlock);
 
 			buildWith.setTarget(targetBlock.getLocation());
