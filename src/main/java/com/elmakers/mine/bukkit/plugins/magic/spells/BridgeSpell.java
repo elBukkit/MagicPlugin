@@ -52,9 +52,8 @@ public class BridgeSpell extends BrushSpell
 		}
 
 		MaterialBrush buildWith = getMaterialBrush();
-		buildWith.setTarget(targetBlock.getLocation());
-
-		Material material = buildWith.getMaterial();
+		buildWith.setTarget(attachBlock.getLocation(), targetBlock.getLocation());
+		buildWith.update(mage, targetBlock.getLocation());
 		
 		BlockList bridgeBlocks = new BlockList();
 		bridgeBlocks.add(targetBlock);
@@ -65,7 +64,8 @@ public class BridgeSpell extends BrushSpell
 		mage.registerForUndo(bridgeBlocks);
 		controller.updateBlock(targetBlock);
 
-		Location effectLocation = targetBlock.getLocation();	
+		Location effectLocation = targetBlock.getLocation();
+		Material material = buildWith.getMaterial();
 		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 

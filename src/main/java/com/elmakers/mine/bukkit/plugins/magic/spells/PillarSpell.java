@@ -56,10 +56,11 @@ public class PillarSpell extends BrushSpell
 		}
 
 		MaterialBrush buildWith = getMaterialBrush();
-		buildWith.setTarget(attachBlock.getLocation());
 
 		BlockList pillarBlocks = new BlockList();
 		Block pillar = getBlockAt(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ());
+		buildWith.setTarget(attachBlock.getLocation(), pillar.getLocation());
+		buildWith.update(mage, pillar.getLocation());
 		pillarBlocks.add(pillar);
 		buildWith.modify(pillar);
 		
@@ -69,7 +70,7 @@ public class PillarSpell extends BrushSpell
 
 		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
 		mage.registerForUndo(pillarBlocks);
-		controller.updateBlock(targetBlock);
+		controller.updateBlock(pillar);
 		
 		return SpellResult.SUCCESS;
 	}
