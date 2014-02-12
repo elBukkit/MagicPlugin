@@ -1736,10 +1736,10 @@ public class MagicController implements Listener
 		Mage mage = getMage(player);
 		Wand wand = mage.getActiveWand();
 		if (wand != null) {
-			// NOTE: This never actually happens, unfortunately opening the player's inventory is client-side.
-			if (event.getView().getType() == InventoryType.CRAFTING) {
-				wand.updateInventoryNames(false);
-			} else {
+			// NOTE: The type will never actually be CRAFTING, at least for now.
+			// But we can hope for server-side player inventory open notification one day, right?
+			// Anyway, check for opening another inventory and close the wand.
+			if (event.getView().getType() != InventoryType.CRAFTING) {
 				if (wand.getMode() == WandMode.INVENTORY || !wand.isInventoryOpen()) {
 					wand.deactivate();
 				}
@@ -1944,10 +1944,6 @@ public class MagicController implements Listener
 			if (wand != null) {
 				wand.activate(mage);
 			}
-		}
-		
-		if (previousWand != null && !changedWands && previousWand.isInventoryOpen()) {
-			previousWand.updateInventoryNames(true);
 		}
 	}
 	

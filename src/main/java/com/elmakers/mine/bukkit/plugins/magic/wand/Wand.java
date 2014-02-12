@@ -159,7 +159,7 @@ public class Wand implements CostReducer {
 	public void setActiveSpell(String activeSpell) {
 		this.activeSpell = activeSpell;
 		updateName();
-		updateInventoryNames(true);
+		updateInventory();
 		saveState();
 	}
 	
@@ -187,9 +187,8 @@ public class Wand implements CostReducer {
 	protected void setActiveMaterial(String materialKey) {
 		this.activeMaterial = materialKey;
 		updateName();
-		
 		updateActiveMaterial();
-		updateInventoryNames(true);
+		updateInventory();
 		saveState();
 	}
 	
@@ -740,7 +739,7 @@ public class Wand implements CostReducer {
 			}
 		}
 		updateActiveMaterial();
-		updateInventoryNames(true);
+		updateInventory();
 		updateName();
 		updateLore();
 		saveState();
@@ -766,16 +765,12 @@ public class Wand implements CostReducer {
 			addToInventory(createMaterialItem(materialKey));
 		}
 		if (activeMaterial == null || activeMaterial.length() == 0 || makeActive) {
-			activeMaterial = materialKey;
-		}
-		updateActiveMaterial();
-		updateInventoryNames(true);
-		updateName();
-		updateLore();
-		saveState();
-		if (isInventoryOpen()) {
+			setActiveMaterial(materialKey);
+		} else {
 			updateInventory();
 		}
+		updateLore();
+		saveState();
 		hasInventory = getSpells().size() + getMaterialKeys().size() > 1;
 		
 		return addedNew;
@@ -820,13 +815,11 @@ public class Wand implements CostReducer {
 				}
 			}
 		}
-		updateInventoryNames(true);
 		updateName();
 		updateLore();
 		saveState();
-		if (isInventoryOpen()) {
-			updateInventory();
-		}
+		updateInventory();
+		
 		return found;
 	}
 	
@@ -846,22 +839,36 @@ public class Wand implements CostReducer {
 			addToInventory(spellItem);
 		}
 		if (activeSpell == null || activeSpell.length() == 0 || makeActive) {
-			activeSpell = spellName;
-		}
-		hasInventory = getSpells().size() + getMaterialKeys().size() > 1;
-		updateInventoryNames(true);
-		updateName();
-		updateLore();
-		saveState();
-		if (isInventoryOpen()) {
+			setActiveSpell(spellName);
+		} else {
 			updateInventory();
 		}
+		hasInventory = getSpells().size() + getMaterialKeys().size() > 1;
+		updateLore();
+		saveState();
 		
 		return addedNew;
 	}
 	
 	public boolean addSpell(String spellName) {
 		return addSpell(spellName, false);
+	}
+	
+	private String getSpellDisplayName(Spell spell, String materialKey) {
+		String name = "";
+		if (spell != null) {
+			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
+				String materialName = getMaterialName(materialKey);
+				if (materialName == null) {
+					materialName = "none";
+				}
+				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE;
+			} else {
+				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE;
+			}
+		}
+		
+		return name;
 	}
 
 	private String getActiveWandName(Spell spell, String materialKey) {
@@ -872,15 +879,7 @@ public class Wand implements CostReducer {
 		
 		// Add active spell to description
 		if (spell != null) {
-			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
-				String materialName = getMaterialName(materialKey);
-				if (materialName == null) {
-					materialName = "none";
-				}
-				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
-			} else {
-				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE + " (" + wandColor + wandName + ChatColor.WHITE + ")";
-			}
+			name = getSpellDisplayName(spell, materialKey) + " (" + name + ChatColor.WHITE + ")";
 		}
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
@@ -1200,26 +1199,6 @@ public class Wand implements CostReducer {
 		
 		return materialKey;
 	}
-	
-	public void updateInventoryNames(boolean activeHotbarNames, boolean activeAllNames) {
-		if (mage == null || !isInventoryOpen() || !mage.hasStoredInventory() || mode != WandMode.INVENTORY) return;
-		
-		ItemStack[] contents = mage.getPlayer().getInventory().getContents();
-		for (int i = 0; i < contents.length; i++) {
-			ItemStack item = contents[i];
-			if (item == null || item.getType() == Material.AIR || isWand(item)) continue;
-			boolean activeName = activeAllNames || (activeHotbarNames && i < Wand.HOTBAR_SIZE);
-			updateInventoryName(item, activeName);
-		}
-	}
-	
-	public void updateInventoryNames() {
-		updateInventoryNames(true, false);
-	}
-	
-	public void updateInventoryNames(boolean activeHotbarNames) {
-		updateInventoryNames(activeHotbarNames, false);
-	}
 
 	protected void updateInventoryName(ItemStack item, boolean activeName) {
 		if (isSpell(item)) {
@@ -1238,7 +1217,7 @@ public class Wand implements CostReducer {
 		if (activeName) {
 			displayName = getActiveWandName(spell);
 		} else {
-			displayName = ChatColor.GOLD + spell.getName();
+			displayName = getSpellDisplayName(spell, activeMaterial);
 		}
 		meta.setDisplayName(displayName);
 		List<String> lore = new ArrayList<String>();
@@ -1304,7 +1283,9 @@ public class Wand implements CostReducer {
 		// Set hotbar items from remaining list
 		for (int hotbarSlot = 0; hotbarSlot < HOTBAR_SIZE; hotbarSlot++) {
 			if (hotbarSlot != currentSlot) {
-				playerInventory.setItem(hotbarSlot, hotbar.getItem(hotbarSlot));
+				ItemStack hotbarItem = hotbar.getItem(hotbarSlot);
+				updateInventoryName(hotbarItem, true);
+				playerInventory.setItem(hotbarSlot, hotbarItem);
 			}
 		}
 	}
@@ -1315,7 +1296,9 @@ public class Wand implements CostReducer {
 			Inventory inventory = inventories.get(openInventoryPage);
 			ItemStack[] contents = inventory.getContents();
 			for (int i = 0; i < contents.length; i++) {
-				targetInventory.setItem(i + startOffset, contents[i]);
+				ItemStack inventoryItem = contents[i];
+				updateInventoryName(inventoryItem, false);
+				targetInventory.setItem(i + startOffset, inventoryItem);
 			}	
 		}
 	}
@@ -1788,7 +1771,6 @@ public class Wand implements CostReducer {
 				inventoryIsOpen = true;
 				mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 				updateInventory();
-				updateInventoryNames();
 				mage.getPlayer().updateInventory();
 			}
 		}
@@ -1841,6 +1823,11 @@ public class Wand implements CostReducer {
 		Player player = mage.getPlayer();
 		if (!Wand.hasActiveWand(player)) {
 			controller.getLogger().warning("Wand activated without holding a wand!");
+			try {
+				throw new Exception("Wand activated without holding a wand!");
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			return;
 		}
 		
