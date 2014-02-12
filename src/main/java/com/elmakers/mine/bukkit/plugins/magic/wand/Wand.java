@@ -1139,6 +1139,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public static boolean hasActiveWand(Player player) {
+		if (player == null) return false;
 		ItemStack activeItem =  player.getInventory().getItemInHand();
 		return isWand(activeItem);
 	}
@@ -1837,15 +1838,20 @@ public class Wand implements CostReducer {
 	}
 	
 	public void activate(Mage mage) {
-		this.mage = mage;
 		Player player = mage.getPlayer();
 		if (!Wand.hasActiveWand(player)) {
 			controller.getLogger().warning("Wand activated without holding a wand!");
 			return;
 		}
 		
+		activate(mage, player.getItemInHand());
+	}
+		
+	public void activate(Mage mage, ItemStack wandItem) {
 		// Update held item, it may have been copied since this wand was created.
-		item = player.getItemInHand();
+		this.item = wandItem;
+		this.mage = mage;
+		Player player = mage.getPlayer();
 		saveState();
 		
 		mage.setActiveWand(this);
