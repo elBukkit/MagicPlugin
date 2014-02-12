@@ -325,10 +325,12 @@ random:
       superdisc: 0,0,1,10
       superconvert: 0,0,1,10
       superiterate: 0,0,1,10
+      flamethrower: 0,5,10,20
       superdome: 0,0,1,10
       tunnel: 5,10,20,30
       undo: 0,0,1,10
       pillar: 0,5,10,15
+      stash: 0,1,5,10
       stalactite: 0,5,10,15
       kaboom: 0,0,1,5
       icbm: 0,0,1,5
@@ -1104,6 +1106,7 @@ fire_3:
         - toss
         - boom
         - kaboom
+        - flamethrower
     materials:
         - stationary_lava
 avatar:
@@ -1298,6 +1301,7 @@ red:
         - flare
         - grenade
         - flare
+        - flamethrower
     materials:
         - stationary_lava    
         - stained_clay:14    
@@ -1501,6 +1505,8 @@ wolf:
         - superiterate
         - neutron
         - laser
+        - stash
+        - flamethrower
     materials:
         - water
         - stationary_water

@@ -249,7 +249,7 @@ pull:
     costs:
         xp: 2
 kaboom:
-    icon: blaze_powder
+    icon: raw_chicken
     category: dark
     class: BoomSpell
     pvp_restricted: true
@@ -467,7 +467,7 @@ invincible:
     active_costs:
         xp: 10
 inferno:
-    icon: fire
+    icon: blaze_powder
     category: firebending
     class: FireSpell
     pvp_restricted: true
@@ -1084,6 +1084,21 @@ superiterate:
         increment_data: false
     costs:
         xp: 200
+flamethrower:
+    icon: fire
+    category: firebending
+    class: IterateSpell
+    parameters:
+        transparent: transparent_to_construction
+        allow_max_range: true
+        range: 32
+        size: 8
+        radius: 1
+        reverse: false
+        increment_data: false
+        material: fire
+    costs:
+        xp: 100
 laser:
     icon: ink_sack:11
     category: dark
@@ -1175,7 +1190,7 @@ levitate:
     active_costs:
         xp: 50
 boom:
-    icon: fermented_spider_eye
+    icon: cooked_chicken
     category: firebending
     class: BoomSpell
     pvp_restricted: true
@@ -1224,6 +1239,19 @@ pillar:
         transparent: transparent_to_construction
     costs:
         xp: 5
+stash:
+    icon: ender_chest
+    category: engineering
+    class: PillarSpell
+    parameters:
+        allow_max_range: false
+        range: 8
+        transparent: transparent_to_construction
+        cooldown: 10000
+        undo: 30000
+        material: ender_chest
+    costs:
+        xp: 50
 force:
     icon: leash
     category: airbending

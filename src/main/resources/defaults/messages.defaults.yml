@@ -263,35 +263,35 @@ spells:
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
-        usage: Cast once to select a point, again to convert
+        usage: Cast twice to convert
     supercollapse:
         name: SuperCollapse
         description: Collapse a large sphere of blocks
-        usage: Cast once to select a point, again to collapse
+        usage: Cast twice to collapse
     superblob:
         name: SuperBlob
         description: Create a large solid sphere
-        usage: Cast once to select a point, again to construct
+        usage: Cast twice to construct
     supershell:
         name: SuperShell
         description: Create a large hollow sphere
-        usage: Cast once to select a point, again to construct
+        usage: Cast twice to construct
     superdisc:
         name: SuperDisc
         description: Create a large circular disc
-        usage: Cast once to select a point, again to construct
+        usage: Cast twice to construct
     superdome:
         name: SuperDome
         description: Create a very large dome
-        usage: Cast once to select a point, again to construct
+        usage: Cast twice to construct
     superpyramid:
         name: SuperPyramid
         description: Create a large hollow pyramid
-        usage: Cast once to select a point, again to construct
+        usage: Cast twice to construct
     superbox:
         name: SuperBox
         description: Create a large hollow box
-        usage: Cast once to select a point, again to construct
+        usage: Cast twice to construct
     kamikazee:
         name: Kamikazee
         description: Kill yourself with an explosion
@@ -342,7 +342,7 @@ spells:
     fill:
         name: Fill
         description: Fill a selected cuboid area
-        usage: Cast once to select a point, again to fill
+        usage: Cast twice to fill
     recurse:
         name: Recurse
         description: Recursively fill blocks
@@ -352,11 +352,11 @@ spells:
     alter:
         name: Alter
         description: Alter certain objects
-        usage: Use on wool, clay, stairs, stained glass, etc
+        usage: Use on wool, stairs, etc
     superalter:
         name: SuperAlter
         description: Alter objects recursively
-        usage: Use on wool, clay, stairs, stained glass, etc
+        usage: Use on wool, stairs, etc
     blob:
         name: Blob
         description: Create a solid blob
@@ -390,6 +390,15 @@ spells:
     superiterate:
         name: Column
         description: Construct a large column of blocks
+    flamethrower:
+        name: Flamethrower
+        description: Burn, baby, burn!
+    stash:
+        name: Stash
+        description: A place to keep your stuff.
+    superiterate:
+        name: Column
+        description: Construct a large column of blocks
     laser:
         name: Laser
         description: Destroy a line of blocks
@@ -398,13 +407,13 @@ spells:
         description: Spray a stream of water
     wolf:
         name: Wolf
-        description: Create a wolf familiar to follow you around
+        description: Create some wolf familiars
     cat:
         name: Cat
-        description: Create a cat familiar to follow you around
+        description: Create some cat familiars
     shrink:
         name: Shrink
-        description: Hurts entities, shrinks various things
+        description: Hurts and shrinks various things
         usage: Must kill the target to receive skull
     flare:
         name: Flare
@@ -428,7 +437,7 @@ spells:
     force:
         name: Force
         description: Use telekinesis
-        usage: Cast once to select an entity, again to throw
+        usage: Cast to select an entity, again to throw
     descend:
         name: Descend
         description: Travel underground
