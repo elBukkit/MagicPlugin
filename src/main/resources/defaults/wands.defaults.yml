@@ -310,8 +310,6 @@ random:
       shrink: 5,20,30,90
       invincible: 0,0,10,20
       levitate: 0,0,10,30
-      leatherskin: 5,10,30,10
-      ironskin: 0,5,10,20
       iterate: 0,0,40,20
       laser: 0,0,10,5
       lava: 0,10,30,20

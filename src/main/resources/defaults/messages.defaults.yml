@@ -154,9 +154,6 @@ spells:
     storm:
         name: Storm
         description: Start a lightning storm
-    leatherskin:
-        name: LeatherSkin
-        description: Protect you from some damage
     tree:
         name: Tree
         description: Instantly grow a tree
@@ -179,9 +176,6 @@ spells:
     weather:
         name: Weather
         description: Change the weather
-    ironskin:
-        name: IronSkin
-        description: Protect you from damage
     fling:
         name: Fling
         description: Sends you flying in the target direction
