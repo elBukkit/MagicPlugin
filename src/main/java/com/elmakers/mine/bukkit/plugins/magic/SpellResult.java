@@ -1,13 +1,17 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+
 public enum SpellResult {
-	SUCCESS, 
-	FAILURE, 
+	CAST, 
+	AREA,
+	FAIL, 
 	INSUFFICIENT_RESOURCES, 
 	INSUFFICIENT_PERMISSION, 
 	COOLDOWN, 
 	NO_TARGET, 
 	TARGET_SELECTED,
 	PLAYER_REQUIRED,
-	COST_FREE
+	COST_FREE;
+	
+	public static SpellResult[] FAILURES = { FAIL, INSUFFICIENT_RESOURCES, INSUFFICIENT_PERMISSION, COOLDOWN, NO_TARGET };
 }

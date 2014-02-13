@@ -37,7 +37,7 @@ public class StairsSpell extends BlockSpell
 
 		createStairs(targetBlock);
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void createStairs(Block targetBlock)

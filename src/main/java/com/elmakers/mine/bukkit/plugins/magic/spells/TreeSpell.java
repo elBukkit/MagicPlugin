@@ -54,7 +54,7 @@ public class TreeSpell extends Spell
 		{
 			castMessage("Your tree didn't grow");
 		}
-		return result ? SpellResult.SUCCESS : SpellResult.FAILURE;
+		return result ? SpellResult.CAST : SpellResult.FAIL;
 	}
 
 	public String getTreeName(TreeType treeType)

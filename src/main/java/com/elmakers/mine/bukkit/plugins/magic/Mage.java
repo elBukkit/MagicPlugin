@@ -491,37 +491,6 @@ public class Mage implements CostReducer
 		return controller.isDestructible(block);
 	}
 	
-	public void onCast(Spell spell, SpellResult result) {
-		switch(result) {
-			case SUCCESS:
-				// No sound on success
-				
-				// Show on dynmap
-				controller.onCast(this, spell);
-				break;
-			case INSUFFICIENT_RESOURCES:
-				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
-				playSound(Sound.NOTE_BASS, 1, 1);
-				break;
-			case INSUFFICIENT_PERMISSION:
-				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
-				playSound(Sound.NOTE_BASS, 1, 1.5f);
-				break;
-			case COOLDOWN:
-				// player.playEffect(player.getLocation(), Effect.SMOKE,  null);
-				playSound(Sound.NOTE_SNARE_DRUM, 1, 1);
-				break;
-			case NO_TARGET:
-				playSound(Sound.NOTE_STICKS, 1, 1);
-				break;
-			case COST_FREE:
-				break;
-			default:
-				// player.playEffect(player.getLocation(), Effect.EXTINGUISH,  null);
-				playSound(Sound.NOTE_BASS_DRUM, 1, 1);
-		}
-	}
-	
 	public void playSound(Sound sound, float volume, float pitch) {
 		Player player = getPlayer();
 		if (player != null && controller.soundsEnabled()) {
@@ -743,6 +712,12 @@ public class Mage implements CostReducer
 		Player player = getPlayer();
 		if (player == null) return null;
 		return player.getLocation();
+	}
+	
+	public Location getEyeLocation() {
+		Player player = getPlayer();
+		if (player == null) return null;
+		return player.getEyeLocation();
 	}
 	
 	public Vector getDirection() {Player player = getPlayer();

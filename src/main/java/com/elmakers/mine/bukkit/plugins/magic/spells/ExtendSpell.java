@@ -58,6 +58,6 @@ public class ExtendSpell extends BrushSpell
 		controller.updateBlock(targetBlock);
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

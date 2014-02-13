@@ -168,6 +168,6 @@ public class IterateSpell extends BrushSpell
 
 		castMessage("Filled " + iteratedBlocks.size() + " blocks");
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

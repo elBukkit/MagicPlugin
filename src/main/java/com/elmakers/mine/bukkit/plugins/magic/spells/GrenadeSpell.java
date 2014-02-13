@@ -32,7 +32,7 @@ public class GrenadeSpell extends Spell
 		Location loc = target.getLocation();
 		TNTPrimed grenade = (TNTPrimed)getPlayer().getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
 		if (grenade == null) {
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		Vector aim = mage.getLocation().getDirection();
 		grenade.setVelocity(aim);
@@ -40,6 +40,6 @@ public class GrenadeSpell extends Spell
 		grenade.setFuseTicks(fuse);
 		grenade.setIsIncendiary(useFire);
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

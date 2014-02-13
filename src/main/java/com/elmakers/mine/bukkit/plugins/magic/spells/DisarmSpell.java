@@ -9,8 +9,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.effects.EffectTrail;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -19,28 +17,10 @@ import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class DisarmSpell extends Spell 
-{
-	private final static int 		maxEffectRange = 16;
-	private final static int 		effectSpeed = 1;
-	private final static float 		particleData = 2f;
-	private final static int 		effectPeriod = 2;
-	private final static int 		particleCount = 6;
-    
+{   
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = getPlayer().getEyeLocation();
-		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
-		effectTrail.setParticleType(ParticleType.MOB_SPELL);
-		effectTrail.setParticleCount(particleCount);
-		effectTrail.setEffectData(particleData);
-		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
-		effectTrail.setSpeed(effectSpeed);
-		effectTrail.setPeriod(effectPeriod);
-		effectTrail.start();
-
 		Target target = getTarget();
 		if (!target.isEntity() || !(target.getEntity() instanceof LivingEntity)) {
 			return SpellResult.NO_TARGET;    
@@ -79,7 +59,7 @@ public class DisarmSpell extends Spell
 		velocity.setY(velocity.getY() * 5);
 		item.setVelocity(velocity);
 		
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 		
 	}
 }

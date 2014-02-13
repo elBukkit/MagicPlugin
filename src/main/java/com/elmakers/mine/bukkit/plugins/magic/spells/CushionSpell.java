@@ -60,6 +60,6 @@ public class CushionSpell extends Spell
 		}
 
 		mage.registerForUndo(cushionBlocks);
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

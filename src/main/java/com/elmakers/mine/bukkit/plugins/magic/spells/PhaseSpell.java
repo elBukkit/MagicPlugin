@@ -3,13 +3,10 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.effects.EffectUtils;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -59,7 +56,7 @@ public class PhaseSpell extends Spell
 		retryCount = 0;
 		tryPhase(targetLocation, maxY);
 		
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 	
 	protected void tryPhase(final Location targetLocation, final int maxY) {
@@ -90,10 +87,6 @@ public class PhaseSpell extends Spell
 			// TODO : Failure notification? Sounds at least? The async nature is difficult.
 			if (destination != null) {
 				player.teleport(destination);
-				EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-				playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-				EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);
-				playerLocation.getWorld().playSound(targetLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,7 +9,6 @@ import com.elmakers.mine.bukkit.blocks.FillBatch;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectUtils;
 import com.elmakers.mine.bukkit.effects.ParticleType;
-import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.TargetType;
@@ -22,7 +20,6 @@ public class FillSpell extends BrushSpell
 	
 	private Block targetBlock = null;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -57,15 +54,8 @@ public class FillSpell extends BrushSpell
 			Material material = buildWith.getMaterial();
 			castMessage("Painting with " + material.name().toLowerCase());
 			mage.registerForUndo(filledBlocks);
-
-			SpellEffect effect = getEffect("cast");
-			// Hacked until config-driven.
-			effect.particleType = null;
-			effect.effect = Effect.STEP_SOUND;
-			effect.data = buildWith.getMaterial().getId();
-			effect.startTrailEffect(mage, getEyeLocation(), targetBlock.getLocation());
 			
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 
 		if (this.targetBlock != null)
@@ -88,20 +78,13 @@ public class FillSpell extends BrushSpell
 			if (!batch.checkDimension(maxDimension))
 			{
 				sendMessage("Dimension is too big!");
-				return SpellResult.FAILURE;
+				return SpellResult.FAIL;
 			}
 
 			mage.addPendingBlockBatch(batch);
 			
-			SpellEffect effect = getEffect("cast");
-			// Hacked until config-driven.
-			effect.particleType = null;
-			effect.effect = Effect.STEP_SOUND;
-			effect.data = buildWith.getMaterial().getId();
-			effect.startTrailEffect(mage, getEyeLocation(), centerLocation);
-			
 			deactivate();
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 		else
 		{
@@ -114,13 +97,8 @@ public class FillSpell extends BrushSpell
 			// Note we don't set the target until the second cast.
 			Material material = buildWith.getMaterial();
 			castMessage("Cast again to fill with " + material.name().toLowerCase());
-						
-			SpellEffect effect = getEffect("target");
-			// Hacked until config-driven.
-			effect.particleType = ParticleType.WATER_DRIPPING;
-			effect.startTrailEffect(mage, getEyeLocation(), effectLocation);
 			
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 	}
 

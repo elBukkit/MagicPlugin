@@ -280,7 +280,7 @@ public class ThrustSpell extends Spell
 
 		lastLevitate = System.currentTimeMillis();
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	@Override

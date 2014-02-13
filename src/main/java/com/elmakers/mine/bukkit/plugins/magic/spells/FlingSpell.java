@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,8 +10,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.effects.EffectRing;
-import com.elmakers.mine.bukkit.effects.EffectTrail;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -29,11 +26,9 @@ public class FlingSpell extends Spell
 
     private final static int effectSpeed = 1;
     private final static int effectPeriod = 3;
-    private final static int maxEffectRange = 16;
     private final static int minRingEffectRange = 2;
     private final static int maxRingEffectRange = 15;
     private final static int maxDamageAmount = 200;
-    private final static int ringEffectAmount = 8;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -76,28 +71,13 @@ public class FlingSpell extends Spell
 			velocity.setY(0);
 		}
 
-		// Visual effect
-		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = getPlayer().getEyeLocation();
-		Vector effectDirection = effectLocation.getDirection();
-		
-		EffectTrail effect = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
-		effect.setParticleType(ParticleType.SPELL);
-		effect.setParticleCount(3);
-		Color effectColor = mage.getEffectColor();
-		effect.setEffectData(effectColor != null ? effectColor.asRGB() : 255);
-		effect.setParticleOffset(2.0f, 2.0f, 2.0f);
-		effect.setSpeed(effectSpeed);
-		effect.setPeriod(effectPeriod);
-		effect.start();
-		
 		velocity.multiply(magnitude);
 		getPlayer().setVelocity(velocity);
 		castMessage("Whee!");
 
 		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling = System.currentTimeMillis();
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -116,6 +96,7 @@ public class FlingSpell extends Spell
 			lastFling = 0;
 			
 			// Visual effect
+			// TODO: Data-drive?
 			Location effectLocation = event.getEntity().getLocation();
 			Block block = event.getEntity().getLocation().getBlock();
 			block = block.getRelative(BlockFace.DOWN);
@@ -123,12 +104,12 @@ public class FlingSpell extends Spell
 			int effectRange = Math.min(maxRingEffectRange, ringEffectRange);
 			effectRange = Math.min(getMaxRange(), effectRange / effectSpeed);
 			
-			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, effectRange, ringEffectAmount);
+			EffectRing effect = new EffectRing(controller.getPlugin());
+			effect.setRadius(effectRange);
 			effect.setEffect(Effect.STEP_SOUND);
-			effect.setData(block.getTypeId());
-			effect.setSpeed(effectSpeed);
+			effect.setEffectData(block.getTypeId());
 			effect.setPeriod(effectPeriod);
-			effect.start();
+			effect.start(effectLocation, null);
 		}
 	}
 }

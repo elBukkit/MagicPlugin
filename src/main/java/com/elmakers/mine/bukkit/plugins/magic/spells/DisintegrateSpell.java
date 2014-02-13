@@ -1,16 +1,12 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.effects.EffectTrail;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -21,27 +17,9 @@ public class DisintegrateSpell extends BlockSpell
 	private final static int             DEFAULT_PLAYER_DAMAGE = 1;
 	private final static int             DEFAULT_ENTITY_DAMAGE = 100;
 
-    private final static int 		maxEffectRange = 16;
-    private final static int 		effectSpeed = 1;
-    private final static int 		effectPeriod = 2;
-	private final static float 		particleData = 1f;
-	private final static int 		particleCount = 6;
-
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = getPlayer().getEyeLocation();
-		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
-		effectTrail.setParticleType(ParticleType.LAVA_DRIPPING);
-		effectTrail.setParticleCount(particleCount);
-		effectTrail.setEffectData(particleData);
-		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
-		effectTrail.setSpeed(effectSpeed);
-		effectTrail.setPeriod(effectPeriod);
-		effectTrail.start();
-		
 		Target target = getTarget();
 		if (target == null)
 		{
@@ -67,7 +45,7 @@ public class DisintegrateSpell extends BlockSpell
 					li.damage(mage.getDamageMultiplier() * entityDamage, getPlayer());
 				}
 				castMessage("ZOT!");
-				return SpellResult.SUCCESS;
+				return SpellResult.CAST;
 			}
 		}
 
@@ -102,6 +80,6 @@ public class DisintegrateSpell extends BlockSpell
 		mage.registerForUndo(disintigrated);
 		castMessage("ZAP!");
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

@@ -16,7 +16,7 @@ public class SimpleBlockAction implements BlockAction
 	public SpellResult perform(Block block)
 	{
 		blocks.add(block);
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	public BlockList getBlocks()

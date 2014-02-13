@@ -10,11 +10,8 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.effects.EffectTrail;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
@@ -25,12 +22,6 @@ public class ShrinkSpell extends Spell
 {
 	private int             DEFAULT_PLAYER_DAMAGE = 1;
 	private int             DEFAULT_ENTITY_DAMAGE = 100;
-
-	private final static int 		maxEffectRange = 16;
-	private final static int 		effectSpeed = 1;
-	private final static int 		effectPeriod = 2;
-    private final static float 		particleData = 2;
-    private final static int 		particleCount = 6;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -39,25 +30,13 @@ public class ShrinkSpell extends Spell
 		String castType = parameters.getString("type");
 		if (castType != null && castType.equalsIgnoreCase("self")) {
 			dropHead(getPlayer().getLocation(), getPlayer().getName(), null, (byte)3);
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
 			dropHead(getPlayer().getLocation(), giveName, null, (byte)3);
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
-		
-		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = getPlayer().getEyeLocation();
-		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
-		effectTrail.setParticleType(ParticleType.INSTANT_SPELL);
-		effectTrail.setParticleCount(particleCount);
-		effectTrail.setEffectData(particleData);
-		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
-		effectTrail.setSpeed(effectSpeed);
-		effectTrail.setPeriod(effectPeriod);
-		effectTrail.start();
 		
 		Target target = getTarget();
 		if (target == null)
@@ -137,7 +116,7 @@ public class ShrinkSpell extends Spell
 			castMessage("Shrink!");
 		}
 		
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 	
 	@SuppressWarnings("deprecation")

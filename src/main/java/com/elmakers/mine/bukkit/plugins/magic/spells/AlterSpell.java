@@ -67,7 +67,7 @@ public class AlterSpell extends Spell
 		if (!adjustableMaterials.contains(targetBlock.getTypeId()))
 		{
 			castMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		if (!mage.hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
@@ -94,7 +94,7 @@ public class AlterSpell extends Spell
 
 		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
 		controller.updateBlock(targetBlock);
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -186,7 +186,7 @@ public class AlterSpell extends Spell
 				return SpellResult.NO_TARGET;
 		};
 		
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, BlockList adjustedBlocks, int recurseDistance, int rDepth)

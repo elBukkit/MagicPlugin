@@ -52,7 +52,7 @@ public class TossSpell extends BrushSpell
 			if (block == null)
 			{
 				sendMessage("One of your blocks fizzled");
-				return SpellResult.FAILURE;
+				return SpellResult.FAIL;
 			}
 
 			block.setDropItem(false);
@@ -61,6 +61,6 @@ public class TossSpell extends BrushSpell
 
 		castMessage("You toss some blocks");
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

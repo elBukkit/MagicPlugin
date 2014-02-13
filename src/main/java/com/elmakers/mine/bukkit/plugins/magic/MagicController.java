@@ -82,6 +82,7 @@ import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
 import com.elmakers.mine.bukkit.blocks.Schematic;
+import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
@@ -1136,6 +1137,9 @@ public class MagicController implements Listener
 			wandRecipeUpperMaterial = properties.getMaterial("crafting_material_upper", wandRecipeUpperMaterial);
 			wandRecipeLowerMaterial = properties.getMaterial("crafting_material_lower", wandRecipeLowerMaterial);
 		}
+		
+		// Set up other systems
+		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
 	}
 	
 	protected void loadPopulator(ConfigurationNode properties)
@@ -2191,7 +2195,7 @@ public class MagicController implements Listener
 		return lostWands.values();
 	}
 	
-	public void onCast(Mage mage, Spell spell) {
+	public void onCast(Mage mage, Spell spell, SpellResult result) {
 		if (dynmapShowSpells && dynmap != null && dynmap.markerAPIInitialized()) {
 			MarkerAPI markers = dynmap.getMarkerAPI();
 			MarkerSet spellSet = markers.getMarkerSet("Spells");
@@ -2225,16 +2229,20 @@ public class MagicController implements Listener
 			
 			// Create a targeting indicator line
 			Location target = null;
-			Target spellTarget = spell.getTarget();
-			if (spellTarget != null) {
-				target = spellTarget.getLocation();
-			}
-			
-			if (target == null) {
-				target = location.clone();
-				Vector direction = location.getDirection();
-				direction.normalize().multiply(range);
-				target.add(direction);
+			if (result != SpellResult.AREA) {
+				Target spellTarget = spell.getCurrentTarget();
+				if (spellTarget != null) {
+					target = spellTarget.getLocation();
+				}
+				
+				if (target == null) {
+					target = location.clone();
+					Vector direction = location.getDirection();
+					direction.normalize().multiply(range);
+					target.add(direction);
+				}
+			} else {
+				target = location;
 			}
 						
 			PolyLineMarker targetMarker = spellSet.findPolyLineMarker(targetId);

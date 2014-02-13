@@ -37,7 +37,7 @@ public class WeatherSpell extends Spell
 			world.setStorm(true);
 			castMessage("You stir up a storm");
 		}
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 }

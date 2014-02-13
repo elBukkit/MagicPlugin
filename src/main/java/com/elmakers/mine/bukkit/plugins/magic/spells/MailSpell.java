@@ -13,15 +13,15 @@ public class MailSpell extends Spell
 		if (!parameters.containsKey("name") || !parameters.containsKey("message"))
 		{
 			sendMessage("Requires name and message parameters");
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		
 		if (!controller.sendMail(getCommandSender(), getPlayer().getName(), parameters.getString("name"), parameters.getString("message"))) {
 			sendMessage("Mail Not Sent");
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		
 		sendMessage("Mail Sent!");
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

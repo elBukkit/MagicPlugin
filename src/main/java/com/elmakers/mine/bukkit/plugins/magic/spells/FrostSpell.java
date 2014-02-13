@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -9,12 +8,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.SimpleBlockAction;
-import com.elmakers.mine.bukkit.effects.EffectTrail;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -28,12 +24,6 @@ public class FrostSpell extends Spell
 	private static final int            DEFALT_ENTITY_DAMAGE = 10;
 	private static final int			DEFAULT_SLOWNESS = 1;
 	private static final int			DEFAULT_SLOWNESS_DURATION = 200;
-	
-    private final static int 		maxEffectRange = 16;
-    private final static int 		effectSpeed = 1;
-    private final static float 		particleData = 0.1f;
-    private final static int 		effectPeriod = 2;
-    private final static int 		particleCount = 8;
 
 	public class FrostAction extends SimpleBlockAction
 	{
@@ -73,25 +63,13 @@ public class FrostSpell extends Spell
 			} else {
 				block.setType(material);
 			}
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 	}
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		int effectRange = Math.min(getMaxRange(), maxEffectRange);
-		Location effectLocation = getPlayer().getEyeLocation();
-		Vector effectDirection = effectLocation.getDirection();
-		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
-		effectTrail.setParticleType(ParticleType.SNOWBALL_POOF);
-		effectTrail.setParticleCount(particleCount);
-		effectTrail.setEffectData(particleData);
-		effectTrail.setParticleOffset(0.2f, 0.2f, 0.2f);
-		effectTrail.setSpeed(effectSpeed);
-		effectTrail.setPeriod(effectPeriod);
-		effectTrail.start();
-		
 		Target target = getTarget();
 
 		if (target == null)
@@ -157,7 +135,7 @@ public class FrostSpell extends Spell
 		castMessage("Frosted " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target.getBlock());
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	public int checkPosition(int x, int z, int R)

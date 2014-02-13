@@ -1,8 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -16,7 +13,6 @@ public class PillarSpell extends BrushSpell
 {
 	int MAX_SEARCH_DISTANCE = 255;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -63,10 +59,6 @@ public class PillarSpell extends BrushSpell
 		buildWith.update(mage, pillar.getLocation());
 		pillarBlocks.add(pillar);
 		buildWith.modify(pillar);
-		
-		Location effectLocation = pillar.getLocation();
-		Material material = buildWith.getMaterial();
-		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
 
 		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
 		
@@ -75,6 +67,6 @@ public class PillarSpell extends BrushSpell
 		mage.registerForUndo(pillarBlocks);
 		controller.updateBlock(pillar);
 		
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

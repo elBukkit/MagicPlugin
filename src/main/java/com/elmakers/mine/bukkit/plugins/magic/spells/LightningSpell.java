@@ -37,7 +37,7 @@ public class LightningSpell extends Spell
 			}
 			*/
 
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 	}
 
@@ -68,6 +68,6 @@ public class LightningSpell extends Spell
 
 		castMessage("Zapped " + action.getBlocks().size() + " blocks");
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

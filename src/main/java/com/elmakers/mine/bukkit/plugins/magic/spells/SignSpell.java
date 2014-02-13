@@ -25,7 +25,7 @@ public class SignSpell extends Spell
 		if (typeString.equals("give"))
 		{
 			castMessage("Have some signs!");
-			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0) ? SpellResult.SUCCESS : SpellResult.FAILURE;
+			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0) ? SpellResult.CAST : SpellResult.FAIL;
 		}
 
 		Target target = getTarget();
@@ -84,12 +84,12 @@ public class SignSpell extends Spell
 				mage.registerForUndo(signBlocks);
 				controller.updateBlock(targetBlock);
 				
-				return SpellResult.SUCCESS;
+				return SpellResult.CAST;
 			}
 			else
 			{
 				sendMessage("Sign placement failed!");
-				return SpellResult.FAILURE;
+				return SpellResult.FAIL;
 			}
 		}
 		else if (target.isEntity() && target.getEntity() instanceof Player)
@@ -97,7 +97,7 @@ public class SignSpell extends Spell
 			Player targetPlayer = (Player)target.getEntity();
 			targetPlayer.sendMessage(getPlayer().getName() + " says hi!");
 			sendMessage("You send " + targetPlayer.getName() + " a message");
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 
 		return SpellResult.NO_TARGET;

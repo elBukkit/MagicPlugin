@@ -28,6 +28,12 @@ public class MaterialAndData {
 		data = 0;
 	}
 	
+	@SuppressWarnings("deprecation")
+	public MaterialAndData(Block block) {
+		material = block.getType();
+		data = block.getData();
+	}
+	
 	public MaterialAndData(MaterialAndData other) {
 		updateFrom(other);
 	}

@@ -51,7 +51,7 @@ public class PortalSpell extends Spell
 		buildPortalBlocks(portalBase.getLocation(), BlockFace.NORTH, portalBlocks);
 		mage.registerForUndo(portalBlocks);
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)

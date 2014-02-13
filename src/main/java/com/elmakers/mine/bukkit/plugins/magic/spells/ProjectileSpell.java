@@ -73,7 +73,7 @@ public class ProjectileSpell extends Spell
 		} catch (Exception ex) {
 			castMessage("Your projectile fizzled");
 			controller.getLogger().warning(ex.getMessage());
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		
 		Location location = mage.getLocation();
@@ -132,7 +132,7 @@ public class ProjectileSpell extends Spell
 		if (tickIncrease > 0 && projectiles.size() > 0 && arrowClass != null) {
 			scheduleProjectileCheck(projectiles, tickIncrease, effects, radius, arrowClass, craftArrowClass, 5);
 		}
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 	
 	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles, final int tickIncrease, 

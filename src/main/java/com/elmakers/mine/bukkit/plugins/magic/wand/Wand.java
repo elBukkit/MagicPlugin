@@ -18,7 +18,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.TreeSpecies;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -92,7 +91,10 @@ public class Wand implements CostReducer {
 	private int effectColor = 0;
 	private ParticleType effectParticle = null;
 	private float effectParticleData = 0;
+	private int particleFrequency = 2;
+	private int particleCounter = 0;
 	private boolean effectBubbles = false;
+	private EffectRing effectPlayer = null;
 	
 	private float defaultWalkSpeed = 0.2f;
 	private float defaultFlySpeed = 0.1f;
@@ -1475,15 +1477,11 @@ public class Wand implements CostReducer {
 		speedIncrease = Math.max(speedIncrease, other.speedIncrease);
 		
 		// Mix colors
-		if (effectColor == 0) {
-			effectColor = other.effectColor;
-		} else if (other.effectColor != 0){
-			Color color1 = Color.fromBGR(effectColor);
-			Color color2 = Color.fromBGR(other.effectColor);
-			Color newColor = color1.mixColors(color2);
-			effectColor = newColor.asRGB();
-		}
-		effectColor = Math.max(effectColor, other.effectColor);
+		Color color1 = Color.fromBGR(effectColor);
+		Color color2 = Color.fromBGR(other.effectColor);
+		Color newColor = color1.mixColors(color2);
+		effectColor = newColor.asRGB();
+		
 		effectBubbles = effectBubbles || other.effectBubbles;
 		if (effectParticle == null) {
 			effectParticle = other.effectParticle;
@@ -1863,35 +1861,31 @@ public class Wand implements CostReducer {
 		updateEffects();
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected void updateEffects() {
 		if (mage == null) return;
 		Player player = mage.getPlayer();
 		if (player == null) return;
 		
 		// Update Bubble effects effects
-		if (effectColor != 0 && effectBubbles) {
+		if (effectBubbles) {
 			InventoryUtils.addPotionEffect(player, effectColor);
 		}
 		
 		// TODO: More customization?
 		if (effectParticle != null) {
-			Location effectLocation = player.getEyeLocation();
-			EffectRing effect = new EffectRing(controller.getPlugin(), effectLocation, 1, 8);
-			effect.setParticleType(effectParticle);
-			effect.setEffectData(effectParticleData);
-			if (effectParticle == ParticleType.BLOCK_BREAKING) {
-				Block block = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
-				Material blockType = block.getType();
-				// Filter to prevent client crashing... hopefully this is enough?
-				if (blockType.isSolid()) {
-					effect.setParticleSubType("" + blockType.getId());
-					effect.setParticleCount(3);
-					effect.start();
+			if ((particleCounter++ % particleFrequency) == 0) {
+				if (effectPlayer == null) {
+					effectPlayer = new EffectRing(controller.getPlugin());
+					effectPlayer.setParticleCount(2);
+					effectPlayer.setIterations(2);
+					effectPlayer.setRadius(2);
+					effectPlayer.setParticleCount(1);
+					effectPlayer.setSize(5);
+					effectPlayer.setMaterial(mage.getLocation().getBlock().getRelative(BlockFace.DOWN));
 				}
-			} else {
-				effect.setParticleCount(1);
-				effect.start();
+				effectPlayer.setParticleType(effectParticle);
+				effectPlayer.setParticleData(effectParticleData);
+				effectPlayer.start(player.getEyeLocation(), null);
 			}
 		}
 	}
@@ -1912,7 +1906,7 @@ public class Wand implements CostReducer {
 		if (mage == null) return;
 		saveState();
 
-		if (effectColor > 0) {
+		if (effectBubbles) {
 			InventoryUtils.removePotionEffect(mage.getPlayer());
 		}
 		

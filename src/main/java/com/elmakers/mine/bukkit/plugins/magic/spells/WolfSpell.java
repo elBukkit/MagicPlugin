@@ -96,7 +96,7 @@ public class WolfSpell extends Spell
 			}
 		}
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void tameWolf(Wolf wolfie)

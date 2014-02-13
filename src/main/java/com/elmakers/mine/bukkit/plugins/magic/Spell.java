@@ -3,13 +3,16 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -28,7 +31,10 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockAction;
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
-import com.elmakers.mine.bukkit.effects.SpellEffect;
+import com.elmakers.mine.bukkit.effects.EffectPlayer;
+import com.elmakers.mine.bukkit.effects.EffectSingle;
+import com.elmakers.mine.bukkit.effects.EffectTrail;
+import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -96,6 +102,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private boolean                             reverseTargeting        = false;
 	private boolean								isActive				= false;
 	
+	private Map<SpellResult, List<EffectPlayer>> effects				= new HashMap<SpellResult, List<EffectPlayer>>();
+	
 	private Target								target					= null;
 	private TargetType							targetType				= TargetType.OTHER;
 
@@ -144,8 +152,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		catch (Throwable ex)
 		{
-			controller.getLogger().warning("Error loading spell: " + name);
-			ex.printStackTrace();
+			controller.getLogger().warning("Error loading spell: " + name + ", " + ex.getMessage());
 			return null;
 		}
 
@@ -226,26 +233,110 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		return castingCosts;
 	}
-	
+
+	// Override to load custom non-parameter data.
 	public void configure(ConfigurationNode node) {
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void loadTemplate(String key, ConfigurationNode node)
+	{
+		this.key = key;
+		this.name = key;
+		
+		// Get localizations
+		name = Messages.get("spells." + key + ".name", name);
+		description = Messages.get("spells." + key + ".description", description);
+		usage = Messages.get("spells." + key + ".usage", usage);
+
+		// Load basic properties
 		icon = node.getMaterialAndData("icon", icon.getMaterial());
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);
 		pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
+		
+		// Load effects ... Config API is kind of ugly here, and I'm not actually
+		// sure this is valid YML... :\
+		effects.clear();
+		if (node.containsKey("effects")) {
+			ConfigurationNode effectsNode = node.getNode("effects");
+			for (SpellResult resultType : SpellResult.values()) {
+				String typeName = resultType.name().toLowerCase();
+				if (effectsNode.containsKey(typeName)) {
+					List<Object> effectNodes = effectsNode.getList(typeName);
+			        if (effectNodes != null) 
+			        {
+			        	List<EffectPlayer> players = new ArrayList<EffectPlayer>();
+			            for (Object o : effectNodes)
+			            {
+			                if (o instanceof Map)
+			                {
+			                    Map<String, Object> effectValues = (Map<String, Object>)o;
+			                    if (effectValues.containsKey("class")) {
+			                    	Object oClass = effectValues.get("class");
+			                    	if (oClass instanceof String) {
+			                    		String effectClass = (String)oClass;
+					                    try {
+					                    	Class<?> genericClass = Class.forName("com.elmakers.mine.bukkit.effects." + effectClass);
+					                    	if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
+					                    		throw new Exception("Must extend EffectPlayer");
+					                    	}
+					                    	
+											Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
+						                    EffectPlayer player = playerClass.newInstance();
+						                    ConfigurationNode effectNode = new ConfigurationNode(effectValues);
+						                    player.load(controller.getPlugin(), effectNode);
+						                    players.add(player);
+					                    } catch (Exception ex) {
+					                    	controller.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
+					                    }
+			                    	}
+			                    }
+			                }
+			            }
+			            
+			            effects.put(resultType, players);
+			        }
+				}
+			}
+		}
+		
+		// Populate default effects
+		initializeDefaultSound(SpellResult.FAIL, Sound.NOTE_BASS_DRUM, 0.9f, 1.2f);
+		initializeDefaultSound(SpellResult.INSUFFICIENT_RESOURCES, Sound.NOTE_BASS, 1.0f, 1.2f);
+		initializeDefaultSound(SpellResult.INSUFFICIENT_PERMISSION, Sound.NOTE_BASS, 1.1f, 1.5f);
+		initializeDefaultSound(SpellResult.COOLDOWN, Sound.NOTE_SNARE_DRUM, 1.1f, 0.9f);
+		initializeDefaultSound(SpellResult.NO_TARGET, Sound.NOTE_STICKS, 1.1f, 0.9f);
+		
+		if (!effects.containsKey(SpellResult.TARGET_SELECTED)) {
+			List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
+			EffectPlayer targetHighlight = new EffectSingle(controller.getPlugin());
+			targetHighlight.setSound(Sound.ANVIL_USE);
+			targetHighlight.setParticleType(ParticleType.HAPPY_VILLAGER);
+			targetHighlight.setLocationType("target");
+			targetHighlight.setOffset(0.5f, 0.5f, 0.5f);
+			effectList.add(targetHighlight);
+			EffectPlayer trail = new EffectTrail(controller.getPlugin());
+			trail.setParticleType(ParticleType.WATER_DRIPPING);
+			effectList.add(trail);
+			effects.put(SpellResult.TARGET_SELECTED, effectList);
+		}
+		
+		if (!effects.containsKey(SpellResult.COST_FREE) && effects.containsKey(SpellResult.CAST)) {
+			effects.put(SpellResult.COST_FREE, effects.get(SpellResult.CAST));
+		}
 	}
-
-	protected void loadTemplate(String key, ConfigurationNode node)
-	{
-		this.key = key;
-		this.name = key;
+	
+	protected void initializeDefaultSound(SpellResult result, Sound sound, float volume, float pitch) {
+		if (effects.containsKey(result)) return;
 		
-		name = Messages.get("spells." + key + ".name", name);
-		description = Messages.get("spells." + key + ".description", description);
-		usage = Messages.get("spells." + key + ".usage", usage);
-		
-		configure(node);
+		EffectPlayer defaultEffect = new EffectSingle(controller.getPlugin());
+		defaultEffect.setSound(sound, volume, pitch);
+		List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
+		effectList.add(defaultEffect);
+		effects.put(result, effectList);
 	}
 
 	public void setMage(Mage mage)
@@ -336,7 +427,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				} else {
 					sendMessage(Messages.get("cooldown.wait_moment"));
 				}
-				mage.onCast(this, SpellResult.COOLDOWN);
+				processResult(SpellResult.COOLDOWN);
 				return false;
 			}
 		}
@@ -348,21 +439,19 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				if (!cost.has(mage))
 				{
 					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription(mage)));
-					mage.onCast(this, SpellResult.INSUFFICIENT_RESOURCES);
+					processResult(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}
 			}
 		}
 
 		lastCast = currentTime;
-		
-		initializeTargeting(getPlayer());
 		processParameters(parameters);
 		
 		SpellResult result = onCast(parameters);
-		mage.onCast(this, result);
+		processResult(result);
 		
-		if (result == SpellResult.SUCCESS) {
+		if (result == SpellResult.CAST || result == SpellResult.AREA) {
 			if (costs != null) {
 				for (CastingCost cost : costs)
 				{
@@ -374,7 +463,31 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			sendMessage(Messages.get("costs.insufficient_permissions"));
 		}
 		
-		return result == SpellResult.SUCCESS;
+		return result == SpellResult.CAST;
+	}
+	
+	protected void processResult(SpellResult result) {
+		if (result == SpellResult.CAST || result == SpellResult.AREA) {
+			// Notify controller of successful casts,
+			// this if for dynmap display or other global-level processing.
+			controller.onCast(mage, this, result);
+		}
+		
+		// Play effects
+		Location mageLocation = mage.getEyeLocation();
+		if (effects.containsKey(result) && mageLocation != null) {
+			Location targetLocation = null;
+			if (target != null) {
+				targetLocation = target.getLocation();
+			}
+			List<EffectPlayer> resultEffects = effects.get(result);
+			for (EffectPlayer player : resultEffects) {
+				// Set material and color
+				player.setMaterial(mage.getBrush());
+				player.setColor(mage.getEffectColor());
+				player.start(mageLocation, targetLocation);
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -553,6 +666,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return targetHeightRequired;
 	}
 
+	public void setTarget(Location location) {
+		target = new Target(getPlayer(), location.getBlock());
+	}
+	
 	/*
 	 * Ground / location search and test function functions
 	 */
@@ -892,9 +1009,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	{
 		Player player = getPlayer();
 		if (targetType == TargetType.SELF && player != null) {
-			return new Target(player, player);
+			target = new Target(player, player);
+			return target;
 		}
-		Block block = getTargetBlock();
+
+		initializeTargeting();
+		findTargetBlock();
+		Block block = getCurBlock();
+		
 		Target targetBlock = new Target(player, block);
 		Target targetEntity = getTargetEntity();
 		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance() || targetType == TargetType.NONE)
@@ -933,8 +1055,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	public Block getTargetBlock()
 	{
-		findTargetBlock();
-		return getCurBlock();
+		return getTarget().getBlock();
 	}
 
 	protected Target getTargetEntity()
@@ -1174,9 +1295,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		return onCancel();
 	}
 
-	protected void initializeTargeting(Player player)
+	protected void initializeTargeting()
 	{
-		playerLocation = player.getLocation();
+		playerLocation = mage.getLocation();
 		length = 0;
 		targetHeightRequired = 1;
 		xRotation = (playerLocation.getYaw() + 90) % 360;
@@ -1352,14 +1473,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public Mage getMage() {
 		return mage;
-	}
-	
-	// Effects
-	
-	protected SpellEffect getEffect(String effectName) {
-		// TODO: config-driven
-		SpellEffect effect = new SpellEffect();
-		return effect;
 	}
 	
 	public void load(ConfigurationNode node) {

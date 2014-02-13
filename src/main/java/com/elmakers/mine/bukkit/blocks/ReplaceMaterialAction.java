@@ -43,7 +43,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 	{
 		if (brush == null)
 		{
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		
 		if (!mage.hasBuildPermission(block))
@@ -53,7 +53,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 		
 		if (mage.isIndestructible(block))
 		{
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 
 		if (replaceable == null || replaceable.contains(block.getType()))
@@ -75,9 +75,9 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 				}
 			}
 			super.perform(block);
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 
-		return SpellResult.FAILURE;
+		return SpellResult.FAIL;
 	}
 }

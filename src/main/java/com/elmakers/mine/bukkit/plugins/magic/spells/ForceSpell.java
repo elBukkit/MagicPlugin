@@ -83,14 +83,14 @@ public class ForceSpell extends Spell
 			if (effectColor != null) {
 				InventoryUtils.addPotionEffect(targetEntity, effectColor);
 			}
-			return SpellResult.COST_FREE;
+			return SpellResult.TARGET_SELECTED;
 		}
 
 		double multiplier = parameters.getDouble("size", 1);
 
 		int magnitude = parameters.getInt("entity_force", DEFAULT_MAGNITUDE);
 		forceEntity(targetEntity, multiplier, magnitude);
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void forceEntity(Entity target, double multiplier, int magnitude)

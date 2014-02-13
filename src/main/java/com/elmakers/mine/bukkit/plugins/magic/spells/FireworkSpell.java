@@ -57,7 +57,7 @@ public class FireworkSpell extends Spell
 
 		castMessage("You fire some magical flares");
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 	
 	protected Color getColor(String name) {

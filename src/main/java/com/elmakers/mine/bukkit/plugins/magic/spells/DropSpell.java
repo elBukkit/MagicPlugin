@@ -47,7 +47,7 @@ public class DropSpell extends BlockSpell
 		mage.registerForUndo(droppedBlocks);
 		castMessage("Dropped " + droppedBlocks.size() + " blocks");
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void drop(Block block, Set<Material> dropTypes, BlockList minedBlocks, int maxRecursion)

@@ -123,7 +123,7 @@ public class FamiliarSpell extends Spell
 				castMessage("You release your familiar(s)");
 				checkListener();
 				familiars.releaseFamiliar(target.getEntity());
-				return SpellResult.SUCCESS;
+				return SpellResult.CAST;
 			}
 
 			familiars.releaseFamiliar();
@@ -228,7 +228,7 @@ public class FamiliarSpell extends Spell
 		castMessage("You create " + spawnCount + typeMessage +" familiar(s)!");
 		familiars.setFamiliars(newFamiliars);
 		checkListener();
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 
 	}
 

@@ -123,6 +123,6 @@ public class TunnelSpell extends BlockSpell
 		mage.registerForUndo(tunneledBlocks);
 		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks");
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

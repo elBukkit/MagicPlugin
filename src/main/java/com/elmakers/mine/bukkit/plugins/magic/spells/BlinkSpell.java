@@ -2,13 +2,10 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import com.elmakers.mine.bukkit.effects.EffectUtils;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -25,16 +22,9 @@ public class BlinkSpell extends Spell
 		if (location != null) 
 		{
 			castMessage("You ascend");
+			setTarget(location);
 			getPlayer().teleport(location);
-			
-			Location playerLocation = mage.getLocation();
-			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-			
-			EffectUtils.playEffect(location, ParticleType.PORTAL, 1, 16);
-			location.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-			
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 		mage.castMessage("Nowhere to go up");
 		return SpellResult.NO_TARGET;
@@ -48,16 +38,9 @@ public class BlinkSpell extends Spell
 		if (location != null) 
 		{
 			castMessage("You descend");
+			setTarget(location);
 			getPlayer().teleport(location);
-			
-			Location playerLocation = mage.getLocation();
-			EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-			playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-			
-			EffectUtils.playEffect(location, ParticleType.PORTAL, 1, 16);
-			location.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-			
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 		mage.castMessage("Nowhere to go down");
 		return SpellResult.NO_TARGET;
@@ -66,7 +49,6 @@ public class BlinkSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Location playerLocation = getPlayer().getEyeLocation();
 		String elevateType = parameters.getString("type", "");
 
 		boolean autoAscend = parameters.getBoolean("allow_ascend", true);
@@ -190,11 +172,8 @@ public class BlinkSpell extends Spell
 			getPlayer().getLocation().getYaw(),
 			getPlayer().getLocation().getPitch()
 		);
+		setTarget(targetLocation);
 		getPlayer().teleport(targetLocation);
-		EffectUtils.playEffect(playerLocation, ParticleType.PORTAL, 1, 16);
-		playerLocation.getWorld().playSound(playerLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-		EffectUtils.playEffect(targetLocation, ParticleType.PORTAL, 1, 16);
-		playerLocation.getWorld().playSound(targetLocation, Sound.ENDERMAN_TELEPORT, 1.0f, 1.5f);
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

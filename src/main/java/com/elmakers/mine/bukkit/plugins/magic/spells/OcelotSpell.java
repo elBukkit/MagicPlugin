@@ -83,7 +83,7 @@ public class OcelotSpell extends Spell
 		Ocelot Ocelot = newOcelot(target);
 		if (Ocelot == null)
 		{
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 
 		ocelots.add(Ocelot);
@@ -98,7 +98,7 @@ public class OcelotSpell extends Spell
 			}
 		}
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void tameOcelot(Ocelot Ocelot)

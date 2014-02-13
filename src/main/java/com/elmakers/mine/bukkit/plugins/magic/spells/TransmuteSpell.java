@@ -61,6 +61,6 @@ public class TransmuteSpell extends BrushSpell
 			castMessage("You transmute your last structure to " + material.name().toLowerCase());
 		}
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

@@ -23,6 +23,6 @@ public class LightSpell extends Spell {
 		int lightLevel = parameters.getInt("size", 15);
 		LightSource.createLightSource(targetLocation, lightLevel);
 		controller.updateBlock(target);
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

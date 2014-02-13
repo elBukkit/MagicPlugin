@@ -1,13 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockRecurse;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.ReplaceMaterialAction;
-import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -16,7 +14,6 @@ public class RecurseSpell extends BrushSpell
 {
 	private final BlockRecurse blockRecurse = new BlockRecurse();
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -64,14 +61,7 @@ public class RecurseSpell extends BrushSpell
 
 		Material material = buildWith.getMaterial();
 		castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
-
-		SpellEffect effect = getEffect("cast");
-		// Hacked until config-driven.
-		effect.particleType = null;
-		effect.effect = Effect.STEP_SOUND;
-		effect.data = buildWith.getMaterial().getId();
-		effect.startTrailEffect(mage, getEyeLocation(), targetBlock.getLocation());
 		
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

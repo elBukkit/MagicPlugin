@@ -3,8 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Effect;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -13,9 +11,6 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.blocks.ConstructBatch;
 import com.elmakers.mine.bukkit.blocks.ConstructionType;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
-import com.elmakers.mine.bukkit.effects.EffectUtils;
-import com.elmakers.mine.bukkit.effects.ParticleType;
-import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.TargetType;
@@ -29,7 +24,6 @@ public class ConstructSpell extends BrushSpell
 	
 	private static final int DEFAULT_MAX_DIMENSION = 128;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -51,18 +45,10 @@ public class ConstructSpell extends BrushSpell
 		if (getTargetType() == TargetType.SELECT) {
 			if (targetBlock == null) {
 				targetBlock = target;
-				Location effectLocation = targetBlock.getLocation();
-				effectLocation.add(0.5f, 0.5f, 0.5f);
-				EffectUtils.playEffect(effectLocation, ParticleType.HAPPY_VILLAGER, 0.3f, 0.3f, 0.3f, 1.5f, 10);
 				castMessage("Cast again to construct");
 				activate();
 				
-				SpellEffect effect = getEffect("target");
-				// Hacked until config-driven.
-				effect.particleType = ParticleType.WATER_DRIPPING;
-				effect.startTrailEffect(mage, getEyeLocation(), effectLocation);
-				
-				return SpellResult.COST_FREE;
+				return SpellResult.TARGET_SELECTED;
 			} else {
 				radius = (int)targetBlock.getLocation().distance(target.getLocation());
 				target = targetBlock;
@@ -77,7 +63,7 @@ public class ConstructSpell extends BrushSpell
 		if (diameter > maxDimension)
 		{
 			sendMessage("Dimension is too big!");
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		
 		if (!hasBuildPermission(target)) {
@@ -153,20 +139,10 @@ public class ConstructSpell extends BrushSpell
 			batch.setTimeToLive(timeToLive);
 		}
 		mage.addPendingBlockBatch(batch);
-
-		SpellEffect effect = getEffect("cast");
-		// Hacked until config-driven.
-		effect.particleType = null;
-		effect.effect = Effect.STEP_SOUND;
-		effect.data = buildWith.getMaterial().getId();
-		effect.startTrailEffect(mage, getEyeLocation(), target.getLocation());
-		if (this.targetBlock != null) {
-			effect.startTrailEffect(mage, getEyeLocation(), this.targetBlock.getLocation());
-		}
 		
 		deactivate();
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 	
 	

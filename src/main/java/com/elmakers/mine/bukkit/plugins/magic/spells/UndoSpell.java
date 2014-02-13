@@ -23,7 +23,7 @@ public class UndoSpell extends Spell
 			{
 				sendMessage("There is nothing to undo for " + undoPlayer);
 			}
-			return undone ? SpellResult.SUCCESS : SpellResult.FAILURE;
+			return undone ? SpellResult.CAST : SpellResult.FAIL;
 		}
 
 		if (parameters.containsKey("type"))
@@ -33,20 +33,20 @@ public class UndoSpell extends Spell
 			{
 				if (mage.commit()) {
 					sendMessage("Undo queue cleared");
-					return SpellResult.SUCCESS;
+					return SpellResult.CAST;
 				} else {
 					castMessage("Nothing to commit");
-					return SpellResult.FAILURE;
+					return SpellResult.FAIL;
 				}
 			}
 			else if (typeString.equals("commitall"))
 			{
 				if (controller.commitAll()) {
 					sendMessage("All undo queues cleared");
-					return SpellResult.SUCCESS;
+					return SpellResult.CAST;
 				} else {
 					castMessage("Nothing in any undo queues");
-					return SpellResult.FAILURE;
+					return SpellResult.FAIL;
 				}
 			}
 			boolean targetAll = typeString.equals("targetall");
@@ -79,7 +79,7 @@ public class UndoSpell extends Spell
 
 					if (undone)
 					{
-						return SpellResult.SUCCESS;
+						return SpellResult.CAST;
 					}
 				}
 				return SpellResult.NO_TARGET;
@@ -98,6 +98,6 @@ public class UndoSpell extends Spell
 		{
 			castMessage("Nothing to undo");
 		}
-		return undone ? SpellResult.SUCCESS : SpellResult.FAILURE;	
+		return undone ? SpellResult.CAST : SpellResult.FAIL;	
 	}
 }

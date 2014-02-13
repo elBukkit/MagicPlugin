@@ -4,37 +4,58 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class EffectTrail extends EffectPlayer {
+public class EffectTrail extends EffectRepeating {
+
+	protected Double length;
 	
-	protected final Location start;
-	protected final Vector direction;
-	protected final int length;
+	// State
+	protected double size;
+	protected Vector direction;
+
+	public EffectTrail() {
+		
+	}
 	
-	protected Location current;
-	protected int played = 0;
-	
-	public EffectTrail(Plugin plugin, Location start, Vector direction, int length) {
+	public EffectTrail(Plugin plugin) {
 		super(plugin);
-		this.start = start.clone();
-		this.direction = direction.clone();
-		this.direction.normalize();
-		this.length = length;
-		current = start.clone();
 	}
 	
 	@Override
-	public void setSpeed(float speed) {
-		this.direction.normalize();
-		this.direction.multiply(speed);
+	public void load(Plugin plugin, ConfigurationNode configuration) {
+		// Different default for a trail, more iterations are generally needed.
+		iterations = 8;
+		
+		super.load(plugin, configuration);
+
+		length = configuration.getDouble("length", length);
 	}
 	
-	public void run() {
-		playEffect(current);
-		current.add(direction);
-		played++;
-		if (played < length) {
-			schedule();
+	@Override
+	public void play() {
+		super.play();
+		
+		if (length != null) {
+			size = length;
+		} else if (target != null) {
+			size = origin.distance(target);
+		} else {
+			size = 0;
 		}
+		
+		// Don't bother playing if it's right in front of us.
+		if (size < 1) {
+			stop();
+		}
+		
+		direction = getDirection();
+	}
+	
+	public void iterate() {
+		Vector delta = direction.clone();
+		Location current = origin.clone();
+		current.add(delta.multiply(scale(size) + 1));
+		playEffect(current);
 	}
 }

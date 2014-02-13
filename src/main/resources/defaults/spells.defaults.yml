@@ -63,6 +63,15 @@ curse:
     category: dark
     class: PotionEffectSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+        -  class: EffectTrail
+           particle: red_dust
+        -  class: EffectRing
+           particle: red_dust
+           location: target
     costs:
         xp: 10
     parameters:
@@ -76,6 +85,17 @@ boon:
     icon: double_plant:5
     category: light
     class: PotionEffectSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+        -  class: EffectTrail
+           particle: instant_spell
+           particle_data: 2
+        -  class: EffectRing
+           particle: instant_spell
+           location: target
+           particle_data: 2
     costs:
         xp: 20
     parameters:
@@ -91,6 +111,17 @@ bounce:
     icon: double_plant:1
     category: light
     class: PotionEffectSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+        -  class: EffectTrail
+           particle: instant_spell
+           particle_data: 1
+        -  class: EffectRing
+           particle: instant_spell
+           location: target
+           particle_data: 1
     costs:
         xp: 10
     parameters:
@@ -102,6 +133,12 @@ shell:
     icon: ender_pearl
     category: earthbending
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -116,6 +153,12 @@ dome:
     icon: bowl
     category: earthbending
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: false
         range: 32
@@ -130,6 +173,12 @@ disc:
     icon: ink_sack:8
     category: earthbending
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: true
         range: 8
@@ -144,6 +193,12 @@ superdisc:
     icon: ink_sack:13
     category: engineering
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: false
         range: 64
@@ -159,6 +214,12 @@ supershell:
     icon: magma_cream
     category: engineering
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: false
         range: 64
@@ -173,6 +234,12 @@ superdome:
     icon: mushroom_soup
     category: engineering
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: false
         range: 64
@@ -188,6 +255,12 @@ tag:
     icon: sign
     category: dark
     class: SignSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: note
     parameters:
         target_type: Player
         allow_max_range: false
@@ -201,6 +274,10 @@ arrow:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
     parameters:
       projectile: Arrow
       speed: 2
@@ -212,6 +289,11 @@ toss:
     icon: wood_button
     category: earthbending
     class: TossSpell
+    effects:
+        cast:
+        -  class: EffectRing
+           effect: step_sound
+           location: origin
     pvp_restricted: true
     parameters:
       speed: 2
@@ -222,6 +304,11 @@ volley:
     category: earthbending
     class: TossSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectRing
+           effect: step_sound
+           location: origin
     parameters:
       speed: 1.5
       count: 8
@@ -240,11 +327,52 @@ sniper:
       damage: 5
     costs:
         xp: 100
+push:
+    icon: rails
+    category: airbending
+    class: PushSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: spell
+           length: 16
+        area:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectRing
+           particle: spell
+    parameters:
+        target_type: Entity
+        range: 16
+        allow_area: true
+        item_force: 1
+        area_range: 8
+        entity_force: 3
+        type: push
+    costs:
+        xp: 5
 pull:
     icon: fishing_rod
     category: airbending
     class: PushSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: spell
+           reverse: true
+           length: 16
+        area:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectRing
+           particle: spell
+           reverse: true
     parameters:
         target_type: Entity
         range: 16
@@ -256,11 +384,40 @@ pull:
         count: 1
     costs:
         xp: 2
+boom:
+    icon: cooked_chicken
+    category: firebending
+    class: BoomSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           firework: burst
+           color: FF0000
+           color2: FF0088
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 32
+        break_blocks: false
+        size: 4
+    costs:
+        xp: 20
 kaboom:
     icon: raw_chicken
     category: dark
     class: BoomSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           firework: ball_large
+           color: FF0000
+           color2: FF0088
     parameters:
         target_type: LivingEntity
         cooldown: 5000
@@ -268,11 +425,39 @@ kaboom:
         break_blocks: true
     costs:
         xp: 50
+nuke:
+    icon: fireball
+    category: master
+    class: BoomSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           firework: creeper
+           color: 00FF00
+           color2: 88FF88
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 64
+        cooldown: 60000
+        size: 20
+        break_blocks: true
+    costs:
+        xp: 500
 frost:
     icon: snow_ball
     category: waterbending
     class: FrostSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: glass
+        -  class: EffectTrail
+           particle: snowball_poof
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -282,11 +467,34 @@ frost:
         transparent: transparent_to_construction
     costs:
         xp: 8
+lightning:
+    icon: raw_fish:3
+    category: firebending
+    class: LightningSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_thunder
+        -  class: EffectTrail
+           particle: smoke
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+    costs:
+        xp: 10
 storm:
     icon: quartz
     category: firebending
     class: LightningSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_thunder
+        -  class: EffectTrail
+           particle: smoke
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -294,20 +502,17 @@ storm:
         radius: '10'
     costs:
         xp: 100
-leatherskin:
-    icon: leather_chestplate
-    category: light
-    class: InvincibleSpell
-    parameters:
-        amount: 50
-    costs:
-        xp: 10
-    active_costs:
-        xp: 2
 tree:
     icon: sapling
     category: elemental
     class: TreeSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: splash
+        -  class: EffectTrail
+           effect: step_sound
+           material: log
     parameters:
         allow_max_range: false
         range: 64
@@ -319,6 +524,13 @@ disarm:
     category: light
     class: DisarmSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_hiss
+        -  class: EffectTrail
+           particle: mob_spell
+           particle_data: 2
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -329,6 +541,15 @@ heal:
     icon: bread
     category: light
     class: HealSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_purr
+        -  class: EffectTrail
+           particle: heart
+        -  class: EffectRing
+           particle: heart
+           location: target
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -339,6 +560,15 @@ gather:
     icon: glowstone_dust
     category: master
     class: GotoSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_idle
+        -  class: EffectTrail
+           particle: portal
+        -  class: EffectRing
+           particle: portal
+           location: both
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -350,6 +580,10 @@ icbm:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
     parameters:
         size: 10
         projectile: Fireball
@@ -360,6 +594,13 @@ neutron:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+        -  class: EffectRing
+           particle: flame
+           location: target
     parameters:
         projectile: Snowball
         effect_harm: 10,5
@@ -372,6 +613,10 @@ wither:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wither_shoot
     parameters:
         projectile: WitherSkull
         effect_wither: 160,2
@@ -383,24 +628,27 @@ weather:
     icon: water
     category: elemental
     class: WeatherSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_rain
+        -  class: EffectRing
+           particle: water_dripping
+           location: source
     parameters:
         cooldown: 30000
     costs:
         xp: 10
-ironskin:
-    icon: iron_chestplate
-    category: light
-    class: InvincibleSpell
-    parameters:
-        amount: 99
-    costs:
-        xp: 15
-    active_costs:
-        xp: 5
 fling:
     icon: feather
     category: airbending
     class: FlingSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+        -  class: EffectTrail
+           particle: spell
     parameters:
     costs:
         xp: 5
@@ -408,6 +656,12 @@ leap:
     icon: leather_boots
     category: airbending
     class: FlingSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fall_small
+        -  class: EffectTrail
+           particle: spell
     parameters:
         cooldown: 5000
         cruising_altitude: 0
@@ -419,6 +673,13 @@ torch:
     icon: torch
     category: engineering
     class: TorchSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+        -  class: EffectTrail
+           particle: block_breaking
+           material: glowstone
     parameters:
         allow_max_range: false
         allow_night: false
@@ -427,11 +688,33 @@ torch:
         allow_glowstone: true
     costs:
         xp: 25
+familiar:
+    icon: monster_egg
+    category: elemental
+    class: FamiliarSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: villager_yes
+        -  class: EffectTrail
+           particle: bubble
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 32
+    costs:
+        xp: 10
 monster:
     icon: pumpkin
     category: dark
     class: FamiliarSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_moan
+        -  class: EffectTrail
+           particle: bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -444,6 +727,12 @@ mob:
     category: dark
     class: FamiliarSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_moan
+        -  class: EffectTrail
+           particle: bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -453,10 +742,69 @@ mob:
         type: mob
     costs:
         xp: 100
+farm:
+    icon: wheat
+    category: elemental
+    class: FamiliarSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: sheep_idle
+        -  class: EffectTrail
+           particle: bubble
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 64
+        count: 10
+        cooldown: 30000
+    costs:
+        xp: 50
+wolf:
+    icon: raw_beef
+    category: elemental
+    class: WolfSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wolf_howl
+        -  class: EffectTrail
+           particle: bubble
+    parameters:
+        target_type: LivingEntity
+        max_wolves: 5
+        allow_max_range: false
+        range: 32
+    costs:
+        xp: 50
+cat:
+    icon: raw_fish
+    category: elemental
+    class: OcelotSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_meow
+        -  class: EffectTrail
+           particle: bubble
+    parameters:
+        target_type: LivingEntity
+        max_ocelots: 5
+        allow_max_range: false
+        range: 32
+    costs:
+        xp: 30
 portal:
     icon: portal
     category: master
     class: PortalSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+        -  class: EffectTrail
+           particle: portal
     parameters:
         allow_max_range: false
         range: 32
@@ -468,6 +816,14 @@ phase:
     icon: ender_portal
     category: master
     class: PhaseSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           target: both
+        -  class: EffectRing
+           particle: portal
+           target: both
     parameters:
         cooldown: 2000
     costs:
@@ -476,17 +832,52 @@ invincible:
     icon: golden_apple
     category: master
     class: InvincibleSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_growl
+           target: both
+        -  class: EffectRing
+           particle: town_aura
+           target: source
     parameters:
         duration: 5000
     costs:
-        xp: 30
+        xp: 100
     active_costs:
+        xp: 50
+fire:
+    icon: flint_and_steel
+    category: firebending
+    class: FireSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire
+           target: both
+        -  class: EffectTrail
+           particle: flame
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 32
+        radius: 2
+        vertical_search_distance: 8
+    costs:
         xp: 10
 inferno:
     icon: blaze_powder
     category: firebending
     class: FireSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire
+           target: both
+        -  class: EffectTrail
+           particle: flame
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -499,6 +890,13 @@ cushion:
     icon: bed
     category: waterbending
     class: CushionSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: splash
+           target: both
+        -  class: EffectTrail
+           particle: water_dripping
     parameters:
         allow_max_range: false
         height: 4
@@ -511,6 +909,10 @@ paint:
     icon: painting
     category: engineering
     class: FillSpell
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: false
         range: 64
@@ -518,10 +920,53 @@ paint:
         transparent: transparent_to_construction
     costs:
         xp: 1
+fill:
+    icon: gold_spade
+    category: engineering
+    class: FillSpell
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        target: select
+        range: 64
+        max_dimension: 64
+        check_destructible: false
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
+recurse:
+    icon: wood_spade
+    category: engineering
+    class: RecurseSpell
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        max_volume: 512
+        max_dimension: 128
+        check_destructible: false
+        transparent: transparent_to_construction
+    costs:
+        xp: 30
 gills:
     icon: cooked_fish
     category: light
     class: PotionEffectSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: swim
+        -  class: EffectTrail
+           particle: bubble
+        -  class: EffectRing
+           particle: bubble
+           location: target
     costs:
         xp: 5
     parameters:
@@ -536,6 +981,10 @@ arrowrain:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
     parameters:
         projectile: Arrow
         count: 6
@@ -544,35 +993,17 @@ arrowrain:
         spread: 30
     costs:
         xp: 30
-lightning:
-    icon: raw_fish:3
-    category: firebending
-    class: LightningSpell
-    pvp_restricted: true
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: true
-        range: 32
-    costs:
-        xp: 10
-nuke:
-    icon: fireball
-    category: master
-    class: BoomSpell
-    pvp_restricted: true
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 64
-        cooldown: 60000
-        size: 20
-        break_blocks: true
-    costs:
-        xp: 100
 day:
     icon: emerald
     category: master
     class: TorchSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectRing
+           particle: magic_runes
+           location: origin
     parameters:
         allow_max_range: false
         allow_night: false
@@ -587,6 +1018,13 @@ night:
     icon: coal
     category: master
     class: TorchSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectRing
+           particle: large_smoke
+           location: origin
     parameters:
         allow_max_range: false
         allow_night: false
@@ -600,6 +1038,13 @@ time:
     icon: watch
     category: master
     class: TorchSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectRing
+           particle: magic_runes
+           location: origin
     parameters:
         allow_max_range: false
         allow_night: true
@@ -613,7 +1058,43 @@ bridge:
     icon: gold_hoe
     category: engineering
     class: BridgeSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
     parameters:
+        transparent: transparent_to_construction
+    costs:
+        xp: 5
+pillar:
+    icon: gold_axe
+    category: engineering
+    class: PillarSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+    costs:
+        xp: 5
+stalactite:
+    icon: wood_axe
+    category: engineering
+    class: PillarSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        allow_max_range: false
+        range: 64
+        type: down
         transparent: transparent_to_construction
     costs:
         xp: 5
@@ -622,6 +1103,10 @@ grenade:
     category: firebending
     pvp_restricted: true
     class: GrenadeSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: lava_pop
     parameters:
         size: 6
         fuse: 30
@@ -632,6 +1117,10 @@ frag:
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
     parameters:
         size: 8
         fuse: 60
@@ -642,6 +1131,12 @@ superblob:
     icon: slime_ball
     category: engineering
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: true
         check_destructible: false
@@ -656,6 +1151,12 @@ superpyramid:
     icon: long_grass:2
     category: engineering
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: true
         range: 32
@@ -666,10 +1167,74 @@ superpyramid:
         transparent: transparent_to_construction
     costs:
         xp: 100
+box:
+    icon: gold_helmet
+    category: earthbending
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 32
+        fill: hollow
+        radius: 3
+        type: cuboid
+        transparent: transparent_to_construction
+        y_offset: 4
+    costs:
+        xp: 10
+superbox:
+    icon: gold_helmet
+    category: engineering
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max-dimension: 16
+        fill: hollow
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
+stash:
+    icon: ender_chest
+    category: engineering
+    class: PillarSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_hit
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 8
+        transparent: transparent_to_construction
+        cooldown: 10000
+        undo: 30000
+        material: ender_chest
+    costs:
+        xp: 50
 kamikazee:
     icon: skull_item:4
     category: dark
     class: BoomSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
     parameters:
         cooldown: 60000
         size: '8'
@@ -677,10 +1242,52 @@ kamikazee:
         break_blocks: false
     costs:
         xp: 5
+blast:
+    icon: brown_mushroom
+    category: mining
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: large_explosion
+    parameters:
+        allow_max_range: false
+        range: 32
+        speed: 2
+        falling: true
+        material: air
+        radius: 2
+        type: sphere
+        destructible: destructible_mining
+    costs:
+        xp: 10
+tunnel:
+    icon: gold_pickaxe
+    category: earthbending
+    class: TunnelSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: large_explosion
+    parameters:
+        allow_max_range: false
+        range: 32
+    costs:
+        xp: 30
 superblast:
     icon: red_mushroom
     category: mining
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: huge_explosion
     parameters:
         allow_max_range: false
         range: 32
@@ -697,6 +1304,12 @@ convert:
     icon: vine
     category: earthbending
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: false
         range: 32
@@ -711,6 +1324,12 @@ superconvert:
     icon: iron_fence
     category: engineering
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         allow_max_range: false
         range: 32
@@ -727,6 +1346,12 @@ collapse:
     icon: iron_plate
     category: earthbending
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: large_explosion
     parameters:
         allow_max_range: false
         range: 16
@@ -743,6 +1368,12 @@ supercollapse:
     icon: gold_plate
     category: master
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: huge_explosion
     parameters:
         allow_max_range: false
         range: 32
@@ -758,25 +1389,19 @@ supercollapse:
         transparent: transparent_to_construction
     costs:
         xp: 100
-blast:
-    icon: brown_mushroom
-    category: mining
-    class: ConstructSpell
-    parameters:
-        allow_max_range: false
-        range: 32
-        speed: 2
-        falling: true
-        material: air
-        radius: 2
-        type: sphere
-        destructible: destructible_mining
-    costs:
-        xp: 10
 cloak:
     icon: chainmail_chestplate
     category: master
     class: PotionEffectSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: villager_idle
+        -  class: EffectTrail
+           particle: smoke
+        -  class: EffectRing
+           particle: smoke
+           location: target
     costs:
         xp: 10
     parameters:
@@ -787,6 +1412,10 @@ undo:
     icon: book_and_quill
     category: engineering
     class: UndoSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_break
     parameters:
         allow_max_range: false
         range: 200
@@ -796,6 +1425,10 @@ commit:
     icon: book
     category: engineering
     class: UndoSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_use
     parameters:
         allow_max_range: false
         range: 200
@@ -806,6 +1439,10 @@ rewind:
     icon: written_book
     category: master
     class: UndoSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_break
     parameters:
         allow_max_range: false
         range: 128
@@ -813,37 +1450,16 @@ rewind:
         transparent: transparent_to_construction
     costs:
         xp: 100
-push:
-    icon: rails
-    category: airbending
-    class: PushSpell
-    pvp_restricted: true
-    parameters:
-        target_type: Entity
-        range: 16
-        allow_area: true
-        item_force: 1
-        area_range: 8
-        entity_force: 3
-        type: push
-    costs:
-        xp: 3
-farm:
-    icon: wheat
-    category: elemental
-    class: FamiliarSpell
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 64
-        count: 10
-        cooldown: 30000
-    costs:
-        xp: 50
 breach:
     icon: seeds
     category: earthbending
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: smoke
     parameters:
         allow_max_range: false
         check_destructible: false
@@ -856,44 +1472,16 @@ breach:
         type: sphere
     costs:
         xp: 20
-tesseract:
-    icon: web
-    category: airbending
-    class: BlinkSpell
-    parameters:
-        allow_max_range: false
-        allow_ascend: false
-        allow_passthrough: false
-        range: 16
-        allow_decend: true
-    costs:
-        xp: 2
-mine:
-    icon: iron_pickaxe
-    category: mining
-    class: DropSpell
-    parameters:
-        allow_max_range: false
-        range: 32
-        recursion_depth: 16
-        drop: ores
-    costs:
-        xp: 10
-chop:
-    icon: iron_axe
-    category: farming
-    class: DropSpell
-    parameters:
-        allow_max_range: false
-        range: 32
-        recursion_depth: 128
-        drop: trees
-    costs:
-        xp: 10
 peek:
     icon: sugar_cane
     category: mining
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: block_breaking
     parameters:
         allow_max_range: false
         check_destructible: false
@@ -911,6 +1499,12 @@ sandblast:
     category: earthbending
     class: ConstructSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: step_sand
+        -  class: EffectTrail
+           particle: block_breaking
     parameters:
         allow_max_range: true
         range: 32
@@ -920,49 +1514,70 @@ sandblast:
         y_offset: 32
     costs:
         xp: 50
-fill:
-    icon: gold_spade
-    category: engineering
-    class: FillSpell
+tesseract:
+    icon: web
+    category: airbending
+    class: BlinkSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           particle: portal
+           target: both
     parameters:
         allow_max_range: false
-        target: select
-        range: 64
-        max_dimension: 64
-        check_destructible: false
-        transparent: transparent_to_construction
+        allow_ascend: false
+        allow_passthrough: false
+        range: 16
+        allow_decend: true
     costs:
-        xp: 100
-recurse:
-    icon: wood_spade
-    category: engineering
-    class: RecurseSpell
+        xp: 2
+mine:
+    icon: iron_pickaxe
+    category: mining
+    class: DropSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: item_break
+        -  class: EffectTrail
+           particle: block_breaking
+           material: diamond_ore
     parameters:
         allow_max_range: false
         range: 32
-        max_volume: 512
-        max_dimension: 128
-        check_destructible: false
-        transparent: transparent_to_construction
+        recursion_depth: 16
+        drop: ores
     costs:
-        xp: 30
-fire:
-    icon: flint_and_steel
-    category: firebending
-    class: FireSpell
-    pvp_restricted: true
+        xp: 10
+chop:
+    icon: iron_axe
+    category: farming
+    class: DropSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: step_wood
+        -  class: EffectTrail
+           particle: block_breaking
+           material: log
     parameters:
-        target_type: LivingEntity
         allow_max_range: false
         range: 32
-        radius: 2
-        vertical_search_distance: 8
+        recursion_depth: 128
+        drop: trees
     costs:
         xp: 10
 alter:
     icon: ink_sack
     category: engineering
     class: AlterSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: dig_wool
+        -  class: EffectTrail
+           particle: block_breaking
     parameters:
         allow_max_range: false
         range: 32
@@ -974,6 +1589,12 @@ superalter:
     icon: ink_sack:1
     category: engineering
     class: AlterSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: dig_wool
+        -  class: EffectTrail
+           particle: block_breaking
     parameters:
         allow_max_range: false
         range: 64
@@ -985,6 +1606,12 @@ blob:
     icon: clay_ball
     category: earthbending
     class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: slime_walk
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -994,21 +1621,18 @@ blob:
         transparent: transparent_to_construction
     costs:
         xp: 25
-familiar:
-    icon: monster_egg
-    category: elemental
-    class: FamiliarSpell
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 32
-    costs:
-        xp: 10
 disintegrate:
     icon: bone
     category: dark
     pvp_restricted: true
     class: DisintegrateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magmacube_jump
+        -  class: EffectTrail
+           particle: lava_dripping
+           particle_data: 1
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1023,6 +1647,14 @@ blink:
     icon: eye_of_ender
     category: master
     class: BlinkSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           target: both
+        -  class: EffectRing
+           particle: portal
+           target: both
     parameters:
         allow_max_range: false
         allow_ascend: true
@@ -1035,28 +1667,28 @@ absorb:
     icon: bucket
     category: engineering
     class: AbsorbSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: drink
+        -  class: EffectTrail
+           effect: step_sound
+           reverse: true
     parameters:
         allow_max_range: false
         range: 64
         transparent: transparent_to_construction
     costs:
         xp: 30
-stalactite:
-    icon: wood_axe
-    category: engineering
-    class: PillarSpell
-    parameters:
-        allow_max_range: false
-        range: 64
-        type: down
-        transparent: transparent_to_construction
-    costs:
-        xp: 5
 lava:
     icon: ink_sack:14
     category: firebending
     class: IterateSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: lava
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -1073,6 +1705,10 @@ stream:
     category: waterbending
     class: IterateSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: water
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -1089,6 +1725,10 @@ earth:
     category: earthbending
     class: IterateSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: step_grass
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -1099,6 +1739,18 @@ earth:
         undo: 2000
     costs:
         xp: 20
+iterate:
+    icon: ink_sack:2
+    category: engineering
+    class: IterateSpell
+    parameters:
+        transparent: transparent_to_construction
+        allow_max_range: true
+        range: 64
+        size: 32
+        increment_data: false
+    costs:
+        xp: 50
 superiterate:
     icon: ink_sack:4
     category: engineering
@@ -1117,6 +1769,10 @@ flamethrower:
     icon: fire
     category: firebending
     class: IterateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -1133,6 +1789,10 @@ laser:
     icon: ink_sack:11
     category: dark
     class: IterateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_extend
     parameters:
         transparent: none
         transparent_reverse: true
@@ -1145,46 +1805,17 @@ laser:
         radius: 1
     costs:
         xp: 30
-iterate:
-    icon: ink_sack:2
-    category: engineering
-    class: IterateSpell
-    parameters:
-        transparent: transparent_to_construction
-        allow_max_range: true
-        range: 64
-        size: 32
-        increment_data: false
-    costs:
-        xp: 50
-wolf:
-    icon: raw_beef
-    category: elemental
-    class: WolfSpell
-    pvp_restricted: true
-    parameters:
-        target_type: LivingEntity
-        max_wolves: 5
-        allow_max_range: false
-        range: 32
-    costs:
-        xp: 50
-cat:
-    icon: raw_fish
-    category: elemental
-    class: OcelotSpell
-    parameters:
-        target_type: LivingEntity
-        max_ocelots: 5
-        allow_max_range: false
-        range: 32
-    costs:
-        xp: 30
 shrink:
     icon: skull_item
     category: dark
     class: ShrinkSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magmacube_jump
+        -  class: EffectTrail
+           particle: instant_spell
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1197,6 +1828,10 @@ flare:
     icon: firework
     category: firebending
     class: FireworkSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: firework_launch
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -1207,6 +1842,14 @@ recall:
     icon: compass
     category: master
     class: RecallSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           location: both
+        -  class: EffectRing
+           particle: portal
+           location: both
     parameters:
         recall_marker: redstone_torch_on
         allow_spawn: true
@@ -1218,81 +1861,29 @@ levitate:
     icon: gold_boots
     category: master
     class: LevitateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+        -  class: EffectRing
+           particle: spell
     parameters:
     costs:
         xp: 100
     active_costs:
-        xp: 50
-boom:
-    icon: cooked_chicken
-    category: firebending
-    class: BoomSpell
-    pvp_restricted: true
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 32
-        break_blocks: false
-        size: 4
-    costs:
-        xp: 20
-box:
-    icon: gold_helmet
-    category: earthbending
-    class: ConstructSpell
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 32
-        fill: hollow
-        radius: 3
-        type: cuboid
-        transparent: transparent_to_construction
-        y_offset: 4
-    costs:
-        xp: 10
-superbox:
-    icon: gold_helmet
-    category: engineering
-    class: ConstructSpell
-    parameters:
-        allow_max_range: false
-        range: 64
-        max-dimension: 16
-        fill: hollow
-        target: select
-        type: cuboid
-        transparent: transparent_to_construction
-    costs:
-        xp: 100
-pillar:
-    icon: gold_axe
-    category: engineering
-    class: PillarSpell
-    parameters:
-        allow_max_range: false
-        range: 64
-        transparent: transparent_to_construction
-    costs:
-        xp: 5
-stash:
-    icon: ender_chest
-    category: engineering
-    class: PillarSpell
-    parameters:
-        allow_max_range: false
-        range: 8
-        transparent: transparent_to_construction
-        cooldown: 10000
-        undo: 30000
-        material: ender_chest
-    costs:
         xp: 50
 force:
     icon: leash
     category: airbending
     class: ForceSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: spell
+           length: 16
     parameters:
         target_type: LivingEntity
         range: 32
@@ -1305,6 +1896,10 @@ fireball:
     category: firebending
     class: ProjectileSpell
     pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
     parameters:
         projectile: SmallFireball
     costs:
@@ -1321,6 +1916,12 @@ camera:
     icon: double_plant
     category: light
     class: CameraSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: smoke
+           sound: fuse
+           location: origin
     parameters:
         target_type: LivingEntity
         cooldown: 1000
@@ -1334,13 +1935,4 @@ mail:
         cooldown: 60000
     costs:
         xp: 100
-tunnel:
-    icon: gold_pickaxe
-    category: earthbending
-    class: TunnelSpell
-    parameters:
-        allow_max_range: false
-        range: 32
-    costs:
-        xp: 30
         

@@ -21,6 +21,6 @@ public class MapSpell extends Spell
 		castMessage("Here's a map!");
 		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
 		world.dropItemNaturally(getPlayer().getLocation(), newMapItem);
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

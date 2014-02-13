@@ -26,7 +26,7 @@ public class InvincibleSpell extends Spell
 			activate();
 		}
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	@Override

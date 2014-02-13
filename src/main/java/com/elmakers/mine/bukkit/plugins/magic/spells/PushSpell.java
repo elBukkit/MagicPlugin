@@ -2,17 +2,12 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.List;
 
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.effects.EffectPlayer;
-import com.elmakers.mine.bukkit.effects.EffectRing;
-import com.elmakers.mine.bukkit.effects.EffectTrail;
-import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -24,25 +19,11 @@ public class PushSpell extends Spell
 	private int DEFAULT_ITEM_MAGNITUDE = 1;
 	private int DEFAULT_ENTITY_MAGNITUDE = 3;
 	private int DEFAULT_MAX_ALL_DISTANCE = 20;
-	
-	// Maybe make these configurable for custom effects?
-    private final static int effectSpeed = 2;
-    private final static int effectPeriod = 2;
-    private final static int ringEffectAmount = 8;
-    private final static int maxEffectRange = 16;
-    private final static int maxRingEffectRange = 6;
 
 	public void forceAll(double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance)
 	{
 		float maxDistance = (float)maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
-		
-		// Visual effect
-		int effectRange = Math.min((int)maxRingEffectRange, maxEffectRange / effectSpeed);
-		Location effectLocation = getPlayer().getLocation();
-		EffectRing effectRing = new EffectRing(controller.getPlugin(), effectLocation, effectRange, ringEffectAmount);
-		if (pull) effectRing.setInvert(true);
-		startEffect(effectRing, effectRange);
 		
 		List<Entity> entities = getPlayer().getWorld().getEntities();
 		for (Entity target : entities)
@@ -98,26 +79,13 @@ public class PushSpell extends Spell
 				castMessage("Gimme!");
 			}
 			forceAll(multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);
-			return SpellResult.SUCCESS;
+			return SpellResult.AREA;
 		}
 
-		// Visual effect
-		int effectRange = Math.min(getMaxRange(), maxEffectRange / effectSpeed);
-		Location effectLocation = getPlayer().getEyeLocation();
-		Vector effectDirection = effectLocation.getDirection();
-		if (pull) {
-			effectDirection.normalize();
-			effectDirection.multiply(effectSpeed * effectRange);
-			effectLocation.add(effectDirection);
-			effectDirection.multiply(-1);
-		}
-		EffectTrail effectTrail = new EffectTrail(controller.getPlugin(), effectLocation, effectDirection, effectRange);
-		startEffect(effectTrail, effectRange);
-
-		// Don't deduct costs for not doing anything but still show the effect.
+		// Don't deduct costs for not doing anything.
 		if (targets.size() == 0)
 		{
-			return SpellResult.NO_TARGET;
+			return SpellResult.COST_FREE;
 		}
 		
 		int pushed = 0;
@@ -140,7 +108,7 @@ public class PushSpell extends Spell
 		{
 			castMessage("Shove!");
 		}
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 
 	protected void forceEntity(Entity target, double multiplier, Location from, Location to, int magnitude)
@@ -162,16 +130,5 @@ public class PushSpell extends Spell
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
 		target.setVelocity(forceVector);
-	}
-	
-	protected void startEffect(EffectPlayer effect, int effectRange) {
-		effect.setParticleType(ParticleType.SPELL);
-		effect.setParticleCount(3);
-		Color effectColor = mage.getEffectColor();
-		effect.setEffectData(effectColor != null ? effectColor.asRGB() : 2);
-		effect.setParticleOffset(0.2f, 0.2f, 0.2f);
-		effect.setSpeed(effectSpeed);
-		effect.setPeriod(effectPeriod);
-		effect.start();
 	}
 }

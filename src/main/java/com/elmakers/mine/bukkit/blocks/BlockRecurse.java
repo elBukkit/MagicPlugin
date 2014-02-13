@@ -28,7 +28,7 @@ public class BlockRecurse
 		}
 		affectedBlocks.add(block);
 
-		if (recurseAction.perform(block) != SpellResult.SUCCESS)
+		if (recurseAction.perform(block) != SpellResult.CAST)
 		{
 			return;
 		}

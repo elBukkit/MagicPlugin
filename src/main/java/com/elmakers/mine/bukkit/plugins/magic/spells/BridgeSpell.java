@@ -1,8 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -16,7 +13,6 @@ public class BridgeSpell extends BrushSpell
 {
 	int MAX_SEARCH_DISTANCE = 16;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -65,11 +61,8 @@ public class BridgeSpell extends BrushSpell
 		mage.registerForUndo(bridgeBlocks);
 		controller.updateBlock(targetBlock);
 
-		Location effectLocation = targetBlock.getLocation();
-		Material material = buildWith.getMaterial();
-		effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());	
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

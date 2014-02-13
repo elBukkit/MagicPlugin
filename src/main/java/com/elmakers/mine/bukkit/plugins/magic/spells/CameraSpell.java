@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -96,11 +95,10 @@ public class CameraSpell extends Spell
 		}
 		if (newMapItem == null) {
 			sendMessage("Failed to load photo");
-			return SpellResult.FAILURE;
+			return SpellResult.FAIL;
 		}
 		getPlayer().getWorld().dropItemNaturally(getPlayer().getLocation(), newMapItem);
-		getPlayer().getWorld().playEffect(getPlayer().getEyeLocation(), Effect.SMOKE, 0);
 		
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

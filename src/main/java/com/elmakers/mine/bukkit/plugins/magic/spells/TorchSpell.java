@@ -59,7 +59,7 @@ public class TorchSpell extends Spell
 			}
 			setTime(targetTime);    
 			castMessage("Changed time to " + timeDescription);
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 
 		
@@ -69,7 +69,7 @@ public class TorchSpell extends Spell
 		{
 			castMessage("FLAME ON!");
 			setTime(0);
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 
 
@@ -77,7 +77,7 @@ public class TorchSpell extends Spell
 		{
 			castMessage("FLAME OFF!");
 			setTime(13000);
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 
 		Block target = getTargetBlock();	
@@ -129,6 +129,6 @@ public class TorchSpell extends Spell
 		mage.registerForUndo(torchBlock);
 		controller.updateBlock(target);
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 }

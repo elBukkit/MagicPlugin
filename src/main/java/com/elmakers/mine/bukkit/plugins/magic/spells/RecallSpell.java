@@ -40,7 +40,7 @@ public class RecallSpell extends Spell
 		{
 			castMessage("Returning you home");
 			tryTeleport(getPlayer().getWorld().getSpawnLocation());
-			return SpellResult.SUCCESS; 
+			return SpellResult.CAST; 
 		}
 		if (typeString.equals("wand"))
 		{
@@ -53,7 +53,7 @@ public class RecallSpell extends Spell
 			}
 			
 			tryTeleport(wandLocation);
-			return SpellResult.SUCCESS; 
+			return SpellResult.CAST; 
 		}
 		if (typeString.equals("death") || getYRotation() < -70  && autoResurrect)
 		{
@@ -65,7 +65,7 @@ public class RecallSpell extends Spell
 			}
 			
 			tryTeleport(deathLocation);
-			return SpellResult.SUCCESS; 
+			return SpellResult.CAST; 
 		}
 		
 		if (getYRotation() > 70)
@@ -92,7 +92,7 @@ public class RecallSpell extends Spell
 					tryTeleport(location);
 				}
 			}
-			return SpellResult.SUCCESS;
+			return SpellResult.CAST;
 		}
 
 		if (!isActive)
@@ -173,7 +173,7 @@ public class RecallSpell extends Spell
 		
 		isActive = true;
 
-		return SpellResult.SUCCESS;
+		return SpellResult.CAST;
 	}
 	
 	@Override
