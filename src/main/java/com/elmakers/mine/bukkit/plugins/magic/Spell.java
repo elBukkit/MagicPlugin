@@ -325,6 +325,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean cast(String[] extraParameters)
 	{
 		target = null;
@@ -367,6 +368,20 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 
 		lastCast = currentTime;
+		if (parameters.containsKey("target_type")) {
+			String entityTypeName = parameters.getString("target_type");
+			try {
+				 Class<?> typeClass = Class.forName("org.bukkit.entity." + entityTypeName);
+				 if (Entity.class.isAssignableFrom(typeClass)) {
+					 targetEntityType = (Class<? extends Entity>)typeClass;
+				 } else {
+					 controller.getLogger().warning("Entity type: " + entityTypeName + " not assignable to Entity");
+				 }
+			} catch (Throwable ex) {
+				controller.getLogger().warning("Unknown entity type: " + entityTypeName);
+				targetEntityType = null;
+			}
+		}
 		initializeTargeting(getPlayer());
 
 		processParameters(parameters);
@@ -472,11 +487,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean hasBuildPermission(Block block)
 	{
 		return mage.hasBuildPermission(block);
-	}
-
-	public void targetEntity(Class<? extends Entity> typeOf)
-	{
-		targetEntityType = typeOf;
 	}
 
 	public void targetThrough(Material mat)
@@ -890,6 +900,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected Target getTargetEntity()
 	{
+		if (targetEntityType == null) return null;
 		List<Target> scored = getAllTargetEntities();
 		if (scored.size() <= 0) return null;
 		return scored.get(0);
@@ -1129,7 +1140,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		playerLocation = player.getLocation();
 		length = 0;
 		targetHeightRequired = 1;
-		targetEntityType = LivingEntity.class;
 		xRotation = (playerLocation.getYaw() + 90) % 360;
 		yRotation = playerLocation.getPitch() * -1;
 		reverseTargeting = false;

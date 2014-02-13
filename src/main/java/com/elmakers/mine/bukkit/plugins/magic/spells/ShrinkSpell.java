@@ -59,7 +59,6 @@ public class ShrinkSpell extends Spell
 		effectTrail.setPeriod(effectPeriod);
 		effectTrail.start();
 		
-		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
 		if (target == null)
 		{

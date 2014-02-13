@@ -4,7 +4,6 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -49,7 +48,6 @@ public class CameraSpell extends Spell
 		}
 		
 		if (newMapItem == null) {
-			this.targetEntity(LivingEntity.class);
 			Target target = getTarget();
 			String playerName = parameters.getString("name");
 			String metaName = null;

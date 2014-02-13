@@ -26,7 +26,6 @@ public class PotionEffectSpell extends Spell
 		String targetType = (String)parameters.getString("target", "other");
 		
 		if (!targetType.equals("self")) {
-			this.targetEntity(LivingEntity.class);
 			Target target = getTarget();
 			if (target != null && target.isEntity() && (target.getEntity() instanceof LivingEntity))
 			{

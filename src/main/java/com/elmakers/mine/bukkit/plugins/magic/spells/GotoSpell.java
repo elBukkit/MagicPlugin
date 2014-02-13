@@ -24,8 +24,6 @@ public class GotoSpell extends Spell
 			targetPlayer = controller.getPlugin().getServer().getPlayer(playerName);
 		}
 
-		targetEntity(Player.class);
-
 		if (getYRotation() > 80)
 		{
 			Player destination = getFarthestPlayer(getPlayer());

@@ -66,6 +66,7 @@ curse:
     costs:
         xp: 10
     parameters:
+        target_type: LivingEntity
         target: other
         particle: townaura
         effect_slow: 100,5  
@@ -78,6 +79,7 @@ boon:
         xp: 20
     parameters:
         target: any
+        target_type: LivingEntity
         particle: reddust
         effect_speed: 600,5   
         effect_jump: 600,5
@@ -91,6 +93,7 @@ bounce:
         xp: 10
     parameters:
         target: any
+        target_type: LivingEntity
         particle: reddust
         effect_jump: 600,20
 shell:
@@ -98,6 +101,7 @@ shell:
     category: earthbending
     class: ConstructSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
         fill: hollow
@@ -183,6 +187,7 @@ tag:
     category: dark
     class: SignSpell
     parameters:
+        target_type: Player
         allow_max_range: false
         range: 32
         cooldown: 10000
@@ -239,6 +244,7 @@ pull:
     class: PushSpell
     pvp_restricted: true
     parameters:
+        target_type: Entity
         range: 16
         allow_area: true
         item_force: 2
@@ -254,6 +260,7 @@ kaboom:
     class: BoomSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         cooldown: 5000
         size: 6
         break_blocks: true
@@ -265,6 +272,7 @@ frost:
     class: FrostSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 24
         radius: 2
@@ -278,7 +286,8 @@ storm:
     class: LightningSpell
     pvp_restricted: true
     parameters:
-        allow_max_range: false
+        target_type: LivingEntity
+        allow_max_range: true
         range: 64
         radius: '10'
     costs:
@@ -309,6 +318,7 @@ disarm:
     class: DisarmSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 16
     costs:
@@ -318,6 +328,7 @@ heal:
     category: light
     class: HealSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
     costs:
@@ -327,6 +338,7 @@ gather:
     category: master
     class: GotoSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 64
     costs:
@@ -419,6 +431,7 @@ monster:
     class: FamiliarSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
         type: mob
@@ -430,6 +443,7 @@ mob:
     class: FamiliarSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
         cooldown: 60000
@@ -472,6 +486,7 @@ inferno:
     class: FireSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 64
         radius: 4
@@ -509,6 +524,7 @@ gills:
     costs:
         xp: 5
     parameters:
+        target_type: LivingEntity
         target: any
         particle: bubbles
         effect_water_breathing: 6000,5
@@ -532,7 +548,8 @@ lightning:
     class: LightningSpell
     pvp_restricted: true
     parameters:
-        allow_max_range: false
+        target_type: LivingEntity
+        allow_max_range: true
         range: 32
     costs:
         xp: 10
@@ -542,6 +559,7 @@ nuke:
     class: BoomSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 64
         cooldown: 60000
@@ -625,7 +643,7 @@ superblob:
     parameters:
         allow_max_range: true
         check_destructible: false
-        range: 64
+        range: 32
         max_dimension: 16
         target: select
         type: sphere
@@ -638,7 +656,7 @@ superpyramid:
     class: ConstructSpell
     parameters:
         allow_max_range: true
-        range: 64
+        range: 32
         max_dimension: 16
         target: select
         fill: hollow
@@ -663,7 +681,7 @@ superblast:
     class: ConstructSpell
     parameters:
         allow_max_range: false
-        range: 64
+        range: 32
         speed: 3
         falling: true
         material: air
@@ -693,7 +711,7 @@ superconvert:
     class: ConstructSpell
     parameters:
         allow_max_range: false
-        range: 64
+        range: 32
         max_dimension: 16
         indestructible:
           - air
@@ -709,7 +727,7 @@ collapse:
     class: ConstructSpell
     parameters:
         allow_max_range: false
-        range: 32
+        range: 16
         material: air
         falling: true
         check_destructible: false
@@ -799,6 +817,7 @@ push:
     class: PushSpell
     pvp_restricted: true
     parameters:
+        target_type: Entity
         range: 16
         allow_area: true
         item_force: 1
@@ -812,6 +831,7 @@ farm:
     category: elemental
     class: FamiliarSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 64
         count: 10
@@ -930,6 +950,7 @@ fire:
     class: FireSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
         radius: 2
@@ -963,6 +984,7 @@ blob:
     category: earthbending
     class: ConstructSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: true
         range: 32
         radius: 3
@@ -975,6 +997,7 @@ familiar:
     category: elemental
     class: FamiliarSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
     costs:
@@ -985,6 +1008,7 @@ disintegrate:
     pvp_restricted: true
     class: DisintegrateSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 12
         player_damage: 5
@@ -1032,6 +1056,7 @@ lava:
     class: IterateSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
         range: 64
@@ -1047,6 +1072,7 @@ stream:
     class: IterateSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
         range: 64
@@ -1062,6 +1088,7 @@ earth:
     class: IterateSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
         range: 64
@@ -1089,6 +1116,7 @@ flamethrower:
     category: firebending
     class: IterateSpell
     parameters:
+        target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
         range: 32
@@ -1133,6 +1161,7 @@ wolf:
     class: WolfSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         max_wolves: 5
         allow_max_range: false
         range: 32
@@ -1143,6 +1172,7 @@ cat:
     category: elemental
     class: OcelotSpell
     parameters:
+        target_type: LivingEntity
         max_ocelots: 5
         allow_max_range: false
         range: 32
@@ -1154,6 +1184,7 @@ shrink:
     class: ShrinkSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 16
         player_damage: 2
@@ -1165,6 +1196,7 @@ flare:
     category: firebending
     class: FireworkSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: true
         range: 10
     costs:
@@ -1195,6 +1227,7 @@ boom:
     class: BoomSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
         break_blocks: false
@@ -1206,6 +1239,7 @@ box:
     category: earthbending
     class: ConstructSpell
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
         fill: hollow
@@ -1258,6 +1292,7 @@ force:
     class: ForceSpell
     pvp_restricted: true
     parameters:
+        target_type: LivingEntity
         range: 32
         item_force: 1
         entity_force: 3
@@ -1285,6 +1320,7 @@ camera:
     category: light
     class: CameraSpell
     parameters:
+        target_type: LivingEntity
         cooldown: 1000
         allow_max_range: false
         range: 32

@@ -51,7 +51,6 @@ public class WolfSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		this.targetEntity(LivingEntity.class);
 		Target target = getTarget();
 		if (target == null)
 		{

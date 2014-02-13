@@ -28,7 +28,6 @@ public class SignSpell extends Spell
 			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0) ? SpellResult.SUCCESS : SpellResult.FAILURE;
 		}
 
-		targetEntity(Player.class);
 		Target target = getTarget();
 		if (target.isBlock())
 		{

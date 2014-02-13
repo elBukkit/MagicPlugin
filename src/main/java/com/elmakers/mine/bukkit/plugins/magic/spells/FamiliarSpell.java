@@ -103,7 +103,6 @@ public class FamiliarSpell extends Spell
 		noTargetThrough(Material.STATIONARY_WATER);
 		noTargetThrough(Material.WATER);
 
-		targetEntity(LivingEntity.class);
 		Target target = getTarget();
 		if (target == null || !target.hasTarget())
 		{

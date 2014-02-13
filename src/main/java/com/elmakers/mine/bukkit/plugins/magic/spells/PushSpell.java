@@ -82,7 +82,6 @@ public class PushSpell extends Spell
 		int entityMagnitude = parameters.getInt("entity_force", DEFAULT_ENTITY_MAGNITUDE);
 		int maxAllDistance = parameters.getInt("area_range", DEFAULT_MAX_ALL_DISTANCE);
 
-		targetEntity(Entity.class);
 		List<Target> targets = getAllTargetEntities();
 		if 
 		(
