@@ -1431,6 +1431,7 @@ wolf:
     haste: 1
     effect_color: '00AACC'
     effect_particle: magic_runes
+    effect_particle_count: 4
     organize: true
     spells:
         - fling

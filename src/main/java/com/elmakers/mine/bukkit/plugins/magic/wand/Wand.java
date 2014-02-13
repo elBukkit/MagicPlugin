@@ -52,7 +52,7 @@ public class Wand implements CostReducer {
 		"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
 		"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
-		"effect_bubbles", "materials", "spells", "mode"};
+		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode"};
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -91,6 +91,7 @@ public class Wand implements CostReducer {
 	private int effectColor = 0;
 	private ParticleType effectParticle = null;
 	private float effectParticleData = 0;
+	private int effectParticleCount = 1;
 	private int particleFrequency = 2;
 	private int particleCounter = 0;
 	private boolean effectBubbles = false;
@@ -615,6 +616,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
 		InventoryUtils.setMeta(wandNode, "effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
 		InventoryUtils.setMeta(wandNode, "effect_particle_data", Float.toString(effectParticleData));
+		InventoryUtils.setMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount));
 		if (effectParticle != null) {
 			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
 		}
@@ -665,6 +667,7 @@ public class Wand implements CostReducer {
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
 		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
 		effectParticleData = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_particle_data", floatFormat.format(effectParticleData)));
+		effectParticleCount = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount)));
 		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
 		mode = parseWandMode(InventoryUtils.getMeta(wandNode, "mode", ""), mode);
 	}
@@ -1486,6 +1489,7 @@ public class Wand implements CostReducer {
 		if (effectParticle == null) {
 			effectParticle = other.effectParticle;
 			effectParticleData = other.effectParticleData;
+			effectParticleCount = other.effectParticleCount;
 		}
 		
 		// Don't need mana if cost-free
@@ -1579,6 +1583,9 @@ public class Wand implements CostReducer {
 		}
 		if (wandConfig.containsKey("effect_particle_data") && !safe) {
 			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data"));
+		}
+		if (wandConfig.containsKey("effect_particle_count") && !safe) {
+			effectParticleCount = Integer.parseInt(wandConfig.getString("effect_particle_count"));
 		}
 		mode = parseWandMode(wandConfig.getString("mode"), mode);
 		
@@ -1879,12 +1886,12 @@ public class Wand implements CostReducer {
 					effectPlayer.setParticleCount(2);
 					effectPlayer.setIterations(2);
 					effectPlayer.setRadius(2);
-					effectPlayer.setParticleCount(1);
 					effectPlayer.setSize(5);
 					effectPlayer.setMaterial(mage.getLocation().getBlock().getRelative(BlockFace.DOWN));
 				}
 				effectPlayer.setParticleType(effectParticle);
 				effectPlayer.setParticleData(effectParticleData);
+				effectPlayer.setParticleCount(effectParticleCount);
 				effectPlayer.start(player.getEyeLocation(), null);
 			}
 		}
