@@ -2,6 +2,8 @@
 
 ## 2.9.2
 
+ - Add configurable spell effects. See spells.default.yml for instructions.
+ - Fix "magic load" command loading changes to spells.yml
  - Add "schematic" brushes, requires WorldEdit for schematic loading.
  - Add "stash" and "flamethrower" spells.
  - Make superconvert work better for cleaning up lava and water.

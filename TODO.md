@@ -1,42 +1,29 @@
 # TODO
 
-## For 2.9.3
+## For 2.9.4
 
  - Trying to upgrade a non-modifiable wand doesn't print a message?
- - Add "load_defaults" option to spells and wands.yml
+ 
+ - Make spells usable without a player, clean up strong Player references
+ - Add location, direction, target parameters to spell
 
- - Configurable effects system
-   - Add visual effects to spawn and recall spells
-
- - Config updates don't work due to players having Spell objects already... ?
-
-## For 2.9.3
+## For 2.9.5
 
  - Undo fails in some cases (overlapping undo queues)
- - "map" brush type (!)
- - Replicate/clone should delete entities in area
- - Paint is broken with/clone and/or replicate?
- - Add option to bypass all costs to magic.yml
+  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
+  - BlockData tracks only the first recorded materialdata, commit will replace
 
 ## For 3.0.0
 
- - Optimize wand state saving
  - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
  - Make sure adding spells/materials never removes any, also opening/closing the inventory
  - Add "wand duplicate" command
  - Tweaking/Balancing - haste, cooldowns, etc
  - Retry limit on construction batches
-  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
-  - BlockData tracks only the first recorded materialdata, commit will replace
  - Fix wand inventory glitches and special-cases
  - Make ores destructible by most spells (except blast?)
- - Magic stats (that persist) - block modified, etc.
- 
- - Make spells usable without a player, clean up strong Player references
- - Add location, direction, target parameters to spell
- - Make the mine spell more flexible
- - Config-driven wand particle effects
+ - Magic stats (that persist) - block modified, etc. (Statistics API?)
 
 NEAR-FUTURE STUFF:
 

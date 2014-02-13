@@ -45,12 +45,42 @@
 #       enabled: <true|false>
 #       category: <anything>
 #       class: <Must be a class from the spells package.>
+#    effects:
+#        cast:
+#        -  class: EffectSingle
+#           sound: orb_pickup 
+#           location: origin
 #       costs:
 #           xp: <xp/mana amount>
 #           <material_name>: <reagent amount>#      
 #       parameters:
 #           <specific spell parameters- TODO: list common ones>
 #
+# Configurable Effects
+#
+# The effects are fully configurable. Each spell has a base list of effect triggers that vary from spell to spell.
+# common ones are:
+#
+# cast: A normal, successful spell cast
+# area: An area-of-effect cast
+# target_selected: A target was selected (for two-cast spells like Fill or Force)
+#
+# Each effect trigger can have a list of effects attached. There are currently 3 classes of effects:
+#
+# EffectSingle : Perform the effect at a single location. Parameters:
+#   location: <origin|target|both>
+# EffectRing : Perform the effect in a ring around a target Parameters:
+#   location: <origin|target|both>
+# EffectTrail : Perform the effect in a trail from the origin to the target.
+#
+# All classes of effects share some common parameters:
+#
+# sound: <bukkit sound enum name> : A sound to play
+#  sound_pitch: <float> : Sound pitch
+#  sound_voume: <float> : Sound volume
+# effect: <bukkit effect name>
+# particle: <particle name - list TBD>
+# 
 
 light:
     icon: redstone_torch_on
