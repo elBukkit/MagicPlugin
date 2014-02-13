@@ -238,13 +238,17 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public void configure(ConfigurationNode node) {
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void loadTemplate(String key, ConfigurationNode node)
 	{
 		this.key = key;
-		this.name = key;
-		
+		this.loadTemplate(node);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void loadTemplate(ConfigurationNode node)
+	{
 		// Get localizations
+		name = this.key;
 		name = Messages.get("spells." + key + ".name", name);
 		description = Messages.get("spells." + key + ".description", description);
 		usage = Messages.get("spells." + key + ".usage", usage);

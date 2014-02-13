@@ -766,4 +766,17 @@ public class Mage implements CostReducer
 	public void setLastHeldMapId(short mapId) {
 		brush.setMapId(mapId);
 	}
+	
+	protected void loadSpells(ConfigurationNode config)
+	{
+		if (config == null) return;
+		
+		// TODO: Handle disabled/removed spells?
+		for (Spell spell : spells.values()) {
+			String key = spell.getKey();
+			if (config.containsKey(key)) {
+				spell.loadTemplate(config.getNode(key));
+			}
+		}
+	}
 }

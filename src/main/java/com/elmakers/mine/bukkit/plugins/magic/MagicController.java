@@ -1033,8 +1033,6 @@ public class MagicController implements Listener
 		if (config == null) return;
 		
 		// Reset existing spells.
-		// Existing Mages might have references to these, though.
-		// Not sure how to handle that.
 		spells.clear();
 		
 		List<String> spellKeys = config.getKeys();
@@ -1052,6 +1050,11 @@ public class MagicController implements Listener
 				continue;
 			}
 			addSpell(newSpell);
+		}
+		
+		// Update registered mages so their spells are current
+		for (Mage mage : mages.values()) {
+			mage.loadSpells(config);
 		}
 	}
 	
