@@ -246,6 +246,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			targetThroughMaterials.clear();
 			targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));			
 		}
+		
+		// Special hack that should work well in most casts.
+		if (isUnderwater()) {
+			targetThroughMaterials.add(Material.WATER);
+			targetThroughMaterials.add(Material.STATIONARY_WATER);
+		}
 
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
