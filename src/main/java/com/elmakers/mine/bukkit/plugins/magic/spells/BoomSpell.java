@@ -46,15 +46,8 @@ public class BoomSpell extends Spell {
 		boolean useFire = parameters.getBoolean("fire", false);
 		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
 		boolean showEffect = parameters.getBoolean("show_effect", true);
-		String targetType = (String)parameters.getString("target", "");
 		
 		size = (int)(mage.getRadiusMultiplier() * size);
-		
-		if (targetType.equals("here"))
-		{
-			getPlayer().damage(getPlayer().getMaxHealth() * 10);
-			return createExplosionAt(getPlayer().getLocation(), size, useFire, breakBlocks);
-		}
 
 		Target target = getTarget();
 		if (!target.hasTarget())

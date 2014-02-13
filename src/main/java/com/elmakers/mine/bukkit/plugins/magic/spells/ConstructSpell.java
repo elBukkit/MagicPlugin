@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.effects.SpellEffect;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.plugins.magic.TargetType;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends BrushSpell
@@ -47,8 +48,7 @@ public class ConstructSpell extends BrushSpell
 		float force = 0;
 		force = (float)parameters.getDouble("speed", force);
 		
-		String targetString = parameters.getString("target", "");
-		if (targetString.equals("select")) {
+		if (getTargetType() == TargetType.SELECT) {
 			if (targetBlock == null) {
 				targetBlock = target;
 				Location effectLocation = targetBlock.getLocation();

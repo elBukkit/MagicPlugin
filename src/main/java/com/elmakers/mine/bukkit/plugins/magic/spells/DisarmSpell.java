@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -42,19 +41,11 @@ public class DisarmSpell extends Spell
 		effectTrail.setPeriod(effectPeriod);
 		effectTrail.start();
 
-		LivingEntity entity = null;
-		String targetType = (String)parameters.getString("target", "other");
-		if (targetType.equals("self")) {
-			entity = getPlayer();
-		} else {
-			Target target = getTarget();
-			Entity targetEntity = target.getEntity();
-			if (targetEntity == null || !(targetEntity instanceof LivingEntity))
-			{
-				return SpellResult.NO_TARGET;    
-			}
-			entity = (LivingEntity)targetEntity;
+		Target target = getTarget();
+		if (!target.isEntity() || !(target.getEntity() instanceof LivingEntity)) {
+			return SpellResult.NO_TARGET;    
 		}
+		LivingEntity entity = (LivingEntity)target.getEntity();
 		
 		EntityEquipment equipment = entity.getEquipment();
 		ItemStack stack = equipment.getItemInHand();

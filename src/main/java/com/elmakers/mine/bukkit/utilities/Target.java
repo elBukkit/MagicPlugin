@@ -20,6 +20,11 @@ public class Target implements Comparable<Target>
 	private double   angle       = 10000;
 	private int      score       = 0;
 
+	public Target(Player player)
+	{
+		this.player = player;
+	}
+	
 	public Target(Player player, Block block)
 	{
 		this.player = player;
@@ -33,6 +38,13 @@ public class Target implements Comparable<Target>
 		this.player = player;
 		this.entity = entity;
 		calculateScore();
+	}
+	
+	public Target(Player player, Entity entity)
+	{
+		this.maxDistance = 0;
+		this.player = player;
+		this.entity = entity;
 	}
 
 	public int getScore()

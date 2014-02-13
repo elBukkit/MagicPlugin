@@ -22,24 +22,12 @@ public class PotionEffectSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		LivingEntity targetEntity = null;
-		String targetType = (String)parameters.getString("target", "other");
-		
-		if (!targetType.equals("self")) {
-			Target target = getTarget();
-			if (target != null && target.isEntity() && (target.getEntity() instanceof LivingEntity))
-			{
-				targetEntity = (LivingEntity)target.getEntity();
-			}
-		}
-		if (targetEntity == null && !targetType.equals("other")) {
-			targetEntity = getPlayer();
-		} 
-		
-		if (targetEntity == null)
+		Target target = getTarget();
+		if (target == null || !target.isEntity() || !(target.getEntity() instanceof LivingEntity))
 		{
 			return SpellResult.NO_TARGET;
 		}
+		LivingEntity targetEntity = (LivingEntity)target.getEntity();
 		
 		ParticleType particleType = ParticleType.fromName((String)parameters.getString("particle", ""), ParticleType.INSTANT_SPELL);
 		if (targetEntity == getPlayer()) {

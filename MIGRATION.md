@@ -1,5 +1,11 @@
 # Migration Notes
 
+## 2.9.3
+
+### spells.yml
+
+The "Recurse" spell is now RecurseSpell, not FillSpell.
+
 ## 2.9.2
 
 ### config.yml

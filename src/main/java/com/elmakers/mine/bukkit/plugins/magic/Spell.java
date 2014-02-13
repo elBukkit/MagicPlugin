@@ -71,7 +71,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	private boolean                             allowMaxRange           = false;
 	private boolean                             pvpRestricted           = false;
-	private int                                 range                   = 200;
+	private int                                 range                   = 32;
 	private static int                          maxRange                = 511;
 	private double                              viewHeight              = 1.65;
 	private double                              step                    = 0.2;
@@ -97,6 +97,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private boolean								isActive				= false;
 	
 	private Target								target					= null;
+	private TargetType							targetType				= TargetType.OTHER;
 
 	protected Object clone()
 	{
@@ -231,28 +232,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		category = node.getString("category", category);
 		parameters = node.getNode("parameters", parameters);
 		pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
-		
-		cooldown = parameters.getInt("cooldown", cooldown);
-		duration = parameters.getInt("duration", duration);
-		range = parameters.getInteger("range", range);
-		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
-		
-		if (parameters.containsKey("target_through")) {
-			targetThroughMaterials = parameters.getMaterials("target_through");
-		} else if (parameters.containsKey("transparent")) {
-			targetThroughMaterials.clear();
-			targetThroughMaterials.addAll(controller.getMaterialSet(parameters.getString("transparent")));
-		} else {
-			targetThroughMaterials.clear();
-			targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));			
-		}
-		
-		// Special hack that should work well in most casts.
-		if (isUnderwater()) {
-			targetThroughMaterials.add(Material.WATER);
-			targetThroughMaterials.add(Material.STATIONARY_WATER);
-		}
-
 		costs = parseCosts(node.getNode("costs"));
 		activeCosts = parseCosts(node.getNode("active_costs"));
 	}
@@ -331,7 +310,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean cast(String[] extraParameters)
 	{
 		target = null;
@@ -343,6 +321,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
 
+		// Check cooldowns
+		cooldown = parameters.getInt("cooldown", cooldown);
+		
 		long currentTime = System.currentTimeMillis();
 		float cooldownReduction = mage.getCooldownReduction();
 		if (cooldownReduction < 1 && !isActive && cooldown > 0) {
@@ -374,23 +355,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 
 		lastCast = currentTime;
-		if (parameters.containsKey("target_type")) {
-			String entityTypeName = parameters.getString("target_type");
-			try {
-				 Class<?> typeClass = Class.forName("org.bukkit.entity." + entityTypeName);
-				 if (Entity.class.isAssignableFrom(typeClass)) {
-					 targetEntityType = (Class<? extends Entity>)typeClass;
-				 } else {
-					 controller.getLogger().warning("Entity type: " + entityTypeName + " not assignable to Entity");
-				 }
-			} catch (Throwable ex) {
-				controller.getLogger().warning("Unknown entity type: " + entityTypeName);
-				targetEntityType = null;
-			}
-		}
+		
 		initializeTargeting(getPlayer());
-
 		processParameters(parameters);
+		
 		SpellResult result = onCast(parameters);
 		mage.onCast(this, result);
 		
@@ -408,9 +376,53 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		return result == SpellResult.SUCCESS;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	protected void processParameters(ConfigurationNode parameters) {
+		duration = parameters.getInt("duration", duration);
+		range = parameters.getInteger("range", range);
+		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 		
+		if (parameters.containsKey("target_through")) {
+			targetThroughMaterials = parameters.getMaterials("target_through");
+		} else if (parameters.containsKey("transparent")) {
+			targetThroughMaterials.clear();
+			targetThroughMaterials.addAll(controller.getMaterialSet(parameters.getString("transparent")));
+		} else {
+			targetThroughMaterials.clear();
+			targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));			
+		}
+		
+		// Special hack that should work well in most casts.
+		if (isUnderwater()) {
+			targetThroughMaterials.add(Material.WATER);
+			targetThroughMaterials.add(Material.STATIONARY_WATER);
+		}
+		
+		if (parameters.containsKey("target")) {
+			String targetTypeName = parameters.getString("target");
+			try {
+				 targetType = TargetType.valueOf(targetTypeName.toUpperCase());
+			} catch (Exception ex) {
+				controller.getLogger().warning("Invalid target_type: " + targetTypeName);
+				targetType = TargetType.OTHER;
+			}
+		}
+		
+		if (parameters.containsKey("target_type")) {
+			String entityTypeName = parameters.getString("target_type");
+			try {
+				 Class<?> typeClass = Class.forName("org.bukkit.entity." + entityTypeName);
+				 if (Entity.class.isAssignableFrom(typeClass)) {
+					 targetEntityType = (Class<? extends Entity>)typeClass;
+				 } else {
+					 controller.getLogger().warning("Entity type: " + entityTypeName + " not assignable to Entity");
+				 }
+			} catch (Throwable ex) {
+				controller.getLogger().warning("Unknown entity type: " + entityTypeName);
+				targetEntityType = null;
+			}
+		}
 	}
 
 	public String getPermissionNode()
@@ -674,8 +686,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Block getPlayerBlock()
 	{
+		Player player = getPlayer();
+		if (player == null) {
+			return null;
+		}
 		Block playerBlock = null;
-		Location playerLoc = getPlayer().getLocation();
+		Location playerLoc = player.getLocation();
 		int x = (int) Math.round(playerLoc.getX() - 0.5);
 		int y = (int) Math.round(playerLoc.getY() - 0.5);
 		int z = (int) Math.round(playerLoc.getZ() - 0.5);
@@ -861,6 +877,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	/*
 	 * HitBlox-ported code
 	 */
+	
+	public TargetType getTargetType()
+	{ 
+		return targetType;
+	}
 
 	/**
 	 * Returns the block at the cursor, or null if out of range
@@ -869,12 +890,20 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Target getTarget()
 	{
+		Player player = getPlayer();
+		if (targetType == TargetType.SELF && player != null) {
+			return new Target(player, player);
+		}
 		Block block = getTargetBlock();
-		Target targetBlock = new Target(getPlayer(), block);
+		Target targetBlock = new Target(player, block);
 		Target targetEntity = getTargetEntity();
-		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance())
+		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance() || targetType == TargetType.NONE)
 		{
-			target = targetBlock;
+			if (targetType == TargetType.ANY && player != null) {
+				target = new Target(player, player);
+			} else {
+				target = targetBlock;
+			}
 		} 
 		else 
 		{
@@ -886,7 +915,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			else 
 			{
 				// Don't let the target the block, either.
-				target = new Target(getPlayer(), null);
+				if (targetType == TargetType.ANY && player != null) {
+					target = new Target(player, player);
+				} else {
+					target = new Target(player);
+				}
 			}
 		}
 		

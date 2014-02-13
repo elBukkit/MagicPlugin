@@ -66,6 +66,7 @@ curse:
     costs:
         xp: 10
     parameters:
+        range: 32
         target_type: LivingEntity
         target: other
         particle: townaura
@@ -79,6 +80,7 @@ boon:
         xp: 20
     parameters:
         target: any
+        range: 32
         target_type: LivingEntity
         particle: reddust
         effect_speed: 600,5   
@@ -512,7 +514,6 @@ paint:
     parameters:
         allow_max_range: false
         range: 64
-        type: single
         check_destructible: false
         transparent: transparent_to_construction
     costs:
@@ -524,6 +525,7 @@ gills:
     costs:
         xp: 5
     parameters:
+        range: 32
         target_type: LivingEntity
         target: any
         particle: bubbles
@@ -671,7 +673,7 @@ kamikazee:
     parameters:
         cooldown: 60000
         size: '8'
-        target: here
+        target: self
         break_blocks: false
     costs:
         xp: 5
@@ -924,6 +926,7 @@ fill:
     class: FillSpell
     parameters:
         allow_max_range: false
+        target: select
         range: 64
         max_dimension: 64
         check_destructible: false
@@ -933,13 +936,12 @@ fill:
 recurse:
     icon: wood_spade
     category: engineering
-    class: FillSpell
+    class: RecurseSpell
     parameters:
         allow_max_range: false
         range: 32
         max_volume: 512
         max_dimension: 128
-        type: recurse
         check_destructible: false
         transparent: transparent_to_construction
     costs:
