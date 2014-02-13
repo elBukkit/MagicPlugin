@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -210,6 +211,13 @@ public class ConfigurationNode {
 		if (value instanceof Location)
 		{
 			value = fromLocation((Location)value);
+		}
+		
+		// Convert colors
+		if (value instanceof Color)
+		{
+			Color color = (Color)value;
+			value = Integer.toString(color.asRGB(), 16);
 		}
 
 		// Convert blocks
@@ -473,6 +481,11 @@ public class ConfigurationNode {
 		 } else {
 			 return o;
 		 }
+	 }
+	 
+	 public Color getColor(String path, Color def) {
+		 Color o = castColor(getProperty(path));
+		 return o == null ? def : o;
 	 }
 
 	 public Set<Material> getMaterials(String key, String csvList)
@@ -991,6 +1004,34 @@ public class ConfigurationNode {
 			 try
 			 {
 				 return Long.parseLong((String)o);
+			 }
+			 catch(NumberFormatException ex)
+			 {
+				 return null;
+			 }
+		 } else {
+			 return null;
+		 }
+	 }
+
+	 private static Color castColor(Object o) {
+		 if (o == null) {
+			 return null;
+		 } else if (o instanceof Byte) {
+			 return Color.fromRGB((Byte)o);
+		 } else if (o instanceof Integer) {
+			 return Color.fromRGB((Integer)o);
+		 } else if (o instanceof Double) {
+			 return Color.fromRGB((int)(double)(Double)o);
+		 } else if (o instanceof Float) {
+			 return Color.fromRGB((int)(float)(Float)o);
+		 } else if (o instanceof Long) {
+			 return Color.fromRGB((int)(long)(Long)o);
+		 } else if (o instanceof String ) {
+			 try
+			 {
+				 Integer rgb = Integer.parseInt((String)o, 16);
+				 return Color.fromBGR(rgb);
 			 }
 			 catch(NumberFormatException ex)
 			 {
