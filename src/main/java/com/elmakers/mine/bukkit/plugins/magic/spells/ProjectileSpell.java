@@ -8,11 +8,10 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.WitherSkull;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
@@ -31,6 +30,11 @@ public class ProjectileSpell extends Spell
 	{
 		if (!mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
+		
+		Player player = getPlayer();
+		if (player == null) {
+			return SpellResult.PLAYER_REQUIRED;
 		}
 
 		int count = parameters.getInt("count", 1);
@@ -71,26 +75,28 @@ public class ProjectileSpell extends Spell
 			controller.getLogger().warning(ex.getMessage());
 			return SpellResult.FAILURE;
 		}
-
-		Location playerLocation = getPlayer().getLocation();
+		
+		Location location = mage.getLocation();
+		Vector direction = mage.getDirection();
 		for (int i = 0; i < count; i++) {
 			try {
-				Projectile projectile = getPlayer().launchProjectile(projectileType);
+				Projectile projectile = null;
+				
+				if (projectileType == Arrow.class) {
+					projectile = player.getWorld().spawnArrow(location, direction, speed, spread);
+				} else {
+					projectile = player.launchProjectile(projectileType);
+				}
 				if (projectile == null) {
 					throw new Exception("A projectile fizzled");
 				}
 				projectiles.add(projectile);
 				projectile.setShooter(getPlayer());
-				if (projectile instanceof WitherSkull) {
-					playerLocation.getWorld().playSound(playerLocation, Sound.WITHER_SHOOT, 1.0f, 1.5f);		
-				}
+				
 				if (projectile instanceof Fireball) {
 					Fireball fireball = (Fireball)projectile;
 					fireball.setIsIncendiary(useFire);
 					fireball.setYield(size);
-					if (!(projectile instanceof WitherSkull)) {
-						playerLocation.getWorld().playSound(playerLocation, Sound.GHAST_FIREBALL, 1.0f, 1.5f);
-					}
 				}
 				if (projectile instanceof Arrow) {
 					Arrow arrow = (Arrow)projectile;
@@ -106,10 +112,6 @@ public class ProjectileSpell extends Spell
 							Method getHandleMethod = arrow.getClass().getMethod("getHandle");
 							Object handle = getHandleMethod.invoke(arrow);
 							
-							Method shootMethod = arrowClass.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-							Vector velocity = getPlayer().getLocation().getDirection();
-							shootMethod.invoke(handle, velocity.getX(), velocity.getY(), velocity.getZ(), speed, spread);
-							
 							Field fromPlayerField = arrowClass.getField("fromPlayer");
 							fromPlayerField.setInt(handle, 2);
 							if (damage > 0) {
@@ -121,8 +123,6 @@ public class ProjectileSpell extends Spell
 					} catch (Throwable ex) {
 						ex.printStackTrace();
 					}
-					
-					playerLocation.getWorld().playSound(playerLocation, Sound.SHOOT_ARROW, 1.0f, 1.5f);
 				}
 			} catch(Exception ex) {
 				ex.printStackTrace();

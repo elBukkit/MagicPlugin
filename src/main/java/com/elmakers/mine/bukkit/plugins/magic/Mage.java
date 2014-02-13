@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockList;
@@ -739,7 +740,15 @@ public class Mage implements CostReducer
 	}
 	
 	public Location getLocation() {
-		return getPlayer().getLocation();
+		Player player = getPlayer();
+		if (player == null) return null;
+		return player.getLocation();
+	}
+	
+	public Vector getDirection() {Player player = getPlayer();
+		// Default is straight up.
+		if (player == null) return new Vector(0, 1, 0);
+		return player.getLocation().getDirection();
 	}
 	
 	public String getName() {
