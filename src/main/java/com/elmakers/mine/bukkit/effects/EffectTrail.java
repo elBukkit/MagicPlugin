@@ -34,8 +34,6 @@ public class EffectTrail extends EffectRepeating {
 	
 	@Override
 	public void play() {
-		super.play();
-		
 		if (length != null) {
 			size = length;
 		} else if (target != null) {
@@ -50,6 +48,7 @@ public class EffectTrail extends EffectRepeating {
 		}
 		
 		direction = getDirection();
+		super.play();
 	}
 	
 	public void iterate() {
