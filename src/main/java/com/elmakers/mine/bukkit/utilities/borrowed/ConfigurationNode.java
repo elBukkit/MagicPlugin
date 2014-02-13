@@ -558,6 +558,48 @@ public class ConfigurationNode {
 	 }
 
 	 /**
+	  * Gets a float at a location. This will either return an double
+	  * or the default value. If the object at the particular location is not
+	  * actually a float, the default value will be returned. However, other
+	  * number types will be casted to an float.
+	  *
+	  * @param path path to node (dot notation)
+	  * @param def default value
+	  * @return float or default
+	  */
+	 public float getFloat(String path, float def) {
+		 Float o = castFloat(getProperty(path));
+
+		 if (o == null) {
+			 setProperty(path, def);
+			 return def;
+		 } else {
+			 return o;
+		 }
+	 }
+
+	 /**
+	  * Gets a float at a location. This will either return an double
+	  * or the default value. If the object at the particular location is not
+	  * actually a float, the default value will be returned. However, other
+	  * number types will be casted to an float.
+	  *
+	  * @param path path to node (dot notation)
+	  * @param def default value
+	  * @return float or default
+	  */
+	 public Float getFloat(String path, Float def) {
+		 Float o = castFloat(getProperty(path));
+
+		 if (o == null) {
+			 setProperty(path, def);
+			 return def;
+		 } else {
+			 return o;
+		 }
+	 }
+
+	 /**
 	  * Gets a boolean at a location. This will either return an boolean
 	  * or the default value. If the object at the particular location is not
 	  * actually a boolean, the default value will be returned.
@@ -982,6 +1024,39 @@ public class ConfigurationNode {
 			 try
 			 {
 				 return Double.parseDouble((String)o);
+			 }
+			 catch(NumberFormatException ex)
+			 {
+				 return null;
+			 }
+		 } else {
+			 return null;
+		 }
+	 }
+
+	 /**
+	  * Casts a value to a float. May return null.
+	  *
+	  * @param o
+	  * @return
+	  */
+	 private static Float castFloat(Object o) {
+		 if (o == null) {
+			 return null;
+		 } else if (o instanceof Float) {
+			 return (Float) o;
+		 } else if (o instanceof Double) {
+			 return (float)(double)(Double) o;
+		 } else if (o instanceof Byte) {
+			 return (float) (Byte) o;
+		 } else if (o instanceof Integer) {
+			 return (float) (Integer) o;
+		 } else if (o instanceof Long) {
+			 return (float) (Long) o;
+		 } else if (o instanceof String ) {
+			 try
+			 {
+				 return Float.parseFloat((String)o);
 			 }
 			 catch(NumberFormatException ex)
 			 {
