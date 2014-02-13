@@ -47,6 +47,7 @@ public class ConstructBatch extends VolumeBatch {
 	private int x = 0;
 	private int y = 0;
 	private int z = 0;
+	private int r = 0;
 	
 	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, boolean fill, boolean spawnFallingBlocks) {
 		super(spell.getMage().getController(), center.getWorld().getName());
@@ -142,16 +143,21 @@ public class ConstructBatch extends VolumeBatch {
 				y++;
 				if (y > yBounds) {
 					y = 0;
-					z++;
-					if (z > radius) {
-						z = 0;
+					if (x < r) {
 						x++;
+					} else {
+						z--;
+						if (z < 0) {
+							r++;
+							z = r;
+							x = 0;
+						}
 					}
 				}
 				processedBlocks++;
 			}
 			
-			if (x > radius) 
+			if (r > radius) 
 			{
 				finishedNonAttached = true;
 			}
