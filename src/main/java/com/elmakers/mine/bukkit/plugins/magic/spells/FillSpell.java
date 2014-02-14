@@ -98,7 +98,7 @@ public class FillSpell extends BrushSpell
 			Material material = buildWith.getMaterial();
 			castMessage("Cast again to fill with " + material.name().toLowerCase());
 			
-			return SpellResult.CAST;
+			return SpellResult.TARGET_SELECTED;
 		}
 	}
 
