@@ -92,7 +92,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private boolean                             targetingComplete;
 	private int                                 targetHeightRequired    = 1;
 	private Class<? extends Entity>             targetEntityType        = null;
-	private Location                            playerLocation;
+	private Location                            location;
 	private double                              xRotation, yRotation;
 	private double                              length, hLength;
 	private double                              xOffset, yOffset, zOffset;
@@ -408,6 +408,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean cast(String[] extraParameters)
 	{
 		target = null;
+		location = mage.getLocation();
+		initializeTargeting();
 		
 		if (pvpRestricted && !controller.isPVPAllowed(mage.getLocation())) {
 			return false;
@@ -468,6 +470,23 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		
 		return result == SpellResult.CAST;
+	}
+
+	protected void initializeTargeting()
+	{
+		length = 0;
+		targetHeightRequired = 1;
+		xRotation = (location.getYaw() + 90) % 360;
+		yRotation = location.getPitch() * -1;
+		reverseTargeting = false;
+
+		targetX = (int) Math.floor(location.getX());
+		targetY = (int) Math.floor(location.getY() + viewHeight);
+		targetZ = (int) Math.floor(location.getZ());
+		lastX = targetX;
+		lastY = targetY;
+		lastZ = targetZ;
+		targetingComplete = false;
 	}
 	
 	protected void processResult(SpellResult result) {
@@ -939,8 +958,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			return player.getLocation();
 		}
 		
-		// TODO: Configurable locations
-		return Bukkit.getWorlds().get(0).getSpawnLocation();
+		return location;
 	}
 
 	protected Location getEyeLocation()
@@ -953,6 +971,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		// TODO: Configurable locations
 		Location location = getLocation();
+		if (location == null) return null;
+		
 		location.setY(location.getY() + 1.5);
 		return location;
 	}
@@ -1017,7 +1037,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			return target;
 		}
 
-		initializeTargeting();
 		findTargetBlock();
 		Block block = getCurBlock();
 		
@@ -1129,9 +1148,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			xOffset = (hLength * Math.cos(Math.toRadians(xRotation)));
 			zOffset = (hLength * Math.sin(Math.toRadians(xRotation)));
 
-			targetX = (int) Math.floor(xOffset + playerLocation.getX());
-			targetY = (int) Math.floor(yOffset + playerLocation.getY() + viewHeight);
-			targetZ = (int) Math.floor(zOffset + playerLocation.getZ());
+			targetX = (int) Math.floor(xOffset + location.getX());
+			targetY = (int) Math.floor(yOffset + location.getY() + viewHeight);
+			targetZ = (int) Math.floor(zOffset + location.getZ());
 
 		}
 		while ((length <= scaledRange) && ((targetX == lastX) && (targetY == lastY) && (targetZ == lastZ)));
@@ -1297,24 +1316,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	public boolean cancel()
 	{
 		return onCancel();
-	}
-
-	protected void initializeTargeting()
-	{
-		playerLocation = mage.getLocation();
-		length = 0;
-		targetHeightRequired = 1;
-		xRotation = (playerLocation.getYaw() + 90) % 360;
-		yRotation = playerLocation.getPitch() * -1;
-		reverseTargeting = false;
-
-		targetX = (int) Math.floor(playerLocation.getX());
-		targetY = (int) Math.floor(playerLocation.getY() + viewHeight);
-		targetZ = (int) Math.floor(playerLocation.getZ());
-		lastX = targetX;
-		lastY = targetY;
-		lastZ = targetZ;
-		targetingComplete = false;
 	}
 
 	protected void findTargetBlock()
