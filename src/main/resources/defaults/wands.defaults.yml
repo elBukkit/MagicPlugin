@@ -467,12 +467,12 @@ random:
 #
       
 demo:
-    modifiable: false
     spells:
         - torch
         - blink
         - fling
-    cost_reduction: 1
+    xp_max: 500
+    xp_regeneration:100
 recall:
     modifiable: true
     xp_regeneration: 2
