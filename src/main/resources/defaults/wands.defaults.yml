@@ -472,7 +472,7 @@ demo:
         - blink
         - fling
     xp_max: 500
-    xp_regeneration:100
+    xp_regeneration: 100
 recall:
     modifiable: true
     xp_regeneration: 2
