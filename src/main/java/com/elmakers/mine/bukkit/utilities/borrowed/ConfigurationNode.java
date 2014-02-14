@@ -1031,7 +1031,7 @@ public class ConfigurationNode {
 			 try
 			 {
 				 Integer rgb = Integer.parseInt((String)o, 16);
-				 return Color.fromBGR(rgb);
+				 return Color.fromRGB(rgb);
 			 }
 			 catch(NumberFormatException ex)
 			 {
