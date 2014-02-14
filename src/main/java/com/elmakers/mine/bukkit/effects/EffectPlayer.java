@@ -43,7 +43,7 @@ public abstract class EffectPlayer {
 	protected Integer effectData = null;
 	
 	protected Sound sound = null;
-	protected float soundVolume = 1;
+	protected float soundVolume = 0.7f;
 	protected float soundPitch = 1.5f;
 	
 	protected FireworkEffect fireworkEffect = null;
@@ -55,7 +55,7 @@ public abstract class EffectPlayer {
 	protected float particleXOffset = 0.3f;
 	protected float particleYOffset = 0.3f;
 	protected float particleZOffset = 0.3f;
-	protected int particleCount = 8;
+	protected int particleCount = 1;
 	
 	protected Vector offset = new Vector(0, 0, 0);
 	

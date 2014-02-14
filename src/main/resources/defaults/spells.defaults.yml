@@ -98,9 +98,10 @@ curse:
         -  class: EffectSingle
            sound: burp
         -  class: EffectTrail
-           particle: red_dust
+           particle: town_aura
+           particle_count: 3
         -  class: EffectRing
-           particle: red_dust
+           particle: town_aura
            location: target
     costs:
         xp: 10
@@ -108,7 +109,6 @@ curse:
         range: 32
         target_type: LivingEntity
         target: other
-        particle: townaura
         effect_slow: 100,5  
         effect_confusion: 100,5
 boon:
@@ -120,10 +120,11 @@ boon:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: instant_spell
+           particle: red_dust
            particle_data: 2
+           particle_count: 3
         -  class: EffectRing
-           particle: instant_spell
+           particle: red_dust
            location: target
            particle_data: 2
     costs:
@@ -132,7 +133,6 @@ boon:
         target: any
         range: 32
         target_type: LivingEntity
-        particle: reddust
         effect_speed: 600,5   
         effect_jump: 600,5
         effect_water_breathing: 600,5
@@ -146,10 +146,11 @@ bounce:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: instant_spell
+           particle: red_dust
            particle_data: 1
+           particle_count: 3
         -  class: EffectRing
-           particle: instant_spell
+           particle: red_dust
            location: target
            particle_data: 1
     costs:
@@ -157,7 +158,6 @@ bounce:
     parameters:
         target: any
         target_type: LivingEntity
-        particle: reddust
         effect_jump: 600,20
 shell:
     icon: ender_pearl
@@ -369,11 +369,13 @@ push:
         -  class: EffectTrail
            particle: spell
            length: 16
+           particle_count: 6
         area:
         -  class: EffectSingle
            sound: fizz
         -  class: EffectRing
            particle: spell
+           particle_count: 6
     parameters:
         target_type: Entity
         range: 16
@@ -397,12 +399,14 @@ pull:
            particle: spell
            reverse: true
            length: 16
+           particle_count: 6
         area:
         -  class: EffectSingle
            sound: fizz
         -  class: EffectRing
            particle: spell
            reverse: true
+           particle_count: 6
     parameters:
         target_type: Entity
         range: 16
@@ -488,6 +492,7 @@ frost:
            sound: glass
         -  class: EffectTrail
            particle: snowball_poof
+           particle_count: 4
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -508,6 +513,7 @@ lightning:
            sound: ambience_thunder
         -  class: EffectTrail
            particle: smoke
+           particle_count: 2
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -525,6 +531,7 @@ storm:
            sound: ambience_thunder
         -  class: EffectTrail
            particle: smoke
+           particle_count: 4
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -561,6 +568,7 @@ disarm:
         -  class: EffectTrail
            particle: mob_spell
            particle_data: 2
+           particle_count: 8
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -596,9 +604,11 @@ gather:
            sound: enderman_idle
         -  class: EffectTrail
            particle: portal
+           particle_count: 4
         -  class: EffectRing
            particle: portal
            location: both
+           particle_count: 2
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -631,6 +641,7 @@ neutron:
         -  class: EffectRing
            particle: flame
            location: target
+           particle_count: 8
     parameters:
         projectile: Snowball
         effect_harm: 10,5
@@ -665,6 +676,7 @@ weather:
         -  class: EffectRing
            particle: water_dripping
            location: source
+           particle_count: 4
     parameters:
         cooldown: 30000
     costs:
@@ -679,6 +691,7 @@ fling:
            sound: enderdragon_wings
         -  class: EffectTrail
            particle: spell
+           particle_count: 4
     parameters:
     costs:
         xp: 5
@@ -692,6 +705,7 @@ leap:
            sound: fall_small
         -  class: EffectTrail
            particle: spell
+           particle_count: 8
     parameters:
         cooldown: 5000
         cruising_altitude: 0
@@ -728,6 +742,7 @@ familiar:
            sound: villager_yes
         -  class: EffectTrail
            particle: bubble
+           particle_count: 4
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -745,6 +760,7 @@ monster:
            sound: ghast_moan
         -  class: EffectTrail
            particle: bubble
+           particle_count: 4
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -763,6 +779,7 @@ mob:
            sound: ghast_moan
         -  class: EffectTrail
            particle: bubble
+           particle_count: 8
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -782,6 +799,7 @@ farm:
            sound: sheep_idle
         -  class: EffectTrail
            particle: bubble
+           particle_count: 8
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -801,6 +819,7 @@ wolf:
            sound: wolf_howl
         -  class: EffectTrail
            particle: bubble
+           particle_count: 4
     parameters:
         target_type: LivingEntity
         max_wolves: 5
@@ -818,6 +837,7 @@ cat:
            sound: cat_meow
         -  class: EffectTrail
            particle: bubble
+           particle_count: 4
     parameters:
         target_type: LivingEntity
         max_ocelots: 5
@@ -835,6 +855,7 @@ portal:
            sound: portal_travel
         -  class: EffectTrail
            particle: portal
+           particle_count: 8
     parameters:
         allow_max_range: false
         range: 32
@@ -854,6 +875,7 @@ phase:
         -  class: EffectRing
            particle: portal
            target: both
+           particle_count: 2
     parameters:
         cooldown: 2000
     costs:
@@ -888,6 +910,7 @@ fire:
            target: both
         -  class: EffectTrail
            particle: flame
+           particle_count: 2
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -908,6 +931,7 @@ inferno:
            target: both
         -  class: EffectTrail
            particle: flame
+           particle_count: 4
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -927,6 +951,7 @@ cushion:
            target: both
         -  class: EffectTrail
            particle: water_dripping
+           particle_count: 8
     parameters:
         allow_max_range: false
         height: 4
@@ -997,6 +1022,7 @@ gills:
         -  class: EffectRing
            particle: bubble
            location: target
+           particle_count: 4
     costs:
         xp: 5
     parameters:
@@ -1034,6 +1060,7 @@ day:
         -  class: EffectRing
            particle: magic_runes
            location: origin
+           particle_count: 2
     parameters:
         allow_max_range: false
         allow_night: false
@@ -1055,6 +1082,7 @@ night:
         -  class: EffectRing
            particle: large_smoke
            location: origin
+           particle_count: 2
     parameters:
         allow_max_range: false
         allow_night: false
@@ -1075,6 +1103,7 @@ time:
         -  class: EffectRing
            particle: magic_runes
            location: origin
+           particle_count: 4
     parameters:
         allow_max_range: false
         allow_night: true
@@ -1436,7 +1465,7 @@ cloak:
         xp: 10
     parameters:
         target: any
-        particle: reddust
+        particle: red_dust
         effect_invisibility: 600,5
 undo:
     icon: book_and_quill
@@ -1544,24 +1573,6 @@ sandblast:
         y_offset: 32
     costs:
         xp: 50
-tesseract:
-    icon: web
-    category: airbending
-    class: BlinkSpell
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: portal_travel
-           particle: portal
-           target: both
-    parameters:
-        allow_max_range: false
-        allow_ascend: false
-        allow_passthrough: false
-        range: 16
-        allow_decend: true
-    costs:
-        xp: 2
 mine:
     icon: iron_pickaxe
     category: mining
@@ -1680,7 +1691,7 @@ blink:
     effects:
         cast:
         -  class: EffectSingle
-           sound: portal_travel
+           sound: enderman_teleport
            target: both
         -  class: EffectRing
            particle: portal
@@ -1693,6 +1704,24 @@ blink:
         allow_decend: true
     costs:
         xp: 50
+tesseract:
+    icon: web
+    category: airbending
+    class: BlinkSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_teleport
+           particle: portal
+           target: both
+    parameters:
+        allow_max_range: false
+        allow_ascend: false
+        allow_passthrough: false
+        range: 16
+        allow_decend: true
+    costs:
+        xp: 2
 absorb:
     icon: bucket
     category: engineering
@@ -1897,6 +1926,7 @@ levitate:
            sound: enderdragon_wings
         -  class: EffectRing
            particle: spell
+           particle_count: 10
     parameters:
     costs:
         xp: 100
