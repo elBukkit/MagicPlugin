@@ -689,6 +689,7 @@ fling:
         cast:
         -  class: EffectSingle
            sound: enderdragon_wings
+           sound_volume: 1.1
         -  class: EffectTrail
            particle: spell
            particle_count: 4

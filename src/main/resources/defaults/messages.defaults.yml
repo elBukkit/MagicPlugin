@@ -415,7 +415,7 @@ spells:
     recall:
         name: Recall
         description: Marks locations for return
-        usage: Cast to set marker, aim up and cast to return
+        usage: Cast to set marker or to return
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
@@ -431,7 +431,7 @@ spells:
     force:
         name: Force
         description: Use telekinesis
-        usage: Cast to select an entity, again to throw
+        usage: Cast to select or throw an entity
     descend:
         name: Descend
         description: Travel underground

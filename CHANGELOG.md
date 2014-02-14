@@ -1,11 +1,15 @@
 # CHANGELOG
 
-## 2.9.2
+## 2.9.3
 
  - Add configurable spell effects. See spells.default.yml for instructions.
  - Fix "magic load" command loading changes to spells.yml
+ - Removed the "IronSkin" and "LeatherSkin" spells- not really useful.
+ - Add "Stash" and "Flamethrower" spells.
+ 
+## 2.9.2 
+ 
  - Add "schematic" brushes, requires WorldEdit for schematic loading.
- - Add "stash" and "flamethrower" spells.
  - Make superconvert work better for cleaning up lava and water.
  - Implement "load_defaults" parameter for spells.yml and wands.yml, if you don't want any of the default spells or wands.
  - Added a new wand mode for interaction using a chest inventory. Start the basics of per-player wand mechanics.
