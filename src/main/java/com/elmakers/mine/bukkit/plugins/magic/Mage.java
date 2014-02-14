@@ -549,9 +549,8 @@ public class Mage implements CostReducer
 	}
 	
 	public Color getEffectColor() {
-		int colorValue = activeWand == null ? 0 : activeWand.getEffectColor();
-		if (colorValue == 0) return null;
-		return Color.fromRGB(colorValue);
+		if (activeWand == null) return null;
+		return Color.fromRGB(activeWand.getEffectColor());
 	}
 	
 	public FireworkEffect getFireworkEffect() {

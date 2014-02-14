@@ -429,8 +429,8 @@ boom:
            sound: explode
         -  class: EffectTrail
            firework: burst
-           color: FF0000
-           color2: FF0088
+           color: 'FF0000'
+           color2: 'FF0088'
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -450,8 +450,8 @@ kaboom:
            sound: explode
         -  class: EffectTrail
            firework: ball_large
-           color: FF0000
-           color2: FF0088
+           color: 'FF0000'
+           color2: 'FF0088'
     parameters:
         target_type: LivingEntity
         cooldown: 5000
@@ -470,8 +470,8 @@ nuke:
            sound: explode
         -  class: EffectTrail
            firework: creeper
-           color: 00FF00
-           color2: 88FF88
+           color: '00FF00'
+           color2: '88FF88'
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -590,6 +590,7 @@ heal:
            location: target
     parameters:
         target_type: LivingEntity
+        target: any
         allow_max_range: false
         range: 32
     costs:

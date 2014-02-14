@@ -46,8 +46,12 @@ public abstract class EffectPlayer {
 	protected float soundVolume = 0.7f;
 	protected float soundPitch = 1.5f;
 	
-	protected FireworkEffect fireworkEffect = null;
+	protected boolean hasFirework = false;
+	protected FireworkEffect.Type fireworkType;
 	protected int fireworkPower = 1;
+	protected Boolean fireworkFlicker;
+	
+	protected FireworkEffect fireworkEffect;
 	
 	protected ParticleType particleType = null;
 	protected String particleSubType = "";
@@ -97,8 +101,8 @@ public abstract class EffectPlayer {
 		}
 
 		if (configuration.containsKey("firework") || configuration.containsKey("firework_power")) {
-			FireworkEffect.Type fireworkType = null;
-			
+			hasFirework = true;
+			fireworkType = null;
 			if (configuration.containsKey("firework")) {
 				String typeName = configuration.getString("firework");
 				fireworkType = FireworkEffect.Type.valueOf(typeName.toUpperCase());
@@ -108,10 +112,8 @@ public abstract class EffectPlayer {
 			}
 
 			fireworkPower = configuration.getInt("firework_power", fireworkPower);
-			Boolean fireworkFlicker = configuration.containsKey("firework_flicker") ? 
+			fireworkFlicker = configuration.containsKey("firework_flicker") ? 
 					configuration.getBoolean("firework_flicker", false) : null;
-			
-			fireworkEffect = getFireworkEffect(getColor1(), getColor2(), fireworkType, fireworkFlicker, false);
 		}
 		if (configuration.containsKey("particle")) {
 			String typeName = configuration.getString("particle");
@@ -171,11 +173,6 @@ public abstract class EffectPlayer {
 	
 	public void setEffect(Effect effect) {
 		this.effect = effect;
-	}
-	
-	public void setFireworkEffect(FireworkEffect fireworkEffect, int power) {
-		this.fireworkEffect = fireworkEffect;
-		this.fireworkPower = power;
 	}
 	
 	public void setParticleType(ParticleType particleType) {
@@ -283,6 +280,12 @@ public abstract class EffectPlayer {
 		}
 		this.origin = origin;
 		this.target = target;
+		
+		if (hasFirework) {
+			fireworkEffect = getFireworkEffect(getColor1(), getColor2(), fireworkType, fireworkFlicker, false);
+		} else {
+			fireworkEffect = null;
+		}
 		
 		if (delayTicks > 0 && plugin != null) {
 			final EffectPlayer player = this;
