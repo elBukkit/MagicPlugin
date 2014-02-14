@@ -82,6 +82,7 @@ import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
 import com.elmakers.mine.bukkit.blocks.Schematic;
+import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
@@ -125,26 +126,52 @@ public class MagicController implements Listener
 
 	public Mage getMage(Player player)
 	{
-		Mage mage = mages.get(player.getName());
-		if (mage == null)
+		Mage mage = getMage(player.getName());
+		if (mage != null)
 		{
-			mage = new Mage(this, player);
-			mages.put(player.getName(), mage);
+			mage.setPlayer(player);
 		}
-
-		mage.setPlayer(player);
 
 		return mage;
 	}
 	
-	public Mage getMage(String playerName) 
+	protected Mage getMage(String playerName, ConfigurationNode node)
 	{
 		if (!mages.containsKey(playerName)) 
 		{
-			mages.put(playerName, new Mage(this, null));
+			Mage newMage = new Mage(this, null);
+			
+			if (node == null) {
+				// Check for existing data file
+				File playerFile = new File(playerDataFolder, playerName + ".yml");
+				if (playerFile.exists()) 
+				{
+					getLogger().info("Loading player data from file " + playerFile.getName());
+					try {
+						Configuration playerData = new Configuration(playerFile);
+						playerData.load();
+						newMage.load(playerData);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			} else {
+				try {
+					newMage.load(node);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			
+			mages.put(playerName, newMage);
 		}
 		
 		return mages.get(playerName);
+	}
+	
+	public Mage getMage(String playerName) 
+	{
+		return getMage(playerName, null);
 	}
 
 	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
@@ -856,8 +883,9 @@ public class MagicController implements Listener
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
 				
-				// Load Player Data
-
+				// Load Player Data, only players that have pending scheduled undo batches
+				getLogger().info("Checking player data for pending undo batches");
+				
 				// Legacy migration
 				File playersFile = new File(configFolder, "players.yml");
 				if (playersFile.exists()) {
@@ -866,10 +894,10 @@ public class MagicController implements Listener
 					playerConfiguration.load();
 					List<String> playerNames = playerConfiguration.getKeys();
 					for (String playerName : playerNames) {
-						getMage(playerName).load(playerConfiguration.getNode(playerName));
+						getMage(playerName, playerConfiguration.getNode(playerName));
 					}
-					
 					playersFile.renameTo(new File("players.yml.bak"));
+					savePlayerData();
 					getLogger().info("Migration complete, you should not see this message again.");
 				} else {
 					// TODO: Remove the above, make this the only path.
@@ -882,10 +910,11 @@ public class MagicController implements Listener
 					for (File playerFile : playerFiles)
 					{
 						Configuration playerData = new Configuration(playerFile);
-						getLogger().info("Loading player data from file " + playerFile.getName());
 						playerData.load();
-						String playerName = playerFile.getName().replaceFirst("[.][^.]+$", "");
-						getMage(playerName).load(playerData);
+						if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
+							String playerName = playerFile.getName().replaceFirst("[.][^.]+$", "");
+							getMage(playerName, playerData);
+						}
 					}
 				}
 				
@@ -1006,23 +1035,39 @@ public class MagicController implements Listener
 		return defaultWandMode;
 	}
 	
+	protected void savePlayerData() {
+		try {
+			for (Entry<String, Mage> mageEntry : mages.entrySet()) {
+				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".yml");
+				Configuration playerConfig = new Configuration(playerData);
+				mageEntry.getValue().save(playerConfig);
+				playerConfig.save();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	protected void saveLostWandData() {
+		try {
+			Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
+			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
+				ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
+				wandEntry.getValue().save(wandNode);
+			}
+			lostWandsConfiguration.save();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	public void save()
 	{
 		getLogger().info("Saving player data");
-		for (Entry<String, Mage> mageEntry : mages.entrySet()) {
-			File playerData = new File(playerDataFolder, mageEntry.getKey() + ".yml");
-			Configuration playerConfig = new Configuration(playerData);
-			mageEntry.getValue().save(playerConfig);
-			playerConfig.save();
-		}
+		savePlayerData();
 
 		getLogger().info("Saving lost wands data");
-		Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
-		for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
-			ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
-			wandEntry.getValue().save(wandNode);
-		}
-		lostWandsConfiguration.save();
+		saveLostWandData();
 
 		getLogger().info("Saving image map data");
 		URLMap.save();
@@ -1643,7 +1688,7 @@ public class MagicController implements Listener
 	{
 		Player player = event.getPlayer();
 		
-		// Make sure they get their portraits back right away on relogin.
+		// Make sure they get their portraits re-rendered on relogin.
 		URLMap.resend(player.getName());
 		
 		Mage mage = getMage(player);
@@ -1657,9 +1702,23 @@ public class MagicController implements Listener
 		
 		mage.onPlayerQuit(event);
 		
-		// Let the GC collect these
-		mage.setActiveWand(null);
-		mage.setPlayer(null);
+		try {
+			File playerData = new File(playerDataFolder, player.getName() + ".yml");
+			getLogger().info("Player logged out, saving data to " + playerData.getName());
+			Configuration playerConfig = new Configuration(playerData);
+			mage.save(playerConfig);
+			playerConfig.save();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// Let the GC collect the mage, unless they have some pending undo batches
+		// or an undo queue (for rewind)
+		UndoQueue undoQueue = mage.getUndoQueue();
+		if (undoQueue == null || undoQueue.isEmpty()) {
+			getLogger().info("Player has no pending undo actions, forgetting");
+			mages.remove(player.getName());
+		}
 	}
 
 	@SuppressWarnings("deprecation")

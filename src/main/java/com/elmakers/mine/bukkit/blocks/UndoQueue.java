@@ -45,6 +45,11 @@ public class UndoQueue
 		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(mage, blocks), ticksToLive);
 	}
 	
+	public boolean isEmpty()
+	{
+		 return scheduledBlocks.isEmpty() && blockQueue.isEmpty();
+	}
+	
 	public void removeScheduledCleanup(BlockList blockList)
 	{
 		scheduledBlocks.remove(blockList);

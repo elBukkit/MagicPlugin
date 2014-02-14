@@ -433,7 +433,7 @@ boom:
            color2: 'FF0088'
     parameters:
         target_type: LivingEntity
-        allow_max_range: false
+        allow_max_range: true
         range: 32
         break_blocks: false
         size: 4
@@ -454,6 +454,7 @@ kaboom:
            color2: 'FF0088'
     parameters:
         target_type: LivingEntity
+        allow_max_range: true
         cooldown: 5000
         size: 6
         break_blocks: true
@@ -474,7 +475,7 @@ nuke:
            color2: '88FF88'
     parameters:
         target_type: LivingEntity
-        allow_max_range: false
+        allow_max_range: true
         range: 64
         cooldown: 60000
         size: 20

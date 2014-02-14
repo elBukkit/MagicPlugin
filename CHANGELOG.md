@@ -6,6 +6,7 @@
  - Fix "magic load" command loading changes to spells.yml
  - Removed the "IronSkin" and "LeatherSkin" spells- not really useful.
  - Add "Stash" and "Flamethrower" spells.
+ - Only load player data on demand, save on quit.
  
 ## 2.9.2 
  
