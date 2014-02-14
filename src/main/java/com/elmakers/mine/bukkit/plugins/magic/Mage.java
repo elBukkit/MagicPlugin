@@ -723,7 +723,7 @@ public class Mage implements CostReducer
 	public Vector getDirection() {Player player = getPlayer();
 		// Default is straight up.
 		if (player == null) return new Vector(0, 1, 0);
-		return player.getLocation().getDirection();
+		return player.getLocation().getDirection().normalize();
 	}
 	
 	public String getName() {

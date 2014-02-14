@@ -83,7 +83,13 @@ public class ProjectileSpell extends Spell
 				Projectile projectile = null;
 				
 				if (projectileType == Arrow.class) {
-					projectile = player.getWorld().spawnArrow(location, direction, speed, spread);
+					// Spread arrows out.. maybe do this for all projectiles?
+					Location arrowLocation = location.clone();
+					arrowLocation.setX(arrowLocation.getX() + direction.getX() * (1 + Math.random() * count));
+					arrowLocation.setY(arrowLocation.getY() + 1.5f);
+					arrowLocation.setZ(arrowLocation.getZ() + direction.getZ() * (1 + Math.random() * count));
+					projectile = player.getWorld().spawnArrow(arrowLocation, direction, speed, spread);
+					projectile.setShooter(player);
 				} else {
 					projectile = player.launchProjectile(projectileType);
 				}
