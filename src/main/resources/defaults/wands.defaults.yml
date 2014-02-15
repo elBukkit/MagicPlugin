@@ -1413,6 +1413,7 @@ admin:
         - phase
         - disarm
         - gather
+        - regenerate
     materials:
         - water
         - lava
@@ -1506,6 +1507,7 @@ wolf:
         - laser
         - stash
         - flamethrower
+        - regenerate
     materials:
         - water
         - stationary_water

@@ -337,6 +337,10 @@ spells:
         name: Fill
         description: Fill a selected cuboid area
         usage: Cast twice to fill
+    regenerate:
+        name: Regenerate
+        description: Regenerate the target area
+        usage: Is not undoable!
     recurse:
         name: Recurse
         description: Recursively fill blocks

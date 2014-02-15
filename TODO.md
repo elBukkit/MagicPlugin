@@ -2,6 +2,8 @@
 
 ## For 2.9.4
 
+ - Fix website, can't parse new effect nodes
+
  - Trying to upgrade a non-modifiable wand doesn't print a message?
  
  - Make spells usable without a player, clean up strong Player references

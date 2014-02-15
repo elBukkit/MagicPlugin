@@ -299,22 +299,6 @@ tag:
         transparent: transparent_to_construction
     costs:
         xp: 20
-arrow:
-    icon: arrow
-    category: dark
-    class: ProjectileSpell
-    pvp_restricted: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: shoot_arrow
-    parameters:
-      projectile: Arrow
-      speed: 2
-      spread: 6
-      fire: false
-    costs:
-        xp: 5 
 toss:
     icon: wood_button
     category: earthbending
@@ -344,19 +328,6 @@ volley:
       count: 8
     costs:
         xp: 10   
-sniper:
-    icon: gold_nugget
-    category: dark
-    class: ProjectileSpell
-    pvp_restricted: true
-    parameters:
-      projectile: Arrow
-      fire: false
-      speed: 6
-      spread: 0
-      damage: 5
-    costs:
-        xp: 100
 push:
     icon: rails
     category: airbending
@@ -667,6 +638,58 @@ wither:
         count: 3
     costs:
         xp: 60
+arrowrain:
+    icon: bow
+    category: dark
+    class: ProjectileSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+    parameters:
+        projectile: Arrow
+        count: 6
+        fire: true
+        speed: 3
+        spread: 30
+    costs:
+        xp: 30
+arrow:
+    icon: arrow
+    category: dark
+    class: ProjectileSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+    parameters:
+      projectile: Arrow
+      speed: 2
+      spread: 6
+      fire: false
+    costs:
+        xp: 5 
+sniper:
+    icon: gold_nugget
+    category: dark
+    class: ProjectileSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_pitch: 0.2
+           sound_volume: 1.5
+    parameters:
+      projectile: Arrow
+      fire: false
+      speed: 6
+      spread: 0
+      damage: 5
+    costs:
+        xp: 100
 weather:
     icon: water
     category: elemental
@@ -963,6 +986,23 @@ cushion:
         cooldown: 100
     costs:
         xp: 10
+regenerate:
+    icon: diamond_spade
+    category: engineering
+    class: RegenerateSpell
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+           material: dirt
+    parameters:
+        allow_max_range: false
+        target: other
+        range: 64
+        max_dimension: 64
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
 paint:
     icon: painting
     category: engineering
@@ -1035,23 +1075,6 @@ gills:
         particle: bubbles
         effect_water_breathing: 6000,5
         effect_night_vision: 6000,5
-arrowrain:
-    icon: bow
-    category: dark
-    class: ProjectileSpell
-    pvp_restricted: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: shoot_arrow
-    parameters:
-        projectile: Arrow
-        count: 6
-        fire: true
-        speed: 3
-        spread: 30
-    costs:
-        xp: 30
 day:
     icon: emerald
     category: master

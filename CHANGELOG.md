@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.9.4
+
+ - Add Regenerate spell (admins only, no undo!)
+
 ## 2.9.3
 
  - Add configurable spell effects. See spells.default.yml for instructions.
