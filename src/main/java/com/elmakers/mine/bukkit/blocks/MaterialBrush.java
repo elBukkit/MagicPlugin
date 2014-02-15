@@ -190,12 +190,15 @@ public class MaterialBrush extends MaterialBrushData {
 			}
 			if (cloneTarget == null) cloneTarget = target;
 			materialTarget = toTargetLocation(target);
-			
-			Block block = materialTarget.getBlock();
-			if (!block.getChunk().isLoaded()) return false;
-
-			updateFrom(block, controller.getRestrictedMaterials());
-			isValid = fillAir || material != Material.AIR;
+			if (materialTarget.getY() <= 0 || materialTarget.getY() >= 255) {
+				isValid = false;
+			} else {
+				Block block = materialTarget.getBlock();
+				if (!block.getChunk().isLoaded()) return false;
+	
+				updateFrom(block, controller.getRestrictedMaterials());
+				isValid = fillAir || material != Material.AIR;
+			}
 		}
 		
 		if (mode == BrushMode.SCHEMATIC) {
