@@ -88,9 +88,6 @@ public class FillSpell extends BrushSpell
 		}
 		else
 		{
-			Location effectLocation = targetBlock.getLocation();
-			effectLocation.add(0.5f, 0.5f, 0.5f);
-			EffectUtils.playEffect(effectLocation, ParticleType.HAPPY_VILLAGER, 0.3f, 0.3f, 0.3f, 1, 16);
 			this.targetBlock = targetBlock;
 			activate();
 			
