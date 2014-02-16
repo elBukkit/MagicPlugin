@@ -1,5 +1,12 @@
 # Migration Notes
 
+## 2.9.4
+
+### spells.yml
+
+The definitions of "Disc" and "SuperDisc" spells have changed, y_max and y_min have changed to 
+orient_dimension_max and orient_dimension_min to support different orientations.
+
 ## 2.9.3
 
 ### spells.yml

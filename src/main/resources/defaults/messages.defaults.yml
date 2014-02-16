@@ -274,6 +274,10 @@ spells:
         name: SuperDisc
         description: Create a large circular disc
         usage: Cast twice to construct
+    superring:
+        name: SuperRing
+        description: Create a large circular ring
+        usage: Cast twice to construct
     superdome:
         name: SuperDome
         description: Create a very large dome

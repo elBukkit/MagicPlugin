@@ -214,8 +214,8 @@ disc:
         range: 8
         radius: 3
         type: sphere
-        y_max: 0
-        y_min: 0
+        orient_dimension_max: 0
+        orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
         xp: 10
@@ -235,11 +235,33 @@ superdisc:
         max_dimension: 16
         target: select
         type: sphere
-        y_max: 0
-        y_min: 0
+        orient_dimension_max: 0
+        orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 50   
+        xp: 50 
+superring:
+    icon: ink_sack:9
+    category: engineering
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        target: select
+        type: sphere
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        fill: hollow
+        transparent: transparent_to_construction
+    costs:
+        xp: 30 
 supershell:
     icon: magma_cream
     category: engineering

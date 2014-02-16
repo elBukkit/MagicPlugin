@@ -4,6 +4,7 @@
 
  - Add Regenerate spell (admins only, no undo!)
  - Fix blast and superblast ("destructible" spell property changed)
+ - Add "SuperRing" spell, allow different ring/disc orientations.
 
 ## 2.9.3
 

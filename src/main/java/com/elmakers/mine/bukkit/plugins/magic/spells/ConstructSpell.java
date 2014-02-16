@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,11 +19,11 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends BrushSpell
 {
-	private ConstructionType defaultConstructionType = ConstructionType.SPHERE;
-	private int				defaultRadius			= 2;
-	private Block targetBlock 						= null;
+	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
+	private static final int DEFAULT_RADIUS						= 2;
+	private static final int DEFAULT_MAX_DIMENSION 				= 128;
 	
-	private static final int DEFAULT_MAX_DIMENSION = 128;
+	private Block targetBlock = null;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -36,11 +37,12 @@ public class ConstructSpell extends BrushSpell
 		}
 
 		int timeToLive = parameters.getInt("undo", 0);
-		int radius = parameters.getInt("radius", defaultRadius);
+		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
 		float force = 0;
 		force = (float)parameters.getDouble("speed", force);
+		Location orientTo = null;
 		
 		if (getTargetType() == TargetType.SELECT) {
 			if (targetBlock == null) {
@@ -51,6 +53,7 @@ public class ConstructSpell extends BrushSpell
 				return SpellResult.TARGET_SELECTED;
 			} else {
 				radius = (int)targetBlock.getLocation().distance(target.getLocation());
+				orientTo = target.getLocation();
 				target = targetBlock;
 			}
 		} else {
@@ -102,7 +105,7 @@ public class ConstructSpell extends BrushSpell
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(target.getLocation());
 		
-		ConstructionType conType = defaultConstructionType;
+		ConstructionType conType = DEFAULT_CONSTRUCTION_TYPE;
 
 		boolean hollow = false;
 		String fillType = (String)parameters.getString("fill", "");
@@ -124,16 +127,16 @@ public class ConstructSpell extends BrushSpell
 			conType = testType;
 		}
 					
-		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, !hollow, falling);
+		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, !hollow, falling, orientTo);
 		if (forceVector != null) {
 			batch.setFallingBlockVelocity(forceVector);
 		}
-		if (parameters.containsKey("y_max")) {
-			batch.setYMax(parameters.getInteger("y_max", null));
+		if (parameters.containsKey("orient_dimension_max")) {
+			batch.setOrientDimensionMax(parameters.getInteger("orient_dimension_max", null));
 		}
 
-		if (parameters.containsKey("y_min")) {
-			batch.setYMin(parameters.getInteger("y_min", null));
+		if (parameters.containsKey("orient_dimension_min")) {
+			batch.setOrientDimensionMin(parameters.getInteger("orient_dimension_min", null));
 		}
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);

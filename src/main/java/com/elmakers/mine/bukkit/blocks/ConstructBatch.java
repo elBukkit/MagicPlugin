@@ -27,6 +27,7 @@ public class ConstructBatch extends VolumeBatch {
 	
 	private final BlockList constructedBlocks = new BlockList();
 	private final Location center;
+	private Vector orient = null;
 	private final int radius;
 	private final ConstructionType type;
 	private final boolean fill;
@@ -41,15 +42,15 @@ public class ConstructBatch extends VolumeBatch {
 	
 	private boolean finishedNonAttached = false;
 	private int attachedBlockIndex = 0;
-	private Integer maxDY = null;
-	private Integer minDY = null;
+	private Integer maxOrientDimension = null;
+	private Integer minOrientDimension = null;
 	
 	private int x = 0;
 	private int y = 0;
 	private int z = 0;
 	private int r = 0;
 	
-	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, boolean fill, boolean spawnFallingBlocks) {
+	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, boolean fill, boolean spawnFallingBlocks, Location orientToLocation) {
 		super(spell.getMage().getController(), center.getWorld().getName());
 		this.center = center;
 		this.radius = radius;
@@ -60,18 +61,33 @@ public class ConstructBatch extends VolumeBatch {
 		this.spell = spell;
 		this.attachables = mage.getController().getMaterialSet("attachable");
 		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
+		if (orientToLocation != null) {
+			Vector orientTo = orientToLocation.toVector().subtract(center.toVector());
+			orientTo.setX(Math.abs(orientTo.getX()));
+			orientTo.setY(Math.abs(orientTo.getY()));
+			orientTo.setZ(Math.abs(orientTo.getZ()));
+			if (orientTo.getX() < orientTo.getZ() && orientTo.getX() < orientTo.getY()) {
+				orient = new Vector(1, 0, 0);
+			} else if (orientTo.getZ() < orientTo.getX() && orientTo.getZ() < orientTo.getY()) {
+				orient = new Vector(0, 0, 1);
+			} else {
+				orient = new Vector(0, 1, 0);
+			}
+		} else {
+			orient = new Vector(0, 1, 0);
+		}
 	}
 	
 	public void setFallingBlockVelocity(Vector velocity) {
 		fallingBlockVelocity = velocity;
 	}
 	
-	public void setYMax(int maxDY) {
-		this.maxDY = maxDY;
+	public void setOrientDimensionMax(int maxDim) {
+		this.maxOrientDimension = maxDim;
 	}
 	
-	public void setYMin(int minDY) {
-		this.minDY = minDY;
+	public void setOrientDimensionMin(int minDim) {
+		this.minOrientDimension = minDim;
 	}
 	
 	protected boolean canAttachTo(Material material) {
@@ -130,36 +146,51 @@ public class ConstructBatch extends VolumeBatch {
 			}
 		} else {
 			int yBounds = radius;
-			if (maxDY != null || minDY != null) {
-				yBounds = Math.max(minDY == null ? radius : minDY, maxDY == null ? radius : maxDY);
+			if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockY() > 0) {
+				yBounds = Math.max(minOrientDimension == null ? radius : minOrientDimension, maxOrientDimension == null ? radius : maxOrientDimension);
 			}
-			yBounds = Math.min(yBounds,255);
+			yBounds = Math.min(yBounds, 255);
 			
-			while (processedBlocks <= maxBlocks && x <= radius) {
+			while (processedBlocks <= maxBlocks && !finishedNonAttached) {
 				if (!fillBlock(x, y, z)) {
 					return processedBlocks;
+				}
+				
+				int xBounds = r;
+				int zBounds = r;
+				if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockX() > 0) {
+					xBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
+				}
+				
+				if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockZ() > 0) {
+					zBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
 				}
 				
 				y++;
 				if (y > yBounds) {
 					y = 0;
-					if (x < r) {
+					if (x < xBounds) {
 						x++;
 					} else {
 						z--;
 						if (z < 0) {
 							r++;
-							z = r;
+							zBounds = r;
+							if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockZ() > 0) {
+								zBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
+							}
+							z = zBounds;
 							x = 0;
 						}
 					}
 				}
+				
+				if (r > radius) 
+				{
+					finishedNonAttached = true;
+					break;
+				}
 				processedBlocks++;
-			}
-			
-			if (r > radius) 
-			{
-				finishedNonAttached = true;
 			}
 		}
 		
@@ -269,7 +300,7 @@ public class ConstructBatch extends VolumeBatch {
 					mz++;
 					int outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 					fillBlock = maxDistanceSquared >= distanceSquared && maxDistanceSquared <= outerDistanceSquared;
-				}
+				}	
 				//spells.getLog().info("(" + x + "," + y + "," + z + ") : " + fillBlock + " = " + distanceSquared + " : " + maxDistanceSquared);
 				break;
 			case PYRAMID:
@@ -308,9 +339,6 @@ public class ConstructBatch extends VolumeBatch {
 	public boolean constructBlock(int dx, int dy, int dz)
 	{
 		// Initial range checks, we skip everything if this is not sane.
-		if (minDY != null && dy < minDY) return true;
-		if (maxDY != null && dy > maxDY) return true;
-		
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
@@ -334,6 +362,9 @@ public class ConstructBatch extends VolumeBatch {
 			BlockData attachBlock = new BlockData(block);
 			attachBlock.updateFrom(brush);
 			attachedBlocks.add(attachBlock);
+			
+
+			
 			return true;
 		}
 		
