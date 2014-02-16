@@ -38,7 +38,7 @@ public class MaterialBrush extends MaterialBrushData {
 	private MaterialMapCanvas mapCanvas = null;
 	private Material mapMaterialBase = Material.STAINED_CLAY;
 	private Schematic schematic;
-	private boolean fillAir = true;
+	private boolean fillWithAir = true;
 	
 	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
 		super(material, data);
@@ -54,12 +54,12 @@ public class MaterialBrush extends MaterialBrushData {
 		} else {
 			isValid = false;
 		}
-		fillAir = true;
+		fillWithAir = true;
 	}
 	
 	public void enableCloning() {
 		if (this.mode != BrushMode.CLONE) {
-			fillAir = this.mode == BrushMode.ERASE;
+			fillWithAir = this.mode == BrushMode.ERASE;
 			this.mode = BrushMode.CLONE;
 		}
 	}
@@ -68,11 +68,12 @@ public class MaterialBrush extends MaterialBrushData {
 		if (this.mode != BrushMode.ERASE) {
 			this.setMaterial(Material.AIR);
 			this.mode = BrushMode.ERASE;
+			fillWithAir = true;
 		}
 	}
 	
 	public void enableMap() {
-		fillAir = false;
+		fillWithAir = false;
 		this.mode = BrushMode.MAP;
 		if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
 			|| this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
@@ -83,7 +84,7 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	public void enableSchematic(String name) {
 		if (this.mode != BrushMode.SCHEMATIC) {
-			fillAir = this.mode == BrushMode.ERASE;
+			fillWithAir = this.mode == BrushMode.ERASE;
 			this.mode = BrushMode.SCHEMATIC;
 		}
 		this.schematicName = name;
@@ -92,7 +93,7 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	public void enableReplication() {
 		if (this.mode != BrushMode.REPLICATE) {
-			fillAir = this.mode == BrushMode.ERASE;
+			fillWithAir = this.mode == BrushMode.ERASE;
 			this.mode = BrushMode.REPLICATE;
 		}
 	}
@@ -197,7 +198,7 @@ public class MaterialBrush extends MaterialBrushData {
 				if (!block.getChunk().isLoaded()) return false;
 	
 				updateFrom(block, controller.getRestrictedMaterials());
-				isValid = fillAir || material != Material.AIR;
+				isValid = fillWithAir || material != Material.AIR;
 			}
 		}
 		
@@ -225,7 +226,7 @@ public class MaterialBrush extends MaterialBrushData {
 				isValid = false;
 			} else {
 				updateFrom(newMaterial);
-				isValid = fillAir || newMaterial.getMaterial() != Material.AIR;
+				isValid = fillWithAir || newMaterial.getMaterial() != Material.AIR;
 			}
 		}
 		

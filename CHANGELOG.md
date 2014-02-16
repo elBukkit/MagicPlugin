@@ -3,6 +3,7 @@
 ## 2.9.4
 
  - Add Regenerate spell (admins only, no undo!)
+ - Fix blast and superblast ("destructible" spell property changed)
 
 ## 2.9.3
 
