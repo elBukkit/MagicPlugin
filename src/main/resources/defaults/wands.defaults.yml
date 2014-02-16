@@ -321,6 +321,7 @@ random:
       superpyramid: 0,0,1,10
       superblob: 0,0,1,10
       superdisc: 0,0,1,10
+      superring: 0,0,1,10
       superconvert: 0,0,1,10
       superiterate: 0,0,1,10
       flamethrower: 0,5,10,20
@@ -712,6 +713,7 @@ engineer:
         - superpyramid
         - superdome
         - superdisc
+        - superring
         - superiterate
         - levitate
         - paint
@@ -1458,6 +1460,7 @@ wolf:
         - superpyramid
         - superbox
         - superdisc
+        - superring
         - disc
         - superdome
         - dome
