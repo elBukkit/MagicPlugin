@@ -1,0 +1,49 @@
+#
+# Use this wands.yml to prevent randomized wands from having any construction spells or materials.
+#
+# This does not affect any other wands.
+#
+
+random:
+    spells:
+      arrow: 100,80,70,30
+      arrowrain: 10,30,50,40
+      blink: 0,0,0,20
+      boom: 20,50,60,40
+      boon: 0,5,10,20
+      camera: 0,10,30,40
+      cat: 5,20,50,10
+      cloak: 10,20,30,20
+      curse: 0,1,10,25
+      familiar: 10,30,40,20
+      farm: 0,0,10,20
+      flare: 110,80,60,20
+      fling: 0,5,70,80
+      force: 5,10,20,60
+      gills: 10,11,20,25
+      heal: 1,5,10,30
+      tesseract: 80,50,40,20
+      leap: 70,80,60,40
+      push: 10,20,40,30
+      pull: 10,20,40,30
+      sniper: 0,0,30,40
+      mob: 0,0,5,10
+      monster: 5,20,30,30
+      wolf: 0,10,20,50
+      lightning: 40,50,30,5
+      storm: 0,0,10,90
+      phase: 0,5,15,25
+      recall: 0,5,15,25
+      shrink: 5,20,30,90
+      invincible: 0,0,10,20
+      levitate: 0,0,10,30
+      neutron: 0,0,10,15
+      day: 0,5,10,30
+      night: 0,0,1,5
+      time: 0,0,0,1
+      disarm: 0,0,0,1
+      weather: 0,0,0,1
+# Materials are pointless without construction spells, so just remove them all.
+    material_count:
+      0: 100, 100, 100, 100
+    materials: []
