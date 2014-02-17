@@ -207,7 +207,7 @@ public class Schematic {
 											Enchantment enchantmentType = Enchantment.getById(enchantment.getKey());
 											newStack.addEnchantment(enchantmentType, enchantment.getValue());
 										} catch (Exception ex) {
-											ex.printStackTrace();
+											// ex.printStackTrace();
 										}
 									}
 								}

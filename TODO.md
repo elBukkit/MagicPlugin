@@ -3,11 +3,14 @@
 ## For 2.9.4
 
  - Fix website, can't parse new effect nodes
+ 
+ - Try using xp levels instead of progress bar for display of actual mana amount.
 
  - Trying to upgrade a non-modifiable wand doesn't print a message?
  
  - Make spells usable without a player, clean up strong Player references
  - Add location, direction, target parameters to spell
+ - Need to purge player data on save.
 
 ## For 2.9.5
 
