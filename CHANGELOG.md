@@ -9,6 +9,7 @@
  - An empty wand will fill on activate if fill_wands is set to true.
  - Allow "wand" on Essentials sign for an empty wand.
  - Some fixes to blink's ledge detection that would let you pass through something unintentionally.
+ - Fix permissions if you have Magic.commands.wand.fill but not Magic.commands.wand, it should still work. (lathame)
 
 ## 2.9.3
 

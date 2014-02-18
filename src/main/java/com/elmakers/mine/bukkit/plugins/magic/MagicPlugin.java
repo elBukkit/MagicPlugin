@@ -578,8 +578,15 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
-		if (!controller.hasPermission(sender, "Magic.commands." + command + "")) return true;
-		if (subCommand.length() > 0 && !controller.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
+		if (subCommand.length() == 0) 
+		{
+			if (!controller.hasPermission(sender, "Magic.commands." + command)) return true;
+			if (!controller.hasPermission(sender, "Magic.commands." + command + ".wand.default", true)) return true;
+		} 
+		else 
+		{
+			if (!controller.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
+		}
 		
 		return onWand(sender, player, args);
 	}
