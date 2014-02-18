@@ -1019,7 +1019,7 @@ regenerate:
            material: dirt
     parameters:
         allow_max_range: false
-        target: other
+        target: select
         range: 64
         max_dimension: 64
         transparent: transparent_to_construction

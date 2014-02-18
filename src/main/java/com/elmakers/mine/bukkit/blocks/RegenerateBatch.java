@@ -35,8 +35,8 @@ public class RegenerateBatch extends VolumeBatch {
 		dx = (int)Math.signum(deltax);
 		dz = (int)Math.signum(deltaz);
 
-		x = p1.getBlockX();
-		z = p1.getBlockZ();
+		x = p1.getChunk().getX();
+		z = p1.getChunk().getZ();
 	}
 	
 	public boolean checkDimension(int maxDimension) {

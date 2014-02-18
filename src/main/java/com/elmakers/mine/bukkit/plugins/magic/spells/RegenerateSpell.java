@@ -74,7 +74,7 @@ public class RegenerateSpell extends Spell
 	{
 		if (targetBlock != null)
 		{
-			sendMessage("Cancelled fill");
+			sendMessage("Cancelled regenerate");
 			deactivate();
 			return true;
 		}
