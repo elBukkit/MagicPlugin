@@ -725,7 +725,7 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 		
-		fillWand(wand, player);
+		wand.fill(player);
 		mage.sendMessage("Your wand now contains all the spells you know");
 		if (sender != player) {
 			sender.sendMessage(player.getName() + "'s wand filled");
@@ -908,7 +908,7 @@ public class MagicPlugin extends JavaPlugin
 		
 		// Check for special "fill wands" configuration
 		if (controller.fillWands() && parameters.length == 0) {
-			fillWand(wand, player);
+			wand.fill(player);
 		}
 	
 		// Place directly in hand if possible
@@ -924,18 +924,6 @@ public class MagicPlugin extends JavaPlugin
 			sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
 		}
 		return true;
-	}
-	
-	protected void fillWand(Wand wand, Player player) {
-		List<Spell> allSpells = controller.getAllSpells();
-
-		for (Spell spell : allSpells)
-		{
-			if (spell.hasSpellPermission(player) && spell.getIcon().getMaterial() != Material.AIR)
-			{
-				wand.addSpell(spell.getKey());
-			}
-		}
 	}
 	
 	public boolean processCastCommand(CommandSender sender, Player player, String[] castParameters)

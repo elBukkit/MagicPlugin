@@ -1829,6 +1829,18 @@ public class Wand implements CostReducer {
 		}
 	}
 	
+	public void fill(Player player) {
+		List<Spell> allSpells = controller.getAllSpells();
+
+		for (Spell spell : allSpells)
+		{
+			if (spell.hasSpellPermission(player) && spell.getIcon().getMaterial() != Material.AIR)
+			{
+				addSpell(spell.getKey());
+			}
+		}
+	}
+	
 	public void activate(Mage mage) {
 		Player player = mage.getPlayer();
 		if (!Wand.hasActiveWand(player)) {
@@ -1845,8 +1857,18 @@ public class Wand implements CostReducer {
 	}
 		
 	public void activate(Mage mage, ItemStack wandItem) {
+		if (mage == null || wandItem == null) return;
+		
 		// Update held item, it may have been copied since this wand was created.
 		this.item = wandItem;
+		
+		// Check for an empty wand and auto-fill
+		if (controller.fillWands()) {
+			if (getSpells().size() == 0) {
+				fill(mage.getPlayer());
+			}
+		}
+		
 		this.mage = mage;
 		Player player = mage.getPlayer();
 		saveState();
