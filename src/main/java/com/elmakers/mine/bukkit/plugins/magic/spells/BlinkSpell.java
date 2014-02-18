@@ -59,7 +59,7 @@ public class BlinkSpell extends Spell
 		{
 			return descend();
 		}
-		else if (elevateType.equals("ascend") || getYRotation() > 80 && autoAscend)
+		else if (elevateType.equals("ascend") || (getYRotation() > 80 && autoAscend))
 		{
 			return ascend();
 		}
@@ -73,24 +73,6 @@ public class BlinkSpell extends Spell
 				setTargetHeightRequired(2);
 				targetThrough(Material.AIR);
 			}
-			else
-			{
-				// TODO: Load this from a special material list.
-				targetThrough(Material.GLASS);
-				targetThrough(Material.THIN_GLASS);
-				// targetThrough(Material.STAINED_GLASS);
-				// targetThrough(Material.STAINED_GLASS_PANE);
-				targetThrough(Material.WATER);
-				targetThrough(Material.STATIONARY_WATER);
-			}
-		} else {
-			// TODO: Load this from a special material list.
-			targetThrough(Material.GLASS);
-			targetThrough(Material.THIN_GLASS);
-			// targetThrough(Material.STAINED_GLASS);
-			// targetThrough(Material.STAINED_GLASS_PANE);
-			targetThrough(Material.WATER);
-			targetThrough(Material.STATIONARY_WATER);
 		}
 
 		Block target = getTargetBlock();
@@ -103,7 +85,7 @@ public class BlinkSpell extends Spell
 		}
 
 		World world = getPlayer().getWorld();
-
+		
 		// Don't drop the player too far, and make sure there is somewhere to stand
 		Block destination = face;
 		int distanceUp = 0;
@@ -126,33 +108,38 @@ public class BlinkSpell extends Spell
 		{
 			ledge = target;
 			Block inFront = face;
-			Block oneUp = null;
-			Block twoUp = null;
-
-			do
+			Block oneUp = ledge.getRelative(BlockFace.UP);
+			Block twoUp = oneUp.getRelative(BlockFace.UP);
+			Block faceOneUp = face.getRelative(BlockFace.UP);
+			Block faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
+			
+			// Check for ability to pass through the face block
+			while
+			(
+					(autoPassthrough || autoAscend || 
+					isTransparent(face.getType()) && isTransparent(faceOneUp.getType()) && isTransparent(faceTwoUp.getType()))
+				&&		distanceUp < verticalSearchDistance
+				&&		isOkToStandIn(inFront.getType())
+				&&	(
+							!isOkToStandOn(ledge.getType())
+					||		!isOkToStandIn(oneUp.getType())
+					||		!isOkToStandIn(twoUp.getType())
+					)
+			) 
 			{
-				oneUp = ledge.getRelative(BlockFace.UP);
-				twoUp = oneUp.getRelative(BlockFace.UP);
+				faceOneUp = face.getRelative(BlockFace.UP);
+				faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
 				inFront = inFront.getRelative(BlockFace.UP);
 				ledge = ledge.getRelative(BlockFace.UP);
 				distanceUp++;
 			}
-			while
-				(
-						distanceUp < verticalSearchDistance
-						&&		isOkToStandIn(inFront.getType())
-						&&	(
-								!isOkToStandOn(groundBlock.getType())
-								||		!isOkToStandIn(oneUp.getType())
-								||		!isOkToStandIn(twoUp.getType())
-								)
-						);
-
+		} else {
+			ledge = null;
 		}
 
-		if (ledge != null && distanceUp < distanceDown)
+		if (ledge != null && distanceUp < distanceDown && isOkToStandOn(ledge.getType()))
 		{
-			destination = ledge;
+			destination = ledge.getRelative(BlockFace.UP);
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);

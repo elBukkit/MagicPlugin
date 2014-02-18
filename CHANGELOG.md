@@ -8,6 +8,7 @@
  - Add "mana_display" config property, which can be used to display mana as a number rather than a bar.
  - An empty wand will fill on activate if fill_wands is set to true.
  - Allow "wand" on Essentials sign for an empty wand.
+ - Some fixes to blink's ledge detection that would let you pass through something unintentionally.
 
 ## 2.9.3
 
