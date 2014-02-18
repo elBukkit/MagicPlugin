@@ -1168,6 +1168,10 @@ public class MagicController implements Listener
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		
+		if (properties.containsKey("mana_display")) {
+			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
+		}
+		
 		// Parse wand settings
 		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
 		Wand.CopyMaterial = properties.getMaterial("copy_item", Wand.CopyMaterial);

@@ -155,6 +155,9 @@ indestructible_wands: true
 # "cycle" : Right-click will cycle to the next active spell (no inventory or icons)
 default_wand_mode: inventory
 
+# How to display Mana. Options are "bar" and "number"
+mana_display: bar
+
 # Crafting settings for crafting wands
 crafting_material_upper: nether_star
 crafting_material_lower: blaze_rod

@@ -5,6 +5,7 @@
  - Add Regenerate spell (admins only, no undo!)
  - Fix blast and superblast ("destructible" spell property changed)
  - Add "SuperRing" spell, allow different ring/disc orientations.
+ - Add "mana_display" config property, which can be used to display mana as a number rather than a bar.
 
 ## 2.9.3
 

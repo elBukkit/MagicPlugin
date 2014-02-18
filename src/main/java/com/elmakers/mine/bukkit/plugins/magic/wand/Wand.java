@@ -110,7 +110,8 @@ public class Wand implements CostReducer {
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
-	public static boolean SchematicsEnabled = false;
+	public static boolean SchematicsEnabled = false;	
+	public static boolean displayManaAsBar = true;
 	public static Material WandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static Material EraseMaterial = Material.SULPHUR;
@@ -1900,8 +1901,13 @@ public class Wand implements CostReducer {
 	protected void updateMana() {
 		if (mage != null && xpMax > 0 && xpRegeneration > 0) {
 			Player player = mage.getPlayer();
-			player.setLevel(0);
-			player.setExp((float)xp / (float)xpMax);
+			if (displayManaAsBar) {
+				player.setLevel(0);
+				player.setExp((float)xp / (float)xpMax);
+			} else {
+				player.setLevel(xp);
+				player.setExp(0);
+			}
 		}
 	}
 	
