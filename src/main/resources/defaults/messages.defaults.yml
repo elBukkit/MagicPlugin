@@ -547,8 +547,8 @@ wands:
         name: Camera
         description: Take a portrait of yourself or others
     default:
-        name: Empty Wand
-        description: The default wand
+        name: Wand
+        description: A magic wand
     white:
         name: The White Wand
         description: A wand for master white wizards
