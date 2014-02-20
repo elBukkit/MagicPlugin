@@ -104,7 +104,7 @@ public class BlinkSpell extends Spell
 
 		Block ledge = null;
 		// Also check for a ledge above the target
-		if (!isReverseTargeting())
+		if (!isReverseTargeting() && (!face.equals(target.getRelative(BlockFace.DOWN)) || autoAscend))
 		{
 			ledge = target;
 			Block inFront = face;
