@@ -3,6 +3,7 @@
 ## 2.9.4
 
  - Fix Essentials' ItemDB integration
+ - Fix using overridden command names (use label, not command name)
  - Add Regenerate spell (admins only, no undo!)
  - Fix blast and superblast ("destructible" spell property changed)
  - Add "SuperRing" spell, allow different ring/disc orientations.

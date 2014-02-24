@@ -272,9 +272,7 @@ public class MagicPlugin extends JavaPlugin
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
 	{
-		String commandName = cmd.getName();
-
-		if (commandName.equalsIgnoreCase("magic") && args.length > 0)
+		if (commandLabel.equalsIgnoreCase("magic") && args.length > 0)
 		{
 			String subCommand = args[0];
 			if (sender instanceof Player)
@@ -409,7 +407,7 @@ public class MagicPlugin extends JavaPlugin
 			}
 		}
 
-		if (commandName.equalsIgnoreCase("wandp"))
+		if (commandLabel.equalsIgnoreCase("wandp"))
 		{
 			if (args.length == 0) {
 				sender.sendMessage("Usage: /wandp [player] [wand name/command]");
@@ -428,7 +426,7 @@ public class MagicPlugin extends JavaPlugin
 			return processWandCommand("wandp", sender, player, args2);
 		}
 
-		if (commandName.equalsIgnoreCase("castp"))
+		if (commandLabel.equalsIgnoreCase("castp"))
 		{
 			if (args.length == 0) {
 				sender.sendMessage("Usage: /castp [player] [spell] <parameters>");
@@ -448,12 +446,12 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		if (!(sender instanceof Player)) {
-			if (commandName.equalsIgnoreCase("spells"))
+			if (commandLabel.equalsIgnoreCase("spells"))
 			{
 				listSpells(sender, -1, null);
 				return true;
 			}
-			if (commandName.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("list"))
+			if (commandLabel.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("list"))
 			{
 				onWandList(sender);
 				return true;
@@ -464,19 +462,19 @@ public class MagicPlugin extends JavaPlugin
 
 		// Everything beyond this point is is-game only
 		Player player = (Player)sender;
-		if (commandName.equalsIgnoreCase("wand"))
+		if (commandLabel.equalsIgnoreCase("wand"))
 		{
 			return processWandCommand("wand", sender, player, args);
 		}
 
-		if (commandName.equalsIgnoreCase("cast"))
+		if (commandLabel.equalsIgnoreCase("cast"))
 		{
 			if (!controller.hasPermission(player, "Magic.commands.cast")) return false;
 			return processCastCommand(player, player, args);
 
 		}
 
-		if (commandName.equalsIgnoreCase("spells"))
+		if (commandLabel.equalsIgnoreCase("spells"))
 		{
 			if (!controller.hasPermission(player, "Magic.commands.spells")) return false;
 			return onSpells(player, args);
