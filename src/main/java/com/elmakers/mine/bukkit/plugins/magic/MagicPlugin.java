@@ -668,6 +668,13 @@ public class MagicPlugin extends JavaPlugin
 			}
 			return true;
 		}
+		if (!wand.isModifiable()) {
+			mage.sendMessage("Your wand can not be modified");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + "'s wand can not be modified");
+			}
+			return true;
+		}
 		ConfigurationNode node = new ConfigurationNode();
 		String value = parameters[1];
 		for (int i = 2; i < parameters.length; i++) {
@@ -697,6 +704,14 @@ public class MagicPlugin extends JavaPlugin
 			mage.sendMessage("Equip a wand first");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
+			return true;
+		}
+
+		if (!wand.isModifiable()) {
+			mage.sendMessage("Your wand can not be modified");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + "'s wand can not be modified");
 			}
 			return true;
 		}
