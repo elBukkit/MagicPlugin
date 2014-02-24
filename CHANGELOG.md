@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.9.5
+
 ## 2.9.4
 
  - Fix Essentials' ItemDB integration
