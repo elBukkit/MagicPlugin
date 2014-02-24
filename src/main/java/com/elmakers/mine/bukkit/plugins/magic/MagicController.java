@@ -2045,9 +2045,11 @@ public class MagicController implements Listener
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
+		if (event.isCancelled()) return;
+		
 		Mage mage = getMage(event.getPlayer());
 		ItemStack pickup = event.getItem().getItemStack();
 		boolean isWand = Wand.isWand(pickup);

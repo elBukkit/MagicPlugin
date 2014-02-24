@@ -1,18 +1,16 @@
 # TODO
 
-## For 2.9.4
+## For 2.9.5
 
  - Fix website, can't parse new effect nodes
- 
- - Try using xp levels instead of progress bar for display of actual mana amount.
 
- - Trying to upgrade a non-modifiable wand doesn't print a message?
+ - Something is wonky about targeting, or message cooldowns, or something- fill, superblob, etc.
  
  - Make spells usable without a player, clean up strong Player references
  - Add location, direction, target parameters to spell
- - Need to purge player data on save.
+ - Need to purge player data on save (When possible)
 
-## For 2.9.5
+## For 2.9.6
 
  - Undo fails in some cases (overlapping undo queues)
   - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
@@ -29,6 +27,7 @@
  - Fix wand inventory glitches and special-cases
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
+ - Finish localization
 
 NEAR-FUTURE STUFF:
 

@@ -4,6 +4,7 @@
 
  - Fix Essentials' ItemDB integration
  - Fix using overridden command names (use label, not command name)
+ - Reduce item pickup event priority (fixes using inventory mode with special pickups, like from MobMoney)
  - Add Regenerate spell (admins only, no undo!)
  - Fix blast and superblast ("destructible" spell property changed)
  - Add "SuperRing" spell, allow different ring/disc orientations.
