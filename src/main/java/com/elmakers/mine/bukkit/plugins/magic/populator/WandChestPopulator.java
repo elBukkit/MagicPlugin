@@ -89,7 +89,7 @@ public class WandChestPopulator extends BlockPopulator {
 						Chest chest = (Chest)block.getState();
 						String[] wandNames = populateChest(chest);
 						if (wandNames.length > 0 && log != null) {
-							log.info("Added wands to chest: " + StringUtils.join(wandNames, ", ") + " at " + (x + source.getX() * 16) + "," + y + "," + (z + source.getZ() * 16));
+							log.info("Added wands to chest: " + StringUtils.join(wandNames, ", ") + " at " + world.getName() + ": " + (x + source.getX() * 16) + "," + y + "," + (z + source.getZ() * 16));
 						}
 					}	
 				}
