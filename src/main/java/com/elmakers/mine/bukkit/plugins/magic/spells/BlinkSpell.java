@@ -85,7 +85,7 @@ public class BlinkSpell extends Spell
 		}
 
 		World world = getPlayer().getWorld();
-		
+
 		// Don't drop the player too far, and make sure there is somewhere to stand
 		Block destination = face;
 		int distanceUp = 0;
@@ -113,25 +113,29 @@ public class BlinkSpell extends Spell
 			Block faceOneUp = face.getRelative(BlockFace.UP);
 			Block faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
 			
-			// Check for ability to pass through the face block
-			while
-			(
-					(autoPassthrough || autoAscend || 
-					isTransparent(face.getType()) && isTransparent(faceOneUp.getType()) && isTransparent(faceTwoUp.getType()))
-				&&		distanceUp < verticalSearchDistance
-				&&		isOkToStandIn(inFront.getType())
-				&&	(
-							!isOkToStandOn(ledge.getType())
-					||		!isOkToStandIn(oneUp.getType())
-					||		!isOkToStandIn(twoUp.getType())
-					)
-			) 
-			{
-				faceOneUp = face.getRelative(BlockFace.UP);
-				faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
-				inFront = inFront.getRelative(BlockFace.UP);
-				ledge = ledge.getRelative(BlockFace.UP);
-				distanceUp++;
+			if (!autoPassthrough && !autoAscend && (!isTransparent(oneUp.getType()) || !isTransparent(twoUp.getType()) || !isTransparent(face.getType()) || !isTransparent(faceOneUp.getType()) || !isTransparent(faceTwoUp.getType()))) {
+				ledge = null;
+			} else {
+				// Check for ability to pass through the face block
+				while
+				(
+						(autoPassthrough || autoAscend || 
+						isTransparent(face.getType()) && isTransparent(faceOneUp.getType()) && isTransparent(faceTwoUp.getType()))
+					&&		distanceUp < verticalSearchDistance
+					&&		isOkToStandIn(inFront.getType())
+					&&	(
+								!isOkToStandOn(ledge.getType())
+						||		!isOkToStandIn(oneUp.getType())
+						||		!isOkToStandIn(twoUp.getType())
+						)
+				) 
+				{
+					faceOneUp = faceOneUp.getRelative(BlockFace.UP);
+					faceTwoUp = faceOneUp.getRelative(BlockFace.UP);
+					inFront = inFront.getRelative(BlockFace.UP);
+					ledge = ledge.getRelative(BlockFace.UP);
+					distanceUp++;
+				}
 			}
 		} else {
 			ledge = null;
