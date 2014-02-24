@@ -15,6 +15,7 @@ public class MagicItemDb extends ItemDb {
 	public MagicItemDb(final MagicController controller, final Object ess) {
 		super((IEssentials)ess);
 		this.controller = controller;
+		this.reloadConfig();
 	}
 	
 	@Override
