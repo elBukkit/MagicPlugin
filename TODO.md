@@ -2,6 +2,8 @@
 
 ## For 2.9.5
 
+ - Use player UUID's instead of names. Might need to migrate player data for this?
+
  - Fix website, can't parse new effect nodes
 
  - Something is wonky about targeting, or message cooldowns, or something- fill, superblob, etc.

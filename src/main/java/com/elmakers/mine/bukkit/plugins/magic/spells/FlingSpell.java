@@ -66,7 +66,7 @@ public class FlingSpell extends Spell
 			velocity.setZ(zValue);
 		}
 
-		if (getPlayer().getLocation().getBlockY() >= 256)
+		if (mage.getLocation().getBlockY() >= 256)
 		{
 			velocity.setY(0);
 		}
