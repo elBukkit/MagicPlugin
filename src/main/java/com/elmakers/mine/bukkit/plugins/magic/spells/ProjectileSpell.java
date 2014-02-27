@@ -28,10 +28,6 @@ public class ProjectileSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
-		
 		Player player = getPlayer();
 		if (player == null) {
 			return SpellResult.PLAYER_REQUIRED;
@@ -74,6 +70,10 @@ public class ProjectileSpell extends Spell
 			castMessage("Your projectile fizzled");
 			controller.getLogger().warning(ex.getMessage());
 			return SpellResult.FAIL;
+		}
+		
+		if (projectileType != Arrow.class && !mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
 		Location location = mage.getLocation();
