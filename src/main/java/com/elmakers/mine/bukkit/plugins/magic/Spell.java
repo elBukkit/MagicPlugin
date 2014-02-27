@@ -412,6 +412,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		initializeTargeting();
 		
 		if (pvpRestricted && !controller.isPVPAllowed(mage.getLocation())) {
+			sendMessage(Messages.get("costs.insufficient_permissions"));
 			return false;
 		}
 		
