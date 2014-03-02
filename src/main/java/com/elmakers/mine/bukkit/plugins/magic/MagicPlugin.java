@@ -957,7 +957,7 @@ public class MagicPlugin extends JavaPlugin
 			parameters[i - 1] = castParameters[i];
 		}
 
-		Player usePermissions = (sender instanceof Player) ? (Player)sender : player;
+		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
 		Mage mage = controller.getMage(player);
 		Spell spell = mage.getSpell(spellName, usePermissions);
 		if (spell == null)

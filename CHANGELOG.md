@@ -2,6 +2,8 @@
 
 ## 2.9.5
 
+ - Fix castp permission (target player doesn't need permission, only command executor needs it)
+
 ## 2.9.4
 
  - Fix Essentials' ItemDB integration
