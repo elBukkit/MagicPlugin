@@ -4,7 +4,7 @@ version: 2.9.5
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
-softdepend: [WorldGuard, WorldEdit, Essentials, dynmap]
+softdepend: [WorldGuard, WorldEdit, Essentials, dynmap, Factions]
 load: startup
 commands:
   cast:

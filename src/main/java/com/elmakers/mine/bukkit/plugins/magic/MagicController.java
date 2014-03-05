@@ -435,19 +435,30 @@ public class MagicController implements Listener
 
 	public boolean hasBuildPermission(Player player, Block block) 
 	{
-		// Check the region manager.
-		// TODO: We need to be able to do WG permission checks while a player is offline.
-		if (!regionManagerEnabled || regionManager == null || player == null) return true;
+		// Check the region manager, or Factions
+		// TODO: We need to be able to do permission checks while a player is offline. This is currently exploitable. (!)
+		boolean allowed = true;
 		
-		try {
-			Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
-			if (canBuildMethod != null) {
-				return (Boolean)canBuildMethod.invoke(regionManager, player, block);
+		if (regionManagerEnabled && player != null && block != null && regionManager != null && regionManagerCanBuildMethod != null) {
+			try {
+				allowed = allowed && (Boolean)regionManagerCanBuildMethod.invoke(regionManager, player, block);
+			} catch (Throwable ex) {
+				ex.printStackTrace();
+				allowed = false;
 			}
-		} catch (Throwable ex) {
 		}
 		
-		return false;
+		if (factionsEnabled && player != null && block != null && factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
+			try {
+				Object loc = psFactoryMethod.invoke(null, block.getLocation());
+				allowed = allowed && loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);
+			} catch (Throwable ex) {
+				ex.printStackTrace();
+				allowed = false;
+			}
+		}
+		
+		return allowed;
 	}
 	
 	public boolean isPVPAllowed(Location location)
@@ -617,6 +628,30 @@ public class MagicController implements Listener
 		} catch (Throwable ex) {
 		}
 		
+		// Also no Factions API
+		if (factionsEnabled) {
+			try {
+				Class<?> psClass = Class.forName("com.massivecraft.mcore.ps.PS");
+				factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsListenerMain");
+				factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Player.class, psClass, Boolean.TYPE);
+				psFactoryMethod = psClass.getMethod("valueOf", Location.class);
+				if (factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
+					getLogger().info("Factions found, build permissions will be respected.");
+				} else {
+					factionsManager = null;
+					factionsCanBuildMethod = null;
+					psFactoryMethod = null;
+				}
+			} catch (Throwable ex) {
+			}
+			
+			if (factionsManager == null) {
+				getLogger().info("Factions not found, will not integrate.");
+			}
+		} else {
+			getLogger().info("Factions integration disabled");
+		}
+		
 		if (cuboidClipboardClass == null) {
 			getLogger().info("WorldEdit not found, schematic brushes will not work.");
 			Wand.SchematicsEnabled = false;
@@ -626,8 +661,8 @@ public class MagicController implements Listener
 		if (regionManagerEnabled) {
 			try {
 				regionManager = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-				Method canBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
-				if (canBuildMethod != null) {
+				regionManagerCanBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
+				if (regionManagerCanBuildMethod != null) {
 					getLogger().info("WorldGuard found, will respect build permissions for construction spells");
 				} else {
 					regionManager = null;
@@ -636,10 +671,10 @@ public class MagicController implements Listener
 			}
 			
 			if (regionManager == null) {
-				getLogger().info("WorldGuard not found, not using a region manager.");
+				getLogger().info("WorldGuard not found, region protection and pvp checks will not be used.");
 			}
 		} else {
-			getLogger().info("Region manager disabled");
+			getLogger().info("Region manager disabled, region protection and pvp checks will not be used.");
 		}
 		
 		// Try to (dynamically) link to dynmap:
@@ -1166,6 +1201,7 @@ public class MagicController implements Listener
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
+		factionsEnabled = properties.getBoolean("factions_enabled", factionsEnabled);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		
 		if (properties.containsKey("mana_display")) {
@@ -2421,6 +2457,11 @@ public class MagicController implements Listener
 	 private final File							 defaultsFolder;
 	 private final File							 playerDataFolder;
 	 
+	 private boolean							 factionsEnabled				= true;
+	 private Class<?>							 factionsManager				= null;
+	 private Method								 factionsCanBuildMethod   		= null;
+	 private Method								 psFactoryMethod		   		= null;
+	 private Method								 regionManagerCanBuildMethod    = null;
 	 private boolean							 regionManagerEnabled           = true;
 	 private Object								 regionManager					= null;
 	 private String								 extraSchematicFilePath			= null;

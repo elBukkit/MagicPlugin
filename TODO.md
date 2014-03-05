@@ -2,24 +2,25 @@
 
 ## For 2.9.5
 
- - Use player UUID's instead of names. Might need to migrate player data for this?
-
- - Fix website, can't parse new effect nodes
-
- - Something is wonky about targeting, or message cooldowns, or something- fill, superblob, etc.
- 
+ - Allow customization of Building and PVP permission checks.
+ - Fix alter on entities- can't cast on horses?
+ - Fix materials in cast messages
+ - Add schematic list command
+ - Fix message cooldowns- something is perhaps wrong there?
  - Make spells usable without a player, clean up strong Player references
  - Add location, direction, target parameters to spell
- - Need to purge player data on save (When possible)
+ - Purge player data on save (When possible)
 
 ## For 2.9.6
 
+ - Maybe yse player UUID's instead of names. Might need to migrate player data for this?
  - Undo fails in some cases (overlapping undo queues)
   - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
   - BlockData tracks only the first recorded materialdata, commit will replace
 
 ## For 3.0.0
 
+ - Fix website, can't parse new effect nodes
  - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
  - Make sure adding spells/materials never removes any, also opening/closing the inventory
@@ -108,8 +109,6 @@ OTHER STUFF:
  - Specific protection for suffocation damage, underwater breathing (air regeneration)
  - Maybe data-drive blink's special list of things it will try to target through?
  - Maybe make wands regenerate while you're not holding them (timer-based)?
- 
- - Factions support .. ?
  
  TESTING / TWEAKING:
  

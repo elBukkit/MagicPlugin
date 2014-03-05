@@ -250,3 +250,6 @@ dynmap_show_spells: true
 
 # Enable worldguard protection against construction spells
 region_manager_enabled: true
+
+# Enable Factions protection against construction spells
+factions_enabled: true
