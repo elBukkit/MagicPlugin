@@ -3,8 +3,7 @@
 ## For 2.9.5
 
  - Allow customization of Building and PVP permission checks.
- - Fix alter on entities- can't cast on horses?
- - Fix materials in cast messages
+ - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
  - Add schematic list command
  - Fix message cooldowns- something is perhaps wrong there?
  - Make spells usable without a player, clean up strong Player references

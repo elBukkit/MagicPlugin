@@ -1668,6 +1668,7 @@ alter:
         -  class: EffectTrail
            particle: block_breaking
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 32
         depth: 0
