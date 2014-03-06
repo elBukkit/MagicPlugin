@@ -12,9 +12,7 @@
     - Magic.commands.wand.*
     - Magic.commands.spells
     - Magic.commands.cast
-    - Magic.cast.rewind
-    - Magic.cast.disarm
-    - Magic.cast.gather
+    - Magic.cast.*
     - Magic.commands.magic
     - Magic.commands.magic.list
 
@@ -23,6 +21,7 @@
     - Magic.commands.wandp
     - Magic.commands.wandp.*
     - Magic.commands.castp
+    - Magic.commands.castp.*
     - Magic.commands.magic.load
     - Magic.commands.magic.save
     - Magic.commands.magic.populate
