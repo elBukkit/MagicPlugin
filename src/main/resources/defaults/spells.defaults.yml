@@ -82,12 +82,6 @@
 # particle: <particle name - list TBD>
 # 
 
-light:
-    icon: redstone_torch_on
-    category: xperimental
-    class: LightSpell
-    costs:
-        xp: 50
 curse:
     icon: spider_eye
     category: dark

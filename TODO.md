@@ -2,6 +2,7 @@
 
 ## For 2.9.5
 
+ - Support schematic entity import for paintings and item frames (at least)
  - Allow customization of Building and PVP permission checks.
  - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
  - Add schematic list command
@@ -9,6 +10,9 @@
  - Make spells usable without a player, clean up strong Player references
  - Add location, direction, target parameters to spell
  - Purge player data on save (When possible)
+ - Command book kit integration .. ?
+ - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
+ - Migrate material key functionality to MaterialBrush, support command-line special materials (e.g. schematics)
 
 ## For 2.9.6
 
@@ -125,5 +129,23 @@ DEMO SERVER / DOCS STUFF:
  - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
 
 STACK TRACES / EXTRA DEBUG INFO
+
+
+PLAYER REQUESTS:
+
+yoheius
+Feb 13, 2014 at 11:51 - 1 like Unlike
+Very good Please a Integration with diablodrops Thanks
+
+--- Contacted diablodrops dev, never heard back. Grabbed source code from github, will check it out.
+
+Mre30
+Jan 9, 2014 at 09:36 - 1 like Unlike
+
+For sure, GlobalMarket will and does work. But its only good for player2player sales.
+
+- DTLTraders
+
+
 
 	
