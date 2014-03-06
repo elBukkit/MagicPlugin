@@ -29,3 +29,95 @@
     - Magic.commands.magic.search
     - Magic.commands.magic.cancel
     - Magic.commands.magic.clean
+
+  g:magic_guest:
+    permissions:
+    - -Magic.cast.*
+    - Magic.cast.tag
+    - Magic.cast.flare
+    - Magic.cast.camera
+
+  g:magic_villager:
+    permissions:
+    - Magic.cast.arrow
+    - Magic.cast.leap
+    
+  g:magic_knight:
+    permissions:
+    - Magic.cast.fling
+    - Magic.cast.pull
+    
+  g:magic_baron:
+    permissions:
+    - Magic.cast.arrowrain
+    - Magic.cast.tesseract
+    - Magic.cast.shrink
+    
+  g:magic_lord:
+    permissions:
+    - Magic.cast.cat
+    - Magic.cast.torch
+    - Magic.cast.boom
+    
+  g:magic_hero:
+    permissions:
+    - Magic.cast.stream
+    - Magic.cast.stash
+    - Magic.cast.blast
+    
+  g:magic_king:
+    permissions:
+    - Magic.cast.curse
+    - Magic.cast.frost
+    - Magic.cast.grenade
+    
+  g:magic_legend:
+    permissions:
+    - Magic.cast.monster
+    - Magic.cast.map
+    - Magic.cast.sniper
+    
+  g:magic_overseer:
+    permissions:
+    - Magic.cast.wolf
+    - Magic.cast.chop
+    - Magic.cast.fire
+    
+  g:magic_wizard:
+    permissions:
+    - Magic.cast.heal
+    - Magic.cast.boon
+    - Magic.cast.recall
+    - Magic.cast.mine
+    
+  g:magic_nether_wizard:
+    permissions:
+    - Magic.cast.push
+    - Magic.cast.blessing
+    - Magic.cast.familiar
+    - Magic.cast.phase
+    
+  g:magic_ender_wizard:
+    permissions:
+    - Magic.cast.levitate
+    - Magic.cast.kaboom
+    - Magic.cast.cloak
+    - Magic.cast.blink
+    
+  g:magic_vip1:
+    permissions:
+    - Magic.cast.disarm
+    - Magic.cast.farm
+    - Magic.cast.flamethrower
+    
+  g:magic_vip2:
+    permissions:
+    - Magic.cast.wither
+    - Magic.cast.mob
+    - Magic.cast.force
+    
+  g:magic_vip3:
+    permissions:
+    - Magic.cast.time
+    - Magic.cast.collapse
+    - Magic.cast.fireball

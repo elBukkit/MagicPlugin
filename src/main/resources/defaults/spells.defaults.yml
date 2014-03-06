@@ -98,13 +98,42 @@ curse:
            particle: town_aura
            location: target
     costs:
-        xp: 10
+        xp: 50
     parameters:
         range: 32
         target_type: LivingEntity
         target: other
         effect_slow: 100,5  
         effect_confusion: 100,5
+blessing:
+    icon: double_plant:3
+    category: light
+    class: ProjectileSpell
+    pvp_restricted: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: villager_yes
+        -  class: EffectRing
+           particle: heart
+           location: target
+           particle_count: 8
+    parameters:
+        target_type: Player
+        target: any
+        projectile: Snowball
+        effect_speed: 600,5
+        effect_jump: 600,5
+        effect_regeneration: 600,1
+        effect_heal: 10,10
+        effect_water_breathing: 600,5
+        effect_night_vision: 600,5
+        effect_damage_resistance: 600,1
+        effect_fire_resistance: 600,1
+        effect_saturation: 600,5
+        radius: 32  
+    costs:
+        xp: 200
 boon:
     icon: double_plant:5
     category: light
@@ -122,7 +151,7 @@ boon:
            location: target
            particle_data: 2
     costs:
-        xp: 20
+        xp: 65
     parameters:
         target: any
         range: 32
@@ -131,6 +160,10 @@ boon:
         effect_jump: 600,5
         effect_water_breathing: 600,5
         effect_night_vision: 600,5
+        effect_damage_resistance: 600,1
+        effect_fire_resistance: 600,1
+        effect_saturation: 600,5
+        effect_regeneration: 600,1
 bounce:
     icon: double_plant:1
     category: light
@@ -153,6 +186,7 @@ bounce:
         target: any
         target_type: LivingEntity
         effect_jump: 600,20
+        effect_damage_resistance: 600,5
 shell:
     icon: ender_pearl
     category: earthbending
@@ -365,7 +399,7 @@ push:
            particle_count: 6
     parameters:
         target_type: Entity
-        range: 16
+        range: 32
         allow_area: true
         item_force: 1
         area_range: 8
@@ -396,10 +430,10 @@ pull:
            particle_count: 6
     parameters:
         target_type: Entity
-        range: 16
+        range: 32
         allow_area: true
         item_force: 2
-        area_range: 16
+        area_range: 20
         entity_force: 3
         type: pull
         count: 1
@@ -489,7 +523,7 @@ frost:
         vertical_search_distance: 8
         transparent: transparent_to_construction
     costs:
-        xp: 8
+        xp: 75
 lightning:
     icon: raw_fish:3
     category: firebending
@@ -582,7 +616,7 @@ heal:
         allow_max_range: false
         range: 32
     costs:
-        xp: 50
+        xp: 100
 gather:
     icon: glowstone_dust
     category: master
@@ -638,34 +672,6 @@ neutron:
         radius: 32  
     costs:
         xp: 80
-blessing:
-    icon: double_plant:3
-    category: light
-    class: ProjectileSpell
-    pvp_restricted: false
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: villager_yes
-        -  class: EffectRing
-           particle: heart
-           location: target
-           particle_count: 8
-    parameters:
-        target_type: Player
-        target: any
-        projectile: Snowball
-        effect_speed: 600,5
-        effect_jump: 600,5
-        effect_regeneration: 600,1
-        effect_heal: 10,10
-        effect_water_breathing: 600,5
-        effect_night_vision: 600,5
-        effect_increase_damage: 600,1
-        effect_damage_resistance: 600,1
-        radius: 32  
-    costs:
-        xp: 150
 wither:
     icon: skull_item:1
     category: dark
@@ -714,7 +720,7 @@ arrow:
       spread: 6
       fire: false
     costs:
-        xp: 5 
+        xp: 25
 sniper:
     icon: gold_nugget
     category: dark
@@ -731,9 +737,9 @@ sniper:
       fire: false
       speed: 6
       spread: 0
-      damage: 5
+      damage: 1
     costs:
-        xp: 100
+        xp: 50
 weather:
     icon: water
     category: elemental
@@ -764,7 +770,7 @@ fling:
            particle_count: 4
     parameters:
     costs:
-        xp: 5
+        xp: 45
 leap:
     icon: leather_boots
     category: airbending
@@ -801,7 +807,7 @@ torch:
         allow_day: false
         allow_glowstone: true
     costs:
-        xp: 25
+        xp: 15
 familiar:
     icon: monster_egg
     category: elemental
@@ -1237,10 +1243,10 @@ grenade:
         -  class: EffectSingle
            sound: lava_pop
     parameters:
-        size: 6
-        fuse: 30
+        size: 3
+        fuse: 60
     costs:
-        xp: 20
+        xp: 35
 frag:
     icon: redstone_block
     category: dark
@@ -1774,7 +1780,7 @@ blink:
         range: 128
         allow_decend: true
     costs:
-        xp: 50
+        xp: 75
 tesseract:
     icon: web
     category: airbending
@@ -1789,10 +1795,10 @@ tesseract:
         allow_max_range: false
         allow_ascend: false
         allow_passthrough: false
-        range: 16
+        range: 14
         allow_decend: true
     costs:
-        xp: 2
+        xp: 25
 absorb:
     icon: bucket
     category: engineering
@@ -1827,9 +1833,9 @@ lava:
         size: 16
         material: lava
         increment_data: true
-        undo: 2000
+        undo: 200
     costs:
-        xp: 50
+        xp: 65
 stream:
     icon: ink_sack:6
     category: waterbending
@@ -1965,7 +1971,7 @@ flare:
     parameters:
         target_type: LivingEntity
         allow_max_range: true
-        range: 10
+        range: 16
     costs:
         xp: 10
 recall:
@@ -2000,9 +2006,9 @@ levitate:
            particle_count: 10
     parameters:
     costs:
-        xp: 100
+        xp: 45
     active_costs:
-        xp: 50
+        xp: 20
 force:
     icon: leash
     category: airbending
@@ -2055,7 +2061,7 @@ camera:
            location: origin
     parameters:
         target_type: LivingEntity
-        cooldown: 1000
+        cooldown: 5000
         allow_max_range: false
         range: 32
     costs:
