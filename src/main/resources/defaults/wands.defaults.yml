@@ -259,6 +259,7 @@ random:
       blob: 0,10,40,10
       boom: 20,50,60,40
       boon: 0,5,10,20
+      blessing: 0,1,5,10
       box: 0,5,40,50
       breach: 5,20,30,40
       bridge: 0,5,10,15
@@ -891,6 +892,7 @@ elder:
         - toss
         - curse
         - boon
+        - blessing
         - convert
         - commit
         - heal
@@ -1194,6 +1196,7 @@ white:
         - undo
         - toss
         - boon
+        - blessing
         - convert
         - commit
         - heal
@@ -1486,6 +1489,7 @@ wolf:
         - toss
         - curse
         - boon
+        - blessing
         - convert
         - heal
         - wither

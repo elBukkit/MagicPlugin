@@ -115,6 +115,9 @@ spells:
     boon:
         name: Boon
         description: Makes you temporarily superpowered
+    blessing:
+        name: Blessing
+        description: Bless a large area of followers
     bounce:
         name: Bounce
         description: Gives super jump power

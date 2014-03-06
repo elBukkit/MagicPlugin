@@ -2,6 +2,7 @@
 
 ## 2.9.5
 
+ - Add "Blessing" spell.
  - Fix castp permission (target player doesn't need permission, only command executor needs it)
  - Add Factions support for build perms. (Kind of hacky at present- Factions, why u no API??)
  - Fix alter on entities. (Superalter will still not target entities)
