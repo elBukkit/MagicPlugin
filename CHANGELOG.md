@@ -2,12 +2,13 @@
 
 ## 2.9.6
 
- - Add "x, y, z" and "dx, dy, dz" parameters to all spells, to force source location and direction. (Scripting!)
+ - Add "px, py, pz" and "dx, dy, dz" parameters to all spells, to force player location and direction. (Scripting!)
  - Add "tx, ty, tz" parameters for target location.
  - Add "bypass_undo" parameter for scripted spells that won't store Rollback information.
  - Allow special materials in "material" parameter (e.g. clone, erase, schematics)
  - Add "Extend" spell, wip.
  - Add "bypass_pvp", "bypass_build", "cost_reduction" and "cooldown_reduction" parameters.
+ - Add "dmx,dmy,dmz" and "dtx, dty, dtz" parameters for controlling relative targeting and material targeting.
 
 ## 2.9.5
 

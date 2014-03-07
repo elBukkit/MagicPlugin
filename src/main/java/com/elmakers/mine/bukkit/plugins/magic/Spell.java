@@ -568,9 +568,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			}
 		}
 		
-		Double yValue = parameters.getDouble("y", null);
-		Double xValue = parameters.getDouble("x", null);
-		Double zValue = parameters.getDouble("z", null);
+		Double yValue = parameters.getDouble("py", null);
+		Double xValue = parameters.getDouble("px", null);
+		Double zValue = parameters.getDouble("pz", null);
 		if (xValue != null && zValue != null && yValue != null) {
 			location = new Location(location.getWorld(), xValue, yValue, zValue,
 					location.getYaw(), location.getPitch());
@@ -578,11 +578,35 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			location = mage.getLocation();
 		}
 		
+		Double dpyValue = parameters.getDouble("dpy", null);
+		Double dpxValue = parameters.getDouble("dpx", null);
+		Double dpzValue = parameters.getDouble("dpz", null);
+		if (dpxValue != null || dpzValue != null || dpyValue != null) {
+			location = new Location(location.getWorld(), 
+					location.getX() + (dpxValue == null ? 0 : dpxValue), 
+					location.getY() + (dpyValue == null ? 0 : dpyValue), 
+					location.getZ() + (dpzValue == null ? 0 : dpzValue),
+					location.getYaw(), location.getPitch());
+		}
+		
 		Double tyValue = parameters.getDouble("ty", null);
 		Double txValue = parameters.getDouble("tx", null);
 		Double tzValue = parameters.getDouble("tz", null);
 		if (txValue != null && tzValue != null && tyValue != null) {
 			targetLocation = new Location(location.getWorld(), txValue, tyValue, tzValue,
+					location.getYaw(), location.getPitch());
+		} else {
+			targetLocation = null;
+		}
+		
+		Double dtyValue = parameters.getDouble("dty", null);
+		Double dtxValue = parameters.getDouble("dtx", null);
+		Double dtzValue = parameters.getDouble("dtz", null);
+		if (dtxValue != null || dtzValue != null || dtyValue != null) {
+			targetLocation = new Location(location.getWorld(), 
+					location.getX() + (dtxValue == null ? 0 : dtxValue), 
+					location.getY() + (dtyValue == null ? 0 : dtyValue), 
+					location.getZ() + (dtzValue == null ? 0 : dtzValue),
 					location.getYaw(), location.getPitch());
 		} else {
 			targetLocation = null;

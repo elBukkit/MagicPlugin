@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,6 +16,7 @@ import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.TargetType;
+import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends BrushSpell
@@ -28,13 +30,13 @@ public class ConstructSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Block target = getTarget().getBlock();
-
-		if (target == null)
+		Target t = getTarget();
+		if (t == null)
 		{
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
+		Block target = t.getBlock();
 
 		int timeToLive = parameters.getInt("undo", 0);
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
@@ -126,7 +128,7 @@ public class ConstructSpell extends BrushSpell
 		{
 			conType = testType;
 		}
-					
+
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, !hollow, falling, orientTo);
 		if (forceVector != null) {
 			batch.setFallingBlockVelocity(forceVector);
