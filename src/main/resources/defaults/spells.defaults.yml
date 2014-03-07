@@ -1452,9 +1452,10 @@ convert:
         indestructible:
           - air
         radius: 3
+        replace: true
         transparent: transparent_to_construction
     costs:
-        xp: 20
+        xp: 30
 superconvert:
     icon: iron_fence
     category: engineering
