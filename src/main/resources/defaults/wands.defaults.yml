@@ -1440,7 +1440,9 @@ wolf:
     effect_color: '00AACC'
     effect_particle: magic_runes
     effect_particle_count: 4
+    effect_particle_data: 1
     organize: true
+    mode: inventory
     spells:
         - fling
         - blink
@@ -1564,3 +1566,152 @@ wolf:
         - schematic:elder_tree
         - schematic:garden_house
         - schematic:stash_chest
+guest:
+    modifiable: true
+    effect_color: '666666'
+    xp_regeneration: 1
+    xp_max: 40
+    spells:
+        - tag
+        - flare
+        - camera
+villager:
+    modifiable: true
+    effect_color: '888888'
+    xp_regeneration: 2
+    xp_max: 60
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+knight:
+    modifiable: true
+    effect_color: 'DDDDDD'
+    xp_regeneration: 3
+    xp_max: 75
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+legend:
+    modifiable: true
+    effect_color: 'DDDDDD'
+    xp_regeneration: 4
+    xp_max: 80
+    effect_particle_type: town_aura
+    effect_particle_count: 2
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - monster
+        - map
+        - sniper
+overseer:
+    modifiable: true
+    effect_color: 'FFFFFF'
+    xp_regeneration: 5
+    xp_max: 100
+    effect_particle_type: town_aura
+    effect_particle_count: 2
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - monster
+        - map
+        - sniper
+wizard:
+    modifiable: true
+    effect_color: 'A9D0F5'
+    xp_regeneration: 6
+    xp_max: 120
+    effect_particle_type: portal
+    effect_particle_count: 2
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - monster
+        - map
+        - sniper
+        - heal
+        - boon
+        - recall
+        - mine
+netherwizard:
+    modifiable: true
+    effect_color: 'B40404'
+    xp_regeneration: 8
+    xp_max: 150
+    effect_particle_type: portal
+    effect_particle_count: 3
+    effect_particle_data: 2
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - monster
+        - map
+        - sniper
+        - heal
+        - boon
+        - recall
+        - mine
+        - push
+        - blessing
+        - familiar
+        - phase
+enderwizard:
+    modifiable: true
+    effect_color: 'AC58FA'
+    xp_regeneration: 10
+    xp_max: 200
+    effect_particle_type: lava_dripping
+    effect_particle_count: 4
+    effect_bubbles: true
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - monster
+        - map
+        - sniper
+        - heal
+        - boon
+        - recall
+        - mine
+        - push
+        - blessing
+        - familiar
+        - phase
+        - levitate
+        - kaboom
+        - cloak
+        - blink 
