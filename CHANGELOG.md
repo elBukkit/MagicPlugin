@@ -9,6 +9,7 @@
  - Add "Extend" spell, wip.
  - Add "bypass_pvp", "bypass_build", "cost_reduction" and "cooldown_reduction" parameters.
  - Add "dmx,dmy,dmz" and "dtx, dty, dtz" parameters for controlling relative targeting and material targeting.
+ - Add "mm" parameter for modifying a material selection (e.g. "erase" with "schematic" for "material")
 
 ## 2.9.5
 

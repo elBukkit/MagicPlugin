@@ -17,6 +17,11 @@ public abstract class BrushSpell extends BlockSpell{
 		if (materialKey != null) {
 			brush = new MaterialBrush(controller, getLocation(), materialKey);
 			
+			if (parameters.containsKey("mm")) {
+				brush.update(parameters.getString("mm"));
+				brush.update(materialKey);
+			}
+			
 			Double dmxValue = parameters.getDouble("dmx", null);
 			Double dmyValue = parameters.getDouble("dmy", null);
 			Double dmzValue = parameters.getDouble("dmz", null);
