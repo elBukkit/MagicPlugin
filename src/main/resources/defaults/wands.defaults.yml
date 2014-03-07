@@ -1604,7 +1604,7 @@ legend:
     effect_color: 'DDDDDD'
     xp_regeneration: 4
     xp_max: 80
-    effect_particle_type: town_aura
+    effect_particle: town_aura
     effect_particle_count: 2
     spells:
         - tag
@@ -1622,7 +1622,7 @@ overseer:
     effect_color: 'FFFFFF'
     xp_regeneration: 5
     xp_max: 100
-    effect_particle_type: town_aura
+    effect_particle: town_aura
     effect_particle_count: 2
     spells:
         - tag
@@ -1640,7 +1640,7 @@ wizard:
     effect_color: 'A9D0F5'
     xp_regeneration: 6
     xp_max: 120
-    effect_particle_type: portal
+    effect_particle: portal
     effect_particle_count: 2
     spells:
         - tag
@@ -1662,7 +1662,7 @@ netherwizard:
     effect_color: 'B40404'
     xp_regeneration: 8
     xp_max: 150
-    effect_particle_type: portal
+    effect_particle: portal
     effect_particle_count: 3
     effect_particle_data: 2
     spells:
@@ -1689,7 +1689,7 @@ enderwizard:
     effect_color: 'AC58FA'
     xp_regeneration: 10
     xp_max: 200
-    effect_particle_type: lava_dripping
+    effect_particle: lava_dripping
     effect_particle_count: 4
     effect_bubbles: true
     spells:
