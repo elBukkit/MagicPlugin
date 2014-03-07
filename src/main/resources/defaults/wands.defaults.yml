@@ -457,6 +457,8 @@ random:
       schematic|blacksmith: 0,0,5,10
       schematic|garden_house: 0,5,10,15
       schematic|compact_house: 5,10,15,20
+      schematic|tent: 10,20,25,30
+      schematic|cage: 5,10,15,20
 
 #
 #
