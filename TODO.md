@@ -1,25 +1,30 @@
 # TODO
 
-## For 2.9.5
-
- - Support schematic entity import for paintings and item frames (at least)
- - Allow customization of Building and PVP permission checks.
- - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
- - Add schematic list command
- - Fix message cooldowns- something is perhaps wrong there?
- - Make spells usable without a player, clean up strong Player references
- - Add location, direction, target parameters to spell
- - Purge player data on save (When possible)
- - Command book kit integration .. ?
- - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
- - Migrate material key functionality to MaterialBrush, support command-line special materials (e.g. schematics)
-
 ## For 2.9.6
 
- - Maybe yse player UUID's instead of names. Might need to migrate player data for this?
+ - Add location, direction, target parameters to spell
+ - Migrate material key functionality to MaterialBrush, support command-line special materials (e.g. schematics)
+ - Make spells usable without a player, clean up strong Player references
+ - Support schematic entity import for paintings and item frames (at least)
+
+## For 2.9.7
+
+ - Allow customization of Building and PVP permission checks.
+ - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
+ - Fix message cooldowns- something is perhaps wrong there?
+ - Purge player data on save (When possible)
+ - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
+  
+## For 2.9.8
+
+ - Maybe use player UUID's instead of names. Might need to migrate player data for this?
  - Undo fails in some cases (overlapping undo queues)
   - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
   - BlockData tracks only the first recorded materialdata, commit will replace
+
+## For 2.9.9
+
+ - Command book kit integration .. ?
 
 ## For 3.0.0
 
@@ -33,6 +38,7 @@
  - Fix wand inventory glitches and special-cases
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
+ - Add schematic list command
  - Finish localization
 
 NEAR-FUTURE STUFF:

@@ -68,6 +68,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private MaterialAndData icon = new MaterialAndData(Material.AIR);
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
+	private Vector direction = null;
 
 	protected ConfigurationNode parameters = new ConfigurationNode();
 
@@ -498,7 +499,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		
 		// Play effects
-		Location mageLocation = mage.getEyeLocation();
+		Location mageLocation = getEyeLocation();
 		if (effects.containsKey(result) && mageLocation != null) {
 			Location targetLocation = null;
 			if (target != null) {
@@ -559,6 +560,26 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				controller.getLogger().warning("Unknown entity type: " + entityTypeName);
 				targetEntityType = null;
 			}
+		}
+		
+		Double yValue = parameters.getDouble("y", null);
+		Double xValue = parameters.getDouble("x", null);
+		Double zValue = parameters.getDouble("z", null);
+		if (xValue != null || zValue != null || yValue != null) {
+			location = new Location(location.getWorld(), xValue == null ? 0 : xValue, yValue == null ? 0 : yValue, zValue == null ? 0 : zValue,
+					location.getYaw(), location.getPitch());
+		}
+
+		Double dyValue = parameters.getDouble("dy", null);
+		Double dxValue = parameters.getDouble("dx", null);
+		Double dzValue = parameters.getDouble("dz", null);
+		if (dxValue != null || dzValue != null || dyValue != null) {
+			direction = new Vector(dxValue == null ? 0 : dxValue, dyValue == null ? 0 : dyValue, dzValue == null ? 0 : dzValue);
+			if (location != null) {
+				location.setDirection(direction);
+			}
+		} else {
+			direction = null;
 		}
 	}
 
@@ -953,29 +974,27 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected Location getLocation()
 	{
-		Player player = getPlayer();
-		if (player != null)
-		{
-			return player.getLocation();
+		if (location == null) {
+			location = mage.getLocation();
+			if (direction != null) {
+				location.setDirection(direction);
+			}
 		}
-		
-		return location;
+		return location.clone();
 	}
 
 	protected Location getEyeLocation()
 	{
-		Player player = getPlayer();
-		if (player != null)
-		{
-			return player.getEyeLocation();
-		}
-		
-		// TODO: Configurable locations
 		Location location = getLocation();
 		if (location == null) return null;
-		
 		location.setY(location.getY() + 1.5);
 		return location;
+	}
+	
+	protected Vector getDirection()
+	{
+		if (direction == null) direction = getLocation().getDirection();
+		return direction;
 	}
 	
 	/**
