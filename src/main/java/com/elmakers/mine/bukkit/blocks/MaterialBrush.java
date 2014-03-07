@@ -354,9 +354,7 @@ public class MaterialBrush extends MaterialBrushData {
 				!center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
 				cloneTarget = center;
 			} else if (mode == BrushMode.SCHEMATIC) {
-				if (schematic == null) {
-					cloneTarget = center;
-				} else {
+				if (schematic != null) {
 					Vector diff = target.toVector().subtract(cloneTarget.toVector());
 					if (!schematic.contains(diff)) {
 						cloneTarget = center;

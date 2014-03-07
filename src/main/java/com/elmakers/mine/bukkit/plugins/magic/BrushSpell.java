@@ -28,6 +28,7 @@ public abstract class BrushSpell extends BlockSpell{
 						location.getZ() + (dmzValue == null ? 0 : dmzValue),
 						location.getYaw(), location.getPitch());
 				
+				brush.clearCloneTarget();
 				brush.setTarget(location);
 			} 
 		} else {

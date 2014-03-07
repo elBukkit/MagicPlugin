@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.plugins.magic.spells;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
