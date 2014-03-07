@@ -44,7 +44,7 @@ public class DropSpell extends BlockSpell
 		drop(target, dropMaterials, droppedBlocks, maxRecursion);
 
 		// Make this undoable.. even though it means you can exploit it for ore with Rewind. Meh!
-		mage.registerForUndo(droppedBlocks);
+		registerForUndo(droppedBlocks);
 		castMessage("Dropped " + droppedBlocks.size() + " blocks");
 
 		return SpellResult.CAST;

@@ -5,11 +5,11 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class TorchSpell extends Spell 
+public class TorchSpell extends BlockSpell 
 {
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -126,7 +126,7 @@ public class TorchSpell extends Spell
 		BlockList torchBlock = new BlockList();
 		target.setType(targetMaterial);
 		torchBlock.add(target);
-		mage.registerForUndo(torchBlock);
+		registerForUndo(torchBlock);
 		controller.updateBlock(target);
 
 		return SpellResult.CAST;

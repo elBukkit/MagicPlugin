@@ -163,7 +163,7 @@ public class IterateSpell extends BrushSpell
 		if (iteratedBlocks.size() > 0)
 		{
 			iteratedBlocks.setTimeToLive(timeToLive);
-			mage.registerForUndo(iteratedBlocks);
+			registerForUndo(iteratedBlocks);
 		}
 
 		castMessage("Filled " + iteratedBlocks.size() + " blocks");

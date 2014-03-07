@@ -511,6 +511,7 @@ public class Mage implements CostReducer
 	}
 	
 	public boolean undo() {
+		boolean stoppedPending = false;
 		if (pendingBatches.size() > 0) {
 			List<BlockBatch> batches = new ArrayList<BlockBatch>();
 			batches.addAll(pendingBatches);
@@ -518,9 +519,11 @@ public class Mage implements CostReducer
 				if (!(batch instanceof UndoBatch)) {
 					batch.finish();
 					pendingBatches.remove(batch);
+					stoppedPending = true;
 				}
 			}
 		}
+		if (stoppedPending) return true;
 		return getUndoQueue().undo(this);
 	}
 	

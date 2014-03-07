@@ -10,12 +10,12 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class SignSpell extends Spell
+public class SignSpell extends BlockSpell
 {  
 	@SuppressWarnings("deprecation")
 	@Override
@@ -81,7 +81,7 @@ public class SignSpell extends Spell
 				
 				BlockList signBlocks = new BlockList();
 				signBlocks.add(targetBlock);
-				mage.registerForUndo(signBlocks);
+				registerForUndo(signBlocks);
 				controller.updateBlock(targetBlock);
 				
 				return SpellResult.CAST;

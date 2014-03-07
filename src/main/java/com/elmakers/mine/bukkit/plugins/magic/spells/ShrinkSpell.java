@@ -12,13 +12,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class ShrinkSpell extends Spell
+public class ShrinkSpell extends BlockSpell
 {
 	private int             DEFAULT_PLAYER_DAMAGE = 1;
 	private int             DEFAULT_ENTITY_DAMAGE = 100;
@@ -111,7 +111,7 @@ public class ShrinkSpell extends Spell
 
 			dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
 			targetBlock.setType(Material.AIR);
-			mage.registerForUndo(shrunk);
+			registerForUndo(shrunk);
 			
 			castMessage("Shrink!");
 		}

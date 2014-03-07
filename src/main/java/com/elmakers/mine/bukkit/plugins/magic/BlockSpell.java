@@ -5,6 +5,7 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public abstract class BlockSpell extends Spell {
@@ -12,6 +13,7 @@ public abstract class BlockSpell extends Spell {
 	private Set<Material>	indestructible;
 	private Set<Material>	destructible;
 	private boolean checkDestructible = true;
+	private boolean bypassUndo				= false;
 	
 	private boolean isIndestructible(Block block)
 	{
@@ -48,6 +50,14 @@ public abstract class BlockSpell extends Spell {
 		if (parameters.containsKey("destructible")) {
 			destructible = controller.getMaterialSet(parameters.getString("destructible"));
 		}
-		checkDestructible = parameters.getBoolean("check_destructible", checkDestructible);
+		checkDestructible = parameters.getBoolean("check_destructible", true);
+		bypassUndo = parameters.getBoolean("bypass_undo", false);
+	}
+	
+	public void registerForUndo(BlockList list)
+	{
+		if (!bypassUndo) {
+			mage.registerForUndo(list);
+		}
 	}
 }

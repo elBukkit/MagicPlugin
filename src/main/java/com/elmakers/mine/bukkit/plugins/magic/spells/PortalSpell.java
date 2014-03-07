@@ -9,11 +9,11 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.BoundingBox;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class PortalSpell extends Spell
+public class PortalSpell extends BlockSpell
 {
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -49,7 +49,7 @@ public class PortalSpell extends Spell
 		portalBlocks.setTimeToLive(timeToLive);
 		controller.disablePhysics(1000);
 		buildPortalBlocks(portalBase.getLocation(), BlockFace.NORTH, portalBlocks);
-		mage.registerForUndo(portalBlocks);
+		registerForUndo(portalBlocks);
 
 		return SpellResult.CAST;
 	}

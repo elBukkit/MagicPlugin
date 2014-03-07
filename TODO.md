@@ -3,6 +3,7 @@
 ## For 2.9.6
 
  - Make spells usable without a player, clean up strong Player references
+ - Add "material_modifier" parameter to spells for complex scripting with schematic and map brushes.
  - Support schematic entity import for paintings and item frames (at least)
  - Make sure schematics can import command blocks... (Glider??)
 

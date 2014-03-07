@@ -5,11 +5,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.blocks.SimpleBlockAction;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class FireSpell extends Spell
+public class FireSpell extends BlockSpell
 {
 	private final static int		DEFAULT_RADIUS	= 4;
     
@@ -68,7 +68,7 @@ public class FireSpell extends Spell
 			this.coverSurface(target.getLocation(), radius, action);
 		}
 
-		mage.registerForUndo(action.getBlocks());
+		registerForUndo(action.getBlocks());
 		castMessage("Burned " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target);
 

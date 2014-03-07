@@ -5,11 +5,11 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class CushionSpell extends Spell
+public class CushionSpell extends BlockSpell
 {
 	private static final int DEFAULT_CUSHION_WIDTH = 3;
 	private static final int DEFAULT_CUSHION_HEIGHT = 4;
@@ -59,7 +59,7 @@ public class CushionSpell extends Spell
 			}
 		}
 
-		mage.registerForUndo(cushionBlocks);
+		registerForUndo(cushionBlocks);
 		return SpellResult.CAST;
 	}
 }

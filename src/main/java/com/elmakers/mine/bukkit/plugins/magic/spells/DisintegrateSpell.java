@@ -77,7 +77,7 @@ public class DisintegrateSpell extends BlockSpell
 			targetBlock.setType(Material.AIR);
 		}
 		
-		mage.registerForUndo(disintigrated);
+		registerForUndo(disintigrated);
 		castMessage("ZAP!");
 
 		return SpellResult.CAST;

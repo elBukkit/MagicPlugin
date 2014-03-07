@@ -120,7 +120,7 @@ public class TunnelSpell extends BlockSpell
 			bottomLeftBlock = bottomLeftBlock.getRelative(direction);
 		}
 
-		mage.registerForUndo(tunneledBlocks);
+		registerForUndo(tunneledBlocks);
 		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks");
 
 		return SpellResult.CAST;

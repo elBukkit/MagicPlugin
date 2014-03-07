@@ -11,12 +11,12 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.SimpleBlockAction;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class FrostSpell extends Spell
+public class FrostSpell extends BlockSpell
 {
 	private static final int			DEFAULT_RADIUS			= 2;
 	private static final int            DEFAULT_TIME_TO_LIVE = 0;
@@ -131,7 +131,7 @@ public class FrostSpell extends Spell
 
 		BlockList frozenBlocks = action.getBlocks();
 		frozenBlocks.setTimeToLive(timeToLive);
-		mage.registerForUndo(frozenBlocks);
+		registerForUndo(frozenBlocks);
 		castMessage("Frosted " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target.getBlock());
 

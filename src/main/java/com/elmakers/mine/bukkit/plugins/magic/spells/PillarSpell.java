@@ -64,7 +64,7 @@ public class PillarSpell extends BrushSpell
 		
 		pillarBlocks.setTimeToLive(parameters.getInt("undo", 0));
 		
-		mage.registerForUndo(pillarBlocks);
+		registerForUndo(pillarBlocks);
 		controller.updateBlock(pillar);
 		
 		return SpellResult.CAST;

@@ -269,7 +269,7 @@ public class ConstructBatch extends VolumeBatch {
 				}
 			}
 			
-			mage.registerForUndo(constructedBlocks);
+			spell.registerForUndo(constructedBlocks);
 			mage.castMessage("Constructed " + constructedBlocks.size() + " blocks");
 		}
 	}
@@ -362,9 +362,6 @@ public class ConstructBatch extends VolumeBatch {
 			BlockData attachBlock = new BlockData(block);
 			attachBlock.updateFrom(brush);
 			attachedBlocks.add(attachBlock);
-			
-
-			
 			return true;
 		}
 		

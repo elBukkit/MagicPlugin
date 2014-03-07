@@ -4,6 +4,7 @@
 
  - Add "x, y, z" and "dx, dy, dz" parameters to all spells, to force source location and direction. (Scripting!)
  - Add "tx, ty, tz" parameters for target location.
+ - Add "bypass_undo" parameter for scripted spells that won't store Rollback information.
  - Allow special materials in "material" parameter (e.g. clone, erase, schematics)
  - Add "Extend" spell, wip.
  - Add "bypass_pvp", "bypass_build", "cost_reduction" and "cooldown_reduction" parameters.

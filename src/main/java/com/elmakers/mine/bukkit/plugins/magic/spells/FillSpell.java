@@ -51,7 +51,7 @@ public class FillSpell extends BrushSpell
 
 			Material material = buildWith.getMaterial();
 			castMessage("Painting with " + material.name().toLowerCase());
-			mage.registerForUndo(filledBlocks);
+			registerForUndo(filledBlocks);
 			
 			return SpellResult.CAST;
 		}

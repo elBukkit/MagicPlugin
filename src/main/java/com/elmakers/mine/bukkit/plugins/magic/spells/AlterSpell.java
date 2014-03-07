@@ -22,12 +22,12 @@ import org.bukkit.entity.Villager.Profession;
 import org.bukkit.entity.Wolf;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class AlterSpell extends Spell
+public class AlterSpell extends BlockSpell
 {
 	static final String DEFAULT_ADJUSTABLES = "3 ,5, 6, 8, 9, 10,11,12,17,162,18,161,23,24,27,28,29,31,33,35,37,38,43,44,50,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,71,75,76,77,78,81,83,85,86,93,94,95,98,99,100,104,105,108,109,114,115,125,126,128,134,135,136,140,141,142,144,155,156,159,160,171,172,175";
 	static final String DEFAULT_ADJUST_MAX =  "2 ,5, 5 ,15,15,15,15,1 ,15,15 ,3 ,1  ,5 ,2 ,9 ,9 ,5 ,2 ,5 ,15,8 ,8 ,15,15,5, 15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,15,3 ,9 ,3 ,2 ,14,15,5 ,5 ,15,7 ,15,15,5 ,0 ,5 ,5 ,15 ,3 ,15,15 ,7  ,7  ,3  ,3  ,3  ,7  ,15 ,15 ,3  ,3  ,3  ,3  ,15 ,7  ,7  ,4  ,4  ,3  ,15 ,15 ,15 ,15 ,6";
@@ -90,7 +90,7 @@ public class AlterSpell extends Spell
 
 		adjust(targetBlock, data, undoList, recursive, recurseDistance, 0);
 
-		mage.registerForUndo(undoList);
+		registerForUndo(undoList);
 
 		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
 		controller.updateBlock(targetBlock);

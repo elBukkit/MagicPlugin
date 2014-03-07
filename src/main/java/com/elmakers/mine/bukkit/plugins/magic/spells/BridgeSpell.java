@@ -58,7 +58,7 @@ public class BridgeSpell extends BrushSpell
 		castMessage("A bridge extends!");
 
 		bridgeBlocks.setTimeToLive(parameters.getInt("undo", 0));
-		mage.registerForUndo(bridgeBlocks);
+		registerForUndo(bridgeBlocks);
 		controller.updateBlock(targetBlock);
 
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
