@@ -41,7 +41,7 @@ public class IterateSpell extends BrushSpell
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(target) || !hasBuildPermission(getPlayer().getLocation().getBlock())) {
+		if (!hasBuildPermission(target) || !hasBuildPermission(getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 

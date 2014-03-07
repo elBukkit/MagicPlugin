@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -145,7 +146,7 @@ public class WandOrganizer {
 		}
 		Map<String, String> materials = new TreeMap<String, String>();
 		for (String materialKey : wandMaterials) {
-			if (Wand.isSpecialMaterialKey(materialKey)) {
+			if (MaterialBrush.isSpecialMaterialKey(materialKey)) {
 				materials.put(" " + materialKey, materialKey);
 			} else {
 				materials.put(materialKey, materialKey);

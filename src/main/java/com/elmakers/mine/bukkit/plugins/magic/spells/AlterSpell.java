@@ -69,7 +69,7 @@ public class AlterSpell extends Spell
 			castMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
 			return SpellResult.FAIL;
 		}
-		if (!mage.hasBuildPermission(targetBlock)) {
+		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		if (mage.isIndestructible(targetBlock)) {

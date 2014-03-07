@@ -2,10 +2,12 @@ package com.elmakers.mine.bukkit.blocks;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.map.MapRenderer;
@@ -28,6 +30,24 @@ public class MaterialBrush extends MaterialBrushData {
 		MAP,
 		SCHEMATIC
 	};
+
+	public static final String ERASE_MATERIAL_KEY = "erase";
+	public static final String COPY_MATERIAL_KEY = "copy";
+	public static final String CLONE_MATERIAL_KEY = "clone";
+	public static final String REPLICATE_MATERIAL_KEY = "replicate";
+	public static final String MAP_MATERIAL_KEY = "map";
+	public static final String SCHEMATIC_MATERIAL_KEY = "schematic";
+	
+	public static Material EraseMaterial = Material.SULPHUR;
+	public static Material CopyMaterial = Material.SUGAR;
+	public static Material CloneMaterial = Material.NETHER_STALK;
+	public static Material ReplicateMaterial = Material.PUMPKIN_SEEDS;
+	public static Material MapMaterial = Material.MAP;
+	public static Material SchematicMaterial = Material.PAPER;
+	
+	public static boolean SchematicsEnabled = false;	
+	
+	public static final Material DEFAULT_MATERIAL = Material.DIRT;
 	
 	private BrushMode mode = BrushMode.MATERIAL;
 	private Location cloneLocation = null;
@@ -43,6 +63,196 @@ public class MaterialBrush extends MaterialBrushData {
 	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
 		super(material, data);
 		this.controller = controller;
+	}
+	
+	public MaterialBrush(final MagicController controller, final Location location, final String materialKey) {
+		super(DEFAULT_MATERIAL, (byte)0);
+		this.controller = controller;
+		update(materialKey);
+		activate(location, materialKey);
+	}
+	
+	public static String getMaterialKey(Material material) {
+		String materialKey = null;
+		if (material == null) return null;
+
+		if (material == EraseMaterial) {
+			materialKey = ERASE_MATERIAL_KEY;
+		} else if (material == CopyMaterial) {
+			materialKey = COPY_MATERIAL_KEY;
+		} else if (material == CloneMaterial) {
+			materialKey = CLONE_MATERIAL_KEY;
+		} else if (material == MapMaterial) {
+			materialKey = MAP_MATERIAL_KEY;
+		} else if (material == ReplicateMaterial) {
+			materialKey = REPLICATE_MATERIAL_KEY;
+		} else if (SchematicsEnabled && material == SchematicMaterial) {
+			// This would be kinda broken.. might want to revisit all this.
+			// This method is only called by addMaterial at this point,
+			// which should only be called with real materials anyway.
+			materialKey = SCHEMATIC_MATERIAL_KEY;
+		} else if (material.isBlock()) {
+			materialKey = material.name().toLowerCase();
+		}
+		
+		return materialKey;
+	}
+	
+	public static boolean isSpecialMaterialKey(String materialKey) {
+		if (materialKey == null || materialKey.length() == 0) return false;
+		if (materialKey.contains(":")) {
+			materialKey = StringUtils.split(materialKey, ":")[0];
+		}
+		return COPY_MATERIAL_KEY.equals(materialKey) || ERASE_MATERIAL_KEY.equals(materialKey) || 
+			   REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) || 
+			   MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
+	}
+
+	@SuppressWarnings("deprecation")
+	public static String getMaterialName(String materialKey) {
+		if (materialKey == null) return null;
+		String materialName = materialKey;
+		String[] namePieces = StringUtils.split(materialName, ":");
+		if (namePieces.length == 0) return null;
+		
+		materialName = namePieces[0];
+		
+		if (!MaterialBrush.isSpecialMaterialKey(materialKey)) {
+			MaterialBrushData brushData = parseMaterialKey(materialKey);
+			if (brushData == null) return null;
+			
+			Material material = brushData.getMaterial();
+			byte data = brushData.getData();
+			
+			// This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
+			/*
+			Class<? extends MaterialData> materialData = material.getData();
+			Bukkit.getLogger().info("Material " + material + " has " + materialData);
+			if (Wool.class.isAssignableFrom(materialData)) {
+				Wool wool = new Wool(material, data);
+				materialName += " " + wool.getColor().name();
+			} else if (Dye.class.isAssignableFrom(materialData)) {
+				Dye dye = new Dye(material, data);
+				materialName += " " + dye.getColor().name();
+			} else if (Dye.class.isAssignableFrom(materialData)) {
+				Dye dye = new Dye(material, data);
+				materialName += " " + dye.getColor().name();
+			}
+			*/
+			
+			// Using raw id's for 1.6 support... because... bukkit... bleh.
+			
+			//if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
+			if (material == Material.CARPET || material.getId() == 95 || material.getId() ==159 || material.getId() == 160 || material == Material.WOOL) {
+				// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
+				DyeColor color = DyeColor.getByWoolData(data);
+				materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
+			} else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
+				TreeSpecies treeSpecies = TreeSpecies.getByData(data);
+				materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
+			} else {
+				materialName = material.name();				
+			}
+		} else if (materialName.startsWith(MaterialBrush.SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
+			materialName = namePieces[1];
+		}
+		
+		materialName = materialName.toLowerCase().replace('_', ' ');
+		
+		return materialName;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static MaterialBrushData parseMaterialKey(String materialKey) {
+		if (materialKey == null || materialKey.length() == 0) return null;
+		
+		Material material = Material.DIRT;
+		byte data = 0;
+		String schematicName = "";
+		String[] pieces = StringUtils.split(materialKey, ":");
+				
+		if (materialKey.equals(ERASE_MATERIAL_KEY)) {
+			material = EraseMaterial;
+		} else if (materialKey.equals(COPY_MATERIAL_KEY)) {
+			material = CopyMaterial;
+		} else if (materialKey.equals(CLONE_MATERIAL_KEY)) {
+			material = CloneMaterial;
+		} else if (materialKey.equals(REPLICATE_MATERIAL_KEY)) {
+			material = ReplicateMaterial;
+		} else if (materialKey.equals(MAP_MATERIAL_KEY)) {
+			material = MapMaterial;
+		} else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
+			material = SchematicMaterial;
+			schematicName = pieces[1];
+		} else {
+			try {
+				if (pieces.length > 0) {
+					// Legacy material id loading
+					try {
+						Integer id = Integer.parseInt(pieces[0]);
+						material = Material.getMaterial(id);
+					} catch (Exception ex) {
+						material = Material.getMaterial(pieces[0].toUpperCase());
+					}
+				}
+				
+				// Prevent building with items
+				if (material != null && !material.isBlock()) {
+					material = null;
+				}
+			} catch (Exception ex) {
+				material = null;
+			}
+			try {
+				if (pieces.length > 1) {
+					data = Byte.parseByte(pieces[1]);
+			}
+			} catch (Exception ex) {
+				data = 0;
+			}
+		}
+		if (material == null) return null;
+		return new MaterialBrushData(material, data, schematicName);
+	}
+	
+	public static boolean isValidMaterial(String materialKey) {
+		return parseMaterialKey(materialKey) != null;
+	}
+
+	public void update(String activeMaterial) {
+		String pieces[] = StringUtils.split(activeMaterial, ":");
+		if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
+			enableCopying();
+		} else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
+			enableCloning();
+		} else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
+			enableReplication();
+		} else if (activeMaterial.equals(MAP_MATERIAL_KEY)) {
+			enableMap();
+		} else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
+			enableErase();
+		} else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
+			enableSchematic(pieces[1]);
+		} else {
+			MaterialAndData material = parseMaterialKey(activeMaterial);
+			if (material != null) {
+				setMaterial(material.getMaterial(), material.getData());
+			}
+		}
+	}
+	
+	public void activate(final Location location, final String material) {
+		String materialKey = material;
+		if (materialKey.contains(":")) {
+			materialKey = StringUtils.split(materialKey, ":")[0];
+		}
+		if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY)) {
+			Location cloneFrom = location.clone();
+			cloneFrom.setY(cloneFrom.getY() - 1);
+			setCloneLocation(cloneFrom);
+		} else if (materialKey.equals(MAP_MATERIAL_KEY) || materialKey.equals(SCHEMATIC_MATERIAL_KEY)) {
+			clearCloneTarget();
+		} 
 	}
 	
 	@Override

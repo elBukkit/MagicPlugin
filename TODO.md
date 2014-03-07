@@ -2,10 +2,9 @@
 
 ## For 2.9.6
 
- - Add location, direction, target parameters to spell
- - Migrate material key functionality to MaterialBrush, support command-line special materials (e.g. schematics)
  - Make spells usable without a player, clean up strong Player references
  - Support schematic entity import for paintings and item frames (at least)
+ - Make sure schematics can import command blocks... (Glider??)
 
 ## For 2.9.7
 
@@ -31,7 +30,7 @@
  - Fix website, can't parse new effect nodes
  - Config-driven WandLevel limits.
  - Add configurable persist block limit for undo queue
- - Make sure adding spells/materials never removes any, also opening/closing the inventory
+ - Make sure adding spells/materials never removes any, also opening/closing the inventory, organizing
  - Add "wand duplicate" command
  - Tweaking/Balancing - haste, cooldowns, etc
  - Retry limit on construction batches

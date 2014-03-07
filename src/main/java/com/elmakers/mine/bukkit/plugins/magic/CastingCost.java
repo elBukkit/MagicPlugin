@@ -56,24 +56,28 @@ public class CastingCost
 		return cost;
 	}
 
-	public boolean has(Mage playerSpells)
+	public boolean has(Spell spell)
 	{
-		Inventory inventory = playerSpells.getInventory();
-		boolean hasItem = item == null || inventory.contains(item, getAmount(playerSpells));
-		boolean hasXp = xp <= 0 || playerSpells.getExperience() >= getXP(playerSpells);
+		Mage mage = spell.getMage();
+		Inventory inventory = mage.getInventory();
+		int amount = getAmount(spell);
+		boolean hasItem = item == null || amount <= 0 || inventory.contains(item, amount);
+		boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
 		return hasItem && hasXp;
 	}
 
-	public void use(Mage playerSpells)
+	public void use(Spell spell)
 	{
-		Inventory inventory = playerSpells.getInventory();
-		if (item != null) {
-			ItemStack itemStack = getItemStack();
+		Mage mage = spell.getMage();
+		Inventory inventory = mage.getInventory();
+		int amount = getAmount(spell);
+		if (item != null && amount > 0) {
+			ItemStack itemStack = getItemStack(spell);
 			inventory.removeItem(itemStack);
 		}
-		int xp = getXP(playerSpells);
+		int xp = getXP(spell);
 		if (xp > 0) {
-			playerSpells.removeExperience(xp);
+			mage.removeExperience(xp);
 		}
 	}
 
@@ -81,6 +85,12 @@ public class CastingCost
 	protected ItemStack getItemStack()
 	{
 		return new ItemStack(item, getAmount(), (short)0, data);
+	}
+
+	@SuppressWarnings("deprecation")
+	protected ItemStack getItemStack(CostReducer reducer)
+	{
+		return new ItemStack(item, getAmount(reducer), (short)0, data);
 	}
 
 	public int getAmount()

@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
@@ -199,7 +200,7 @@ public class WandLevel {
 			String materialKey = material.getValue();
 			// Fixup @'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
 			materialKey = materialKey.replace("|", ":");
-			if (!wandMaterials.contains(material.getValue()) && Wand.isValidMaterial(materialKey)) {
+			if (!wandMaterials.contains(material.getValue()) && MaterialBrush.isValidMaterial(materialKey)) {
 				remainingMaterials.add(material);
 			}
 		}

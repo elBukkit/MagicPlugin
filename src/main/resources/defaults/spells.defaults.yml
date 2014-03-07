@@ -1217,6 +1217,21 @@ pillar:
         transparent: transparent_to_construction
     costs:
         xp: 5
+extend:
+    icon: diamond_axe
+    category: engineering
+    class: ExtendSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+    costs:
+        xp: 10
 stalactite:
     icon: wood_axe
     category: engineering

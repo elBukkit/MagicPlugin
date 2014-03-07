@@ -72,7 +72,7 @@ public class ProjectileSpell extends Spell
 			return SpellResult.FAIL;
 		}
 		
-		if (projectileType != Arrow.class && !mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
+		if (projectileType != Arrow.class && !hasBuildPermission(getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		

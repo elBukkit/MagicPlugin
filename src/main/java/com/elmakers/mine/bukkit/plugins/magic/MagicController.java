@@ -81,6 +81,7 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.Schematic;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
@@ -621,7 +622,7 @@ public class MagicController implements Listener
 			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
 			if (loadSchematicMethod != null) {
 				getLogger().info("WorldEdit found, schematic brushes enabled.");
-				Wand.SchematicsEnabled = true;
+				MaterialBrush.SchematicsEnabled = true;
 			} else {
 				cuboidClipboardClass = null;
 			}
@@ -654,7 +655,7 @@ public class MagicController implements Listener
 		
 		if (cuboidClipboardClass == null) {
 			getLogger().info("WorldEdit not found, schematic brushes will not work.");
-			Wand.SchematicsEnabled = false;
+			MaterialBrush.SchematicsEnabled = false;
 		}
 		
 		// Try to (dynamically) link to WorldGuard:
@@ -1210,12 +1211,12 @@ public class MagicController implements Listener
 		
 		// Parse wand settings
 		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
-		Wand.CopyMaterial = properties.getMaterial("copy_item", Wand.CopyMaterial);
-		Wand.EraseMaterial = properties.getMaterial("erase_item", Wand.EraseMaterial);
-		Wand.CloneMaterial = properties.getMaterial("clone_item", Wand.CloneMaterial);
-		Wand.ReplicateMaterial = properties.getMaterial("replicate_item", Wand.ReplicateMaterial);
-		Wand.SchematicMaterial = properties.getMaterial("schematic_item", Wand.SchematicMaterial);
-		Wand.MapMaterial = properties.getMaterial("map_item", Wand.MapMaterial);
+		MaterialBrush.CopyMaterial = properties.getMaterial("copy_item", MaterialBrush.CopyMaterial);
+		MaterialBrush.EraseMaterial = properties.getMaterial("erase_item", MaterialBrush.EraseMaterial);
+		MaterialBrush.CloneMaterial = properties.getMaterial("clone_item", MaterialBrush.CloneMaterial);
+		MaterialBrush.ReplicateMaterial = properties.getMaterial("replicate_item", MaterialBrush.ReplicateMaterial);
+		MaterialBrush.SchematicMaterial = properties.getMaterial("schematic_item", MaterialBrush.SchematicMaterial);
+		MaterialBrush.MapMaterial = properties.getMaterial("map_item", MaterialBrush.MapMaterial);
 		Wand.EnchantableWandMaterial = properties.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings

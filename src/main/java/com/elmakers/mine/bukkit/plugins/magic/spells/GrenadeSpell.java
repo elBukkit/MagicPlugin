@@ -26,7 +26,7 @@ public class GrenadeSpell extends Spell
 		if (target == null) {
 			return SpellResult.NO_TARGET;
 		}
-		if (!mage.hasBuildPermission(target)) {
+		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		Location loc = target.getLocation();

@@ -439,6 +439,9 @@ spells:
     pillar:
         name: Pillar
         description: Raises a pillar up
+    extend:
+        name: Extend
+        description: Place a block at your target
     force:
         name: Force
         description: Use telekinesis
@@ -573,3 +576,27 @@ wands:
     decorator:
         name: Decorator
         description: Decorates large areas at a time
+    guest:
+        name: The Welcome Wand
+        description: A low-powered wand for new players
+    villager:
+        name: The Villager Wand
+        description: Some basic utility and defense spells
+    knight:
+        name: The Knight Wand
+        description: A wand for knights
+    legend:
+        name: The Legendary Wand
+        description: It's legen ... 
+    overseer:
+        name: The Overseer Wand
+        description: ... DARY!
+    wizard:
+        name: The Wizard Wand
+        description: You're a real wizard, now.
+    netherwizard:
+        name: The Nether Wizard Wand
+        description: Spooky Power
+    enderwizard:
+        name: The Ender Wizard Wand
+        description: Super Power

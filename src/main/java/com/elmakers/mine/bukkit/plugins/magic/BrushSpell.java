@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
-import org.bukkit.Material;
-
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -10,12 +8,14 @@ public abstract class BrushSpell extends BlockSpell{
 	private MaterialBrush brush;
 
 	@Override
-	protected void loadTemplate(String key, ConfigurationNode node)
+	protected void processParameters(ConfigurationNode parameters)
 	{
-		super.loadTemplate(key, node);
-		Material override = parameters.getMaterial("material", null);
-		if (override != null) {
-			brush = new MaterialBrush(controller, override, (byte)0);
+		super.processParameters(parameters);
+		String materialKey = parameters.getString("material", null);
+		if (materialKey != null) {
+			brush = new MaterialBrush(controller, getLocation(), materialKey);
+		} else {
+			brush = null;
 		}
 	}
 	

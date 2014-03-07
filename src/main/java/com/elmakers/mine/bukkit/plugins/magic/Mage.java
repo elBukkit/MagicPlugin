@@ -514,17 +514,11 @@ public class Mage implements CostReducer
 		if (pendingBatches.size() > 0) {
 			List<BlockBatch> batches = new ArrayList<BlockBatch>();
 			batches.addAll(pendingBatches);
-			boolean cancelled = false;
 			for (BlockBatch batch : batches) {
 				if (!(batch instanceof UndoBatch)) {
 					batch.finish();
 					pendingBatches.remove(batch);
-					cancelled = true;
 				}
-			}
-			if (cancelled) {
-				controller.removePending(this);
-				return true;
 			}
 		}
 		return getUndoQueue().undo(this);

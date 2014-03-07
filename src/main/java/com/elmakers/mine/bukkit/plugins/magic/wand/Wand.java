@@ -13,11 +13,8 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.TreeSpecies;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -110,23 +107,9 @@ public class Wand implements CostReducer {
 	
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
-	public static boolean SchematicsEnabled = false;	
 	public static boolean displayManaAsBar = true;
 	public static Material WandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
-	public static Material EraseMaterial = Material.SULPHUR;
-	public static Material CopyMaterial = Material.SUGAR;
-	public static Material CloneMaterial = Material.NETHER_STALK;
-	public static Material ReplicateMaterial = Material.PUMPKIN_SEEDS;
-	public static Material MapMaterial = Material.MAP;
-	public static Material SchematicMaterial = Material.PAPER;
-
-	public static final String ERASE_MATERIAL_KEY = "erase";
-	public static final String COPY_MATERIAL_KEY = "copy";
-	public static final String CLONE_MATERIAL_KEY = "clone";
-	public static final String REPLICATE_MATERIAL_KEY = "replicate";
-	public static final String MAP_MATERIAL_KEY = "map";
-	public static final String SCHEMATIC_MATERIAL_KEY = "schematic";
 	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
@@ -170,18 +153,8 @@ public class Wand implements CostReducer {
 	protected void activateBrush(String materialKey) {
 		setActiveMaterial(materialKey);
 		if (materialKey != null) {
-			if (materialKey.contains(":")) {
-				materialKey = StringUtils.split(materialKey, ":")[0];
-			}
-			if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY)) {
-				MaterialBrush brush = mage.getBrush();
-				Location cloneLocation = mage.getLocation();
-				cloneLocation.setY(cloneLocation.getY() - 1);
-				brush.setCloneLocation(cloneLocation);
-			} else if (materialKey.equals(MAP_MATERIAL_KEY) || materialKey.equals(SCHEMATIC_MATERIAL_KEY)) {
-				MaterialBrush brush = mage.getBrush();
-				brush.clearCloneTarget();
-			} 
+			MaterialBrush brush = mage.getBrush();
+			brush.activate(mage.getLocation(), materialKey);
 		}
 	}
 	
@@ -538,7 +511,7 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	protected ItemStack createMaterialItem(String materialKey) {
-		MaterialBrushData brushData = parseMaterialKey(materialKey);
+		MaterialBrushData brushData = MaterialBrush.parseMaterialKey(materialKey);
 		if (brushData == null) return null;
 		
 		Material material = brushData.getMaterial();
@@ -552,18 +525,18 @@ public class Wand implements CostReducer {
 		ItemMeta meta = itemStack.getItemMeta();
 		List<String> lore = new ArrayList<String>();
 		if (material != null) {
-			lore.add(ChatColor.GRAY + Messages.get("wand.building_material_info").replace("$material", getMaterialName(materialKey)));
-			if (material == EraseMaterial) {
+			lore.add(ChatColor.GRAY + Messages.get("wand.building_material_info").replace("$material", MaterialBrush.getMaterialName(materialKey)));
+			if (material == MaterialBrush.EraseMaterial) {
 				lore.add(Messages.get("wand.erase_material_description"));
-			} else if (material == CopyMaterial) {
+			} else if (material == MaterialBrush.CopyMaterial) {
 				lore.add(Messages.get("wand.copy_material_description"));
-			} else if (material == CloneMaterial) {
+			} else if (material == MaterialBrush.CloneMaterial) {
 				lore.add(Messages.get("wand.clone_material_description"));
-			} else if (material == ReplicateMaterial) {
+			} else if (material == MaterialBrush.ReplicateMaterial) {
 				lore.add(Messages.get("wand.replicate_material_description"));
-			} else if (material == MapMaterial) {
+			} else if (material == MaterialBrush.MapMaterial) {
 				lore.add(Messages.get("wand.map_material_description"));
-			} else if (material == SchematicMaterial) {
+			} else if (material == MaterialBrush.SchematicMaterial) {
 				lore.add(Messages.get("wand.schematic_material_description").replace("$schematic", brushData.getSchematicName()));
 			} else {
 				lore.add(ChatColor.LIGHT_PURPLE + Messages.get("wand.building_material_description"));
@@ -868,7 +841,7 @@ public class Wand implements CostReducer {
 		String name = "";
 		if (spell != null) {
 			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
-				String materialName = getMaterialName(materialKey);
+				String materialName = MaterialBrush.getMaterialName(materialKey);
 				if (materialName == null) {
 					materialName = "none";
 				}
@@ -901,35 +874,9 @@ public class Wand implements CostReducer {
 	private String getActiveWandName(Spell spell) {
 		return getActiveWandName(spell, activeMaterial);
 	}
-	
-	private static String getMaterialKey(Material material) {
-		String materialKey = null;
-		if (material == null) return null;
-
-		if (material == EraseMaterial) {
-			materialKey = ERASE_MATERIAL_KEY;
-		} else if (material == CopyMaterial) {
-			materialKey = COPY_MATERIAL_KEY;
-		} else if (material == CloneMaterial) {
-			materialKey = CLONE_MATERIAL_KEY;
-		} else if (material == MapMaterial) {
-			materialKey = MAP_MATERIAL_KEY;
-		} else if (material == ReplicateMaterial) {
-			materialKey = REPLICATE_MATERIAL_KEY;
-		} else if (SchematicsEnabled && material == SchematicMaterial) {
-			// This would be kinda broken.. might want to revisit all this.
-			// This method is only called by addMaterial at this point,
-			// which should only be called with real materials anyway.
-			materialKey = SCHEMATIC_MATERIAL_KEY;
-		} else if (material.isBlock()) {
-			materialKey = material.name().toLowerCase();
-		}
-		
-		return materialKey;
-	}
 
 	private static String getMaterialKey(Material material, byte data) {
-		String materialKey = getMaterialKey(material);
+		String materialKey = MaterialBrush.getMaterialKey(material);
 		if (materialKey == null) {
 			return null;
 		}
@@ -938,60 +885,6 @@ public class Wand implements CostReducer {
 		}
 		
 		return materialKey;
-	}
-
-	@SuppressWarnings("deprecation")
-	private static String getMaterialName(String materialKey) {
-		if (materialKey == null) return null;
-		String materialName = materialKey;
-		String[] namePieces = StringUtils.split(materialName, ":");
-		if (namePieces.length == 0) return null;
-		
-		materialName = namePieces[0];
-		
-		if (!isSpecialMaterialKey(materialKey)) {
-			MaterialBrushData brushData = parseMaterialKey(materialKey);
-			if (brushData == null) return null;
-			
-			Material material = brushData.getMaterial();
-			byte data = brushData.getData();
-			
-			// This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
-			/*
-			Class<? extends MaterialData> materialData = material.getData();
-			Bukkit.getLogger().info("Material " + material + " has " + materialData);
-			if (Wool.class.isAssignableFrom(materialData)) {
-				Wool wool = new Wool(material, data);
-				materialName += " " + wool.getColor().name();
-			} else if (Dye.class.isAssignableFrom(materialData)) {
-				Dye dye = new Dye(material, data);
-				materialName += " " + dye.getColor().name();
-			} else if (Dye.class.isAssignableFrom(materialData)) {
-				Dye dye = new Dye(material, data);
-				materialName += " " + dye.getColor().name();
-			}
-			*/
-			
-			// Using raw id's for 1.6 support... because... bukkit... bleh.
-			
-			//if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
-			if (material == Material.CARPET || material.getId() == 95 || material.getId() ==159 || material.getId() == 160 || material == Material.WOOL) {
-				// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
-				DyeColor color = DyeColor.getByWoolData(data);
-				materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
-			} else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
-				TreeSpecies treeSpecies = TreeSpecies.getByData(data);
-				materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
-			} else {
-				materialName = material.name();				
-			}
-		} else if (materialName.startsWith(SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
-			materialName = namePieces[1];
-		}
-		
-		materialName = materialName.toLowerCase().replace('_', ' ');
-		
-		return materialName;
 	}
 	
 	private String getActiveWandName() {
@@ -1161,16 +1054,6 @@ public class Wand implements CostReducer {
 		
 		return null;
 	}
-	
-	public static boolean isSpecialMaterialKey(String materialKey) {
-		if (materialKey == null || materialKey.length() == 0) return false;
-		if (materialKey.contains(":")) {
-			materialKey = StringUtils.split(materialKey, ":")[0];
-		}
-		return COPY_MATERIAL_KEY.equals(materialKey) || ERASE_MATERIAL_KEY.equals(materialKey) || 
-			   REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) || 
-			   MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
-	}
 
 	public static boolean isWand(ItemStack item) {
 		// Special-case here for porting old wands. Could be removed eventually.
@@ -1245,7 +1128,7 @@ public class Wand implements CostReducer {
 		if (activeName) {
 			displayName = getActiveWandName(materialKey);
 		} else {
-			displayName = getMaterialName(materialKey);
+			displayName = MaterialBrush.getMaterialName(materialKey);
 		}
 		meta.setDisplayName(displayName);
 		itemStack.setItemMeta(meta);
@@ -1440,7 +1323,7 @@ public class Wand implements CostReducer {
 			List<Object> materialList = wandConfig.getList("materials");
 			if (materialList != null) {
 				for (Object materialKey : materialList) {
-					if (!isValidMaterial((String)materialKey)) {
+					if (!MaterialBrush.isValidMaterial((String)materialKey)) {
 						controller.getPlugin().getLogger().info("Unknown material: " + materialKey);
 					} else {
 						wand.addMaterial((String)materialKey, false, true);
@@ -1642,89 +1525,14 @@ public class Wand implements CostReducer {
 		return defaultValue;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public static MaterialBrushData parseMaterialKey(String materialKey) {
-		if (materialKey == null || materialKey.length() == 0) return null;
-		
-		Material material = Material.DIRT;
-		byte data = 0;
-		String schematicName = "";
-		String[] pieces = StringUtils.split(materialKey, ":");
-				
-		if (materialKey.equals(ERASE_MATERIAL_KEY)) {
-			material = EraseMaterial;
-		} else if (materialKey.equals(COPY_MATERIAL_KEY)) {
-			material = CopyMaterial;
-		} else if (materialKey.equals(CLONE_MATERIAL_KEY)) {
-			material = CloneMaterial;
-		} else if (materialKey.equals(REPLICATE_MATERIAL_KEY)) {
-			material = ReplicateMaterial;
-		} else if (materialKey.equals(MAP_MATERIAL_KEY)) {
-			material = MapMaterial;
-		} else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
-			material = SchematicMaterial;
-			schematicName = pieces[1];
-		} else {
-			try {
-				if (pieces.length > 0) {
-					// Legacy material id loading
-					try {
-						Integer id = Integer.parseInt(pieces[0]);
-						material = Material.getMaterial(id);
-					} catch (Exception ex) {
-						material = Material.getMaterial(pieces[0].toUpperCase());
-					}
-				}
-				
-				// Prevent building with items
-				if (material != null && !material.isBlock()) {
-					material = null;
-				}
-			} catch (Exception ex) {
-				material = null;
-			}
-			try {
-				if (pieces.length > 1) {
-					data = Byte.parseByte(pieces[1]);
-			}
-			} catch (Exception ex) {
-				data = 0;
-			}
-		}
-		if (material == null) return null;
-		return new MaterialBrushData(material, data, schematicName);
-	}
-	
-	public static boolean isValidMaterial(String materialKey) {
-		return parseMaterialKey(materialKey) != null;
-	}
-
 	private void updateActiveMaterial() {
 		if (mage == null) return;
 		
 		if (activeMaterial == null) {
 			mage.clearBuildingMaterial();
 		} else {
-			String pieces[] = StringUtils.split(activeMaterial, ":");
 			MaterialBrush brush = mage.getBrush();
-			if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
-				brush.enableCopying();
-			} else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
-				brush.enableCloning();
-			} else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
-				brush.enableReplication();
-			} else if (activeMaterial.equals(MAP_MATERIAL_KEY)) {
-				brush.enableMap();
-			} else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
-				brush.enableErase();
-			} else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
-				brush.enableSchematic(pieces[1]);
-			} else {
-				MaterialAndData material = parseMaterialKey(activeMaterial);
-				if (material != null) {
-					brush.setMaterial(material.getMaterial(), material.getData());
-				}
-			}
+			brush.update(activeMaterial);
 		}
 	}
 	

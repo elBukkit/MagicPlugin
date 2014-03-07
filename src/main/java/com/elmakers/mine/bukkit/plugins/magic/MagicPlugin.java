@@ -25,6 +25,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.blocks.BlockData;
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.populator.MagicRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandCleanupRunnable;
@@ -786,7 +787,7 @@ public class MagicPlugin extends JavaPlugin
 			}
 			
 			String materialKey = parameters[1];
-			if (!Wand.isValidMaterial(materialKey)) {
+			if (!MaterialBrush.isValidMaterial(materialKey)) {
 				sender.sendMessage(materialKey + " is not a valid material");
 				return true;
 			}

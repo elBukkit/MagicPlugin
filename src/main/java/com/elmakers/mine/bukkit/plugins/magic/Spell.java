@@ -48,7 +48,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
  * Original targeting code ported from: HitBlox.java, Ho0ber@gmail.com 
  *
  */
-public abstract class Spell implements Comparable<Spell>, Cloneable
+public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 {	
 	/*
 	 * protected members that are helpful to use
@@ -78,6 +78,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	private boolean                             allowMaxRange           = false;
 	private boolean                             pvpRestricted           = false;
+	private boolean								bypassBuildRestriction  = false;
+	private boolean								bypassPvpRestriction    = false;
+	private float                               cooldownReduction       = 0;
+	private float                               costReduction           = 0;
 	private int                                 range                   = 32;
 	private static int                          maxRange                = 511;
 	private double                              viewHeight              = 1.65;
@@ -94,6 +98,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	private int                                 targetHeightRequired    = 1;
 	private Class<? extends Entity>             targetEntityType        = null;
 	private Location                            location;
+	private Location                            targetLocation;
 	private double                              xRotation, yRotation;
 	private double                              length, hLength;
 	private double                              xOffset, yOffset, zOffset;
@@ -191,13 +196,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		
 		for (CastingCost cost : activeCosts)
 		{
-			if (!cost.has(mage))
+			if (!cost.has(this))
 			{
 				deactivate();
 				return;
 			}
 			
-			cost.use(mage);
+			cost.use(this);
 		}
 	}
 	
@@ -412,19 +417,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		location = mage.getLocation();
 		initializeTargeting();
 		
-		if (pvpRestricted && !controller.isPVPAllowed(mage.getLocation())) {
-			sendMessage(Messages.get("costs.insufficient_permissions"));
-			return false;
-		}
-		
 		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
-
+		processParameters(parameters);
+		
 		// Check cooldowns
 		cooldown = parameters.getInt("cooldown", cooldown);
 		
 		long currentTime = System.currentTimeMillis();
-		float cooldownReduction = mage.getCooldownReduction();
+		double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
 		if (cooldownReduction < 1 && !isActive && cooldown > 0) {
 			int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
 			if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
@@ -444,7 +445,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		{
 			for (CastingCost cost : costs)
 			{
-				if (!cost.has(mage))
+				if (!cost.has(this))
 				{
 					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription(mage)));
 					processResult(SpellResult.INSUFFICIENT_RESOURCES);
@@ -452,18 +453,23 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 				}
 			}
 		}
-
-		lastCast = currentTime;
-		processParameters(parameters);
+		
+		if (pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(mage.getLocation())) {
+			sendMessage(Messages.get("costs.insufficient_permissions"));
+			return false;
+		}
 		
 		SpellResult result = onCast(parameters);
+		if (result == SpellResult.CAST) {
+			lastCast = currentTime;
+		}
 		processResult(result);
 		
 		if (result == SpellResult.CAST || result == SpellResult.AREA) {
 			if (costs != null) {
 				for (CastingCost cost : costs)
 				{
-					cost.use(mage);
+					cost.use(this);
 				}
 			}
 			castCount++;
@@ -565,9 +571,21 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		Double yValue = parameters.getDouble("y", null);
 		Double xValue = parameters.getDouble("x", null);
 		Double zValue = parameters.getDouble("z", null);
-		if (xValue != null || zValue != null || yValue != null) {
-			location = new Location(location.getWorld(), xValue == null ? 0 : xValue, yValue == null ? 0 : yValue, zValue == null ? 0 : zValue,
+		if (xValue != null && zValue != null && yValue != null) {
+			location = new Location(location.getWorld(), xValue, yValue, zValue,
 					location.getYaw(), location.getPitch());
+		} else {
+			location = mage.getLocation();
+		}
+		
+		Double tyValue = parameters.getDouble("ty", null);
+		Double txValue = parameters.getDouble("tx", null);
+		Double tzValue = parameters.getDouble("tz", null);
+		if (txValue != null && tzValue != null && tyValue != null) {
+			targetLocation = new Location(location.getWorld(), txValue, tyValue, tzValue,
+					location.getYaw(), location.getPitch());
+		} else {
+			targetLocation = null;
 		}
 
 		Double dyValue = parameters.getDouble("dy", null);
@@ -581,6 +599,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		} else {
 			direction = null;
 		}
+		
+		bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
+		bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+		costReduction = parameters.getFloat("cost_reduction", 0);
+		cooldownReduction = parameters.getFloat("cooldown_reduction", 0);
 	}
 
 	public String getPermissionNode()
@@ -662,6 +685,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	public boolean hasBuildPermission(Block block)
 	{
+		if (bypassBuildRestriction) return true;
 		return mage.hasBuildPermission(block);
 	}
 
@@ -848,12 +872,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	 */
 	public Block getPlayerBlock()
 	{
-		Player player = getPlayer();
-		if (player == null) {
-			return null;
-		}
 		Block playerBlock = null;
-		Location playerLoc = player.getLocation();
+		Location playerLoc = getLocation();
 		int x = (int) Math.round(playerLoc.getX() - 0.5);
 		int y = (int) Math.round(playerLoc.getY() - 0.5);
 		int z = (int) Math.round(playerLoc.getZ() - 0.5);
@@ -974,12 +994,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 
 	protected Location getLocation()
 	{
-		if (location == null) {
+		if (location == null && mage != null) {
 			location = mage.getLocation();
 			if (direction != null) {
 				location.setDirection(direction);
 			}
 		}
+		if (location == null) return null;
 		return location.clone();
 	}
 
@@ -993,8 +1014,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 	
 	protected Vector getDirection()
 	{
-		if (direction == null) direction = getLocation().getDirection();
-		return direction;
+		if (direction == null) {
+			Location location = getLocation();
+			if (location != null) {
+				direction = location.getDirection();
+			}
+		}
+		if (direction == null) return null;
+		return direction.clone();
 	}
 	
 	/**
@@ -1057,6 +1084,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 			return target;
 		}
 
+		if (targetLocation != null) {
+			return new Target(player, targetLocation.getBlock());
+		}
 		findTargetBlock();
 		Block block = getCurBlock();
 		
@@ -1073,7 +1103,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		else 
 		{
 			// Don't allow targeting entities in no-PVP areas.
-			if (!pvpRestricted || controller.isPVPAllowed(targetEntity.getLocation())) 
+			if (!pvpRestricted || bypassPvpRestriction || controller.isPVPAllowed(targetEntity.getLocation())) 
 			{
 				target = targetEntity;
 			}
@@ -1698,5 +1728,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable
 		}
 		
 		return mobSkin;
+	}
+	
+	public float getCostReduction()
+	{
+		return costReduction + mage.getCostReduction();
+	}
+	
+	public boolean usesMana() 
+	{
+		return mage.usesMana();
 	}
 }

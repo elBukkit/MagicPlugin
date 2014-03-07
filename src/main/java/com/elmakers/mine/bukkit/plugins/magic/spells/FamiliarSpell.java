@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -95,7 +96,10 @@ public class FamiliarSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!mage.hasBuildPermission(getPlayer().getLocation().getBlock())) {
+		if (!hasBuildPermission(getLocation().getBlock())) {
+			
+			Bukkit.getLogger().info("Failed build perms");
+			
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		

@@ -15,7 +15,7 @@ public class TossSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Location location = getPlayer().getLocation();
+		Location location = getLocation();
 		if (!hasBuildPermission(location.getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
