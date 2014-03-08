@@ -603,13 +603,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Double dtxValue = parameters.getDouble("dtx", null);
 		Double dtzValue = parameters.getDouble("dtz", null);
 		if (dtxValue != null || dtzValue != null || dtyValue != null) {
-			targetLocation = new Location(location.getWorld(), 
-					location.getX() + (dtxValue == null ? 0 : dtxValue), 
-					location.getY() + (dtyValue == null ? 0 : dtyValue), 
-					location.getZ() + (dtzValue == null ? 0 : dtzValue),
-					location.getYaw(), location.getPitch());
-		} else {
-			targetLocation = null;
+			if (targetLocation == null) targetLocation = location.clone();
+			targetLocation = new Location(targetLocation.getWorld(), 
+					targetLocation.getX() + (dtxValue == null ? 0 : dtxValue), 
+					targetLocation.getY() + (dtyValue == null ? 0 : dtyValue), 
+					targetLocation.getZ() + (dtzValue == null ? 0 : dtzValue),
+					targetLocation.getYaw(), targetLocation.getPitch());
 		}
 
 		Double dyValue = parameters.getDouble("dy", null);
