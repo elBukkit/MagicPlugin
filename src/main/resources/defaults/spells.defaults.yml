@@ -532,7 +532,7 @@ lightning:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_thunder
+           sound: firework_large_blast
         -  class: EffectTrail
            particle: smoke
            particle_count: 2
@@ -2088,4 +2088,31 @@ mail:
         cooldown: 60000
     costs:
         xp: 100
+wolfhouse:
+    icon: ender_portal
+    category: master
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        check_destructibe: false
+        range: 32
+        radius: 32
+        type: sphere
+        material: schematic|wolf_house
+        dmx: -2
+        dmy: -48
+        dmz: 11
+        radius: 16
+        mm: erase 
+        transparent: transparent_to_construction
+    costs:
+        xp: 1000
         

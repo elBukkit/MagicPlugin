@@ -100,19 +100,27 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	public static boolean isSpecialMaterialKey(String materialKey) {
 		if (materialKey == null || materialKey.length() == 0) return false;
-		if (materialKey.contains(":")) {
-			materialKey = StringUtils.split(materialKey, ":")[0];
-		}
+		materialKey = splitMaterialKey(materialKey)[0];
 		return COPY_MATERIAL_KEY.equals(materialKey) || ERASE_MATERIAL_KEY.equals(materialKey) || 
 			   REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) || 
 			   MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
+	}
+	
+	public static String[] splitMaterialKey(String materialKey) {
+		if (materialKey.contains("|")) {
+			return StringUtils.split(materialKey, "|");
+		} else if (materialKey.contains(":")) {
+			return StringUtils.split(materialKey, ":");
+		}
+		
+		return new String[] { materialKey };
 	}
 
 	@SuppressWarnings("deprecation")
 	public static String getMaterialName(String materialKey) {
 		if (materialKey == null) return null;
 		String materialName = materialKey;
-		String[] namePieces = StringUtils.split(materialName, ":");
+		String[] namePieces = splitMaterialKey(materialName);
 		if (namePieces.length == 0) return null;
 		
 		materialName = namePieces[0];
@@ -169,7 +177,7 @@ public class MaterialBrush extends MaterialBrushData {
 		Material material = Material.DIRT;
 		byte data = 0;
 		String schematicName = "";
-		String[] pieces = StringUtils.split(materialKey, ":");
+		String[] pieces = splitMaterialKey(materialKey);
 				
 		if (materialKey.equals(ERASE_MATERIAL_KEY)) {
 			material = EraseMaterial;
@@ -220,7 +228,7 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 
 	public void update(String activeMaterial) {
-		String pieces[] = StringUtils.split(activeMaterial, ":");
+		String pieces[] = splitMaterialKey(activeMaterial);
 		if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
 			enableCopying();
 		} else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
@@ -242,10 +250,7 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 	
 	public void activate(final Location location, final String material) {
-		String materialKey = material;
-		if (materialKey.contains(":")) {
-			materialKey = StringUtils.split(materialKey, ":")[0];
-		}
+		String materialKey = splitMaterialKey(material)[0];
 		if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY)) {
 			Location cloneFrom = location.clone();
 			cloneFrom.setY(cloneFrom.getY() - 1);

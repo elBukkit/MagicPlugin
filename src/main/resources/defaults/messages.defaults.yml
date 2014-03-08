@@ -413,6 +413,9 @@ spells:
     wolf:
         name: Wolf
         description: Create some wolf familiars
+    wolfhouse:
+        name: Wolf House
+        description: Create an auto-regenerating base
     cat:
         name: Cat
         description: Create some cat familiars
