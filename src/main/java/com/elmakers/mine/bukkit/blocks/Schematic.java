@@ -184,7 +184,14 @@ public class Schematic {
 					signSetNBTDataMethod.invoke(signBlock, nbtData);
 					blockData.setSignLines((String[])getLinesMethod.invoke(signBlock));
 				}
-			} else if (material == Material.CHEST) {
+			} /* TODO else if (material == Material.COMMAND) {
+				if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
+					Object signBlock = signConstructor.newInstance(material.getId(), materialData);
+					Object nbtData = getNBTDataMethod.invoke(baseBlock);
+					signSetNBTDataMethod.invoke(signBlock, nbtData);
+					blockData.setSignLines((String[])getLinesMethod.invoke(signBlock));
+				}
+			} */ else if (material == Material.CHEST) {
 				if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
 					Object chestBlock = chestConstructor.newInstance(materialData);
 					Object nbtData = getNBTDataMethod.invoke(baseBlock);

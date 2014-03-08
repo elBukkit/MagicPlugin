@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -514,18 +515,23 @@ public class MagicController implements Listener
 
 		String fileName = schematicName + ".schematic";
 		File schematicFile = new File(schematicFolder, fileName);
-		if (!schematicFile.exists()) {
+		InputStream builtin = plugin.getResource("schematics/" + fileName);
+		if (builtin != null) {
 			try {
 				plugin.saveResource("schematics/" + fileName, true);
+				getLogger().warning("Loading builtin schematic: schematics/" + fileName);
 			} catch (Exception ex) {
-				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-					String extraFileName = extraSchematicFilePath.replace("$name", schematicName);
-					File extraSchematicFile = new File(configFolder, "../" + extraFileName);
-					if (extraSchematicFile.exists()) {
-						schematicFile = extraSchematicFile;
-					} else {
-						getLogger().warning("Could not load file: " + extraSchematicFile.getAbsolutePath());
-					}
+				getLogger().warning("Could not save file: " + "schematics/" + fileName);
+			}
+		}
+		if (!schematicFile.exists()) {
+			if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+				String extraFileName = extraSchematicFilePath.replace("$name", schematicName);
+				File extraSchematicFile = new File(configFolder, "../" + extraFileName);
+				if (extraSchematicFile.exists()) {
+					schematicFile = extraSchematicFile;
+				} else {
+					getLogger().warning("Could not load file: " + extraSchematicFile.getAbsolutePath());
 				}
 			}
 		}
