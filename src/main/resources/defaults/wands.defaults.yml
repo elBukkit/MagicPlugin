@@ -346,6 +346,8 @@ random:
       time: 0,0,0,1
       disarm: 0,0,0,1
       weather: 0,0,0,1
+      tent: 0,0,5,15
+      wolfhouse: 0,0,0,1
     material_count:
       0: 50, 20, 20,    0
       1: 1,  10,  30,   0
@@ -451,7 +453,6 @@ random:
       stained_glass_pane|15: 60,40,30,20
       schematic|rainbow: 0,2,5,10
       schematic|creeper_rug: 0,0,5,10
-      schematic|wolf_house: 0,0,0,1
       schematic|stash_chest: 0,0,0,1
       schematic|elder_tree: 0,0,0,1
       schematic|church: 0,0,5,10
@@ -753,7 +754,6 @@ engineer:
         - obsidian
         - schematic:rainbow
         - schematic:creeper_rug
-        - schematic:wolf_house
         - schematic:church
         - schematic:blacksmith
         - schematic:compact_house
@@ -856,6 +856,7 @@ elder:
     effect_bubbles: true
     organize: true
     spells:
+        - tent
         - fling
         - blink
         - recurse
@@ -1439,11 +1440,11 @@ wolf:
     cost_reduction: 2
     protection: 2
     fire_protection: 2
-    cooldown_reduction: 2
+    cooldown_reduction: 0.9
     health_regeneration: 1
     hunger_regeneration: 1
-    power: 5
-    haste: 1
+    power: 2
+    haste: 0
     effect_color: '00AACC'
     effect_particle: magic_runes
     effect_particle_count: 4
@@ -1457,6 +1458,7 @@ wolf:
         - superblob
         - day
         - undo
+        - wolfhouse
         - disarm
         - gather
         - rewind
@@ -1567,7 +1569,6 @@ wolf:
         - redstone_block
         - schematic:rainbow
         - schematic:creeper_rug
-        - schematic:wolf_house
         - schematic:church
         - schematic:blacksmith
         - schematic:compact_house
