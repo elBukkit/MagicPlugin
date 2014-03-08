@@ -2268,6 +2268,7 @@ public class MagicController implements Listener
 	public void toggleCastCommandOverrides(Mage mage, boolean override) {
 		mage.setCostReduction(override ? castCommandCostReduction : 0);
 		mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
+		mage.setPowerMultiplier(override ? 1 : 0);
 	}
 	
 	public float getCooldownReduction() {

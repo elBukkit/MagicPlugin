@@ -54,6 +54,7 @@ public class Mage implements CostReducer
 	
 	private float 				costReduction = 0;
 	private float 				cooldownReduction = 0;
+	private float 				powerMultiplier = 0;
 	private long 				lastClick = 0;
 	private long 				blockPlaceTimeout = 0;
 	private Location 			lastDeathLocation = null;
@@ -142,13 +143,21 @@ public class Mage implements CostReducer
 		cooldownReduction = reduction;
 	}
 	
+	public void setPowerMultiplier(float mutliplier) {
+		powerMultiplier = mutliplier;
+	}
+	
 	public boolean usesMana() {
 		return activeWand == null ? false : activeWand.usesMana();
 	}
 	
+	protected float getWandPower() {
+		return activeWand == null ? 0 : activeWand.getPower() * powerMultiplier;
+	}
+	
 	public float getDamageMultiplier() {
 		float maxPowerMultiplier = controller.getMaxDamagePowerMultiplier() - 1;
-		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+		return 1 + (maxPowerMultiplier * getWandPower());
 	}
 	
 	public float getRangeMultiplier() {
@@ -156,13 +165,13 @@ public class Mage implements CostReducer
 		
 		float maxPowerMultiplier = controller.getMaxRangePowerMultiplier() - 1;
 		float maxPowerMultiplierMax = controller.getMaxRangePowerMultiplierMax();
-		float multiplier = 1 + (maxPowerMultiplier * activeWand.getPower());
+		float multiplier = 1 + (maxPowerMultiplier * getWandPower());
 		return Math.min(multiplier, maxPowerMultiplierMax);
 	}
 	
 	public float getConstructionMultiplier() {
 		float maxPowerMultiplier = controller.getMaxConstructionPowerMultiplier() - 1;
-		return activeWand == null ? 1 : 1 + (maxPowerMultiplier * activeWand.getPower());
+		return 1 + (maxPowerMultiplier * getWandPower());
 	}
 	
 	public float getRadiusMultiplier() {
@@ -170,7 +179,7 @@ public class Mage implements CostReducer
 		
 		float maxPowerMultiplier = controller.getMaxRadiusPowerMultiplier() - 1;
 		float maxPowerMultiplierMax = controller.getMaxRadiusPowerMultiplierMax();
-		float multiplier = 1 + (maxPowerMultiplier * activeWand.getPower());
+		float multiplier = 1 + (maxPowerMultiplier * getWandPower());
 		return Math.min(multiplier, maxPowerMultiplierMax);
 	}
 
