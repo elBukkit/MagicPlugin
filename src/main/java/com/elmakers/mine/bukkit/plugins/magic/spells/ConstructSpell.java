@@ -36,6 +36,11 @@ public class ConstructSpell extends BrushSpell
 			return SpellResult.NO_TARGET;
 		}
 		Block target = t.getBlock();
+		if (target == null)
+		{
+			castMessage("No target");
+			return SpellResult.NO_TARGET;
+		}
 
 		int timeToLive = parameters.getInt("undo", 0);
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);

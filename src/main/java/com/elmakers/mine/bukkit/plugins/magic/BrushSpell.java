@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public abstract class BrushSpell extends BlockSpell{
 
 	private MaterialBrush brush;
+	private boolean hasBrush = false;
 
 	@Override
 	protected void processParameters(ConfigurationNode parameters)
@@ -41,6 +42,13 @@ public abstract class BrushSpell extends BlockSpell{
 		}
 	}
 	
+	@Override
+	protected void loadTemplate(ConfigurationNode node)
+	{
+		super.loadTemplate(node);
+		hasBrush = parameters.containsKey("material");
+	}
+	
 	public MaterialBrush getMaterialBrush()
 	{
 		if (brush != null)
@@ -53,6 +61,6 @@ public abstract class BrushSpell extends BlockSpell{
 	
 	public boolean hasBrushOverride() 
 	{
-		return brush != null;
+		return brush != null || hasBrush;
 	}
 }
