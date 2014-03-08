@@ -55,6 +55,20 @@ public class FillSpell extends BrushSpell
 			
 			return SpellResult.CAST;
 		}
+		
+
+		Double ftxValue = parameters.getDouble("ftx", null);
+		Double ftyValue = parameters.getDouble("fty", null);
+		Double ftzValue = parameters.getDouble("ftz", null);
+		if (ftxValue != null && ftzValue != null && ftyValue != null) {
+			Location targetLocation = getLocation();
+			targetLocation = new Location(targetLocation.getWorld(), 
+					ftxValue, 
+					ftyValue, 
+					ftzValue,
+					targetLocation.getYaw(), targetLocation.getPitch());
+			this.targetBlock = targetLocation.getBlock();
+		}
 
 		if (this.targetBlock != null)
 		{
