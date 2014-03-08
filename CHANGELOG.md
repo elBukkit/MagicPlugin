@@ -2,7 +2,7 @@
 
 ## 2.9.6
 
- - Add "Wolf House" and "Tent" spells. WIP.
+ - Add "Wolf House" and "Tent" and "Cage" spells. WIP.
  - Copy command blocks from schematics.
  - Add "px, py, pz" and "dx, dy, dz" parameters to all spells, to force player location and direction. (Scripting!)
  - Add "tx, ty, tz" parameters for target location.

@@ -419,6 +419,9 @@ spells:
     tent:
         name: Tent
         description: Create a minimal house
+    cage:
+        name: Cage
+        description: Temporarily cage your target
     cat:
         name: Cat
         description: Create some cat familiars
