@@ -41,6 +41,8 @@ public class Schematic {
 	private static Method getItemIdMethod;
 	private static Method getItemDataMethod;
 	private static Method getItemEnchantmentsMethod;
+	private static Method compoundTagGetValueMethod;
+	private static Method tagGetValueMethod;
 	
 	private final Object weSchematic;
 	private Vector center;
@@ -65,6 +67,13 @@ public class Schematic {
 				getSizeMethod = cuboidClipboardClass.getMethod("getSize");				
 			}
 			compoundTagClass = Class.forName("com.sk89q.jnbt.CompoundTag");
+			if (compoundTagClass != null) {
+				compoundTagGetValueMethod = compoundTagClass.getMethod("getValue");
+			}
+			Class<?> tagClass = Class.forName("com.sk89q.jnbt.Tag");
+			if (tagClass != null) {
+				tagGetValueMethod = tagClass.getMethod("getValue");
+			}
 			blockClass = Class.forName("com.sk89q.worldedit.foundation.Block");
 			if (blockClass != null) {
 				getNBTDataMethod = blockClass.getMethod("getNbtData");
@@ -99,7 +108,6 @@ public class Schematic {
 			if (itemStackClass != null) {
 				getItemAmountMethod = itemStackClass.getMethod("getAmount");
 			}
-			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -112,7 +120,7 @@ public class Schematic {
 				&& chestClass != null && containerClass != null && itemClass != null && itemStackClass != null
 				&& getItemDataMethod != null && getItemIdMethod != null && getItemEnchantmentsMethod != null
 				&& getItemAmountMethod != null && getItemsMethod != null && chestSetNBTDataMethod != null
-				&& chestConstructor != null;
+				&& chestConstructor != null && compoundTagGetValueMethod != null && tagGetValueMethod != null;
 		
 		return classesValid;
 	}
@@ -150,7 +158,7 @@ public class Schematic {
 		return (x >= 0 && x <= size.getBlockX() && y >= 0 && y <= size.getBlockY() && z >= 0 && z <= size.getBlockZ());
 	}
 	
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	public MaterialAndData getBlock(Vector v) {
 		if (!checkClasses()) return null;
 		
@@ -178,51 +186,66 @@ public class Schematic {
 			// It looks like //paste works in a dev build of WE, but it still doesn't give me the blocks
 			// Looking at WE's code, it seems like the part that's needed is commented out... ??
 			if (material == Material.SIGN_POST || material == Material.WALL_SIGN) {
-				if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
-					Object signBlock = signConstructor.newInstance(material.getId(), materialData);
-					Object nbtData = getNBTDataMethod.invoke(baseBlock);
-					signSetNBTDataMethod.invoke(signBlock, nbtData);
-					blockData.setSignLines((String[])getLinesMethod.invoke(signBlock));
+				try {
+					if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
+						Object signBlock = signConstructor.newInstance(material.getId(), materialData);
+						Object nbtData = getNBTDataMethod.invoke(baseBlock);
+						signSetNBTDataMethod.invoke(signBlock, nbtData);
+						blockData.setSignLines((String[])getLinesMethod.invoke(signBlock));
+					}
+				} catch (Throwable ex) {
+					ex.printStackTrace();
 				}
-			} /* TODO else if (material == Material.COMMAND) {
-				if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
-					Object signBlock = signConstructor.newInstance(material.getId(), materialData);
-					Object nbtData = getNBTDataMethod.invoke(baseBlock);
-					signSetNBTDataMethod.invoke(signBlock, nbtData);
-					blockData.setSignLines((String[])getLinesMethod.invoke(signBlock));
-				}
-			} */ else if (material == Material.CHEST) {
-				if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
-					Object chestBlock = chestConstructor.newInstance(materialData);
-					Object nbtData = getNBTDataMethod.invoke(baseBlock);
-					chestSetNBTDataMethod.invoke(chestBlock, nbtData);
-					Object[] items = (Object[])getItemsMethod.invoke(chestBlock);
-					if (items != null && items.length > 0) {
-						ItemStack[] contents = new ItemStack[items.length];
-						for (int i = 0; i < items.length; i++) {
-							if (items[i] != null) {
-								Material itemMaterial = Material.getMaterial((Integer)getItemIdMethod.invoke(items[i]));
-								short itemData = (short)(Short)getItemDataMethod.invoke(items[i]);
-								int itemAmount = (int)(Integer)getItemAmountMethod.invoke(items[i]);			
-								ItemStack newStack = new ItemStack(itemMaterial, itemAmount,itemData);
-								
-								@SuppressWarnings("unchecked")
-								Map<Integer, Integer> enchantments = (Map<Integer, Integer>)getItemEnchantmentsMethod.invoke(items[i]);
-								if (enchantments != null && enchantments.size() > 0) {
-									for (Entry<Integer, Integer> enchantment : enchantments.entrySet()) {
-										try {
-											Enchantment enchantmentType = Enchantment.getById(enchantment.getKey());
-											newStack.addEnchantment(enchantmentType, enchantment.getValue());
-										} catch (Exception ex) {
-											// ex.printStackTrace();
-										}
-									}
-								}
-								contents[i] = newStack;
+			} else if (material == Material.COMMAND) {
+				try {
+					if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
+						Object nbtRoot = getNBTDataMethod.invoke(baseBlock);
+						if (nbtRoot != null) {
+							Map<String, Object> rootValues = (Map<String, Object>)compoundTagGetValueMethod.invoke(nbtRoot);
+							if (rootValues.containsKey("Command")) {
+								Object commandValue = tagGetValueMethod.invoke(rootValues.get("Command"));
+								blockData.setCommandLine((String)commandValue);
 							}
 						}
-						blockData.setInventoryContents(contents);
 					}
+				} catch (Throwable ex) {
+					ex.printStackTrace();
+				}
+			} else if (material == Material.CHEST) {
+				try {
+					if ((Boolean)hasNBTDataMethod.invoke(baseBlock)) {
+						Object chestBlock = chestConstructor.newInstance(materialData);
+						Object nbtData = getNBTDataMethod.invoke(baseBlock);
+						chestSetNBTDataMethod.invoke(chestBlock, nbtData);
+						Object[] items = (Object[])getItemsMethod.invoke(chestBlock);
+						if (items != null && items.length > 0) {
+							ItemStack[] contents = new ItemStack[items.length];
+							for (int i = 0; i < items.length; i++) {
+								if (items[i] != null) {
+									Material itemMaterial = Material.getMaterial((Integer)getItemIdMethod.invoke(items[i]));
+									short itemData = (short)(Short)getItemDataMethod.invoke(items[i]);
+									int itemAmount = (int)(Integer)getItemAmountMethod.invoke(items[i]);			
+									ItemStack newStack = new ItemStack(itemMaterial, itemAmount,itemData);
+									
+									Map<Integer, Integer> enchantments = (Map<Integer, Integer>)getItemEnchantmentsMethod.invoke(items[i]);
+									if (enchantments != null && enchantments.size() > 0) {
+										for (Entry<Integer, Integer> enchantment : enchantments.entrySet()) {
+											try {
+												Enchantment enchantmentType = Enchantment.getById(enchantment.getKey());
+												newStack.addEnchantment(enchantmentType, enchantment.getValue());
+											} catch (Exception ex) {
+												// ex.printStackTrace();
+											}
+										}
+									}
+									contents[i] = newStack;
+								}
+							}
+							blockData.setInventoryContents(contents);
+						}
+					}
+				} catch (Throwable ex) {
+					ex.printStackTrace();
 				}
 			}
 			

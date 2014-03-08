@@ -2,6 +2,8 @@
 
 ## 2.9.6
 
+ - Add "Wolf House" and "Tent" spells. WIP.
+ - Copy command blocks from schematics.
  - Add "px, py, pz" and "dx, dy, dz" parameters to all spells, to force player location and direction. (Scripting!)
  - Add "tx, ty, tz" parameters for target location.
  - Add "bypass_undo" parameter for scripted spells that won't store Rollback information.

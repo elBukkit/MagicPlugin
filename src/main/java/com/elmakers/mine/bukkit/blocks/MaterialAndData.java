@@ -217,4 +217,8 @@ public class MaterialAndData {
 	public void setInventoryContents(ItemStack[] contents) {
 		inventoryContents = contents;
 	}
+	
+	public void setCommandLine(String command) {
+		commandLine = command;
+	}
 }

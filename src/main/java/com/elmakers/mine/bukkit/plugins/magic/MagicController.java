@@ -519,7 +519,7 @@ public class MagicController implements Listener
 		if (builtin != null) {
 			try {
 				plugin.saveResource("schematics/" + fileName, true);
-				getLogger().warning("Loading builtin schematic: schematics/" + fileName);
+				getLogger().warning("Updating builtin schematic: schematics/" + fileName);
 			} catch (Exception ex) {
 				getLogger().warning("Could not save file: " + "schematics/" + fileName);
 			}
