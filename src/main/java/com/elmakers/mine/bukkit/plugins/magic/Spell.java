@@ -1102,43 +1102,53 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	public Target getTarget()
 	{
 		Player player = getPlayer();
+		
 		if (targetType == TargetType.SELF && player != null) {
 			target = new Target(player, player);
 			return target;
 		}
 
-		if (targetLocation != null) {
-			return new Target(player, targetLocation.getBlock());
+		if (targetType != TargetType.NONE && targetLocation != null) {
+			target = new Target(player, targetLocation.getBlock());
+			return target;
 		}
+		
+		target = new Target(player);
+		
+		if (targetType == TargetType.NONE) {
+			return target;
+		}
+		
 		findTargetBlock();
 		Block block = getCurBlock();
 		
-		Target targetBlock = new Target(player, block);
 		Target targetEntity = getTargetEntity();
-		if (targetEntity == null || targetBlock.getDistance() < targetEntity.getDistance() || targetType == TargetType.NONE)
-		{
-			if (targetType == TargetType.ANY && player != null) {
-				target = new Target(player, player);
+		Target targetBlock = block == null ? null : new Target(player, block);
+		
+		// Don't allow targeting entities in no-PVP areas.
+		if (targetEntity != null && pvpRestricted && !bypassPvpRestriction && controller.isPVPAllowed(targetEntity.getLocation())) {
+			targetEntity = null;
+		}
+		
+		// Don't let the target the block, either.
+		if (targetBlock != null && pvpRestricted && !bypassPvpRestriction && controller.isPVPAllowed(targetBlock.getLocation())) {
+			targetBlock = null;
+		}
+		
+		if (targetBlock != null && targetEntity != null) {
+			if (targetBlock.getDistance() < targetEntity.getDistance()) {
+				targetBlock = null;
 			} else {
-				target = targetBlock;
+				targetEntity = null;
 			}
-		} 
-		else 
-		{
-			// Don't allow targeting entities in no-PVP areas.
-			if (!pvpRestricted || bypassPvpRestriction || controller.isPVPAllowed(targetEntity.getLocation())) 
-			{
-				target = targetEntity;
-			}
-			else 
-			{
-				// Don't let the target the block, either.
-				if (targetType == TargetType.ANY && player != null) {
-					target = new Target(player, player);
-				} else {
-					target = new Target(player);
-				}
-			}
+		}
+		
+		if (targetEntity != null) {
+			target = targetEntity;
+		} else if (targetBlock != null) {
+			target = targetBlock;
+		} else if (targetType == TargetType.ANY && player != null) {
+			target = new Target(player, player);
 		}
 		
 		return target;
