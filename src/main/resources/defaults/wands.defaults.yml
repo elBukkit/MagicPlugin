@@ -1580,6 +1580,7 @@ guest:
     effect_color: '666666'
     xp_regeneration: 1
     xp_max: 40
+    icon: stick
     spells:
         - tag
         - flare
@@ -1589,6 +1590,7 @@ villager:
     effect_color: '888888'
     xp_regeneration: 2
     xp_max: 60
+    icon: stick
     spells:
         - tag
         - flare
@@ -1600,6 +1602,7 @@ knight:
     effect_color: 'DDDDDD'
     xp_regeneration: 3
     xp_max: 75
+    icon: diamond_sword
     spells:
         - tag
         - flare
@@ -1608,6 +1611,23 @@ knight:
         - leap
         - fling
         - pull
+baron:
+    modifiable: true
+    effect_color: 'DDDDDD'
+    xp_regeneration: 3
+    xp_max: 80
+    icon: diamond_sword
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - arrowrain
+        - tesseract
+        - shrink
 legend:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1615,6 +1635,7 @@ legend:
     xp_max: 80
     effect_particle: town_aura
     effect_particle_count: 2
+    icon: diamond_sword
     spells:
         - tag
         - flare
@@ -1626,6 +1647,9 @@ legend:
         - monster
         - map
         - sniper
+        - arrowrain
+        - tesseract
+        - shrink
 overseer:
     modifiable: true
     effect_color: 'FFFFFF'
@@ -1633,6 +1657,7 @@ overseer:
     xp_max: 100
     effect_particle: town_aura
     effect_particle_count: 2
+    icon: diamond_sword
     spells:
         - tag
         - flare
@@ -1644,6 +1669,9 @@ overseer:
         - monster
         - map
         - sniper
+        - arrowrain
+        - tesseract
+        - shrink
 wizard:
     modifiable: true
     effect_color: 'A9D0F5'
@@ -1651,6 +1679,7 @@ wizard:
     xp_max: 120
     effect_particle: portal
     effect_particle_count: 2
+    icon: blaze_rod
     spells:
         - tag
         - flare
@@ -1666,6 +1695,9 @@ wizard:
         - boon
         - recall
         - mine
+        - arrowrain
+        - tesseract
+        - shrink
 netherwizard:
     modifiable: true
     effect_color: 'B40404'
@@ -1674,6 +1706,7 @@ netherwizard:
     effect_particle: portal
     effect_particle_count: 3
     effect_particle_data: 2
+    icon: blaze_rod
     spells:
         - tag
         - flare
@@ -1693,6 +1726,9 @@ netherwizard:
         - blessing
         - familiar
         - phase
+        - arrowrain
+        - tesseract
+        - shrink
 enderwizard:
     modifiable: true
     effect_color: 'AC58FA'
@@ -1701,6 +1737,7 @@ enderwizard:
     effect_particle: lava_dripping
     effect_particle_count: 4
     effect_bubbles: true
+    icon: blaze_rod
     spells:
         - tag
         - flare
@@ -1723,4 +1760,7 @@ enderwizard:
         - levitate
         - kaboom
         - cloak
-        - blink 
+        - blink
+        - arrowrain
+        - tesseract
+        - shrink

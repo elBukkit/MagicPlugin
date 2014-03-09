@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -49,7 +50,7 @@ public class Wand implements CostReducer {
 		"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
 		"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
-		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode"};
+		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon"};
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -65,6 +66,8 @@ public class Wand implements CostReducer {
 	private String wandName = "";
 	private String description = "";
 	private String owner = "";
+	
+	private MaterialAndData icon = null;
 	
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
@@ -108,7 +111,7 @@ public class Wand implements CostReducer {
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	public static boolean displayManaAsBar = true;
-	public static Material WandMaterial = Material.BLAZE_ROD;
+	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	
 	// Wand configurations
@@ -122,13 +125,14 @@ public class Wand implements CostReducer {
 	
 	private Wand(ItemStack itemStack) {
 		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
+		this.icon = new MaterialAndData(itemStack.getType(), (byte)itemStack.getDurability());
 		inventories = new ArrayList<Inventory>();
 		item = itemStack;
 	}
 	
 	public Wand(MagicController spells) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
-		this(InventoryUtils.getCopy(new ItemStack(WandMaterial)));
+		this(InventoryUtils.getCopy(new ItemStack(DefaultWandMaterial)));
 		InventoryUtils.addGlow(item);
 		this.controller = spells;
 		id = UUID.randomUUID().toString();
@@ -141,6 +145,18 @@ public class Wand implements CostReducer {
 		this(item);
 		this.controller = spells;
 		loadState();
+	}
+	
+	public void setIcon(Material material, byte data) {
+		setIcon(material == null ? null : new MaterialAndData(material, data));
+	}
+	
+	public void setIcon(MaterialAndData materialData) {
+		icon = materialData;
+		if (icon != null) {
+			item.setType(icon.getMaterial());
+			item.setDurability(icon.getData());
+		}
 	}
 
 	public void setActiveSpell(String activeSpell) {
@@ -568,6 +584,13 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "name", wandName);
 		InventoryUtils.setMeta(wandNode, "description", description);
 		InventoryUtils.setMeta(wandNode, "owner", owner);
+
+		if (icon != null) {
+			String iconKey = MaterialBrush.getMaterialKey(icon);
+			if (iconKey != null && iconKey.length() > 0) {
+				InventoryUtils.setMeta(wandNode, "icon", iconKey);
+			}
+		}
 	
 		InventoryUtils.setMeta(wandNode, "cost_reduction", floatFormat.format(costReduction));
 		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
@@ -644,6 +667,12 @@ public class Wand implements CostReducer {
 		effectParticleCount = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount)));
 		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
 		mode = parseWandMode(InventoryUtils.getMeta(wandNode, "mode", ""), mode);
+		String iconKey = InventoryUtils.getMeta(wandNode, "icon", "");
+		if (iconKey.length() > 0) {
+			icon = MaterialBrush.parseMaterialKey(iconKey);
+		} else {
+			icon = null;
+		}
 	}
 
 	protected void parseParticleEffect(String effectParticleName) {
@@ -765,7 +794,7 @@ public class Wand implements CostReducer {
 		if (isInventoryOpen()) {
 			saveInventory();
 		}
-		String materialKey = getMaterialKey(material, data);
+		String materialKey = MaterialBrush.getMaterialKey(material, data);
 		return addMaterial(materialKey, makeActive, force);
 	}
 	
@@ -873,18 +902,6 @@ public class Wand implements CostReducer {
 	
 	private String getActiveWandName(Spell spell) {
 		return getActiveWandName(spell, activeMaterial);
-	}
-
-	private static String getMaterialKey(Material material, byte data) {
-		String materialKey = MaterialBrush.getMaterialKey(material);
-		if (materialKey == null) {
-			return null;
-		}
-		if (data != 0) {
-			materialKey += ":" + data;
-		}
-		
-		return materialKey;
 	}
 	
 	private String getActiveWandName() {
@@ -1036,7 +1053,10 @@ public class Wand implements CostReducer {
 	}
 	
 	public void makeEnchantable(boolean enchantable) {
-		item.setType(enchantable ? EnchantableWandMaterial : WandMaterial);
+		// TODO: Support non-default items
+		if (item.getType() == EnchantableWandMaterial || item.getType() == DefaultWandMaterial) {
+			item.setType(enchantable ? EnchantableWandMaterial : DefaultWandMaterial);
+		}
 		updateName();
 	}
 	
@@ -1056,8 +1076,7 @@ public class Wand implements CostReducer {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		// Special-case here for porting old wands. Could be removed eventually.
-		return item != null && (item.getType() == WandMaterial || item.getType() == EnchantableWandMaterial) && (InventoryUtils.hasMeta(item, "wand") || InventoryUtils.hasMeta(item, "magic_wand"));
+		return item != null && InventoryUtils.hasMeta(item, "wand");
 	}
 
 	public static boolean isSpell(ItemStack item) {
@@ -1475,6 +1494,10 @@ public class Wand implements CostReducer {
 		
 		owner = wandConfig.getString("owner", owner);
 		description = wandConfig.getString("description", description);
+		
+		if (wandConfig.containsKey("icon")) {
+			setIcon(wandConfig.getMaterialAndData("icon"));
+		}
 		
 		saveState();
 		updateName();

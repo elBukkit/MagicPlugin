@@ -97,6 +97,22 @@ public class MaterialBrush extends MaterialBrushData {
 		
 		return materialKey;
 	}
+
+	public static String getMaterialKey(Material material, byte data) {
+		String materialKey = MaterialBrush.getMaterialKey(material);
+		if (materialKey == null) {
+			return null;
+		}
+		if (data != 0) {
+			materialKey += ":" + data;
+		}
+		
+		return materialKey;
+	}
+	
+	public static String getMaterialKey(MaterialAndData materialData) {
+		return getMaterialKey(materialData.getMaterial(), materialData.getData());
+	}
 	
 	public static boolean isSpecialMaterialKey(String materialKey) {
 		if (materialKey == null || materialKey.length() == 0) return false;

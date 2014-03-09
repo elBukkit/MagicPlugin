@@ -1216,7 +1216,7 @@ public class MagicController implements Listener
 		}
 		
 		// Parse wand settings
-		Wand.WandMaterial = properties.getMaterial("wand_item", Wand.WandMaterial);
+		Wand.DefaultWandMaterial = properties.getMaterial("wand_item", Wand.DefaultWandMaterial);
 		MaterialBrush.CopyMaterial = properties.getMaterial("copy_item", MaterialBrush.CopyMaterial);
 		MaterialBrush.EraseMaterial = properties.getMaterial("erase_item", MaterialBrush.EraseMaterial);
 		MaterialBrush.CloneMaterial = properties.getMaterial("clone_item", MaterialBrush.CloneMaterial);
@@ -1808,8 +1808,9 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
+		// TODO: Support enchanting other items?
 		Recipe recipe = event.getRecipe();
-		if (craftingEnabled && wandRecipe != null && recipe.getResult().getType() == Wand.WandMaterial) {
+		if (craftingEnabled && wandRecipe != null && recipe.getResult().getType() == Wand.DefaultWandMaterial) {
 			// Verify that this was our recipe
 			// Just in case something else can craft our base material (e.g. stick)
 			Inventory inventory = event.getInventory();
