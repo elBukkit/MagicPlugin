@@ -592,20 +592,32 @@ wands:
         name: The Villager Wand
         description: Some basic utility and defense spells
     knight:
-        name: The Knight Wand
+        name: Enchanted Sword
         description: A wand for knights
+    baron:
+        name: The Baron Sword
+        description: Rule with Power
+    lord:
+        name: The Lord Sword
+        description: Lord Over Them
+    hero:
+        name: The Hero Sword
+        description: Heroic!
+    king:
+        name: Excaliber
+        description: From The Lady
     legend:
-        name: The Legendary Wand
+        name: The Legendary Sword
         description: It's legen ... 
     overseer:
-        name: The Overseer Wand
+        name: The Overseer Sword
         description: ... DARY!
     wizard:
         name: The Wizard Wand
         description: You're a real wizard, now.
     netherwizard:
-        name: The Nether Wizard Wand
+        name: The Nether Wand
         description: Spooky Power
     enderwizard:
-        name: The Ender Wizard Wand
+        name: The Ender Wand
         description: Super Power

@@ -1628,6 +1628,75 @@ baron:
         - arrowrain
         - tesseract
         - shrink
+lord:
+    modifiable: true
+    effect_color: 'DDDDDD'
+    xp_regeneration: 3
+    xp_max: 85
+    icon: diamond_sword
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - arrowrain
+        - tesseract
+        - shrink
+        - cat
+        - torch
+        - boom
+hero:
+    modifiable: true
+    effect_color: 'DDDDDD'
+    xp_regeneration: 4
+    xp_max: 90
+    icon: diamond_sword
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - arrowrain
+        - tesseract
+        - shrink
+        - cat
+        - torch
+        - boom
+        - stream
+        - stash
+        - blast
+king:
+    modifiable: true
+    effect_color: 'DDDDDD'
+    xp_regeneration: 4
+    xp_max: 95
+    icon: diamond_sword
+    spells:
+        - tag
+        - flare
+        - camera
+        - arrow
+        - leap
+        - fling
+        - pull
+        - arrowrain
+        - tesseract
+        - shrink
+        - cat
+        - torch
+        - boom
+        - stream
+        - stash
+        - blast
+        - curse
+        - frost
+        - grenade
 legend:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1650,6 +1719,15 @@ legend:
         - arrowrain
         - tesseract
         - shrink
+        - cat
+        - torch
+        - boom
+        - stream
+        - stash
+        - blast
+        - curse
+        - frost
+        - grenade
 overseer:
     modifiable: true
     effect_color: 'FFFFFF'
@@ -1672,6 +1750,15 @@ overseer:
         - arrowrain
         - tesseract
         - shrink
+        - cat
+        - torch
+        - boom
+        - stream
+        - stash
+        - blast
+        - curse
+        - frost
+        - grenade
 wizard:
     modifiable: true
     effect_color: 'A9D0F5'
@@ -1698,6 +1785,15 @@ wizard:
         - arrowrain
         - tesseract
         - shrink
+        - cat
+        - torch
+        - boom
+        - stream
+        - stash
+        - blast
+        - curse
+        - frost
+        - grenade
 netherwizard:
     modifiable: true
     effect_color: 'B40404'
@@ -1729,6 +1825,15 @@ netherwizard:
         - arrowrain
         - tesseract
         - shrink
+        - cat
+        - torch
+        - boom
+        - stream
+        - stash
+        - blast
+        - curse
+        - frost
+        - grenade
 enderwizard:
     modifiable: true
     effect_color: 'AC58FA'
@@ -1764,3 +1869,12 @@ enderwizard:
         - arrowrain
         - tesseract
         - shrink
+        - cat
+        - torch
+        - boom
+        - stream
+        - stash
+        - blast
+        - curse
+        - frost
+        - grenade
