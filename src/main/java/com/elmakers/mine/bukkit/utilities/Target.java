@@ -46,6 +46,14 @@ public class Target implements Comparable<Target>
 		this.player = player;
 		this.entity = entity;
 	}
+	
+	public Target(Player player, Entity entity, Block block)
+	{
+		this.maxDistance = 0;
+		this.player = player;
+		this.entity = entity;
+		this.block = block;
+	}
 
 	public int getScore()
 	{

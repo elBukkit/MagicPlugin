@@ -551,6 +551,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				controller.getLogger().warning("Invalid target_type: " + targetTypeName);
 				targetType = TargetType.OTHER;
 			}
+		} else {
+			targetType = TargetType.OTHER;
 		}
 		
 		if (parameters.containsKey("target_type")) {
@@ -1126,14 +1128,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		
 		Target targetEntity = getTargetEntity();
 		Target targetBlock = block == null ? null : new Target(player, block);
-		
+
 		// Don't allow targeting entities in no-PVP areas.
-		if (targetEntity != null && pvpRestricted && !bypassPvpRestriction && controller.isPVPAllowed(targetEntity.getLocation())) {
+		if (targetEntity != null && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetEntity.getLocation())) {
 			targetEntity = null;
 		}
 		
 		// Don't let the target the block, either.
-		if (targetBlock != null && pvpRestricted && !bypassPvpRestriction && controller.isPVPAllowed(targetBlock.getLocation())) {
+		if (targetBlock != null && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetBlock.getLocation())) {
 			targetBlock = null;
 		}
 		
@@ -1150,7 +1152,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		} else if (targetBlock != null) {
 			target = targetBlock;
 		} else if (targetType == TargetType.ANY && player != null) {
-			target = new Target(player, player);
+			target = new Target(player, player, targetBlock == null ? null : targetBlock.getBlock());
 		}
 		
 		return target;
