@@ -624,7 +624,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		
 		bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
+		bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
 		bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+		bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
 		costReduction = parameters.getFloat("cost_reduction", 0);
 		cooldownReduction = parameters.getFloat("cooldown_reduction", 0);
 	}

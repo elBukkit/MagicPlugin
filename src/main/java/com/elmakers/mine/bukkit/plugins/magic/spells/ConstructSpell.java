@@ -44,6 +44,7 @@ public class ConstructSpell extends BrushSpell
 
 		int timeToLive = parameters.getInt("undo", 0);
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
+		radius = parameters.getInt("r", radius);
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
 		float force = 0;

@@ -51,7 +51,9 @@ public abstract class BlockSpell extends Spell {
 			destructible = controller.getMaterialSet(parameters.getString("destructible"));
 		}
 		checkDestructible = parameters.getBoolean("check_destructible", true);
+		checkDestructible = parameters.getBoolean("cd", checkDestructible);
 		bypassUndo = parameters.getBoolean("bypass_undo", false);
+		bypassUndo = parameters.getBoolean("bu", bypassUndo);
 	}
 	
 	public void registerForUndo(BlockList list)
