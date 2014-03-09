@@ -2126,7 +2126,7 @@ cage:
         radius: 8
         type: sphere
         cooldown: 10000
-        undo: 60000
+        undo: 30000
         material: schematic|cage
         transparent: transparent_to_construction
     costs:

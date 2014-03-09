@@ -131,6 +131,12 @@ public class Mage implements CostReducer
 		return storedInventory;
 	}
 	
+	public void clearCache() {
+		if (brush != null) {
+			brush.clearSchematic();
+		}
+	}
+	
 	public float getCostReduction() {
 		return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
 	}

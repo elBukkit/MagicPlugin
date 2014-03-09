@@ -4,7 +4,6 @@
 
  - Make spells usable without a player, clean up strong Player references
  - Support schematic entity import for paintings and item frames (at least)
- - Make sure schematics can import command blocks... (Glider??)
  - Customizable crafting recipes
 
 ## For 2.9.7

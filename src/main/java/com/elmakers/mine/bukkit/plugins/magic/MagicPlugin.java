@@ -218,6 +218,7 @@ public class MagicPlugin extends JavaPlugin
 				addIfPermissible(sender, options, "Magic.commands.", "generate");
 				addIfPermissible(sender, options, "Magic.commands.", "search");
 				addIfPermissible(sender, options, "Magic.commands.", "clean");
+				addIfPermissible(sender, options, "Magic.commands.", "clearcache");
 				addIfPermissible(sender, options, "Magic.commands.", "cancel");
 				addIfPermissible(sender, options, "Magic.commands.", "load");
 				addIfPermissible(sender, options, "Magic.commands.", "save");
@@ -292,6 +293,13 @@ public class MagicPlugin extends JavaPlugin
 				controller.loadConfiguration();
 				URLMap.loadConfiguration();
 				sender.sendMessage("Configuration reloaded.");
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("clearcache"))
+			{		
+				controller.clearCache();
+				URLMap.clearCache();
+				sender.sendMessage("Image map and schematic caches cleared.");
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("commit"))

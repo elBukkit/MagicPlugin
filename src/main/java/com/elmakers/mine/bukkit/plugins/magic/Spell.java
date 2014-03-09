@@ -423,6 +423,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		
 		// Check cooldowns
 		cooldown = parameters.getInt("cooldown", cooldown);
+		cooldown = parameters.getInt("cd", cooldown);
 		
 		long currentTime = System.currentTimeMillis();
 		double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;

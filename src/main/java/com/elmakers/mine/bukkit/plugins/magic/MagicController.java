@@ -500,6 +500,24 @@ public class MagicController implements Listener
 		return cuboidClipboardClass != null;
 	}
 	
+	public void clearCache() {
+		// Only delete schematics that we have builtins for.
+		String[] schematicFiles = schematicFolder.list();
+		for (String schematicFilename : schematicFiles) {
+			if (!schematicFilename.endsWith(".schematic")) continue;
+			InputStream builtin = plugin.getResource("schematics/" + schematicFilename);
+			if (builtin == null) continue;
+			File schematicFile = new File(schematicFolder, schematicFilename);
+			schematicFile.delete();
+			plugin.getLogger().info("Deleted file " + schematicFile.getAbsolutePath());
+		}
+		
+		schematics.clear();
+		for (Mage mage : mages.values()) {
+			mage.clearCache();
+		}
+	}
+	
 	public Schematic loadSchematic(String schematicName) {
 		if (schematicName == null || schematicName.length() == 0 || !schematicsEnabled()) return null;
 		

@@ -177,6 +177,21 @@ public class URLMap extends MapRenderer  {
 			map.reset();
 		}
 	}
+	
+	public static void clearCache() {
+		String[] cacheFiles = cacheFolder.list();
+		for (String cacheFilename : cacheFiles) {
+			if (!cacheFilename.endsWith(".png") && !cacheFilename.endsWith(".jpeg") && !cacheFilename.endsWith(".jpg")
+					 && !cacheFilename.endsWith(".gif")) continue;
+			
+			File cacheFile = new File(cacheFolder, cacheFilename);
+			cacheFile.delete();
+			if (plugin != null) {
+				plugin.getLogger().info("Deleted file " + cacheFile.getAbsolutePath());
+			}
+		}
+		loadConfiguration();
+	}
 
 	/**
 	 * A helper function to get an ItemStack from a MapView.

@@ -29,7 +29,7 @@ commands:
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
-    usage: /magic [load|save|populate|search|cancel|commit|list|clean]
+    usage: /magic [load|save|cancel|clearcache|commit|list|populate|search]
     permission: Magic.commands.magic
 permissions:
   Magic.commands.spells:

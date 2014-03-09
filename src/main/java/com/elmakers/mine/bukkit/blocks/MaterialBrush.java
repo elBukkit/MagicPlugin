@@ -322,6 +322,10 @@ public class MaterialBrush extends MaterialBrushData {
 		schematic = null;
 	}
 	
+	public void clearSchematic() {
+		schematic = null;
+	}
+	
 	public void enableReplication() {
 		if (this.mode != BrushMode.REPLICATE) {
 			fillWithAir = this.mode == BrushMode.ERASE;
