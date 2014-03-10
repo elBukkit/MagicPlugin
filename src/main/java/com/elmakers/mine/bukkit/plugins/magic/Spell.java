@@ -255,7 +255,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		// Get localizations
 		name = this.key;
+		name = node.getString("name", name);
 		name = Messages.get("spells." + key + ".name", name);
+		description = node.getString("description", "");
 		description = Messages.get("spells." + key + ".description", description);
 		usage = Messages.get("spells." + key + ".usage", usage);
 

@@ -1330,7 +1330,9 @@ public class Wand implements CostReducer {
 				return null;
 			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
+			wandName = wandConfig.getString("name", wandName);
 			wandName = Messages.get("wands." + templateName + ".name", wandName);
+			wandDescription = wandConfig.getString("description", wandDescription);
 			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
 			List<Object> spellList = wandConfig.getList("spells");
 			if (spellList != null) {
