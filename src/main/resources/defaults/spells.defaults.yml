@@ -2162,14 +2162,14 @@ wolfhouse:
         target_type: LivingEntity
         target: any
         allow_max_range: false
-        check_destructibe: false
+        check_destructible: false
         range: 64
         radius: 4
         type: sphere
         cooldown: 3600000
         material: schematic|wolfhouse
         dmx: -2
-        dmy: -49
+        dmy: -47
         dmz: 11
         mm: erase 
         transparent: transparent_to_construction

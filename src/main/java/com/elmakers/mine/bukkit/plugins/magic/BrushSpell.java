@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
-import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -28,15 +28,13 @@ public abstract class BrushSpell extends BlockSpell{
 			Double dmyValue = parameters.getDouble("dmy", null);
 			Double dmzValue = parameters.getDouble("dmz", null);
 			if (dmxValue != null || dmyValue != null || dmzValue != null) {
-				Location location = getLocation();
-				location = new Location(location.getWorld(), 
-						location.getX() + (dmxValue == null ? 0 : dmxValue), 
-						location.getY() + (dmyValue == null ? 0 : dmyValue), 
-						location.getZ() + (dmzValue == null ? 0 : dmzValue),
-						location.getYaw(), location.getPitch());
+				Vector offset = new Vector( 
+						dmxValue == null ? 0 : dmxValue, 
+						dmyValue == null ? 0 : dmyValue, 
+						dmzValue == null ? 0 : dmzValue);
 				
 				brush.clearCloneTarget();
-				brush.setTarget(location);
+				brush.setTargetOffset(offset);
 			} 
 		} else {
 			brush = null;

@@ -53,6 +53,7 @@ public class MaterialBrush extends MaterialBrushData {
 	private Location cloneLocation = null;
 	private Location cloneTarget = null;
 	private Location materialTarget = null;
+	private Vector targetOffset = null;
 	private final MagicController controller;
 	private short mapId = -1;
 	private MaterialMapCanvas mapCanvas = null;
@@ -350,6 +351,11 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	public void clearCloneTarget() {
 		cloneTarget = null;
+		targetOffset = null;
+	}
+	
+	public void setTargetOffset(Vector offset) {
+		targetOffset = offset.clone();
 	}
 	
 	public boolean hasCloneTarget() {
@@ -378,11 +384,17 @@ public class MaterialBrush extends MaterialBrushData {
 			if (cloneTarget == null || mode == BrushMode.CLONE || 
 				!center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
 				cloneTarget = center;
+				if (targetOffset != null) {
+					cloneTarget = cloneTarget.add(targetOffset);
+				}
 			} else if (mode == BrushMode.SCHEMATIC) {
 				if (schematic != null) {
 					Vector diff = target.toVector().subtract(cloneTarget.toVector());
 					if (!schematic.contains(diff)) {
 						cloneTarget = center;
+						if (targetOffset != null) {
+							cloneTarget = cloneTarget.add(targetOffset);
+						}
 					}
 				}
 			}
