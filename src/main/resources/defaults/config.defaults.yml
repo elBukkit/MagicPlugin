@@ -203,6 +203,14 @@ schematic_files: WorldEdit/schematics/$name.schematic
 # How many casts to track in the undo queue
 undo_depth: 64
 
+# The largest thing we'll persist in the undo queue (to a file)
+undo_max_persist_size: 10000
+
+# How long to wait until we stop checking player data for pending undo
+# 0 = Always check all players on load.
+# This value is in days.
+player_data_expire_threshold: 2 
+
 # If set to non-zero, represents a time (in milliseconds) after which all construction
 # spells will be reversed.
 auto_undo: 0

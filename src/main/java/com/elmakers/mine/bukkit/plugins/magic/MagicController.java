@@ -942,39 +942,22 @@ public class MagicController implements Listener
 		// This is pretty hacky, but I'd hope everything is OK on the next time anyway.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
+				File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
+				    public boolean accept(File dir, String name) {
+				        return name.toLowerCase().endsWith(".yml");
+				    }
+				});
 				
-				// Load Player Data, only players that have pending scheduled undo batches
-				getLogger().info("Checking player data for pending undo batches");
-				
-				// Legacy migration
-				File playersFile = new File(configFolder, "players.yml");
-				if (playersFile.exists()) {
-					getLogger().info("MIGRATING player data from file " + playersFile.getName());
-					Configuration playerConfiguration = new Configuration(playersFile);
-					playerConfiguration.load();
-					List<String> playerNames = playerConfiguration.getKeys();
-					for (String playerName : playerNames) {
-						getMage(playerName, playerConfiguration.getNode(playerName));
-					}
-					playersFile.renameTo(new File("players.yml.bak"));
-					savePlayerData();
-					getLogger().info("Migration complete, you should not see this message again.");
-				} else {
-					// TODO: Remove the above, make this the only path.
-					File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
-					    public boolean accept(File dir, String name) {
-					        return name.toLowerCase().endsWith(".yml");
-					    }
-					});
+				for (File playerFile : playerFiles)
+				{
+					// Skip if older than 2 days
+					if (playerDataThreshold > 0 && playerFile.lastModified() < System.currentTimeMillis() - playerDataThreshold) continue;
 					
-					for (File playerFile : playerFiles)
-					{
-						Configuration playerData = new Configuration(playerFile);
-						playerData.load();
-						if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
-							String playerName = playerFile.getName().replaceFirst("[.][^.]+$", "");
-							getMage(playerName, playerData);
-						}
+					Configuration playerData = new Configuration(playerFile);
+					playerData.load();
+					if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
+						String playerName = playerFile.getName().replaceFirst("[.][^.]+$", "");
+						getMage(playerName, playerData);
 					}
 				}
 				
@@ -1193,6 +1176,8 @@ public class MagicController implements Listener
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
 		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
+		undoMaxPersistSize = properties.getInteger("undo_max_persist_size", undoMaxPersistSize);
+		playerDataThreshold = (long)(properties.getFloat("undo_max_persist_size", 0) * 1000 * 24 * 3600);
 		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
 		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
@@ -2432,6 +2417,8 @@ public class MagicController implements Listener
 	 private long                                physicsDisableTimeout          = 0;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;
+	 private int                                 undoMaxPersistSize             = 0;
+	 private long                                playerDataThreshold            = 0;
 	 private WandMode							 defaultWandMode				= WandMode.INVENTORY;
 	 private boolean                             showMessages                   = true;
 	 private boolean                             showCastMessages               = false;
