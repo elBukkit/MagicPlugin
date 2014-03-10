@@ -337,6 +337,10 @@ public class MagicController implements Listener
 		return autoUndo;
 	}
 	
+	public float getMaxPower() {
+		return maxPower;
+	}
+	
 	/*
 	 * Undo system
 	 */
@@ -1233,6 +1237,7 @@ public class MagicController implements Listener
 		maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
 		maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
 		maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
+		maxPower = (float)properties.getDouble("max_power", maxPower);
 		costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
@@ -2482,6 +2487,7 @@ public class MagicController implements Listener
 	 private float								 maxRadiusPowerMultiplierMax    = 4.0f;
 	 private float								 maxRangePowerMultiplier 		= 3.0f;
 	 private float								 maxRangePowerMultiplierMax 	= 5.0f;
+	 private float								 maxPower						= 1.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	= 1.0f;
 	 private float								 castCommandPowerMultiplier     = 0.0f;

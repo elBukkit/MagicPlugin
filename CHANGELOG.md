@@ -17,6 +17,8 @@
  - Add "dmx,dmy,dmz" and "dtx, dty, dtz" parameters for controlling relative targeting and material targeting.
  - Add "mm" parameter for modifying a material selection (e.g. "erase" with "schematic" for "material")
  - Add "clearcache" command to clear schematic and image map cache files.
+ - Add "max_power" config.yml option to limit crazy uses of /wand configure power XXXXXXXXX.
+ - Add "undo_max_persist_size" config.yml option to avoid huge player yml files.
 
 ## 2.9.5
 

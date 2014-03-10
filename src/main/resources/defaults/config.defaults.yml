@@ -244,7 +244,8 @@ max_power_construction_multiplier: 3.0
 max_power_radius_multiplier: 2.0
 max_power_radius_multiplier_max: 4.0
 max_power_range_multiplier: 2.0
-max_power_range_max: 5.0
+max_power_range_multiplier_max: 5.0
+max_power: 100.0
 
 ### Plugin Integration
 
