@@ -164,6 +164,10 @@ permissions:
     description: Search the world for wands
     type: boolean
     default: op
+  Magic.commands.magic.clearcache:
+    description: Clears the image and schematic caches
+    type: boolean
+    default: op
   Magic.commands.magic.cancel:
     description: Cancel any pending search or populate jobs
     type: boolean
