@@ -1132,20 +1132,18 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Target targetBlock = block == null ? null : new Target(player, block);
 
 		// Don't allow targeting entities in no-PVP areas.
-		if (targetEntity != null && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetEntity.getLocation())) {
+		boolean noPvp = targetEntity != null && (targetEntity instanceof Player) && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetEntity.getLocation());
+		if (noPvp) {
 			targetEntity = null;
-		}
-		
-		// Don't let the target the block, either.
-		if (targetBlock != null && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetBlock.getLocation())) {
+			// Don't let the target the block, either.
 			targetBlock = null;
 		}
 		
 		if (targetBlock != null && targetEntity != null) {
 			if (targetBlock.getDistance() < targetEntity.getDistance()) {
-				targetBlock = null;
-			} else {
 				targetEntity = null;
+			} else {
+				targetBlock = null;
 			}
 		}
 		
