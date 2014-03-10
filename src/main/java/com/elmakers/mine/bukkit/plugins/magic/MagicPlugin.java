@@ -970,7 +970,8 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
-		Mage mage = controller.getMage(sender);
+		CommandSender mageController = player == null ? sender : player;
+		Mage mage = controller.getMage(mageController);
 		Spell spell = mage.getSpell(spellName, usePermissions);
 		if (spell == null)
 		{
