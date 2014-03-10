@@ -1,10 +1,5 @@
 # TODO
 
-## For 2.9.6
-
- - Make spells usable without a player, clean up strong Player references
- - Support schematic entity import for paintings and item frames (at least)
-
 ## For 2.9.7
 
  - Allow customization of Building and PVP permission checks.
@@ -15,6 +10,8 @@
  - Configurable randomization for Familiar spell
  - Fix Recall spell
  - Customizable wand crafting recipes, check NMS data for "icon"
+ - Make spells usable without a player, clean up strong Player references
+ - Support schematic entity import for paintings and item frames (at least)
   
 ## For 2.9.8
 
