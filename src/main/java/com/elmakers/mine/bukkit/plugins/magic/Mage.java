@@ -52,6 +52,7 @@ public class Mage implements CostReducer
 	private UndoQueue          					undoQueue               	   = null;
 	private LinkedList<BlockBatch>				pendingBatches					= new LinkedList<BlockBatch>();
 	
+	private Location			location;
 	private float 				costReduction = 0;
 	private float 				cooldownReduction = 0;
 	private float 				powerMultiplier = 0;
@@ -129,6 +130,10 @@ public class Mage implements CostReducer
 
 	public Inventory getStoredInventory() {
 		return storedInventory;
+	}
+	
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 	
 	public void clearCache() {
@@ -720,6 +725,8 @@ public class Mage implements CostReducer
 	}
 	
 	public Location getLocation() {
+		if (location != null) return location;
+		
 		Player player = getPlayer();
 		if (player == null) return null;
 		return player.getLocation();

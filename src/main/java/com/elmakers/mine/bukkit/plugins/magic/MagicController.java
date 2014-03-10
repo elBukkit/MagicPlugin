@@ -26,7 +26,9 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -128,7 +130,8 @@ public class MagicController implements Listener
 
 	public Mage getMage(Player player)
 	{
-		Mage mage = getMage(player.getName());
+		String playerName = player == null ? "COMMAND" : player.getName();
+		Mage mage = getMage(playerName);
 		if (mage != null)
 		{
 			mage.setPlayer(player);
@@ -137,43 +140,73 @@ public class MagicController implements Listener
 		return mage;
 	}
 	
-	protected Mage getMage(String playerName, ConfigurationNode node)
+	public Mage getMage(String mageName, CommandSender commandSender)
 	{
-		if (!mages.containsKey(playerName)) 
+		Mage mage = getMage(mageName);
+		if (mage != null)
+		{
+			mage.setLocation(null);
+			mage.setCommandSender(commandSender);
+			if (commandSender instanceof Player) {
+				mage.setPlayer((Player)commandSender);
+			}
+			if (commandSender instanceof BlockCommandSender) {
+				BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
+				mage.setLocation(commandBlock.getBlock().getLocation());
+			}
+		}
+
+		return mage;
+	}
+
+	
+	public Mage getMage(CommandSender commandSender)
+	{
+		String mageName = "COMMAND";
+		if (commandSender instanceof ConsoleCommandSender) {
+			mageName = "CONSOLE";
+		} else if (commandSender instanceof Player) {
+			mageName = ((Player)commandSender).getName();
+		}
+		
+		return getMage(mageName, commandSender);
+	}
+	
+	protected void loadMage(String playerName, ConfigurationNode node)
+	{
+		Mage mage = getMage(playerName);
+		try {
+			mage.load(node);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	protected Mage getMage(String mageName)
+	{
+		if (!mages.containsKey(mageName)) 
 		{
 			Mage newMage = new Mage(this, null);
 			
-			if (node == null) {
-				// Check for existing data file
-				File playerFile = new File(playerDataFolder, playerName + ".yml");
-				if (playerFile.exists()) 
-				{
-					getLogger().info("Loading player data from file " + playerFile.getName());
-					try {
-						Configuration playerData = new Configuration(playerFile);
-						playerData.load();
-						newMage.load(playerData);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-			} else {
+			// Check for existing data file
+			File playerFile = new File(playerDataFolder, mageName + ".yml");
+			if (playerFile.exists()) 
+			{
+				getLogger().info("Loading player data from file " + playerFile.getName());
 				try {
-					newMage.load(node);
+					Configuration playerData = new Configuration(playerFile);
+					playerData.load();
+					newMage.load(playerData);
 				} catch (Exception ex) {
+					getLogger().warning("Failed to load player data from file " + playerFile.getName());
 					ex.printStackTrace();
 				}
 			}
 			
-			mages.put(playerName, newMage);
+			mages.put(mageName, newMage);
 		}
 		
-		return mages.get(playerName);
-	}
-	
-	public Mage getMage(String playerName) 
-	{
-		return getMage(playerName, null);
+		return mages.get(mageName);
 	}
 
 	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
@@ -957,7 +990,7 @@ public class MagicController implements Listener
 					playerData.load();
 					if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
 						String playerName = playerFile.getName().replaceFirst("[.][^.]+$", "");
-						getMage(playerName, playerData);
+						loadMage(playerName, playerData);
 					}
 				}
 				
@@ -1201,6 +1234,7 @@ public class MagicController implements Listener
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
+		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
 		autoUndo = properties.getInteger("auto_undo", autoUndo);
 		blockPopulatorEnabled = properties.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
@@ -2272,7 +2306,7 @@ public class MagicController implements Listener
 	public void toggleCastCommandOverrides(Mage mage, boolean override) {
 		mage.setCostReduction(override ? castCommandCostReduction : 0);
 		mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
-		mage.setPowerMultiplier(override ? 1 : 0);
+		mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
 	}
 	
 	public float getCooldownReduction() {
@@ -2447,6 +2481,7 @@ public class MagicController implements Listener
 	 private float								 maxRangePowerMultiplierMax 	= 5.0f;
 	 private float							 	 castCommandCostReduction	    = 1.0f;
 	 private float							 	 castCommandCooldownReduction	= 1.0f;
+	 private float								 castCommandPowerMultiplier     = 0.0f;
 	 private float							 	 costReduction	    			= 0.0f;
 	 private float							 	 cooldownReduction				= 0.0f;
 	 private ConfigurationNode					 blockPopulatorConfig			= null;

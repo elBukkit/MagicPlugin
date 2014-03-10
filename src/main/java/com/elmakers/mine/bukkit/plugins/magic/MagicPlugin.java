@@ -454,6 +454,16 @@ public class MagicPlugin extends JavaPlugin
 			return processCastCommand(sender, player, args2);
 		}
 
+		if (commandLabel.equalsIgnoreCase("cast"))
+		{
+			Player player = null;
+			if (sender instanceof Player) {
+				player = (Player)sender;
+			}
+			if (!controller.hasPermission(player, "Magic.commands.cast")) return false;
+			return processCastCommand(sender, player, args);
+		}
+
 		if (!(sender instanceof Player)) {
 			if (commandLabel.equalsIgnoreCase("spells"))
 			{
@@ -474,13 +484,6 @@ public class MagicPlugin extends JavaPlugin
 		if (commandLabel.equalsIgnoreCase("wand"))
 		{
 			return processWandCommand("wand", sender, player, args);
-		}
-
-		if (commandLabel.equalsIgnoreCase("cast"))
-		{
-			if (!controller.hasPermission(player, "Magic.commands.cast")) return false;
-			return processCastCommand(player, player, args);
-
 		}
 
 		if (commandLabel.equalsIgnoreCase("spells"))
@@ -967,7 +970,7 @@ public class MagicPlugin extends JavaPlugin
 		}
 
 		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
-		Mage mage = controller.getMage(player);
+		Mage mage = controller.getMage(sender);
 		Spell spell = mage.getSpell(spellName, usePermissions);
 		if (spell == null)
 		{
