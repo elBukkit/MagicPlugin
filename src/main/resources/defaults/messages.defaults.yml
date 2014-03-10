@@ -250,6 +250,9 @@ spells:
     frag:
         name: Incendiary Grenade
         description: Toss a fire grenade
+    cluster:
+        name: Cluster Bomb
+        description: Toss a splitting grenade
     convert:
         name: Convert
         description: Convert a spherical area of blocks

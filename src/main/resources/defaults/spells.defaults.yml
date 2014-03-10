@@ -1277,6 +1277,23 @@ frag:
         fire: true
     costs:
         xp: 120
+ 
+cluster:
+    icon: coal:1
+    category: dark
+    class: GrenadeSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+    parameters:
+        size: 2
+        fuse: 60
+        fire: false
+        count: 5
+    costs:
+        xp: 150
 superblob:
     icon: slime_ball
     category: engineering
