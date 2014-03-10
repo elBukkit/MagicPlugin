@@ -438,7 +438,7 @@ pull:
         type: pull
         count: 1
     costs:
-        xp: 2
+        xp: 8
 boom:
     icon: cooked_chicken
     category: firebending
@@ -737,7 +737,7 @@ sniper:
       fire: false
       speed: 6
       spread: 0
-      damage: 1
+      damage: 2.5
     costs:
         xp: 50
 weather:
@@ -1258,7 +1258,7 @@ grenade:
         -  class: EffectSingle
            sound: lava_pop
     parameters:
-        size: 3
+        size: 4
         fuse: 60
     costs:
         xp: 35
@@ -1272,7 +1272,7 @@ frag:
         -  class: EffectSingle
            sound: creeper_hiss
     parameters:
-        size: 8
+        size: 7
         fuse: 60
         fire: true
     costs:
