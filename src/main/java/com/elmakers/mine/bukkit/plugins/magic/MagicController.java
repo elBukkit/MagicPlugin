@@ -130,8 +130,8 @@ public class MagicController implements Listener
 
 	public Mage getMage(Player player)
 	{
-		String playerName = player == null ? "COMMAND" : player.getName();
-		Mage mage = getMage(playerName);
+		if (player == null) return null;
+		Mage mage = getMage(player.getName());
 		if (mage != null)
 		{
 			mage.setPlayer(player);
@@ -158,7 +158,6 @@ public class MagicController implements Listener
 
 		return mage;
 	}
-
 	
 	public Mage getMage(CommandSender commandSender)
 	{
@@ -344,6 +343,10 @@ public class MagicController implements Listener
 
 	public int getUndoQueueDepth() {
 		return undoQueueDepth;
+	}
+	
+	public int getMaxUndoPersistSize() {
+		return undoMaxPersistSize;
 	}
 
 	public String undoAny(Block target)

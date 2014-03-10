@@ -208,7 +208,7 @@ schematic_files: WorldEdit/schematics/$name.schematic
 undo_depth: 64
 
 # The largest thing we'll persist in the undo queue (to a file)
-undo_max_persist_size: 10000
+undo_max_persist_size: 4098
 
 # How long to wait until we stop checking player data for pending undo
 # 0 = Always check all players on load.

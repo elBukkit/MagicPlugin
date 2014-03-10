@@ -673,7 +673,7 @@ public class Mage implements CostReducer
 			ConfigurationNode brushNode = configNode.createChild("brush");
 			brush.save(brushNode);
 			
-			getUndoQueue().save(controller, configNode);
+			getUndoQueue().save(this, configNode);
 			ConfigurationNode spellNode = configNode.createChild("spells");
 			for (Spell spell : spells.values()) {
 				spell.save(spellNode.createChild(spell.getKey()));

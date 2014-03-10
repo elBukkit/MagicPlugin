@@ -134,11 +134,17 @@ public class UndoQueue
 		}
 	}
 	
-	public void save(MagicController spells, ConfigurationNode node)
+	public void save(Mage mage, ConfigurationNode node)
 	{
+		MagicController controller = mage.getController();
+		int maxSize = controller.getMaxUndoPersistSize();
 		try {
 			List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
 			for (BlockList list : blockQueue) {
+				if (maxSize > 0 && list.size() > maxSize) {
+					controller.getLogger().info("Discarding undo batch, size " + list.size() + " for player " + mage.getName());
+					continue;
+				}
 				Map<String, Object> listNode = new HashMap<String, Object>();
 				list.save(listNode);
 				nodeList.add(listNode);
@@ -153,7 +159,7 @@ public class UndoQueue
 			node.setProperty("scheduled", nodeList);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			spells.getPlugin().getLogger().warning("Failed to save undo data: " + ex.getMessage());
+			controller.getLogger().warning("Failed to save undo data: " + ex.getMessage());
 		}
 	}
 	
