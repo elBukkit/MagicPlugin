@@ -96,7 +96,7 @@ cast_message_prefix: §5§o
 sounds: true
 
 # Prevent rapid sending of chat messages from the plugin (in milliseconds)
-message_throttle: 3000
+message_throttle: 1000
 
 # Set this to 1 to just turn costs off, or you can use it to scale costs down.
 cost_reduction: 0.0

@@ -55,7 +55,7 @@ public class Mage implements CostReducer
 	private Location			location;
 	private float 				costReduction = 0;
 	private float 				cooldownReduction = 0;
-	private float 				powerMultiplier = 0;
+	private float 				powerMultiplier = 1;
 	private long 				lastClick = 0;
 	private long 				blockPlaceTimeout = 0;
 	private Location 			lastDeathLocation = null;
