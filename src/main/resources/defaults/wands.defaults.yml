@@ -282,6 +282,7 @@ random:
       fling: 0,5,70,80
       force: 5,10,20,60
       frag: 0,0,10,90
+      cluster: 0,0,5,50
       frost: 80,70,50,10
       gills: 10,11,20,25
       grenade: 30,50,70,20
@@ -883,6 +884,7 @@ elder:
         - shrink
         - box
         - frag
+        - cluster
         - volley
         - stalactite
         - fill
@@ -1272,6 +1274,7 @@ black:
         - curse
         - convert
         - commit
+        - cluster
         - wither
         - superpyramid
         - disintegrate
@@ -1310,10 +1313,11 @@ red:
         - convert
         - icbm
         - supershell
-        - flare
         - grenade
         - flare
         - flamethrower
+        - cluster
+        - frag
     materials:
         - stationary_lava    
         - stained_clay:14    
