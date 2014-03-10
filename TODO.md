@@ -2,14 +2,14 @@
 
 ## For 2.9.7
 
- - Allow customization of Building and PVP permission checks.
- - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
- - Fix message cooldowns- something is perhaps wrong there?
- - Purge player data on save (When possible)
+ - Improve tab completion
+ - Add configurable persist block limit for undo queue (finish implementation)
+ - Retry limit on construction batches
  - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
  - Configurable randomization for Familiar spell
  - Fix Recall spell
  - Customizable wand crafting recipes, check NMS data for "icon"
+ - Add "wand unenchant" and "wand enchant" commands
  - Make spells usable without a player, clean up strong Player references
  - Support schematic entity import for paintings and item frames (at least)
   
@@ -23,30 +23,30 @@
 ## For 2.9.9
 
  - Command book kit integration .. ?
+ - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
+ - Fix message cooldowns- something is perhaps wrong there?
+ - Purge player data on save (When possible)
 
 ## For 3.0.0
 
  - Fix website, can't parse new effect nodes
  - Config-driven WandLevel limits.
- - Add configurable persist block limit for undo queue
  - Make sure adding spells/materials never removes any, also opening/closing the inventory, organizing
  - Add "wand duplicate" command
  - Tweaking/Balancing - haste, cooldowns, etc
- - Retry limit on construction batches
  - Fix wand inventory glitches and special-cases
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Add schematic list command
  - Finish localization
+ - make push spell reflect projectiles (set fireball velocity)
+ - Fireball / grenade "rain" spells (Meteor Shower, Carpet Bomb?)
 
 NEAR-FUTURE STUFF:
 
  - Async player data save/load (... undo queue locking?)
- - make push spell reflect projectiles (set fireball velocity)
  - investigate lag/slowdown - new dynmap stuff?
- - Essentials signs add to wand...
 
- - Familiar- my cast kills their familiars?
 
 NEW SPELLS:
 
@@ -62,7 +62,6 @@ NEW SPELLS:
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Biome modification (mega-frost). Chunk regeneration would be awesome.
- - Fireball / grenade "rain" spells (Meteor Shower, Carpet Bomb?)
 
 WAND PROGRESSION:
 

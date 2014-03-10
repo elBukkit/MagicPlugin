@@ -3,6 +3,7 @@
 ## 2.9.6
 
  - Removed/Disabled the "Light" spell (for now.. ?)
+ - Add "count" parameter to grenade spell. (Add "Cluster Bomb" spell)
  - Add "Wolf House" and "Tent" and "Cage" spells. WIP.
  - Support different item types for wand templates.
  - Copy command blocks from schematics.

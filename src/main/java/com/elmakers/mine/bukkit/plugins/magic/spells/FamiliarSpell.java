@@ -179,6 +179,7 @@ public class FamiliarSpell extends Spell
 
 		List<Creature> newFamiliars = new ArrayList<Creature>();
 		int spawnCount = 0;
+		Location centerLoc = targetBlock.getLocation();
 		for (int i = 0; i < famCount; i++)
 		{
 			if (famClass != FamiliarClass.SPECIFIC)
@@ -200,7 +201,7 @@ public class FamiliarSpell extends Spell
 				}
 			}      
 
-			Location targetLoc = targetBlock.getLocation();
+			Location targetLoc = centerLoc.clone();
 			if (famCount > 1)
 			{
 				targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * famCount) - famCount);
