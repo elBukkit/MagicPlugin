@@ -13,6 +13,8 @@
  - Fix message cooldowns- something is perhaps wrong there?
  - Purge player data on save (When possible)
  - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
+ - Configurable randomization for Familiar spell
+ - Fix Recall spell
   
 ## For 2.9.8
 

@@ -24,7 +24,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class FamiliarSpell extends Spell
 {
 	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow,Ozelot,HorseEntity";
-	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Ghast,Giant,Silverfish,Enderman,CaveSpider,Blaze,LavaSlime,Bat,Witch";
+	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Giant,Silverfish,CaveSpider,Blaze,Bat,Witch";
 
 	private final Random rand = new Random();
 	private PlayerFamiliar familiars = new PlayerFamiliar();
