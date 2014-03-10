@@ -4,7 +4,6 @@
 
  - Make spells usable without a player, clean up strong Player references
  - Support schematic entity import for paintings and item frames (at least)
- - Customizable crafting recipes
 
 ## For 2.9.7
 
@@ -15,6 +14,7 @@
  - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
  - Configurable randomization for Familiar spell
  - Fix Recall spell
+ - Customizable wand crafting recipes, check NMS data for "icon"
   
 ## For 2.9.8
 

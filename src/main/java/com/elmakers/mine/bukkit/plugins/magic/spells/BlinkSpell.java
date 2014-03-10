@@ -16,7 +16,7 @@ public class BlinkSpell extends Spell
 
 	protected SpellResult ascend()
 	{
-		Location targetLocation = getPlayer().getLocation();
+		Location targetLocation = getLocation();
 		targetLocation.setY(targetLocation.getY() + 2);
 		Location location = findPlaceToStand(targetLocation, true);
 		if (location != null) 
@@ -32,7 +32,7 @@ public class BlinkSpell extends Spell
 
 	protected SpellResult descend()
 	{
-		Location targetLocation = getPlayer().getLocation();
+		Location targetLocation = getLocation();
 		targetLocation.setY(targetLocation.getY() - 2);
 		Location location = findPlaceToStand(targetLocation, false);
 		if (location != null) 
@@ -84,7 +84,7 @@ public class BlinkSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 
-		World world = getPlayer().getWorld();
+		World world = getWorld();
 
 		// Don't drop the player too far, and make sure there is somewhere to stand
 		Block destination = face;

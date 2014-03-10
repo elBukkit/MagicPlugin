@@ -37,7 +37,7 @@ public class WolfSpell extends Spell
 			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
 		}
 
-		Wolf entity = (Wolf)getPlayer().getWorld().spawnEntity(targetBlock.getLocation(), EntityType.WOLF);
+		Wolf entity = (Wolf)getWorld().spawnEntity(targetBlock.getLocation(), EntityType.WOLF);
 		if (entity == null)
 		{
 			sendMessage("Your wolfie is DOA");

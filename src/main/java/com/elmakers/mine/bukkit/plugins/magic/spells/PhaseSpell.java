@@ -22,7 +22,7 @@ public class PhaseSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int maxY = 255;
-		Location playerLocation = getPlayer().getEyeLocation();
+		Location playerLocation = getLocation();
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
 		if (worldName.contains("_the_end")) {

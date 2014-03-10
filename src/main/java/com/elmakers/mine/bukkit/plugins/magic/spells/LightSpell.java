@@ -14,7 +14,7 @@ public class LightSpell extends Spell {
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
-		Location targetLocation = getPlayer().getLocation();
+		Location targetLocation = getLocation();
 		if (target == null) {
 			target = targetLocation.getBlock();
 		} else {

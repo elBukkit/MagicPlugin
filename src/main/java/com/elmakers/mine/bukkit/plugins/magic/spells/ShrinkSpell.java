@@ -29,12 +29,12 @@ public class ShrinkSpell extends BlockSpell
 	{
 		String castType = parameters.getString("type");
 		if (castType != null && castType.equalsIgnoreCase("self")) {
-			dropHead(getPlayer().getLocation(), getPlayer().getName(), null, (byte)3);
+			dropHead(getLocation(), getPlayer().getName(), null, (byte)3);
 			return SpellResult.CAST;
 		}
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
-			dropHead(getPlayer().getLocation(), giveName, null, (byte)3);
+			dropHead(getLocation(), giveName, null, (byte)3);
 			return SpellResult.CAST;
 		}
 		

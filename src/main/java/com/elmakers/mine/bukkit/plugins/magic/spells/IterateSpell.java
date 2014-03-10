@@ -45,12 +45,12 @@ public class IterateSpell extends BrushSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		int iterateBlocks = (int)getPlayer().getLocation().distance(target.getLocation());
+		int iterateBlocks = (int)getLocation().distance(target.getLocation());
 		if (iterateBlocks <= 0) return SpellResult.NO_TARGET;
 		iterateBlocks = Math.min(iterateBlocks, size);
 
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
-		Vector playerLoc = new Vector(getPlayer().getLocation().getX(), getPlayer().getLocation().getY() + 1, getPlayer().getLocation().getZ());
+		Vector playerLoc = new Vector(getLocation().getX(), getLocation().getY() + 1, getLocation().getZ());
 
 		Vector aim = null;
 		if (reverse) {

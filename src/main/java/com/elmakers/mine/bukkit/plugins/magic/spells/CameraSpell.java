@@ -52,7 +52,6 @@ public class CameraSpell extends Spell
 			String metaName = null;
 			if (playerName == null) 
 			{
-				Player player = getPlayer();
 				if (target != null)
 				{
 					if (target.isEntity()) {
@@ -76,9 +75,10 @@ public class CameraSpell extends Spell
 						}
 					}
 				}
-				
+
 				if (playerName == null)
 				{
+					Player player = getPlayer();
 					if (player == null) {
 						return SpellResult.NO_TARGET;
 					}
@@ -97,7 +97,7 @@ public class CameraSpell extends Spell
 			sendMessage("Failed to load photo");
 			return SpellResult.FAIL;
 		}
-		getPlayer().getWorld().dropItemNaturally(getPlayer().getLocation(), newMapItem);
+		getWorld().dropItemNaturally(getLocation(), newMapItem);
 		
 		return SpellResult.CAST;
 	}

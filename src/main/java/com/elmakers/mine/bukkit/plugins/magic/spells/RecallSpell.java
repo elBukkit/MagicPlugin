@@ -39,7 +39,7 @@ public class RecallSpell extends Spell
 		if (typeString.equals("spawn"))
 		{
 			castMessage("Returning you home");
-			tryTeleport(getPlayer().getWorld().getSpawnLocation());
+			tryTeleport(getWorld().getSpawnLocation());
 			return SpellResult.CAST; 
 		}
 		if (typeString.equals("wand"))
@@ -73,18 +73,18 @@ public class RecallSpell extends Spell
 			if (!isActive && autoSpawn)
 			{
 				castMessage("Returning you home");
-				tryTeleport(getPlayer().getWorld().getSpawnLocation());
+				tryTeleport(getWorld().getSpawnLocation());
 			}
 			else
 			{
 				if (!isActive) return SpellResult.NO_TARGET;
 
-				double distanceSquared = getPlayer().getLocation().distanceSquared(location);
+				double distanceSquared = getLocation().distanceSquared(location);
 
 				if (distanceSquared < disableDistance * disableDistance && autoSpawn)
 				{
 					castMessage("Returning you home");
-					tryTeleport(getPlayer().getWorld().getSpawnLocation());
+					tryTeleport(getWorld().getSpawnLocation());
 				}
 				else
 				{
@@ -163,7 +163,7 @@ public class RecallSpell extends Spell
 			castMessage("You place a recall marker");
 		}
 
-		location = getPlayer().getLocation();
+		location = getLocation();
 		location.setX(targetBlock.getX());
 		location.setY(targetBlock.getY());
 		location.setZ(targetBlock.getZ());

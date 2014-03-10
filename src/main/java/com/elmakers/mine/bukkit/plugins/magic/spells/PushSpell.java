@@ -25,11 +25,11 @@ public class PushSpell extends Spell
 		float maxDistance = (float)maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
 		
-		List<Entity> entities = getPlayer().getWorld().getEntities();
+		List<Entity> entities = getWorld().getEntities();
 		for (Entity target : entities)
 		{
 			if (target == getPlayer()) continue;
-			Location playerLocation = getPlayer().getLocation();
+			Location playerLocation = getLocation();
 			Location targetLocation = target.getLocation();
 
 			if (playerLocation.distanceSquared(targetLocation) >maxDistanceSquared) continue;
@@ -91,8 +91,8 @@ public class PushSpell extends Spell
 		int pushed = 0;
 		for (Target target : targets) {
 			Entity targetEntity = target.getEntity();
-			Location to = pull ? target.getLocation() : getPlayer().getLocation();
-			Location from = pull ? getPlayer().getLocation() : target.getLocation();
+			Location to = pull ? target.getLocation() : getLocation();
+			Location from = pull ? getLocation() : target.getLocation();
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 
 			forceEntity(targetEntity, multiplier, from, to, magnitude);

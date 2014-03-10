@@ -34,7 +34,7 @@ public class FlingSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		int height = 0;
-		Block playerBlock = getPlayer().getLocation().getBlock();
+		Block playerBlock = getLocation().getBlock();
 
 		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
 		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);

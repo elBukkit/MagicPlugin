@@ -118,7 +118,7 @@ public class ThrustSpell extends Spell
 	{
 		checkCounter = 0;
 
-		Location playerLocation = getPlayer().getLocation();
+		Location playerLocation = getLocation();
 		World world = playerLocation.getWorld();
 		Block targetBlock = world.getBlockAt(playerLocation);
 		targetBlock = targetBlock.getRelative(BlockFace.DOWN);

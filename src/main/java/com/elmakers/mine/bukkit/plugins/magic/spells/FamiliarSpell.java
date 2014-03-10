@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -97,9 +96,6 @@ public class FamiliarSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		if (!hasBuildPermission(getLocation().getBlock())) {
-			
-			Bukkit.getLogger().info("Failed build perms");
-			
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
@@ -240,7 +236,7 @@ public class FamiliarSpell extends Spell
 	{
 		Creature familiar = null;
 		try {
-			Entity famEntity = getPlayer().getWorld().spawnEntity(target, famType);
+			Entity famEntity = getWorld().spawnEntity(target, famType);
 			if (!(famEntity instanceof Creature)) return null;
 	
 			familiar = (Creature)famEntity;

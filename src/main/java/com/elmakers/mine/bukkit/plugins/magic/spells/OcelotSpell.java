@@ -40,7 +40,7 @@ public class OcelotSpell extends Spell
 			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
 		}
 
-		Ocelot entity = (Ocelot)getPlayer().getWorld().spawnEntity(targetBlock.getLocation(), EntityType.OCELOT);
+		Ocelot entity = (Ocelot)getWorld().spawnEntity(targetBlock.getLocation(), EntityType.OCELOT);
 		if (entity == null)
 		{
 			sendMessage("Your Ocelot is DOA");

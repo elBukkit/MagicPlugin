@@ -25,7 +25,7 @@ public class BoomSpell extends Spell {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		Location l = block.getLocation();
-		getPlayer().getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
+		getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 		controller.updateBlock(block);
 		return SpellResult.CAST;
 	}

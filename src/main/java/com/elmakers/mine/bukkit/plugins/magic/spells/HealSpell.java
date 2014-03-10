@@ -28,10 +28,14 @@ public class HealSpell extends Spell
 			}
 			return SpellResult.CAST;
 		}
+		Player player = getPlayer();
+		if (player == null) {
+			return SpellResult.NO_TARGET;
+		}
 		castMessage("You heal yourself");
-		getPlayer().setHealth(getPlayer().getMaxHealth());
-		getPlayer().setExhaustion(0);
-		getPlayer().setFoodLevel(20);
+		player.setHealth(getPlayer().getMaxHealth());
+		player.setExhaustion(0);
+		player.setFoodLevel(20);
 		return SpellResult.CAST;
 	}
 }

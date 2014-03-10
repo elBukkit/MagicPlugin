@@ -17,7 +17,7 @@ public class CushionSpell extends BlockSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		World world = getPlayer().getWorld();
+		World world = getWorld();
 		Block targetFace = getTargetBlock();
 		if (targetFace == null)
 		{

@@ -60,7 +60,7 @@ public class SignSpell extends BlockSpell
 			else
 			{
 				targetBlock.setType(Material.SIGN_POST);
-				float yaw = getPlayer().getLocation().getYaw();
+				float yaw = getLocation().getYaw();
 				yaw = yaw < 180 ? yaw + 180 : yaw - 180;
 				targetBlock.setData((byte)(yaw * 15 / 360));
 			}

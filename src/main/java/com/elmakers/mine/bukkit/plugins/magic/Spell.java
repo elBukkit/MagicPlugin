@@ -908,7 +908,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		int dy = 0;
 		while (dy > -3 && (playerBlock == null || isOkToStandIn(playerBlock.getType())))
 		{
-			playerBlock = getPlayer().getWorld().getBlockAt(x, y + dy, z);
+			playerBlock = getWorld().getBlockAt(x, y + dy, z);
 			dy--;
 		}
 		return playerBlock;
@@ -1013,9 +1013,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 		Vector aimVector = new Vector(xOffset + 0.5, height + 0.5, zOffset + 0.5);
 
-		Location location = new Location(getPlayer().getWorld(), spawnBlock.getX() + aimVector.getX(), spawnBlock.getY()
-				+ aimVector.getY(), spawnBlock.getZ() + aimVector.getZ(), getPlayer().getLocation().getYaw(), getPlayer()
-				.getLocation().getPitch());
+		Location location = new Location(getWorld(), spawnBlock.getX() + aimVector.getX(), spawnBlock.getY()
+				+ aimVector.getY(), spawnBlock.getZ() + aimVector.getZ(), getLocation().getYaw(), getLocation().getPitch());
 
 		return location;
 	}
@@ -1082,7 +1081,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public float getPlayerRotation()
 	{
-		float playerRot = getPlayer().getLocation().getYaw();
+		float playerRot = getLocation().getYaw();
 		while (playerRot < 0)
 			playerRot += 360;
 		while (playerRot > 360)
@@ -1178,7 +1177,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	}
 	
 	protected List<Target> getAllTargetEntities() {
-		List<Entity> entities = getPlayer().getWorld().getEntities();
+		List<Entity> entities = getWorld().getEntities();
 		List<Target> scored = new ArrayList<Target>();
 		for (Entity entity : entities)
 		{
@@ -1299,7 +1298,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public Block getBlockAt(int x, int y, int z)
 	{
-		World world = getPlayer().getWorld();
+		World world = getWorld();
+		if (world == null) return null;
 		return world.getBlockAt(x, y, z);
 	}	
 
@@ -1356,9 +1356,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 * 
 	 * @param time specified server time (0-24000)
 	 */
-	public void setTime(long time)
+	public boolean setTime(long time)
 	{
-		getPlayer().getWorld().setTime(time);
+		World world = getWorld();
+		if (world != null) {
+			world.setTime(time);
+			return true;
+		}
+		
+		return false;
 	}
 
 	/**
@@ -1368,7 +1374,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public long getTime()
 	{
-		return getPlayer().getWorld().getTime();
+		World world = getWorld();
+		return world == null ? 0 : world.getTime();
+	}
+	
+	public World getWorld()
+	{
+		Location location = getLocation();
+		if (location != null) return location.getWorld();
+		return null;
 	}
 
 	/**
@@ -1521,7 +1535,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				{
 					int x = center.getBlockX() + dx;
 					int z = center.getBlockZ() + dz;
-					Block block = getPlayer().getWorld().getBlockAt(x, y, z);
+					Block block = getWorld().getBlockAt(x, y, z);
 					int depth = 0;
 
 					if (targetThroughMaterials.contains(block.getType()))

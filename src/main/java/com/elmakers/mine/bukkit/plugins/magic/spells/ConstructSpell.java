@@ -120,7 +120,7 @@ public class ConstructSpell extends BrushSpell
 		if (falling)
 		{
 			if (force != 0) {
-				forceVector = getPlayer().getLocation().getDirection();
+				forceVector = getLocation().getDirection();
 				forceVector.setY(-forceVector.getY()).normalize().multiply(force);
 			}
 		}
