@@ -63,9 +63,7 @@ public class ConstructSpell extends BrushSpell
 				orientTo = target.getLocation();
 				target = targetBlock;
 			}
-		} else {
-			radius = (int)(mage.getRadiusMultiplier() * (float)radius);			
-		}
+		} 
 
 		int maxDimension = (int)(mage.getConstructionMultiplier() * (float)parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION));
 

@@ -25,7 +25,7 @@ public class IterateSpell extends BrushSpell
 		int timeToLive = parameters.getInt("undo", 0);
 		boolean incrementData = parameters.getBoolean("increment_data", false);
 		int radius = parameters.getInt("radius", 0);
-		radius = (int)(radius * mage.getRadiusMultiplier());
+		// radius = (int)(radius * mage.getRadiusMultiplier());
 		int size = parameters.getInt("size", DEFAULT_SIZE);
 		boolean reverse = parameters.getBoolean("reverse", false);
 		size = (int)(mage.getConstructionMultiplier() * (float)size);
