@@ -91,7 +91,7 @@ public class FillSpell extends BrushSpell
 				sendMessage("Dimension is too big!");
 				return SpellResult.FAIL;
 			}
-
+			batch.setTimeToLive(parameters.getInt("undo", 0));
 			mage.addPendingBlockBatch(batch);
 			
 			deactivate();

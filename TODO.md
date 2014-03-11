@@ -2,7 +2,9 @@
 
 ## For 2.9.7
 
- - Fix 1.6 support!
+ - Move wolf house target up, or add a couple more blocks of radius for observation tower
+
+ - Fix first cast of schematic- seems it's not waiting for load, maybe?
 
  - Make spells usable without a player, clean up strong Player references
    - Allow using Projectile spell without a player- maybe generally fix arrows.

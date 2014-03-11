@@ -140,4 +140,8 @@ public class FillBatch extends VolumeBatch {
 	public int getZSize() {
 		return absz;
 	}
+	
+	public void setTimeToLive(int timeToLive) {
+		this.filledBlocks.setTimeToLive(timeToLive);
+	}
 }

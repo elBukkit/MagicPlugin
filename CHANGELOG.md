@@ -6,6 +6,7 @@
  - Fix Blessing not targeting yourself if you're superprotected.
  - Fix targeting direction command overrides with /cast (dx, dy, dz)
  - Add "beacon" and "flare_beacon" material schematics.
+ - Add support for "undo" parameter in fill spell.
 
 ## 2.9.6
 
