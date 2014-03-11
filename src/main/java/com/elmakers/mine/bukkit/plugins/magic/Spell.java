@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -629,7 +630,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		if (dxValue != null || dzValue != null || dyValue != null) {
 			direction = new Vector(dxValue == null ? 0 : dxValue, dyValue == null ? 0 : dyValue, dzValue == null ? 0 : dzValue);
 			if (location != null) {
-				location.setDirection(direction);
+				location = RandomUtils.setDirection(location, direction);
 			}
 		} else {
 			direction = null;
@@ -1033,7 +1034,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		if (location == null && mage != null) {
 			location = mage.getLocation();
 			if (direction != null) {
-				location.setDirection(direction);
+				location = RandomUtils.setDirection(location, direction);
 			}
 		}
 		if (location == null) return null;

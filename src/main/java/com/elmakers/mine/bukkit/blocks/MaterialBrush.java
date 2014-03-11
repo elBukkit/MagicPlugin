@@ -304,11 +304,14 @@ public class MaterialBrush extends MaterialBrushData {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void enableMap() {
 		fillWithAir = false;
 		this.mode = BrushMode.MAP;
 		if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
-			|| this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
+			// Use raw id's for 1.6 backwards compatibility.
+			|| this.material.getId() == 95 || this.material.getId() == 160
+			// || this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
 			|| this.material == Material.CARPET) {
 			this.mapMaterialBase = this.material;
 		}
