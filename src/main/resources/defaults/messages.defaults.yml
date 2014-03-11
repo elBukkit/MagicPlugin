@@ -333,7 +333,7 @@ spells:
         description: Blink a short distance
     mine:
         name: Mine
-        description: Mines and drops the targeted resources
+        description: Mines and drops the targeted ores
     chop:
         name: Chop
         description: Fell a tree in one cast

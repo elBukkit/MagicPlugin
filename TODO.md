@@ -14,6 +14,7 @@
  - Add "wand unenchant" and "wand enchant" commands
  - Fix weird wand inventory issues, duplicate items, etc
  - dtlTraders integration
+ - Fix Laser spell
   
 ## For 2.9.8
 
@@ -24,6 +25,7 @@
  - Configurable randomization for Familiar spell
  - Fix / Improve Recall spell
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
+ - Add image map search feature
 
 ## For 2.9.9
 
