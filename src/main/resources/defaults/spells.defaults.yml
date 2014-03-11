@@ -1827,9 +1827,9 @@ tesseract:
     parameters:
         allow_max_range: false
         allow_ascend: false
+        allow_descend: false
         allow_passthrough: false
         range: 14
-        allow_decend: true
     costs:
         xp: 25
 absorb:
