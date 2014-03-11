@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.9.7
+
+ - Fix Blessing not targeting yourself if you're superprotected.
+
 ## 2.9.6
 
  - Allow use of /cast without a player, as in a command block.

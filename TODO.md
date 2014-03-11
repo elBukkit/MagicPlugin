@@ -2,34 +2,40 @@
 
 ## For 2.9.7
 
- - Improve tab completion
- - Add configurable persist block limit for undo queue (finish implementation)
- - Retry limit on construction batches
- - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
- - Configurable randomization for Familiar spell
- - Fix Recall spell
- - Customizable wand crafting recipes, check NMS data for "icon"
- - Add "wand unenchant" and "wand enchant" commands
  - Make spells usable without a player, clean up strong Player references
- - Support schematic entity import for paintings and item frames (at least)
-  
-## For 2.9.8
-
- - Maybe use player UUID's instead of names. Might need to migrate player data for this?
+   - Allow using Projectile spell without a player- maybe generally fix arrows.
+ - Retry limit on construction batches
  - Undo fails in some cases (overlapping undo queues)
   - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
   - BlockData tracks only the first recorded materialdata, commit will replace
+    - I think the following is related, might be caused by a construct batch someone overlapping itself - which also shouldn't happen.
+    - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
+ - Customizable wand crafting recipes, check NMS data for "icon"
+ - Add "wand unenchant" and "wand enchant" commands
+ - Fix weird wand inventory issues, duplicate items, etc
+ - dtlTraders integration
+  
+## For 2.9.8
+
+ - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
+ - Maybe use player UUID's instead of names. Might need to migrate player data for this?
+ - Support schematic entity import for paintings and item frames (at least)
+ - Add "Simulate" spell
+ - Configurable randomization for Familiar spell
+ - Fix / Improve Recall spell
+ - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
 
 ## For 2.9.9
 
- - Command book kit integration .. ?
+ - Commandbook kit integration .. ?
  - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
  - Fix message cooldowns- something is perhaps wrong there?
  - Purge player data on save (When possible)
+ - Improve tab completion
+ - Configurable passthrough material list for Blink
 
 ## For 3.0.0
 
- - Fix website, can't parse new effect nodes
  - Config-driven WandLevel limits.
  - Make sure adding spells/materials never removes any, also opening/closing the inventory, organizing
  - Add "wand duplicate" command
@@ -39,14 +45,17 @@
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Add schematic list command
  - Finish localization
- - make push spell reflect projectiles (set fireball velocity)
+ - Make push spell reflect projectiles (set fireball velocity)
  - Fireball / grenade "rain" spells (Meteor Shower, Carpet Bomb?)
+ - Fix website, can't parse new effect nodes
+ - New spawn on dev server
+ - Create new YouTube video(s)
+ - Create API library, example plugin and example spell plugin.
 
 NEAR-FUTURE STUFF:
 
  - Async player data save/load (... undo queue locking?)
  - investigate lag/slowdown - new dynmap stuff?
-
 
 NEW SPELLS:
 
@@ -71,13 +80,10 @@ WAND PROGRESSION:
 
 OTHER STUFF:
  
- - Apply potion effects while holding wand Could replace haste with this.
+ - Apply potion effects while holding wand, Could replace haste with this.
  - Add fall protection to bounce spell (generalize it)
- - Add option to open chest on right-click (for wand inventory)
  - Make volley multi-sample?
  - Alter names sheep "jeb_", - others "Dinnerbone" ?
- - Organize inventory by spell usage (favorites page)
- - Complete work on tab completion
  - Separate material list for "super" building materials?
  
  - Fix up alter spell, remove id-based lists
@@ -91,8 +97,6 @@ OTHER STUFF:
    - Track falling block entities (sandblast, toss, etc)
    - Auto-expand?
  - prevent pillar from passing through non-air blocks of different materials than the target
- - Some sort of workaround for wands getting killed by the creative inventory
- - Look into data values disappearing on materials in wand inventory like stairs
  - If possible, label more material data like stair direction.
  - Add locale option to suffix messages.yml
  
@@ -102,26 +106,21 @@ OTHER STUFF:
  - Add /magic depopulate, to remove all wands from chests
  
  - See if you can disable the fire from a fireball when not incendiary
- - Light incendiary tnt on fire? (rename frag to incendiary?)
 
  - Persist player spell data
    - familiar
- - Localize all spell-specific messages.
  
  - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
  - Add chunk generate and stop options to "populate" for creating square maps.. ?
  
  - Continue work on combining wands on avils
  - Specific protection for suffocation damage, underwater breathing (air regeneration)
- - Maybe data-drive blink's special list of things it will try to target through?
  - Maybe make wands regenerate while you're not holding them (timer-based)?
  
  TESTING / TWEAKING:
  
  - Test larger undo queue sizes, or count size in blocks?
- - Make sure I haven't broken Essentials' ItemDB- it's not working for adding items to signs.. ? (e.g. xpbottle, netherstar)
  - Add console logging of massive construction spell casting
- - Raise default construction limits again.. or mess with power?
 
 DEMO SERVER / DOCS STUFF:
 
