@@ -5,6 +5,7 @@
  - Fix 1.6 Support (sorry!)
  - Fix Blessing not targeting yourself if you're superprotected.
  - Fix targeting direction command overrides with /cast (dx, dy, dz)
+ - Add "beacon" and "flare_beacon" material schematics.
 
 ## 2.9.6
 

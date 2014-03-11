@@ -53,15 +53,32 @@
  - Fireball / grenade "rain" spells (Meteor Shower, Carpet Bomb?)
  - Fix website, can't parse new effect nodes
  - New spawn on dev server
- - Create new YouTube video(s)
- - Create API library, example plugin and example spell plugin.
+ 
+## DOCUMENTATION / DEMO STUFF
 
-NEAR-FUTURE STUFF:
+ - Add "wand properties" infobook
+
+ - Create new YouTube video(s)
+ - Update "scripting" and "customization" documentation once tab completion is done.
+ - API Tutorials, when API is complete.
+ - Get Factions running on the demo server?
+ 
+ - Build and have fun! ;)
+
+##  API STUFF
+
+ - Separate "Magic" API with a few simple methods like cast, undo, commit
+ - ImageMap API
+ - Spell API for custom spells
+ - Sample custom spell plugin (soft-depend)
+ - Sample API integration plugin (soft-depend)
+
+## NEAR-FUTURE STUFF
 
  - Async player data save/load (... undo queue locking?)
  - investigate lag/slowdown - new dynmap stuff?
 
-NEW SPELLS:
+## NEW SPELLS
 
  - level - levels the ground
  - avatar - Goes into "avatar" state- free spells, super power, levitating, special effects- but rapidly decreasing mana while active.
@@ -76,14 +93,15 @@ NEW SPELLS:
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Biome modification (mega-frost).
 
-WAND PROGRESSION:
+## WAND PROGRESSION
 
  - Wand auto-colorization (via spell categories)
  - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
  - Add option to not be able to use another player's wand
 
-OTHER STUFF:
+## OTHER STUFF
  
+ - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
  - Apply potion effects while holding wand, Could replace haste with this.
  - Add fall protection to bounce spell (generalize it)
  - Make volley multi-sample?
@@ -121,23 +139,15 @@ OTHER STUFF:
  - Specific protection for suffocation damage, underwater breathing (air regeneration)
  - Maybe make wands regenerate while you're not holding them (timer-based)?
  
- TESTING / TWEAKING:
+## TESTING / TWEAKING:
  
  - Test larger undo queue sizes, or count size in blocks?
  - Add console logging of massive construction spell casting
 
-DEMO SERVER / DOCS STUFF:
-
- - Add "wand properties" infobook
- - Build and have fun! ;)
-
- - .. update docs, .. make new video
- - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
-
-STACK TRACES / EXTRA DEBUG INFO
+## STACK TRACES / EXTRA DEBUG INFO
 
 
-PLAYER REQUESTS:
+## PLAYER REQUESTS:
 
 yoheius
 Feb 13, 2014 at 11:51 - 1 like Unlike

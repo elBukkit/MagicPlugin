@@ -462,6 +462,8 @@ random:
       schematic|compact_house: 5,10,15,20
       schematic|tent: 10,20,25,30
       schematic|cage: 5,10,15,20
+      schematic|beacon: 0,5,10,15
+      schematic|flare_beacon: 0,1,5,10
 
 #
 #
@@ -760,6 +762,12 @@ engineer:
         - schematic:compact_house
         - schematic:elder_tree
         - schematic:garden_house
+        - schematic:beacon
+        - schematic:flare_beacon
+        - schematic:cage
+        - schematic:tent
+        - schematic:wolfhouse
+        - schematic:stash_chest
 battle:
     modifiable: true
     protection_physical: 0.3
