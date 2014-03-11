@@ -2162,9 +2162,9 @@ wolfhouse:
     parameters:
         target_type: LivingEntity
         target: any
-        allow_max_range: false
+        allow_max_range: true
         check_destructible: false
-        range: 64
+        range: 8
         radius: 4
         type: sphere
         cooldown: 3600000

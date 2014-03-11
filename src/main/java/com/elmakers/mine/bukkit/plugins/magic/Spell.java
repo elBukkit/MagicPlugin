@@ -1462,6 +1462,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	
 	protected int getMaxRange()
 	{
+		if (allowMaxRange) return Math.min(maxRange, range);
 		return Math.min(maxRange, (int)(mage.getRangeMultiplier() * range));
 	}
 
