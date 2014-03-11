@@ -420,11 +420,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		this.target = null;
 		defaultTargetLocation = defaultTarget;
 		location = mage.getLocation();
-		initializeTargeting();
 		
 		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
 		processParameters(parameters);
+		
+		initializeTargeting();
 		
 		// Check cooldowns
 		cooldown = parameters.getInt("cooldown", cooldown);
@@ -1116,7 +1117,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	public Target getTarget()
 	{
 		Player player = getPlayer();
-		
 		if (targetType == TargetType.SELF && player != null) {
 			target = new Target(getLocation(), player);
 			return target;

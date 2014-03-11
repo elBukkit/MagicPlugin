@@ -2,7 +2,9 @@
 
 ## 2.9.7
 
+ - Fix 1.6 Support (sorry!)
  - Fix Blessing not targeting yourself if you're superprotected.
+ - Fix targeting direction command overrides with /cast (dx, dy, dz)
 
 ## 2.9.6
 
