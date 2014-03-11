@@ -2,6 +2,8 @@
 
 ## For 2.9.7
 
+ - Fix 1.6 support!
+
  - Make spells usable without a player, clean up strong Player references
    - Allow using Projectile spell without a player- maybe generally fix arrows.
  - Retry limit on construction batches
@@ -72,7 +74,7 @@ NEW SPELLS:
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
  - Disguise spells / clone spell
  - vortex type spells.. singularity, black hole, tornado - fun ideas there.
- - Biome modification (mega-frost). Chunk regeneration would be awesome.
+ - Biome modification (mega-frost).
 
 WAND PROGRESSION:
 

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>2.9.7</version>
 	<name>elMakers - Bukkit Plugins : Magic</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
@@ -17,19 +17,35 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.7.2-R0.1-SNAPSHOT</version>
+			<version>1.6.4-R2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldedit</artifactId>
+			<version>5.6</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.dynmap</groupId>
-			<artifactId>DynmapCoreAPI</artifactId>
-			<version>1.9.2</version>
+			<artifactId>dynmap-api</artifactId>
+			<version>0.80</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
        <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
+      </repository>
+      <repository>
+      		<id>sk89q</id>
+      		<url>http://maven.sk89q.com/artifactory/repo/</url>
+      </repository>
+      <repository>
+      		<id>dynmap</id>
+      		<url>http://repo.mikeprimm.com/</url>
       </repository>
     </repositories>
 	<build>
