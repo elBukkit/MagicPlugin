@@ -99,6 +99,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Class<? extends Entity>             targetEntityType        = null;
 	private Location                            location;
 	private Location                            targetLocation;
+	private Location							defaultTargetLocation   = null;
 	private double                              xRotation, yRotation;
 	private double                              length, hLength;
 	private double                              xOffset, yOffset, zOffset;
@@ -399,7 +400,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	public boolean cast()
 	{
-		return cast(new String[0]);
+		return cast(new String[0], null);
 	}
 
 	static public void addParameters(String[] extraParameters, ConfigurationNode parameters)
@@ -413,9 +414,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 	}
 
-	public boolean cast(String[] extraParameters)
+	public boolean cast(String[] extraParameters, Location defaultTarget)
 	{
-		target = null;
+		this.target = null;
+		defaultTargetLocation = defaultTarget;
 		location = mage.getLocation();
 		initializeTargeting();
 		
@@ -608,7 +610,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Double dtxValue = parameters.getDouble("dtx", null);
 		Double dtzValue = parameters.getDouble("dtz", null);
 		if (dtxValue != null || dtzValue != null || dtyValue != null) {
-			if (targetLocation == null) targetLocation = location.clone();
+			if (targetLocation == null) {
+				if (defaultTargetLocation == null) {
+					defaultTargetLocation = getLocation();
+				}
+				targetLocation = defaultTargetLocation.clone();
+			}
 			targetLocation = new Location(targetLocation.getWorld(), 
 					targetLocation.getX() + (dtxValue == null ? 0 : dtxValue), 
 					targetLocation.getY() + (dtyValue == null ? 0 : dtyValue), 
@@ -766,7 +773,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	}
 
 	public void setTarget(Location location) {
-		target = new Target(getPlayer(), location.getBlock());
+		target = new Target(getLocation(), location.getBlock());
 	}
 	
 	/*
@@ -1110,16 +1117,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Player player = getPlayer();
 		
 		if (targetType == TargetType.SELF && player != null) {
-			target = new Target(player, player);
+			target = new Target(getLocation(), player);
 			return target;
 		}
 
 		if (targetType != TargetType.NONE && targetLocation != null) {
-			target = new Target(player, targetLocation.getBlock());
+			target = new Target(getLocation(), targetLocation.getBlock());
 			return target;
 		}
 		
-		target = new Target(player);
+		target = new Target(getLocation());
 		
 		if (targetType == TargetType.NONE) {
 			return target;
@@ -1129,7 +1136,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Block block = getCurBlock();
 		
 		Target targetEntity = getTargetEntity();
-		Target targetBlock = block == null ? null : new Target(player, block);
+		Target targetBlock = block == null ? null : new Target(getLocation(), block);
 
 		// Don't allow targeting entities in no-PVP areas.
 		boolean noPvp = targetEntity != null && (targetEntity instanceof Player) && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetEntity.getLocation());
@@ -1152,7 +1159,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		} else if (targetBlock != null) {
 			target = targetBlock;
 		} else if (targetType == TargetType.ANY && player != null) {
-			target = new Target(player, player, targetBlock == null ? null : targetBlock.getBlock());
+			target = new Target(getLocation(), player, targetBlock == null ? null : targetBlock.getBlock());
 		}
 		
 		return target;
@@ -1184,7 +1191,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			if (entity == getPlayer()) continue;
 			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 
-			Target newScore = new Target(getPlayer(), entity, getMaxRange());
+			Target newScore = new Target(getLocation(), entity, getMaxRange());
 			if (newScore.getScore() > 0)
 			{
 				scored.add(newScore);

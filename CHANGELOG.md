@@ -3,6 +3,7 @@
 ## 2.9.6
 
  - Removed/Disabled the "Light" spell (for now.. ?)
+ - Allow use of /cast without a player, as in a command block.
  - Add "count" parameter to grenade spell. (Add "Cluster Bomb" spell)
  - Add default "name" and "description" nodes back to wands and spells for easy customization.
  - Add "Wolf House" and "Tent" and "Cage" spells. WIP.

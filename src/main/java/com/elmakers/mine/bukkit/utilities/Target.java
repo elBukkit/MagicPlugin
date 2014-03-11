@@ -13,44 +13,44 @@ public class Target implements Comparable<Target>
 	protected double maxAngle    = 0.3;
 
 	private Entity   entity;
-	private Player   player;
+	private Location   source;
 	private Block    block;
 
 	private double   distance    = 100000;
 	private double   angle       = 10000;
 	private int      score       = 0;
 
-	public Target(Player player)
+	public Target(Location sourceLocation)
 	{
-		this.player = player;
+		this.source = sourceLocation;
 	}
 	
-	public Target(Player player, Block block)
+	public Target(Location sourceLocation, Block block)
 	{
-		this.player = player;
+		this.source = sourceLocation;
 		this.block = block;
 		calculateScore();
 	}
 
-	public Target(Player player, Entity entity, int range)
+	public Target(Location sourceLocation, Entity entity, int range)
 	{
 		this.maxDistance = range;
-		this.player = player;
+		this.source = sourceLocation;
 		this.entity = entity;
 		calculateScore();
 	}
 	
-	public Target(Player player, Entity entity)
+	public Target(Location sourceLocation, Entity entity)
 	{
 		this.maxDistance = 0;
-		this.player = player;
+		this.source = sourceLocation;
 		this.entity = entity;
 	}
 	
-	public Target(Player player, Entity entity, Block block)
+	public Target(Location sourceLocation, Entity entity, Block block)
 	{
 		this.maxDistance = 0;
-		this.player = player;
+		this.source = sourceLocation;
 		this.entity = entity;
 		this.block = block;
 	}
@@ -62,8 +62,8 @@ public class Target implements Comparable<Target>
 
 	protected void calculateScore()
 	{
-		Vector playerFacing = player.getLocation().getDirection();
-		Vector playerLoc = new Vector(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
+		Vector playerFacing = source.getDirection();
+		Vector playerLoc = new Vector(source.getBlockX(), source.getBlockY(), source.getBlockZ());
 
 		Location targetLocation = getLocation();
 		if (targetLocation == null) return;

@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -971,6 +972,13 @@ public class MagicPlugin extends JavaPlugin
 
 		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
 		CommandSender mageController = player == null ? sender : player;
+		Location targetLocation = null;
+		if (sender instanceof BlockCommandSender) {
+			targetLocation = ((BlockCommandSender)sender).getBlock().getLocation();
+		}
+		if (sender instanceof Player) {
+			targetLocation = ((Player)player).getLocation();
+		}
 		Mage mage = controller.getMage(mageController);
 		Spell spell = mage.getSpell(spellName, usePermissions);
 		if (spell == null)
@@ -981,10 +989,14 @@ public class MagicPlugin extends JavaPlugin
 
 		// Make it free and skip cooldowns, if configured to do so.
 		controller.toggleCastCommandOverrides(mage, true);
-		spell.cast(parameters);
+		spell.cast(parameters, targetLocation);
 		controller.toggleCastCommandOverrides(mage, false);
 		if (sender != player) {
-			sender.sendMessage("Cast " + spellName + " on " + player.getName());
+			String castMessage = "Cast " + spellName;
+			if (player != null) {
+				castMessage += " on " + player.getName();
+			}
+			sender.sendMessage(castMessage);
 		}
 
 		return true;

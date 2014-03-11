@@ -1324,6 +1324,9 @@ public class MagicController implements Listener
 
 	public boolean hasPermission(Player player, String pNode, boolean defaultValue)
 	{
+		// Should this return defaultValue? Can't give perms to console.
+		if (player == null) return true;
+		
 		// Seems like the GM should handle this, but no?
 		if (defaultValue && pNode.contains(".")) {
 			String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";

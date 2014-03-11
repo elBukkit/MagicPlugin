@@ -163,8 +163,8 @@ public class Mage implements CostReducer
 	}
 	
 	protected float getWandPower() {
-		float power = Math.min(controller.getMaxPower(), activeWand.getPower());
-		return activeWand == null ? 0 : power * powerMultiplier;
+		float power = Math.min(controller.getMaxPower(), activeWand == null ? 0 : activeWand.getPower());
+		return power * powerMultiplier;
 	}
 	
 	public float getDamageMultiplier() {

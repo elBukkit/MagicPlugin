@@ -1444,7 +1444,7 @@ wolf:
     cost_reduction: 2
     protection: 2
     fire_protection: 2
-    cooldown_reduction: 0.9
+    cooldown_reduction: 0.999
     health_regeneration: 1
     hunger_regeneration: 1
     power: 2
