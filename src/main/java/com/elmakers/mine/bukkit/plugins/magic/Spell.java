@@ -1664,14 +1664,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			if (entity instanceof LivingEntity) {
 				if (entity instanceof Player) {
 					Player targetPlayer = (Player)entity;
-					if (targetPlayer.getName().equals(mage.getName()) && getTargetType() != TargetType.ANY && getTargetType() != TargetType.SELF) {
+					boolean isSourcePlayer = targetPlayer.getName().equals(mage.getName());
+					if (isSourcePlayer && getTargetType() != TargetType.ANY && getTargetType() != TargetType.SELF) {
 						continue;
 					}
 					
 					Mage targetMage = controller.getMage(targetPlayer);
 					
 					// Check for protected players
-					if (targetMage.isSuperProtected()) {
+					if (targetMage.isSuperProtected() && !isSourcePlayer) {
 						continue;
 					}
 				}

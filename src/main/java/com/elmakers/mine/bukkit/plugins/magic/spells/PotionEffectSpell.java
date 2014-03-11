@@ -23,11 +23,12 @@ public class PotionEffectSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		LivingEntity targetEntity = (LivingEntity)target.getEntity();
-
-		if (targetEntity != getPlayer()) {
+		Player player = getPlayer();
+		if (targetEntity != player) {
 			// Check for superprotected mages
 			if (targetEntity instanceof Player) {
-				Mage targetMage = controller.getMage((Player)targetEntity);
+				Player targetPlayer = (Player)targetEntity;
+				Mage targetMage = controller.getMage(targetPlayer);
 				
 				// Check for protected players
 				if (targetMage.isSuperProtected()) {
