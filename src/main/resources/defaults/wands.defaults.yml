@@ -1626,7 +1626,7 @@ knight:
 baron:
     modifiable: true
     effect_color: 'DDDDDD'
-    xp_regeneration: 3
+    xp_regeneration: 4
     xp_max: 80
     icon: diamond_sword
     spells:
@@ -1643,8 +1643,8 @@ baron:
 lord:
     modifiable: true
     effect_color: 'DDDDDD'
-    xp_regeneration: 3
-    xp_max: 85
+    xp_regeneration: 4
+    xp_max: 100
     icon: diamond_sword
     spells:
         - tag
@@ -1664,7 +1664,7 @@ hero:
     modifiable: true
     effect_color: 'DDDDDD'
     xp_regeneration: 4
-    xp_max: 90
+    xp_max: 120
     icon: diamond_sword
     spells:
         - tag
@@ -1686,8 +1686,8 @@ hero:
 king:
     modifiable: true
     effect_color: 'DDDDDD'
-    xp_regeneration: 4
-    xp_max: 95
+    xp_regeneration: 5
+    xp_max: 130
     icon: diamond_sword
     spells:
         - tag
@@ -1712,8 +1712,8 @@ king:
 legend:
     modifiable: true
     effect_color: 'DDDDDD'
-    xp_regeneration: 4
-    xp_max: 80
+    xp_regeneration: 5
+    xp_max: 150
     effect_particle: town_aura
     effect_particle_count: 2
     icon: diamond_sword
@@ -1744,7 +1744,7 @@ overseer:
     modifiable: true
     effect_color: 'FFFFFF'
     xp_regeneration: 5
-    xp_max: 100
+    xp_max: 175
     effect_particle: town_aura
     effect_particle_count: 2
     icon: diamond_sword
@@ -1774,8 +1774,8 @@ overseer:
 wizard:
     modifiable: true
     effect_color: 'A9D0F5'
-    xp_regeneration: 6
-    xp_max: 120
+    xp_regeneration: 7
+    xp_max: 200
     effect_particle: portal
     effect_particle_count: 2
     icon: blaze_rod
@@ -1809,8 +1809,8 @@ wizard:
 netherwizard:
     modifiable: true
     effect_color: 'B40404'
-    xp_regeneration: 8
-    xp_max: 150
+    xp_regeneration: 10
+    xp_max: 250
     effect_particle: portal
     effect_particle_count: 3
     effect_particle_data: 2
@@ -1849,8 +1849,8 @@ netherwizard:
 enderwizard:
     modifiable: true
     effect_color: 'AC58FA'
-    xp_regeneration: 10
-    xp_max: 200
+    xp_regeneration: 20
+    xp_max: 300
     effect_particle: lava_dripping
     effect_particle_count: 4
     effect_bubbles: true

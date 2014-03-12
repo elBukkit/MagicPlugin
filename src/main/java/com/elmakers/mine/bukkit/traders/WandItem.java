@@ -24,7 +24,7 @@ public class WandItem extends ItemAttr {
 			Wand wand = new Wand(TradersController.getController(), itemStack);
 			wandKey = wand.getTemplate();
 
-			// Bukkit.getLogger().info("WandItem.onFactorize for key "+ wandKey + " with wand template " + wand.getTemplate());
+			// Bukkit.getLogger().info("WandItem.onFactorize for key "+ wandKey + " with wand template " + wand.getTemplate() + " from " + Wand.isWand(itemStack));
 		}
 	}
 
@@ -48,8 +48,10 @@ public class WandItem extends ItemAttr {
 			Wand wand = Wand.createWand(TradersController.getController(), wandKey);
 			itemStack = wand.getItem();
 			
-			// Bukkit.getLogger().info("WandItem.onReturnAssign for key "+ wandKey);
+			// Bukkit.getLogger().info("WandItem.onReturnAssign for key " + wandKey + " as " + itemStack);
 		} 
+		
+		// Bukkit.getLogger().info("Returning " + itemStack + ": " + Wand.isWand(itemStack));
 		
 		return itemStack;
 	}
