@@ -2164,7 +2164,7 @@ wolfhouse:
         target: any
         allow_max_range: true
         check_destructible: false
-        range: 8
+        range: 16
         radius: 4
         type: sphere
         cooldown: 3600000
