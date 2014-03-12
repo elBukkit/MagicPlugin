@@ -3,6 +3,7 @@
 ## 2.9.7
 
  - Fix 1.6 Support (sorry!)
+ - Change default wand mode to "chest", I think it's more accessible.
  - Fix Blessing not targeting yourself if you're superprotected.
  - Fix targeting direction command overrides with /cast (dx, dy, dz)
  - Add "beacon" and "flare_beacon" material schematics.

@@ -157,7 +157,7 @@ indestructible_wands: true
 # "inventory" : The default, toggles the wand inventory in/out of your player inventory
 # "chest" : Bring up a Wand inventory on right-click.
 # "cycle" : Right-click will cycle to the next active spell (no inventory or icons)
-default_wand_mode: inventory
+default_wand_mode: chest
 
 # How to display Mana. Options are "bar" and "number"
 mana_display: bar
