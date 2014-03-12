@@ -574,23 +574,19 @@ public class MagicController implements Listener
 
 		String fileName = schematicName + ".schematic";
 		File schematicFile = new File(schematicFolder, fileName);
-		InputStream builtin = plugin.getResource("schematics/" + fileName);
-		if (builtin != null) {
+		if (!schematicFile.exists()) {
 			try {
 				plugin.saveResource("schematics/" + fileName, true);
-				getLogger().warning("Updating builtin schematic: schematics/" + fileName);
+				getLogger().info("Adding builtin schematic: schematics/" + fileName);
 			} catch (Exception ex) {
-				getLogger().warning("Could not save file: " + "schematics/" + fileName);
-			}
-		}
-		if (!schematicFile.exists()) {
-			if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-				String extraFileName = extraSchematicFilePath.replace("$name", schematicName);
-				File extraSchematicFile = new File(configFolder, "../" + extraFileName);
-				if (extraSchematicFile.exists()) {
-					schematicFile = extraSchematicFile;
-				} else {
-					getLogger().warning("Could not load file: " + extraSchematicFile.getAbsolutePath());
+				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+					String extraFileName = extraSchematicFilePath.replace("$name", schematicName);
+					File extraSchematicFile = new File(configFolder, "../" + extraFileName);
+					if (extraSchematicFile.exists()) {
+						schematicFile = extraSchematicFile;
+					} else {
+						getLogger().warning("Could not load file: " + extraSchematicFile.getAbsolutePath());
+					}
 				}
 			}
 		}
