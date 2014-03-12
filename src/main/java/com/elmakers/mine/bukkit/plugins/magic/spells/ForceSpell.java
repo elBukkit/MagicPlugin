@@ -83,6 +83,7 @@ public class ForceSpell extends Spell
 			if (effectColor != null) {
 				InventoryUtils.addPotionEffect(targetEntity, effectColor);
 			}
+			castMessage("You capture your target");
 			return SpellResult.TARGET_SELECTED;
 		}
 

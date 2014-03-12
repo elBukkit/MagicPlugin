@@ -16,7 +16,8 @@ public class HealSpell extends Spell
 	{
 		Target target = getTarget();
 		Entity targetEntity = target.getEntity();
-		if (targetEntity != null && targetEntity instanceof LivingEntity)
+		Player player = getPlayer();
+		if (targetEntity != null && targetEntity instanceof LivingEntity && targetEntity != player)
 		{
 			castMessage("You heal your target");
 			LivingEntity li = (LivingEntity)targetEntity;
@@ -28,7 +29,6 @@ public class HealSpell extends Spell
 			}
 			return SpellResult.CAST;
 		}
-		Player player = getPlayer();
 		if (player == null) {
 			return SpellResult.NO_TARGET;
 		}
