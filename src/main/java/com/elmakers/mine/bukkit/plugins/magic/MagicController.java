@@ -94,6 +94,7 @@ import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
+import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.NMSUtils;
@@ -679,6 +680,29 @@ public class MagicController implements Listener
 				}
 			}, 5);
 		}
+
+		// Check for dtlTraders, wait a tick to avoid hitting it before it's initialized.
+		final MagicController controller = this;
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				try {
+					tradersController = null;
+					Plugin tradersPlugin = plugin.getServer().getPluginManager().getPlugin("dtlTraders");
+					if (tradersPlugin != null) {
+						tradersController = new TradersController();
+						tradersController.initialize(controller, tradersPlugin);
+						getLogger().info("Integrating with dtlTraders for selling Wands");
+					}
+				} catch (Throwable ex) {
+					ex.printStackTrace();
+					tradersController = null;
+				}
+				
+				if (tradersController == null) {
+					getLogger().info("dtlTraders not found, will not integrate.");
+				}
+			}
+		}, 2);
 		
 		// Try to link to WorldEdit (no API...)
 		try {
@@ -691,6 +715,11 @@ public class MagicController implements Listener
 				cuboidClipboardClass = null;
 			}
 		} catch (Throwable ex) {
+		}
+		
+		if (cuboidClipboardClass == null) {
+			getLogger().info("WorldEdit not found, schematic brushes will not work.");
+			MaterialBrush.SchematicsEnabled = false;
 		}
 		
 		// Also no Factions API
@@ -715,11 +744,6 @@ public class MagicController implements Listener
 			}
 		} else {
 			getLogger().info("Factions integration disabled");
-		}
-		
-		if (cuboidClipboardClass == null) {
-			getLogger().info("WorldEdit not found, schematic brushes will not work.");
-			MaterialBrush.SchematicsEnabled = false;
 		}
 		
 		// Try to (dynamically) link to WorldGuard:
@@ -2521,6 +2545,7 @@ public class MagicController implements Listener
 	 private boolean							 factionsEnabled				= true;
 	 private Class<?>							 factionsManager				= null;
 	 private Method								 factionsCanBuildMethod   		= null;
+	 private TradersController					 tradersController				= null;
 	 private Method								 psFactoryMethod		   		= null;
 	 private Method								 regionManagerCanBuildMethod    = null;
 	 private boolean							 regionManagerEnabled           = true;

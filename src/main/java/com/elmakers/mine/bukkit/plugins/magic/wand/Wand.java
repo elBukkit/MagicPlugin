@@ -65,6 +65,7 @@ public class Wand implements CostReducer {
 	private String wandName = "";
 	private String description = "";
 	private String owner = "";
+	private String template = "";
 	
 	private MaterialAndData icon = null;
 	
@@ -282,6 +283,14 @@ public class Wand implements CostReducer {
 	public void setName(String name) {
 		wandName = name;
 		updateName();
+	}
+	
+	public void setTemplate(String templateName) {
+		this.template = templateName;
+	}
+	
+	public String getTemplate() {
+		return this.template;
 	}
 	
 	protected void setDescription(String description) {
@@ -590,6 +599,10 @@ public class Wand implements CostReducer {
 				InventoryUtils.setMeta(wandNode, "icon", iconKey);
 			}
 		}
+		
+		if (template != null && template.length() > 0) {
+			InventoryUtils.setMeta(wandNode, "template", template);
+		}
 	
 		InventoryUtils.setMeta(wandNode, "cost_reduction", floatFormat.format(costReduction));
 		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
@@ -634,6 +647,7 @@ public class Wand implements CostReducer {
 		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
 		description = InventoryUtils.getMeta(wandNode, "description", description);
 		owner = InventoryUtils.getMeta(wandNode, "owner", owner);
+		template = InventoryUtils.getMeta(wandNode, "template", template);
 
 		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
 		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
@@ -1352,6 +1366,7 @@ public class Wand implements CostReducer {
 			}
 			
 			wand.configureProperties(wandConfig);
+			wand.setTemplate(templateName);
 			
 			if (wandConfig.getBoolean("organize", false)) {
 				wand.organizeInventory(owner);
@@ -1394,6 +1409,10 @@ public class Wand implements CostReducer {
 			effectParticle = other.effectParticle;
 			effectParticleData = other.effectParticleData;
 			effectParticleCount = other.effectParticleCount;
+		}
+		
+		if (other.template != null && other.template.length() > 0) {
+			template = other.template;
 		}
 		
 		// Don't need mana if cost-free
@@ -1499,6 +1518,8 @@ public class Wand implements CostReducer {
 		if (wandConfig.containsKey("icon")) {
 			setIcon(wandConfig.getMaterialAndData("icon"));
 		}
+		
+		template = wandConfig.getString(template, template);
 		
 		saveState();
 		updateName();

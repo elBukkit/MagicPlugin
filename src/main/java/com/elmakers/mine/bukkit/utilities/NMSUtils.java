@@ -99,7 +99,7 @@ public class NMSUtils {
 			handleField.setAccessible(true);
 			handle = handleField.get(stack);
 		} catch (Throwable ex) {
-			ex.printStackTrace();
+			handle = null;
 		}
 		return handle;
 	}

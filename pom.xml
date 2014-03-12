@@ -30,8 +30,13 @@
 			<groupId>org.dynmap</groupId>
 			<artifactId>dynmap-api</artifactId>
 			<version>0.80</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.dandielo</groupId>
+			<artifactId>dtlTraders</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
@@ -46,6 +51,10 @@
       <repository>
       		<id>dynmap</id>
       		<url>http://repo.mikeprimm.com/</url>
+      </repository>
+      <repository>
+      		<id>dtlTraders</id>
+      		<url>http://www.wbs-wireless.com:9090/plugin/repository/everything/</url>
       </repository>
     </repositories>
 	<build>
