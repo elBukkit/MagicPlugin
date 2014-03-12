@@ -50,16 +50,12 @@ public class WandOrganizer {
 		if (addToHotbar) {
 			addToHotbar = false;
 			Inventory hotbar = wand.getHotbar();
-			int emptyCount = 0;
-			for (int i = Wand.HOTBAR_SIZE - 1; i >= 0; i--) {
+			for (int i = 0; i < Wand.HOTBAR_SIZE; i++) {
 				ItemStack hotbarItem = hotbar.getItem(i);
 				if (hotbarItem == null || hotbarItem.getType() == Material.AIR) {
-					emptyCount++;
-					if (emptyCount > 1) {
-						addToHotbar = true;
-						hotbar.setItem(i, itemStack);
-						break;
-					}
+					addToHotbar = true;
+					hotbar.setItem(i, itemStack);
+					return;
 				}
 			}
 		}

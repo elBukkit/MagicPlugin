@@ -1968,6 +1968,7 @@ public class Wand implements CostReducer {
 	
 	protected void clearInventories() {
 		inventories.clear();
+		hotbar.clear();
 	}
 	
 	public int getEffectColor() {

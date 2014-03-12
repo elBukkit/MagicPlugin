@@ -8,6 +8,7 @@
  - Fix targeting direction command overrides with /cast (dx, dy, dz)
  - Add "beacon" and "flare_beacon" material schematics.
  - Add support for "undo" parameter in fill spell.
+ - Fix wand inventory reorganizing, duplicating spells.
 
 ## 2.9.6
 

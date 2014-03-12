@@ -3,9 +3,9 @@
 ## For 2.9.7
 
  - Move wolf house target up, or add a couple more blocks of radius for observation tower
-
+ - Make sure /wand name works
  - Fix first cast of schematic- seems it's not waiting for load, maybe?
-
+ - Specify scaling for map material somehow.. maybe just default to 1/8 for now?
  - Make spells usable without a player, clean up strong Player references
    - Allow using Projectile spell without a player- maybe generally fix arrows.
  - Retry limit on construction batches
