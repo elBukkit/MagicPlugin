@@ -231,22 +231,18 @@ attachable:
 - activator_rail
 - powered_rail
 - detector_rail
-- piston_moving_piece
-- piston_extension
 
 # Things that can specifically be attached to walls. 
 # this will be a more complex check in construction, otherwise
 # for an attachable, only the floor block is checked.
 attachable_wall:
 - vine
-- piston_extension
 - wood_button
 - vine
 - cocoa
 - redstone_torch_off
 - redstone_torch_on
 - ladder
-- piston_moving_piece
 - torch
 - wall_sign
 - stone_button
