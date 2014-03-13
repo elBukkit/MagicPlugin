@@ -100,6 +100,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Class<? extends Entity>             targetEntityType        = null;
 	private Location                            location;
 	private Location                            targetLocation;
+	private Entity								targetEntity = null;
 	private Location							defaultTargetLocation   = null;
 	private double                              xRotation, yRotation;
 	private double                              length, hLength;
@@ -637,6 +638,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			direction = null;
 		}
 		
+		if (parameters.containsKey("player")) {
+			Player player = controller.getPlugin().getServer().getPlayer(parameters.getString("player"));
+			if (player != null) {
+				targetLocation = player.getLocation();
+				targetEntity = player;
+			}
+		} else {
+			targetEntity = null;
+		}
+		
 		bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
 		bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
 		bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
@@ -1119,6 +1130,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Player player = getPlayer();
 		if (targetType == TargetType.SELF && player != null) {
 			target = new Target(getLocation(), player);
+			return target;
+		}
+
+		if (targetType != TargetType.NONE && targetEntity != null) {
+			target = new Target(getLocation(), targetEntity);
 			return target;
 		}
 

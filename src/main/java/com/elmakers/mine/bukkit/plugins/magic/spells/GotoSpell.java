@@ -17,13 +17,6 @@ public class GotoSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		String playerName = parameters.getString("player");
-		Player targetPlayer = null;
-		if (playerName != null)
-		{
-			targetPlayer = controller.getPlugin().getServer().getPlayer(playerName);
-		}
-
 		if (getYRotation() > 80)
 		{
 			Player destination = getFarthestPlayer(getPlayer());
@@ -52,11 +45,8 @@ public class GotoSpell extends Spell
 			destination = target.getLocation();
 			destination.setY(destination.getY() + 1);
 		}
-
-		if (targetPlayer == null)
-		{
-			targetPlayer = getFarthestPlayer(getPlayer());
-		}
+		
+		Player targetPlayer = getFarthestPlayer(getPlayer());
 
 		if (targetPlayer == null) return SpellResult.NO_TARGET;
 		targetPlayer.teleport(destination);
