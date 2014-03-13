@@ -1377,8 +1377,8 @@ superbox:
         xp: 100
 stash:
     icon: ender_chest
-    category: engineering
-    class: PillarSpell
+    category: master
+    class: StashSpell
     effects:
         cast:
         -  class: EffectSingle
@@ -1386,12 +1386,9 @@ stash:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        target_entity: HumanEntity
+        target: self
         range: 8
-        transparent: transparent_to_construction
-        cooldown: 10000
-        undo: 30000
-        material: ender_chest
     costs:
         xp: 50
 kamikazee:

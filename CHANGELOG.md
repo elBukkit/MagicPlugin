@@ -4,6 +4,7 @@
 
  - Fix 1.6 Support (sorry!)
  - Add dtlTraders integration (WIP), for selling wands with Citizens NPCs.
+ - Update Stash spell, make it awesomer.
  - Change default wand mode to "chest", I think it's more accessible.
  - Fix Blessing not targeting yourself if you're superprotected.
  - Fix targeting direction command overrides with /cast (dx, dy, dz)
