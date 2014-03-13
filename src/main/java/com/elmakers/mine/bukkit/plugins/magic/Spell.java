@@ -1127,14 +1127,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public Target getTarget()
 	{
+		if (targetType != TargetType.NONE && targetType != TargetType.BLOCK && targetEntity != null) {
+			target = new Target(getLocation(), targetEntity);
+			return target;
+		}
+		
 		Player player = getPlayer();
 		if (targetType == TargetType.SELF && player != null) {
 			target = new Target(getLocation(), player);
-			return target;
-		}
-
-		if (targetType != TargetType.NONE && targetEntity != null) {
-			target = new Target(getLocation(), targetEntity);
 			return target;
 		}
 
@@ -1151,9 +1151,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		
 		findTargetBlock();
 		Block block = getCurBlock();
-		
-		Target targetEntity = getTargetEntity();
+
+		if (targetType == TargetType.BLOCK) {
+			target = new Target(getLocation(), block);
+			return target;
+		}
+
 		Target targetBlock = block == null ? null : new Target(getLocation(), block);
+		Target targetEntity = getTargetEntity();
 
 		// Don't allow targeting entities in no-PVP areas.
 		boolean noPvp = targetEntity != null && (targetEntity instanceof Player) && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetEntity.getLocation());
