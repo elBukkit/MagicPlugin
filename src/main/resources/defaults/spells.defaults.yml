@@ -438,7 +438,7 @@ pull:
         type: pull
         count: 1
     costs:
-        xp: 8
+        xp: 25
 boom:
     icon: cooked_chicken
     category: firebending
@@ -457,7 +457,7 @@ boom:
         allow_max_range: true
         range: 32
         break_blocks: false
-        size: 4
+        size: 6
     costs:
         xp: 20
 kaboom:
@@ -476,11 +476,11 @@ kaboom:
     parameters:
         target_type: LivingEntity
         allow_max_range: true
-        cooldown: 5000
+        cooldown: 7000
         size: 6
         break_blocks: true
     costs:
-        xp: 50
+        xp: 60
 nuke:
     icon: fireball
     category: master
@@ -860,7 +860,7 @@ mob:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
-        cooldown: 60000
+        cooldown: 45000
         count: 20
         type: mob
     costs:
@@ -975,26 +975,8 @@ invincible:
     active_costs:
         xp: 50
 fire:
-    icon: flint_and_steel
-    category: firebending
-    class: FireSpell
-    pvp_restricted: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fire
-           target: both
-        -  class: EffectTrail
-           particle: flame
-           particle_count: 2
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 32
-        radius: 2
-        vertical_search_distance: 8
     costs:
-        xp: 10
+        xp: 35
 inferno:
     icon: blaze_powder
     category: firebending
@@ -1261,7 +1243,7 @@ grenade:
         size: 4
         fuse: 60
     costs:
-        xp: 35
+        xp: 40
 frag:
     icon: redstone_block
     category: dark
@@ -1418,15 +1400,15 @@ blast:
            particle: large_explosion
     parameters:
         allow_max_range: false
-        range: 32
+        range: 16
         speed: 2
         falling: true
         material: air
-        radius: 2
+        radius: 1
         type: sphere
         destructible: destructible_mining
     costs:
-        xp: 10
+        xp: 45
 tunnel:
     icon: gold_pickaxe
     category: earthbending
@@ -1456,9 +1438,9 @@ superblast:
         allow_max_range: false
         range: 32
         speed: 3
-        falling: true
+        falling: false
         material: air
-        radius: 4
+        radius: 5
         type: sphere
         transparent: transparent_to_construction
         destructible: destructible_mining
