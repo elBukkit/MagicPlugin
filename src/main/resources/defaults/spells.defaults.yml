@@ -975,6 +975,24 @@ invincible:
     active_costs:
         xp: 50
 fire:
+    icon: flint_and_steel
+    category: firebending
+    class: FireSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire
+           target: both
+        -  class: EffectTrail
+           particle: flame
+           particle_count: 2
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 32
+        radius: 2
+        vertical_search_distance: 8
     costs:
         xp: 35
 inferno:
