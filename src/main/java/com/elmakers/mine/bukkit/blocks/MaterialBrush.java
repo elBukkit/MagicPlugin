@@ -60,6 +60,7 @@ public class MaterialBrush extends MaterialBrushData {
 	private Material mapMaterialBase = Material.STAINED_CLAY;
 	private Schematic schematic;
 	private boolean fillWithAir = true;
+	private Vector orientVector = null;
 	
 	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
 		super(material, data);
@@ -383,6 +384,11 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 	
 	public void setTarget(Location target, Location center) {
+		orientVector = target.toVector().subtract(center.toVector());
+		orientVector.setX(Math.abs(orientVector.getX()));
+		orientVector.setY(Math.abs(orientVector.getY()));
+		orientVector.setZ(Math.abs(orientVector.getZ()));
+		
 		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP || mode == BrushMode.SCHEMATIC) {
 			if (cloneTarget == null || mode == BrushMode.CLONE || 
 				!center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
@@ -504,10 +510,24 @@ public class MaterialBrush extends MaterialBrushData {
 			if (mapCanvas != null && cloneTarget != null) {
 				Vector diff = target.toVector().subtract(cloneTarget.toVector());
 				
-				// TODO : Different orientations, centering, etc
-				DyeColor mapColor = mapCanvas.getDyeColor(
-						Math.abs(diff.getBlockX() + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
-						Math.abs(diff.getBlockZ() + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+				// TODO : Different orientations, centering, scaling, etc
+				// We default to 1/8 scaling for now to make the portraits work well.
+				DyeColor mapColor = DyeColor.WHITE;
+				if (orientVector.getBlockY() > orientVector.getBlockZ() || orientVector.getBlockY() > orientVector.getBlockX()) {
+					if (orientVector.getBlockX() > orientVector.getBlockZ()) {
+						mapColor = mapCanvas.getDyeColor(
+								Math.abs(diff.getBlockX() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
+								Math.abs(diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+					} else {
+						mapColor = mapCanvas.getDyeColor(
+								Math.abs(diff.getBlockZ() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
+								Math.abs(diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+					}
+				} else {
+					mapColor = mapCanvas.getDyeColor(
+						Math.abs(diff.getBlockX() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
+						Math.abs(diff.getBlockZ() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+				}
 				if (mapColor != null) {
 					super.setMaterial(mapMaterialBase, mapColor.getData());
 					isValid = true;
