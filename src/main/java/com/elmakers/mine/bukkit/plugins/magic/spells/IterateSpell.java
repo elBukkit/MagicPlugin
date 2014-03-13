@@ -38,7 +38,6 @@ public class IterateSpell extends BrushSpell
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target) || !hasBuildPermission(getLocation().getBlock())) {

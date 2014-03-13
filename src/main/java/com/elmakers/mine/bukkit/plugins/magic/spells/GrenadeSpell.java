@@ -25,7 +25,7 @@ public class GrenadeSpell extends Spell
 		int fuse = parameters.getInt("fuse", 80);
 		boolean useFire = parameters.getBoolean("fire", false);
 
-		Block target = getNextBlock();
+		Block target = getTarget().getBlock();
 		if (target == null) {
 			return SpellResult.NO_TARGET;
 		}

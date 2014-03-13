@@ -96,7 +96,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	private int                                 verticalSearchDistance  = 8;
 	private boolean                             targetingComplete;
-	private int                                 targetHeightRequired    = 1;
+	private boolean                             targetSpaceRequired     = false;
 	private Class<? extends Entity>             targetEntityType        = null;
 	private Location                            location;
 	private Location                            targetLocation;
@@ -491,7 +491,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	protected void initializeTargeting()
 	{
 		length = 0;
-		targetHeightRequired = 1;
+		targetSpaceRequired = false;
 		xRotation = (location.getYaw() + 90) % 360;
 		yRotation = location.getPitch() * -1;
 		reverseTargeting = false;
@@ -775,14 +775,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		return reverseTargeting;
 	}
 
-	public void setTargetHeightRequired(int height)
+	public void setTargetSpaceRequired()
 	{
-		targetHeightRequired = height;
-	}
-
-	public int getTargetHeightRequired()
-	{
-		return targetHeightRequired;
+		targetSpaceRequired = true;
 	}
 
 	public void setTarget(Location location) {
@@ -791,6 +786,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	
 	/*
 	 * Ground / location search and test function functions
+	 * TODO: Config-drive this.
 	 */
 	public boolean isOkToStandIn(Material mat)
 	{
@@ -1243,6 +1239,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 	}
 
+	protected void offsetTarget(int dx, int dy, int dz) {
+		targetX += dx;
+		targetY += dy;
+		targetZ += dz;
+	}
+	
 	/**
 	 * Move "steps" forward along line of vision and returns the block there
 	 * 
@@ -1254,7 +1256,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		lastY = targetY;
 		lastZ = targetZ;
 		int scaledRange = getMaxRange();
-
 		do
 		{
 			length += step;
@@ -1269,18 +1270,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			targetZ = (int) Math.floor(zOffset + location.getZ());
 
 		}
-		while ((length <= scaledRange) && ((targetX == lastX) && (targetY == lastY) && (targetZ == lastZ)));
-
-		if (length > scaledRange || targetY > 255)
+		while ((length <= scaledRange) && (targetY >= 1) && (targetY <= 256) && ((targetX == lastX) && (targetY == lastY) && (targetZ == lastZ)));
+		
+		if (length > scaledRange || targetY >= 256 || targetY <= 1)
 		{
-			if (allowMaxRange)
-			{
-				return getBlockAt(targetX, targetY, targetZ);
-			}
-			else
-			{
-				return null;
-			}
+			return null;
 		}
 
 		return getBlockAt(targetX, targetY, targetZ);
@@ -1456,22 +1450,20 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			return;
 		}
 		int scaledRange = getMaxRange();
-		while (getNextBlock() != null && length <= scaledRange)
+		while (length <= scaledRange)
 		{
-			Block block = getCurBlock();
-			if (isTargetable(block.getType()))
-			{
-				boolean enoughSpace = true;
-				for (int i = 1; i < targetHeightRequired; i++)
-				{
-					block = block.getRelative(BlockFace.UP);
-					if (!isTargetable(block.getType()))
-					{
-						enoughSpace = false;
-						break;
-					}
+			Block block = getNextBlock();
+			if (block == null) {
+				break;
+			}
+			if (targetSpaceRequired) {
+				if (isOkToStandIn(block.getType()) && isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
+					break;
 				}
-				if (enoughSpace) break;
+			} else {
+				if (isTargetable(block.getType())) {
+					break;
+				}
 			}
 		}
 		targetingComplete = true;
@@ -1498,6 +1490,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		this.range = range;
 		this.allowMaxRange = allow;
+	}
+
+	protected void setMaxRange(int range)
+	{
+		this.range = range;
 	}
 
 	protected Material getMaterial(String matName, List<Material> materials)

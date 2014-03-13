@@ -11,6 +11,8 @@
  - Add "beacon" and "flare_beacon" material schematics.
  - Add support for "undo" parameter in fill spell.
  - Fix wand inventory reorganizing, duplicating spells.
+ - Scale maps by 1/8 to make portraits look better, and allow for vertical orientations.
+ - Fix some weird targeting issues at low elevations.
 
 ## 2.9.6
 

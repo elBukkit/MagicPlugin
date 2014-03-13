@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class BlinkSpell extends Spell
 {
 	private int verticalSearchDistance = 255;
+	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
 
 	protected SpellResult ascend()
 	{
@@ -69,8 +70,10 @@ public class BlinkSpell extends Spell
 			Block firstBlock = getNextBlock();
 			if (firstBlock != null && firstBlock.getType() != Material.AIR && !isWater(firstBlock.getType()))
 			{
+				setMaxRange(parameters.getInteger("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
+				offsetTarget(0, -1, 0);
 				setReverseTargeting(true);
-				setTargetHeightRequired(2);
+				setTargetSpaceRequired();
 				targetThrough(Material.AIR);
 			}
 		}

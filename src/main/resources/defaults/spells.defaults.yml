@@ -1789,7 +1789,8 @@ blink:
         allow_max_range: false
         allow_ascend: true
         allow_passthrough: true
-        range: 128
+        range: 64
+        passthrough_range: 4
         allow_decend: true
     costs:
         xp: 75

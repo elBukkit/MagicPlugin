@@ -2,10 +2,8 @@
 
 ## For 2.9.7
 
- - Move wolf house target up, or add a couple more blocks of radius for observation tower
- - Make sure /wand name works
- - Fix first cast of schematic- seems it's not waiting for load, maybe?
- - Specify scaling for map material somehow.. maybe just default to 1/8 for now?
+ - Add "wand unenchant" and "wand enchant" commands
+ - Fix Laser spell
  - Make spells usable without a player, clean up strong Player references
    - Allow using Projectile spell without a player- maybe generally fix arrows.
  - Retry limit on construction batches
@@ -14,14 +12,10 @@
   - BlockData tracks only the first recorded materialdata, commit will replace
     - I think the following is related, might be caused by a construct batch someone overlapping itself - which also shouldn't happen.
     - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
- - Customizable wand crafting recipes, check NMS data for "icon"
- - Add "wand unenchant" and "wand enchant" commands
- - Fix weird wand inventory issues, duplicate items, etc
- - dtlTraders integration
- - Fix Laser spell
   
 ## For 2.9.8
 
+ - Customizable wand crafting recipes, check NMS data for "icon"
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Maybe use player UUID's instead of names. Might need to migrate player data for this?
  - Support schematic entity import for paintings and item frames (at least)
