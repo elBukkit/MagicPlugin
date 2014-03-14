@@ -1164,6 +1164,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			targetBlock = null;
 		}
 		
+		if (targetEntity == null && targetType == TargetType.ANY && player != null) {
+			target = new Target(getLocation(), player, targetBlock == null ? null : targetBlock.getBlock());
+			return target;
+		}
+		
 		if (targetBlock != null && targetEntity != null) {
 			if (targetBlock.getDistance() < targetEntity.getDistance()) {
 				targetEntity = null;
@@ -1176,9 +1181,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			target = targetEntity;
 		} else if (targetBlock != null) {
 			target = targetBlock;
-		} else if (targetType == TargetType.ANY && player != null) {
-			target = new Target(getLocation(), player, targetBlock == null ? null : targetBlock.getBlock());
-		}
+		} 
 		
 		return target;
 	}
