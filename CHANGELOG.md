@@ -1,7 +1,5 @@
 # CHANGELOG
 
-## 2.9.8
-
 ## 2.9.7
 
  - Fix 1.6 Support (sorry!)
