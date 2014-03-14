@@ -106,6 +106,7 @@ destructible:
 - grass
 - dirt
 - cobblestone
+- clay
 - water
 - stationary_water
 - lava

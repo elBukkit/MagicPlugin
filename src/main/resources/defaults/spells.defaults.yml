@@ -2160,16 +2160,16 @@ wolfhouse:
     parameters:
         target_type: LivingEntity
         target: any
-        allow_max_range: true
+        allow_max_range: false
         check_destructible: false
         range: 16
         radius: 4
         type: sphere
         cooldown: 3600000
         material: schematic|wolfhouse
-        dmx: -2
-        dmy: -47
-        dmz: 11
+        dmx: -3
+        dmy: -22 
+        dmz: 9
         mm: erase 
         transparent: transparent_to_construction
     costs:

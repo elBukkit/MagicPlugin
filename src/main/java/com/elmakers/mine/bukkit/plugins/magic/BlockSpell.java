@@ -46,6 +46,9 @@ public abstract class BlockSpell extends Spell {
 		if (parameters.containsKey("indestructible")) {
 			indestructible = parameters.getMaterials("indestructible", "");
 		}
+		if (parameters.containsKey("id")) {
+			indestructible = parameters.getMaterials("id", "");
+		}
 		destructible = null;
 		if (parameters.containsKey("destructible")) {
 			destructible = controller.getMaterialSet(parameters.getString("destructible"));
