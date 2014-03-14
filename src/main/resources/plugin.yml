@@ -21,7 +21,7 @@ commands:
     permission: Magic.commands.spells
   wand:
     description: Create and modify wands
-    usage: /wand [add|remove|upgrade|configure|describe|organize] [<spellname>|material] <materialname>
+    usage: /wand [add|remove|upgrade|configure|describe|organize|enchant|unenchant] [<spellname>|material] <materialname>
     permission: Magic.commands.wand
   wandp:
     description: Create and modify wands for another player
@@ -57,6 +57,14 @@ permissions:
     default: op
   Magic.commands.wand.describe:
     description: Player may describe their wand
+    type: boolean
+    default: op
+  Magic.commands.wand.enchant:
+    description: Player may turn an item into a wand
+    type: boolean
+    default: op
+  Magic.commands.wand.unenchant:
+    description: Player may destroy a wand
     type: boolean
     default: op
   Magic.commands.wand.add:

@@ -13,6 +13,7 @@
  - Fix wand inventory reorganizing, duplicating spells.
  - Scale maps by 1/8 to make portraits look better, and allow for vertical orientations.
  - Fix some weird targeting issues at low elevations.
+ - Add "wand enchant" and "wand unenchant" commands for managing custom wand items.
 
 ## 2.9.6
 

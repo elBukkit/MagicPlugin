@@ -131,8 +131,12 @@ public class Wand implements CostReducer {
 	}
 	
 	public Wand(MagicController spells) {
+		this(spells, DefaultWandMaterial, (short)0);
+	}
+	
+	public Wand(MagicController spells, Material icon, short iconData) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
-		this(InventoryUtils.getCopy(new ItemStack(DefaultWandMaterial)));
+		this(InventoryUtils.getCopy(new ItemStack(icon, 1, iconData)));
 		InventoryUtils.addGlow(item);
 		this.controller = spells;
 		id = UUID.randomUUID().toString();
@@ -145,6 +149,10 @@ public class Wand implements CostReducer {
 		this(item);
 		this.controller = spells;
 		loadState();
+	}
+	
+	public void unenchant() {
+		item = new ItemStack(item.getType(), 1, (short)item.getDurability());
 	}
 	
 	public void setIcon(Material material, byte data) {

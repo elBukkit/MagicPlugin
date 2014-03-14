@@ -530,6 +530,20 @@ public class MagicPlugin extends JavaPlugin
 			onWandConfigure(sender, player, args2, false);
 			return true;
 		}
+		if (subCommand.equalsIgnoreCase("enchant"))
+		{
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandEnchant(sender, player);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("unenchant"))
+		{
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandUnenchant(sender, player);
+			return true;
+		}
 		if (subCommand.equalsIgnoreCase("organize"))
 		{
 			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -664,12 +678,63 @@ public class MagicPlugin extends JavaPlugin
 		return true;
 	}
 	
+	public boolean onWandEnchant(CommandSender sender, Player player)
+	{
+		Mage mage = controller.getMage(player);
+		ItemStack heldItem = player.getItemInHand();
+		if (heldItem == null || heldItem.getType() == Material.AIR)
+		{
+			mage.sendMessage("Equip an item first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding an item");
+			}
+			return false;
+		}
+		
+		Wand wand = new Wand(controller, heldItem.getType(), heldItem.getDurability());
+		player.setItemInHand(wand.getItem());
+		wand.activate(mage);
+		
+		mage.sendMessage("Your " + heldItem.getType() + " has been enchanted");
+		if (sender != player) {
+			sender.sendMessage(player.getName() + "'s  " + heldItem.getType() + " been enchanted");
+		}
+		
+		return true;
+	}
+	
+	public boolean onWandUnenchant(CommandSender sender, Player player)
+	{
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
+		
+		// Trying to make sure the player is actually holding the active wand
+		// Just in case. This isn't fool-proof though, if they have more than one wand.
+		if (wand == null || !Wand.isWand(player.getItemInHand())) {
+			mage.sendMessage("Equip a wand first");
+			if (sender != player) {
+				sender.sendMessage(player.getName() + " isn't holding a wand");
+			}
+			return false;
+		}
+
+		wand.unenchant();
+		player.setItemInHand(wand.getItem());
+		mage.setActiveWand(null);
+		
+		mage.sendMessage("Your wand has been unenchanted");
+		if (sender != player) {
+			sender.sendMessage(player.getName() + "'s wand has been unenchanted");
+		}
+		return true;
+	}
+	
 	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{
 		if (parameters.length < 2) {
 			sender.sendMessage("Use: /wand configure <property> <value>");
 			sender.sendMessage("Properties: " + StringUtils.join(Wand.PROPERTY_KEYS, ", "));
-			return true;
+			return false;
 		}
 
 		Mage mage = controller.getMage(player);
@@ -679,14 +744,14 @@ public class MagicPlugin extends JavaPlugin
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
-			return true;
+			return false;
 		}
 		if (!wand.isModifiable()) {
 			mage.sendMessage("Your wand can not be modified");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand can not be modified");
 			}
-			return true;
+			return false;
 		}
 		ConfigurationNode node = new ConfigurationNode();
 		String value = parameters[1];

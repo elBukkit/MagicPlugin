@@ -2,7 +2,6 @@
 
 ## For 2.9.7
 
- - Add "wand unenchant" and "wand enchant" commands
  - Make spells usable without a player, clean up strong Player references
    - Allow using Projectile spell without a player- maybe generally fix arrows.
  - Retry limit on construction batches
