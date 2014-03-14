@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.blocks;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -38,15 +39,15 @@ public class BlockList implements Collection<BlockData>, Serializable
 
 	protected BoundingBox          area;
 
-	protected HashSet<Long>        blockIdMap;
-
 	// HashMap backing and easy persistence - need an extra list for this right
 	// now.
 	protected ArrayList<BlockData> blockList;
-	protected HashSet<BlockData>   blockMap;
+	protected HashSet<Long>        blockIdMap;
 
 	protected int                  passesRemaining  = 1;
 	protected int                  timeToLive       = 0;
+	
+	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
 	public BlockList()
 	{
@@ -70,27 +71,38 @@ public class BlockList implements Collection<BlockData>, Serializable
 		{
 			return true;
 		}
-
 		BlockData newBlock = new BlockData(block);
 		return add(newBlock);
 	}
+	
+	public static boolean commitAll() 
+	{
+		boolean undid = modified.size() > 0;
+		modified.clear();
+		return undid;
+	}
 
+	public void commit()
+	{
+		for (BlockData block : blockList)
+		{
+			modified.remove(block.getId());
+		}
+	}
+	
 	public boolean add(BlockData blockData)
 	{
 		// First do a sanity check with the map
 		// Currently, we don't replace blocks!
-		if (blockMap != null)
-		{
-			if (blockMap.contains(blockData))
-			{
-				return true;
-			}
-		}
-		else
-		{
-			blockMap = new HashSet<BlockData>();
-		}
+		if (contains(blockData)) return true;
 
+		// TODO: Make this work better, commit, etc.
+		if (modified.containsKey(blockData.getId())) {
+			blockData = modified.get(blockData.getId());
+		} else {
+			modified.put(blockData.getId(), blockData);
+		}
+			
 		if (blockIdMap == null)
 		{
 			blockIdMap = new HashSet<Long>();
@@ -111,8 +123,7 @@ public class BlockList implements Collection<BlockData>, Serializable
 			area = area.contain(blockLocation);
 		}
 
-		blockMap.add(blockData);
-		blockIdMap.add(BlockData.getBlockId(blockData));
+		blockIdMap.add(blockData.getId());
 		return blockList.add(blockData);
 	}
 
@@ -138,42 +149,43 @@ public class BlockList implements Collection<BlockData>, Serializable
 
 	public boolean contains(Block block)
 	{
-		if (blockMap == null)
-		{
-			return false;
-		}
-
+		if (blockIdMap == null) return false;
 		return blockIdMap.contains(BlockData.getBlockId(block));
 	}
 
 	public boolean contains(BlockData blockData)
 	{
-		if (blockMap == null || blockData == null)
+		if (blockIdMap == null || blockData == null)
 		{
 			return false;
 		}
 
-		return blockMap.contains(blockData);
+		return blockIdMap.contains(blockData.getId());
 	}
 
 	public boolean contains(Object arg0)
 	{
+		if (arg0 instanceof Block) {
+			return contains((Block)arg0);
+		}
+		if (arg0 instanceof BlockData) {
+			return contains((BlockData)arg0);
+		}
 		// Fall back to map
-		return blockMap.contains(arg0) || blockIdMap.contains(arg0);
+		return blockIdMap == null ? false : blockIdMap.contains(arg0);
 	}
 
 	public boolean containsAll(Collection<?> arg0)
 	{
-		if (blockMap == null)
+		if (blockIdMap == null)
 		{
 			return false;
 		}
-		return blockMap.containsAll(arg0);
+		return blockIdMap.containsAll(arg0);
 	}
 
 	// Collection interface- would be great if I could just extend HashSet and
 	// have this "just work"
-	// TODO : Make that happen in Persistence!
 
 	// For now, this is here to keep the map up to date, and to pass through to
 	// the blockList.
@@ -244,12 +256,10 @@ public class BlockList implements Collection<BlockData>, Serializable
 		this.blockList = blockList;
 		if (blockList != null)
 		{
-			blockMap = new HashSet<BlockData>();
 			blockIdMap = new HashSet<Long>();
 			for (BlockData block : blockList)
 			{
-				blockMap.add(block);
-				blockIdMap.add(BlockData.getBlockId(block));
+				blockIdMap.add(block.getId());
 			}
 		}
 	}

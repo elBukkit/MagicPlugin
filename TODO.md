@@ -1,17 +1,5 @@
 # TODO
 
-## For 2.9.7
-
- - Support material variants in casting costs.
- - Make spells usable without a player, clean up strong Player references
-   - Allow using Projectile spell without a player- maybe generally fix arrows.
- - Retry limit on construction batches
- - Undo fails in some cases (overlapping undo queues)
-  - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
-  - BlockData tracks only the first recorded materialdata, commit will replace
-    - I think the following is related, might be caused by a construct batch someone overlapping itself - which also shouldn't happen.
-    - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
-  
 ## For 2.9.8
 
  - Customizable wand crafting recipes, check NMS data for "icon"
@@ -23,6 +11,8 @@
  - Fix / Improve Recall spell
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
  - Add image map search feature
+ - Make spells usable without a player, clean up strong Player references
+   - Allow using Projectile spell without a player- maybe generally fix arrows.
 
 ## For 2.9.9
 
@@ -32,6 +22,14 @@
  - Purge player data on save (When possible)
  - Improve tab completion
  - Configurable passthrough material list for Blink
+ - Retry limit on construction batches
+
+ - Take another look at (should be mostly done):
+   - Undo fails in some cases (overlapping undo queues)
+    - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
+    - BlockData tracks only the first recorded materialdata, commit will replace
+      - I think the following is related, might be caused by a construct batch someone overlapping itself - which also shouldn't happen.
+      - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
 
 ## For 3.0.0
 

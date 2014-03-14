@@ -14,6 +14,8 @@
  - Scale maps by 1/8 to make portraits look better, and allow for vertical orientations.
  - Fix some weird targeting issues at low elevations.
  - Add "wand enchant" and "wand unenchant" commands for managing custom wand items.
+ - Support material variants (e.g. double_plant:2) in casting costs.
+ - Some fixes for the overlapping undo problem, may not be 100% done but seems to work ok.
 
 ## 2.9.6
 

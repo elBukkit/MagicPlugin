@@ -26,6 +26,7 @@ public class UndoBatch extends VolumeBatch {
 			processedBlocks++;
 		}
 		if (undoList == null || blockIndex >= undoList.size()) {
+			blockList.commit();
 			finish();
 		}
 		

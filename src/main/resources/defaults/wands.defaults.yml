@@ -1541,7 +1541,9 @@ wolf:
         - stash
         - flamethrower
         - regenerate
-    materials:
+        - tag
+    materials:  
+        - lapis_block
         - water
         - stationary_water
         - stationary_lava
@@ -1570,8 +1572,7 @@ wolf:
         - emerald_block
         - leaves   
         - ice
-        - packed_ice    
-        - lapis_block
+        - packed_ice  
         - diamond_block
         - gold_block
         - emerald_block

@@ -37,10 +37,10 @@ public class BlockData extends MaterialAndData
 	{
 		return block.getWorld().getName().hashCode() << 28 ^ Integer.valueOf(block.getX()).hashCode() << 13 ^ Integer.valueOf(block.getY()).hashCode() << 7 ^ Integer.valueOf(block.getZ()).hashCode();
 	}
-
-	public static long getBlockId(BlockData blockData)
+	
+	public long getId()
 	{
-		return getBlockId(blockData.getBlock());
+		return world.hashCode() << 28 ^ Integer.valueOf(location.getBlockX()).hashCode() << 13 ^ Integer.valueOf(location.getBlockY()).hashCode() << 7 ^ Integer.valueOf(location.getBlockZ()).hashCode();
 	}
 
 	public static BlockFace getReverseFace(BlockFace blockFace)

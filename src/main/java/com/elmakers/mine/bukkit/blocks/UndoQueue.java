@@ -171,7 +171,9 @@ public class UndoQueue
 	public boolean commit()
 	{
 		if (blockQueue.size() == 0) return false;
-		
+		for (BlockList list : blockQueue) {
+			list.commit();
+		}
 		blockQueue.clear();
 		return true;
 	}
