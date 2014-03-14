@@ -200,7 +200,7 @@ public class WandLevel {
 			String materialKey = material.getValue();
 			// Fixup @'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
 			materialKey = materialKey.replace("|", ":");
-			if (!wandMaterials.contains(material.getValue()) && MaterialBrush.isValidMaterial(materialKey)) {
+			if (!wandMaterials.contains(material.getValue()) && MaterialBrush.isValidMaterial(materialKey, false)) {
 				remainingMaterials.add(material);
 			}
 		}

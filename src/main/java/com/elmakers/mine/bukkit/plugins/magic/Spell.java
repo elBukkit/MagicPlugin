@@ -455,7 +455,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			{
 				if (!cost.has(this))
 				{
-					sendMessage(Messages.get("costs.insufficient_resources").replace("$cost", cost.getDescription(mage)));
+					String baseMessage = Messages.get("costs.insufficient_resources");
+					String costDescription = cost.getDescription(mage);
+					sendMessage(baseMessage.replace("$cost", costDescription));
 					processResult(SpellResult.INSUFFICIENT_RESOURCES);
 					return false;
 				}

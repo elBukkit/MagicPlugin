@@ -75,6 +75,10 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 	
 	public static String getMaterialKey(Material material) {
+		return getMaterialKey(material, true);
+	}
+	
+	public static String getMaterialKey(Material material, boolean allowItems) {
 		String materialKey = null;
 		if (material == null) return null;
 
@@ -93,15 +97,19 @@ public class MaterialBrush extends MaterialBrushData {
 			// This method is only called by addMaterial at this point,
 			// which should only be called with real materials anyway.
 			materialKey = SCHEMATIC_MATERIAL_KEY;
-		} else if (material.isBlock()) {
+		} else if (allowItems || material.isBlock()) {
 			materialKey = material.name().toLowerCase();
 		}
 		
 		return materialKey;
 	}
-
+	
 	public static String getMaterialKey(Material material, byte data) {
-		String materialKey = MaterialBrush.getMaterialKey(material);
+		return getMaterialKey(material, data, true);
+	}
+
+	public static String getMaterialKey(Material material, byte data, boolean allowItems) {
+		String materialKey = MaterialBrush.getMaterialKey(material, allowItems);
 		if (materialKey == null) {
 			return null;
 		}
@@ -113,7 +121,11 @@ public class MaterialBrush extends MaterialBrushData {
 	}
 	
 	public static String getMaterialKey(MaterialAndData materialData) {
-		return getMaterialKey(materialData.getMaterial(), materialData.getData());
+		return getMaterialKey(materialData.getMaterial(), materialData.getData(), true);
+	}
+	
+	public static String getMaterialKey(MaterialAndData materialData, boolean allowItems) {
+		return getMaterialKey(materialData.getMaterial(), materialData.getData(), allowItems);
 	}
 	
 	public static boolean isSpecialMaterialKey(String materialKey) {
@@ -133,7 +145,15 @@ public class MaterialBrush extends MaterialBrushData {
 		
 		return new String[] { materialKey };
 	}
+	
+	public static String getMaterialName(MaterialAndData material) {
+		return getMaterialName(getMaterialKey(material));
+	}
 
+	public static String getMaterialName(Material material, byte data) {
+		return getMaterialName(getMaterialKey(material, data));
+	}
+	
 	@SuppressWarnings("deprecation")
 	public static String getMaterialName(String materialKey) {
 		if (materialKey == null) return null;
@@ -188,8 +208,12 @@ public class MaterialBrush extends MaterialBrushData {
 		return materialName;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static MaterialBrushData parseMaterialKey(String materialKey) {
+		return parseMaterialKey(materialKey, true);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static MaterialBrushData parseMaterialKey(String materialKey, boolean allowItems) {
 		if (materialKey == null || materialKey.length() == 0) return null;
 		
 		Material material = Material.DIRT;
@@ -223,7 +247,7 @@ public class MaterialBrush extends MaterialBrushData {
 				}
 				
 				// Prevent building with items
-				if (material != null && !material.isBlock()) {
+				if (!allowItems && material != null && !material.isBlock()) {
 					material = null;
 				}
 			} catch (Exception ex) {
@@ -243,6 +267,10 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	public static boolean isValidMaterial(String materialKey) {
 		return parseMaterialKey(materialKey) != null;
+	}
+	
+	public static boolean isValidMaterial(String materialKey, boolean allowItems) {
+		return parseMaterialKey(materialKey, allowItems) != null;
 	}
 
 	public void update(String activeMaterial) {

@@ -543,7 +543,7 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	protected ItemStack createMaterialItem(String materialKey) {
-		MaterialBrushData brushData = MaterialBrush.parseMaterialKey(materialKey);
+		MaterialBrushData brushData = MaterialBrush.parseMaterialKey(materialKey, false);
 		if (brushData == null) return null;
 		
 		Material material = brushData.getMaterial();
@@ -815,7 +815,7 @@ public class Wand implements CostReducer {
 		if (isInventoryOpen()) {
 			saveInventory();
 		}
-		String materialKey = MaterialBrush.getMaterialKey(material, data);
+		String materialKey = MaterialBrush.getMaterialKey(material, data, false);
 		return addMaterial(materialKey, makeActive, force);
 	}
 	
@@ -1365,7 +1365,7 @@ public class Wand implements CostReducer {
 			List<Object> materialList = wandConfig.getList("materials");
 			if (materialList != null) {
 				for (Object materialKey : materialList) {
-					if (!MaterialBrush.isValidMaterial((String)materialKey)) {
+					if (!MaterialBrush.isValidMaterial((String)materialKey, false)) {
 						controller.getPlugin().getLogger().info("Unknown material: " + materialKey);
 					} else {
 						wand.addMaterial((String)materialKey, false, true);

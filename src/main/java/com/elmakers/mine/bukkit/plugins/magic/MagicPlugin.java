@@ -695,9 +695,9 @@ public class MagicPlugin extends JavaPlugin
 		player.setItemInHand(wand.getItem());
 		wand.activate(mage);
 		
-		mage.sendMessage("Your " + heldItem.getType() + " has been enchanted");
+		mage.sendMessage("Your " + MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability()) + " has been enchanted");
 		if (sender != player) {
-			sender.sendMessage(player.getName() + "'s  " + heldItem.getType() + " been enchanted");
+			sender.sendMessage(player.getName() + "'s  " + MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability()) + " been enchanted");
 		}
 		
 		return true;
@@ -864,7 +864,7 @@ public class MagicPlugin extends JavaPlugin
 			}
 			
 			String materialKey = parameters[1];
-			if (!MaterialBrush.isValidMaterial(materialKey)) {
+			if (!MaterialBrush.isValidMaterial(materialKey, false)) {
 				sender.sendMessage(materialKey + " is not a valid material");
 				return true;
 			}

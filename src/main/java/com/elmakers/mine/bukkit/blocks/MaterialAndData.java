@@ -221,4 +221,10 @@ public class MaterialAndData {
 	public void setCommandLine(String command) {
 		commandLine = command;
 	}
+
+	@SuppressWarnings("deprecation")
+	public ItemStack getItemStack(int amount)
+	{
+		return new ItemStack(material, amount, (short)0, data);
+	}
 }

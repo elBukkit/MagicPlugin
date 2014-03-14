@@ -2,6 +2,7 @@
 
 ## For 2.9.7
 
+ - Support material variants in casting costs.
  - Make spells usable without a player, clean up strong Player references
    - Allow using Projectile spell without a player- maybe generally fix arrows.
  - Retry limit on construction batches

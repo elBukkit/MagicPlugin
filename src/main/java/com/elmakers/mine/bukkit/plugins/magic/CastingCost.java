@@ -7,13 +7,13 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.blocks.MaterialAndData;
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.utilities.Messages;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CastingCost
 {
-	protected Material item;
-	protected byte data;
+	protected MaterialAndData item;
 	protected double amount;
 	protected int xp;
 
@@ -22,34 +22,31 @@ public class CastingCost
 		if (key.toLowerCase().equals("xp")) {
 			this.xp = (int)cost;
 		} else {
-			this.item = ConfigurationNode.toMaterial(key);
+			this.item = MaterialBrush.parseMaterialKey(key, true);
 			this.amount = cost;
 		}
-		this.data = 0;
 	}
 
 	public CastingCost(Material item, double amount)
 	{
-		this.item = item;
-		this.data = 0;
+		this.item = new MaterialAndData(item, (byte)0);
 		this.amount = amount;
 	}
 
 	public CastingCost(Material item, byte data, double amount)
 	{
-		this.item = item;
-		this.data = data;
+		this.item = new MaterialAndData(item, data);
 		this.amount = amount;
 	}
 	
-	public Material getMaterial() {
+	public MaterialAndData getMaterial() {
 		return item;
 	}
 
 	public Map<String, Object> export()
 	{
 		Map<String, Object> cost = new HashMap<String, Object>();
-		cost.put("material", item.name().toLowerCase());
+		cost.put("material", MaterialBrush.getMaterialName(item));
 		cost.put("amount", amount);
 		cost.put("xp", xp);
 
@@ -61,7 +58,7 @@ public class CastingCost
 		Mage mage = spell.getMage();
 		Inventory inventory = mage.getInventory();
 		int amount = getAmount(spell);
-		boolean hasItem = item == null || amount <= 0 || inventory.contains(item, amount);
+		boolean hasItem = item == null || amount <= 0 || inventory.containsAtLeast(item.getItemStack(amount), amount);
 		boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
 		return hasItem && hasXp;
 	}
@@ -81,16 +78,14 @@ public class CastingCost
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	protected ItemStack getItemStack()
 	{
-		return new ItemStack(item, getAmount(), (short)0, data);
+		return item.getItemStack(getAmount());
 	}
 
-	@SuppressWarnings("deprecation")
 	protected ItemStack getItemStack(CostReducer reducer)
 	{
-		return new ItemStack(item, getAmount(reducer), (short)0, data);
+		return item.getItemStack(getAmount(reducer));
 	}
 
 	public int getAmount()
@@ -130,7 +125,7 @@ public class CastingCost
 	public String getDescription(CostReducer reducer)
 	{
 		if (item != null && getAmount() != 0) {
-			return item.name().toLowerCase().replace("_", " ").replace(" block", "");
+			return MaterialBrush.getMaterialName(item);
 		}
 		if (reducer.usesMana()) {
 			return Messages.get("costs.mana");
@@ -141,7 +136,7 @@ public class CastingCost
 	public String getFullDescription(CostReducer reducer)
 	{
 		if (item != null) {
-			return (int)getAmount(reducer) + " " + item.name().toLowerCase().replace("_", " ").replace(" block", "");
+			return (int)getAmount(reducer) + " " + MaterialBrush.getMaterialName(item);
 		}
 		if (reducer.usesMana()) {
 			return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
