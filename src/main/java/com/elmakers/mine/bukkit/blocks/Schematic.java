@@ -26,7 +26,7 @@ public class Schematic {
 		weSchematic = (CuboidClipboard)schematic;
 		
 		// Center at the bottom X,Z center
-	// This should be configurable, maybe?
+		// This should be configurable, maybe?
 		try {
 			com.sk89q.worldedit.Vector weSize = weSchematic.getSize();
 			size = new Vector(weSize.getBlockX(), weSize.getBlockY(), weSize.getBlockZ()); 

@@ -84,6 +84,8 @@ public class BlockList implements Collection<BlockData>, Serializable
 
 	public void commit()
 	{
+		if (blockList == null) return;
+		
 		for (BlockData block : blockList)
 		{
 			modified.remove(block.getId());

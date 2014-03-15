@@ -2,6 +2,7 @@
 
 ## For 2.9.8
 
+ - Fix first construct of a schematic.
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Maybe use player UUID's instead of names. Might need to migrate player data for this?
@@ -70,6 +71,7 @@
 
  - Async player data save/load (... undo queue locking?)
  - investigate lag/slowdown - new dynmap stuff?
+ - Scoreboard mana/spell display
 
 ## NEW SPELLS
 
@@ -154,6 +156,11 @@ Jan 9, 2014 at 09:36 - 1 like Unlike
 For sure, GlobalMarket will and does work. But its only good for player2player sales.
 
 - DTLTraders
+
+---
+
+Gitpw3d
+Wants scoreboard-based mana display
 
 
 
