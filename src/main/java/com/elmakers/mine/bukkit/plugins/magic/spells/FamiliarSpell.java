@@ -12,7 +12,9 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
@@ -241,6 +243,10 @@ public class FamiliarSpell extends Spell
 			if (!(famEntity instanceof Creature)) return null;
 	
 			familiar = (Creature)famEntity;
+			if (familiar instanceof Skeleton) {
+				Skeleton skellie = (Skeleton)familiar;
+				skellie.getEquipment().setItemInHand(new ItemStack(Material.BOW));
+			}
 			if (targetEntity != null)
 			{
 				familiar.setTarget(targetEntity);
