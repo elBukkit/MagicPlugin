@@ -40,7 +40,9 @@ public class FillSpell extends BrushSpell
 			deactivate();
 
 			BlockList filledBlocks = new BlockList();
-			filledBlocks.setTimeToLive(parameters.getInt("undo", 0));
+			int undoTime = parameters.getInt("undo", 0);
+			undoTime = parameters.getInt("u", undoTime);
+			filledBlocks.setTimeToLive(undoTime);
 			filledBlocks.add(targetBlock);
 
 			buildWith.setTarget(targetBlock.getLocation());
