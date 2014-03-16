@@ -1,10 +1,9 @@
 package com.elmakers.mine.bukkit.essentials;
 
-import net.ess3.api.IEssentials;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.utils.FormatUtil;
 import com.earth2me.essentials.utils.StringUtil;
