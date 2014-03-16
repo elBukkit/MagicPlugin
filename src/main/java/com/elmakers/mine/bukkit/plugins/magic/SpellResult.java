@@ -4,6 +4,8 @@ package com.elmakers.mine.bukkit.plugins.magic;
 public enum SpellResult {
 	CAST, 
 	AREA,
+	FIZZLE,
+	BACKFIRE,
 	FAIL, 
 	INSUFFICIENT_RESOURCES, 
 	INSUFFICIENT_PERMISSION, 
@@ -13,5 +15,7 @@ public enum SpellResult {
 	PLAYER_REQUIRED,
 	COST_FREE;
 	
-	public static SpellResult[] FAILURES = { FAIL, INSUFFICIENT_RESOURCES, INSUFFICIENT_PERMISSION, COOLDOWN, NO_TARGET };
+	public boolean isSuccess() {
+		return this == CAST || this == AREA || this == FIZZLE || this == BACKFIRE;
+	}
 }

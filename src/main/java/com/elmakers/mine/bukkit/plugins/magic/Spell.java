@@ -116,6 +116,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Target								target					= null;
 	private TargetType							targetType				= TargetType.OTHER;
 
+	private float								fizzleChance			= 0.0f;
+	private float								backfireChance			= 0.0f;
+
 	protected Object clone()
 	{
 		try
@@ -469,13 +472,27 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			return false;
 		}
 		
-		SpellResult result = onCast(parameters);
-		if (result == SpellResult.CAST) {
-			lastCast = currentTime;
+		SpellResult result = null;
+		if (!mage.isSuperPowered()) {
+			if (backfireChance > 0 && Math.random() < backfireChance) {
+				targetType = TargetType.SELF;
+				onCast(parameters);
+				result = SpellResult.BACKFIRE;
+			} else if (fizzleChance > 0 && Math.random() < fizzleChance) {
+				result = SpellResult.FIZZLE;
+			}
+		}
+		
+		if (result == null) {
+			result = onCast(parameters);
 		}
 		processResult(result);
+
+		if (result.isSuccess()) {
+			lastCast = currentTime;
+		}
 		
-		if (result == SpellResult.CAST || result == SpellResult.AREA) {
+		if (result.isSuccess()) {
 			if (costs != null) {
 				for (CastingCost cost : costs)
 				{
@@ -508,10 +525,19 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	}
 	
 	protected void processResult(SpellResult result) {
-		if (result == SpellResult.CAST || result == SpellResult.AREA) {
+		if (result.isSuccess()) {
 			// Notify controller of successful casts,
 			// this if for dynmap display or other global-level processing.
 			controller.onCast(mage, this, result);
+		}
+		
+		// Show messaging
+		if (result == SpellResult.BACKFIRE) {
+			// This is kind of a hack. This can be removed once spell messaging is standardized.
+			lastMessageSent = 0;
+			sendMessage("Your spell backfired!");
+		} else if (result == SpellResult.FIZZLE) {
+			sendMessage("Your spell fizzled!");
 		}
 		
 		// Play effects
@@ -546,6 +572,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			targetThroughMaterials.clear();
 			targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));			
 		}
+		
+		fizzleChance = parameters.getFloat("fizzle_chance", fizzleChance);
+		backfireChance = parameters.getFloat("backfire_chance", backfireChance);
 		
 		// Special hack that should work well in most casts.
 		if (isUnderwater()) {
