@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.9.8
+
+ - Spells can have a random backfire/fizzle chance. Use with Disarm.
+ - Familiar skeletons will have bows.
+
 ## 2.9.7
 
  - Fix 1.6 Support (sorry!)
