@@ -7,7 +7,7 @@
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Maybe use player UUID's instead of names. Might need to migrate player data for this?
  - Support schematic entity import for paintings and item frames (at least)
- - Add "Simulate" spell
+ - Add "Glider" schematic (need command-block simulate support)
  - Configurable randomization for Familiar spell
  - Fix / Improve Recall spell
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?

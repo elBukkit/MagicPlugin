@@ -185,6 +185,9 @@ spells:
     leap:
         name: Leap
         description: Take a big leap
+    simulate:
+        name: Simulate
+        description: Conway's Game of Life!
     torch:
         name: Torch
         description: Creates a torch or glowstone

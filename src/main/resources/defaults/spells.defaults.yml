@@ -187,6 +187,18 @@ bounce:
         target_type: LivingEntity
         effect_jump: 600,20
         effect_damage_resistance: 600,5
+simulate:
+    icon: double_plant:3
+    category: light
+    class: SimulateSpell
+    costs:
+        xp: 20
+    parameters:
+        range: 32
+        radius: 32
+        allow_max_range: false
+        death_material: air
+        commands: false
 shell:
     icon: ender_pearl
     category: earthbending
