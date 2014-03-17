@@ -408,13 +408,7 @@ public class ConfigurationNode {
 
 	public Material getMaterial(String path, Material def) {
 		Material o = getMaterial(path);
-
-		if (o == null) {
-			setProperty(path, def);
-			return def;
-		}
-
-		return o;
+		return o == null ? def : o;
 	}
 
 	/**
@@ -428,12 +422,7 @@ public class ConfigurationNode {
 	 */
 	 public String getString(String path, String def) {
 		 String o = getString(path);
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 }
-		 return o;
+		 return o == null ? def : o;
 	 }
 
 	 /**
@@ -448,24 +437,12 @@ public class ConfigurationNode {
 	  */
 	 public int getInt(String path, int def) {
 		 Integer o = castInt(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 	 
 	 public Integer getInteger(String path, Integer def) {
 		 Integer o = castInt(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 
 	 public int getInteger(String path, int def) {
@@ -474,13 +451,7 @@ public class ConfigurationNode {
 	 
 	 public long getLong(String path, long def) {
 		 Long o = castLong(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 	 
 	 public Color getColor(String path, Color def) {
@@ -540,13 +511,7 @@ public class ConfigurationNode {
 	  */
 	 public double getDouble(String path, double def) {
 		 Double o = castDouble(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 
 	 /**
@@ -561,13 +526,7 @@ public class ConfigurationNode {
 	  */
 	 public Double getDouble(String path, Double def) {
 		 Double o = castDouble(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 
 	 /**
@@ -582,13 +541,7 @@ public class ConfigurationNode {
 	  */
 	 public float getFloat(String path, float def) {
 		 Float o = castFloat(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 
 	 /**
@@ -603,13 +556,7 @@ public class ConfigurationNode {
 	  */
 	 public Float getFloat(String path, Float def) {
 		 Float o = castFloat(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 
 	 /**
@@ -623,24 +570,12 @@ public class ConfigurationNode {
 	  */
 	 public boolean getBoolean(String path, boolean def) {
 		 Boolean o = castBoolean(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 	 
 	 public Boolean getBoolean(String path, Boolean def) {
 		 Boolean o = castBoolean(getProperty(path));
-
-		 if (o == null) {
-			 setProperty(path, def);
-			 return def;
-		 } else {
-			 return o;
-		 }
+		 return o == null ? def : o;
 	 }
 	 
 	 public BlockData getBlockData(String path) {
@@ -724,17 +659,7 @@ public class ConfigurationNode {
 	  */
 	 public List<String> getStringList(String path, List<String> def) {
 		 List<String> list = getStringList(path);
-
-		 if (list == null) {
-			 if (def != null)
-			 {
-				 setProperty(path, def);
-				 return def;
-			 }
-			 return new ArrayList<String>();
-		 }
-
-		 return list;
+		 return list == null ? (def == null ? new ArrayList<String>() : def) : list;
 	 }
 	 
 	 public List<String> getStringList(String path) {
