@@ -3,11 +3,11 @@
 ## For 2.9.8
 
  - Fix first construct of a schematic.
+ - Add global "bypass_build" and "bypass_pvp" parameters.
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Maybe use player UUID's instead of names. Might need to migrate player data for this?
  - Support schematic entity import for paintings and item frames (at least)
- - Add "Glider" schematic (need command-block simulate support)
  - Configurable randomization for Familiar spell
  - Fix / Improve Recall spell
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
@@ -162,6 +162,23 @@ For sure, GlobalMarket will and does work. But its only good for player2player s
 Gitpw3d
 Wants scoreboard-based mana display
 
+-------
 
+alek123222
+Nov 27, 2013 at 15:35 - 1 like Unlike
+Can you make it compatible so when a user has over 20 health he can still be healed because at the moment the plugin just sets them back to 20 again.
+I am using a custom plugin thats based of this one: http://dev.bukkit.org/bukkit-plugins/lore-attrubites-revival/ Also cool downs seem not to work at all and also a message would be nice that when a spell is on cool down should pop up saying "Cool-down blah"
+----
+
+Gitpw3d
+2 days, 11 hours ago - 0 likes Like
+My Mistake When the wand is selected the health is set to 20(normal)
+but ils messes with that becauses of the lvs the when the wand is unslected the health reverts to normal execpt needing to regen ~100-1000 hearts
+reply report create ticket delete #339
+Gitpw3d
+2 days, 16 hours ago - 1 like Unlike
+Hi elMaker im using ils lore stats which increases the health you get per lv but mana being displayed messed it up, do you have a solution? other then that this plugin is great
+
+----
 
 	

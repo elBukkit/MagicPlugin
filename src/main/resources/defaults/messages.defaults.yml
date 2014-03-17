@@ -422,6 +422,9 @@ spells:
     wolfhouse:
         name: Wolf House
         description: Create an auto-regenerating base
+    glider:
+        name: Glider
+        description: Create a powerful automoton
     tent:
         name: Tent
         description: Create a minimal house

@@ -61,6 +61,8 @@ public class Mage implements CostReducer
 	private Location 			lastDeathLocation = null;
 	private final MaterialBrush		brush;
 	
+	private static String defaultMageName = "Automaton";
+	
 	public void removeExperience(int xp) {
 		
 		if (activeWand != null && activeWand.hasExperience()) {
@@ -746,7 +748,7 @@ public class Mage implements CostReducer
 	}
 	
 	public String getName() {
-		return playerName;
+		return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
 	}
 	
 	public void addPendingBlockBatch(BlockBatch batch) {

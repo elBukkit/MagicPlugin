@@ -212,6 +212,7 @@ attachable:
 - rails
 - stone_plate
 - iron_door_block
+- wood_door
 - wood_plate
 - redstone_torch_off
 - redstone_torch_on
@@ -248,6 +249,10 @@ attachable_wall:
 - wall_sign
 - stone_button
 - lever
+
+# blocks that should otherwise be delayed until the second pass
+delayed:
+- redstone_block
 
 # Which materials are always considered indestructible.
 # No spell will ever modify a block of this type.

@@ -195,10 +195,32 @@ simulate:
         xp: 20
     parameters:
         range: 32
-        radius: 32
+        radius: 8
         allow_max_range: false
         death_material: air
         commands: false
+        check_destructible: true
+glider:
+    icon: sapling:2
+    category: master
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: true
+        check_destructible: true
+        range: 10
+        radius: 4
+        type: sphere
+        cooldown: 60000
+        material: schematic|glider
+        transparent: transparent_to_construction
+    costs:
+        xp: 1000
 shell:
     icon: ender_pearl
     category: earthbending

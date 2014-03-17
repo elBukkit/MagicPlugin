@@ -37,11 +37,15 @@ public class ConstructBatch extends VolumeBatch {
 	private Vector fallingBlockVelocity = null;
 	private boolean copyEntities = true;
 	private final BlockList attachedBlocks = new BlockList();
+	private final BlockList delayedBlocks = new BlockList();
 	private final Set<Material> attachables;
 	private final Set<Material> attachablesWall;
+	private final Set<Material> delayed;
 	
 	private boolean finishedNonAttached = false;
+	private boolean finishedAttached = false;
 	private int attachedBlockIndex = 0;
+	private int delayedBlockIndex = 0;
 	private Integer maxOrientDimension = null;
 	private Integer minOrientDimension = null;
 	
@@ -61,6 +65,7 @@ public class ConstructBatch extends VolumeBatch {
 		this.spell = spell;
 		this.attachables = mage.getController().getMaterialSet("attachable");
 		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
+		this.delayed = mage.getController().getMaterialSet("delayed");
 		if (orientToLocation != null) {
 			Vector orientTo = orientToLocation.toVector().subtract(center.toVector());
 			orientTo.setX(Math.abs(orientTo.getX()));
@@ -100,7 +105,23 @@ public class ConstructBatch extends VolumeBatch {
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		if (finishedNonAttached) {
+		if (finishedAttached) {
+			if (delayedBlockIndex >= delayedBlocks.size()) {
+				finish();
+			} else while (delayedBlockIndex < delayedBlocks.size() && processedBlocks <  maxBlocks) {
+				BlockData delayed = delayedBlocks.get(delayedBlockIndex);
+				Block block = delayed.getBlock();
+				if (!block.getChunk().isLoaded()) {
+					block.getChunk().load();
+					return processedBlocks;
+				}
+				
+				constructedBlocks.add(block);
+				delayed.modify(block);
+				
+				delayedBlockIndex++;
+			}
+		} else if (finishedNonAttached) {
 			while (attachedBlockIndex < attachedBlocks.size() && processedBlocks <  maxBlocks) {
 				BlockData attach = attachedBlocks.get(attachedBlockIndex);
 				Block block = attach.getBlock();
@@ -142,7 +163,7 @@ public class ConstructBatch extends VolumeBatch {
 				attachedBlockIndex++;
 			}
 			if (attachedBlockIndex >= attachedBlocks.size()) {
-				finish();
+				finishedAttached = true;
 			}
 		} else {
 			int yBounds = radius;
@@ -208,7 +229,7 @@ public class ConstructBatch extends VolumeBatch {
 				int radiusSquared = radius * radius;
 				World targetWorld = center.getWorld();
 
-				// First clear all hanging entitiesfrom the area.
+				// First clear all hanging entities from the area.
 				List<Entity> targetEntities = targetWorld.getEntities();
 				for (Entity entity : targetEntities) {
 					// Specific check only for what we copy. This could be more abstract.
@@ -362,6 +383,13 @@ public class ConstructBatch extends VolumeBatch {
 			BlockData attachBlock = new BlockData(block);
 			attachBlock.updateFrom(brush);
 			attachedBlocks.add(attachBlock);
+			return true;
+		}
+		
+		if (delayed.contains(brush.getMaterial())) {
+			BlockData delayBlock = new BlockData(block);
+			delayBlock.updateFrom(brush);
+			delayedBlocks.add(delayBlock);
 			return true;
 		}
 		
