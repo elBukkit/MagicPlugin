@@ -420,8 +420,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 	}
 
-	// Note that the return result may be "true" for a delayed cast, even
-	// if that spell ultimately fails in some way.
 	public boolean cast(String[] extraParameters, Location defaultTarget)
 	{
 		this.target = null;
@@ -473,20 +471,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		if (pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(mage.getLocation())) {
 			sendMessage(Messages.get("costs.insufficient_permissions"));
 			return false;
-		}
-		
-		// delay is in ms, gets converted.
-		int delay = parameters.getInt("delay", 0);
-		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
-		delay /= 50;
-		if (delay > 0) {
-			final Spell castLater = this;
-			Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-				public void run() {
-					castLater.finalizeCast(parameters);
-				}
-			}, delay);
-			return true;
 		}
 		
 		return finalizeCast(parameters);

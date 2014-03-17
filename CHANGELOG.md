@@ -5,7 +5,6 @@
  - Spells can have a random backfire/fizzle chance. Use with Disarm.
  - Familiar skeletons will have bows.
  - Add "Simulate" spell (a pet project of mine.. may not interest you unless you have a thing for Conway's Life)
- - Add "delay" spell parameter for delayed-casting spells. Mainly for command blocks.
  - Add "Glider" spell (WIP, potentially destructive or server intensive!)
 
 ## 2.9.7
