@@ -16,6 +16,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -419,13 +420,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 	}
 
+	// Note that the return result may be "true" for a delayed cast, even
+	// if that spell ultimately fails in some way.
 	public boolean cast(String[] extraParameters, Location defaultTarget)
 	{
 		this.target = null;
 		defaultTargetLocation = defaultTarget;
 		location = mage.getLocation();
 		
-		ConfigurationNode parameters = new ConfigurationNode(this.parameters);
+		final ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
 		processParameters(parameters);
 		
@@ -472,6 +475,24 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			return false;
 		}
 		
+		// delay is in ms, gets converted.
+		int delay = parameters.getInt("delay", 0);
+		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
+		delay /= 50;
+		if (delay > 0) {
+			final Spell castLater = this;
+			Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+				public void run() {
+					castLater.finalizeCast(parameters);
+				}
+			}, delay);
+			return true;
+		}
+		
+		return finalizeCast(parameters);
+	}
+	
+	protected boolean finalizeCast(ConfigurationNode parameters) {
 		SpellResult result = null;
 		if (!mage.isSuperPowered()) {
 			if (backfireChance > 0 && Math.random() < backfireChance) {
@@ -487,12 +508,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			result = onCast(parameters);
 		}
 		processResult(result);
-
-		if (result.isSuccess()) {
-			lastCast = currentTime;
-		}
 		
 		if (result.isSuccess()) {
+			lastCast = System.currentTimeMillis();
 			if (costs != null) {
 				for (CastingCost cost : costs)
 				{
@@ -504,7 +522,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			sendMessage(Messages.get("costs.insufficient_permissions"));
 		}
 		
-		return result == SpellResult.CAST;
+		return result.isSuccess();
 	}
 
 	protected void initializeTargeting()
@@ -1162,6 +1180,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Player player = getPlayer();
 		if (targetType == TargetType.SELF && player != null) {
 			target = new Target(getLocation(), player);
+			return target;
+		}
+		
+		CommandSender sender = mage.getCommandSender();
+		if (targetType == TargetType.SELF && player == null && sender != null && (sender instanceof BlockCommandSender)) {
+			BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
+			target = new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
 			return target;
 		}
 
