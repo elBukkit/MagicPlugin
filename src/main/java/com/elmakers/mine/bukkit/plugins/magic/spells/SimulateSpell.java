@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
@@ -37,7 +38,7 @@ public class SimulateSpell extends BlockSpell {
 		birthMaterial = parameters.getMaterial("material", birthMaterial);
 		Material deathMaterial = parameters.getMaterial("death_material", Material.AIR);
 
-		SimulateBatch batch = new SimulateBatch(this, target.getLocation(), radius, birthMaterial, deathMaterial);
+		final SimulateBatch batch = new SimulateBatch(this, target.getLocation(), radius, birthMaterial, deathMaterial);
 		
 		boolean includeCommands = parameters.getBoolean("commands", true);
 		if (includeCommands) {
@@ -49,7 +50,19 @@ public class SimulateSpell extends BlockSpell {
 			}
 		}
 		
-		mage.addPendingBlockBatch(batch);
+		// delay is in ms, gets converted.
+		int delay = parameters.getInt("delay", 0);
+		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
+		delay /= 50;
+		if (delay > 0) {
+			Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+				public void run() {
+					mage.addPendingBlockBatch(batch);
+				}
+			}, delay);
+		} else {
+			mage.addPendingBlockBatch(batch);
+		}
 		
 		return SpellResult.CAST;
 	}
