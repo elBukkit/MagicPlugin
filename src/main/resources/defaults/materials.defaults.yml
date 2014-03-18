@@ -83,18 +83,7 @@ transparent_to_construction:
 - brown_mushroom
 - red_mushroom
 - double_plant
-# What materials are not targeted by construction spells
-ignored:
-- air
-- snow
-- wooden_door
-- iron_door_block
-- long_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- brown_mushroom
-- red_mushroom
+
 # Which materials are inherently "destructible". This list includes anything is
 # can be naturally generated, except by structures (strongholds, villages, etc).
 # Most construction spells will use this material list for destructibility tests by
@@ -194,6 +183,7 @@ attachable:
 - dead_bush
 - yellow_flower
 - red_rose
+- flower_pot
 - brown_mushroom
 - red_mushroom
 - carrot
@@ -211,13 +201,9 @@ attachable:
 - ladder
 - rails
 - stone_plate
-- iron_door_block
-- wood_door
 - wood_plate
 - redstone_torch_off
 - redstone_torch_on
-- cactus
-- sugar_cane_block
 - diode_block_on
 - diode_block_off
 - vine
@@ -249,6 +235,14 @@ attachable_wall:
 - wall_sign
 - stone_button
 - lever
+
+# Things that double-stack like doors and tall plants
+attachable_double:
+- cactus
+- iron_door_block
+- wooden_door
+- sugar_cane_block
+- double_plant
 
 # blocks that should otherwise be delayed until the second pass
 delayed:

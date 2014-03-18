@@ -183,4 +183,8 @@ public class BlockData extends MaterialAndData
 	public String getWorldName() {
 		return world;
 	}
+	
+	public BlockVector getLocation() {
+		return location;
+	}
 }

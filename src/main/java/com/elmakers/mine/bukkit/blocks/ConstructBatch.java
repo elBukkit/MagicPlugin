@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.blocks;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -36,10 +39,12 @@ public class ConstructBatch extends VolumeBatch {
 	private final boolean spawnFallingBlocks;
 	private Vector fallingBlockVelocity = null;
 	private boolean copyEntities = true;
-	private final BlockList attachedBlocks = new BlockList();
-	private final BlockList delayedBlocks = new BlockList();
+	private final Map<Long, BlockData> attachedBlockMap = new HashMap<Long, BlockData>();
+	private final List<BlockData> attachedBlockList = new ArrayList<BlockData>();
+	private final List<BlockData> delayedBlocks = new ArrayList<BlockData>();
 	private final Set<Material> attachables;
 	private final Set<Material> attachablesWall;
+	private final Set<Material> attachablesDouble;
 	private final Set<Material> delayed;
 	
 	private boolean finishedNonAttached = false;
@@ -65,6 +70,7 @@ public class ConstructBatch extends VolumeBatch {
 		this.spell = spell;
 		this.attachables = mage.getController().getMaterialSet("attachable");
 		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
+		this.attachablesDouble = mage.getController().getMaterialSet("attachable_double");
 		this.delayed = mage.getController().getMaterialSet("delayed");
 		if (orientToLocation != null) {
 			Vector orientTo = orientToLocation.toVector().subtract(center.toVector());
@@ -95,12 +101,15 @@ public class ConstructBatch extends VolumeBatch {
 		this.minOrientDimension = minDim;
 	}
 	
-	protected boolean canAttachTo(Material material) {
-		// Should I use my own list for this? This one seems good and efficient.
+	protected boolean canAttachTo(Material attachMaterial, Material material, boolean vertical) {
+		// For double-high blocks, a material can always attach to itself.
+		if (vertical && attachMaterial == material) return true;
+
+			// Should I use my own list for this? This one seems good and efficient.
 		if (material.isTransparent()) return false;
 		
 		// Can't attach to any attachables either- some of these (like signs) aren't transparent.
-		return !attachables.contains(material);
+		return !attachables.contains(material) && !attachablesWall.contains(material) && !attachablesDouble.contains(material);
 	}
 	
 	public int process(int maxBlocks) {
@@ -122,32 +131,43 @@ public class ConstructBatch extends VolumeBatch {
 				delayedBlockIndex++;
 			}
 		} else if (finishedNonAttached) {
-			while (attachedBlockIndex < attachedBlocks.size() && processedBlocks <  maxBlocks) {
-				BlockData attach = attachedBlocks.get(attachedBlockIndex);
+			while (attachedBlockIndex < attachedBlockList.size() && processedBlocks <  maxBlocks) {
+				BlockData attach = attachedBlockList.get(attachedBlockIndex);
 				Block block = attach.getBlock();
 				if (!block.getChunk().isLoaded()) {
 					block.getChunk().load();
 					return processedBlocks;
 				}
-				
+
 				// TODO: Port all this to fill... or move to BlockSpell?
 				
 				// Always check the the block underneath the target
 				Block underneath = block.getRelative(BlockFace.DOWN);
-				
-				boolean ok = canAttachTo(underneath.getType());
+
+				Material material = attach.getMaterial();
+				boolean ok = canAttachTo(material, underneath.getType(), true);
+
+				if (!ok && attachablesDouble.contains(material)) {
+					BlockData attachedUnder = attachedBlockMap.get(BlockData.getBlockId(underneath));
+					ok = (attachedUnder != null && attachedUnder.getMaterial() == material);
+					
+					if (!ok) {
+						Block above = block.getRelative(BlockFace.UP);
+						BlockData attachedAbove = attachedBlockMap.get(BlockData.getBlockId(above));
+						ok = (attachedAbove != null && attachedAbove.getMaterial() == material);
+					}
+				}
 				
 				// TODO : More specific checks: crops, potato, carrot, melon/pumpkin, cactus, etc.
 				
 				if (!ok) {
 					// Check for a wall attachable. These are assumed to also be ok
 					// on the ground.
-					Material material = attach.getMaterial();
 					boolean canAttachToWall = attachablesWall.contains(material);
 					if (canAttachToWall) {
 						final BlockFace[] faces = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH};
 						for (BlockFace face : faces) {
-							if (canAttachTo(block.getRelative(face).getType())) {
+							if (canAttachTo(material, block.getRelative(face).getType(), false)) {
 								ok = true;
 								break;
 							}
@@ -162,7 +182,7 @@ public class ConstructBatch extends VolumeBatch {
 				
 				attachedBlockIndex++;
 			}
-			if (attachedBlockIndex >= attachedBlocks.size()) {
+			if (attachedBlockIndex >= attachedBlockList.size()) {
 				finishedAttached = true;
 			}
 		} else {
@@ -339,14 +359,14 @@ public class ConstructBatch extends VolumeBatch {
 		boolean success = true;
 		if (fillBlock)
 		{
+			success = success && constructBlock(x, -y, z);
+			success = success && constructBlock(-x, -y, z);
+			success = success && constructBlock(-x, -y, -z);
+			success = success && constructBlock(x, -y, -z);
 			success = success && constructBlock(x, y, z);
 			success = success && constructBlock(-x, y, z);
-			success = success && constructBlock(x, -y, z);
-			success = success && constructBlock(x, y, -z);
-			success = success && constructBlock(-x, -y, z);
-			success = success && constructBlock(x, -y, -z);
 			success = success && constructBlock(-x, y, -z);
-			success = success && constructBlock(-x, -y, -z);
+			success = success && constructBlock(x, y, -z);
 		}
 		return success;
 	}
@@ -379,10 +399,11 @@ public class ConstructBatch extends VolumeBatch {
 		}
 		
 		// Postpone attachable blocks to a second batch
-		if (attachables.contains(brush.getMaterial())) {
+		if (attachables.contains(brush.getMaterial()) || attachablesWall.contains(brush.getMaterial()) || attachablesDouble.contains(brush.getMaterial())) {
 			BlockData attachBlock = new BlockData(block);
 			attachBlock.updateFrom(brush);
-			attachedBlocks.add(attachBlock);
+			attachedBlockMap.put(attachBlock.getId(), attachBlock);
+			attachedBlockList.add(attachBlock);
 			return true;
 		}
 		

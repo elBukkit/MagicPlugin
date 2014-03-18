@@ -2,58 +2,56 @@
 
 ## For 2.9.8
 
- - Fix enchanting! Wha happen?
- - Add TP room to Wolf House (recall wand/death/spawn, observation booth), fix Self destruct
- - Phase scaling in the End?
+ - Localize all spell messages
  - Fix first construct of a schematic.
  - Add global "bypass_build" and "bypass_pvp" parameters.
  - Customizable wand crafting recipes, check NMS data for "icon"
- - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Maybe use player UUID's instead of names. Might need to migrate player data for this?
  - Support schematic entity import for paintings and item frames (at least)
  - Configurable randomization for Familiar spell
  - Fix / Improve Recall spell
- - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
- - Add image map search feature
  - Make spells usable without a player, clean up strong Player references
-   - Allow using Projectile spell without a player- maybe generally fix arrows.
+ - Allow using Projectile spell without a player- generally fix arrows.
 
 ## For 2.9.9
 
- - Commandbook kit integration .. ?
+ - Commandbook kit integration
  - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
- - Fix message cooldowns- something is perhaps wrong there?
  - Purge player data on save (When possible)
  - Improve tab completion
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
-
- - Take another look at (should be mostly done):
-   - Undo fails in some cases (overlapping undo queues)
-    - IDEAS: Make BlockData immutable (based on a BlockLocation- maybe repurpose BlockVector?)
-    - BlockData tracks only the first recorded materialdata, commit will replace
-      - I think the following is related, might be caused by a construct batch someone overlapping itself - which also shouldn't happen.
-      - Undo issue, maybe having to do with cancelling batches- leaves weird z-axis-aligned strips that skip an x coordinate?
+ - Undo fails in some cases (overlapping undo issue still present, need more complex fix)
 
 ## For 3.0.0
 
+ - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
+ - Add Multi-Spell Spell
+ - Add spell effect to projectile spell
  - Config-driven WandLevel limits.
- - Make sure adding spells/materials never removes any, also opening/closing the inventory, organizing
  - Add "wand duplicate" command
+ - A way to /wand enchant with auto-fill but not filling wand... ?
  - Tweaking/Balancing - haste, cooldowns, etc
- - Fix wand inventory glitches and special-cases
  - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
- - Add schematic list command
  - Finish localization
  - Make push spell reflect projectiles (set fireball velocity)
  - Fireball / grenade "rain" spells (Meteor Shower, Carpet Bomb?)
- - Fix website, can't parse new effect nodes
- - New spawn on dev server
+ 
+## Post-3.0.0
+
+ - Phase scaling in the End? Experiment...
+ - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
+ - Fix dtlTraders integration
+ - Add image map search feature
+ - Add schematic list command (just for magic-specific schematics, and/or WE ones, too)
  
 ## DOCUMENTATION / DEMO STUFF
 
  - Add "wand properties" infobook
+
+ - Fix website, can't parse new effect nodes
+ - New spawn on dev server
 
  - Create new YouTube video(s)
  - Update "scripting" and "customization" documentation once tab completion is done.
