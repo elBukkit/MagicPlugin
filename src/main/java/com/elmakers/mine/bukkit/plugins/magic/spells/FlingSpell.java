@@ -22,7 +22,7 @@ public class FlingSpell extends Spell
 
 	protected int defaultMaxSpeedAtElevation = 64;
 	protected double defaultMinMagnitude = 1.5;
-	protected double defaultMaxMagnitude = 6; 
+	protected double defaultMaxMagnitude = 4; 
 
     private final static int effectSpeed = 1;
     private final static int effectPeriod = 3;

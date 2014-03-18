@@ -816,6 +816,9 @@ fling:
         -  class: EffectTrail
            particle: spell
            particle_count: 4
+           min_speed: 1.5
+           max_speed: 4
+           cruising_altitude: 40
     parameters:
     costs:
         xp: 45
