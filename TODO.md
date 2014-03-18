@@ -2,6 +2,9 @@
 
 ## For 2.9.8
 
+ - Fix enchanting! Wha happen?
+ - Add TP room to Wolf House (recall wand/death/spawn, observation booth), fix Self destruct
+ - Phase scaling in the End?
  - Fix first construct of a schematic.
  - Add global "bypass_build" and "bypass_pvp" parameters.
  - Customizable wand crafting recipes, check NMS data for "icon"
