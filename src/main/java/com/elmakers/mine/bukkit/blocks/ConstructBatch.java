@@ -8,15 +8,9 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Painting;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
@@ -244,68 +238,21 @@ public class ConstructBatch extends VolumeBatch {
 			super.finish();
 			
 			MaterialBrush brush = spell.getMaterialBrush();
-			if (copyEntities && fill && brush != null && brush.isReplicating()) {
+			if (copyEntities && fill && brush != null && brush.hasEntities()) {
 				// TODO: Handle Non-spherical construction types!
-				int radiusSquared = radius * radius;
-				World targetWorld = center.getWorld();
-
-				// First clear all hanging entities from the area.
-				List<Entity> targetEntities = targetWorld.getEntities();
-				for (Entity entity : targetEntities) {
-					// Specific check only for what we copy. This could be more abstract.
-					if (entity instanceof Painting || entity instanceof ItemFrame) {
-						if (entity.getLocation().distanceSquared(center) <= radiusSquared) {
-							entity.remove();
-						}
-					}
-				}
+				List<EntityData> entities = brush.getEntities(center, radius);
 				
-				// Now copy all hanging entities from the source location
-				Location cloneLocation = brush.toTargetLocation(center);
-				World sourceWorld = cloneLocation.getWorld();
-				List<Entity> entities = sourceWorld.getEntities();
-				for (Entity entity : entities) {
-					if (entity instanceof Painting) {
-						if (entity.getLocation().distanceSquared(cloneLocation) > radiusSquared) continue;
-						Painting painting = (Painting)entity;
-						Location attachedLocation = painting.getLocation().getBlock().getRelative(painting.getAttachedFace()).getLocation();
-						Location targetLocation = brush.fromTargetLocation(center.getWorld(), attachedLocation);
-						try {
-							Painting newPainting = (Painting)center.getWorld().spawnEntity(targetLocation, EntityType.PAINTING);
-							if (newPainting != null) {
-								targetLocation = brush.fromTargetLocation(center.getWorld(), painting.getLocation());								
-								newPainting.teleport(targetLocation);
-								newPainting.setArt(painting.getArt());
-								newPainting.setFacingDirection(painting.getFacing());
-							}
-						} catch (Exception ex) {
-							// controller.getLogger().warning(ex.getMessage());
-							targetWorld.dropItemNaturally(targetLocation, new ItemStack(Material.PAINTING, 1));
-						}
-					} else if (entity instanceof ItemFrame) {
-						if (entity.getLocation().distanceSquared(cloneLocation) > radiusSquared) continue;
-						ItemFrame itemFrame = (ItemFrame)entity;
-						Location attachedLocation = itemFrame.getLocation().getBlock().getRelative(itemFrame.getAttachedFace()).getLocation();
-						Location targetLocation = brush.fromTargetLocation(center.getWorld(), attachedLocation);
-						ItemStack itemStack = InventoryUtils.getCopy(itemFrame.getItem());
-						try {
-							ItemFrame newItemFrame = (ItemFrame)center.getWorld().spawnEntity(targetLocation, EntityType.ITEM_FRAME);
-							if (newItemFrame != null) {
-								targetLocation = brush.fromTargetLocation(center.getWorld(), itemFrame.getLocation());
-								newItemFrame.teleport(targetLocation);
-								newItemFrame.setFacingDirection(itemFrame.getFacing());
-								newItemFrame.setRotation(itemFrame.getRotation());
-								if (itemStack != null) {
-									newItemFrame.setItem(itemStack);
-								}
-							}
-						} catch (Exception ex) {
-							// controller.getLogger().warning(ex.getMessage());
-							if (itemStack != null) {
-								targetWorld.dropItemNaturally(targetLocation, itemStack);
-							}
-							targetWorld.dropItemNaturally(targetLocation, new ItemStack(Material.ITEM_FRAME, 1));
-						}
+				for (EntityData entity : entities) {
+					Location targetLocation = entity.getLocation();
+					
+					switch (entity.getType()) {
+					case PAINTING:
+						InventoryUtils.spawnPainting(targetLocation, entity.getFacing(), entity.getArt());
+					break;
+					case ITEM_FRAME:
+						InventoryUtils.spawnItemFrame(targetLocation, entity.getFacing(), entity.getItem());
+						break;
+					default: break;
 					}
 				}
 			}

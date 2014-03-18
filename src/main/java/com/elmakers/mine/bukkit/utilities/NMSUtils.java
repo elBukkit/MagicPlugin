@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -28,6 +29,8 @@ public class NMSUtils {
 	protected static Class<?> class_Packet56MapChunkBulk;
 	protected static Class<?> class_Packet63WorldParticles;
 	protected static Class<?> class_PacketPlayOutWorldParticles;
+	protected static Class<?> class_EntityPainting;
+	protected static Class<?> class_EntityItemFrame;
 
 	static 
 	{
@@ -50,7 +53,9 @@ public class NMSUtils {
 			class_CraftLivingEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftLivingEntity");
 			class_Packet = fixBukkitClass("net.minecraft.server.Packet");
 			class_World = fixBukkitClass("net.minecraft.server.World");
-			class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");			
+			class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");
+			class_EntityPainting = fixBukkitClass("net.minecraft.server.EntityPainting");
+			class_EntityItemFrame = fixBukkitClass("net.minecraft.server.EntityItemFrame");
 		} 
 		catch (Throwable ex) {
 			ex.printStackTrace();
@@ -189,5 +194,41 @@ public class NMSUtils {
 		Method sendPacketMethod = connection.getClass().getMethod("sendPacket", class_Packet);
 		sendPacketMethod.invoke(connection, packet);
 	}
+    
+	public static int getFacing(BlockFace direction)
+	{
+		int dir;
+        switch (direction) {
+        case SOUTH:
+        default:
+            dir = 0;
+            break;
+        case WEST:
+            dir = 1;
+            break;
+        case NORTH:
+            dir = 2;
+            break;
+        case EAST:
+            dir = 3;
+            break;
+        }
+        
+        return dir;
+	}
 	
+	public static org.bukkit.entity.Entity getBukkitEntity(Object entity)
+	{
+		if (entity == null) return null;
+		try {
+			Method getMethod = entity.getClass().getMethod("getBukkitEntity");
+			Object bukkitEntity = getMethod.invoke(entity);
+			if (!(bukkitEntity instanceof org.bukkit.entity.Entity)) return null;
+			return (org.bukkit.entity.Entity)bukkitEntity;
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}
 }

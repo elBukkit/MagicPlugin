@@ -4,10 +4,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Painting;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -233,4 +239,54 @@ public class InventoryUtils extends NMSUtils
 	public static void removePotionEffect(LivingEntity entity) {
 		addPotionEffect(entity, 0); // ?
 	}
+	
+    public static Painting spawnPainting(Location location, BlockFace facing, Art art)
+    {
+    	Painting newPainting = null;
+		try {
+			//                entity = new EntityPainting(world, (int) x, (int) y, (int) z, dir);
+			Constructor<?> paintingConstructor = class_EntityPainting.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+			Method addEntity = class_World.getMethod("addEntity", class_Entity, SpawnReason.class);
+			
+			Object worldHandle = getHandle(location.getWorld());
+			Object newEntity = paintingConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+			if (newEntity != null) {
+				addEntity.invoke(worldHandle, newEntity, SpawnReason.CUSTOM);
+				org.bukkit.entity.Entity bukkitEntity = getBukkitEntity(newEntity);
+				if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
+				
+				newPainting = (Painting)bukkitEntity;
+				newPainting.setArt(art, true);
+				newPainting.setFacingDirection(facing, true);
+			}
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return newPainting;
+    }
+
+    public static ItemFrame spawnItemFrame(Location location, BlockFace facing, ItemStack item)
+    {
+    	ItemFrame newItemFrame = null;
+		try {
+            // entity = new EntityItemFrame(world, (int) x, (int) y, (int) z, dir);
+			Constructor<?> itemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+			Method addEntity = class_World.getMethod("addEntity", class_Entity, SpawnReason.class);
+			
+			Object worldHandle = getHandle(location.getWorld());
+			Object newEntity = itemFrameConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+			if (newEntity != null) {
+				addEntity.invoke(worldHandle, newEntity, SpawnReason.CUSTOM);
+				org.bukkit.entity.Entity bukkitEntity = getBukkitEntity(newEntity);
+				if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
+				
+				newItemFrame = (ItemFrame)bukkitEntity;
+				newItemFrame.setItem(getCopy(item));
+				newItemFrame.setFacingDirection(facing, true);
+			}
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		return newItemFrame;
+    }
 }

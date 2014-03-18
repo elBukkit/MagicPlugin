@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,6 +11,9 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Painting;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
@@ -613,8 +617,49 @@ public class MaterialBrush extends MaterialBrushData {
 		}
 	}
 	
-	public boolean isReplicating()
+	public boolean hasEntities()
 	{
-		return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE;
+		return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC;
+	}
+	
+	public List<EntityData> getEntities(Location center, int radius)
+	{
+		List<EntityData> copyEntities = new ArrayList<EntityData>();
+		
+		int radiusSquared = radius * radius;
+		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)
+		{
+			World targetWorld = center.getWorld();
+	
+			// First clear all hanging entities from the area.
+			List<Entity> targetEntities = targetWorld.getEntities();
+			for (Entity entity : targetEntities) {
+				// Specific check only for what we copy. This could be more abstract.
+				if (entity instanceof Painting || entity instanceof ItemFrame) {
+					if (entity.getLocation().distanceSquared(center) <= radiusSquared) {
+						entity.remove();
+					}
+				}
+			}
+			
+			// Now copy all hanging entities from the source location
+			Location cloneLocation = toTargetLocation(center);
+			World sourceWorld = cloneLocation.getWorld();
+			List<Entity> entities = sourceWorld.getEntities();
+			for (Entity entity : entities) {
+				if (entity instanceof Painting || entity instanceof ItemFrame) {
+					Location entityLocation = entity.getLocation();
+					if (entity.getLocation().distanceSquared(cloneLocation) > radiusSquared) continue;
+					EntityData entityData = new EntityData(fromTargetLocation(center.getWorld(), entityLocation), entity);
+					copyEntities.add(entityData);
+				}
+			}
+		} 
+		else if (mode == BrushMode.SCHEMATIC)
+		{
+			// TODO
+		}
+			
+		return copyEntities;
 	}
 }
