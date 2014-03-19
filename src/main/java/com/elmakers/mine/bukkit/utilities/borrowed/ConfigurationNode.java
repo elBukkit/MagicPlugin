@@ -1088,15 +1088,14 @@ public class ConfigurationNode {
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	protected void combine(Map<String, Object> to, Map<String, Object> from) {
-		 Set<Entry<String, Object>> fromEntries  = from.entrySet();
-		 for (Entry<String, Object> entry : fromEntries) {
+	protected void combine(Map<String, Object> to, Map<? extends Object, Object> from) {
+		 for (Entry<? extends Object, Object> entry : from.entrySet()) {
 			 Object value = entry.getValue();
-			 String key = entry.getKey();
+			 String key = entry.getKey().toString();
 			 if (value instanceof Map && to.containsKey(key)) {
 				 Object toValue = to.get(key);
 				 if (toValue instanceof Map) {
-					 combine((Map<String, Object>)toValue, (Map<String, Object>)value);
+					 combine((Map<String, Object>)toValue, (Map<Object, Object>)value);
 					 continue;
 				 }
 			 }
