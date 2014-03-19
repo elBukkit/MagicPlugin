@@ -865,6 +865,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	
 	public boolean isSafeLocation(Block block)
 	{
+		
 		if (!block.getChunk().isLoaded()) {
 			block.getChunk().load(true);
 			return false;
@@ -875,11 +876,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		
 		Block blockOneUp = block.getRelative(BlockFace.UP);
-		Block blockTwoUp = blockOneUp.getRelative(BlockFace.UP);
+		Block blockOneDown = block.getRelative(BlockFace.DOWN);
+
 		return (
-				isOkToStandOn(block.getType())
+				isOkToStandOn(blockOneDown.getType())
 				&&	isOkToStandIn(blockOneUp.getType())
-				&& 	isOkToStandIn(blockTwoUp.getType())
+				&& 	isOkToStandIn(block.getType())
 		);
 	}
 	
@@ -905,6 +907,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		
 		int targetY = targetLoc.getBlockY();
 		if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) return targetLoc;
+		
 		Location location = null;
 		if (targetY < minY) {
 			location = targetLoc.clone();
@@ -915,8 +918,17 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			location.setY(maxY);
 			location = findPlaceToStand(location, false, minY, maxY);
 		} else {
-			location = findPlaceToStand(targetLoc, true, minY, maxY);
+			// First look down just a little bit
+			int y = targetLoc.getBlockY();
+			int testMinY = Math.max(minY,  y - 4);
+			location = findPlaceToStand(targetLoc, false, testMinY, maxY);
 			
+			// Then look up
+			if (location == null) {
+				location = findPlaceToStand(targetLoc, true, minY, maxY);
+			}
+			
+			// Then look allll the way down.
 			if (location == null) {
 				location = findPlaceToStand(targetLoc, false, minY, maxY);
 			}
@@ -945,7 +957,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			)
 			{
 				// spot found - return location
-				targetLocation.setY(targetLocation.getY() + 1);
 				return targetLocation;
 			}
 			

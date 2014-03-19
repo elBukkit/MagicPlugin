@@ -21,7 +21,7 @@ public class PhaseSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		int maxY = 255;
+		int maxY = 250;
 		Location playerLocation = getLocation();
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
@@ -41,7 +41,7 @@ public class PhaseSpell extends Spell
 				targetLocation = new Location(targetWorld, playerLocation.getX() * 8, playerLocation.getY(), playerLocation.getZ() * 8);
 			}
 		} else {
-			maxY = 125;
+			maxY = 118;
 			worldName = worldName + "_nether";
 			World targetWorld = Bukkit.getWorld(worldName);
 			if (targetWorld != null) {
