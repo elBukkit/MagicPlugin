@@ -5,11 +5,11 @@
  - Localize all spell messages
  - Fix first construct of a schematic. (?)
  - Customizable wand crafting recipes, check NMS data for "icon"
+ - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
 
 ## For 2.9.9
 
  - Commandbook kit integration
- - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
  - Purge player data on save (When possible)
  - Improve tab completion
  - Configurable passthrough material list for Blink

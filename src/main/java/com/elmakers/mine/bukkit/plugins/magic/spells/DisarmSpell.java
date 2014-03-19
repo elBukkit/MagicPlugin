@@ -58,8 +58,6 @@ public class DisarmSpell extends Spell
 		Vector velocity = item.getVelocity();
 		velocity.setY(velocity.getY() * 5);
 		item.setVelocity(velocity);
-
-		castMessage("You disarm your target");
 		
 		return SpellResult.CAST;
 		

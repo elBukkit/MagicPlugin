@@ -475,7 +475,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		
 		if (pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(mage.getLocation())) {
-			sendMessage(Messages.get("costs.insufficient_permissions"));
+			processResult(SpellResult.INSUFFICIENT_PERMISSION);
 			return false;
 		}
 		
@@ -508,8 +508,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				}
 			}
 			castCount++;
-		} else if (result == SpellResult.INSUFFICIENT_PERMISSION) {
-			sendMessage(Messages.get("costs.insufficient_permissions"));
 		}
 		
 		return result.isSuccess();
@@ -532,6 +530,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		targetingComplete = false;
 	}
 	
+	protected String getMessage(String messageKey) {
+		return getMessage(messageKey, "");
+	}
+	
+	protected String getMessage(String messageKey, String def) {
+		String message = Messages.get("spells.default." + messageKey, def);
+		return Messages.get("spells." + key + "." + messageKey, message);
+	}
+	
 	protected void processResult(SpellResult result) {
 		if (result.isSuccess()) {
 			// Notify controller of successful casts,
@@ -540,12 +547,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		
 		// Show messaging
-		if (result == SpellResult.BACKFIRE) {
-			// This is kind of a hack. This can be removed once spell messaging is standardized.
-			lastMessageSent = 0;
-			sendMessage("Your spell backfired!");
-		} else if (result == SpellResult.FIZZLE) {
-			sendMessage("Your spell fizzled!");
+		if (result == SpellResult.CAST) {
+			String message = getMessage(result.name().toLowerCase());
+			Player player = mage.getPlayer();
+			if (target != null && player != null && target.getEntity() == player) {
+				message = getMessage("cast_self", message);
+			}
+			castMessage(message);
+		} else {
+			sendMessage(getMessage(result.name().toLowerCase()));
 		}
 		
 		// Play effects
@@ -1410,7 +1420,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public void castMessage(String message)
 	{
-		if (canSendMessage())
+		if (canSendMessage() && message != null && message.length() > 0)
 		{
 			mage.castMessage(message);
 			lastMessageSent = System.currentTimeMillis();
@@ -1427,7 +1437,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public void sendMessage(String message)
 	{
-		if (canSendMessage())
+		if (canSendMessage() && message != null && message.length() > 0)
 		{
 			mage.sendMessage(message);
 			lastMessageSent = System.currentTimeMillis();
