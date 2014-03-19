@@ -267,3 +267,10 @@ region_manager_enabled: true
 
 # Enable Factions protection against construction spells
 factions_enabled: true
+
+# Disable all build-related checks
+bypass_build: false
+
+# Disable all pvp-related checks
+bypass_pvp: false
+

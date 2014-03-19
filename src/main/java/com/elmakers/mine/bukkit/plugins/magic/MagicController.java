@@ -486,6 +486,8 @@ public class MagicController implements Listener
 		// TODO: We need to be able to do permission checks while a player is offline. This is currently exploitable. (!)
 		boolean allowed = true;
 		
+		if (bypassBuildPermissions) return true;
+		
 		if (regionManagerEnabled && player != null && block != null && regionManager != null && regionManagerCanBuildMethod != null) {
 			try {
 				allowed = allowed && (Boolean)regionManagerCanBuildMethod.invoke(regionManager, player, block);
@@ -510,7 +512,7 @@ public class MagicController implements Listener
 	
 	public boolean isPVPAllowed(Location location)
 	{
-		if (!regionManagerEnabled || regionManager == null || location == null) return true;
+		if (bypassPvpPermissions || !regionManagerEnabled || regionManager == null || location == null) return true;
 		
 		try {
 			Method getRegionManagerMethod = regionManager.getClass().getMethod("getRegionManager", World.class);
@@ -1278,6 +1280,8 @@ public class MagicController implements Listener
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
 		factionsEnabled = properties.getBoolean("factions_enabled", factionsEnabled);
+		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
+		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		
 		if (properties.containsKey("mana_display")) {
@@ -2542,7 +2546,9 @@ public class MagicController implements Listener
 	 private final File							 schematicFolder;
 	 private final File							 defaultsFolder;
 	 private final File							 playerDataFolder;
-	 
+
+	 private boolean							 bypassBuildPermissions         = false;
+	 private boolean							 bypassPvpPermissions           = false;
 	 private boolean							 factionsEnabled				= true;
 	 private Class<?>							 factionsManager				= null;
 	 private Method								 factionsCanBuildMethod   		= null;

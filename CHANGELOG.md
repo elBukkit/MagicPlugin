@@ -7,6 +7,7 @@
  - Add "Simulate" spell (a pet project of mine.. may not interest you unless you have a thing for Conway's Life)
  - Add "Glider" spell (WIP, potentially destructive or server intensive!)
  - Add "enable_glow" option to spells.yml (for @broluigi)
+ - Add global "bypass_build" and "bypass_pvp" parameters to config.yml (for @LHammonds)
 
 ## 2.9.7
 

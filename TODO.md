@@ -4,7 +4,6 @@
 
  - Localize all spell messages
  - Fix first construct of a schematic. (?)
- - Add global "bypass_build" and "bypass_pvp" parameters.
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Maybe use player UUID's instead of names. Might need to migrate player data for this?
  - Configurable randomization for Familiar spell
