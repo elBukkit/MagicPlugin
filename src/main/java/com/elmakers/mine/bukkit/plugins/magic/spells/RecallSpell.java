@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -16,91 +17,127 @@ import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
+import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class RecallSpell extends Spell
 {
 	public Location location;
 	public boolean isActive;
-	private int disableDistance = 5;
 
 	private static int MAX_RETRY_COUNT = 8;
 	private static int RETRY_INTERVAL = 10;
 	
 	private int retryCount = 0;
+	
+	private enum RecallType
+	{
+		MARKER,
+		DEATH,
+		SPAWN,
+		HOME,
+		WAND,
+	//	FHOME,
+	//	WARPS
+	};
+	
+	private RecallType selectedType = RecallType.MARKER;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		boolean autoResurrect = parameters.getBoolean("auto_resurrect", true);
-		boolean autoSpawn = parameters.getBoolean("allow_spawn", true);
+		int selectedTypeIndex = 0;
+		boolean allowMarker = true;
+		List<RecallType> enabledTypes = new ArrayList<RecallType>();
+		for (RecallType testType : RecallType.values()) {
+			if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true)) {
+				enabledTypes.add(testType);
+				if (testType == selectedType) selectedTypeIndex = enabledTypes.size() - 1;
+			} else {
+				if (testType == RecallType.MARKER) allowMarker = false;
+			}
+		}
 
-		String typeString = parameters.getString("type", "");
-		if (typeString.equals("spawn"))
+		if (parameters.containsKey("type")) {
+			String typeString = parameters.getString("type", "");
+			if (isActive && typeString.equalsIgnoreCase("remove")) {
+				removeMarker();
+				return SpellResult.TARGET_SELECTED;
+			}
+			RecallType newType = RecallType.valueOf(typeString.toUpperCase());
+			if (newType == null) {
+				castMessage("Unknown recall type " + typeString);
+				return SpellResult.FAIL;
+			}
+			
+			selectedType = newType;
+		} 
+		else if (getYRotation() > 70 || getYRotation() < -70 || !allowMarker)
 		{
-			castMessage("Returning you home");
-			tryTeleport(getWorld().getSpawnLocation());
-			return SpellResult.CAST; 
+			if (getYRotation() > 70) selectedTypeIndex++;
+			else selectedTypeIndex--;
+			if (selectedTypeIndex < 0) selectedTypeIndex = enabledTypes.size() - 1;
+			if (selectedTypeIndex >= enabledTypes.size()) selectedTypeIndex = 0;
+			selectedType = enabledTypes.get(selectedTypeIndex);
 		}
-		if (typeString.equals("wand"))
+		else
 		{
-			List<LostWand> lostWands = mage.getLostWands();
-			Location wandLocation = lostWands.size() > 0 ? lostWands.get(0).getLocation() : null;
-			if (wandLocation == null)
-			{
-				sendMessage("No recorded lost wands for you. Sorry!");
+			Target target = getTarget();
+			if (target == null) {
 				return SpellResult.NO_TARGET;
 			}
 			
-			tryTeleport(wandLocation);
-			return SpellResult.CAST; 
-		}
-		if (typeString.equals("death") || getYRotation() < -70  && autoResurrect)
-		{
-			Location deathLocation = mage.getLastDeathLocation();
-			if (deathLocation == null)
-			{
-				sendMessage("No recorded death location. Sorry!");
-				return SpellResult.NO_TARGET;
-			}
-			
-			tryTeleport(deathLocation);
-			return SpellResult.CAST; 
+			return placeMarker(target.getBlock());
 		}
 		
-		if (getYRotation() > 70)
-		{
-			if (!isActive && autoSpawn)
-			{
-				castMessage("Returning you home");
+		Player player = getPlayer();
+		if (player == null) return SpellResult.PLAYER_REQUIRED;
+		
+		switch (selectedType) {
+		case MARKER:
+			if (!isActive) {
+				return placeMarker(getLocation().getBlock());
+			}
+			
+			castMessage("Returning you to your marker");
+			tryTeleport(location);
+			break;
+			case DEATH:
+				Location deathLocation = mage.getLastDeathLocation();
+				if (deathLocation == null)
+				{
+					sendMessage("No recorded death location. Sorry!");
+					return SpellResult.NO_TARGET;
+				}
+
+				castMessage("Returning you to your last death location");
+				tryTeleport(deathLocation);
+				return SpellResult.CAST; 
+			case SPAWN:
+				castMessage("Returning you to spawn");
 				tryTeleport(getWorld().getSpawnLocation());
-			}
-			else
-			{
-				if (!isActive) return SpellResult.NO_TARGET;
-
-				double distanceSquared = getLocation().distanceSquared(location);
-
-				if (distanceSquared < disableDistance * disableDistance && autoSpawn)
+				break;
+			case HOME:
+				castMessage("Returning you home");
+				tryTeleport(player.getBedSpawnLocation());
+				break;
+			case WAND:
+				List<LostWand> lostWands = mage.getLostWands();
+				Location wandLocation = lostWands.size() > 0 ? lostWands.get(0).getLocation() : null;
+				if (wandLocation == null)
 				{
-					castMessage("Returning you home");
-					tryTeleport(getWorld().getSpawnLocation());
+					sendMessage("No recorded lost wands for you");
+					return SpellResult.NO_TARGET;
 				}
-				else
-				{
-					castMessage("Returning you to your marker");
-					tryTeleport(location);
-				}
-			}
-			return SpellResult.CAST;
+				
+				castMessage("Returning you to your lost wand");
+				tryTeleport(wandLocation);
+				return SpellResult.CAST; 
+			default:
+				return SpellResult.FAIL;
 		}
 
-		if (!isActive)
-		{
-			return placeMarker(getTargetBlock());
-		}
-
-		return placeMarker(getTargetBlock());
+		return SpellResult.CAST;
 	}
 
 	protected boolean removeMarker()

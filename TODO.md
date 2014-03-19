@@ -2,14 +2,10 @@
 
 ## For 2.9.8
 
+ - Configurable randomization for Familiar spell
  - Localize all spell messages
  - Fix first construct of a schematic. (?)
  - Customizable wand crafting recipes, check NMS data for "icon"
- - Maybe use player UUID's instead of names. Might need to migrate player data for this?
- - Configurable randomization for Familiar spell
- - Fix / Improve Recall spell
- - Make spells usable without a player, clean up strong Player references
- - Allow using Projectile spell without a player- generally fix arrows.
 
 ## For 2.9.9
 
@@ -20,17 +16,17 @@
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
  - Undo fails in some cases (overlapping undo issue still present, need more complex fix)
+ - Look at player data, reference by UUID, async loading, binary data, etc.
 
 ## For 3.0.0
 
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Add Multi-Spell Spell
- - Add spell effect to projectile spell
+ - Add Spell effect to projectile spell
  - Config-driven WandLevel limits.
  - Add "wand duplicate" command
  - A way to /wand enchant with auto-fill but not filling wand... ?
  - Tweaking/Balancing - haste, cooldowns, etc
- - Make ores destructible by most spells (except blast?)
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Finish localization
  - Make push spell reflect projectiles (set fireball velocity)

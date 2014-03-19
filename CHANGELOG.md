@@ -3,6 +3,7 @@
 ## 2.9.8
 
  - Spells can have a random backfire/fizzle chance. Use with Disarm.
+ - Improve Recall - now cycles between various waypoints when targeting up/down.
  - Familiar skeletons will have bows.
  - Add "Simulate" spell (a pet project of mine.. may not interest you unless you have a thing for Conway's Life)
  - Add "Glider" spell (WIP, potentially destructive or server intensive!)

@@ -2097,10 +2097,11 @@ recall:
            particle: portal
            location: both
     parameters:
-        recall_marker: redstone_torch_on
         allow_spawn: true
-        auto_resurrect: true
-        auto_resurrect_invisible: false
+        allow_marker: true
+        allow_death: true
+        allow_wand: true
+        allow_home: true
     costs:
         xp: 20
 levitate:
