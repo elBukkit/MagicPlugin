@@ -164,6 +164,32 @@ boon:
         effect_fire_resistance: 600,1
         effect_saturation: 600,5
         effect_regeneration: 600,1
+perk:
+    icon: yellow_flower
+    category: light
+    class: PotionEffectSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+        -  class: EffectTrail
+           particle: red_dust
+           particle_data: 2
+           particle_count: 2
+        -  class: EffectRing
+           particle: red_dust
+           location: target
+           particle_data: 2
+    costs:
+        xp: 30
+    parameters:
+        target: any
+        range: 32
+        target_type: LivingEntity
+        effect_speed: 160,1
+        effect_night_vision: 160,5
+        effect_damage_resistance: 160,1
+        effect_saturation: 160,1
 bounce:
     icon: double_plant:1
     category: light

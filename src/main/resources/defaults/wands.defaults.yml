@@ -259,6 +259,7 @@ random:
       blob: 0,10,40,10
       boom: 20,50,60,40
       boon: 0,5,10,20
+      perk: 5,15,20,30
       blessing: 0,1,5,10
       box: 0,5,40,50
       breach: 5,20,30,40
@@ -1602,6 +1603,7 @@ guest:
         - tag
         - flare
         - camera
+        - perk
 villager:
     modifiable: true
     effect_color: '888888'
@@ -1614,6 +1616,7 @@ villager:
         - camera
         - arrow
         - leap
+        - perk
 knight:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1628,6 +1631,7 @@ knight:
         - leap
         - fling
         - pull
+        - perk
 baron:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1645,6 +1649,7 @@ baron:
         - arrowrain
         - tesseract
         - shrink
+        - perk
 lord:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1665,6 +1670,7 @@ lord:
         - cat
         - torch
         - boom
+        - perk
 hero:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1688,6 +1694,7 @@ hero:
         - stream
         - stash
         - blast
+        - perk
 king:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1714,6 +1721,7 @@ king:
         - curse
         - frost
         - grenade
+        - perk
 legend:
     modifiable: true
     effect_color: 'DDDDDD'
@@ -1745,6 +1753,7 @@ legend:
         - curse
         - frost
         - grenade
+        - perk
 overseer:
     modifiable: true
     effect_color: 'FFFFFF'
@@ -1776,6 +1785,7 @@ overseer:
         - curse
         - frost
         - grenade
+        - perk
 wizard:
     modifiable: true
     effect_color: 'A9D0F5'
@@ -1811,6 +1821,7 @@ wizard:
         - curse
         - frost
         - grenade
+        - perk
 netherwizard:
     modifiable: true
     effect_color: 'B40404'
@@ -1851,6 +1862,7 @@ netherwizard:
         - curse
         - frost
         - grenade
+        - perk
 enderwizard:
     modifiable: true
     effect_color: 'AC58FA'
@@ -1895,3 +1907,4 @@ enderwizard:
         - curse
         - frost
         - grenade
+        - perk

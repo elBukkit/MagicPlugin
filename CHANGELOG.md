@@ -11,6 +11,7 @@
  - Add "enable_glow" option to spells.yml (for @broluigi)
  - Add global "bypass_build" and "bypass_pvp" parameters to config.yml (for @LHammonds)
  - Fix cooldown messages for lengths longer than a minute (up to hours)
+ - Add "Perk" spell.
 
 ## 2.9.7
 
