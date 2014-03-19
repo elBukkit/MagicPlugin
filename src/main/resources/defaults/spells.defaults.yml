@@ -1309,6 +1309,8 @@ grenade:
         -  class: EffectSingle
            sound: lava_pop
     parameters:
+        allow_max_range: true
+        range: 32
         size: 4
         fuse: 60
     costs:
@@ -1323,12 +1325,13 @@ frag:
         -  class: EffectSingle
            sound: creeper_hiss
     parameters:
+        allow_max_range: true
+        range: 32
         size: 7
         fuse: 60
         fire: true
     costs:
         xp: 120
- 
 cluster:
     icon: coal:1
     category: dark
@@ -1339,6 +1342,8 @@ cluster:
         -  class: EffectSingle
            sound: creeper_hiss
     parameters:
+        allow_max_range: true
+        range: 32
         size: 2
         fuse: 60
         fire: false
