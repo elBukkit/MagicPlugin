@@ -7,7 +7,6 @@
  - Add global "bypass_build" and "bypass_pvp" parameters.
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Maybe use player UUID's instead of names. Might need to migrate player data for this?
- - Support schematic entity import for paintings and item frames (at least)
  - Configurable randomization for Familiar spell
  - Fix / Improve Recall spell
  - Make spells usable without a player, clean up strong Player references
@@ -45,6 +44,7 @@
  - Fix dtlTraders integration
  - Add image map search feature
  - Add schematic list command (just for magic-specific schematics, and/or WE ones, too)
+  - Support schematic entity import for paintings and item frames (at least)
  
 ## DOCUMENTATION / DEMO STUFF
 

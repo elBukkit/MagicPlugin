@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -148,5 +151,28 @@ public class Schematic {
 		}
 		
 		return null;
+	}
+
+	public List<EntityData> getEntities(Location center, int radius)
+	{
+		List<EntityData> entities = new ArrayList<EntityData>();
+		/*
+		if (weSchematic == null) return entities;
+		// No accessor! :(
+		try {
+			Field entitiesField = weSchematic.getClass().getDeclaredField("entities");
+			entitiesField.setAccessible(true);
+			
+			@SuppressWarnings("unchecked")
+			// List<Object> schematicEntities = (List<Object>)entitiesField.get(weSchematic);
+			
+			// Bukkit.getLogger().info("Found " + schematicEntities.size() + " entities");
+			
+
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+		*/
+		return entities;
 	}
 }

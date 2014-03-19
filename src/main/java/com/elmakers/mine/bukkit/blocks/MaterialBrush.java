@@ -657,7 +657,10 @@ public class MaterialBrush extends MaterialBrushData {
 		} 
 		else if (mode == BrushMode.SCHEMATIC)
 		{
-			// TODO
+			if (schematic != null)
+			{
+				return schematic.getEntities(center, radius);
+			}
 		}
 			
 		return copyEntities;
