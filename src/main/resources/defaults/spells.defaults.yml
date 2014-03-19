@@ -750,9 +750,32 @@ arrowrain:
         count: 6
         fire: true
         speed: 3
-        spread: 30
+        spread: 12
+        dpy: 4
+        ddy: -0.2
     costs:
         xp: 30
+meteor:
+    icon: double_plant:4
+    category: dark
+    class: ProjectileSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+        -  class: EffectRing
+           particle: lava_dripping
+           location: target
+           particle_count: 4
+    parameters:
+        projectile: Fireball
+        count: 12
+        fire: true
+        dpy: 12
+        ddy: -0.75
+    costs:
+        xp: 80
 arrow:
     icon: arrow
     category: dark
@@ -2126,6 +2149,7 @@ fireball:
            sound: ghast_fireball
     parameters:
         projectile: SmallFireball
+        size: 2
     costs:
         xp: 15
 map:

@@ -225,6 +225,9 @@ spells:
     arrowrain:
         name: Arrow Rain
         description: Fire a volley of arrows
+    meteor:
+        name: Meteor Shower
+        description: Fire death from above
     lightning:
         name: Lightning
         description: Strike lighting at your target

@@ -76,18 +76,18 @@ public class ProjectileSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		Location location = mage.getLocation();
-		Vector direction = mage.getDirection();
+		Location location = getEyeLocation();
+		Vector direction = getDirection().normalize();
 		for (int i = 0; i < count; i++) {
 			try {
 				Projectile projectile = null;
 				
 				if (projectileType == Arrow.class) {
-					// Spread arrows out.. maybe do this for all projectiles?
+					// Move arrow out a bit
 					Location arrowLocation = location.clone();
-					arrowLocation.setX(arrowLocation.getX() + direction.getX() * (1 + Math.random() * count));
-					arrowLocation.setY(arrowLocation.getY() + 1.5f);
-					arrowLocation.setZ(arrowLocation.getZ() + direction.getZ() * (1 + Math.random() * count));
+					arrowLocation.setX(arrowLocation.getX() + direction.getX());
+					arrowLocation.setY(arrowLocation.getY() + direction.getY());
+					arrowLocation.setZ(arrowLocation.getZ() + direction.getZ());
 					projectile = player.getWorld().spawnArrow(arrowLocation, direction, speed, spread);
 					projectile.setShooter(player);
 				} else {
@@ -103,6 +103,14 @@ public class ProjectileSpell extends Spell
 					Fireball fireball = (Fireball)projectile;
 					fireball.setIsIncendiary(useFire);
 					fireball.setYield(size);
+					
+					try {
+						Object handle = NMSUtils.getHandle(fireball);
+						Method setPositionMethod = handle.getClass().getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+						setPositionMethod.invoke(handle, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+					} catch (Throwable ex) {
+						ex.printStackTrace();
+					}
 				}
 				if (projectile instanceof Arrow) {
 					Arrow arrow = (Arrow)projectile;

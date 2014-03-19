@@ -664,11 +664,23 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Double dzValue = parameters.getDouble("dz", null);
 		if (dxValue != null || dzValue != null || dyValue != null) {
 			direction = new Vector(dxValue == null ? 0 : dxValue, dyValue == null ? 0 : dyValue, dzValue == null ? 0 : dzValue);
-			if (location != null) {
-				location = RandomUtils.setDirection(location, direction);
-			}
 		} else {
 			direction = null;
+		}
+
+		Double ddxValue = parameters.getDouble("ddx", null);
+		Double ddyValue = parameters.getDouble("ddy", null);
+		Double ddzValue = parameters.getDouble("ddz", null);
+		if (dtxValue != null || dtzValue != null || dtyValue != null) {
+			if (direction == null) direction = getDirection();
+			direction.setX(direction.getX() + (ddxValue == null ? 0 : ddxValue));
+			direction.setY(direction.getY() + (ddyValue == null ? 0 : ddyValue));
+			direction.setZ(direction.getZ() + (ddzValue == null ? 0 : ddzValue));
+		}
+
+		if (direction != null && location != null) {
+			direction = direction.normalize();
+			location = RandomUtils.setDirection(location, direction);
 		}
 		
 		if (parameters.containsKey("player")) {
