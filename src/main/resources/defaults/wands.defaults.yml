@@ -283,6 +283,7 @@ random:
       force: 5,10,20,60
       frag: 0,0,10,90
       cluster: 0,0,5,50
+      bomb: 0,0,1,20
       frost: 80,70,50,10
       gills: 10,11,20,25
       grenade: 30,50,70,20
@@ -893,6 +894,7 @@ elder:
         - box
         - frag
         - cluster
+        - bomb
         - volley
         - stalactite
         - fill
@@ -1282,6 +1284,7 @@ black:
         - curse
         - convert
         - commit
+        - bomb
         - cluster
         - wither
         - superpyramid
@@ -1325,6 +1328,7 @@ red:
         - flare
         - flamethrower
         - cluster
+        - bomb
         - frag
     materials:
         - stationary_lava    

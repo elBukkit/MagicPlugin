@@ -1373,6 +1373,30 @@ cluster:
         count: 5
     costs:
         xp: 150
+bomb:
+    icon: double_plant:4
+    category: dark
+    class: GrenadeSpell
+    pvp_restricted: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+        -  class: EffectRing
+           particle: lava_dripping
+           location: target
+           particle_count: 4
+    parameters:
+        allow_max_range: true
+        range: 32
+        size: 1
+        fuse: 60
+        fire: true
+        count: 12
+        dpy: 20
+        ddy: -0.75
+    costs:
+        xp: 250
 superblob:
     icon: slime_ball
     category: engineering
