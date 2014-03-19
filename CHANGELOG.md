@@ -4,11 +4,13 @@
 
  - Spells can have a random backfire/fizzle chance. Use with Disarm.
  - Improve Recall - now cycles between various waypoints when targeting up/down.
+ - Add "Carpet Bomb" spell.
  - Familiar skeletons will have bows.
  - Add "Simulate" spell (a pet project of mine.. may not interest you unless you have a thing for Conway's Life)
  - Add "Glider" spell (WIP, potentially destructive or server intensive!)
  - Add "enable_glow" option to spells.yml (for @broluigi)
  - Add global "bypass_build" and "bypass_pvp" parameters to config.yml (for @LHammonds)
+ - Fix cooldown messages for lengths longer than a minute (up to hours)
 
 ## 2.9.7
 

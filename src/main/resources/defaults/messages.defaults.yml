@@ -82,6 +82,8 @@ costs:
     insufficient_permissions: You don't have permission to cast that here
 cooldown:
     wait_seconds: You must wait another $seconds seconds.
+    wait_minutes: You must wait another $minutes minutes.
+    wait_hours: You must wait another $hours hours.
     wait_moment: You must wait a moment.
 categories:
     master:
@@ -105,6 +107,11 @@ categories:
     elemental:
         name: Elemental
 spells:
+    default:
+        fizzle: Your spell fizzled!
+        backfire: Your spell backfired!
+        fail: Your spell failed!
+        insufficient_permissions: You don't have permission to cast that here.
     light:
         name: Light
         description: Creates a magical light source
@@ -228,6 +235,9 @@ spells:
     meteor:
         name: Meteor Shower
         description: Fire death from above
+    bomb:
+        name: Carpet Bomb
+        description: Rain death from above
     lightning:
         name: Lightning
         description: Strike lighting at your target

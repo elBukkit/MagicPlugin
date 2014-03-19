@@ -443,7 +443,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
 			{
 				long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
-				if (seconds > 1) {
+				if (seconds > 60 * 60 ) {
+					long hours = seconds / (60 * 60);
+					sendMessage(Messages.get("cooldown.wait_hours").replace("$hours", ((Long)hours).toString()));					
+				} else if (seconds > 60) {
+					long minutes = seconds / 60;
+					sendMessage(Messages.get("cooldown.wait_minutes").replace("$minutes", ((Long)minutes).toString()));					
+				} else if (seconds > 1) {
 					sendMessage(Messages.get("cooldown.wait_seconds").replace("$seconds", ((Long)seconds).toString()));
 				} else {
 					sendMessage(Messages.get("cooldown.wait_moment"));
