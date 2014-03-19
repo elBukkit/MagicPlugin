@@ -1286,6 +1286,7 @@ public class MagicController implements Listener
 		
 		// Parse wand settings
 		Wand.DefaultWandMaterial = properties.getMaterial("wand_item", Wand.DefaultWandMaterial);
+		Wand.EnableGlow = properties.getBoolean("enable_glow", Wand.EnableGlow);
 		MaterialBrush.CopyMaterial = properties.getMaterial("copy_item", MaterialBrush.CopyMaterial);
 		MaterialBrush.EraseMaterial = properties.getMaterial("erase_item", MaterialBrush.EraseMaterial);
 		MaterialBrush.CloneMaterial = properties.getMaterial("clone_item", MaterialBrush.CloneMaterial);

@@ -113,6 +113,7 @@ public class Wand implements CostReducer {
 	public static boolean displayManaAsBar = true;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
+	public static boolean EnableGlow = true;
 	
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
@@ -137,7 +138,9 @@ public class Wand implements CostReducer {
 	public Wand(MagicController spells, Material icon, short iconData) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
 		this(InventoryUtils.getCopy(new ItemStack(icon, 1, iconData)));
-		InventoryUtils.addGlow(item);
+		if (EnableGlow) {
+			InventoryUtils.addGlow(item);
+		}
 		this.controller = spells;
 		id = UUID.randomUUID().toString();
 		wandName = Messages.get("wand.default_name");
@@ -939,7 +942,9 @@ public class Wand implements CostReducer {
 		item.setItemMeta(meta);
 		
 		// Reset Enchantment glow
-		InventoryUtils.addGlow(item);
+		if (EnableGlow) {
+			InventoryUtils.addGlow(item);
+		}
 
 		// The all-important last step of restoring the meta state, something
 		// the Anvil will blow away.
@@ -1063,7 +1068,9 @@ public class Wand implements CostReducer {
 		meta.setLore(lore);
 		
 		item.setItemMeta(meta);
-		InventoryUtils.addGlow(item);
+		if (EnableGlow) {
+			InventoryUtils.addGlow(item);
+		}
 
 		// Reset spell list and wand config
 		saveState();
