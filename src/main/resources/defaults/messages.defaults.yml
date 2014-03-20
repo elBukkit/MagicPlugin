@@ -142,6 +142,9 @@ spells:
     tag:
         name: Tag
         description: Leave a sign with your name
+        fail: Sign placement failed!
+        cast: You leave a tag
+        cast_player: You send $player a message
     arrow:
         name: Arrow
         description: Fire a magic arrow
@@ -284,38 +287,56 @@ spells:
         name: SuperConvert
         description: Convert a large sphere of blocks
         usage: Cast twice to convert
+        cancel: Convert cancelled
+        target_selected: Cast again to convert
     supercollapse:
         name: SuperCollapse
         description: Collapse a large sphere of blocks
         usage: Cast twice to collapse
+        cancel: Collapse cancelled
+        target_selected: Cast again to collapse
     superblob:
         name: SuperBlob
         description: Create a large solid sphere
         usage: Cast twice to construct
+        cancel: Blob cancelled
+        target_selected: Cast again to build sphere
     supershell:
         name: SuperShell
         description: Create a large hollow sphere
         usage: Cast twice to construct
+        cancel: Shell cancelled
+        target_selected: Cast again to build shell
     superdisc:
         name: SuperDisc
         description: Create a large circular disc
         usage: Cast twice to construct
+        cancel: Disc cancelled
+        target_selected: Cast again to build disc
     superring:
         name: SuperRing
         description: Create a large circular ring
         usage: Cast twice to construct
+        cancel: Ring cancelled
+        target_selected: Cast again to build ring
     superdome:
         name: SuperDome
         description: Create a very large dome
         usage: Cast twice to construct
+        cancel: Dome cancelled
+        target_selected: Cast again to build dome
     superpyramid:
         name: SuperPyramid
         description: Create a large hollow pyramid
         usage: Cast twice to construct
+        cancel: Pyramid cancelled
+        target_selected: Cast again to build pyramid
     superbox:
         name: SuperBox
         description: Create a large hollow box
         usage: Cast twice to construct
+        cancel: Box cancelled
+        target_selected: Cast again to build box
     kamikazee:
         name: Kamikazee
         description: Kill yourself with an explosion
@@ -367,10 +388,17 @@ spells:
         name: Fill
         description: Fill a selected cuboid area
         usage: Cast twice to fill
+        cancel: Fill cancelled
+        target_selected: Cast again to fill with $material
+        fail: Can't fill that much!
+        cast: Filled with $material
     regenerate:
         name: Regenerate
         description: Regenerate the target area
         usage: Is not undoable!
+        fail: Can't regenerate that much!
+        cast: Regenerating area
+        target_selected: Cast again to regenerate area
     recurse:
         name: Recurse
         description: Recursively fill blocks
@@ -454,6 +482,8 @@ spells:
     cat:
         name: Cat
         description: Create some cat familiars
+        cast: You summon a cat!
+        fail: Your cat is DOA.
     shrink:
         name: Shrink
         description: Hurts and shrinks various things
@@ -502,6 +532,8 @@ spells:
     mail:
         name: Mail
         description: Send a mail to a player. Not meant for wand use.
+        cast: Mail sent!
+        fail: Mail not sent.
 wands:
     random:
         name: Wand of {Spell}
@@ -611,6 +643,8 @@ wands:
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand
+        cast: You summon a wolfie!
+        fail: Your wolfie is DOA.
     decorator:
         name: Decorator
         description: Decorates large areas at a time

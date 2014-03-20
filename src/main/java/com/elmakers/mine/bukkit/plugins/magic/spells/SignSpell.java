@@ -77,7 +77,6 @@ public class SignSpell extends BlockSpell
 				sign.setLine(2, dateFormat.format(currentDate));
 				sign.setLine(3, timeFormat.format(currentDate));
 				sign.update();
-				castMessage("You leave a tag");
 				
 				BlockList signBlocks = new BlockList();
 				signBlocks.add(targetBlock);
@@ -88,7 +87,6 @@ public class SignSpell extends BlockSpell
 			}
 			else
 			{
-				sendMessage("Sign placement failed!");
 				return SpellResult.FAIL;
 			}
 		}
@@ -96,7 +94,6 @@ public class SignSpell extends BlockSpell
 		{
 			Player targetPlayer = (Player)target.getEntity();
 			targetPlayer.sendMessage(getPlayer().getName() + " says hi!");
-			sendMessage("You send " + targetPlayer.getName() + " a message");
 			return SpellResult.CAST;
 		}
 

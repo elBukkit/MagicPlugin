@@ -24,7 +24,6 @@ public class RegenerateSpell extends Spell
 
 		if (targetBlock == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetBlock)) {
@@ -50,7 +49,6 @@ public class RegenerateSpell extends Spell
 			
 			if (!batch.checkDimension(maxDimension))
 			{
-				sendMessage("Dimension is too big!");
 				return SpellResult.FAIL;
 			}
 
@@ -63,8 +61,6 @@ public class RegenerateSpell extends Spell
 		{
 			this.targetBlock = targetBlock;
 			activate();
-			castMessage("Cast again to regenerate area");
-			
 			return SpellResult.TARGET_SELECTED;
 		}
 	}
@@ -74,7 +70,6 @@ public class RegenerateSpell extends Spell
 	{
 		if (targetBlock != null)
 		{
-			sendMessage("Cancelled regenerate");
 			deactivate();
 			return true;
 		}

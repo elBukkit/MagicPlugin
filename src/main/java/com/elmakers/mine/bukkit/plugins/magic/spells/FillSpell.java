@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
@@ -26,7 +25,6 @@ public class FillSpell extends BrushSpell
 
 		if (targetBlock == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetBlock)) {
@@ -34,7 +32,6 @@ public class FillSpell extends BrushSpell
 		}
 		
 		MaterialBrush buildWith = getMaterialBrush();
-
 		if (singleBlock)
 		{
 			deactivate();
@@ -50,14 +47,10 @@ public class FillSpell extends BrushSpell
 			buildWith.modify(targetBlock);
 			
 			controller.updateBlock(targetBlock);
-
-			Material material = buildWith.getMaterial();
-			castMessage("Painting with " + material.name().toLowerCase());
 			registerForUndo(filledBlocks);
 			
 			return SpellResult.CAST;
 		}
-		
 
 		Double ftxValue = parameters.getDouble("ftx", null);
 		Double ftyValue = parameters.getDouble("fty", null);
@@ -90,7 +83,6 @@ public class FillSpell extends BrushSpell
 			
 			if (!batch.checkDimension(maxDimension))
 			{
-				sendMessage("Dimension is too big!");
 				return SpellResult.FAIL;
 			}
 			batch.setTimeToLive(parameters.getInt("undo", 0));
@@ -103,11 +95,6 @@ public class FillSpell extends BrushSpell
 		{
 			this.targetBlock = targetBlock;
 			activate();
-			
-			// Note we don't set the target until the second cast.
-			Material material = buildWith.getMaterial();
-			castMessage("Cast again to fill with " + material.name().toLowerCase());
-			
 			return SpellResult.TARGET_SELECTED;
 		}
 	}
@@ -117,7 +104,6 @@ public class FillSpell extends BrushSpell
 	{
 		if (targetBlock != null)
 		{
-			sendMessage("Cancelled fill");
 			deactivate();
 			return true;
 		}

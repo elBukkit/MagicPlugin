@@ -536,7 +536,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	
 	protected String getMessage(String messageKey, String def) {
 		String message = Messages.get("spells.default." + messageKey, def);
-		return Messages.get("spells." + key + "." + messageKey, message);
+		message = Messages.get("spells." + key + "." + messageKey, message);
+		if (message == null) message = "";
+		return message;
 	}
 	
 	protected void processResult(SpellResult result) {
@@ -550,8 +552,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		if (result == SpellResult.CAST) {
 			String message = getMessage(result.name().toLowerCase());
 			Player player = mage.getPlayer();
-			if (target != null && player != null && target.getEntity() == player) {
+			Entity targetEntity = target != null ? target.getEntity() : null;
+			if (targetEntity == player) {
 				message = getMessage("cast_self", message);
+			} else if (targetEntity instanceof Player) {
+				message = getMessage("cast_player", message);
+			} else if (targetEntity instanceof LivingEntity) {
+				message = getMessage("cast_livingentity", message);
+			} else if (targetEntity instanceof Entity) {
+				message = getMessage("cast_entity", message);
 			}
 			castMessage(message);
 		} else {
@@ -1522,7 +1531,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public boolean cancel()
 	{
-		return onCancel();
+		boolean cancelled = onCancel();
+		if (cancelled) {
+			sendMessage(getMessage("cancel"));
+		}
+		return cancelled;
 	}
 
 	protected void findTargetBlock()

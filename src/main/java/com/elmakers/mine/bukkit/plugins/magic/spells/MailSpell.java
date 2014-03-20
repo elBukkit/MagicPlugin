@@ -12,16 +12,14 @@ public class MailSpell extends Spell
 		// TODO: Multi-word messages....
 		if (!parameters.containsKey("name") || !parameters.containsKey("message"))
 		{
-			sendMessage("Requires name and message parameters");
+			controller.getLogger().warning("Mail requires name and message parameters");
 			return SpellResult.FAIL;
 		}
 		
 		if (!controller.sendMail(getCommandSender(), getPlayer().getName(), parameters.getString("name"), parameters.getString("message"))) {
-			sendMessage("Mail Not Sent");
 			return SpellResult.FAIL;
 		}
 		
-		sendMessage("Mail Sent!");
 		return SpellResult.CAST;
 	}
 }
