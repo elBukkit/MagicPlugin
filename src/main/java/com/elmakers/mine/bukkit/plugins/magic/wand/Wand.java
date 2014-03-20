@@ -49,7 +49,7 @@ public class Wand implements CostReducer {
 		"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
 		"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
-		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon"};
+		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon", "quiet"};
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -105,24 +105,26 @@ public class Wand implements CostReducer {
 	private int storedXp = 0;
 	private float storedXpProgress = 0;
 	
+	private int quietLevel = 0;
+	
+	// Inventory functionality
+	
+	private WandMode mode = null;
+	private int openInventoryPage = 0;
+	private boolean inventoryIsOpen = false;
+	private Inventory displayInventory = null;
+	
 	// Kinda of a hacky initialization optimization :\
 	private boolean suspendSave = false;
-	
+
+	// Wand configurations
+	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	public static boolean displayManaAsBar = true;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static boolean EnableGlow = true;
-	
-	// Wand configurations
-	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
-	
-	// Inventory functionality
-	WandMode mode = null;
-	int openInventoryPage = 0;
-	boolean inventoryIsOpen = false;
-	Inventory displayInventory = null;
 	
 	private Wand(ItemStack itemStack) {
 		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
@@ -637,6 +639,7 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
 		InventoryUtils.setMeta(wandNode, "effect_particle_data", Float.toString(effectParticleData));
 		InventoryUtils.setMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount));
+		InventoryUtils.setMeta(wandNode, "quiet", Integer.toString(quietLevel));
 		if (effectParticle != null) {
 			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
 		}
@@ -689,6 +692,7 @@ public class Wand implements CostReducer {
 		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
 		effectParticleData = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_particle_data", floatFormat.format(effectParticleData)));
 		effectParticleCount = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount)));
+		quietLevel = Integer.parseInt(InventoryUtils.getMeta(wandNode, "quiet", Integer.toString(quietLevel)));
 		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
 		mode = parseWandMode(InventoryUtils.getMeta(wandNode, "mode", ""), mode);
 		String iconKey = InventoryUtils.getMeta(wandNode, "icon", "");
@@ -1505,6 +1509,8 @@ public class Wand implements CostReducer {
 		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
 		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
 		
+		quietLevel = wandConfig.getInt("quiet", quietLevel);
+		
 		if (wandConfig.containsKey("effect_color") && !safe) {
 			try {
 				effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
@@ -2017,5 +2023,13 @@ public class Wand implements CostReducer {
 	
 	public WandMode getMode() {
 		return mode != null ? mode : controller.getDefaultWandMode();
+	}
+	
+	public boolean showCastMessages() {
+		return quietLevel == 0;
+	}
+	
+	public boolean showMessages() {
+		return quietLevel < 2;
 	}
 }

@@ -474,6 +474,9 @@ public class Mage implements CostReducer
 	 */
 	public void castMessage(String message)
 	{
+		// First check wand
+		if (activeWand != null && !activeWand.showCastMessages()) return;
+		
 		CommandSender sender = getCommandSender();
 		if (sender != null && controller.showCastMessages() && controller.showMessages())
 		{
@@ -491,6 +494,9 @@ public class Mage implements CostReducer
 	 */
 	public void sendMessage(String message)
 	{
+		// First check wand
+		if (activeWand != null && !activeWand.showMessages()) return;
+				
 		CommandSender sender = getCommandSender();
 		if (sender != null && controller.showMessages())
 		{

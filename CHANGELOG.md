@@ -23,6 +23,7 @@
  - Player data is now stored by UUID instead of name. Legacy data should auto-migrate.
  - Fix Construct batches modifying more blocks than necessary (and hopefully fix issues with undo on large batches)
  - Fix hotbar spells getting lost on wand organize
+ - Add "quiet" option to wands, useful for custom message display or for recording (quiet = 1 or 2 for less chat spam)
 
 ## 2.9.7
 
