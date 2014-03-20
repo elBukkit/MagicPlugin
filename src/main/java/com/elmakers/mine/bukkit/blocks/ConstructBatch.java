@@ -13,11 +13,11 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.material.Button;
-import org.bukkit.material.Command;
 import org.bukkit.material.Lever;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.PoweredRail;
+import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
@@ -360,15 +360,11 @@ public class ConstructBatch extends VolumeBatch {
 		// Check for power mode.
 		if (power)
 		{
+			Material material = block.getType();
 			BlockState blockState = block.getState();
 			MaterialData data = blockState.getData();
 			boolean powerBlock = false;
-			if (data instanceof Command) {
-				Command powerData = (Command)data;
-				powerBlock = true;
-				constructedBlocks.add(block);
-				powerData.setPowered(!powerData.isPowered());
-			} else if (data instanceof Button) {
+			if (data instanceof Button) {
 				Button powerData = (Button)data;
 				constructedBlocks.add(block);
 				powerData.setPowered(!powerData.isPowered());
@@ -388,6 +384,20 @@ public class ConstructBatch extends VolumeBatch {
 				constructedBlocks.add(block);
 				powerData.setPowered(!powerData.isPowered());
 				powerBlock = true;
+			} else if (data instanceof RedstoneWire) {
+				RedstoneWire wireData = (RedstoneWire)data;
+				constructedBlocks.add(block);
+				wireData.setData((byte)(15 - wireData.getData()));
+				powerBlock = true;
+			} else if (material == Material.REDSTONE_BLOCK) {
+				constructedBlocks.add(block);
+				block.setType(Material.AIR);
+			} else if (material == Material.REDSTONE_TORCH_OFF) {
+				constructedBlocks.add(block);
+				block.setType(Material.REDSTONE_TORCH_ON);
+			} else if (material == Material.REDSTONE_TORCH_ON) {
+				constructedBlocks.add(block);
+				block.setType(Material.REDSTONE_TORCH_OFF);
 			}
 			
 			if (powerBlock) {

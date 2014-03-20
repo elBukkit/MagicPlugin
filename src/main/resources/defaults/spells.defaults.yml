@@ -1923,6 +1923,8 @@ emp:
         radius: 8
         type: sphere
         power: true
+        cooldown: 1000
+        undo: 500
     costs:
         xp: 25
 disintegrate:
@@ -2279,7 +2281,7 @@ tent:
         range: 16
         radius: 8
         type: sphere
-        cooldown: 36000
+        cooldown: 3600000
         material: schematic|tent
         transparent: transparent_to_construction
 cage:
@@ -2299,7 +2301,7 @@ cage:
         range: 16
         radius: 8
         type: sphere
-        cooldown: 10000
+        cooldown: 60000
         undo: 30000
         material: schematic|cage
         transparent: transparent_to_construction
