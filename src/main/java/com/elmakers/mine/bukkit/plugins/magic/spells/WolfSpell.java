@@ -22,11 +22,6 @@ public class WolfSpell extends Spell
 
 	public Wolf newWolf(Target target)
 	{
-		if (target == null)
-		{
-			return null;
-		}
-
 		Block targetBlock = target.getBlock();
 		if (targetBlock == null) {
 			return null;
@@ -50,11 +45,6 @@ public class WolfSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
-		if (target == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
-
 		ArrayList<Wolf> newWolves = new ArrayList<Wolf>();
 
 		for (Wolf wolf : wolves)

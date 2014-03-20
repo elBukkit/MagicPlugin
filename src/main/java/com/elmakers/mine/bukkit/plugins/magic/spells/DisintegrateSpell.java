@@ -21,10 +21,6 @@ public class DisintegrateSpell extends BlockSpell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
-		if (target == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
 		
 		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
 		int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);

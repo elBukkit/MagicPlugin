@@ -18,7 +18,7 @@ public class PotionEffectSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
-		if (target == null || !target.isEntity() || !(target.getEntity() instanceof LivingEntity))
+		if (!target.isEntity() || !(target.getEntity() instanceof LivingEntity))
 		{
 			return SpellResult.NO_TARGET;
 		}

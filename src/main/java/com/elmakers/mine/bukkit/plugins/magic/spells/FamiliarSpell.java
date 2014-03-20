@@ -108,7 +108,7 @@ public class FamiliarSpell extends Spell
 		noTargetThrough(Material.WATER);
 
 		Target target = getTarget();
-		if (target == null || !target.hasTarget())
+		if (!target.hasTarget())
 		{
 			return SpellResult.NO_TARGET;
 		}

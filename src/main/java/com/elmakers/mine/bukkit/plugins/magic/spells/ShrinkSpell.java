@@ -39,10 +39,6 @@ public class ShrinkSpell extends BlockSpell
 		}
 		
 		Target target = getTarget();
-		if (target == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
 
 		if (target.isEntity()) {
 			if (!(target.getEntity() instanceof LivingEntity)) return SpellResult.NO_TARGET;

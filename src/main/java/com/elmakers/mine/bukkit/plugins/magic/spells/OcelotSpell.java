@@ -23,11 +23,6 @@ public class OcelotSpell extends Spell
 
 	public Ocelot newOcelot(Target target)
 	{
-		if (target == null)
-		{
-			return null;
-		}
-
 		Block targetBlock = target.getBlock();
 		if (targetBlock == null)
 		{
@@ -52,11 +47,6 @@ public class OcelotSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
-		if (target == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
-
 		ArrayList<Ocelot> newocelots = new ArrayList<Ocelot>();
 
 		for (Ocelot Ocelot : ocelots)

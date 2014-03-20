@@ -31,10 +31,6 @@ public class ConstructSpell extends BrushSpell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target t = getTarget();
-		if (t == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
 		Block target = t.getBlock();
 		if (target == null)
 		{
