@@ -1,32 +1,35 @@
 # TODO
 
 ## For 2.9.8
+
+ - Fix overlapping undo (better fix)
+ - Allow firing projectiles without a player
  
 ## For 2.9.9
 
  - Commandbook kit integration
- - Purge player data on save (When possible)
  - Improve tab completion
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
- - Fix overlapping undo (better fix)
  - Customizable wand crafting recipes, check NMS data for "icon"
+ - Config-driven WandLevel limits.
+ - Add "wand duplicate" command
 
 ## For 3.0.0
 
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Add Multi-Spell Spell
  - Add Spell effect to projectile spell
- - Config-driven WandLevel limits.
- - Add "wand duplicate" command
- - A way to /wand enchant with auto-fill but not filling wand... ?
+ - Add Command spell
  - Tweaking/Balancing - haste, cooldowns, etc
- - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Finish localization
  - Make push spell reflect projectiles (set fireball velocity)
  - Configurable randomization for Familiar spell
  - Cast spells on WG region enter/exit (Darkrael)
  - Fix first construct of a schematic. (?)
+ - A way to /wand enchant with auto-fill but not filling wand... ?
+ - Magic stats (that persist) - block modified, etc. (Statistics API?)
+ - Scoreboard mana/spell display
  
 ## Post-3.0.0
 
@@ -65,7 +68,6 @@
 
  - Async player data save/load (... undo queue locking?)
  - investigate lag/slowdown - new dynmap stuff?
- - Scoreboard mana/spell display
 
 ## NEW SPELLS
 

@@ -333,6 +333,8 @@ random:
       superdome: 0,0,1,10
       tunnel: 5,10,20,30
       undo: 0,0,1,10
+      commit: 0,0,0,1
+      rewind: 0,0,0,5
       pillar: 0,5,10,15
       place: 0,1,5,10
       stash: 0,1,5,10
@@ -709,6 +711,8 @@ engineer:
         - place
         - recurse
         - undo
+        - commit
+        - rewind
         - commit
         - blob
         - stalactite
