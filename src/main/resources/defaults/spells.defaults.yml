@@ -585,7 +585,7 @@ frost:
     costs:
         xp: 75
 lightning:
-    icon: raw_fish:3
+    icon: raw_fish:2
     category: firebending
     class: LightningSpell
     pvp_restricted: true
@@ -603,7 +603,7 @@ lightning:
     costs:
         xp: 10
 storm:
-    icon: quartz
+    icon: raw_fish:3
     category: firebending
     class: LightningSpell
     pvp_restricted: true
@@ -1047,10 +1047,10 @@ phase:
         cast:
         -  class: EffectSingle
            sound: portal_travel
-           target: both
+           location: both
         -  class: EffectRing
            particle: portal
-           target: both
+           location: both
            particle_count: 2
     parameters:
         cooldown: 2000
@@ -1064,7 +1064,7 @@ invincible:
         cast:
         -  class: EffectSingle
            sound: enderdragon_growl
-           target: both
+           location: both
         -  class: EffectRing
            particle: town_aura
            target: source
@@ -1083,7 +1083,7 @@ fire:
         cast:
         -  class: EffectSingle
            sound: fire
-           target: both
+           location: both
         -  class: EffectTrail
            particle: flame
            particle_count: 2
@@ -1104,7 +1104,7 @@ inferno:
         cast:
         -  class: EffectSingle
            sound: fire
-           target: both
+           location: both
         -  class: EffectTrail
            particle: flame
            particle_count: 4
@@ -1124,7 +1124,7 @@ cushion:
         cast:
         -  class: EffectSingle
            sound: splash
-           target: both
+           location: both
         -  class: EffectTrail
            particle: water_dripping
            particle_count: 8
@@ -1898,6 +1898,30 @@ blob:
         transparent: transparent_to_construction
     costs:
         xp: 25
+emp:
+    icon: quartz
+    category: master
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectTrail
+           effect_particle: red_dust
+           effect_particle_count: 5
+        -  class: EffectRing
+           effect_particle: red_dust
+           effect_particle_count: 3
+           location: target
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 8
+        type: sphere
+        power: true
+    costs:
+        xp: 25
 disintegrate:
     icon: bone
     category: dark
@@ -1928,10 +1952,10 @@ blink:
         cast:
         -  class: EffectSingle
            sound: enderman_teleport
-           target: both
+           location: both
         -  class: EffectRing
            particle: portal
-           target: both
+           location: both
     parameters:
         allow_max_range: false
         allow_ascend: true
@@ -1950,7 +1974,7 @@ tesseract:
         -  class: EffectSingle
            sound: enderman_teleport
            particle: portal
-           target: both
+           location: both
     parameters:
         allow_max_range: false
         allow_ascend: false

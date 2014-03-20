@@ -259,7 +259,7 @@ random:
       blob: 0,10,40,10
       boom: 20,50,60,40
       boon: 0,5,10,20
-      perk: 5,15,20,30
+      emp: 0,0,10,20
       blessing: 0,1,5,10
       box: 0,5,40,50
       breach: 5,20,30,40
@@ -298,6 +298,7 @@ random:
       peek: 10,30,40,30
       mob: 0,0,5,10
       monster: 5,20,30,30
+      perk: 5,15,20,30
       wolf: 0,10,20,50
       lightning: 40,50,30,5
       storm: 0,0,10,90
@@ -1547,6 +1548,7 @@ wolf:
         - flamethrower
         - regenerate
         - tag
+        - emp
     materials:  
         - lapis_block
         - water
@@ -1608,6 +1610,7 @@ villager:
     modifiable: true
     effect_color: '888888'
     xp_regeneration: 2
+    protection_falling: 0.1
     xp_max: 60
     icon: stick
     spells:
@@ -1623,6 +1626,8 @@ knight:
     xp_regeneration: 3
     xp_max: 75
     icon: diamond_sword
+    protection_falling: 0.2
+    protection_physical: 0.1
     spells:
         - tag
         - flare
@@ -1638,6 +1643,8 @@ baron:
     xp_regeneration: 4
     xp_max: 80
     icon: diamond_sword
+    protection_falling: 0.3
+    protection_physical: 0.2
     spells:
         - tag
         - flare
@@ -1656,6 +1663,8 @@ lord:
     xp_regeneration: 4
     xp_max: 100
     icon: diamond_sword
+    protection_falling: 0.5
+    protection_physical: 0.3
     spells:
         - tag
         - flare
@@ -1677,6 +1686,9 @@ hero:
     xp_regeneration: 4
     xp_max: 120
     icon: diamond_sword
+    protection_falling: 0.5
+    protection_physical: 0.5
+    protection_fire: 0.1
     spells:
         - tag
         - flare
@@ -1701,6 +1713,9 @@ king:
     xp_regeneration: 5
     xp_max: 130
     icon: diamond_sword
+    protection_falling: 0.7
+    protection_physical: 0.6
+    protection_fire: 0.2
     spells:
         - tag
         - flare
@@ -1730,6 +1745,9 @@ legend:
     effect_particle: town_aura
     effect_particle_count: 2
     icon: diamond_sword
+    protection_falling: 0.8
+    protection_physical: 0.8
+    protection_fire: 0.3
     spells:
         - tag
         - flare
@@ -1762,6 +1780,10 @@ overseer:
     effect_particle: town_aura
     effect_particle_count: 2
     icon: diamond_sword
+    protection_falling: 0.8
+    protection_physical: 0.8
+    protection_fire: 0.5
+    protection_explosions: 0.5
     spells:
         - tag
         - flare
@@ -1789,11 +1811,13 @@ overseer:
 wizard:
     modifiable: true
     effect_color: 'A9D0F5'
-    xp_regeneration: 7
+    xp_regeneration: 10
     xp_max: 200
     effect_particle: portal
     effect_particle_count: 2
     icon: blaze_rod
+    protection_falling: 1.0
+    protection: 0.8
     spells:
         - tag
         - flare
@@ -1825,11 +1849,14 @@ wizard:
 netherwizard:
     modifiable: true
     effect_color: 'B40404'
-    xp_regeneration: 10
-    xp_max: 250
+    xp_regeneration: 20
+    xp_max: 300
     effect_particle: portal
     effect_particle_count: 3
     effect_particle_data: 2
+    protection_falling: 1.0
+    protection: 0.8
+    protection_fire: 1.0
     icon: blaze_rod
     spells:
         - tag
@@ -1866,12 +1893,15 @@ netherwizard:
 enderwizard:
     modifiable: true
     effect_color: 'AC58FA'
-    xp_regeneration: 20
-    xp_max: 300
+    xp_regeneration: 30
+    xp_max: 500
     effect_particle: lava_dripping
     effect_particle_count: 4
     effect_bubbles: true
     icon: blaze_rod
+    protection_falling: 1.0
+    protection: 0.9
+    protection_fire: 1.0
     spells:
         - tag
         - flare

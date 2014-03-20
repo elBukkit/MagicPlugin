@@ -148,6 +148,9 @@ public class ConstructSpell extends BrushSpell
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
 		}
+		if (parameters.getBoolean("power", false)) {
+			batch.setPower(true);
+		}
 		mage.addPendingBlockBatch(batch);
 		
 		deactivate();

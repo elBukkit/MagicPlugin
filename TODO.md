@@ -6,7 +6,8 @@
  - Fix first construct of a schematic. (?)
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
-
+ - Fix overlapping Construct modifications.
+ 
 ## For 2.9.9
 
  - Commandbook kit integration
@@ -14,7 +15,7 @@
  - Improve tab completion
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
- - Undo fails in some cases (overlapping undo issue still present, need more complex fix)
+ - Fix overlapping undo (better fix)
  - Look at player data, reference by UUID, async loading, binary data, etc.
 
 ## For 3.0.0
@@ -39,6 +40,7 @@
  - Add image map search feature
  - Add schematic list command (just for magic-specific schematics, and/or WE ones, too)
   - Support schematic entity import for paintings and item frames (at least)
+ - EnderDragon familiars that don't do block damage or spawn a portal on death?
  
 ## DOCUMENTATION / DEMO STUFF
 

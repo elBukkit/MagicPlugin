@@ -388,6 +388,9 @@ spells:
     blob:
         name: Blob
         description: Create a solid blob
+    emp:
+        name: EMP
+        description: Electrify the area
     familiar:
         name: Familiar
         description: Create an animal familiar

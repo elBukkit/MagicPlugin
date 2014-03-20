@@ -10,7 +10,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.material.Button;
+import org.bukkit.material.Command;
+import org.bukkit.material.Lever;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.PistonBaseMaterial;
+import org.bukkit.material.PoweredRail;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
@@ -47,6 +54,7 @@ public class ConstructBatch extends VolumeBatch {
 	private int delayedBlockIndex = 0;
 	private Integer maxOrientDimension = null;
 	private Integer minOrientDimension = null;
+	private boolean power = false;
 	
 	private int x = 0;
 	private int y = 0;
@@ -81,6 +89,10 @@ public class ConstructBatch extends VolumeBatch {
 		} else {
 			orient = new Vector(0, 1, 0);
 		}
+	}
+	
+	public void setPower(boolean power) {
+		this.power = power;
 	}
 	
 	public void setFallingBlockVelocity(Vector velocity) {
@@ -333,9 +345,55 @@ public class ConstructBatch extends VolumeBatch {
 		
 		if (y < 0 || y > MAX_Y) return true;
 		
+		// Make sure the block is loaded.
+		Block block = center.getWorld().getBlockAt(x, y, z);
+		if (!block.getChunk().isLoaded()) {
+			block.getChunk().load();
+			return false;
+		}
+		
+		// Check for power mode.
+		if (power)
+		{
+			BlockState blockState = block.getState();
+			MaterialData data = blockState.getData();
+			boolean powerBlock = false;
+			if (data instanceof Command) {
+				Command powerData = (Command)data;
+				powerBlock = true;
+				constructedBlocks.add(block);
+				powerData.setPowered(!powerData.isPowered());
+			} else if (data instanceof Button) {
+				Button powerData = (Button)data;
+				constructedBlocks.add(block);
+				powerData.setPowered(!powerData.isPowered());
+				powerBlock = true;
+			} else if (data instanceof Lever) {
+				Lever powerData = (Lever)data;
+				constructedBlocks.add(block);
+				powerData.setPowered(!powerData.isPowered());
+				powerBlock = true;
+			} else if (data instanceof PistonBaseMaterial) {
+				PistonBaseMaterial powerData = (PistonBaseMaterial)data;
+				constructedBlocks.add(block);
+				powerData.setPowered(!powerData.isPowered());
+				powerBlock = true;
+			} else if (data instanceof PoweredRail) {
+				PoweredRail powerData = (PoweredRail)data;
+				constructedBlocks.add(block);
+				powerData.setPowered(!powerData.isPowered());
+				powerBlock = true;
+			}
+			
+			if (powerBlock) {
+				blockState.update();
+			}
+			
+			return true;
+		}
+
 		// Prepare material brush, it may update
 		// given the current target (clone, replicate)
-		Block block = center.getWorld().getBlockAt(x, y, z);
 		MaterialBrush brush = spell.getMaterialBrush();
 		brush.update(mage, block.getLocation());
 		
@@ -359,11 +417,6 @@ public class ConstructBatch extends VolumeBatch {
 			delayBlock.updateFrom(brush);
 			delayedBlocks.add(delayBlock);
 			return true;
-		}
-		
-		if (!block.getChunk().isLoaded()) {
-			block.getChunk().load();
-			return false;
 		}
 		
 		if (!spell.isDestructible(block))
