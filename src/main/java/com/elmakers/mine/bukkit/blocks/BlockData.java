@@ -21,13 +21,16 @@ public class BlockData extends MaterialAndData
 	public static final BlockFace[] FACES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN };
 	public static final BlockFace[] SIDES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST };
 
+	protected static Server server;
+	
 	// Transient
 	protected Block     block;
+	protected BlockData	nextState;
+	protected BlockData	priorState;
 
+	// Persistent
 	protected BlockVector  location;
 	protected String       world;
-
-	protected static Server server;
 	
 	public static void setServer(Server server) {
 		BlockData.server = server;
@@ -132,7 +135,7 @@ public class BlockData extends MaterialAndData
 		this.location = location;
 	}
 
-	public boolean undo()
+	protected boolean undo()
 	{
 		if (!checkBlock())
 		{
@@ -150,8 +153,30 @@ public class BlockData extends MaterialAndData
 		{
 			modify(block);
 		}
+		
+		if (priorState != null) {
+			priorState.setNextState(nextState);
+		}
+		if (nextState != null) {
+			nextState.setPriorState(priorState);
+			nextState.updateFrom(this);
+		}
 
 		return true;
+	}
+	
+	protected void commit()
+	{
+		if (nextState != null) {
+			nextState.setPriorState(null);
+			nextState.updateFrom(block);
+		}
+		
+		if (priorState != null) {
+			// Very important for recursion!
+			priorState.setNextState(null);
+			priorState.commit();
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -186,5 +211,21 @@ public class BlockData extends MaterialAndData
 	
 	public BlockVector getLocation() {
 		return location;
+	}
+	
+	public BlockData getNextState() {
+		return nextState;
+	}
+	
+	public void setNextState(BlockData next) {
+		nextState = next;
+	}
+	
+	public BlockData getPriorState() {
+		return priorState;
+	}
+	
+	public void setPriorState(BlockData prior) {
+		priorState = prior;
 	}
 }

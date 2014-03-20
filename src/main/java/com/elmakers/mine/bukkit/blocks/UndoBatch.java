@@ -18,7 +18,7 @@ public class UndoBatch extends VolumeBatch {
 		ArrayList<BlockData> undoList = blockList.getBlockList();
 		while (undoList != null && blockIndex < undoList.size()) {
 			BlockData blockData = undoList.get(blockIndex);
-			if (!blockData.undo()) {
+			if (!blockList.undo(blockData)) {
 				break;
 			}
 			updateBlock(blockData);
@@ -26,7 +26,6 @@ public class UndoBatch extends VolumeBatch {
 			processedBlocks++;
 		}
 		if (undoList == null || blockIndex >= undoList.size()) {
-			blockList.commit();
 			finish();
 		}
 		

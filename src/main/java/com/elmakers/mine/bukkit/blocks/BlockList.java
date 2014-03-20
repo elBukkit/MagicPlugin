@@ -75,35 +75,11 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return add(newBlock);
 	}
 	
-	public static boolean commitAll() 
-	{
-		boolean undid = modified.size() > 0;
-		modified.clear();
-		return undid;
-	}
-
-	public void commit()
-	{
-		if (blockList == null) return;
-		
-		for (BlockData block : blockList)
-		{
-			modified.remove(block.getId());
-		}
-	}
-	
 	public boolean add(BlockData blockData)
 	{
 		// First do a sanity check with the map
 		// Currently, we don't replace blocks!
 		if (contains(blockData)) return true;
-
-		// TODO: Make this work better, commit, etc.
-		if (modified.containsKey(blockData.getId())) {
-			blockData = modified.get(blockData.getId());
-		} else {
-			modified.put(blockData.getId(), blockData);
-		}
 			
 		if (blockIdMap == null)
 		{
@@ -320,6 +296,55 @@ public class BlockList implements Collection<BlockData>, Serializable
 			return null;
 		}
 		return blockList.toArray(arg0);
+	}
+	
+	public void prepareForUndo()
+	{
+		if (blockList == null) return;
+		
+		for (BlockData blockData : blockList) 
+		{
+			BlockData priorState = modified.get(blockData.getId());
+			if (priorState != null)
+			{
+				priorState.setNextState(blockData);
+				blockData.setPriorState(priorState);
+			}
+
+			modified.put(blockData.getId(), blockData);
+		}
+	}
+
+	public void commit()
+	{
+		if (blockList == null) return;
+		
+		for (BlockData block : blockList)
+		{
+			BlockData currentState = modified.get(block.getId());
+			if (currentState == block)
+			{
+				modified.remove(block.getId());
+			}
+
+			block.commit();
+		}
+	}
+	
+	public boolean undo(BlockData undoBlock)
+	{
+		if (undoBlock.undo()) {
+			BlockData currentState = modified.get(undoBlock.getId());
+			if (currentState == undoBlock) {
+				modified.put(undoBlock.getId(), undoBlock.getPriorState());
+			}
+			
+			undoBlock.undo();
+			
+			return true;
+		}
+		
+		return false;
 	}
 
 	public void undo(Mage mage)

@@ -7,6 +7,7 @@
  - Add "EMP" spell.
  - Add "Perk" spell.
  - Make arrow rain more like a rain of arrows.
+ - Improve undo system and overlapping regions (out of order undo, etc)
  - Projectiles can be used without a player (e.g. command blocks)
  - All spell messages are now standardized and localized in messages.yml. All the in-game text can be changed.
  - Spells can have a random backfire/fizzle chance. Use with Disarm.
@@ -21,6 +22,7 @@
  - Fix /spells <category> NPE (Thanks, @Felikahn)
  - Player data is now stored by UUID instead of name. Legacy data should auto-migrate.
  - Fix Construct batches modifying more blocks than necessary (and hopefully fix issues with undo on large batches)
+ - Fix hotbar spells getting lost on wand organize
 
 ## 2.9.7
 

@@ -1,8 +1,6 @@
 # TODO
 
 ## For 2.9.8
-
- - Fix overlapping undo (better fix)
  
 ## For 2.9.9
 

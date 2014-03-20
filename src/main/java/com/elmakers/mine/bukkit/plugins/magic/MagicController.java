@@ -84,7 +84,6 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
-import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.Schematic;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
@@ -381,9 +380,6 @@ public class MagicController implements Listener
 		for (Mage mage : mages.values()) {
 			undid = mage.commit() || undid;
 		}
-		// Eventually this shouldn't be necessary since committing all undo queues
-		// *should* also clear the modified list.
-		undid = BlockList.commitAll() || undid;
 		return undid;
 	}
 

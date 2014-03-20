@@ -27,13 +27,16 @@ public class UndoQueue
 	{
 		if (maxSize > 0 && blockQueue.size() > maxSize)
 		{
-			blockQueue.removeFirst();
+			BlockList expired = blockQueue.removeFirst();
+			expired.commit();
 		}
+		blocks.prepareForUndo();
 		blockQueue.add(blocks);
 	}
 	
 	public void scheduleCleanup(Mage mage, BlockList blocks)
 	{
+		blocks.prepareForUndo();
 		scheduledBlocks.add(blocks);
 		
 		Plugin plugin = mage.getController().getPlugin();
