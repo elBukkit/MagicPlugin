@@ -47,7 +47,6 @@ public class LightningSpell extends Spell
 		Target target = getTarget();
 		if (!target.hasTarget())
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 
@@ -65,8 +64,6 @@ public class LightningSpell extends Spell
 		{
 			this.coverSurface(target.getLocation(), radius, action);
 		}
-
-		castMessage("Zapped " + action.getBlocks().size() + " blocks");
 
 		return SpellResult.CAST;
 	}

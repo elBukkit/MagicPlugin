@@ -84,7 +84,6 @@ public class ShrinkSpell extends BlockSpell
 			if ((ownerName != null || data != 3) && li.isDead()) {
 				dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 			}
-			castMessage("Boogidie Boogidie");
 		} else {
 			Block targetBlock = target.getBlock();
 			if (targetBlock == null) {
@@ -108,8 +107,6 @@ public class ShrinkSpell extends BlockSpell
 			dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
 			targetBlock.setType(Material.AIR);
 			registerForUndo(shrunk);
-			
-			castMessage("Shrink!");
 		}
 		
 		return SpellResult.CAST;

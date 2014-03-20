@@ -21,7 +21,6 @@ public class PortalSpell extends BlockSpell
 		Block target = getTargetBlock();
 		if (target == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target)) 
@@ -40,7 +39,6 @@ public class PortalSpell extends BlockSpell
 		blockType = portalBase.getType();
 		if (blockType != Material.AIR && blockType != Material.SNOW)
 		{
-			castMessage("Can't create a portal there");
 			return SpellResult.NO_TARGET;		
 		}
 

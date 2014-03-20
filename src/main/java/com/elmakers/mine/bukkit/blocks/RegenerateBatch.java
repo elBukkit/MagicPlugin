@@ -4,12 +4,13 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
 
 public class RegenerateBatch extends VolumeBatch {
 	private final World world;
 	private final Mage mage;
+	private final BlockSpell spell;
 
 	// These are chunk coords!
 	private final int absx;
@@ -21,10 +22,11 @@ public class RegenerateBatch extends VolumeBatch {
 	private int ix = 0;
 	private int iz = 0;
 	
-	public RegenerateBatch(Spell spell, Location p1, Location p2) {
+	public RegenerateBatch(BlockSpell spell, Location p1, Location p2) {
 		super(spell.getMage().getController(), p1.getWorld().getName());
 		this.mage = spell.getMage();
 		this.world = this.mage.getPlayer().getWorld();
+		this.spell = spell;
 		
 		int deltax = p2.getBlock().getChunk().getX() - p1.getChunk().getX();
 		int deltaz = p2.getChunk().getZ() - p1.getChunk().getZ();
@@ -82,7 +84,10 @@ public class RegenerateBatch extends VolumeBatch {
 	public void finish() {
 		if (!finished) {
 			super.finish();
-			mage.castMessage("Regenerated " + getXSize() + "x" + getZSize() + " chunks");
+			
+			String message = spell.getMessage("cast_finish");
+			message = message.replace("$count", Integer.toString(getXSize() * getZSize()));
+			spell.castMessage(message);
 		}
 	}
 	

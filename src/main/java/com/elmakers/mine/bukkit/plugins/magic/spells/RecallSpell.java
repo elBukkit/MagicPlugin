@@ -66,7 +66,7 @@ public class RecallSpell extends Spell
 			}
 			RecallType newType = RecallType.valueOf(typeString.toUpperCase());
 			if (newType == null) {
-				castMessage("Unknown recall type " + typeString);
+				controller.getLogger().warning("Unknown recall type " + typeString);
 				return SpellResult.FAIL;
 			}
 			
@@ -99,26 +99,26 @@ public class RecallSpell extends Spell
 				return placeMarker(getLocation().getBlock());
 			}
 			
-			castMessage("Returning you to your marker");
+			castMessage(getMessage("cast_marker"));
 			tryTeleport(location);
 			break;
 			case DEATH:
 				Location deathLocation = mage.getLastDeathLocation();
 				if (deathLocation == null)
 				{
-					sendMessage("No recorded death location. Sorry!");
+					sendMessage(getMessage("no_target_death"));
 					return SpellResult.NO_TARGET;
 				}
 
-				castMessage("Returning you to your last death location");
+				castMessage(getMessage("cast_death"));
 				tryTeleport(deathLocation);
 				return SpellResult.CAST; 
 			case SPAWN:
-				castMessage("Returning you to spawn");
+				castMessage(getMessage("cast_spawn"));
 				tryTeleport(getWorld().getSpawnLocation());
 				break;
 			case HOME:
-				castMessage("Returning you home");
+				castMessage(getMessage("cast_home"));
 				tryTeleport(player.getBedSpawnLocation());
 				break;
 			case WAND:
@@ -126,11 +126,11 @@ public class RecallSpell extends Spell
 				Location wandLocation = lostWands.size() > 0 ? lostWands.get(0).getLocation() : null;
 				if (wandLocation == null)
 				{
-					sendMessage("No recorded lost wands for you");
+					sendMessage(getMessage("no_target_wand"));
 					return SpellResult.NO_TARGET;
 				}
 				
-				castMessage("Returning you to your lost wand");
+				castMessage(getMessage("cast_wand"));
 				tryTeleport(wandLocation);
 				return SpellResult.CAST; 
 			default:
@@ -177,7 +177,6 @@ public class RecallSpell extends Spell
 	{
 		if (target == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		Block targetBlock = target.getRelative(BlockFace.UP);
@@ -187,17 +186,16 @@ public class RecallSpell extends Spell
 		}
 		if (targetBlock.getType() != Material.AIR)
 		{
-			castMessage("Can't place a marker there");
 			return SpellResult.NO_TARGET;
 		}
 
 		if (removeMarker())
 		{
-			castMessage("You move your recall marker");
+			castMessage(getMessage("cast_marker_move"));
 		}
 		else
 		{
-			castMessage("You place a recall marker");
+			castMessage(getMessage("cast_marker_place"));
 		}
 
 		location = getLocation();

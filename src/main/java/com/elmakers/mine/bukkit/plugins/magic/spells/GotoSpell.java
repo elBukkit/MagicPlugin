@@ -22,7 +22,7 @@ public class GotoSpell extends Spell
 			Player destination = getFarthestPlayer(getPlayer());
 			if (destination == null) return SpellResult.NO_TARGET;
 			getPlayer().teleport(destination);
-			castMessage("Teleporting you to " + destination.getName());
+			castMessage(getMessage("cast_to_player").replace("$player", destination.getName()));
 			return SpellResult.CAST;
 		}
 
@@ -35,7 +35,7 @@ public class GotoSpell extends Spell
 			Player destination = getFarthestPlayer(targetedPlayer);
 			if (destination == null) return SpellResult.NO_TARGET;
 			targetedPlayer.teleport(destination);
-			castMessage("Teleporting " + targetedPlayer.getName() + " to " + destination.getName());
+			castMessage(getMessage("cast_player_to_player").replace("$player", targetedPlayer.getName().replace("$to_player", destination.getName())));
 			return SpellResult.CAST;
 		}
 
@@ -50,7 +50,7 @@ public class GotoSpell extends Spell
 
 		if (targetPlayer == null) return SpellResult.NO_TARGET;
 		targetPlayer.teleport(destination);
-		castMessage("Teleporting " + targetPlayer.getName() + " to your target");
+		castMessage(getMessage("cast_player_to_target").replace("$player", targetPlayer.getName()));
 
 		return SpellResult.CAST;
 	}

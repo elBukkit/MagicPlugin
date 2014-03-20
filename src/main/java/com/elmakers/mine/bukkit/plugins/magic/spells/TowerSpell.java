@@ -10,14 +10,16 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TowerSpell extends BlockSpell {
 
+	private int blocksCreated;
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		blocksCreated = 0;
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target)) {
@@ -44,13 +46,11 @@ public class TowerSpell extends BlockSpell {
 			Block block = getBlockAt(midX, y, midZ);
 			if (block.getType() != Material.AIR)
 			{
-				castMessage("Found ceiling of " + block.getType().name().toLowerCase());
 				height = i;
 				break;
 			}
 		}
 
-		int blocksCreated = 0;
 		BlockList towerBlocks = new BlockList();
 		for (int i = 0; i < height; i++)
 		{
@@ -76,7 +76,12 @@ public class TowerSpell extends BlockSpell {
 			}
 		}
 		registerForUndo(towerBlocks);
-		castMessage("Made tower " + height + " high with " + blocksCreated + " blocks");
 		return SpellResult.CAST;
+	}
+	
+	@Override
+	public String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		return message.replace("$count", Integer.toString(blocksCreated));
 	}
 }

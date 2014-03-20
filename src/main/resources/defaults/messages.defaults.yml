@@ -148,28 +148,36 @@ spells:
         fail: Sign placement failed!
         cast: You leave a tag
         cast_player: You send $player a message
+        cast_give: Have some signs!
+        cast_message: You hear a mysterious voice from $player ... it says ... Hi!
     arrow:
         name: Arrow
         description: Fire a magic arrow
     toss:
         name: Toss
         description: Toss a block
+        fail: One of your blocks fizzled
+        cast: You toss a block
     volley:
         name: Volley
         description: Toss a bunch of blocks
+        fail: One of your blocks fizzled
+        cast: You toss some blocks
     sniper:
         name: Sniper
         description: Fire a super fast arrow
     pull:
         name: Pull
         description: Pull things toward you
+        area: Gimme!
+        cast: Yoink!
     kaboom:
         name: KaBoom
         description: Create a big explosion
     frost:
         name: Frost
         description: Freeze water and create snow
-        cast: Freeze!
+        cast: Frosted $count blocks
     storm:
         name: Storm
         description: Start a lightning storm
@@ -185,10 +193,15 @@ spells:
     heal:
         name: Heal
         description: Heal yourself or others
+        cast: You heal your target
+        cast_self: You heal yourself
     gather:
         name: Gather
         description: Gather groups of players together
         usage: Cast up to teleport yourself, aim to tp others
+        cast_to_player: Teleporting you to $player
+        cast_player_to_player: Teleporting $player to $to_player
+        cast_player_to_target: Teleporting $player to your target
     icbm:
         name: ICBM
         description: Cast an exploding fireball
@@ -211,6 +224,8 @@ spells:
     torch:
         name: Torch
         description: Creates a torch or glowstone
+        no_target: Can't put a torch there
+        cast: Flame on!
     tunnel:
         name: Tunnel
         description: Mine out a tunnel in front of you
@@ -227,6 +242,7 @@ spells:
     portal:
         name: Portal
         description: Create a temporary portal
+        no_target: Can't create a portal there
     phase:
         name: Phase
         description: Phase to another dimension
@@ -270,12 +286,15 @@ spells:
     day:
         name: Sunny Day
         description: Make it a lovely day
+        cast_time: What a pretty day!
     night:
         name: Night
         description: Make it dark
+        cast_time: Spoooooky
     time:
         name: Time
         description: Change the time of day
+        cast_time: Changed time to $time
     bridge:
         name: Bridge
         description: Extend the ground underneath you
@@ -400,6 +419,7 @@ spells:
     push:
         name: Push
         description: Push things away from you
+        area: Get away!
     farm:
         name: Herd
         description: Create a herd
@@ -445,9 +465,11 @@ spells:
         fail: Can't regenerate that much!
         cast: Regenerating area
         target_selected: Cast again to regenerate area
+        cast_finish: Regenerated $count chunks
     recurse:
         name: Recurse
         description: Recursively fill blocks
+        cast: Filled $count blocks with $material
     fire:
         name: Fire
         description: Light fires from a distance
@@ -500,6 +522,7 @@ spells:
         name: Stalactite
         description: Create a downward pillar
         cast: You lower a pillar of $material
+        no_target: Can't pillar down any further
     lava:
         name: Lava
         description: Fire a stream of lava
@@ -509,21 +532,21 @@ spells:
     iterate:
         name: Iterate
         description: Construct a line of blocks
+        cast: Filled $count blocks
     superiterate:
         name: Column
         description: Construct a large column of blocks
+        cast: Filled $count blocks
     flamethrower:
         name: Flamethrower
         description: Burn, baby, burn!
     stash:
         name: Stash
         description: A place to keep your stuff.
-    superiterate:
-        name: Column
-        description: Construct a large column of blocks
     laser:
         name: Laser
         description: Destroy a line of blocks
+        cast: Lasered $count blocks
     stream:
         name: Stream
         description: Spray a stream of water
@@ -553,7 +576,8 @@ spells:
         name: Shrink
         description: Hurts and shrinks various things
         usage: Must kill the target to receive skull
-        cast: ZAP!
+        cast: Shrink!
+        cast_entity: ZAP!
     flare:
         name: Flare
         description: Fire off flares
@@ -562,6 +586,16 @@ spells:
         name: Recall
         description: Marks locations for return
         usage: Cast to set marker or to return
+        no_target: Can't place a marker there
+        cast_marker_place: You place a recall marker
+        cast_marker_move: You move your recall marker
+        cast_marker: Returning you to your marker
+        cast_death: Returning you to your last death location
+        cast_spawn: Returning you to spawn
+        cast_home: Returning you home
+        cast_wand: Returning you to your lost wand
+        no_target_death: No recorded death location. Sorry!
+        no_target_wand: No recorded wands for you
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
@@ -578,6 +612,8 @@ spells:
         name: Pillar
         description: Raises a pillar up
         cast: You create a pillar of $material
+        no_target: Can't pillar any further
+        no_target: Can't pillar any further
     place:
         name: Place
         description: Place a block at your target
@@ -597,6 +633,7 @@ spells:
     map:
         name: Map
         description: Generate a map
+        cast: Here's a map!
     camera:
         name: Camera
         description: Take a portrait of yourself or others

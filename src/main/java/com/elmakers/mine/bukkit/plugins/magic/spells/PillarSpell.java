@@ -19,7 +19,6 @@ public class PillarSpell extends BrushSpell
 		Block attachBlock = getTargetBlock();
 		if (attachBlock == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}	
 
@@ -44,7 +43,6 @@ public class PillarSpell extends BrushSpell
 		}
 		if (isTargetable(targetBlock.getType()))
 		{
-			castMessage("Can't pillar any further");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetBlock)) {
@@ -59,8 +57,6 @@ public class PillarSpell extends BrushSpell
 		buildWith.update(mage, pillar.getLocation());
 		pillarBlocks.add(pillar);
 		buildWith.modify(pillar);
-
-		castMessage("Creating a pillar of " + attachBlock.getType().name().toLowerCase());
 		
 		pillarBlocks.setTimeToLive(parameters.getInt("undo", 0));
 		

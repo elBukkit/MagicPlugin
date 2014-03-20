@@ -58,7 +58,7 @@ public class TorchSpell extends BlockSpell
 				}
 			}
 			setTime(targetTime);    
-			castMessage("Changed time to " + timeDescription);
+			castMessage(getMessage("cast_time").replace("$time", timeDescription));
 			return SpellResult.CAST;
 		}
 
@@ -67,7 +67,7 @@ public class TorchSpell extends BlockSpell
 		boolean allowDay = parameters.getBoolean("allow_day", false);
 		if (getYRotation() > 80 && allowDay)
 		{
-			castMessage("FLAME ON!");
+			castMessage(getMessage("cast_time").replace("$time", "day"));
 			setTime(0);
 			return SpellResult.CAST;
 		}
@@ -75,7 +75,7 @@ public class TorchSpell extends BlockSpell
 
 		if (getYRotation() < -80 && allowNight)
 		{
-			castMessage("FLAME OFF!");
+			castMessage(getMessage("cast_time").replace("$time", "night"));
 			setTime(13000);
 			return SpellResult.CAST;
 		}
@@ -85,7 +85,6 @@ public class TorchSpell extends BlockSpell
 
 		if (target == null || face == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target)) {
@@ -113,7 +112,6 @@ public class TorchSpell extends BlockSpell
 				||		(targetMaterial == Material.GLOWSTONE && !allowLightstone)
 				)
 		{
-			castMessage("Can't put a torch there");
 			return SpellResult.NO_TARGET;
 		}
 
@@ -122,7 +120,6 @@ public class TorchSpell extends BlockSpell
 			target = face;
 		}	
 
-		castMessage("Flame on!");
 		BlockList torchBlock = new BlockList();
 		target.setType(targetMaterial);
 		torchBlock.add(target);

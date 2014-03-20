@@ -24,7 +24,7 @@ public class SignSpell extends BlockSpell
 		String typeString = parameters.getString("type", "");
 		if (typeString.equals("give"))
 		{
-			castMessage("Have some signs!");
+			castMessage(getMessage("cast_give"));
 			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0) ? SpellResult.CAST : SpellResult.FAIL;
 		}
 
@@ -93,7 +93,10 @@ public class SignSpell extends BlockSpell
 		else if (target.isEntity() && target.getEntity() instanceof Player)
 		{
 			Player targetPlayer = (Player)target.getEntity();
-			targetPlayer.sendMessage(getPlayer().getName() + " says hi!");
+			String message = getMessage("cast_message");
+			if (message.length() == 0) return SpellResult.NO_TARGET;
+			message.replace("$player", getPlayer().getName());
+			targetPlayer.sendMessage(message);
 			return SpellResult.CAST;
 		}
 

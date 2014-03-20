@@ -165,8 +165,6 @@ public class IterateSpell extends BrushSpell
 			registerForUndo(iteratedBlocks);
 		}
 
-		castMessage("Filled " + iteratedBlocks.size() + " blocks");
-
 		return SpellResult.CAST;
 	}
 }

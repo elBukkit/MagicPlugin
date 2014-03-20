@@ -18,7 +18,6 @@ public class MapSpell extends Spell
 	{
 		World world = getWorld();
 		MapView newMap = Bukkit.createMap(world);
-		castMessage("Here's a map!");
 		ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
 		world.dropItemNaturally(getLocation(), newMapItem);
 		return SpellResult.CAST;

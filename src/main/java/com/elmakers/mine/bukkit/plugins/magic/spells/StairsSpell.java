@@ -22,7 +22,6 @@ public class StairsSpell extends BlockSpell
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 

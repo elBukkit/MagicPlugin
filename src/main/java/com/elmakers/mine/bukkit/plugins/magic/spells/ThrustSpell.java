@@ -270,12 +270,10 @@ public class ThrustSpell extends Spell
 		if (action.isActive(getPlayer()))
 		{
 			action.deactivate(this);
-			castMessage("You feel heavier");
 		}
 		else
 		{
 			action.activate(this);
-			castMessage("You feel lighter");
 		}
 
 		lastLevitate = System.currentTimeMillis();

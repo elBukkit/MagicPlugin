@@ -21,7 +21,6 @@ public class RecurseSpell extends BrushSpell
 		
 		if (targetBlock == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetBlock)) 
@@ -58,9 +57,6 @@ public class RecurseSpell extends BrushSpell
 		blockRecurse.recurse(targetBlock, action);
 		mage.registerForUndo(action.getBlocks());
 		controller.updateBlock(targetBlock);
-
-		Material material = buildWith.getMaterial();
-		castMessage("Filled " + action.getBlocks().size() + " blocks with " + material.name().toLowerCase());	
 		
 		return SpellResult.CAST;
 	}

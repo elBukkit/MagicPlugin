@@ -74,7 +74,6 @@ public class FrostSpell extends BlockSpell
 
 		if (!target.hasTarget())
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		
@@ -127,7 +126,6 @@ public class FrostSpell extends BlockSpell
 		BlockList frozenBlocks = action.getBlocks();
 		frozenBlocks.setTimeToLive(timeToLive);
 		registerForUndo(frozenBlocks);
-		castMessage("Frosted " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target.getBlock());
 
 		return SpellResult.CAST;

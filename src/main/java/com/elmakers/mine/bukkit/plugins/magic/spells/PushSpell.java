@@ -70,14 +70,6 @@ public class PushSpell extends Spell
 			&&  (getYRotation() < -80 || getYRotation() > 80)
 		)
 		{
-			if (push)
-			{
-				castMessage("Get away!");
-			}
-			else
-			{
-				castMessage("Gimme!");
-			}
 			forceAll(multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);
 			return SpellResult.AREA;
 		}
@@ -98,15 +90,6 @@ public class PushSpell extends Spell
 			forceEntity(targetEntity, multiplier, from, to, magnitude);
 			pushed++;
 			if (count > 0 && pushed >= count) break;
-		}
-
-		if (pull)
-		{
-			castMessage("Yoink!");
-		}
-		else
-		{
-			castMessage("Shove!");
 		}
 		return SpellResult.CAST;
 	}
