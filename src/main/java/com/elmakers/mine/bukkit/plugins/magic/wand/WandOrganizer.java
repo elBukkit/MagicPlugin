@@ -154,7 +154,15 @@ public class WandOrganizer {
 		currentInventoryCount = 0;
 		currentInventory = wand.getInventoryByIndex(currentInventoryIndex);
 		
-		// Put favorites first
+		// Restore hotbar items first
+		for (String hotbarSpellName : hotbarSpellNames) {
+			addToInventory(wand.createSpellItem(hotbarSpellName));
+		}
+		for (String hotbarMaterialName : hotbarMaterialNames) {
+			addToInventory(wand.createMaterialItem(hotbarMaterialName));
+		}
+		
+		// Put favorites
 		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
 			for (String spellName : favorites) {
 				addToInventory(wand.createSpellItem(spellName));
