@@ -627,12 +627,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		fizzleChance = parameters.getFloat("fizzle_chance", fizzleChance);
 		backfireChance = parameters.getFloat("backfire_chance", backfireChance);
 		
-		// Special hack that should work well in most casts.
-		if (isUnderwater()) {
-			targetThroughMaterials.add(Material.WATER);
-			targetThroughMaterials.add(Material.STATIONARY_WATER);
-		}
-		
 		if (parameters.containsKey("target")) {
 			String targetTypeName = parameters.getString("target");
 			try {
@@ -658,6 +652,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				controller.getLogger().warning("Unknown entity type: " + entityTypeName);
 				targetEntityType = null;
 			}
+		}
+		
+		String worldName = parameters.getString("world");
+		if (worldName != null && worldName.length() > 0) {
+			location = new Location(Bukkit.getWorld(worldName), 0, 0, 0);
 		}
 		
 		Double yValue = parameters.getDouble("py", null);
@@ -748,6 +747,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
 		costReduction = parameters.getFloat("cost_reduction", 0);
 		cooldownReduction = parameters.getFloat("cooldown_reduction", 0);
+		
+		// Special hack that should work well in most casts.
+		if (isUnderwater()) {
+			targetThroughMaterials.add(Material.WATER);
+			targetThroughMaterials.add(Material.STATIONARY_WATER);
+		}
 	}
 
 	public String getPermissionNode()
@@ -1025,6 +1030,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		Block playerBlock = null;
 		Location playerLoc = getLocation();
+		if (playerLoc == null) return null;
 		int x = (int) Math.round(playerLoc.getX() - 0.5);
 		int y = (int) Math.round(playerLoc.getY() - 0.5);
 		int z = (int) Math.round(playerLoc.getZ() - 0.5);
@@ -1117,29 +1123,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		default:
 			return direction;
 		}
-	}
-
-
-	/**
-	 * Find a good location to spawn a projectile, such as a fireball.
-	 * 
-	 * @return The projectile spawn location
-	 */
-	protected Location getProjectileSpawnLocation()
-	{
-		Block spawnBlock = getPlayerBlock();
-
-		int height = 2;
-		double hLength = 2;
-		double xOffset = (hLength * Math.cos(Math.toRadians(xRotation)));
-		double zOffset = (hLength * Math.sin(Math.toRadians(xRotation)));
-
-		Vector aimVector = new Vector(xOffset + 0.5, height + 0.5, zOffset + 0.5);
-
-		Location location = new Location(getWorld(), spawnBlock.getX() + aimVector.getX(), spawnBlock.getY()
-				+ aimVector.getY(), spawnBlock.getZ() + aimVector.getZ(), getLocation().getYaw(), getLocation().getPitch());
-
-		return location;
 	}
 
 	protected Location getLocation()
@@ -1531,6 +1514,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	public boolean isUnderwater()
 	{
 		Block playerBlock = getPlayerBlock();
+		if (playerBlock == null) return false;
 		playerBlock = playerBlock.getRelative(BlockFace.UP);
 		return (playerBlock.getType() == Material.WATER || playerBlock.getType() == Material.STATIONARY_WATER);
 	}
