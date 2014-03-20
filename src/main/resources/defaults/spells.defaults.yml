@@ -848,6 +848,13 @@ weather:
         -  class: EffectRing
            particle: water_dripping
            location: source
+           particle_count: 1
+        area:
+        -  class: EffectSingle
+           sound: ambience_thunder
+        -  class: EffectRing
+           particle: water_dripping
+           location: source
            particle_count: 4
     parameters:
         cooldown: 30000
@@ -1711,27 +1718,24 @@ undo:
         -  class: EffectSingle
            sound: anvil_break
     parameters:
-        allow_max_range: false
-        range: 200
+        target: self
     costs:
-        xp: 5
+        xp: 20
 commit:
     icon: book
     category: engineering
-    class: UndoSpell
+    class: CommitSpell
     effects:
         cast:
         -  class: EffectSingle
            sound: anvil_use
     parameters:
-        allow_max_range: false
-        range: 200
-        type: commit
+        target: self
     costs:
-        xp: 5
+        xp: 50
 rewind:
     icon: written_book
-    category: master
+    category: engineering
     class: UndoSpell
     effects:
         cast:
@@ -1740,7 +1744,6 @@ rewind:
     parameters:
         allow_max_range: false
         range: 128
-        type: targetall
         transparent: transparent_to_construction
     costs:
         xp: 100
