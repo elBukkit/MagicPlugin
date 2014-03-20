@@ -17,6 +17,7 @@
  - Fix material names in cast messages.
  - Fix /spells <category> NPE (Thanks, @Felikahn)
  - Player data is now stored by UUID instead of name. Legacy data should auto-migrate.
+ - Fix Construct batches modifying more blocks than necessary (and hopefully fix issues with undo on large batches)
 
 ## 2.9.7
 

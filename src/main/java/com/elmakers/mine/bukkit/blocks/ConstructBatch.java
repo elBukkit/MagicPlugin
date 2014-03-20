@@ -321,14 +321,16 @@ public class ConstructBatch extends VolumeBatch {
 		boolean success = true;
 		if (fillBlock)
 		{
-			success = success && constructBlock(x, -y, z);
-			success = success && constructBlock(-x, -y, z);
-			success = success && constructBlock(-x, -y, -z);
-			success = success && constructBlock(x, -y, -z);
+			if (y != 0) {
+				success = success && constructBlock(x, -y, z);
+				if (x != 0) success = success && constructBlock(-x, -y, z);
+				if (z != 0) success = success && constructBlock(x, -y, -z);
+				if (x != 0 && z != 0) success = success && constructBlock(-x, -y, -z);
+			}
 			success = success && constructBlock(x, y, z);
-			success = success && constructBlock(-x, y, z);
-			success = success && constructBlock(-x, y, -z);
-			success = success && constructBlock(x, y, -z);
+			if (x != 0) success = success && constructBlock(-x, y, z);
+			if (z != 0) success = success && constructBlock(x, y, -z);
+			if (z != 0 && x != 0) success = success && constructBlock(-x, y, -z);
 		}
 		return success;
 	}

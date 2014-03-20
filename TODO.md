@@ -1,8 +1,6 @@
 # TODO
 
 ## For 2.9.8
-
- - Fix overlapping Construct modifications.
  
 ## For 2.9.9
 
