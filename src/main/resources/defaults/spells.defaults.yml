@@ -723,7 +723,7 @@ icbm:
            sound: ghast_fireball
     parameters:
         size: 10
-        projectile: Fireball
+        projectile: LargeFireball
     costs:
         xp: 100
 neutron:
@@ -795,11 +795,12 @@ meteor:
            location: target
            particle_count: 4
     parameters:
-        projectile: Fireball
+        projectile: SmallFireball
         count: 12
         fire: true
+        spread: 30
         dpy: 12
-        ddy: -0.75
+        ddy: -0.2
     costs:
         xp: 80
 arrow:

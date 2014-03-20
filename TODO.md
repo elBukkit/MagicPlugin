@@ -3,7 +3,6 @@
 ## For 2.9.8
 
  - Fix overlapping undo (better fix)
- - Allow firing projectiles without a player
  
 ## For 2.9.9
 

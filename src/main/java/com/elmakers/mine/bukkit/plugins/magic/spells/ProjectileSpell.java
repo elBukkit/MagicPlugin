@@ -1,14 +1,17 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -23,16 +26,11 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class ProjectileSpell extends Spell 
 {
 	private int defaultSize = 1;
+	private Random random = new Random();
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Player player = getPlayer();
-		if (player == null) {
-			return SpellResult.PLAYER_REQUIRED;
-		}
-
 		int count = parameters.getInt("count", 1);
 		int size = parameters.getInt("size", defaultSize);
 		int radius = parameters.getInt("radius", 0);
@@ -57,59 +55,118 @@ public class ProjectileSpell extends Spell
 		boolean useFire = parameters.getBoolean("fire", true);
 		int tickIncrease = parameters.getInteger("tick_increase", 1180);
 		
-		String projectileClass = parameters.getString("projectile", "Fireball");
+		String projectileTypeName = parameters.getString("projectile", "Fireball");
+		final Class<?> projectileClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
+		final Class<?> fireballClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
 		final Class<?> arrowClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
+		final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
+		final Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server.Entity");
 		final Class<?> craftArrowClass = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
 		
-		// Track projectiles to remove them after some time.
-		List<Projectile> projectiles = new ArrayList<Projectile>();
-		Class<? extends Projectile> projectileType = null;
-		try {
-			projectileType = (Class<? extends Projectile>)Class.forName("org.bukkit.entity." + projectileClass);
-		} catch (Exception ex) {
-			controller.getLogger().warning(ex.getMessage());
+		if (projectileClass == null || worldClass == null || fireballClass == null || arrowClass == null || craftArrowClass == null) {
+			controller.getLogger().warning("Can't find NMS classess");
 			return SpellResult.FAIL;
 		}
 		
-		if (projectileType != Arrow.class && !hasBuildPermission(getLocation().getBlock())) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
+		Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
+		if (projectileType == null
+			|| (!arrowClass.isAssignableFrom(projectileType) 
+			&& !projectileClass.isAssignableFrom(projectileType) 
+			&& !fireballClass.isAssignableFrom(projectileType))) {
+			controller.getLogger().warning("Bad projectile class: " + projectileTypeName);
+			return SpellResult.FAIL;
 		}
 		
+		// Prevent explosive projectiles in no-build zones
+		if (fireballClass.isAssignableFrom(projectileType) && !hasBuildPermission(getLocation().getBlock())) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
+
+		Constructor<? extends Object> constructor = null;
+		Method shootMethod = null;
+		Method setPositionRotationMethod = null;
+		Field dirXField = null;
+		Field dirYField = null;
+		Field dirZField = null;
+		Method addEntityMethod = null;
+		try {
+			constructor = projectileType.getConstructor(worldClass);
+			
+			if (fireballClass.isAssignableFrom(projectileType)) {
+				dirXField = projectileType.getField("dirX");
+				dirYField = projectileType.getField("dirY");
+				dirZField = projectileType.getField("dirZ");
+			} 
+
+			if (projectileClass.isAssignableFrom(projectileType) || arrowClass.isAssignableFrom(projectileType)) {
+				shootMethod = projectileType.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+			}
+			
+			setPositionRotationMethod = projectileType.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+			addEntityMethod = worldClass.getMethod("addEntity", entityClass);
+	    } catch (Throwable ex) {
+			ex.printStackTrace();
+			return SpellResult.FAIL;
+		}
+		
+		// Prepare parameters
 		Location location = getEyeLocation();
 		Vector direction = getDirection().normalize();
+
+		// Track projectiles to remove them after some time.
+		List<Projectile> projectiles = new ArrayList<Projectile>();
+		
+		// Spawn projectiles
+		Object nmsWorld = NMSUtils.getHandle(location.getWorld());
+		Player player = getPlayer();
 		for (int i = 0; i < count; i++) {
 			try {
-				Projectile projectile = null;
+				// Spawn a new projectile
+				Object nmsProjectile = null;
+				nmsProjectile = constructor.newInstance(nmsWorld);
+
+				if (nmsProjectile == null) {
+					throw new Exception("Failed to spawn projectile of class " + projectileTypeName);
+				}
 				
-				if (projectileType == Arrow.class) {
-					// Move arrow out a bit
-					Location arrowLocation = location.clone();
-					arrowLocation.setX(arrowLocation.getX() + direction.getX());
-					arrowLocation.setY(arrowLocation.getY() + direction.getY());
-					arrowLocation.setZ(arrowLocation.getZ() + direction.getZ());
-					projectile = player.getWorld().spawnArrow(arrowLocation, direction, speed, spread);
+				// Set position and rotation, and potentially velocity (direction)
+				// Velocity must be set manually- EntityFireball.setDirection applies a crazy-wide gaussian distribution!
+				if (dirXField != null && dirYField != null && dirZField != null) {
+					// Taken from EntityArrow
+					double spreadWeight = Math.min(0.4f,  spread * 0.007499999832361937D);
+					
+					double dx = speed * (direction.getX() + (random.nextGaussian() * spreadWeight));
+					double dy = speed * (direction.getY() + (random.nextGaussian() * spreadWeight));
+					double dz = speed * (direction.getZ() + (random.nextGaussian() * spreadWeight));
+
+			        dirXField.set(nmsProjectile, dx * 0.1D);
+			        dirYField.set(nmsProjectile, dy * 0.1D);
+			        dirZField.set(nmsProjectile, dz * 0.1D);
+				}
+				setPositionRotationMethod.invoke(nmsProjectile, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+
+				if (shootMethod != null) {
+					shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
+				}
+				
+				Entity entity = NMSUtils.getBukkitEntity(nmsProjectile);
+				if (entity == null || !(entity instanceof Projectile)) {
+					throw new Exception("Got invalid bukkit entity from projectile of class " + projectileTypeName);
+				}
+				Projectile projectile = (Projectile)entity;
+
+				if (player != null) {
 					projectile.setShooter(player);
-				} else {
-					projectile = player.launchProjectile(projectileType);
 				}
-				if (projectile == null) {
-					throw new Exception("A projectile fizzled");
-				}
+				
 				projectiles.add(projectile);
-				projectile.setShooter(getPlayer());
+				
+				addEntityMethod.invoke(nmsWorld, nmsProjectile);
 				
 				if (projectile instanceof Fireball) {
 					Fireball fireball = (Fireball)projectile;
 					fireball.setIsIncendiary(useFire);
 					fireball.setYield(size);
-					
-					try {
-						Object handle = NMSUtils.getHandle(fireball);
-						Method setPositionMethod = handle.getClass().getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-						setPositionMethod.invoke(handle, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-					} catch (Throwable ex) {
-						ex.printStackTrace();
-					}
 				}
 				if (projectile instanceof Arrow) {
 					Arrow arrow = (Arrow)projectile;

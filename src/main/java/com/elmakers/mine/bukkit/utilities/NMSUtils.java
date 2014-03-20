@@ -77,7 +77,7 @@ public class NMSUtils {
 		}
 	}
 	
-	public static Class getBukkitClass(String className) {
+	public static Class<?> getBukkitClass(String className) {
 		Class<?> ret = null;
 		try { 	
 			ret = fixBukkitClass(className);
@@ -87,7 +87,7 @@ public class NMSUtils {
 		return ret;
 	}
 	
-	protected static Class<?> fixBukkitClass(String className) {
+	public static Class<?> fixBukkitClass(String className) {
 		className = className.replace("org.bukkit.craftbukkit.", "org.bukkit.craftbukkit." + versionPrefix);
 		className = className.replace("net.minecraft.server.", "net.minecraft.server." + versionPrefix);
 		try {
@@ -97,7 +97,7 @@ public class NMSUtils {
 		}
 	}
 	
-	protected static Object getHandle(org.bukkit.inventory.ItemStack stack) {
+	public static Object getHandle(org.bukkit.inventory.ItemStack stack) {
 		Object handle = null;
 		try {
 			Field handleField = stack.getClass().getDeclaredField("handle");
@@ -109,7 +109,7 @@ public class NMSUtils {
 		return handle;
 	}
 
-	protected static Object getHandle(org.bukkit.World world) {
+	public static Object getHandle(org.bukkit.World world) {
 		Object handle = null;
 		try {
 			Method handleMethod = world.getClass().getMethod("getHandle");
@@ -144,7 +144,7 @@ public class NMSUtils {
 		return done;
 	}
 
-	protected static Object getHandle(org.bukkit.Chunk chunk) {
+	public static Object getHandle(org.bukkit.Chunk chunk) {
 		Object handle = null;
 		try {
 			Method handleMethod = chunk.getClass().getMethod("getHandle");
@@ -155,7 +155,7 @@ public class NMSUtils {
 		return handle;
 	}
 
-	protected static Object getHandle(org.bukkit.entity.Player player) {
+	public static Object getHandle(org.bukkit.entity.Player player) {
 		Object handle = null;
 		try {
 			Method handleMethod = player.getClass().getMethod("getHandle");

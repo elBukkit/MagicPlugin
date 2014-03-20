@@ -2,18 +2,21 @@
 
 ## 2.9.8
 
+ - Add "Carpet Bomb" spell.
+ - Add "Meteor Shower" spell.
+ - Add "EMP" spell.
+ - Add "Perk" spell.
+ - Make arrow rain more like a rain of arrows.
+ - Projectiles can be used without a player (e.g. command blocks)
  - All spell messages are now standardized and localized in messages.yml. All the in-game text can be changed.
  - Spells can have a random backfire/fizzle chance. Use with Disarm.
  - Improve Recall - now cycles between various waypoints when targeting up/down.
- - Add "Carpet Bomb" spell.
  - Familiar skeletons will have bows.
  - Add "Simulate" spell (a pet project of mine.. may not interest you unless you have a thing for Conway's Life)
  - Add "Glider" spell (WIP, potentially destructive or server intensive!)
  - Add "enable_glow" option to spells.yml (for @broluigi)
  - Add global "bypass_build" and "bypass_pvp" parameters to config.yml (for @LHammonds)
  - Fix cooldown messages for lengths longer than a minute (up to hours)
- - Add "Perk" spell.
- - Add "EMP" spell. (WIP)
  - Fix material names in cast messages.
  - Fix /spells <category> NPE (Thanks, @Felikahn)
  - Player data is now stored by UUID instead of name. Legacy data should auto-migrate.
