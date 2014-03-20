@@ -468,7 +468,7 @@ public class MagicPlugin extends JavaPlugin
 		if (!(sender instanceof Player)) {
 			if (commandLabel.equalsIgnoreCase("spells"))
 			{
-				listSpells(sender, -1, null);
+				listSpells(sender, -1, args.length > 0 ? args[0] : null);
 				return true;
 			}
 			if (commandLabel.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("list"))
@@ -1100,7 +1100,9 @@ public class MagicPlugin extends JavaPlugin
 		Player player = sender instanceof Player ? (Player)sender : null;
 		for (Spell spell : spellVariants)
 		{
-			if (spell.getCategory().equalsIgnoreCase(category) && (player == null || spell.hasSpellPermission(player)))
+			String spellCategory = spell.getCategory();
+			if (spellCategory != null && spellCategory.equalsIgnoreCase(category) 
+				&& (player == null || spell.hasSpellPermission(player)))
 			{
 				categorySpells.add(spell);
 			}
@@ -1108,10 +1110,12 @@ public class MagicPlugin extends JavaPlugin
 
 		if (categorySpells.size() == 0)
 		{
-			player.sendMessage("You don't know any spells");
+			String message = Messages.get("general.no_spells_in_category");
+			message = message.replace("$category", category);
+			sender.sendMessage(message);
 			return;
 		}
-
+		sender.sendMessage(category + ":");
 		Collections.sort(categorySpells);
 		for (Spell spell : categorySpells)
 		{
@@ -1120,7 +1124,7 @@ public class MagicPlugin extends JavaPlugin
 			if (!name.equals(spell.getKey())) {
 				description = name + " : " + description;
 			}
-			player.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getIcon().getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
+			sender.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getIcon().getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
 		}
 	}
 
@@ -1148,7 +1152,7 @@ public class MagicPlugin extends JavaPlugin
 		}
 		if (spellGroups.size() == 0)
 		{
-			player.sendMessage("You don't know any spells");
+			player.sendMessage(Messages.get("general.no_spells"));
 			return;
 		}
 
@@ -1202,10 +1206,15 @@ public class MagicPlugin extends JavaPlugin
 			{
 				pageNumber = maxPages;
 			}
-
-			sender.sendMessage("You know " + spellCount + " spells. [" + pageNumber + "/" + maxPages + "]");
+			String message = Messages.get("general.spell_list_page");
+			message = message.replace("$count", Integer.toString(spellCount));
+			message = message.replace("$pages", Integer.toString(maxPages));
+			message = message.replace("$page", Integer.toString(pageNumber));
+			sender.sendMessage(message);
 		} else {
-			sender.sendMessage("Listing " + spellCount + " spells.");	
+			String message = Messages.get("general.spell_list");
+			message = message.replace("$count", Integer.toString(spellCount));
+			sender.sendMessage(message);	
 		}
 
 		int currentPage = 1;

@@ -2,10 +2,7 @@
 
 ## For 2.9.8
 
- - Fix first construct of a schematic. (?)
- - Customizable wand crafting recipes, check NMS data for "icon"
  - Fix overlapping Construct modifications.
- - Fix /spells <category> NPE (Thanks, @Felikahn)
  
 ## For 2.9.9
 
@@ -16,6 +13,7 @@
  - Retry limit on construction batches
  - Fix overlapping undo (better fix)
  - Look at player data, reference by UUID, async loading, binary data, etc.
+ - Customizable wand crafting recipes, check NMS data for "icon"
 
 ## For 3.0.0
 
@@ -31,6 +29,7 @@
  - Make push spell reflect projectiles (set fireball velocity)
  - Configurable randomization for Familiar spell
  - Cast spells on WG region enter/exit (Darkrael)
+ - Fix first construct of a schematic. (?)
  
 ## Post-3.0.0
 

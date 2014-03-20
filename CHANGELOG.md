@@ -2,6 +2,7 @@
 
 ## 2.9.8
 
+ - All spell messages are now standardized and localized in messages.yml. All the in-game text can be changed.
  - Spells can have a random backfire/fizzle chance. Use with Disarm.
  - Improve Recall - now cycles between various waypoints when targeting up/down.
  - Add "Carpet Bomb" spell.
@@ -14,6 +15,7 @@
  - Add "Perk" spell.
  - Add "EMP" spell. (WIP)
  - Fix material names in cast messages.
+ - Fix /spells <category> NPE (Thanks, @Felikahn)
 
 ## 2.9.7
 
