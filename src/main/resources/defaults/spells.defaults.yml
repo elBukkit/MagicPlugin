@@ -1317,10 +1317,10 @@ pillar:
         transparent: transparent_to_construction
     costs:
         xp: 5
-extend:
+place:
     icon: diamond_axe
     category: engineering
-    class: ExtendSpell
+    class: PlaceSpell
     effects:
         cast:
         -  class: EffectSingle

@@ -334,7 +334,7 @@ random:
       tunnel: 5,10,20,30
       undo: 0,0,1,10
       pillar: 0,5,10,15
-      extend: 0,1,5,10
+      place: 0,1,5,10
       stash: 0,1,5,10
       stalactite: 0,5,10,15
       kaboom: 0,0,1,5
@@ -706,7 +706,7 @@ engineer:
         - absorb
         - bridge
         - pillar
-        - extend
+        - place
         - recurse
         - undo
         - commit
@@ -903,7 +903,7 @@ elder:
         - blob
         - blast
         - pillar
-        - extend
+        - place
         - bridge
         - absorb
         - alter
@@ -1073,7 +1073,7 @@ earth_3:
         - volley
         - blast
         - pillar
-        - extend
+        - place
         - bridge
         - breach
         - earth
@@ -1212,7 +1212,7 @@ white:
         - blob
         - blast
         - pillar
-        - extend
+        - place
         - bridge
         - absorb
         - undo
@@ -1278,7 +1278,7 @@ black:
         - blob
         - blast
         - pillar
-        - extend
+        - place
         - bridge
         - absorb
         - undo
@@ -1399,7 +1399,7 @@ green:
         - heal
         - leap
         - pillar
-        - extend
+        - place
         - stalactite
         - wolf
         - cat
@@ -1513,7 +1513,7 @@ wolf:
         - blob
         - blast
         - pillar
-        - extend
+        - place
         - bridge
         - absorb
         - alter
