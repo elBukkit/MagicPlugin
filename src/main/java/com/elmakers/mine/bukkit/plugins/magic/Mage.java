@@ -646,6 +646,7 @@ public class Mage implements CostReducer
 		try {
 			if (configNode == null) return;
 
+			playerName = configNode.getString("name", playerName);
 			lastDeathLocation = configNode.getLocation("last_death_location");
 			
 			getUndoQueue().load(this, configNode);
@@ -671,6 +672,7 @@ public class Mage implements CostReducer
 	protected void save(ConfigurationNode configNode)
 	{
 		try {
+			configNode.setProperty("name", playerName);
 			configNode.setProperty("last_death_location", lastDeathLocation);
 			
 			ConfigurationNode brushNode = configNode.createChild("brush");

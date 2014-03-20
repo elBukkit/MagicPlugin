@@ -12,7 +12,6 @@
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
  - Fix overlapping undo (better fix)
- - Look at player data, reference by UUID, async loading, binary data, etc.
  - Customizable wand crafting recipes, check NMS data for "icon"
 
 ## For 3.0.0
@@ -40,6 +39,7 @@
  - Add schematic list command (just for magic-specific schematics, and/or WE ones, too)
   - Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
+ - Async player data loading/saving
  
 ## DOCUMENTATION / DEMO STUFF
 

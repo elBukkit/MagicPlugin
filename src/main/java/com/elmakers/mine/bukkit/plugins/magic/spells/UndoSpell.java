@@ -32,11 +32,11 @@ public class UndoSpell extends Spell
 			boolean undone = false;
 			if (targetAll)
 			{
-				String playerName = controller.undoAny(target.getBlock());
-				if (playerName != null) 
+				Mage targetMage = controller.undoAny(target.getBlock());
+				if (targetMage != null) 
 				{
 					undone = true;
-					setTargetName(mage.getName());
+					setTargetName(targetMage.getName());
 				}
 			}
 			else

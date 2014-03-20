@@ -236,7 +236,6 @@ public class MagicPlugin extends JavaPlugin
 			if (args.length == 1) {
 				options.addAll(MagicController.getPlayerNames());
 			} else if (args.length > 1) {
-				mage = controller.getMage(args[0]);
 				String[] args2 = Arrays.copyOfRange(args, 1, args.length);
 				handleWandCommandTab(options, mage, sender, cmd, alias, args2);
 			}

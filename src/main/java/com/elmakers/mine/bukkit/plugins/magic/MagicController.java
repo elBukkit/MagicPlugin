@@ -133,49 +133,78 @@ public class MagicController implements Listener
 	public Mage getMage(Player player)
 	{
 		if (player == null) return null;
-		Mage mage = getMage(player.getName());
-		if (mage != null)
-		{
-			mage.setPlayer(player);
-		}
-
-		return mage;
+		return getMage(player.getUniqueId().toString(), player);
 	}
 	
-	public Mage getMage(String mageName, CommandSender commandSender)
+	public Mage getMage(String mageId, CommandSender commandSender)
 	{
-		Mage mage = getMage(mageName);
-		if (mage != null)
+		Mage mage = null;
+		if (!mages.containsKey(mageId)) 
 		{
-			mage.setLocation(null);
-			mage.setCommandSender(commandSender);
-			if (commandSender instanceof Player) {
-				mage.setPlayer((Player)commandSender);
+			mage = new Mage(this, null);
+			
+			// Check for existing data file
+			File playerFile = new File(playerDataFolder, mageId + ".dat");
+			if (playerFile.exists()) 
+			{
+				getLogger().info("Loading player data from file " + playerFile.getName());
+				try {
+					Configuration playerData = new Configuration(playerFile);
+					playerData.load();
+					mage.load(playerData);
+				} catch (Exception ex) {
+					getLogger().warning("Failed to load player data from file " + playerFile.getName());
+					ex.printStackTrace();
+				}
+			} else if (commandSender != null && commandSender instanceof Player) {
+				// TOOD: Remove legacy data migration.
+				Player player = (Player)commandSender;
+				File legacyFile = new File(playerDataFolder, player.getName() + ".yml");
+				if (legacyFile.exists()) 
+				{
+					getLogger().info("Migrating player data from file " + legacyFile.getName());
+					try {
+						Configuration playerData = new Configuration(legacyFile);
+						playerData.load();
+						mage.load(playerData);
+					} catch (Exception ex) {
+						getLogger().warning("Failed to migrate player data from file " + legacyFile.getName());
+						ex.printStackTrace();
+					}
+				}
 			}
-			if (commandSender instanceof BlockCommandSender) {
-				BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
-				mage.setLocation(commandBlock.getBlock().getLocation());
-			}
+			
+			mages.put(mageId, mage);
+		} else {
+			mage = mages.get(mageId);
 		}
-
+		mage.setLocation(null);
+		mage.setCommandSender(commandSender);
+		if (commandSender instanceof Player) {
+			mage.setPlayer((Player)commandSender);
+		}
+		if (commandSender instanceof BlockCommandSender) {
+			BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
+			mage.setLocation(commandBlock.getBlock().getLocation());
+		}
 		return mage;
 	}
 	
 	public Mage getMage(CommandSender commandSender)
 	{
-		String mageName = "COMMAND";
+		String mageId = "COMMAND";
 		if (commandSender instanceof ConsoleCommandSender) {
-			mageName = "CONSOLE";
+			mageId = "CONSOLE";
 		} else if (commandSender instanceof Player) {
-			mageName = ((Player)commandSender).getName();
+			mageId = ((Player)commandSender).getUniqueId().toString();
 		}
 		
-		return getMage(mageName, commandSender);
+		return getMage(mageId, commandSender);
 	}
 	
-	protected void loadMage(String playerName, ConfigurationNode node)
+	protected void loadMage(String playerId, ConfigurationNode node)
 	{
-		Mage mage = getMage(playerName);
+		Mage mage = getMage(playerId);
 		try {
 			mage.load(node);
 		} catch (Exception ex) {
@@ -183,31 +212,9 @@ public class MagicController implements Listener
 		}
 	}
 	
-	protected Mage getMage(String mageName)
+	protected Mage getMage(String mageId)
 	{
-		if (!mages.containsKey(mageName)) 
-		{
-			Mage newMage = new Mage(this, null);
-			
-			// Check for existing data file
-			File playerFile = new File(playerDataFolder, mageName + ".yml");
-			if (playerFile.exists()) 
-			{
-				getLogger().info("Loading player data from file " + playerFile.getName());
-				try {
-					Configuration playerData = new Configuration(playerFile);
-					playerData.load();
-					newMage.load(playerData);
-				} catch (Exception ex) {
-					getLogger().warning("Failed to load player data from file " + playerFile.getName());
-					ex.printStackTrace();
-				}
-			}
-			
-			mages.put(mageName, newMage);
-		}
-		
-		return mages.get(mageName);
+		return getMage(mageId, null);
 	}
 
 	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
@@ -355,32 +362,19 @@ public class MagicController implements Listener
 		return undoMaxPersistSize;
 	}
 
-	public String undoAny(Block target)
+	public Mage undoAny(Block target)
 	{
-		for (String playerName : mages.keySet())
+		for (Mage mage : mages.values())
 		{
-			Mage mage = getMage(playerName);
 			if (mage.undo(target))
 			{
-				return playerName;
+				return mage;
 			}
 		}
 
 		return null;
 	}
-
-	public boolean undo(String playerName)
-	{
-		Mage mage = getMage(playerName);
-		return mage.undo();
-	}
-
-	public boolean commit(String playerName)
-	{
-		Mage mage = getMage(playerName);
-		return mage.commit();
-	}
-
+	
 	public boolean commitAll()
 	{
 		boolean undid = false;
@@ -1016,7 +1010,7 @@ public class MagicController implements Listener
 			public void run() {
 				File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
 				    public boolean accept(File dir, String name) {
-				        return name.toLowerCase().endsWith(".yml");
+				        return name.toLowerCase().endsWith(".dat");
 				    }
 				});
 				
@@ -1028,8 +1022,8 @@ public class MagicController implements Listener
 					Configuration playerData = new Configuration(playerFile);
 					playerData.load();
 					if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
-						String playerName = playerFile.getName().replaceFirst("[.][^.]+$", "");
-						loadMage(playerName, playerData);
+						String playerId = playerFile.getName().replaceFirst("[.][^.]+$", "");
+						loadMage(playerId, playerData);
 					}
 				}
 				
@@ -1153,9 +1147,10 @@ public class MagicController implements Listener
 	protected void savePlayerData() {
 		try {
 			for (Entry<String, Mage> mageEntry : mages.entrySet()) {
-				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".yml");
+				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
 				Configuration playerConfig = new Configuration(playerData);
-				mageEntry.getValue().save(playerConfig);
+				Mage mage = mageEntry.getValue();
+				mage.save(playerConfig);
 				playerConfig.save();
 			}
 		} catch (Exception ex) {
@@ -1832,7 +1827,7 @@ public class MagicController implements Listener
 		mage.onPlayerQuit(event);
 		
 		try {
-			File playerData = new File(playerDataFolder, player.getName() + ".yml");
+			File playerData = new File(playerDataFolder, player.getUniqueId().toString() + ".dat");
 			getLogger().info("Player logged out, saving data to " + playerData.getName());
 			Configuration playerConfig = new Configuration(playerData);
 			mage.save(playerConfig);

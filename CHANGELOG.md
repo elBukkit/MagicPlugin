@@ -16,6 +16,7 @@
  - Add "EMP" spell. (WIP)
  - Fix material names in cast messages.
  - Fix /spells <category> NPE (Thanks, @Felikahn)
+ - Player data is now stored by UUID instead of name. Legacy data should auto-migrate.
 
 ## 2.9.7
 
