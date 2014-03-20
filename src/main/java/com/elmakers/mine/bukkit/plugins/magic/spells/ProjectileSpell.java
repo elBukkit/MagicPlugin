@@ -67,7 +67,6 @@ public class ProjectileSpell extends Spell
 		try {
 			projectileType = (Class<? extends Projectile>)Class.forName("org.bukkit.entity." + projectileClass);
 		} catch (Exception ex) {
-			castMessage("Your projectile fizzled");
 			controller.getLogger().warning(ex.getMessage());
 			return SpellResult.FAIL;
 		}

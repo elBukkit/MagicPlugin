@@ -45,7 +45,6 @@ public class FireSpell extends BlockSpell
 		Block target = getTargetBlock();
 		if (target == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 
@@ -69,7 +68,6 @@ public class FireSpell extends BlockSpell
 		}
 
 		registerForUndo(action.getBlocks());
-		castMessage("Burned " + action.getBlocks().size() + " blocks");
 		controller.updateBlock(target);
 
 		return SpellResult.CAST;

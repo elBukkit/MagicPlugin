@@ -20,6 +20,7 @@ public class InvincibleSpell extends Spell
 		if (protectAmount != 0)
 		{
 			deactivate();
+			return SpellResult.COST_FREE;
 		}
 		else
 		{
@@ -32,7 +33,6 @@ public class InvincibleSpell extends Spell
 	@Override
 	public void onDeactivate()
 	{
-		sendMessage("You feel normal.");
 		controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
 		protectAmount = 0;
 	}
@@ -41,16 +41,6 @@ public class InvincibleSpell extends Spell
 	public void onActivate()
 	{
 		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
-
-		if (amount >= 100)
-		{
-			castMessage("You feel invincible!");
-		}
-		else
-		{
-			castMessage("You feel strong!");
-		}
-
 		protectAmount = (float)amount / 100;
 	}
 	

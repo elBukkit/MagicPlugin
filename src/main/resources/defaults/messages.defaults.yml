@@ -133,12 +133,15 @@ spells:
     disc:
         name: Disc
         description: Create a platform in front of you
+        cast_finish: Filled $count blocks with $material
     dome:
         name: Dome
         description: Create a large dome
+        cast_finish: Filled $count blocks with $material
     shell:
         name: Shell
         description: Create a large spherical shell
+        cast_finish: Filled $count blocks with $material
     tag:
         name: Tag
         description: Leave a sign with your name
@@ -166,9 +169,11 @@ spells:
     frost:
         name: Frost
         description: Freeze water and create snow
+        cast: Freeze!
     storm:
         name: Storm
         description: Start a lightning storm
+        cast: Ka-POW!
     tree:
         name: Tree
         description: Instantly grow a tree
@@ -199,6 +204,7 @@ spells:
     leap:
         name: Leap
         description: Take a big leap
+        cast: Whee!
     simulate:
         name: Simulate
         description: Conway's Game of Life!
@@ -211,9 +217,13 @@ spells:
     monster:
         name: Monster
         description: Call a monster to your side
+        cost_free: You release your monster
+        cast: You summon a monster
     mob:
         name: Mob
         description: Summon a mob of monsters
+        cost_free: You release your mob
+        cast: You summon $count monster(s)
     portal:
         name: Portal
         description: Create a temporary portal
@@ -223,19 +233,23 @@ spells:
     invincible:
         name: Invincible
         description: Make yourself impervious to damage
+        cast: You feel invincible!
+        cancel: You feel normal
     inferno:
         name: Inferno
         description: Burn a wide area
+        cast: You burn $count blocks
     cushion:
         name: Cushion
         description: Create a safety bubble
         usage: Cast underneath yourself while falling
+        cast: Happy landings!
     paint:
         name: Paint
         description: Fill a single block
     gills:
         name: Gills
-        description: Restores health while moving underwater
+        description: Work freely underwater
     arrowrain:
         name: Arrow Rain
         description: Fire a volley of arrows
@@ -248,9 +262,11 @@ spells:
     lightning:
         name: Lightning
         description: Strike lighting at your target
+        cast: Ka-Zap!
     nuke:
         name: Nuke
         description: Create a huge explosion
+        cast: YIKES!
     day:
         name: Sunny Day
         description: Make it a lovely day
@@ -264,9 +280,8 @@ spells:
         name: Bridge
         description: Extend the ground underneath you
         usage: Can be used in mid-air
-    ascend:
-        name: Ascend
-        description: Go up to the nearest safe spot
+        no_target: Can't bridge here
+        cast: A bridge of $material extends
     grenade:
         name: Grenade
         description: Place a primed grenade
@@ -280,72 +295,94 @@ spells:
         name: Convert
         description: Convert a spherical area of blocks
         usage: Does not fill air
+        cast_finish: Converted $count blocks to $material
     collapse:
         name: Collapse
         description: Collapse a spherical area of blocks
+        cast_finish: Collapsed $count blocks]
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
         usage: Cast twice to convert
         cancel: Convert cancelled
         target_selected: Cast again to convert
+        fail: Too large!
+        cast_finish: Converted $count blocks to $material
     supercollapse:
         name: SuperCollapse
         description: Collapse a large sphere of blocks
         usage: Cast twice to collapse
         cancel: Collapse cancelled
         target_selected: Cast again to collapse
+        fail: Too large!
+        cast_finish: Collapsed $count blocks
     superblob:
         name: SuperBlob
         description: Create a large solid sphere
         usage: Cast twice to construct
         cancel: Blob cancelled
         target_selected: Cast again to build sphere
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     supershell:
         name: SuperShell
         description: Create a large hollow sphere
         usage: Cast twice to construct
         cancel: Shell cancelled
         target_selected: Cast again to build shell
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     superdisc:
         name: SuperDisc
         description: Create a large circular disc
         usage: Cast twice to construct
         cancel: Disc cancelled
         target_selected: Cast again to build disc
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     superring:
         name: SuperRing
         description: Create a large circular ring
         usage: Cast twice to construct
         cancel: Ring cancelled
         target_selected: Cast again to build ring
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     superdome:
         name: SuperDome
         description: Create a very large dome
         usage: Cast twice to construct
         cancel: Dome cancelled
         target_selected: Cast again to build dome
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     superpyramid:
         name: SuperPyramid
         description: Create a large hollow pyramid
         usage: Cast twice to construct
         cancel: Pyramid cancelled
         target_selected: Cast again to build pyramid
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     superbox:
         name: SuperBox
         description: Create a large hollow box
         usage: Cast twice to construct
         cancel: Box cancelled
         target_selected: Cast again to build box
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     kamikazee:
         name: Kamikazee
         description: Kill yourself with an explosion
     superblast:
         name: Superblast
         description: Mine out a very large area
+        cast_finish: Blasted $count blocks
     blast:
         name: Blast
         description: Mine out a large area
+        cast_finish: Blasted $count blocks
     cloak:
         name: Cloak
         description: Make yourself invisible
@@ -359,31 +396,40 @@ spells:
     rewind:
         name: Rewind
         description: Undo the target action
-        usage: Will undo another player's actions
+        usage: Will undo the targeted action
     push:
         name: Push
         description: Push things away from you
     farm:
         name: Herd
         description: Create a herd
+        cost_free: You release your herd
+        cast: You summon $count farm animals
     breach:
         name: Breach
         description: Temporarily destroy the target surface
+        cast_finish: Temporary destroyed $count blocks
     tesseract:
         name: Tesseract
         description: Blink a short distance
+        no_target: Can't go there
+        cast: Zip!
     mine:
         name: Mine
         description: Mines and drops the targeted ores
+        cast: Mined $count blocks
     chop:
         name: Chop
         description: Fell a tree in one cast
+        cast: Chopped $count blocks
     peek:
         name: Peek
         description: Temporarily glass the target surface
+        cast_finish: Temporary glassed $count blocks
     sandblast:
         name: Sandblast
         description: Drop a big block of sand
+        cast_finish: Created $count falling sand blocks
     fill:
         name: Fill
         description: Fill a selected cuboid area
@@ -391,7 +437,7 @@ spells:
         cancel: Fill cancelled
         target_selected: Cast again to fill with $material
         fail: Can't fill that much!
-        cast: Filled with $material
+        cast_finish: Filled $count blocks with $material
     regenerate:
         name: Regenerate
         description: Regenerate the target area
@@ -405,38 +451,55 @@ spells:
     fire:
         name: Fire
         description: Light fires from a distance
+        cast: You start a fire
     alter:
         name: Alter
         description: Alter certain objects
         usage: Use on wool, stairs, etc
+        cast_entity: You altered the target entity
+        cast: You altered your target
+        fail: Can't adjust that
     superalter:
         name: SuperAlter
         description: Alter objects recursively
         usage: Use on wool, stairs, etc
+        cast: Altered $count blocks
+        fail: Can't adjust that
     blob:
         name: Blob
         description: Create a solid blob
+        cast_finish: Blobbed $count blocks with $material
     emp:
         name: EMP
         description: Electrify the area
+        cast_finish: Electrified $count blocks
     familiar:
         name: Familiar
         description: Create an animal familiar
+        cast: You summon a familiar
+        cost_free: You release your familiar
     disintegrate:
         name: Disintegrate
         description: Damage your target
         usage: Will destroy target block or entity
+        cast_entity: ZOT!
+        cast: ZAP!
     blink:
         name: Blink
         description: Teleport to your target
         usage: Can pass through solid objects
+        no_target: Can't blink in there
+        cast: Blink!
     absorb:
         name: Absorb
         description: Absorb some of the target
         usage: Adds materials to your wand
+        fail: This spell requires a wand
+        cast: Absorbing some $material
     stalactite:
         name: Stalactite
         description: Create a downward pillar
+        cast: You lower a pillar of $material
     lava:
         name: Lava
         description: Fire a stream of lava
@@ -467,6 +530,8 @@ spells:
     wolf:
         name: Wolf
         description: Create some wolf familiars
+        cast: You summon a wolfie!
+        fail: Your wolfie is DOA
     wolfhouse:
         name: Wolf House
         description: Create an auto-regenerating base
@@ -488,9 +553,11 @@ spells:
         name: Shrink
         description: Hurts and shrinks various things
         usage: Must kill the target to receive skull
+        cast: ZAP!
     flare:
         name: Flare
         description: Fire off flares
+        cast: You fire some magical flares
     recall:
         name: Recall
         description: Marks locations for return
@@ -498,25 +565,29 @@ spells:
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
+        cast: You feel lighter
+        cancel: You feel heavier
     boom:
         name: Boom
         description: Create an explosion
     box:
         name: Box
         description: Create a large hollow box
+        cast_finish: Filled $count blocks with $material
     pillar:
         name: Pillar
         description: Raises a pillar up
-    extend:
-        name: Extend
+        cast: You create a pillar of $material
+    place:
+        name: Place
         description: Place a block at your target
+        cast: You place a block of $material
     force:
         name: Force
         description: Use telekinesis
-        usage: Cast to select or throw an entity
-    descend:
-        name: Descend
-        description: Travel underground
+        usage: Cast to select and throw an entity
+        cancel: Released target
+        target_selected: You capture your target
     fireball:
         name: Fireball
         description: Cast an exploding fireball
@@ -529,6 +600,9 @@ spells:
     camera:
         name: Camera
         description: Take a portrait of yourself or others
+        fail: Failed to load photo
+        cast: CLICK!
+        cast_self: Selfie!
     mail:
         name: Mail
         description: Send a mail to a player. Not meant for wand use.
@@ -643,8 +717,6 @@ wands:
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand
-        cast: You summon a wolfie!
-        fail: Your wolfie is DOA.
     decorator:
         name: Decorator
         description: Decorates large areas at a time

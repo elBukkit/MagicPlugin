@@ -33,13 +33,11 @@ public class ConstructSpell extends BrushSpell
 		Target t = getTarget();
 		if (t == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		Block target = t.getBlock();
 		if (target == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 
@@ -72,7 +70,6 @@ public class ConstructSpell extends BrushSpell
 		int diameter = radius * 2;
 		if (diameter > maxDimension)
 		{
-			sendMessage("Dimension is too big!");
 			return SpellResult.FAIL;
 		}
 		

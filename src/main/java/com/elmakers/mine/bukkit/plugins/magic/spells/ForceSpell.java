@@ -83,7 +83,6 @@ public class ForceSpell extends Spell
 			if (effectColor != null) {
 				InventoryUtils.addPotionEffect(targetEntity, effectColor);
 			}
-			castMessage("You capture your target");
 			return SpellResult.TARGET_SELECTED;
 		}
 
@@ -114,9 +113,7 @@ public class ForceSpell extends Spell
 	public boolean onCancel()
 	{
 		if (targetEntity != null)
-		{       
-			castMessage("Released target");
-
+		{
             releaseTarget();
 			return true;
 		}

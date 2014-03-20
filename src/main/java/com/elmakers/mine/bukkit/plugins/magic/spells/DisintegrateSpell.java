@@ -23,7 +23,6 @@ public class DisintegrateSpell extends BlockSpell
 		Target target = getTarget();
 		if (target == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		
@@ -44,14 +43,12 @@ public class DisintegrateSpell extends BlockSpell
 				{
 					li.damage(mage.getDamageMultiplier() * entityDamage, getPlayer());
 				}
-				castMessage("ZOT!");
 				return SpellResult.CAST;
 			}
 		}
 
 		if (!target.hasTarget())
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		
@@ -78,8 +75,6 @@ public class DisintegrateSpell extends BlockSpell
 		}
 		
 		registerForUndo(disintigrated);
-		castMessage("ZAP!");
-
 		return SpellResult.CAST;
 	}
 }

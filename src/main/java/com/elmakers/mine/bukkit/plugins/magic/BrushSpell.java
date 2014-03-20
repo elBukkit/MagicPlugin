@@ -64,7 +64,7 @@ public abstract class BrushSpell extends BlockSpell{
 	}
 	
 	@Override
-	protected String getMessage(String messageKey, String def) {
+	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);
 		
 		// TODO: Default material.. ?

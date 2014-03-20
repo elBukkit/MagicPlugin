@@ -82,10 +82,7 @@ public class CameraSpell extends Spell
 					if (player == null) {
 						return SpellResult.NO_TARGET;
 					}
-					castMessage("Selfie!");
 					playerName = player.getName();
-				} else {
-					castMessage("CLICK!");
 				}
 			}
 			if (parameters.containsKey("reload")) {
@@ -94,7 +91,6 @@ public class CameraSpell extends Spell
 			newMapItem = URLMap.getPlayerPortrait(playerName, priority, metaName);
 		}
 		if (newMapItem == null) {
-			sendMessage("Failed to load photo");
 			return SpellResult.FAIL;
 		}
 		getWorld().dropItemNaturally(getLocation(), newMapItem);

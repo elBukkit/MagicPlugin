@@ -15,6 +15,7 @@ public class FillBatch extends VolumeBatch {
 	private final MaterialBrush brush;
 	private final World world;
 	private final Mage mage;
+	private final BrushSpell spell;
 
 	private final int absx;
 	private final int absy;
@@ -34,6 +35,7 @@ public class FillBatch extends VolumeBatch {
 	
 	public FillBatch(BrushSpell spell, Location p1, Location p2, MaterialBrush brush) {
 		super(spell.getMage().getController(), p1.getWorld().getName());
+		this.spell = spell;
 		this.brush = brush;
 		this.mage = spell.getMage();
 		this.world = this.mage.getPlayer().getWorld();
@@ -124,8 +126,10 @@ public class FillBatch extends VolumeBatch {
 		if (!finished) {
 			super.finish();
 			
-			mage.registerForUndo(filledBlocks);
-			mage.castMessage("Filled " + getXSize() + "x" +  getYSize() + "x" +  getZSize() + " area with " + brush.getMaterial().name().toLowerCase());
+			spell.registerForUndo(filledBlocks);
+			String message = spell.getMessage("cast_finish");
+			message = message.replace("$count", Integer.toString(filledBlocks.size()));
+			spell.castMessage(message);
 		}
 	}
 	

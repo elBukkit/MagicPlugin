@@ -55,8 +55,6 @@ public class FireworkSpell extends Spell
 			//spawnFirework(target.getLocation(), flareCount);
 		}
 
-		castMessage("You fire some magical flares");
-
 		return SpellResult.CAST;
 	}
 	

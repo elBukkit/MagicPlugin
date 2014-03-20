@@ -72,7 +72,7 @@ public class FrostSpell extends BlockSpell
 	{
 		Target target = getTarget();
 
-		if (target == null)
+		if (!target.hasTarget())
 		{
 			castMessage("No target");
 			return SpellResult.NO_TARGET;
@@ -105,12 +105,7 @@ public class FrostSpell extends BlockSpell
 				}
 			}
 		}
-
-		if (!target.hasTarget())
-		{
-			castMessage("No target");
-			return SpellResult.NO_TARGET;
-		}
+		
 		if (!hasBuildPermission(target.getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}

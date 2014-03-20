@@ -22,12 +22,10 @@ public class BlinkSpell extends Spell
 		Location location = findPlaceToStand(targetLocation, true);
 		if (location != null) 
 		{
-			castMessage("You ascend");
 			setTarget(location);
 			getPlayer().teleport(location);
 			return SpellResult.CAST;
 		}
-		mage.castMessage("Nowhere to go up");
 		return SpellResult.NO_TARGET;
 	}
 
@@ -38,12 +36,10 @@ public class BlinkSpell extends Spell
 		Location location = findPlaceToStand(targetLocation, false);
 		if (location != null) 
 		{
-			castMessage("You descend");
 			setTarget(location);
 			getPlayer().teleport(location);
 			return SpellResult.CAST;
 		}
-		mage.castMessage("Nowhere to go down");
 		return SpellResult.NO_TARGET;
 	}
 
@@ -83,7 +79,6 @@ public class BlinkSpell extends Spell
 
 		if (target == null) 
 		{
-			castMessage("Nowhere to blink to");
 			return SpellResult.NO_TARGET;
 		}
 
@@ -153,10 +148,8 @@ public class BlinkSpell extends Spell
 		Block twoUp = oneUp.getRelative(BlockFace.UP);
 		if (!isOkToStandIn(oneUp.getType()) || !isOkToStandIn(twoUp.getType()))
 		{
-			castMessage("You can't fit in there!");
 			return SpellResult.NO_TARGET;
 		}
-		castMessage("Blink!");
 		Location targetLocation = new Location
 		(
 			world,

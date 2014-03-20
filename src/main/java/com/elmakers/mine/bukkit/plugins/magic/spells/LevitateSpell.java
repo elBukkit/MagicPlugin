@@ -46,8 +46,6 @@ public class LevitateSpell extends Spell
 		// Prevent the player from death by fall
 		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		levitateEnded = System.currentTimeMillis();
-		
-		castMessage("You feel heavier");
 	}
 	
 	@Override
@@ -62,8 +60,6 @@ public class LevitateSpell extends Spell
 				
 			}
 		}, 2);
-
-		castMessage("You feel lighter");
 	}
 
 	@SuppressWarnings("deprecation")

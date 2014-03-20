@@ -14,6 +14,7 @@ public abstract class BlockSpell extends Spell {
 	private Set<Material>	destructible;
 	private boolean checkDestructible = true;
 	private boolean bypassUndo				= false;
+	private int modifiedBlocks = 0;
 	
 	private boolean isIndestructible(Block block)
 	{
@@ -61,8 +62,21 @@ public abstract class BlockSpell extends Spell {
 	
 	public void registerForUndo(BlockList list)
 	{
+		modifiedBlocks += list.size();
 		if (!bypassUndo) {
 			mage.registerForUndo(list);
 		}
+	}
+	
+	@Override
+	protected void preCast()
+	{
+		modifiedBlocks = 0;
+	}
+	
+	@Override
+	public String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		return message.replace("$count", Integer.toString(modifiedBlocks));
 	}
 }

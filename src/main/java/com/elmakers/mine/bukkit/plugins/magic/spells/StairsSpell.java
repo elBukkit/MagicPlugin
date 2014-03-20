@@ -129,7 +129,6 @@ public class StairsSpell extends BlockSpell
 
 		registerForUndo(tunneledBlocks);
 		registerForUndo(stairBlocks);
-		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks and created " + stairBlocks.size() + " stairs");
 	}	
 
 	protected void createSpiralStairs(Block targetBlock)

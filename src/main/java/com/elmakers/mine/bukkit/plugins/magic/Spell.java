@@ -419,9 +419,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			}
 		}
 	}
+	
+	protected void preCast()
+	{
+		
+	}
 
 	public boolean cast(String[] extraParameters, Location defaultTarget)
 	{
+		this.preCast();
 		this.target = null;
 		defaultTargetLocation = defaultTarget;
 		location = mage.getLocation();
@@ -530,11 +536,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		targetingComplete = false;
 	}
 	
-	protected String getMessage(String messageKey) {
+	public String getMessage(String messageKey) {
 		return getMessage(messageKey, "");
 	}
 	
-	protected String getMessage(String messageKey, String def) {
+	public String getMessage(String messageKey, String def) {
 		String message = Messages.get("spells.default." + messageKey, def);
 		message = Messages.get("spells." + key + "." + messageKey, message);
 		if (message == null) message = "";
@@ -1399,7 +1405,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		return getBlockAt(lastX, lastY, lastZ);
 	}
-
+	
 	/**
 	 * Returns the block at the specified location
 	 * 

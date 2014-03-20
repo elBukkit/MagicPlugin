@@ -21,7 +21,6 @@ public class CushionSpell extends BlockSpell
 		Block targetFace = getTargetBlock();
 		if (targetFace == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetFace)) {
@@ -30,8 +29,6 @@ public class CushionSpell extends BlockSpell
 		
 		int cushionWidth = parameters.getInteger("width", DEFAULT_CUSHION_WIDTH);
 		int cushionHeight = parameters.getInteger("height", DEFAULT_CUSHION_HEIGHT);
-
-		castMessage("Happy landings");
 
 		BlockList cushionBlocks = new BlockList();
 		cushionBlocks.setTimeToLive(7000);

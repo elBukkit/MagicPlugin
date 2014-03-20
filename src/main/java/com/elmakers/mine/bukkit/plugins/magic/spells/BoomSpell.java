@@ -16,7 +16,6 @@ public class BoomSpell extends Spell {
 	{
 		if (target == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 
@@ -42,7 +41,6 @@ public class BoomSpell extends Spell {
 		Target target = getTarget();
 		if (!target.hasTarget())
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 

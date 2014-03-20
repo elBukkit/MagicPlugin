@@ -18,8 +18,7 @@ public class AbsorbSpell extends BrushSpell
 	{
 		Wand wand = mage.getActiveWand();
 		if (wand == null) {
-			castMessage("This spell requires a wand");
-			return SpellResult.NO_TARGET;
+			return SpellResult.FAIL;
 		}
 		
 		Material material = Material.AIR;
@@ -34,7 +33,6 @@ public class AbsorbSpell extends BrushSpell
 
 		if (target == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 	
@@ -48,7 +46,6 @@ public class AbsorbSpell extends BrushSpell
 		
 		// Add to the wand
 		wand.addMaterial(material, data, true, true);
-		castMessage("Absorbing some " + material.name().toLowerCase());
 		
 		return SpellResult.CAST;
 	}

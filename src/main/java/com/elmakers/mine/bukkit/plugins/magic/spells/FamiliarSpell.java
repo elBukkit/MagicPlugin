@@ -29,6 +29,7 @@ public class FamiliarSpell extends Spell
 
 	private final Random rand = new Random();
 	private PlayerFamiliar familiars = new PlayerFamiliar();
+	private int spawnCount = 0;
 
 	public enum FamiliarClass
 	{
@@ -97,6 +98,7 @@ public class FamiliarSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		spawnCount = 0;	
 		if (!hasBuildPermission(getLocation().getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
@@ -108,7 +110,6 @@ public class FamiliarSpell extends Spell
 		Target target = getTarget();
 		if (target == null || !target.hasTarget())
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		Block originalTarget = target.getBlock(); 
@@ -122,10 +123,9 @@ public class FamiliarSpell extends Spell
 			boolean isFamiliar = target.isEntity() && familiars.isFamiliar(target.getEntity());
 			if (isFamiliar)
 			{
-				castMessage("You release your familiar(s)");
 				checkListener();
 				familiars.releaseFamiliar(target.getEntity());
-				return SpellResult.CAST;
+				return SpellResult.COST_FREE;
 			}
 
 			familiars.releaseFamiliar();
@@ -180,7 +180,6 @@ public class FamiliarSpell extends Spell
 		}
 
 		List<Creature> newFamiliars = new ArrayList<Creature>();
-		int spawnCount = 0;
 		Location centerLoc = targetBlock.getLocation();
 		for (int i = 0; i < famCount; i++)
 		{
@@ -219,16 +218,6 @@ public class FamiliarSpell extends Spell
 			}
 		}
 
-		String typeMessage = "";
-		if (famClass == FamiliarClass.SPECIFIC)
-		{
-			typeMessage = " " + famType.name().toLowerCase();
-		}
-		else if (famClass != FamiliarClass.ANY)
-		{
-			typeMessage = " " + famClass.name().toLowerCase();
-		}
-		castMessage("You create " + spawnCount + typeMessage +" familiar(s)!");
 		familiars.setFamiliars(newFamiliars);
 		checkListener();
 		return SpellResult.CAST;
@@ -276,5 +265,11 @@ public class FamiliarSpell extends Spell
 			familiars.releaseFamiliar();
 			checkListener();
 		}
+	}
+	
+	@Override
+	public String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		return message.replace("$count", Integer.toString(spawnCount));
 	}
 }

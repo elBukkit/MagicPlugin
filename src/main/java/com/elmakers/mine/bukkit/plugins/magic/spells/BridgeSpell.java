@@ -20,7 +20,6 @@ public class BridgeSpell extends BrushSpell
 		if (playerBlock == null) 
 		{
 			// no spot found to bridge
-			castMessage("You need to be standing on something");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(playerBlock)) {
@@ -40,7 +39,6 @@ public class BridgeSpell extends BrushSpell
 		}
 		if (isTargetable(targetBlock.getType()))
 		{
-			castMessage("Can't bridge any further");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(targetBlock)) {
@@ -54,8 +52,6 @@ public class BridgeSpell extends BrushSpell
 		BlockList bridgeBlocks = new BlockList();
 		bridgeBlocks.add(targetBlock);
 		buildWith.modify(targetBlock);
-
-		castMessage("A bridge extends!");
 
 		bridgeBlocks.setTimeToLive(parameters.getInt("undo", 0));
 		registerForUndo(bridgeBlocks);

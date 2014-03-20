@@ -196,10 +196,14 @@ public class MaterialBrush extends MaterialBrushData {
 			if (material == Material.CARPET || material.getId() == 95 || material.getId() ==159 || material.getId() == 160 || material == Material.WOOL) {
 				// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
 				DyeColor color = DyeColor.getByWoolData(data);
-				materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
+				if (color != null) {
+					materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
+				}
 			} else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
 				TreeSpecies treeSpecies = TreeSpecies.getByData(data);
-				materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
+				if (treeSpecies != null) {
+					materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
+				}
 			} else {
 				materialName = material.name();				
 			}

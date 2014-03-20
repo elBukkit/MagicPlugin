@@ -73,7 +73,6 @@ public class FlingSpell extends Spell
 
 		velocity.multiply(magnitude);
 		getPlayer().setVelocity(velocity);
-		castMessage("Whee!");
 
 		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling = System.currentTimeMillis();

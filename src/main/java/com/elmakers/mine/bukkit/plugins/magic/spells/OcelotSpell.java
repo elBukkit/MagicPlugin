@@ -25,7 +25,6 @@ public class OcelotSpell extends Spell
 	{
 		if (target == null)
 		{
-			castMessage("No target");
 			return null;
 		}
 

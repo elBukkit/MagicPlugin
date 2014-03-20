@@ -33,7 +33,7 @@ public class AlterSpell extends BlockSpell
 	static final String DEFAULT_ADJUST_MAX =  "2 ,5, 5 ,15,15,15,15,1 ,15,15 ,3 ,1  ,5 ,2 ,9 ,9 ,5 ,2 ,5 ,15,8 ,8 ,15,15,5, 15,3 ,5 ,15,5 ,7 ,8 ,5 ,5 ,15,15,3 ,9 ,3 ,2 ,14,15,5 ,5 ,15,7 ,15,15,5 ,0 ,5 ,5 ,15 ,3 ,15,15 ,7  ,7  ,3  ,3  ,3  ,7  ,15 ,15 ,3  ,3  ,3  ,3  ,15 ,7  ,7  ,4  ,4  ,3  ,15 ,15 ,15 ,15 ,6";
 	static final String DEFAULT_ADJUST_MIN =  "0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0  ,0 ,0  ,2 ,0 ,0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,2 ,0 ,2 ,0 ,0 ,2 ,2 ,0 ,0 ,0 ,0 ,0 ,5 ,6 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,3 ,2 ,2 ,0  ,0 ,0 ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0";
 	static final int DEFAULT_RECURSE_DISTANCE = 0;
-
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -48,7 +48,6 @@ public class AlterSpell extends BlockSpell
 		Block targetBlock = target.getBlock();
 		if (targetBlock == null) 
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 		
@@ -66,7 +65,6 @@ public class AlterSpell extends BlockSpell
 		
 		if (!adjustableMaterials.contains(targetBlock.getTypeId()))
 		{
-			castMessage("Can't adjust " + targetBlock.getType().name().toLowerCase());
 			return SpellResult.FAIL;
 		}
 		if (!hasBuildPermission(targetBlock)) {
@@ -92,7 +90,6 @@ public class AlterSpell extends BlockSpell
 
 		registerForUndo(undoList);
 
-		castMessage("Adjusting " + targetBlock.getType().name().toLowerCase() + " from " + originalData + " to " + data);
 		controller.updateBlock(targetBlock);
 		return SpellResult.CAST;
 	}
@@ -136,7 +133,6 @@ public class AlterSpell extends BlockSpell
 				horse.setStyle(horseStyle);
 				horse.setColor(color);
 				horse.setVariant(variant);
-				castMessage("You altered a horse");
 			break;
 			case OCELOT:
 				Ocelot ocelot = (Ocelot)entity;
@@ -144,7 +140,6 @@ public class AlterSpell extends BlockSpell
 				Type[] typeValues = Type.values();
 				catType = typeValues[(catType.ordinal() + 1) % typeValues.length];
 				ocelot.setCatType(catType);
-				castMessage("You altered an ocelot");
 				break;
 			case VILLAGER:
 				Villager villager = (Villager)entity;
@@ -152,7 +147,6 @@ public class AlterSpell extends BlockSpell
 				Profession[] professionValues = Profession.values();
 				profession = professionValues[(profession.ordinal() + 1) % professionValues.length];
 				villager.setProfession(profession);
-				castMessage("You altered a villager");
 				break;
 			case WOLF:
 			{
@@ -161,7 +155,6 @@ public class AlterSpell extends BlockSpell
 				DyeColor[] dyeColorValues = DyeColor.values();
 				dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
 				wolf.setCollarColor(dyeColor);
-				castMessage("You altered a wolf's collar");
 			}
 				break;
 			case SHEEP:
@@ -171,7 +164,6 @@ public class AlterSpell extends BlockSpell
 					DyeColor[] dyeColorValues = DyeColor.values();
 					dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
 					sheep.setColor(dyeColor);
-					castMessage("You altered a sheep");
 				}
 				break;
 			case SKELETON:
@@ -180,7 +172,6 @@ public class AlterSpell extends BlockSpell
 				SkeletonType[] skeletonTypeValues = SkeletonType.values();
 				skeletonType = skeletonTypeValues[(skeletonType.ordinal() + 1) % skeletonTypeValues.length];
 				skeleton.setSkeletonType(skeletonType);
-				castMessage("You altered a skeleton");
 				break;
 			default:
 				return SpellResult.NO_TARGET;

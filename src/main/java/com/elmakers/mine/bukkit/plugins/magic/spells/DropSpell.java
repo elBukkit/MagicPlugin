@@ -23,7 +23,6 @@ public class DropSpell extends BlockSpell
 		Block target = getTargetBlock();
 		if (target == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 
@@ -45,7 +44,6 @@ public class DropSpell extends BlockSpell
 
 		// Make this undoable.. even though it means you can exploit it for ore with Rewind. Meh!
 		registerForUndo(droppedBlocks);
-		castMessage("Dropped " + droppedBlocks.size() + " blocks");
 
 		return SpellResult.CAST;
 	}

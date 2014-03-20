@@ -270,7 +270,10 @@ public class ConstructBatch extends VolumeBatch {
 			}
 			
 			spell.registerForUndo(constructedBlocks);
-			mage.castMessage("Constructed " + constructedBlocks.size() + " blocks");
+			
+			String message = spell.getMessage("cast_finish");
+			message = message.replace("$count", Integer.toString(constructedBlocks.size()));
+			mage.castMessage(message);
 		}
 	}
 	
