@@ -1145,6 +1145,8 @@ public class MagicController implements Listener
 	}
 	
 	protected void savePlayerData() {
+		List<String> forgetIds = new ArrayList<String>();
+		
 		try {
 			for (Entry<String, Mage> mageEntry : mages.entrySet()) {
 				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
@@ -1152,9 +1154,24 @@ public class MagicController implements Listener
 				Mage mage = mageEntry.getValue();
 				mage.save(playerConfig);
 				playerConfig.save();
+				
+				// Check for players we can forget
+				Player player = mage.getPlayer();
+				if (player != null && !player.isOnline()) {
+					UndoQueue undoQueue = mage.getUndoQueue();
+					if (undoQueue == null || undoQueue.isEmpty()) {
+						getLogger().info("Offline player " + player.getName() + " has no pending undo actions, forgetting");
+						forgetIds.add(mageEntry.getKey());
+					}
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+		
+		// Forget players we don't need to keep in memory
+		for (String forgetId : forgetIds) {
+			mages.remove(forgetId);
 		}
 	}
 	
@@ -1841,7 +1858,7 @@ public class MagicController implements Listener
 		UndoQueue undoQueue = mage.getUndoQueue();
 		if (undoQueue == null || undoQueue.isEmpty()) {
 			getLogger().info("Player has no pending undo actions, forgetting");
-			mages.remove(player.getName());
+			mages.remove(player.getUniqueId().toString());
 		}
 	}
 
