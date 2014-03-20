@@ -627,8 +627,8 @@ public class Mage implements CostReducer
 			this.player = new WeakReference<Player>(player);
 			this.commandSender = new WeakReference<CommandSender>(player);
 		} else {
-			this.player.clear();
-			this.commandSender.clear();
+			if (this.player != null) this.player.clear();
+			if (this.commandSender != null) this.commandSender.clear();
 		}
 	}
 	
@@ -636,7 +636,7 @@ public class Mage implements CostReducer
 	{
 		if (sender != null) {
 			this.commandSender = new WeakReference<CommandSender>(sender);
-		} else {
+		} else if (this.commandSender != null){
 			this.commandSender.clear();
 		}
 	}
