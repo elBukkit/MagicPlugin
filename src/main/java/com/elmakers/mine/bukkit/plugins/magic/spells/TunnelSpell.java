@@ -29,8 +29,6 @@ public class TunnelSpell extends BlockSpell
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 
 		{
-			// no spot found to tunnel
-			castMessage("You need to be standing on something");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(playerBlock)) {
@@ -121,7 +119,6 @@ public class TunnelSpell extends BlockSpell
 		}
 
 		registerForUndo(tunneledBlocks);
-		castMessage("Tunneled through " + tunneledBlocks.size() + "blocks");
 
 		return SpellResult.CAST;
 	}

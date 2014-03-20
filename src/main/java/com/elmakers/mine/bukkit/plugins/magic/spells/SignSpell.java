@@ -70,7 +70,7 @@ public class SignSpell extends BlockSpell
 				String playerName = getPlayer().getName();
 				playerName = mage.getController().getMessagePrefix() + playerName;
 				sign.setLine(0, playerName);
-				sign.setLine(1, "was here");
+				sign.setLine(1, getMessage("sign_message"));
 				Date currentDate = new Date();
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -95,7 +95,6 @@ public class SignSpell extends BlockSpell
 			Player targetPlayer = (Player)target.getEntity();
 			String message = getMessage("cast_message");
 			if (message.length() == 0) return SpellResult.NO_TARGET;
-			message.replace("$player", getPlayer().getName());
 			targetPlayer.sendMessage(message);
 			return SpellResult.CAST;
 		}

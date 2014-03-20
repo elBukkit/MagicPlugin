@@ -19,7 +19,6 @@ public class HealSpell extends Spell
 		Player player = getPlayer();
 		if (targetEntity != null && targetEntity instanceof LivingEntity && targetEntity != player)
 		{
-			castMessage("You heal your target");
 			LivingEntity li = (LivingEntity)targetEntity;
 			li.setHealth(li.getMaxHealth());
 			if (targetEntity instanceof Player) {
@@ -32,7 +31,6 @@ public class HealSpell extends Spell
 		if (player == null) {
 			return SpellResult.NO_TARGET;
 		}
-		castMessage("You heal yourself");
 		player.setHealth(getPlayer().getMaxHealth());
 		player.setExhaustion(0);
 		player.setFoodLevel(20);

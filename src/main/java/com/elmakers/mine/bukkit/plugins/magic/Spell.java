@@ -115,6 +115,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Map<SpellResult, List<EffectPlayer>> effects				= new HashMap<SpellResult, List<EffectPlayer>>();
 	
 	private Target								target					= null;
+	private String								targetName			    = null;
 	private TargetType							targetType				= TargetType.OTHER;
 
 	private float								fizzleChance			= 0.0f;
@@ -429,6 +430,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		this.preCast();
 		this.target = null;
+		this.targetName = null;
 		defaultTargetLocation = defaultTarget;
 		location = mage.getLocation();
 		
@@ -544,7 +546,23 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		String message = Messages.get("spells.default." + messageKey, def);
 		message = Messages.get("spells." + key + "." + messageKey, message);
 		if (message == null) message = "";
+		
+		// Escape some common parameters
+		Player player = getPlayer();
+		String playerName = player == null ? "Unknown" : player.getName();
+		message = message.replace("$player", playerName);
+		String useTargetName = targetName;
+		if (useTargetName == null) {
+			useTargetName = target != null && target.isEntity() && target.getEntity() instanceof Player ?
+				((Player)target.getEntity()).getName() : "Unknown";
+		}
+		message = message.replace("$target", useTargetName);
+		
 		return message;
+	}
+	
+	protected void setTargetName(String name) {
+		targetName = name;
 	}
 	
 	protected void processResult(SpellResult result) {

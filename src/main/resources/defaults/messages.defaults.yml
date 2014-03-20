@@ -147,9 +147,10 @@ spells:
         description: Leave a sign with your name
         fail: Sign placement failed!
         cast: You leave a tag
-        cast_player: You send $player a message
+        cast_player: You send $target a message
         cast_give: Have some signs!
         cast_message: You hear a mysterious voice from $player ... it says ... Hi!
+        sign_message: was here
     arrow:
         name: Arrow
         description: Fire a magic arrow
@@ -185,6 +186,8 @@ spells:
     tree:
         name: Tree
         description: Instantly grow a tree
+        fail: Your tree didn't grow
+        cast: You grow a $tree!
     disarm:
         name: Disarm
         description: Disarm your opponent
@@ -199,9 +202,9 @@ spells:
         name: Gather
         description: Gather groups of players together
         usage: Cast up to teleport yourself, aim to tp others
-        cast_to_player: Teleporting you to $player
-        cast_player_to_player: Teleporting $player to $to_player
-        cast_player_to_target: Teleporting $player to your target
+        cast_to_player: Teleporting you to $to_player
+        cast_player_to_player: Teleporting $from_player to $to_player
+        cast_player_to_target: Teleporting $from_player to your target
     icbm:
         name: ICBM
         description: Cast an exploding fireball
@@ -211,6 +214,8 @@ spells:
     weather:
         name: Weather
         description: Change the weather
+        cast: You calm the storm
+        area: You stir up a storm
     fling:
         name: Fling
         description: Sends you flying in the target direction
@@ -226,9 +231,12 @@ spells:
         description: Creates a torch or glowstone
         no_target: Can't put a torch there
         cast: Flame on!
+        area: Changed time to $time
     tunnel:
         name: Tunnel
         description: Mine out a tunnel in front of you
+        no_target: You need to be standing on something!
+        cast: Tunneled through $count blocks
     monster:
         name: Monster
         description: Call a monster to your side
@@ -286,15 +294,15 @@ spells:
     day:
         name: Sunny Day
         description: Make it a lovely day
-        cast_time: What a pretty day!
+        area: What a pretty day!
     night:
         name: Night
         description: Make it dark
-        cast_time: Spoooooky
+        area: Spoooooky
     time:
         name: Time
         description: Change the time of day
-        cast_time: Changed time to $time
+        area: Changed time to $time
     bridge:
         name: Bridge
         description: Extend the ground underneath you
@@ -408,14 +416,25 @@ spells:
     undo:
         name: Rollback
         description: Undo your last action
+        cast: Your undo the target construction
+        cast_player: You undo $target's construction
+        cast_self: Your undo your construction
+        fail: Nothing to undo
     commit:
         name: Commit
         description: Commit your actions
         usage: Clears your undo queue
+        cast_player: You commit $target's constructions
+        cast: Your Rollback queue has been cleared
+        fail: Nothing to commit
     rewind:
         name: Rewind
         description: Undo the target action
         usage: Will undo the targeted action
+        cast: Your undo the target construction
+        cast_player: You undo $target's construction
+        cast_self: Your undo your construction
+        fail: Nothing to undo
     push:
         name: Push
         description: Push things away from you
@@ -543,6 +562,8 @@ spells:
     stash:
         name: Stash
         description: A place to keep your stuff.
+        cast: You peek into your ender chest
+        cast_player: You peek into $target's ender chest
     laser:
         name: Laser
         description: Destroy a line of blocks
@@ -645,6 +666,11 @@ spells:
         description: Send a mail to a player. Not meant for wand use.
         cast: Mail sent!
         fail: Mail not sent.
+    transmute:
+        name: Transmute
+        description: Convert your last construction
+        no_target: Nothing to transmute
+        cast: You transmute your structure to $material
 wands:
     random:
         name: Wand of {Spell}

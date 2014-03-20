@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockData;
@@ -21,14 +20,12 @@ public class TransmuteSpell extends BrushSpell
 		/*
 		 * Use target if targeting
 		 */
-		boolean usedTarget = false;
 		Block target = getTargetBlock();
 
 		if (target != null)
 		{
 			UndoQueue undoQueue = mage.getUndoQueue();
 			transmuteAction = undoQueue.getLast(target);
-			usedTarget = transmuteAction != null;
 		}
 
 		if (transmuteAction == null)
@@ -39,26 +36,14 @@ public class TransmuteSpell extends BrushSpell
 
 		if (transmuteAction == null)
 		{
-			sendMessage("Nothing to transmute");
 			return SpellResult.NO_TARGET;
 		}
 
 		MaterialBrush buildWith = getMaterialBrush();
-		Material material = buildWith.getMaterial();
-		
 		for (BlockData undoBlock : transmuteAction)
 		{
 			Block block = undoBlock.getBlock();
 			buildWith.modify(block);
-		}
-
-		if (usedTarget)
-		{
-			castMessage("You transmute your target structure to " + material.name().toLowerCase());
-		}
-		else
-		{
-			castMessage("You transmute your last structure to " + material.name().toLowerCase());
 		}
 
 		return SpellResult.CAST;

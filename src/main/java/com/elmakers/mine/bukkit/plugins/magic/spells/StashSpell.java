@@ -23,14 +23,6 @@ public class StashSpell extends Spell
 		
 		Player showPlayer = mage.getPlayer();
 		if (showPlayer == null) return SpellResult.PLAYER_REQUIRED;
-		if (target instanceof Player) {
-			Player playerTarget = (Player)target;
-			if (playerTarget == mage.getPlayer()) {
-				castMessage("You peek into your ender chest");
-			} else {
-				castMessage("You peek into " + playerTarget.getName() + "'s ender chest");
-			}
-		}
 
 		// Make sure to close the player's wand
 		Wand activeWand = mage.getActiveWand();

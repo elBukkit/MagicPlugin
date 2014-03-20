@@ -11,6 +11,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TorchSpell extends BlockSpell 
 {
+	private String timeType = "day";
+	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -29,55 +31,51 @@ public class TorchSpell extends BlockSpell
 		if (parameters.containsKey("time"))
 		{
 			long targetTime = 0;
-			String typeString = parameters.getString("time", "day");
-			String timeDescription = "day";
-			if (typeString.equalsIgnoreCase("toggle")) {
+			timeType = parameters.getString("time", "day");
+			if (timeType.equalsIgnoreCase("toggle")) {
 				long currentTime = getTime();
 				if (currentTime > 13000) {
-					typeString = "day";
+					timeType = "day";
 				} else {
-					typeString = "night";
+					timeType = "night";
 				}
 			}
 			
-			if (typeString.equalsIgnoreCase("night"))
+			if (timeType.equalsIgnoreCase("night"))
 			{
 				targetTime = 13000;
-				timeDescription = "night";
 			}
 			else
 			{
 				try 
 				{
-					targetTime = Long.parseLong(typeString);
-					timeDescription = "raw: " + targetTime;
+					targetTime = Long.parseLong(timeType);
+					timeType = "raw(" + targetTime + ")";
 				} 
 				catch (NumberFormatException ex) 
 				{
 					targetTime = 0;
 				}
 			}
-			setTime(targetTime);    
-			castMessage(getMessage("cast_time").replace("$time", timeDescription));
-			return SpellResult.CAST;
+			setTime(targetTime);
+			return SpellResult.AREA;
 		}
-
 		
 		boolean allowNight = parameters.getBoolean("allow_night", false);
 		boolean allowDay = parameters.getBoolean("allow_day", false);
 		if (getYRotation() > 80 && allowDay)
 		{
-			castMessage(getMessage("cast_time").replace("$time", "day"));
+			timeType = "day";
 			setTime(0);
-			return SpellResult.CAST;
+			return SpellResult.AREA;
 		}
 
 
 		if (getYRotation() < -80 && allowNight)
 		{
-			castMessage(getMessage("cast_time").replace("$time", "night"));
+			timeType = "night";
 			setTime(13000);
-			return SpellResult.CAST;
+			return SpellResult.AREA;
 		}
 
 		Block target = getTargetBlock();	
@@ -127,5 +125,11 @@ public class TorchSpell extends BlockSpell
 		controller.updateBlock(target);
 
 		return SpellResult.CAST;
+	}
+	
+	@Override
+	public String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		return message.replace("$time", timeType);
 	}
 }

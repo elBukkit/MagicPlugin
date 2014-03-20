@@ -12,22 +12,21 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class TreeSpell extends Spell
 {
 	private TreeType defaultTreeType = null;
+	private TreeType lastTreeType = null;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Block target = getTargetBlock();
-
+		lastTreeType = null;
 		if (target == null)
 		{
-			castMessage("No target");
 			return SpellResult.NO_TARGET;
 		}
 
 		boolean requireSapling = parameters.getBoolean("require_sapling", false);
 		if (requireSapling && target.getType() != Material.SAPLING)
 		{
-			castMessage("Plant a sapling first");
 			return SpellResult.NO_TARGET;
 		}
 		if (!hasBuildPermission(target)) {
@@ -47,12 +46,8 @@ public class TreeSpell extends Spell
 
 		if (result)
 		{
-			castMessage("You grow a " + getTreeName(treeType) + " tree");
 			controller.updateBlock(target);
-		}
-		else
-		{
-			castMessage("Your tree didn't grow");
+			lastTreeType = treeType;
 		}
 		return result ? SpellResult.CAST : SpellResult.FAIL;
 	}
@@ -76,5 +71,11 @@ public class TreeSpell extends Spell
 			}
 		}
 		return tree;
+	}
+	
+	@Override
+	public String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		return message.replace("$tree", getTreeName(lastTreeType));
 	}
 }

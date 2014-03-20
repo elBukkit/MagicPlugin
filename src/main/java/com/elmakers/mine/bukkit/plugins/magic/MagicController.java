@@ -375,6 +375,12 @@ public class MagicController implements Listener
 		return mage.undo();
 	}
 
+	public boolean commit(String playerName)
+	{
+		Mage mage = getMage(playerName);
+		return mage.commit();
+	}
+
 	public boolean commitAll()
 	{
 		boolean undid = false;

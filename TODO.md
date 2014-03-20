@@ -2,10 +2,10 @@
 
 ## For 2.9.8
 
- - Localize all spell messages
  - Fix first construct of a schematic. (?)
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Fix overlapping Construct modifications.
+ - Fix /spells <category> NPE (Thanks, @Felikahn)
  
 ## For 2.9.9
 
@@ -30,6 +30,7 @@
  - Finish localization
  - Make push spell reflect projectiles (set fireball velocity)
  - Configurable randomization for Familiar spell
+ - Cast spells on WG region enter/exit (Darkrael)
  
 ## Post-3.0.0
 

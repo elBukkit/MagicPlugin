@@ -18,7 +18,6 @@ public class WeatherSpell extends Spell
 		{
 			world.setStorm(false);
 			world.setThundering(false);
-			castMessage("You calm the storm");
 			/*
             boolean hasThunder = world.isThundering();
             if (hasThunder)
@@ -35,7 +34,8 @@ public class WeatherSpell extends Spell
 		else
 		{
 			world.setStorm(true);
-			castMessage("You stir up a storm");
+			// This is mainly so we can have different cast messages and effects, but is a bit of a hack.
+			return SpellResult.AREA;
 		}
 		return SpellResult.CAST;
 	}
