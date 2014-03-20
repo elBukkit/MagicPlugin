@@ -212,6 +212,19 @@ public class MaterialBrush extends MaterialBrushData {
 		return materialName;
 	}
 	
+	public String getName() {
+		String brushKey = getKey();
+		switch (mode) {
+		case CLONE: brushKey = CLONE_MATERIAL_KEY; break;
+		case REPLICATE: brushKey = REPLICATE_MATERIAL_KEY; break;
+		case COPY: brushKey = COPY_MATERIAL_KEY; break;
+		case MAP: brushKey = MAP_MATERIAL_KEY; break;
+		case SCHEMATIC: brushKey = SCHEMATIC_MATERIAL_KEY + ":" + schematicName; break;
+			default: break;
+		}
+		return getMaterialName(brushKey);
+	}
+	
 	public static MaterialBrushData parseMaterialKey(String materialKey) {
 		return parseMaterialKey(materialKey, true);
 	}

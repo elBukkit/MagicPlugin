@@ -5,7 +5,6 @@
  - Localize all spell messages
  - Fix first construct of a schematic. (?)
  - Customizable wand crafting recipes, check NMS data for "icon"
- - Fix materials in cast messages (hm, only applies to copy - fix is tricky.)
  - Fix overlapping Construct modifications.
  
 ## For 2.9.9

@@ -13,6 +13,7 @@
  - Fix cooldown messages for lengths longer than a minute (up to hours)
  - Add "Perk" spell.
  - Add "EMP" spell. (WIP)
+ - Fix material names in cast messages.
 
 ## 2.9.7
 

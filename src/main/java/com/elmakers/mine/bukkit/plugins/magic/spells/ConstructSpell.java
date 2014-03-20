@@ -25,6 +25,7 @@ public class ConstructSpell extends BrushSpell
 	private static final int DEFAULT_MAX_DIMENSION 				= 128;
 	
 	private Block targetBlock = null;
+	private boolean powered = false;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
@@ -54,7 +55,6 @@ public class ConstructSpell extends BrushSpell
 		if (getTargetType() == TargetType.SELECT) {
 			if (targetBlock == null) {
 				targetBlock = target;
-				castMessage("Cast again to construct");
 				activate();
 				
 				return SpellResult.TARGET_SELECTED;
@@ -169,11 +169,23 @@ public class ConstructSpell extends BrushSpell
 	{
 		if (targetBlock != null)
 		{
-			sendMessage("Cancelled construct");
 			deactivate();
 			return true;
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public boolean hasBrushOverride() 
+	{
+		return powered || super.hasBrushOverride();
+	}
+	
+	@Override
+	protected void loadTemplate(ConfigurationNode node)
+	{
+		super.loadTemplate(node);
+		powered = parameters.getBoolean("power", false);
 	}
 }

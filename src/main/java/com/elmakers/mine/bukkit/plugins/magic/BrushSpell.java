@@ -62,4 +62,18 @@ public abstract class BrushSpell extends BlockSpell{
 	{
 		return brush != null || hasBrush;
 	}
+	
+	@Override
+	protected String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		
+		// TODO: Default material.. ?
+		String materialName = "Default";
+		MaterialBrush useBrush = getMaterialBrush();
+		if (useBrush != null) {
+			materialName = useBrush.getName();
+		}
+		
+		return message.replace("$material", materialName);
+	}
 }
