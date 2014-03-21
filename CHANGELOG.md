@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2.9.9
+
 ## 2.9.8
 
  - Add "Carpet Bomb" spell, rains down TNT from above.
