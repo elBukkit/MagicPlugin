@@ -84,7 +84,7 @@ load_default_wands: true
 show_messages: true
 
 # Whether or not to show messages on every spell cast (in chat)
-show_cast_messages: false
+show_cast_messages: true
 
 # A prefix to use for any important messages
 message_prefix: §d§o
