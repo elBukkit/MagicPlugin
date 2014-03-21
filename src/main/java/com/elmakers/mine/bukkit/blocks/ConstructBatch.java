@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -391,6 +392,7 @@ public class ConstructBatch extends VolumeBatch {
 				powerBlock = true;
 			} else if (material == Material.REDSTONE_BLOCK) {
 				constructedBlocks.add(block);
+				block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
 				block.setType(Material.AIR);
 			} else if (material == Material.REDSTONE_TORCH_OFF) {
 				constructedBlocks.add(block);
