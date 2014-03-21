@@ -785,6 +785,12 @@ wands:
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand
+    CoOoD3R:
+        name: CoOoD3R's Wand
+        description: For the Loyal
+    lathame:
+        name: lathame's wand
+        description: Hail to the King, Baby!
     decorator:
         name: Decorator
         description: Decorates large areas at a time
