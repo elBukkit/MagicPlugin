@@ -1,12 +1,5 @@
 # TODO
 
-## For 2.9.8
-
- - Add "Fly" spell (cost-free version of Levitate, maybe higher speed?)
- - Fix icons (meteor/cluster/carpet - building icons, etc)
- - Collapse blocklist chains on save (?)
- - Test new dev build of dtlTraders
- 
 ## For 2.9.9
 
  - Commandbook kit integration
@@ -17,6 +10,8 @@
  - Config-driven WandLevel limits.
  - Add "wand duplicate" command
  - Batch block populator for chests
+ - Collapse blocklist chains on save (?)
+ - Test new dev build of dtlTraders
 
 ## For 3.0.0
 

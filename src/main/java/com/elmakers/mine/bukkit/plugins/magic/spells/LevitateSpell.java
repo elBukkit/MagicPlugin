@@ -5,6 +5,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
@@ -25,10 +26,14 @@ public class LevitateSpell extends Spell
     private final static int minRingEffectRange = 1;
     private final static int maxRingEffectRange = 8;
     private final static int maxDamageAmount = 150;
+    
+    private float flySpeedMultiplier = 0;
+    private float restoreFlySpeed = 0;
 	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		flySpeedMultiplier = parameters.getFloat("speed", 0);
 		if (getPlayer().getAllowFlight()) {
 			deactivate();
 			return SpellResult.COST_FREE;
@@ -40,8 +45,15 @@ public class LevitateSpell extends Spell
 	
 	@Override
 	public void onDeactivate() {
-		getPlayer().setFlying(false);
-		getPlayer().setAllowFlight(false);
+		final Player player = getPlayer();
+		if (player == null) return;
+		
+		if (restoreFlySpeed > 0) {
+			player.setFlySpeed(restoreFlySpeed);
+		}
+		
+		player.setFlying(false);
+		player.setAllowFlight(false);
 		
 		// Prevent the player from death by fall
 		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
@@ -50,13 +62,22 @@ public class LevitateSpell extends Spell
 	
 	@Override
 	public void onActivate() {
+		final Player player = getPlayer();
+		if (player == null) return;
+		
+		// Store and modify fly speed
+		if (flySpeedMultiplier > 0) {
+			restoreFlySpeed = player.getFlySpeed();
+			player.setFlySpeed(restoreFlySpeed * flySpeedMultiplier);
+		}
+		
 		Vector velocity = getPlayer().getVelocity();
 		velocity.setY(velocity.getY() + 2);
 		getPlayer().setVelocity(velocity);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			public void run() {
-				getPlayer().setAllowFlight(true);
-				getPlayer().setFlying(true);
+				player.setAllowFlight(true);
+				player.setFlying(true);
 				
 			}
 		}, 2);

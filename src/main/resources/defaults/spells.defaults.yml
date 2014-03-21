@@ -2212,6 +2212,7 @@ fly:
            particle: spell
            particle_count: 20
     parameters:
+        speed: 1.8
     costs:
         xp: 500
 force:

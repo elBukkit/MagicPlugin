@@ -2,10 +2,11 @@
 
 ## 2.9.8
 
- - Add "Carpet Bomb" spell.
- - Add "Meteor Shower" spell.
- - Add "EMP" spell.
- - Add "Perk" spell.
+ - Add "Carpet Bomb" spell, rains down TNT from above.
+ - Add "Meteor Shower" spell, rains down fireballs from above.
+ - Add "EMP" spell, fries/activates nearby electricals
+ - Add "Perk" spell, a low-powered version of Boon
+ - Add "Fly" spell, a cost-free and sped-up Levitate.
  - Make arrow rain more like a rain of arrows.
  - Improve undo system and overlapping regions (out of order undo, etc)
  - Projectiles can be used without a player (e.g. command blocks)
