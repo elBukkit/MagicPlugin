@@ -1471,6 +1471,10 @@ wolf:
     effect_particle: magic_runes
     effect_particle_count: 4
     effect_particle_data: 1
+    effect_sound: ambience_cave
+    effect_volume: 0.6
+    effect_pitch: 0.3
+    effect_interval: 20
     organize: true
     mode: inventory
     spells:
@@ -1599,6 +1603,35 @@ wolf:
         - schematic:elder_tree
         - schematic:garden_house
         - schematic:stash_chest
+CoOoD3R:
+   modifiable: true
+   effect_color: 888888
+   effect_particle: heart
+   effect_particle_count: 2
+   effect_interval: 10
+   xp_regeneration: 500
+   xp_max: 2000
+   spells:
+       - sniper
+       - pull
+       - laser
+       - fling
+       - levitate
+       - stash
+       - portal
+       - neutron
+       - peek
+       - alter
+       - fire
+       - blink
+       - earth
+       - superblob
+       - blob
+       - tag
+   materials:
+       - schematic:garden_house
+       - stone
+       - obsidian
 guest:
     modifiable: true
     effect_color: '666666'
