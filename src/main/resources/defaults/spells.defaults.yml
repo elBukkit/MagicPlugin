@@ -106,7 +106,7 @@ curse:
         effect_slow: 100,5  
         effect_confusion: 100,5
 blessing:
-    icon: double_plant:3
+    icon: double_plant:5
     category: light
     class: ProjectileSpell
     pvp_restricted: false
@@ -135,7 +135,7 @@ blessing:
     costs:
         xp: 200
 boon:
-    icon: double_plant:5
+    icon: red_rose:2
     category: light
     class: PotionEffectSpell
     effects:
@@ -191,7 +191,7 @@ perk:
         effect_damage_resistance: 160,1
         effect_saturation: 160,1
 bounce:
-    icon: double_plant:1
+    icon: red_rose:8
     category: light
     class: PotionEffectSpell
     effects:
@@ -1408,7 +1408,7 @@ cluster:
     costs:
         xp: 150
 bomb:
-    icon: red_rose:4
+    icon: double_plant:1
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
