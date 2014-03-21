@@ -674,6 +674,8 @@ public class MagicPlugin extends JavaPlugin
 		}
 		for (ConfigurationNode templateConfig : nameMap.values())
 		{
+			if (templateConfig.getBoolean("hidden", false)) continue;
+			
 			String key = templateConfig.getString("key");
 			String name = Messages.get("wands." + key + ".name", Messages.get("wand.default_name"));
 			String description = Messages.get("wands." + key + ".description", "");
