@@ -627,6 +627,11 @@ spells:
         description: Levitate yourself up into the air
         cast: You feel lighter
         cancel: You feel heavier
+    fly:
+        name: Fly
+        description: Fly free as a bird
+        cast: You feel lighter
+        cancel: You feel heavier
     boom:
         name: Boom
         description: Create an explosion

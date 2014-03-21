@@ -1145,7 +1145,7 @@ cushion:
     costs:
         xp: 10
 regenerate:
-    icon: diamond_spade
+    icon: diamond_hoe
     category: engineering
     class: RegenerateSpell
     effects:
@@ -1177,7 +1177,7 @@ paint:
     costs:
         xp: 1
 fill:
-    icon: gold_spade
+    icon: gold_hoe
     category: engineering
     class: FillSpell
     effects:
@@ -1298,7 +1298,7 @@ time:
     costs:
         xp: 40        
 bridge:
-    icon: gold_hoe
+    icon: wooden_hoe
     category: engineering
     class: BridgeSpell
     effects:
@@ -1390,7 +1390,7 @@ frag:
     costs:
         xp: 120
 cluster:
-    icon: coal:1
+    icon: red_rose:3
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
@@ -1408,7 +1408,7 @@ cluster:
     costs:
         xp: 150
 bomb:
-    icon: double_plant:4
+    icon: red_rose:4
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
@@ -1544,7 +1544,7 @@ kamikazee:
     costs:
         xp: 5
 blast:
-    icon: brown_mushroom
+    icon: iron_spade
     category: mining
     class: ConstructSpell
     effects:
@@ -1602,7 +1602,7 @@ superblast:
     costs:
         xp: 100
 convert:
-    icon: vine
+    icon: gold_spade
     category: earthbending
     class: ConstructSpell
     effects:
@@ -1623,7 +1623,7 @@ convert:
     costs:
         xp: 30
 superconvert:
-    icon: iron_fence
+    icon: diamond_spade
     category: engineering
     class: ConstructSpell
     effects:
@@ -2200,6 +2200,20 @@ levitate:
         xp: 45
     active_costs:
         xp: 20
+fly:
+    icon: diamond_boots
+    category: master
+    class: LevitateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+        -  class: EffectRing
+           particle: spell
+           particle_count: 20
+    parameters:
+    costs:
+        xp: 500
 force:
     icon: leash
     category: airbending

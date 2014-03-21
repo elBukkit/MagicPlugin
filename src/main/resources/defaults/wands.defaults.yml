@@ -892,7 +892,7 @@ elder:
         - push
         - pull
         - force
-        - levitate
+        - fly
         - mob
         - farm
         - shell
@@ -1439,7 +1439,7 @@ admin:
     effect_color: '888888'
     effect_bubbles: true
     spells:
-        - levitate
+        - fly
         - blink
         - recurse
         - time
@@ -1480,7 +1480,7 @@ wolf:
     spells:
         - fling
         - blink
-        - levitate
+        - fly
         - superblob
         - day
         - undo
@@ -1621,7 +1621,7 @@ CoOoD3R:
        - pull
        - laser
        - fling
-       - levitate
+       - fly
        - stash
        - portal
        - neutron
@@ -1654,7 +1654,7 @@ lathame:
        - force
        - curse
        - fling
-       - levitate
+       - fly
        - stash
        - portal
        - neutron
