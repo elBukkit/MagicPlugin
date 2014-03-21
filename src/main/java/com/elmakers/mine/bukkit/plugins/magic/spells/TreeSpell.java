@@ -54,6 +54,7 @@ public class TreeSpell extends Spell
 
 	public String getTreeName(TreeType treeType)
 	{
+		if (treeType == null || treeType.name() == null) return "Tree";
 		return treeType.name().toLowerCase();
 	}
 
