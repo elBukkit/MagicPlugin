@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,7 +8,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -225,6 +228,11 @@ public class MagicPlugin extends JavaPlugin
 				addIfPermissible(sender, options, "Magic.commands.", "save");
 				addIfPermissible(sender, options, "Magic.commands.", "commit");
 				addIfPermissible(sender, options, "Magic.commands.", "list");
+			} else if (args.length == 2) {
+				if (args[1].equalsIgnoreCase("list")) {
+					addIfPermissible(sender, options, "Magic.commands.list", "maps");
+					addIfPermissible(sender, options, "Magic.commands.list", "wands");
+				}
 			}
 		}
 		else if (cmd.getName().equalsIgnoreCase("wand")) 
@@ -313,20 +321,63 @@ public class MagicPlugin extends JavaPlugin
 			}
 			if (subCommand.equalsIgnoreCase("list"))
 			{
-				String owner = "";
-				if (args.length > 1) {
-					owner = args[1];
+				String usage = "Usage: magic list <wands [player]|maps [keyword]>";
+				String listCommand = "";
+				if (args.length > 1)
+				{
+					listCommand = args[1];
+					if (!controller.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) return false;
 				}
-				// TODO: Other kinds of lists.
-				Collection<LostWand> lostWands = controller.getLostWands();
-				for (LostWand lostWand : lostWands) {
-					Location location = lostWand.getLocation();
-					if (owner.length() > 0 && !owner.equals(lostWand.getOwner())) {
-						continue;
+				
+				if (listCommand.equalsIgnoreCase("wands")) {
+					String owner = "";
+					if (args.length > 2) {
+						owner = args[2];
 					}
-					sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
-							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+					Collection<LostWand> lostWands = controller.getLostWands();
+					int shown = 0;
+					for (LostWand lostWand : lostWands) {
+						Location location = lostWand.getLocation();
+						if (owner.length() > 0 && !owner.equalsIgnoreCase	(lostWand.getOwner())) {
+							continue;
+						}
+						shown++;
+						sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
+								location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+					}
+					
+					sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
+					return true;
+				} else if (listCommand.equalsIgnoreCase("maps")) {
+					String keyword = "";
+					if (args.length > 2) {
+						keyword = args[2];
+					}
+
+					int shown = 0;
+					Set<Entry<Short, URLMap>> allMaps = URLMap.getAll();
+					for (Entry<Short, URLMap> mapRecord : allMaps) {
+						Short mapId = mapRecord.getKey();
+						URLMap map = mapRecord.getValue();
+						if (map == null || mapId == null) continue;
+						
+						if (map.matches(keyword)) {
+							shown++;
+							String name = map.getName();
+							name = (name == null ? "(None)" : name);
+							sender.sendMessage(ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": " + 
+									name + " => " + ChatColor.GRAY + map.getURL());
+						}
+					}
+					if (shown == 0) {
+						sender.sendMessage("No maps found" + (keyword.length() > 0 ? " matching " + keyword : "") + ", use /castp <player> camera [url|player] [...]");
+					} else {
+						sender.sendMessage(shown + " maps found matching " + keyword);
+					}
+					return true;
 				}
+			
+				sender.sendMessage(usage);
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search") || subCommand.equalsIgnoreCase("generate"))

@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -35,6 +36,10 @@ public class URLMap extends MapRenderer  {
 	private static File cacheFolder = null;
 	
 	// Public API
+	
+	public static Set<Entry<Short, URLMap>> getAll() {
+		return idMap.entrySet();
+	}
 
 	public static void loadConfiguration() {
 		if (configurationFile == null) return;
@@ -353,6 +358,23 @@ public class URLMap extends MapRenderer  {
 	public void initialize(MapView mapView) {
 		// This is here mainly as a hack to be able to force render to canvas.
 		rendered = false;
+	}
+	
+	public boolean matches(String keyword) {
+		if (keyword == null || keyword.length() == 0) return true;
+		
+		String lowerUrl = url == null ? "" : url.toLowerCase();
+		String lowerName = name == null ? "" : name.toLowerCase();
+		String lowerKeyword = keyword.toLowerCase();
+		return lowerUrl.contains(lowerKeyword) || lowerName.contains(lowerKeyword);
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getURL() {
+		return url;
 	}
 	
 	// Private Functions and data

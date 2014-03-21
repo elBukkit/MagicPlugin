@@ -33,7 +33,6 @@
  - Phase scaling in the End? Experiment...
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
  - Fix dtlTraders integration
- - Add image map search feature
  - Add schematic list command (just for magic-specific schematics, and/or WE ones, too)
   - Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
@@ -174,5 +173,11 @@ Gitpw3d
 Hi elMaker im using ils lore stats which increases the health you get per lv but mana being displayed messed it up, do you have a solution? other then that this plugin is great
 
 ----
+
+diannetea
+4 minutes ago - 1 like Unlike
+We've narrowed down the wands breaking to the "clicksort" plugin, when someone organizes their inventory it breaks and you have to create a new one.
+
+---
 
 	

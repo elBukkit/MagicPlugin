@@ -193,7 +193,15 @@ permissions:
     type: boolean
     default: op
   Magic.commands.magic.list:
-    description: Player may list stats, lost wands, etc
+    description: Player may list wands or maps
+    type: boolean
+    default: op
+  Magic.commands.magic.list.wands:
+    description: Player may list lost wands
+    type: boolean
+    default: op
+  Magic.commands.magic.list.maps:
+    description: Player may list map images
     type: boolean
     default: op
   Magic.commands.magic.clean:
