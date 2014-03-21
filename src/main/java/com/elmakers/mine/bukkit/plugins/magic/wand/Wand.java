@@ -554,7 +554,7 @@ public class Wand implements CostReducer {
 			itemStack = null;
 		}
 		if (itemStack == null) {
-			controller.getPlugin().getLogger().warning("Unable to create spell icon with material " + icon.getMaterial().name());	
+			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spellName + " with material " + icon.getMaterial().name());	
 			return originalItemStack;
 		}
 		updateSpellName(itemStack, spell, true);

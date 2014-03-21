@@ -3,6 +3,7 @@
 ## 2.9.9
 
  - Add "keep" and "bound" wand options, for wands that you keep on death and/or are bound to a specific player.
+ - Fix dtlTraders integration. Requires dtlTraders v3.1.0 (dev snapshot at time of this release)
 
 ## 2.9.8
 

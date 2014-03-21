@@ -44,6 +44,11 @@
 			<version>2.13-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+		</dependency>
 	</dependencies>
 	<repositories>
        <repository>

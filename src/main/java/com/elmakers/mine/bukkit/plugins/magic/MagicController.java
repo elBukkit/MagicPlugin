@@ -161,11 +161,12 @@ public class MagicController implements Listener
 				File legacyFile = new File(playerDataFolder, player.getName() + ".yml");
 				if (legacyFile.exists()) 
 				{
-					getLogger().info("Migrating player data from file " + legacyFile.getName());
+					getLogger().info("Migrating player data from file " + legacyFile.getName() + " for id " + mageId);
 					try {
 						Configuration playerData = new Configuration(legacyFile);
 						playerData.load();
 						mage.load(playerData);
+						legacyFile.renameTo(new File(legacyFile.getName() + ".bak"));
 					} catch (Exception ex) {
 						getLogger().warning("Failed to migrate player data from file " + legacyFile.getName());
 						ex.printStackTrace();

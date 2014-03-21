@@ -1,10 +1,18 @@
 package com.elmakers.mine.bukkit.utilities;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Art;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -20,6 +28,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventoryUtils extends NMSUtils
 {
+	private final static int MAX_SERIALIZE_DEPTH = 8;
+	
 	protected static Object getNMSCopy(ItemStack stack) {
     	Object nms = null;
     	try {
@@ -79,6 +89,49 @@ public class InventoryUtils extends NMSUtils
 			ex.printStackTrace();
 		}
 		return meta;
+	}
+	
+	public static String serialize(ItemStack stack) {
+		if (stack == null) return null;
+		String serialized = null;
+		try {
+			Object craft = getHandle(stack);
+			if (craft == null) return null;
+			Object tagObject = getTag(craft);
+			if (tagObject == null) return null;
+			Method writeMethod = class_NBTTagCompound.getDeclaredMethod("write", DataOutput.class);
+			writeMethod.setAccessible(true);
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			DataOutput dp = new DataOutputStream(os);
+			writeMethod.invoke(tagObject, dp);
+			serialized = Base64.encodeBase64String(os.toByteArray());
+		} catch (Throwable ex) {
+			Bukkit.getLogger().warning("Failed to serialize item: " + ex.getMessage());
+			serialized = null;
+		}
+		return serialized;
+	}
+	
+	public static boolean deserialize(ItemStack stack, String data) {
+		if (stack == null || data == null || data.length() == 0) return false;
+		
+		try {
+			Object craft = getHandle(stack);
+			if (craft == null) return false;
+			Object tagObject = getTag(craft);
+			if (tagObject == null) return false;
+			Method loadMethod = class_NBTTagCompound.getDeclaredMethod("load", DataInput.class, Integer.TYPE);
+			loadMethod.setAccessible(true);
+			ByteArrayInputStream is = new ByteArrayInputStream(Base64.decodeBase64(data));
+			DataInput di = new DataInputStream(is);
+			loadMethod.invoke(tagObject, di, MAX_SERIALIZE_DEPTH);
+		} catch (Throwable ex) {
+			Bukkit.getLogger().warning("Failed to deserialize item data " + data);
+			ex.printStackTrace();
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public static Object createNode(ItemStack stack, String tag) {

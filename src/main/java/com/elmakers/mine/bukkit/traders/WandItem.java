@@ -5,13 +5,15 @@ import net.dandielo.citizens.traders_v3.core.exceptions.attributes.AttributeValu
 import net.dandielo.citizens.traders_v3.utils.items.Attribute;
 import net.dandielo.citizens.traders_v3.utils.items.ItemAttr;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 @Attribute(name="Wand", key="wand", priority = 5)
 public class WandItem extends ItemAttr {
-	private String wandKey;
+	private String wandData;
 	
 	public WandItem(String key) {
 		super(key);
@@ -22,33 +24,37 @@ public class WandItem extends ItemAttr {
 			throws AttributeValueNotFoundException {
 		if (Wand.isWand(itemStack)) {
 			Wand wand = new Wand(TradersController.getController(), itemStack);
-			wandKey = wand.getTemplate();
-
-			// Bukkit.getLogger().info("WandItem.onFactorize for key "+ wandKey + " with wand template " + wand.getTemplate() + " from " + Wand.isWand(itemStack));
+			wandData = InventoryUtils.serialize(wand.getItem());
+			if (wandData == null) {
+				Bukkit.getLogger().warning("Failed to serialize wand data");
+			}
+			
+			//Bukkit.getLogger().info("WandItem.onFactorize with wand template " + wand.getTemplate() + " from " + Wand.isWand(itemStack) + ": " + wandData);
 		}
 	}
 
 	@Override
 	public void onLoad(String itemKey) throws AttributeInvalidValueException {
-		wandKey = itemKey;
-		
-		// Bukkit.getLogger().info("WandItem.onLoad itemKey: " + itemKey + " for key "+ wandKey);
+		wandData = itemKey;	
+		// Bukkit.getLogger().info("WandItem.onLoad data: " + wandData);
 	}
 
 	@Override
 	public String onSave() {
-		// Bukkit.getLogger().info("WandItem.onSave for key "+ wandKey);
-		return wandKey;
+		// Bukkit.getLogger().info("WandItem.onSave for data " + wandData);
+		return wandData;
 	}
 	
 	@Override
 	public ItemStack onReturnAssign(ItemStack itemStack, boolean endItem)
 	{
-		if (wandKey != null && wandKey.length() > 0) {
-			Wand wand = Wand.createWand(TradersController.getController(), wandKey);
-			itemStack = wand.getItem();
+		if (wandData != null && wandData.length() > 0) {
+			itemStack = InventoryUtils.getCopy(itemStack);
+			if (!InventoryUtils.deserialize(itemStack, wandData)) {
+				Bukkit.getLogger().warning("Failed to deserialize wand data");
+			}
 			
-			// Bukkit.getLogger().info("WandItem.onReturnAssign for key " + wandKey + " as " + itemStack);
+			// Bukkit.getLogger().info("WandItem.onReturnAssign for data " + wandData + " as " + itemStack + ": " + success);
 		} 
 		
 		// Bukkit.getLogger().info("Returning " + itemStack + ": " + Wand.isWand(itemStack));
