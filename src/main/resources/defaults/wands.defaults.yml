@@ -1684,7 +1684,7 @@ lathame:
        - map
 guest:
     modifiable: true
-    effect_color: '666666'
+    effect_color: '00FF00'
     xp_regeneration: 1
     xp_max: 40
     icon: stick
@@ -1695,7 +1695,7 @@ guest:
         - perk
 villager:
     modifiable: true
-    effect_color: '888888'
+    effect_color: '00FF00'
     xp_regeneration: 2
     protection_falling: 0.1
     xp_max: 60
@@ -1709,7 +1709,7 @@ villager:
         - perk
 knight:
     modifiable: true
-    effect_color: 'DDDDDD'
+    effect_color: '11FF11'
     xp_regeneration: 3
     xp_max: 75
     icon: diamond_sword
@@ -1726,7 +1726,7 @@ knight:
         - perk
 baron:
     modifiable: true
-    effect_color: 'DDDDDD'
+    effect_color: '11FF11'
     xp_regeneration: 4
     xp_max: 80
     icon: diamond_sword
@@ -1746,7 +1746,7 @@ baron:
         - perk
 lord:
     modifiable: true
-    effect_color: 'DDDDDD'
+    effect_color: '11FF11'
     xp_regeneration: 4
     xp_max: 100
     icon: diamond_sword
@@ -1769,7 +1769,7 @@ lord:
         - perk
 hero:
     modifiable: true
-    effect_color: 'DDDDDD'
+    effect_color: '11FF11'
     xp_regeneration: 4
     xp_max: 120
     icon: diamond_sword
@@ -1796,7 +1796,7 @@ hero:
         - perk
 king:
     modifiable: true
-    effect_color: 'DDDDDD'
+    effect_color: '22FF22'
     xp_regeneration: 5
     xp_max: 130
     icon: diamond_sword
@@ -1826,7 +1826,7 @@ king:
         - perk
 legend:
     modifiable: true
-    effect_color: 'DDDDDD'
+    effect_color: '22FF22'
     xp_regeneration: 5
     xp_max: 150
     effect_particle: town_aura
@@ -1861,7 +1861,7 @@ legend:
         - perk
 overseer:
     modifiable: true
-    effect_color: 'FFFFFF'
+    effect_color: '22FF22'
     xp_regeneration: 5
     xp_max: 175
     effect_particle: town_aura
@@ -1897,7 +1897,7 @@ overseer:
         - perk
 wizard:
     modifiable: true
-    effect_color: 'A9D0F5'
+    effect_color: '89A0D5'
     xp_regeneration: 10
     xp_max: 200
     effect_particle: portal
