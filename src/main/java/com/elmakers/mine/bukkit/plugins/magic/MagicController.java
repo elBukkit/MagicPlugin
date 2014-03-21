@@ -1282,6 +1282,8 @@ public class MagicController implements Listener
 		blockPopulatorEnabled = properties.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
+		bindingEnabled = properties.getBoolean("enable_anvil_binding", bindingEnabled);
+		keepingEnabled = properties.getBoolean("enable_anvil_keeping", keepingEnabled);
 		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
@@ -2014,11 +2016,18 @@ public class MagicController implements Listener
 			
 			// Rename wand when taking from result slot
 			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
+				if (!(event.getWhoClicked() instanceof Player)) return;
+				Player player = (Player)event.getWhoClicked();
+				
+				Wand wand = new Wand(this, current);
+				if (!wand.canUse(player)) {
+					player.sendMessage( Messages.get("wand.bound").replace("$name", wand.getOwner()));
+					return;
+				}
+				
 				ItemMeta meta = current.getItemMeta();
 				String newName = meta.getDisplayName();
-				Wand wand = new Wand(this, current);
-				Player player = (Player)event.getWhoClicked();
-				wand.takeOwnership(player, newName, true);
+				wand.takeOwnership(player, newName, true, keepingEnabled, bindingEnabled);
 				if (organizingEnabled) {
 					wand.organizeInventory(getMage(player));
 				}
@@ -2046,7 +2055,7 @@ public class MagicController implements Listener
 					}
 					
 					// TODO: Can't get the anvil's text from here.
-					firstWand.takeOwnership(player, firstWand.getName(), true);
+					firstWand.takeOwnership(player, firstWand.getName(), true, keepingEnabled, bindingEnabled);
 					firstWand.add(secondWand);
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);
@@ -2537,6 +2546,8 @@ public class MagicController implements Listener
 	 private boolean							 craftingEnabled				= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
+	 private boolean							 keepingEnabled					= false;
+	 private boolean							 bindingEnabled					= false;
 	 private boolean							 organizingEnabled				= false;
 	 private boolean							 essentialsSignsEnabled			= false;
 	 private boolean							 dynmapUpdate					= true;

@@ -118,6 +118,8 @@ enable_crafting: true
 
 # Whether wands can be combined on an anvil
 enable_combining: true
+enable_anvil_binding: true
+enable_anvil_keeping: false
 
 # Whether wands can be upgraded on an enchanting table
 enable_enchanting: true

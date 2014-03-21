@@ -11,7 +11,6 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -329,12 +328,19 @@ public class Wand implements CostReducer {
 		owner = player.getName();
 	}
 	
-	public void takeOwnership(Player player, String name, boolean updateDescription) {
+	public void takeOwnership(Player player, String name, boolean updateDescription, boolean keep, boolean bind) {
 		setName(name);
 		takeOwnership(player);
 		if (updateDescription) {
 			setDescription("");
 		}
+		if (keep) {
+			this.keep = true;
+		}
+		if (bind) {
+			this.bound = true;
+		}
+		saveState();
 	}
 	
 	public ItemStack getItem() {
