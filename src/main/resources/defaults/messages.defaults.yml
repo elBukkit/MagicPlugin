@@ -78,6 +78,8 @@ wand:
     costs_description: Costs $description
     active_costs_description: Costs $description Per Second
     owner_description: $name's Wand
+    bound_description: Bound to $name
+    bound: That wand is bound to $name
 costs:
     xp_amount: $amount XP
     mana_amount: $amount Mana

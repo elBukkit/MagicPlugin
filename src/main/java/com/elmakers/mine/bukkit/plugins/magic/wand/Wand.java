@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -18,12 +19,14 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
@@ -52,7 +55,7 @@ public class Wand implements CostReducer {
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
 		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon", "quiet", 
 		"effect_particle_interval", "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume", 
-		};
+		"bound", "keep"};
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -69,6 +72,8 @@ public class Wand implements CostReducer {
 	private String description = "";
 	private String owner = "";
 	private String template = "";
+	private boolean bound = false;
+	private boolean keep = false;
 	
 	private MaterialAndData icon = null;
 	
@@ -653,6 +658,8 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "effect_sound_volume", Float.toString(effectSoundVolume));
 		InventoryUtils.setMeta(wandNode, "effect_sound_pitch", Float.toString(effectSoundPitch));
 		InventoryUtils.setMeta(wandNode, "quiet", Integer.toString(quietLevel));
+		InventoryUtils.setMeta(wandNode, "keep", Integer.toString(keep ?  1 : 0));
+		InventoryUtils.setMeta(wandNode, "bound", Integer.toString(bound ?  1 : 0));
 		if (effectSound != null) {
 			InventoryUtils.setMeta(wandNode, "effect_sound", effectSound.name());
 		}
@@ -705,6 +712,8 @@ public class Wand implements CostReducer {
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
 		quietLevel = Integer.parseInt(InventoryUtils.getMeta(wandNode, "quiet", Integer.toString(quietLevel)));
+		keep = Integer.parseInt(InventoryUtils.getMeta(wandNode, "keep", (keep ? "1" : "0"))) != 0;
+		bound = Integer.parseInt(InventoryUtils.getMeta(wandNode, "bound", (bound ? "1" : "0"))) != 0;
 		
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
 		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
@@ -957,7 +966,7 @@ public class Wand implements CostReducer {
 	private String getActiveWandName(Spell spell, String materialKey) {
 
 		// Build wand name
-		ChatColor wandColor = modifiable ? ChatColor.AQUA : ChatColor.RED;
+		ChatColor wandColor = modifiable ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.RED;
 		String name = wandColor + wandName;
 		
 		// Add active spell to description
@@ -1075,8 +1084,13 @@ public class Wand implements CostReducer {
 				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
 			}
 			if (owner.length() > 0) {
-				String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
-				lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+				if (bound) {
+					String ownerDescription = Messages.get("wand.bound_description", "$name").replace("$name", owner);
+					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+				} else {
+					String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
+					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+				}
 			}
 			
 			lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
@@ -1465,7 +1479,9 @@ public class Wand implements CostReducer {
 		Color color2 = Color.fromBGR(other.effectColor);
 		Color newColor = color1.mixColors(color2);
 		effectColor = newColor.asRGB();
-		
+
+		keep = keep || other.keep;
+		bound = bound || other.bound;
 		effectBubbles = effectBubbles || other.effectBubbles;
 		if (effectParticle == null) {
 			effectParticle = other.effectParticle;
@@ -1521,6 +1537,16 @@ public class Wand implements CostReducer {
 		updateLore();
 	}
 	
+	public boolean canUse(Player player) {
+		if (!bound || owner == null || owner.length() == 0) return true;
+		
+		return owner.equalsIgnoreCase(player.getName());
+	}
+	
+	public boolean keepOnDeath() {
+		return keep;
+	}
+	
 	public void configureProperties(ConfigurationNode wandConfig) {
 		configureProperties(wandConfig, false);
 	}
@@ -1567,14 +1593,13 @@ public class Wand implements CostReducer {
 				
 			}
 		}
-		if (wandConfig.containsKey("effect_bubbles")) {
-			boolean _effectBubbles = (boolean)wandConfig.getBoolean("effect_bubbles", effectBubbles);
-			effectBubbles = safe ? _effectBubbles || effectBubbles : _effectBubbles;
-		}
 		
 		// Don't change any of this stuff in safe mode
 		if (!safe) {
 			quietLevel = wandConfig.getInt("quiet", quietLevel);
+			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
+			keep = wandConfig.getBoolean("keep", keep);
+			bound = wandConfig.getBoolean("bound", bound);
 		
 			if (wandConfig.containsKey("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));
@@ -1786,6 +1811,20 @@ public class Wand implements CostReducer {
 			}
 			return;
 		}
+		
+		if (!canUse(player)) {
+			player.sendMessage(Messages.get("wand.bound").replace("$name", owner));
+			player.setItemInHand(null);
+			Location location = player.getLocation();
+			location.setY(location.getY() + 1);
+			Item droppedItem = player.getWorld().dropItemNaturally(location, item);
+			Vector velocity = droppedItem.getVelocity();
+			velocity.setY(velocity.getY() * 2 + 1);
+			velocity.multiply(3);
+			droppedItem.setVelocity(velocity);
+			return;
+		}
+		
 		
 		activate(mage, player.getItemInHand());
 	}

@@ -1539,7 +1539,7 @@ public class MagicController implements Listener
 		List<ItemStack> drops = event.getDrops();
 		Wand wand = mage.getActiveWand();
 		if (wand != null) {
-			// Retrieve stored inventory before deactiavting the wand
+			// Retrieve stored inventory before deactivating the wand
 			if (mage.hasStoredInventory()) {
 				drops.clear();
 
@@ -1566,32 +1566,37 @@ public class MagicController implements Listener
 			}
 		}
 		
-		if (keepWandsOnDeath)
+		List<ItemStack> oldDrops = new ArrayList<ItemStack>(drops);
+		final List<ItemStack> keepWands = new ArrayList<ItemStack>();
+		drops.clear();
+		for (ItemStack itemStack : oldDrops)
 		{
-			List<ItemStack> oldDrops = new ArrayList<ItemStack>(drops);
-			final List<ItemStack> droppedWands = new ArrayList<ItemStack>();
-			drops.clear();
-			for (ItemStack itemStack : oldDrops)
-			{
-				if (Wand.isWand(itemStack))
-				{
-					droppedWands.add(itemStack);
-				}
-				else
-				{
-					drops.add(itemStack);
+			boolean keepItem = false;
+			if (Wand.isWand(itemStack)) {
+				keepItem = keepWandsOnDeath;	
+				if (!keepItem) {
+					Wand testWand = new Wand(this, itemStack);
+					keepItem = testWand.keepOnDeath();
 				}
 			}
-			if (droppedWands.size() > 0)
+			if (keepItem)
 			{
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-					public void run() {
-						for (ItemStack itemStack : droppedWands)
-							player.getInventory().addItem(itemStack);
-						}
+				keepWands.add(itemStack);
+			}
+			else
+			{
+				drops.add(itemStack);
+			}
+		}
+		if (keepWands.size() > 0)
+		{
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					for (ItemStack itemStack : keepWands)
+						player.getInventory().addItem(itemStack);
 					}
-				, 5);
-			}
+				}
+			, 5);
 		}
 
 		mage.onPlayerDeath(event);
@@ -2035,6 +2040,11 @@ public class MagicController implements Listener
 						player.sendMessage("One of your wands can not be combined");
 						return;
 					}
+					if (!firstWand.canUse(player) || !secondWand.canUse(player)) {
+						player.sendMessage("One of those wands is not bound to you");
+						return;
+					}
+					
 					// TODO: Can't get the anvil's text from here.
 					firstWand.takeOwnership(player, firstWand.getName(), true);
 					firstWand.add(secondWand);
@@ -2233,6 +2243,8 @@ public class MagicController implements Listener
 			if (!WandLevel.randomizeWand(wand, true, level)) {
 				event.getEnchanter().sendMessage("This wand is fully enchanted (for now)");
 			}
+			
+			event.setCancelled(false);
 		}
 	}
 	
@@ -2240,7 +2252,16 @@ public class MagicController implements Listener
 	public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
 		if (enchantingEnabled && Wand.isWand(event.getItem())) {
 			Wand wandItem = new Wand(this, event.getItem());
-			if (!wandItem.isModifiable()) return;
+			Player player = event.getEnchanter();
+			if (!wandItem.isModifiable()) {
+				event.setCancelled(true);
+				return;
+			}
+			
+			if (!wandItem.canUse(player)) {
+				event.setCancelled(true);
+				return;
+			}
 			
 			Set<Integer> levelSet = WandLevel.getLevels();
 			ArrayList<Integer> levels = new ArrayList<Integer>();

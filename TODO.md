@@ -2,33 +2,38 @@
 
 ## For 2.9.9
 
- - Commandbook kit integration
+ - Add "wand duplicate" command
+ - Config-driven WandLevel limits.
+ - Collapse blocklist chains on save (?)
  - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
+
  - Customizable wand crafting recipes, check NMS data for "icon"
- - Config-driven WandLevel limits.
- - Add "wand duplicate" command
  - Batch block populator for chests
- - Collapse blocklist chains on save (?)
- - Test new dev build of dtlTraders
+ - Make "regengerate" undoable and safe.
+ - Commandbook kit integration
 
 ## For 3.0.0
 
+ - Scoreboard mana/spell display
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Add Multi-Spell Spell
  - Add Spell effect to projectile spell
  - Add Command spell
- - Tweaking/Balancing - haste, cooldowns, etc
- - Finish localization
- - Make push spell reflect projectiles (set fireball velocity)
  - Configurable randomization for Familiar spell
+
+ - Make push spell reflect projectiles (set fireball velocity)
  - Cast spells on WG region enter/exit (Darkrael)
  - Fix first construct of a schematic. (?)
  - A way to /wand enchant with auto-fill but not filling wand... ?
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
- - Scoreboard mana/spell display
+ - Hopefully get dtlTraders integration working
+
+ - Tweaking/Balancing - haste, cooldowns, etc
+ - Finish localization
  - Arena spell/schematic
+ - Add cast messages for all spells
  - Player-specific wands, check player data- CoOoD3R, lathame, rileycross, treed, Art1001 .. ?
  
 ## Post-3.0.0

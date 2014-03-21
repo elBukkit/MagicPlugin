@@ -861,6 +861,7 @@ necromancer:
         - wither
 elder:
     modifiable: true
+    bound: true
     protection: 1
     xp_max: 1000
     xp_regeneration: 100
@@ -1429,6 +1430,8 @@ green:
         - huge_mushroom_2
 admin:
     modifiable: true
+    keep: true
+    bound: true
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2
@@ -1459,6 +1462,8 @@ admin:
         - copy            
 wolf:
     modifiable: true
+    keep: true
+    bound: true
     cost_reduction: 2
     protection: 2
     fire_protection: 2
@@ -1605,6 +1610,8 @@ wolf:
         - schematic:stash_chest
 CoOoD3R:
    modifiable: true
+   keep: true
+   bound: true
    effect_color: 888888
    effect_particle: heart
    effect_particle_count: 2
@@ -1639,6 +1646,8 @@ CoOoD3R:
        - obsidian
 lathame:
    modifiable: true
+   keep: true
+   bound: true
    effect_color: FF8888
    effect_particle: lava_dripping
    effect_particle_count: 2

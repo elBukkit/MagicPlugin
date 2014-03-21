@@ -2,6 +2,8 @@
 
 ## 2.9.9
 
+ - Add "keep" and "bound" wand options, for wands that you keep on death and/or are bound to a specific player.
+
 ## 2.9.8
 
  - Add "Carpet Bomb" spell, rains down TNT from above.

@@ -822,7 +822,7 @@ public class MagicPlugin extends JavaPlugin
 	{
 		if (parameters.length < 1) {
 			sender.sendMessage("Use: /wand combine <wandname>");
-			return true;
+			return false;
 		}
 
 		Mage mage = controller.getMage(player);
@@ -832,7 +832,7 @@ public class MagicPlugin extends JavaPlugin
 			if (sender != player) {
 				sender.sendMessage(player.getName() + " isn't holding a wand");
 			}
-			return true;
+			return false;
 		}
 
 		if (!wand.isModifiable()) {
@@ -840,14 +840,18 @@ public class MagicPlugin extends JavaPlugin
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand can not be modified");
 			}
-			return true;
+			return false;
+		}
+		if (!wand.canUse(player) ) {
+			player.sendMessage("That wand is not bound to you");
+			return false;
 		}
 
 		String wandName = parameters[0];
 		Wand newWand = Wand.createWand(controller, wandName);
 		if (newWand == null) {
 			sender.sendMessage("Unknown wand name " + wandName);
-			return true;
+			return false;
 		}
 		wand.deactivate();
 		wand.add(newWand);
