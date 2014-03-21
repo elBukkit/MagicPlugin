@@ -2,36 +2,17 @@
 
 require_once('config.inc.php');
 
-// Set up autoloader for external classes
-
-function autoload($className)
-{
-	$className = ltrim($className, '\\');
-	$fileName  = '';
-	$namespace = '';
-	if ($lastNsPos = strrpos($className, '\\')) {
-		$namespace = substr($className, 0, $lastNsPos);
-		$className = substr($className, $lastNsPos + 1);
-		$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-	}
-	$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
-	require $fileName;
-}
-
-spl_autoload_register('autoload');
-
-use Symfony\Component\Yaml\Yaml;
+require_once('spyc.php');
 
 function parseConfigFile($name) {
 	global $magicRootFolder;
 
-	$config = Yaml::parse("$magicRootFolder/defaults/$name.defaults.yml");
+	$config = spyc_load_file("$magicRootFolder/defaults/$name.defaults.yml");
 	$configFile = "$magicRootFolder/$name.yml";
 	if (file_exists($configFile)) {
-		$override = Yaml::parse("$magicRootFolder/$name.defaults.yml");
-		// Hrm.
-		// $config = array_merge_recursive($config, $override);
+		error_log("Loading $configFile");
+		$override = spyc_load_file($configFile);
+		$config = array_merge_recursive($config, $override);
 	}
 	return $config;
 }
@@ -81,7 +62,7 @@ $cloneMaterial = isset($general['clone_item']) ? $general['clone_item'] : 'pumpk
 $books = array();
 if (file_exists($infoBookRootConfig)) {
 	$booksConfigKeys = array('version-check', 'onlogin', 'protected');
-	$booksConfig = Yaml::parse($infoBookRootConfig);
+	$booksConfig = spyc_load_file($infoBookRootConfig);
 	foreach ($booksConfig as $key => $book) {
 		// Hacky.. InfoBook has a weird config :\
 		if (!in_array($booksConfig, $booksConfigKeys)) {

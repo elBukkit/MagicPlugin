@@ -38,6 +38,7 @@
  
 ## Post-3.0.0
 
+ - Magic bows that fire arrows that trigger spells... ?
  - Phase scaling in the End? Experiment...
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
  - Fix dtlTraders integration
@@ -50,7 +51,6 @@
 
  - Add "wand properties" infobook
 
- - Fix website, can't parse new effect nodes
  - New spawn on dev server
 
  - Create new YouTube video(s)
