@@ -795,7 +795,7 @@ meteor:
            location: target
            particle_count: 4
     parameters:
-        projectile: SmallFireball
+        projectile: LargeFireball
         count: 12
         fire: true
         spread: 30

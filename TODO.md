@@ -2,8 +2,6 @@
 
 ## For 2.9.8
 
- - Tweak Meteor Shower, Fix multiple LargeProjectiles (?)
- - Make ProjectileSpell default to Arrow
  - Add "Fly" spell (cost-free version of Levitate, maybe higher speed?)
  - Fix icons (meteor/cluster/carpet - building icons, etc)
  - Collapse blocklist chains on save (?)
@@ -18,6 +16,7 @@
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Config-driven WandLevel limits.
  - Add "wand duplicate" command
+ - Batch block populator for chests
 
 ## For 3.0.0
 

@@ -55,7 +55,7 @@ public class ProjectileSpell extends Spell
 		boolean useFire = parameters.getBoolean("fire", true);
 		int tickIncrease = parameters.getInteger("tick_increase", 1180);
 		
-		String projectileTypeName = parameters.getString("projectile", "Fireball");
+		String projectileTypeName = parameters.getString("projectile", "Arrow");
 		final Class<?> projectileClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
 		final Class<?> fireballClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
 		final Class<?> arrowClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
@@ -143,7 +143,13 @@ public class ProjectileSpell extends Spell
 			        dirYField.set(nmsProjectile, dy * 0.1D);
 			        dirZField.set(nmsProjectile, dz * 0.1D);
 				}
-				setPositionRotationMethod.invoke(nmsProjectile, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+				Vector modifiedLocation = location.toVector().clone();
+				if (i > 0 && fireballClass.isAssignableFrom(projectileType) && spread > 0) {
+					modifiedLocation.setX(modifiedLocation.getX() + direction.getX() + (random.nextGaussian() * spread / 5));
+					modifiedLocation.setY(modifiedLocation.getY() + direction.getY() + (random.nextGaussian() * spread / 5));
+					modifiedLocation.setZ(modifiedLocation.getZ() + direction.getZ() + (random.nextGaussian() * spread / 5));
+				}
+				setPositionRotationMethod.invoke(nmsProjectile, modifiedLocation.getX(), modifiedLocation.getY(), modifiedLocation.getZ(), location.getYaw(), location.getPitch());
 
 				if (shootMethod != null) {
 					shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
