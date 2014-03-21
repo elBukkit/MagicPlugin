@@ -679,28 +679,23 @@ public class MagicController implements Listener
 			}, 5);
 		}
 
-		// Check for dtlTraders, wait a tick to avoid hitting it before it's initialized.
-		final MagicController controller = this;
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			public void run() {
-				try {
-					tradersController = null;
-					Plugin tradersPlugin = plugin.getServer().getPluginManager().getPlugin("dtlTraders");
-					if (tradersPlugin != null) {
-						tradersController = new TradersController();
-						tradersController.initialize(controller, tradersPlugin);
-						getLogger().info("Integrating with dtlTraders for selling Wands");
-					}
-				} catch (Throwable ex) {
-					ex.printStackTrace();
-					tradersController = null;
-				}
-				
-				if (tradersController == null) {
-					getLogger().info("dtlTraders not found, will not integrate.");
-				}
+		// Check for dtlTraders
+		tradersController = null;
+		try {
+			Plugin tradersPlugin = plugin.getServer().getPluginManager().getPlugin("dtlTraders");
+			if (tradersPlugin != null) {
+				tradersController = new TradersController();
+				tradersController.initialize(this, tradersPlugin);
+				getLogger().info("Integrating with dtlTraders for selling Wands");
 			}
-		}, 2);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+			tradersController = null;
+		}
+		
+		if (tradersController == null) {
+			getLogger().info("dtlTraders not found, will not integrate.");
+		}
 		
 		// Try to link to WorldEdit (no API...)
 		try {
