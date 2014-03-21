@@ -33,7 +33,7 @@ public class GrenadeSpell extends Spell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		Location loc = target.getLocation();
+		Location loc = getEyeLocation();
 		final Random rand = new Random();
 		for (int i = 0; i < count; i++)
 		{
