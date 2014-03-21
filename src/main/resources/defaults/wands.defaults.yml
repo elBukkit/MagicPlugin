@@ -161,6 +161,7 @@ default:
 #
 random:
     modifiable: true
+    icon: stick
     levels: 1,20,30,40
 #   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
     property_count:
@@ -479,7 +480,8 @@ random:
 # Names and descriptions for wands are defined in messages.yml.
 #
 #
-      
+
+# This wand is for demo'ing the plugin
 demo:
     spells:
         - torch
@@ -487,40 +489,6 @@ demo:
         - fling
     xp_max: 500
     xp_regeneration: 100
-recall:
-    modifiable: true
-    xp_regeneration: 2
-    xp_max: 20
-    effect_color: 'FFFFFF'
-    spells:
-        - recall
-fireball:
-    modifiable: false
-    effect_color: 'FF0000'
-    spells:
-        - fireball
-    uses: 10
-    cost_reduction: 1
-arrow:
-    modifiable: false
-    effect_color: '880000'
-    spells:
-        - arrow
-    uses: 200
-    cost_reduction: 1    
-dueling:
-    modifiable: true
-    effect_color: '880000'
-    protection_fire: 0.8
-    protection: 0.8
-    xp_regeneration: 2
-    xp_max: 40
-    spells:
-        - fireball
-        - fling
-        - arrow
-        - grenade
-        - wither
 explorer:
     modifiable: true
     xp_regeneration: 1
@@ -546,9 +514,9 @@ psychic:
         - force
 painter:
     modifiable: true
-    xp_regeneration: 1
+    xp_regeneration: 10
     effect_color: '118811'
-    xp_max: 100
+    xp_max: 200
     spells:
         - paint
     materials:
@@ -691,6 +659,8 @@ decorator:
         - stained_glass_pane:15
 engineer:
     modifiable: true
+    keep: true
+    bound: true
     effect_color: '00FF00'
     hunger_regeneration: 1
     health_regeneration: 1
@@ -1609,6 +1579,7 @@ wolf:
         - schematic:garden_house
         - schematic:stash_chest
 CoOoD3R:
+   hidden: true
    modifiable: true
    keep: true
    bound: true
@@ -1645,6 +1616,7 @@ CoOoD3R:
        - stone
        - obsidian
 lathame:
+   hidden: true
    modifiable: true
    keep: true
    bound: true

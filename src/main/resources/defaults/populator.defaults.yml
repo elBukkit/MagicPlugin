@@ -25,8 +25,8 @@ populate_chests:
     2: 20
     3: 5
   wand_probability:
-    arrow: 50
-    fireball: 60
+    guest: 50
+    villager: 60
     random(1): 200
     random(2): 150
     random(5): 80

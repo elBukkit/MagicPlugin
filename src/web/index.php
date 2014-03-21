@@ -10,7 +10,6 @@ function parseConfigFile($name) {
 	$config = spyc_load_file("$magicRootFolder/defaults/$name.defaults.yml");
 	$configFile = "$magicRootFolder/$name.yml";
 	if (file_exists($configFile)) {
-		error_log("Loading $configFile");
 		$override = spyc_load_file($configFile);
 		$config = array_merge_recursive($config, $override);
 	}
@@ -38,17 +37,46 @@ foreach ($spells as $key => $spell) {
 }
 
 foreach ($wands as $key => $wand) {
-	$wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
-	$wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
-	$wand['spells'] = isset($wand['spells']) ? $wand['spells'] : array();
+	if (isset($wand['hidden']) && $wand['hidden']) {
+		unset($wands[$key]);
+		continue;
+	}
+	if ($key == 'random') {
+		$wand['name'] = 'Randomized Wand';
+		$wand['description'] = 'This is a randomized wand template, used for crafting, enchanting, and random wands in chests';
+		
+		$convertedRandomSpells = array();
+		if (isset($wand['spells'])) {
+			$wand['spell_probabilities'] = $wand['spells'];
+			$randomSpells = $wand['spells'];
+			$wand['spells'] = $convertedRandomSpells;
+			
+			foreach ($randomSpells as $spellKey => $probability) {
+				$convertedRandomSpells[] = $spellKey;
+			}
+		}
+		$wand['spells'] = $convertedRandomSpells;
+	} else {
+		$wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
+		$wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
+		$wand['spells'] = isset($wand['spells']) ? $wand['spells'] : array();
+	}
 	$wands[$key] = $wand;
 }
 ksort($wands);
+
+// Move randomized wand to top
+if (isset($wands['random'])) {
+	$randomArray = array('random' => $wands['random']);
+	unset($wands['random']);
+	$wands = $randomArray + $wands;
+}
 
 $enchantingEnabled = isset($general['enable_enchanting']) ? $general['enable_enchanting'] : false;
 $combiningEnabled = isset($general['enable_combining']) ? $general['enable_combining'] : false;
 $blockPopulatorEnabled = isset($general['enable_block_populator']) ? $general['enable_block_populator'] : false;
 
+$wandItem = isset($general['wand_item']) ? $general['wand_item'] : '';
 $craftingMaterialUpper = isset($general['crafting_material_upper']) ? $general['crafting_material_upper'] : '';
 $craftingMaterialLower = isset($general['crafting_material_lower']) ? $general['crafting_material_lower'] : '';
 $craftingEnabled = isset($general['enable_crafting']) ? $general['enable_crafting'] : false;
@@ -211,7 +239,8 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<?php 
 					foreach ($spells as $key => $spell) {
 						$icon = isset($spell['icon']) ? printMaterial($spell['icon'], true) : '';
-						echo '<li class="ui-widget-content" id="spell-' . $key . '">' . $icon . '<span class="spellTitle">' . $spell['name'] . '</span></li>';
+						$name = isset($spell['name']) ? $spell['name'] : "($key)";
+						echo '<li class="ui-widget-content" id="spell-' . $key . '">' . $icon . '<span class="spellTitle">' . $name . '</span></li>';
 					}
 				?>
 				</ol>
@@ -235,7 +264,11 @@ function printMaterial($materialKey, $iconOnly = null) {
 							}
 							$extraStyle = 'font-weight: bold; color: #' . $effectColor;
 						}
-						echo '<li class="ui-widget-content" style="' . $extraStyle . '" id="wand-' . $key . '">' .'<span class="wandTitle">' . $wand['name'] . '</span></li>';
+						$name = isset($wand['name']) ? $wand['name'] : "($key)";
+						$wandClass = ($key == 'random') ? 'randomWandTitle' : 'wandTitle';
+						$icon = isset($wand['icon']) ? $wand['icon'] : $wandItem;
+						$icon = printMaterial($icon, true);
+						echo '<li class="ui-widget-content" style="' . $extraStyle . '" id="wand-' . $key . '">' . $icon . '<span class="' . $wandClass . '">' . $name . '</span></li>';
 					}
 				?>
 				</ol>

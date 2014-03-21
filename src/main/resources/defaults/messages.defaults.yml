@@ -689,22 +689,7 @@ wands:
         description: This will randomly generate a wand
     demo:
         name: Demo Wand
-        description: Has a few simple demo spells
-    spawn:
-        name: Return to Spawn
-        description: Returns you to spawn
-    recall:
-        name: Recall Wand
-        description: Returns you to a previous location
-    fireball:
-        name: Fireball Wand
-        description: A temporary fireball wand
-    arrow:
-        name: Arrow Wand
-        description: A temporary arrow wand
-    dueling:
-        name: Dueling Wand
-        description: Made for PVP!
+        description: Not for gameplay, for demo'ing the plugin.
     explorer:
         name: Exploring Wand
         description: For exploring

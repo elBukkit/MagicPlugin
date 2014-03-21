@@ -38,7 +38,7 @@ function getMaterial(materialKey, iconOnly)
 	return enclosingSpan;
 }
 
-function getSpellDetails(key, showTitle, useMana, costReduction)
+function getSpellDetails(key, showTitle, useMana, costReduction, probabilityString)
 {
 	showTitle = (typeof showTitle === 'undefined') ? true : showTitle;
 	useMana = (typeof useMana === 'undefined') ? false : useMana;
@@ -59,6 +59,33 @@ function getSpellDetails(key, showTitle, useMana, costReduction)
 
 	detailsDiv.append(description);
 	detailsDiv.append(icon);
+	
+	// Check for rarity
+	if (probabilityString != null && probabilityString.length > 0) {
+		var rarityClass = 'spellCommon';
+		var rarityDescription = 'Common';
+		var overallWeight = 0;
+		var pieces = probabilityString.split(',');
+		for (var index in pieces) {
+			overallWeight += parseInt(pieces[index]);
+		}
+		
+		if (overallWeight < 5) {
+			rarityClass = 'spellVeryRare';
+			rarityDescription = 'Very Rare';
+		} else if (overallWeight < 20) {
+			rarityClass = 'spellRare';
+			rarityDescription = 'Rare';
+		} else if (overallWeight < 100) {
+			rarityClass = 'spellUncommon';
+			rarityDescription = 'Uncommon';
+		}
+		
+		var probabilityDescription = $('<div class="spellProbability ' + rarityClass + '"/>')
+			.text(rarityDescription);
+		
+		detailsDiv.append(probabilityDescription);
+	}
 
 	var firstCost = true;
 	if ('costs' in spell) {
@@ -284,17 +311,21 @@ function getWandDetails(key)
 		scrollingContainer.append($('<div class="regeneration"/>').text(getLevelString('Hunger Regeneration', hungerRegeneration / maxRegeneration)));
 	}
 		
-	var spellHeader = $('<div class="wandHeading">Spells</div>');
-	var spellListContainer = $('<div id="wandSpellList"/>');
-	var spellList = $('<div/>');
 	var wandSpells = wand.spells;
 	wandSpells.sort();
+	var spellHeader = $('<div class="wandHeading">Spells (' + wandSpells.length + ')</div>');
+	var spellListContainer = $('<div id="wandSpellList"/>');
+	var spellList = $('<div/>');
 	for (var spellIndex in wandSpells)
 	{
 		var key = wand.spells[spellIndex];
 		var spell = spells[key];
+		var probabilityString = "";
+		if ('spell_probabilities' in wand && key in wand['spell_probabilities']) {
+			probabilityString = wand['spell_probabilities'][key];
+		}
 		spellList.append($('<h3/>').text(spell.name));
-		spellList.append($('<div/>').append(getSpellDetails(key, false, xpRegeneration > 0, costReduction)));
+		spellList.append($('<div/>').append(getSpellDetails(key, false, xpRegeneration > 0, costReduction, probabilityString)));
 	}
 	spellList.accordion({ heightStyle: 'content'} );
 	spellListContainer.append(spellList);

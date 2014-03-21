@@ -73,13 +73,13 @@
 {
 	position:absolute;
 	left: 0px;
-	width: 420px;
+	width: 460px;
 }
 
 .details
 {
 	position:absolute;
-	left: 280px;
+	left: 320px;
 	right: 0px;
 	bottom: 30px;
 	top: 60px;
@@ -91,7 +91,7 @@
 	padding: 5px;
 	font-size: 1.2em;
 	color: white;
-	background-color: #222288;"
+	background-color: #222288;
 }
 
 .wandTitleBanner
@@ -100,7 +100,13 @@
 	padding: 5px;
 	font-size: 1.2em;
 	color: white;
-	background-color: #228888;"
+	background-color: #228888;
+}
+
+.randomWandTitle
+{
+	font-weight: bold;
+	font-size: 1.2em;
 }
 
 .bookTitleBanner
@@ -109,7 +115,7 @@
 	padding: 5px;
 	font-size: 1.2em;
 	color: white;
-	background-color: #888822;"
+	background-color: #888822;
 }
 
 .spellDescription
@@ -117,6 +123,32 @@
 	color: #222222;
 	font-style: italic;
 	margin-bottom: 2px;
+}
+
+.spellProbability
+{
+	font-style: italic;
+	margin-bottom: 2px;
+}
+
+.spellVeryRare
+{
+	color: orchid;
+}
+
+.spellRare
+{
+	color: red;
+}
+
+.spellUncommon
+{
+	color: orange;
+}
+
+.spellCommon
+{
+	color: green;
 }
 
 .wandDescription

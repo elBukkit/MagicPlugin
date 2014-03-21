@@ -1,5 +1,47 @@
 # Migration Notes
 
+## 2.9.9
+
+I removed many of the default wands, trying to de-clutter. If you were using any of them or want them back,
+simply copy+paste from here into your wands.yml file (in plugins/Magic):
+
+https://raw.githubusercontent.com/elBukkit/MagicPlugin/330f6b0e3721471bc6e101e97109a695d17e09dd/src/main/resources/defaults/wands.defaults.yml
+
+## Some general notes
+
+At this point I will try and ensure that migration is generally hassle-free, and plugin updates are
+drop-in. I am hesitant to integrate any kind of auto-updater, but if you wanted to automate pulling
+from the latest devbukkit or DEV build, I will try to make sure that won't cause problems.
+
+To be clear, *to make migration easy* going forward, generally do NOT copy and paste from the defaults
+into your custom configuration file.
+
+Proper customization involves only putting *what you want to change* into your spells.yml, wands.yml config.yml
+or messages.yml (etc) files. The files in defaults/ are always loaded first, and what you've put in the
+customized configuration files overrides them.
+
+For instance, if you want to give "fireball" a 10-second cooldown, you would put the following in plugins/Magic/spells.yml
+
+```
+fireball:
+    parameters:
+        cooldown: 10000
+```
+
+Note that all duration values will be in *milliseconds* (not seconds or ticks).
+
+If you copy and paste the entire defaults file (or even sections of it, like the definition of a whole
+spell), migration may get trickier. I will sometimes change the class a spell uses, fix effects, tweak
+icons, or something else that you probably don't really want to tweak. 
+If you've overridden the defaults, my changes won't have
+any effect on your server, and that spell might break (or not get fixed) on update.
+
+Going forward I will assume that you are following this rule when customizing. I'm not going to mention
+every tweak I make to the default config files, because if you haven't overridden it, it shouldn't matter.
+
+If you have overridden something, I'm going to assume it was intentional. I will try to summarize all of this
+in the "admin instructions" section on devbukkit.
+
 ## 2.9.4
 
 ### spells.yml
