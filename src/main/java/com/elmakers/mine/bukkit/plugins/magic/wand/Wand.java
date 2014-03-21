@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.BlockFace;
@@ -49,7 +50,9 @@ public class Wand implements CostReducer {
 		"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
 		"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
-		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon", "quiet"};
+		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon", "quiet", 
+		"effect_particle_interval", "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume", 
+		};
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -92,10 +95,16 @@ public class Wand implements CostReducer {
 	private ParticleType effectParticle = null;
 	private float effectParticleData = 0;
 	private int effectParticleCount = 1;
-	private int particleFrequency = 2;
-	private int particleCounter = 0;
+	private int effectParticleInterval = 2;
+	private int effectParticleCounter = 0;
 	private boolean effectBubbles = false;
 	private EffectRing effectPlayer = null;
+	
+	private Sound effectSound = null;
+	private int effectSoundInterval = 5;
+	private int effectSoundCounter = 0;
+	private float effectSoundVolume = 0;
+	private float effectSoundPitch = 0;
 	
 	private float defaultWalkSpeed = 0.2f;
 	private float defaultFlySpeed = 0.1f;
@@ -639,7 +648,14 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
 		InventoryUtils.setMeta(wandNode, "effect_particle_data", Float.toString(effectParticleData));
 		InventoryUtils.setMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount));
+		InventoryUtils.setMeta(wandNode, "effect_particle_interval", Integer.toString(effectParticleInterval));
+		InventoryUtils.setMeta(wandNode, "effect_sound_interval", Integer.toString(effectSoundInterval));
+		InventoryUtils.setMeta(wandNode, "effect_sound_volume", Float.toString(effectSoundVolume));
+		InventoryUtils.setMeta(wandNode, "effect_sound_pitch", Float.toString(effectSoundPitch));
 		InventoryUtils.setMeta(wandNode, "quiet", Integer.toString(quietLevel));
+		if (effectSound != null) {
+			InventoryUtils.setMeta(wandNode, "effect_sound", effectSound.name());
+		}
 		if (effectParticle != null) {
 			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
 		}
@@ -688,18 +704,45 @@ public class Wand implements CostReducer {
 		uses = Integer.parseInt(InventoryUtils.getMeta(wandNode, "uses", Integer.toString(uses)));
 		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
 		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
+		quietLevel = Integer.parseInt(InventoryUtils.getMeta(wandNode, "quiet", Integer.toString(quietLevel)));
+		
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
 		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
 		effectParticleData = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_particle_data", floatFormat.format(effectParticleData)));
 		effectParticleCount = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount)));
-		quietLevel = Integer.parseInt(InventoryUtils.getMeta(wandNode, "quiet", Integer.toString(quietLevel)));
+		effectParticleInterval = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_particle_interval", Integer.toString(effectSoundInterval)));
+		effectSoundInterval = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_sound_interval", Integer.toString(effectParticleInterval)));
+		effectSoundVolume = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_sound_volume", floatFormat.format(effectSoundVolume)));
+		effectSoundPitch = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_sound_pitch", floatFormat.format(effectSoundPitch)));
+		
+		parseSoundEffect(InventoryUtils.getMeta(wandNode, "effect_sound", effectSound == null ? "" : effectSound.name()));
 		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
+		
 		mode = parseWandMode(InventoryUtils.getMeta(wandNode, "mode", ""), mode);
 		String iconKey = InventoryUtils.getMeta(wandNode, "icon", "");
 		if (iconKey.length() > 0) {
 			icon = MaterialBrush.parseMaterialKey(iconKey);
 		} else {
 			icon = null;
+		}
+	}
+
+	protected void parseSoundEffect(String effectSoundName) {
+		if (effectSoundName.length() > 0) {
+			String testName = effectSoundName.toUpperCase().replace("_", "");
+			try {
+				for (Sound testType : Sound.values()) {
+					String testTypeName = testType.name().replace("_", "");
+					if (testTypeName.equals(testName)) {
+						effectSound = testType;
+						break;
+					}
+				}
+			} catch (Exception ex) {
+				effectSound = null;
+			}
+		} else {
+			effectSound = null;
 		}
 	}
 
@@ -1428,6 +1471,14 @@ public class Wand implements CostReducer {
 			effectParticle = other.effectParticle;
 			effectParticleData = other.effectParticleData;
 			effectParticleCount = other.effectParticleCount;
+			effectParticleInterval = other.effectParticleInterval;
+		}
+		
+		if (effectSound == null) {
+			effectSound = other.effectSound;
+			effectSoundInterval = other.effectSoundInterval;
+			effectSoundVolume = other.effectSoundVolume;
+			effectSoundPitch = other.effectSoundPitch;
 		}
 		
 		if (other.template != null && other.template.length() > 0) {
@@ -1509,8 +1560,6 @@ public class Wand implements CostReducer {
 		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
 		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
 		
-		quietLevel = wandConfig.getInt("quiet", quietLevel);
-		
 		if (wandConfig.containsKey("effect_color") && !safe) {
 			try {
 				effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
@@ -1522,25 +1571,36 @@ public class Wand implements CostReducer {
 			boolean _effectBubbles = (boolean)wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			effectBubbles = safe ? _effectBubbles || effectBubbles : _effectBubbles;
 		}
-		if (wandConfig.containsKey("effect_particle") && !safe) {
-			parseParticleEffect(wandConfig.getString("effect_particle"));
-		}
-		if (wandConfig.containsKey("effect_particle_data") && !safe) {
-			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data"));
-		}
-		if (wandConfig.containsKey("effect_particle_count") && !safe) {
-			effectParticleCount = Integer.parseInt(wandConfig.getString("effect_particle_count"));
-		}
-		mode = parseWandMode(wandConfig.getString("mode"), mode);
 		
-		owner = wandConfig.getString("owner", owner);
-		description = wandConfig.getString("description", description);
+		// Don't change any of this stuff in safe mode
+		if (!safe) {
+			quietLevel = wandConfig.getInt("quiet", quietLevel);
 		
-		if (wandConfig.containsKey("icon")) {
-			setIcon(wandConfig.getMaterialAndData("icon"));
+			if (wandConfig.containsKey("effect_particle")) {
+				parseParticleEffect(wandConfig.getString("effect_particle"));
+				effectParticleData = 0;
+			}
+			if (wandConfig.containsKey("effect_sound")) {
+				parseSoundEffect(wandConfig.getString("effect_sound"));
+			}
+			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data", floatFormat.format(effectParticleData)));
+			effectParticleCount = Integer.parseInt(wandConfig.getString("effect_particle_count", Integer.toString(effectParticleCount)));
+			effectParticleInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
+			effectSoundInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
+			effectSoundVolume = Float.parseFloat(wandConfig.getString("effect_sound_volume", floatFormat.format(effectSoundVolume)));
+			effectSoundPitch = Float.parseFloat(wandConfig.getString("effect_sound_pitch", floatFormat.format(effectSoundPitch)));
+			
+			mode = parseWandMode(wandConfig.getString("mode"), mode);
+
+			owner = wandConfig.getString("owner", owner);
+			description = wandConfig.getString("description", description);
+			
+			if (wandConfig.containsKey("icon")) {
+				setIcon(wandConfig.getMaterialAndData("icon"));
+			}
+			
+			template = wandConfig.getString(template, template);
 		}
-		
-		template = wandConfig.getString(template, template);
 		
 		saveState();
 		updateName();
@@ -1775,21 +1835,28 @@ public class Wand implements CostReducer {
 			InventoryUtils.addPotionEffect(player, effectColor);
 		}
 		
-		// TODO: More customization?
-		if (effectParticle != null) {
-			if ((particleCounter++ % particleFrequency) == 0) {
+		Location location = mage.getLocation();
+		
+		if (effectParticle != null && location != null) {
+			if ((effectParticleCounter++ % effectParticleInterval) == 0) {
 				if (effectPlayer == null) {
 					effectPlayer = new EffectRing(controller.getPlugin());
 					effectPlayer.setParticleCount(2);
 					effectPlayer.setIterations(2);
 					effectPlayer.setRadius(2);
 					effectPlayer.setSize(5);
-					effectPlayer.setMaterial(mage.getLocation().getBlock().getRelative(BlockFace.DOWN));
+					effectPlayer.setMaterial(location.getBlock().getRelative(BlockFace.DOWN));
 				}
 				effectPlayer.setParticleType(effectParticle);
 				effectPlayer.setParticleData(effectParticleData);
 				effectPlayer.setParticleCount(effectParticleCount);
 				effectPlayer.start(player.getEyeLocation(), null);
+			}
+		}
+		
+		if (effectSound != null && location != null && controller.soundsEnabled()) {
+			if ((effectSoundCounter++ % effectSoundInterval) == 0) {
+				mage.getLocation().getWorld().playSound(location, effectSound, effectSoundVolume, effectSoundPitch);
 			}
 		}
 	}

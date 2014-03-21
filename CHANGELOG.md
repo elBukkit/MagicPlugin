@@ -25,6 +25,7 @@
  - Fix hotbar spells getting lost on wand organize
  - Add "quiet" option to wands, useful for custom message display or for recording (quiet = 1 or 2 for less chat spam)
  - Added "magic list maps <keyword>" command (magic list -> magic list wands)
+ - Add configurable sound effects for wands
 
 ## 2.9.7
 

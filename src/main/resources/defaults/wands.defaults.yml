@@ -1472,9 +1472,9 @@ wolf:
     effect_particle_count: 4
     effect_particle_data: 1
     effect_sound: ambience_cave
-    effect_volume: 0.6
-    effect_pitch: 0.3
-    effect_interval: 20
+    effect_sound_volume: 0.6
+    effect_sound_pitch: 0.3
+    effect_sound_interval: 20
     organize: true
     mode: inventory
     spells:
@@ -1608,7 +1608,10 @@ CoOoD3R:
    effect_color: 888888
    effect_particle: heart
    effect_particle_count: 2
-   effect_interval: 10
+   effect_particle_interval: 10
+   effect_sound: pig_idle
+   effect_sound_volume: 0.4
+   effect_sound_interval: 15
    xp_regeneration: 500
    xp_max: 2000
    spells:

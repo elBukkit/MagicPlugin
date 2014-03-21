@@ -1,11 +1,18 @@
 # TODO
 
 ## For 2.9.8
+
+ - Tweak Meteor Shower, Fix multiple LargeProjectiles (?)
+ - Make ProjectileSpell default to Arrow
+ - Add "Fly" spell (cost-free version of Levitate, maybe higher speed?)
+ - Fix icons (meteor/cluster/carpet - building icons, etc)
+ - Collapse blocklist chains on save (?)
+ - Test new dev build of dtlTraders
  
 ## For 2.9.9
 
  - Commandbook kit integration
- - Improve tab completion
+ - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
  - Customizable wand crafting recipes, check NMS data for "icon"
@@ -27,6 +34,8 @@
  - A way to /wand enchant with auto-fill but not filling wand... ?
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Scoreboard mana/spell display
+ - Arena spell/schematic
+ - Player-specific wands, check player data- CoOoD3R, lathame, rileycross, treed, Art1001 .. ?
  
 ## Post-3.0.0
 
