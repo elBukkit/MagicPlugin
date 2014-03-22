@@ -801,6 +801,8 @@ meteor:
         spread: 30
         dpy: 12
         ddy: -0.2
+        range: 64
+        allow_max_range: true
     costs:
         xp: 80
 arrow:
@@ -1298,7 +1300,7 @@ time:
     costs:
         xp: 40        
 bridge:
-    icon: wooden_hoe
+    icon: wood_hoe
     category: engineering
     class: BridgeSpell
     effects:
