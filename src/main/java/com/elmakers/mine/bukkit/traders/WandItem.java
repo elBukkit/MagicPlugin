@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 @Attribute(name="Wand", key="wand", priority = 5)
 public class WandItem extends ItemAttr {
 	private String wandData;
+	private static final boolean DEBUG = false;
 	
 	public WandItem(String key) {
 		super(key);
@@ -29,19 +30,19 @@ public class WandItem extends ItemAttr {
 				Bukkit.getLogger().warning("Failed to serialize wand data");
 			}
 			
-			//Bukkit.getLogger().info("WandItem.onFactorize with wand template " + wand.getTemplate() + " from " + Wand.isWand(itemStack) + ": " + wandData);
+			if (DEBUG) Bukkit.getLogger().info("WandItem.onFactorize with wand template " + wand.getTemplate() + " from " + Wand.isWand(itemStack) + ": " + wandData);
 		}
 	}
 
 	@Override
 	public void onLoad(String itemKey) throws AttributeInvalidValueException {
 		wandData = itemKey;	
-		// Bukkit.getLogger().info("WandItem.onLoad data: " + wandData);
+		if (DEBUG) Bukkit.getLogger().info("WandItem.onLoad data: " + wandData);
 	}
 
 	@Override
 	public String onSave() {
-		// Bukkit.getLogger().info("WandItem.onSave for data " + wandData);
+		if (DEBUG) Bukkit.getLogger().info("WandItem.onSave for data " + wandData);
 		return wandData;
 	}
 	
@@ -51,14 +52,13 @@ public class WandItem extends ItemAttr {
 		if (wandData != null && wandData.length() > 0) {
 			itemStack = InventoryUtils.getCopy(itemStack);
 			if (!InventoryUtils.deserialize(itemStack, wandData)) {
-				Bukkit.getLogger().warning("Failed to deserialize wand data");
+				Bukkit.getLogger().info("Failed to deserialize wand datan for data " + wandData + " as " + itemStack);
 			}
 			
-			// Bukkit.getLogger().info("WandItem.onReturnAssign for data " + wandData + " as " + itemStack + ": " + success);
-		} 
+			Bukkit.getLogger().info("DEBUG: Generating traders wand (" + Wand.isWand(itemStack) + ")");
+			if (DEBUG) Bukkit.getLogger().info("WandItem.onReturnAssign for data " + wandData + " as " + itemStack + ": " + Wand.isWand(itemStack));
+		}
 		
-		// Bukkit.getLogger().info("Returning " + itemStack + ": " + Wand.isWand(itemStack));
-		
-		return itemStack;
+		return InventoryUtils.getCopy(itemStack);
 	}
 }

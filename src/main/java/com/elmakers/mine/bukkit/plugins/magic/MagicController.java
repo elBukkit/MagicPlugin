@@ -59,6 +59,7 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -132,7 +133,13 @@ public class MagicController implements Listener
 	public Mage getMage(Player player)
 	{
 		if (player == null) return null;
-		return getMage(player.getUniqueId().toString(), player);
+		String id = player.getUniqueId().toString();
+		
+		// Check for Citizens NPC!
+		if (player.hasMetadata("NPC")) {
+			id = "NPC-" + player.getName();
+		}
+		return getMage(id, player);
 	}
 	
 	public Mage getMage(String mageId, CommandSender commandSender)
@@ -166,7 +173,7 @@ public class MagicController implements Listener
 						Configuration playerData = new Configuration(legacyFile);
 						playerData.load();
 						mage.load(playerData);
-						legacyFile.renameTo(new File(legacyFile.getName() + ".bak"));
+						legacyFile.renameTo(new File(playerDataFolder, player.getName() + ".yml.bak"));
 					} catch (Exception ex) {
 						getLogger().warning("Failed to migrate player data from file " + legacyFile.getName());
 						ex.printStackTrace();
@@ -687,7 +694,7 @@ public class MagicController implements Listener
 			if (tradersPlugin != null) {
 				tradersController = new TradersController();
 				tradersController.initialize(this, tradersPlugin);
-				getLogger().info("Integrating with dtlTraders for selling Wands");
+				getLogger().info("dtlTraders found, integrating for selling Wands");
 			}
 		} catch (Throwable ex) {
 			ex.printStackTrace();
@@ -1696,8 +1703,24 @@ public class MagicController implements Listener
 			ex.printStackTrace();
 		}
 	}
+	
+	@EventHandler(priority=EventPriority.HIGHEST)
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        if (event.isCancelled())
+            return;
+        
+        // Check for clicking on a Citizens NPC
+        if (event.getRightClicked().hasMetadata("NPC")) {
+        	Player player = event.getPlayer();		
+    		Mage mage = getMage(player);
+        	Wand wand = mage.getActiveWand();
+        	if (wand != null) {
+        		wand.closeInventory();
+        	}
+        }
+    }
 
-	@EventHandler(priority=EventPriority.LOWEST)
+	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		// Block block = event.getClickedBlock();
@@ -1741,6 +1764,7 @@ public class MagicController implements Listener
 			wand.cast();
 			return;
 		}
+		
 		boolean toggleInventory = (event.getAction() == Action.RIGHT_CLICK_AIR);
 		if (!toggleInventory && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Material material = event.getClickedBlock().getType();
