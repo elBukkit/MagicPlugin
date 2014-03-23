@@ -5,7 +5,7 @@
 $magicRootFolder = dirname(__FILE__) . '/../main/resources';
 
 // Configure InfoBook integration (external plugin)
-$infoBookRootConfig = dirname(__FILE__) . '/../main/resources/examples/infobook.yml';
+$infoBookRootConfig = dirname(__FILE__) . '/../main/resources/examples/InfoBook/config.yml';
 
 // Page title
 $title = "elMakers Magic Development Site";

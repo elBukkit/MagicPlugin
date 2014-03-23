@@ -11,10 +11,11 @@
     - Magic.commands.wand
     - Magic.commands.wand.*
     - Magic.commands.spells
-    - Magic.commands.cast
     - Magic.cast.*
     - Magic.commands.magic
     - Magic.commands.magic.list
+    - Magic.commands.magic.list.wands
+    - Magic.commands.magic.list.maps
 
   g:magic_admin:
     permissions:
@@ -28,6 +29,8 @@
     - Magic.commands.magic.search
     - Magic.commands.magic.cancel
     - Magic.commands.magic.clean
+    - Magic.commands.magic.clearcache
+    - Magic.commands.cast
 
   g:magic_guest:
     permissions:
