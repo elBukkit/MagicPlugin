@@ -2275,12 +2275,6 @@ camera:
         range: 32
     costs:
         xp: 5
-mail:
-    class: MailSpell
-    parameters:
-        cooldown: 60000
-    costs:
-        xp: 100
 tent:
     icon: sapling:4
     category: master

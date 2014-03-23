@@ -673,11 +673,6 @@ spells:
         fail: Failed to load photo
         cast: CLICK!
         cast_self: Selfie!
-    mail:
-        name: Mail
-        description: Send a mail to a player. Not meant for wand use.
-        cast: Mail sent!
-        fail: Mail not sent.
     transmute:
         name: Transmute
         description: Convert your last construction
