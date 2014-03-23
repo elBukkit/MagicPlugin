@@ -1933,7 +1933,7 @@ wizard:
         - frost
         - grenade
         - perk
-netherwizard:
+nether:
     modifiable: true
     effect_color: 'B40404'
     xp_regeneration: 20
@@ -1977,7 +1977,7 @@ netherwizard:
         - frost
         - grenade
         - perk
-enderwizard:
+ender:
     modifiable: true
     effect_color: 'AC58FA'
     xp_regeneration: 30

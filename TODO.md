@@ -2,6 +2,13 @@
 
 ## For 2.9.9
 
+ - Look for NPC metadata on interact and on mage load
+ - Walls spell?
+ - Fix yml backup file location! Weird NPC file loading..
+
+ - Add "cross_world" option to RecallSpell (default to false)
+ - Add end options for PhaseSpell (allow return, scale/spawn/location? - multiverse?)
+ - Per-world maps (need to look into map renderer api for this!)
  - Add "wand duplicate" command
  - Config-driven WandLevel limits.
  - Collapse blocklist chains on save (?)
@@ -36,6 +43,8 @@
  - Add cast messages for all spells
  - Player-specific wands, check player data- CoOoD3R, lathame, rileycross, treed, Art1001 .. ?
  
+ - Test with CB 1.6
+ 
 ## Post-3.0.0
 
  - Magic bows that fire arrows that trigger spells... ?
@@ -57,6 +66,8 @@
  - Update "scripting" and "customization" documentation once tab completion is done.
  - API Tutorials, when API is complete.
  - Get Factions running on the demo server?
+ 
+ - Make RPG world - test MultiVerse inventories
  
  - Build and have fun! ;)
 
