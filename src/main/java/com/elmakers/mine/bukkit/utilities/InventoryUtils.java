@@ -173,8 +173,13 @@ public class InventoryUtils extends NMSUtils
 	public static void setMeta(Object node, String tag, String value) {
 		if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
 		try {
-			Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
-			setStringMethod.invoke(node, tag, value);
+			if (value == null || value.length() == 0) {
+				Method setStringMethod = class_NBTTagCompound.getMethod("remove", String.class);
+				setStringMethod.invoke(node, tag);
+			} else {
+				Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
+				setStringMethod.invoke(node, tag, value);
+			}
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
