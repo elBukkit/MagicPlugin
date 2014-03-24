@@ -443,7 +443,12 @@ public class MagicController implements Listener
 
 	public boolean fillWands()
 	{
-		return fillWands;
+		return fillingEnabled;
+	}
+
+	public boolean bindWands()
+	{
+		return bindingEnabled;
 	}
 
 	/*
@@ -1271,7 +1276,7 @@ public class MagicController implements Listener
 		maxBlockUpdates = properties.getInt("max_block_updates", maxBlockUpdates);
 		ageDroppedItems = properties.getInt("age_dropped_items", ageDroppedItems);
 		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
-		fillWands = properties.getBoolean("fill_wands", fillWands);
+		fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
 		indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
 		keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", keepWandsOnDeath);
 		maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
@@ -1290,8 +1295,7 @@ public class MagicController implements Listener
 		blockPopulatorEnabled = properties.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
-		bindingEnabled = properties.getBoolean("enable_anvil_binding", bindingEnabled);
-		keepingEnabled = properties.getBoolean("enable_anvil_keeping", keepingEnabled);
+		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
 		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
@@ -2054,7 +2058,7 @@ public class MagicController implements Listener
 				
 				ItemMeta meta = current.getItemMeta();
 				String newName = meta.getDisplayName();
-				wand.takeOwnership(player, newName, true, keepingEnabled, bindingEnabled);
+				wand.setName(newName);
 				if (organizingEnabled) {
 					wand.organizeInventory(getMage(player));
 				}
@@ -2082,14 +2086,14 @@ public class MagicController implements Listener
 					}
 					
 					// TODO: Can't get the anvil's text from here.
-					firstWand.takeOwnership(player, firstWand.getName(), true, keepingEnabled, bindingEnabled);
 					firstWand.add(secondWand);
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
 
 					if (organizingEnabled) {
-						firstWand.organizeInventory();
+						Mage mage = getMage(player);
+						firstWand.organizeInventory(mage);
 					}
 					player.getInventory().addItem(firstWand.getItem());
 					player.sendMessage("Your wands have been combined!");
@@ -2103,8 +2107,8 @@ public class MagicController implements Listener
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
-
-					firstWand.organizeInventory();
+					Mage mage = getMage(player);
+					firstWand.organizeInventory(mage);
 					player.getInventory().addItem(firstWand.getItem());
 					player.sendMessage("Your wand has been organized!");
 				}
@@ -2564,7 +2568,6 @@ public class MagicController implements Listener
 	 private String								 messagePrefix					= "";
 	 private String								 castMessagePrefix				= "";
 	 private boolean                             soundsEnabled                  = true;
-	 private boolean                             fillWands                      = false;
 	 private boolean                             indestructibleWands            = true;
 	 private boolean                             keepWandsOnDeath	            = true;
 	 private int								 messageThrottle				= 0;
@@ -2573,9 +2576,9 @@ public class MagicController implements Listener
 	 private boolean							 craftingEnabled				= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
-	 private boolean							 keepingEnabled					= false;
 	 private boolean							 bindingEnabled					= false;
 	 private boolean							 organizingEnabled				= false;
+	 private boolean                             fillingEnabled                 = false;
 	 private boolean							 essentialsSignsEnabled			= false;
 	 private boolean							 dynmapUpdate					= true;
 	 private boolean							 dynmapShowWands				= true;

@@ -1130,15 +1130,10 @@ public class MagicPlugin extends JavaPlugin
 			currentWand.closeInventory();
 		}
 	
-		Wand wand = Wand.createWand(controller, wandName, mage);
+		Wand wand = Wand.createWand(controller, wandName);
 		if (wand == null) {
 			sender.sendMessage("No wand defined with key " + wandName);
 			return true;
-		}
-		
-		// Check for special "fill wands" configuration
-		if (controller.fillWands() && parameters.length == 0) {
-			wand.fill(player);
 		}
 	
 		if (giveItemToPlayer(player, wand.getItem())) {

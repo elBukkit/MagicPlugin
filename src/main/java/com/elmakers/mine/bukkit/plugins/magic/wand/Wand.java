@@ -54,7 +54,7 @@ public class Wand implements CostReducer {
 		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
 		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon", "quiet", 
 		"effect_particle_interval", "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume", 
-		"bound", "keep"};
+		"bound", "keep", "organize", "fill"};
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -73,6 +73,8 @@ public class Wand implements CostReducer {
 	private String template = "";
 	private boolean bound = false;
 	private boolean keep = false;
+	private boolean autoOrganize = false;
+	private boolean autoFill = false;
 	
 	private MaterialAndData icon = null;
 	
@@ -157,10 +159,15 @@ public class Wand implements CostReducer {
 			InventoryUtils.addGlow(item);
 		}
 		this.controller = spells;
-		id = UUID.randomUUID().toString();
 		wandName = Messages.get("wand.default_name");
 		updateName();
-		saveState();
+	}
+	
+	public void checkId() {
+		if (id == null) {
+			id = UUID.randomUUID().toString();
+			saveState();
+		}
 	}
 	
 	public Wand(MagicController spells, ItemStack item) {
@@ -326,21 +333,9 @@ public class Wand implements CostReducer {
 	
 	protected void takeOwnership(Player player) {
 		owner = player.getName();
-	}
-	
-	public void takeOwnership(Player player, String name, boolean updateDescription, boolean keep, boolean bind) {
-		setName(name);
-		takeOwnership(player);
-		if (updateDescription) {
-			setDescription("");
+		if (controller != null && controller.bindWands()) {
+			bound = true;
 		}
-		if (keep) {
-			this.keep = true;
-		}
-		if (bind) {
-			this.bound = true;
-		}
-		saveState();
 	}
 	
 	public ItemStack getItem() {
@@ -674,6 +669,8 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(wandNode, "quiet", Integer.toString(quietLevel));
 		InventoryUtils.setMeta(wandNode, "keep", Integer.toString(keep ?  1 : 0));
 		InventoryUtils.setMeta(wandNode, "bound", Integer.toString(bound ?  1 : 0));
+		InventoryUtils.setMeta(wandNode, "fill", Integer.toString(autoFill ?  1 : 0));
+		InventoryUtils.setMeta(wandNode, "organize", Integer.toString(autoOrganize ? 1 : 0));
 		if (effectSound != null) {
 			InventoryUtils.setMeta(wandNode, "effect_sound", effectSound.name());
 		}
@@ -693,8 +690,7 @@ public class Wand implements CostReducer {
 		}
 		
 		// Don't generate a UUID unless we need to, not sure how expensive that is.
-		id = InventoryUtils.getMeta(wandNode, "id");
-		id = id == null || id.length() == 0 ? UUID.randomUUID().toString() : id;
+		id = InventoryUtils.getMeta(wandNode, "id", "");
 		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
 		description = InventoryUtils.getMeta(wandNode, "description", description);
 		owner = InventoryUtils.getMeta(wandNode, "owner", owner);
@@ -728,6 +724,8 @@ public class Wand implements CostReducer {
 		quietLevel = Integer.parseInt(InventoryUtils.getMeta(wandNode, "quiet", Integer.toString(quietLevel)));
 		keep = Integer.parseInt(InventoryUtils.getMeta(wandNode, "keep", (keep ? "1" : "0"))) != 0;
 		bound = Integer.parseInt(InventoryUtils.getMeta(wandNode, "bound", (bound ? "1" : "0"))) != 0;
+		autoOrganize = Integer.parseInt(InventoryUtils.getMeta(wandNode, "organize", (autoOrganize ? "1" : "0"))) != 0;
+		autoFill = Integer.parseInt(InventoryUtils.getMeta(wandNode, "fill", (autoFill ? "1" : "0"))) != 0;
 		
 		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
 		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
@@ -1404,10 +1402,6 @@ public class Wand implements CostReducer {
 	}
 	
 	public static Wand createWand(MagicController controller, String templateName) {
-		return createWand(controller, templateName, null);
-	}
-	
-	public static Wand createWand(MagicController controller, String templateName, Mage owner) {
 		Wand wand = new Wand(controller);
 		wand.suspendSave = true;
 		String wandName = Messages.get("wand.default_name");
@@ -1461,15 +1455,8 @@ public class Wand implements CostReducer {
 			
 			wand.configureProperties(wandConfig);
 			wand.setTemplate(templateName);
-			
-			if (wandConfig.getBoolean("organize", false)) {
-				wand.organizeInventory(owner);
-			}
 		}
 
-		if (owner != null) {	
-			wand.takeOwnership(owner.getPlayer());
-		}
 		wand.setDescription(wandDescription);
 		wand.setName(wandName);
 		wand.saveState(true);
@@ -1618,6 +1605,8 @@ public class Wand implements CostReducer {
 			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			keep = wandConfig.getBoolean("keep", keep);
 			bound = wandConfig.getBoolean("bound", bound);
+			autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
+			autoFill = wandConfig.getBoolean("fill", autoFill);
 		
 			if (wandConfig.containsKey("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));
@@ -1816,6 +1805,9 @@ public class Wand implements CostReducer {
 				addSpell(spell.getKey());
 			}
 		}
+		
+		autoFill = false;
+		saveState();
 	}
 	
 	public void activate(Mage mage) {
@@ -1848,6 +1840,9 @@ public class Wand implements CostReducer {
 		
 	public void activate(Mage mage, ItemStack wandItem) {
 		if (mage == null || wandItem == null) return;
+		
+		// Make sure this wand has a unique id.
+		checkId();
 		
 		// Update held item, it may have been copied since this wand was created.
 		this.item = wandItem;
@@ -1885,18 +1880,25 @@ public class Wand implements CostReducer {
 		}
 		
 		// Check for an empty wand and auto-fill
-		if (controller.fillWands()) {
+		if (controller.fillWands() || autoFill) {
 			if (getSpells().size() == 0) {
 				fill(mage.getPlayer());
 			}
 		}
 		
+		// Check for auto-organize
+		if (autoOrganize) {
+			organizeInventory(mage);
+		}
+		
+		// Take ownership of wand
+		if (owner == null || owner.length() == 0) {
+			takeOwnership(player);
+		}
+		
 		saveState();
 		
 		mage.setActiveWand(this);
-		if (owner.length() == 0) {
-			takeOwnership(player);
-		}
 		updateSpeed(player);
 		if (usesMana()) {
 			storedXpLevel = player.getLevel();
@@ -2143,13 +2145,7 @@ public class Wand implements CostReducer {
 		WandOrganizer organizer = new WandOrganizer(this, mage);
 		organizer.organize();
 		openInventoryPage = 0;
-		saveState();
-	}
-	
-	public void organizeInventory() {
-		WandOrganizer organizer = new WandOrganizer(this, null);
-		organizer.organize();
-		openInventoryPage = 0;
+		autoOrganize = false;
 		saveState();
 	}
 	
