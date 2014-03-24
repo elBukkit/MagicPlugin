@@ -4,6 +4,7 @@
 
  - Add "keep" and "bound" wand options, for wands that you keep on death and/or are bound to a specific player.
  - Fix dtlTraders integration. Requires dtlTraders v3.1.0 (dev snapshot at time of this release)
+ - Add "allow_cross_world" parameter to Recall spell, the default is to disallow Recall'ing to another world now.
 
 ## 2.9.8
 

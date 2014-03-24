@@ -622,8 +622,10 @@ spells:
         cast_spawn: Returning you to spawn
         cast_home: Returning you home
         cast_wand: Returning you to your lost wand
-        no_target_death: No recorded death location. Sorry!
-        no_target_wand: No recorded wands for you
+        no_target_death: No recorded death location
+        no_target_wand: No recorded lost wands
+        no_target_home: No home set
+        cross_world_disallowed: You are not allowed to Recall to another world
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
@@ -811,9 +813,9 @@ wands:
     wizard:
         name: The Wizard Wand
         description: You're a real wizard, now.
-    netherwizard:
+    nether:
         name: The Nether Wand
         description: Spooky Power
-    enderwizard:
+    ender:
         name: The Ender Wand
         description: Super Power

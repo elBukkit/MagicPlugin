@@ -2,11 +2,8 @@
 
 ## For 2.9.9
 
- - Look for NPC metadata on interact and on mage load
  - Walls spell?
- - Fix yml backup file location! Weird NPC file loading..
 
- - Add "cross_world" option to RecallSpell (default to false)
  - Add end options for PhaseSpell (allow return, scale/spawn/location? - multiverse?)
  - Per-world maps (need to look into map renderer api for this!)
  - Add "wand duplicate" command
