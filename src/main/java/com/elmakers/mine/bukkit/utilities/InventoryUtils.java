@@ -105,6 +105,9 @@ public class InventoryUtils extends NMSUtils
 			DataOutput dp = new DataOutputStream(os);
 			writeMethod.invoke(tagObject, dp);
 			serialized = Base64.encodeBase64String(os.toByteArray());
+			
+			// Base64 encodings sometimes chunk output or add whitespace :\
+			serialized = serialized.replace("\n", "").replace("\r", "").replace(" ", "").trim();
 		} catch (Throwable ex) {
 			Bukkit.getLogger().warning("Failed to serialize item: " + ex.getMessage());
 			serialized = null;
