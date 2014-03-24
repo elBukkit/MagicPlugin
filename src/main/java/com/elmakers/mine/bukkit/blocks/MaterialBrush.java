@@ -636,7 +636,8 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	public boolean hasEntities()
 	{
-		return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC;
+		// return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC;
+		return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE;
 	}
 	
 	public List<EntityData> getEntities(Location center, int radius)
