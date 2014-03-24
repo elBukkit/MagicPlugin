@@ -36,12 +36,14 @@ public class WandItem extends ItemAttr {
 
 	@Override
 	public void onLoad(String itemKey) throws AttributeInvalidValueException {
-		wandData = itemKey;	
+		wandData = itemKey;
+		if (wandData == null) wandData = "";
 		if (DEBUG) Bukkit.getLogger().info("WandItem.onLoad data: " + wandData);
 	}
 
 	@Override
 	public String onSave() {
+		if (wandData == null) wandData = "";
 		if (DEBUG) Bukkit.getLogger().info("WandItem.onSave for data " + wandData);
 		return wandData;
 	}
@@ -49,16 +51,15 @@ public class WandItem extends ItemAttr {
 	@Override
 	public ItemStack onReturnAssign(ItemStack itemStack, boolean endItem)
 	{
-		if (wandData != null && wandData.length() > 0) {
+		if (wandData != null && wandData.length() > 0 && itemStack != null) {
 			itemStack = InventoryUtils.getCopy(itemStack);
 			if (!InventoryUtils.deserialize(itemStack, wandData)) {
-				Bukkit.getLogger().info("Failed to deserialize wand datan for data " + wandData + " as " + itemStack);
+				Bukkit.getLogger().info("Failed to deserialize wand data for " + wandData + " as " + itemStack);
 			}
-			
-			Bukkit.getLogger().info("DEBUG: Generating traders wand (" + Wand.isWand(itemStack) + ")");
-			if (DEBUG) Bukkit.getLogger().info("WandItem.onReturnAssign for data " + wandData + " as " + itemStack + ": " + Wand.isWand(itemStack));
 		}
 		
-		return InventoryUtils.getCopy(itemStack);
+		if (DEBUG) Bukkit.getLogger().info("WandItem.onReturnAssign for data " + wandData + " as " + itemStack + ": " + Wand.isWand(itemStack));
+		
+		return itemStack;
 	}
 }
