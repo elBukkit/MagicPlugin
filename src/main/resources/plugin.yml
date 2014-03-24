@@ -5,7 +5,6 @@ website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
 softdepend: [WorldGuard,WorldEdit,Essentials,dynmap,dtlTraders,Factions]
-load: startup
 commands:
   cast:
     description: Cast a spell directly
