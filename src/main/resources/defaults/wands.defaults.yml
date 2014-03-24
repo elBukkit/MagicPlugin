@@ -843,11 +843,11 @@ elder:
     effect_bubbles: true
     organize: true
     spells:
+        - time
         - tent
         - fling
         - blink
         - recurse
-        - time
         - sniper
         - kaboom
         - fireball
@@ -1228,6 +1228,7 @@ black:
     effect_color: '111111'
     effect_bubbles: true
     spells:
+        - wither
         - fling
         - blink
         - recurse
@@ -1263,7 +1264,6 @@ black:
         - commit
         - bomb
         - cluster
-        - wither
         - superpyramid
         - disintegrate
         - flare
@@ -1689,10 +1689,10 @@ guest:
     xp_max: 50
     icon: stick
     spells:
-        - tag
-        - flare
-        - camera
         - perk
+        - flare
+        - tag
+        - camera
 villager:
     modifiable: true
     effect_color: '00FF00'
@@ -1701,10 +1701,10 @@ villager:
     xp_max: 60
     icon: stick
     spells:
+        - arrow
         - tag
         - flare
         - camera
-        - arrow
         - leap
         - perk
 knight:
@@ -1716,12 +1716,12 @@ knight:
     protection_falling: 0.2
     protection_physical: 0.1
     spells:
+        - fling
         - tag
         - flare
         - camera
         - arrow
         - leap
-        - fling
         - pull
         - perk
 baron:
@@ -1733,6 +1733,7 @@ baron:
     protection_falling: 0.3
     protection_physical: 0.2
     spells:
+        - tesseract
         - tag
         - flare
         - camera
@@ -1741,7 +1742,6 @@ baron:
         - fling
         - pull
         - arrowrain
-        - tesseract
         - shrink
         - perk
 lord:
@@ -1753,6 +1753,7 @@ lord:
     protection_falling: 0.5
     protection_physical: 0.3
     spells:
+        - arrowrain
         - tag
         - flare
         - camera
@@ -1760,7 +1761,6 @@ lord:
         - leap
         - fling
         - pull
-        - arrowrain
         - tesseract
         - shrink
         - cat
@@ -1777,6 +1777,7 @@ hero:
     protection_physical: 0.5
     protection_fire: 0.1
     spells:
+        - boom
         - tag
         - flare
         - camera
@@ -1789,7 +1790,6 @@ hero:
         - shrink
         - cat
         - torch
-        - boom
         - stream
         - stash
         - blast
@@ -1804,6 +1804,7 @@ king:
     protection_physical: 0.6
     protection_fire: 0.2
     spells:
+        - curse
         - tag
         - flare
         - camera
@@ -1820,7 +1821,6 @@ king:
         - stream
         - stash
         - blast
-        - curse
         - frost
         - grenade
         - perk
@@ -1836,6 +1836,7 @@ legend:
     protection_physical: 0.8
     protection_fire: 0.3
     spells:
+        - grenade
         - tag
         - flare
         - camera
@@ -1857,7 +1858,6 @@ legend:
         - blast
         - curse
         - frost
-        - grenade
         - perk
 overseer:
     modifiable: true
@@ -1872,6 +1872,7 @@ overseer:
     protection_fire: 0.5
     protection_explosions: 0.5
     spells:
+        - fire
         - tag
         - flare
         - camera
@@ -1895,6 +1896,8 @@ overseer:
         - frost
         - grenade
         - perk
+        - wolf
+        - chop
 wizard:
     modifiable: true
     effect_color: '89A0D5'
@@ -1906,6 +1909,7 @@ wizard:
     protection_falling: 1.0
     protection: 0.8
     spells:
+        - recall
         - tag
         - flare
         - camera
@@ -1918,7 +1922,6 @@ wizard:
         - sniper
         - heal
         - boon
-        - recall
         - mine
         - arrowrain
         - tesseract
@@ -1933,6 +1936,9 @@ wizard:
         - frost
         - grenade
         - perk
+        - wolf
+        - chop
+        - fire
 nether:
     modifiable: true
     effect_color: 'B40404'
@@ -1946,6 +1952,7 @@ nether:
     protection_fire: 1.0
     icon: blaze_rod
     spells:
+        - portal
         - tag
         - flare
         - camera
@@ -1963,7 +1970,6 @@ nether:
         - push
         - blessing
         - familiar
-        - phase
         - arrowrain
         - tesseract
         - shrink
@@ -1977,6 +1983,9 @@ nether:
         - frost
         - grenade
         - perk
+        - wolf
+        - chop
+        - fire
 ender:
     modifiable: true
     effect_color: 'AC58FA'
@@ -1990,6 +1999,7 @@ ender:
     protection: 0.9
     protection_fire: 1.0
     spells:
+        - phase
         - tag
         - flare
         - camera
@@ -2007,7 +2017,7 @@ ender:
         - push
         - blessing
         - familiar
-        - phase
+        - portal
         - levitate
         - kaboom
         - cloak
@@ -2025,3 +2035,6 @@ ender:
         - frost
         - grenade
         - perk
+        - wolf
+        - chop
+        - fire

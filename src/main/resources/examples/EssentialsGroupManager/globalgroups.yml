@@ -98,7 +98,7 @@
     - Magic.cast.push
     - Magic.cast.blessing
     - Magic.cast.familiar
-    - Magic.cast.phase
+    - Magic.cast.portal
     
   g:magic_ender_wizard:
     permissions:
@@ -106,6 +106,7 @@
     - Magic.cast.kaboom
     - Magic.cast.cloak
     - Magic.cast.blink
+    - Magic.cast.phase
     
   g:magic_vip1:
     permissions:
