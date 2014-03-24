@@ -16,6 +16,7 @@
     - Magic.commands.magic.list
     - Magic.commands.magic.list.wands
     - Magic.commands.magic.list.maps
+    - Magic.commands.magic.give
 
   g:magic_admin:
     permissions:

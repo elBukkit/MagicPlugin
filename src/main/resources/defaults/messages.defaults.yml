@@ -80,11 +80,13 @@ wand:
     owner_description: $name's Wand
     bound_description: Bound to $name
     bound: That wand is bound to $name
+    spell_added: $spell has been added to your wand
+    brush_added: The $brush material brush has been added to your wand
 costs:
-    xp_amount: $amount XP
+    xp_amount: $amount Mana
     mana_amount: $amount Mana
     mana: Mana
-    xp: XP
+    xp: Mana
     insufficient_resources: Not enough $cost
 cooldown:
     wait_seconds: You must wait another $seconds seconds.

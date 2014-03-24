@@ -6,15 +6,15 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 
-@Attribute(name="Wand", key="wand", priority = 5)
-public class WandItem extends NBTItem {
+@Attribute(name="Spell", key="spell", priority = 5)
+public class SpellItem extends NBTItem {
 	
-	public WandItem(String key) {
+	public SpellItem(String key) {
 		super(key);
 	}
 
 	@Override
 	protected boolean isItem(ItemStack itemStack) {
-		return Wand.isWand(itemStack);
+		return Wand.isSpell(itemStack);
 	}
 }

@@ -108,7 +108,7 @@
 # 
 default:
     xp_regeneration: 5
-    xp_max: 20
+    xp_max: 75
     modifiable: true
     effect_color: 'FFFFFF'
     
@@ -211,9 +211,9 @@ random:
       0.3: 0 ,  0, 10, 50
     xp_regeneration:
       1: 100,30, 5,  0
-      5: 20, 30, 40, 10
-      10: 0 , 10, 10, 30
-      15: 0 ,  0, 1,  5
+      10: 20, 30, 40, 10
+      20: 0 , 10, 10, 30
+      25: 0 ,  0, 1,  5
     xp_max:
       5:  100,10,  0, 0
       20: 20, 30, 50, 10
@@ -834,11 +834,11 @@ elder:
     bound: true
     protection: 1
     xp_max: 1000
-    xp_regeneration: 100
+    xp_regeneration: 200
     health_regeneration: 1
     hunger_regeneration: 1
     power: 1
-    haste: 1
+    haste: 0.5
     effect_color: '8B008B'
     effect_bubbles: true
     organize: true
@@ -1685,8 +1685,8 @@ lathame:
 guest:
     modifiable: true
     effect_color: '00FF00'
-    xp_regeneration: 1
-    xp_max: 40
+    xp_regeneration: 5
+    xp_max: 50
     icon: stick
     spells:
         - tag
@@ -1696,7 +1696,7 @@ guest:
 villager:
     modifiable: true
     effect_color: '00FF00'
-    xp_regeneration: 2
+    xp_regeneration: 10
     protection_falling: 0.1
     xp_max: 60
     icon: stick
@@ -1710,8 +1710,8 @@ villager:
 knight:
     modifiable: true
     effect_color: '11FF11'
-    xp_regeneration: 3
-    xp_max: 75
+    xp_regeneration: 15
+    xp_max: 80
     icon: diamond_sword
     protection_falling: 0.2
     protection_physical: 0.1
@@ -1727,8 +1727,8 @@ knight:
 baron:
     modifiable: true
     effect_color: '11FF11'
-    xp_regeneration: 4
-    xp_max: 80
+    xp_regeneration: 18
+    xp_max: 100
     icon: diamond_sword
     protection_falling: 0.3
     protection_physical: 0.2
@@ -1747,8 +1747,8 @@ baron:
 lord:
     modifiable: true
     effect_color: '11FF11'
-    xp_regeneration: 4
-    xp_max: 100
+    xp_regeneration: 20
+    xp_max: 130
     icon: diamond_sword
     protection_falling: 0.5
     protection_physical: 0.3
@@ -1770,8 +1770,8 @@ lord:
 hero:
     modifiable: true
     effect_color: '11FF11'
-    xp_regeneration: 4
-    xp_max: 120
+    xp_regeneration: 25
+    xp_max: 150
     icon: diamond_sword
     protection_falling: 0.5
     protection_physical: 0.5
@@ -1797,8 +1797,8 @@ hero:
 king:
     modifiable: true
     effect_color: '22FF22'
-    xp_regeneration: 5
-    xp_max: 130
+    xp_regeneration: 30
+    xp_max: 175
     icon: diamond_sword
     protection_falling: 0.7
     protection_physical: 0.6
@@ -1827,8 +1827,8 @@ king:
 legend:
     modifiable: true
     effect_color: '22FF22'
-    xp_regeneration: 5
-    xp_max: 150
+    xp_regeneration: 40
+    xp_max: 200
     effect_particle: town_aura
     effect_particle_count: 2
     icon: diamond_sword
@@ -1862,8 +1862,8 @@ legend:
 overseer:
     modifiable: true
     effect_color: '22FF22'
-    xp_regeneration: 5
-    xp_max: 175
+    xp_regeneration: 50
+    xp_max: 250
     effect_particle: town_aura
     effect_particle_count: 2
     icon: diamond_sword
@@ -1898,8 +1898,8 @@ overseer:
 wizard:
     modifiable: true
     effect_color: '89A0D5'
-    xp_regeneration: 10
-    xp_max: 200
+    xp_regeneration: 75
+    xp_max: 400
     effect_particle: portal
     effect_particle_count: 2
     icon: blaze_rod
@@ -1936,8 +1936,8 @@ wizard:
 nether:
     modifiable: true
     effect_color: 'B40404'
-    xp_regeneration: 20
-    xp_max: 300
+    xp_regeneration: 100
+    xp_max: 500
     effect_particle: portal
     effect_particle_count: 3
     effect_particle_data: 2
@@ -1980,8 +1980,8 @@ nether:
 ender:
     modifiable: true
     effect_color: 'AC58FA'
-    xp_regeneration: 30
-    xp_max: 500
+    xp_regeneration: 150
+    xp_max: 800
     effect_particle: lava_dripping
     effect_particle_count: 4
     effect_bubbles: true

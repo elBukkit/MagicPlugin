@@ -1450,11 +1450,13 @@ public class MagicController implements Listener
 		if (icon != null && icon.getType() != Material.AIR) {
 			Spell spell = mage.getSpell(Wand.getSpell(icon));
 			if (spell != null) {
+				activeWand.saveInventory();
 				activeWand.setActiveSpell(spell.getKey());
 				
 				// Reset the held item, Bukkit may have replaced it (?)
 				mage.getPlayer().setItemInHand(activeWand.getItem());
 			} else if (Wand.isBrush(icon)){
+				activeWand.saveInventory();
 				activeWand.activateBrush(icon);
 				
 				// Reset the held item, Bukkit may have replaced it (?)

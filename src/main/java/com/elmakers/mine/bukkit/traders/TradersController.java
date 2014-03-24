@@ -13,6 +13,8 @@ public class TradersController {
 	
 	public void initialize(MagicController controller, Plugin tradersPlugin) throws AttributeInvalidClassException {
 		ItemAttr.registerAttr(WandItem.class);
+		ItemAttr.registerAttr(BrushItem.class);
+		ItemAttr.registerAttr(SpellItem.class);
 		TradersController.controller = controller;
 	}
 	

@@ -536,10 +536,10 @@ public class Wand implements CostReducer {
 		}
 		hasInventory = spellNames.length + materialNames.length > 1;
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	protected ItemStack createSpellItem(String spellName) {
-		Spell spell = controller.getSpell(spellName);
+	public static ItemStack createSpellIcon(String spellKey, MagicController controller, Wand wand) {
+		Spell spell = controller.getSpell(spellKey);
 		if (spell == null) return null;
 		MaterialAndData icon = spell.getIcon();
 		if (icon == null) {
@@ -554,11 +554,15 @@ public class Wand implements CostReducer {
 			itemStack = null;
 		}
 		if (itemStack == null) {
-			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spellName + " with material " + icon.getMaterial().name());	
+			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spellKey + " with material " + icon.getMaterial().name());	
 			return originalItemStack;
 		}
-		updateSpellName(itemStack, spell, true);
+		updateSpellName(itemStack, spell, wand, wand == null ? null : wand.activeMaterial);
 		return itemStack;
+	}
+	
+	protected ItemStack createSpellItem(String spellKey) {
+		return createSpellIcon(spellKey, controller, this);
 	}
 	
 	private String getActiveWandName(String materialKey) {
@@ -566,8 +570,12 @@ public class Wand implements CostReducer {
 		return getActiveWandName(spell, materialKey);
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected ItemStack createMaterialItem(String materialKey) {
+		return createMaterialIcon(materialKey, controller, this);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static ItemStack createMaterialIcon(String materialKey, MagicController controller, Wand wand) {
 		MaterialBrushData brushData = MaterialBrush.parseMaterialKey(materialKey, false);
 		if (brushData == null) return null;
 		
@@ -601,7 +609,7 @@ public class Wand implements CostReducer {
 		}
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
-		updateMaterialName(itemStack, materialKey, true);
+		updateMaterialName(itemStack, materialKey, wand);
 		return itemStack;
 	}
 
@@ -855,6 +863,10 @@ public class Wand implements CostReducer {
 		return getSpells().contains(spellName);
 	}
 	
+	public boolean addMaterial(String materialKey) {
+		return addMaterial(materialKey, false, false);
+	}
+	
 	public boolean addMaterial(String materialKey, boolean makeActive, boolean force) {
 		if (!modifiable && !force) return false;
 		
@@ -952,7 +964,7 @@ public class Wand implements CostReducer {
 		return addSpell(spellName, false);
 	}
 	
-	private String getSpellDisplayName(Spell spell, String materialKey) {
+	private static String getSpellDisplayName(Spell spell, String materialKey) {
 		String name = "";
 		if (spell != null) {
 			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
@@ -1084,7 +1096,7 @@ public class Wand implements CostReducer {
 		
 		Spell spell = controller.getSpell(activeSpell);
 		if (spell != null && spellCount == 1 && materialCount <= 1) {
-			addSpellLore(spell, lore);
+			addSpellLore(spell, lore, this);
 		} else {
 			if (description.length() > 0) {
 				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
@@ -1211,24 +1223,24 @@ public class Wand implements CostReducer {
 		if (isSpell(item)) {
 			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
-				updateSpellName(item, spell, activeName);
+				updateSpellName(item, spell, activeName ? this : null, activeMaterial);
 			}
 		} else if (isBrush(item)) {
-			updateMaterialName(item, getMaterialKey(item), activeName);
+			updateMaterialName(item, getMaterialKey(item), activeName ? this : null);
 		}
 	}
 	
-	protected void updateSpellName(ItemStack itemStack, Spell spell, boolean activeName) {
+	protected static void updateSpellName(ItemStack itemStack, Spell spell, Wand wand, String activeMaterial) {
 		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
-		if (activeName) {
-			displayName = getActiveWandName(spell);
+		if (wand != null) {
+			displayName = wand.getActiveWandName(spell);
 		} else {
 			displayName = getSpellDisplayName(spell, activeMaterial);
 		}
 		meta.setDisplayName(displayName);
 		List<String> lore = new ArrayList<String>();
-		addSpellLore(spell, lore);
+		addSpellLore(spell, lore, wand);
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
 		InventoryUtils.addGlow(itemStack);
@@ -1236,11 +1248,11 @@ public class Wand implements CostReducer {
 		InventoryUtils.setMeta(spellNode, "key", spell.getKey());
 	}
 	
-	protected void updateMaterialName(ItemStack itemStack, String materialKey, boolean activeName) {
+	protected static void updateMaterialName(ItemStack itemStack, String materialKey, Wand wand) {
 		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
-		if (activeName) {
-			displayName = getActiveWandName(materialKey);
+		if (wand != null) {
+			displayName = wand.getActiveWandName(materialKey);
 		} else {
 			displayName = MaterialBrush.getMaterialName(materialKey);
 		}
@@ -1310,7 +1322,7 @@ public class Wand implements CostReducer {
 		}
 	}
 	
-	protected void addSpellLore(Spell spell, List<String> lore) {
+	protected static void addSpellLore(Spell spell, List<String> lore, CostReducer reducer) {
 		String description = spell.getDescription();
 		String usage = spell.getUsage();
 		if (description != null && description.length() > 0) {
@@ -1322,16 +1334,16 @@ public class Wand implements CostReducer {
 		List<CastingCost> costs = spell.getCosts();
 		if (costs != null) {
 			for (CastingCost cost : costs) {
-				if (cost.hasCosts(this)) {
-					lore.add(ChatColor.YELLOW + Messages.get("wand.costs_description").replace("$description", cost.getFullDescription(this)));
+				if (cost.hasCosts(reducer)) {
+					lore.add(ChatColor.YELLOW + Messages.get("wand.costs_description").replace("$description", cost.getFullDescription(reducer)));
 				}
 			}
 		}
 		List<CastingCost> activeCosts = spell.getActiveCosts();
 		if (activeCosts != null) {
 			for (CastingCost cost : activeCosts) {
-				if (cost.hasCosts(this)) {
-					lore.add(ChatColor.YELLOW + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(this)));
+				if (cost.hasCosts(reducer)) {
+					lore.add(ChatColor.YELLOW + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(reducer)));
 				}
 			}
 		}
@@ -1830,8 +1842,7 @@ public class Wand implements CostReducer {
 			droppedItem.setVelocity(velocity);
 			return;
 		}
-		
-		
+
 		activate(mage, player.getItemInHand());
 	}
 		
@@ -1840,6 +1851,38 @@ public class Wand implements CostReducer {
 		
 		// Update held item, it may have been copied since this wand was created.
 		this.item = wandItem;
+		this.mage = mage;
+		
+		// Check for spell or other special icons in the player's inventory
+		Player player = mage.getPlayer();
+		boolean modified = false;
+		ItemStack[] items = player.getInventory().getContents();
+		Set<String> spells = getSpells();
+		Set<String> materials = getMaterialKeys();
+		for (int i = 0; i < items.length; i++) {
+			ItemStack item = items[i];
+			if (isSpell(item)) {
+				String spellKey = getSpell(item);
+				if (!spells.contains(spellKey) && addSpell(spellKey)) {
+					Spell spell = controller.getSpell(spellKey);
+					if (spell != null) {
+						modified = true;
+						items[i] = null;
+						mage.sendMessage(Messages.get("wand.spell_added").replace("$spell", spell.getName()));
+					}
+				}
+			} else if (isBrush(item)) {
+				String materialKey = getMaterialKey(item);
+				if (!materials.contains(materialKey) && addMaterial(materialKey)) {
+					items[i] = null;
+					modified = true;
+					mage.sendMessage(Messages.get("wand.brush_added").replace("$brush", MaterialBrush.getMaterialName(materialKey)));
+				}
+			}
+		}
+		if (modified) {
+			player.getInventory().setContents(items);
+		}
 		
 		// Check for an empty wand and auto-fill
 		if (controller.fillWands()) {
@@ -1848,8 +1891,6 @@ public class Wand implements CostReducer {
 			}
 		}
 		
-		this.mage = mage;
-		Player player = mage.getPlayer();
 		saveState();
 		
 		mage.setActiveWand(this);

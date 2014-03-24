@@ -226,6 +226,7 @@ public class MagicPlugin extends JavaPlugin
 				addIfPermissible(sender, options, "Magic.commands.", "load");
 				addIfPermissible(sender, options, "Magic.commands.", "save");
 				addIfPermissible(sender, options, "Magic.commands.", "commit");
+				addIfPermissible(sender, options, "Magic.commands.", "give");
 				addIfPermissible(sender, options, "Magic.commands.", "list");
 			} else if (args.length == 2) {
 				if (args[1].equalsIgnoreCase("list")) {
@@ -278,6 +279,28 @@ public class MagicPlugin extends JavaPlugin
 		return options;
 	}
 	
+	protected void onGiveSpell(CommandSender sender, Player player, String spellKey)
+	{
+		ItemStack itemStack = Wand.createSpellIcon(spellKey, controller, null);
+		if (itemStack == null) {
+			sender.sendMessage("Failed to create spell item for " + spellKey);
+			return;
+		}
+		
+		giveItemToPlayer(player, itemStack);
+	}
+	
+	protected void onGiveBrush(CommandSender sender, Player player, String materialKey)
+	{
+		ItemStack itemStack = Wand.createMaterialIcon(materialKey, controller, null);
+		if (itemStack == null) {
+			sender.sendMessage("Failed to material spell item for " + materialKey);
+			return;
+		}
+		
+		giveItemToPlayer(player, itemStack);
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
 	{
@@ -315,6 +338,60 @@ public class MagicPlugin extends JavaPlugin
 					sender.sendMessage("All changes committed");
 				} else {
 					sender.sendMessage("Nothing to commit");
+				}
+				return true;
+			}
+			if (subCommand.equalsIgnoreCase("give"))
+			{
+				String key = "";
+				boolean isSpell = true;
+				Player player = null;
+				if (sender instanceof Player) {
+					if (args.length == 1) {
+						sender.sendMessage("Usage: magic give <spellname|'material'> [materialname]");
+						return true;
+					}
+					if (args.length > 2 && !args[2].equals("material")) {
+						sender.sendMessage("Usage: magic give <spellname|'material'> [materialname]");
+						return true;
+					}
+					if (args.length > 2) {
+						key = args[2];
+						isSpell = false;
+					} else {
+						key = args[1];
+					}
+					
+					player = (Player)sender;
+				} else {
+					if (args.length < 3) {
+						sender.sendMessage("Usage: magic give <playername> <spellname|'material'> [materialname]");
+						return true;
+					}
+					String playerName = args[1];
+					player = getServer().getPlayer(playerName);
+					if (player == null) {
+						sender.sendMessage("Can't find player " + playerName);
+						return true;
+					}
+					if (args.length > 3 && !args[3].equals("material")) {
+						sender.sendMessage("Usage: magic give <playername> <spellname|'material'> [materialname]");
+						return true;
+					}
+					if (args.length > 3) {
+						key = args[3];
+						isSpell = false;
+					} else {
+						key = args[2];
+					}
+					
+					player = (Player)sender;
+				}
+				
+				if (isSpell) {
+					onGiveSpell(sender, player, key);
+				} else {
+					onGiveBrush(sender, player, key);
 				}
 				return true;
 			}
@@ -1064,19 +1141,30 @@ public class MagicPlugin extends JavaPlugin
 			wand.fill(player);
 		}
 	
-		// Place directly in hand if possible
-		PlayerInventory inventory = player.getInventory();
-		ItemStack inHand = inventory.getItemInHand();
-		if (inHand == null || inHand.getType() == Material.AIR) {
-			inventory.setItem(inventory.getHeldItemSlot(), wand.getItem());
+		if (giveItemToPlayer(player, wand.getItem())) {
 			wand.activate(mage);
-		} else {
-			player.getInventory().addItem(wand.getItem());
 		}
 		if (sender != player) {
 			sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
 		}
 		return true;
+	}
+	
+	protected boolean giveItemToPlayer(Player player, ItemStack itemStack) {
+		// Place directly in hand if possible
+		PlayerInventory inventory = player.getInventory();
+		ItemStack inHand = inventory.getItemInHand();
+		if (inHand == null || inHand.getType() == Material.AIR) {
+			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
+			return true;
+		} else {
+			HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
+			if (returned.size() > 0) {
+				player.getWorld().dropItem(player.getLocation(), itemStack);
+			}
+		}
+		
+		return false;
 	}
 	
 	public boolean processCastCommand(CommandSender sender, Player player, String[] castParameters)

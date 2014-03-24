@@ -101,7 +101,7 @@ public class CastingCost
 	protected int getAmount(CostReducer reducer)
 	{
 		double reducedAmount = amount;
-		float reduction = reducer.getCostReduction();
+		float reduction = reducer == null ? 0 : reducer.getCostReduction();
 		if (reduction > 0) {
 			reducedAmount = (1.0f - reduction) * reducedAmount;
 		}
@@ -111,7 +111,7 @@ public class CastingCost
 	protected int getXP(CostReducer reducer)
 	{
 		float reducedAmount = xp;
-		float reduction = reducer.getCostReduction();
+		float reduction = reducer == null ? 0 : reducer.getCostReduction();
 		if (reduction > 0) {
 			reducedAmount = (1.0f - reduction) * reducedAmount;
 		}
@@ -138,7 +138,7 @@ public class CastingCost
 		if (item != null) {
 			return (int)getAmount(reducer) + " " + MaterialBrush.getMaterialName(item);
 		}
-		if (reducer.usesMana()) {
+		if (reducer != null && reducer.usesMana()) {
 			return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
 		}
 		return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
