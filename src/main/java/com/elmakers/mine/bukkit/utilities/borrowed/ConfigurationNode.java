@@ -62,6 +62,41 @@ public class ConfigurationNode {
 		this.root = root;
 	}
 
+	public ConfigurationNode(String serializedData) {
+		this.root = new HashMap<String, Object>();
+		importFromString(serializedData);
+	}
+	
+	public boolean importFromString(String serializedData) {
+		root.clear();
+		if (serializedData == null || serializedData.length() < 3) return false;
+		
+		if (serializedData.charAt(0) != '{') return false;
+		if (serializedData.charAt(serializedData.length() - 1) != '{') return false;
+		serializedData = serializedData.substring(1, serializedData.length() - 2);
+		
+		String[] allKeyValues = StringUtils.split(serializedData, '&');
+		// Testing with a single level for now.
+		for (String keyValue : allKeyValues) {
+			String[] pieces = keyValue.split(":", 2);
+			if (pieces.length == 2) {
+				root.put(pieces[0], pieces[1]);
+			}
+		}
+		
+		return true;
+	}
+	
+	public String exportToString() {
+		String[] allKeyValues = new String[root.size()];
+		int index = 0;
+		for (Entry<String, Object> entry : root.entrySet()) {
+			allKeyValues[index++] = entry.getKey() + ":" + entry.getValue();
+		}
+		
+		return "{" + StringUtils.join(allKeyValues, '&') + "}";
+	}
+
 	/**
 	 * Gets all of the cofiguration values within the Node as
 	 * a key value pair, with the key being the full path and the
@@ -368,26 +403,28 @@ public class ConfigurationNode {
 			Material material = null;
 			byte data = 0;
 			String[] pieces = StringUtils.split(matName, ':');
-			if (pieces.length > 1) {
-				try {
-					data = Byte.parseByte(pieces[1]);
+			if (pieces.length > 0) {
+				if (pieces.length > 1) {
+					try {
+						data = Byte.parseByte(pieces[1]);
+					}
+					catch(NumberFormatException ex)
+					{
+						data = 0;
+					}
+				}
+				try
+				{
+					Integer value = Integer.parseInt(pieces[0]);
+					if (value != null)
+					{
+						material = Material.getMaterial(value);
+					}
 				}
 				catch(NumberFormatException ex)
 				{
-					data = 0;
+					material = Material.getMaterial(pieces[0].toUpperCase());
 				}
-			}
-			try
-			{
-				Integer value = Integer.parseInt(pieces[0]);
-				if (value != null)
-				{
-					material = Material.getMaterial(value);
-				}
-			}
-			catch(NumberFormatException ex)
-			{
-				material = Material.getMaterial(pieces[0].toUpperCase());
 			}
 			
 			if (material == null) return null;

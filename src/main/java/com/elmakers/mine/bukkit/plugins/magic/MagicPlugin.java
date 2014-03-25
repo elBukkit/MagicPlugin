@@ -888,7 +888,7 @@ public class MagicPlugin extends JavaPlugin
 		}
 		node.setProperty(parameters[0], value);
 		wand.deactivate();
-		wand.configureProperties(node, safe);
+		wand.loadProperties(node, safe);
 		wand.activate(mage);
 		mage.sendMessage("Wand reconfigured");
 		if (sender != player) {

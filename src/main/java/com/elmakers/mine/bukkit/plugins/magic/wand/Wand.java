@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -47,14 +48,25 @@ public class Wand implements CostReducer {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
 	public final static String[] PROPERTY_KEYS = {
-		"active_spell", "active_material", "xp", "xp_regeneration", "xp_max", "health_regeneration", 
-		"hunger_regeneration", "uses", 
-		"cost_reduction", "cooldown_reduction", "power", "protection", "protection_physical", 
-		"protection_projectiles", "protection_falling", "protection_fire", "protection_explosions", 
-		"haste", "has_inventory", "modifiable", "effect_color", "effect_particle", "effect_particle_data",
-		"effect_particle_count", "effect_bubbles", "materials", "spells", "mode", "icon", "quiet", 
-		"effect_particle_interval", "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume", 
-		"bound", "keep", "organize", "fill"};
+		"active_spell", "active_material", 
+		"xp", "xp_regeneration", "xp_max",
+		"bound", "uses", 
+		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
+		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
+		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
+		"haste", 
+		"health_regeneration", "hunger_regeneration", 
+		"icon", "mode", 
+		"power", 
+		"protection", "protection_physical", "protection_projectiles", 
+		"protection_falling", "protection_fire", "protection_explosions",
+		"materials", "spells"
+	};
+	public final static String[] HIDDEN_PROPERTY_KEYS = {
+		"id", "owner", "name", "description", "template", "has_inventory",
+		"keep", "organize", "fill", "modifiable", "quiet"
+	};
+	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
 	private ItemStack item;
 	private MagicController controller;
@@ -174,6 +186,22 @@ public class Wand implements CostReducer {
 		this(item);
 		this.controller = spells;
 		loadState();
+	}
+	
+	public Wand(MagicController spells, ItemStack item, String serializedData) {
+		this(item);
+		this.controller = spells;
+		ConfigurationNode configuration = new ConfigurationNode(serializedData);
+		loadProperties(configuration);
+		saveState();
+		updateName();
+		updateLore();
+	}
+	
+	public String export() {
+		ConfigurationNode configuration = new ConfigurationNode();
+		saveProperties(configuration);
+		return configuration.exportToString();
 	}
 	
 	public void unenchant() {
@@ -507,22 +535,25 @@ public class Wand implements CostReducer {
 	protected void parseInventoryStrings(String spellString, String materialString) {
 		hotbar.clear();
 		inventories.clear();
-		String[] spellNames = StringUtils.split(spellString, "|");
+		// Support YML-List-As-String format and |-delimited format
+		spellString = spellString.replaceAll("[\\]\\[]", "");
+		String[] spellNames = StringUtils.split(spellString, "|,");
 		for (String spellName : spellNames) {
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
-			ItemStack itemStack = createSpellItem(pieces[0]);
+			ItemStack itemStack = createSpellItem(pieces[0].trim());
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + pieces[0]);
 				continue;
 			}
 			addToInventory(itemStack, slot);
 		}
-		String[] materialNames = StringUtils.split(materialString, "|");
+		materialString = materialString.replace("[\\]\\[]", "");
+		String[] materialNames = StringUtils.split(materialString, "|,");
 		for (String materialName : materialNames) {
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
-			ItemStack itemStack = createMaterialItem(pieces[0]);
+			ItemStack itemStack = createMaterialItem(pieces[0].trim());
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + pieces[0]);
 				continue;
@@ -614,138 +645,199 @@ public class Wand implements CostReducer {
 	}
 
 	protected void saveState() {
-		if (suspendSave) return;
+		if (suspendSave || item == null) return;
 		
 		Object wandNode = InventoryUtils.createNode(item, "wand");
-		
-		InventoryUtils.setMeta(wandNode, "id", id);
-		String wandMaterials = getMaterialString();
-		String wandSpells = getSpellString();
-		InventoryUtils.setMeta(wandNode, "materials", wandMaterials);
-		InventoryUtils.setMeta(wandNode, "spells", wandSpells);
-		InventoryUtils.setMeta(wandNode, "active_spell", activeSpell);
-		InventoryUtils.setMeta(wandNode, "active_material", activeMaterial);
-		InventoryUtils.setMeta(wandNode, "name", wandName);
-		InventoryUtils.setMeta(wandNode, "description", description);
-		InventoryUtils.setMeta(wandNode, "owner", owner);
-
-		if (icon != null) {
-			String iconKey = MaterialBrush.getMaterialKey(icon);
-			if (iconKey != null && iconKey.length() > 0) {
-				InventoryUtils.setMeta(wandNode, "icon", iconKey);
-			}
-		}
-		
-		if (template != null && template.length() > 0) {
-			InventoryUtils.setMeta(wandNode, "template", template);
-		}
-	
-		InventoryUtils.setMeta(wandNode, "cost_reduction", floatFormat.format(costReduction));
-		InventoryUtils.setMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction));
-		InventoryUtils.setMeta(wandNode, "power", floatFormat.format(power));
-		InventoryUtils.setMeta(wandNode, "protection", floatFormat.format(damageReduction));
-		InventoryUtils.setMeta(wandNode, "protection_physical", floatFormat.format(damageReductionPhysical));
-		InventoryUtils.setMeta(wandNode, "protection_projectiles", floatFormat.format(damageReductionProjectiles));
-		InventoryUtils.setMeta(wandNode, "protection_falling", floatFormat.format(damageReductionFalling));
-		InventoryUtils.setMeta(wandNode, "protection_fire", floatFormat.format(damageReductionFire));
-		InventoryUtils.setMeta(wandNode, "protection_explosions", floatFormat.format(damageReductionExplosions));
-		InventoryUtils.setMeta(wandNode, "haste", floatFormat.format(speedIncrease));
-		InventoryUtils.setMeta(wandNode, "xp", Integer.toString(xp));
-		InventoryUtils.setMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration));
-		InventoryUtils.setMeta(wandNode, "xp_max", Integer.toString(xpMax));
-		InventoryUtils.setMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration));
-		InventoryUtils.setMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration));
-		InventoryUtils.setMeta(wandNode, "uses", Integer.toString(uses));
-		InventoryUtils.setMeta(wandNode, "has_inventory", Integer.toString((hasInventory ? 1 : 0)));
-		InventoryUtils.setMeta(wandNode, "modifiable", Integer.toString((modifiable ? 1 : 0)));
-		InventoryUtils.setMeta(wandNode, "effect_color", Integer.toString(effectColor, 16));
-		InventoryUtils.setMeta(wandNode, "effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
-		InventoryUtils.setMeta(wandNode, "effect_particle_data", Float.toString(effectParticleData));
-		InventoryUtils.setMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount));
-		InventoryUtils.setMeta(wandNode, "effect_particle_interval", Integer.toString(effectParticleInterval));
-		InventoryUtils.setMeta(wandNode, "effect_sound_interval", Integer.toString(effectSoundInterval));
-		InventoryUtils.setMeta(wandNode, "effect_sound_volume", Float.toString(effectSoundVolume));
-		InventoryUtils.setMeta(wandNode, "effect_sound_pitch", Float.toString(effectSoundPitch));
-		InventoryUtils.setMeta(wandNode, "quiet", Integer.toString(quietLevel));
-		InventoryUtils.setMeta(wandNode, "keep", Integer.toString(keep ?  1 : 0));
-		InventoryUtils.setMeta(wandNode, "bound", Integer.toString(bound ?  1 : 0));
-		InventoryUtils.setMeta(wandNode, "fill", Integer.toString(autoFill ?  1 : 0));
-		InventoryUtils.setMeta(wandNode, "organize", Integer.toString(autoOrganize ? 1 : 0));
-		if (effectSound != null) {
-			InventoryUtils.setMeta(wandNode, "effect_sound", effectSound.name());
-		}
-		if (effectParticle != null) {
-			InventoryUtils.setMeta(wandNode, "effect_particle", effectParticle.name());
-		}
-		if (mode != null) {
-			InventoryUtils.setMeta(wandNode, "mode", mode.name());
-		}
+		ConfigurationNode stateNode = new ConfigurationNode();
+		saveProperties(stateNode);
+		InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
 	}
 	
 	protected void loadState() {
+		if (item == null) return;
+		
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		if (wandNode == null) {
 			controller.getPlugin().getLogger().warning("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
 		}
 		
-		// Don't generate a UUID unless we need to, not sure how expensive that is.
-		id = InventoryUtils.getMeta(wandNode, "id", "");
-		wandName = InventoryUtils.getMeta(wandNode, "name", wandName);
-		description = InventoryUtils.getMeta(wandNode, "description", description);
-		owner = InventoryUtils.getMeta(wandNode, "owner", owner);
-		template = InventoryUtils.getMeta(wandNode, "template", template);
-
-		activeSpell = InventoryUtils.getMeta(wandNode, "active_spell", activeSpell);
-		activeMaterial = InventoryUtils.getMeta(wandNode, "active_material", activeMaterial);
+		ConfigurationNode stateNode = new ConfigurationNode();
+		InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
 		
-		String wandMaterials = InventoryUtils.getMeta(wandNode, "materials", "");
-		String wandSpells = InventoryUtils.getMeta(wandNode, "spells", "");
-		parseInventoryStrings(wandSpells, wandMaterials);
+		loadProperties(stateNode);
+	}
+	
+	public void saveProperties(ConfigurationNode node) {
+		node.setProperty("id", id);
+		node.setProperty("materials", getMaterialString());
 		
-		costReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cost_reduction", floatFormat.format(costReduction)));
-		cooldownReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "cooldown_reduction", floatFormat.format(cooldownReduction)));
-		power = Float.parseFloat(InventoryUtils.getMeta(wandNode, "power", floatFormat.format(power)));
-		damageReduction = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection", floatFormat.format(damageReduction)));
-		damageReductionPhysical = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_physical", floatFormat.format(damageReductionPhysical)));
-		damageReductionProjectiles = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_projectiles", floatFormat.format(damageReductionProjectiles)));
-		damageReductionFalling = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_falling", floatFormat.format(damageReductionFalling)));
-		damageReductionFire = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_fire", floatFormat.format(damageReductionFire)));
-		damageReductionExplosions = Float.parseFloat(InventoryUtils.getMeta(wandNode, "protection_explosions", floatFormat.format(damageReductionExplosions)));
-		speedIncrease = Float.parseFloat(InventoryUtils.getMeta(wandNode, "haste", floatFormat.format(speedIncrease)));
-		xp = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp", Integer.toString(xp)));
-		xpRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_regeneration", Integer.toString(xpRegeneration)));
-		xpMax = Integer.parseInt(InventoryUtils.getMeta(wandNode, "xp_max", Integer.toString(xpMax)));
-		healthRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "health_regeneration", Integer.toString(healthRegeneration)));
-		hungerRegeneration = Integer.parseInt(InventoryUtils.getMeta(wandNode, "hunger_regeneration", Integer.toString(hungerRegeneration)));
-		uses = Integer.parseInt(InventoryUtils.getMeta(wandNode, "uses", Integer.toString(uses)));
-		hasInventory = Integer.parseInt(InventoryUtils.getMeta(wandNode, "has_inventory", (hasInventory ? "1" : "0"))) != 0;
-		modifiable = Integer.parseInt(InventoryUtils.getMeta(wandNode, "modifiable", (modifiable ? "1" : "0"))) != 0;
-		quietLevel = Integer.parseInt(InventoryUtils.getMeta(wandNode, "quiet", Integer.toString(quietLevel)));
-		keep = Integer.parseInt(InventoryUtils.getMeta(wandNode, "keep", (keep ? "1" : "0"))) != 0;
-		bound = Integer.parseInt(InventoryUtils.getMeta(wandNode, "bound", (bound ? "1" : "0"))) != 0;
-		autoOrganize = Integer.parseInt(InventoryUtils.getMeta(wandNode, "organize", (autoOrganize ? "1" : "0"))) != 0;
-		autoFill = Integer.parseInt(InventoryUtils.getMeta(wandNode, "fill", (autoFill ? "1" : "0"))) != 0;
+		node.setProperty("spells", getSpellString());
 		
-		effectColor = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_color", Integer.toString(effectColor, 16)), 16);
-		effectBubbles = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_bubbles", (effectBubbles ? "1" : "0"))) != 0;
-		effectParticleData = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_particle_data", floatFormat.format(effectParticleData)));
-		effectParticleCount = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_particle_count", Integer.toString(effectParticleCount)));
-		effectParticleInterval = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_particle_interval", Integer.toString(effectSoundInterval)));
-		effectSoundInterval = Integer.parseInt(InventoryUtils.getMeta(wandNode, "effect_sound_interval", Integer.toString(effectParticleInterval)));
-		effectSoundVolume = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_sound_volume", floatFormat.format(effectSoundVolume)));
-		effectSoundPitch = Float.parseFloat(InventoryUtils.getMeta(wandNode, "effect_sound_pitch", floatFormat.format(effectSoundPitch)));
-		
-		parseSoundEffect(InventoryUtils.getMeta(wandNode, "effect_sound", effectSound == null ? "" : effectSound.name()));
-		parseParticleEffect(InventoryUtils.getMeta(wandNode, "effect_particle", effectParticle == null ? "" : effectParticle.name()));
-		
-		mode = parseWandMode(InventoryUtils.getMeta(wandNode, "mode", ""), mode);
-		String iconKey = InventoryUtils.getMeta(wandNode, "icon", "");
-		if (iconKey.length() > 0) {
-			icon = MaterialBrush.parseMaterialKey(iconKey);
+		node.setProperty("active_spell", activeSpell);
+		node.setProperty("active_material", activeMaterial);
+		node.setProperty("name", wandName);
+		node.setProperty("description", description);
+		node.setProperty("owner", owner);
+	
+		node.setProperty("cost_reduction", floatFormat.format(costReduction));
+		node.setProperty("cooldown_reduction", floatFormat.format(cooldownReduction));
+		node.setProperty("power", floatFormat.format(power));
+		node.setProperty("protection", floatFormat.format(damageReduction));
+		node.setProperty("protection_physical", floatFormat.format(damageReductionPhysical));
+		node.setProperty("protection_projectiles", floatFormat.format(damageReductionProjectiles));
+		node.setProperty("protection_falling", floatFormat.format(damageReductionFalling));
+		node.setProperty("protection_fire", floatFormat.format(damageReductionFire));
+		node.setProperty("protection_explosions", floatFormat.format(damageReductionExplosions));
+		node.setProperty("haste", floatFormat.format(speedIncrease));
+		node.setProperty("xp", Integer.toString(xp));
+		node.setProperty("xp_regeneration", Integer.toString(xpRegeneration));
+		node.setProperty("xp_max", Integer.toString(xpMax));
+		node.setProperty("health_regeneration", Integer.toString(healthRegeneration));
+		node.setProperty("hunger_regeneration", Integer.toString(hungerRegeneration));
+		node.setProperty("uses", Integer.toString(uses));
+		node.setProperty("has_inventory", Integer.toString((hasInventory ? 1 : 0)));
+		node.setProperty("modifiable", Integer.toString((modifiable ? 1 : 0)));
+		node.setProperty("effect_color", Integer.toString(effectColor, 16));
+		node.setProperty("effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
+		node.setProperty("effect_particle_data", Float.toString(effectParticleData));
+		node.setProperty("effect_particle_count", Integer.toString(effectParticleCount));
+		node.setProperty("effect_particle_interval", Integer.toString(effectParticleInterval));
+		node.setProperty("effect_sound_interval", Integer.toString(effectSoundInterval));
+		node.setProperty("effect_sound_volume", Float.toString(effectSoundVolume));
+		node.setProperty("effect_sound_pitch", Float.toString(effectSoundPitch));
+		node.setProperty("quiet", Integer.toString(quietLevel));
+		node.setProperty("keep", Integer.toString(keep ?  1 : 0));
+		node.setProperty("bound", Integer.toString(bound ?  1 : 0));
+		node.setProperty("fill", Integer.toString(autoFill ?  1 : 0));
+		node.setProperty("organize", Integer.toString(autoOrganize ? 1 : 0));
+		if (effectSound != null) {
+			node.setProperty("effect_sound", effectSound.name());
 		} else {
-			icon = null;
+			node.removeProperty("effectSound");
 		}
+		if (effectParticle != null) {
+			node.setProperty("effect_particle", effectParticle.name());
+		} else {
+			node.removeProperty("effect_particle");
+		}
+		if (mode != null) {
+			node.setProperty("mode", mode.name());
+		} else {
+			node.removeProperty("mode");
+		}
+		if (icon != null) {
+			String iconKey = MaterialBrush.getMaterialKey(icon);
+			if (iconKey != null && iconKey.length() > 0) {
+				node.setProperty("icon", iconKey);
+			} else {
+				node.removeProperty("icon");
+			}
+		} else {
+			node.removeProperty("icon");
+		}
+		if (template != null && template.length() > 0) {
+			node.setProperty("template", template);
+		} else {
+			node.removeProperty(template);
+		}
+	}
+	
+	public void loadProperties(ConfigurationNode wandConfig) {
+		loadProperties(wandConfig, false);
+	}
+	
+	public void loadProperties(ConfigurationNode wandConfig, boolean safe) {
+		modifiable = (boolean)wandConfig.getBoolean("modifiable", modifiable);
+		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
+		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
+		float _cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
+		cooldownReduction = safe ? Math.max(_cooldownReduction, cooldownReduction) : _cooldownReduction;
+		float _power = (float)wandConfig.getDouble("power", power);
+		power = safe ? Math.max(_power, power) : _power;
+		float _damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
+		damageReduction = safe ? Math.max(_damageReduction, damageReduction) : _damageReduction;
+		float _damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
+		damageReductionPhysical = safe ? Math.max(_damageReductionPhysical, damageReductionPhysical) : _damageReductionPhysical;
+		float _damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles", damageReductionProjectiles);
+		damageReductionProjectiles = safe ? Math.max(_damageReductionProjectiles, damageReductionPhysical) : _damageReductionProjectiles;
+		float _damageReductionFalling = (float)wandConfig.getDouble("protection_falling", damageReductionFalling);
+		damageReductionFalling = safe ? Math.max(_damageReductionFalling, damageReductionFalling) : _damageReductionFalling;
+		float _damageReductionFire = (float)wandConfig.getDouble("protection_fire", damageReductionFire);
+		damageReductionFire = safe ? Math.max(_damageReductionFire, damageReductionFire) : _damageReductionFire;
+		float _damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
+		damageReductionExplosions = safe ? Math.max(_damageReductionExplosions, damageReductionExplosions) : _damageReductionExplosions;
+		int _xpRegeneration = wandConfig.getInt("xp_regeneration", xpRegeneration);
+		xpRegeneration = safe ? Math.max(_xpRegeneration, xpRegeneration) : _xpRegeneration;
+		int _xpMax = wandConfig.getInt("xp_max", xpMax);
+		xpMax = safe ? Math.max(_xpMax, xpMax) : _xpMax;
+		int _xp = wandConfig.getInt("xp", xp);
+		xp = safe ? Math.max(_xp, xp) : _xp;
+		int _healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
+		healthRegeneration = safe ? Math.max(_healthRegeneration, healthRegeneration) : _healthRegeneration;
+		int _hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
+		hungerRegeneration = safe ? Math.max(_hungerRegeneration, hungerRegeneration) : _hungerRegeneration;
+		int _uses = wandConfig.getInt("uses", uses);
+		uses = safe ? Math.max(_uses, uses) : _uses;
+		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
+		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
+		
+		if (wandConfig.containsKey("effect_color") && !safe) {
+			try {
+				effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
+			} catch (Exception ex) {
+				
+			}
+		}
+		
+		// Don't change any of this stuff in safe mode
+		if (!safe) {
+			id = wandConfig.getString("id", id);
+			quietLevel = wandConfig.getInt("quiet", quietLevel);
+			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
+			keep = wandConfig.getBoolean("keep", keep);
+			bound = wandConfig.getBoolean("bound", bound);
+			autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
+			autoFill = wandConfig.getBoolean("fill", autoFill);
+			hasInventory = wandConfig.getBoolean("has_inventory", hasInventory);
+			
+			if (wandConfig.containsKey("effect_particle")) {
+				parseParticleEffect(wandConfig.getString("effect_particle"));
+				effectParticleData = 0;
+			}
+			if (wandConfig.containsKey("effect_sound")) {
+				parseSoundEffect(wandConfig.getString("effect_sound"));
+			}
+			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data", floatFormat.format(effectParticleData)));
+			effectParticleCount = Integer.parseInt(wandConfig.getString("effect_particle_count", Integer.toString(effectParticleCount)));
+			effectParticleInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
+			effectSoundInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
+			effectSoundVolume = Float.parseFloat(wandConfig.getString("effect_sound_volume", floatFormat.format(effectSoundVolume)));
+			effectSoundPitch = Float.parseFloat(wandConfig.getString("effect_sound_pitch", floatFormat.format(effectSoundPitch)));
+			
+			mode = parseWandMode(wandConfig.getString("mode"), mode);
+
+			owner = wandConfig.getString("owner", owner);
+			wandName = wandConfig.getString("name", wandName);			
+			description = wandConfig.getString("description", description);
+			template = wandConfig.getString(template, template);
+			
+			activeSpell = wandConfig.getString("active_spell", activeSpell);
+			activeMaterial = wandConfig.getString("active_material", activeMaterial);
+			
+			String wandMaterials = wandConfig.getString("materials", "");
+			String wandSpells = wandConfig.getString("spells", "");
+			
+			parseInventoryStrings(wandSpells, wandMaterials);
+			
+			if (wandConfig.containsKey("icon")) {
+				setIcon(wandConfig.getMaterialAndData("icon"));
+			}
+		}
+		
+		saveState();
+		updateName();
+		updateLore();
 	}
 
 	protected void parseSoundEffect(String effectSoundName) {
@@ -1432,10 +1524,14 @@ public class Wand implements CostReducer {
 				return null;
 			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
-			wandName = wandConfig.getString("name", wandName);
+			// Default to localized names
 			wandName = Messages.get("wands." + templateName + ".name", wandName);
-			wandDescription = wandConfig.getString("description", wandDescription);
 			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
+			
+			// Load all properties
+			wand.loadProperties(wandConfig);
+			
+			// Add spells and materials, which appear in config as list, but are csv in properties
 			List<Object> spellList = wandConfig.getList("spells");
 			if (spellList != null) {
 				for (Object spellName : spellList) {			
@@ -1453,7 +1549,6 @@ public class Wand implements CostReducer {
 				}
 			}
 			
-			wand.configureProperties(wandConfig);
 			wand.setTemplate(templateName);
 		}
 
@@ -1550,93 +1645,6 @@ public class Wand implements CostReducer {
 	
 	public boolean keepOnDeath() {
 		return keep;
-	}
-	
-	public void configureProperties(ConfigurationNode wandConfig) {
-		configureProperties(wandConfig, false);
-	}
-	
-	public void configureProperties(ConfigurationNode wandConfig, boolean safe) {
-		modifiable = (boolean)wandConfig.getBoolean("modifiable", modifiable);
-		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
-		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
-		float _cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
-		cooldownReduction = safe ? Math.max(_cooldownReduction, cooldownReduction) : _cooldownReduction;
-		float _power = (float)wandConfig.getDouble("power", power);
-		power = safe ? Math.max(_power, power) : _power;
-		float _damageReduction = (float)wandConfig.getDouble("protection", damageReduction);
-		damageReduction = safe ? Math.max(_damageReduction, damageReduction) : _damageReduction;
-		float _damageReductionPhysical = (float)wandConfig.getDouble("protection_physical", damageReductionPhysical);
-		damageReductionPhysical = safe ? Math.max(_damageReductionPhysical, damageReductionPhysical) : _damageReductionPhysical;
-		float _damageReductionProjectiles = (float)wandConfig.getDouble("protection_projectiles", damageReductionProjectiles);
-		damageReductionProjectiles = safe ? Math.max(_damageReductionProjectiles, damageReductionPhysical) : _damageReductionProjectiles;
-		float _damageReductionFalling = (float)wandConfig.getDouble("protection_falling", damageReductionFalling);
-		damageReductionFalling = safe ? Math.max(_damageReductionFalling, damageReductionFalling) : _damageReductionFalling;
-		float _damageReductionFire = (float)wandConfig.getDouble("protection_fire", damageReductionFire);
-		damageReductionFire = safe ? Math.max(_damageReductionFire, damageReductionFire) : _damageReductionFire;
-		float _damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
-		damageReductionExplosions = safe ? Math.max(_damageReductionExplosions, damageReductionExplosions) : _damageReductionExplosions;
-		int _xpRegeneration = wandConfig.getInt("xp_regeneration", xpRegeneration);
-		xpRegeneration = safe ? Math.max(_xpRegeneration, xpRegeneration) : _xpRegeneration;
-		int _xpMax = wandConfig.getInt("xp_max", xpMax);
-		xpMax = safe ? Math.max(_xpMax, xpMax) : _xpMax;
-		int _xp = wandConfig.getInt("xp", xp);
-		xp = safe ? Math.max(_xp, xp) : _xp;
-		int _healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
-		healthRegeneration = safe ? Math.max(_healthRegeneration, healthRegeneration) : _healthRegeneration;
-		int _hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
-		hungerRegeneration = safe ? Math.max(_hungerRegeneration, hungerRegeneration) : _hungerRegeneration;
-		int _uses = wandConfig.getInt("uses", uses);
-		uses = safe ? Math.max(_uses, uses) : _uses;
-		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
-		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
-		
-		if (wandConfig.containsKey("effect_color") && !safe) {
-			try {
-				effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
-			} catch (Exception ex) {
-				
-			}
-		}
-		
-		// Don't change any of this stuff in safe mode
-		if (!safe) {
-			quietLevel = wandConfig.getInt("quiet", quietLevel);
-			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
-			keep = wandConfig.getBoolean("keep", keep);
-			bound = wandConfig.getBoolean("bound", bound);
-			autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
-			autoFill = wandConfig.getBoolean("fill", autoFill);
-		
-			if (wandConfig.containsKey("effect_particle")) {
-				parseParticleEffect(wandConfig.getString("effect_particle"));
-				effectParticleData = 0;
-			}
-			if (wandConfig.containsKey("effect_sound")) {
-				parseSoundEffect(wandConfig.getString("effect_sound"));
-			}
-			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data", floatFormat.format(effectParticleData)));
-			effectParticleCount = Integer.parseInt(wandConfig.getString("effect_particle_count", Integer.toString(effectParticleCount)));
-			effectParticleInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
-			effectSoundInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
-			effectSoundVolume = Float.parseFloat(wandConfig.getString("effect_sound_volume", floatFormat.format(effectSoundVolume)));
-			effectSoundPitch = Float.parseFloat(wandConfig.getString("effect_sound_pitch", floatFormat.format(effectSoundPitch)));
-			
-			mode = parseWandMode(wandConfig.getString("mode"), mode);
-
-			owner = wandConfig.getString("owner", owner);
-			description = wandConfig.getString("description", description);
-			
-			if (wandConfig.containsKey("icon")) {
-				setIcon(wandConfig.getMaterialAndData("icon"));
-			}
-			
-			template = wandConfig.getString(template, template);
-		}
-		
-		saveState();
-		updateName();
-		updateLore();
 	}
 	
 	public static void loadTemplates(ConfigurationNode properties) {

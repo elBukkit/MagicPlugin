@@ -26,6 +26,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+
 public class InventoryUtils extends NMSUtils
 {
 	private final static int MAX_SERIALIZE_DEPTH = 8;
@@ -89,6 +91,45 @@ public class InventoryUtils extends NMSUtils
 			ex.printStackTrace();
 		}
 		return meta;
+	}
+	
+	public static boolean saveTagsToNBT(ConfigurationNode tags, Object node, String[] tagNames)
+	{
+		if (node == null) {
+			Bukkit.getLogger().warning("Tring to save tags to a null node");
+			return false;
+		}
+		if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
+			Bukkit.getLogger().warning("Tring to save tags to a non-CompoundTag");
+			return false;
+		}
+		for (String tagName : tagNames)
+		{
+			setMeta(node, tagName, tags.getString(tagName));
+		}
+		
+		return true;
+	}
+	
+	public static boolean loadTagsFromNBT(ConfigurationNode tags, Object node, String[] tagNames)
+	{
+		if (node == null) {
+			Bukkit.getLogger().warning("Tring to load tags from a null node");
+			return false;
+		}
+		if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
+			Bukkit.getLogger().warning("Tring to load tags from a non-CompoundTag");
+			return false;
+		}
+		for (String tagName : tagNames)
+		{
+			String meta = getMeta(node, tagName);
+			if (meta != null && meta.length() > 0) {
+				tags.setProperty(tagName, meta);
+			}
+		}
+		
+		return true;
 	}
 	
 	public static String serialize(ItemStack stack) {

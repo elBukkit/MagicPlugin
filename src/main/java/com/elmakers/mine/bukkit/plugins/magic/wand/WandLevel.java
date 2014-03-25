@@ -341,7 +341,7 @@ public class WandLevel {
 		}
 
 		// Set properties. This also updates name and lore.
-		wand.configureProperties(wandProperties);
+		wand.loadProperties(wandProperties);
 		
 		return addedMaterials || addedSpells;
 	}
