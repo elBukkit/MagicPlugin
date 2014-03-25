@@ -1305,6 +1305,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		for (Entity entity : entities)
 		{
 			if (entity == getPlayer()) continue;
+			// TODO: Targetable NPC's?
+			if (entity.hasMetadata("NPC")) continue;
 			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 
 			Target newScore = new Target(getLocation(), entity, getMaxRange());

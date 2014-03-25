@@ -29,6 +29,7 @@ public class PushSpell extends Spell
 		for (Entity target : entities)
 		{
 			if (target == getPlayer()) continue;
+			if (target.hasMetadata("NPC")) continue;
 			Location playerLocation = getLocation();
 			Location targetLocation = target.getLocation();
 
