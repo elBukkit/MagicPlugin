@@ -69,10 +69,19 @@ public class ConfigurationNode {
 	
 	public boolean importFromString(String serializedData) {
 		root.clear();
-		if (serializedData == null || serializedData.length() < 3) return false;
+		if (serializedData == null || serializedData.length() < 3) {
+			Bukkit.getLogger().warning("Importing empty string");
+			return false;
+		}
 		
-		if (serializedData.charAt(0) != '{') return false;
-		if (serializedData.charAt(serializedData.length() - 1) != '{') return false;
+		if (serializedData.charAt(0) != '{') {
+			Bukkit.getLogger().warning("Importing invalid string data - missing {");
+			return false;
+		}
+		if (serializedData.charAt(serializedData.length() - 1) != '}') {
+			Bukkit.getLogger().warning("Importing invalid string data - missing }");
+			return false;
+		}
 		serializedData = serializedData.substring(1, serializedData.length() - 2);
 		
 		String[] allKeyValues = StringUtils.split(serializedData, '&');
@@ -1088,7 +1097,14 @@ public class ConfigurationNode {
 			 }
 			 catch(NumberFormatException ex)
 			 {
-				 return null;
+				 try
+				 {
+					 return Integer.parseInt((String)o) != 0;
+				 }
+				 catch(NumberFormatException ex2)
+				 {
+					 return null;
+				 }
 			 }
 		 } else {
 			 return null;

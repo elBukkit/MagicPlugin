@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 public class SpellItem extends NBTItem {
 	
 	public SpellItem(String key) {
-		super(key);
+		super(key, "spell", "key");
 	}
 
 	@Override

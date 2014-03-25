@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 public class BrushItem extends NBTItem {
 	
 	public BrushItem(String key) {
-		super(key);
+		super(key, "brush", "key");
 	}
 
 	@Override

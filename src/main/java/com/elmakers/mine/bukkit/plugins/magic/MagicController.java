@@ -2244,8 +2244,15 @@ public class MagicController implements Listener
 			plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getId());
 			removeLostWand(wand);
 		}
+		
+		Wand activeWand = mage.getActiveWand();
+		if (activeWand != null && !Wand.isWand(pickup) && activeWand.addItem(pickup)) {
+			event.getItem().remove();
+			event.setCancelled(true);   
+			return;
+		}
+		
 		if (mage.hasStoredInventory()) {
-			
 			event.setCancelled(true);   		
 			if (mage.addToStoredInventory(event.getItem().getItemStack())) {
 				event.getItem().remove();

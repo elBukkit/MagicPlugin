@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -73,7 +74,7 @@ public class Wand implements CostReducer {
 	private Mage mage;
 	
 	// Cached state
-	private String id;
+	private String id = "";
 	private Inventory hotbar;
 	private List<Inventory> inventories;
 	
@@ -105,7 +106,7 @@ public class Wand implements CostReducer {
 	private int xp = 0;
 	
 	private int xpRegeneration = 0;
-	private int xpMax = 50;
+	private int xpMax = 0;
 	private int healthRegeneration = 0;
 	private int hungerRegeneration = 0;
 	
@@ -176,7 +177,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public void checkId() {
-		if (id == null) {
+		if (id.length() == 0) {
 			id = UUID.randomUUID().toString();
 			saveState();
 		}
@@ -548,7 +549,7 @@ public class Wand implements CostReducer {
 			}
 			addToInventory(itemStack, slot);
 		}
-		materialString = materialString.replace("[\\]\\[]", "");
+		materialString = materialString.replaceAll("[\\]\\[]", "");
 		String[] materialNames = StringUtils.split(materialString, "|,");
 		for (String materialName : materialNames) {
 			String[] pieces = materialName.split("@");
@@ -680,37 +681,37 @@ public class Wand implements CostReducer {
 		node.setProperty("description", description);
 		node.setProperty("owner", owner);
 	
-		node.setProperty("cost_reduction", floatFormat.format(costReduction));
-		node.setProperty("cooldown_reduction", floatFormat.format(cooldownReduction));
-		node.setProperty("power", floatFormat.format(power));
-		node.setProperty("protection", floatFormat.format(damageReduction));
-		node.setProperty("protection_physical", floatFormat.format(damageReductionPhysical));
-		node.setProperty("protection_projectiles", floatFormat.format(damageReductionProjectiles));
-		node.setProperty("protection_falling", floatFormat.format(damageReductionFalling));
-		node.setProperty("protection_fire", floatFormat.format(damageReductionFire));
-		node.setProperty("protection_explosions", floatFormat.format(damageReductionExplosions));
-		node.setProperty("haste", floatFormat.format(speedIncrease));
-		node.setProperty("xp", Integer.toString(xp));
-		node.setProperty("xp_regeneration", Integer.toString(xpRegeneration));
-		node.setProperty("xp_max", Integer.toString(xpMax));
-		node.setProperty("health_regeneration", Integer.toString(healthRegeneration));
-		node.setProperty("hunger_regeneration", Integer.toString(hungerRegeneration));
-		node.setProperty("uses", Integer.toString(uses));
-		node.setProperty("has_inventory", Integer.toString((hasInventory ? 1 : 0)));
-		node.setProperty("modifiable", Integer.toString((modifiable ? 1 : 0)));
-		node.setProperty("effect_color", Integer.toString(effectColor, 16));
-		node.setProperty("effect_bubbles", Integer.toString(effectBubbles ?  1 : 0));
+		node.setProperty("cost_reduction", costReduction);
+		node.setProperty("cooldown_reduction", cooldownReduction);
+		node.setProperty("power", power);
+		node.setProperty("protection", damageReduction);
+		node.setProperty("protection_physical", damageReductionPhysical);
+		node.setProperty("protection_projectiles", damageReductionProjectiles);
+		node.setProperty("protection_falling", damageReductionFalling);
+		node.setProperty("protection_fire", damageReductionFire);
+		node.setProperty("protection_explosions", damageReductionExplosions);
+		node.setProperty("haste", speedIncrease);
+		node.setProperty("xp", xp);
+		node.setProperty("xp_regeneration", xpRegeneration);
+		node.setProperty("xp_max", xpMax);
+		node.setProperty("health_regeneration", healthRegeneration);
+		node.setProperty("hunger_regeneration", hungerRegeneration);
+		node.setProperty("uses", uses);
+		node.setProperty("has_inventory", hasInventory);
+		node.setProperty("modifiable", modifiable);
+		node.setProperty("effect_color", effectColor);
+		node.setProperty("effect_bubbles", effectBubbles);
 		node.setProperty("effect_particle_data", Float.toString(effectParticleData));
-		node.setProperty("effect_particle_count", Integer.toString(effectParticleCount));
-		node.setProperty("effect_particle_interval", Integer.toString(effectParticleInterval));
-		node.setProperty("effect_sound_interval", Integer.toString(effectSoundInterval));
+		node.setProperty("effect_particle_count", effectParticleCount);
+		node.setProperty("effect_particle_interval", effectParticleInterval);
+		node.setProperty("effect_sound_interval", effectSoundInterval);
 		node.setProperty("effect_sound_volume", Float.toString(effectSoundVolume));
 		node.setProperty("effect_sound_pitch", Float.toString(effectSoundPitch));
-		node.setProperty("quiet", Integer.toString(quietLevel));
-		node.setProperty("keep", Integer.toString(keep ?  1 : 0));
-		node.setProperty("bound", Integer.toString(bound ?  1 : 0));
-		node.setProperty("fill", Integer.toString(autoFill ?  1 : 0));
-		node.setProperty("organize", Integer.toString(autoOrganize ? 1 : 0));
+		node.setProperty("quiet", quietLevel);
+		node.setProperty("keep", keep);
+		node.setProperty("bound", bound);
+		node.setProperty("fill", autoFill);
+		node.setProperty("organize", autoOrganize);
 		if (effectSound != null) {
 			node.setProperty("effect_sound", effectSound.name());
 		} else {
@@ -793,6 +794,7 @@ public class Wand implements CostReducer {
 		// Don't change any of this stuff in safe mode
 		if (!safe) {
 			id = wandConfig.getString("id", id);
+			if (id == null) id = "";
 			quietLevel = wandConfig.getInt("quiet", quietLevel);
 			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			keep = wandConfig.getBoolean("keep", keep);
@@ -1860,27 +1862,11 @@ public class Wand implements CostReducer {
 		Player player = mage.getPlayer();
 		boolean modified = false;
 		ItemStack[] items = player.getInventory().getContents();
-		Set<String> spells = getSpells();
-		Set<String> materials = getMaterialKeys();
 		for (int i = 0; i < items.length; i++) {
 			ItemStack item = items[i];
-			if (isSpell(item)) {
-				String spellKey = getSpell(item);
-				if (!spells.contains(spellKey) && addSpell(spellKey)) {
-					Spell spell = controller.getSpell(spellKey);
-					if (spell != null) {
-						modified = true;
-						items[i] = null;
-						mage.sendMessage(Messages.get("wand.spell_added").replace("$spell", spell.getName()));
-					}
-				}
-			} else if (isBrush(item)) {
-				String materialKey = getMaterialKey(item);
-				if (!materials.contains(materialKey) && addMaterial(materialKey)) {
-					items[i] = null;
-					modified = true;
-					mage.sendMessage(Messages.get("wand.brush_added").replace("$brush", MaterialBrush.getMaterialName(materialKey)));
-				}
+			if (addItem(item)) {
+				modified = true;
+				items[i] = null;
 			}
 		}
 		if (modified) {
@@ -1919,6 +1905,29 @@ public class Wand implements CostReducer {
 		updateLore();
 		
 		updateEffects();
+	}
+	
+	public boolean addItem(ItemStack item) {
+		if (isSpell(item)) {
+			String spellKey = getSpell(item);
+			Set<String> spells = getSpells();
+			if (!spells.contains(spellKey) && addSpell(spellKey)) {
+				Spell spell = controller.getSpell(spellKey);
+				if (spell != null) {
+					mage.sendMessage(Messages.get("wand.spell_added").replace("$spell", spell.getName()));
+					return true;
+				}
+			}
+		} else if (isBrush(item)) {
+			String materialKey = getMaterialKey(item);
+			Set<String> materials = getMaterialKeys();
+			if (!materials.contains(materialKey) && addMaterial(materialKey)) {
+				mage.sendMessage(Messages.get("wand.brush_added").replace("$brush", MaterialBrush.getMaterialName(materialKey)));
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	protected void updateEffects() {
@@ -2090,7 +2099,7 @@ public class Wand implements CostReducer {
 		if (!(other instanceof Wand)) return false;
 		
 		Wand otherWand =  ((Wand)other);
-		if (this.id == null || otherWand.id == null) return false;
+		if (this.id.length() == 0 || otherWand.id.length() == 0) return false;
 		
 		return otherWand.id.equals(this.id);
 	}
