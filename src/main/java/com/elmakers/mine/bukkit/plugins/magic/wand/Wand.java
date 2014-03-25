@@ -876,7 +876,9 @@ public class Wand implements CostReducer {
 			String wandMaterials = wandConfig.getString("materials", "");
 			String wandSpells = wandConfig.getString("spells", "");
 			
-			if (wandMaterials.length() > 0 && wandSpells.length() > 0) {
+			if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
+				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
+				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
 				parseInventoryStrings(wandSpells, wandMaterials);
 			}
 			
@@ -2002,9 +2004,8 @@ public class Wand implements CostReducer {
 			Wand wand = new Wand(controller, item);
 			if (this.add(wand)) {
 				mage.sendMessage(Messages.get("wand.upgraded"));
+				return true;
 			}
-			
-			return true;
 		}
 		
 		return false;
