@@ -68,6 +68,13 @@ public class InventoryUtils extends NMSUtils
         return stack;
 	}
 	
+	public static ItemStack makeReal(ItemStack stack) {
+		if (stack == null) return null;
+		if (getHandle(stack) != null) return stack;
+		
+		return getCopy(stack);
+	}
+	
 	public static String getMeta(ItemStack stack, String tag, String defaultValue) {
 		String result = getMeta(stack, tag);
 		return result == null ? defaultValue : result;

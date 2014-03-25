@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -48,24 +47,27 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class Wand implements CostReducer {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
+	
+	// REMEMBER! Each of these MUST have a corresponding class in .traders, else traders will
+	// destroy the corresponding data.
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material", 
 		"xp", "xp_regeneration", "xp_max",
-		"bound", "uses", 
+		"bound", "uses",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"haste", 
 		"health_regeneration", "hunger_regeneration", 
-		"icon", "mode", 
+		"icon", "mode", "keep", "modifiable", "quiet", 
 		"power", 
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
 		"materials", "spells"
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
-		"id", "owner", "name", "description", "template", "has_inventory",
-		"keep", "organize", "fill", "modifiable", "quiet"
+		"id", "owner", "name", "description", "template",
+		"organize", "fill"
 	};
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
@@ -187,22 +189,6 @@ public class Wand implements CostReducer {
 		this(item);
 		this.controller = spells;
 		loadState();
-	}
-	
-	public Wand(MagicController spells, ItemStack item, String serializedData) {
-		this(item);
-		this.controller = spells;
-		ConfigurationNode configuration = new ConfigurationNode(serializedData);
-		loadProperties(configuration);
-		saveState();
-		updateName();
-		updateLore();
-	}
-	
-	public String export() {
-		ConfigurationNode configuration = new ConfigurationNode();
-		saveProperties(configuration);
-		return configuration.exportToString();
 	}
 	
 	public void unenchant() {
@@ -697,7 +683,6 @@ public class Wand implements CostReducer {
 		node.setProperty("health_regeneration", healthRegeneration);
 		node.setProperty("hunger_regeneration", hungerRegeneration);
 		node.setProperty("uses", uses);
-		node.setProperty("has_inventory", hasInventory);
 		node.setProperty("modifiable", modifiable);
 		node.setProperty("effect_color", effectColor);
 		node.setProperty("effect_bubbles", effectBubbles);
@@ -801,7 +786,6 @@ public class Wand implements CostReducer {
 			bound = wandConfig.getBoolean("bound", bound);
 			autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
 			autoFill = wandConfig.getBoolean("fill", autoFill);
-			hasInventory = wandConfig.getBoolean("has_inventory", hasInventory);
 			
 			if (wandConfig.containsKey("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));

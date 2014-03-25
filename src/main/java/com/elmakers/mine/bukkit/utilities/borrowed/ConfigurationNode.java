@@ -62,50 +62,6 @@ public class ConfigurationNode {
 		this.root = root;
 	}
 
-	public ConfigurationNode(String serializedData) {
-		this.root = new HashMap<String, Object>();
-		importFromString(serializedData);
-	}
-	
-	public boolean importFromString(String serializedData) {
-		root.clear();
-		if (serializedData == null || serializedData.length() < 3) {
-			Bukkit.getLogger().warning("Importing empty string");
-			return false;
-		}
-		
-		if (serializedData.charAt(0) != '{') {
-			Bukkit.getLogger().warning("Importing invalid string data - missing {");
-			return false;
-		}
-		if (serializedData.charAt(serializedData.length() - 1) != '}') {
-			Bukkit.getLogger().warning("Importing invalid string data - missing }");
-			return false;
-		}
-		serializedData = serializedData.substring(1, serializedData.length() - 2);
-		
-		String[] allKeyValues = StringUtils.split(serializedData, '&');
-		// Testing with a single level for now.
-		for (String keyValue : allKeyValues) {
-			String[] pieces = keyValue.split(":", 2);
-			if (pieces.length == 2) {
-				root.put(pieces[0], pieces[1]);
-			}
-		}
-		
-		return true;
-	}
-	
-	public String exportToString() {
-		String[] allKeyValues = new String[root.size()];
-		int index = 0;
-		for (Entry<String, Object> entry : root.entrySet()) {
-			allKeyValues[index++] = entry.getKey() + ":" + entry.getValue();
-		}
-		
-		return "{" + StringUtils.join(allKeyValues, '&') + "}";
-	}
-
 	/**
 	 * Gets all of the cofiguration values within the Node as
 	 * a key value pair, with the key being the full path and the
