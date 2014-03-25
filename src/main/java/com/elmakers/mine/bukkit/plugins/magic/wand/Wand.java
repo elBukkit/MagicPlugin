@@ -876,7 +876,9 @@ public class Wand implements CostReducer {
 			String wandMaterials = wandConfig.getString("materials", "");
 			String wandSpells = wandConfig.getString("spells", "");
 			
-			parseInventoryStrings(wandSpells, wandMaterials);
+			if (wandMaterials.length() > 0 && wandSpells.length() > 0) {
+				parseInventoryStrings(wandSpells, wandMaterials);
+			}
 			
 			if (wandConfig.containsKey("icon")) {
 				setIcon(wandConfig.getMaterialAndData("icon"));

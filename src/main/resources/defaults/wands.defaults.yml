@@ -1595,6 +1595,7 @@ CoOoD3R:
    xp_max: 2000
    protection: 2
    protection_fire: 1
+   quiet: 1
    spells:
        - sniper
        - pull
