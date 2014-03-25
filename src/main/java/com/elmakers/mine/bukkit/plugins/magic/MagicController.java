@@ -1766,7 +1766,7 @@ public class MagicController implements Listener
 			return;
 		}
 		
-		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
+		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
 		{
 			wand.cast();
 			return;

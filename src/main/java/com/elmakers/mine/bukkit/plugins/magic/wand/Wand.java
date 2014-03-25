@@ -320,6 +320,10 @@ public class Wand implements CostReducer {
 		return !locked;
 	}
 	
+	public boolean isUpgrade() {
+		return isUpgrade;
+	}
+	
 	public boolean usesMana() {
 		return xpMax > 0 && xpRegeneration > 0 && getCostReduction() < 1;
 	}
@@ -1379,13 +1383,17 @@ public class Wand implements CostReducer {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && InventoryUtils.hasMeta(item, "wand") && !isWandUpgrade(item);
+		// Note that WandUpgrades also show up here!
+		return item != null && InventoryUtils.hasMeta(item, "wand");
 	}
 
 	public static boolean isWandUpgrade(ItemStack item) {
 		if (item == null) return false;
-		Object wandNode = InventoryUtils.getMeta(item, "wand");
+		Object wandNode = InventoryUtils.getNode(item, "wand");
+		
+		if (wandNode == null) return false;
 		String upgradeData = InventoryUtils.getMeta(wandNode, "upgrade");
+		
 		return upgradeData != null && upgradeData.equals("true");
 	}
 
@@ -1983,6 +1991,7 @@ public class Wand implements CostReducer {
 	
 	public boolean addItem(ItemStack item) {
 		if (isUpgrade) return false;
+
 		if (isSpell(item)) {
 			String spellKey = getSpell(item);
 			Set<String> spells = getSpells();
