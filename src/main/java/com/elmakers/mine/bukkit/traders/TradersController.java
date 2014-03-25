@@ -59,7 +59,7 @@ public class TradersController {
 		ItemFlag.registerFlag(WandEffectBubblesFlag.class);
 		ItemFlag.registerFlag(WandOrganizeFlag.class);
 		ItemFlag.registerFlag(WandFillFlag.class);
-		ItemFlag.registerFlag(WandModifiableFlag.class);
+		ItemFlag.registerFlag(WandLockedFlag.class);
 		
 		ItemFlag.registerFlag(WandFlag.class);
 		ItemFlag.registerFlag(GlowFlag.class);

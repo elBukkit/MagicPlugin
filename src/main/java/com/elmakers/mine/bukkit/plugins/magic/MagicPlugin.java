@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.plugins.magic.wand.WandUpgrade;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -786,17 +785,11 @@ public class MagicPlugin extends JavaPlugin
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player) {
-		Mage mage = controller.getMage(player);
-		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			} else {
-				mage.sendMessage("Equip a wand first");
-			}
+		if (!checkWand(sender, player, true, true)) {
 			return true;
 		}
-		
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		wand.describe(sender);
 
 		return true;
@@ -804,22 +797,18 @@ public class MagicPlugin extends JavaPlugin
 	
 	public boolean onWandOrganize(CommandSender sender, Player player)
 	{
-		Mage mage = controller.getMage(player);
-		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			mage.sendMessage("Equip a wand first");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			}
+		// Allow reorganizing modifiable wands
+		if (!checkWand(sender, player, true)) {
 			return true;
 		}
-		
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
 		wand.deactivate();
 		wand.organizeInventory(mage);
 		wand.activate(mage);
-		mage.sendMessage("Wand reorganized");
+		mage.sendMessage(Messages.get("wand.reorganized"));
 		if (sender != player) {
-			sender.sendMessage(player.getName() + "'s wand reorganized");
+			sender.sendMessage(Messages.getParameterized("wand.player_reorganized", "$name", player.getName()));
 		}
 		
 		return true;
@@ -831,9 +820,9 @@ public class MagicPlugin extends JavaPlugin
 		ItemStack heldItem = player.getItemInHand();
 		if (heldItem == null || heldItem.getType() == Material.AIR)
 		{
-			mage.sendMessage("Equip an item first");
+			mage.sendMessage(Messages.get("wand.no_item"));
 			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding an item");
+				sender.sendMessage(Messages.getParameterized("wand.player_no_item", "$name", player.getName()));
 			}
 			return false;
 		}
@@ -842,9 +831,13 @@ public class MagicPlugin extends JavaPlugin
 		player.setItemInHand(wand.getItem());
 		wand.activate(mage);
 		
-		mage.sendMessage("Your " + MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability()) + " has been enchanted");
+		mage.sendMessage(Messages.getParameterized("wand.enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
+				
 		if (sender != player) {
-			sender.sendMessage(player.getName() + "'s  " + MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability()) + " been enchanted");
+			sender.sendMessage(Messages.getParameterized("wand.player_enchanted", 
+					"$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability()),
+					"$name", player.getName()
+			));
 		}
 		
 		return true;
@@ -852,15 +845,18 @@ public class MagicPlugin extends JavaPlugin
 	
 	public boolean onWandUnenchant(CommandSender sender, Player player)
 	{
+		if (!checkWand(sender, player)) {
+			return true;
+		}
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		
 		// Trying to make sure the player is actually holding the active wand
 		// Just in case. This isn't fool-proof though, if they have more than one wand.
 		if (wand == null || !Wand.isWand(player.getItemInHand())) {
-			mage.sendMessage("Equip a wand first");
+			mage.sendMessage(Messages.get("wand.no_wand"));
 			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
+				sender.sendMessage(Messages.getParameterized("wand.player_no_wand", "$name", player.getName()));
 			}
 			return false;
 		}
@@ -869,9 +865,9 @@ public class MagicPlugin extends JavaPlugin
 		player.setItemInHand(wand.getItem());
 		mage.setActiveWand(null);
 		
-		mage.sendMessage("Your wand has been unenchanted");
+		mage.sendMessage(Messages.get("wand.unenchanted"));
 		if (sender != player) {
-			sender.sendMessage(player.getName() + "'s wand has been unenchanted");
+			sender.sendMessage(Messages.getParameterized("wand.player_unenchanted", "$name", player.getName()));
 		}
 		return true;
 	}
@@ -883,23 +879,15 @@ public class MagicPlugin extends JavaPlugin
 			sender.sendMessage("Properties: " + StringUtils.join(Wand.PROPERTY_KEYS, ", "));
 			return false;
 		}
+		
+		// TODO: A way to make wands modifiable again... ?
+		// Probably need to handle that separately, or maybe lock/unlock commands?
+		if (!checkWand(sender, player)) {
+			return true;
+		}
 
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			mage.sendMessage("Equip a wand first");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			}
-			return false;
-		}
-		if (!wand.isModifiable()) {
-			mage.sendMessage("Your wand can not be modified");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + "'s wand can not be modified");
-			}
-			return false;
-		}
 		ConfigurationNode node = new ConfigurationNode();
 		String value = parameters[1];
 		for (int i = 2; i < parameters.length; i++) {
@@ -909,10 +897,50 @@ public class MagicPlugin extends JavaPlugin
 		wand.deactivate();
 		wand.loadProperties(node, safe);
 		wand.activate(mage);
-		mage.sendMessage("Wand reconfigured");
+		mage.sendMessage(Messages.get("wand.reconfigured"));
 		if (sender != player) {
-			sender.sendMessage(player.getName() + "'s wand reconfigured");
+			sender.sendMessage(Messages.getParameterized("wand.player_reconfigured", "$name", player.getName()));
 		}
+		return true;
+	}
+	
+	protected boolean checkWand(CommandSender sender, Player player)
+	{
+		return checkWand(sender, player, false, false);
+	}
+	
+	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable)
+	{
+		return checkWand(sender, player, skipModifiable, false);
+	}
+	
+	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound)
+	{
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
+		
+		if (wand == null) {
+			mage.sendMessage(Messages.get("wand.no_wand"));
+			if (sender != player) {
+				sender.sendMessage(Messages.getParameterized("wand.player_no_wand", "$name", player.getName()));
+			}
+			return false;
+		}
+		if (!skipModifiable && !wand.isModifiable()) {
+			mage.sendMessage(Messages.get("wand.unmodifiable"));
+			if (sender != player) {
+				sender.sendMessage(Messages.getParameterized("wand.player_unmodifiable", "$name", player.getName()));
+			}
+			return false;
+		}
+		if (!skipBound && !wand.canUse(mage.getPlayer()) ) {
+			mage.sendMessage(Messages.get("wand.bound_to_other"));
+			if (sender != player) {
+				sender.sendMessage(Messages.getParameterized("wand.player_unmodifiable", "$name", player.getName()));
+			}
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -922,62 +950,44 @@ public class MagicPlugin extends JavaPlugin
 			sender.sendMessage("Use: /wand combine <wandname>");
 			return false;
 		}
+		
+		if (!checkWand(sender, player)) {
+			return true;
+		}
 
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			mage.sendMessage("Equip a wand first");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			}
-			return false;
-		}
-
-		if (!wand.isModifiable()) {
-			mage.sendMessage("Your wand can not be modified");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + "'s wand can not be modified");
-			}
-			return false;
-		}
-		if (!wand.canUse(player) ) {
-			player.sendMessage("That wand is not bound to you");
-			return false;
-		}
-
+		
 		String wandName = parameters[0];
 		Wand newWand = Wand.createWand(controller, wandName);
 		if (newWand == null) {
-			sender.sendMessage("Unknown wand name " + wandName);
+			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandName));
 			return false;
 		}
 		wand.deactivate();
 		wand.add(newWand);
 		wand.activate(mage);
 		
-		mage.sendMessage("Wand upgraded");
+		mage.sendMessage(Messages.get("wand.upgraded"));
 		if (sender != player) {
-			sender.sendMessage(player.getName() + "'s wand upgraded");
+			sender.sendMessage(Messages.getParameterized("wand.player_upgraded", "$name", player.getName()));
 		}
 		return true;
 	}
 
 	public boolean onWandFill(CommandSender sender, Player player)
 	{
-		Mage mage = controller.getMage(player);
-		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			mage.sendMessage("Equip a wand first");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			}
+		if (!checkWand(sender, player)) {
 			return true;
 		}
 		
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
+		
 		wand.fill(player);
-		mage.sendMessage("Your wand now contains all the spells you know");
+		mage.sendMessage(Messages.get("wand.filled"));
 		if (sender != player) {
-			sender.sendMessage(player.getName() + "'s wand filled");
+			sender.sendMessage(Messages.getParameterized("wand.player_filled", "$name", player.getName()));
 		}
 		
 		return true;
@@ -989,23 +999,13 @@ public class MagicPlugin extends JavaPlugin
 			sender.sendMessage("Use: /wand add <spell|material> [material:data]");
 			return true;
 		}
+		
+		if (!checkWand(sender, player)) {
+			return true;
+		}
 
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			mage.sendMessage("Equip a wand first");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			}
-			return true;
-		}
-		if (!wand.isModifiable()) {
-			mage.sendMessage("This wand can not be modified");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + "'s wand can't be modified");
-			}
-			return true;
-		}
 
 		String spellName = parameters[0];
 		if (spellName.equals("material")) {
@@ -1062,22 +1062,12 @@ public class MagicPlugin extends JavaPlugin
 			return true;
 		}
 
+		if (!checkWand(sender, player)) {
+			return true;
+		}
+
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			mage.sendMessage("Equip a wand first");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			}
-			return true;
-		}
-		if (!wand.isModifiable()) {
-			mage.sendMessage("This wand can not be modified");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + "'s wand can't be modified");
-			}
-			return true;
-		}
 
 		String spellName = parameters[0];	
 		if (spellName.equals("material")) {
@@ -1118,19 +1108,19 @@ public class MagicPlugin extends JavaPlugin
 			sender.sendMessage("Use: /wand name <name>");
 			return true;
 		}
-		
-		Mage mage = controller.getMage(player);
-		Wand wand = mage.getActiveWand();
-		if (wand == null) {
-			mage.sendMessage("Equip a wand first");
-			if (sender != player) {
-				sender.sendMessage(player.getName() + " isn't holding a wand");
-			}
+
+		if (!checkWand(sender, player)) {
 			return true;
 		}
 		
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
+		
 		wand.setName(StringUtils.join(parameters, " "));
-		sender.sendMessage("Wand renamed");
+		mage.sendMessage(Messages.get("wand.renamed"));
+		if (sender != player) {
+			sender.sendMessage(Messages.getParameterized("wand.player_renamed", "$name", player.getName()));
+		}
 
 		return true;
 	}
@@ -1163,7 +1153,6 @@ public class MagicPlugin extends JavaPlugin
 		
 		return onGiveWand(sender, player, wandName);
 	}
-
 	
 	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey)
 	{
@@ -1173,7 +1162,8 @@ public class MagicPlugin extends JavaPlugin
 			currentWand.closeInventory();
 		}
 	
-		Wand wand = new WandUpgrade(controller, wandKey);
+		Wand wand = new Wand(controller, wandKey);
+		wand.makeUpgrade();
 		if (giveItemToPlayer(player, wand.getItem())) {
 			wand.activate(mage);
 		}

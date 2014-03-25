@@ -44,6 +44,7 @@ general:
 wand:
     default_name: Wand
     upgrade_name: Wand Upgrade
+    upgrade_default_description: Will improve (not add to) you wand.
     upgrade_item_description: Will be absorbed by your wand
     spell_item_description: Will be absorbed by your wand
     brush_item_description: Will be absorbed by your wand
@@ -86,10 +87,30 @@ wand:
     active_costs_description: Costs $description Per Second
     owner_description: $name's Wand
     bound_description: Bound to $name
+    unmodifiable: That wand can not be modified
+    player_unmodifiable: $name's wand can not be modified
+    bound_to_other: That wand is not bound to you
     bound: That wand is bound to $name
     spell_added: $spell has been added to your wand
     brush_added: The $brush material brush has been added to your wand
     upgraded: Your wand has been upgraded
+    no_wand: You must be holding a wand
+    player_no_wand: $name is not holding a wand
+    no_item: You must be holding an item
+    player_no_item: $name is not holding an item
+    reorganized: Wand reorganized
+    player_reorganized: $name's wand reorganized
+    enchanted: Your $item has been enchanted
+    player_enchanted: $name's $item has been enchanted
+    unenchanted: Your wand has been unenchanted
+    player_unenchanted: $name's wand has been unenchanted
+    unknown_template: Unknown wand name $name
+    reconfigured: Wand reconfigured
+    player_reconfigured: $name's wand reconfigured
+    filled: Your wand now contains all of your spells
+    player_filled: $name's wand filled
+    renamed: Your wand has been renamed
+    player_renamed: $name's wand renamed
 costs:
     xp_amount: $amount Mana
     mana_amount: $amount Mana

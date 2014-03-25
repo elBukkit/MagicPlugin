@@ -27,4 +27,12 @@ public class Messages {
 	public static String get(String key) {
 		return get(key, key);
 	}
+	
+	public static String getParameterized(String key, String paramName, String paramValue) {
+		return get(key, key).replace(paramName, paramValue);
+	}
+	
+	public static String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2) {
+		return get(key, key).replace(paramName1, paramValue1).replace(paramName2, paramValue2);
+	}
 }

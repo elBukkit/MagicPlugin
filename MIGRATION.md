@@ -7,6 +7,11 @@ simply copy+paste from here into your wands.yml file (in plugins/Magic):
 
 https://raw.githubusercontent.com/elBukkit/MagicPlugin/330f6b0e3721471bc6e101e97109a695d17e09dd/src/main/resources/defaults/wands.defaults.yml
 
+I changed the "modifiable" flag in wand data to "locked" (and inverted it). If you had any un-modifiable wands in your worlds, they will
+now be modifiable sorry about that, please let me know if it's a concern (I'm assuming it's not) and I can add in some migration code.
+
+I don't think anyone was using locked wands, hopefully not.
+
 ## Some general notes
 
 At this point I will try and ensure that migration is generally hassle-free, and plugin updates are

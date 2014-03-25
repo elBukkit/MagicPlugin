@@ -7,6 +7,6 @@ public class WandUpgradeFlag extends NBTItemFlag {
 
 	public WandUpgradeFlag(String key)
 	{
-		super(key, "wand_upgrade", null);
+		super(key, "wand", "upgrade");
 	}
 }

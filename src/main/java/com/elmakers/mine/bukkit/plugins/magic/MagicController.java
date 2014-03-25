@@ -699,7 +699,7 @@ public class MagicController implements Listener
 			if (tradersPlugin != null) {
 				tradersController = new TradersController();
 				tradersController.initialize(this, tradersPlugin);
-				getLogger().info("dtlTraders found, integrating for selling Wands");
+				getLogger().info("dtlTraders found, integrating for selling Wands, Spells, Brushes and Upgrades");
 			}
 		} catch (Throwable ex) {
 			ex.printStackTrace();
@@ -1312,6 +1312,7 @@ public class MagicController implements Listener
 		}
 		
 		// Parse wand settings
+		Wand.DefaultUpgradeMaterial = properties.getMaterial("wand_upgrade_item", Wand.DefaultUpgradeMaterial);
 		Wand.DefaultWandMaterial = properties.getMaterial("wand_item", Wand.DefaultWandMaterial);
 		Wand.EnableGlow = properties.getBoolean("enable_glow", Wand.EnableGlow);
 		MaterialBrush.CopyMaterial = properties.getMaterial("copy_item", MaterialBrush.CopyMaterial);

@@ -53,13 +53,13 @@ public class Wand implements CostReducer {
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material", 
 		"xp", "xp_regeneration", "xp_max",
-		"bound", "uses",
+		"bound", "uses", "upgrade",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"haste", 
 		"health_regeneration", "hunger_regeneration", 
-		"icon", "mode", "keep", "modifiable", "quiet", 
+		"icon", "mode", "keep", "locked", "quiet", 
 		"power", 
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
@@ -90,6 +90,7 @@ public class Wand implements CostReducer {
 	private boolean keep = false;
 	private boolean autoOrganize = false;
 	private boolean autoFill = false;
+	private boolean isUpgrade = false;
 	
 	private MaterialAndData icon = null;
 	
@@ -103,7 +104,7 @@ public class Wand implements CostReducer {
 	private float damageReductionExplosions = 0;
 	private float power = 0;
 	private boolean hasInventory = false;
-	private boolean modifiable = true;
+	private boolean locked = false;
 	private int uses = 0;
 	private int xp = 0;
 	
@@ -115,14 +116,14 @@ public class Wand implements CostReducer {
 	private int effectColor = 0;
 	private ParticleType effectParticle = null;
 	private float effectParticleData = 0;
-	private int effectParticleCount = 1;
-	private int effectParticleInterval = 2;
+	private int effectParticleCount = 0;
+	private int effectParticleInterval = 0;
 	private int effectParticleCounter = 0;
 	private boolean effectBubbles = false;
 	private EffectRing effectPlayer = null;
 	
 	private Sound effectSound = null;
-	private int effectSoundInterval = 5;
+	private int effectSoundInterval = 0;
 	private int effectSoundCounter = 0;
 	private float effectSoundVolume = 0;
 	private float effectSoundPitch = 0;
@@ -152,6 +153,7 @@ public class Wand implements CostReducer {
 	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	public static boolean displayManaAsBar = true;
+	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static boolean EnableGlow = true;
@@ -189,7 +191,7 @@ public class Wand implements CostReducer {
 				}
 				ConfigurationNode randomTemplate = wandTemplates.get("random");
 				randomize(level, false);
-				modifiable = (boolean)randomTemplate.getBoolean("modifiable", true);
+				locked = (boolean)randomTemplate.getBoolean("locked", false);
 				saveState(true);
 			}
 			
@@ -250,6 +252,16 @@ public class Wand implements CostReducer {
 			item.setDurability(icon.getData());
 		}
 	}
+	
+	public void makeUpgrade() {
+		isUpgrade = true;
+		wandName = Messages.get("wand.upgrade_name");
+		description = Messages.get("wand.upgrade_default_description");
+		setIcon(DefaultUpgradeMaterial, (byte)0);
+		saveState();
+		updateName(true);
+		updateLore();
+	}
 
 	public void setActiveSpell(String activeSpell) {
 		this.activeSpell = activeSpell;
@@ -305,7 +317,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean isModifiable() {
-		return modifiable;
+		return !locked;
 	}
 	
 	public boolean usesMana() {
@@ -666,7 +678,7 @@ public class Wand implements CostReducer {
 		}
 		
 		if (isItem) {
-			lore.add(Messages.get("wand.brush_item_description"));
+			lore.add(ChatColor.YELLOW + Messages.get("wand.brush_item_description"));
 		}
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
@@ -731,7 +743,7 @@ public class Wand implements CostReducer {
 		node.setProperty("health_regeneration", healthRegeneration);
 		node.setProperty("hunger_regeneration", hungerRegeneration);
 		node.setProperty("uses", uses);
-		node.setProperty("modifiable", modifiable);
+		node.setProperty("locked", locked);
 		node.setProperty("effect_color", Integer.toString(effectColor, 16));
 		node.setProperty("effect_bubbles", effectBubbles);
 		node.setProperty("effect_particle_data", Float.toString(effectParticleData));
@@ -744,6 +756,7 @@ public class Wand implements CostReducer {
 		node.setProperty("keep", keep);
 		node.setProperty("bound", bound);
 		node.setProperty("fill", autoFill);
+		node.setProperty("upgrade", isUpgrade);
 		node.setProperty("organize", autoOrganize);
 		if (effectSound != null) {
 			node.setProperty("effect_sound", effectSound.name());
@@ -782,7 +795,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public void loadProperties(ConfigurationNode wandConfig, boolean safe) {
-		modifiable = (boolean)wandConfig.getBoolean("modifiable", modifiable);
+		locked = (boolean)wandConfig.getBoolean("locked", locked);
 		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
 		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
 		float _cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
@@ -834,6 +847,7 @@ public class Wand implements CostReducer {
 			bound = wandConfig.getBoolean("bound", bound);
 			autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
 			autoFill = wandConfig.getBoolean("fill", autoFill);
+			isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
 			
 			if (wandConfig.containsKey("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));
@@ -868,6 +882,34 @@ public class Wand implements CostReducer {
 				setIcon(wandConfig.getMaterialAndData("icon"));
 			}
 		}
+		
+		// Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
+		// so try to keep defaults as 0/0.0/false.
+		if (effectSound == null) {
+			effectSoundInterval = 0;
+			effectSoundVolume = 0;
+			effectSoundPitch = 0;
+		} else {
+			effectSoundInterval = (effectSoundInterval == 0) ? 5 : effectSoundInterval;
+			effectSoundVolume = (effectSoundVolume < 0.01f) ? 0.8f : effectSoundVolume;
+			effectSoundPitch = (effectSoundPitch < 0.01f) ? 1.1f : effectSoundPitch;
+		}
+		
+		if (effectParticle == null) {
+			effectParticleInterval = 0;
+		} else {
+			effectParticleInterval = (effectParticleInterval == 0) ? 2 : effectParticleInterval;
+			effectParticleCount = (effectParticleCount == 0) ? 1 : effectParticleCount;
+		}
+		
+		if (xpRegeneration <= 0 || xpMax <= 0 || costReduction >= 1) {
+			xpMax = 0;
+			xpRegeneration = 0;
+			xp = 0;
+		}
+		
+		checkActiveSpell();
+		checkActiveMaterial();
 		
 		saveState();
 		updateName();
@@ -918,7 +960,7 @@ public class Wand implements CostReducer {
 			sender.sendMessage("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
 		}
-		ChatColor wandColor = modifiable ? ChatColor.AQUA : ChatColor.RED;
+		ChatColor wandColor = isModifiable() ? ChatColor.AQUA : ChatColor.RED;
 		sender.sendMessage(wandColor + wandName);
 		if (description.length() > 0) {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
@@ -940,7 +982,7 @@ public class Wand implements CostReducer {
 	}
 
 	public boolean removeMaterial(String materialKey) {
-		if (!modifiable || materialKey == null) return false;
+		if (!isModifiable() || materialKey == null) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
@@ -992,7 +1034,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean addMaterial(String materialKey, boolean makeActive, boolean force) {
-		if (!modifiable && !force) return false;
+		if (!isModifiable() && !force) return false;
 		
 		boolean addedNew = !hasMaterial(materialKey);
 		if (addedNew) {
@@ -1011,7 +1053,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean addMaterial(Material material, byte data, boolean makeActive, boolean force) {
-		if (!modifiable && !force) return false;
+		if (!isModifiable() && !force) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
@@ -1021,7 +1063,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean removeSpell(String spellName) {
-		if (!modifiable) return false;
+		if (!isModifiable()) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
@@ -1058,7 +1100,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean addSpell(String spellName, boolean makeActive) {
-		if (!modifiable) return false;
+		if (!isModifiable()) return false;
 		
 		if (isInventoryOpen()) {
 			saveInventory();
@@ -1108,7 +1150,7 @@ public class Wand implements CostReducer {
 	private String getActiveWandName(Spell spell, String materialKey) {
 
 		// Build wand name
-		ChatColor wandColor = modifiable ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.RED;
+		ChatColor wandColor = isModifiable() ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.RED;
 		String name = wandColor + wandName;
 		
 		// Add active spell to description
@@ -1243,32 +1285,51 @@ public class Wand implements CostReducer {
 		List<String> lore = new ArrayList<String>();
 		
 		Spell spell = controller.getSpell(activeSpell);
-		if (spell != null && spellCount == 1 && materialCount <= 1) {
+		if (spell != null && spellCount == 1 && materialCount <= 1 && !isUpgrade) {
 			addSpellLore(spell, lore, this);
 		} else {
 			if (description.length() > 0) {
 				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
 			}
-			if (owner.length() > 0) {
-				if (bound) {
-					String ownerDescription = Messages.get("wand.bound_description", "$name").replace("$name", owner);
-					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
-				} else {
-					String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
-					lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+			if (!isUpgrade) {
+				if (owner.length() > 0) {
+					if (bound) {
+						String ownerDescription = Messages.get("wand.bound_description", "$name").replace("$name", owner);
+						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+					} else {
+						String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
+						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+					}
 				}
 			}
 			
-			lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
+			if (spellCount > 0) {
+				if (isUpgrade) {
+					lore.add(Messages.get("wand.upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
+				} else {
+					lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
+				}
+			}
 			if (materialCount > 0) {
-				lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
+				if (isUpgrade) {
+					lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
+				} else {
+					lore.add(Messages.get("wand.upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
+				}
 			}
 		}
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
-			lore.add(ChatColor.RED + Messages.get("wand.uses_remaining").replace("$count", ((Integer)remaining).toString()));
+			if (isUpgrade) {
+				lore.add(ChatColor.RED + Messages.get("wand.upgrade_uses").replace("$count", ((Integer)remaining).toString()));
+			} else {
+				lore.add(ChatColor.RED + Messages.get("wand.uses_remaining").replace("$count", ((Integer)remaining).toString()));
+			}
 		}
 		addPropertyLore(lore);
+		if (isUpgrade) {
+			lore.add(ChatColor.YELLOW + Messages.get("wand.upgrade_item_description"));
+		}
 		return lore;
 	}
 	
@@ -1314,7 +1375,14 @@ public class Wand implements CostReducer {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && InventoryUtils.hasMeta(item, "wand") && !InventoryUtils.hasMeta(item, "wand_upgrade");
+		return item != null && InventoryUtils.hasMeta(item, "wand") && !isWandUpgrade(item);
+	}
+
+	public static boolean isWandUpgrade(ItemStack item) {
+		if (item == null) return false;
+		Object wandNode = InventoryUtils.getMeta(item, "wand");
+		String upgradeData = InventoryUtils.getMeta(wandNode, "upgrade");
+		return upgradeData != null && upgradeData.equals("true");
 	}
 
 	public static boolean isSpell(ItemStack item) {
@@ -1373,7 +1441,7 @@ public class Wand implements CostReducer {
 		List<String> lore = new ArrayList<String>();
 		addSpellLore(spell, lore, wand);
 		if (isItem) {
-			lore.add(Messages.get("wand.spell_item_description"));
+			lore.add(ChatColor.YELLOW + Messages.get("wand.spell_item_description"));
 		}
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
@@ -1542,7 +1610,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public boolean add(Wand other) {
-		if (!modifiable || !other.modifiable) return false;
+		if (!isModifiable() || !other.isModifiable()) return false;
 		
 		costReduction = Math.max(costReduction, other.costReduction);
 		power = Math.max(power, other.power);
@@ -1826,7 +1894,7 @@ public class Wand implements CostReducer {
 			droppedItem.setVelocity(velocity);
 			return;
 		}
-
+		
 		activate(mage, player.getItemInHand());
 	}
 		
@@ -1872,6 +1940,9 @@ public class Wand implements CostReducer {
 			takeOwnership(player);
 		}
 		
+		checkActiveSpell();
+		checkActiveMaterial();
+		
 		saveState();
 		
 		mage.setActiveWand(this);
@@ -1888,8 +1959,27 @@ public class Wand implements CostReducer {
 		
 		updateEffects();
 	}
+
+	protected void checkActiveSpell() {
+		if (activeSpell == null || activeSpell.length() == 0) {
+			Set<String> spells = getSpells();
+			if (spells.size() > 0) {
+				activeSpell = spells.iterator().next();
+			}
+		}
+	}
+	
+	protected void checkActiveMaterial() {
+		if (activeMaterial == null || activeMaterial.length() == 0) {
+			Set<String> materials = getMaterialKeys();
+			if (materials.size() > 0) {
+				activeSpell = materials.iterator().next();
+			}
+		}
+	}
 	
 	public boolean addItem(ItemStack item) {
+		if (isUpgrade) return false;
 		if (isSpell(item)) {
 			String spellKey = getSpell(item);
 			Set<String> spells = getSpells();
@@ -1907,7 +1997,7 @@ public class Wand implements CostReducer {
 				mage.sendMessage(Messages.get("wand.brush_added").replace("$brush", MaterialBrush.getMaterialName(materialKey)));
 				return true;
 			}
-		} else if (WandUpgrade.isWandUpgrade(item)) {
+		} else if (isWandUpgrade(item)) {
 			Wand wand = new Wand(controller, item);
 			if (this.add(wand)) {
 				mage.sendMessage(Messages.get("wand.upgraded"));
