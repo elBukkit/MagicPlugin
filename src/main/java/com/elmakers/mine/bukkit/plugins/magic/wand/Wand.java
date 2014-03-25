@@ -1635,14 +1635,14 @@ public class Wand implements CostReducer {
 		keep = keep || other.keep;
 		bound = bound || other.bound;
 		effectBubbles = effectBubbles || other.effectBubbles;
-		if (effectParticle == null) {
+		if (other.effectParticle != null) {
 			effectParticle = other.effectParticle;
 			effectParticleData = other.effectParticleData;
 			effectParticleCount = other.effectParticleCount;
 			effectParticleInterval = other.effectParticleInterval;
 		}
 		
-		if (effectSound == null) {
+		if (other.effectSound != null) {
 			effectSound = other.effectSound;
 			effectSoundInterval = other.effectSoundInterval;
 			effectSoundVolume = other.effectSoundVolume;
@@ -1892,7 +1892,6 @@ public class Wand implements CostReducer {
 			Item droppedItem = player.getWorld().dropItemNaturally(location, item);
 			Vector velocity = droppedItem.getVelocity();
 			velocity.setY(velocity.getY() * 2 + 1);
-			velocity.multiply(3);
 			droppedItem.setVelocity(velocity);
 			return;
 		}
