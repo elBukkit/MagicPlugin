@@ -63,6 +63,7 @@ public class GotoSpell extends Spell
 
 		for (Player d : players)
 		{
+			if (d.hasMetadata("NPC")) continue;
 			if (d != fromPlayer)
 			{
 				Mage targetMage = controller.getMage((Player)d);
