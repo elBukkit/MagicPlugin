@@ -1161,7 +1161,7 @@ public class MagicController implements Listener
 				
 				// Check for players we can forget
 				Player player = mage.getPlayer();
-				if (player != null && !player.isOnline()) {
+				if (player != null && !player.isOnline() && !player.hasMetadata("NPC")) {
 					UndoQueue undoQueue = mage.getUndoQueue();
 					if (undoQueue == null || undoQueue.isEmpty()) {
 						getLogger().info("Offline player " + player.getName() + " has no pending undo actions, forgetting");
