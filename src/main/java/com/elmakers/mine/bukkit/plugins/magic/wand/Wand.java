@@ -71,9 +71,9 @@ public class Wand implements CostReducer {
 	};
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
-	private ItemStack item;
-	private MagicController controller;
-	private Mage mage;
+	protected ItemStack item;
+	protected MagicController controller;
+	protected Mage mage;
 	
 	// Cached state
 	private String id = "";
@@ -82,8 +82,8 @@ public class Wand implements CostReducer {
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
-	private String wandName = "";
-	private String description = "";
+	protected String wandName = "";
+	protected String description = "";
 	private String owner = "";
 	private String template = "";
 	private boolean bound = false;
@@ -156,15 +156,59 @@ public class Wand implements CostReducer {
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static boolean EnableGlow = true;
 	
-	private Wand(ItemStack itemStack) {
+	protected Wand(ItemStack itemStack) {
 		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
 		this.icon = new MaterialAndData(itemStack.getType(), (byte)itemStack.getDurability());
 		inventories = new ArrayList<Inventory>();
 		item = itemStack;
 	}
 	
-	public Wand(MagicController spells) {
-		this(spells, DefaultWandMaterial, (short)0);
+	public Wand(MagicController controller) {
+		this(controller, DefaultWandMaterial, (short)0);
+	}
+	
+	public Wand(MagicController controller, String templateName) {
+		this(controller);
+		suspendSave = true;
+		String wandName = Messages.get("wand.default_name");
+		String wandDescription = "";
+
+		// Check for default wand
+		if ((templateName == null || templateName.length() == 0) && wandTemplates.containsKey("default"))
+		{
+			templateName = "default";
+		}
+		
+		// See if there is a template with this key
+		if (templateName != null && templateName.length() > 0) {
+			if ((templateName.equals("random") || templateName.startsWith("random(")) && wandTemplates.containsKey("random")) {
+				int level = 1;
+				if (!templateName.equals("random")) {
+					String randomLevel = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
+					level = Integer.parseInt(randomLevel);
+				}
+				ConfigurationNode randomTemplate = wandTemplates.get("random");
+				randomize(level, false);
+				modifiable = (boolean)randomTemplate.getBoolean("modifiable", true);
+				saveState(true);
+			}
+			
+			if (!wandTemplates.containsKey(templateName)) {
+				saveState(true);
+				return;
+			}
+			ConfigurationNode wandConfig = wandTemplates.get(templateName);
+			// Default to localized names
+			wandName = Messages.get("wands." + templateName + ".name", wandName);
+			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
+			
+			// Load all properties
+			loadProperties(wandConfig);
+		}
+
+		setDescription(wandDescription);
+		setName(wandName);
+		saveState(true);
 	}
 	
 	public Wand(MagicController spells, Material icon, short iconData) {
@@ -528,7 +572,7 @@ public class Wand implements CostReducer {
 		for (String spellName : spellNames) {
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
-			ItemStack itemStack = createSpellItem(pieces[0].trim());
+			ItemStack itemStack = createSpellIcon(pieces[0].trim());
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + pieces[0]);
 				continue;
@@ -540,7 +584,7 @@ public class Wand implements CostReducer {
 		for (String materialName : materialNames) {
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
-			ItemStack itemStack = createMaterialItem(pieces[0].trim());
+			ItemStack itemStack = createMaterialIcon(pieces[0].trim());
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + pieces[0]);
 				continue;
@@ -551,7 +595,7 @@ public class Wand implements CostReducer {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static ItemStack createSpellIcon(String spellKey, MagicController controller, Wand wand) {
+	public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
 		Spell spell = controller.getSpell(spellKey);
 		if (spell == null) return null;
 		MaterialAndData icon = spell.getIcon();
@@ -570,12 +614,12 @@ public class Wand implements CostReducer {
 			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spellKey + " with material " + icon.getMaterial().name());	
 			return originalItemStack;
 		}
-		updateSpellName(itemStack, spell, wand, wand == null ? null : wand.activeMaterial);
+		updateSpellName(itemStack, spell, wand, wand == null ? null : wand.activeMaterial, isItem);
 		return itemStack;
 	}
 	
-	protected ItemStack createSpellItem(String spellKey) {
-		return createSpellIcon(spellKey, controller, this);
+	protected ItemStack createSpellIcon(String spellKey) {
+		return createSpellItem(spellKey, controller, this, false);
 	}
 	
 	private String getActiveWandName(String materialKey) {
@@ -583,12 +627,12 @@ public class Wand implements CostReducer {
 		return getActiveWandName(spell, materialKey);
 	}
 	
-	protected ItemStack createMaterialItem(String materialKey) {
-		return createMaterialIcon(materialKey, controller, this);
+	protected ItemStack createMaterialIcon(String materialKey) {
+		return createMaterialItem(materialKey, controller, this, false);
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static ItemStack createMaterialIcon(String materialKey, MagicController controller, Wand wand) {
+	public static ItemStack createMaterialItem(String materialKey, MagicController controller, Wand wand, boolean isItem) {
 		MaterialBrushData brushData = MaterialBrush.parseMaterialKey(materialKey, false);
 		if (brushData == null) return null;
 		
@@ -619,6 +663,10 @@ public class Wand implements CostReducer {
 			} else {
 				lore.add(ChatColor.LIGHT_PURPLE + Messages.get("wand.building_material_description"));
 			}
+		}
+		
+		if (isItem) {
+			lore.add(Messages.get("wand.brush_item_description"));
 		}
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
@@ -684,7 +732,7 @@ public class Wand implements CostReducer {
 		node.setProperty("hunger_regeneration", hungerRegeneration);
 		node.setProperty("uses", uses);
 		node.setProperty("modifiable", modifiable);
-		node.setProperty("effect_color", effectColor);
+		node.setProperty("effect_color", Integer.toString(effectColor, 16));
 		node.setProperty("effect_bubbles", effectBubbles);
 		node.setProperty("effect_particle_data", Float.toString(effectParticleData));
 		node.setProperty("effect_particle_count", effectParticleCount);
@@ -948,7 +996,7 @@ public class Wand implements CostReducer {
 		
 		boolean addedNew = !hasMaterial(materialKey);
 		if (addedNew) {
-			addToInventory(createMaterialItem(materialKey));
+			addToInventory(createMaterialIcon(materialKey));
 		}
 		if (activeMaterial == null || activeMaterial.length() == 0 || makeActive) {
 			setActiveMaterial(materialKey);
@@ -1016,7 +1064,7 @@ public class Wand implements CostReducer {
 			saveInventory();
 		}
 		boolean addedNew = !hasSpell(spellName);
-		ItemStack spellItem = createSpellItem(spellName);
+		ItemStack spellItem = createSpellIcon(spellName);
 		if (spellItem == null) {
 			controller.getPlugin().getLogger().info("Unknown spell: " + spellName);
 			return false;
@@ -1163,11 +1211,35 @@ public class Wand implements CostReducer {
 		return "<div style=\"background-color: black; margin: 8px; padding: 8px\">" + StringUtils.join(lore, "<br/>") + "</div>";
 	}
 
-	private List<String> getLore() {
+	protected List<String> getLore() {
 		return getLore(getSpells().size(), getMaterialKeys().size());
 	}
 	
-	private List<String> getLore(int spellCount, int materialCount) {
+	protected void addPropertyLore(List<String> lore)
+	{
+		if (usesMana()) {
+			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + Messages.get("wand.mana_amount").replace("$amount", ((Integer)xpMax).toString()));
+			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(Messages.get("wand.mana_regeneration"), (float)xpRegeneration / (float)WandLevel.maxXpRegeneration));
+		}
+		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cost_reduction"), costReduction));
+		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cooldown_reduction"), cooldownReduction));
+		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.power"), power));
+		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.haste"), speedIncrease));
+		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection"), damageReduction));
+		if (damageReduction < 1) {
+			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_physical"), damageReductionPhysical));
+			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_projectile"), damageReductionProjectiles));
+			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fall"), damageReductionFalling));
+			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fire"), damageReductionFire));
+			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_blast"), damageReductionExplosions));
+		}
+		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.health_regeneration"), healthRegeneration / WandLevel.maxRegeneration));
+		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.hunger_regeneration"), hungerRegeneration / WandLevel.maxRegeneration));
+		
+	}
+	
+	protected List<String> getLore(int spellCount, int materialCount) 
+	{
 		List<String> lore = new ArrayList<String>();
 		
 		Spell spell = controller.getSpell(activeSpell);
@@ -1196,28 +1268,11 @@ public class Wand implements CostReducer {
 		if (remaining > 0) {
 			lore.add(ChatColor.RED + Messages.get("wand.uses_remaining").replace("$count", ((Integer)remaining).toString()));
 		}
-		if (usesMana()) {
-			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + Messages.get("wand.mana_amount").replace("$amount", ((Integer)xpMax).toString()));
-			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(Messages.get("wand.mana_regeneration"), (float)xpRegeneration / (float)WandLevel.maxXpRegeneration));
-		}
-		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cost_reduction"), costReduction));
-		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cooldown_reduction"), cooldownReduction));
-		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.power"), power));
-		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.haste"), speedIncrease));
-		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection"), damageReduction));
-		if (damageReduction < 1) {
-			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_physical"), damageReductionPhysical));
-			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_projectile"), damageReductionProjectiles));
-			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fall"), damageReductionFalling));
-			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fire"), damageReductionFire));
-			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_blast"), damageReductionExplosions));
-		}
-		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.health_regeneration"), healthRegeneration / WandLevel.maxRegeneration));
-		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.hunger_regeneration"), hungerRegeneration / WandLevel.maxRegeneration));
+		addPropertyLore(lore);
 		return lore;
 	}
 	
-	private void updateLore() {
+	protected void updateLore() {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = getLore();
 		meta.setLore(lore);
@@ -1259,7 +1314,7 @@ public class Wand implements CostReducer {
 	}
 
 	public static boolean isWand(ItemStack item) {
-		return item != null && InventoryUtils.hasMeta(item, "wand");
+		return item != null && InventoryUtils.hasMeta(item, "wand") && !InventoryUtils.hasMeta(item, "wand_upgrade");
 	}
 
 	public static boolean isSpell(ItemStack item) {
@@ -1299,14 +1354,14 @@ public class Wand implements CostReducer {
 		if (isSpell(item)) {
 			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
-				updateSpellName(item, spell, activeName ? this : null, activeMaterial);
+				updateSpellName(item, spell, activeName ? this : null, activeMaterial, false);
 			}
 		} else if (isBrush(item)) {
 			updateMaterialName(item, getMaterialKey(item), activeName ? this : null);
 		}
 	}
 	
-	protected static void updateSpellName(ItemStack itemStack, Spell spell, Wand wand, String activeMaterial) {
+	protected static void updateSpellName(ItemStack itemStack, Spell spell, Wand wand, String activeMaterial, boolean isItem) {
 		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
 		if (wand != null) {
@@ -1317,6 +1372,9 @@ public class Wand implements CostReducer {
 		meta.setDisplayName(displayName);
 		List<String> lore = new ArrayList<String>();
 		addSpellLore(spell, lore, wand);
+		if (isItem) {
+			lore.add(Messages.get("wand.spell_item_description"));
+		}
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
 		InventoryUtils.addGlow(itemStack);
@@ -1480,73 +1538,11 @@ public class Wand implements CostReducer {
 	}
 	
 	public static Wand createWand(MagicController controller, String templateName) {
-		Wand wand = new Wand(controller);
-		wand.suspendSave = true;
-		String wandName = Messages.get("wand.default_name");
-		String wandDescription = "";
-
-		// Check for default wand
-		if ((templateName == null || templateName.length() == 0) && wandTemplates.containsKey("default"))
-		{
-			templateName = "default";
-		}
-		
-		// See if there is a template with this key
-		if (templateName != null && templateName.length() > 0) {
-			if ((templateName.equals("random") || templateName.startsWith("random(")) && wandTemplates.containsKey("random")) {
-				int level = 1;
-				if (!templateName.equals("random")) {
-					String randomLevel = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
-					level = Integer.parseInt(randomLevel);
-				}
-				ConfigurationNode randomTemplate = wandTemplates.get("random");
-				wand.randomize(level, false);
-				wand.modifiable = (boolean)randomTemplate.getBoolean("modifiable", true);
-				wand.saveState(true);
-				return wand;
-			}
-			
-			if (!wandTemplates.containsKey(templateName)) {
-				return null;
-			}
-			ConfigurationNode wandConfig = wandTemplates.get(templateName);
-			// Default to localized names
-			wandName = Messages.get("wands." + templateName + ".name", wandName);
-			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
-			
-			// Load all properties
-			wand.loadProperties(wandConfig);
-			
-			// Add spells and materials, which appear in config as list, but are csv in properties
-			List<Object> spellList = wandConfig.getList("spells");
-			if (spellList != null) {
-				for (Object spellName : spellList) {			
-					wand.addSpell((String)spellName);
-				}
-			}
-			List<Object> materialList = wandConfig.getList("materials");
-			if (materialList != null) {
-				for (Object materialKey : materialList) {
-					if (!MaterialBrush.isValidMaterial((String)materialKey, false)) {
-						controller.getPlugin().getLogger().info("Unknown material: " + materialKey);
-					} else {
-						wand.addMaterial((String)materialKey, false, true);
-					}
-				}
-			}
-			
-			wand.setTemplate(templateName);
-		}
-
-		wand.setDescription(wandDescription);
-		wand.setName(wandName);
-		wand.saveState(true);
-		
-		return wand;
+		return new Wand(controller, templateName);
 	}
 	
-	public void add(Wand other) {
-		if (!modifiable || !other.modifiable) return;
+	public boolean add(Wand other) {
+		if (!modifiable || !other.modifiable) return false;
 		
 		costReduction = Math.max(costReduction, other.costReduction);
 		power = Math.max(power, other.power);
@@ -1621,6 +1617,8 @@ public class Wand implements CostReducer {
 		saveState();
 		updateName();
 		updateLore();
+		
+		return true;
 	}
 	
 	public boolean canUse(Player player) {
@@ -1909,6 +1907,13 @@ public class Wand implements CostReducer {
 				mage.sendMessage(Messages.get("wand.brush_added").replace("$brush", MaterialBrush.getMaterialName(materialKey)));
 				return true;
 			}
+		} else if (WandUpgrade.isWandUpgrade(item)) {
+			Wand wand = new Wand(controller, item);
+			if (this.add(wand)) {
+				mage.sendMessage(Messages.get("wand.upgraded"));
+			}
+			
+			return true;
 		}
 		
 		return false;

@@ -60,8 +60,10 @@ public class TradersController {
 		ItemFlag.registerFlag(WandOrganizeFlag.class);
 		ItemFlag.registerFlag(WandFillFlag.class);
 		ItemFlag.registerFlag(WandModifiableFlag.class);
+		
 		ItemFlag.registerFlag(WandFlag.class);
 		ItemFlag.registerFlag(GlowFlag.class);
+		ItemFlag.registerFlag(WandUpgradeFlag.class);
 
 		TradersController.controller = controller;
 	}

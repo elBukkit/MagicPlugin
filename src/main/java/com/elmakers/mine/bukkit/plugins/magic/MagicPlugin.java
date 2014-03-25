@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.populator.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.plugins.magic.wand.WandUpgrade;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -281,7 +282,7 @@ public class MagicPlugin extends JavaPlugin
 	
 	protected void onGiveSpell(CommandSender sender, Player player, String spellKey)
 	{
-		ItemStack itemStack = Wand.createSpellIcon(spellKey, controller, null);
+		ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
 		if (itemStack == null) {
 			sender.sendMessage("Failed to create spell item for " + spellKey);
 			return;
@@ -292,7 +293,7 @@ public class MagicPlugin extends JavaPlugin
 	
 	protected void onGiveBrush(CommandSender sender, Player player, String materialKey)
 	{
-		ItemStack itemStack = Wand.createMaterialIcon(materialKey, controller, null);
+		ItemStack itemStack = Wand.createMaterialItem(materialKey, controller, null, true);
 		if (itemStack == null) {
 			sender.sendMessage("Failed to material spell item for " + materialKey);
 			return;
@@ -344,20 +345,28 @@ public class MagicPlugin extends JavaPlugin
 			if (subCommand.equalsIgnoreCase("give"))
 			{
 				String key = "";
-				boolean isSpell = true;
+				boolean isMaterial = false;
+				boolean isWand = false;
+				boolean isUpgrade = false;
 				Player player = null;
 				if (sender instanceof Player) {
 					if (args.length == 1) {
-						sender.sendMessage("Usage: magic give <spellname|'material'> [materialname]");
+						sender.sendMessage("Usage: magic give <spellname|'material'|'upgrade|wand'> [materialname|wandname]");
 						return true;
 					}
-					if (args.length > 2 && !args[2].equals("material")) {
-						sender.sendMessage("Usage: magic give <spellname|'material'> [materialname]");
+					if (args.length > 2 && !args[1].equals("material") && !args[1].equals("wand") && !args[1].equals("upgrade")) {
+						sender.sendMessage("Usage: magic give <spellname|'material|upgrade|wand'> [materialname|wandname]");
 						return true;
 					}
 					if (args.length > 2) {
+						if (args[1].equals("wand")) {
+							isWand = true;
+						} else if (args[1].equals("upgrade")) {
+							isUpgrade = true;
+						} else {
+							isMaterial = true;
+						}
 						key = args[2];
-						isSpell = false;
 					} else {
 						key = args[1];
 					}
@@ -365,7 +374,7 @@ public class MagicPlugin extends JavaPlugin
 					player = (Player)sender;
 				} else {
 					if (args.length < 3) {
-						sender.sendMessage("Usage: magic give <playername> <spellname|'material'> [materialname]");
+						sender.sendMessage("Usage: magic give <playername> <spellname|'material|upgrade|wand'> [materialname|wandname]");
 						return true;
 					}
 					String playerName = args[1];
@@ -374,13 +383,19 @@ public class MagicPlugin extends JavaPlugin
 						sender.sendMessage("Can't find player " + playerName);
 						return true;
 					}
-					if (args.length > 3 && !args[3].equals("material")) {
-						sender.sendMessage("Usage: magic give <playername> <spellname|'material'> [materialname]");
+					if (args.length > 3 && !args[2].equals("material") && !args[2].equals("wand") && !args[2].equals("upgrade")) {
+						sender.sendMessage("Usage: magic give <playername> <spellname|'material|upgrade|wand'> [materialname|wandname]");
 						return true;
 					}
 					if (args.length > 3) {
+						if (args[2].equals("wand")) {
+							isWand = true;
+						} else if (args[2].equals("upgrade")) {
+							isUpgrade = true;
+						} else {
+							isMaterial = true;
+						}
 						key = args[3];
-						isSpell = false;
 					} else {
 						key = args[2];
 					}
@@ -388,10 +403,14 @@ public class MagicPlugin extends JavaPlugin
 					player = (Player)sender;
 				}
 				
-				if (isSpell) {
-					onGiveSpell(sender, player, key);
-				} else {
+				if (isWand) {
+					onGiveWand(sender, player, key);
+				} else if (isMaterial) {
 					onGiveBrush(sender, player, key);
+				} else if (isUpgrade) {
+					onGiveUpgrade(sender, player, key);
+				} else {
+					onGiveSpell(sender, player, key);
 				}
 				return true;
 			}
@@ -1116,6 +1135,24 @@ public class MagicPlugin extends JavaPlugin
 		return true;
 	}
 
+	public boolean onGiveWand(CommandSender sender, Player player, String wandKey)
+	{
+		Mage mage = controller.getMage(player);
+		Wand currentWand =  mage.getActiveWand();
+		if (currentWand != null) {
+			currentWand.closeInventory();
+		}
+	
+		Wand wand = Wand.createWand(controller, wandKey);
+		if (giveItemToPlayer(player, wand.getItem())) {
+			wand.activate(mage);
+		}
+		if (sender != player) {
+			sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
+		}
+		return true;
+	}
+	
 	public boolean onWand(CommandSender sender, Player player, String[] parameters)
 	{
 		String wandName = null;
@@ -1123,24 +1160,25 @@ public class MagicPlugin extends JavaPlugin
 		{
 			wandName = parameters[0];
 		}
+		
+		return onGiveWand(sender, player, wandName);
+	}
 
+	
+	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey)
+	{
 		Mage mage = controller.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
 		if (currentWand != null) {
 			currentWand.closeInventory();
 		}
 	
-		Wand wand = Wand.createWand(controller, wandName);
-		if (wand == null) {
-			sender.sendMessage("No wand defined with key " + wandName);
-			return true;
-		}
-	
+		Wand wand = new WandUpgrade(controller, wandKey);
 		if (giveItemToPlayer(player, wand.getItem())) {
 			wand.activate(mage);
 		}
 		if (sender != player) {
-			sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
+			sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
 		}
 		return true;
 	}

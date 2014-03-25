@@ -43,6 +43,10 @@ general:
     spell_list: You know $count spells
 wand:
     default_name: Wand
+    upgrade_name: Wand Upgrade
+    upgrade_item_description: Will be absorbed by your wand
+    spell_item_description: Will be absorbed by your wand
+    brush_item_description: Will be absorbed by your wand
     copy_material_description: Fills with the target material
     erase_material_description: Fills with Air
     clone_material_description: Copies blocks from a target
@@ -50,7 +54,8 @@ wand:
     map_material_description: Creates pixel art from last held map
     schematic_material_description: Uses $schematic to build.
     building_material_description: Magic building material
-    building_material_info: Build with $material
+    building_material_info: Uses $material with construction spells
+    upgrade_uses: Adds $count Uses
     uses_remaining_brief: $count Uses
     uses_remaining: $count Uses Remaining
     enchantment_level_1: I
@@ -61,6 +66,8 @@ wand:
     enchantment_level_max: X
     spell_count: Knows $count Spells
     material_count: Has $count Materials
+    upgrade_spell_count: Adds $count Spells
+    upgrade_material_count: Adds $count Materials
     mana_amount: "Mana: $amount"
     mana_regeneration: Mana Regeneration
     cost_reduction: Cost Reduction
@@ -82,6 +89,7 @@ wand:
     bound: That wand is bound to $name
     spell_added: $spell has been added to your wand
     brush_added: The $brush material brush has been added to your wand
+    upgraded: Your wand has been upgraded
 costs:
     xp_amount: $amount Mana
     mana_amount: $amount Mana

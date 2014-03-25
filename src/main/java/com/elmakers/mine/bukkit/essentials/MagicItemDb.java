@@ -34,13 +34,13 @@ public class MagicItemDb extends ItemDb {
 			} 
 		} else if (id.startsWith("spell:")) {
 			String spellKey = id.replace("spell:", "");
-			ItemStack itemStack = Wand.createSpellIcon(spellKey, controller, null);
+			ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
 			if (itemStack != null) {
 				return itemStack;
 			}
 		} else if (id.startsWith("brush:")) {
 			String brushKey = id.replace("brush:", "");
-			ItemStack itemStack = Wand.createMaterialIcon(brushKey, controller, null);
+			ItemStack itemStack = Wand.createMaterialItem(brushKey, controller, null, true);
 			if (itemStack != null) {
 				return itemStack;
 			}

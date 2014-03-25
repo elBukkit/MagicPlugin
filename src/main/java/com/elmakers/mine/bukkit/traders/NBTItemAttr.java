@@ -15,6 +15,7 @@ public abstract class NBTItemAttr extends ItemAttr
 	private static final boolean DEBUG = false;
 	private String tagName;
 	private String subtagName;
+	private String defaultValue = "";
 	private String tagData = "";
 	private boolean playerOnly;
 	
@@ -23,6 +24,15 @@ public abstract class NBTItemAttr extends ItemAttr
 		super(key);
 		tagName = tag;
 		subtagName = subtag;
+		playerOnly = false;
+	}
+	
+	public NBTItemAttr(String key, String tag, String subtag, String def) 
+	{
+		super(key);
+		tagName = tag;
+		subtagName = subtag;
+		defaultValue = def;
 		playerOnly = false;
 	}
 	
@@ -57,15 +67,19 @@ public abstract class NBTItemAttr extends ItemAttr
 			tagData = InventoryUtils.getMeta(itemStack, tagName);
 		}
 		
-		tagData = tagData == null ? "" : tagData;
+		if (tagData == null || tagData.length() == 0 || tagData.equals(defaultValue)) {
+			throw new AttributeValueNotFoundException();
+		}
 		if (DEBUG) Bukkit.getLogger().info("NBTItem.onFactorize: " + tagName + "." + subtagName + "=" + tagData);
 	}
 
 	@Override
 	public void onLoad(String itemKey) throws AttributeInvalidValueException 
 	{
+		if (itemKey == null || itemKey.length() == 0 || itemKey.equals(defaultValue)) {
+			throw new AttributeInvalidValueException(this.info, "No data: " + defaultValue);
+		}
 		tagData = itemKey;
-		if (tagData == null) tagData = "";
 		if (DEBUG) Bukkit.getLogger().info("NBTItem.onLoad data: " + tagName + "=" + tagData);
 	}
 

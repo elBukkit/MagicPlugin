@@ -139,6 +139,7 @@ age_dropped_items: 0
 
 # Wand appearance
 wand_item: blaze_rod
+wand_upgrade_item: nether_star
 wand_glow: true
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).

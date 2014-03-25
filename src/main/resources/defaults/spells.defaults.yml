@@ -713,7 +713,7 @@ gather:
     costs:
         xp: 50
 icbm:
-    icon: nether_star
+    icon: cooked_pork
     category: dark
     class: ProjectileSpell
     pvp_restricted: true

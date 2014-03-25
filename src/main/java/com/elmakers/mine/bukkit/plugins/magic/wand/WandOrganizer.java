@@ -156,16 +156,16 @@ public class WandOrganizer {
 		
 		// Restore hotbar items first
 		for (String hotbarSpellName : hotbarSpellNames) {
-			addToInventory(wand.createSpellItem(hotbarSpellName));
+			addToInventory(wand.createSpellIcon(hotbarSpellName));
 		}
 		for (String hotbarMaterialName : hotbarMaterialNames) {
-			addToInventory(wand.createMaterialItem(hotbarMaterialName));
+			addToInventory(wand.createMaterialIcon(hotbarMaterialName));
 		}
 		
 		// Put favorites
 		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
 			for (String spellName : favorites) {
-				addToInventory(wand.createSpellItem(spellName));
+				addToInventory(wand.createSpellIcon(spellName));
 			}
 		}
 		
@@ -178,7 +178,7 @@ public class WandOrganizer {
 			}
 			
 			for (String spellName : spellGroup) {
-				addToInventory(wand.createSpellItem(spellName));
+				addToInventory(wand.createSpellIcon(spellName));
 			}
 		}
 		
@@ -186,7 +186,7 @@ public class WandOrganizer {
 			nextInventory();
 			
 			for (String materialName : materials.values()) {
-				addToInventory(wand.createMaterialItem(materialName));
+				addToInventory(wand.createMaterialIcon(materialName));
 			}
 		}
 	}
