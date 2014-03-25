@@ -713,7 +713,7 @@ gather:
     costs:
         xp: 50
 icbm:
-    icon: cooked_pork
+    icon: grilled_pork
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
