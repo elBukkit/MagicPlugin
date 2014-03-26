@@ -2450,6 +2450,7 @@ public class MagicController implements Listener
 		for (World world : worlds) {
 			List<Player> players = world.getPlayers();
 			for (Player player : players) {
+				if (player.hasMetadata("NPC")) continue;
 				playerNames.add(player.getName());
 			}
 		}
