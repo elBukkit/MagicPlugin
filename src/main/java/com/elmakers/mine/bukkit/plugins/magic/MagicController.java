@@ -130,6 +130,10 @@ public class MagicController implements Listener
 	/*
 	 * Public API - Use for hooking up a plugin, or calling a spell
 	 */
+	public Collection<Mage> getMages()
+	{
+		return mages.values();
+	}
 
 	public Mage getMage(Player player)
 	{
@@ -592,18 +596,22 @@ public class MagicController implements Listener
 		File schematicFile = new File(schematicFolder, fileName);
 		if (!schematicFile.exists()) {
 			try {
-				plugin.saveResource("schematics/" + fileName, true);
-				getLogger().info("Adding builtin schematic: schematics/" + fileName);
-			} catch (Exception ex) {
+				// Check extra path first
+				File extraSchematicFile = null;
 				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
 					String extraFileName = extraSchematicFilePath.replace("$name", schematicName);
-					File extraSchematicFile = new File(configFolder, "../" + extraFileName);
-					if (extraSchematicFile.exists()) {
-						schematicFile = extraSchematicFile;
-					} else {
-						getLogger().warning("Could not load file: " + extraSchematicFile.getAbsolutePath());
-					}
+					extraSchematicFile = new File(configFolder, "../" + extraFileName);
 				}
+				
+				if (extraSchematicFile != null && extraSchematicFile.exists()) {
+					schematicFile = extraSchematicFile;
+					getLogger().info("Loading file: " + extraSchematicFile.getAbsolutePath());
+				}  else {
+					plugin.saveResource("schematics/" + fileName, true);
+					getLogger().info("Adding builtin schematic: schematics/" + fileName);
+				}
+			} catch (Exception ex) {
+				
 			}
 		}
 
@@ -1530,6 +1538,7 @@ public class MagicController implements Listener
 			} else if (activeWand.isInventoryOpen()) {
 				// Don't allow dropping anything out of the wand inventory, 
 				// but this will close the inventory.
+				// TODO: Is this exploitable?
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
 						activeWand.closeInventory();
