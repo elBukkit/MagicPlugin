@@ -278,7 +278,7 @@ public abstract class EffectPlayer {
 		if (origin == null) {
 			throw new InvalidParameterException("Origin cannot be null");
 		}
-		if (!origin.getWorld().equals(target.getWorld())) {
+		if (target != null && !origin.getWorld().equals(target.getWorld())) {
 			return;
 		}
 		this.origin = origin;
