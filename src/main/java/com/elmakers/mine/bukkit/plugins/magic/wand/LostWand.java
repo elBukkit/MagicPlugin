@@ -68,6 +68,7 @@ public class LostWand {
 		}		
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 	    if (!(obj instanceof LostWand)) {
 	        return false;
@@ -77,6 +78,7 @@ public class LostWand {
         return other.id.equals(id);
 	}
 
+	@Override
 	public int hashCode() {
 	    return id.hashCode();
 	}

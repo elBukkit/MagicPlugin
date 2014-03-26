@@ -38,21 +38,24 @@ public class RecurseSpell extends BrushSpell
 		ReplaceMaterialAction action = new ReplaceMaterialAction(mage, targetBlock, buildWith);
 
 		// A bit hacky, but is very handy!
-		if (targetMaterial == Material.STATIONARY_WATER)
+		if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
 		{
-			action.addReplaceable(Material.WATER);
+			for (byte i = 0; i < 9; i++) {
+				action.addReplaceable(Material.STATIONARY_WATER, i);
+				action.addReplaceable(Material.WATER, i);
+			}
 		}
-		else if (targetMaterial == Material.WATER)
+		else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
 		{
-			action.addReplaceable(Material.STATIONARY_WATER);
+			for (byte i = 0; i < 9; i++) {
+				action.addReplaceable(Material.STATIONARY_LAVA, i);
+				action.addReplaceable(Material.LAVA, i);
+			}
 		}
-		else if (targetMaterial == Material.STATIONARY_LAVA)
-		{
-			action.addReplaceable(Material.LAVA);
-		}
-		else if (targetMaterial == Material.LAVA)
-		{
-			action.addReplaceable(Material.STATIONARY_LAVA);
+		else if (targetMaterial == Material.SNOW) {
+			for (byte i = 0; i < 8; i++) {
+				action.addReplaceable(Material.SNOW, i);
+			}
 		}
 		blockRecurse.recurse(targetBlock, action);
 		mage.registerForUndo(action.getBlocks());

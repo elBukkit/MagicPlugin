@@ -566,11 +566,11 @@ public class MaterialBrush extends MaterialBrushData {
 					if (orientVector.getBlockX() > orientVector.getBlockZ()) {
 						mapColor = mapCanvas.getDyeColor(
 								Math.abs(diff.getBlockX() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
-								Math.abs(diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+								Math.abs(-diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
 					} else {
 						mapColor = mapCanvas.getDyeColor(
 								Math.abs(diff.getBlockZ() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
-								Math.abs(diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+								Math.abs(-diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
 					}
 				} else {
 					mapColor = mapCanvas.getDyeColor(

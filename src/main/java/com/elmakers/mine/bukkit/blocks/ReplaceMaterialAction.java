@@ -15,7 +15,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 {
 	protected Mage mage;
 	protected MaterialBrush brush;
-	protected Set<Material> replaceable = new HashSet<Material>();
+	protected Set<MaterialAndData> replaceable = new HashSet<MaterialAndData>();
 	
 	private boolean spawnFallingBlocks = false;
 	private Vector fallingBlockVelocity = null;
@@ -23,7 +23,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 	public ReplaceMaterialAction(Mage mage, Block targetBlock, MaterialBrush brush)
 	{
 		this.mage = mage;
-		replaceable.add(targetBlock.getType());
+		replaceable.add(new MaterialAndData(targetBlock));
 		this.brush = brush;
 	}
 
@@ -35,7 +35,12 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 
 	public void addReplaceable(Material material)
 	{
-		replaceable.add(material);
+		replaceable.add(new MaterialAndData(material));
+	}
+
+	public void addReplaceable(Material material, byte data)
+	{
+		replaceable.add(new MaterialAndData(material, data));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -56,7 +61,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 			return SpellResult.FAIL;
 		}
 
-		if (replaceable == null || replaceable.contains(block.getType()))
+		if (replaceable == null || replaceable.contains(new MaterialAndData(block)))
 		{
 			Material previousMaterial = block.getType();
 			byte previousData = block.getData();

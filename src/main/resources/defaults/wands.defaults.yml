@@ -1560,6 +1560,7 @@ wolf:
         - quartz_block
         - quartz_block:1
         - quartz_block:2
+        - wool
         - emerald_block
         - leaves   
         - ice

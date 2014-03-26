@@ -38,6 +38,23 @@ public class MaterialAndData {
 		updateFrom(other);
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Override
+	public int hashCode() {
+		// Note that this does not incorporate any metadata!
+		return (material.getId() << 8) | data;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (!(obj instanceof MaterialAndData)) {
+	        return false;
+	    }
+	    
+	    MaterialAndData other = (MaterialAndData)obj;
+        return other.data == data && other.material == material;
+	}
+	
 	public void updateFrom(MaterialAndData other) {
 		material = other.material;
 		data = other.data;

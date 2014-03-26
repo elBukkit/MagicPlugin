@@ -7,6 +7,7 @@
  - Add /magic give command, mainly for use with dtlTraders, gives a spell, material brush, or wand upgrade item.
  - Add "allow_cross_world" parameter to Recall spell, the default is to disallow Recall'ing to another world now.
  - Allow selling spells and material brushes on Essentials signs.
+ - Citizens integration (spells will ignore NPC's)
 
 ## 2.9.8
 
