@@ -451,7 +451,7 @@ public class Wand implements CostReducer {
 	}
 	
 	protected String getSpellString() {
-		return StringUtils.join(getSpells(true), "|");
+		return StringUtils.join(getSpells(true), ",");
 	}
 
 	public Set<String> getMaterialKeys() {
@@ -478,7 +478,7 @@ public class Wand implements CostReducer {
 	}
 	
 	protected String getMaterialString() {
-		return StringUtils.join(getMaterialKeys(true), "|");		
+		return StringUtils.join(getMaterialKeys(true), ",");		
 	}
 	
 	protected Integer parseSlot(String[] pieces) {
