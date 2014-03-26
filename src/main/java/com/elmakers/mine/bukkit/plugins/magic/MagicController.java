@@ -95,6 +95,7 @@ import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
+import com.elmakers.mine.bukkit.plugins.magic.wand.WandMode;
 import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;

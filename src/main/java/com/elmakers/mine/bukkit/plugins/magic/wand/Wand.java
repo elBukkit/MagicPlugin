@@ -39,7 +39,6 @@ import com.elmakers.mine.bukkit.plugins.magic.CostReducer;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.WandMode;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -1645,14 +1644,14 @@ public class Wand implements CostReducer {
 		keep = keep || other.keep;
 		bound = bound || other.bound;
 		effectBubbles = effectBubbles || other.effectBubbles;
-		if (other.effectParticle != null) {
+		if (other.effectParticle != null && (other.isUpgrade || effectParticle == null)) {
 			effectParticle = other.effectParticle;
 			effectParticleData = other.effectParticleData;
 			effectParticleCount = other.effectParticleCount;
 			effectParticleInterval = other.effectParticleInterval;
 		}
 		
-		if (other.effectSound != null) {
+		if (other.effectSound != null && (other.isUpgrade || effectSound == null)) {
 			effectSound = other.effectSound;
 			effectSoundInterval = other.effectSoundInterval;
 			effectSoundVolume = other.effectSoundVolume;
@@ -1661,6 +1660,10 @@ public class Wand implements CostReducer {
 		
 		if (other.template != null && other.template.length() > 0) {
 			template = other.template;
+		}
+		
+		if (other.isUpgrade && other.mode != null) {
+			mode = other.mode;
 		}
 		
 		// Don't need mana if cost-free
