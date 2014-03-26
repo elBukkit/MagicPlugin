@@ -27,6 +27,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.populator.MagicRunnable;
@@ -421,6 +422,34 @@ public class MagicPlugin extends JavaPlugin
 				{
 					listCommand = args[1];
 					if (!controller.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) return false;
+				}
+				else
+				{
+					if (!controller.hasPermission(sender, "Magic.commands.magic." + listCommand)) return false;
+					
+					sender.sendMessage("Use: magic list <wands [player]|maps [keyword]>");
+					sender.sendMessage("For more specific information");
+					
+					Collection<Mage> mages = controller.getMages();
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active players: " + mages.size());
+					sender.sendMessage(ChatColor.AQUA + "Pending construction batches: ");
+					for (Mage mage : mages) {
+						List<BlockBatch> pending = mage.getPendingBatches();
+						if (pending.size() > 0) {
+							int totalSize = 0;
+							int totalRemaining = 0;
+							for (BlockBatch batch : pending) {
+								totalSize += batch.size();
+								totalRemaining = batch.remaining();
+							}
+							
+							sender.sendMessage(ChatColor.AQUA + mage.getName() + " " + ChatColor.GRAY + " has "
+									+ ChatColor.WHITE + "" + pending.size() + "" + ChatColor.GRAY
+									+ " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
+									+ "" + ChatColor.GRAY + ")");
+						}
+					}
+					return true;
 				}
 				
 				if (listCommand.equalsIgnoreCase("wands")) {

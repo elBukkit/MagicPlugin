@@ -40,6 +40,14 @@ public class RegenerateBatch extends VolumeBatch {
 		x = p1.getChunk().getX();
 		z = p1.getChunk().getZ();
 	}
+
+	public int size() {
+		return 0;
+	}
+	
+	public int remaining() {
+		return (absx - x) * (absz - z) * 16 * 16;
+	}
 	
 	public boolean checkDimension(int maxDimension) {
 		// Convert to block coords

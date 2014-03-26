@@ -119,6 +119,14 @@ public class ConstructBatch extends VolumeBatch {
 		return !attachables.contains(material) && !attachablesWall.contains(material) && !attachablesDouble.contains(material);
 	}
 	
+	public int size() {
+		return constructedBlocks.size();
+	}
+	
+	public int remaining() {
+		return delayedBlocks.size() + attachedBlockList.size() + ((r - x) * (r - y) * (r - z)) * 4;
+	}
+	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
 		if (finishedAttached) {

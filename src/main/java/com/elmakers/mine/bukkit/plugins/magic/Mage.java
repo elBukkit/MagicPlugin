@@ -780,6 +780,11 @@ public class Mage implements CostReducer
 		}
 	}
 	
+	public List<BlockBatch> getPendingBatches() 
+	{
+		return pendingBatches;
+	}
+	
 	public List<LostWand> getLostWands() {
 		Collection<LostWand> allWands = controller.getLostWands();
 		List<LostWand> mageWands = new ArrayList<LostWand>();

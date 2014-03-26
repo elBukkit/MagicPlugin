@@ -6,4 +6,7 @@ public interface BlockBatch {
 	
 	public boolean isFinished();
 	public void finish();
+	
+	public int size();
+	public int remaining();
 }

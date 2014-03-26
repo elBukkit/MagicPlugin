@@ -56,6 +56,14 @@ public class FillBatch extends VolumeBatch {
 		y = p1.getBlockY();
 		z = p1.getBlockZ();
 	}
+
+	public int size() {
+		return filledBlocks.size();
+	}
+	
+	public int remaining() {
+		return (absx - x) * (absy - y) * (absz - z);
+	}
 	
 	public boolean checkDimension(int maxDimension) {
 		return !(maxDimension > 0 && (absx > maxDimension || absy > maxDimension || absz > maxDimension));

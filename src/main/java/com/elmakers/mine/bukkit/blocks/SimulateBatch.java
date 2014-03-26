@@ -81,6 +81,14 @@ public class SimulateBatch extends VolumeBatch {
 		blockCount = 0;
 	}
 
+	public int size() {
+		return modifiedBlocks.size();
+	}
+	
+	public int remaining() {
+		return (endX - x) * (endZ - z);
+	}
+
 	@Override
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;

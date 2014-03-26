@@ -12,6 +12,14 @@ public class UndoBatch extends VolumeBatch {
 		super(spells, blockList.getWorldName());
 		this.blockList = blockList;
 	}
+
+	public int size() {
+		return blockList.size();
+	}
+	
+	public int remaining() {
+		return blockList.size() - blockIndex;
+	}
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;

@@ -192,7 +192,7 @@ permissions:
     type: boolean
     default: op
   Magic.commands.magic.list:
-    description: Player may list wands or maps
+    description: Player may list general Magic info
     type: boolean
     default: op
   Magic.commands.magic.list.wands:
