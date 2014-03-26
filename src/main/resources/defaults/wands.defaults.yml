@@ -661,6 +661,7 @@ engineer:
     modifiable: true
     keep: true
     bound: true
+    icon: wood_axe
     effect_color: '00FF00'
     hunger_regeneration: 1
     health_regeneration: 1
@@ -702,6 +703,7 @@ engineer:
         - superring
         - superiterate
         - levitate
+        - fly
         - paint
         - alter
         - superalter
