@@ -94,6 +94,7 @@ wand:
     spell_added: $spell has been added to your wand
     brush_added: The $brush material brush has been added to your wand
     upgraded: Your wand has been upgraded
+    player_upgraded: $name's wand upgraded
     no_wand: You must be holding a wand
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item
