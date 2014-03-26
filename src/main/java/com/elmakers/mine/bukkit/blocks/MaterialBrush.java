@@ -252,7 +252,7 @@ public class MaterialBrush extends MaterialBrushData {
 			material = ReplicateMaterial;
 		} else if (materialKey.equals(MAP_MATERIAL_KEY)) {
 			material = MapMaterial;
-		} else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
+		} else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY) && pieces.length > 1) {
 			material = SchematicMaterial;
 			schematicName = pieces[1];
 		} else {
