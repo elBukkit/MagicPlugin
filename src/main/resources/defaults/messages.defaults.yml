@@ -154,21 +154,30 @@ spells:
         name: Light
         description: Creates a magical light source
         usage: The blast of the light may wipe nearby signs, and is permanent!
+        cast: You shouldn't have done that!
     curse:
         name: Curse
         description: Slows down and weakens the target
+        cast: You curse your target
     boon:
         name: Boon
         description: Makes you temporarily superpowered
+        cast_self: You give yourself a boon
+        cast: You give your target a boon
     perk:
         name: Perk
         description: Give a little boost
+        cast_self: You give yourself a perk
+        cast: You give your target a perk
     blessing:
         name: Blessing
         description: Bless a large area of followers
+        cast: You bless the area
     bounce:
         name: Bounce
         description: Gives super jump power
+        cast_self: You give yourself high jumping
+        cast: You give your target high jumping
     disc:
         name: Disc
         description: Create a platform in front of you
@@ -214,6 +223,7 @@ spells:
     kaboom:
         name: KaBoom
         description: Create a big explosion
+        cast: Kaboom!
     frost:
         name: Frost
         description: Freeze water and create snow
@@ -247,9 +257,11 @@ spells:
     icbm:
         name: ICBM
         description: Cast an exploding fireball
+        cast: Look out!
     neutron:
         name: Neutron Bomb
         description: Kill all entities in a wide radius
+        cast: You kill everything in the area
     weather:
         name: Weather
         description: Change the weather
@@ -265,6 +277,7 @@ spells:
     simulate:
         name: Simulate
         description: Conway's Game of Life!
+        cast: You bring the world to life
     torch:
         name: Torch
         description: Creates a torch or glowstone
@@ -290,6 +303,7 @@ spells:
         name: Portal
         description: Create a temporary portal
         no_target: Can't create a portal there
+        cast: You create a temporary portal
     phase:
         name: Phase
         description: Phase to another dimension
@@ -313,15 +327,18 @@ spells:
     gills:
         name: Gills
         description: Work freely underwater
+        cast: You can now breathe and see underwater
     arrowrain:
         name: Arrow Rain
         description: Fire a volley of arrows
     meteor:
         name: Meteor Shower
         description: Fire death from above
+        cast: You rain fire from the heavens
     bomb:
         name: Carpet Bomb
         description: Rain death from above
+        cast: You call in an air strike
     lightning:
         name: Lightning
         description: Strike lighting at your target
@@ -354,9 +371,11 @@ spells:
     frag:
         name: Incendiary Grenade
         description: Toss a fire grenade
+        cast: You toss an incendiary grenade
     cluster:
         name: Cluster Bomb
         description: Toss a splitting grenade
+        cast: You toss a cluster bomb
     convert:
         name: Convert
         description: Convert a spherical area of blocks
@@ -452,6 +471,8 @@ spells:
     cloak:
         name: Cloak
         description: Make yourself invisible
+        cast: You turn your target invisible
+        cast_self: You turn yourself invisible
     undo:
         name: Rollback
         description: Undo your last action
@@ -486,12 +507,11 @@ spells:
     breach:
         name: Breach
         description: Temporarily destroy the target surface
-        cast_finish: Temporary destroyed $count blocks
+        cast_finish: Temporarily destroyed $count blocks
     tesseract:
         name: Tesseract
         description: Blink a short distance
         no_target: Can't go there
-        cast: Zip!
     mine:
         name: Mine
         description: Mines and drops the targeted ores
@@ -503,7 +523,7 @@ spells:
     peek:
         name: Peek
         description: Temporarily glass the target surface
-        cast_finish: Temporary glassed $count blocks
+        cast_finish: Temporarily glassed $count blocks
     sandblast:
         name: Sandblast
         description: Drop a big block of sand
@@ -584,9 +604,11 @@ spells:
     lava:
         name: Lava
         description: Fire a stream of lava
+        cast: You fire a stream of lava
     earth:
         name: Earth
         description: Construct a temporary line of blocks
+        cast: You summon a line of earth
     iterate:
         name: Iterate
         description: Construct a line of blocks
@@ -598,11 +620,16 @@ spells:
     flamethrower:
         name: Flamethrower
         description: Burn, baby, burn!
+        cast: You fire a stream of flame
     stash:
         name: Stash
-        description: A place to keep your stuff.
+        description: A place to keep your stuff
         cast: You peek into your ender chest
         cast_player: You peek into $target's ender chest
+    workbench:
+        name: Workbench
+        description: Crafting on the go
+        cast: You create a temporary workbench
     laser:
         name: Laser
         description: Destroy a line of blocks
@@ -610,6 +637,7 @@ spells:
     stream:
         name: Stream
         description: Spray a stream of water
+        cast: You spray a stream of water
     wolf:
         name: Wolf
         description: Create some wolf familiars
@@ -618,15 +646,19 @@ spells:
     wolfhouse:
         name: Wolf House
         description: Create an auto-regenerating base
+        cast: Patience, my child!
     glider:
         name: Glider
         description: Create a powerful automoton
+        cast: It's alive!
     tent:
         name: Tent
         description: Create a minimal house
+        cast: You create a tent
     cage:
         name: Cage
         description: Temporarily cage your target
+        cast: You trap your target
     cat:
         name: Cat
         description: Create some cat familiars
@@ -671,6 +703,7 @@ spells:
     boom:
         name: Boom
         description: Create an explosion
+        cast: Boom!
     box:
         name: Box
         description: Create a large hollow box

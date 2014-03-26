@@ -2,9 +2,6 @@
 
 ## For 2.9.9
 
- - Walls spell?
- - Fix Place spell with copy
- - Change default mana displays to numeric .. ? Could use xp bar for cooldown... wand lore option (.e.g "$roman" or "$mana / s"
  - Change item age to ms (anything else in ticks?)
  - Add end options for PhaseSpell (allow return, scale/spawn/location? - multiverse?)
  - Per-world maps (need to look into map renderer api for this!)
@@ -19,7 +16,8 @@
  - Batch block populator for chests
  - Make "regengerate" undoable and safe.
  - Commandbook kit integration
-
+ - Walls spell?
+ 
 ## For 3.0.0
 
  - Scoreboard mana/spell display

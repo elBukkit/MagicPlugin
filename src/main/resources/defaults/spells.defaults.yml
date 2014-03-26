@@ -1514,6 +1514,25 @@ superbox:
         transparent: transparent_to_construction
     costs:
         xp: 100
+workbench:
+    icon: workbench
+    category: engineering
+    class: PillarSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_extend
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 5
+        transparent: transparent_to_construction
+        cooldown: 70000
+        undo: 60000
+        material: workbench
+    costs:
+        xp: 30
 stash:
     icon: ender_chest
     category: master
@@ -1525,9 +1544,9 @@ stash:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        target_entity: HumanEntity
-        target: self
-        range: 8
+        target_entity: Player
+        target: any
+        range: 3
     costs:
         xp: 50
 kamikazee:
