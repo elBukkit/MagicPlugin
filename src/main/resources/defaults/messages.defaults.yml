@@ -884,3 +884,27 @@ wands:
     ender:
         name: The Ender Wand
         description: Super Power
+    redeffects:
+        name: Red Wand Effects
+        description: Tint your wand effects!
+    greeneffects:
+        name: Green Wand Effects
+        description: Tint your wand effects!
+    blueeffects:
+        name: Blue Wand Effects
+        description: Tint your wand effects!
+    whiteeffects:
+        name: White Wand Effects
+        description: Tint your wand effects!
+    blackeffects:
+        name: Black Wand Effects
+        description: Tint your wand effects!
+    purpleeffects:
+        name: Purple Wand Effects
+        description: Tint your wand effects!
+    yelloweffects:
+        name: Yellow Wand Effects
+        description: Tint your wand effects!
+    aquaeffects:
+        name: Aqua Wand Effects
+        description: Tint your wand effects!

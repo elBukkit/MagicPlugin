@@ -41,6 +41,10 @@ foreach ($wands as $key => $wand) {
 		unset($wands[$key]);
 		continue;
 	}
+	if (isset($wand['upgrade']) && $wand['upgrade']) {
+		unset($wands[$key]);
+		continue;
+	}
 	if ($key == 'random') {
 		$wand['name'] = 'Randomized Wand';
 		$wand['description'] = 'This is a randomized wand template, used for crafting, enchanting, and random wands in chests';

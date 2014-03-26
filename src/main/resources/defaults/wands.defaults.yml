@@ -109,7 +109,6 @@
 default:
     xp_regeneration: 5
     xp_max: 75
-    modifiable: true
     effect_color: 'FFFFFF'
     
 #
@@ -160,7 +159,6 @@ default:
 # harder to comprehend when looking at the numbers- I'm thinking about ways to clean that up.
 #
 random:
-    modifiable: true
     icon: stick
     levels: 1,20,30,40
 #   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
@@ -490,7 +488,6 @@ demo:
     xp_max: 500
     xp_regeneration: 100
 explorer:
-    modifiable: true
     xp_regeneration: 1
     effect_color: '008800'
     xp_max: 50
@@ -500,7 +497,6 @@ explorer:
         - leap
         - flare
 psychic:
-    modifiable: true
     protection_falling: 0.9
     xp_regeneration: 1
     effect_color: '000088'
@@ -513,7 +509,6 @@ psychic:
         - pull
         - force
 painter:
-    modifiable: true
     xp_regeneration: 10
     effect_color: '118811'
     xp_max: 200
@@ -658,7 +653,6 @@ decorator:
         - stained_glass_pane:14
         - stained_glass_pane:15
 engineer:
-    modifiable: true
     keep: true
     bound: true
     icon: wood_axe
@@ -748,7 +742,6 @@ engineer:
         - schematic:wolfhouse
         - schematic:stash_chest
 battle:
-    modifiable: true
     protection_physical: 0.3
     xp_regeneration: 10
     effect_color: 'DD0000'
@@ -762,7 +755,6 @@ battle:
         - arrowrain
         - wither
 mining:
-    modifiable: true
     xp_regeneration: 10
     effect_color: '888888'
     xp_max: 100
@@ -773,7 +765,6 @@ mining:
         - tunnel
         - torch
 farming:
-    modifiable: true
     xp_regeneration: 10
     effect_color: '0000EE'
     xp_max: 100
@@ -789,7 +780,6 @@ farming:
         - soil
         - water
 alchemist:
-    modifiable: true
     xp_regeneration: 10
     effect_color: 'EE00EE'
     xp_max: 100
@@ -808,7 +798,6 @@ alchemist:
         - soul_sand
         - sand
 elementalist:
-    modifiable: true
     xp_regeneration: 10
     effect_color: '0000FF'
     xp_max: 100
@@ -820,7 +809,6 @@ elementalist:
         - wolf
         - weather
 necromancer:
-    modifiable: true
     xp_regeneration: 10
     effect_color: '111111'
     xp_max: 100
@@ -832,7 +820,6 @@ necromancer:
         - shrink
         - wither
 elder:
-    modifiable: true
     bound: true
     protection: 1
     xp_max: 1000
@@ -914,7 +901,6 @@ elder:
         - replicate
         - map
 air:
-    modifiable: true
     protection: 0.2
     protection_falling: 0.7
     xp_regeneration: 2
@@ -925,7 +911,6 @@ air:
         - pull
         - leap
 air_2:
-    modifiable: true
     protection: 0.4
     protection_falling: 0.9
     xp_regeneration: 4
@@ -938,7 +923,6 @@ air_2:
         - pull
         - leap
 air_3:
-    modifiable: true
     protection: 0.5
     protection_falling: 1
     xp_regeneration: 10
@@ -954,7 +938,6 @@ air_3:
         - leap
         - levitate
 water:
-    modifiable: true
     protection: 0.1
     xp_regeneration: 2
     effect_color: '000088'
@@ -963,7 +946,6 @@ water:
         - cushion
         - heal
 water_2:
-    modifiable: true
     protection: 0.3
     xp_regeneration: 4
     xp_max: 75
@@ -977,7 +959,6 @@ water_2:
     materials:
         - stationary_water
 water_3:
-    modifiable: true
     protection: 0.5
     xp_regeneration: 10
     xp_max: 150
@@ -999,7 +980,6 @@ water_3:
         - ice
         - packed_ice
 earth:
-    modifiable: true
     protection: 0.2
     protection_physical: 0.6
     protection_blast: 0.5
@@ -1014,7 +994,6 @@ earth:
         - dirt
         - cobblestone
 earth_2:
-    modifiable: true
     protection: 0.3
     protection_physical: 0.8
     protection_blast: 0.8
@@ -1034,7 +1013,6 @@ earth_2:
         - stone
         - sand
 earth_3:
-    modifiable: true
     protection: 0.4
     protection_physical: 0.9
     protection_blast: 0.9
@@ -1062,7 +1040,6 @@ earth_3:
         - iron_block
         - soul_sand
 fire:
-    modifiable: true
     protection_fire: 0.5
     xp_regeneration: 2
     effect_color: '880000'
@@ -1071,7 +1048,6 @@ fire:
         - fire
         - fireball
 fire_2:
-    modifiable: true
     protection_fire: 0.7
     protection: 0.1
     xp_regeneration: 4
@@ -1087,7 +1063,6 @@ fire_2:
     materials:
         - stationary_lava
 fire_3:
-    modifiable: true
     protection_fire: 1
     protection: 0.3
     xp_regeneration: 10
@@ -1110,7 +1085,6 @@ fire_3:
     materials:
         - stationary_lava
 avatar:
-    modifiable: true
     protection: 0.9
     protection_fire: 0.9
     xp_regeneration: 40
@@ -1151,14 +1125,12 @@ avatar:
         - ice
         - stationary_water
 camera:
-    modifiable: true
     effect_color: 'FFFFFF'
     xp_regeneration: 1
     xp_max: 5
     spells:
         - camera
 white:
-    modifiable: true
     cost_reduction: 0.5
     protection: 0.9
     xp_regeneration: 50
@@ -1218,7 +1190,6 @@ white:
         - quartz_block:1
         - quartz_block:2
 black:
-    modifiable: true
     cost_reduction: 0.5
     protection: 0.9
     xp_regeneration: 50
@@ -1282,7 +1253,6 @@ black:
         - stained_glass:15
         - wool:15
 red:
-    modifiable: true
     protection_fire: 1
     protection: 0.6
     xp_regeneration: 40
@@ -1317,7 +1287,6 @@ red:
         - sand:1
         - redstone_block
 blue:
-    modifiable: true
     protection: 0.8
     xp_regeneration: 40
     xp_max: 300
@@ -1356,7 +1325,6 @@ blue:
         - lapis_block
         - diamond_block
 green:
-    modifiable: true
     protection: 0.8
     xp_regeneration: 40
     xp_max: 300
@@ -1401,7 +1369,6 @@ green:
         - huge_mushroom_1
         - huge_mushroom_2
 admin:
-    modifiable: true
     keep: true
     bound: true
     cost_reduction: 2
@@ -1433,7 +1400,6 @@ admin:
         - erase
         - copy            
 wolf:
-    modifiable: true
     keep: true
     bound: true
     cost_reduction: 2
@@ -1688,7 +1654,6 @@ lathame:
        - replicate
        - map
 guest:
-    modifiable: true
     effect_color: '00FF00'
     xp_regeneration: 5
     xp_max: 50
@@ -1699,7 +1664,6 @@ guest:
         - tag
         - camera
 villager:
-    modifiable: true
     effect_color: '00FF00'
     xp_regeneration: 10
     protection_falling: 0.1
@@ -1713,7 +1677,6 @@ villager:
         - leap
         - perk
 knight:
-    modifiable: true
     effect_color: '11FF11'
     xp_regeneration: 15
     xp_max: 80
@@ -1730,7 +1693,6 @@ knight:
         - pull
         - perk
 baron:
-    modifiable: true
     effect_color: '11FF11'
     xp_regeneration: 18
     xp_max: 100
@@ -1750,7 +1712,6 @@ baron:
         - shrink
         - perk
 lord:
-    modifiable: true
     effect_color: '11FF11'
     xp_regeneration: 20
     xp_max: 130
@@ -1773,7 +1734,6 @@ lord:
         - boom
         - perk
 hero:
-    modifiable: true
     effect_color: '11FF11'
     xp_regeneration: 25
     xp_max: 150
@@ -1800,7 +1760,6 @@ hero:
         - blast
         - perk
 king:
-    modifiable: true
     effect_color: '22FF22'
     xp_regeneration: 30
     xp_max: 175
@@ -1830,7 +1789,6 @@ king:
         - grenade
         - perk
 legend:
-    modifiable: true
     effect_color: '22FF22'
     xp_regeneration: 40
     xp_max: 200
@@ -1865,7 +1823,6 @@ legend:
         - frost
         - perk
 overseer:
-    modifiable: true
     effect_color: '22FF22'
     xp_regeneration: 50
     xp_max: 250
@@ -1904,7 +1861,6 @@ overseer:
         - wolf
         - chop
 wizard:
-    modifiable: true
     effect_color: '89A0D5'
     xp_regeneration: 75
     xp_max: 400
@@ -1945,7 +1901,6 @@ wizard:
         - chop
         - fire
 nether:
-    modifiable: true
     effect_color: 'B40404'
     xp_regeneration: 100
     xp_max: 500
@@ -1992,7 +1947,6 @@ nether:
         - chop
         - fire
 ender:
-    modifiable: true
     effect_color: 'AC58FA'
     xp_regeneration: 150
     xp_max: 800
@@ -2043,3 +1997,78 @@ ender:
         - wolf
         - chop
         - fire
+        
+#
+# UPGRADE ITEMS
+#
+
+redeffects:
+    upgrade: true
+    icon: carpet:14
+    effect_color: 'FF0000'
+    effect_bubbles: true
+greeneffects:
+    upgrade: true
+    icon: carpet:5
+    effect_color: '00FF00'
+    effect_bubbles: true
+blueeffects:
+    upgrade: true
+    icon: carpet:11
+    effect_color: '0000FF'
+    effect_bubbles: true
+whiteeffects:
+    upgrade: true
+    icon: carpet:0
+    effect_color: 'FFFFFF'
+    effect_bubbles: true
+blackeffects:
+    upgrade: true
+    icon: carpet:15
+    effect_color: '010101'
+    effect_bubbles: true
+purpleeffects:
+    upgrade: true
+    icon: carpet:10
+    effect_color: 'FF00FF'
+    effect_bubbles: true
+yelloweffects:
+    upgrade: true
+    icon: carpet:4
+    effect_color: 'FFFF00'
+    effect_bubbles: true
+aquaeffects:
+    upgrade: true
+    icon: carpet:3
+    effect_color: '0000FF'
+    effect_bubbles: true
+rainboweffects:
+    upgrade: true
+    icon: magma_cream
+    effect_color: 'FFFFFF'
+    effect_bubbles: false
+    effect_particle: mob_spell
+    effect_parcticle_data: 2
+    effect_particle_count: 3
+mana1:
+    upgrade: true
+    icon: nether_star
+    xp_max: 200
+    xp_regeneration: 20
+mana2:
+    upgrade: true
+    icon: nether_star
+    xp_max: 400
+    xp_regeneration: 40
+mana3:
+    upgrade: true
+    icon: nether_star
+    xp_max: 1000
+    xp_regeneration: 100
+manaboost:
+    upgrade: true
+    icon: glass_bottle
+    xp: 1000
+
+ 
+    

@@ -316,7 +316,7 @@ public class MagicPlugin extends JavaPlugin
 		boolean isWand = false;
 		boolean isUpgrade = false;
 		
-		if (args.length > 1 && !args[2].equals("material") && !args[2].equals("wand") && !args[2].equals("upgrade")) {
+		if (args.length > 1 && !args[0].equals("material") && !args[0].equals("wand") && !args[0].equals("upgrade")) {
 			sender.sendMessage(usageString);
 			return true;
 		}
