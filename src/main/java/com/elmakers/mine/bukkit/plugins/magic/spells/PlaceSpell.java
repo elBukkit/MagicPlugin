@@ -14,22 +14,23 @@ public class PlaceSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		Target target = getTarget();
-		if (!target.isBlock()) return SpellResult.NO_TARGET;
-		Block attachBlock = getLastBlock();
+		Target attachToBlock = getTarget();
+		if (!attachToBlock.isBlock()) return SpellResult.NO_TARGET;
+		Block placeBlock = getLastBlock();
 
 		MaterialBrush buildWith = getMaterialBrush();
-		buildWith.setTarget(attachBlock.getLocation());
+		buildWith.setTarget(attachToBlock.getLocation(), placeBlock.getLocation());
+		buildWith.setTarget(attachToBlock.getLocation());
 
-		if (!hasBuildPermission(attachBlock)) {
+		if (!hasBuildPermission(placeBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		BlockList placedBlocks = new BlockList();
-		placedBlocks.add(attachBlock);
-		buildWith.modify(attachBlock);
+		placedBlocks.add(placeBlock);
+		buildWith.modify(placeBlock);
 
 		registerForUndo(placedBlocks);
-		controller.updateBlock(attachBlock);
+		controller.updateBlock(placeBlock);
 
 		return SpellResult.CAST;
 	}
