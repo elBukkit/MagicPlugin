@@ -1202,25 +1202,6 @@ public class Wand implements CostReducer {
 		updateName(true);
 	}
 	
-	private String getLevelString(String prefix, float amount) {
-		String suffix = "";
-
-		if (amount > 1) {
-			suffix = Messages.get("wand.enchantment_level_max");
-		} else if (amount > 0.8) {
-			suffix = Messages.get("wand.enchantment_level_5");
-		} else if (amount > 0.6) {
-			suffix = Messages.get("wand.enchantment_level_4");
-		} else if (amount > 0.4) {
-			suffix = Messages.get("wand.enchantment_level_3");
-		} else if (amount > 0.2) {
-			suffix = Messages.get("wand.enchantment_level_2");
-		} else {
-			 suffix = Messages.get("wand.enchantment_level_1");
-		}
-		return prefix + " " + suffix;
-	}
-	
 	protected static String convertToHTML(String line) {
 		int tagCount = 1;
 		line = "<span style=\"color:white\">" + line;
@@ -1267,24 +1248,56 @@ public class Wand implements CostReducer {
 	protected void addPropertyLore(List<String> lore)
 	{
 		if (usesMana()) {
-			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + Messages.get("wand.mana_amount").replace("$amount", ((Integer)xpMax).toString()));
-			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(Messages.get("wand.mana_regeneration"), (float)xpRegeneration / (float)WandLevel.maxXpRegeneration));
+			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getLevelString("wand.mana_amount", xpMax, WandLevel.maxMaxXp));
+			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString("wand.mana_regeneration", xpRegeneration, WandLevel.maxXpRegeneration));
 		}
-		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cost_reduction"), costReduction));
-		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.cooldown_reduction"), cooldownReduction));
-		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.power"), power));
-		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.haste"), speedIncrease));
-		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection"), damageReduction));
+		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString("wand.cost_reduction", costReduction));
+		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString("wand.cooldown_reduction", cooldownReduction));
+		if (power > 0) lore.add(ChatColor.AQUA + getLevelString("wand.power", power));
+		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString("wand.haste", speedIncrease));
+		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection", damageReduction));
 		if (damageReduction < 1) {
-			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_physical"), damageReductionPhysical));
-			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_projectile"), damageReductionProjectiles));
-			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fall"), damageReductionFalling));
-			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_fire"), damageReductionFire));
-			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.protection_blast"), damageReductionExplosions));
+			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_physical", damageReductionPhysical));
+			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_projectile", damageReductionProjectiles));
+			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_fall", damageReductionFalling));
+			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_fire", damageReductionFire));
+			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_blast", damageReductionExplosions));
 		}
-		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.health_regeneration"), healthRegeneration / WandLevel.maxRegeneration));
-		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(Messages.get("wand.hunger_regeneration"), hungerRegeneration / WandLevel.maxRegeneration));
-		
+		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.health_regeneration", healthRegeneration, WandLevel.maxRegeneration));
+		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.hunger_regeneration", hungerRegeneration, WandLevel.maxRegeneration));
+	}
+	
+	private String getLevelString(String templateName, float amount)
+	{
+		return getLevelString(templateName, amount, 1);
+	}
+	
+	private String getLevelString(String templateName, float amount, float max)
+	{
+		String templateString = Messages.get(templateName);
+		if (templateString.contains("$roman")) {
+			templateString = templateString.replace("$roman", getRomanString(amount));
+		}
+		return templateString.replace("$amount", Integer.toString((int)amount));
+	}
+
+	private String getRomanString(float amount) {
+		String roman = "";
+
+		if (amount > 1) {
+			roman = Messages.get("wand.enchantment_level_max");
+		} else if (amount > 0.8) {
+			roman = Messages.get("wand.enchantment_level_5");
+		} else if (amount > 0.6) {
+			roman = Messages.get("wand.enchantment_level_4");
+		} else if (amount > 0.4) {
+			roman = Messages.get("wand.enchantment_level_3");
+		} else if (amount > 0.2) {
+			roman = Messages.get("wand.enchantment_level_2");
+		} else {
+			 roman = Messages.get("wand.enchantment_level_1");
+		}
+		return roman;
 	}
 	
 	protected List<String> getLore(int spellCount, int materialCount) 

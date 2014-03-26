@@ -70,19 +70,19 @@ wand:
     upgrade_spell_count: Adds $count Spells
     upgrade_material_count: Adds $count Materials
     mana_amount: "Mana: $amount"
-    mana_regeneration: Mana Regeneration
-    cost_reduction: Cost Reduction
-    cooldown_reduction: Cooldown Reduction
+    mana_regeneration: "Mana Regeneration: $amount/s"
+    cost_reduction: Cost Reduction $roman
+    cooldown_reduction: Cooldown Reduction $roman
     power: Power
     haste: Haste
-    protection: Protection
-    protection_physical: Physical Protection
-    protection_projectile: Projectile Protection
-    protection_fall: Fall Protection
-    protection_fire: Fire Protection
-    protection_blast: Blast Protection
-    health_regeneration: Health Regeneration
-    hunger_regeneration: Anti-Hunger
+    protection: Protection $roman
+    protection_physical: Physical Protection $roman
+    protection_projectile: Projectile Protection $roman
+    protection_fall: Fall Protection $roman
+    protection_fire: Fire Protection $roman
+    protection_blast: Blast Protection $roman
+    health_regeneration: Health Regeneration $roman
+    hunger_regeneration: Anti-Hunger $roman
     costs_description: Costs $description
     active_costs_description: Costs $description Per Second
     owner_description: $name's Wand
