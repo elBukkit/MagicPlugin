@@ -22,7 +22,7 @@ public class ConstructSpell extends BrushSpell
 {
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
 	private static final int DEFAULT_RADIUS						= 2;
-	private static final int DEFAULT_MAX_DIMENSION 				= 128;
+	private static final int DEFAULT_MAX_DIMENSION 				= 16;
 	
 	private Block targetBlock = null;
 	private boolean powered = false;

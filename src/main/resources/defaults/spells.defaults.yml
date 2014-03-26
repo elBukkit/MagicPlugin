@@ -1507,7 +1507,7 @@ superbox:
     parameters:
         allow_max_range: false
         range: 64
-        max-dimension: 16
+        max_dimension: 16
         fill: hollow
         target: select
         type: cuboid
