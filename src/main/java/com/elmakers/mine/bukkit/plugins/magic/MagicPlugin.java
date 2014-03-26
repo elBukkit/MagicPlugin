@@ -302,6 +302,51 @@ public class MagicPlugin extends JavaPlugin
 		giveItemToPlayer(player, itemStack);
 	}
 	
+	protected boolean onMagicGive(CommandSender sender, Player player, String[] args)
+	{
+		String playerCommand = (sender instanceof Player) ? "" : "<player> ";
+		String usageString = "Usage: /magic give " + playerCommand + "<spellname|'material'|'upgrade'|'wand'> [materialname|wandname]";
+		if (args.length == 0) {
+			sender.sendMessage(usageString);
+			return true;
+		}
+		
+		String key = "";
+		boolean isMaterial = false;
+		boolean isWand = false;
+		boolean isUpgrade = false;
+		
+		if (args.length > 1 && !args[2].equals("material") && !args[2].equals("wand") && !args[2].equals("upgrade")) {
+			sender.sendMessage(usageString);
+			return true;
+		}
+		
+		if (args[0].equals("wand")) {
+			isWand = true;
+			key = args[1];
+		} else if (args[0].equals("upgrade")) {
+			isUpgrade = true;
+			key = args[1];
+		} else if (args[0].equals("material")) {
+			isMaterial = true;
+			key = args[1];
+		} else {
+			key = args[0];
+		}
+		
+		if (isWand) {
+			onGiveWand(sender, player, key);
+		} else if (isMaterial) {
+			onGiveBrush(sender, player, key);
+		} else if (isUpgrade) {
+			onGiveUpgrade(sender, player, key);
+		} else {
+			onGiveSpell(sender, player, key);
+		}
+		
+		return true;
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
 	{
@@ -344,75 +389,25 @@ public class MagicPlugin extends JavaPlugin
 			}
 			if (subCommand.equalsIgnoreCase("give"))
 			{
-				String key = "";
-				boolean isMaterial = false;
-				boolean isWand = false;
-				boolean isUpgrade = false;
 				Player player = null;
-				if (sender instanceof Player) {
-					if (args.length == 1) {
-						sender.sendMessage("Usage: magic give <spellname|'material'|'upgrade|wand'> [materialname|wandname]");
-						return true;
-					}
-					if (args.length > 2 && !args[1].equals("material") && !args[1].equals("wand") && !args[1].equals("upgrade")) {
-						sender.sendMessage("Usage: magic give <spellname|'material|upgrade|wand'> [materialname|wandname]");
-						return true;
-					}
-					if (args.length > 2) {
-						if (args[1].equals("wand")) {
-							isWand = true;
-						} else if (args[1].equals("upgrade")) {
-							isUpgrade = true;
-						} else {
-							isMaterial = true;
-						}
-						key = args[2];
-					} else {
-						key = args[1];
-					}
-					
-					player = (Player)sender;
-				} else {
-					if (args.length < 3) {
-						sender.sendMessage("Usage: magic give <playername> <spellname|'material|upgrade|wand'> [materialname|wandname]");
-						return true;
-					}
-					String playerName = args[1];
-					player = getServer().getPlayer(playerName);
-					if (player == null) {
-						sender.sendMessage("Can't find player " + playerName);
-						return true;
-					}
-					if (args.length > 3 && !args[2].equals("material") && !args[2].equals("wand") && !args[2].equals("upgrade")) {
-						sender.sendMessage("Usage: magic give <playername> <spellname|'material|upgrade|wand'> [materialname|wandname]");
-						return true;
-					}
-					if (args.length > 3) {
-						if (args[2].equals("wand")) {
-							isWand = true;
-						} else if (args[2].equals("upgrade")) {
-							isUpgrade = true;
-						} else {
-							isMaterial = true;
-						}
-						key = args[3];
-					} else {
-						key = args[2];
-					}
-					
-					player = (Player)sender;
-				}
+				int argStart = 1;
 				
-				if (isWand) {
-					onGiveWand(sender, player, key);
-				} else if (isMaterial) {
-					onGiveBrush(sender, player, key);
-				} else if (isUpgrade) {
-					onGiveUpgrade(sender, player, key);
+				if (sender instanceof Player) {
+					player = (Player)sender;
 				} else {
-					onGiveSpell(sender, player, key);
+					argStart = 2;
+					player = Bukkit.getPlayer(args[0]);
+					if (player == null) {
+						sender.sendMessage("Can't find player " + args[0]);
+						return true;
+					}
+					if (!player.isOnline()) {
+						sender.sendMessage("Player " + args[0] + " is not online");
+						return true;
+					}
 				}
-				return true;
+				String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
+				return onMagicGive(sender, player, args2);
 			}
 			if (subCommand.equalsIgnoreCase("list"))
 			{
