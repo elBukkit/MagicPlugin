@@ -1394,7 +1394,8 @@ public class MagicController implements Listener
 		if (player == null) return true;
 		
 		// Seems like the GM should handle this, but no?
-		if (defaultValue && pNode.contains(".")) {
+		// I mean.. really? It Essentials GM doesn't handle wildcards? Holy cow...
+		if (pNode.contains(".")) {
 			String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";
 			boolean isParentSet = player.isPermissionSet(parentNode);
 			if (isParentSet) {
@@ -1403,7 +1404,10 @@ public class MagicController implements Listener
 		}
 		
 		boolean isSet = player.isPermissionSet(pNode);
-		return isSet ? player.hasPermission(pNode) : defaultValue;
+		if (defaultValue) {
+			return isSet ? player.hasPermission(pNode) : defaultValue;
+		}
+		return player.hasPermission(pNode);
 	}
 
 	public boolean hasPermission(Player player, String pNode)

@@ -10,6 +10,7 @@
  - Allow selling spells and material brushes on Essentials signs.
  - Citizens integration (spells will ignore NPC's)
  - Some multi-world fixes to the Camera spell.
+ - Fix permission use with wildcards... umm.. I thought the GM handled this??
 
 ## 2.9.8
 

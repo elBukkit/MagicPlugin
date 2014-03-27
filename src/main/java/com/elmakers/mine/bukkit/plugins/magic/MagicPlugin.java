@@ -423,8 +423,7 @@ public class MagicPlugin extends JavaPlugin
 				{
 					if (!controller.hasPermission(sender, "Magic.commands.magic." + listCommand)) return false;
 					
-					sender.sendMessage("Use: magic list <wands [player]|maps [keyword]>");
-					sender.sendMessage("For more specific information");
+					sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'wands' or 'maps' parameter.");
 					
 					Collection<Mage> mages = controller.getMages();
 					List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
