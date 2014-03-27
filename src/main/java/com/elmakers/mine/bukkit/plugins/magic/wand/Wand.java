@@ -1719,6 +1719,7 @@ public class Wand implements CostReducer {
 	
 	public boolean canUse(Player player) {
 		if (!bound || owner == null || owner.length() == 0) return true;
+		if (controller.hasPermission(player, "Magic.wand.override_bind", false)) return true;
 		
 		return owner.equalsIgnoreCase(player.getName());
 	}

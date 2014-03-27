@@ -17,6 +17,7 @@
     - Magic.commands.magic.list.wands
     - Magic.commands.magic.list.maps
     - Magic.commands.magic.give
+    - Magic.wand.override_bind
 
   g:magic_admin:
     permissions:
