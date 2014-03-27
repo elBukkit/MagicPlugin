@@ -68,17 +68,21 @@ public class URLMap extends MapRenderer  {
 						if (mapConfig.contains("y_overlay")) {
 							yOverlay = mapConfig.getInt("y_overlay");
 						}
+						String world = "world";
+						if (mapConfig.contains("world")) {
+							world = mapConfig.getString("world");
+						}
 						try {
 							mapId = Short.parseShort(mapIdString);
 						} catch (Exception ex) {
-							map = get(mapConfig.getString("url"), mapConfig.getString("name"), 
+							map = get(world, mapConfig.getString("url"), mapConfig.getString("name"), 
 								mapConfig.getInt("x"), mapConfig.getInt("y"), xOverlay, yOverlay,
 								mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
 							info("Created new map id " + map.id + " for config id " + mapIdString);
 							needsUpdate = true;
 						}
 						if (map == null && mapId != null) {
-							map = get(mapId, mapConfig.getString("url"), mapConfig.getString("name"), 
+							map = get(world, mapId, mapConfig.getString("url"), mapConfig.getString("name"), 
 									mapConfig.getInt("x"), mapConfig.getInt("y"),
 									xOverlay, yOverlay, mapConfig.getInt("width"), mapConfig.getInt("height"), priority);
 						}
@@ -133,6 +137,7 @@ public class URLMap extends MapRenderer  {
 		YamlConfiguration configuration = new YamlConfiguration();
 		for (URLMap map : idMap.values()) {
 			ConfigurationSection mapConfig = configuration.createSection(Short.toString(map.id));
+			mapConfig.set("world", map.world);
 			mapConfig.set("url", map.url);
 			mapConfig.set("x", map.x);
 			mapConfig.set("y", map.y);
@@ -222,21 +227,27 @@ public class URLMap extends MapRenderer  {
 	 * @param playerName
 	 * @return
 	 */
-	public static ItemStack getPlayerPortrait(String playerName, Integer priority, String photoName) {
+	public static ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoName) {
 		photoName = photoName == null ? playerName : photoName;
 		String photoLabel = "Photo of " + photoName;
-		MapView mapView = getURL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", photoLabel, 8, 8, 40, 8, 8, 8, priority);
+		MapView mapView = getURL(worldName, "http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", photoLabel, 8, 8, 40, 8, 8, 8, priority);
 		return getMapItem(photoLabel, mapView);
 	}
-	
-	public static ItemStack getPlayerPortrait(String playerName, Integer priority) {
-		return getPlayerPortrait(playerName, priority, playerName);
-	}
-	
-	public static ItemStack getPlayerPortrait(String playerName) {
-		return getPlayerPortrait(playerName, null);
-	}
 
+	public static MapView getURL(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+		URLMap map = URLMap.get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority);
+		return map.getMapView();
+	}
+	
+	/**
+	 * Get a new ItemStack for the specified url with a specific cropping.
+	 * 
+	 */
+	public static ItemStack getURLItem(String world, String url, String name, int x, int y, int width, int height, Integer priority) {
+		MapView mapView = getURL(world, url, name, x, y, null, null, width, height, priority);
+		return getMapItem(name, mapView);
+	}
+	
 	@SuppressWarnings("deprecation")
 	protected static ItemStack getMapItem(String name, MapView mapView) {
 		short id = 0;
@@ -251,9 +262,8 @@ public class URLMap extends MapRenderer  {
 	 * 
 	 * @param playerName
 	 */
-	public static void forceReloadPlayerPortrait(String playerName) {
-		URLMap map = URLMap.get("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8);
-		map.reload();
+	public static void forceReloadPlayerPortrait(String worldName, String playerName) {
+		forceReload(worldName, "http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8);
 	}
 
 	/**
@@ -265,66 +275,8 @@ public class URLMap extends MapRenderer  {
 	 * @param width
 	 * @param height
 	 */
-	public static void forceReload(String url, int x, int y, int width, int height) {
-		URLMap.get(url, x, y, width, height).reload();
-	}
-	
-	/**
-	 * Get a new MapView for the specified url. 
-	 * 
-	 * The full image will be used.
-	 * 
-	 * @param url
-	 * @return
-	 */
-	public static MapView getURL(String url) {
-		return getURL(url, 0, 0, 0, 0);
-	}
-
-	/**
-	 * Get a new ItemStack for the specified url with a specific cropping.
-	 * 
-	 * @param url
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param name
-	 * @param priority
-	 * 	The displayName to give the new item.
-	 * @return
-	 */
-	public static ItemStack getURLItem(String url, int x, int y, int width, int height, String name, Integer priority) {
-		MapView mapView = getURL(url, x, y, width, height, priority);
-		return getMapItem(name, mapView);
-	}
-	
-	public static ItemStack getURLItem(String url, int x, int y, int width, int height, String name) {
-		return getURLItem(url, x, y, width, height, name, null);
-	}
-
-	/**
-	 * Get a new MapView for the specified url with a specific cropping.
-	 * 
-	 * @param url
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @return
-	 */
-	public static MapView getURL(String url, int x, int y, int width, int height, Integer priority) {
-		URLMap map = URLMap.get(url, x, y, width, height, priority);
-		return map.getMapView();
-	}
-	
-	public static MapView getURL(String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
-		URLMap map = URLMap.get(url, name, x, y, xOverlay, yOverlay, width, height, priority);
-		return map.getMapView();
-	}
-	
-	public static MapView getURL(String url, int x, int y, int width, int height) {
-		return getURL(url, x, y, width, height, null);
+	public static void forceReload(String worldName, String url, int x, int y, int width, int height) {
+		URLMap.get(worldName, url, x, y, width, height).reload();
 	}
 	
 	/**
@@ -384,6 +336,7 @@ public class URLMap extends MapRenderer  {
 	private static HashMap<String, URLMap> keyMap = new HashMap<String, URLMap>();
 	private static HashMap<Short, URLMap> idMap = new HashMap<Short, URLMap>();
 	
+	private String world;
 	private Short id;
 	private BufferedImage image;
 	
@@ -401,8 +354,8 @@ public class URLMap extends MapRenderer  {
 	protected Set<String> sentToPlayers = new HashSet<String>();
 	protected Integer priority;
 	
-	private static URLMap get(short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
-		String key = getKey(url, x, y, width, height);
+	private static URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+		String key = getKey(world, url, x, y, width, height);
 		URLMap map = idMap.get(mapId);
 		if (map != null) {
 			if (!map.getKey().equals(key)) {
@@ -418,19 +371,19 @@ public class URLMap extends MapRenderer  {
 			return map;
 		}
 		
-		map = new URLMap(mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority);
+		map = new URLMap(world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority);
 		keyMap.put(key, map);
 		idMap.put(mapId, map);
 		return map;
 	}
 
-	private static URLMap get(String url, int x, int y, int width, int height) {
-		return get(url, x, y, width, height, null);
+	private static URLMap get(String worldName, String url, int x, int y, int width, int height) {
+		return get(worldName, url, x, y, width, height, null);
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static URLMap get(String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
-		String key = getKey(url, x, y, width, height);
+	private static URLMap get(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+		String key = getKey(worldName, url, x, y, width, height);
 		if (keyMap.containsKey(key)) {
 			URLMap map = keyMap.get(key);
 			map.priority = priority;
@@ -439,19 +392,19 @@ public class URLMap extends MapRenderer  {
 			map.yOverlay = yOverlay;
 			return map;
 		}
-		World world = Bukkit.getWorlds().get(0);
+		World world = Bukkit.getWorld(worldName);
 		MapView mapView = Bukkit.createMap(world);
 		if (mapView == null) {
 			warning("Unable to create new map for url key " + key);
 			return null;
 		}
-		URLMap newMap = get(mapView.getId(), url, name, x, y, xOverlay, yOverlay, width, height, priority);
+		URLMap newMap = get(worldName, mapView.getId(), url, name, x, y, xOverlay, yOverlay, width, height, priority);
 		save();
 		return newMap;
 	}
 	
-	private static URLMap get(String url, int x, int y, int width, int height, Integer priority) {
-		return get(url, null, x, y, null, null, width, height, priority);
+	private static URLMap get(String worldName, String url, int x, int y, int width, int height, Integer priority) {
+		return get(worldName, url, null, x, y, null, null, width, height, priority);
 	}
 	
 	private MapView getMapView() {
@@ -493,7 +446,8 @@ public class URLMap extends MapRenderer  {
 		return enabled;
 	}
 	
-	private URLMap(short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+	private URLMap(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+		this.world = world;
 		this.url = url;
 		this.name = name;
 		this.x = x;
@@ -506,12 +460,12 @@ public class URLMap extends MapRenderer  {
 		this.priority = priority;
 	}
 	
-	private static String getKey(String url, int x, int y, int width, int height) {
-		return "" + x + "," + y + "|" + width + "," + height + "|" + url;
+	private static String getKey(String world, String url, int x, int y, int width, int height) {
+		return world + "|" + x + "," + y + "|" + width + "," + height + "|" + url;
 	}
 	
 	private String getKey() {
-		return getKey(url, x, y, width, height);
+		return getKey(world, url, x, y, width, height);
 	}
 	
 	private void resendTo(String playerName) {

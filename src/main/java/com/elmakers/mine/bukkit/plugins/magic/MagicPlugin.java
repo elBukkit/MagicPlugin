@@ -435,7 +435,7 @@ public class MagicPlugin extends JavaPlugin
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + magicTasks + "/" + tasks.size());
 					
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active players: " + mages.size());
-					sender.sendMessage(ChatColor.AQUA + "Pending construction batches: ");
+					sender.sendMessage(ChatColor.AQUA + "Pending construction batches (" + controller.getPending().size() + "): ");
 					for (Mage mage : mages) {
 						List<BlockBatch> pending = mage.getPendingBatches();
 						if (pending.size() > 0) {

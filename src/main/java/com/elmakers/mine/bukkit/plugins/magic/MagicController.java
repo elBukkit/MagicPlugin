@@ -819,6 +819,10 @@ public class MagicController implements Listener
 		}, 0, 1);
 	}
 	
+	public Collection<Mage> getPending() {
+		return pendingConstruction.values();
+	}
+	
 	protected void addPending(Mage mage) {
 		pendingConstruction.put(mage.getName(), mage);
 	}

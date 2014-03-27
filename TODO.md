@@ -2,8 +2,6 @@
 
 ## For 2.9.9
 
- - Purge players from pending construction batch list when empty
-
  - Add end options for PhaseSpell (allow return, scale/spawn/location? - multiverse?)
  - Add "wand duplicate" command
  - Config-driven WandLevel limits.
