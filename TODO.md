@@ -15,6 +15,8 @@
  - Commandbook kit integration
  - Walls spell?
  
+ - Implement schematic saving as a "Snapshot" spell, restore with "Repair"?
+ 
 ## For 3.0.0
 
  - Scoreboard mana/spell display

@@ -1421,7 +1421,7 @@ wolf:
     effect_sound: ambience_cave
     effect_sound_volume: 0.6
     effect_sound_pitch: 0.3
-    effect_sound_interval: 20
+    effect_sound_interval: 30
     organize: true
     mode: inventory
     spells:

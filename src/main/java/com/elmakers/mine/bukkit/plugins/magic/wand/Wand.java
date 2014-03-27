@@ -862,7 +862,7 @@ public class Wand implements CostReducer {
 			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data", floatFormat.format(effectParticleData)));
 			effectParticleCount = Integer.parseInt(wandConfig.getString("effect_particle_count", Integer.toString(effectParticleCount)));
 			effectParticleInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
-			effectSoundInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
+			effectSoundInterval = Integer.parseInt(wandConfig.getString("effect_sound_interval", Integer.toString(effectSoundInterval)));
 			effectSoundVolume = Float.parseFloat(wandConfig.getString("effect_sound_volume", floatFormat.format(effectSoundVolume)));
 			effectSoundPitch = Float.parseFloat(wandConfig.getString("effect_sound_pitch", floatFormat.format(effectSoundPitch)));
 			
