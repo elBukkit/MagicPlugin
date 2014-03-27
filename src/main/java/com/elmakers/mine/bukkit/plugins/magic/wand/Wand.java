@@ -405,6 +405,12 @@ public class Wand implements CostReducer {
 		updateLore();
 	}
 	
+	public void tryToOwn(Player player) {
+		if (owner == null || owner.length() == 0) {
+			takeOwnership(player);
+		}
+	}
+	
 	protected void takeOwnership(Player player) {
 		owner = player.getName();
 		if (controller != null && controller.bindWands()) {
@@ -1963,11 +1969,6 @@ public class Wand implements CostReducer {
 		// Check for auto-organize
 		if (autoOrganize) {
 			organizeInventory(mage);
-		}
-		
-		// Take ownership of wand
-		if (owner == null || owner.length() == 0) {
-			takeOwnership(player);
 		}
 		
 		checkActiveSpell();

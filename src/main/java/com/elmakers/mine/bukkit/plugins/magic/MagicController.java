@@ -2076,6 +2076,9 @@ public class MagicController implements Listener
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(this, current);
 					wand.updateName(true);
+					if (event.getWhoClicked() instanceof Player) {
+						wand.tryToOwn((Player)event.getWhoClicked());
+					}
 				}
 				
 				return;
@@ -2099,6 +2102,7 @@ public class MagicController implements Listener
 				if (organizingEnabled) {
 					wand.organizeInventory(getMage(player));
 				}
+				wand.tryToOwn(player);
 				return;
 			}
 
@@ -2132,6 +2136,7 @@ public class MagicController implements Listener
 					if (organizingEnabled) {
 						firstWand.organizeInventory(mage);
 					}
+					firstWand.tryToOwn(player);
 					player.getInventory().addItem(firstWand.getItem());
 					mage.sendMessage("Your wands have been combined!");
 					
@@ -2146,6 +2151,7 @@ public class MagicController implements Listener
 					cursor.setType(Material.AIR);
 					Mage mage = getMage(player);
 					firstWand.organizeInventory(mage);
+					firstWand.tryToOwn(player);
 					player.getInventory().addItem(firstWand.getItem());
 					mage.sendMessage("Your wand has been organized!");
 				}
