@@ -585,6 +585,7 @@ public class Wand implements CostReducer {
 		spellString = spellString.replaceAll("[\\]\\[]", "");
 		String[] spellNames = StringUtils.split(spellString, "|,");
 		for (String spellName : spellNames) {
+			if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellName;
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
 			ItemStack itemStack = createSpellIcon(pieces[0].trim());
@@ -597,6 +598,7 @@ public class Wand implements CostReducer {
 		materialString = materialString.replaceAll("[\\]\\[]", "");
 		String[] materialNames = StringUtils.split(materialString, "|,");
 		for (String materialName : materialNames) {
+			if (activeMaterial == null || activeMaterial.length() == 0) activeMaterial = materialName;
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
 			ItemStack itemStack = createMaterialIcon(pieces[0].trim());
@@ -2001,7 +2003,7 @@ public class Wand implements CostReducer {
 		if (activeMaterial == null || activeMaterial.length() == 0) {
 			Set<String> materials = getMaterialKeys();
 			if (materials.size() > 0) {
-				activeSpell = materials.iterator().next();
+				activeMaterial = materials.iterator().next();
 			}
 		}
 	}
