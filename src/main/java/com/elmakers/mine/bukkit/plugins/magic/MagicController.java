@@ -2507,7 +2507,7 @@ public class MagicController implements Listener
 				marker = spellSet.createCircleMarker(markerId, label, false, worldName, location.getX(), location.getY(), location.getZ(), radius, radius, false);
 			}
 			marker.setRadius(radius, radius);
-			marker.setLineStyle(width, 0.9, color.asRGB());
+			marker.setLineStyle(1, 0.9, color.asRGB());
 			marker.setFillStyle(0.5, color.asRGB());
 			
 			// Create a targeting indicator line
