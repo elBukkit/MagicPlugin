@@ -2,6 +2,7 @@
 
 ## 2.9.9
 
+ - Add "Pickpocket" spell, like invsee at close range.
  - Add "keep" and "bound" wand options, for wands that you keep on death and/or are bound to a specific player.
  - Fix dtlTraders integration. Wands, spells and material brushes can be sold by traders. (Requires v 3.1.0, currently a dev build! Thanks again @dandielo !)
  - Add /magic give command, mainly for use with dtlTraders, gives a spell, material brush, or wand upgrade item.

@@ -337,6 +337,7 @@ random:
       pillar: 0,5,10,15
       place: 0,1,5,10
       stash: 0,1,5,10
+      pickpocket: 0,0,1,5
       stalactite: 0,5,10,15
       kaboom: 0,0,1,5
       icbm: 0,0,1,5
@@ -1243,6 +1244,7 @@ black:
         - portal
         - neutron
         - night
+        - pickpocket
     materials:
         - water
         - erase
@@ -1393,6 +1395,7 @@ admin:
         - disarm
         - gather
         - regenerate
+        - pickpocket
     materials:
         - water
         - lava
@@ -1501,6 +1504,7 @@ wolf:
         - regenerate
         - tag
         - emp
+        - pickpocket
     materials:  
         - lapis_block
         - water

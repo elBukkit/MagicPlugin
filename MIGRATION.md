@@ -12,6 +12,9 @@ now be modifiable sorry about that, please let me know if it's a concern (I'm as
 
 I don't think anyone was using locked wands, hopefully not.
 
+I renamed the bending wands- *TAKE CARE* if you were giving out the "air" "water" "earth" or "fire" wands- those are now
+the Master wands, not the Student!
+
 ## Some general notes
 
 At this point I will try and ensure that migration is generally hassle-free, and plugin updates are

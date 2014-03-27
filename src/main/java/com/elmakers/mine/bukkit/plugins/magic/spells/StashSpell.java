@@ -31,8 +31,14 @@ public class StashSpell extends Spell
 		}
 		
 		HumanEntity humanTarget = (HumanEntity)targetEntity;
-		Inventory enderInventory = humanTarget.getEnderChest();
-		showPlayer.openInventory(enderInventory);
+		
+		if (parameters.getString("type").equalsIgnoreCase("inventory")) {
+			Inventory enderInventory = humanTarget.getInventory();
+			showPlayer.openInventory(enderInventory);
+		} else {
+			Inventory enderInventory = humanTarget.getEnderChest();
+			showPlayer.openInventory(enderInventory);
+		}
 		
 		return SpellResult.CAST;
 	}
