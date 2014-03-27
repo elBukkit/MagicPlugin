@@ -691,6 +691,25 @@ heal:
         range: 32
     costs:
         xp: 100
+music:
+    icon: gold_record
+    category: light
+    class: MusicSpell
+    effects:
+        cast:
+        -  class: EffectTrail
+           particle: note
+        -  class: EffectRing
+           particle: note
+           location: target
+    parameters:
+        target_type: Player
+        target: any
+        allow_max_range: true
+        range: 16
+        cooldown: 120000
+    costs:
+        xp: 20
 gather:
     icon: glowstone_dust
     category: master

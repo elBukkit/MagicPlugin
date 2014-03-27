@@ -248,6 +248,11 @@ spells:
         description: Heal yourself or others
         cast: You heal your target
         cast_self: You heal yourself
+    music:
+        name: Music
+        description: Play some tunes
+        cast_player: You play some music for $name
+        cast_self: You play some music
     gather:
         name: Gather
         description: Gather groups of players together
@@ -308,6 +313,7 @@ spells:
     phase:
         name: Phase
         description: Phase to another dimension
+        cast: You phase into another dimension
     invincible:
         name: Invincible
         description: Make yourself impervious to damage
