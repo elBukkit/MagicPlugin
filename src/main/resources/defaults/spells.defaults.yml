@@ -2219,7 +2219,7 @@ recall:
         allow_death: true
         allow_wand: true
         allow_home: true
-        allow_cross_world: false
+        allow_cross_world: true
     costs:
         xp: 20
 levitate:

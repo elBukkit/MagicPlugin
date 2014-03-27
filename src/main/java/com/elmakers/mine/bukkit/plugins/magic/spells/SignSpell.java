@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -95,7 +96,8 @@ public class SignSpell extends BlockSpell
 			Player targetPlayer = (Player)target.getEntity();
 			String message = getMessage("cast_message");
 			if (message.length() == 0) return SpellResult.NO_TARGET;
-			targetPlayer.sendMessage(message);
+			Mage targetMage = controller.getMage(targetPlayer);
+			targetMage.sendMessage(message);
 			return SpellResult.CAST;
 		}
 

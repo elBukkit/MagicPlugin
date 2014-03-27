@@ -1780,8 +1780,24 @@ public class MagicController implements Listener
 			return;
 		}
 		
-		if (wand == null || !hasWandPermission(player))
+		if (wand == null) return;
+		
+		if (!hasWandPermission(player))
 		{
+			// Check for self-destruct
+			if (hasPermission(player, "Magic.wand.destruct", false)) {
+				wand.deactivate();
+				PlayerInventory inventory = player.getInventory();
+				ItemStack[] items = inventory.getContents();
+				for (int i = 0; i < items.length; i++) {
+					ItemStack item = items[i];
+					if (Wand.isWand(item) || Wand.isSpell(item) || Wand.isBrush(item)) {
+						items[i] = null;
+					}
+				}
+				inventory.setContents(items);
+				mage.sendMessage(Messages.get("wand.self_destruct"));
+			}
 			return;
 		}
 		
@@ -2072,7 +2088,8 @@ public class MagicController implements Listener
 				
 				Wand wand = new Wand(this, current);
 				if (!wand.canUse(player)) {
-					player.sendMessage( Messages.get("wand.bound").replace("$name", wand.getOwner()));
+					Mage mage = getMage(player);
+					mage.sendMessage(Messages.get("wand.bound").replace("$name", wand.getOwner()));
 					return;
 				}
 				
@@ -2096,12 +2113,13 @@ public class MagicController implements Listener
 					Wand firstWand = new Wand(this, firstItem);
 					Wand secondWand = new Wand(this, secondItem);
 					Player player = (Player)event.getWhoClicked();
+					Mage mage = getMage(player);
 					if (!firstWand.isModifiable() || !secondWand.isModifiable()) {
-						player.sendMessage("One of your wands can not be combined");
+						mage.sendMessage("One of your wands can not be combined");
 						return;
 					}
 					if (!firstWand.canUse(player) || !secondWand.canUse(player)) {
-						player.sendMessage("One of those wands is not bound to you");
+						mage.sendMessage("One of those wands is not bound to you");
 						return;
 					}
 					
@@ -2112,11 +2130,10 @@ public class MagicController implements Listener
 					cursor.setType(Material.AIR);
 
 					if (organizingEnabled) {
-						Mage mage = getMage(player);
 						firstWand.organizeInventory(mage);
 					}
 					player.getInventory().addItem(firstWand.getItem());
-					player.sendMessage("Your wands have been combined!");
+					mage.sendMessage("Your wands have been combined!");
 					
 					// This seems to work in the debugger, but.. doesn't do anything.
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
@@ -2130,7 +2147,7 @@ public class MagicController implements Listener
 					Mage mage = getMage(player);
 					firstWand.organizeInventory(mage);
 					player.getInventory().addItem(firstWand.getItem());
-					player.sendMessage("Your wand has been organized!");
+					mage.sendMessage("Your wand has been organized!");
 				}
 				
 				return;

@@ -112,6 +112,7 @@ wand:
     player_filled: $name's wand filled
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
+    self_destruct: Your wands did not survive the dimensional shift!
 costs:
     xp_amount: $amount Mana
     mana_amount: $amount Mana

@@ -1911,7 +1911,7 @@ public class Wand implements CostReducer {
 		}
 		
 		if (!canUse(player)) {
-			player.sendMessage(Messages.get("wand.bound").replace("$name", owner));
+			mage.sendMessage(Messages.get("wand.bound").replace("$name", owner));
 			player.setItemInHand(null);
 			Location location = player.getLocation();
 			location.setY(location.getY() + 1);

@@ -215,6 +215,10 @@ permissions:
     description: The player may use a wand
     default: true
     type: boolean
+  Magic.wand.destruct:
+    description: A wand will self-destruct if the players tries to use it without permission.
+    default: false
+    type: boolean
   Magic.cast:
     description: The spells a player may cast
     type: list
