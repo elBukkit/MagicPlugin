@@ -905,7 +905,7 @@ public class MagicPlugin extends JavaPlugin
 	
 	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{
-		if (parameters.length < 2) {
+		if (parameters.length < 1) {
 			sender.sendMessage("Use: /wand configure <property> <value>");
 			sender.sendMessage("Properties: " + StringUtils.join(Wand.PROPERTY_KEYS, ", "));
 			return false;
@@ -920,9 +920,10 @@ public class MagicPlugin extends JavaPlugin
 		Mage mage = controller.getMage(player);
 		Wand wand = mage.getActiveWand();
 		ConfigurationNode node = new ConfigurationNode();
-		String value = parameters[1];
-		for (int i = 2; i < parameters.length; i++) {
-			value = value + " " + parameters[i];
+		String value = "";
+		for (int i = 1; i < parameters.length; i++) {
+			if (i != 1) value = value + " ";
+			value = value + parameters[i];
 		}
 		node.setProperty(parameters[0], value);
 		wand.deactivate();
