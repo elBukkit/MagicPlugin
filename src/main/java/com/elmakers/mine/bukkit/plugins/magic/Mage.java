@@ -348,6 +348,7 @@ public class Mage implements CostReducer
 	
 	public boolean isSuperProtected()
 	{
+		if (controller.hasPermission(getPlayer(), "Magic.protected")) return true;
 		return activeWand != null && activeWand.getDamageReduction() > 1;
 	}
 	

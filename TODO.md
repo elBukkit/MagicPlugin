@@ -2,12 +2,16 @@
 
 ## For 2.9.9
 
+ - Traders losing prices!
+ - Look at broken Power text in lore
  - Add "wand duplicate" command
  - Config-driven WandLevel limits.
  - Collapse blocklist chains on save (?)
  - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
+
+ - Clicking on empty wand space deselects spell.. ?
 
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Batch block populator for chests
