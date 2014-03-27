@@ -1380,9 +1380,15 @@ public class Wand implements CostReducer {
 	}
 	
 	public void makeEnchantable(boolean enchantable) {
-		// TODO: Support non-default items
-		if (item.getType() == EnchantableWandMaterial || item.getType() == DefaultWandMaterial) {
-			item.setType(enchantable ? EnchantableWandMaterial : DefaultWandMaterial);
+		if (!enchantable) {
+			item.setType(icon.getMaterial());
+			item.setDurability(icon.getData());
+		} else {
+			Set<Material> enchantableMaterials = controller.getMaterialSet("echantable");
+			if (!enchantableMaterials.contains(item.getType())) {
+				item.setType(EnchantableWandMaterial);
+				item.setDurability((short)0);
+			}
 		}
 		updateName();
 	}

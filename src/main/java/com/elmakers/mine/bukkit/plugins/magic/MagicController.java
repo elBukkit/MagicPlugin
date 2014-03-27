@@ -2333,7 +2333,7 @@ public class MagicController implements Listener
 			if (!WandLevel.randomizeWand(wand, true, level)) {
 				event.getEnchanter().sendMessage("This wand is fully enchanted (for now)");
 			}
-			
+			wand.makeEnchantable(true);
 			event.setCancelled(false);
 		}
 	}
@@ -2352,7 +2352,7 @@ public class MagicController implements Listener
 				event.setCancelled(true);
 				return;
 			}
-			
+			wandItem.makeEnchantable(true);
 			Set<Integer> levelSet = WandLevel.getLevels();
 			ArrayList<Integer> levels = new ArrayList<Integer>();
 			levels.addAll(levelSet);

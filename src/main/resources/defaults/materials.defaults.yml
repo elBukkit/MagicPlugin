@@ -402,3 +402,26 @@ building:
 - stained_glass
 - packed_ice
 - tnt
+
+enchantable:
+- wood_sword
+- iron_sword
+- gold_sword
+- diamond_sword
+- wood_spade
+- iron_spade
+- gold_spade
+- diamond_spade
+- wood_axe
+- iron_axe
+- gold_axe
+- diamond_axe
+- wood_hoe
+- iron_hoe
+- gold_hoe
+- diamond_hoe
+- wood_pickaxe
+- iron_pickaxe
+- gold_pickaxe
+- diamond_pickaxe
+- bow
