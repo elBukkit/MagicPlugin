@@ -13,6 +13,7 @@
  - Fix permission use with wildcards... umm.. I thought the GM handled this??
  - Added "Magic.wand.destruct", false by default- use if you want to wipe player inventories of wands if they get somewhere they don't have permission to use wands.
  - Added "Magic.wand.override_bind", a perm node for ops so they can handle bound wands.
+ - Make Phase configurale (e.g. if you have two worlds, you can link them with a specific scale)
 
 ## 2.9.8
 

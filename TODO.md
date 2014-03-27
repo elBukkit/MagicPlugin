@@ -2,7 +2,6 @@
 
 ## For 2.9.9
 
- - Add end options for PhaseSpell (allow return, scale/spawn/location? - multiverse?)
  - Add "wand duplicate" command
  - Config-driven WandLevel limits.
  - Collapse blocklist chains on save (?)

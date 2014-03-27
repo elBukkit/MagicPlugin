@@ -25,28 +25,45 @@ public class PhaseSpell extends Spell
 		Location playerLocation = getLocation();
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
-		if (worldName.contains("_the_end")) {
-			worldName = worldName.replace("_the_end", "");
-			World targetWorld = Bukkit.getWorld(worldName);
-			if (targetWorld != null) {
-				// No scaling here?
-				// Just send them to spawn... this is kind of to fix players finding the real spawn
-				// on my own server, but I'm not just sure how best to handle this anyway.
-				targetLocation = targetWorld.getSpawnLocation();
+		
+		if (parameters.containsKey("worlds"))
+		{
+			ConfigurationNode worldMap = parameters.getNode("worlds");
+			if (!worldMap.containsKey(worldName)) {
+				return SpellResult.NO_TARGET;
 			}
-		} else if (worldName.contains("_nether")) {
-			worldName = worldName.replace("_nether", "");
-			World targetWorld = Bukkit.getWorld(worldName);
+			
+			ConfigurationNode worldNode = worldMap.getNode(worldName);
+			World targetWorld = Bukkit.getWorld(worldNode.getString("target"));
+			float scale = worldNode.getFloat("scale", 1.0f);
 			if (targetWorld != null) {
-				targetLocation = new Location(targetWorld, playerLocation.getX() * 8, playerLocation.getY(), playerLocation.getZ() * 8);
+				targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
 			}
-		} else {
-			maxY = 118;
-			worldName = worldName + "_nether";
-			World targetWorld = Bukkit.getWorld(worldName);
-			if (targetWorld != null) {
-				targetLocation = new Location(targetWorld, playerLocation.getX() / 8, Math.min(125, playerLocation.getY()), playerLocation.getZ() / 8);
-			}
+		} 
+		else {
+			if (worldName.contains("_the_end")) {
+				worldName = worldName.replace("_the_end", "");
+				World targetWorld = Bukkit.getWorld(worldName);
+				if (targetWorld != null) {
+					// No scaling here?
+					// Just send them to spawn... this is kind of to fix players finding the real spawn
+					// on my own server, but I'm not just sure how best to handle this anyway.
+					targetLocation = targetWorld.getSpawnLocation();
+				}
+			} else if (worldName.contains("_nether")) {
+				worldName = worldName.replace("_nether", "");
+				World targetWorld = Bukkit.getWorld(worldName);
+				if (targetWorld != null) {
+					targetLocation = new Location(targetWorld, playerLocation.getX() * 8, playerLocation.getY(), playerLocation.getZ() * 8);
+				}
+			} else {
+				maxY = 118;
+				worldName = worldName + "_nether";
+				World targetWorld = Bukkit.getWorld(worldName);
+				if (targetWorld != null) {
+					targetLocation = new Location(targetWorld, playerLocation.getX() / 8, Math.min(125, playerLocation.getY()), playerLocation.getZ() / 8);
+				}
+			}	
 		}
 		
 		if (targetLocation == null) {
