@@ -410,9 +410,13 @@ public class ConstructBatch extends VolumeBatch {
 				constructedBlocks.add(block);
 				block.setType(Material.REDSTONE_TORCH_OFF);
 			} else if (material == Material.TNT) {
-				// Um, sure why not?
-				constructedBlocks.add(block);
+				// Not adding this to the undo batch because
+				// A) The main use of this is for the EMP spell, which auto-undoes itself
+				// B) We're about to spawn primed TNT, so there's no going back anyway...
+				//    (or the hopefully-future snapshot undo feature will take over anyway... maybe?)
+				// constructedBlocks.add(block);
 				block.setType(Material.AIR);
+				// Um, sure why not?
 				block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
 			}
 			

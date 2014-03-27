@@ -1549,7 +1549,7 @@ stash:
     costs:
         xp: 50
 pickpocket:
-    icon: ender_chest
+    icon: shears
     category: dark
     class: StashSpell
     effects:
@@ -1940,7 +1940,7 @@ blob:
     costs:
         xp: 25
 emp:
-    icon: quartz
+    icon: daylight_detector
     category: master
     class: ConstructSpell
     effects:
