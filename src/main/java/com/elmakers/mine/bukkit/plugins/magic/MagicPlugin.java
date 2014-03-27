@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockData;
@@ -426,6 +427,13 @@ public class MagicPlugin extends JavaPlugin
 					sender.sendMessage("For more specific information");
 					
 					Collection<Mage> mages = controller.getMages();
+					List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
+					int magicTasks = 0;
+					for (BukkitTask task : tasks)  {
+						if (task.getOwner() == this) magicTasks++;
+					}
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + magicTasks + "/" + tasks.size());
+					
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active players: " + mages.size());
 					sender.sendMessage(ChatColor.AQUA + "Pending construction batches: ");
 					for (Mage mage : mages) {
