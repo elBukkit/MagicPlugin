@@ -324,11 +324,15 @@ public class MagicPlugin extends JavaPlugin
 		
 		if (args[0].equals("wand")) {
 			isWand = true;
-			key = args[1];
+			key = args.length > 1 ? args[1] : "";
 		} else if (args[0].equals("upgrade")) {
 			isUpgrade = true;
-			key = args[1];
+			key =  args.length > 1 ? args[1] : "";
 		} else if (args[0].equals("material")) {
+			if (args.length < 2) {
+				sender.sendMessage(usageString);
+				return true;
+			}
 			isMaterial = true;
 			key = args[1];
 		} else {
