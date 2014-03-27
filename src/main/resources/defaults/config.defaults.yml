@@ -129,8 +129,13 @@ enable_block_populator: false
 enable_organizing: true
 
 # Set this to a non-zero value to remove common ground items more quickly.
-# They will get removed after living 6000 ticks, so setting this to 5980
-# will make them live only a second.
+#
+# This value is in milliseconds, for consistency with other Magic duration values.
+# The default live time is 6000 ticks, which is 300000ms.  (300 seconds, 5 minutes)
+# So to make items lived for only a second, use 299000.
+# To make items live for 1 minute, use 240000. (300000 - 60 * 1000)
+# Mathmatical!
+# 
 age_dropped_items: 0
 
 #

@@ -2,7 +2,6 @@
 
 ## For 2.9.9
 
- - Change item age to ms (anything else in ticks?)
  - Add end options for PhaseSpell (allow return, scale/spawn/location? - multiverse?)
  - Per-world maps (need to look into map renderer api for this!)
  - Add "wand duplicate" command

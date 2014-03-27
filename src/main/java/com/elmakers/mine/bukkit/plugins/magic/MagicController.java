@@ -1680,7 +1680,8 @@ public class MagicController implements Listener
 				Object handle = NMSUtils.getHandle(item);
 				Field ageField = itemClass.getDeclaredField("age");
 				ageField.setAccessible(true);
-				ageField.set(handle, ageDroppedItems);
+				int ticks = ageDroppedItems * 20 / 1000;
+				ageField.set(handle, ticks);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
