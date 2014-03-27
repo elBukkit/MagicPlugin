@@ -42,7 +42,7 @@ public class CameraSpell extends Spell
 				int width = parameters.getInt("width", 0);
 				int height = parameters.getInt("height", 0);
 				String mapName = parameters.getString("name", "Photo");
-				newMapItem = URLMap.getURLItem(url, x, y, width, height, mapName, priority);
+				newMapItem = URLMap.getURLItem(getWorld().getName(), url, mapName, x, y, width, height, priority);
 			}
 		}
 		
@@ -86,9 +86,9 @@ public class CameraSpell extends Spell
 				}
 			}
 			if (parameters.containsKey("reload")) {
-				URLMap.forceReloadPlayerPortrait(playerName);
+				URLMap.forceReloadPlayerPortrait(getWorld().getName(), playerName);
 			}
-			newMapItem = URLMap.getPlayerPortrait(playerName, priority, metaName);
+			newMapItem = URLMap.getPlayerPortrait(getWorld().getName(), playerName, priority, metaName);
 		}
 		if (newMapItem == null) {
 			return SpellResult.FAIL;
