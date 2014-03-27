@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
@@ -408,6 +409,11 @@ public class ConstructBatch extends VolumeBatch {
 			} else if (material == Material.REDSTONE_TORCH_ON) {
 				constructedBlocks.add(block);
 				block.setType(Material.REDSTONE_TORCH_OFF);
+			} else if (material == Material.TNT) {
+				// Um, sure why not?
+				constructedBlocks.add(block);
+				block.setType(Material.AIR);
+				block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
 			}
 			
 			if (powerBlock) {
