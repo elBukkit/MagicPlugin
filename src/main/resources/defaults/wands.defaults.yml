@@ -352,6 +352,7 @@ random:
       time: 0,0,0,1
       disarm: 0,0,0,1
       weather: 0,0,0,1
+      cage: 0,0,2,10
       tent: 0,0,5,15
       wolfhouse: 0,0,0,1
     material_count:
@@ -465,8 +466,6 @@ random:
       schematic|blacksmith: 0,0,5,10
       schematic|garden_house: 0,5,10,15
       schematic|compact_house: 5,10,15,20
-      schematic|tent: 10,20,25,30
-      schematic|cage: 5,10,15,20
       schematic|beacon: 0,5,10,15
       schematic|flare_beacon: 0,1,5,10
 
