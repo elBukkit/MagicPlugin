@@ -12,6 +12,7 @@
  - Retry limit on construction batches
 
  - Clicking on empty wand space deselects spell.. ?
+ - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
 
  - Customizable wand crafting recipes, check NMS data for "icon"
  - Batch block populator for chests

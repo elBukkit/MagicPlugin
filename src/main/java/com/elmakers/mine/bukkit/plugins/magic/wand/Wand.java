@@ -874,7 +874,7 @@ public class Wand implements CostReducer {
 			effectSoundVolume = Float.parseFloat(wandConfig.getString("effect_sound_volume", floatFormat.format(effectSoundVolume)));
 			effectSoundPitch = Float.parseFloat(wandConfig.getString("effect_sound_pitch", floatFormat.format(effectSoundPitch)));
 			
-			mode = parseWandMode(wandConfig.getString("mode"), mode);
+			setMode(parseWandMode(wandConfig.getString("mode"), mode));
 
 			owner = wandConfig.getString("owner", owner);
 			wandName = wandConfig.getString("name", wandName);			
@@ -1690,7 +1690,7 @@ public class Wand implements CostReducer {
 		}
 		
 		if (other.isUpgrade && other.mode != null) {
-			mode = other.mode;
+			setMode(other.mode);
 		}
 		
 		// Don't need mana if cost-free
@@ -2305,6 +2305,15 @@ public class Wand implements CostReducer {
 	
 	public WandMode getMode() {
 		return mode != null ? mode : controller.getDefaultWandMode();
+	}
+	
+	public void setMode(WandMode mode) {
+		WandMode oldMode = this.mode;
+		this.mode = mode;
+		Player player = mage == null ? null : mage.getPlayer();
+		if (player != null && mode != oldMode && mode == WandMode.INVENTORY) {
+			organizeInventory(mage);
+		}
 	}
 	
 	public boolean showCastMessages() {
