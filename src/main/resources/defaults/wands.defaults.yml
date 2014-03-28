@@ -160,314 +160,314 @@ default:
 #
 random:
     icon: stick
-    levels: 1,20,30,40
+    levels: 1,10,20,35,45
 #   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
     property_count:
-      0: 100,100, 50,   0
-      1: 5,  10,  100,  20
-      2: 0,   5,   60,  80
-      3: 0,   0,    0,  50
+      0: 100,100, 50,   0,  0
+      1: 5,  10,  100,  20, 0
+      2: 0,   5,   60,  80, 0
+      3: 0,   0,    0,  50, 100
     power:
-      0:   100,100,80, 30
-      0.1: 0,   0, 40, 50
-      0.2: 0 ,  0, 20, 30
-      0.3: 0 ,  0, 10, 20 
+      0:   100,100,80, 30, 0
+      0.1: 0,   0, 40, 50, 0
+      0.2: 0 ,  0, 20, 30, 0
+      0.3: 0 ,  0, 10, 20, 100
     cost_reduction:
-      0:   100,100,80, 30
-      0.1: 2,  30, 40, 50
-      0.2: 0 , 10, 20, 30
-      0.3: 0 ,  0, 10, 20 
+      0:   100,100,80, 30, 0
+      0.1: 2,  30, 40, 50, 0
+      0.2: 0 , 10, 20, 30, 0
+      0.3: 0 ,  0, 10, 20, 100
     protection:
-      0:   100,100,90, 80
-      0.1: 0,   5, 10, 20
-      0.2: 0 ,  1, 5,  15
-      0.3: 0 ,  0, 1,  10
+      0:   100,100,90, 80, 0
+      0.1: 0,   5, 10, 20, 0
+      0.2: 0 ,  1, 5,  15, 0
+      0.3: 0 ,  0, 1,  10, 100
     protection_physical:
-      0:   100,100,90, 80
-      0.1: 1,  10, 20, 30
-      0.2: 0 , 15, 15, 40
-      0.3: 0 ,  0, 10, 50
+      0:   100,100,90, 80, 0
+      0.1: 1,  10, 20, 30, 0
+      0.2: 0 , 15, 15, 40, 0
+      0.3: 0 ,  0, 10, 50, 100
     protection_projectiles:
-      0:   100,100,90, 80
-      0.1: 1,  10, 20, 30
-      0.2: 0 , 15, 15, 40
-      0.3: 0 ,  0, 10, 50
+      0:   100,100,90, 80, 0
+      0.1: 1,  10, 20, 30, 0
+      0.2: 0 , 15, 15, 40, 0
+      0.3: 0 ,  0, 10, 50, 100
     protection_falling:
-      0:   100,100,90, 80
-      0.1: 1,  10, 20, 30
-      0.2: 0 , 15, 15, 40
-      0.3: 0 ,  0, 10, 50
+      0:   100,100,90, 80, 0
+      0.1: 1,  10, 20, 30, 0
+      0.2: 0 , 15, 15, 40, 0
+      0.3: 0 ,  0, 10, 50, 100
     protection_fire:
-      0:   100,100,90, 80
-      0.1: 1,  10, 20, 30
-      0.2: 0 , 15, 15, 40
-      0.3: 0 ,  0, 10, 50
+      0:   100,100,90, 80, 0
+      0.1: 1,  10, 20, 30, 0
+      0.2: 0 , 15, 15, 40, 0
+      0.3: 0 ,  0, 10, 50, 100
     protection_explosions:
-      0:   100,100,90, 80
-      0.1: 1,  10, 20, 30
-      0.2: 0 , 15, 15, 40
-      0.3: 0 ,  0, 10, 50
+      0:   100,100,90, 80, 0
+      0.1: 1,  10, 20, 30, 0
+      0.2: 0 , 15, 15, 40, 0
+      0.3: 0 ,  0, 10, 50, 100
     xp_regeneration:
-      1: 100,30, 5,  0
-      10: 20, 30, 40, 10
-      20: 0 , 10, 10, 30
-      25: 0 ,  0, 1,  5
+      1: 100,30, 5,  0,   0
+      10: 20, 30, 40, 10, 0
+      20: 0 , 10, 10, 30, 0
+      25: 0 ,  0, 1,  5,  100
     xp_max:
-      5:  100,10,  0, 0
-      20: 20, 30, 50, 10
-      50: 5 , 20, 30, 50
-      100: 0 ,  0,  5, 20
+      5:   100,10,  0, 0,  0
+      20:  20, 30, 50, 10, 0
+      50:  5 , 20, 30, 50, 0
+      100: 0 , 0,  5,  20, 100
     health_regeneration:
-      0: 100,100,90, 80
-      1: 1,   5, 10, 15
-      2: 0 , 10, 15, 30
-      4: 0 , 15, 20, 40
+      0: 100,100,90, 80, 0
+      1: 1,   5, 10, 15, 0
+      2: 0 , 10, 15, 30, 0
+      4: 0 , 15, 20, 40, 100
     hunger_regeneration:
-      0: 100,100,80,  0
-      1: 80, 80, 80, 10
-      2: 0 , 20, 25, 30
-      4: 0 , 15, 20, 40
+      0: 100,100,80,  0, 0
+      1: 80, 80, 80, 10, 0
+      2: 0 , 20, 25, 30, 0
+      4: 0 , 15, 20, 40, 100
     haste:
-      0:    100,100,80, 60
-      0.1:  0 ,  0, 20, 30
-      0.2:  0 ,  0, 10, 20
-      0.3:  0 ,  0,  0, 10
+      0:    100,100,80, 60, 0
+      0.1:  0 ,  0, 20, 30, 0
+      0.2:  0 ,  0, 10, 20, 0
+      0.3:  0 ,  0,  0, 10, 100
     uses: 
-      0: 100,100,100,100
+      0: 100,100,100,100,100
     add_uses: 
-      5:  100,100,50,10
-      10: 50,80,90,20
-      20: 10,40,80,30
-      50: 0,10,50,60
+      5:  100,100,50,10,0
+      10: 50,80,90,20,0
+      20: 10,40,80,30,0
+      50: 0,10,50,60,100
     spell_count:
-      1: 100, 40,  10,  0
-      3: 5,   10,  60,  10
-      5: 0,   5,   20,  20
-      7: 0,   1,   10,  50
-      8: 0,   0,   1,   60
-      9: 0,   0,   0,   20
-      10: 0,  0,   0,   10
+      1: 100, 40,  10,  0,  0
+      3: 5,   10,  60,  10, 0
+      5: 0,   5,   20,  20, 0
+      7: 0,   1,   10,  50, 0
+      8: 0,   0,   1,   60, 0
+      9: 0,   0,   0,   20, 0
+      10: 0,  0,   0,   10, 100
     spells:
-      absorb: 0,0,0,1
-      alter: 0,10,20,30
-      superalter: 0,1,5,10
-      arrow: 100,80,70,30
-      arrowrain: 10,30,50,40
-      blast: 30,40,50,30
-      blink: 0,0,0,20
-      blob: 0,10,40,10
-      boom: 20,50,60,40
-      boon: 0,5,10,20
-      emp: 0,0,10,20
-      blessing: 0,1,5,10
-      box: 0,5,40,50
-      breach: 5,20,30,40
-      bridge: 0,5,10,15
-      camera: 0,10,30,40
-      cat: 5,20,50,10
-      cloak: 10,20,30,20
-      collapse: 0,5,30,50
-      convert: 0,5,40,50
-      curse: 0,1,10,25
-      cushion: 10,40,20,10
-      disintegrate: 0,10,40,50
-      dome: 0,5,40,50
-      earth: 5,20,50,20
-      familiar: 10,30,40,20
-      farm: 0,0,10,20
-      fill: 0,0,1,5
-      fire: 50,70,60,50
-      fireball: 60,70,80,50
-      flare: 110,80,60,20
-      fling: 0,5,70,80
-      force: 5,10,20,60
-      frag: 0,0,10,90
-      cluster: 0,0,5,50
-      bomb: 0,0,1,20
-      frost: 80,70,50,10
-      gills: 10,11,20,25
-      grenade: 30,50,70,20
-      heal: 1,5,10,30
-      tesseract: 80,50,40,20
-      torch: 80,60,50,10
-      leap: 70,80,60,40
-      push: 10,20,40,30
-      pull: 10,20,40,30
-      sniper: 0,0,30,40
-      peek: 10,30,40,30
-      mob: 0,0,5,10
-      monster: 5,20,30,30
-      perk: 5,15,20,30
-      wolf: 0,10,20,50
-      lightning: 40,50,30,5
-      storm: 0,0,10,90
-      inferno: 0,0,10,90
-      sandblast: 20,30,40,10
-      lava: 5,20,50,20
-      recurse: 0,5,20,40
-      paint: 1,20,45,15
-      phase: 0,0,0,1
-      portal: 0,5,25,35
-      recall: 0,5,15,25
-      toss: 2,25,35,50
-      volley: 0,0,45,70
-      shrink: 5,20,30,90
-      invincible: 0,0,10,20
-      levitate: 0,0,10,30
-      iterate: 0,0,40,20
-      laser: 0,0,10,5
-      lava: 0,10,30,20
-      stream: 0,10,30,20
-      shell: 0,5,40,50
-      supershell: 0,0,1,10
-      superblast: 0,0,1,5
-      superbox: 0,0,1,10
-      superpyramid: 0,0,1,10
-      superblob: 0,0,1,10
-      superdisc: 0,0,1,10
-      superring: 0,0,1,10
-      superconvert: 0,0,1,10
-      superiterate: 0,0,1,10
-      flamethrower: 0,5,10,20
-      superdome: 0,0,1,10
-      tunnel: 5,10,20,30
-      undo: 0,0,1,10
-      commit: 0,0,0,1
-      rewind: 0,0,0,5
-      pillar: 0,5,10,15
-      place: 0,1,5,10
-      stash: 0,1,5,10
-      pickpocket: 0,0,1,5
-      stalactite: 0,5,10,15
-      kaboom: 0,0,1,5
-      icbm: 0,0,1,5
-      neutron: 0,0,10,15
-      wither: 5,10,20,30
-      mine: 1,20,30,40
-      chop: 1,20,30,40
-      tree: 5,20,35,45
-      nuke: 0,0,0,1
-      day: 0,5,10,30
-      night: 0,0,1,5
-      time: 0,0,0,1
-      disarm: 0,0,0,1
-      weather: 0,0,0,1
-      cage: 0,0,2,10
-      tent: 0,0,5,15
-      wolfhouse: 0,0,0,1
+      absorb: 0,0,0,1,100
+      alter: 0,10,20,30,100
+      superalter: 0,1,5,10,100
+      arrow: 100,80,70,30,100
+      arrowrain: 10,30,50,40,100
+      blast: 30,40,50,30,100
+      blink: 0,0,0,20,100
+      blob: 0,10,40,10,100
+      boom: 20,50,60,40,100
+      boon: 0,5,10,20,100
+      emp: 0,0,10,20,100
+      blessing: 0,1,5,10,100
+      box: 0,5,40,50,100
+      breach: 5,20,30,40,100
+      bridge: 0,5,10,15,100
+      camera: 0,10,30,40,100
+      cat: 5,20,50,10,100
+      cloak: 10,20,30,20,100
+      collapse: 0,5,30,50,100
+      convert: 0,5,40,50,100
+      curse: 0,1,10,25,100
+      cushion: 10,40,20,10,100
+      disintegrate: 0,10,40,50,100
+      dome: 0,5,40,50,100
+      earth: 5,20,50,20,100
+      familiar: 10,30,40,20,100
+      farm: 0,0,10,20,100
+      fill: 0,0,1,5,100
+      fire: 50,70,60,50,100
+      fireball: 60,70,80,50,100
+      flare: 110,80,60,20,100
+      fling: 0,5,70,80,100
+      force: 5,10,20,60,100
+      frag: 0,0,10,90,100
+      cluster: 0,0,5,50,100
+      bomb: 0,0,1,20,100
+      frost: 80,70,50,10,100
+      gills: 10,11,20,25,100
+      grenade: 30,50,70,20,100
+      heal: 1,5,10,30,100
+      tesseract: 80,50,40,20,100
+      torch: 80,60,50,10,100
+      leap: 70,80,60,40,100
+      push: 10,20,40,30,100
+      pull: 10,20,40,30,100
+      sniper: 0,0,30,40,100
+      peek: 10,30,40,30,100
+      mob: 0,0,5,10,100
+      monster: 5,20,30,30,100
+      perk: 5,15,20,30,100
+      wolf: 0,10,20,50,100
+      lightning: 40,50,30,5,100
+      storm: 0,0,10,90,100
+      inferno: 0,0,10,90,100
+      sandblast: 20,30,40,10,100
+      lava: 5,20,50,20,100
+      recurse: 0,5,20,40,100
+      paint: 1,20,45,15,100
+      phase: 0,0,0,1,100
+      portal: 0,5,25,35,100
+      recall: 0,5,15,25,100
+      toss: 2,25,35,50,100
+      volley: 0,0,45,70,100
+      shrink: 5,20,30,90,100
+      invincible: 0,0,10,20,100
+      levitate: 0,0,10,30,100
+      iterate: 0,0,40,20,100
+      laser: 0,0,10,5,100
+      lava: 0,10,30,20,100
+      stream: 0,10,30,20,100
+      shell: 0,5,40,50,100
+      supershell: 0,0,1,10,100
+      superblast: 0,0,1,5,100
+      superbox: 0,0,1,10,100
+      superpyramid: 0,0,1,10,100
+      superblob: 0,0,1,10,100
+      superdisc: 0,0,1,10,100
+      superring: 0,0,1,10,100
+      superconvert: 0,0,1,10,100
+      superiterate: 0,0,1,10,100
+      flamethrower: 0,5,10,20,100
+      superdome: 0,0,1,10,100
+      tunnel: 5,10,20,30,100
+      undo: 0,0,1,10,100
+      commit: 0,0,0,1,100
+      rewind: 0,0,0,5,100
+      pillar: 0,5,10,15,100
+      place: 0,1,5,10,100
+      stash: 0,1,5,10,100
+      pickpocket: 0,0,1,5,100
+      stalactite: 0,5,10,15,100
+      kaboom: 0,0,1,5,100
+      icbm: 0,0,1,5,100
+      neutron: 0,0,10,15,100
+      wither: 5,10,20,30,100
+      mine: 1,20,30,40,100
+      chop: 1,20,30,40,100
+      tree: 5,20,35,45,100
+      nuke: 0,0,0,1,100
+      day: 0,5,10,30,100
+      night: 0,0,1,5,100
+      time: 0,0,0,1,100
+      disarm: 0,0,0,1,100
+      weather: 0,0,0,1,100
+      cage: 0,0,2,10,100
+      tent: 0,0,5,15,100
+      wolfhouse: 0,0,0,1,100
     material_count:
-      0: 50, 20, 20,    0
-      1: 1,  10,  30,   0
-      2: 0,  5,   40,   30
-      4: 0,  1,   10,   50
-      6: 0,  0,    5,   10
+      0: 50, 20, 20,    0,  0
+      1: 1,  10,  30,   0,  0
+      2: 0,  5,   40,   30, 0
+      4: 0,  1,   10,   50, 0
+      6: 0,  0,    5,   10, 100
     materials:
-      erase: 0,0,0,1
-      copy: 0,0,0,1
-      clone: 0,0,0,1
-      replicate: 0,0,0,1
-      map: 0,0,0,1
-      lava: 0,0,15,30
-      water: 0,0,30,90
-      stone: 50,70,80,100
-      dirt: 50,50,70,80
-      sand: 20,30,40,70
-      gravel: 20,30,40,60
-      glass: 10,20,30,50
-      glowstone: 5,10,20,40
-      stained_clay: 1,5,15,45
-      stained_glass: 0,5,15,45
-      stained_glass_pane: 0,5,15,45
-      soul_sand: 5,10,20,40
-      grass: 5,10,20,40
-      wood: 5,10,20,40 
-      log: 5,10,20,40
-      vine: 0,5,10,30
-      mycel: 0,5,10,30
-      quartz_block: 0,0,25,35
-      lapis_block: 0,0,25,35
-      leaves: 0,5,10,30
-      ice: 10,20,25,30
-      packed_ice: 10,20,25,30
-      diamond_block: 0,0,5,20
-      gold_block: 0,0,5,20
-      emerald_block: 0,0,5,20
-      obsidian: 0,0,15,30
-      redstone_block: 0,0,5,10
-      wool|0: 80,60,50,20
-      wool|1: 80,60,50,20
-      wool|2: 80,60,50,20
-      wool|3: 80,60,50,20
-      wool|4: 80,60,50,20
-      wool|5: 80,60,50,20
-      wool|6: 80,60,50,20
-      wool|7: 80,60,50,20
-      wool|8: 80,60,50,20
-      wool|9: 80,60,50,20
-      wool|10: 80,60,50,20
-      wool|11: 80,60,50,20
-      wool|12: 80,60,50,20
-      wool|13: 80,60,50,20
-      wool|14: 80,60,50,20
-      wool|15: 80,60,50,20
-      stained_clay|0: 80,60,50,20
-      stained_clay|1: 80,60,50,20
-      stained_clay|2: 80,60,50,20
-      stained_clay|3: 80,60,50,20
-      stained_clay|4: 80,60,50,20
-      stained_clay|5: 80,60,50,20
-      stained_clay|6: 80,60,50,20
-      stained_clay|7: 80,60,50,20
-      stained_clay|8: 80,60,50,20
-      stained_clay|9: 80,60,50,20
-      stained_clay|10: 80,60,50,20
-      stained_clay|11: 80,60,50,20
-      stained_clay|12: 80,60,50,20
-      stained_clay|13: 80,60,50,20
-      stained_clay|14: 80,60,50,20
-      stained_clay|15: 80,60,50,20
-      stained_glass|0: 60,40,30,20
-      stained_glass|1: 60,40,30,20
-      stained_glass|2: 60,40,30,20
-      stained_glass|3: 60,40,30,20
-      stained_glass|4: 60,40,30,20
-      stained_glass|5: 60,40,30,20
-      stained_glass|6: 60,40,30,20
-      stained_glass|7: 60,40,30,20
-      stained_glass|8: 60,40,30,20
-      stained_glass|9: 60,40,30,20
-      stained_glass|10: 60,40,30,20
-      stained_glass|11: 60,40,30,20
-      stained_glass|12: 60,40,30,20
-      stained_glass|13: 60,40,30,20
-      stained_glass|14: 60,40,30,20
-      stained_glass_pane|15: 60,40,30,20
-      stained_glass_pane|0: 60,40,30,20
-      stained_glass_pane|1: 60,40,30,20
-      stained_glass_pane|2: 60,40,30,20
-      stained_glass_pane|3: 60,40,30,20
-      stained_glass_pane|4: 60,40,30,20
-      stained_glass_pane|5: 60,40,30,20
-      stained_glass_pane|6: 60,40,30,20
-      stained_glass_pane|7: 60,40,30,20
-      stained_glass_pane|8: 60,40,30,20
-      stained_glass_pane|9: 60,40,30,20
-      stained_glass_pane|10: 60,40,30,20
-      stained_glass_pane|11: 60,40,30,20
-      stained_glass_pane|12: 60,40,30,20
-      stained_glass_pane|13: 60,40,30,20
-      stained_glass_pane|14: 60,40,30,20
-      stained_glass_pane|15: 60,40,30,20
-      schematic|rainbow: 0,2,5,10
-      schematic|creeper_rug: 0,0,5,10
-      schematic|stash_chest: 0,0,0,1
-      schematic|elder_tree: 0,0,0,1
-      schematic|church: 0,0,5,10
-      schematic|blacksmith: 0,0,5,10
-      schematic|garden_house: 0,5,10,15
-      schematic|compact_house: 5,10,15,20
-      schematic|beacon: 0,5,10,15
-      schematic|flare_beacon: 0,1,5,10
+      erase: 0,0,0,1,100
+      copy: 0,0,0,1,100
+      clone: 0,0,0,1,100
+      replicate: 0,0,0,1,100
+      map: 0,0,0,1,100
+      lava: 0,0,15,30,100
+      water: 0,0,30,90,100
+      stone: 50,70,80,100,100
+      dirt: 50,50,70,80,100
+      sand: 20,30,40,70,100
+      gravel: 20,30,40,60,100
+      glass: 10,20,30,50,100
+      glowstone: 5,10,20,40,100
+      stained_clay: 1,5,15,45,100
+      stained_glass: 0,5,15,45,100
+      stained_glass_pane: 0,5,15,45,100
+      soul_sand: 5,10,20,40,100
+      grass: 5,10,20,40,100
+      wood: 5,10,20,40 ,100
+      log: 5,10,20,40,100
+      vine: 0,5,10,30,100
+      mycel: 0,5,10,30,100
+      quartz_block: 0,0,25,35,100
+      lapis_block: 0,0,25,35,100
+      leaves: 0,5,10,30,100
+      ice: 10,20,25,30,100
+      packed_ice: 10,20,25,30,100
+      diamond_block: 0,0,5,20,100
+      gold_block: 0,0,5,20,100
+      emerald_block: 0,0,5,20,100
+      obsidian: 0,0,15,30,100
+      redstone_block: 0,0,5,10,100
+      wool|0: 80,60,50,20,100
+      wool|1: 80,60,50,20,100
+      wool|2: 80,60,50,20,100
+      wool|3: 80,60,50,20,100
+      wool|4: 80,60,50,20,100
+      wool|5: 80,60,50,20,100
+      wool|6: 80,60,50,20,100
+      wool|7: 80,60,50,20,100
+      wool|8: 80,60,50,20,100
+      wool|9: 80,60,50,20,100
+      wool|10: 80,60,50,20,100
+      wool|11: 80,60,50,20,100
+      wool|12: 80,60,50,20,100
+      wool|13: 80,60,50,20,100
+      wool|14: 80,60,50,20,100
+      wool|15: 80,60,50,20,100
+      stained_clay|0: 80,60,50,20,100
+      stained_clay|1: 80,60,50,20,100
+      stained_clay|2: 80,60,50,20,100
+      stained_clay|3: 80,60,50,20,100
+      stained_clay|4: 80,60,50,20,100
+      stained_clay|5: 80,60,50,20,100
+      stained_clay|6: 80,60,50,20,100
+      stained_clay|7: 80,60,50,20,100
+      stained_clay|8: 80,60,50,20,100
+      stained_clay|9: 80,60,50,20,100
+      stained_clay|10: 80,60,50,20,100
+      stained_clay|11: 80,60,50,20,100
+      stained_clay|12: 80,60,50,20,100
+      stained_clay|13: 80,60,50,20,100
+      stained_clay|14: 80,60,50,20,100
+      stained_clay|15: 80,60,50,20,100
+      stained_glass|0: 60,40,30,20,100
+      stained_glass|1: 60,40,30,20,100
+      stained_glass|2: 60,40,30,20,100
+      stained_glass|3: 60,40,30,20,100
+      stained_glass|4: 60,40,30,20,100
+      stained_glass|5: 60,40,30,20,100
+      stained_glass|6: 60,40,30,20,100
+      stained_glass|7: 60,40,30,20,100
+      stained_glass|8: 60,40,30,20,100
+      stained_glass|9: 60,40,30,20,100
+      stained_glass|10: 60,40,30,20,100
+      stained_glass|11: 60,40,30,20,100
+      stained_glass|12: 60,40,30,20,100
+      stained_glass|13: 60,40,30,20,100
+      stained_glass|14: 60,40,30,20,100
+      stained_glass_pane|15: 60,40,30,20,100
+      stained_glass_pane|0: 60,40,30,20,100
+      stained_glass_pane|1: 60,40,30,20,100
+      stained_glass_pane|2: 60,40,30,20,100
+      stained_glass_pane|3: 60,40,30,20,100
+      stained_glass_pane|4: 60,40,30,20,100
+      stained_glass_pane|5: 60,40,30,20,100
+      stained_glass_pane|6: 60,40,30,20,100
+      stained_glass_pane|7: 60,40,30,20,100
+      stained_glass_pane|8: 60,40,30,20,100
+      stained_glass_pane|9: 60,40,30,20,100
+      stained_glass_pane|10: 60,40,30,20,100
+      stained_glass_pane|11: 60,40,30,20,100
+      stained_glass_pane|12: 60,40,30,20,100
+      stained_glass_pane|13: 60,40,30,20,100
+      stained_glass_pane|14: 60,40,30,20,100
+      stained_glass_pane|15: 60,40,30,20,100
+      schematic|rainbow: 0,2,5,10,100
+      schematic|creeper_rug: 0,0,5,10,100
+      schematic|stash_chest: 0,0,0,1,100
+      schematic|elder_tree: 0,0,0,1,100
+      schematic|church: 0,0,5,10,100
+      schematic|blacksmith: 0,0,5,10,100
+      schematic|garden_house: 0,5,10,15,100
+      schematic|compact_house: 5,10,15,20,100
+      schematic|beacon: 0,5,10,15,100
+      schematic|flare_beacon: 0,1,5,10,100
 
 #
 #
