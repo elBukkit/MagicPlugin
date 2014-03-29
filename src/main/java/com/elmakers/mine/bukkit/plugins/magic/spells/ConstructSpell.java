@@ -133,10 +133,14 @@ public class ConstructSpell extends BrushSpell
 		}
 		if (parameters.containsKey("orient_dimension_max")) {
 			batch.setOrientDimensionMax(parameters.getInteger("orient_dimension_max", null));
+		} else if (parameters.containsKey("odmax")) {
+			batch.setOrientDimensionMax(parameters.getInteger("odmax", null));
 		}
 
 		if (parameters.containsKey("orient_dimension_min")) {
 			batch.setOrientDimensionMin(parameters.getInteger("orient_dimension_min", null));
+		} else if (parameters.containsKey("odmin")) {
+			batch.setOrientDimensionMax(parameters.getInteger("odmin", null));
 		}
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
