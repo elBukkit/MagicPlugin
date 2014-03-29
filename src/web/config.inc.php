@@ -11,7 +11,7 @@ $infoBookRootConfig = dirname(__FILE__) . '/../main/resources/examples/InfoBook/
 $title = "elMakers Magic Development Site";
 
 // Instructional YouTube video id
-$youTubeVideo = 'J4jgbGQEAwY';
+$youTubeVideo = '8rjY8pjjPM8';
 
 // How players get wands, other than view the configured ways in magic.yml (crafting, random chests)
 $howToGetWands = array('You can purchase wands in an Essentials Shop', 'You can find wands on the ground using the dynmap');
