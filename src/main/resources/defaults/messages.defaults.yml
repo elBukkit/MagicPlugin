@@ -73,8 +73,8 @@ wand:
     mana_regeneration: "Mana Regeneration: $amount/s"
     cost_reduction: Cost Reduction $roman
     cooldown_reduction: Cooldown Reduction $roman
-    power: Power
-    haste: Haste
+    power: Power $roman
+    haste: Haste $roman
     protection: Protection $roman
     protection_physical: Physical Protection $roman
     protection_projectile: Projectile Protection $roman
