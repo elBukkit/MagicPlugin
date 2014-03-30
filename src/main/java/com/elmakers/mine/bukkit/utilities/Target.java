@@ -54,7 +54,11 @@ public class Target implements Comparable<Target>
 		this.maxDistance = 0;
 		this.source = sourceLocation;
 		this.entity = entity;
-		this.location = block.getLocation();
+		if (block != null) {
+			this.location = block.getLocation();
+		} else if (entity != null) {
+			this.location = entity.getLocation();
+		}
 	}
 
 	public int getScore()
