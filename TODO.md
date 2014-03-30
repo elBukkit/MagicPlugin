@@ -10,10 +10,7 @@
 
  - Phase and Blink check for flying?
  - Recall needs effects
- - Scale simulate with wand power, maybe?
- 
  - Add lantern schematic
- - Configure option for targeting NPCs, use in camera spell
  
  - Mana / enchanting balance- how did I get Nuke??
 
@@ -26,10 +23,10 @@
  
  - Enchant count limit for wands
 
- - Clicking on empty wand space deselects spell.. ?
+ - Clicking on empty wand space deselects spell, maybe? Remove auto-activate spell?
  - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
 
- - Customizable wand crafting recipes, check NMS data for "icon"
+ - Customizable wand crafting recipes
  - Batch block populator for chests
  - Make "regengerate" undoable and safe.
  - Commandbook kit integration
