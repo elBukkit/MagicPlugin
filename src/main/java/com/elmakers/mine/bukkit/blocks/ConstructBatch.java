@@ -62,6 +62,9 @@ public class ConstructBatch extends VolumeBatch {
 	private int y = 0;
 	private int z = 0;
 	private int r = 0;
+
+	private boolean limitYAxis = false;
+	// TODO.. min X, Z, etc
 	
 	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, boolean fill, boolean spawnFallingBlocks, Location orientToLocation) {
 		super(spell.getMage().getController(), center.getWorld().getName());
@@ -204,6 +207,7 @@ public class ConstructBatch extends VolumeBatch {
 		} else {
 			int yBounds = radius;
 			if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockY() > 0) {
+				limitYAxis = true;
 				yBounds = Math.max(minOrientDimension == null ? radius : minOrientDimension, maxOrientDimension == null ? radius : maxOrientDimension);
 			}
 			yBounds = Math.min(yBounds, 255);
@@ -353,6 +357,10 @@ public class ConstructBatch extends VolumeBatch {
 	@SuppressWarnings("deprecation")
 	public boolean constructBlock(int dx, int dy, int dz)
 	{
+		// Special-case hackiness..
+		if (limitYAxis && minOrientDimension != null && dy < -minOrientDimension) return true;
+		if (limitYAxis && maxOrientDimension != null && dy > maxOrientDimension) return true;
+		
 		// Initial range checks, we skip everything if this is not sane.
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;

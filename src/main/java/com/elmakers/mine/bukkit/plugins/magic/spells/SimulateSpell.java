@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
@@ -36,6 +38,24 @@ public class SimulateSpell extends BlockSpell {
 		
 		Material birthMaterial = target.getType();
 		birthMaterial = parameters.getMaterial("material", birthMaterial);
+		birthMaterial = parameters.getMaterial("m", birthMaterial);
+		
+		// Should this maybe use a brush?
+		Double dmxValue = parameters.getDouble("dmx", null);
+		Double dmyValue = parameters.getDouble("dmy", null);
+		Double dmzValue = parameters.getDouble("dmz", null);
+		if (dmxValue != null || dmyValue != null || dmzValue != null) {
+			Vector offset = new Vector( 
+					dmxValue == null ? 0 : dmxValue, 
+					dmyValue == null ? 0 : dmyValue, 
+					dmzValue == null ? 0 : dmzValue);
+			Location targetLocation = target.getLocation().add(offset);
+			if (!targetLocation.getBlock().getChunk().isLoaded()) return SpellResult.FAIL;
+			birthMaterial = targetLocation.getBlock().getType();
+			
+			Bukkit.getLogger().info("Sampled " + birthMaterial + " from " + targetLocation.toVector());
+		} 
+		
 		Material deathMaterial = parameters.getMaterial("death_material", Material.AIR);
 
 		final SimulateBatch batch = new SimulateBatch(this, target.getLocation(), radius, birthMaterial, deathMaterial);

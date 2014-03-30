@@ -459,6 +459,11 @@ public class MaterialBrush extends MaterialBrushData {
 		}
 		if (mode == BrushMode.COPY) {
 			Block block = target.getBlock();
+			if (targetOffset != null) {
+				Location targetLocation = block.getLocation();
+				targetLocation = targetLocation.add(targetOffset);
+				block = targetLocation.getBlock();
+			}
 			updateFrom(block, controller.getRestrictedMaterials());
 		}
 	}

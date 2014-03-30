@@ -145,7 +145,7 @@ public class ConstructSpell extends BrushSpell
 		if (parameters.containsKey("orient_dimension_min")) {
 			batch.setOrientDimensionMin(parameters.getInteger("orient_dimension_min", null));
 		} else if (parameters.containsKey("odmin")) {
-			batch.setOrientDimensionMax(parameters.getInteger("odmin", null));
+			batch.setOrientDimensionMin(parameters.getInteger("odmin", null));
 		}
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
