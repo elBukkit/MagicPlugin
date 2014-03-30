@@ -35,7 +35,7 @@ public class WandOrganizer {
 	public WandOrganizer(Wand wand, Mage mage) {
 		this.wand = wand;
 		this.mage = mage;
-		addToHotbar = wand.getMode() == WandMode.INVENTORY;
+		addToHotbar = true;
 	}
 
 	protected void nextInventory() {

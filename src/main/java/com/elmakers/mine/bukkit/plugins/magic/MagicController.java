@@ -2023,6 +2023,10 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (!(event.getWhoClicked() instanceof Player)) return;
+
+		Player player = (Player)event.getWhoClicked();
+		Mage mage = getMage(player);
+		Wand activeWand = mage.getActiveWand();
 		
 		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 	
@@ -2034,6 +2038,12 @@ public class MagicController implements Listener
 				event.setCancelled(true);
 				return;
 			}
+		}
+		
+		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
+		{
+			event.setCancelled(true);
+			return;
 		}
 		
 		if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
@@ -2086,12 +2096,8 @@ public class MagicController implements Listener
 			
 			// Rename wand when taking from result slot
 			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
-				if (!(event.getWhoClicked() instanceof Player)) return;
-				Player player = (Player)event.getWhoClicked();
-				
 				Wand wand = new Wand(this, current);
 				if (!wand.canUse(player)) {
-					Mage mage = getMage(player);
 					mage.sendMessage(Messages.get("wand.bound").replace("$name", wand.getOwner()));
 					return;
 				}
@@ -2116,8 +2122,6 @@ public class MagicController implements Listener
 				{
 					Wand firstWand = new Wand(this, firstItem);
 					Wand secondWand = new Wand(this, secondItem);
-					Player player = (Player)event.getWhoClicked();
-					Mage mage = getMage(player);
 					if (!firstWand.isModifiable() || !secondWand.isModifiable()) {
 						mage.sendMessage("One of your wands can not be combined");
 						return;
@@ -2144,12 +2148,10 @@ public class MagicController implements Listener
 					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
 				} else if (organizingEnabled && Wand.isWand(firstItem)) {
 					Wand firstWand = new Wand(this, firstItem);
-					Player player = (Player)event.getWhoClicked();
 					// TODO: Can't get the anvil's text from here.
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
-					Mage mage = getMage(player);
 					firstWand.organizeInventory(mage);
 					firstWand.tryToOwn(player);
 					player.getInventory().addItem(firstWand.getItem());
@@ -2161,16 +2163,13 @@ public class MagicController implements Listener
 		}
 		
 		// Check for wand cycling with active inventory
-		Player player = (Player)event.getWhoClicked();
-		Mage mage = getMage(player);
-		Wand wand = mage.getActiveWand();
-		if (wand != null) {
-			WandMode wandMode = wand.getMode();
+		if (activeWand != null) {
+			WandMode wandMode = activeWand.getMode();
 			if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
 			    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
-				if (wand != null && wand.isInventoryOpen()) {
+				if (activeWand != null && activeWand.isInventoryOpen()) {
 					if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
-						wand.cycleInventory();
+						activeWand.cycleInventory();
 						event.setCancelled(true);
 						return;
 					}
@@ -2183,8 +2182,8 @@ public class MagicController implements Listener
 					// Chest mode falls back to selection from here.
 					if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST) {
 						ItemStack clickedItem = event.getCurrentItem();
-						if (clickedItem != null && (wandMode == WandMode.INVENTORY || event.getRawSlot() < Wand.INVENTORY_SIZE)) {
-							onPlayerActivateIcon(mage, wand, clickedItem);
+						if (clickedItem != null) {
+							onPlayerActivateIcon(mage, activeWand, clickedItem);
 						}
 						player.closeInventory();
 						event.setCancelled(true);
