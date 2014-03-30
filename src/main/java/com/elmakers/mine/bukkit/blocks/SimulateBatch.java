@@ -65,10 +65,10 @@ public class SimulateBatch extends VolumeBatch {
 		includeCommands = false;
 		
 		y = center.getBlockY();
-		startX = center.getBlockX() - radius / 2;
-		startZ = center.getBlockZ() - radius / 2;
-		endX = center.getBlockX() + radius / 2;
-		endZ = center.getBlockZ() + radius / 2;
+		startX = center.getBlockX() - radius;
+		startZ = center.getBlockZ() - radius;
+		endX = center.getBlockX() + radius;
+		endZ = center.getBlockZ() + radius;
 		
 		x = startX;
 		z = startZ;
