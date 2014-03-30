@@ -101,6 +101,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Class<? extends Entity>             targetEntityType        = null;
 	private Location                            location;
 	private Location                            targetLocation;
+	protected Location                          targetLocation2;
 	private Entity								targetEntity = null;
 	private Location							defaultTargetLocation   = null;
 	private double                              xRotation, yRotation;
@@ -724,6 +725,33 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			direction.setX(direction.getX() + (ddxValue == null ? 0 : ddxValue));
 			direction.setY(direction.getY() + (ddyValue == null ? 0 : ddyValue));
 			direction.setZ(direction.getZ() + (ddzValue == null ? 0 : ddzValue));
+		}
+		
+		// For two-click construction spells
+		targetLocation2 = null;
+		Double tx2Value = parameters.getDouble("tx2", null);
+		Double ty2Value = parameters.getDouble("ty2", null);
+		Double tz2Value = parameters.getDouble("tz2", null);
+		if (location != null && tx2Value != null && ty2Value != null && tz2Value != null) {
+			targetLocation2 = new Location(location.getWorld(), 
+					tx2Value, 
+					ty2Value, 
+					tz2Value,
+					location.getYaw(), location.getPitch());
+		}
+
+		Double dty2Value = parameters.getDouble("dty2", null);
+		Double dtx2Value = parameters.getDouble("dtx2", null);
+		Double dtz2Value = parameters.getDouble("dtz2", null);
+		if (dtx2Value != null || dtz2Value != null || dty2Value != null) {
+			if (targetLocation2 == null) {
+				targetLocation2 = targetLocation.clone();
+			}
+			targetLocation2 = new Location(targetLocation2.getWorld(), 
+					targetLocation2.getX() + (dtxValue == null ? 0 : dtxValue), 
+					targetLocation2.getY() + (dtyValue == null ? 0 : dtyValue), 
+					targetLocation2.getZ() + (dtzValue == null ? 0 : dtzValue),
+					targetLocation2.getYaw(), targetLocation2.getPitch());
 		}
 
 		if (direction != null && location != null) {

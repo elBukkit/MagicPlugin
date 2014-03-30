@@ -38,7 +38,7 @@ public class FillBatch extends VolumeBatch {
 		this.spell = spell;
 		this.brush = brush;
 		this.mage = spell.getMage();
-		this.world = this.mage.getPlayer().getWorld();
+		this.world = p1.getWorld();
 		
 		int deltax = p2.getBlockX() - p1.getBlockX();
 		int deltay = p2.getBlockY() - p1.getBlockY();

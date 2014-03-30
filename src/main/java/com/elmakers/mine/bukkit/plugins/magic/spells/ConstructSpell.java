@@ -47,6 +47,11 @@ public class ConstructSpell extends BrushSpell
 		Location orientTo = null;
 		
 		if (getTargetType() == TargetType.SELECT) {
+
+			if (targetLocation2 != null) {
+				this.targetBlock = targetLocation2.getBlock();
+			}
+			
 			if (targetBlock == null) {
 				targetBlock = target;
 				activate();

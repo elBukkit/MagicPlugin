@@ -39,6 +39,10 @@ public class RegenerateSpell extends BlockSpell
 			
 			return SpellResult.CAST;
 		}
+		
+		if (targetLocation2 != null) {
+			this.targetBlock = targetLocation2.getBlock();
+		}
 
 		if (this.targetBlock != null)
 		{

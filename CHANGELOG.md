@@ -16,6 +16,7 @@
  - Added "Magic.wand.override_bind", a perm node for ops so they can handle bound wands.
  - Make Phase configurale (e.g. if you have two worlds, you can link them with a specific scale)
  - Add "Magic.protected" pnode which makes you protected without a wand.
+ - Add tx2, ty3, tz3 and dtx2, dty2, dtz2 parameters to Fill, Construct and Regenerate.
 
 ## 2.9.8
 
