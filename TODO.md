@@ -5,9 +5,8 @@
  - peek wipes chests?? ... undo doesn't do chests??
  - Traders losing prices!
   
- - Fix Pickpocket
+ - Test/Fix Pickpocket
  - wandp configure glitch- maybe need to replace item in hand on reconfigure?
- - Look at Shrink giving out multiple heads per entity...
 
  - Phase and Blink check for flying?
  - Recall needs effects
@@ -17,7 +16,7 @@
  - Configure option for targeting NPCs, use in camera spell
  
  - Mana / enchanting balance- how did I get Nuke??
- 
+
  - Add "wand duplicate" command
  - Config-driven WandLevel limits.
  - Collapse blocklist chains on save (?)

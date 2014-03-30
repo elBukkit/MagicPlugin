@@ -1582,7 +1582,7 @@ pickpocket:
         target_entity: Player
         target: other
         type: inventory
-        range: 3
+        range: 4
     costs:
         xp: 75
 kamikazee:
