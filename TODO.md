@@ -2,7 +2,7 @@
 
 ## For 2.9.9
 
- - peek wipes chests?? ... undo doesn't do chests??
+ - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Traders losing prices!
   
  - Test/Fix Pickpocket

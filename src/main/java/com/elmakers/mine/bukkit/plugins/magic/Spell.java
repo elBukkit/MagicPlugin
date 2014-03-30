@@ -119,6 +119,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Target								target					= null;
 	private String								targetName			    = null;
 	private TargetType							targetType				= TargetType.OTHER;
+	private boolean								targetNPCs				= false;
 
 	private float								fizzleChance			= 0.0f;
 	private float								backfireChance			= 0.0f;
@@ -640,6 +641,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		} else {
 			targetType = TargetType.OTHER;
 		}
+		
+		targetNPCs = parameters.getBoolean("target_npc", false);
 		
 		if (parameters.containsKey("target_type")) {
 			String entityTypeName = parameters.getString("target_type");
@@ -1347,8 +1350,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		for (Entity entity : entities)
 		{
 			if (entity == getPlayer()) continue;
-			// TODO: Targetable NPC's?
-			if (entity.hasMetadata("NPC")) continue;
+			if (!targetNPCs && entity.hasMetadata("NPC")) continue;
 			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 
 			Target newScore = new Target(getLocation(), entity, getMaxRange());

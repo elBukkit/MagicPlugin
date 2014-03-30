@@ -2326,6 +2326,7 @@ camera:
            location: origin
     parameters:
         target_type: LivingEntity
+        target_npc: true
         cooldown: 5000
         allow_max_range: false
         range: 32

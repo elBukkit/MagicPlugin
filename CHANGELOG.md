@@ -1,8 +1,8 @@
 # CHANGELOG
 
-## 2.9.9
+## 2.9.8.1
 
- - Add "Pickpocket" spell, like invsee at close range.
+ - Add "Pickpocket" spell, like invsee at close range. (er, maybe not working yet, not sure!)
  - Add "Music" spell, plays a record for the target player.
  - Add "keep" and "bound" wand options, for wands that you keep on death and/or are bound to a specific player.
  - Fix dtlTraders integration. Wands, spells and material brushes can be sold by traders. (Requires v 3.1.0, currently a dev build! Thanks again @dandielo !)
@@ -10,13 +10,14 @@
  - Add "allow_cross_world" parameter to Recall spell, the default is to disallow Recall'ing to another world now.
  - Allow selling spells and material brushes on Essentials signs.
  - Citizens integration (spells will ignore NPC's)
- - Some multi-world fixes to the Camera spell.
+ - Some multi-world fixes to the Camera spell. Allow targeting NPC's.
  - Fix permission use with wildcards... umm.. I thought the GM handled this??
  - Added "Magic.wand.destruct", false by default- use if you want to wipe player inventories of wands if they get somewhere they don't have permission to use wands.
  - Added "Magic.wand.override_bind", a perm node for ops so they can handle bound wands.
  - Make Phase configurale (e.g. if you have two worlds, you can link them with a specific scale)
  - Add "Magic.protected" pnode which makes you protected without a wand.
  - Add tx2, ty3, tz3 and dtx2, dty2, dtz2 parameters to Fill, Construct and Regenerate.
+ - Fix players getting kicked if they drop their wand while the "chest" inventory is open.
 
 ## 2.9.8
 
