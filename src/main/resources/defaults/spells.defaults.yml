@@ -222,6 +222,7 @@ simulate:
     parameters:
         range: 32
         radius: 8
+        cooldown: 2000
         allow_max_range: false
         death_material: air
         commands: false
@@ -2396,7 +2397,8 @@ wolfhouse:
         material: schematic|wolfhouse
         dmx: -3
         dmy: -22 
-        dmz: 9
+        dmz: 10
+        dtx: 1
         mm: erase 
         transparent: transparent_to_construction
     costs:
