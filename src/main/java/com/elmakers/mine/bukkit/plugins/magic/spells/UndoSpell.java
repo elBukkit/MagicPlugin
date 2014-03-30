@@ -15,7 +15,7 @@ public class UndoSpell extends Spell
 	{
 		Target target = getTarget();
 		Player player = getPlayer();
-		if (target.isEntity() && target.getEntity() instanceof Player)
+		if (target.hasEntity() && target.getEntity() instanceof Player)
 		{
 			// Don't let just anyone rewind someone else's thing
 			if (player != null && target.getEntity() != player && !mage.isSuperPowered()) {
@@ -26,7 +26,7 @@ public class UndoSpell extends Spell
 			return mage.undo() ? SpellResult.CAST : SpellResult.FAIL;
 		}
 		
-		if (target.isBlock())
+		if (target.isValid())
 		{
 			boolean targetAll = mage.isSuperPowered();
 			boolean undone = false;

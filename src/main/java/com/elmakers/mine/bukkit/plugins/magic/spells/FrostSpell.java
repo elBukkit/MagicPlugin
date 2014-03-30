@@ -84,7 +84,7 @@ public class FrostSpell extends BlockSpell
 		int slowness = parameters.getInt("slowness", DEFAULT_SLOWNESS);
 		int slownessDuration = parameters.getInt("slowness_duration", DEFAULT_SLOWNESS_DURATION);
 
-		if (target.isEntity())
+		if (target.hasEntity())
 		{
 			Entity targetEntity = target.getEntity();
 			if (targetEntity instanceof LivingEntity)

@@ -17,7 +17,7 @@ public class StashSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
-		if (!target.isEntity()) return SpellResult.NO_TARGET;
+		if (!target.hasEntity()) return SpellResult.NO_TARGET;
 		Entity targetEntity = target.getEntity();
 		if (!(targetEntity instanceof HumanEntity)) return SpellResult.NO_TARGET;
 		

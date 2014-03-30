@@ -58,7 +58,7 @@ public class ForceSpell extends Spell
 		if (targetEntity == null) {
 			Target target = getTarget();
 
-			if (!target.isEntity() || !(target.getEntity() instanceof LivingEntity))
+			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
 			{
 				targetEntity = null;
 				return SpellResult.NO_TARGET;

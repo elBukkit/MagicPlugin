@@ -15,7 +15,7 @@ public class PlaceSpell extends BrushSpell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target attachToBlock = getTarget();
-		if (!attachToBlock.isBlock()) return SpellResult.NO_TARGET;
+		if (!attachToBlock.isValid()) return SpellResult.NO_TARGET;
 		Block placeBlock = getLastBlock();
 
 		MaterialBrush buildWith = getMaterialBrush();

@@ -40,7 +40,7 @@ public class GotoSpell extends Spell
 		}
 
 		Location destination = getPlayer().getLocation();
-		if (target.isBlock())
+		if (target.isValid())
 		{
 			destination = target.getLocation();
 			destination.setY(destination.getY() + 1);

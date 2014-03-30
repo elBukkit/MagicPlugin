@@ -20,7 +20,7 @@ public class CommitSpell extends Spell
 		}
 
 		Target target = getTarget();
-		if (target.isEntity() && target.getEntity() instanceof Player)
+		if (target.hasEntity() && target.getEntity() instanceof Player)
 		{
 			Mage mage = controller.getMage((Player)target.getEntity());
 			return mage.commit() ? SpellResult.CAST : SpellResult.FAIL;

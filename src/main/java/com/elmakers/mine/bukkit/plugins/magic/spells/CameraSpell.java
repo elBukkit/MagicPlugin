@@ -54,7 +54,7 @@ public class CameraSpell extends Spell
 			{
 				if (target != null)
 				{
-					if (target.isEntity()) {
+					if (target.hasEntity()) {
 						Entity targetEntity = target.getEntity();
 						if (targetEntity instanceof Player) {
 							playerName = ((Player)targetEntity).getName();

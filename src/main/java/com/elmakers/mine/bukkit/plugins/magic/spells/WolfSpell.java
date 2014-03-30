@@ -27,7 +27,7 @@ public class WolfSpell extends Spell
 			return null;
 		}
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
-		if (target.isEntity())
+		if (target.hasEntity())
 		{      
 			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
 		}

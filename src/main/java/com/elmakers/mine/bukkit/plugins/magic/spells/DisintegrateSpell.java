@@ -25,7 +25,7 @@ public class DisintegrateSpell extends BlockSpell
 		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
 		int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
-		if (target.isEntity())
+		if (target.hasEntity())
 		{
 			Entity targetEntity = target.getEntity();
 			if (targetEntity instanceof LivingEntity)

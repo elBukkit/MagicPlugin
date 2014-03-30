@@ -30,7 +30,7 @@ public class SignSpell extends BlockSpell
 		}
 
 		Target target = getTarget();
-		if (target.isBlock())
+		if (target.isValid())
 		{
 			Block targetBlock = getFaceBlock();
 			if (!hasBuildPermission(targetBlock)) {
@@ -91,7 +91,7 @@ public class SignSpell extends BlockSpell
 				return SpellResult.FAIL;
 			}
 		}
-		else if (target.isEntity() && target.getEntity() instanceof Player)
+		else if (target.hasEntity() && target.getEntity() instanceof Player)
 		{
 			Player targetPlayer = (Player)target.getEntity();
 			String message = getMessage("cast_message");

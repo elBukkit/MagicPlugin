@@ -85,7 +85,7 @@ public class RecallSpell extends Spell
 		else
 		{
 			Target target = getTarget();
-			if (!target.isBlock()) {
+			if (!target.isValid()) {
 				return SpellResult.NO_TARGET;
 			}
 			

@@ -40,7 +40,7 @@ public class ShrinkSpell extends BlockSpell
 		
 		Target target = getTarget();
 
-		if (target.isEntity()) {
+		if (target.hasEntity()) {
 			if (!(target.getEntity() instanceof LivingEntity)) return SpellResult.NO_TARGET;
 			
 			int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);

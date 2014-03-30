@@ -120,7 +120,7 @@ public class FamiliarSpell extends Spell
 
 		if (hasFamiliar)
 		{   // Dispel familiars if you target them and cast
-			boolean isFamiliar = target.isEntity() && familiars.isFamiliar(target.getEntity());
+			boolean isFamiliar = target.hasEntity() && familiars.isFamiliar(target.getEntity());
 			if (isFamiliar)
 			{
 				checkListener();
@@ -131,7 +131,7 @@ public class FamiliarSpell extends Spell
 			familiars.releaseFamiliar();
 		}
 
-		if (target.isEntity())
+		if (target.hasEntity())
 		{
 
 			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);

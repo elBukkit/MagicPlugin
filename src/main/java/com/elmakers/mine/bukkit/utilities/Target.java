@@ -12,9 +12,9 @@ public class Target implements Comparable<Target>
 	protected int    maxDistance = 512;
 	protected double maxAngle    = 0.3;
 
+	private Location source;
+	private Location location;
 	private Entity   entity;
-	private Location   source;
-	private Block    block;
 
 	private double   distance    = 100000;
 	private double   angle       = 10000;
@@ -28,7 +28,7 @@ public class Target implements Comparable<Target>
 	public Target(Location sourceLocation, Block block)
 	{
 		this.source = sourceLocation;
-		this.block = block;
+		this.location = block.getLocation();
 		calculateScore();
 	}
 
@@ -37,6 +37,7 @@ public class Target implements Comparable<Target>
 		this.maxDistance = range;
 		this.source = sourceLocation;
 		this.entity = entity;
+		this.location = entity.getLocation();
 		calculateScore();
 	}
 	
@@ -45,6 +46,7 @@ public class Target implements Comparable<Target>
 		this.maxDistance = 0;
 		this.source = sourceLocation;
 		this.entity = entity;
+		this.location = entity.getLocation();
 	}
 	
 	public Target(Location sourceLocation, Entity entity, Block block)
@@ -52,7 +54,7 @@ public class Target implements Comparable<Target>
 		this.maxDistance = 0;
 		this.source = sourceLocation;
 		this.entity = entity;
-		this.block = block;
+		this.location = block.getLocation();
 	}
 
 	public int getScore()
@@ -99,19 +101,19 @@ public class Target implements Comparable<Target>
 		return other.score - this.score;
 	}
 
-	public boolean isEntity()
+	public boolean hasEntity()
 	{
 		return entity != null;
 	}
 
-	public boolean isBlock()
+	public boolean isValid()
 	{
-		return block != null;
+		return location != null;
 	}
 
 	public boolean hasTarget()
 	{
-		return isEntity() || isBlock();
+		return location != null;
 	}
 
 	public Entity getEntity()
@@ -121,11 +123,12 @@ public class Target implements Comparable<Target>
 
 	public Block getBlock()
 	{
-		if (block == null && entity != null)
+		if (location == null)
 		{
-			return entity.getLocation().getBlock();
+			return null;
 		}
-		return block;
+		
+		return location.getBlock();
 	}
 
 	public double getDistance()
@@ -135,16 +138,14 @@ public class Target implements Comparable<Target>
 
 	public Location getLocation()
 	{
-		if (entity != null)
+		return location;
+	}
+	
+	public void add(Vector offset)
+	{
+		if (location != null)
 		{
-			return entity.getLocation();
+			location = location.add(offset);
 		}
-
-		if (block != null)
-		{
-			return block.getLocation();
-		}
-
-		return null;
 	}
 }

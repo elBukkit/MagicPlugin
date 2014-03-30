@@ -39,7 +39,7 @@ public class AlterSpell extends BlockSpell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
-		if (target.isEntity()) {
+		if (target.hasEntity()) {
 			SpellResult result = alterEntity(target.getEntity());
 			if (result != SpellResult.NO_TARGET) {
 				return result;

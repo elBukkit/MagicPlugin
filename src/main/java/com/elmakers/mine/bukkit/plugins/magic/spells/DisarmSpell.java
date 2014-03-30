@@ -22,7 +22,7 @@ public class DisarmSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		Target target = getTarget();
-		if (!target.isEntity() || !(target.getEntity() instanceof LivingEntity)) {
+		if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity)) {
 			return SpellResult.NO_TARGET;    
 		}
 		LivingEntity entity = (LivingEntity)target.getEntity();

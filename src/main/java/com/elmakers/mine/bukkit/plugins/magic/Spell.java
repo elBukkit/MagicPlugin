@@ -101,6 +101,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Class<? extends Entity>             targetEntityType        = null;
 	private Location                            location;
 	private Location                            targetLocation;
+	private Vector								targetLocationOffset;
 	protected Location                          targetLocation2;
 	private Entity								targetEntity = null;
 	private Location							defaultTargetLocation   = null;
@@ -554,7 +555,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		message = message.replace("$player", playerName);
 		String useTargetName = targetName;
 		if (useTargetName == null) {
-			useTargetName = target != null && target.isEntity() && target.getEntity() instanceof Player ?
+			useTargetName = target != null && target.hasEntity() && target.getEntity() instanceof Player ?
 				((Player)target.getEntity()).getName() : "Unknown";
 		}
 		message = message.replace("$target", useTargetName);
@@ -707,6 +708,18 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 					targetLocation.getZ() + (dtzValue == null ? 0 : dtzValue),
 					targetLocation.getYaw(), targetLocation.getPitch());
 		}
+		
+		targetLocationOffset = null;
+		
+		Double otyValue = parameters.getDouble("oty", null);
+		Double otxValue = parameters.getDouble("otx", null);
+		Double otzValue = parameters.getDouble("otz", null);
+		if (otxValue != null || otzValue != null || otyValue != null) {
+			targetLocationOffset = new Vector(
+					(otxValue == null ? 0 : otxValue),
+					(otyValue == null ? 0 : otyValue), 
+					(otzValue == null ? 0 : otzValue));
+		}
 
 		Double dyValue = parameters.getDouble("dy", null);
 		Double dxValue = parameters.getDouble("dx", null);
@@ -748,9 +761,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				targetLocation2 = targetLocation.clone();
 			}
 			targetLocation2 = new Location(targetLocation2.getWorld(), 
-					targetLocation2.getX() + (dtxValue == null ? 0 : dtxValue), 
-					targetLocation2.getY() + (dtyValue == null ? 0 : dtyValue), 
-					targetLocation2.getZ() + (dtzValue == null ? 0 : dtzValue),
+					targetLocation2.getX() + (dtx2Value == null ? 0 : dtx2Value), 
+					targetLocation2.getY() + (dty2Value == null ? 0 : dty2Value), 
+					targetLocation2.getZ() + (dtz2Value == null ? 0 : dtz2Value),
 					targetLocation2.getYaw(), targetLocation2.getPitch());
 		}
 
@@ -1231,49 +1244,51 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{ 
 		return targetType;
 	}
+	
+	protected Target getTarget()
+	{
+		target = findTarget();
+		if (targetLocationOffset != null) {
+			target.add(targetLocationOffset);
+		}
+		return target;
+	}
 
 	/**
 	 * Returns the block at the cursor, or null if out of range
 	 * 
 	 * @return The target block
 	 */
-	public Target getTarget()
+	public Target findTarget()
 	{
 		if (targetType != TargetType.NONE && targetType != TargetType.BLOCK && targetEntity != null) {
-			target = new Target(getLocation(), targetEntity);
-			return target;
+			return new Target(getLocation(), targetEntity);
 		}
 		
 		Player player = getPlayer();
 		if (targetType == TargetType.SELF && player != null) {
-			target = new Target(getLocation(), player);
-			return target;
+			return new Target(getLocation(), player);
 		}
 		
 		CommandSender sender = mage.getCommandSender();
 		if (targetType == TargetType.SELF && player == null && sender != null && (sender instanceof BlockCommandSender)) {
 			BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
-			target = new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
-			return target;
+			return new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
 		}
 
 		if (targetType != TargetType.NONE && targetLocation != null) {
-			target = new Target(getLocation(), targetLocation.getBlock());
-			return target;
+			return new Target(getLocation(), targetLocation.getBlock());
 		}
 		
-		target = new Target(getLocation());
-		
 		if (targetType == TargetType.NONE) {
-			return target;
+			return new Target(getLocation());
 		}
 		
 		findTargetBlock();
 		Block block = getCurBlock();
 
 		if (targetType == TargetType.BLOCK) {
-			target = new Target(getLocation(), block);
-			return target;
+			return new Target(getLocation(), block);
 		}
 
 		Target targetBlock = block == null ? null : new Target(getLocation(), block);
@@ -1288,8 +1303,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		
 		if (targetEntity == null && targetType == TargetType.ANY && player != null) {
-			target = new Target(getLocation(), player, targetBlock == null ? null : targetBlock.getBlock());
-			return target;
+			return new Target(getLocation(), player, targetBlock == null ? null : targetBlock.getBlock());
 		}
 		
 		if (targetBlock != null && targetEntity != null) {
@@ -1301,12 +1315,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		
 		if (targetEntity != null) {
-			target = targetEntity;
+			return targetEntity;
 		} else if (targetBlock != null) {
-			target = targetBlock;
+			return targetBlock;
 		} 
 		
-		return target;
+		return new Target(getLocation());
 	}
 	
 	public Target getCurrentTarget()
