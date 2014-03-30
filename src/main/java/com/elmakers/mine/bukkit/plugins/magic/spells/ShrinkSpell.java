@@ -48,6 +48,7 @@ public class ShrinkSpell extends BlockSpell
 
 			Entity targetEntity = target.getEntity();
 			LivingEntity li = (LivingEntity)targetEntity;
+			boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
 			String ownerName = null;
 			String itemName = null;
 			byte data = 3;
@@ -81,7 +82,7 @@ public class ShrinkSpell extends BlockSpell
 				}
 				
 			}
-			if ((ownerName != null || data != 3) && li.isDead()) {
+			if ((ownerName != null || data != 3) && li.isDead() && !alreadyDead) {
 				dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 			}
 		} else {
