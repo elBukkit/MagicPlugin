@@ -52,8 +52,6 @@ public class SimulateSpell extends BlockSpell {
 			Location targetLocation = target.getLocation().add(offset);
 			if (!targetLocation.getBlock().getChunk().isLoaded()) return SpellResult.FAIL;
 			birthMaterial = targetLocation.getBlock().getType();
-			
-			Bukkit.getLogger().info("Sampled " + birthMaterial + " from " + targetLocation.toVector());
 		} 
 		
 		Material deathMaterial = parameters.getMaterial("death_material", Material.AIR);
