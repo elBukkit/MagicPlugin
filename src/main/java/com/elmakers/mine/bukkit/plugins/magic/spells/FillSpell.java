@@ -69,7 +69,8 @@ public class FillSpell extends BrushSpell
 			
 			FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
 
-			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);		
+			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);	
+			maxDimension = parameters.getInteger("md", maxDimension);	
 			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
 			
 			if (!batch.checkDimension(maxDimension))

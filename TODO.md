@@ -2,14 +2,30 @@
 
 ## For 2.9.9
 
+ - peek wipes chests?? ... undo doesn't do chests??
  - Traders losing prices!
- - Look at broken Power text in lore
+  
+ - Fix Pickpocket
+ - wandp configure glitch- maybe need to replace item in hand on reconfigure?
+ - Look at Shrink giving out multiple heads per entity...
+
+ - Phase and Blink check for flying?
+ - Recall needs effects
+ - Scale simulate with wand power, maybe?
+ 
+ - Add lantern schematic
+ - Configure option for targeting NPCs, use in camera spell
+ 
+ - Mana / enchanting balance- how did I get Nuke??
+ 
  - Add "wand duplicate" command
  - Config-driven WandLevel limits.
  - Collapse blocklist chains on save (?)
  - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
+ 
+ - Enchant count limit for wands
 
  - Clicking on empty wand space deselects spell.. ?
  - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
@@ -20,6 +36,7 @@
  - Commandbook kit integration
  - Walls spell?
  
+ - Integrate with MobMoney to disallow money spamming
  - Implement schematic saving as a "Snapshot" spell, restore with "Repair"?
  
 ## For 3.0.0
