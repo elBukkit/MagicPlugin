@@ -2170,7 +2170,7 @@ public class MagicController implements Listener
 			if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
 			    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
 				if (activeWand != null && activeWand.isInventoryOpen()) {
-					if (event.getAction() == InventoryAction.PICKUP_HALF) {
+					if (event.getAction() == InventoryAction.PICKUP_HALF || (event.getAction() == InventoryAction.NOTHING && wandMode == WandMode.INVENTORY)) {
 						activeWand.cycleInventory();
 						event.setCancelled(true);
 						return;
