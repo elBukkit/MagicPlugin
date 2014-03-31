@@ -3,6 +3,7 @@
 ## 2.9.9
 
  - Add "Hat" spell.
+ - Add "lantern" schematic. Add several of the newer spells (Fly, Cluster Bomb, etc) to the enchant list.
 
 ## 2.9.8.1
 
