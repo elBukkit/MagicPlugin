@@ -7,11 +7,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
+import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class HatSpell extends BrushSpell 
+public class HatSpell extends Spell 
 {   
 	@SuppressWarnings("deprecation")
 	@Override
