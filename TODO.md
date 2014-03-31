@@ -4,6 +4,9 @@
 
  - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?
 
+ - Periodic save timer
+ - SuperCube spell
+
  - There is a random missing stained glass block in the life schematic
   - clear button off-center? Something is...
 

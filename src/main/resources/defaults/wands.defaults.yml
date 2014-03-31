@@ -287,9 +287,11 @@ random:
       frost: 80,70,50,10,100
       gills: 10,11,20,25,100
       grenade: 30,50,70,20,100
+      hat: 110,80,60,20,100
       heal: 1,5,10,30,100
       tesseract: 80,50,40,20,100
       torch: 80,60,50,10,100
+      workbench: 80,60,50,10,100
       leap: 70,80,60,40,100
       push: 10,20,40,30,100
       pull: 10,20,40,30,100
@@ -297,6 +299,7 @@ random:
       peek: 10,30,40,30,100
       mob: 0,0,5,10,100
       monster: 5,20,30,30,100
+      music: 110,80,60,20,100
       perk: 5,15,20,30,100
       wolf: 0,10,20,50,100
       lightning: 40,50,30,5,100
@@ -314,6 +317,7 @@ random:
       shrink: 5,20,30,90,100
       invincible: 0,0,10,20,100
       levitate: 0,0,10,30,100
+      fly: 0,0,0,1,100
       iterate: 0,0,40,20,100
       laser: 0,0,10,5,100
       lava: 0,10,30,20,100
@@ -355,6 +359,11 @@ random:
       cage: 0,0,2,10,100
       tent: 0,0,5,15,100
       wolfhouse: 0,0,0,1,100
+      simulate: 0,0,0,1,100
+      glider: 0,0,0,1,100
+      meteor: 0,0,0,1,100
+      cluster: 0,0,0,1,100
+      bomb: 0,0,0,1,100
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0
@@ -2000,6 +2009,32 @@ ender:
         - wolf
         - chop
         - fire
+conway:
+    effect_color: 'FFFFFF'
+    xp_regeneration: 50
+    xp_max: 500
+    effect_particle: portal
+    effect_particle_count: 3
+    icon: sapling:2
+    protection_falling: 1.0
+    protection: 0.8
+    spells:
+        - fly
+        - simulate
+        - glider
+        - pillar
+        - disintegrate
+        - fill
+        - emp
+        - blob
+        - superblob
+        - levitate
+        - undo
+        - commit
+    materials:
+        - schematic:life
+        - schematic:glider
+        - schematic:flare_beacon
         
 #
 # UPGRADE ITEMS

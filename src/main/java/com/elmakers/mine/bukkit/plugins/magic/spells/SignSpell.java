@@ -33,7 +33,7 @@ public class SignSpell extends BlockSpell
 		if (target.isValid())
 		{
 			Block targetBlock = getFaceBlock();
-			if (!hasBuildPermission(targetBlock)) {
+			if (targetBlock == null || !hasBuildPermission(targetBlock)) {
 				return SpellResult.INSUFFICIENT_PERMISSION;
 			}
 			if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)

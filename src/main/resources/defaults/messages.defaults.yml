@@ -896,6 +896,9 @@ wands:
     nether:
         name: The Nether Wand
         description: Spooky Power
+    conway:
+        name: Conway's Wand
+        description: The Game of Life
     ender:
         name: The Ender Wand
         description: Super Power

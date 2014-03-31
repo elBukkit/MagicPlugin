@@ -247,7 +247,7 @@ glider:
         material: schematic|glider
         transparent: transparent_to_construction
     costs:
-        xp: 1000
+        xp: 500
 shell:
     icon: ender_pearl
     category: earthbending
