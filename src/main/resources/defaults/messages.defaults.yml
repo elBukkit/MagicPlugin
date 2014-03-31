@@ -284,6 +284,10 @@ spells:
         name: Simulate
         description: Conway's Game of Life!
         cast: You bring the world to life
+    simulate3:
+        name: Simulate 3D
+        description: Conway's Game of Life ... in 3D!
+        cast: You bring the world to life
     torch:
         name: Torch
         description: Creates a torch or glowstone

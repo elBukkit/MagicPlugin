@@ -2,13 +2,20 @@
 
 ## For 2.9.9
 
+ - Wolf house convert didn't work ... needs more dimension? .. uh... yeah it's bad.
+ - Change frag icon
+ - Add tp to hub button in wolf booth? Maybe get rid of shields...
+
+ - Maybe a way to cancel pending batches from the command line?
  - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?
 
  - Periodic save timer
  - SuperCube spell
 
- - There is a random missing stained glass block in the life schematic
+ - There is a random missing stained glass block in the life schematic .. ha, and remove sign about incident! :)
   - clear button off-center? Something is...
+  
+ - Life board customization buttons, like in wolf house?
 
  - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Traders losing prices!

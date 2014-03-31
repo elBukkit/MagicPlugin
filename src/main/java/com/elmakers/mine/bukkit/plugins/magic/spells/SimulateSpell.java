@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +20,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 public class SimulateSpell extends BlockSpell {
 	
 	private static final int DEFAULT_RADIUS = 32;
+	
+	private Integer taskId = null;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) {
@@ -36,6 +42,8 @@ public class SimulateSpell extends BlockSpell {
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = parameters.getInt("r", radius);
 		radius *= mage.getConstructionMultiplier();
+		int yRadius = parameters.getInt("yradius", 0);
+		yRadius *= mage.getConstructionMultiplier();
 		
 		Material birthMaterial = target.getType();
 		birthMaterial = parameters.getMaterial("material", birthMaterial);
@@ -53,11 +61,31 @@ public class SimulateSpell extends BlockSpell {
 			Location targetLocation = target.getLocation().add(offset);
 			if (!targetLocation.getBlock().getChunk().isLoaded()) return SpellResult.FAIL;
 			birthMaterial = targetLocation.getBlock().getType();
-		} 
+		}
 		
 		Material deathMaterial = parameters.getMaterial("death_material", Material.AIR);
-
-		final SimulateBatch batch = new SimulateBatch(this, target.getLocation(), radius, birthMaterial, deathMaterial);
+		
+		Set<Integer> birthCounts = new HashSet<Integer>();
+		Set<Integer> liveCounts = new HashSet<Integer>();
+		
+		if (parameters.containsKey("live_rules")) {
+			liveCounts.addAll(parameters.getIntList("live_rules", new ArrayList<Integer>()));
+		} else {
+			liveCounts.add(2);
+			liveCounts.add(3);
+		}
+		
+		if (parameters.containsKey("birth_rules")) {
+			birthCounts.addAll(parameters.getIntList("birth_rules", new ArrayList<Integer>()));
+		} else {
+			birthCounts.add(3);
+		}
+		
+		if (liveCounts.size() == 0 || birthCounts.size() == 0) {
+			return SpellResult.FAIL;
+		}
+		
+		final SimulateBatch batch = new SimulateBatch(this, target.getLocation(), radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
 		
 		boolean includeCommands = parameters.getBoolean("commands", true);
 		if (includeCommands) {
@@ -73,9 +101,10 @@ public class SimulateSpell extends BlockSpell {
 		int delay = parameters.getInt("delay", 0);
 		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
 		delay /= 50;
-		if (delay > 0) {
-			Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+		if (delay > 0 && taskId == null) {
+			taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 				public void run() {
+					taskId = null;
 					mage.addPendingBlockBatch(batch);
 				}
 			}, delay);

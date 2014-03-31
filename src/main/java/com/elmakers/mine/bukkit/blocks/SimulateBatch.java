@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,40 +39,59 @@ public class SimulateBatch extends VolumeBatch {
 	private Material deathMaterial;
 	private boolean includeCommands;
 	private BlockFace powerDirection;
-	int y;
-	int startX;
-	int startZ;
-	int endX;
-	int endZ;
-	int x;
-	int z;
-	int updatingIndex;
-	int commandDelay;
-	int blockCount;
-	
+	private int startX;
+	private int startZ;
+	private int startY;
+	private int endY;
+	private int endX;
+	private int endZ;
+	private int x;
+	private int y;
+	private int z;
+	private int yRadius;
+	private int updatingIndex;
+	private int commandDelay;
+	private int blockCount;
+	private ArrayList<Boolean> liveCounts = new ArrayList<Boolean>();
+	private ArrayList<Boolean> birthCounts = new ArrayList<Boolean>();
+
 	private SimulationState state;
 
 	BlockList deadBlocks = new BlockList();
 	BlockList bornBlocks = new BlockList();
 	BlockList modifiedBlocks = new BlockList();
 	
-	public SimulateBatch(BlockSpell spell, Location center, int radius, Material birth, Material death) {
+	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, Material birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
 		super(spell.getMage().getController(), center.getWorld().getName());
 		this.mage = spell.getMage();
 		this.spell = spell;
 		
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
+		for (Integer liveCount : liveCounts) {
+			while (this.liveCounts.size() < liveCount) {
+				this.liveCounts.add(false);
+			}
+			this.liveCounts.add(true);
+		}
+		for (Integer birthCount : birthCounts) {
+			while (this.birthCounts.size() < birthCount) {
+				this.birthCounts.add(false);
+			}
+			this.birthCounts.add(true);
+		}
 		this.world = center.getWorld();
 		includeCommands = false;
 		
-		y = center.getBlockY();
+		startY = center.getBlockY() - yRadius;
+		endY = center.getBlockY() + yRadius;
 		startX = center.getBlockX() - radius;
 		startZ = center.getBlockZ() - radius;
 		endX = center.getBlockX() + radius;
 		endZ = center.getBlockZ() + radius;
 		
 		x = startX;
+		y = startY;
 		z = startZ;
 		
 		state = SimulationState.SCANNING;
@@ -103,14 +124,15 @@ public class SimulateBatch extends VolumeBatch {
 			if (blockMaterial == birthMaterial) {
 				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
 				// Cells with < 2 neighbors die
-				if (neighborCount < 2 || neighborCount > 3) {
+				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
 					deadBlocks.add(block);
 				} else {
 					blockCount++;
 				}
 			} else if (blockMaterial == deathMaterial) {
 				// Check for exactly 3 neighbors
-				if (getNeighborCount(block, birthMaterial, includeCommands) == 3) {
+				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+				if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
 					bornBlocks.add(block);
 					blockCount++;
 				}
@@ -119,7 +141,7 @@ public class SimulateBatch extends VolumeBatch {
 				
 				// Treat this like a living cell.
 				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-				if (neighborCount < 2 || neighborCount > 3) {
+				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
 					deadBlocks.add(block);
 				} else {
 					// But also make sure to replace it if it's not being re-born.
@@ -135,6 +157,11 @@ public class SimulateBatch extends VolumeBatch {
 				x++;
 			}
 			if (x > endX) {
+				x = startX;
+				z = startZ;
+				y++;
+			}
+			if (y > endY) {
 				// Clear the command block's power source, if it exists (only spports redstone blocks at the moment)
 				if (castCommandBlock != null && castCommandBlock.getType() == Material.COMMAND) {
 					if (castCommandBlock.getRelative(BlockFace.DOWN).getType() == POWER_MATERAIL) {
@@ -248,13 +275,40 @@ public class SimulateBatch extends VolumeBatch {
 			includeCommands = castCommand != null && castCommand.length() > 0;
 		}
 	}
+	
+	protected boolean isAlive(Block block, Material liveMaterial, boolean includeCommands)
+	{
+		Material neighborType = block.getType();
+		return (neighborType == liveMaterial || (includeCommands && neighborType == Material.COMMAND));
+	}
 
 	protected int getNeighborCount(Block block, Material liveMaterial, boolean includeCommands) {
 		int liveCount = 0;
 		for (BlockFace face : neighborFaces) {
-			Material neighborType = block.getRelative(face).getType();
-			if (neighborType == liveMaterial || (includeCommands && neighborType == Material.COMMAND)) {
+			if (isAlive(block.getRelative(face), liveMaterial, includeCommands)) {
 				liveCount++;
+			}
+		}
+		
+		if (yRadius > 0) {
+			Block upBlock = block.getRelative(BlockFace.UP);
+			if (isAlive(upBlock, liveMaterial, includeCommands)) {
+				liveCount++;
+			}
+			for (BlockFace face : neighborFaces) {
+				if (isAlive(upBlock.getRelative(face), liveMaterial, includeCommands)) {
+					liveCount++;
+				}
+			}
+
+			Block downBlock = block.getRelative(BlockFace.DOWN);
+			if (isAlive(downBlock, liveMaterial, includeCommands)) {
+				liveCount++;
+			}
+			for (BlockFace face : neighborFaces) {
+				if (isAlive(downBlock.getRelative(face), liveMaterial, includeCommands)) {
+					liveCount++;
+				}
 			}
 		}
 		

@@ -227,6 +227,23 @@ simulate:
         death_material: air
         commands: false
         check_destructible: true
+simulate3:
+    icon: sapling:3
+    category: master
+    class: SimulateSpell
+    costs:
+        xp: 500
+    parameters:
+        range: 32
+        radius: 8
+        cooldown: 5000
+        allow_max_range: false
+        death_material: air
+        commands: false
+        check_destructible: true
+        live_rules: 2,3,4,5,6,7
+        birth_rules: 5
+        yradius: 8
 glider:
     icon: sapling:2
     category: master
@@ -1395,7 +1412,7 @@ grenade:
     costs:
         xp: 40
 frag:
-    icon: redstone_block
+    icon: apple
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
@@ -2416,7 +2433,6 @@ wolfhouse:
         dmx: -3
         dmy: -22 
         dmz: 10
-        otx: 1
         mm: erase 
         transparent: transparent_to_construction
     costs:

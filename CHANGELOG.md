@@ -4,7 +4,8 @@
 
  - Add "Hat" spell.
  - Add "lantern" schematic. Add several of the newer spells (Fly, Cluster Bomb, etc) to the enchant list.
-
+ - Add "Simulate 3D" spell.
+ 
 ## 2.9.8.1
 
  - Add "Pickpocket" spell, like invsee at close range. (er, maybe not working yet, not sure!)

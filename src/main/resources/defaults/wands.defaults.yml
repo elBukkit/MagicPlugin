@@ -2033,6 +2033,7 @@ conway:
         - levitate
         - undo
         - commit
+        - simulate3
     materials:
         - schematic:life
         - schematic:glider
