@@ -1731,6 +1731,15 @@ public class Wand implements CostReducer {
 		for (String material : materials) {
 			addMaterial(material, false, true);
 		}
+		
+		Player player = (mage == null) ? null : mage.getPlayer();
+		if (other.autoFill && player != null) {
+			this.fill(player);
+		}
+		
+		if (other.autoOrganize && mage != null) {
+			this.organizeInventory(mage);
+		}
 
 		saveState();
 		updateName();
@@ -1964,14 +1973,14 @@ public class Wand implements CostReducer {
 		}
 		
 		// Check for an empty wand and auto-fill
-		if (controller.fillWands() || autoFill) {
+		if (!isUpgrade && (controller.fillWands() || autoFill)) {
 			if (getSpells().size() == 0) {
 				fill(mage.getPlayer());
 			}
 		}
 		
 		// Check for auto-organize
-		if (autoOrganize) {
+		if (autoOrganize && !isUpgrade) {
 			organizeInventory(mage);
 		}
 		
