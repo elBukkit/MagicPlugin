@@ -1484,6 +1484,8 @@ public class MagicController implements Listener
 				// Reset the held item, Bukkit may have replaced it (?)
 				mage.getPlayer().setItemInHand(activeWand.getItem());
 			}
+		} else {
+			activeWand.setActiveSpell("");
 		}
 	}
 	
@@ -2168,7 +2170,7 @@ public class MagicController implements Listener
 			if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
 			    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
 				if (activeWand != null && activeWand.isInventoryOpen()) {
-					if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
+					if (event.getAction() == InventoryAction.PICKUP_HALF) {
 						activeWand.cycleInventory();
 						event.setCancelled(true);
 						return;
@@ -2180,11 +2182,10 @@ public class MagicController implements Listener
 					}
 					
 					// Chest mode falls back to selection from here.
-					if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST) {
+					// Also include "none" as a semi-hacky check for clicking on an empty space.
+					if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST || event.getAction() == InventoryAction.NOTHING) {
 						ItemStack clickedItem = event.getCurrentItem();
-						if (clickedItem != null) {
-							onPlayerActivateIcon(mage, activeWand, clickedItem);
-						}
+						onPlayerActivateIcon(mage, activeWand, clickedItem);
 						player.closeInventory();
 						event.setCancelled(true);
 						return;
@@ -2458,6 +2459,7 @@ public class MagicController implements Listener
 	}
 	
 	public Spell getSpell(String name) {
+		if (name == null || name.length() == 0) return null;
 		return spells.get(name);
 	}
 	

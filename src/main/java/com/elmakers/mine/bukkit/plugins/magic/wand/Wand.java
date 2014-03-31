@@ -591,7 +591,6 @@ public class Wand implements CostReducer {
 		spellString = spellString.replaceAll("[\\]\\[]", "");
 		String[] spellNames = StringUtils.split(spellString, "|,");
 		for (String spellName : spellNames) {
-			if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellName;
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
 			ItemStack itemStack = createSpellIcon(pieces[0].trim());
@@ -923,7 +922,6 @@ public class Wand implements CostReducer {
 			xp = 0;
 		}
 		
-		checkActiveSpell();
 		checkActiveMaterial();
 		
 		saveState();
@@ -1129,7 +1127,7 @@ public class Wand implements CostReducer {
 		if (addedNew) {
 			addToInventory(spellItem);
 		}
-		if (activeSpell == null || activeSpell.length() == 0 || makeActive) {
+		if (makeActive) {
 			setActiveSpell(spellName);
 		} else {
 			updateInventory();
@@ -1977,7 +1975,6 @@ public class Wand implements CostReducer {
 			organizeInventory(mage);
 		}
 		
-		checkActiveSpell();
 		checkActiveMaterial();
 		
 		saveState();
@@ -1995,15 +1992,6 @@ public class Wand implements CostReducer {
 		updateLore();
 		
 		updateEffects();
-	}
-
-	protected void checkActiveSpell() {
-		if (activeSpell == null || activeSpell.length() == 0) {
-			Set<String> spells = getSpells();
-			if (spells.size() > 0) {
-				activeSpell = spells.iterator().next();
-			}
-		}
 	}
 	
 	protected void checkActiveMaterial() {
@@ -2139,7 +2127,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public Spell getActiveSpell() {
-		if (mage == null) return null;
+		if (mage == null || activeSpell == null || activeSpell.length() == 0) return null;
 		return mage.getSpell(activeSpell);
 	}
 	
