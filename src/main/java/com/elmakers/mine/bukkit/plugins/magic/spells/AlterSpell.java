@@ -54,9 +54,9 @@ public class AlterSpell extends BlockSpell
 		int recurseDistance = parameters.getInteger("depth", DEFAULT_RECURSE_DISTANCE);
 		recurseDistance = (int)(mage.getRadiusMultiplier() * recurseDistance);
 
-		List<Integer> adjustableMaterials = csv.parseIntegers(DEFAULT_ADJUSTABLES);
-		List<Integer> maxData = csv.parseIntegers(DEFAULT_ADJUST_MAX);
-		List<Integer> minData = csv.parseIntegers(DEFAULT_ADJUST_MIN);
+		List<Integer> adjustableMaterials = ConfigurationNode.parseIntegers(DEFAULT_ADJUSTABLES);
+		List<Integer> maxData = ConfigurationNode.parseIntegers(DEFAULT_ADJUST_MAX);
+		List<Integer> minData = ConfigurationNode.parseIntegers(DEFAULT_ADJUST_MIN);
 
 		if (adjustableMaterials.size() != maxData.size() || maxData.size() != minData.size())
 		{

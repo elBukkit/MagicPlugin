@@ -36,7 +36,6 @@ import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectSingle;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
-import com.elmakers.mine.bukkit.utilities.CSVParser;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -57,7 +56,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	protected MagicController				controller;
 	protected Mage 							mage;
-	protected static CSVParser              csv = new CSVParser();
 
 	/*
 	 * Variant properties

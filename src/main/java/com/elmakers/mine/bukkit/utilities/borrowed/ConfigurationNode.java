@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utilities.borrowed;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,14 +20,12 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
-import com.elmakers.mine.bukkit.utilities.CSVParser;
 
 /**
  * Represents a configuration node.
  */
 public class ConfigurationNode {
 	protected Map<String, Object> root;
-	protected static CSVParser csv = new CSVParser();
 
 	@SuppressWarnings("unchecked")
 	public ConfigurationNode createChild(String name)
@@ -463,7 +462,7 @@ public class ConfigurationNode {
 
 	 public Set<Material> getMaterials(String key, String csvList)
 	 {
-		 List<String> defaultMatNames = csv.parseStrings(csvList);
+		 List<String> defaultMatNames = new ArrayList<String>(Arrays.asList(StringUtils.split(csvList, ',')));
 		 List<String> materialData = getStringList(key, defaultMatNames);
 		 Set<String> matNames = new HashSet<String>();
 		 Set<Material> materials = new HashSet<Material>();
@@ -632,18 +631,16 @@ public class ConfigurationNode {
 	 @SuppressWarnings("unchecked")
 	 public List<Object> getList(String path) {
 		 Object o = getProperty(path);
-
 		 if (o == null) {
 			 return null;
 		 } else if (o instanceof List) {
 			 return (List<Object>) o;
 		 } else if (o instanceof String) {
-			 List<String> strings = csv.parseStrings((String)o);
-			 List<Object> list = new ArrayList<Object>();
-			 list.addAll(strings);
-			 return list;
+			 return new ArrayList<Object>(Arrays.asList(StringUtils.split((String)o, ',')));
 		 } else {
-			 return null;
+			 List<Object> single = new ArrayList<Object>();
+			 single.add(o);
+			 return single;
 		 }
 	 }
 
@@ -701,18 +698,36 @@ public class ConfigurationNode {
 		 if (raw == null) {
 			 return def != null ? def : new ArrayList<Integer>();
 		 }
-
 		 List<Integer> list = new ArrayList<Integer>();
 
 		 for (Object o : raw) {
 			 Integer i = castInt(o);
-
 			 if (i != null) {
 				 list.add(i);
 			 }
 		 }
 
 		 return list;
+	 }
+	 
+	 static public List<Integer> parseIntegers(String csvList)
+	 {
+		List<Integer> ints = new ArrayList<Integer>();
+
+		String[] intStrings = csvList.split(",");
+		for (String s : intStrings)
+		{
+			try
+			{
+				int thisInt = Integer.parseInt(s.trim());
+				ints.add(thisInt);
+			}
+			catch (NumberFormatException ex)
+			{
+
+			}
+		}
+		return ints;
 	 }
 
 	 /**

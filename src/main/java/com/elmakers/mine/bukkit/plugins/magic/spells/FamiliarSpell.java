@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -192,13 +193,13 @@ public class FamiliarSpell extends Spell
 				}
 				else
 				{
-					List<String> types = csv.parseStrings(DEFAULT_FAMILIARS);
+					String[] types = StringUtils.split(DEFAULT_FAMILIARS, ',');
 					if (famClass == FamiliarClass.MONSTER)
 					{
-						types = csv.parseStrings(DEFAULT_MONSTERS);
+						types = StringUtils.split(DEFAULT_MONSTERS, ',');
 					}
-					int randomFamiliar = rand.nextInt(types.size());
-					famType = EntityType.fromName(types.get(randomFamiliar));
+					int randomFamiliar = rand.nextInt(types.length);
+					famType = EntityType.fromName(types[randomFamiliar]);
 				}
 			}      
 
