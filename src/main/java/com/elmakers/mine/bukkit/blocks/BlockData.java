@@ -38,12 +38,25 @@ public class BlockData extends MaterialAndData
 
 	public static long getBlockId(Block block)
 	{
-		return block.getWorld().getName().hashCode() << 28 ^ Integer.valueOf(block.getX()).hashCode() << 13 ^ Integer.valueOf(block.getY()).hashCode() << 7 ^ Integer.valueOf(block.getZ()).hashCode();
+		return getBlockId(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+	}
+	
+	public static long getBlockId(String world, int x, int y, int z)
+	{
+		// Long is 63 bits
+		// 15 sets of F's (4-bits)
+		// world gets 4 bits
+	    // y gets 8 bits
+		// and x and z get 24 bits each
+		return ((world.hashCode() & 0xF) << 56)
+			| (((long)x & 0xFFFFFF) << 32) 
+			| (((long)z & 0xFFFFFF) << 8) 
+			| ((long)y & 0xFF);
 	}
 	
 	public long getId()
 	{
-		return world.hashCode() << 28 ^ Integer.valueOf(location.getBlockX()).hashCode() << 13 ^ Integer.valueOf(location.getBlockY()).hashCode() << 7 ^ Integer.valueOf(location.getBlockZ()).hashCode();
+		return getBlockId(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
 
 	public static BlockFace getReverseFace(BlockFace blockFace)

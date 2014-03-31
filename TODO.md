@@ -6,6 +6,7 @@
  - Change frag icon
  - Add tp to hub button in wolf booth? Maybe get rid of shields...
  
+ - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with sold wands, too?
  - Issue selling Hat- may have been fixed?
 
  - Maybe a way to cancel pending batches from the command line?
