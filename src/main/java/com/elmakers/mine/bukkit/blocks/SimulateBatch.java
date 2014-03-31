@@ -65,6 +65,7 @@ public class SimulateBatch extends VolumeBatch {
 		super(spell.getMage().getController(), center.getWorld().getName());
 		this.mage = spell.getMage();
 		this.spell = spell;
+		this.yRadius = yRadius;
 		
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
@@ -123,14 +124,12 @@ public class SimulateBatch extends VolumeBatch {
 			Material blockMaterial = block.getType();
 			if (blockMaterial == birthMaterial) {
 				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-				// Cells with < 2 neighbors die
 				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
 					deadBlocks.add(block);
 				} else {
 					blockCount++;
 				}
 			} else if (blockMaterial == deathMaterial) {
-				// Check for exactly 3 neighbors
 				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
 				if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
 					bornBlocks.add(block);

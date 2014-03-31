@@ -5,6 +5,8 @@
  - Wolf house convert didn't work ... needs more dimension? .. uh... yeah it's bad.
  - Change frag icon
  - Add tp to hub button in wolf booth? Maybe get rid of shields...
+ 
+ - Issue selling Hat- may have been fixed?
 
  - Maybe a way to cancel pending batches from the command line?
  - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?

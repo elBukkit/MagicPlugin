@@ -241,7 +241,7 @@ simulate3:
         death_material: air
         commands: false
         check_destructible: true
-        live_rules: 2,3,4,5,6,7
+        live_rules: 3,4,5,6,7,8,9
         birth_rules: 5
         yradius: 8
 glider:
