@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.9.9
+
+ - Add "Hat" spell.
+
 ## 2.9.8.1
 
  - Add "Pickpocket" spell, like invsee at close range. (er, maybe not working yet, not sure!)

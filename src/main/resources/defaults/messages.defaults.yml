@@ -603,6 +603,10 @@ spells:
         usage: Adds materials to your wand
         fail: This spell requires a wand
         cast: Absorbing some $material
+    hat:
+        name: Hat
+        description: Wear your target
+        cast: You put $material on your head
     stalactite:
         name: Stalactite
         description: Create a downward pillar

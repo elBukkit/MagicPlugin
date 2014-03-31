@@ -2,6 +2,11 @@
 
 ## For 2.9.9
 
+ - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?
+
+ - There is a random missing stained glass block in the life schematic
+  - clear button off-center? Something is...
+
  - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Traders losing prices!
   
