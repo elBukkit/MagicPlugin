@@ -524,6 +524,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	protected void initializeTargeting()
 	{
+		if (location == null) {
+			return;
+		}
 		length = 0;
 		targetSpaceRequired = false;
 		xRotation = (location.getYaw() + 90) % 360;
