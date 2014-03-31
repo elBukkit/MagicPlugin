@@ -269,7 +269,9 @@ public class InventoryUtils extends NMSUtils
 		
 		try {
 			Object craft = getHandle(stack);
+			if (craft == null) return;
 			Object tagObject = getTag(craft);
+			if (tagObject == null) return;
 			final Object enchList = class_NBTTagList.newInstance();
 			Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);		
 			setMethod.invoke(tagObject, "ench", enchList);
