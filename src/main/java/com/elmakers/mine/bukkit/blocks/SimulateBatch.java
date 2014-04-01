@@ -20,7 +20,7 @@ public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
-	private static BlockFace[] powerFaces = { BlockFace.DOWN, BlockFace.UP };
+	private static BlockFace[] powerFaces = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
 		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND, FINISHED
@@ -43,6 +43,7 @@ public class SimulateBatch extends VolumeBatch {
 	private Material birthMaterial;
 	private Material deathMaterial;
 	private boolean includeCommands;
+	private Material powerSimMaterial;
 	private int startX;
 	private int startZ;
 	private int startY;
@@ -72,6 +73,9 @@ public class SimulateBatch extends VolumeBatch {
 		
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
+		
+		this.powerSimMaterial = birthMaterial;
+		
 		for (Integer liveCount : liveCounts) {
 			while (this.liveCounts.size() < liveCount) {
 				this.liveCounts.add(false);
@@ -149,7 +153,7 @@ public class SimulateBatch extends VolumeBatch {
 				for (BlockFace powerFace : powerFaces) {
 					Block checkForPower = castCommandBlock.getRelative(powerFace);
 					if (checkForPower.getType() == POWER_MATERIAL) {
-						checkForPower.setType(deathMaterial);
+						checkForPower.setType(powerSimMaterial);
 						commandPowered = true;
 					}
 				}
@@ -242,10 +246,10 @@ public class SimulateBatch extends VolumeBatch {
 				
 				if (testBlock != null) {
 					if (commandPowered) {
-						BlockFace powerFace = findPowerLocation(testBlock, deathMaterial);
+						BlockFace powerFace = findPowerLocation(testBlock, powerSimMaterial);
 						while (powerFace == null && potentialCommandBlocks.size() > 0) {
 							testBlock = findPotentialCommandLocation();
-							powerFace = findPowerLocation(testBlock, deathMaterial);
+							powerFace = findPowerLocation(testBlock, powerSimMaterial);
 						}
 						
 						if (powerFace != null) {
@@ -271,7 +275,7 @@ public class SimulateBatch extends VolumeBatch {
 				// Continue to power the command block
 				// Find a new direction, replace existing block
 				if (commandPowered && castCommandBlock != null && includeCommands) {
-					BlockFace powerDirection = findPowerLocation(castCommandBlock, deathMaterial);
+					BlockFace powerDirection = findPowerLocation(castCommandBlock, powerSimMaterial);
 					if (powerDirection != null) {
 						Block powerBlock = castCommandBlock.getRelative(powerDirection);
 						powerBlock.setType(POWER_MATERIAL);

@@ -218,11 +218,10 @@ simulate:
     category: light
     class: SimulateSpell
     costs:
-        xp: 20
+        xp: 100
     parameters:
         range: 32
         radius: 8
-        cooldown: 1000
         allow_max_range: false
         death_material: air
         commands: false
@@ -235,15 +234,14 @@ simulate3:
         xp: 500
     parameters:
         range: 32
-        radius: 8
-        cooldown: 5000
+        radius: 4
+        yradius: 4
+        live_rules: 3,4,5,6,7,8,9
+        birth_rules: 5
         allow_max_range: false
         death_material: air
         commands: false
         check_destructible: true
-        live_rules: 3,4,5,6,7,8,9
-        birth_rules: 5
-        yradius: 8
 glider:
     icon: sapling:2
     category: master
