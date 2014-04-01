@@ -674,6 +674,10 @@ spells:
         name: Virus
         description: You probably don't want to cast this
         cast: What have you done?
+    life:
+        name: Life
+        description: Create a HUGE Life board
+        cast: Time to experiment!
     tent:
         name: Tent
         description: Create a minimal house

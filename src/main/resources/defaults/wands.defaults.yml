@@ -1472,7 +1472,7 @@ wolf:
         - superblob
         - day
         - undo
-        - rewind
+        - emp
         - sniper 
         - force
         - fill
@@ -1490,6 +1490,7 @@ wolf:
         - inferno
         - wolfhouse
         - disarm
+        - rewind
         - gather
         - superconvert
         - supershell
@@ -1543,8 +1544,12 @@ wolf:
         - flamethrower
         - regenerate
         - tag
-        - emp
         - pickpocket
+        - virus
+        - life
+        - glider
+        - simulate
+        - simulate3
     materials:  
         - lapis_block
         - water
