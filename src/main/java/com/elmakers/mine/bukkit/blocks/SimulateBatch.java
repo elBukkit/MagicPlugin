@@ -35,7 +35,7 @@ public class SimulateBatch extends VolumeBatch {
 	private Block castCommandBlock;
 	private int commandDistanceSquared;
 	private String castCommand;
-	private int commandMoveRangeSquared = 8;
+	private int commandMoveRangeSquared = 9;
 	private boolean commandDrift;
 	private boolean commandMoved;
 	private boolean commandPowered;

@@ -6,8 +6,11 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -209,6 +212,12 @@ public class MagicController implements Listener
 			mageId = "CONSOLE";
 		} else if (commandSender instanceof Player) {
 			mageId = ((Player)commandSender).getUniqueId().toString();
+		} else if (commandSender instanceof BlockCommandSender) {
+			BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
+			String commandName = commandBlock.getName();
+			if (commandName != null && commandName.length() > 0) {
+				mageId = "COMMAND-" + commandBlock.getName();
+			}
 		}
 		
 		return getMage(mageId, commandSender);
@@ -2524,7 +2533,8 @@ public class MagicController implements Listener
 			Color color = mage.getEffectColor();
 			color = color == null ? Color.PURPLE : color;
 			final String worldName = location.getWorld().getName();
-			String label = spell.getName() + " : " + mage.getName();
+			Date now = new Date();
+			String label = spell.getName() + " : " + mage.getName() + " @ " + dateFormatter.format(now);
 			
 			// Create a circular disc for a spell cast
 			CircleMarker marker = spellSet.findCircleMarker(markerId);
@@ -2684,6 +2694,7 @@ public class MagicController implements Listener
 	 private DynmapCommonAPI					 dynmap							= null;
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;
+	 private DateFormat							 dateFormatter					= new SimpleDateFormat("YY-mm-DD HH:MM:SS");
 	 
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
 	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();

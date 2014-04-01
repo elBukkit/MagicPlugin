@@ -100,6 +100,10 @@ public class Schematic {
 							Object commandValue = rootValues.get("Command").getValue();
 							blockData.setCommandLine((String)commandValue);
 						}
+						if (rootValues.containsKey("CustomName")) {
+							Object nameValue = rootValues.get("CustomName").getValue();
+							blockData.setCustomName((String)nameValue);
+						}
 					}
 				} catch (Throwable ex) {
 					ex.printStackTrace();

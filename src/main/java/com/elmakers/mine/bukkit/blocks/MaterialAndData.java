@@ -19,7 +19,7 @@ public class MaterialAndData {
 	protected byte data;
 	protected String[] signLines = null;
 	protected String commandLine = null;
-	protected String skullName = null;
+	protected String customName = null;
 	protected ItemStack[] inventoryContents = null;
 	protected boolean isValid = true;
 
@@ -61,7 +61,7 @@ public class MaterialAndData {
 		commandLine = other.commandLine;
 		inventoryContents = other.inventoryContents;
 		signLines = other.signLines;
-		skullName = other.skullName;
+		customName = other.customName;
 		isValid = other.isValid;
 	}
 	
@@ -81,7 +81,7 @@ public class MaterialAndData {
 		signLines = null;
 		commandLine = null;
 		inventoryContents = null;
-		skullName = null;
+		customName = null;
 		isValid = true;
 	}
 	
@@ -109,7 +109,7 @@ public class MaterialAndData {
 		signLines = null;
 		commandLine = null;
 		inventoryContents = null;
-		skullName = null;
+		customName = null;
 		
 		BlockState blockState = block.getState();
 		if (blockState instanceof Sign) {
@@ -118,13 +118,14 @@ public class MaterialAndData {
 		} else if (blockState instanceof CommandBlock){
 			CommandBlock command = (CommandBlock)blockState;
 			commandLine = command.getCommand();
+			customName = command.getName();
 		} else if (blockState instanceof InventoryHolder) {
 			InventoryHolder holder = (InventoryHolder)blockState;
 			Inventory holderInventory = holder.getInventory();
 			inventoryContents = holderInventory.getContents();
 		} else if (blockState instanceof Skull) {
 			Skull skull = (Skull)blockState;
-			skullName = skull.getOwner();
+			customName = skull.getOwner();
 		}
 		
 		material = blockMaterial;
@@ -157,6 +158,9 @@ public class MaterialAndData {
 			} else if (blockState instanceof CommandBlock && commandLine != null) {
 				CommandBlock command = (CommandBlock)blockState;
 				command.setCommand(commandLine);
+				if (customName != null) {
+					command.setName(customName);
+				}
 				command.update();
 			} else if (blockState instanceof InventoryHolder && inventoryContents != null) {
 				InventoryHolder holder = (InventoryHolder)blockState;
@@ -169,9 +173,9 @@ public class MaterialAndData {
 						newInventory.setItem(i, item);
 					}
 				}
-			} else if (blockState instanceof Skull && skullName != null) {
+			} else if (blockState instanceof Skull && customName != null) {
 				Skull skull = (Skull)blockState;
-				skull.setOwner(skullName);
+				skull.setOwner(customName);
 				skull.update();
 			}
 		} catch (Exception ex) {
@@ -229,6 +233,10 @@ public class MaterialAndData {
 	
 	public void setSignLines(String[] lines) {
 		signLines = lines.clone();
+	}
+	
+	public void setCustomName(String customName) {
+		this.customName = customName;
 	}
 	
 	public void setInventoryContents(ItemStack[] contents) {

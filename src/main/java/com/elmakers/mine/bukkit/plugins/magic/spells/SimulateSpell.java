@@ -96,7 +96,7 @@ public class SimulateSpell extends BlockSpell {
 				batch.setCommandBlock(target);
 			}
 			
-			batch.setCommandMoveRange(parameters.getInt("move", 8), parameters.getBoolean("drift", false));
+			batch.setCommandMoveRange(parameters.getInt("move", 3), parameters.getBoolean("drift", false));
 		}
 		
 		// delay is in ms, gets converted.

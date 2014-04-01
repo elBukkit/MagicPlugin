@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityCombustEvent;
@@ -643,6 +644,11 @@ public class Mage implements CostReducer
 	{
 		if (sender != null) {
 			this.commandSender = new WeakReference<CommandSender>(sender);
+
+			if (sender instanceof BlockCommandSender) {
+				BlockCommandSender commandBlock = (BlockCommandSender)sender;
+				playerName = commandBlock.getName();
+			}
 		} else if (this.commandSender != null){
 			this.commandSender.clear();
 		}

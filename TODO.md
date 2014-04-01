@@ -2,10 +2,8 @@
 
 ## For 2.9.9
 
- - Wolf house convert didn't work ... needs more dimension? .. uh... yeah it's bad.
- - Change frag icon
- - Add tp to hub button in wolf booth? Maybe get rid of shields...
- 
+ - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
+ - Add timestamp to dynmap spell pop-up
  - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with sold wands, too?
  - Issue selling Hat- may have been fixed?
 
@@ -18,7 +16,7 @@
  - There is a random missing stained glass block in the life schematic .. ha, and remove sign about incident! :)
   - clear button off-center? Something is...
   
- - Life board customization buttons, like in wolf house?
+ - Life board customization buttons, like in wolf house? Sim is off-center, too.
 
  - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Traders losing prices!
