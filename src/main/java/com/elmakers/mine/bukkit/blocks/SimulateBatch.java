@@ -1,10 +1,13 @@
 package com.elmakers.mine.bukkit.blocks;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,6 +18,7 @@ import org.bukkit.block.CommandBlock;
 
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.utilities.NMSUtils;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
@@ -35,8 +39,10 @@ public class SimulateBatch extends VolumeBatch {
 	private Block castCommandBlock;
 	private int commandDistanceSquared;
 	private String castCommand;
+	private String commandName;
 	private int commandMoveRangeSquared = 9;
 	private boolean commandDrift;
+	private boolean commandForce;
 	private boolean commandMoved;
 	private boolean commandPowered;
 	private World world;
@@ -143,6 +149,11 @@ public class SimulateBatch extends VolumeBatch {
 		if (state == SimulationState.SCANNING_COMMAND) {
 			// Process the casting command block first, and only if specially configured to do so.
 			if (includeCommands && castCommandBlock != null) {
+				if (!castCommandBlock.getChunk().isLoaded()) {
+					castCommandBlock.getChunk().load();
+					return processedBlocks;
+				}
+				
 				// Determine if we need to move the command block
 				int neighborCount = getNeighborCount(castCommandBlock, birthMaterial, includeCommands);
 				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
@@ -213,6 +224,10 @@ public class SimulateBatch extends VolumeBatch {
 			int deadIndex = updatingIndex;
 			if (deadIndex >= 0 && deadIndex < deadBlocks.size()) {
 				Block killBlock = deadBlocks.get(deadIndex);
+				if (!killBlock.getChunk().isLoaded()) {
+					killBlock.getChunk().load();
+					return processedBlocks;
+				}
 				modifiedBlocks.add(killBlock);
 				killBlock.setType(deathMaterial);
 				controller.updateBlock(killBlock);
@@ -222,6 +237,10 @@ public class SimulateBatch extends VolumeBatch {
 			int bornIndex = updatingIndex - deadBlocks.size();
 			if (bornIndex >= 0 && bornIndex < bornBlocks.size()) {
 				Block birthBlock = bornBlocks.get(bornIndex);
+				if (!birthBlock.getChunk().isLoaded()) {
+					birthBlock.getChunk().load();
+					return processedBlocks;
+				}
 				modifiedBlocks.add(birthBlock);
 				birthBlock.setType(birthMaterial);
 				controller.updateBlock(birthBlock);
@@ -238,6 +257,10 @@ public class SimulateBatch extends VolumeBatch {
 		
 		if (state == SimulationState.COMMAND) {
 			if (commandDelay == 0 && includeCommands) {
+				if (!castCommandBlock.getChunk().isLoaded()) {
+					castCommandBlock.getChunk().load();
+					return processedBlocks;
+				}
 				// Find a valid block for the command
 				Block testBlock = castCommandBlock;
 				if ((testBlock == null || commandDrift || castCommandBlock.getType() != birthMaterial) && potentialCommandBlocks.size() > 0) {
@@ -266,7 +289,11 @@ public class SimulateBatch extends VolumeBatch {
 				if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
 					CommandBlock copyCommand = (CommandBlock)commandData;
 					copyCommand.setCommand(castCommand);
+					copyCommand.setName(commandName);
 					copyCommand.update();
+					
+					// Also move the mage
+					mage.setLocation(castCommandBlock.getLocation());
 				} else {
 					castCommandBlock = null;
 				}
@@ -279,6 +306,32 @@ public class SimulateBatch extends VolumeBatch {
 					if (powerDirection != null) {
 						Block powerBlock = castCommandBlock.getRelative(powerDirection);
 						powerBlock.setType(POWER_MATERIAL);
+						
+						// We're going to do some Deep Magic here to keep these things running
+						// while players are offline. This should maybe be a parameter or config option.
+						if (commandForce) {
+							try {
+								Object worldHandle = NMSUtils.getHandle(castCommandBlock.getWorld());
+								Field playersField = worldHandle.getClass().getField("players");
+								
+								@SuppressWarnings("rawtypes")
+								List players = (List)playersField.get(worldHandle);
+								if (players != null && players.size() == 0) {
+									// Invoke the command directly, but only if it's a cast command.
+									if (castCommand.startsWith("cast ")) {
+										String[] commandLine = StringUtils.split(castCommand.substring(5), ' ');
+										if (commandLine.length > 0) {
+											String[] parameters = (String[])ArrayUtils.subarray(commandLine, 1, commandLine.length);
+											controller.cast(mage, commandLine[0], parameters, null, null);
+											Location location = castCommandBlock.getLocation();
+											controller.getLogger().info(commandName + " cast " + commandLine + " at " + location.getWorld().getName() + ": " + location.toVector());
+										}
+									}
+								}
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
+						}
 					}
 				}
 				state = SimulationState.FINISHED;
@@ -309,14 +362,17 @@ public class SimulateBatch extends VolumeBatch {
 		if (castCommandBlock.getType() == Material.COMMAND) {
 			BlockState commandData = castCommandBlock.getState();
 			if (commandData != null && commandData instanceof CommandBlock) {
-				castCommand = ((CommandBlock)commandData).getCommand();
+				CommandBlock commandBlock = ((CommandBlock)commandData);
+				castCommand = commandBlock.getCommand();
+				commandName = commandBlock.getName();
 			}
 			includeCommands = castCommand != null && castCommand.length() > 0;
 		}
 	}
 	
-	public void setCommandMoveRange(int commandRadius, boolean drift) {
+	public void setCommandMoveRange(int commandRadius, boolean drift, boolean force) {
 		commandDrift = drift;
+		commandForce = force;
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
 	

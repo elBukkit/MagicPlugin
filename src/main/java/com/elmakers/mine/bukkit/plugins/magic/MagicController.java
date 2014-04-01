@@ -198,10 +198,6 @@ public class MagicController implements Listener
 		if (commandSender instanceof Player) {
 			mage.setPlayer((Player)commandSender);
 		}
-		if (commandSender instanceof BlockCommandSender) {
-			BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
-			mage.setLocation(commandBlock.getBlock().getLocation());
-		}
 		return mage;
 	}
 	
@@ -2515,6 +2511,45 @@ public class MagicController implements Listener
 		return lostWands.values();
 	}
 	
+	public boolean cast(Mage mage, String spellName, String[] parameters, CommandSender sender, Player player)
+	{
+		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
+		Location targetLocation = null;
+		if (mage == null) {
+			CommandSender mageController = player == null ? sender : player;
+			if (sender instanceof BlockCommandSender) {
+				targetLocation = ((BlockCommandSender)sender).getBlock().getLocation();
+			}
+			if (sender instanceof Player) {
+				targetLocation = ((Player)player).getLocation();
+			}
+			mage = getMage(mageController);
+		}
+		
+		Spell spell = mage.getSpell(spellName, usePermissions);
+		if (spell == null)
+		{
+			if (sender != null) {
+				sender.sendMessage("Spell " + spellName + " unknown");
+			}
+			return false;
+		}
+
+		// Make it free and skip cooldowns, if configured to do so.
+		toggleCastCommandOverrides(mage, true);
+		spell.cast(parameters, targetLocation);
+		toggleCastCommandOverrides(mage, false);
+		if (sender != player && sender != null) {
+			String castMessage = "Cast " + spellName;
+			if (player != null) {
+				castMessage += " on " + player.getName();
+			}
+			sender.sendMessage(castMessage);
+		}
+
+		return true;
+	}
+	
 	public void onCast(Mage mage, Spell spell, SpellResult result) {
 		if (dynmapShowSpells && dynmap != null && dynmap.markerAPIInitialized()) {
 			MarkerAPI markers = dynmap.getMarkerAPI();
@@ -2694,7 +2729,7 @@ public class MagicController implements Listener
 	 private DynmapCommonAPI					 dynmap							= null;
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;
-	 private DateFormat							 dateFormatter					= new SimpleDateFormat("YY-mm-DD HH:MM:SS");
+	 private DateFormat							 dateFormatter					= new SimpleDateFormat("yy-MM-dd HH:mm");
 	 
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
 	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();

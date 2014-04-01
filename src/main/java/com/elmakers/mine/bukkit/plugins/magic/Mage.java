@@ -648,6 +648,7 @@ public class Mage implements CostReducer
 			if (sender instanceof BlockCommandSender) {
 				BlockCommandSender commandBlock = (BlockCommandSender)sender;
 				playerName = commandBlock.getName();
+				setLocation(commandBlock.getBlock().getLocation());
 			}
 		} else if (this.commandSender != null){
 			this.commandSender.clear();
