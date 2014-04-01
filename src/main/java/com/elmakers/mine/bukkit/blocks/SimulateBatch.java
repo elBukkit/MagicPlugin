@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -19,26 +20,29 @@ public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
+	private static BlockFace[] powerFaces = { BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		SCANNING, UPDATING, COMMAND, CLEANUP, FINISHED
+		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND, FINISHED
 	};
 	
-	private static Material POWER_MATERAIL = Material.REDSTONE_BLOCK;
+	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
 	
 	private static int COMMAND_UPDATE_DELAY = 0;
+	private static int COMMAND_POWER_DELAY = 1;
 	
 	private Mage mage;
-	private BlockSpell spell;
 	private Block castCommandBlock;
 	private int commandDistanceSquared;
 	private String castCommand;
-	private Block commandTarget;
+	private int commandMoveRangeSquared = 8;
+	private boolean commandDrift;
+	private boolean commandMoved;
+	private boolean commandPowered;
 	private World world;
 	private Material birthMaterial;
 	private Material deathMaterial;
 	private boolean includeCommands;
-	private BlockFace powerDirection;
 	private int startX;
 	private int startZ;
 	private int startY;
@@ -51,20 +55,19 @@ public class SimulateBatch extends VolumeBatch {
 	private int yRadius;
 	private int updatingIndex;
 	private int commandDelay;
-	private int blockCount;
 	private ArrayList<Boolean> liveCounts = new ArrayList<Boolean>();
 	private ArrayList<Boolean> birthCounts = new ArrayList<Boolean>();
-
+	private Random random = new Random();
 	private SimulationState state;
 
-	BlockList deadBlocks = new BlockList();
-	BlockList bornBlocks = new BlockList();
-	BlockList modifiedBlocks = new BlockList();
+	private List<Block> deadBlocks = new ArrayList<Block>();
+	private List<Block> bornBlocks = new ArrayList<Block>();
+	private List<Block> potentialCommandBlocks = new ArrayList<Block>();
+	private BlockList modifiedBlocks = new BlockList();
 	
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, Material birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
 		super(spell.getMage().getController(), center.getWorld().getName());
 		this.mage = spell.getMage();
-		this.spell = spell;
 		this.yRadius = yRadius;
 		
 		this.birthMaterial = birth;
@@ -83,6 +86,8 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		this.world = center.getWorld();
 		includeCommands = false;
+		commandMoved = false;
+		commandDrift = false;
 		
 		startY = center.getBlockY() - yRadius;
 		endY = center.getBlockY() + yRadius;
@@ -95,12 +100,10 @@ public class SimulateBatch extends VolumeBatch {
 		y = startY;
 		z = startZ;
 		
-		state = SimulationState.SCANNING;
+		state = SimulationState.SCANNING_COMMAND;
 		updatingIndex = 0;
 		commandDistanceSquared = 0;
 		commandDelay = 0;
-		powerDirection = null;
-		blockCount = 0;
 	}
 
 	public int size() {
@@ -108,12 +111,61 @@ public class SimulateBatch extends VolumeBatch {
 	}
 	
 	public int remaining() {
-		return (endX - x) * (endZ - z);
+		return (endX - x) * (endZ - z) * (endY - y);
+	}
+	
+	protected void checkForPotentialCommand(Block block) {
+		if (includeCommands && (commandMoved || commandDrift)) {
+			int distanceSquared = (int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation()));
+			if (commandMoved && 
+			(
+				castCommandBlock == null ||
+				distanceSquared < commandDistanceSquared)
+			)
+			{
+				castCommandBlock = block;
+				commandDistanceSquared = distanceSquared;
+			}
+			
+			if (distanceSquared < commandMoveRangeSquared) {
+				potentialCommandBlocks.add(block);
+			}
+		}
 	}
 
 	@Override
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
+		if (state == SimulationState.SCANNING_COMMAND) {
+			// Process the casting command block first, and only if specially configured to do so.
+			if (includeCommands && castCommandBlock != null) {
+				// Determine if we need to move the command block
+				int neighborCount = getNeighborCount(castCommandBlock, birthMaterial, includeCommands);
+				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
+					commandMoved = true;
+				}
+				
+				// Check for power blocks
+				for (BlockFace powerFace : powerFaces) {
+					Block checkForPower = castCommandBlock.getRelative(powerFace);
+					if (checkForPower.getType() == POWER_MATERIAL) {
+						checkForPower.setType(deathMaterial);
+						commandPowered = true;
+					}
+				}
+				
+				// Make this a normal block so the sim will process it
+				// this also serves to reset the command block for the next tick, if it lives.
+				castCommandBlock.setType(birthMaterial);
+			} else {
+				castCommandBlock = null;
+				includeCommands = false;
+			}
+			
+			processedBlocks++;
+			state = SimulationState.SCANNING;
+		}
+		
 		while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
 			Block block = world.getBlockAt(x, y, z);
 			if (!block.getChunk().isLoaded()) {
@@ -127,26 +179,13 @@ public class SimulateBatch extends VolumeBatch {
 				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
 					deadBlocks.add(block);
 				} else {
-					blockCount++;
+					checkForPotentialCommand(block);
 				}
 			} else if (blockMaterial == deathMaterial) {
 				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
 				if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
 					bornBlocks.add(block);
-					blockCount++;
-				}
-			} else if (includeCommands && blockMaterial == Material.COMMAND && castCommandBlock != null && BlockData.getBlockId(block) == BlockData.getBlockId(castCommandBlock)) {
-				// Only process the casting command block.
-				
-				// Treat this like a living cell.
-				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
-					deadBlocks.add(block);
-				} else {
-					// But also make sure to replace it if it's not being re-born.
-					// This will ensure that the command gets re-run if it's still attached to redstone.
-					commandTarget = block;
-					blockCount++;
+					checkForPotentialCommand(block);
 				}
 			}
 			
@@ -160,54 +199,32 @@ public class SimulateBatch extends VolumeBatch {
 				z = startZ;
 				y++;
 			}
+			
 			if (y > endY) {
-				// Clear the command block's power source, if it exists (only spports redstone blocks at the moment)
-				if (castCommandBlock != null && castCommandBlock.getType() == Material.COMMAND) {
-					if (castCommandBlock.getRelative(BlockFace.DOWN).getType() == POWER_MATERAIL) {
-						powerDirection = BlockFace.DOWN;
-					} else if (castCommandBlock.getRelative(BlockFace.UP).getType() == POWER_MATERAIL) {
-						powerDirection = BlockFace.UP;
-					}
-					
-					if (powerDirection != null) {
-						Block powerBlock = castCommandBlock.getRelative(powerDirection);
-						modifiedBlocks.add(powerBlock);
-						powerBlock.setType(Material.AIR);
-					}
-				}
-				
 				state = SimulationState.UPDATING;
 			}
 		}
 		
 		while (state == SimulationState.UPDATING && processedBlocks <= maxBlocks) {
-			List<BlockData> deadBlockList = deadBlocks.getBlockList();
-			if (deadBlockList != null && updatingIndex < deadBlockList.size()) {
-				BlockData killBlock = deadBlockList.get(updatingIndex);
+			int deadIndex = updatingIndex;
+			if (deadIndex >= 0 && deadIndex < deadBlocks.size()) {
+				Block killBlock = deadBlocks.get(deadIndex);
 				modifiedBlocks.add(killBlock);
-				Block block = killBlock.getBlock();
-				block.setType(deathMaterial);
-				controller.updateBlock(block);
+				killBlock.setType(deathMaterial);
+				controller.updateBlock(killBlock);
 				processedBlocks++;
 			}
 			
-			List<BlockData> bornBlockList = bornBlocks.getBlockList();
 			int bornIndex = updatingIndex - deadBlocks.size();
-			if (bornBlockList != null && bornIndex >= 0 && bornIndex < bornBlockList.size()) {
-				BlockData birthBlock = bornBlockList.get(bornIndex);
+			if (bornIndex >= 0 && bornIndex < bornBlocks.size()) {
+				Block birthBlock = bornBlocks.get(bornIndex);
 				modifiedBlocks.add(birthBlock);
-				Block block = birthBlock.getBlock();
-				if (includeCommands) {
-					if (commandTarget == null || block.getLocation().distanceSquared(commandTarget.getLocation()) < commandDistanceSquared) {
-						commandTarget = block;
-					}
-				}
-				block.setType(birthMaterial);
-				controller.updateBlock(block);
+				birthBlock.setType(birthMaterial);
+				controller.updateBlock(birthBlock);
 			}
 			
 			updatingIndex++;
-			if (updatingIndex > deadBlocks.size() + bornBlocks.size()) {
+			if (updatingIndex >= deadBlocks.size() + bornBlocks.size()) {
 				state = SimulationState.COMMAND;
 				
 				// Wait at least a tick before re-populating the command block.
@@ -216,44 +233,53 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		if (state == SimulationState.COMMAND) {
-			if (commandTarget != null && commandDelay == 0) {
-				commandTarget.setType(Material.AIR);
-			}
-			commandDelay++;
-			if (commandDelay >= COMMAND_UPDATE_DELAY) {
-				if (commandTarget != null) {
-					commandTarget.setType(Material.COMMAND);
-					BlockState commandData = commandTarget.getState();
-					if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
-						CommandBlock copyCommand = (CommandBlock)commandData;
-						copyCommand.setCommand(castCommand);
-						copyCommand.update();
-						
-						// Continue to power the command block if it was initially powered by a 
-						// redstone block above or below it.
-						// because this can cause overlapping commands and badness.
-						if (powerDirection != null) {
-							Block powerBlock = commandTarget.getRelative(powerDirection);
-							if (spell.isDestructible(powerBlock)) {
-								commandTarget.getRelative(powerDirection).setType(POWER_MATERAIL);
-								modifiedBlocks.add(powerBlock);
-							}
+			if (commandDelay == 0 && includeCommands) {
+				// Find a valid block for the command
+				Block testBlock = castCommandBlock;
+				if ((testBlock == null || commandDrift || castCommandBlock.getType() != birthMaterial) && potentialCommandBlocks.size() > 0) {
+					testBlock = findPotentialCommandLocation();
+				}
+				
+				if (testBlock != null) {
+					if (commandPowered) {
+						BlockFace powerFace = findPowerLocation(testBlock, deathMaterial);
+						while (powerFace == null && potentialCommandBlocks.size() > 0) {
+							testBlock = findPotentialCommandLocation();
+							powerFace = findPowerLocation(testBlock, deathMaterial);
 						}
+						
+						if (powerFace != null) {
+							castCommandBlock = testBlock;
+						}
+					} else {
+						castCommandBlock = testBlock;
 					}
 				}
-				state = SimulationState.CLEANUP;
 			}
-			return maxBlocks;
-		}
-		
-		if (state == SimulationState.CLEANUP) {
-			// Remove the power block if the simulation has collapsed.
-			if (blockCount == 0 && powerDirection != null && commandTarget != null && commandTarget.getRelative(powerDirection).getType() == POWER_MATERAIL) {
-				Block powerBlock = commandTarget.getRelative(powerDirection);
-				modifiedBlocks.add(powerBlock);
-				powerBlock.setType(Material.AIR);
+			if (commandDelay == COMMAND_UPDATE_DELAY && castCommandBlock != null && includeCommands) {
+				castCommandBlock.setType(Material.COMMAND);
+				BlockState commandData = castCommandBlock.getState();
+				if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
+					CommandBlock copyCommand = (CommandBlock)commandData;
+					copyCommand.setCommand(castCommand);
+					copyCommand.update();
+				} else {
+					castCommandBlock = null;
+				}
 			}
-			state = SimulationState.FINISHED;
+			if (commandDelay >= COMMAND_POWER_DELAY) {
+				// Continue to power the command block
+				// Find a new direction, replace existing block
+				if (commandPowered && castCommandBlock != null && includeCommands) {
+					BlockFace powerDirection = findPowerLocation(castCommandBlock, deathMaterial);
+					if (powerDirection != null) {
+						Block powerBlock = castCommandBlock.getRelative(powerDirection);
+						powerBlock.setType(POWER_MATERIAL);
+					}
+				}
+				state = SimulationState.FINISHED;
+			}
+			commandDelay++;
 			return maxBlocks;
 		}
 		
@@ -262,6 +288,16 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		return processedBlocks;
+	}
+	
+	protected Block findPotentialCommandLocation() {
+		Block potential = null;
+		if (potentialCommandBlocks.size() > 0) {
+			int index = random.nextInt(potentialCommandBlocks.size());
+			potential = potentialCommandBlocks.get(index);
+			potentialCommandBlocks.remove(index);
+		}
+		return potential;
 	}
 
 	public void setCommandBlock(Block block) {
@@ -275,10 +311,24 @@ public class SimulateBatch extends VolumeBatch {
 		}
 	}
 	
+	public void setCommandMoveRange(int commandRadius, boolean drift) {
+		commandDrift = drift;
+		commandMoveRangeSquared = commandRadius * commandRadius;
+	}
+	
 	protected boolean isAlive(Block block, Material liveMaterial, boolean includeCommands)
 	{
 		Material neighborType = block.getType();
-		return (neighborType == liveMaterial || (includeCommands && neighborType == Material.COMMAND));
+		return (neighborType == liveMaterial || (includeCommands && (neighborType == Material.COMMAND || neighborType == POWER_MATERIAL)));
+	}
+	
+	protected BlockFace findPowerLocation(Block block, Material targetMaterial) {
+		for (BlockFace face : powerFaces) {
+			if (block.getRelative(face).getType() == targetMaterial) {
+				return face;
+			}
+		}
+		return null;
 	}
 
 	protected int getNeighborCount(Block block, Material liveMaterial, boolean includeCommands) {

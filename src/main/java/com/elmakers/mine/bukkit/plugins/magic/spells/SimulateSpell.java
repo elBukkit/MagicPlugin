@@ -87,7 +87,7 @@ public class SimulateSpell extends BlockSpell {
 		
 		final SimulateBatch batch = new SimulateBatch(this, target.getLocation(), radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
 		
-		boolean includeCommands = parameters.getBoolean("commands", true);
+		boolean includeCommands = parameters.getBoolean("auto", false);
 		if (includeCommands) {
 			if (mage.getCommandSender() instanceof BlockCommandSender) {
 				BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
@@ -95,12 +95,15 @@ public class SimulateSpell extends BlockSpell {
 			} else if (target.getType() == Material.COMMAND) {
 				batch.setCommandBlock(target);
 			}
+			
+			batch.setCommandMoveRange(parameters.getInt("move", 8), parameters.getBoolean("drift", false));
 		}
 		
 		// delay is in ms, gets converted.
 		int delay = parameters.getInt("delay", 0);
 		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
 		delay /= 50;
+		
 		if (delay > 0 && taskId == null) {
 			taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 				public void run() {
@@ -111,7 +114,6 @@ public class SimulateSpell extends BlockSpell {
 		} else {
 			mage.addPendingBlockBatch(batch);
 		}
-		
 		return SpellResult.CAST;
 	}
 }
