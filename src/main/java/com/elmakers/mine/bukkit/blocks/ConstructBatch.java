@@ -49,6 +49,7 @@ public class ConstructBatch extends VolumeBatch {
 	private final Set<Material> attachablesWall;
 	private final Set<Material> attachablesDouble;
 	private final Set<Material> delayed;
+	private Map<String, String> commandMap;
 	
 	private boolean finishedNonAttached = false;
 	private boolean finishedAttached = false;
@@ -477,6 +478,15 @@ public class ConstructBatch extends VolumeBatch {
 		if (brush.isDifferent(block)) {			
 			updateBlock(center.getWorld().getName(), x, y, z);
 			constructedBlocks.add(block);
+			
+			// Check for command overrides
+			if (commandMap != null && brush.getMaterial() == Material.COMMAND) {
+				String commandKey = brush.getCommandLine();
+				if (commandKey != null && commandKey.length() > 0 && commandMap.containsKey(commandKey)) {
+					brush.setCommandLine(commandMap.get(commandKey));
+				}
+			}
+			
 			brush.modify(block);
 			if (spawnFallingBlocks) {
 				FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
@@ -491,5 +501,13 @@ public class ConstructBatch extends VolumeBatch {
 	
 	public void setTimeToLive(int timeToLive) {
 		this.constructedBlocks.setTimeToLive(timeToLive);
+	}
+	
+	public void addCommandMapping(String key, String command) {
+		if (commandMap == null) {
+			commandMap = new HashMap<String, String>();
+		}
+		
+		commandMap.put(key,  command);
 	}
 }

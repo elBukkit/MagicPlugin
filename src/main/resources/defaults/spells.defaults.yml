@@ -261,8 +261,33 @@ glider:
         cooldown: 60000
         material: schematic|glider
         transparent: transparent_to_construction
+        commands:
+          glider_simulate: cast simulate target self material obsidian auto true delay 500 radius 3
     costs:
         xp: 500
+virus:
+    icon: sapling:4
+    category: dark
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: true
+        check_destructible: true
+        range: 32
+        radius: 5
+        type: sphere
+        cooldown: 120000
+        material: schematic|virus
+        transparent: transparent_to_construction
+        commands:
+          virus_simulate: cast simulate3 target self material obsidian auto true delay 1000 radius 8 yradius 8 drift true
+    costs:
+        xp: 1500
 shell:
     icon: ender_pearl
     category: earthbending
@@ -2433,6 +2458,26 @@ wolfhouse:
         dmz: 10
         mm: erase 
         transparent: transparent_to_construction
+        commands:
+          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 dtx -5 dty 23 dtz 11 dmx 0 dmy -46 dmz -1 r 52 mm dirt
+          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 dtx -5 dty 23 dtz 11 dmx 0 dmy -46 dmz -1 r 52 id water,stationary_water
+          wolf_dome: castp @p[r=7] shell type sphere m stained_glass:15 cd true md 100 dtx -5 dty 16 dtz 12 r 35
+          wolf_shields: castp @p[r=7] shell m obsidian cd true md 100 dtx -5 dty 16 dtz 12 r 37
+          wolf_undo: castp @p[r=6] undo
+          wolf_commit: castp @p[r=6] commit
+          wolf_nothing: msg @p[r=6] Nothing here!
+          wolf_clear: castp @p[r=7] blob type sphere m erase cd true md 100 dtx -5 dty 15 dtz 12 r 36
+          wolf_destruct: castp @p[r=7] blob m erase cd true md 130 dtx -5 dty 24 dtz 11 r 60
+          wolf_convert: castp @p convert radius 64 md 128 dty -1 dmx -1 dmz 2 m copy
+          wolf_phase: castp @p[r=2] phase
+          wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
+          wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0
+          wolf_tp_hub:
+          wolf_tp_booth:
+          wolf_tp_enchanting: tp @p[r=3] ~-5 ~35 ~-17
+          wolf_recall_wand: castp @p[r=2] recall type wand
+          wolf_recall_death: castp @p[r=2] recall type death
+          wolf_recall_spawn: castp @p[r=2] recall type spawn
     costs:
         xp: 1000
         

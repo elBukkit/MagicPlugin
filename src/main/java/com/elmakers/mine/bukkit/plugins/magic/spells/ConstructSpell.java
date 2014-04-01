@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spells;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -133,6 +134,17 @@ public class ConstructSpell extends BrushSpell
 		}
 
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, !hollow, falling, orientTo);
+		
+		// Check for command block overrides
+		if (parameters.containsKey("commands"))
+		{
+			ConfigurationNode commandMap = parameters.getNode("commands");
+			List<String> keys = commandMap.getKeys();
+			for (String key : keys) {
+				batch.addCommandMapping(key, commandMap.getString(key));
+			}
+		} 
+		
 		if (forceVector != null) {
 			batch.setFallingBlockVelocity(forceVector);
 		}

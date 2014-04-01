@@ -670,6 +670,10 @@ spells:
         name: Glider
         description: Create a powerful automoton
         cast: It's alive!
+    virus:
+        name: Virus
+        description: You probably don't want to cast this
+        cast: What have you done?
     tent:
         name: Tent
         description: Create a minimal house

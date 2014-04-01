@@ -5,6 +5,7 @@
  - Add "Hat" spell.
  - Add "lantern" schematic. Add several of the newer spells (Fly, Cluster Bomb, etc) to the enchant list.
  - Add "Simulate 3D" spell.
+ - Add "Virus" spell. Mad science, be careful!
  - Allow clicking (or hotbar button) on an empty space to clear active spell. Useful for enchanted swords and other tools.
  - Hopefully really fix my pesky undo bug (Block data hash code fail!)
  - Add customization station in Wolf House hub room.

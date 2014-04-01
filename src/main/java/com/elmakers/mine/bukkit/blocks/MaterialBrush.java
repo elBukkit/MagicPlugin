@@ -688,4 +688,14 @@ public class MaterialBrush extends MaterialBrushData {
 			
 		return copyEntities;
 	}
+	
+	public String getCommandLine()
+	{
+		return commandLine;
+	}
+	
+	public void setCommandLine(String command)
+	{
+		this.commandLine = command;
+	}
 }

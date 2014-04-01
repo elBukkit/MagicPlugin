@@ -750,10 +750,8 @@ engineer:
         - schematic:elder_tree
         - schematic:garden_house
         - schematic:beacon
-        - schematic:flare_beacon
         - schematic:cage
         - schematic:tent
-        - schematic:wolfhouse
         - schematic:stash_chest
         - schematic:lantern
 battle:
@@ -1595,11 +1593,7 @@ wolf:
         - schematic:garden_house
         - schematic:stash_chest
         - schematic:lantern
-        - schematic:life
-        - schematic:glider
-        - schematic:flare_beacon
         - schematic:beacon
-        - schematic:wolfhouse
 CoOoD3R:
    hidden: true
    modifiable: true
