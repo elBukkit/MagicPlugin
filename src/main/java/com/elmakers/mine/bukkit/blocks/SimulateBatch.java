@@ -324,7 +324,7 @@ public class SimulateBatch extends VolumeBatch {
 											String[] parameters = (String[])ArrayUtils.subarray(commandLine, 1, commandLine.length);
 											controller.cast(mage, commandLine[0], parameters, null, null);
 											Location location = castCommandBlock.getLocation();
-											controller.getLogger().info(commandName + " cast " + commandLine + " at " + location.getWorld().getName() + ": " + location.toVector());
+											controller.getLogger().info(commandName + " cast " + castCommand + " at " + location.getWorld().getName() + ": " + location.toVector());
 										}
 									}
 								}
