@@ -8,6 +8,7 @@
  - Allow clicking (or hotbar button) on an empty space to clear active spell. Useful for enchanted swords and other tools.
  - Hopefully really fix my pesky undo bug (Block data hash code fail!)
  - Add customization station in Wolf House hub room.
+ - Two-phase undo for cleaner cleanup (attachable blocks)
  
 ## 2.9.8.1
 
