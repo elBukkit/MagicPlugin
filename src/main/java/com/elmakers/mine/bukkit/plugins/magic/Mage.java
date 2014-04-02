@@ -773,13 +773,18 @@ public class Mage implements CostReducer
 	}
 	
 	public void processPendingBatches(int maxBlockUpdates) {
-		int updated = 0;
-		while (updated < maxBlockUpdates && pendingBatches.size() > 0) {
-			BlockBatch batch = pendingBatches.getFirst();
-			int batchUpdated = batch.process(maxBlockUpdates);
-			updated += batchUpdated;
-			if (batch.isFinished()) {
-				pendingBatches.removeFirst();
+		if (pendingBatches.size() > 0) {
+			int updated = 0;
+			List<BlockBatch> processBatches = new ArrayList<BlockBatch>(pendingBatches);
+			pendingBatches.clear();
+			for (BlockBatch batch : processBatches) {
+				int batchUpdated = batch.process(maxBlockUpdates - updated);
+				updated += batchUpdated;
+				if (!batch.isFinished()) {
+					pendingBatches.add(batch);
+				}
+				
+				if (updated >= maxBlockUpdates) break;
 			}
 		}
 		
