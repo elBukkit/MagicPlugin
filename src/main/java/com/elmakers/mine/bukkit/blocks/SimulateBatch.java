@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -37,6 +36,7 @@ public class SimulateBatch extends VolumeBatch {
 	private static int COMMAND_POWER_DELAY = 1;
 	
 	private Mage mage;
+	private BlockSpell spell;
 	private Block castCommandBlock;
 	private Block commandTargetBlock;
 	private int commandDistanceSquared;
@@ -49,8 +49,9 @@ public class SimulateBatch extends VolumeBatch {
 	private World world;
 	private Material birthMaterial;
 	private Material deathMaterial;
-	private boolean includeCommands;
+	private Material powerSimMaterialBackup;
 	private Material powerSimMaterial;
+	private boolean includeCommands;
 	private int startX;
 	private int startZ;
 	private int startY;
@@ -75,6 +76,7 @@ public class SimulateBatch extends VolumeBatch {
 	
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, Material birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
 		super(spell.getMage().getController(), center.getWorld().getName());
+		this.spell = spell;
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
 		
@@ -82,6 +84,7 @@ public class SimulateBatch extends VolumeBatch {
 		this.deathMaterial = death;
 		
 		this.powerSimMaterial = birthMaterial;
+		this.powerSimMaterialBackup = deathMaterial;
 		
 		for (Integer liveCount : liveCounts) {
 			while (this.liveCounts.size() < liveCount) {
@@ -295,13 +298,28 @@ public class SimulateBatch extends VolumeBatch {
 				// Continue to power the command block
 				// Find a new direction, replace existing block
 				if (commandPowered && commandTargetBlock != null && includeCommands) {
+					// First try and replace a live cell
 					BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
+					// Next try to replace a dead cell, which will affect the simulation outcome
+					// but this is perhaps better than it dying?
+					if (powerDirection == null) {
+						powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
+					}
+					// If it's *still* not valid, search for something breakable.
+					for (BlockFace face : powerFaces) {
+						if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
+							powerDirection = face;
+							break;
+						}
+					}
+					
 					if (powerDirection != null) {
 						Block powerBlock = commandTargetBlock.getRelative(powerDirection);
 						powerBlock.setType(POWER_MATERIAL);
 						
 						// We're going to do some Deep Magic here to keep these things running
 						// while players are offline. This should maybe be a parameter or config option.
+						// TODO: Maybe replace this with a chunk load trigger mechanism?
 						if (commandForce) {
 							try {
 								Object worldHandle = NMSUtils.getHandle(commandTargetBlock.getWorld());
