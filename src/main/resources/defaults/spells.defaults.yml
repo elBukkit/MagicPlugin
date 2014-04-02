@@ -285,7 +285,7 @@ virus:
         material: schematic|virus
         transparent: transparent_to_construction
         commands:
-          virus_simulate: cast simulate3 target self material obsidian auto true delay 1000 radius 8 yradius 8 drift true
+          virus_simulate: cast simulate3 target self m obsidian auto true delay 1000 radius 8 yradius 8 drift true bu true
     costs:
         xp: 1500
 life:

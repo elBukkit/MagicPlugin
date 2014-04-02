@@ -2,6 +2,7 @@
 
 ## For 2.9.9
 
+ - Hat should drop existing item on the ground
  - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
  - Add timestamp to dynmap spell pop-up
  - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with sold wands, too?

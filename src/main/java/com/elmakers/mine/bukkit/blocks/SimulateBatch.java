@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -37,13 +38,13 @@ public class SimulateBatch extends VolumeBatch {
 	
 	private Mage mage;
 	private Block castCommandBlock;
+	private Block commandTargetBlock;
 	private int commandDistanceSquared;
 	private String castCommand;
 	private String commandName;
 	private int commandMoveRangeSquared = 9;
 	private boolean commandDrift;
 	private boolean commandForce;
-	private boolean commandMoved;
 	private boolean commandPowered;
 	private World world;
 	private Material birthMaterial;
@@ -96,7 +97,6 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		this.world = center.getWorld();
 		includeCommands = false;
-		commandMoved = false;
 		commandDrift = false;
 		
 		startY = center.getBlockY() - yRadius;
@@ -125,15 +125,15 @@ public class SimulateBatch extends VolumeBatch {
 	}
 	
 	protected void checkForPotentialCommand(Block block) {
-		if (includeCommands && (commandMoved || commandDrift)) {
+		if (includeCommands) {
 			int distanceSquared = (int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation()));
-			if (commandMoved && 
+			if (
 			(
-				castCommandBlock == null ||
+				commandTargetBlock == null ||
 				distanceSquared < commandDistanceSquared)
 			)
 			{
-				castCommandBlock = block;
+				commandTargetBlock = block;
 				commandDistanceSquared = distanceSquared;
 			}
 			
@@ -154,11 +154,7 @@ public class SimulateBatch extends VolumeBatch {
 					return processedBlocks;
 				}
 				
-				// Determine if we need to move the command block
-				int neighborCount = getNeighborCount(castCommandBlock, birthMaterial, includeCommands);
-				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
-					commandMoved = true;
-				}
+				commandTargetBlock = castCommandBlock;
 				
 				// Check for power blocks
 				for (BlockFace powerFace : powerFaces) {
@@ -172,9 +168,6 @@ public class SimulateBatch extends VolumeBatch {
 				// Make this a normal block so the sim will process it
 				// this also serves to reset the command block for the next tick, if it lives.
 				castCommandBlock.setType(birthMaterial);
-			} else {
-				castCommandBlock = null;
-				includeCommands = false;
 			}
 			
 			processedBlocks++;
@@ -256,14 +249,14 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		if (state == SimulationState.COMMAND) {
-			if (commandDelay == 0 && includeCommands) {
-				if (!castCommandBlock.getChunk().isLoaded()) {
-					castCommandBlock.getChunk().load();
+			if (commandDelay == 0 && includeCommands && commandTargetBlock != null) {
+				if (!commandTargetBlock.getChunk().isLoaded()) {
+					commandTargetBlock.getChunk().load();
 					return processedBlocks;
 				}
 				// Find a valid block for the command
-				Block testBlock = castCommandBlock;
-				if ((testBlock == null || commandDrift || castCommandBlock.getType() != birthMaterial) && potentialCommandBlocks.size() > 0) {
+				Block testBlock = commandTargetBlock;
+				if ((testBlock == null || commandDrift || testBlock.getType() != birthMaterial) && potentialCommandBlocks.size() > 0) {
 					testBlock = findPotentialCommandLocation();
 				}
 				
@@ -276,16 +269,16 @@ public class SimulateBatch extends VolumeBatch {
 						}
 						
 						if (powerFace != null) {
-							castCommandBlock = testBlock;
+							commandTargetBlock = testBlock;
 						}
 					} else {
-						castCommandBlock = testBlock;
+						commandTargetBlock = testBlock;
 					}
 				}
 			}
-			if (commandDelay == COMMAND_UPDATE_DELAY && castCommandBlock != null && includeCommands) {
-				castCommandBlock.setType(Material.COMMAND);
-				BlockState commandData = castCommandBlock.getState();
+			if (commandDelay == COMMAND_UPDATE_DELAY && commandTargetBlock != null && includeCommands) {
+				commandTargetBlock.setType(Material.COMMAND);
+				BlockState commandData = commandTargetBlock.getState();
 				if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
 					CommandBlock copyCommand = (CommandBlock)commandData;
 					copyCommand.setCommand(castCommand);
@@ -293,25 +286,25 @@ public class SimulateBatch extends VolumeBatch {
 					copyCommand.update();
 					
 					// Also move the mage
-					mage.setLocation(castCommandBlock.getLocation());
+					mage.setLocation(commandTargetBlock.getLocation());
 				} else {
-					castCommandBlock = null;
+					commandTargetBlock = null;
 				}
 			}
 			if (commandDelay >= COMMAND_POWER_DELAY) {
 				// Continue to power the command block
 				// Find a new direction, replace existing block
-				if (commandPowered && castCommandBlock != null && includeCommands) {
-					BlockFace powerDirection = findPowerLocation(castCommandBlock, powerSimMaterial);
+				if (commandPowered && commandTargetBlock != null && includeCommands) {
+					BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
 					if (powerDirection != null) {
-						Block powerBlock = castCommandBlock.getRelative(powerDirection);
+						Block powerBlock = commandTargetBlock.getRelative(powerDirection);
 						powerBlock.setType(POWER_MATERIAL);
 						
 						// We're going to do some Deep Magic here to keep these things running
 						// while players are offline. This should maybe be a parameter or config option.
 						if (commandForce) {
 							try {
-								Object worldHandle = NMSUtils.getHandle(castCommandBlock.getWorld());
+								Object worldHandle = NMSUtils.getHandle(commandTargetBlock.getWorld());
 								Field playersField = worldHandle.getClass().getField("players");
 								
 								@SuppressWarnings("rawtypes")
@@ -323,7 +316,7 @@ public class SimulateBatch extends VolumeBatch {
 										if (commandLine.length > 0) {
 											String[] parameters = (String[])ArrayUtils.subarray(commandLine, 1, commandLine.length);
 											controller.cast(mage, commandLine[0], parameters, null, null);
-											Location location = castCommandBlock.getLocation();
+											Location location = commandTargetBlock.getLocation();
 											controller.getLogger().info(commandName + " cast " + castCommand + " at " + location.getWorld().getName() + ": " + location.toVector());
 										}
 									}
