@@ -11,6 +11,7 @@
  - Hopefully really fix my pesky undo bug (Block data hash code fail!)
  - Add customization station in Wolf House hub room.
  - Two-phase undo for cleaner cleanup (attachable blocks)
+ - Enable periodic auto-save by default, once an hour.
  
 ## 2.9.8.1
 

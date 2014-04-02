@@ -180,6 +180,9 @@ crafting_output: random(1)
 # A cooldown value in milliseconds between clicks. Mainly used to prevent Bukkit/MC double-event bugs.
 click_cooldown: 150
 
+# Auto-save interval in milliseconds (default is one hour, 0 to disable)
+auto_save: 3600000
+
 #
 # Construction System Tweaking
 #
