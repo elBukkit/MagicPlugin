@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.blocks;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,6 +17,7 @@ import org.bukkit.block.CommandBlock;
 
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.utilities.Target;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
@@ -23,23 +26,23 @@ public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] powerFaces = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND, FINISHED
+		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND_SEARCH, COMMAND_UPDATE, COMMAND_POWER, FINISHED
+	};
+	
+	public enum TargetMode {
+		STABILIZE, WANDER, HUNT
 	};
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
-	
-	private static int COMMAND_UPDATE_DELAY = 0;
-	private static int COMMAND_POWER_DELAY = 1;
 	
 	private Mage mage;
 	private BlockSpell spell;
 	private Block castCommandBlock;
 	private Block commandTargetBlock;
-	private int commandDistanceSquared;
+	private TargetMode targetMode = TargetMode.STABILIZE;
 	private String castCommand;
 	private String commandName;
 	private int commandMoveRangeSquared = 9;
-	private boolean commandDrift;
 	private boolean commandReload;
 	private boolean commandPowered;
 	private World world;
@@ -59,15 +62,14 @@ public class SimulateBatch extends VolumeBatch {
 	private int z;
 	private int yRadius;
 	private int updatingIndex;
-	private int commandDelay;
 	private ArrayList<Boolean> liveCounts = new ArrayList<Boolean>();
 	private ArrayList<Boolean> birthCounts = new ArrayList<Boolean>();
-	private Random random = new Random();
 	private SimulationState state;
+	private Location center;
 
 	private List<Block> deadBlocks = new ArrayList<Block>();
 	private List<Block> bornBlocks = new ArrayList<Block>();
-	private List<Block> potentialCommandBlocks = new ArrayList<Block>();
+	private List<Target> potentialCommandBlocks = new LinkedList<Target>();
 	private BlockList modifiedBlocks = new BlockList();
 	
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, Material birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
@@ -75,6 +77,7 @@ public class SimulateBatch extends VolumeBatch {
 		this.spell = spell;
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
+		this.center = center.clone();
 		
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
@@ -96,7 +99,6 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		this.world = center.getWorld();
 		includeCommands = false;
-		commandDrift = false;
 		
 		startY = center.getBlockY() - yRadius;
 		endY = center.getBlockY() + yRadius;
@@ -111,8 +113,6 @@ public class SimulateBatch extends VolumeBatch {
 		
 		state = SimulationState.SCANNING_COMMAND;
 		updatingIndex = 0;
-		commandDistanceSquared = 0;
-		commandDelay = 0;
 	}
 
 	public int size() {
@@ -126,18 +126,8 @@ public class SimulateBatch extends VolumeBatch {
 	protected void checkForPotentialCommand(Block block) {
 		if (includeCommands) {
 			int distanceSquared = (int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation()));
-			if (
-			(
-				commandTargetBlock == null ||
-				distanceSquared < commandDistanceSquared)
-			)
-			{
-				commandTargetBlock = block;
-				commandDistanceSquared = distanceSquared;
-			}
-			
 			if (distanceSquared < commandMoveRangeSquared) {
-				potentialCommandBlocks.add(block);
+				potentialCommandBlocks.add(new Target(center, block));
 			}
 		}
 	}
@@ -156,8 +146,6 @@ public class SimulateBatch extends VolumeBatch {
 					// Can't really do it without the chunk being loaded though, so hrm.
 					return processedBlocks;
 				}
-				
-				commandTargetBlock = castCommandBlock;
 				
 				// Check for power blocks
 				for (BlockFace powerFace : powerFaces) {
@@ -247,42 +235,64 @@ public class SimulateBatch extends VolumeBatch {
 			
 			updatingIndex++;
 			if (updatingIndex >= deadBlocks.size() + bornBlocks.size()) {
-				state = SimulationState.COMMAND;
+				state = SimulationState.COMMAND_SEARCH;
 				
 				// Wait at least a tick before re-populating the command block.
 				return maxBlocks;
 			}
 		}
 		
-		if (state == SimulationState.COMMAND) {
-			if (commandDelay == 0 && includeCommands && commandTargetBlock != null) {
+		// Each of the following states will end in this tick, to give the
+		// MC sim time to register power updates.
+		if (state == SimulationState.COMMAND_SEARCH) {
+			if (includeCommands && potentialCommandBlocks.size() > 0) {
+				switch (targetMode) {
+				case STABILIZE:
+					Collections.sort(potentialCommandBlocks);
+					break;
+				case WANDER:
+					Collections.shuffle(potentialCommandBlocks);
+					break;
+				case HUNT:
+					// TODO: Entity targeting
+					Collections.shuffle(potentialCommandBlocks);
+					break;
+				}
+				
+				// Find a valid block for the command
+				commandTargetBlock = null;
+				Block backupBlock = null;
+				while (commandTargetBlock == null && potentialCommandBlocks.size() > 0) {
+					Block block = potentialCommandBlocks.remove(0).getBlock();
+					if (block != null && block.getType() == birthMaterial) {
+						// If we're powering the block, look for one with a powerable neighbor.
+						if (!commandPowered) {
+							commandTargetBlock = block;
+						} else {
+							backupBlock = block;
+							BlockFace powerFace = findPowerLocation(block, powerSimMaterial);
+							if (powerFace != null) {
+								commandTargetBlock = block;
+							}
+						}
+					}
+				}
+				
+				// If we didn't find any powerable blocks, but we did find at least one valid sim block
+				// just use that one.
+				if (commandTargetBlock == null) commandTargetBlock = backupBlock;
+			}
+			state = SimulationState.COMMAND_UPDATE;
+			return processedBlocks;
+		}
+		
+		if (state == SimulationState.COMMAND_UPDATE) {
+			if (includeCommands && commandTargetBlock != null) {
 				if (!commandTargetBlock.getChunk().isLoaded()) {
 					commandTargetBlock.getChunk().load();
 					return processedBlocks;
 				}
-				// Find a valid block for the command
-				Block testBlock = commandTargetBlock;
-				if ((testBlock == null || commandDrift || testBlock.getType() != birthMaterial) && potentialCommandBlocks.size() > 0) {
-					testBlock = findPotentialCommandLocation();
-				}
 				
-				if (testBlock != null) {
-					if (commandPowered) {
-						BlockFace powerFace = findPowerLocation(testBlock, powerSimMaterial);
-						while (powerFace == null && potentialCommandBlocks.size() > 0) {
-							testBlock = findPotentialCommandLocation();
-							powerFace = findPowerLocation(testBlock, powerSimMaterial);
-						}
-						
-						if (powerFace != null) {
-							commandTargetBlock = testBlock;
-						}
-					} else {
-						commandTargetBlock = testBlock;
-					}
-				}
-			}
-			if (commandDelay == COMMAND_UPDATE_DELAY && commandTargetBlock != null && includeCommands) {
 				commandTargetBlock.setType(Material.COMMAND);
 				BlockState commandData = commandTargetBlock.getState();
 				if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
@@ -297,37 +307,43 @@ public class SimulateBatch extends VolumeBatch {
 					commandTargetBlock = null;
 				}
 			}
-			if (commandDelay >= COMMAND_POWER_DELAY) {
-				// Continue to power the command block
-				// Find a new direction, replace existing block
-				if (commandPowered && commandTargetBlock != null && includeCommands) {
-					// First try and replace a live cell
-					BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
-					// Next try to replace a dead cell, which will affect the simulation outcome
-					// but this is perhaps better than it dying?
-					if (powerDirection == null) {
-						powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
-					}
-					// If it's *still* not valid, search for something breakable.
+			state = SimulationState.COMMAND_POWER;
+			return processedBlocks;
+		}
+		
+		if (state == SimulationState.COMMAND_POWER) {
+			// Continue to power the command block
+			// Find a new direction, replace existing block
+			if (commandPowered && commandTargetBlock != null && includeCommands) {
+				// First try and replace a live cell
+				BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
+				// Next try to replace a dead cell, which will affect the simulation outcome
+				// but this is perhaps better than it dying?
+				if (powerDirection == null) {
+					Bukkit.getLogger().info("Had to fall back to backup location, pattern may diverge");
+					powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
+				}
+				// If it's *still* not valid, search for something breakable.
+				if (powerDirection == null) {
 					for (BlockFace face : powerFaces) {
 						if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
+							Bukkit.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
 							powerDirection = face;
 							break;
 						}
 					}
-					
-					if (powerDirection != null) {
-						Block powerBlock = commandTargetBlock.getRelative(powerDirection);
-						powerBlock.setType(POWER_MATERIAL);
-						if (commandReload) {
-							controller.registerBlockForReloadToggle(powerBlock);
-						}
+				}
+				
+				if (powerDirection != null) {
+					Block powerBlock = commandTargetBlock.getRelative(powerDirection);
+					powerBlock.setType(POWER_MATERIAL);
+					if (commandReload) {
+						controller.registerBlockForReloadToggle(powerBlock);
 					}
 				}
-				state = SimulationState.FINISHED;
 			}
-			commandDelay++;
-			return maxBlocks;
+			state = SimulationState.FINISHED;
+			return processedBlocks;
 		}
 		
 		if (state == SimulationState.FINISHED) {
@@ -335,16 +351,6 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		return processedBlocks;
-	}
-	
-	protected Block findPotentialCommandLocation() {
-		Block potential = null;
-		if (potentialCommandBlocks.size() > 0) {
-			int index = random.nextInt(potentialCommandBlocks.size());
-			potential = potentialCommandBlocks.get(index);
-			potentialCommandBlocks.remove(index);
-		}
-		return potential;
 	}
 
 	public void setCommandBlock(Block block) {
@@ -360,8 +366,8 @@ public class SimulateBatch extends VolumeBatch {
 		}
 	}
 	
-	public void setCommandMoveRange(int commandRadius, boolean drift, boolean reload) {
-		commandDrift = drift;
+	public void setCommandMoveRange(int commandRadius, boolean reload, TargetMode mode) {
+		targetMode = mode == null ? TargetMode.STABILIZE : mode;
 		commandReload = reload;
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}

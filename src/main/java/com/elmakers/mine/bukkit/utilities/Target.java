@@ -40,6 +40,16 @@ public class Target implements Comparable<Target>
 		this.location = entity.getLocation();
 		calculateScore();
 	}
+
+	public Target(Location sourceLocation, Entity entity, int range, double angle)
+	{
+		this.maxDistance = range;
+		this.maxAngle = angle;
+		this.source = sourceLocation;
+		this.entity = entity;
+		this.location = entity.getLocation();
+		calculateScore();
+	}
 	
 	public Target(Location sourceLocation, Entity entity)
 	{
@@ -85,14 +95,15 @@ public class Target implements Comparable<Target>
 
 		score = (int)((maxDistance - distance) + (3 - angle) * 4);
 
-		// Favor targeting monsters, a bit
+		// Favor targeting players, a bit
+		// TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
 		if (entity instanceof Player)
 		{
-			score = score + 3;
+			score = score + 5;
 		}
 		else  if (entity instanceof LivingEntity)
 		{
-			score = score + 5;
+			score = score + 3;
 		}
 		else
 		{

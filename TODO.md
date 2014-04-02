@@ -2,6 +2,9 @@
 
 ## For 2.9.9
 
+ - Pending construct batch limit!
+
+ - Animate spell
  - Hat should drop existing item on the ground
  - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
  - Add timestamp to dynmap spell pop-up

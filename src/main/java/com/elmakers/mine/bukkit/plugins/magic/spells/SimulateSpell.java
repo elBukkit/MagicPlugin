@@ -85,7 +85,12 @@ public class SimulateSpell extends BlockSpell {
 			return SpellResult.FAIL;
 		}
 		
-		final SimulateBatch batch = new SimulateBatch(this, target.getLocation(), radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
+		// use the target location with the player's facing
+		Location location = getLocation();
+		Location targetLocation = target.getLocation();
+		targetLocation.setPitch(location.getPitch());
+		targetLocation.setYaw(location.getYaw());
+		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
 		
 		boolean includeCommands = parameters.getBoolean("auto", false);
 		if (includeCommands) {
@@ -96,7 +101,12 @@ public class SimulateSpell extends BlockSpell {
 				batch.setCommandBlock(target);
 			}
 			
-			batch.setCommandMoveRange(parameters.getInt("move", 3), parameters.getBoolean("drift", false), parameters.getBoolean("reload", true));
+			SimulateBatch.TargetMode targetMode = null;
+			String targetModeString = parameters.getString("target_mode", "");
+			if (targetModeString.length() > 0) {
+				targetMode = SimulateBatch.TargetMode.valueOf(targetModeString);
+			}
+			batch.setCommandMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true), targetMode);
 		}
 		
 		// delay is in ms, gets converted.
