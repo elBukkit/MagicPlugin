@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.BlockVector;
@@ -86,7 +87,7 @@ public class BlockData extends MaterialAndData
 
 	public BlockData(Block block)
 	{
-		updateFrom(block);
+		super(block);
 		this.block = block;
 
 		location = new BlockVector(block.getX(), block.getY(), block.getZ());
@@ -125,14 +126,18 @@ public class BlockData extends MaterialAndData
 		return block != null;
 	}
 
+	public World getWorld()
+	{
+		return server.getWorld(world);
+	}
+	
 	public Block getBlock()
 	{
 		if (block == null && location != null && server != null)
 		{
-			Location blockLocation = new Location(server.getWorld(world), location.getBlockX(), location.getBlockY(), location.getBlockZ());
-			if (blockLocation != null)
-			{
-				block = blockLocation.getBlock();
+			if (world != null) {
+				World world = getWorld();
+				block = world.getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 			}
 		}
 		return block;
@@ -240,5 +245,9 @@ public class BlockData extends MaterialAndData
 	
 	public void setPriorState(BlockData prior) {
 		priorState = prior;
+	}
+	
+	public void restore() {
+		modify(getBlock());
 	}
 }

@@ -1,13 +1,10 @@
 package com.elmakers.mine.bukkit.blocks;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,7 +15,6 @@ import org.bukkit.block.CommandBlock;
 
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.utilities.NMSUtils;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
@@ -44,7 +40,7 @@ public class SimulateBatch extends VolumeBatch {
 	private String commandName;
 	private int commandMoveRangeSquared = 9;
 	private boolean commandDrift;
-	private boolean commandForce;
+	private boolean commandReload;
 	private boolean commandPowered;
 	private World world;
 	private Material birthMaterial;
@@ -152,8 +148,12 @@ public class SimulateBatch extends VolumeBatch {
 		if (state == SimulationState.SCANNING_COMMAND) {
 			// Process the casting command block first, and only if specially configured to do so.
 			if (includeCommands && castCommandBlock != null) {
+				// We are going to rely on the block toggling to kick this back to life when the chunk
+				// reloads, so for now just bail and hope the timing works out.
 				if (!castCommandBlock.getChunk().isLoaded()) {
-					castCommandBlock.getChunk().load();
+					finish();
+					// TODO: Maybe Scatter-shot and register all 6 surrounding power blocks for reload toggle.
+					// Can't really do it without the chunk being loaded though, so hrm.
 					return processedBlocks;
 				}
 				
@@ -163,6 +163,9 @@ public class SimulateBatch extends VolumeBatch {
 				for (BlockFace powerFace : powerFaces) {
 					Block checkForPower = castCommandBlock.getRelative(powerFace);
 					if (checkForPower.getType() == POWER_MATERIAL) {
+						if (commandReload) {
+							controller.unregisterBlockForReloadToggle(checkForPower);
+						}
 						checkForPower.setType(powerSimMaterial);
 						commandPowered = true;
 					}
@@ -316,32 +319,8 @@ public class SimulateBatch extends VolumeBatch {
 					if (powerDirection != null) {
 						Block powerBlock = commandTargetBlock.getRelative(powerDirection);
 						powerBlock.setType(POWER_MATERIAL);
-						
-						// We're going to do some Deep Magic here to keep these things running
-						// while players are offline. This should maybe be a parameter or config option.
-						// TODO: Maybe replace this with a chunk load trigger mechanism?
-						if (commandForce) {
-							try {
-								Object worldHandle = NMSUtils.getHandle(commandTargetBlock.getWorld());
-								Field playersField = worldHandle.getClass().getField("players");
-								
-								@SuppressWarnings("rawtypes")
-								List players = (List)playersField.get(worldHandle);
-								if (players != null && players.size() == 0) {
-									// Invoke the command directly, but only if it's a cast command.
-									if (castCommand.startsWith("cast ")) {
-										String[] commandLine = StringUtils.split(castCommand.substring(5), ' ');
-										if (commandLine.length > 0) {
-											String[] parameters = (String[])ArrayUtils.subarray(commandLine, 1, commandLine.length);
-											controller.cast(mage, commandLine[0], parameters, null, null);
-											Location location = commandTargetBlock.getLocation();
-											controller.getLogger().info(commandName + " cast " + castCommand + " at " + location.getWorld().getName() + ": " + location.toVector());
-										}
-									}
-								}
-							} catch (Exception ex) {
-								ex.printStackTrace();
-							}
+						if (commandReload) {
+							controller.registerBlockForReloadToggle(powerBlock);
 						}
 					}
 				}
@@ -381,9 +360,9 @@ public class SimulateBatch extends VolumeBatch {
 		}
 	}
 	
-	public void setCommandMoveRange(int commandRadius, boolean drift, boolean force) {
+	public void setCommandMoveRange(int commandRadius, boolean drift, boolean reload) {
 		commandDrift = drift;
-		commandForce = force;
+		commandReload = reload;
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
 	
@@ -437,6 +416,7 @@ public class SimulateBatch extends VolumeBatch {
 	
 	@Override
 	public void finish() {
+		state = SimulationState.FINISHED;
 		if (!finished) {
 			super.finish();
 			mage.registerForUndo(modifiedBlocks);

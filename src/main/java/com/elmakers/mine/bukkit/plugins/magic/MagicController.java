@@ -88,6 +88,7 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
+import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.Schematic;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
@@ -1025,62 +1026,149 @@ public class MagicController implements Listener
 	{
 		loadConfiguration();
 		
-		// Delay some loading, in particular world lookups by name seem to fail at onEnable time
-		// I'm guessing this is because I force Magic to run prior to inialization
-		// This is pretty hacky, but I'd hope everything is OK on the next time anyway.
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			public void run() {
-				File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
-				    public boolean accept(File dir, String name) {
-				        return name.toLowerCase().endsWith(".dat");
-				    }
-				});
-				
-				for (File playerFile : playerFiles)
-				{
-					// Skip if older than 2 days
-					if (playerDataThreshold > 0 && playerFile.lastModified() < System.currentTimeMillis() - playerDataThreshold) continue;
-					
-					Configuration playerData = new Configuration(playerFile);
-					playerData.load();
-					if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
-						String playerId = playerFile.getName().replaceFirst("[.][^.]+$", "");
-						loadMage(playerId, playerData);
+		File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
+		    public boolean accept(File dir, String name) {
+		        return name.toLowerCase().endsWith(".dat");
+		    }
+		});
+		
+		for (File playerFile : playerFiles)
+		{
+			// Skip if older than 2 days
+			if (playerDataThreshold > 0 && playerFile.lastModified() < System.currentTimeMillis() - playerDataThreshold) continue;
+			
+			Configuration playerData = new Configuration(playerFile);
+			playerData.load();
+			if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
+				String playerId = playerFile.getName().replaceFirst("[.][^.]+$", "");
+				loadMage(playerId, playerData);
+			}
+		}
+		
+		// Load lost wands
+		getLogger().info("Loading lost wand data");
+		loadLostWands();
+		
+		// Load toggle-on-load blocks
+		getLogger().info("Loading toggle-block data");
+		loadToggleBlockData();
+		
+		// Load URL Map Data
+		try {
+			URLMap.resetAll();
+			File urlMapFile = getDataFile(URL_MAPS_FILE);
+			File imageCache = new File(dataFolder, "imagemapcache");
+			imageCache.mkdirs();
+			URLMap.load(plugin, urlMapFile, imageCache);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		getLogger().info("Finished loading configuration");
+	}
+
+	protected void loadLostWands()
+	{
+		try {
+			ConfigurationNode lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
+			if (lostWandConfiguration != null)
+			{
+				List<String> wandIds = lostWandConfiguration.getKeys();
+				for (String wandId : wandIds) {
+					LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getNode(wandId));
+					if (!lostWand.isValid()) {
+						getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
+						continue;
 					}
-				}
-				
-				// Load lost wands
-				try {
-					getLogger().info("Loading lost wand data");
-					ConfigurationNode lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
-					if (lostWandConfiguration != null)
-					{
-						List<String> wandIds = lostWandConfiguration.getKeys();
-						for (String wandId : wandIds) {
-							LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getNode(wandId));
-							if (!lostWand.isValid()) {
-								getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
-								continue;
-							}
-							addLostWand(lostWand);
-						}
-					}
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				
-				// Load URL Map Data
-				try {
-					URLMap.resetAll();
-					File urlMapFile = getDataFile(URL_MAPS_FILE);
-					File imageCache = new File(dataFolder, "imagemapcache");
-					imageCache.mkdirs();
-					URLMap.load(plugin, urlMapFile, imageCache);
-				} catch (Exception ex) {
-					ex.printStackTrace();
+					addLostWand(lostWand);
 				}
 			}
-		}, 10);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	protected void saveLostWandData() {
+		try {
+			Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
+			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
+				ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
+				wandEntry.getValue().save(wandNode);
+			}
+			lostWandsConfiguration.save();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	protected void loadToggleBlockData()
+	{
+		try {
+			ConfigurationNode toggleBlockData = loadDataFile(TOGGLE_BLOCKS_FILE);
+			if (toggleBlockData != null)
+			{
+				List<String> chunkIds = toggleBlockData.getKeys();
+				for (String chunkId : chunkIds) {
+					Map<Long, BlockData> restoreChunk = new HashMap<Long, BlockData>();
+					toggleBlocksOnLoad.put(chunkId, restoreChunk);
+					
+					List<String> blockDataList = toggleBlockData.getStringList(chunkId);
+					for (String blockAsString : blockDataList) {
+						BlockData blockData = BlockData.fromString(blockAsString);
+						if (blockData == null) {
+							getLogger().info("Skipped invalid entry in toggleblocks.yml file, entry will be deleted: " + blockAsString);
+							continue;
+						}
+						
+						restoreChunk.put(blockData.getId(), blockData);
+					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	protected void saveToggleBlockData()
+	{
+		try {
+			Configuration toggleBlockData = createDataFile(TOGGLE_BLOCKS_FILE);
+			for (Entry<String, Map<Long, BlockData>> toggleEntry : toggleBlocksOnLoad.entrySet()) {
+				List<String> blockList = new ArrayList<String>();
+				for (BlockData block : toggleEntry.getValue().values()) {
+					blockList.add(block.toString());
+				}
+				toggleBlockData.setProperty(toggleEntry.getKey(), blockList);
+			}
+			toggleBlockData.save();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		try {
+			ConfigurationNode toggleBlockData = loadDataFile(TOGGLE_BLOCKS_FILE);
+			if (toggleBlockData != null)
+			{
+				List<String> chunkIds = toggleBlockData.getKeys();
+				for (String chunkId : chunkIds) {
+					Map<Long, BlockData> restoreChunk = new HashMap<Long, BlockData>();
+					toggleBlocksOnLoad.put(chunkId, restoreChunk);
+					
+					List<String> blockDataList = toggleBlockData.getStringList(chunkId);
+					for (String blockAsString : blockDataList) {
+						BlockData blockData = BlockData.fromString(blockAsString);
+						if (blockData == null) {
+							getLogger().info("Skipped invalid entry in toggleblocks.yml file, entry will be deleted: " + blockAsString);
+							continue;
+						}
+						
+						restoreChunk.put(blockData.getId(), blockData);
+					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	protected String getChunkKey(Chunk chunk) {
@@ -1197,19 +1285,6 @@ public class MagicController implements Listener
 		}
 	}
 	
-	protected void saveLostWandData() {
-		try {
-			Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
-			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
-				ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
-				wandEntry.getValue().save(wandNode);
-			}
-			lostWandsConfiguration.save();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
 	public void save()
 	{
 		getLogger().info("Saving player data");
@@ -1220,6 +1295,9 @@ public class MagicController implements Listener
 
 		getLogger().info("Saving image map data");
 		URLMap.save();
+
+		getLogger().info("Saving toggle block data");
+		saveToggleBlockData();
 	}
 	
 	protected void loadSpells(ConfigurationNode config)
@@ -1277,6 +1355,12 @@ public class MagicController implements Listener
 	protected void loadProperties(ConfigurationNode properties)
 	{
 		if (properties == null) return;
+
+		// Cancel any pending configurable tasks
+		if (autoSaveTaskId > 0) {
+			Bukkit.getScheduler().cancelTask(autoSaveTaskId);
+			autoSaveTaskId = 0;
+		}
 		
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
@@ -1351,6 +1435,21 @@ public class MagicController implements Listener
 		
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
+		
+		// Set up auto-save timer
+		final MagicController saveController = this;
+		int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;;
+		if (autoSaveIntervalTicks > 1) {
+			autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, 
+					new Runnable() {
+						public void run() {
+							saveController.getLogger().info("Auto-saving Magic data");
+							saveController.save();
+							saveController.getLogger().info("... Done auto-saving.");
+						}
+					}, 
+					autoSaveIntervalTicks, autoSaveIntervalTicks);
+		}
 	}
 	
 	protected void loadPopulator(ConfigurationNode properties)
@@ -2461,6 +2560,9 @@ public class MagicController implements Listener
 				me.checkForWands(event.getChunk(), 10);
 			}
 		}, 5);
+		
+		// Also check for any blocks we need to toggle.
+		triggerBlockToggle(e.getChunk());
 	}
 	
 	public Spell getSpell(String name) {
@@ -2629,6 +2731,57 @@ public class MagicController implements Listener
 			*/
 		}
 	}
+	
+	public void registerBlockForReloadToggle(Block block) {
+		String chunkId = getChunkKey(block.getChunk());
+		Map<Long, BlockData> toReload = toggleBlocksOnLoad.get(chunkId);
+		if (toReload == null) {
+			toReload = new HashMap<Long, BlockData>();
+			toggleBlocksOnLoad.put(chunkId, toReload);
+		}
+		BlockData data = new BlockData(block);
+		toReload.put(data.getId(), data);
+	}
+
+	public void unregisterBlockForReloadToggle(Block block) {
+		// Note that we currently don't clean up an empty entry,
+		// purposefully, to prevent thrashing the main map and adding lots
+		// of HashMap creation.
+		String chunkId = getChunkKey(block.getChunk());
+		Map<Long, BlockData> toReload = toggleBlocksOnLoad.get(chunkId);
+		if (toReload != null) {
+			toReload.remove(BlockData.getBlockId(block));
+		}
+	}
+	
+	protected void triggerBlockToggle(final Chunk chunk) {
+		String chunkKey = getChunkKey(chunk);
+		Map<Long, BlockData> chunkData = toggleBlocksOnLoad.get(chunkKey);
+		if (chunkData != null) {
+			Collection<BlockData> blocks = chunkData.values();
+			final List<BlockData> restored = new ArrayList<BlockData>();
+			for (BlockData toggleBlock : blocks) {
+				Block current = toggleBlock.getBlock();
+				// Don't toggle the block if it has changed to something else.
+				if (current.getType() == toggleBlock.getMaterial()) {
+					current.setType(Material.AIR);
+					restored.add(toggleBlock);
+				}
+			}
+			if (restored.size() > 0) {
+				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, 
+					new Runnable() {
+						public void run() {
+							for (BlockData restoreBlock : restored) {
+								getLogger().info("Resuming block at " + restoreBlock.getLocation());
+								restoreBlock.restore();
+							}
+						}
+				}, 5);
+			}
+			toggleBlocksOnLoad.remove(chunkKey);
+		}
+	}
 
 	/*
 	 * Private data
@@ -2640,6 +2793,7 @@ public class MagicController implements Listener
 	 private final String                        MATERIALS_FILE             	= "materials";
 	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
+	 private final String						 TOGGLE_BLOCKS_FILE				= "toggleblocks";
 	 private final String						 URL_MAPS_FILE					= "imagemaps";
 	 
 	 private boolean 							loadDefaultSpells				= true;
@@ -2696,6 +2850,7 @@ public class MagicController implements Listener
 	 private int								 maxBlockUpdates				= 100;
 	 private int								 ageDroppedItems				= 0;
 	 private int								 autoUndo						= 0;
+	 private int								 autoSaveTaskId					= 0;
 	 
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();
@@ -2730,7 +2885,8 @@ public class MagicController implements Listener
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;
 	 private DateFormat							 dateFormatter					= new SimpleDateFormat("yy-MM-dd HH:mm");
-	 
+
+	 private Map<String, Map<Long, BlockData>>   toggleBlocksOnLoad			    = new HashMap<String, Map<Long, BlockData>>();
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
 	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();
 }
