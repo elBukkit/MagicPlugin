@@ -18,8 +18,7 @@
 # For example, to make it so all construction spells automatically undo their effects
 # after ten seconds:
 #
-# general:
-#   auto-undo: 10000
+# auto_undo: 10000
 #
 # More examples can be found at
 # 

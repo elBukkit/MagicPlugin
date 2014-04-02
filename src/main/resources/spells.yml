@@ -9,12 +9,15 @@
 # Here you may alter default spell behavior, or add and remove spells.
 # See http://dev.bukkit.org/bukkit-plugins/magic/ for more information.
 #
-# To see the default spells and configurations, look in defaults/spells.yml
+# To see the default spells and configurations, look in defaults/spells.defaults.yml
+# There are more instructions in that file, as well as many examples to look at.
 # 
 # The name, description, and usage of a spell should be defined in messages.yml as
 #  messages.spells.<spellkey>.name
 #  messages.spells.<spellkey>.description
 #  messages.spells.<spellkey>.usage
+#  messages.spells.<spellkey>.cast
+#  ... etc.
 #
 # General format:
 #

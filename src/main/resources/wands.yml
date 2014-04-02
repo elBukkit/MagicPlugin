@@ -10,17 +10,16 @@
 # /wand and /wandp commands.
 #
 # To see the default wands and configurations, look in defaults/wands.defaults.yml
+# There are more instructions in that file, as well as many examples to look at.
 #
 # Once a wand is created, it is its own unique item. It may be modified after that,
-# and has no direct relationship back to the template that created it
-# (TODO: Update after implementing wand progression system)
+# and may bear no direct relationship back to the template that created it.
 # 
 # The name and description, of a wand should be defined in messages.yml as
 #  messages.wands.<wandkey>.name
 #  messages.wands.<wandkey>.description
 #
-# Note that wands can also be renamed, and that upon doing so a player will take
-# ownership of the wand, changing its description to "PlayerName's Wand"
+# Note that wands can also be renamed on an anvil.
 #
 # There are two special entries in here:
 # - The "default" wand is used as a template when creating a new and with /wand.
