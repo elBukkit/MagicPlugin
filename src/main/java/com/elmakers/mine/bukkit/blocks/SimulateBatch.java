@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -14,6 +13,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
@@ -30,7 +31,7 @@ public class SimulateBatch extends VolumeBatch {
 	};
 	
 	public enum TargetMode {
-		STABILIZE, WANDER, HUNT
+		STABILIZE, WANDER, GLIDE, HUNT
 	};
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
@@ -40,9 +41,14 @@ public class SimulateBatch extends VolumeBatch {
 	private Block castCommandBlock;
 	private Block commandTargetBlock;
 	private TargetMode targetMode = TargetMode.STABILIZE;
+	private Location targetLocation;
 	private String castCommand;
 	private String commandName;
+	private boolean reverseTargetDistanceScore = false;
 	private int commandMoveRangeSquared = 9;
+	private int huntRange = 128;
+	// 3.0 is roughly 180 degrees, gives him a wider FOV
+	private float huntFov = 3.0f;
 	private boolean commandReload;
 	private boolean commandPowered;
 	private World world;
@@ -78,6 +84,7 @@ public class SimulateBatch extends VolumeBatch {
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
 		this.center = center.clone();
+		this.targetLocation = center.clone();
 		
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
@@ -127,7 +134,9 @@ public class SimulateBatch extends VolumeBatch {
 		if (includeCommands) {
 			int distanceSquared = (int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation()));
 			if (distanceSquared < commandMoveRangeSquared) {
-				potentialCommandBlocks.add(new Target(center, block));
+				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
+				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
+				potentialCommandBlocks.add(new Target(targetLocation, block, huntRange, huntFov, reverseTargetDistanceScore));
 			}
 		}
 	}
@@ -247,14 +256,10 @@ public class SimulateBatch extends VolumeBatch {
 		if (state == SimulationState.COMMAND_SEARCH) {
 			if (includeCommands && potentialCommandBlocks.size() > 0) {
 				switch (targetMode) {
-				case STABILIZE:
+				case HUNT:
 					Collections.sort(potentialCommandBlocks);
 					break;
-				case WANDER:
-					Collections.shuffle(potentialCommandBlocks);
-					break;
-				case HUNT:
-					// TODO: Entity targeting
+				default:
 					Collections.shuffle(potentialCommandBlocks);
 					break;
 				}
@@ -302,7 +307,10 @@ public class SimulateBatch extends VolumeBatch {
 					copyCommand.update();
 					
 					// Also move the mage
-					mage.setLocation(commandTargetBlock.getLocation());
+					Location newLocation = commandTargetBlock.getLocation();
+					newLocation.setPitch(center.getPitch());
+					newLocation.setYaw(center.getYaw());
+					mage.setLocation(newLocation);
 				} else {
 					commandTargetBlock = null;
 				}
@@ -320,14 +328,14 @@ public class SimulateBatch extends VolumeBatch {
 				// Next try to replace a dead cell, which will affect the simulation outcome
 				// but this is perhaps better than it dying?
 				if (powerDirection == null) {
-					Bukkit.getLogger().info("Had to fall back to backup location, pattern may diverge");
+					// Bukkit.getLogger().info("Had to fall back to backup location, pattern may diverge");
 					powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
 				}
 				// If it's *still* not valid, search for something breakable.
 				if (powerDirection == null) {
 					for (BlockFace face : powerFaces) {
 						if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
-							Bukkit.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
+							// Bukkit.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
 							powerDirection = face;
 							break;
 						}
@@ -370,6 +378,37 @@ public class SimulateBatch extends VolumeBatch {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
 		commandReload = reload;
 		commandMoveRangeSquared = commandRadius * commandRadius;
+		
+		switch (targetMode) {
+		case HUNT:
+			targetLocation = center.clone();
+			reverseTargetDistanceScore = false;
+			List<Entity> entities = targetLocation.getWorld().getEntities();
+			Target bestTarget = null;
+			for (Entity entity : entities)
+			{
+				if (!(entity instanceof Player)) continue;
+				Target newScore = new Target(center, entity, huntRange, huntFov, false);
+				int score = newScore.getScore();
+				if (bestTarget == null || score > bestTarget.getScore()) {
+					bestTarget = newScore;
+				}
+			}
+			
+			if (bestTarget != null) {
+				// Bukkit.getLogger().info("Hunting " + ((Player)bestTarget.getEntity()).getName() + 
+				// 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation());
+				targetLocation = bestTarget.getLocation();
+			}
+			break;
+		case GLIDE:
+			targetLocation = center.clone();
+			reverseTargetDistanceScore = true;
+			break;
+		default:
+			targetLocation = center.clone();
+			reverseTargetDistanceScore = true;
+		}
 	}
 	
 	protected boolean isAlive(Block block, Material liveMaterial, boolean includeCommands)

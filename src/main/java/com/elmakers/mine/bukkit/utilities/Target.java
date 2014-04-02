@@ -15,6 +15,7 @@ public class Target implements Comparable<Target>
 	private Location source;
 	private Location location;
 	private Entity   entity;
+	private boolean  reverseDistance = false;
 
 	private double   distance    = 100000;
 	private double   angle       = 10000;
@@ -27,6 +28,16 @@ public class Target implements Comparable<Target>
 	
 	public Target(Location sourceLocation, Block block)
 	{
+		this.source = sourceLocation;
+		this.location = block.getLocation();
+		calculateScore();
+	}
+
+	public Target(Location sourceLocation, Block block, int range, double angle, boolean reverseDistance)
+	{
+		this.maxDistance = range;
+		this.maxAngle = angle;
+		this.reverseDistance = reverseDistance;
 		this.source = sourceLocation;
 		this.location = block.getLocation();
 		calculateScore();
@@ -45,6 +56,17 @@ public class Target implements Comparable<Target>
 	{
 		this.maxDistance = range;
 		this.maxAngle = angle;
+		this.source = sourceLocation;
+		this.entity = entity;
+		this.location = entity.getLocation();
+		calculateScore();
+	}
+
+	public Target(Location sourceLocation, Entity entity, int range, double angle, boolean reverseDistance)
+	{
+		this.maxDistance = range;
+		this.maxAngle = angle;
+		this.reverseDistance = reverseDistance;
 		this.source = sourceLocation;
 		this.entity = entity;
 		this.location = entity.getLocation();
@@ -92,6 +114,10 @@ public class Target implements Comparable<Target>
 		score = 0;
 		if (angle > maxAngle) return;
 		if (distance > maxDistance) return;
+		
+		if (reverseDistance) {
+			distance = maxDistance - distance;
+		}
 
 		score = (int)((maxDistance - distance) + (3 - angle) * 4);
 

@@ -104,7 +104,11 @@ public class SimulateSpell extends BlockSpell {
 			SimulateBatch.TargetMode targetMode = null;
 			String targetModeString = parameters.getString("target_mode", "");
 			if (targetModeString.length() > 0) {
-				targetMode = SimulateBatch.TargetMode.valueOf(targetModeString);
+				try {
+					targetMode = SimulateBatch.TargetMode.valueOf(targetModeString.toUpperCase());
+				} catch (Exception ex) {
+					controller.getLogger().warning(ex.getMessage());
+				}
 			}
 			batch.setCommandMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true), targetMode);
 		}
