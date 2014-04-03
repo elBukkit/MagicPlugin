@@ -44,9 +44,12 @@ public class AnimateSpell extends SimulateSpell
 		if (!isDestructible(targetBlock) || !isDestructible(powerBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+
+		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
+		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 		
-		
-		String commandLine = "cast " + getKey() + " target self auto true bu true m " + targetBlock.getType().name().toLowerCase();
+		String commandLine = "cast " + getKey() + " target self auto true bu true m " + targetBlock.getType().name().toLowerCase() +
+				" cd " + (simCheckDestructible ? "true" : "false");
 		String commandName = parameters.getString("name", "Automata");
 		
 		targetBlock.setType(Material.COMMAND);

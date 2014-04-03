@@ -315,16 +315,17 @@ hunter:
         allow_max_range: true
         check_destructible: false
         range: 32
-        cooldown: 120000
-        name: Virus 6.0
-        radius: 16
-        yradius: 16
-        delay: 1000
+        cooldown: 60000
+        name: Hunter
+        radius: 3
+        yradius: 3
+        delay: 2000
         target_mode: hunt
-        live_rules: 3,4,5,6,7,8,9
-        birth_rules: 5
+        live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+        birth_rules: 2,3
+        move: 1
     costs:
-        xp: 2000
+        xp: 800
 animate:
     icon: lever
     category: master

@@ -161,11 +161,6 @@ spells:
         name: Curse
         description: Slows down and weakens the target
         cast: You curse your target
-    animate:
-        name: Animate
-        description: Animate the target material
-        cast: You create an automaton
-        no_target: You must target two blocks next to each other
     boon:
         name: Boon
         description: Makes you temporarily superpowered
@@ -290,10 +285,32 @@ spells:
         name: Simulate
         description: Conway's Game of Life!
         cast: You bring the world to life
+    animate:
+        name: Animate
+        description: Animate the target material
+        cast: You create a Magic Golem
+        no_target: You must target two blocks next to each other
     simulate3:
         name: Simulate 3D
         description: Conway's Game of Life ... in 3D!
         cast: You bring the world to life
+    glider:
+        name: Glider
+        description: Create a powerful automoton
+        cast: It's alive!
+    virus:
+        name: Virus
+        description: You probably don't want to cast this
+        cast: What have you done?
+        cast: It's alive!
+    hunter:
+        name: Hunter
+        description: Create a drone
+        cast: DESTROY ALL HUMANS!
+    life:
+        name: Life
+        description: Create a HUGE Life board
+        cast: Time to experiment!
     torch:
         name: Torch
         description: Creates a torch or glowstone
@@ -672,18 +689,6 @@ spells:
         name: Wolf House
         description: Create an auto-regenerating base
         cast: Patience, my child!
-    glider:
-        name: Glider
-        description: Create a powerful automoton
-        cast: It's alive!
-    virus:
-        name: Virus
-        description: You probably don't want to cast this
-        cast: What have you done?
-    life:
-        name: Life
-        description: Create a HUGE Life board
-        cast: Time to experiment!
     tent:
         name: Tent
         description: Create a minimal house
