@@ -25,7 +25,7 @@ public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
-	private static BlockFace[] powerFaces = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
+	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
 		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND_SEARCH, COMMAND_UPDATE, COMMAND_POWER, FINISHED
@@ -158,7 +158,7 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				
 				// Check for power blocks
-				for (BlockFace powerFace : powerFaces) {
+				for (BlockFace powerFace : POWER_FACES) {
 					Block checkForPower = castCommandBlock.getRelative(powerFace);
 					if (checkForPower.getType() == POWER_MATERIAL) {
 						if (commandReload) {
@@ -334,7 +334,7 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				// If it's *still* not valid, search for something breakable.
 				if (powerDirection == null) {
-					for (BlockFace face : powerFaces) {
+					for (BlockFace face : POWER_FACES) {
 						if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
 							// Bukkit.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
 							powerDirection = face;
@@ -422,8 +422,8 @@ public class SimulateBatch extends VolumeBatch {
 		return (neighborType == liveMaterial || (includeCommands && (neighborType == Material.COMMAND || neighborType == POWER_MATERIAL)));
 	}
 	
-	protected BlockFace findPowerLocation(Block block, Material targetMaterial) {
-		for (BlockFace face : powerFaces) {
+	public static BlockFace findPowerLocation(Block block, Material targetMaterial) {
+		for (BlockFace face : POWER_FACES) {
 			if (block.getRelative(face).getType() == targetMaterial) {
 				return face;
 			}

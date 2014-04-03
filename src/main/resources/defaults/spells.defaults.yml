@@ -217,6 +217,12 @@ simulate:
     icon: double_plant:3
     category: light
     class: SimulateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_pitch: 0.5
+           sound_volume: 0.7
     costs:
         xp: 100
     parameters:
@@ -230,6 +236,12 @@ simulate3:
     icon: sapling:3
     category: master
     class: SimulateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_idle
+           sound_pitch: 1.5
+           sound_volume: 0.8
     costs:
         xp: 500
     parameters:
@@ -272,7 +284,7 @@ virus:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_cave
+           sound: enderdragon_growl
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -287,7 +299,27 @@ virus:
         commands:
           virus_simulate: cast simulate3 target self m obsidian auto true delay 1000 radius 8 yradius 8 target_mode hunt bu true
     costs:
-        xp: 1500
+        xp: 1000
+animate:
+    icon: lever
+    category: master
+    class: AnimateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_growl
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: true
+        check_destructible: false
+        range: 32
+        cooldown: 120000
+        transparent: transparent_to_construction
+        name: Virus 6.0
+        command: cast simulate3 target self m $material auto true delay 1000 radius 16 yradius 16 target_mode hunt bu true
+    costs:
+        xp: 2000        
 life:
     icon: sapling:1
     category: white
@@ -1256,6 +1288,7 @@ paint:
         -  class: EffectTrail
            effect: step_sound
     parameters:
+        target: block
         allow_max_range: false
         range: 64
         check_destructible: false
@@ -2064,11 +2097,11 @@ disintegrate:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 12
+        range: 8
+        target: block
         player_damage: 5
         entity_damage: 50
         check_destructible: false
-        transparent: transparent_to_construction
     costs:
         xp: 30
 blink:

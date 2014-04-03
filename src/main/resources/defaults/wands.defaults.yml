@@ -1550,6 +1550,7 @@ wolf:
         - glider
         - simulate
         - simulate3
+        - animate
     materials:  
         - lapis_block
         - water
@@ -2071,6 +2072,7 @@ conway:
         - undo
         - commit
         - simulate3
+        - animate
     materials:
         - schematic:life
         - schematic:glider

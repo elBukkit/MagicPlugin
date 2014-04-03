@@ -161,6 +161,11 @@ spells:
         name: Curse
         description: Slows down and weakens the target
         cast: You curse your target
+    animate:
+        name: Animate
+        description: Animate the target material
+        cast: You create an automaton
+        no_target: You must target two blocks next to each other
     boon:
         name: Boon
         description: Makes you temporarily superpowered
