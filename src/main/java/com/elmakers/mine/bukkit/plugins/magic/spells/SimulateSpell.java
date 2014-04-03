@@ -128,6 +128,12 @@ public class SimulateSpell extends BlockSpell {
 		} else {
 			mage.addPendingBlockBatch(batch);
 		}
+		
+		// This is a bit of a hack, but it forces dynmap to show the spell cast direction
+		// instead of the target (also for effects), which looks cool with
+		// Automata
+		clearTarget();
+		
 		return SpellResult.CAST;
 	}
 }

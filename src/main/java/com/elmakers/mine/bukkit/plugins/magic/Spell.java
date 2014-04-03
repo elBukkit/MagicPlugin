@@ -1331,6 +1331,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		return target;
 	}
+	
+	public void clearTarget()
+	{
+		target = null;
+	}
 
 	public Block getTargetBlock()
 	{
