@@ -3,23 +3,22 @@
 ## For 2.9.9
 
  - Pending construct batch limit!
-
+ - World-bound wands, add Tester wand
+ 
+ - Brush for Virus spell (!)
+ 
  - Animate spell
  - Hat should drop existing item on the ground
  - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
- - Add timestamp to dynmap spell pop-up
  - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with sold wands, too?
- - Issue selling Hat- may have been fixed?
 
  - Maybe a way to cancel pending batches from the command line?
  - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?
 
- - Periodic save timer
  - SuperCube spell
 
  - There is a random missing stained glass block in the life schematic .. ha, and remove sign about incident! :)
   - clear button off-center? Something is...
-  
  - Life board customization buttons, like in wolf house? Sim is off-center, too.
 
  - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.

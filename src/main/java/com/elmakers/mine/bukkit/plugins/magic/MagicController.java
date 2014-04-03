@@ -91,6 +91,7 @@ import org.dynmap.markers.PolyLineMarker;
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.Schematic;
+import com.elmakers.mine.bukkit.blocks.ToggleBlock;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -1109,18 +1110,13 @@ public class MagicController implements Listener
 			{
 				List<String> chunkIds = toggleBlockData.getKeys();
 				for (String chunkId : chunkIds) {
-					Map<Long, BlockData> restoreChunk = new HashMap<Long, BlockData>();
-					toggleBlocksOnLoad.put(chunkId, restoreChunk);
-					
-					List<String> blockDataList = toggleBlockData.getStringList(chunkId);
-					for (String blockAsString : blockDataList) {
-						BlockData blockData = BlockData.fromString(blockAsString);
-						if (blockData == null) {
-							getLogger().info("Skipped invalid entry in toggleblocks.yml file, entry will be deleted: " + blockAsString);
-							continue;
-						}
-						
-						restoreChunk.put(blockData.getId(), blockData);
+					ConfigurationNode chunkNode = toggleBlockData.getNode(chunkId);
+					Map<Long, ToggleBlock> restoreChunk = new HashMap<Long, ToggleBlock>();
+					List<String> blockIds = chunkNode.getKeys();
+					for (String blockId : blockIds) {
+						ConfigurationNode toggleConfig = chunkNode.getNode(blockId);
+						ToggleBlock toggle = new ToggleBlock(toggleConfig);
+						restoreChunk.put(toggle.getId(), toggle);
 					}
 				}
 			}
@@ -1133,39 +1129,17 @@ public class MagicController implements Listener
 	{
 		try {
 			Configuration toggleBlockData = createDataFile(TOGGLE_BLOCKS_FILE);
-			for (Entry<String, Map<Long, BlockData>> toggleEntry : toggleBlocksOnLoad.entrySet()) {
-				List<String> blockList = new ArrayList<String>();
-				for (BlockData block : toggleEntry.getValue().values()) {
-					blockList.add(block.toString());
-				}
-				toggleBlockData.setProperty(toggleEntry.getKey(), blockList);
-			}
-			toggleBlockData.save();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		try {
-			ConfigurationNode toggleBlockData = loadDataFile(TOGGLE_BLOCKS_FILE);
-			if (toggleBlockData != null)
-			{
-				List<String> chunkIds = toggleBlockData.getKeys();
-				for (String chunkId : chunkIds) {
-					Map<Long, BlockData> restoreChunk = new HashMap<Long, BlockData>();
-					toggleBlocksOnLoad.put(chunkId, restoreChunk);
-					
-					List<String> blockDataList = toggleBlockData.getStringList(chunkId);
-					for (String blockAsString : blockDataList) {
-						BlockData blockData = BlockData.fromString(blockAsString);
-						if (blockData == null) {
-							getLogger().info("Skipped invalid entry in toggleblocks.yml file, entry will be deleted: " + blockAsString);
-							continue;
-						}
-						
-						restoreChunk.put(blockData.getId(), blockData);
+			for (Entry<String, Map<Long, ToggleBlock>> toggleEntry : toggleBlocksOnLoad.entrySet()) {
+				Collection<ToggleBlock> blocks = toggleEntry.getValue().values();
+				if (blocks.size() > 0) {
+					ConfigurationNode chunkNode = toggleBlockData.createChild(toggleEntry.getKey());
+					for (ToggleBlock block : blocks) {
+						ConfigurationNode node = chunkNode.createChild(block.getKey());
+						block.save(node);
 					}
 				}
 			}
+			toggleBlockData.save();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -2732,14 +2706,14 @@ public class MagicController implements Listener
 		}
 	}
 	
-	public void registerBlockForReloadToggle(Block block) {
+	public void registerBlockForReloadToggle(Block block, String message) {
 		String chunkId = getChunkKey(block.getChunk());
-		Map<Long, BlockData> toReload = toggleBlocksOnLoad.get(chunkId);
+		Map<Long, ToggleBlock> toReload = toggleBlocksOnLoad.get(chunkId);
 		if (toReload == null) {
-			toReload = new HashMap<Long, BlockData>();
+			toReload = new HashMap<Long, ToggleBlock>();
 			toggleBlocksOnLoad.put(chunkId, toReload);
 		}
-		BlockData data = new BlockData(block);
+		ToggleBlock data = new ToggleBlock(block, message);
 		toReload.put(data.getId(), data);
 	}
 
@@ -2748,7 +2722,7 @@ public class MagicController implements Listener
 		// purposefully, to prevent thrashing the main map and adding lots
 		// of HashMap creation.
 		String chunkId = getChunkKey(block.getChunk());
-		Map<Long, BlockData> toReload = toggleBlocksOnLoad.get(chunkId);
+		Map<Long, ToggleBlock> toReload = toggleBlocksOnLoad.get(chunkId);
 		if (toReload != null) {
 			toReload.remove(BlockData.getBlockId(block));
 		}
@@ -2756,30 +2730,52 @@ public class MagicController implements Listener
 	
 	protected void triggerBlockToggle(final Chunk chunk) {
 		String chunkKey = getChunkKey(chunk);
-		Map<Long, BlockData> chunkData = toggleBlocksOnLoad.get(chunkKey);
+		Map<Long, ToggleBlock> chunkData = toggleBlocksOnLoad.get(chunkKey);
 		if (chunkData != null) {
-			Collection<BlockData> blocks = chunkData.values();
-			final List<BlockData> restored = new ArrayList<BlockData>();
-			for (BlockData toggleBlock : blocks) {
-				Block current = toggleBlock.getBlock();
-				// Don't toggle the block if it has changed to something else.
-				if (current.getType() == toggleBlock.getMaterial()) {
-					current.setType(Material.AIR);
-					restored.add(toggleBlock);
+			final List<ToggleBlock> restored = new ArrayList<ToggleBlock>();
+			Collection<Long> blockKeys = chunkData.keySet();
+			long timeThreshold = System.currentTimeMillis() - toggleCooldown;
+			for (Long blockKey : blockKeys) {
+				ToggleBlock toggleBlock = chunkData.get(blockKey);
+				
+				// Skip it for now if the chunk was recently loaded
+				if (toggleBlock.getCreatedTime() < timeThreshold) {
+					Block current = toggleBlock.getBlock();
+					// Don't toggle the block if it has changed to something else.
+					if (current.getType() == toggleBlock.getMaterial()) {
+						current.setType(Material.AIR);
+						restored.add(toggleBlock);
+					}
+					
+					chunkData.remove(blockKey);
 				}
 			}
 			if (restored.size() > 0) {
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, 
 					new Runnable() {
 						public void run() {
-							for (BlockData restoreBlock : restored) {
+							int rangeSquared = toggleMessageRange * toggleMessageRange;
+							for (ToggleBlock restoreBlock : restored) {
 								getLogger().info("Resuming block at " + restoreBlock.getLocation());
 								restoreBlock.restore();
+								String message = restoreBlock.getMessage();
+								if (message != null && message.length() > 0) {
+									List<Entity> entities = restoreBlock.getWorld().getEntities();
+									for (Entity entity : entities)
+									{
+										if (!(entity instanceof Player)) continue;
+										if (entity.getLocation().toVector().distanceSquared(restoreBlock.getLocation()) < rangeSquared) {
+											((Player)entity).sendMessage(message);
+										}
+									}
+								}
 							}
 						}
 				}, 5);
 			}
-			toggleBlocksOnLoad.remove(chunkKey);
+			if (chunkData.size() == 0) {
+				toggleBlocksOnLoad.remove(chunkKey);
+			}
 		}
 	}
 
@@ -2869,6 +2865,8 @@ public class MagicController implements Listener
 	 private final File							 defaultsFolder;
 	 private final File							 playerDataFolder;
 
+	 private int								 toggleCooldown					= 10000;
+	 private int								 toggleMessageRange				= 256;
 	 private boolean							 bypassBuildPermissions         = false;
 	 private boolean							 bypassPvpPermissions           = false;
 	 private boolean							 factionsEnabled				= true;
@@ -2886,7 +2884,7 @@ public class MagicController implements Listener
 	 private Material							 defaultMaterial				= Material.DIRT;
 	 private DateFormat							 dateFormatter					= new SimpleDateFormat("yy-MM-dd HH:mm");
 
-	 private Map<String, Map<Long, BlockData>>   toggleBlocksOnLoad			    = new HashMap<String, Map<Long, BlockData>>();
+	 private Map<String, Map<Long, ToggleBlock>> toggleBlocksOnLoad			    = new HashMap<String, Map<Long, ToggleBlock>>();
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
 	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();
 }

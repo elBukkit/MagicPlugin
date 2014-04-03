@@ -821,6 +821,10 @@ public class ConfigurationNode {
 
 		 return list;
 	 }
+	 
+	 public List<ConfigurationNode> getNodeList(String path) {
+		 return getNodeList(path, null);
+	 }
 
 	 /**
 	  * Get a configuration node at a path. If the node doesn't exist or the

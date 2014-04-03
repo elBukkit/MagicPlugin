@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
 
 public class SimulateBatch extends VolumeBatch {
@@ -346,7 +347,11 @@ public class SimulateBatch extends VolumeBatch {
 					Block powerBlock = commandTargetBlock.getRelative(powerDirection);
 					powerBlock.setType(POWER_MATERIAL);
 					if (commandReload) {
-						controller.registerBlockForReloadToggle(powerBlock);
+						String message = "";
+						if (commandName != null && commandName.length() > 1) {
+							message = Messages.get("general.toggle_block").replace("$name", commandName);
+						}
+						controller.registerBlockForReloadToggle(powerBlock, message);
 					}
 				}
 			}
