@@ -347,13 +347,17 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return false;
 	}
 
-	public void undo(Mage mage)
+	public boolean undo(Mage mage)
 	{
-		if (blockList == null) return;
+		if (blockList == null) return true;
 
-		passesRemaining--;
 		UndoBatch batch = new UndoBatch(mage.getController(), this);
-		mage.addPendingBlockBatch(batch);
+		if (!mage.addPendingBlockBatch(batch)) {
+			return false;
+		}
+		passesRemaining--;
+		
+		return true;
 	}
 	
 	public void load(ConfigurationNode node) {

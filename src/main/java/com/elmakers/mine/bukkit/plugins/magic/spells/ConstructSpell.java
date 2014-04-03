@@ -165,11 +165,11 @@ public class ConstructSpell extends BrushSpell
 		if (parameters.getBoolean("power", false)) {
 			batch.setPower(true);
 		}
-		mage.addPendingBlockBatch(batch);
+		boolean success = mage.addPendingBlockBatch(batch);
 		
 		deactivate();
 
-		return SpellResult.CAST;
+		return success ? SpellResult.CAST : SpellResult.FAIL;
 	}
 	
 	

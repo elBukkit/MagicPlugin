@@ -56,10 +56,10 @@ public class RegenerateSpell extends BlockSpell
 				return SpellResult.FAIL;
 			}
 
-			mage.addPendingBlockBatch(batch);
+			boolean success = mage.addPendingBlockBatch(batch);
 			
 			deactivate();
-			return SpellResult.CAST;
+			return success ? SpellResult.CAST : SpellResult.FAIL;
 		}
 		else
 		{

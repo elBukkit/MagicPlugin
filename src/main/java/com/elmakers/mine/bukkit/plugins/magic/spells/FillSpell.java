@@ -78,10 +78,10 @@ public class FillSpell extends BrushSpell
 				return SpellResult.FAIL;
 			}
 			batch.setTimeToLive(parameters.getInt("undo", 0));
-			mage.addPendingBlockBatch(batch);
+			boolean success = mage.addPendingBlockBatch(batch);
 			
 			deactivate();
-			return SpellResult.CAST;
+			return success ? SpellResult.CAST : SpellResult.FAIL;
 		}
 		else
 		{

@@ -767,9 +767,13 @@ public class Mage implements CostReducer
 		return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
 	}
 	
-	public void addPendingBlockBatch(BlockBatch batch) {
+	public boolean addPendingBlockBatch(BlockBatch batch) {
+		if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
+			return false;
+		}
 		pendingBatches.addLast(batch);
 		controller.addPending(this);
+		return true;
 	}
 	
 	public void processPendingBatches(int maxBlockUpdates) {

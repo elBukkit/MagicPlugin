@@ -96,8 +96,12 @@ public class UndoQueue
 		}
 
 		BlockList blocks = blockQueue.removeLast();
-		blocks.undo(mage);
-		return true;
+		if (blocks.undo(mage)) {
+			return true;
+		}
+		
+		blockQueue.add(blocks);
+		return false;
 	}
 
 	public boolean undo(Mage mage, Block target)
@@ -109,10 +113,12 @@ public class UndoQueue
 			return false;
 		}
 
-		blockQueue.remove(lastActionOnTarget);
-		lastActionOnTarget.undo(mage);
-
-		return true;
+		if (lastActionOnTarget.undo(mage)) {
+			blockQueue.remove(lastActionOnTarget);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void load(Mage mage, ConfigurationNode node)

@@ -377,6 +377,10 @@ public class MagicController implements Listener
 		return undoQueueDepth;
 	}
 	
+	public int getPendingQueueDepth() {
+		return pendingQueueDepth;
+	}
+	
 	public int getMaxUndoPersistSize() {
 		return undoMaxPersistSize;
 	}
@@ -1340,6 +1344,7 @@ public class MagicController implements Listener
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
 		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
+		pendingQueueDepth = properties.getInteger("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInteger("undo_max_persist_size", undoMaxPersistSize);
 		playerDataThreshold = (long)(properties.getFloat("undo_max_persist_size", 0) * 1000 * 24 * 3600);
 		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
@@ -2807,6 +2812,7 @@ public class MagicController implements Listener
 	 private long                                physicsDisableTimeout          = 0;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;
+	 private int								 pendingQueueDepth				= 16;
 	 private int                                 undoMaxPersistSize             = 0;
 	 private long                                playerDataThreshold            = 0;
 	 private WandMode							 defaultWandMode				= WandMode.INVENTORY;

@@ -118,6 +118,7 @@ public class SimulateSpell extends BlockSpell {
 		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
 		delay /= 50;
 		
+		boolean success = true;
 		if (delay > 0 && taskId == null) {
 			taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 				public void run() {
@@ -126,7 +127,7 @@ public class SimulateSpell extends BlockSpell {
 				}
 			}, delay);
 		} else {
-			mage.addPendingBlockBatch(batch);
+			success = mage.addPendingBlockBatch(batch);
 		}
 		
 		// This is a bit of a hack, but it forces dynmap to show the spell cast direction
@@ -134,6 +135,6 @@ public class SimulateSpell extends BlockSpell {
 		// Automata
 		clearTarget();
 		
-		return SpellResult.CAST;
+		return success ? SpellResult.CAST : SpellResult.FAIL;
 	}
 }

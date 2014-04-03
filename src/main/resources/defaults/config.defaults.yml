@@ -220,6 +220,9 @@ schematic_files: WorldEdit/schematics/$name.schematic
 # How many casts to track in the undo queue
 undo_depth: 64
 
+# How many pending constructions a player may have at one time
+pending_depth: 8
+
 # The largest thing we'll persist in the undo queue (to a file)
 undo_max_persist_size: 4098
 
