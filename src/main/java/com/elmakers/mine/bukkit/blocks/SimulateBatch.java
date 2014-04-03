@@ -48,6 +48,9 @@ public class SimulateBatch extends VolumeBatch {
 	private boolean reverseTargetDistanceScore = false;
 	private int commandMoveRangeSquared = 9;
 	private int huntRange = 128;
+	private int birthRangeSquared = 0;
+	private int liveRangeSquared = 0;
+	
 	// 3.0 is roughly 180 degrees, gives him a wider FOV
 	private float huntFov = 3.0f;
 	private boolean commandReload;
@@ -131,9 +134,8 @@ public class SimulateBatch extends VolumeBatch {
 		return (endX - x) * (endZ - z) * (endY - y);
 	}
 	
-	protected void checkForPotentialCommand(Block block) {
+	protected void checkForPotentialCommand(Block block, int distanceSquared) {
 		if (includeCommands) {
-			int distanceSquared = (int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation()));
 			if (distanceSquared < commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
 				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
@@ -187,17 +189,29 @@ public class SimulateBatch extends VolumeBatch {
 			
 			Material blockMaterial = block.getType();
 			if (blockMaterial == birthMaterial) {
-				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
-					deadBlocks.add(block);
+				int distanceSquared = liveRangeSquared > 0 || includeCommands ? 
+						(int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
+
+				if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
+					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+					if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
+						deadBlocks.add(block);
+					} else {
+						checkForPotentialCommand(block, distanceSquared);
+					}
 				} else {
-					checkForPotentialCommand(block);
+					deadBlocks.add(block);
 				}
 			} else if (blockMaterial == deathMaterial) {
-				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-				if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
-					bornBlocks.add(block);
-					checkForPotentialCommand(block);
+				int distanceSquared = birthRangeSquared > 0 || includeCommands ? 
+						(int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
+
+				if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
+					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+					if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
+						bornBlocks.add(block);
+						checkForPotentialCommand(block, distanceSquared);
+					}
 				}
 			}
 			
@@ -377,6 +391,14 @@ public class SimulateBatch extends VolumeBatch {
 			}
 			includeCommands = castCommand != null && castCommand.length() > 0;
 		}
+	}
+	
+	public void setBirthRange(int range) {
+		birthRangeSquared = range * range;
+	}
+
+	public void setLiveRange(int range) {
+		liveRangeSquared = range * range;
 	}
 	
 	public void setCommandMoveRange(int commandRadius, boolean reload, TargetMode mode) {

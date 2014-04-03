@@ -92,7 +92,7 @@ public class SimulateSpell extends BlockSpell {
 		targetLocation.setYaw(location.getYaw());
 		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
 		
-		boolean includeCommands = parameters.getBoolean("auto", false);
+		boolean includeCommands = parameters.getBoolean("animate", false);
 		if (includeCommands) {
 			if (mage.getCommandSender() instanceof BlockCommandSender) {
 				BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
@@ -112,6 +112,9 @@ public class SimulateSpell extends BlockSpell {
 			}
 			batch.setCommandMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true), targetMode);
 		}
+		
+		batch.setBirthRange(parameters.getInt("birth_range", 0));
+		batch.setLiveRange(parameters.getInt("live_range", 0));
 		
 		// delay is in ms, gets converted.
 		int delay = parameters.getInt("delay", 0);

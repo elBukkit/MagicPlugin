@@ -274,7 +274,7 @@ glider:
         material: schematic|glider
         transparent: transparent_to_construction
         commands:
-          glider_simulate: cast simulate target self material obsidian auto true delay 500 radius 3
+          glider_simulate: cast simulate target self material obsidian animate true delay 500 radius 3
     costs:
         xp: 500
 virus:

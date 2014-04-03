@@ -17,7 +17,7 @@ public class AnimateSpell extends SimulateSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		if (!parameters.getBoolean("animate", true))
+		if (parameters.getBoolean("animate", false))
 		{
 			return super.onCast(parameters);
 		}
@@ -48,7 +48,7 @@ public class AnimateSpell extends SimulateSpell
 		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
 		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 		
-		String commandLine = "cast " + getKey() + " target self auto true bu true m " + targetBlock.getType().name().toLowerCase() +
+		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 bu true m " + targetBlock.getType().name().toLowerCase() +
 				" cd " + (simCheckDestructible ? "true" : "false");
 		String commandName = parameters.getString("name", "Automata");
 		
