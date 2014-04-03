@@ -2733,7 +2733,7 @@ public class MagicController implements Listener
 		Map<Long, ToggleBlock> chunkData = toggleBlocksOnLoad.get(chunkKey);
 		if (chunkData != null) {
 			final List<ToggleBlock> restored = new ArrayList<ToggleBlock>();
-			Collection<Long> blockKeys = chunkData.keySet();
+			Collection<Long> blockKeys = new ArrayList<Long>(chunkData.keySet());
 			long timeThreshold = System.currentTimeMillis() - toggleCooldown;
 			for (Long blockKey : blockKeys) {
 				ToggleBlock toggleBlock = chunkData.get(blockKey);

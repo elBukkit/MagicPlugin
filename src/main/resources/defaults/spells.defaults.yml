@@ -1612,7 +1612,7 @@ box:
     costs:
         xp: 10
 superbox:
-    icon: gold_helmet
+    icon: diamond_helmet
     category: engineering
     class: ConstructSpell
     effects:
