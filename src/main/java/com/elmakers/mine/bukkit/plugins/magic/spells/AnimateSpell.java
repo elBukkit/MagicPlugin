@@ -9,15 +9,19 @@ import org.bukkit.block.CommandBlock;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.blocks.SimulateBatch;
-import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class AnimateSpell extends BlockSpell 
+public class AnimateSpell extends SimulateSpell 
 {
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		if (!parameters.getBoolean("animate", true))
+		{
+			return super.onCast(parameters);
+		}
+		
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
 		{
@@ -42,10 +46,8 @@ public class AnimateSpell extends BlockSpell
 		}
 		
 		
-		String commandLine = parameters.getString("command", "");
+		String commandLine = "cast " + getKey() + " target self auto true bu true m " + targetBlock.getType().name().toLowerCase();
 		String commandName = parameters.getString("name", "Automata");
-		
-		commandLine = commandLine.replace("$material", targetBlock.getType().name().toLowerCase());
 		
 		targetBlock.setType(Material.COMMAND);
 		BlockState commandData = targetBlock.getState();

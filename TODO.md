@@ -5,9 +5,9 @@
  - Pending construct batch limit!
  - World-bound wands, add Tester wand
  
- - Brush for Virus spell (!)
+ - Add string to trader for sale (Livid_Tech)
+ - Add directional parameter for mage direction when creating an glider... somehow?
  
- - Animate spell
  - Hat should drop existing item on the ground
  - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
  - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with sold wands, too?
