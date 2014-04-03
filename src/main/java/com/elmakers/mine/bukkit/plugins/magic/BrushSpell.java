@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -56,6 +57,12 @@ public abstract class BrushSpell extends BlockSpell{
 		}
 		
 		return mage.getBrush();
+	}
+	
+	@Override
+	public MaterialAndData getEffectMaterial()
+	{
+		return brush != null ? brush : mage.getBrush();
 	}
 	
 	public boolean hasBrushOverride() 

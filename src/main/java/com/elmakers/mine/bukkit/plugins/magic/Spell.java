@@ -51,6 +51,9 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
  */
 public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 {	
+	// TODO: Configurable default? this does look cool, though.
+	protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
+	
 	/*
 	 * protected members that are helpful to use
 	 */
@@ -542,6 +545,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		targetingComplete = false;
 	}
 	
+	public void setTargetType(TargetType t) {
+		this.targetType = t;
+		if (target != null) {
+			target = null;
+			initializeTargeting();
+		}
+	}
+	
 	public String getMessage(String messageKey) {
 		return getMessage(messageKey, "");
 	}
@@ -605,11 +616,24 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			List<EffectPlayer> resultEffects = effects.get(result);
 			for (EffectPlayer player : resultEffects) {
 				// Set material and color
-				player.setMaterial(mage.getBrush());
+				player.setMaterial(getEffectMaterial());
 				player.setColor(mage.getEffectColor());
 				player.start(mageLocation, targetLocation);
 			}
 		}
+	}
+	
+	public MaterialAndData getEffectMaterial()
+	{
+		if (target != null && target.isValid()) {
+			Block block = target.getBlock();
+			MaterialAndData targetMaterial = new MaterialAndData(block);
+			if (targetMaterial.getMaterial() == Material.AIR) {
+				targetMaterial.setMaterial(DEFAULT_EFFECT_MATERIAL);
+			}
+			return targetMaterial;
+		}
+		return new MaterialAndData(DEFAULT_EFFECT_MATERIAL);
 	}
 
 	@SuppressWarnings("unchecked")
