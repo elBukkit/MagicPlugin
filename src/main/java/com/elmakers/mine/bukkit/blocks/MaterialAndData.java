@@ -109,21 +109,26 @@ public class MaterialAndData {
 		inventoryContents = null;
 		customName = null;
 		
-		BlockState blockState = block.getState();
-		if (blockState instanceof Sign) {
-			Sign sign = (Sign)blockState;
-			signLines = sign.getLines();
-		} else if (blockState instanceof CommandBlock){
-			CommandBlock command = (CommandBlock)blockState;
-			commandLine = command.getCommand();
-			customName = command.getName();
-		} else if (blockState instanceof InventoryHolder) {
-			InventoryHolder holder = (InventoryHolder)blockState;
-			Inventory holderInventory = holder.getInventory();
-			inventoryContents = holderInventory.getContents();
-		} else if (blockState instanceof Skull) {
-			Skull skull = (Skull)blockState;
-			customName = skull.getOwner();
+		try {
+			BlockState blockState = block.getState();
+			if (blockState instanceof Sign) {
+				Sign sign = (Sign)blockState;
+				signLines = sign.getLines();
+			} else if (blockState instanceof CommandBlock){
+				// This seems to occasionally throw exceptions...
+				CommandBlock command = (CommandBlock)blockState;
+				commandLine = command.getCommand();
+				customName = command.getName();
+			} else if (blockState instanceof InventoryHolder) {
+				InventoryHolder holder = (InventoryHolder)blockState;
+				Inventory holderInventory = holder.getInventory();
+				inventoryContents = holderInventory.getContents();
+			} else if (blockState instanceof Skull) {
+				Skull skull = (Skull)blockState;
+				customName = skull.getOwner();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		
 		material = blockMaterial;
