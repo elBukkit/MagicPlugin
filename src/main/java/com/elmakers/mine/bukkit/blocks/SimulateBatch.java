@@ -15,10 +15,12 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 
 public class SimulateBatch extends VolumeBatch {
@@ -435,6 +437,8 @@ public class SimulateBatch extends VolumeBatch {
 				// Bukkit.getLogger().info("Hunting " + ((Player)bestTarget.getEntity()).getName() + 
 				// 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation());
 				targetLocation = bestTarget.getLocation();
+				Vector direction = targetLocation.toVector().subtract(center.toVector());
+				center = RandomUtils.setDirection(center, direction);
 			}
 			break;
 		case GLIDE:

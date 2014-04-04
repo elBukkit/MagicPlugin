@@ -195,7 +195,6 @@ public class MagicController implements Listener
 		} else {
 			mage = mages.get(mageId);
 		}
-		mage.setLocation(null);
 		mage.setCommandSender(commandSender);
 		if (commandSender instanceof Player) {
 			mage.setPlayer((Player)commandSender);
@@ -2761,7 +2760,7 @@ public class MagicController implements Listener
 						public void run() {
 							int rangeSquared = toggleMessageRange * toggleMessageRange;
 							for (ToggleBlock restoreBlock : restored) {
-								getLogger().info("Resuming block at " + restoreBlock.getLocation());
+								getLogger().info("Resuming block at " + restoreBlock.getLocation() + ": " + restoreBlock.getMessage());
 								restoreBlock.restore();
 								String message = restoreBlock.getMessage();
 								if (message != null && message.length() > 0) {
