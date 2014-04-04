@@ -115,6 +115,8 @@ public class SimulateSpell extends BlockSpell {
 		
 		batch.setBirthRange(parameters.getInt("birth_range", 0));
 		batch.setLiveRange(parameters.getInt("live_range", 0));
+		batch.setMinHuntRange(parameters.getInt("hunt_min_range", 4));
+		batch.setMaxHuntRange(parameters.getInt("hunt_max_range", 128));
 		
 		// delay is in ms, gets converted.
 		int delay = parameters.getInt("delay", 0);

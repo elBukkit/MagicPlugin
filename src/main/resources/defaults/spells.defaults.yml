@@ -292,9 +292,10 @@ virus:
         check_destructible: false
         range: 32
         cooldown: 120000
-        name: Virus 6.0
+        name: Virus 7.0
         radius: 16
         yradius: 16
+        hunt_min_range: 8
         delay: 1000
         target_mode: hunt
         live_rules: 3,4,5,6,7,8,9
@@ -316,14 +317,17 @@ hunter:
         check_destructible: false
         range: 32
         cooldown: 60000
-        name: Hunter
-        radius: 3
-        yradius: 3
-        delay: 2000
+        name: Hunter 2.0
+        radius: 5
+        yradius: 5
+        birth_range: 3
+        live_range: 3
+        hunt_min_range: 0
+        delay: 500
         target_mode: hunt
-        live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
-        birth_rules: 2,3
-        move: 1
+        live_rules: 3,4,5,6,7,8,9
+        birth_rules: 5
+        move: 2
     costs:
         xp: 800
 animate:
@@ -344,6 +348,9 @@ animate:
         name: Magic Golem
         radius: 5
         yradius: 5
+        birth_range: 3
+        live_range: 3
+        move: 4
         delay: 1000
         target_mode: glide
         live_rules: 3,4,5,6,7,8,9

@@ -47,7 +47,8 @@ public class SimulateBatch extends VolumeBatch {
 	private String commandName;
 	private boolean reverseTargetDistanceScore = false;
 	private int commandMoveRangeSquared = 9;
-	private int huntRange = 128;
+	private int huntMaxRange = 128;
+	private int huntMinRange = 4;
 	private int birthRangeSquared = 0;
 	private int liveRangeSquared = 0;
 	
@@ -139,7 +140,7 @@ public class SimulateBatch extends VolumeBatch {
 			if (distanceSquared < commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
 				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
-				potentialCommandBlocks.add(new Target(targetLocation, block, huntRange, huntFov, reverseTargetDistanceScore));
+				potentialCommandBlocks.add(new Target(targetLocation, block, huntMinRange, huntMaxRange, huntFov, reverseTargetDistanceScore));
 			}
 		}
 	}
@@ -401,6 +402,14 @@ public class SimulateBatch extends VolumeBatch {
 		liveRangeSquared = range * range;
 	}
 	
+	public void setMaxHuntRange(int range) {
+		huntMaxRange = range;
+	}
+
+	public void setMinHuntRange(int range) {
+		huntMinRange = range;
+	}
+	
 	public void setCommandMoveRange(int commandRadius, boolean reload, TargetMode mode) {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
 		commandReload = reload;
@@ -415,7 +424,7 @@ public class SimulateBatch extends VolumeBatch {
 			for (Entity entity : entities)
 			{
 				if (!(entity instanceof Player)) continue;
-				Target newScore = new Target(center, entity, huntRange, huntFov, false);
+				Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, false);
 				int score = newScore.getScore();
 				if (bestTarget == null || score > bestTarget.getScore()) {
 					bestTarget = newScore;

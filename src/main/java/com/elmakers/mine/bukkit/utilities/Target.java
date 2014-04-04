@@ -10,6 +10,7 @@ import org.bukkit.util.Vector;
 public class Target implements Comparable<Target>
 {
 	protected int    maxDistance = 512;
+	protected int    minDistance = 0;
 	protected double maxAngle    = 0.3;
 
 	private Location source;
@@ -29,7 +30,7 @@ public class Target implements Comparable<Target>
 	public Target(Location sourceLocation, Block block)
 	{
 		this.source = sourceLocation;
-		this.location = block.getLocation();
+		if (block != null) this.location = block.getLocation();
 		calculateScore();
 	}
 
@@ -39,7 +40,18 @@ public class Target implements Comparable<Target>
 		this.maxAngle = angle;
 		this.reverseDistance = reverseDistance;
 		this.source = sourceLocation;
-		this.location = block.getLocation();
+		if (block != null) this.location = block.getLocation();
+		calculateScore();
+	}
+
+	public Target(Location sourceLocation, Block block, int minRange, int maxRange, double angle, boolean reverseDistance)
+	{
+		this.maxDistance = maxRange;
+		this.minDistance = minRange;
+		this.maxAngle = angle;
+		this.reverseDistance = reverseDistance;
+		this.source = sourceLocation;
+		if (block != null) this.location = block.getLocation();
 		calculateScore();
 	}
 
@@ -48,7 +60,7 @@ public class Target implements Comparable<Target>
 		this.maxDistance = range;
 		this.source = sourceLocation;
 		this.entity = entity;
-		this.location = entity.getLocation();
+		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
 
@@ -58,7 +70,7 @@ public class Target implements Comparable<Target>
 		this.maxAngle = angle;
 		this.source = sourceLocation;
 		this.entity = entity;
-		this.location = entity.getLocation();
+		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
 
@@ -69,7 +81,19 @@ public class Target implements Comparable<Target>
 		this.reverseDistance = reverseDistance;
 		this.source = sourceLocation;
 		this.entity = entity;
-		this.location = entity.getLocation();
+		if (entity != null) this.location = entity.getLocation();
+		calculateScore();
+	}
+
+	public Target(Location sourceLocation, Entity entity, int minRange, int maxRange, double angle, boolean reverseDistance)
+	{
+		this.maxDistance = maxRange;
+		this.minDistance = minRange;
+		this.maxAngle = angle;
+		this.reverseDistance = reverseDistance;
+		this.source = sourceLocation;
+		this.entity = entity;
+		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
 	
@@ -78,7 +102,7 @@ public class Target implements Comparable<Target>
 		this.maxDistance = 0;
 		this.source = sourceLocation;
 		this.entity = entity;
-		this.location = entity.getLocation();
+		if (entity != null) this.location = entity.getLocation();
 	}
 	
 	public Target(Location sourceLocation, Entity entity, Block block)
@@ -114,6 +138,7 @@ public class Target implements Comparable<Target>
 		score = 0;
 		if (angle > maxAngle) return;
 		if (distance > maxDistance) return;
+		if (distance < minDistance) return;
 		
 		if (reverseDistance) {
 			distance = maxDistance - distance;
