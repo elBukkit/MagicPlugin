@@ -303,7 +303,7 @@ virus:
     costs:
         xp: 2000
 hunter:
-    icon: stone_button
+    icon: lever
     category: dark
     class: AnimateSpell
     effects:
@@ -331,7 +331,7 @@ hunter:
     costs:
         xp: 800
 animate:
-    icon: lever
+    icon: command_minecart
     category: master
     class: AnimateSpell
     effects:
@@ -1668,6 +1668,25 @@ superbox:
         transparent: transparent_to_construction
     costs:
         xp: 100
+supercube:
+    icon: nether_brick
+    category: engineering
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+    costs:
+        xp: 150
 workbench:
     icon: workbench
     category: engineering
@@ -2102,11 +2121,11 @@ emp:
         -  class: EffectSingle
            sound: fuse
         -  class: EffectTrail
-           effect_particle: red_dust
-           effect_particle_count: 5
+           particle: red_dust
+           particle_count: 5
         -  class: EffectRing
-           effect_particle: red_dust
-           effect_particle_count: 3
+           particle: red_dust
+           particle_count: 3
            location: target
     parameters:
         target_type: LivingEntity
@@ -2117,6 +2136,31 @@ emp:
         power: true
         cooldown: 1000
         undo: 500
+    costs:
+        xp: 25
+superemp:
+    icon: diode
+    category: master
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectTrail
+           particle: red_dust
+           particle_count: 5
+        -  class: EffectRing
+           particle: red_dust
+           particle_count: 6
+           location: target
+    parameters:
+        target: select
+        allow_max_range: true
+        range: 32
+        type: sphere
+        power: true
+        cooldown: 3000
+        undo: 1000
     costs:
         xp: 25
 disintegrate:
@@ -2383,6 +2427,7 @@ recall:
            location: both
         -  class: EffectRing
            particle: portal
+           particle_count: 6
            location: both
     parameters:
         allow_spawn: true

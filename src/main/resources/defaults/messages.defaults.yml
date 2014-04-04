@@ -443,6 +443,15 @@ spells:
         target_selected: Cast again to build sphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        target_selected: Cast again to build sphere
+    superemp:
+        name: SuperEMP
+        description: Electrify a large area
+        usage: Cast twice to electrify
+        cancel: EMP cancelled
+        fail: Too large!
+        cast_finish: Electrified $count blocks
+        target_selected: Cast again to electrify sphere
     supershell:
         name: SuperShell
         description: Create a large hollow sphere
@@ -489,6 +498,14 @@ spells:
         usage: Cast twice to construct
         cancel: Box cancelled
         target_selected: Cast again to build box
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superbox:
+        name: SuperCube
+        description: Create a large solid cube
+        usage: Cast twice to construct
+        cancel: Cube cancelled
+        target_selected: Cast again to build cube
         fail: Too large!
         cast_finish: Filled $count blocks with $material
     kamikazee:

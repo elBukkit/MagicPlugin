@@ -2,11 +2,7 @@
 
 ## For 2.9.9
 
- - Pending construct batch limit!
  - World-bound wands, add Tester wand
- 
- - Add string to trader for sale (Livid_Tech)
- - Add directional parameter for mage direction when creating an glider... somehow?
  
  - Hat should drop existing item on the ground
  - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
@@ -14,6 +10,8 @@
 
  - Maybe a way to cancel pending batches from the command line?
  - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?
+
+ - Ability to have normal enchants on a sword/wand
 
  - SuperCube spell
 

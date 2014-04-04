@@ -2870,7 +2870,7 @@ public class MagicController implements Listener
 	 private final File							 defaultsFolder;
 	 private final File							 playerDataFolder;
 
-	 private int								 toggleCooldown					= 10000;
+	 private int								 toggleCooldown					= 1000;
 	 private int								 toggleMessageRange				= 256;
 	 private boolean							 bypassBuildPermissions         = false;
 	 private boolean							 bypassPvpPermissions           = false;
