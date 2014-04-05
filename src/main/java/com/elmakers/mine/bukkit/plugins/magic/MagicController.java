@@ -91,7 +91,7 @@ import org.dynmap.markers.PolyLineMarker;
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.Schematic;
-import com.elmakers.mine.bukkit.blocks.ToggleBlock;
+import com.elmakers.mine.bukkit.blocks.Automaton;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -1055,7 +1055,7 @@ public class MagicController implements Listener
 		
 		// Load toggle-on-load blocks
 		getLogger().info("Loading toggle-block data");
-		loadToggleBlockData();
+		loadAutomata();
 		
 		// Load URL Map Data
 		try {
@@ -1105,20 +1105,20 @@ public class MagicController implements Listener
 		}
 	}
 
-	protected void loadToggleBlockData()
+	protected void loadAutomata()
 	{
 		try {
-			ConfigurationNode toggleBlockData = loadDataFile(TOGGLE_BLOCKS_FILE);
+			ConfigurationNode toggleBlockData = loadDataFile(AUTOMATA_FILE);
 			if (toggleBlockData != null)
 			{
 				List<String> chunkIds = toggleBlockData.getKeys();
 				for (String chunkId : chunkIds) {
 					ConfigurationNode chunkNode = toggleBlockData.getNode(chunkId);
-					Map<Long, ToggleBlock> restoreChunk = new HashMap<Long, ToggleBlock>();
+					Map<Long, Automaton> restoreChunk = new HashMap<Long, Automaton>();
 					List<String> blockIds = chunkNode.getKeys();
 					for (String blockId : blockIds) {
 						ConfigurationNode toggleConfig = chunkNode.getNode(blockId);
-						ToggleBlock toggle = new ToggleBlock(toggleConfig);
+						Automaton toggle = new Automaton(toggleConfig);
 						restoreChunk.put(toggle.getId(), toggle);
 					}
 				}
@@ -1128,21 +1128,21 @@ public class MagicController implements Listener
 		}
 	}
 	
-	protected void saveToggleBlockData()
+	protected void saveAutomata()
 	{
 		try {
-			Configuration toggleBlockData = createDataFile(TOGGLE_BLOCKS_FILE);
-			for (Entry<String, Map<Long, ToggleBlock>> toggleEntry : toggleBlocksOnLoad.entrySet()) {
-				Collection<ToggleBlock> blocks = toggleEntry.getValue().values();
+			Configuration automataData = createDataFile(AUTOMATA_FILE);
+			for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
+				Collection<Automaton> blocks = toggleEntry.getValue().values();
 				if (blocks.size() > 0) {
-					ConfigurationNode chunkNode = toggleBlockData.createChild(toggleEntry.getKey());
-					for (ToggleBlock block : blocks) {
+					ConfigurationNode chunkNode = automataData.createChild(toggleEntry.getKey());
+					for (Automaton block : blocks) {
 						ConfigurationNode node = chunkNode.createChild(block.getKey());
 						block.save(node);
 					}
 				}
 			}
-			toggleBlockData.save();
+			automataData.save();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1274,7 +1274,7 @@ public class MagicController implements Listener
 		URLMap.save();
 
 		getLogger().info("Saving toggle block data");
-		saveToggleBlockData();
+		saveAutomata();
 	}
 	
 	protected void loadSpells(ConfigurationNode config)
@@ -2712,12 +2712,12 @@ public class MagicController implements Listener
 	
 	public void registerBlockForReloadToggle(Block block, String message) {
 		String chunkId = getChunkKey(block.getChunk());
-		Map<Long, ToggleBlock> toReload = toggleBlocksOnLoad.get(chunkId);
+		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload == null) {
-			toReload = new HashMap<Long, ToggleBlock>();
-			toggleBlocksOnLoad.put(chunkId, toReload);
+			toReload = new HashMap<Long, Automaton>();
+			automata.put(chunkId, toReload);
 		}
-		ToggleBlock data = new ToggleBlock(block, message);
+		Automaton data = new Automaton(block, message);
 		toReload.put(data.getId(), data);
 	}
 
@@ -2726,7 +2726,7 @@ public class MagicController implements Listener
 		// purposefully, to prevent thrashing the main map and adding lots
 		// of HashMap creation.
 		String chunkId = getChunkKey(block.getChunk());
-		Map<Long, ToggleBlock> toReload = toggleBlocksOnLoad.get(chunkId);
+		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload != null) {
 			toReload.remove(BlockData.getBlockId(block));
 		}
@@ -2734,13 +2734,13 @@ public class MagicController implements Listener
 	
 	protected void triggerBlockToggle(final Chunk chunk) {
 		String chunkKey = getChunkKey(chunk);
-		Map<Long, ToggleBlock> chunkData = toggleBlocksOnLoad.get(chunkKey);
+		Map<Long, Automaton> chunkData = automata.get(chunkKey);
 		if (chunkData != null) {
-			final List<ToggleBlock> restored = new ArrayList<ToggleBlock>();
+			final List<Automaton> restored = new ArrayList<Automaton>();
 			Collection<Long> blockKeys = new ArrayList<Long>(chunkData.keySet());
 			long timeThreshold = System.currentTimeMillis() - toggleCooldown;
 			for (Long blockKey : blockKeys) {
-				ToggleBlock toggleBlock = chunkData.get(blockKey);
+				Automaton toggleBlock = chunkData.get(blockKey);
 				
 				// Skip it for now if the chunk was recently loaded
 				if (toggleBlock.getCreatedTime() < timeThreshold) {
@@ -2759,7 +2759,7 @@ public class MagicController implements Listener
 					new Runnable() {
 						public void run() {
 							int rangeSquared = toggleMessageRange * toggleMessageRange;
-							for (ToggleBlock restoreBlock : restored) {
+							for (Automaton restoreBlock : restored) {
 								getLogger().info("Resuming block at " + restoreBlock.getLocation() + ": " + restoreBlock.getMessage());
 								restoreBlock.restore();
 								String message = restoreBlock.getMessage();
@@ -2778,7 +2778,7 @@ public class MagicController implements Listener
 				}, 5);
 			}
 			if (chunkData.size() == 0) {
-				toggleBlocksOnLoad.remove(chunkKey);
+				automata.remove(chunkKey);
 			}
 		}
 	}
@@ -2793,7 +2793,7 @@ public class MagicController implements Listener
 	 private final String                        MATERIALS_FILE             	= "materials";
 	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
-	 private final String						 TOGGLE_BLOCKS_FILE				= "toggleblocks";
+	 private final String						 AUTOMATA_FILE					= "automata";
 	 private final String						 URL_MAPS_FILE					= "imagemaps";
 	 
 	 private boolean 							loadDefaultSpells				= true;
@@ -2889,7 +2889,7 @@ public class MagicController implements Listener
 	 private Material							 defaultMaterial				= Material.DIRT;
 	 private DateFormat							 dateFormatter					= new SimpleDateFormat("yy-MM-dd HH:mm");
 
-	 private Map<String, Map<Long, ToggleBlock>> toggleBlocksOnLoad			    = new HashMap<String, Map<Long, ToggleBlock>>();
+	 private Map<String, Map<Long, Automaton>> 	 automata			    		= new HashMap<String, Map<Long, Automaton>>();
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
 	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();
 }

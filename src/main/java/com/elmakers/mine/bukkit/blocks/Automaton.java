@@ -4,17 +4,17 @@ import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class ToggleBlock extends BlockData {
+public class Automaton extends BlockData {
 	private String message;
 	private long createdAt;
 	
-	public ToggleBlock(ConfigurationNode node) {
+	public Automaton(ConfigurationNode node) {
 		super(node);
 		message = node.getString("message");
 		createdAt = node.getLong("created", 0);
 	}
 	
-	public ToggleBlock(Block block, String message) {
+	public Automaton(Block block, String message) {
 		super(block);
 		
 		this.message = message;
