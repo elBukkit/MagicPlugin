@@ -158,7 +158,7 @@ default:
 #
 random:
     icon: stick
-    levels: 1,20,30,35,45
+    levels: 1,25,35,40,45
 #   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
     property_count:
       0: 100,100, 50,   0,  0
@@ -239,12 +239,9 @@ random:
       50: 0,10,50,60,100
     spell_count:
       1: 100, 40,  10,  0,  0
-      3: 5,   10,  60,  10, 0
-      5: 0,   5,   20,  20, 0
-      7: 0,   1,   10,  50, 0
-      8: 0,   0,   1,   60, 0
-      9: 0,   0,   0,   20, 0
-      10: 0,  0,   0,   10, 100
+      2: 5,   10,  60,  10, 0
+      3: 0,   5,   20,  20, 0
+      5: 0,   1,   10,  50, 0
     spells:
       absorb: 0,0,0,1,100
       alter: 0,10,20,30,100
