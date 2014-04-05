@@ -8,6 +8,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.blocks.MaterialAndData;
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -31,7 +33,8 @@ public class AnimateSpell extends SimulateSpell
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		BlockFace powerFace = SimulateBatch.findPowerLocation(targetBlock, targetBlock.getType());
+		MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
+		BlockFace powerFace = SimulateBatch.findPowerLocation(targetBlock, targetMaterial);
 		if (powerFace == null)
 		{
 			return SpellResult.NO_TARGET;
@@ -51,7 +54,7 @@ public class AnimateSpell extends SimulateSpell
 		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 bu true m " + targetBlock.getType().name().toLowerCase() +
 				" cd " + (simCheckDestructible ? "true" : "false");
 		String commandName = parameters.getString("name", "Automata");
-		commandName = mage.getName() + "@" + commandName;
+		commandName = commandName + " " + MaterialBrush.getMaterialName(targetMaterial);
 		
 		targetBlock.setType(Material.COMMAND);
 		BlockState commandData = targetBlock.getState();

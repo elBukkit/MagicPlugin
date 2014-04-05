@@ -202,6 +202,12 @@ public class MaterialAndData {
 		
 		return materialKey;
 	}
+	
+	// TODO: Should this just be !isDifferent .. ? It's fast right now.
+	@SuppressWarnings("deprecation")
+	public boolean is(Block block) {
+		return material == block.getType() && data == block.getData();
+	}
 
 	@SuppressWarnings("deprecation")
 	public boolean isDifferent(Block block) {

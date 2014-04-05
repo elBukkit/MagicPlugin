@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 import com.elmakers.mine.bukkit.blocks.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -45,9 +46,9 @@ public class SimulateSpell extends BlockSpell {
 		int yRadius = parameters.getInt("yradius", 0);
 		yRadius *= mage.getConstructionMultiplier();
 		
-		Material birthMaterial = target.getType();
-		birthMaterial = parameters.getMaterial("material", birthMaterial);
-		birthMaterial = parameters.getMaterial("m", birthMaterial);
+		MaterialAndData birthMaterial = new MaterialAndData(target);
+		birthMaterial = parameters.getMaterialAndData("material", birthMaterial);
+		birthMaterial = parameters.getMaterialAndData("m", birthMaterial);
 		
 		// Should this maybe use a brush?
 		Double dmxValue = parameters.getDouble("dmx", null);
@@ -60,7 +61,7 @@ public class SimulateSpell extends BlockSpell {
 					dmzValue == null ? 0 : dmzValue);
 			Location targetLocation = target.getLocation().add(offset);
 			if (!targetLocation.getBlock().getChunk().isLoaded()) return SpellResult.FAIL;
-			birthMaterial = targetLocation.getBlock().getType();
+			birthMaterial = new MaterialAndData(targetLocation.getBlock());
 		}
 		
 		Material deathMaterial = parameters.getMaterial("death_material", Material.AIR);

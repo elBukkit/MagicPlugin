@@ -47,7 +47,7 @@ public class SimulateBatch extends VolumeBatch {
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
 	
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
 	private Mage mage;
 	private BlockSpell spell;
@@ -70,10 +70,10 @@ public class SimulateBatch extends VolumeBatch {
 	private boolean commandReload;
 	private boolean commandPowered;
 	private World world;
-	private Material birthMaterial;
+	private MaterialAndData birthMaterial;
 	private Material deathMaterial;
-	private Material powerSimMaterialBackup;
-	private Material powerSimMaterial;
+	private MaterialAndData powerSimMaterialBackup;
+	private MaterialAndData powerSimMaterial;
 	private boolean includeCommands;
 	private int startX;
 	private int startZ;
@@ -96,7 +96,7 @@ public class SimulateBatch extends VolumeBatch {
 	private List<Target> potentialCommandBlocks = new LinkedList<Target>();
 	private BlockList modifiedBlocks = new BlockList();
 	
-	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, Material birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
+	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
 		super(spell.getMage().getController(), center.getWorld().getName());
 		this.spell = spell;
 		this.mage = spell.getMage();
@@ -108,7 +108,7 @@ public class SimulateBatch extends VolumeBatch {
 		this.deathMaterial = death;
 		
 		this.powerSimMaterial = birthMaterial;
-		this.powerSimMaterialBackup = deathMaterial;
+		this.powerSimMaterialBackup = new MaterialAndData(deathMaterial);
 		
 		for (Integer liveCount : liveCounts) {
 			while (this.liveCounts.size() < liveCount) {
@@ -180,14 +180,14 @@ public class SimulateBatch extends VolumeBatch {
 						if (commandReload) {
 							controller.unregisterBlockForReloadToggle(checkForPower);
 						}
-						checkForPower.setType(powerSimMaterial);
+						powerSimMaterial.modify(checkForPower);
 						commandPowered = true;
 					}
 				}
 				
 				// Make this a normal block so the sim will process it
 				// this also serves to reset the command block for the next tick, if it lives.
-				castCommandBlock.setType(birthMaterial);
+				birthMaterial.modify(castCommandBlock);
 			}
 			
 			processedBlocks++;
@@ -202,7 +202,7 @@ public class SimulateBatch extends VolumeBatch {
 			}
 			
 			Material blockMaterial = block.getType();
-			if (blockMaterial == birthMaterial) {
+			if (birthMaterial.is(block)) {
 				int distanceSquared = liveRangeSquared > 0 || includeCommands ? 
 						(int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
 
@@ -225,6 +225,18 @@ public class SimulateBatch extends VolumeBatch {
 					if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
 						bornBlocks.add(block);
 						checkForPotentialCommand(block, distanceSquared);
+					}
+				}
+			} else if (includeCommands && blockMaterial == Material.COMMAND && commandName != null && commandName.length() > 1) {
+				// Absorb nearby commands of the same name.
+				BlockState commandData = block.getState();
+				if (commandData != null && commandData instanceof CommandBlock) {
+					CommandBlock commandBlock = ((CommandBlock)commandData);
+					if (commandBlock.getName().equals(commandName)) {
+						block.setType(deathMaterial);
+						if (DEBUG) {
+							controller.getLogger().info("CONSUMED clone at " + block.getLocation().toVector());
+						}
 					}
 				}
 			}
@@ -267,7 +279,7 @@ public class SimulateBatch extends VolumeBatch {
 					return processedBlocks;
 				}
 				modifiedBlocks.add(birthBlock);
-				birthBlock.setType(birthMaterial);
+				birthMaterial.modify(birthBlock);
 				controller.updateBlock(birthBlock);
 			}
 			
@@ -301,7 +313,7 @@ public class SimulateBatch extends VolumeBatch {
 				Block backupBlock = null;
 				while (commandTargetBlock == null && potentialCommandBlocks.size() > 0) {
 					Block block = potentialCommandBlocks.remove(0).getBlock();
-					if (block != null && block.getType() == birthMaterial) {
+					if (block != null && birthMaterial.is(block)) {
 						// If we're powering the block, look for one with a powerable neighbor.
 						if (!commandPowered) {
 							commandTargetBlock = block;
@@ -523,22 +535,22 @@ public class SimulateBatch extends VolumeBatch {
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
 	
-	protected boolean isAlive(Block block, Material liveMaterial, boolean includeCommands)
+	protected boolean isAlive(Block block, MaterialAndData liveMaterial, boolean includeCommands)
 	{
 		Material neighborType = block.getType();
-		return (neighborType == liveMaterial || (includeCommands && (neighborType == Material.COMMAND || neighborType == POWER_MATERIAL)));
+		return (liveMaterial.is(block) || (includeCommands && (neighborType == Material.COMMAND || neighborType == POWER_MATERIAL)));
 	}
 	
-	public static BlockFace findPowerLocation(Block block, Material targetMaterial) {
+	public static BlockFace findPowerLocation(Block block, MaterialAndData targetMaterial) {
 		for (BlockFace face : POWER_FACES) {
-			if (block.getRelative(face).getType() == targetMaterial) {
+			if (targetMaterial.is(block.getRelative(face))) {
 				return face;
 			}
 		}
 		return null;
 	}
 
-	protected int getNeighborCount(Block block, Material liveMaterial, boolean includeCommands) {
+	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
 		int liveCount = 0;
 		for (BlockFace face : neighborFaces) {
 			if (isAlive(block.getRelative(face), liveMaterial, includeCommands)) {

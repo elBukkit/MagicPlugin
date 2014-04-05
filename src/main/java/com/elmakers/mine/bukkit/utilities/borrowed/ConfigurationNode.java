@@ -406,6 +406,11 @@ public class ConfigurationNode {
 		MaterialAndData o = getMaterialAndData(path);
 		return o == null ? new MaterialAndData(def, defData) : o;
 	}
+	
+	public MaterialAndData getMaterialAndData(String path, MaterialAndData def) {
+		MaterialAndData o = getMaterialAndData(path);
+		return o == null ? def : o;
+	}
 
 	public Material getMaterial(String path, Material def) {
 		Material o = getMaterial(path);
