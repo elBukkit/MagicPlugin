@@ -3,6 +3,7 @@
 ## 2.9.9
 
  - Change enchanting range to 10 - 35
+ - /magic cancel will now cancel any pending construction batches
 
 ## 2.9.8.AUTOMATA
 

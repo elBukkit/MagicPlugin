@@ -1637,7 +1637,7 @@ superblob:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: true
+        allow_max_range: false
         check_destructible: false
         range: 32
         max_dimension: 16
@@ -1657,7 +1657,7 @@ superpyramid:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: true
+        allow_max_range: false
         range: 32
         max_dimension: 16
         target: select
@@ -2194,7 +2194,7 @@ superemp:
            location: target
     parameters:
         target: select
-        allow_max_range: true
+        allow_max_range: false
         range: 32
         type: sphere
         power: true

@@ -559,6 +559,14 @@ public class MagicPlugin extends JavaPlugin
 				} else {
 					sender.sendMessage("There is no job running");
 				}
+				
+				int stoppedPending = 0;
+				for (Mage mage : controller.getMages()) {
+					if (mage.cancelPending()) stoppedPending++;
+				}
+				
+				sender.sendMessage("Stopped " + stoppedPending + " pending construction batches");
+				
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("clean"))

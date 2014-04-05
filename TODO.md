@@ -2,27 +2,21 @@
 
 ## For 2.9.9
 
- - World-bound wands, add Tester wand
  - Config-driven WandLevel limits, fix max range on protection, cost reduction, etc
  
- - "Bubble" spell for underwater bubble - kylieveronica 
+ - Mana / enchanting balance- how did I get Nuke??
 
  - Extra spell list for simulate to cast
  - Interpolate autonoma directional changes, configurable speed
 
- - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
- - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with sold wands, too?
+ - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with solid wands, too?
 
- - Maybe a way to cancel pending batches from the command line?
  - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?
-
- - Ability to have normal enchants on a sword/wand
 
  - There is a random missing stained glass block in the life schematic .. ha, and remove sign about incident! :)
   - clear button off-center? Something is...
- - Life board customization buttons, like in wolf house? Sim is off-center, too.
+ - Life board customization buttons, like in wolf house? Sim is off-center, too. Name messaging command block.
 
- - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Traders losing prices!
   
  - Test/Fix Pickpocket
@@ -30,29 +24,25 @@
 
  - Phase and Blink check for flying?
  - Recall needs effects
- 
- - Mana / enchanting balance- how did I get Nuke??
 
  - Add "wand duplicate" command
- - Collapse blocklist chains on save (?)
- - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Configurable passthrough material list for Blink
- - Retry limit on construction batches
- 
- - Clicking on empty wand space deselects spell, maybe? Remove auto-activate spell?
- - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
-
- - Customizable wand crafting recipes
- - Batch block populator for chests
- - Make "regengerate" undoable and safe.
- - Commandbook kit integration
- - Walls spell?
- 
- - Integrate with MobMoney to disallow money spamming
- - Implement schematic saving as a "Snapshot" spell, restore with "Repair"?
  
 ## For 3.0.0
 
+ - "Bubble" spell for underwater bubble - kylieveronica 
+ - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
+ - Retry limit on construction batches
+ - Customizable wand crafting recipes
+ - Batch block populator for chests
+ - Commandbook kit integration
+ - Ability to have normal enchants on a sword/wand
+ - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
+ - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
+
+ - Make "regengerate" undoable and safe.
+ - Integrate with MobMoney to disallow money spamming
+ - World-bound wands, add Tester wand
  - Scoreboard mana/spell display
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Add Multi-Spell Spell
@@ -76,6 +66,9 @@
  
 ## Post-3.0.0
 
+ - Collapse blocklist chains on save (?)
+ - Walls spell
+ - Implement schematic saving as a "Snapshot" spell, restore with "Repair"?
  - Enchant count limit for wands
  - Magic bows that fire arrows that trigger spells... ?
  - Phase scaling in the End? Experiment...
