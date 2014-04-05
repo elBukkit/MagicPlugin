@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
@@ -18,7 +19,10 @@ public class BlinkSpell extends Spell
 	protected SpellResult ascend()
 	{
 		Location targetLocation = getLocation();
-		targetLocation.setY(targetLocation.getY() + 2);
+		for (int i = 0; i < 2; i++) {
+			if (!allowPassThrough(targetLocation.getBlock().getType())) return SpellResult.NO_TARGET;
+			targetLocation.setY(targetLocation.getY() + 1);
+		}
 		Location location = findPlaceToStand(targetLocation, true);
 		if (location != null) 
 		{
@@ -32,7 +36,10 @@ public class BlinkSpell extends Spell
 	protected SpellResult descend()
 	{
 		Location targetLocation = getLocation();
-		targetLocation.setY(targetLocation.getY() - 2);
+		for (int i = 0; i < 2; i++) {
+			if (!allowPassThrough(targetLocation.getBlock().getType())) return SpellResult.NO_TARGET;
+			targetLocation.setY(targetLocation.getY() - 1);
+		}
 		Location location = findPlaceToStand(targetLocation, false);
 		if (location != null) 
 		{
@@ -47,6 +54,11 @@ public class BlinkSpell extends Spell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		String elevateType = parameters.getString("type", "");
+		
+		Player player = getPlayer();
+		if (player == null) {
+			return SpellResult.PLAYER_REQUIRED;
+		}
 
 		boolean autoAscend = parameters.getBoolean("allow_ascend", true);
 		boolean autoDescend = parameters.getBoolean("allow_descend", true);
@@ -64,9 +76,14 @@ public class BlinkSpell extends Spell
 		if (autoPassthrough)
 		{
 			Block firstBlock = getNextBlock();
+			if (!allowPassThrough(firstBlock.getType())) 
+			{
+				return SpellResult.NO_TARGET;
+			}
 			if (firstBlock != null && firstBlock.getType() != Material.AIR && !isWater(firstBlock.getType()))
 			{
-				setMaxRange(parameters.getInteger("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
+				int passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInteger("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
+				setMaxRange(passthroughRange);
 				offsetTarget(0, -1, 0);
 				setReverseTargeting(true);
 				setTargetSpaceRequired();
@@ -84,24 +101,28 @@ public class BlinkSpell extends Spell
 
 		World world = getWorld();
 
-		// Don't drop the player too far, and make sure there is somewhere to stand
 		Block destination = face;
 		int distanceUp = 0;
 		int distanceDown = 0;
+
 		if (isReverseTargeting())
 		{
 			destination = target;
 		}
-		Block groundBlock = destination.getRelative(BlockFace.DOWN);
-		while (distanceDown < verticalSearchDistance && !isOkToStandOn(groundBlock.getType()))
-		{
-			destination = groundBlock;
-			groundBlock = destination.getRelative(BlockFace.DOWN);
-			distanceDown++;
+		
+		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
+		if (!player.isFlying()) {
+			Block groundBlock = destination.getRelative(BlockFace.DOWN);
+			while (distanceDown < verticalSearchDistance && !isOkToStandOn(groundBlock.getType()))
+			{
+				destination = groundBlock;
+				groundBlock = destination.getRelative(BlockFace.DOWN);
+				distanceDown++;
+			}
 		}
 
-		Block ledge = null;
 		// Also check for a ledge above the target
+		Block ledge = null;
 		if (!isReverseTargeting() && (!face.equals(target.getRelative(BlockFace.DOWN)) || autoAscend))
 		{
 			ledge = target;
@@ -160,7 +181,7 @@ public class BlinkSpell extends Spell
 			getPlayer().getLocation().getPitch()
 		);
 		setTarget(targetLocation);
-		getPlayer().teleport(targetLocation);
+		player.teleport(targetLocation);
 		return SpellResult.CAST;
 	}
 }

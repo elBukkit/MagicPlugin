@@ -112,6 +112,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private int                                 lastX, lastY, lastZ;
 	private int                                 targetX, targetY, targetZ;
 	private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
+	private Set<Material>                       preventPassThroughMaterials  	= null;
 	private boolean                             reverseTargeting        = false;
 	private boolean								isActive				= false;
 	
@@ -642,6 +643,14 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		range = parameters.getInteger("range", range);
 		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 		
+		if (parameters.containsKey("prevent_passthrough")) {
+			preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
+		} else if (parameters.containsKey("indestructible")) {
+			preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("indestructible"));
+		} else {
+			preventPassThroughMaterials = controller.getMaterialSet("indestructible");
+		}
+		
 		if (parameters.containsKey("target_through")) {
 			targetThroughMaterials = parameters.getMaterials("target_through");
 		} else if (parameters.containsKey("transparent")) {
@@ -923,8 +932,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		targetThroughMaterials.remove(mat);
 	}
 
+	public boolean allowPassThrough(Material mat)
+	{
+		return preventPassThroughMaterials == null || !preventPassThroughMaterials.contains(mat);
+	}
+	
 	public boolean isTargetable(Material mat)
 	{
+		if (!allowPassThrough(mat)) {
+			return true;
+		}
 		boolean targetThrough = targetThroughMaterials.contains(mat);
 		if (reverseTargeting)
 		{
@@ -1000,9 +1017,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		
 		Block blockOneUp = block.getRelative(BlockFace.UP);
 		Block blockOneDown = block.getRelative(BlockFace.DOWN);
-
+		Player player = getPlayer();
 		return (
-				isOkToStandOn(blockOneDown.getType())
+				(isOkToStandOn(blockOneDown.getType()) || (player != null && player.isFlying()))
 				&&	isOkToStandIn(blockOneUp.getType())
 				&& 	isOkToStandIn(block.getType())
 		);
@@ -1081,6 +1098,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			{
 				// spot found - return location
 				return targetLocation;
+			}
+			
+			if (!allowPassThrough(block.getType())) {
+				return null;
 			}
 			
 			targetLocation.setY(targetLocation.getY() + direction);

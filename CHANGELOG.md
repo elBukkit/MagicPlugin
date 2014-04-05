@@ -5,6 +5,9 @@
  - Change enchanting range to 10 - 35
  - /magic cancel will now cancel any pending construction batches
  - Add "Gasp" spell for underwater bubble (Thanks, kylieveronica!)
+ - Some tweaks and improvements to Blink and Phase, won't passthrough bedrock
+ - A lot of wand nerfing and balancing
+ - Randomized effect colors for randomized wands
 
 ## 2.9.8.AUTOMATA
 

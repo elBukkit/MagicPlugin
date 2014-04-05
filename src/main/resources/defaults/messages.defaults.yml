@@ -651,7 +651,7 @@ spells:
         name: Blink
         description: Teleport to your target
         usage: Can pass through solid objects
-        no_target: Can't blink in there
+        no_target: Can't blink there
         cast: Blink!
     absorb:
         name: Absorb

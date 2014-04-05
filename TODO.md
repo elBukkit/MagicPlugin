@@ -21,12 +21,9 @@
   
  - Test/Fix Pickpocket
  - wandp configure glitch- maybe need to replace item in hand on reconfigure?
-
- - Phase and Blink check for flying?
  - Recall needs effects
 
  - Add "wand duplicate" command
- - Configurable passthrough material list for Blink
  
 ## For 3.0.0
 

@@ -732,7 +732,7 @@ nuke:
         allow_max_range: true
         range: 64
         cooldown: 60000
-        size: 20
+        size: 16
         break_blocks: true
     costs:
         xp: 500
@@ -914,7 +914,7 @@ icbm:
         -  class: EffectSingle
            sound: ghast_fireball
     parameters:
-        size: 10
+        size: 8
         projectile: LargeFireball
     costs:
         xp: 100
@@ -2262,6 +2262,7 @@ blink:
         allow_max_range: false
         allow_ascend: true
         allow_passthrough: true
+        prevent_passthrough: indestructible
         range: 64
         passthrough_range: 4
         allow_decend: true

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -21,7 +22,6 @@ public class PhaseSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		int maxY = 250;
 		Location playerLocation = getLocation();
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
@@ -57,7 +57,6 @@ public class PhaseSpell extends Spell
 					targetLocation = new Location(targetWorld, playerLocation.getX() * 8, playerLocation.getY(), playerLocation.getZ() * 8);
 				}
 			} else {
-				maxY = 118;
 				worldName = worldName + "_nether";
 				World targetWorld = Bukkit.getWorld(worldName);
 				if (targetWorld != null) {
@@ -71,12 +70,12 @@ public class PhaseSpell extends Spell
 		}
 		
 		retryCount = 0;
-		tryPhase(targetLocation, maxY);
+		tryPhase(targetLocation);
 		
 		return SpellResult.CAST;
 	}
 	
-	protected void tryPhase(final Location targetLocation, final int maxY) {
+	protected void tryPhase(final Location targetLocation) {
 		Chunk chunk = targetLocation.getBlock().getChunk();
 		if (!chunk.isLoaded()) {
 			chunk.load(true);
@@ -85,7 +84,7 @@ public class PhaseSpell extends Spell
 				final PhaseSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
-						me.tryPhase(targetLocation, maxY);
+						me.tryPhase(targetLocation);
 					}
 				}, RETRY_INTERVAL);
 				
@@ -98,6 +97,7 @@ public class PhaseSpell extends Spell
 			Location playerLocation = player.getLocation();
 			targetLocation.setYaw(playerLocation.getYaw());
 			targetLocation.setPitch(playerLocation.getPitch());
+			final int maxY = targetLocation.getWorld().getEnvironment() == Environment.NETHER ? 118 : 255;
 			
 			Location destination = tryFindPlaceToStand(targetLocation, 4, maxY);
 			
