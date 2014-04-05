@@ -2,6 +2,7 @@
 
 ## For 2.9.9
 
+ - Wand name doesn't update when deactivating a spell
  - World-bound wands, add Tester wand
  - "Bubble" spell for underwater bubble - kylieveronica 
 
@@ -16,8 +17,6 @@
 
  - Ability to have normal enchants on a sword/wand
 
- - SuperCube spell
-
  - There is a random missing stained glass block in the life schematic .. ha, and remove sign about incident! :)
   - clear button off-center? Something is...
  - Life board customization buttons, like in wolf house? Sim is off-center, too.
@@ -30,7 +29,6 @@
 
  - Phase and Blink check for flying?
  - Recall needs effects
- - Add lantern schematic
  
  - Mana / enchanting balance- how did I get Nuke??
 
@@ -41,8 +39,6 @@
  - Configurable passthrough material list for Blink
  - Retry limit on construction batches
  
- - Enchant count limit for wands
-
  - Clicking on empty wand space deselects spell, maybe? Remove auto-activate spell?
  - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
 
@@ -69,7 +65,6 @@
  - Fix first construct of a schematic. (?)
  - A way to /wand enchant with auto-fill but not filling wand... ?
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
- - Hopefully get dtlTraders integration working
 
  - Tweaking/Balancing - haste, cooldowns, etc
  - Finish localization
@@ -81,6 +76,7 @@
  
 ## Post-3.0.0
 
+ - Enchant count limit for wands
  - Magic bows that fire arrows that trigger spells... ?
  - Phase scaling in the End? Experiment...
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?

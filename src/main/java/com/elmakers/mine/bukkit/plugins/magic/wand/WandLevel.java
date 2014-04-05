@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.plugins.magic.wand;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +56,8 @@ public class WandLevel {
 	public static float maxFlySpeed = 0.8f;
 	public static float maxWalkSpeed = 0.8f;
 	public static float maxPower = 1.0f;
+	public static int minLevel = 10;
+	public static int maxLevel = 40;
 	
 	public static WandLevel getLevel(int level) {
 		if (levelMap == null) return null;
@@ -353,13 +356,18 @@ public class WandLevel {
 	
 	public static Set<Integer> getLevels() {
 		if (levels == null) return null;
-		
-		return levelMap.keySet();
+		Set<Integer> filteredLevels = new HashSet<Integer>();
+		for (Integer level : levels) {
+			if (level >= minLevel && level <= maxLevel) {
+				filteredLevels.add(level);
+			}
+		}
+		return filteredLevels;
 	}
 	
 	public static int getMaxLevel() {
 		if (levels == null) return 0;
 		
-		return levels[levels.length - 1];
+		return Math.min(levels[levels.length - 1], maxLevel);
 	}
 }

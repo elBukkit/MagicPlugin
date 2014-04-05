@@ -2,6 +2,10 @@
 
 ## 2.9.9
 
+ - Change enchanting range to 10 - 35
+
+## 2.9.8.AUTOMATA
+
  - Add "Hat" spell.
  - Add "lantern" schematic. Add several of the newer spells (Fly, Cluster Bomb, etc) to the enchant list.
  - Add "Simulate 3D" spell.
