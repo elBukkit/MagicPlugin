@@ -1338,6 +1338,28 @@ cushion:
         cooldown: 100
     costs:
         xp: 10
+gasp:
+    icon: empty_bottle
+    category: waterbending
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: splash
+           location: both
+        -  class: EffectRing
+           particle: water_dripping
+           particle_count: 8
+    parameters:
+        target: any
+        range: 16
+        radius: 3
+        material: air
+        destructible: water
+        check_destructible: true
+        undo: 2000
+    costs:
+        xp: 20
 regenerate:
     icon: diamond_hoe
     category: engineering

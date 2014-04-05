@@ -123,6 +123,14 @@ destructible:
 - emerald_ore
 - quartz_ore
 
+water:
+- water
+- stationary_water
+
+lava:
+- lava
+- stationary_lava
+
 # Which materials are defined as ores
 # This can be used to make "erasure" spells that avoid destroying ore,
 # or otherwise make spells that act specifically on ores.

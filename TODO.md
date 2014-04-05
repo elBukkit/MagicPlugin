@@ -30,7 +30,6 @@
  
 ## For 3.0.0
 
- - "Bubble" spell for underwater bubble - kylieveronica 
  - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Retry limit on construction batches
  - Customizable wand crafting recipes

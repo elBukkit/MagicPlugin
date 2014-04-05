@@ -4,6 +4,7 @@
 
  - Change enchanting range to 10 - 35
  - /magic cancel will now cancel any pending construction batches
+ - Add "Gasp" spell for underwater bubble (Thanks, kylieveronica!)
 
 ## 2.9.8.AUTOMATA
 
