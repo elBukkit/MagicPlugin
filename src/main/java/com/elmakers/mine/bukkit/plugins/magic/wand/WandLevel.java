@@ -49,6 +49,8 @@ public class WandLevel {
 	public static final int maxMaxXp = 1000;
 	public static final int maxXpRegeneration = 50;
 	public static final int maxRegeneration = 5;
+	public static final float maxDamageReduction = 0.2f;
+	public static final float maxCostReduction = 0.5f;
 	public static final float maxReduction = 0.9f;
 	public static final float maxProtection = 0.9f;
 	public static float maxFlySpeedIncrease = 0.1f;

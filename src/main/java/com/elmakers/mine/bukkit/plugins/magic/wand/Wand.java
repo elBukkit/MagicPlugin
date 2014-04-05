@@ -331,7 +331,7 @@ public class Wand implements CostReducer {
 	}
 
 	public float getCostReduction() {
-		return controller.getCostReduction() + costReduction;
+		return controller.getCostReduction() + costReduction * WandLevel.maxCostReduction;
 	}
 	
 	public void setCooldownReduction(float reduction) {
@@ -347,27 +347,27 @@ public class Wand implements CostReducer {
 	}
 
 	public float getDamageReduction() {
-		return damageReduction;
+		return damageReduction * WandLevel.maxDamageReduction;
 	}
 
 	public float getDamageReductionPhysical() {
-		return damageReductionPhysical;
+		return damageReductionPhysical * WandLevel.maxDamageReduction;
 	}
 	
 	public float getDamageReductionProjectiles() {
-		return damageReductionProjectiles;
+		return damageReductionProjectiles * WandLevel.maxDamageReduction;
 	}
 
 	public float getDamageReductionFalling() {
-		return damageReductionFalling;
+		return damageReductionFalling * WandLevel.maxDamageReduction;
 	}
 
 	public float getDamageReductionFire() {
-		return damageReductionFire;
+		return damageReductionFire * WandLevel.maxDamageReduction;
 	}
 
 	public float getDamageReductionExplosions() {
-		return damageReductionExplosions;
+		return damageReductionExplosions * WandLevel.maxDamageReduction;
 	}
 
 	public int getUses() {
