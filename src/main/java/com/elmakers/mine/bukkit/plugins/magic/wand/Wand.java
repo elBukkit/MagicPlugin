@@ -1182,7 +1182,7 @@ public class Wand implements CostReducer {
 	
 	private String getActiveWandName() {
 		Spell spell = null;
-		if (hasInventory) {
+		if (hasInventory && activeSpell != null && activeSpell.length() > 0) {
 			spell = controller.getSpell(activeSpell);
 		}
 		return getActiveWandName(spell);

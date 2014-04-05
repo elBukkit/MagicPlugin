@@ -2,8 +2,9 @@
 
 ## For 2.9.9
 
- - Wand name doesn't update when deactivating a spell
  - World-bound wands, add Tester wand
+ - Config-driven WandLevel limits, fix max range on protection, cost reduction, etc
+ 
  - "Bubble" spell for underwater bubble - kylieveronica 
 
  - Extra spell list for simulate to cast
@@ -33,7 +34,6 @@
  - Mana / enchanting balance- how did I get Nuke??
 
  - Add "wand duplicate" command
- - Config-driven WandLevel limits.
  - Collapse blocklist chains on save (?)
  - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Configurable passthrough material list for Blink
