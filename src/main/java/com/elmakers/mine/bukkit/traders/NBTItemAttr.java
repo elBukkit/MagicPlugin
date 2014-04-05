@@ -91,7 +91,7 @@ public abstract class NBTItemAttr extends ItemAttr
 			throw new AttributeInvalidValueException(this.info, "No data: " + defaultValue);
 		}
 		tagData = itemKey;
-		tagData.replace("|", ":");
+		tagData = tagData.replace("|", ":");
 		if (DEBUG) Bukkit.getLogger().info("NBTItem.onLoad data: " + tagName + "=" + tagData);
 	}
 
@@ -99,9 +99,8 @@ public abstract class NBTItemAttr extends ItemAttr
 	public String onSave() 
 	{
 		if (tagData == null) tagData = "";
-		tagData.replace(":", "|");
 		if (DEBUG) Bukkit.getLogger().info("NBTItem.onSave for data " + tagName + "=" + tagData);
-		return tagData;
+		return tagData.replace(":", "|");
 	}
 	
 	@Override
