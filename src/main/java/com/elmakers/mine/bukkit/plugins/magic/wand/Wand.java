@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.wand;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -149,7 +148,6 @@ public class Wand implements CostReducer {
 
 	// Wand configurations
 	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
-	private static DecimalFormat floatFormat = new DecimalFormat("#.###");
 	
 	public static boolean displayManaAsBar = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
@@ -192,6 +190,7 @@ public class Wand implements CostReducer {
 				randomize(level, false);
 				locked = (boolean)randomTemplate.getBoolean("locked", false);
 				saveState(true);
+				return;
 			}
 			
 			if (!wandTemplates.containsKey(templateName)) {
@@ -866,12 +865,12 @@ public class Wand implements CostReducer {
 			if (wandConfig.containsKey("effect_sound")) {
 				parseSoundEffect(wandConfig.getString("effect_sound"));
 			}
-			effectParticleData = Float.parseFloat(wandConfig.getString("effect_particle_data", floatFormat.format(effectParticleData)));
-			effectParticleCount = Integer.parseInt(wandConfig.getString("effect_particle_count", Integer.toString(effectParticleCount)));
-			effectParticleInterval = Integer.parseInt(wandConfig.getString("effect_particle_interval", Integer.toString(effectParticleInterval)));
-			effectSoundInterval = Integer.parseInt(wandConfig.getString("effect_sound_interval", Integer.toString(effectSoundInterval)));
-			effectSoundVolume = Float.parseFloat(wandConfig.getString("effect_sound_volume", floatFormat.format(effectSoundVolume)));
-			effectSoundPitch = Float.parseFloat(wandConfig.getString("effect_sound_pitch", floatFormat.format(effectSoundPitch)));
+			effectParticleData = wandConfig.getFloat("effect_particle_data", effectParticleData);
+			effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
+			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
+			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
+			effectSoundVolume = wandConfig.getFloat("effect_sound_volume", effectSoundVolume);
+			effectSoundPitch = wandConfig.getFloat("effect_sound_pitch", effectSoundPitch);
 			
 			setMode(parseWandMode(wandConfig.getString("mode"), mode));
 
