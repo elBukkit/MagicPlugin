@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,6 +46,8 @@ public class SimulateBatch extends VolumeBatch {
 	};
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
+	
+	public static boolean DEBUG = false;
 	
 	private Mage mage;
 	private BlockSpell spell;
@@ -316,6 +319,11 @@ public class SimulateBatch extends VolumeBatch {
 				// just use that one.
 				if (commandTargetBlock == null) commandTargetBlock = backupBlock;
 			}
+			if (DEBUG) {
+				if (commandTargetBlock != null) {
+					controller.getLogger().info("MOVED: " + commandTargetBlock.getLocation().toVector().subtract(center.toVector()));
+				}
+			}
 			state = SimulationState.COMMAND_UPDATE;
 			return processedBlocks;
 		}
@@ -357,14 +365,18 @@ public class SimulateBatch extends VolumeBatch {
 				// Next try to replace a dead cell, which will affect the simulation outcome
 				// but this is perhaps better than it dying?
 				if (powerDirection == null) {
-					// Bukkit.getLogger().info("Had to fall back to backup location, pattern may diverge");
+					if (DEBUG) {
+						controller.getLogger().info("Had to fall back to backup location, pattern may diverge");
+					}
 					powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
 				}
 				// If it's *still* not valid, search for something breakable.
 				if (powerDirection == null) {
 					for (BlockFace face : POWER_FACES) {
 						if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
-							// Bukkit.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
+							if (DEBUG) {
+								controller.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
+							}
 							powerDirection = face;
 							break;
 						}
@@ -377,7 +389,14 @@ public class SimulateBatch extends VolumeBatch {
 					if (commandReload) {
 						String message = "";
 						if (commandName != null && commandName.length() > 1) {
-							message = Messages.get("general.toggle_block").replace("$name", commandName);
+							String automataName = commandName;
+							if (automataName.contains("@")) {
+								String[] pieces = StringUtils.split(automataName, '@');
+								if (pieces.length > 1 && pieces[1].length() > 0)  {
+									automataName = pieces[1];
+								}
+							}
+							message = Messages.get("general.toggle_block").replace("$name", automataName);
 						}
 						controller.registerBlockForReloadToggle(powerBlock, message);
 					}
@@ -429,9 +448,6 @@ public class SimulateBatch extends VolumeBatch {
 	
 	public void target(TargetMode mode) {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
-		
-		Bukkit.getLogger().info("Targeting " + commandName + " : " + targetMode + " @ " + targetType);
-		
 		switch (targetMode) 
 		{
 		case FLEE:
@@ -472,16 +488,19 @@ public class SimulateBatch extends VolumeBatch {
 			
 			if (bestTarget != null) 
 			{
-				 String targetDescription = bestTarget.getEntity() == null ? "NONE" :
-					 ((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
-				 Bukkit.getLogger().info(" *Tracking " + targetDescription + 
-				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation());
-				
+				if (DEBUG) {
+					String targetDescription = bestTarget.getEntity() == null ? "NONE" :
+						((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
+					controller.getLogger().info(" *Tracking " + targetDescription + 
+				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " min " + huntMinRange);
+				}
 				if (targetMode == TargetMode.DIRECTED) {
 					Vector direction = bestTarget.getLocation().getDirection();
 					center = RandomUtils.setDirection(center, direction);
 					targetLocation = center.clone().add(direction.normalize().multiply(huntMaxRange));
-					Bukkit.getLogger().info(" *Directed " + direction + " to " + targetLocation.toVector()); 
+					if (DEBUG) {
+						Bukkit.getLogger().info(" *Directed " + direction + " to " + targetLocation.toVector()); 
+					}
 				} else {
 					targetLocation = bestTarget.getLocation();
 					Vector direction = targetMode == TargetMode.FLEE ? center.toVector().subtract(targetLocation.toVector()) : targetLocation.toVector().subtract(center.toVector());

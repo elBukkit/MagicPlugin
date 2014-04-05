@@ -51,6 +51,7 @@ public class AnimateSpell extends SimulateSpell
 		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 bu true m " + targetBlock.getType().name().toLowerCase() +
 				" cd " + (simCheckDestructible ? "true" : "false");
 		String commandName = parameters.getString("name", "Automata");
+		commandName = mage.getName() + "@" + commandName;
 		
 		targetBlock.setType(Material.COMMAND);
 		BlockState commandData = targetBlock.getState();

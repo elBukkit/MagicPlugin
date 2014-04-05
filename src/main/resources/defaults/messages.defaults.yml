@@ -304,13 +304,16 @@ spells:
         cast: What have you done?
         cast: It's alive!
     hunter:
+        no_target: You must target two blocks next to each other
         name: Hunter
         description: Create a deadly Automaton
+        no_target: You must target two blocks next to each other
         cast: DESTROY ALL HUMANS!
-    protector:
-        name: Protected
+    defender:
+        name: Defender
         description: Create an Automata hunter
         cast: I will hunt for you, human
+        no_target: You must target two blocks next to each other
     life:
         name: Life
         description: Create a HUGE Life board
