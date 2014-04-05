@@ -107,7 +107,7 @@
 # This can be used to make a very basic wand that a player may then enchant or configure.
 # 
 default:
-    effect_color: '888888'
+    effect_color: random
     
 #
 # The "random" entry is used by the wand randomizer.
@@ -159,6 +159,7 @@ default:
 random:
     icon: stick
     levels: 1,25,35,40,45
+    effect_color: random
 #   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
     property_count:
       0: 100,100, 50,   0,  0

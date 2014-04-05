@@ -840,7 +840,12 @@ public class Wand implements CostReducer {
 		
 		if (wandConfig.containsKey("effect_color") && !safe) {
 			try {
-				effectColor = Integer.parseInt(wandConfig.getString("effect_color", "0"), 16);
+				String colorString = wandConfig.getString("effect_color", "0");
+				if (colorString.equals("random")) {
+					effectColor = (int)(Math.random() * 0xFFFFFF);
+				} else {
+					effectColor = Integer.parseInt(colorString, 16);
+				}
 			} catch (Exception ex) {
 				
 			}
