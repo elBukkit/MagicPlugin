@@ -2,14 +2,12 @@
 
 ## For 2.9.9
 
- - Superpowered wands bypass restricted material check and indestructible check (?) - add command, ender portal portal, etc
  - World-bound wands, add Tester wand
  - "Bubble" spell for underwater bubble - kylieveronica 
 
  - Extra spell list for simulate to cast
  - Interpolate autonoma directional changes, configurable speed
 
- - Hat should drop existing item on the ground
  - Fix hat effect- force sample target? and restrict targeting (no bedrock at least)
  - Random colors on random wand! Maybe "random" "effect_color" property so it'll work with sold wands, too?
 

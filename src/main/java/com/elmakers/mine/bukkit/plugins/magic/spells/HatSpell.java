@@ -44,7 +44,11 @@ public class HatSpell extends Spell
 			return SpellResult.NO_TARGET;
 		}
 		ItemStack hatItem = new ItemStack(material, 1, (short)data);
+		ItemStack itemStack = player.getInventory().getHelmet();
 		player.getInventory().setHelmet(hatItem);
+		if (itemStack != null && itemStack.getType() != Material.AIR) {
+			player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+		}
 		return SpellResult.CAST;
 	}
 }

@@ -2294,9 +2294,10 @@ hat:
     parameters:
         allow_max_range: false
         range: 32
+        cooldown: 3000
         transparent: transparent_to_construction
     costs:
-        xp: 30
+        xp: 200
 lava:
     icon: ink_sack:14
     category: firebending
