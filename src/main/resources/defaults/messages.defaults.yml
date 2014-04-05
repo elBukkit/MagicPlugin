@@ -296,7 +296,7 @@ spells:
         cast: You bring the world to life
     glider:
         name: Glider
-        description: Create a powerful automoton
+        description: Create a powerful Automaton
         cast: It's alive!
     virus:
         name: Virus
@@ -305,8 +305,12 @@ spells:
         cast: It's alive!
     hunter:
         name: Hunter
-        description: Create a drone
+        description: Create a deadly Automaton
         cast: DESTROY ALL HUMANS!
+    protector:
+        name: Protected
+        description: Create an Automata hunter
+        cast: I will hunt for you, human
     life:
         name: Life
         description: Create a HUGE Life board

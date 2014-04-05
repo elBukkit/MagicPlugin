@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.blocks;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -14,6 +16,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -34,7 +37,11 @@ public class SimulateBatch extends VolumeBatch {
 	};
 	
 	public enum TargetMode {
-		STABILIZE, WANDER, GLIDE, HUNT
+		STABILIZE, WANDER, GLIDE, HUNT, FLEE, DIRECTED
+	};
+	
+	public enum TargetType {
+		PLAYER, MAGE, MOB, AUTOMATON, ANY
 	};
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
@@ -44,6 +51,7 @@ public class SimulateBatch extends VolumeBatch {
 	private Block castCommandBlock;
 	private Block commandTargetBlock;
 	private TargetMode targetMode = TargetMode.STABILIZE;
+	private TargetType targetType = TargetType.PLAYER;
 	private Location targetLocation;
 	private String castCommand;
 	private String commandName;
@@ -277,6 +285,9 @@ public class SimulateBatch extends VolumeBatch {
 				case HUNT:
 					Collections.sort(potentialCommandBlocks);
 					break;
+				case FLEE:
+					Collections.sort(potentialCommandBlocks);
+					break;
 				default:
 					Collections.shuffle(potentialCommandBlocks);
 					break;
@@ -412,33 +423,70 @@ public class SimulateBatch extends VolumeBatch {
 		huntMinRange = range;
 	}
 	
-	public void setCommandMoveRange(int commandRadius, boolean reload, TargetMode mode) {
+	public void setTargetType(TargetType targetType) {
+		this.targetType = targetType;
+	}
+	
+	public void target(TargetMode mode) {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
-		commandReload = reload;
-		commandMoveRangeSquared = commandRadius * commandRadius;
 		
-		switch (targetMode) {
+		Bukkit.getLogger().info("Targeting " + commandName + " : " + targetMode + " @ " + targetType);
+		
+		switch (targetMode) 
+		{
+		case FLEE:
 		case HUNT:
+		case DIRECTED:
 			targetLocation = center.clone();
-			reverseTargetDistanceScore = false;
-			List<Entity> entities = targetLocation.getWorld().getEntities();
+			reverseTargetDistanceScore = targetMode == TargetMode.FLEE;
 			Target bestTarget = null;
-			for (Entity entity : entities)
+			if (targetType == TargetType.ANY || targetType == TargetType.MOB)
 			{
-				if (!(entity instanceof Player)) continue;
-				Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, false);
-				int score = newScore.getScore();
-				if (bestTarget == null || score > bestTarget.getScore()) {
-					bestTarget = newScore;
+				List<Entity> entities = targetLocation.getWorld().getEntities();
+				for (Entity entity : entities)
+				{
+					// We'll get the players from the Mages list
+					if (entity instanceof Player || !(entity instanceof LivingEntity)) continue;
+					Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, false);
+					int score = newScore.getScore();
+					if (bestTarget == null || score > bestTarget.getScore()) {
+						bestTarget = newScore;
+					}
+				}
+			}
+			if (targetType == TargetType.MAGE || targetType == TargetType.AUTOMATON || targetType == TargetType.ANY || targetType == TargetType.PLAYER)
+			{
+				Collection<Mage> mages = controller.getMages();
+				for (Mage mage : mages)
+				{
+					if (mage == this.mage) continue;
+					if (targetType == TargetType.AUTOMATON && mage.getPlayer() != null) continue;
+					
+					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, false);
+					int score = newScore.getScore();
+					if (bestTarget == null || score > bestTarget.getScore()) {
+						bestTarget = newScore;
+					}
 				}
 			}
 			
-			if (bestTarget != null) {
-				// Bukkit.getLogger().info("Hunting " + ((Player)bestTarget.getEntity()).getName() + 
-				// 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation());
-				targetLocation = bestTarget.getLocation();
-				Vector direction = targetLocation.toVector().subtract(center.toVector());
-				center = RandomUtils.setDirection(center, direction);
+			if (bestTarget != null) 
+			{
+				 String targetDescription = bestTarget.getEntity() == null ? "NONE" :
+					 ((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
+				 Bukkit.getLogger().info(" *Tracking " + targetDescription + 
+				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation());
+				
+				if (targetMode == TargetMode.DIRECTED) {
+					Vector direction = bestTarget.getLocation().getDirection();
+					center = RandomUtils.setDirection(center, direction);
+					targetLocation = center.clone().add(direction.normalize().multiply(huntMaxRange));
+					Bukkit.getLogger().info(" *Directed " + direction + " to " + targetLocation.toVector()); 
+				} else {
+					targetLocation = bestTarget.getLocation();
+					Vector direction = targetMode == TargetMode.FLEE ? center.toVector().subtract(targetLocation.toVector()) : targetLocation.toVector().subtract(center.toVector());
+					center = RandomUtils.setDirection(center, direction);
+				}
 			}
 			break;
 		case GLIDE:
@@ -449,6 +497,11 @@ public class SimulateBatch extends VolumeBatch {
 			targetLocation = center.clone();
 			reverseTargetDistanceScore = true;
 		}
+	}
+	
+	public void setCommandMoveRange(int commandRadius, boolean reload) {
+		commandReload = reload;
+		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
 	
 	protected boolean isAlive(Block block, Material liveMaterial, boolean includeCommands)

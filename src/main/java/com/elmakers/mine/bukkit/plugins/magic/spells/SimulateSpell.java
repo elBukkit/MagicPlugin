@@ -110,13 +110,26 @@ public class SimulateSpell extends BlockSpell {
 					controller.getLogger().warning(ex.getMessage());
 				}
 			}
-			batch.setCommandMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true), targetMode);
+			batch.setCommandMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true));
+			
+			SimulateBatch.TargetType targetType = null;
+			String targetTypeString = parameters.getString("target_types", "");
+			if (targetTypeString.length() > 0) {
+				try {
+					targetType = SimulateBatch.TargetType.valueOf(targetTypeString.toUpperCase());
+				} catch (Exception ex) {
+					controller.getLogger().warning(ex.getMessage());
+				}
+			}
+			batch.setTargetType(targetType);
+			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
+			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
+			
+			batch.target(targetMode);
 		}
 		
 		batch.setBirthRange(parameters.getInt("birth_range", 0));
 		batch.setLiveRange(parameters.getInt("live_range", 0));
-		batch.setMinHuntRange(parameters.getInt("hunt_min_range", 4));
-		batch.setMaxHuntRange(parameters.getInt("hunt_max_range", 128));
 		
 		// delay is in ms, gets converted.
 		int delay = parameters.getInt("delay", 0);

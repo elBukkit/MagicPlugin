@@ -292,12 +292,14 @@ virus:
         check_destructible: false
         range: 32
         cooldown: 120000
-        name: Virus 7.0
-        radius: 16
-        yradius: 16
-        hunt_min_range: 8
+        name: Virus 8.0
+        radius: 32
+        yradius: 32
+        target_min_range: 24
+        target_max_range: 256
         delay: 1000
         target_mode: hunt
+        target_types: any
         live_rules: 3,4,5,6,7,8,9
         birth_rules: 5
     costs:
@@ -317,17 +319,52 @@ hunter:
         check_destructible: false
         range: 32
         cooldown: 60000
-        name: Hunter 2.0
+        name: Hunter 3.0
         radius: 5
         yradius: 5
-        birth_range: 3
-        live_range: 3
-        hunt_min_range: 0
+        birth_range: 4
+        live_range: 4
+        target_min_range: 0
+        target_max_range: 128
         delay: 500
         target_mode: hunt
-        live_rules: 3,4,5,6,7,8,9
-        birth_rules: 5
+        target_types: player
+        live_rules: 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
+        birth_rules: 2,3,4,5
         move: 2
+    costs:
+        xp: 800
+
+defender:
+    icon: lever
+    category: dark
+    class: AnimateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_scream
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: true
+        check_destructible: false
+        range: 32
+        cooldown: 60000
+        name: Defender 1.0
+        radius: 12
+        yradius: 12
+        birth_range: 6
+        live_range: 6
+        target_min_range: 0
+        target_max_range: 0
+        delay: 500
+        target_mode: hunt
+        target_types: automaton
+        target_min_range: 0
+        target_max_range: 128
+        live_rules: 3,4,5,6,7,8,9
+        birth_rules: 4,5
+        move: 4
     costs:
         xp: 800
 animate:
@@ -352,7 +389,10 @@ animate:
         live_range: 3
         move: 4
         delay: 1000
-        target_mode: glide
+        target_mode: directed
+        target_types: mage
+        target_min_range: 1
+        target_max_range: 32
         live_rules: 3,4,5,6,7,8,9
         birth_rules: 5
     costs:

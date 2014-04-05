@@ -7,6 +7,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
+
 public class Target implements Comparable<Target>
 {
 	protected int    maxDistance = 512;
@@ -16,6 +18,7 @@ public class Target implements Comparable<Target>
 	private Location source;
 	private Location location;
 	private Entity   entity;
+	private Mage	 mage;
 	private boolean  reverseDistance = false;
 
 	private double   distance    = 100000;
@@ -96,6 +99,19 @@ public class Target implements Comparable<Target>
 		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
+
+	public Target(Location sourceLocation, Mage mage, int minRange, int maxRange, double angle, boolean reverseDistance)
+	{
+		this.maxDistance = maxRange;
+		this.minDistance = minRange;
+		this.maxAngle = angle;
+		this.reverseDistance = reverseDistance;
+		this.source = sourceLocation;
+		this.mage = mage;
+		if (mage != null) this.entity = mage.getPlayer();
+		if (mage != null) this.location = mage.getLocation();
+		calculateScore();
+	}
 	
 	public Target(Location sourceLocation, Entity entity)
 	{
@@ -148,13 +164,23 @@ public class Target implements Comparable<Target>
 
 		// Favor targeting players, a bit
 		// TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
-		if (entity instanceof Player)
+		if (entity != null && entity.hasMetadata("NPC"))
+		{
+			score = score - 1;
+		}
+		else
+		if (mage != null)
 		{
 			score = score + 5;
 		}
-		else  if (entity instanceof LivingEntity)
+		else
+		if (entity instanceof Player)
 		{
 			score = score + 3;
+		}
+		else  if (entity instanceof LivingEntity)
+		{
+			score = score + 2;
 		}
 		else
 		{
