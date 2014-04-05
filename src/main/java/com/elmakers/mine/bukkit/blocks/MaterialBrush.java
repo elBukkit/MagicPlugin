@@ -19,7 +19,6 @@ import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -58,7 +57,7 @@ public class MaterialBrush extends MaterialBrushData {
 	private Location cloneTarget = null;
 	private Location materialTarget = null;
 	private Vector targetOffset = null;
-	private final MagicController controller;
+	private final Mage mage;
 	private short mapId = -1;
 	private MaterialMapCanvas mapCanvas = null;
 	private Material mapMaterialBase = Material.STAINED_CLAY;
@@ -66,14 +65,14 @@ public class MaterialBrush extends MaterialBrushData {
 	private boolean fillWithAir = true;
 	private Vector orientVector = null;
 	
-	public MaterialBrush(final MagicController controller, final Material material, final  byte data) {
+	public MaterialBrush(final Mage mage, final Material material, final  byte data) {
 		super(material, data);
-		this.controller = controller;
+		this.mage = mage;
 	}
 	
-	public MaterialBrush(final MagicController controller, final Location location, final String materialKey) {
+	public MaterialBrush(final Mage mage, final Location location, final String materialKey) {
 		super(DEFAULT_MATERIAL, (byte)0);
-		this.controller = controller;
+		this.mage = mage;
 		update(materialKey);
 		activate(location, materialKey);
 	}
@@ -329,7 +328,7 @@ public class MaterialBrush extends MaterialBrushData {
 	
 	@Override
 	public void setMaterial(Material material, byte data) {
-		if (!controller.isRestricted(material) && material.isBlock()) {
+		if (!mage.isRestricted(material) && material.isBlock()) {
 			super.setMaterial(material, data);
 			mode = BrushMode.MATERIAL;
 			isValid = true;
@@ -464,7 +463,7 @@ public class MaterialBrush extends MaterialBrushData {
 				targetLocation = targetLocation.add(targetOffset);
 				block = targetLocation.getBlock();
 			}
-			updateFrom(block, controller.getRestrictedMaterials());
+			updateFrom(block, mage.getRestrictedMaterials());
 		}
 	}
 	
@@ -505,7 +504,7 @@ public class MaterialBrush extends MaterialBrushData {
 				Block block = materialTarget.getBlock();
 				if (!block.getChunk().isLoaded()) return false;
 	
-				updateFrom(block, controller.getRestrictedMaterials());
+				updateFrom(block, fromMage.getRestrictedMaterials());
 				isValid = fillWithAir || material != Material.AIR;
 			}
 		}
@@ -517,7 +516,7 @@ public class MaterialBrush extends MaterialBrushData {
 					return true;
 				}
 				
-				schematic = controller.loadSchematic(schematicName);
+				schematic = mage.getController().loadSchematic(schematicName);
 				if (schematic == null) {
 					schematicName = "";
 					isValid = false;
@@ -613,7 +612,7 @@ public class MaterialBrush extends MaterialBrushData {
 			schematicName = node.getString("schematic", schematicName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			controller.getPlugin().getLogger().warning("Failed to load brush data: " + ex.getMessage());
+			mage.getController().getPlugin().getLogger().warning("Failed to load brush data: " + ex.getMessage());
 		}
 	}
 	
@@ -635,7 +634,7 @@ public class MaterialBrush extends MaterialBrushData {
 			node.setProperty("schematic", schematicName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			controller.getLogger().warning("Failed to save brush data: " + ex.getMessage());
+			mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());
 		}
 	}
 	

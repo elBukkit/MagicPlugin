@@ -625,7 +625,7 @@ public class Mage implements CostReducer
 	{
 		this.controller = master;
 		this.player = new WeakReference<Player>(player);
-		this.brush = new MaterialBrush(controller, Material.DIRT, (byte)0);
+		this.brush = new MaterialBrush(this, Material.DIRT, (byte)0);
 	}
 
 	protected void setPlayer(Player player)
@@ -843,5 +843,23 @@ public class Mage implements CostReducer
 				spell.loadTemplate(config.getNode(key));
 			}
 		}
+	}
+
+	final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
+	
+	public Set<Material> getRestrictedMaterials()
+	{
+		if (isSuperPowered()) {
+			return EMPTY_MATERIAL_SET;
+		}
+		return controller.getRestrictedMaterials();
+	}
+
+	public boolean isRestricted(Material material) 
+	{
+		if (isSuperPowered()) {
+			return false;
+		}
+		return controller.isRestricted(material);	
 	}
 }

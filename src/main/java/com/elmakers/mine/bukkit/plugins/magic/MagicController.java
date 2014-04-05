@@ -323,7 +323,7 @@ public class MagicController implements Listener
 		return destructibleMaterials;
 	}
 
-	public Set<Material> getRestrictedMaterials()
+	protected Set<Material> getRestrictedMaterials()
 	{
 		return restrictedMaterials;
 	}
@@ -494,7 +494,7 @@ public class MagicController implements Listener
 		return destructibleMaterials.contains(block.getType());		
 	}
 
-	public boolean isRestricted(Material material) 
+	protected boolean isRestricted(Material material) 
 	{
 		return restrictedMaterials.contains(material);		
 	}

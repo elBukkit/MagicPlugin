@@ -18,7 +18,7 @@ public abstract class BrushSpell extends BlockSpell{
 		String materialKey = parameters.getString("material", null);
 		materialKey = parameters.getString("m", materialKey);
 		if (materialKey != null) {
-			brush = new MaterialBrush(controller, getLocation(), materialKey);
+			brush = new MaterialBrush(mage, getLocation(), materialKey);
 			
 			if (parameters.containsKey("mm")) {
 				brush.update(parameters.getString("mm"));

@@ -264,6 +264,9 @@ indestructible:
 restricted:
 # It's a good idea to put any indestructibles in here, since they can't be removed.
 - bedrock
+- command
+- ender_portal
+- portal
 #- ender_portal_frame
 # Ender portals can cause some really nasty client lag.
 #- ender_portal

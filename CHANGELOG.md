@@ -15,6 +15,7 @@
  - Two-phase undo for cleaner cleanup (attachable blocks)
  - Enable periodic auto-save by default, once an hour.
  - Add configurable pending batch limit for constructions. Mostly a safety thing for out-of-control Automata.
+ - Command blocks, portal and ender portal blocks are restricted, except for superpowered wands.
  
 ## 2.9.8.1
 
