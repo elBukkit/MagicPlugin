@@ -30,7 +30,8 @@ public class SignSpell extends BlockSpell
 		}
 
 		Target target = getTarget();
-		if (target.isValid())
+		Block block = target.getBlock();
+		if (target.isValid() && block != null)
 		{
 			Block targetBlock = getFaceBlock();
 			if (targetBlock == null || !hasBuildPermission(targetBlock)) {
@@ -39,7 +40,7 @@ public class SignSpell extends BlockSpell
 			if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)
 			{
 				targetBlock.setType(Material.WALL_SIGN);
-				switch(target.getBlock().getFace(targetBlock))
+				switch (block.getFace(targetBlock))
 				{
 				case EAST:
 					targetBlock.setData((byte)2);
