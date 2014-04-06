@@ -1054,7 +1054,7 @@ public class MagicController implements Listener
 		loadLostWands();
 		
 		// Load toggle-on-load blocks
-		getLogger().info("Loading toggle-block data");
+		getLogger().info("Loading autonoma data");
 		loadAutomata();
 		
 		// Load URL Map Data
@@ -2758,27 +2758,29 @@ public class MagicController implements Listener
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, 
 					new Runnable() {
 						public void run() {
-							int rangeSquared = toggleMessageRange * toggleMessageRange;
 							for (Automaton restoreBlock : restored) {
 								getLogger().info("Resuming block at " + restoreBlock.getLocation() + ": " + restoreBlock.getMessage());
 								restoreBlock.restore();
-								String message = restoreBlock.getMessage();
-								if (message != null && message.length() > 0) {
-									List<Entity> entities = restoreBlock.getWorld().getEntities();
-									for (Entity entity : entities)
-									{
-										if (!(entity instanceof Player)) continue;
-										if (entity.getLocation().toVector().distanceSquared(restoreBlock.getLocation()) < rangeSquared) {
-											((Player)entity).sendMessage(message);
-										}
-									}
-								}
+								sendToMages(restoreBlock.getMessage(), restoreBlock.getLocation().toLocation(restoreBlock.getWorld()), toggleMessageRange);	
 							}
 						}
 				}, 5);
 			}
 			if (chunkData.size() == 0) {
 				automata.remove(chunkKey);
+			}
+		}
+	}
+	
+	public void sendToMages(String message, Location location, int range) {
+		int rangeSquared = range * range;
+		if (message != null && message.length() > 0) {
+			for (Mage mage : mages.values())
+			{
+				if (!mage.isPlayer()) continue;
+				if (mage.getLocation().toVector().distanceSquared(location.toVector()) < rangeSquared) {
+					mage.sendMessage(message);
+				}
 			}
 		}
 	}

@@ -867,4 +867,9 @@ public class Mage implements CostReducer
 		}
 		return controller.isRestricted(material);	
 	}
+	
+	public boolean isPlayer()
+	{
+		return player != null;
+	}
 }

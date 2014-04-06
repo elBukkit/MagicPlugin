@@ -302,18 +302,20 @@ spells:
         name: Virus
         description: You probably don't want to cast this
         cast: What have you done?
-        cast: It's alive!
+        cast_boradcast: §c§o$name §r§5was born
     hunter:
         no_target: You must target two blocks next to each other
         name: Hunter
         description: Create a deadly Automaton
         no_target: You must target two blocks next to each other
-        cast: DESTROY ALL HUMANS!
+        cast: Destroy all humans!
+        cast_boradcast: §c§o$name §r§5was born
     defender:
         name: Defender
         description: Create an Automata hunter
         cast: I will hunt for you, human
         no_target: You must target two blocks next to each other
+        cast_boradcast: §c§o$name §r§5was born
     life:
         name: Life
         description: Create a HUGE Life board

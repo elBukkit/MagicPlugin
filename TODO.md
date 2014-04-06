@@ -2,6 +2,8 @@
 
 ## For 2.9.9
 
+ - Change default (no Player) build check to false, and/or see if you can for a region of any kind
+
  - Config-driven WandLevel limits, fix max range on protection, cost reduction, etc
  
  - Mana / enchanting balance- how did I get Nuke??
