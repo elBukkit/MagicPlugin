@@ -1779,7 +1779,7 @@ stash:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        target_entity: Player
+        target_type: Player
         target: self
     costs:
         xp: 50
@@ -1794,7 +1794,7 @@ pickpocket:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        target_entity: Player
+        target_type: Player
         target: other
         type: inventory
         range: 4

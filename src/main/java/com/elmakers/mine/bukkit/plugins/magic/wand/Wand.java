@@ -51,7 +51,7 @@ public class Wand implements CostReducer {
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material", 
 		"xp", "xp_regeneration", "xp_max",
-		"bound", "uses", "upgrade",
+		"bound", "uses", "upgrade", "indestructible",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
@@ -85,6 +85,7 @@ public class Wand implements CostReducer {
 	private String owner = "";
 	private String template = "";
 	private boolean bound = false;
+	private boolean indestructible = false;
 	private boolean keep = false;
 	private boolean autoOrganize = false;
 	private boolean autoFill = false;
@@ -154,12 +155,15 @@ public class Wand implements CostReducer {
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
 	public static boolean EnableGlow = true;
-	
-	protected Wand(ItemStack itemStack) {
+
+	public Wand(MagicController controller, ItemStack itemStack) {
+		this.controller = controller;
 		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
 		this.icon = new MaterialAndData(itemStack.getType(), (byte)itemStack.getDurability());
 		inventories = new ArrayList<Inventory>();
 		item = itemStack;
+		indestructible = controller.getIndestructibleWands();
+		loadState();
 	}
 	
 	public Wand(MagicController controller) {
@@ -211,13 +215,12 @@ public class Wand implements CostReducer {
 		saveState(true);
 	}
 	
-	public Wand(MagicController spells, Material icon, short iconData) {
+	public Wand(MagicController controller, Material icon, short iconData) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
-		this(InventoryUtils.getCopy(new ItemStack(icon, 1, iconData)));
+		this(controller, InventoryUtils.getCopy(new ItemStack(icon, 1, iconData)));
 		if (EnableGlow) {
 			InventoryUtils.addGlow(item);
 		}
-		this.controller = spells;
 		wandName = Messages.get("wand.default_name");
 		updateName();
 	}
@@ -227,12 +230,6 @@ public class Wand implements CostReducer {
 			id = UUID.randomUUID().toString();
 			saveState();
 		}
-	}
-	
-	public Wand(MagicController spells, ItemStack item) {
-		this(item);
-		this.controller = spells;
-		loadState();
 	}
 	
 	public void unenchant() {
@@ -316,6 +313,10 @@ public class Wand implements CostReducer {
 	
 	public boolean isModifiable() {
 		return !locked;
+	}
+	
+	public boolean isIndestructible() {
+		return indestructible;
 	}
 	
 	public boolean isUpgrade() {
@@ -414,6 +415,9 @@ public class Wand implements CostReducer {
 		owner = player.getName();
 		if (controller != null && controller.bindWands()) {
 			bound = true;
+		}
+		if (controller != null && controller.keepWands()) {
+			keep = true;
 		}
 	}
 	
@@ -714,7 +718,6 @@ public class Wand implements CostReducer {
 		
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		if (wandNode == null) {
-			controller.getPlugin().getLogger().warning("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
 		}
 		
@@ -764,6 +767,7 @@ public class Wand implements CostReducer {
 		node.setProperty("quiet", quietLevel);
 		node.setProperty("keep", keep);
 		node.setProperty("bound", bound);
+		node.setProperty("indestructible", indestructible);
 		node.setProperty("fill", autoFill);
 		node.setProperty("upgrade", isUpgrade);
 		node.setProperty("organize", autoOrganize);
@@ -858,6 +862,7 @@ public class Wand implements CostReducer {
 			quietLevel = wandConfig.getInt("quiet", quietLevel);
 			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			keep = wandConfig.getBoolean("keep", keep);
+			indestructible = wandConfig.getBoolean("indestructible", indestructible);
 			bound = wandConfig.getBoolean("bound", bound);
 			autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
 			autoFill = wandConfig.getBoolean("fill", autoFill);

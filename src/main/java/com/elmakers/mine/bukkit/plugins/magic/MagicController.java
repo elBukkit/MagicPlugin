@@ -466,6 +466,11 @@ public class MagicController implements Listener
 		return bindingEnabled;
 	}
 
+	public boolean keepWands()
+	{
+		return keepingEnabled;
+	}
+
 	/*
 	 * Get the log, if you need to debug or log errors.
 	 */
@@ -1049,26 +1054,30 @@ public class MagicController implements Listener
 			}
 		}
 		
-		// Load lost wands
-		getLogger().info("Loading lost wand data");
-		loadLostWands();
-		
-		// Load toggle-on-load blocks
-		getLogger().info("Loading autonoma data");
-		loadAutomata();
-		
-		// Load URL Map Data
-		try {
-			URLMap.resetAll();
-			File urlMapFile = getDataFile(URL_MAPS_FILE);
-			File imageCache = new File(dataFolder, "imagemapcache");
-			imageCache.mkdirs();
-			URLMap.load(plugin, urlMapFile, imageCache);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		getLogger().info("Finished loading configuration");
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				// Load lost wands
+				getLogger().info("Loading lost wand data");
+				loadLostWands();
+				
+				// Load toggle-on-load blocks
+				getLogger().info("Loading autonoma data");
+				loadAutomata();
+				
+				// Load URL Map Data
+				try {
+					URLMap.resetAll();
+					File urlMapFile = getDataFile(URL_MAPS_FILE);
+					File imageCache = new File(dataFolder, "imagemapcache");
+					imageCache.mkdirs();
+					URLMap.load(plugin, urlMapFile, imageCache);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				
+				getLogger().info("Finished loading data.");
+			}
+		}, 5);
 	}
 
 	protected void loadLostWands()
@@ -1376,6 +1385,7 @@ public class MagicController implements Listener
 		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
 		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
+		keepingEnabled = properties.getBoolean("enable_keeping", keepingEnabled);
 		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
@@ -1738,13 +1748,13 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onItemDespawn(ItemDespawnEvent event)
 	{
-		if ((indestructibleWands || dynmapShowWands) && Wand.isWand(event.getEntity().getItemStack()))
+		if (Wand.isWand(event.getEntity().getItemStack()))
 		{
-			if (indestructibleWands) {
+			Wand wand = new Wand(this, event.getEntity().getItemStack());			
+			if (wand.isIndestructible()) {
 				event.getEntity().setTicksLived(1);
 				event.setCancelled(true);
 			} else if (dynmapShowWands) {
-				Wand wand = new Wand(this, event.getEntity().getItemStack());
 				removeLostWand(wand);
 			}
 		}
@@ -1755,15 +1765,14 @@ public class MagicController implements Listener
 	{
 		if (Wand.isWand(event.getEntity().getItemStack()))
 		{
-			if (indestructibleWands) {
-				InventoryUtils.setInvulnerable(event.getEntity());
-			}
 			Wand wand = new Wand(this, event.getEntity().getItemStack());
-			if (wand != null) {
+			if (wand != null && wand.isIndestructible()) {
+				InventoryUtils.setInvulnerable(event.getEntity());
+
+				// Don't show non-indestructible wands on dynmap
 				addLostWand(wand, event.getEntity().getLocation());		
 				Location dropLocation = event.getLocation();
 				getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
-
 			}
 		} else if (ageDroppedItems > 0) {
 			try {
@@ -1790,16 +1799,16 @@ public class MagicController implements Listener
 				Player player = (Player)event.getEntity();
 				onPlayerDamage(player, event);
 			}
-	        if (entity instanceof Item && (indestructibleWands || dynmapShowWands))
+	        if (entity instanceof Item)
 	        {
 	   		 	Item item = (Item)entity;
 	   		 	ItemStack itemStack = item.getItemStack();
 	            if (Wand.isWand(itemStack))
 	            {
-	            	if (indestructibleWands) {
+                	Wand wand = new Wand(this, item.getItemStack());
+	            	if (wand.isIndestructible()) {
 	                     event.setCancelled(true);
 	            	} else if (event.getDamage() >= itemStack.getDurability()) {
-	                	Wand wand = new Wand(this, item.getItemStack());
 	                	if (removeLostWand(wand)) {
 	                		plugin.getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " destroyed");
 	                	}
@@ -2591,6 +2600,14 @@ public class MagicController implements Listener
 		return lostWands.values();
 	}
 	
+	public Collection<Automaton> getAutomata() {
+		Collection<Automaton> all = new ArrayList<Automaton>();
+		for (Map<Long, Automaton> chunkList : automata.values()) {
+			all.addAll(chunkList.values());
+		}
+		return all;
+	}
+	
 	public boolean cast(Mage mage, String spellName, String[] parameters, CommandSender sender, Player player)
 	{
 		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
@@ -2710,14 +2727,14 @@ public class MagicController implements Listener
 		}
 	}
 	
-	public void registerBlockForReloadToggle(Block block, String message) {
+	public void registerBlockForReloadToggle(Block block, String name, String message) {
 		String chunkId = getChunkKey(block.getChunk());
 		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload == null) {
 			toReload = new HashMap<Long, Automaton>();
 			automata.put(chunkId, toReload);
 		}
-		Automaton data = new Automaton(block, message);
+		Automaton data = new Automaton(block, name, message);
 		toReload.put(data.getId(), data);
 	}
 
@@ -2759,7 +2776,7 @@ public class MagicController implements Listener
 					new Runnable() {
 						public void run() {
 							for (Automaton restoreBlock : restored) {
-								getLogger().info("Resuming block at " + restoreBlock.getLocation() + ": " + restoreBlock.getMessage());
+								getLogger().info("Resuming block at " + restoreBlock.getLocation() + ": " + restoreBlock.getName());
 								restoreBlock.restore();
 								sendToMages(restoreBlock.getMessage(), restoreBlock.getLocation().toLocation(restoreBlock.getWorld()), toggleMessageRange);	
 							}
@@ -2783,6 +2800,10 @@ public class MagicController implements Listener
 				}
 			}
 		}
+	}
+	
+	public boolean getIndestructibleWands() {
+		return indestructibleWands;
 	}
 
 	/*
@@ -2831,6 +2852,7 @@ public class MagicController implements Listener
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
 	 private boolean							 bindingEnabled					= false;
+	 private boolean							 keepingEnabled					= false;
 	 private boolean							 organizingEnabled				= false;
 	 private boolean                             fillingEnabled                 = false;
 	 private boolean							 essentialsSignsEnabled			= false;

@@ -154,7 +154,10 @@ wand_item_enchantable: wood_sword
 fill_wands: false
 
 # If true, wands will automatically bind to their owners
-enable_binding: false
+enable_binding: true
+
+# If true, wands will automatically be set to keep when owned
+enable_keeping: true
 
 # Players keep their wands when they die
 keep_wands_on_death: false

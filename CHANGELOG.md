@@ -8,6 +8,9 @@
  - Some tweaks and improvements to Blink and Phase, won't passthrough bedrock
  - A lot of wand nerfing and balancing
  - Randomized effect colors for randomized wands
+ - Add "/magic list autonoma" command
+ - Claiming a wand (on an anvil) will set wands to "keep" and "bound" by default.
+ - Add "Recall Token", the first magic item. Lets you cast Recall 10 times, and you keep it on death.
 
 ## 2.9.8.AUTOMATA
 
