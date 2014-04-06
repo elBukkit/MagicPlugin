@@ -943,6 +943,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	public boolean allowPassThrough(Material mat)
 	{
+		if (mage != null && mage.isSuperPowered()) {
+			return true;
+		}
 		return preventPassThroughMaterials == null || !preventPassThroughMaterials.contains(mat);
 	}
 	
