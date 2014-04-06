@@ -200,6 +200,11 @@ public class ConfigurationNode {
 	 */
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public void setProperty(String path, Object value) {
+		if (value == null) {
+			this.removeProperty(path);
+			return;
+		}
+		
 		// Going to convert materials to strings, to make this easier to hand edit.
 		if (value instanceof Material)
 		{

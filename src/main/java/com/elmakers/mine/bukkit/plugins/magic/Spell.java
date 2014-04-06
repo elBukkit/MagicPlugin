@@ -1133,13 +1133,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		Block playerBlock = null;
 		Location playerLoc = getLocation();
 		if (playerLoc == null) return null;
+		World world = playerLoc.getWorld();
+		if (world == null) return null;
 		int x = (int) Math.round(playerLoc.getX() - 0.5);
 		int y = (int) Math.round(playerLoc.getY() - 0.5);
 		int z = (int) Math.round(playerLoc.getZ() - 0.5);
 		int dy = 0;
 		while (dy > -3 && (playerBlock == null || isOkToStandIn(playerBlock.getType())))
 		{
-			playerBlock = getWorld().getBlockAt(x, y + dy, z);
+			playerBlock = world.getBlockAt(x, y + dy, z);
 			dy--;
 		}
 		return playerBlock;
@@ -1837,7 +1839,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			node.setProperty("last_cast", lastCast);
 			onSave(node);
 		} catch (Exception ex) {
-			controller.getPlugin().getLogger().warning("Failed to save data for spell " + name + ": " + ex.getMessage());
+			controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
+			ex.printStackTrace();
 		}
 	}
 

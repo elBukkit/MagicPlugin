@@ -34,8 +34,8 @@ public class StashSpell extends Spell
 		
 		String typeString = parameters.getString("type", "ender");
 		if (typeString.equalsIgnoreCase("inventory")) {
-			Inventory enderInventory = humanTarget.getInventory();
-			showPlayer.openInventory(enderInventory);
+			Inventory inventory = humanTarget.getInventory();
+			showPlayer.openInventory(inventory);
 		} else {
 			Inventory enderInventory = humanTarget.getEnderChest();
 			showPlayer.openInventory(enderInventory);
