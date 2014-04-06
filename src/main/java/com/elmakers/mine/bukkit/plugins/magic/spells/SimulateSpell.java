@@ -125,6 +125,8 @@ public class SimulateSpell extends BlockSpell {
 			batch.setTargetType(targetType);
 			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
 			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
+
+			batch.setCast(parameters.getString("cast", ""));
 			
 			batch.target(targetMode);
 		}

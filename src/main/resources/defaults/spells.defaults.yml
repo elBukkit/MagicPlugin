@@ -319,7 +319,7 @@ hunter:
         check_destructible: false
         range: 32
         cooldown: 60000
-        name: Hunter 3.0
+        name: Hunter 4.0
         radius: 5
         yradius: 5
         birth_range: 4
@@ -329,6 +329,7 @@ hunter:
         delay: 500
         target_mode: hunt
         target_types: player
+        cast: curse
         live_rules: 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         move: 3

@@ -564,8 +564,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		if (message == null) message = "";
 		
 		// Escape some common parameters
-		Player player = getPlayer();
-		String playerName = player == null ? "Unknown" : player.getName();
+		String playerName = mage.getName();
 		message = message.replace("$player", playerName);
 		String useTargetName = targetName;
 		if (useTargetName == null) {
@@ -599,10 +598,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				message = getMessage("cast_player", message);
 				String playerMessage = getMessage("cast_player_message");
 				if (playerMessage.length() > 0) {
-					playerMessage = playerMessage.replace("$spell", getName()).replace("$player", mage.getName());
+					playerMessage = playerMessage.replace("$spell", getName());
 					Player targetPlayer = (Player)target.getEntity();
 					Mage targetMage = controller.getMage(targetPlayer);
-					targetMage.sendMessage(message);
+					targetMage.sendMessage(playerMessage);
 				}
 			} else if (targetEntity instanceof LivingEntity) {
 				message = getMessage("cast_livingentity", message);

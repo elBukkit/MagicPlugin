@@ -152,7 +152,7 @@ spells:
         backfire: Your spell backfired!
         fail: Your spell failed!
         insufficient_permissions: You don't have permission to cast that here.
-        cast_player_message: §d§o$player §r§5cast §3§o$spell $r$5on you!
+        cast_player_message: §d§o$player §r§5cast §3§o$spell §r§5on you!
     light:
         name: Light
         description: Creates a magical light source

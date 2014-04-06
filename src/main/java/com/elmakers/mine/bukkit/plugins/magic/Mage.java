@@ -870,6 +870,26 @@ public class Mage implements CostReducer
 	
 	public boolean isPlayer()
 	{
+		Player player = getPlayer();
 		return player != null;
+	}
+	
+	public boolean isDead()
+	{
+		// TODO: "Dead" automata?
+		Player player = getPlayer();
+		return player != null && player.isDead();
+	}
+	
+	public boolean isOnline()
+	{
+		// TODO: "Offline" automata?
+		Player player = getPlayer();
+		return player != null && player.isOnline();
+	}
+	
+	public boolean hasLocation()
+	{
+		return getLocation() != null;
 	}
 }

@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -47,7 +48,7 @@ public class SimulateBatch extends VolumeBatch {
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
 	
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	
 	private Mage mage;
 	private BlockSpell spell;
@@ -58,6 +59,7 @@ public class SimulateBatch extends VolumeBatch {
 	private Location targetLocation;
 	private String castCommand;
 	private String commandName;
+	private String castSpell;
 	private boolean reverseTargetDistanceScore = false;
 	private int commandMoveRangeSquared = 9;
 	private int huntMaxRange = 128;
@@ -438,6 +440,10 @@ public class SimulateBatch extends VolumeBatch {
 		}
 	}
 	
+	public void setCast(String cast) {
+		castSpell = cast;
+	}
+	
 	public void setBirthRange(int range) {
 		birthRangeSquared = range * range;
 	}
@@ -474,7 +480,7 @@ public class SimulateBatch extends VolumeBatch {
 				for (Entity entity : entities)
 				{
 					// We'll get the players from the Mages list
-					if (entity instanceof Player || !(entity instanceof LivingEntity)) continue;
+					if (entity instanceof Player || !(entity instanceof LivingEntity) || entity.isDead()) continue;
 					Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
@@ -489,6 +495,7 @@ public class SimulateBatch extends VolumeBatch {
 				{
 					if (mage == this.mage) continue;
 					if (targetType == TargetType.AUTOMATON && mage.getPlayer() != null) continue;
+					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
 					
 					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, false);
 					int score = newScore.getScore();
@@ -500,9 +507,10 @@ public class SimulateBatch extends VolumeBatch {
 			
 			if (bestTarget != null) 
 			{
+				String targetDescription = bestTarget.getEntity() == null ? "NONE" :
+					((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
+				
 				if (DEBUG) {
-					String targetDescription = bestTarget.getEntity() == null ? "NONE" :
-						((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
 					controller.getLogger().info(" *Tracking " + targetDescription + 
 				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " min " + huntMinRange);
 				}
@@ -517,6 +525,21 @@ public class SimulateBatch extends VolumeBatch {
 					targetLocation = bestTarget.getLocation();
 					Vector direction = targetMode == TargetMode.FLEE ? center.toVector().subtract(targetLocation.toVector()) : targetLocation.toVector().subtract(center.toVector());
 					center = RandomUtils.setDirection(center, direction);
+				}
+				
+				// JUST TESTING!
+				if (castSpell.length() > 0) {
+					float castProbability = 0.1f;
+					if (Math.random() < castProbability) {
+						Spell spell = mage.getSpell(castSpell);
+						if (castSpell != null) {
+							if (DEBUG) {
+								Bukkit.getLogger().info(commandName + " casting " + castSpell + " at " + targetDescription);
+							}
+							String[] parameters = {"cost_reduction", "1", "target_through air,", birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
+							spell.cast(parameters, null);
+						}
+					}
 				}
 			}
 			break;

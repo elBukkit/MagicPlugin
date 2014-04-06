@@ -1137,7 +1137,7 @@ public class MagicController implements Listener
 				if (blocks.size() > 0) {
 					ConfigurationNode chunkNode = automataData.createChild(toggleEntry.getKey());
 					for (Automaton block : blocks) {
-						ConfigurationNode node = chunkNode.createChild(block.getKey());
+						ConfigurationNode node = chunkNode.createChild(Long.toString(block.getId()));
 						block.save(node);
 					}
 				}
@@ -1273,7 +1273,7 @@ public class MagicController implements Listener
 		getLogger().info("Saving image map data");
 		URLMap.save();
 
-		getLogger().info("Saving toggle block data");
+		getLogger().info("Saving autonoma data");
 		saveAutomata();
 	}
 	
@@ -2777,7 +2777,7 @@ public class MagicController implements Listener
 		if (message != null && message.length() > 0) {
 			for (Mage mage : mages.values())
 			{
-				if (!mage.isPlayer()) continue;
+				if (!mage.isPlayer() || mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
 				if (mage.getLocation().toVector().distanceSquared(location.toVector()) < rangeSquared) {
 					mage.sendMessage(message);
 				}

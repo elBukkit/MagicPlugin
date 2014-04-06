@@ -2,6 +2,10 @@
 
 ## For 2.9.9
 
+ - Automata should not target dead or offline entities... some way to know another Autonoma is "dead" would be great.
+ 
+ - And add /magic list autonoma
+ - And "invincible" option to wands to override invincibility, create "recall token" item.
  - Change default (no Player) build check to false, and/or see if you can for a region of any kind
 
  - Config-driven WandLevel limits, fix max range on protection, cost reduction, etc
