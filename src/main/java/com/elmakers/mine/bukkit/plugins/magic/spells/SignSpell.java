@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.blocks.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -23,7 +22,9 @@ public class SignSpell extends BlockSpell
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
 		String typeString = parameters.getString("type", "");
-		if (typeString.equals("give"))
+		boolean autoAscend = parameters.getBoolean("auto_give", true);
+
+		if (typeString.equals("give") || (autoAscend && getYRotation() > 80))
 		{
 			castMessage(getMessage("cast_give"));
 			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0) ? SpellResult.CAST : SpellResult.FAIL;
@@ -94,11 +95,7 @@ public class SignSpell extends BlockSpell
 		}
 		else if (target.hasEntity() && target.getEntity() instanceof Player)
 		{
-			Player targetPlayer = (Player)target.getEntity();
-			String message = getMessage("cast_message");
-			if (message.length() == 0) return SpellResult.NO_TARGET;
-			Mage targetMage = controller.getMage(targetPlayer);
-			targetMage.sendMessage(message);
+			// Spell will take care of messaging the target player with cast_player_message
 			return SpellResult.CAST;
 		}
 

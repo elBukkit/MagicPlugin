@@ -597,6 +597,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				message = getMessage("cast_self", message);
 			} else if (targetEntity instanceof Player) {
 				message = getMessage("cast_player", message);
+				String playerMessage = getMessage("cast_player_message");
+				if (playerMessage.length() > 0) {
+					playerMessage = playerMessage.replace("$spell", getName()).replace("$player", mage.getName());
+					Player targetPlayer = (Player)target.getEntity();
+					Mage targetMage = controller.getMage(targetPlayer);
+					targetMage.sendMessage(message);
+				}
 			} else if (targetEntity instanceof LivingEntity) {
 				message = getMessage("cast_livingentity", message);
 			} else if (targetEntity instanceof Entity) {

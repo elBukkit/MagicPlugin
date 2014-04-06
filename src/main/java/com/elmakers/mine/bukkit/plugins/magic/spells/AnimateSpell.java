@@ -12,7 +12,6 @@ import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AnimateSpell extends SimulateSpell 
