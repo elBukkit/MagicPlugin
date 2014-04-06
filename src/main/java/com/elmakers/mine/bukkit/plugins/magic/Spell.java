@@ -581,6 +581,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	}
 	
 	protected void processResult(SpellResult result) {
+		if (mage != null) {
+			mage.processResult(result);
+		}
 		if (result.isSuccess()) {
 			// Notify controller of successful casts,
 			// this if for dynmap display or other global-level processing.

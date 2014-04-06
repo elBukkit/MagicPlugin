@@ -187,7 +187,8 @@ public class ConfigurationNode {
 	}
 	
 	public static String fromLocation(Location location) {
-		return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorld().getName();
+		return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorld().getName()
+				+ location.getYaw() + "," + location.getPitch();
 	}
 
 	/**
@@ -309,6 +310,8 @@ public class ConfigurationNode {
 		}
 		if (o instanceof String) {
 			try {
+				float pitch = 0;
+				float yaw = 0;
 				String[] pieces = StringUtils.split((String)o, ',');
 				double x = Double.parseDouble(pieces[0]);
 				double y = Double.parseDouble(pieces[1]);
@@ -319,7 +322,11 @@ public class ConfigurationNode {
 				} else {
 					world = Bukkit.getWorlds().get(0);
 				}
-				return new Location(world, x, y, z);
+				if (pieces.length > 5) {
+					yaw = Float.parseFloat(pieces[4]);
+					pitch = Float.parseFloat(pieces[5]);
+				}
+				return new Location(world, x, y, z, yaw, pitch);
 			} catch(Exception ex) {
 				return null;
 			}

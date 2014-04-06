@@ -39,6 +39,8 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Mage implements CostReducer
 {
+	protected static int 						AUTOMATA_ONLINE_TIMEOUT = 5000;
+	
 	protected WeakReference<Player> 			player;
 	protected WeakReference<CommandSender>		commandSender;
 	protected String 							playerName;
@@ -58,11 +60,16 @@ public class Mage implements CostReducer
 	private float 				cooldownReduction = 0;
 	private float 				powerMultiplier = 1;
 	private long 				lastClick = 0;
+	private long 				lastCast = 0;
 	private long 				blockPlaceTimeout = 0;
 	private Location 			lastDeathLocation = null;
 	private final MaterialBrush		brush;
 	
 	private static String defaultMageName = "Automaton";
+	
+	protected void processResult(SpellResult result) {
+		lastCast = System.currentTimeMillis();
+	}
 	
 	public void removeExperience(int xp) {
 		
@@ -681,6 +688,8 @@ public class Mage implements CostReducer
 
 			playerName = configNode.getString("name", playerName);
 			lastDeathLocation = configNode.getLocation("last_death_location");
+			location = configNode.getLocation("location");
+			lastCast = configNode.getLong("last_cast", lastCast);
 			
 			getUndoQueue().load(this, configNode);
 			ConfigurationNode spellNode = configNode.getNode("spells");
@@ -706,7 +715,11 @@ public class Mage implements CostReducer
 	{
 		try {
 			configNode.setProperty("name", playerName);
+			configNode.setProperty("last_cast", lastCast);
 			configNode.setProperty("last_death_location", lastDeathLocation);
+			if (location != null) {
+				configNode.setProperty("location", location);
+			}
 			
 			ConfigurationNode brushNode = configNode.createChild("brush");
 			brush.save(brushNode);
@@ -876,16 +889,29 @@ public class Mage implements CostReducer
 	
 	public boolean isDead()
 	{
-		// TODO: "Dead" automata?
 		Player player = getPlayer();
-		return player != null && player.isDead();
+		if (player != null) {
+			return player.isDead();
+		}
+		// Check for automata
+		CommandSender sender = getCommandSender();
+		if (sender == null || !(sender instanceof BlockCommandSender)) return true;
+		BlockCommandSender commandBlock = (BlockCommandSender)sender;
+		Block block = commandBlock.getBlock();
+		if (!block.getChunk().isLoaded()) return true;
+		return (block.getType() != Material.COMMAND);
 	}
 	
 	public boolean isOnline()
 	{
-		// TODO: "Offline" automata?
 		Player player = getPlayer();
-		return player != null && player.isOnline();
+		if (player != null) {
+			return player.isOnline();
+		}
+		// Check for automata
+		CommandSender sender = getCommandSender();
+		if (sender == null || !(sender instanceof BlockCommandSender)) return true;
+		return lastCast > System.currentTimeMillis() - AUTOMATA_ONLINE_TIMEOUT;
 	}
 	
 	public boolean hasLocation()
