@@ -41,7 +41,9 @@ general:
     no_spells_in_category: You don't know any spells in the $category category
     spell_list_page: You know $count spells [page $page of $pages]
     spell_list: You know $count spells
-    toggle_block: §c§o$name §r§5has awakened
+automata:
+    awaken: §c§o$name §r§5has awakened
+    default_name: Automaton
 wand:
     default_name: Wand
     upgrade_name: Wand Upgrade
@@ -981,3 +983,6 @@ wands:
     aquaeffects:
         name: Aqua Wand Effects
         description: Tint your wand effects!
+    recalltoken:
+        name: Recall Token
+        description: Aim up and left-click

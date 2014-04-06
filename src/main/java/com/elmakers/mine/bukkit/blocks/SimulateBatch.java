@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -401,18 +400,11 @@ public class SimulateBatch extends VolumeBatch {
 					Block powerBlock = commandTargetBlock.getRelative(powerDirection);
 					powerBlock.setType(POWER_MATERIAL);
 					if (commandReload) {
-						String message = "";
-						if (commandName != null && commandName.length() > 1) {
-							String automataName = commandName;
-							if (automataName.contains("@")) {
-								String[] pieces = StringUtils.split(automataName, '@');
-								if (pieces.length > 1 && pieces[1].length() > 0)  {
-									automataName = pieces[1];
-								}
-							}
-							message = Messages.get("general.toggle_block").replace("$name", automataName);
+						String automataName = commandName;
+						if (automataName == null || automataName.length() <= 1) {
+							automataName = Messages.get("automata.default_name");
 						}
-						controller.registerBlockForReloadToggle(powerBlock, message);
+						controller.registerBlockForReloadToggle(powerBlock, automataName, "automata.awaken");
 					}
 				}
 			}

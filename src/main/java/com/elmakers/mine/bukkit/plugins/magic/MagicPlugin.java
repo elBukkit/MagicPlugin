@@ -26,7 +26,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.BlockVector;
 
+import com.elmakers.mine.bukkit.blocks.Automaton;
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
@@ -233,6 +235,7 @@ public class MagicPlugin extends JavaPlugin
 				if (args[1].equalsIgnoreCase("list")) {
 					addIfPermissible(sender, options, "Magic.commands.list", "maps");
 					addIfPermissible(sender, options, "Magic.commands.list", "wands");
+					addIfPermissible(sender, options, "Magic.commands.list", "automata");
 				}
 			}
 		}
@@ -426,7 +429,7 @@ public class MagicPlugin extends JavaPlugin
 				{
 					if (!controller.hasPermission(sender, "Magic.commands.magic." + listCommand)) return false;
 					
-					sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'wands' or 'maps' parameter.");
+					sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'wands', 'maps' or 'automata' parameter.");
 					
 					Collection<Mage> mages = controller.getMages();
 					List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
@@ -476,7 +479,19 @@ public class MagicPlugin extends JavaPlugin
 					
 					sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
 					return true;
-				} else if (listCommand.equalsIgnoreCase("maps")) {
+				} else if (listCommand.equalsIgnoreCase("automata")) {
+					Collection<Automaton> automata = controller.getAutomata();
+					for (Automaton automaton : automata) {
+						BlockVector location = automaton.getLocation();
+						String worldName = automaton.getWorldName();
+						sender.sendMessage(ChatColor.AQUA + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
+								location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+					}
+					
+					sender.sendMessage(automata.size() + " automata active");
+					return true;
+				}
+				else if (listCommand.equalsIgnoreCase("maps")) {
 					String keyword = "";
 					if (args.length > 2) {
 						keyword = args[2];

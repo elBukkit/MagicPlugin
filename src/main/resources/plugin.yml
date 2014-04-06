@@ -203,6 +203,10 @@ permissions:
     description: Player may list map images
     type: boolean
     default: op
+  Magic.commands.magic.list.automata:
+    description: Player may list stored automata
+    type: boolean
+    default: op
   Magic.commands.magic.clean:
     description: Player may remove lost wands from the world
     type: boolean
