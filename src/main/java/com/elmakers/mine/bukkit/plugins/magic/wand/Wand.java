@@ -192,7 +192,9 @@ public class Wand implements CostReducer {
 				}
 				ConfigurationNode randomTemplate = wandTemplates.get("random");
 				randomize(level, false);
+				// Random wands take a few properties from the "random" template
 				locked = (boolean)randomTemplate.getBoolean("locked", false);
+				setEffectColor(randomTemplate.getString("effect_color"));
 				saveState(true);
 				return;
 			}
@@ -388,7 +390,7 @@ public class Wand implements CostReducer {
 	}
 	
 	public void setName(String name) {
-		wandName = name;
+		wandName = ChatColor.stripColor(name);
 		updateName();
 	}
 	
@@ -419,6 +421,7 @@ public class Wand implements CostReducer {
 		if (controller != null && controller.keepWands()) {
 			keep = true;
 		}
+		saveState();
 	}
 	
 	public ItemStack getItem() {
@@ -593,27 +596,30 @@ public class Wand implements CostReducer {
 		// Support YML-List-As-String format and |-delimited format
 		spellString = spellString.replaceAll("[\\]\\[]", "");
 		String[] spellNames = StringUtils.split(spellString, "|,");
-		for (String spellName : spellNames) {
+		for (String spellName : spellNames) {		
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
-			ItemStack itemStack = createSpellIcon(pieces[0].trim());
+			String spellKey = pieces[0].trim();
+			ItemStack itemStack = createSpellIcon(spellKey);
 			if (itemStack == null) {
-				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + pieces[0]);
+				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
 				continue;
 			}
+			if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey;	
 			addToInventory(itemStack, slot);
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
 		String[] materialNames = StringUtils.split(materialString, "|,");
 		for (String materialName : materialNames) {
-			if (activeMaterial == null || activeMaterial.length() == 0) activeMaterial = materialName;
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
-			ItemStack itemStack = createMaterialIcon(pieces[0].trim());
+			String materialKey = pieces[0].trim();
+			ItemStack itemStack = createMaterialIcon(materialKey);
 			if (itemStack == null) {
-				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + pieces[0]);
+				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
 				continue;
 			}
+			if (activeMaterial == null || activeMaterial.length() == 0) activeMaterial = materialKey;
 			addToInventory(itemStack, slot);
 		}
 		hasInventory = spellNames.length + materialNames.length > 1;
@@ -807,6 +813,22 @@ public class Wand implements CostReducer {
 		loadProperties(wandConfig, false);
 	}
 	
+	public void setEffectColor(String hexColor) {
+		if (hexColor == null || hexColor.length() == 0) {
+			effectColor = 0;
+			return;
+		}
+		try {
+			if (hexColor.equals("random")) {
+				effectColor = (int)(Math.random() * 0xFFFFFF);
+			} else {
+				effectColor = Integer.parseInt(hexColor, 16);
+			}
+		} catch (Exception ex) {
+			
+		}
+	}
+	
 	public void loadProperties(ConfigurationNode wandConfig, boolean safe) {
 		locked = (boolean)wandConfig.getBoolean("locked", locked);
 		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
@@ -843,16 +865,7 @@ public class Wand implements CostReducer {
 		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
 		
 		if (wandConfig.containsKey("effect_color") && !safe) {
-			try {
-				String colorString = wandConfig.getString("effect_color", "0");
-				if (colorString.equals("random")) {
-					effectColor = (int)(Math.random() * 0xFFFFFF);
-				} else {
-					effectColor = Integer.parseInt(colorString, 16);
-				}
-			} catch (Exception ex) {
-				
-			}
+			setEffectColor(wandConfig.getString("effect_color"));
 		}
 		
 		// Don't change any of this stuff in safe mode
@@ -1825,6 +1838,17 @@ public class Wand implements CostReducer {
 	
 	public void toggleInventory() {
 		if (!hasInventory) {
+			if (activeSpell != null && activeSpell.length() > 0) {
+				activeSpell = "";
+			} else {
+				Set<String> spells = getSpells();
+				// Sanity check, so it'll work next click.
+				if (spells.size() > 1) hasInventory = true;
+				if (spells.size() > 0) {
+					activeSpell = spells.iterator().next();
+				}
+			}
+			updateName();
 			return;
 		}
 		if (!isInventoryOpen()) {

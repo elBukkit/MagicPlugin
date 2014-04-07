@@ -1937,9 +1937,7 @@ public class MagicController implements Listener
 						wand.cycleSpells(player.getItemInHand());
 					}
 				} else {
-					if (wand.getHasInventory()) {
-						wand.toggleInventory();
-					}
+					wand.toggleInventory();
 				}
 			} else {
 				mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
@@ -2189,19 +2187,21 @@ public class MagicController implements Listener
 			
 			// Rename wand when taking from result slot
 			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
+				ItemMeta meta = current.getItemMeta();
+				String newName = meta.getDisplayName();
+				
 				Wand wand = new Wand(this, current);
 				if (!wand.canUse(player)) {
+					event.setCancelled(true);
 					mage.sendMessage(Messages.get("wand.bound").replace("$name", wand.getOwner()));
 					return;
 				}
-				
-				ItemMeta meta = current.getItemMeta();
-				String newName = meta.getDisplayName();
 				wand.setName(newName);
 				if (organizingEnabled) {
 					wand.organizeInventory(getMage(player));
 				}
 				wand.tryToOwn(player);
+				Bukkit.getLogger().info("Update result: "  + current.getItemMeta().getDisplayName());
 				return;
 			}
 

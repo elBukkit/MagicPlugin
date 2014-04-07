@@ -157,7 +157,6 @@ default:
 # harder to comprehend when looking at the numbers- I'm thinking about ways to clean that up.
 #
 random:
-    icon: stick
     levels: 1,25,35,40,45
     effect_color: random
 #   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
