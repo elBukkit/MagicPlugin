@@ -47,7 +47,11 @@ public class FactionsManager {
 	}
 	
 	public boolean hasBuildPermission(Player player, Block block) {
-		if (enabled && player != null && block != null && factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
+		if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
+			
+			// Disallows building via command blocks, or while offline, when Factions is present.
+			if (player == null) return false;
+			
 			try {
 				Object loc = psFactoryMethod.invoke(null, block.getLocation());
 				return loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);

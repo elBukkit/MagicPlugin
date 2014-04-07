@@ -362,6 +362,7 @@ public class Mage implements CostReducer
 	
 	public boolean isSuperPowered()
 	{
+		if (controller.hasPermission(getPlayer(), "Magic.powered")) return true;		
 		return activeWand != null && activeWand.getPower() > 1;
 	}
 	

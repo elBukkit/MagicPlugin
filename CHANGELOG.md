@@ -11,6 +11,9 @@
  - Add "/magic list autonoma" command
  - Claiming a wand (on an anvil) will set wands to "keep" and "bound" by default.
  - Add "Recall Token", the first magic item. Lets you cast Recall 10 times, and you keep it on death.
+ - Automata will respect build permissions for WG regions and Factions claims
+ - Mob spawners are now restricted, but copyable by supermages.
+ - Add "powered" pnode for always-on superpower (for mods, mainly to bypass restriction list)
 
 ## 2.9.8.AUTOMATA
 

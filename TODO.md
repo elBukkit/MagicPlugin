@@ -2,8 +2,6 @@
 
 ## For 2.9.9
  
- - Change default (no Player) build check to false, and/or see if you can for a region of any kind
-
  - Config-driven WandLevel limits
 
  - Extra spell list for simulate to cast

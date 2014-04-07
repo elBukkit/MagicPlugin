@@ -514,9 +514,7 @@ public class MagicController implements Listener
 	public boolean hasBuildPermission(Player player, Block block) 
 	{
 		// Check the region manager, or Factions
-		// TODO: We need to be able to do permission checks while a player is offline. This is currently exploitable. (!)
-		boolean allowed = true;
-		
+		boolean allowed = true;		
 		if (bypassBuildPermissions) return true;
 		
 		allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
