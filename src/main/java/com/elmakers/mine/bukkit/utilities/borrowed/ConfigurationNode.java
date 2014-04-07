@@ -188,7 +188,7 @@ public class ConfigurationNode {
 	
 	public static String fromLocation(Location location) {
 		return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorld().getName()
-				+ location.getYaw() + "," + location.getPitch();
+				+ "," + location.getYaw() + "," + location.getPitch();
 	}
 
 	/**
