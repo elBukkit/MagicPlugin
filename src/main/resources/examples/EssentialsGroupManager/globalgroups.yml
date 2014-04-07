@@ -34,6 +34,7 @@
     - Magic.commands.magic.clean
     - Magic.commands.magic.clearcache
     - Magic.commands.cast
+    - Magic.powered
 
   g:magic_guest:
     permissions:
