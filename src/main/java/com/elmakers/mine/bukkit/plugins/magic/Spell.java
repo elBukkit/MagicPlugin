@@ -1578,37 +1578,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		long now = System.currentTimeMillis();
 		return (lastMessageSent < now - throttle);
 	}
-
-	/*
-	 * Time functions
-	 */
-
-	/**
-	 * Sets the current server time
-	 * 
-	 * @param time specified server time (0-24000)
-	 */
-	public boolean setTime(long time)
-	{
-		World world = getWorld();
-		if (world != null) {
-			world.setTime(time);
-			return true;
-		}
-		
-		return false;
-	}
-
-	/**
-	 * Return the in-game server time.
-	 * 
-	 * @return server time
-	 */
-	public long getTime()
-	{
-		World world = getWorld();
-		return world == null ? 0 : world.getTime();
-	}
 	
 	public World getWorld()
 	{

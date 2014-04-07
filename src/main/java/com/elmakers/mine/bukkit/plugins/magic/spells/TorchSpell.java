@@ -16,10 +16,13 @@ public class TorchSpell extends BlockSpell
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
+		World world = getWorld();
+		if (world == null) {
+			return SpellResult.NO_TARGET;
+		}
 		if (parameters.containsKey("weather"))
 		{
 			String weatherString = parameters.getString("weather");
-			World world = getLocation().getWorld();
 			if (weatherString.equals("storm")) {
 				world.setStorm(true);
 				world.setThundering(true);
@@ -33,7 +36,7 @@ public class TorchSpell extends BlockSpell
 			long targetTime = 0;
 			timeType = parameters.getString("time", "day");
 			if (timeType.equalsIgnoreCase("toggle")) {
-				long currentTime = getTime();
+				long currentTime = world.getTime();
 				if (currentTime > 13000) {
 					timeType = "day";
 				} else {
@@ -57,7 +60,7 @@ public class TorchSpell extends BlockSpell
 					targetTime = 0;
 				}
 			}
-			setTime(targetTime);
+			world.setTime(targetTime);
 			return SpellResult.AREA;
 		}
 		
@@ -66,7 +69,7 @@ public class TorchSpell extends BlockSpell
 		if (getYRotation() > 80 && allowDay)
 		{
 			timeType = "day";
-			setTime(0);
+			world.setTime(0);
 			return SpellResult.AREA;
 		}
 
@@ -74,7 +77,7 @@ public class TorchSpell extends BlockSpell
 		if (getYRotation() < -80 && allowNight)
 		{
 			timeType = "night";
-			setTime(13000);
+			world.setTime(13000);
 			return SpellResult.AREA;
 		}
 
