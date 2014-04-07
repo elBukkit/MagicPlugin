@@ -269,16 +269,14 @@ indestructible:
 # Any spells not on this list can not be copied, cloned, replicated
 # or otherwise built with using a Wand brush.
 # Note that ender_portal blocks can horribly lag the server and client, keep that one on here.
-restricted:
+# Mob spawners seem gitchy on removal and leave a perma-effect
+# Copying command blocks can be dangerous and cause unintended effects
 # It's a good idea to put any indestructibles in here, since they can't be removed.
+restricted:
 - bedrock
 - command
 - ender_portal
 - portal
-#- ender_portal_frame
-# Ender portals can cause some really nasty client lag.
-#- ender_portal
-# Mob spawners are glitched and make perma-particles
 - mob_spawner
 
 # Which materials are acceptable as building materials. This

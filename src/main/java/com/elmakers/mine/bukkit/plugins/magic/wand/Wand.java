@@ -29,7 +29,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
-import com.elmakers.mine.bukkit.blocks.MaterialBrushData;
 import com.elmakers.mine.bukkit.effects.EffectRing;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
@@ -664,7 +663,7 @@ public class Wand implements CostReducer {
 	
 	@SuppressWarnings("deprecation")
 	public static ItemStack createMaterialItem(String materialKey, MagicController controller, Wand wand, boolean isItem) {
-		MaterialBrushData brushData = MaterialBrush.parseMaterialKey(materialKey, false);
+		MaterialAndData brushData = MaterialBrush.parseMaterialKey(materialKey, false);
 		if (brushData == null) return null;
 		
 		Material material = brushData.getMaterial();
@@ -690,7 +689,7 @@ public class Wand implements CostReducer {
 			} else if (material == MaterialBrush.MapMaterial) {
 				lore.add(Messages.get("wand.map_material_description"));
 			} else if (material == MaterialBrush.SchematicMaterial) {
-				lore.add(Messages.get("wand.schematic_material_description").replace("$schematic", brushData.getSchematicName()));
+				lore.add(Messages.get("wand.schematic_material_description").replace("$schematic", brushData.getCustomName()));
 			} else {
 				lore.add(ChatColor.LIGHT_PURPLE + Messages.get("wand.building_material_description"));
 			}

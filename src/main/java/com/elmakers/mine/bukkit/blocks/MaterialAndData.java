@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.Inventory;
@@ -34,6 +35,11 @@ public class MaterialAndData {
 	
 	public MaterialAndData(MaterialAndData other) {
 		updateFrom(other);
+	}
+	
+	public MaterialAndData(final Material material, final  byte data, final String customName) {
+		this(material, data);
+		this.customName = customName;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -126,6 +132,9 @@ public class MaterialAndData {
 			} else if (blockState instanceof Skull) {
 				Skull skull = (Skull)blockState;
 				customName = skull.getOwner();
+			} else if (blockState instanceof CreatureSpawner) {
+				CreatureSpawner spawner = (CreatureSpawner)blockState;
+				customName = spawner.getCreatureTypeName();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -180,6 +189,10 @@ public class MaterialAndData {
 				Skull skull = (Skull)blockState;
 				skull.setOwner(customName);
 				skull.update();
+			} else if (blockState instanceof CreatureSpawner && customName != null && customName.length() > 0) {
+				CreatureSpawner spawner = (CreatureSpawner)blockState;
+				spawner.setCreatureTypeByName(customName);
+				spawner.update();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -196,7 +209,15 @@ public class MaterialAndData {
 	
 	public String getKey() {
 		String materialKey = material.name().toLowerCase();
-		if (data != 0) {
+		
+		// Some special keys
+		if (material == Material.SKULL && data == 3 && customName != null && customName.length() > 0) {
+			materialKey += ":" + customName;
+		}
+		else if (material == Material.MOB_SPAWNER && customName != null && customName.length() > 0) {
+			materialKey += ":" + customName;
+		}
+		else if (data != 0) {
 			materialKey += ":" + data;
 		}
 		
@@ -246,6 +267,10 @@ public class MaterialAndData {
 	
 	public void setCustomName(String customName) {
 		this.customName = customName;
+	}
+	
+	public String getCustomName() {
+		return customName;
 	}
 	
 	public void setInventoryContents(ItemStack[] contents) {

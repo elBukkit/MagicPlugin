@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class MaterialBrush extends MaterialBrushData {
+public class MaterialBrush extends MaterialAndData {
 	
 	private enum BrushMode {
 		MATERIAL,
@@ -167,11 +167,12 @@ public class MaterialBrush extends MaterialBrushData {
 		materialName = namePieces[0];
 		
 		if (!MaterialBrush.isSpecialMaterialKey(materialKey)) {
-			MaterialBrushData brushData = parseMaterialKey(materialKey);
+			MaterialAndData brushData = parseMaterialKey(materialKey);
 			if (brushData == null) return null;
 			
 			Material material = brushData.getMaterial();
 			byte data = brushData.getData();
+			String customName = brushData.getCustomName();
 			
 			// This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
 			/*
@@ -203,6 +204,8 @@ public class MaterialBrush extends MaterialBrushData {
 				if (treeSpecies != null) {
 					materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
 				}
+			} else if ((material == Material.SKULL || material == Material.MOB_SPAWNER) && customName != null && customName.length() > 0) {
+				materialName = materialName + " (" + customName + ")";
 			} else {
 				materialName = material.name();				
 			}
@@ -222,23 +225,23 @@ public class MaterialBrush extends MaterialBrushData {
 		case REPLICATE: brushKey = REPLICATE_MATERIAL_KEY; break;
 		case COPY: brushKey = COPY_MATERIAL_KEY; break;
 		case MAP: brushKey = MAP_MATERIAL_KEY; break;
-		case SCHEMATIC: brushKey = SCHEMATIC_MATERIAL_KEY + ":" + schematicName; break;
+		case SCHEMATIC: brushKey = SCHEMATIC_MATERIAL_KEY + ":" + customName; break;
 			default: break;
 		}
 		return getMaterialName(brushKey);
 	}
 	
-	public static MaterialBrushData parseMaterialKey(String materialKey) {
+	public static MaterialAndData parseMaterialKey(String materialKey) {
 		return parseMaterialKey(materialKey, true);
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static MaterialBrushData parseMaterialKey(String materialKey, boolean allowItems) {
+	public static MaterialAndData parseMaterialKey(String materialKey, boolean allowItems) {
 		if (materialKey == null || materialKey.length() == 0) return null;
 		
 		Material material = Material.DIRT;
 		byte data = 0;
-		String schematicName = "";
+		String customName = "";
 		String[] pieces = splitMaterialKey(materialKey);
 				
 		if (materialKey.equals(ERASE_MATERIAL_KEY)) {
@@ -253,7 +256,7 @@ public class MaterialBrush extends MaterialBrushData {
 			material = MapMaterial;
 		} else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY) && pieces.length > 1) {
 			material = SchematicMaterial;
-			schematicName = pieces[1];
+			customName = pieces[1];
 		} else {
 			try {
 				if (pieces.length > 0) {
@@ -276,13 +279,23 @@ public class MaterialBrush extends MaterialBrushData {
 			try {
 				if (pieces.length > 1) {
 					data = Byte.parseByte(pieces[1]);
-			}
+				}
 			} catch (Exception ex) {
-				data = 0;
+				// Some special-cases
+				if (material == Material.SKULL || material == Material.MOB_SPAWNER) {
+					customName = pieces[1];
+					data = 3;
+				} else if (material == Material.SKULL || material == Material.MOB_SPAWNER) {
+					customName = pieces[1];
+					data = 0;
+				} else {
+					data = 0;
+					customName = "";
+				}
 			}
 		}
 		if (material == null) return null;
-		return new MaterialBrushData(material, data, schematicName);
+		return new MaterialAndData(material, data, customName);
 	}
 	
 	public static boolean isValidMaterial(String materialKey) {
@@ -371,7 +384,7 @@ public class MaterialBrush extends MaterialBrushData {
 			fillWithAir = this.mode == BrushMode.ERASE;
 			this.mode = BrushMode.SCHEMATIC;
 		}
-		this.schematicName = name;
+		this.customName = name;
 		schematic = null;
 	}
 	
@@ -511,14 +524,14 @@ public class MaterialBrush extends MaterialBrushData {
 		
 		if (mode == BrushMode.SCHEMATIC) {
 			if (schematic == null) {
-				if (schematicName.length() == 0) {
+				if (customName.length() == 0) {
 					isValid = false;
 					return true;
 				}
 				
-				schematic = mage.getController().loadSchematic(schematicName);
+				schematic = mage.getController().loadSchematic(customName);
 				if (schematic == null) {
-					schematicName = "";
+					customName = "";
 					isValid = false;
 					return true;
 				}
@@ -609,7 +622,7 @@ public class MaterialBrush extends MaterialBrushData {
 			mapId = (short)node.getInt("map_id", mapId);
 			material = node.getMaterial("material", material);
 			data = (byte)node.getInt("data", data);
-			schematicName = node.getString("schematic", schematicName);
+			customName = node.getString("extra_data", customName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			mage.getController().getPlugin().getLogger().warning("Failed to load brush data: " + ex.getMessage());
@@ -631,7 +644,7 @@ public class MaterialBrush extends MaterialBrushData {
 			node.setProperty("map_id", (int)mapId);
 			node.setProperty("material", material);
 			node.setProperty("data", data);
-			node.setProperty("schematic", schematicName);
+			node.setProperty("extra_data", customName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());
