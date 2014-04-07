@@ -45,9 +45,10 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.4</version>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldguard</artifactId>
+			<version>5.8.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<repositories>

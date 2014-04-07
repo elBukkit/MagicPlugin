@@ -88,10 +88,10 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
+import com.elmakers.mine.bukkit.blocks.Automaton;
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.blocks.Schematic;
-import com.elmakers.mine.bukkit.blocks.Automaton;
 import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -101,6 +101,8 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandMode;
+import com.elmakers.mine.bukkit.regions.FactionsManager;
+import com.elmakers.mine.bukkit.regions.WorldGuardManager;
 import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
@@ -517,59 +519,16 @@ public class MagicController implements Listener
 		
 		if (bypassBuildPermissions) return true;
 		
-		if (regionManagerEnabled && player != null && block != null && regionManager != null && regionManagerCanBuildMethod != null) {
-			try {
-				allowed = allowed && (Boolean)regionManagerCanBuildMethod.invoke(regionManager, player, block);
-			} catch (Throwable ex) {
-				ex.printStackTrace();
-				allowed = false;
-			}
-		}
-		
-		if (factionsEnabled && player != null && block != null && factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
-			try {
-				Object loc = psFactoryMethod.invoke(null, block.getLocation());
-				allowed = allowed && loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);
-			} catch (Throwable ex) {
-				ex.printStackTrace();
-				allowed = false;
-			}
-		}
+		allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
+		allowed = allowed && factionsManager.hasBuildPermission(player, block);
 		
 		return allowed;
 	}
 	
 	public boolean isPVPAllowed(Location location)
 	{
-		if (bypassPvpPermissions || !regionManagerEnabled || regionManager == null || location == null) return true;
-		
-		try {
-			Method getRegionManagerMethod = regionManager.getClass().getMethod("getRegionManager", World.class);
-			if (getRegionManagerMethod == null) throw new Exception("Can't hook to getRegionManager method");
-			Object worldManager = getRegionManagerMethod.invoke(regionManager, location.getWorld());
-			if (worldManager == null) return true;
-			Class<?> regionManagerClass = Class.forName("com.sk89q.worldguard.protection.managers.RegionManager");
-			Method getApplicableRegionsMethod = regionManagerClass.getMethod("getApplicableRegions", Location.class);
-			if (getApplicableRegionsMethod == null) throw new Exception("Can't hook to getApplicableRegions method");
-			Object applicableSet = getApplicableRegionsMethod.invoke(worldManager, location);
-			if (applicableSet == null) return true;
-			Class<?> stateFlagClass = Class.forName("com.sk89q.worldguard.protection.flags.StateFlag");
-			Method allowsMethod = applicableSet.getClass().getMethod("allows", stateFlagClass);
-			if (allowsMethod == null) throw new Exception("Can't hook to allows method");
-			
-			// This is super-duper hacky :\
-			// There's no real API for worldguard though, and I don't want a hard dependency. Maybe I could
-			// encapsulate somehow?
-			Class<?> defaultFlagClass = Class.forName("com.sk89q.worldguard.protection.flags.DefaultFlag");
-			Field pvpField = defaultFlagClass.getField("PVP");
-			if (pvpField == null) throw new Exception("Can't find PVP field");
-			Object pvpFlag = pvpField.get(null);
-			return (Boolean)allowsMethod.invoke(applicableSet, pvpFlag);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		
-		return false;
+		if (bypassPvpPermissions) return true;
+		return worldGuardManager.isPVPAllowed(location);
 	}
 	
 	public boolean schematicsEnabled() {
@@ -752,49 +711,11 @@ public class MagicController implements Listener
 			MaterialBrush.SchematicsEnabled = false;
 		}
 		
-		// Also no Factions API
-		if (factionsEnabled) {
-			try {
-				Class<?> psClass = Class.forName("com.massivecraft.mcore.ps.PS");
-				factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsListenerMain");
-				factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Player.class, psClass, Boolean.TYPE);
-				psFactoryMethod = psClass.getMethod("valueOf", Location.class);
-				if (factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
-					getLogger().info("Factions found, build permissions will be respected.");
-				} else {
-					factionsManager = null;
-					factionsCanBuildMethod = null;
-					psFactoryMethod = null;
-				}
-			} catch (Throwable ex) {
-			}
-			
-			if (factionsManager == null) {
-				getLogger().info("Factions not found, will not integrate.");
-			}
-		} else {
-			getLogger().info("Factions integration disabled");
-		}
+		// Link to factions
+		factionsManager.initialize(plugin);
 		
 		// Try to (dynamically) link to WorldGuard:
-		if (regionManagerEnabled) {
-			try {
-				regionManager = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-				regionManagerCanBuildMethod = regionManager.getClass().getMethod("canBuild", Player.class, Block.class);
-				if (regionManagerCanBuildMethod != null) {
-					getLogger().info("WorldGuard found, will respect build permissions for construction spells");
-				} else {
-					regionManager = null;
-				}
-			} catch (Throwable ex) {
-			}
-			
-			if (regionManager == null) {
-				getLogger().info("WorldGuard not found, region protection and pvp checks will not be used.");
-			}
-		} else {
-			getLogger().info("Region manager disabled, region protection and pvp checks will not be used.");
-		}
+		worldGuardManager.initialize(plugin);
 		
 		// Try to (dynamically) link to dynmap:
 		try {
@@ -1391,11 +1312,12 @@ public class MagicController implements Listener
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
-		regionManagerEnabled = properties.getBoolean("region_manager_enabled", regionManagerEnabled);
-		factionsEnabled = properties.getBoolean("factions_enabled", factionsEnabled);
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
+
+		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", factionsManager.isEnabled()));
+		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
 		
 		if (properties.containsKey("mana_display")) {
 			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
@@ -2201,7 +2123,6 @@ public class MagicController implements Listener
 					wand.organizeInventory(getMage(player));
 				}
 				wand.tryToOwn(player);
-				Bukkit.getLogger().info("Update result: "  + current.getItemMeta().getDisplayName());
 				return;
 			}
 
@@ -2896,16 +2817,13 @@ public class MagicController implements Listener
 
 	 private int								 toggleCooldown					= 1000;
 	 private int								 toggleMessageRange				= 256;
+	 
 	 private boolean							 bypassBuildPermissions         = false;
 	 private boolean							 bypassPvpPermissions           = false;
-	 private boolean							 factionsEnabled				= true;
-	 private Class<?>							 factionsManager				= null;
-	 private Method								 factionsCanBuildMethod   		= null;
+	 private FactionsManager					 factionsManager				= new FactionsManager();
+	 private WorldGuardManager					 worldGuardManager				= new WorldGuardManager();
+	 
 	 private TradersController					 tradersController				= null;
-	 private Method								 psFactoryMethod		   		= null;
-	 private Method								 regionManagerCanBuildMethod    = null;
-	 private boolean							 regionManagerEnabled           = true;
-	 private Object								 regionManager					= null;
 	 private String								 extraSchematicFilePath			= null;
 	 private Class<?>							 cuboidClipboardClass           = null;
 	 private DynmapCommonAPI					 dynmap							= null;
