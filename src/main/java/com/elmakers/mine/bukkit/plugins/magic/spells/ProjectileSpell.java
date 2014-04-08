@@ -222,30 +222,42 @@ public class ProjectileSpell extends Spell
 	
 	protected void checkProjectiles(final Collection<Projectile> projectiles, final int tickIncrease, 
 			final Collection<PotionEffect> effects, final int radius, final Class<?> arrowClass, final Class<?> craftArrowClass, int retries) {
+
+		Field lifeField = null;
+		Method getHandleMethod = null;
+		
 		try {
-			Field lifeField = arrowClass.getDeclaredField("j");
-			Method getHandleMethod = craftArrowClass.getMethod("getHandle");
-			final Collection<Projectile> remaining = new ArrayList<Projectile>();
-			for (Projectile projectile : projectiles) {
-				if (projectile.isDead()) {
-					// Apply potion effects if configured
-					applyPotionEffects(projectile.getLocation(), radius, effects);
-				} else if (projectile instanceof Arrow){
-					Object handle = getHandleMethod.invoke(projectile);
-					lifeField.setAccessible(true);
-					int currentLife = (Integer)lifeField.get(handle);
-					if (currentLife < tickIncrease) {
-						lifeField.set(handle, tickIncrease);
+			lifeField = arrowClass.getDeclaredField("j");
+			getHandleMethod = craftArrowClass.getMethod("getHandle");			
+		} catch (Exception ex) {
+			lifeField = null;
+			getHandleMethod = null;
+			controller.getLogger().warning("Failed to create short-lived arrow. Are you running bukkit? Set tick_increase to 0 to avoid this message");			
+		}
+		
+		final Collection<Projectile> remaining = new ArrayList<Projectile>();
+		for (Projectile projectile : projectiles) {
+			if (projectile.isDead()) {
+				// Apply potion effects if configured
+				applyPotionEffects(projectile.getLocation(), radius, effects);
+			} else  {
+				remaining.add(projectile);
+				if (projectile instanceof Arrow && tickIncrease > 0 && lifeField != null && getHandleMethod != null) {
+					try {
+						Object handle = getHandleMethod.invoke(projectile);
+						lifeField.setAccessible(true);
+						int currentLife = (Integer)lifeField.get(handle);
+						if (currentLife < tickIncrease) {
+							lifeField.set(handle, tickIncrease);
+						}
+					} catch(Exception ex) {
+						ex.printStackTrace();
 					}
-					
-					remaining.add(projectile);
 				}
 			}
-			if (remaining.size() > 0 && retries > 0) {
-				scheduleProjectileCheck(remaining, tickIncrease, effects, radius, arrowClass, craftArrowClass, retries - 1);
-			}
-		} catch(Exception ex) {
-			ex.printStackTrace();
+		}
+		if (remaining.size() > 0 && retries > 0) {
+			scheduleProjectileCheck(remaining, tickIncrease, effects, radius, arrowClass, craftArrowClass, retries - 1);
 		}
 	}
 }
