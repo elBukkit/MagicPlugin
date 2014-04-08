@@ -26,6 +26,18 @@ public class PhaseSpell extends Spell
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
 		
+		if (parameters.containsKey("target_world"))
+		{
+			World targetWorld = Bukkit.getWorld(parameters.getString("target_world"));
+			if (targetWorld == null) {
+				return SpellResult.INVALID_WORLD;
+			}
+			float scale = parameters.getFloat("scale", 1.0f);
+			if (targetWorld != null) {
+				targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
+			}
+		}
+		else
 		if (parameters.containsKey("worlds"))
 		{
 			ConfigurationNode worldMap = parameters.getNode("worlds");

@@ -13,6 +13,8 @@ public enum SpellResult {
 	NO_TARGET, 
 	TARGET_SELECTED,
 	PLAYER_REQUIRED,
+	WORLD_REQUIRED,
+	INVALID_WORLD,
 	COST_FREE;
 	
 	public boolean isSuccess() {
