@@ -323,6 +323,10 @@ spells:
         name: Life
         description: Create a HUGE Life board
         cast: Time to experiment!
+    life3:
+        name: Life 3D
+        description: Create a large 3D Life board
+        cast: Mad science!
     torch:
         name: Torch
         description: Creates a torch or glowstone

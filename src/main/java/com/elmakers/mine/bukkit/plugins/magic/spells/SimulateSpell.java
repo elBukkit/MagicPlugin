@@ -8,7 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
@@ -66,17 +69,63 @@ public class SimulateSpell extends BlockSpell {
 		
 		Material deathMaterial = parameters.getMaterial("death_material", Material.AIR);
 		
+		// use the target location with the player's facing
+		Location location = getLocation();
+		Location targetLocation = target.getLocation();
+		targetLocation.setPitch(location.getPitch());
+		targetLocation.setYaw(location.getYaw());
+
+		// Look for relative-positioned chests that define the rulesets.
+
 		Set<Integer> birthCounts = new HashSet<Integer>();
 		Set<Integer> liveCounts = new HashSet<Integer>();
 		
-		if (parameters.containsKey("live_rules")) {
+		Double dlcxValue = parameters.getDouble("dlcx", null);
+		Double dlcyValue = parameters.getDouble("dlcy", null);
+		Double dlczValue = parameters.getDouble("dlcz", null);
+		if (dlcxValue != null || dlczValue != null || dlczValue != null) {
+			Location liveChestLocation = targetLocation.clone().add(new Vector(dlcxValue == null ? 0 : dlcxValue, dlcyValue == null ? 0 : 
+				dlcyValue, dlczValue == null ? 0 : dlczValue));
+			Block chestBlock = liveChestLocation.getBlock();
+			BlockState chestState = chestBlock.getState();
+			if (chestState instanceof InventoryHolder) {
+				ItemStack[] items = ((InventoryHolder)chestState).getInventory().getContents();
+				for (int index = 0; index < items.length; index++) {
+					if (items[index] != null && items[index].getType() != Material.AIR) {
+						liveCounts.add(index + 1);
+						controller.getLogger().info("SimulateSpell: Added live rules for index " + (index + 1)  + " from chest at " + liveChestLocation.toVector());
+					}
+				}
+			} else {
+				controller.getLogger().warning("SimulateSpell: Chest for live rules not found at " + liveChestLocation.toVector());
+			}
+		} else if (parameters.containsKey("live_rules")) {
 			liveCounts.addAll(parameters.getIntList("live_rules", new ArrayList<Integer>()));
 		} else {
 			liveCounts.add(2);
 			liveCounts.add(3);
 		}
 		
-		if (parameters.containsKey("birth_rules")) {
+		Double dbcxValue = parameters.getDouble("dbcx", null);
+		Double dbcyValue = parameters.getDouble("dbcy", null);
+		Double dbczValue = parameters.getDouble("dbcz", null);
+		if (dbcxValue != null || dbczValue != null || dbczValue != null) {
+			Location birthChestLocation = targetLocation.clone().add(new Vector(dbcxValue == null ? 0 : dbcxValue, dbcyValue == null ? 0 : 
+				dbcyValue, dbczValue == null ? 0 : dbczValue));
+			Block chestBlock = birthChestLocation.getBlock();
+			BlockState chestState = chestBlock.getState();
+			if (chestState instanceof InventoryHolder) {
+				ItemStack[] items = ((InventoryHolder)chestState).getInventory().getContents();
+				for (int index = 0; index < items.length; index++) {
+					if (items[index] != null && items[index].getType() != Material.AIR) {
+						birthCounts.add(index + 1);
+						controller.getLogger().info("SimulateSpell: Added birth rules for index " + (index + 1) + " from chest at " + birthChestLocation.toVector());
+					}
+				}
+			} else {
+				controller.getLogger().warning("SimulateSpell: Chest for birth rules not found at " + birthChestLocation.toVector());
+			}
+		} else if (parameters.containsKey("birth_rules")) {
 			birthCounts.addAll(parameters.getIntList("birth_rules", new ArrayList<Integer>()));
 		} else {
 			birthCounts.add(3);
@@ -86,11 +135,6 @@ public class SimulateSpell extends BlockSpell {
 			return SpellResult.FAIL;
 		}
 		
-		// use the target location with the player's facing
-		Location location = getLocation();
-		Location targetLocation = target.getLocation();
-		targetLocation.setPitch(location.getPitch());
-		targetLocation.setYaw(location.getYaw());
 		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
 		
 		boolean includeCommands = parameters.getBoolean("animate", false);
