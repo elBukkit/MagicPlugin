@@ -227,6 +227,7 @@ attachable:
 - activator_rail
 - powered_rail
 - detector_rail
+- carpet
 
 # Things that can specifically be attached to walls. 
 # this will be a more complex check in construction, otherwise
