@@ -71,7 +71,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -96,7 +95,6 @@ import com.elmakers.mine.bukkit.blocks.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
-import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestPopulator;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
@@ -925,13 +923,6 @@ public class MagicController implements Listener
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
-		// Load block populator configuration
-		try {
-			loadPopulator(loadConfigFile(BLOCK_POPULATOR_FILE, true));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 		
 		// Load spells
 		try {
@@ -1300,7 +1291,6 @@ public class MagicController implements Listener
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
 		autoUndo = properties.getInteger("auto_undo", autoUndo);
-		blockPopulatorEnabled = properties.getBoolean("enable_block_populator", blockPopulatorEnabled);
 		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
 		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
@@ -1358,13 +1348,6 @@ public class MagicController implements Listener
 					}, 
 					autoSaveIntervalTicks, autoSaveIntervalTicks);
 		}
-	}
-	
-	protected void loadPopulator(ConfigurationNode properties)
-	{		
-		if (properties == null) return;
-	
-		blockPopulatorConfig = properties.getNode("populate_chests");
 	}
 
 	protected void clear()
@@ -2382,23 +2365,6 @@ public class MagicController implements Listener
 		}
 	}
 	
-	public WandChestPopulator getWandChestPopulator() {
-		return new WandChestPopulator(this, blockPopulatorConfig);
-	}
-	
-	@EventHandler
-	public void onWorldInit(WorldInitEvent event) {
-		// Install our block populator if configured to do so.
-		if (blockPopulatorEnabled && blockPopulatorConfig == null) {
-			plugin.getLogger().warning("Block populator is enabled, but missing config");
-		}
-		if (blockPopulatorEnabled && blockPopulatorConfig != null) {
-			World world = event.getWorld();
-			world.getPopulators().add(getWandChestPopulator());
-			plugin.getLogger().info("Installing chest populator in " + world.getName());
-		}
-	}
-	
 	protected boolean addLostWandMarker(LostWand lostWand) {
 		Location location = lostWand.getLocation();
 		return addMarker("wand-" + lostWand.getId(), "Wands", lostWand.getName(), location.getWorld().getName(),
@@ -2733,7 +2699,6 @@ public class MagicController implements Listener
 	 private final String                        WANDS_FILE             		= "wands";
 	 private final String                        MESSAGES_FILE             		= "messages";
 	 private final String                        MATERIALS_FILE             	= "materials";
-	 private final String                        BLOCK_POPULATOR_FILE           = "populator";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
 	 private final String						 AUTOMATA_FILE					= "automata";
 	 private final String						 URL_MAPS_FILE					= "imagemaps";
@@ -2766,7 +2731,6 @@ public class MagicController implements Listener
 	 private boolean                             keepWandsOnDeath	            = true;
 	 private int								 messageThrottle				= 0;
 	 private int								 clickCooldown					= 150;
-	 private boolean							 blockPopulatorEnabled			= false;
 	 private boolean							 craftingEnabled				= false;
 	 private boolean							 enchantingEnabled				= false;
 	 private boolean							 combiningEnabled				= false;
@@ -2790,7 +2754,6 @@ public class MagicController implements Listener
 	 private float								 castCommandPowerMultiplier     = 0.0f;
 	 private float							 	 costReduction	    			= 0.0f;
 	 private float							 	 cooldownReduction				= 0.0f;
-	 private ConfigurationNode					 blockPopulatorConfig			= null;
 	 private int								 maxBlockUpdates				= 100;
 	 private int								 ageDroppedItems				= 0;
 	 private int								 autoUndo						= 0;

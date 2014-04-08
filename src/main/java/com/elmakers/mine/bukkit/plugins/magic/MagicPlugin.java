@@ -20,7 +20,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
@@ -33,10 +32,9 @@ import com.elmakers.mine.bukkit.blocks.Automaton;
 import com.elmakers.mine.bukkit.blocks.BlockBatch;
 import com.elmakers.mine.bukkit.blocks.BlockData;
 import com.elmakers.mine.bukkit.blocks.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.populator.WandChestRunnable;
-import com.elmakers.mine.bukkit.plugins.magic.populator.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.utilities.MagicRunnable;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
@@ -209,7 +207,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		addIfPermissible(sender, options, permissionPrefix, option, false);
 	}
 	
-	@EventHandler
+	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
 	{
 		Mage mage = null;
@@ -221,22 +219,19 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		if (cmd.getName().equalsIgnoreCase("magic"))
 		{
 			if (args.length == 1) {
-				addIfPermissible(sender, options, "Magic.commands.", "populate");
-				addIfPermissible(sender, options, "Magic.commands.", "generate");
-				addIfPermissible(sender, options, "Magic.commands.", "search");
-				addIfPermissible(sender, options, "Magic.commands.", "clean");
-				addIfPermissible(sender, options, "Magic.commands.", "clearcache");
-				addIfPermissible(sender, options, "Magic.commands.", "cancel");
-				addIfPermissible(sender, options, "Magic.commands.", "load");
-				addIfPermissible(sender, options, "Magic.commands.", "save");
-				addIfPermissible(sender, options, "Magic.commands.", "commit");
-				addIfPermissible(sender, options, "Magic.commands.", "give");
-				addIfPermissible(sender, options, "Magic.commands.", "list");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "clearcache");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "cancel");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "load");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "save");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "commit");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "give");
+				addIfPermissible(sender, options, "Magic.commands.magic.", "list");
 			} else if (args.length == 2) {
 				if (args[1].equalsIgnoreCase("list")) {
-					addIfPermissible(sender, options, "Magic.commands.list", "maps");
-					addIfPermissible(sender, options, "Magic.commands.list", "wands");
-					addIfPermissible(sender, options, "Magic.commands.list", "automata");
+					addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
+					addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
+					addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
 				}
 			}
 		}
@@ -522,47 +517,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 				}
 			
 				sender.sendMessage(usage);
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("populate") || subCommand.equalsIgnoreCase("search") || subCommand.equalsIgnoreCase("generate"))
-			{   
-				checkRunningTask();
-				if (runningTask != null) {
-					sender.sendMessage("Cancel current job first");
-					return true;
-				}
-				World world = null;
-				int ymax = 50;
-				if (sender instanceof Player) {
-					world = ((Player)sender).getWorld();
-					if (args.length > 1) {
-						ymax = Integer.parseInt(args[1]);
-					}
-				} else {
-					if (args.length > 1) {
-						String worldName = args[1];
-						world = Bukkit.getWorld(worldName);
-					}
-					if (args.length > 2) {
-						ymax = Integer.parseInt(args[2]);
-					}
-				}
-				if (world == null) {
-					sender.sendMessage("Usage: magic " + subCommand + " <world> <ymax>");
-					return true;
-				}
-				WandChestRunnable chestRunnable = new WandChestRunnable(controller, world, ymax);
-				runningTask = chestRunnable;
-				if (subCommand.equalsIgnoreCase("search")) {
-					ymax = 0;
-					sender.sendMessage("Searching for wands in " + world.getName());
-				} else if (subCommand.equalsIgnoreCase("generate")) {
-					sender.sendMessage("Generating chunks, and adding wands in " + world.getName() + " below y=" + ymax);
-					chestRunnable.setGenerate(true);
-				} else {
-					sender.sendMessage("Populating chests with wands in " + world.getName() + " below y=" + ymax);
-				}
-				runningTask.runTaskTimer(this, 5, 5);
 				return true;
 			}
 			if (subCommand.equalsIgnoreCase("cancel"))

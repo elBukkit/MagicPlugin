@@ -28,7 +28,7 @@ commands:
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
-    usage: /magic [load|save|cancel|clearcache|commit|list|populate|search|give]
+    usage: /magic [load|save|cancel|clearcache|commit|list|give]
     permission: Magic.commands.magic
 permissions:
   Magic.commands.spells:
@@ -171,24 +171,16 @@ permissions:
     description: Player may save data
     type: boolean
     default: op
-  Magic.commands.magic.populate:
-    description: Player may populate the world with chests
-    type: boolean
-    default: op
-  Magic.commands.magic.search:
-    description: Search the world for wands
-    type: boolean
-    default: op
   Magic.commands.magic.clearcache:
-    description: Clears the image and schematic caches
+    description: Player may clears the image and schematic caches
     type: boolean
     default: op
   Magic.commands.magic.cancel:
-    description: Cancel any pending search or populate jobs
+    description: Player may cancel any pending construction jobs
     type: boolean
     default: op
   Magic.commands.magic.commit:
-    description: Clear all player undo queues
+    description: Player may clear all player undo queues
     type: boolean
     default: op
   Magic.commands.magic.list:

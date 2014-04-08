@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic.populator;
+package com.elmakers.mine.bukkit.utilities;
 
 import java.util.logging.Logger;
 

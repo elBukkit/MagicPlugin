@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic.populator;
+package com.elmakers.mine.bukkit.plugins.magic.wand;
 
 import java.util.LinkedList;
 
@@ -10,8 +10,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
-import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.utilities.MagicRunnable;
 
 public class WandCleanupRunnable extends MagicRunnable {
 	private final LinkedList<LostWand> lostWands = new LinkedList<LostWand>();
