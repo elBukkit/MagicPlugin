@@ -75,7 +75,7 @@ public abstract class BrushSpell extends BlockSpell{
 		String message = super.getMessage(messageKey, def);
 		
 		// TODO: Default material.. ?
-		String materialName = "Default";
+		String materialName = "None";
 		MaterialBrush useBrush = getMaterialBrush();
 		if (useBrush != null) {
 			materialName = useBrush.getName();

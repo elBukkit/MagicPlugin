@@ -172,7 +172,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		catch (Throwable ex)
 		{
-			controller.getLogger().warning("Error loading spell: " + name + ", " + ex.getMessage());
+			controller.getLogger().warning("Error loading spell: " + className);
+			ex.printStackTrace();
 			return null;
 		}
 
@@ -181,20 +182,17 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		{
 			newObject = spellClass.newInstance();
 		}
-		catch (InstantiationException e)
+		catch (Throwable ex)
 		{
-			// TODO Log errors
-			return null;
-		}
-		catch (IllegalAccessException e)
-		{
-			// TODO Log errors
+
+			controller.getLogger().warning("Error loading spell: " + className);
+			ex.printStackTrace();
 			return null;
 		}
 
 		if (newObject == null || !(newObject instanceof Spell))
 		{
-			// TODO Log errors
+			controller.getLogger().warning("Error loading spell: " + className + ", does it extend Spell?");
 			return null;
 		}
 
