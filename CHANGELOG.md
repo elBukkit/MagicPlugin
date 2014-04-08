@@ -14,6 +14,8 @@
  - Automata will respect build permissions for WG regions and Factions claims
  - Mob spawners are now restricted, but copyable by supermages.
  - Add "powered" pnode for always-on superpower (for mods, mainly to bypass restriction list)
+ - Updated Life spell, added Life 3D spell for some real mad science. (And for me to breed new Virus rulesets)
+ - Add very basic beginnings of an API.
 
 ## 2.9.8.AUTOMATA
 
