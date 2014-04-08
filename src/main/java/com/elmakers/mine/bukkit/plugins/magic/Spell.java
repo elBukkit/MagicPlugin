@@ -32,6 +32,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.blocks.BlockAction;
 import com.elmakers.mine.bukkit.blocks.MaterialAndData;
+import com.elmakers.mine.bukkit.blocks.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectSingle;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
@@ -558,6 +559,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		return getMessage(messageKey, "");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String getMessage(String messageKey, String def) {
 		String message = Messages.get("spells.default." + messageKey, def);
 		message = Messages.get("spells." + key + "." + messageKey, message);
@@ -572,6 +574,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 				((Player)target.getEntity()).getName() : "Unknown";
 		}
 		message = message.replace("$target", useTargetName);
+		
+		// TODO: See duplication in BrushSpell, need default material
+		String materialName = "None";
+		if (target != null && target.isValid()) {
+			materialName = MaterialBrush.getMaterialName(target.getBlock().getType(), target.getBlock().getData());
+		}
+		message = message.replace("$material", materialName);
 		
 		return message;
 	}
