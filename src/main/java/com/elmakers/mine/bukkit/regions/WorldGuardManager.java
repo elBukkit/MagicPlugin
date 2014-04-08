@@ -48,6 +48,7 @@ public class WorldGuardManager {
 				 
 		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+		if (checkSet.size() == 0) return true;
 		return checkSet.allows(DefaultFlag.PVP);
 	}
 	
@@ -56,6 +57,7 @@ public class WorldGuardManager {
 				 
 		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+		if (checkSet.size() == 0) return true;
 		return checkSet.allows(DefaultFlag.PASSTHROUGH);
 	}
 	
