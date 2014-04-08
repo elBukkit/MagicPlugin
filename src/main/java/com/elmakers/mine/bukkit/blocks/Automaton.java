@@ -34,7 +34,6 @@ public class Automaton extends BlockData {
 	}
 	
 	public String getMessage() {
-		if (message != null) return message;
 		if (message == null || message.length() == 0 || name == null || name.length() == 0) return "";
 		String contents = Messages.get(message);
 		if (contents == null || contents.length() == 0) return "";
