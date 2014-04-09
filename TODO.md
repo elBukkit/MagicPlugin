@@ -2,22 +2,22 @@
 
 ## For 2.9.9
  
+ - Why aren't chest contents loading properly in Life board?
+ - Change dtx and otx parameters around for consistency
+ - Make shrink turn entities to babies first
+ - Place does NOT work with replicate (pillar/bridge a bit wonky too?)
+ 
+ - Fix Automata variants... wool blue broke!
+
  - Config-driven WandLevel limits
 
  - Extra spell list for simulate to cast
  - Interpolate autonoma directional changes, configurable speed
 
- - Maybe change dtx and otx parameters around for consistency? Might be a pain- used in arena, schematics, etc?
-
- - There is a random missing stained glass block in the life schematic .. ha, and remove sign about incident! :)
-  - clear button off-center? Something is...
- - Life board customization buttons, like in wolf house? Sim is off-center, too. Name messaging command block.
-
  - Traders losing prices!
   
  - Test/Fix Pickpocket
  - wandp configure glitch- maybe need to replace item in hand on reconfigure?
- - Recall needs effects
 
  - Add "wand duplicate" command
  

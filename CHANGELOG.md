@@ -16,6 +16,7 @@
  - Add "powered" pnode for always-on superpower (for mods, mainly to bypass restriction list)
  - Updated Life spell, added Life 3D spell for some real mad science. (And for me to breed new Virus rulesets)
  - Add very basic beginnings of an API.
+ - Recall can now support CommandBook warps.
 
 ## 2.9.8.AUTOMATA
 

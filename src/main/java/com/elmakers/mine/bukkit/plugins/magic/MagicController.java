@@ -109,6 +109,7 @@ import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.warp.WarpController;
 
 public class MagicController implements Listener 
 {
@@ -689,7 +690,8 @@ public class MagicController implements Listener
 			getLogger().info("dtlTraders not found, will not integrate.");
 		}
 		
-		// Try to link to WorldEdit (no API...)
+		// Try to link to WorldEdit
+		// TODO: Make wrapper class to avoid this reflection.
 		try {
 			cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
 			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
@@ -700,6 +702,21 @@ public class MagicController implements Listener
 				cuboidClipboardClass = null;
 			}
 		} catch (Throwable ex) {
+		}
+		
+		// Try to link to CommandBook
+		try {
+			Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
+			if (commandBookPlugin != null) {
+				warpController = new WarpController();
+				if (warpController.setCommandBook(commandBookPlugin)) {
+					getLogger().info("CommandBook found, integrating for Recall warps");
+				} else {
+					getLogger().warning("CommandBook integration failed");
+				}
+			}
+		} catch (Throwable ex) {
+			
 		}
 		
 		if (cuboidClipboardClass == null) {
@@ -2690,6 +2707,11 @@ public class MagicController implements Listener
 	public boolean getIndestructibleWands() {
 		return indestructibleWands;
 	}
+	
+	public Location getWarp(String warpName) {
+		if (warpController == null) return null;
+		return warpController.getWarp(warpName);
+	}
 
 	/*
 	 * Private data
@@ -2758,6 +2780,7 @@ public class MagicController implements Listener
 	 private int								 ageDroppedItems				= 0;
 	 private int								 autoUndo						= 0;
 	 private int								 autoSaveTaskId					= 0;
+	 private WarpController						 warpController					= null;
 	 
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();

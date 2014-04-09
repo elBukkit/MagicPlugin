@@ -4,7 +4,7 @@ version: 2.9.9
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
-softdepend: [WorldGuard,WorldEdit,Essentials,dynmap,dtlTraders,Factions]
+softdepend: [WorldGuard,WorldEdit,Essentials,dynmap,dtlTraders,Factions,CommandBook]
 commands:
   cast:
     description: Cast a spell directly

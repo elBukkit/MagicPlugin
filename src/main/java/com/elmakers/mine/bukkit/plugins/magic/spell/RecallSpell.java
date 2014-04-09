@@ -29,7 +29,13 @@ public class RecallSpell extends Spell
 	private static int RETRY_INTERVAL = 10;
 	
 	private int retryCount = 0;
-	private boolean allowCrossWorld = false;
+	private boolean allowCrossWorld = true;
+	private int selectedWarpIndex = 0;
+	private List<String> warps = new ArrayList<String>();
+	
+	private RecallType selectedType = RecallType.MARKER;
+	private int selectedTypeIndex = 0;
+	private List<RecallType> enabledTypes = new ArrayList<RecallType>();
 	
 	private enum RecallType
 	{
@@ -38,29 +44,41 @@ public class RecallSpell extends Spell
 		SPAWN,
 		HOME,
 		WAND,
+		WARPS
 	//	FHOME,
-	//	WARPS
 	};
-	
-	private RecallType selectedType = RecallType.MARKER;
 
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
-		int selectedTypeIndex = 0;
 		boolean allowMarker = true;
-		allowCrossWorld = parameters.getBoolean("cross_world", false);
-		List<RecallType> enabledTypes = new ArrayList<RecallType>();
+		selectedTypeIndex = 0;
+		int cycleRetries = 5;
+		enabledTypes.clear();
+		warps = null;
+		
+		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values()) {
-			if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true)) {
-				enabledTypes.add(testType);
-				if (testType == selectedType) selectedTypeIndex = enabledTypes.size() - 1;
+			// Special-case for warps
+			if (testType == RecallType.WARPS) {
+				if (parameters.containsKey("allow_warps")) {
+					warps = parameters.getStringList("allow_warps");
+					enabledTypes.add(testType);
+					if (testType == selectedType) selectedTypeIndex = enabledTypes.size() - 1;
+				}
 			} else {
-				if (testType == RecallType.MARKER) allowMarker = false;
+				if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true)) {
+					enabledTypes.add(testType);
+					if (testType == selectedType) selectedTypeIndex = enabledTypes.size() - 1;
+				} else {
+					if (testType == RecallType.MARKER) allowMarker = false;
+				}
 			}
 		}
 
+		boolean reverseDirection = false;
 		if (parameters.containsKey("type")) {
+			cycleRetries = 0;
 			String typeString = parameters.getString("type", "");
 			if (isActive && typeString.equalsIgnoreCase("remove")) {
 				removeMarker();
@@ -76,11 +94,8 @@ public class RecallSpell extends Spell
 		} 
 		else if (getYRotation() > 70 || getYRotation() < -70 || !allowMarker)
 		{
-			if (getYRotation() > 70) selectedTypeIndex++;
-			else selectedTypeIndex--;
-			if (selectedTypeIndex < 0) selectedTypeIndex = enabledTypes.size() - 1;
-			if (selectedTypeIndex >= enabledTypes.size()) selectedTypeIndex = 0;
-			selectedType = enabledTypes.get(selectedTypeIndex);
+			reverseDirection = getYRotation() < 70;
+			cycleTarget(reverseDirection);
 		}
 		else
 		{
@@ -89,56 +104,110 @@ public class RecallSpell extends Spell
 				return SpellResult.NO_TARGET;
 			}
 			
-			return placeMarker(target.getBlock());
+			return placeMarker(target.getBlock()) ? SpellResult.CAST : SpellResult.FAIL;
+		}
+
+		if (selectedType == null) {
+			if (enabledTypes.size() == 0) return SpellResult.FAIL;
+			selectedType = enabledTypes.get(0);
 		}
 		
 		Player player = getPlayer();
 		if (player == null) return SpellResult.PLAYER_REQUIRED;
 		
+		boolean success = false;
+		while (!success && cycleRetries >= 0) {
+			success = tryCurrentType(player, cycleRetries == 0);
+			if (!success && cycleRetries > 0) {
+				cycleTarget(reverseDirection);
+			}
+			cycleRetries--;
+		}
+
+		return success ? SpellResult.CAST : SpellResult.FAIL;
+	}
+	
+	protected void cycleTargetType(boolean reverse) {
+		if (reverse) selectedTypeIndex--;
+		else selectedTypeIndex++;
+		if (selectedTypeIndex < 0) selectedTypeIndex = enabledTypes.size() - 1;
+		if (selectedTypeIndex >= enabledTypes.size()) selectedTypeIndex = 0;
+		selectedType = enabledTypes.get(selectedTypeIndex);
+		if (selectedType == RecallType.WARPS) {
+			if (reverse) selectedWarpIndex = warps.size() - 1;
+			else selectedWarpIndex = 0;
+		}
+	}
+	
+	protected void cycleTarget(boolean reverse) {
+		// Special-case for warps
+		if (selectedType == RecallType.WARPS) {
+			if (reverse) {
+				selectedWarpIndex--;
+				if (selectedWarpIndex < 0) {
+					selectedWarpIndex = warps.size() - 1;
+				} else {
+					return;
+				}
+			}
+			else {
+				selectedWarpIndex++;
+				if (selectedWarpIndex >= warps.size()) {
+					selectedWarpIndex = 0;
+				} else {
+					return;
+				}
+			}
+		}
+		
+		cycleTargetType(reverse);
+	}
+	
+	protected boolean tryCurrentType(Player player, boolean showFailMessage) {
 		switch (selectedType) {
 		case MARKER:
 			if (!isActive) {
 				return placeMarker(getLocation().getBlock());
 			}
 			
-			castMessage(getMessage("cast_marker"));
-			return tryTeleport(location);
+			return tryTeleport(location, getMessage("cast_marker"));
 		case DEATH:
 			Location deathLocation = mage.getLastDeathLocation();
 			if (deathLocation == null)
 			{
-				sendMessage(getMessage("no_target_death"));
-				return SpellResult.NO_TARGET;
+				if (showFailMessage) sendMessage(getMessage("no_target_death"));
+				return false;
 			}
 
-			castMessage(getMessage("cast_death"));
-			return tryTeleport(deathLocation);
+			return tryTeleport(deathLocation, getMessage("cast_death"));
 		case SPAWN:
-			castMessage(getMessage("cast_spawn"));
-			return tryTeleport(getWorld().getSpawnLocation());
+			return tryTeleport(getWorld().getSpawnLocation(), getMessage("cast_spawn"));
 		case HOME:
 			Location bedLocation = player.getBedSpawnLocation();
 			if (bedLocation == null) {
-				castMessage(getMessage("no_target_home"));
-				return SpellResult.NO_TARGET;
-			} else {
-				castMessage(getMessage("cast_home"));				
+				if (showFailMessage) castMessage(getMessage("no_target_home"));
+				return false;
 			}
-			return tryTeleport(bedLocation);
+			return tryTeleport(bedLocation, getMessage("cast_home"));
 		case WAND:
 			List<LostWand> lostWands = mage.getLostWands();
 			Location wandLocation = lostWands.size() > 0 ? lostWands.get(0).getLocation() : null;
 			if (wandLocation == null)
 			{
-				sendMessage(getMessage("no_target_wand"));
-				return SpellResult.NO_TARGET;
+				if (showFailMessage) sendMessage(getMessage("no_target_wand"));
+				return false;
 			}
 			
-			castMessage(getMessage("cast_wand"));
-			return tryTeleport(wandLocation);
+			return tryTeleport(wandLocation, getMessage("cast_wand"));
+		case WARPS:
+			if (warps == null || selectedWarpIndex < 0 || selectedWarpIndex >= warps.size()) return false;
+			String warpName = warps.get(selectedWarpIndex);
+			Location warpLocation = controller.getWarp(warpName);
+			if (warpLocation == null) return false;
+			return tryTeleport(warpLocation, getMessage("cast_warp").replace("$name", warpName));
 		}
-
-		return SpellResult.FAIL;
+		
+		return false;
 	}
 
 	protected boolean removeMarker()
@@ -148,10 +217,10 @@ public class RecallSpell extends Spell
 		return true;
 	}
 	
-	protected SpellResult tryTeleport(final Location targetLocation) {
+	protected boolean tryTeleport(final Location targetLocation, final String message) {
 		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {
 			sendMessage(getMessage("cross_world_disallowed"));
-			return SpellResult.NO_TARGET;
+			return false;
 		}
 		
 		Chunk chunk = targetLocation.getBlock().getChunk();
@@ -162,29 +231,35 @@ public class RecallSpell extends Spell
 				final RecallSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
-						me.tryTeleport(targetLocation);
+						me.tryTeleport(targetLocation, message);
 					}
 				}, RETRY_INTERVAL);
 				
-				return SpellResult.CAST;
+				return true;
 			}
 		}
 		
 		Player player = getPlayer();
 		if (player != null) {
+			// Update the marker so they can get back, if there is no marker set.
+			if (!isActive) {
+				placeMarker(getLocation().getBlock());
+			}
+			
 			Location playerLocation = player.getLocation();
 			targetLocation.setYaw(playerLocation.getYaw());
 			targetLocation.setPitch(playerLocation.getPitch());
 			player.teleport(tryFindPlaceToStand(targetLocation));
+			castMessage(message);
 		}
-		return SpellResult.CAST;
+		return true;
 	}
 
-	protected SpellResult placeMarker(Block target)
+	protected boolean placeMarker(Block target)
 	{
 		if (target == null)
 		{
-			return SpellResult.NO_TARGET;
+			return false;
 		}
 		Block targetBlock = target.getRelative(BlockFace.UP);
 		if (targetBlock.getType() != Material.AIR)
@@ -193,7 +268,7 @@ public class RecallSpell extends Spell
 		}
 		if (targetBlock.getType() != Material.AIR)
 		{
-			return SpellResult.NO_TARGET;
+			return false;
 		}
 
 		if (removeMarker())
@@ -215,7 +290,7 @@ public class RecallSpell extends Spell
 		
 		isActive = true;
 
-		return SpellResult.CAST;
+		return true;
 	}
 	
 	@Override
