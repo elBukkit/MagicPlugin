@@ -87,11 +87,11 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
-import com.elmakers.mine.bukkit.blocks.Automaton;
-import com.elmakers.mine.bukkit.blocks.BlockData;
-import com.elmakers.mine.bukkit.blocks.MaterialBrush;
-import com.elmakers.mine.bukkit.blocks.Schematic;
-import com.elmakers.mine.bukkit.blocks.UndoQueue;
+import com.elmakers.mine.bukkit.block.Automaton;
+import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.Schematic;
+import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
@@ -99,8 +99,8 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandMode;
-import com.elmakers.mine.bukkit.regions.FactionsManager;
-import com.elmakers.mine.bukkit.regions.WorldGuardManager;
+import com.elmakers.mine.bukkit.protection.FactionsManager;
+import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
@@ -987,7 +987,7 @@ public class MagicController implements Listener
 				
 				getLogger().info("Finished loading data.");
 			}
-		}, 5);
+		}, 10);
 	}
 
 	protected void loadLostWands()

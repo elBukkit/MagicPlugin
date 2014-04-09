@@ -7,8 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.blocks.MaterialAndData;
-import com.elmakers.mine.bukkit.blocks.MaterialBrush;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utilities.Messages;
 
 public class CastingCost

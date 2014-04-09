@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.elmakers.mine.bukkit.blocks.MaterialBrush;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;

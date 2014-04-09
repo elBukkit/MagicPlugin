@@ -28,10 +28,10 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.blocks.Automaton;
-import com.elmakers.mine.bukkit.blocks.BlockBatch;
-import com.elmakers.mine.bukkit.blocks.BlockData;
-import com.elmakers.mine.bukkit.blocks.MaterialBrush;
+import com.elmakers.mine.bukkit.block.Automaton;
+import com.elmakers.mine.bukkit.block.BlockBatch;
+import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;

@@ -27,11 +27,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.blocks.BlockBatch;
-import com.elmakers.mine.bukkit.blocks.BlockList;
-import com.elmakers.mine.bukkit.blocks.MaterialBrush;
-import com.elmakers.mine.bukkit.blocks.UndoBatch;
-import com.elmakers.mine.bukkit.blocks.UndoQueue;
+import com.elmakers.mine.bukkit.block.BlockBatch;
+import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.UndoBatch;
+import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;

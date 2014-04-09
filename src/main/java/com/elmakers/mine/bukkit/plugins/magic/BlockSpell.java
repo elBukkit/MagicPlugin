@@ -5,7 +5,7 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.blocks.BlockList;
+import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public abstract class BlockSpell extends Spell {

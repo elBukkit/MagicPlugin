@@ -2,8 +2,8 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.blocks.MaterialAndData;
-import com.elmakers.mine.bukkit.blocks.MaterialBrush;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public abstract class BrushSpell extends BlockSpell{

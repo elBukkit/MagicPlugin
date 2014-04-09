@@ -30,9 +30,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.blocks.BlockAction;
-import com.elmakers.mine.bukkit.blocks.MaterialAndData;
-import com.elmakers.mine.bukkit.blocks.MaterialBrush;
+import com.elmakers.mine.bukkit.block.BlockAction;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectSingle;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
@@ -162,7 +162,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 		if (className.indexOf('.') <= 0)
 		{
-			className = builtinClassPath + ".spells." + className;
+			className = builtinClassPath + ".spell." + className;
 		}
 
 		Class<?> spellClass = null;
