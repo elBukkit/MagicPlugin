@@ -43,16 +43,16 @@ public class SignSpell extends BlockSpell
 				targetBlock.setType(Material.WALL_SIGN);
 				switch (block.getFace(targetBlock))
 				{
-				case EAST:
+				case NORTH:
 					targetBlock.setData((byte)2);
 					break;
-				case WEST:
+				case SOUTH:
 					targetBlock.setData((byte)3);
 					break;
-				case NORTH:
+				case WEST:
 					targetBlock.setData((byte)4);
 					break;
-				case SOUTH:
+				case EAST:
 					targetBlock.setData((byte)5);
 					break;
 				default:
