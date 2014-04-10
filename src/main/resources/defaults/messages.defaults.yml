@@ -726,7 +726,6 @@ spells:
     wolfhouse:
         name: Wolf House
         description: Create an auto-regenerating base
-        cast: Patience, my child!
     tent:
         name: Tent
         description: Create a minimal house
