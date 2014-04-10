@@ -409,7 +409,7 @@ life:
            effect: step_sound
     parameters:
         allow_max_range: true
-        check_destructible: true
+        check_destructible: false
         range: 32
         radius: 32
         max_dimension: 64
@@ -420,11 +420,11 @@ life:
         transparent: transparent_to_construction
         commands:
           life_wiki: msg @p See http://en.wikipedia.org/wiki/Conway%27s_life for more info!
-          life_simulate: cast simulate bu true r 64 dty -14 dtz -68 dmy 16 dmz 68 dbcx -1 dbcy 16 dbcz 68 dlcx 1 dlcy 16 dlcz 68
-          life_clear: castp @p box odmax 10 odmin 1 m erase cd false dtx 2 dty -17 dtz -68 radius 64 md 300 fill fill cooldown 10000
-          life_border: castp @p box odmax 2 odmin 2 dtx 3 dty -20 dtz -68 radius 65 md 300 cd 60000 m copy dmx -3 dmy 18 dmz 68
-          life_board: castp @p box odmax 1 odmin 3 dtx 2 dty -20 dtz -68 radius 64 md 300 fill fill cd 60000 m copy dmx -2 dmy 18 dmz 68
-          life_line: castp @p fill dtx -16 dty -14 dtz -32 dtx2 32 m copy cd 10000 dmx -15 dmy 16 dmz 36
+          life_simulate: cast simulate bu true r 64 ty ~-14 tz ~-68 omy 16 omz 68 obcx -1 obcy 16 obcz 68 olcx 1 olcy 16 olcz 68
+          life_clear: castp @p box odmax 10 odmin 1 m erase cd false tx ~2 ty ~-17 tz ~-68 radius 64 md 300 thickness 0 cooldown 10000
+          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-68 radius 65 md 300 cd 60000 m copy omx -3 omy 18 omz 68
+          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 m copy omx -2 omy 18 omz 68
+          life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 m copy cd 10000 omx -15 omy 16 omz 36
     costs:
         xp: 1500
 life3:
@@ -439,7 +439,7 @@ life3:
            effect: step_sound
     parameters:
         allow_max_range: true
-        check_destructible: true
+        check_destructible: false
         range: 32
         radius: 32
         max_dimension: 64
@@ -450,11 +450,11 @@ life3:
         transparent: transparent_to_construction
         commands:
           life_wiki: msg @p See http://en.wikipedia.org/wiki/Conway%27s_life for more info!
-          life_simulate: cast simulate3 bu true r 16 yradius 16 dty 0 dtz -20 dmy 2 dmz 68 dbcx -1 dbcy 2 dbcz 20 dlcx 1 dlcy 2 dlcz 20
-          life_clear: castp @p box odmax 10 odmin 1 m erase cd false dtx 2 dty -17 dtz -20 radius 16 md 300 fill fill cooldown 10000
-          life_border: castp @p box odmax 2 odmin 2 dtx 3 dty -20 dtz -20 radius 17 md 300 cd 60000 m copy dmx -3 dmy 18 dmz 20
-          life_board: castp @p box odmax 1 odmin 3 dtx 2 dty -20 dtz -20 radius 16 md 300 fill fill cd 60000 m copy dmx -2 dmy 18 dmz 20
-          life_line: castp @p fill dtx -8 dty 0 dtz -16 dtx2 8 m copy cd 10000 dmx -7 dmy 2 dmz 20
+          life_simulate: cast simulate3 bu true r 16 yradius 16 tz ~-20 omy 2 omz 68 obcx -1 obcy 2 obcz 20 olcx 1 olcy 2 olcz 20
+          life_clear: castp @p box odmax 10 odmin 1 m erase cd false tx ~2 ty ~-17 tz ~-20 radius 16 md 300 thickness cool 10000
+          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-20 radius 17 md 300 cd 60000 m copy omx -3 omy 18 omz 20
+          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-20 radius 16 md 300 thickness 0 cd 60000 m copy omx -2 omy 18 dmz 20
+          life_line: castp @p fill tx ~-8 tz ~-16 t2x ~8 m copy cd 10000 omx -7 omy 2 omz 20
     costs:
         xp: 1500
 shell:
@@ -471,7 +471,7 @@ shell:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
-        fill: hollow
+        thickness: 1
         radius: 3
         type: sphere
         transparent: transparent_to_construction
@@ -490,7 +490,7 @@ dome:
     parameters:
         allow_max_range: false
         range: 32
-        fill: hollow
+        thickness: 1
         radius: 6
         type: sphere
         y_min: 1
@@ -556,7 +556,7 @@ superring:
         type: sphere
         orient_dimension_max: 0
         orient_dimension_min: 0
-        fill: hollow
+        thickness: 1
         transparent: transparent_to_construction
     costs:
         xp: 30 
@@ -574,7 +574,7 @@ supershell:
         allow_max_range: false
         range: 64
         max_dimension: 16
-        fill: hollow
+        thickness: 1
         target: select
         type: sphere
         transparent: transparent_to_construction
@@ -594,7 +594,7 @@ superdome:
         allow_max_range: false
         range: 64
         max_dimension: 16
-        fill: hollow
+        thickness: 1
         target: select
         type: sphere
         y_min: 1
@@ -1028,8 +1028,8 @@ meteor:
         count: 12
         fire: true
         spread: 30
-        dpy: 12
-        ddy: -0.2
+        py: ~12
+        pdy: ~-0.2
         range: 64
         allow_max_range: true
     costs:
@@ -1720,7 +1720,7 @@ superpyramid:
         range: 32
         max_dimension: 16
         target: select
-        fill: hollow
+        thickness: 1
         type: pyramid
         transparent: transparent_to_construction
     costs:
@@ -1739,7 +1739,7 @@ box:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
-        fill: hollow
+        thickness: 1
         radius: 3
         type: cuboid
         transparent: transparent_to_construction
@@ -1760,7 +1760,7 @@ superbox:
         allow_max_range: false
         range: 64
         max_dimension: 16
-        fill: hollow
+        thickness: 1
         target: select
         type: cuboid
         transparent: transparent_to_construction
@@ -2695,22 +2695,22 @@ wolfhouse:
         type: sphere
         cooldown: 3600000
         material: schematic|wolfhouse
-        dmx: -3
-        dmy: -22 
-        dmz: 10
+        omx: -3
+        omy: -22 
+        omz: 10
         mm: erase 
         transparent: transparent_to_construction
         commands:
-          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 dtx -5 dty 23 dtz 11 dmx 0 dmy -46 dmz -1 r 52 mm dirt
-          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 dtx -5 dty 23 dtz 11 dmx 0 dmy -46 dmz -1 r 52 id water,stationary_water
-          wolf_dome: castp @p[r=7] shell type sphere m stained_glass:15 cd true md 100 dtx -5 dty 16 dtz 12 r 35
-          wolf_shields: castp @p[r=7] shell m obsidian cd true md 100 dtx -5 dty 16 dtz 12 r 37
+          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 omx 0 omy -46 omz -1 r 52 mm dirt
+          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 omx 0 omy -46 omz -1 r 52 id water,stationary_water
+          wolf_dome: castp @p[r=7] shell type sphere m stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35
+          wolf_shields: castp @p[r=7] shell m obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37
           wolf_undo: castp @p[r=6] undo
           wolf_commit: castp @p[r=6] commit
           wolf_nothing: msg @p[r=6] Nothing here!
-          wolf_clear: castp @p[r=7] blob type sphere m erase cd true md 100 dtx -5 dty 15 dtz 12 r 36
-          wolf_destruct: castp @p[r=7] blob m erase cd true md 130 dtx -5 dty 24 dtz 11 r 60
-          wolf_convert: castp @p convert radius 64 md 128 dty -1 dmx -1 dmz 2 m copy
+          wolf_clear: castp @p[r=7] blob type sphere m erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
+          wolf_destruct: castp @p[r=7] blob m erase cd true md 130 tx ~-5 ty ~24 tz ~11 r 60
+          wolf_convert: castp @p convert radius 64 md 128 ty ~-1 omx -1 omz 2 m copy
           wolf_phase: castp @p[r=2] phase
           wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
           wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0

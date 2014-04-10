@@ -104,6 +104,7 @@ public class ConstructSpell extends BrushSpell
 			setDestructible(destructible);
 		}
 		
+		// TODO : Is this needed? Or just use "ty"?
 		if (parameters.containsKey("y_offset")) {
 			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
@@ -113,9 +114,7 @@ public class ConstructSpell extends BrushSpell
 		
 		ConstructionType conType = DEFAULT_CONSTRUCTION_TYPE;
 
-		boolean hollow = false;
-		String fillType = (String)parameters.getString("fill", "");
-		hollow = fillType.equals("hollow");
+		int thickness = parameters.getInt("thickness", 0);
 		
 		Vector forceVector = null;
 		if (falling)
@@ -133,7 +132,7 @@ public class ConstructSpell extends BrushSpell
 			conType = testType;
 		}
 
-		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, !hollow, falling, orientTo);
+		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
 		
 		// Check for command block overrides
 		if (parameters.containsKey("commands"))

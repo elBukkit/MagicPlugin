@@ -38,7 +38,6 @@ import com.elmakers.mine.bukkit.effects.EffectSingle;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.utilities.Messages;
-import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -72,7 +71,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private MaterialAndData icon = new MaterialAndData(Material.AIR);
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
-	private Vector direction = null;
 
 	protected ConfigurationNode parameters = new ConfigurationNode();
 
@@ -106,7 +104,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Vector								targetLocationOffset;
 	protected Location                          targetLocation2;
 	private Entity								targetEntity = null;
-	private Location							defaultTargetLocation   = null;
 	private double                              xRotation, yRotation;
 	private double                              length, hLength;
 	private double                              xOffset, yOffset, zOffset;
@@ -411,7 +408,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	public boolean cast()
 	{
-		return cast(new String[0], null);
+		return cast(new String[0]);
 	}
 
 	static public void addParameters(String[] extraParameters, ConfigurationNode parameters)
@@ -430,12 +427,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		
 	}
 
-	public boolean cast(String[] extraParameters, Location defaultTarget)
+	public boolean cast(String[] extraParameters)
 	{
 		this.preCast();
 		this.target = null;
 		this.targetName = null;
-		defaultTargetLocation = defaultTarget;
 		location = mage.getLocation();
 		
 		final ConfigurationNode parameters = new ConfigurationNode(this.parameters);
@@ -709,59 +705,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			}
 		}
 		
-		String worldName = parameters.getString("world");
-		if (worldName != null && worldName.length() > 0) {
-			location = new Location(Bukkit.getWorld(worldName), 0, 0, 0);
-		}
-		
-		Double yValue = parameters.getDouble("py", null);
-		Double xValue = parameters.getDouble("px", null);
-		Double zValue = parameters.getDouble("pz", null);
-		if (xValue != null && zValue != null && yValue != null) {
-			location = new Location(location.getWorld(), xValue, yValue, zValue,
-					location.getYaw(), location.getPitch());
-		} else {
-			location = mage.getLocation();
-		}
-		
-		Double dpyValue = parameters.getDouble("dpy", null);
-		Double dpxValue = parameters.getDouble("dpx", null);
-		Double dpzValue = parameters.getDouble("dpz", null);
-		if (dpxValue != null || dpzValue != null || dpyValue != null) {
-			location = new Location(location.getWorld(), 
-					location.getX() + (dpxValue == null ? 0 : dpxValue), 
-					location.getY() + (dpyValue == null ? 0 : dpyValue), 
-					location.getZ() + (dpzValue == null ? 0 : dpzValue),
-					location.getYaw(), location.getPitch());
-		}
-		
-		Double tyValue = parameters.getDouble("ty", null);
-		Double txValue = parameters.getDouble("tx", null);
-		Double tzValue = parameters.getDouble("tz", null);
-		if (txValue != null && tzValue != null && tyValue != null) {
-			targetLocation = new Location(location.getWorld(), txValue, tyValue, tzValue,
-					location.getYaw(), location.getPitch());
-		} else {
-			targetLocation = null;
-		}
-		
-		Double dtyValue = parameters.getDouble("dty", null);
-		Double dtxValue = parameters.getDouble("dtx", null);
-		Double dtzValue = parameters.getDouble("dtz", null);
-		if (dtxValue != null || dtzValue != null || dtyValue != null) {
-			if (targetLocation == null) {
-				if (defaultTargetLocation == null) {
-					defaultTargetLocation = getLocation();
-				}
-				targetLocation = defaultTargetLocation.clone();
-			}
-			targetLocation = new Location(targetLocation.getWorld(), 
-					targetLocation.getX() + (dtxValue == null ? 0 : dtxValue), 
-					targetLocation.getY() + (dtyValue == null ? 0 : dtyValue), 
-					targetLocation.getZ() + (dtzValue == null ? 0 : dtzValue),
-					targetLocation.getYaw(), targetLocation.getPitch());
-		}
-		
+		location = parameters.getLocationOverride("p", mage.getLocation());
+		targetLocation = parameters.getLocationOverride("t", location == null ? mage.getLocation() : location);
 		targetLocationOffset = null;
 		
 		Double otyValue = parameters.getDouble("oty", null);
@@ -773,57 +718,9 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 					(otyValue == null ? 0 : otyValue), 
 					(otzValue == null ? 0 : otzValue));
 		}
-
-		Double dyValue = parameters.getDouble("dy", null);
-		Double dxValue = parameters.getDouble("dx", null);
-		Double dzValue = parameters.getDouble("dz", null);
-		if (dxValue != null || dzValue != null || dyValue != null) {
-			direction = new Vector(dxValue == null ? 0 : dxValue, dyValue == null ? 0 : dyValue, dzValue == null ? 0 : dzValue);
-		} else {
-			direction = null;
-		}
-
-		Double ddxValue = parameters.getDouble("ddx", null);
-		Double ddyValue = parameters.getDouble("ddy", null);
-		Double ddzValue = parameters.getDouble("ddz", null);
-		if (dtxValue != null || dtzValue != null || dtyValue != null) {
-			if (direction == null) direction = getDirection();
-			direction.setX(direction.getX() + (ddxValue == null ? 0 : ddxValue));
-			direction.setY(direction.getY() + (ddyValue == null ? 0 : ddyValue));
-			direction.setZ(direction.getZ() + (ddzValue == null ? 0 : ddzValue));
-		}
 		
 		// For two-click construction spells
-		targetLocation2 = null;
-		Double tx2Value = parameters.getDouble("tx2", null);
-		Double ty2Value = parameters.getDouble("ty2", null);
-		Double tz2Value = parameters.getDouble("tz2", null);
-		if (location != null && tx2Value != null && ty2Value != null && tz2Value != null) {
-			targetLocation2 = new Location(location.getWorld(), 
-					tx2Value, 
-					ty2Value, 
-					tz2Value,
-					location.getYaw(), location.getPitch());
-		}
-
-		Double dty2Value = parameters.getDouble("dty2", null);
-		Double dtx2Value = parameters.getDouble("dtx2", null);
-		Double dtz2Value = parameters.getDouble("dtz2", null);
-		if (dtx2Value != null || dtz2Value != null || dty2Value != null) {
-			if (targetLocation2 == null) {
-				targetLocation2 = targetLocation.clone();
-			}
-			targetLocation2 = new Location(targetLocation2.getWorld(), 
-					targetLocation2.getX() + (dtx2Value == null ? 0 : dtx2Value), 
-					targetLocation2.getY() + (dty2Value == null ? 0 : dty2Value), 
-					targetLocation2.getZ() + (dtz2Value == null ? 0 : dtz2Value),
-					targetLocation2.getYaw(), targetLocation2.getPitch());
-		}
-
-		if (direction != null && location != null) {
-			direction = direction.normalize();
-			location = RandomUtils.setDirection(location, direction);
-		}
+		targetLocation2 = parameters.getLocationOverride("t2", location == null ? mage.getLocation() : location);
 		
 		if (parameters.containsKey("player")) {
 			Player player = controller.getPlugin().getServer().getPlayer(parameters.getString("player"));
@@ -1240,9 +1137,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		if (location == null && mage != null) {
 			location = mage.getLocation();
-			if (direction != null) {
-				location = RandomUtils.setDirection(location, direction);
-			}
 		}
 		if (location == null) return null;
 		return location.clone();
@@ -1258,14 +1152,10 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	
 	protected Vector getDirection()
 	{
-		if (direction == null) {
-			Location location = getLocation();
-			if (location != null) {
-				direction = location.getDirection();
-			}
+		if (location == null) {
+			return mage.getDirection();
 		}
-		if (direction == null) return null;
-		return direction.clone();
+		return location.getDirection();
 	}
 	
 	/**

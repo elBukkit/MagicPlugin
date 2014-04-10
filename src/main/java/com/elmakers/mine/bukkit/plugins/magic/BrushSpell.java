@@ -25,9 +25,9 @@ public abstract class BrushSpell extends BlockSpell{
 				brush.update(materialKey);
 			}
 			
-			Double dmxValue = parameters.getDouble("dmx", null);
-			Double dmyValue = parameters.getDouble("dmy", null);
-			Double dmzValue = parameters.getDouble("dmz", null);
+			Double dmxValue = parameters.getDouble("omx", null);
+			Double dmyValue = parameters.getDouble("omy", null);
+			Double dmzValue = parameters.getDouble("omz", null);
 			if (dmxValue != null || dmyValue != null || dmzValue != null) {
 				Vector offset = new Vector( 
 						dmxValue == null ? 0 : dmxValue, 

@@ -2,17 +2,23 @@
 
 ## 2.9.9
 
-I removed many of the default wands, trying to de-clutter. If you were using any of them or want them back,
+* I removed the block populator. It will be part of a separate plugin, MagicWorlds. (TODO: add link)
+
+* I have renamed many of the default spell parameters, if you've been scripting, plesae check SPELLS.md (TODO: add link).
+
+* I broke any Wolf House's you may have made already, sorry! (Related to the above- you can fix it by re-casting at the center of your control booth)
+
+* I removed many of the default wands, trying to de-clutter. If you were using any of them or want them back,
 simply copy+paste from here into your wands.yml file (in plugins/Magic):
 
 https://raw.githubusercontent.com/elBukkit/MagicPlugin/330f6b0e3721471bc6e101e97109a695d17e09dd/src/main/resources/defaults/wands.defaults.yml
 
-I changed the "modifiable" flag in wand data to "locked" (and inverted it). If you had any un-modifiable wands in your worlds, they will
+* I changed the "modifiable" flag in wand data to "locked" (and inverted it). If you had any un-modifiable wands in your worlds, they will
 now be modifiable sorry about that, please let me know if it's a concern (I'm assuming it's not) and I can add in some migration code.
 
 I don't think anyone was using locked wands, hopefully not.
 
-I renamed the bending wands- *TAKE CARE* if you were giving out the "air" "water" "earth" or "fire" wands- those are now
+* I renamed the bending wands- *TAKE CARE* if you were giving out the "air" "water" "earth" or "fire" wands- those are now
 the Master wands, not the Student!
 
 ## Some general notes

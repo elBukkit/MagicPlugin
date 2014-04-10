@@ -36,7 +36,7 @@ public class ConstructBatch extends VolumeBatch {
 	private Vector orient = null;
 	private final int radius;
 	private final ConstructionType type;
-	private final boolean fill;
+	private final int thickness;
 	private final Mage mage;
 	private final BrushSpell spell;
 	private final boolean spawnFallingBlocks;
@@ -67,12 +67,12 @@ public class ConstructBatch extends VolumeBatch {
 	private boolean limitYAxis = false;
 	// TODO.. min X, Z, etc
 	
-	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, boolean fill, boolean spawnFallingBlocks, Location orientToLocation) {
+	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, int thickness, boolean spawnFallingBlocks, Location orientToLocation) {
 		super(spell.getMage().getController(), center.getWorld().getName());
 		this.center = center;
 		this.radius = radius;
 		this.type = type;
-		this.fill = fill;
+		this.thickness = thickness;
 		this.spawnFallingBlocks = spawnFallingBlocks;
 		this.mage = spell.getMage();
 		this.spell = spell;
@@ -265,7 +265,7 @@ public class ConstructBatch extends VolumeBatch {
 			super.finish();
 			
 			MaterialBrush brush = spell.getMaterialBrush();
-			if (copyEntities && fill && brush != null && brush.hasEntities()) {
+			if (copyEntities && thickness == 0 && brush != null && brush.hasEntities()) {
 				// TODO: Handle Non-spherical construction types!
 				List<EntityData> entities = brush.getEntities(center, radius);
 				
@@ -307,7 +307,7 @@ public class ConstructBatch extends VolumeBatch {
 				float mz = (float)z - 0.5f;
 				
 				int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
-				if (fill)
+				if (thickness == 0)
 				{
 					fillBlock = distanceSquared <= maxDistanceSquared;
 				} 
@@ -317,20 +317,21 @@ public class ConstructBatch extends VolumeBatch {
 					my++;
 					mz++;
 					int outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
-					fillBlock = maxDistanceSquared >= distanceSquared && maxDistanceSquared <= outerDistanceSquared;
+					fillBlock = maxDistanceSquared >= distanceSquared - thickness && maxDistanceSquared <= outerDistanceSquared;
 				}	
 				//spells.getLog().info("(" + x + "," + y + "," + z + ") : " + fillBlock + " = " + distanceSquared + " : " + maxDistanceSquared);
 				break;
 			case PYRAMID:
 				int elevation = radius - y;
-				if (fill) {
+				if (thickness == 0) {
 					fillBlock = (x <= elevation) && (z <= elevation);
 				} else {
-					fillBlock = (x == elevation && z <= elevation) || (z == elevation && x <= elevation);
+					fillBlock = (x <= elevation && x >= elevation - thickness && z <= elevation) 
+							 || (z <= elevation && z >= elevation - thickness && x <= elevation);
 				}
 				break;
 			default: 
-				fillBlock = fill ? true : (x == radius || y == radius || z == radius);
+				fillBlock = thickness == 0 ? true : (x >= radius - thickness || y >= radius - thickness || z >= radius - thickness);
 				break;
 		}
 		boolean success = true;

@@ -17,9 +17,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utilities.RandomUtils;
 
 /**
  * Represents a configuration node.
@@ -307,6 +309,63 @@ public class ConfigurationNode {
 		}
 
 		return toLocation(o);
+	}
+	
+	protected double overrideDouble(double value, String nodeName)
+	{
+		String override = getString(nodeName);
+		if (override == null || override.length() == 0) return value;
+		try {
+			if (override.startsWith("~")) {
+				override = override.substring(1);
+				value = value + Double.parseDouble(override);
+			} else {
+				value = Double.parseDouble(override);
+			}	
+		} catch (Exception ex) {
+			
+		}
+		
+		return value;
+	}
+	
+	public Location getLocationOverride(String basePath, Location location) {
+		String worldName = basePath + "world";
+		String xName = basePath + "x";
+		String yName = basePath + "y";
+		String zName = basePath + "z";
+		String dxName = basePath + "dx";
+		String dyName = basePath + "dy";
+		String dzName = basePath + "dz";
+		boolean hasPosition = containsKey(xName) || containsKey(yName) || containsKey(zName) || containsKey(worldName);
+		boolean hasDirection = containsKey(dxName) || containsKey(dyName) || containsKey(dzName);
+		
+		if (!hasPosition && !hasDirection) return null; 
+
+		String worldOverride = getString(worldName);
+		if (location == null) {
+			if (worldOverride == null || worldOverride.length() == 0) return null;
+			location = new Location(Bukkit.getWorld(worldOverride), 0, 0, 0);
+		} else {
+			if (worldOverride != null && worldOverride.length() > 0) {
+				location.setWorld(Bukkit.getWorld(worldOverride));
+			}
+		}
+		if (hasPosition) {
+			location.setX(overrideDouble(location.getX(), xName));
+			location.setY(overrideDouble(location.getY(), yName));
+			location.setZ(overrideDouble(location.getZ(), zName));
+		}
+		
+		if (hasDirection) {
+			Vector direction = location.getDirection();
+			direction.setX(overrideDouble(direction.getX(), dxName));
+			direction.setY(overrideDouble(direction.getY(), dyName));
+			direction.setZ(overrideDouble(direction.getZ(), dzName));
+			RandomUtils.setDirection(location, direction);
+		}
+		
+		return location;
 	}
 	
 	public static Location toLocation(Object o) {

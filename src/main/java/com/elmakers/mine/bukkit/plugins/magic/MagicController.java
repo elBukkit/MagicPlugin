@@ -2513,15 +2513,8 @@ public class MagicController implements Listener
 	public boolean cast(Mage mage, String spellName, String[] parameters, CommandSender sender, Player player)
 	{
 		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
-		Location targetLocation = null;
 		if (mage == null) {
 			CommandSender mageController = player == null ? sender : player;
-			if (sender instanceof BlockCommandSender) {
-				targetLocation = ((BlockCommandSender)sender).getBlock().getLocation();
-			}
-			if (sender instanceof Player) {
-				targetLocation = ((Player)player).getLocation();
-			}
 			mage = getMage(mageController);
 		}
 		
@@ -2536,7 +2529,7 @@ public class MagicController implements Listener
 
 		// Make it free and skip cooldowns, if configured to do so.
 		toggleCastCommandOverrides(mage, true);
-		spell.cast(parameters, targetLocation);
+		spell.cast(parameters);
 		toggleCastCommandOverrides(mage, false);
 		if (sender != player && sender != null) {
 			String castMessage = "Cast " + spellName;

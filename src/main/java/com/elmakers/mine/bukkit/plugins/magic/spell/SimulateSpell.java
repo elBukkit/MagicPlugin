@@ -54,9 +54,9 @@ public class SimulateSpell extends BlockSpell {
 		birthMaterial = parameters.getMaterialAndData("m", birthMaterial);
 		
 		// Should this maybe use a brush?
-		Double dmxValue = parameters.getDouble("dmx", null);
-		Double dmyValue = parameters.getDouble("dmy", null);
-		Double dmzValue = parameters.getDouble("dmz", null);
+		Double dmxValue = parameters.getDouble("omx", null);
+		Double dmyValue = parameters.getDouble("omy", null);
+		Double dmzValue = parameters.getDouble("omz", null);
 		if (dmxValue != null || dmyValue != null || dmzValue != null) {
 			Vector offset = new Vector( 
 					dmxValue == null ? 0 : dmxValue, 
@@ -80,9 +80,9 @@ public class SimulateSpell extends BlockSpell {
 		Set<Integer> birthCounts = new HashSet<Integer>();
 		Set<Integer> liveCounts = new HashSet<Integer>();
 		
-		Double dlcxValue = parameters.getDouble("dlcx", null);
-		Double dlcyValue = parameters.getDouble("dlcy", null);
-		Double dlczValue = parameters.getDouble("dlcz", null);
+		Double dlcxValue = parameters.getDouble("olcx", null);
+		Double dlcyValue = parameters.getDouble("olcy", null);
+		Double dlczValue = parameters.getDouble("olcz", null);
 		if (dlcxValue != null || dlczValue != null || dlczValue != null) {
 			Location liveChestLocation = targetLocation.clone().add(new Vector(dlcxValue == null ? 0 : dlcxValue, dlcyValue == null ? 0 : 
 				dlcyValue, dlczValue == null ? 0 : dlczValue));
@@ -106,9 +106,9 @@ public class SimulateSpell extends BlockSpell {
 			liveCounts.add(3);
 		}
 		
-		Double dbcxValue = parameters.getDouble("dbcx", null);
-		Double dbcyValue = parameters.getDouble("dbcy", null);
-		Double dbczValue = parameters.getDouble("dbcz", null);
+		Double dbcxValue = parameters.getDouble("obcx", null);
+		Double dbcyValue = parameters.getDouble("obcy", null);
+		Double dbczValue = parameters.getDouble("obcz", null);
 		if (dbcxValue != null || dbczValue != null || dbczValue != null) {
 			Location birthChestLocation = targetLocation.clone().add(new Vector(dbcxValue == null ? 0 : dbcxValue, dbcyValue == null ? 0 : 
 				dbcyValue, dbczValue == null ? 0 : dbczValue));

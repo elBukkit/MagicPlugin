@@ -2,16 +2,25 @@
 
 ## For 2.9.9
  
+ - Zombie + skellie horses
+ - Allow pvp bypass by superpowered mages
+ - Wolf House cooldown message spam
+ - Wolf house constructed message is empty
+ 
+ - Clear description on wand rename
+ - Option for Frost to change to packed ice
  - Why aren't chest contents loading properly in Life board?
  - Change dtx and otx parameters around for consistency
  - Make shrink turn entities to babies first
  - Place does NOT work with replicate (pillar/bridge a bit wonky too?)
  
  - Fix Automata variants... wool blue broke!
-
+ - Automata cast spell on death, detect death and unload mage
+ - Implode spell :)
+ - Generalize automata spell casting
+ 
  - Config-driven WandLevel limits
 
- - Extra spell list for simulate to cast
  - Interpolate autonoma directional changes, configurable speed
 
  - Traders losing prices!
@@ -72,6 +81,8 @@
  - Async player data loading/saving
  
 ## DOCUMENTATION / DEMO STUFF
+
+ - check out node craft- thanks, Aireesan
 
  - Add "wand properties" infobook
 

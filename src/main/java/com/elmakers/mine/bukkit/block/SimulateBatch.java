@@ -529,7 +529,7 @@ public class SimulateBatch extends VolumeBatch {
 								Bukkit.getLogger().info(commandName + " casting " + castSpell + " at " + targetDescription);
 							}
 							String[] parameters = {"cost_reduction", "1", "target_through air,", birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
-							spell.cast(parameters, null);
+							spell.cast(parameters);
 						}
 					}
 				}
