@@ -27,6 +27,12 @@ public class FrostSpell extends BlockSpell
 
 	public class FrostAction extends SimpleBlockAction
 	{
+		private Material iceMaterial;
+		
+		public FrostAction(Material iceMaterial) {
+			this.iceMaterial = iceMaterial;
+		}
+		
 		@SuppressWarnings("deprecation")
 		public SpellResult perform(Block block)
 		{
@@ -37,7 +43,7 @@ public class FrostSpell extends BlockSpell
 			Material material = Material.SNOW;
 			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
 			{
-				material = Material.ICE;
+				material = iceMaterial;
 			}
 			else if (block.getType() == Material.LAVA)
 			{
@@ -50,6 +56,10 @@ public class FrostSpell extends BlockSpell
 			else if (block.getType() == Material.FIRE)
 			{
 				material = Material.AIR;
+			}
+			else if (block.getType() == Material.SNOW)
+			{
+				material = Material.SNOW;
 			}
 			else
 			{
@@ -83,6 +93,7 @@ public class FrostSpell extends BlockSpell
 		int timeToLive = parameters.getInt("undo", DEFAULT_TIME_TO_LIVE);
 		int slowness = parameters.getInt("slowness", DEFAULT_SLOWNESS);
 		int slownessDuration = parameters.getInt("slowness_duration", DEFAULT_SLOWNESS_DURATION);
+		Material iceMaterial = parameters.getMaterial("ice", Material.ICE);
 
 		if (target.hasEntity())
 		{
@@ -111,7 +122,7 @@ public class FrostSpell extends BlockSpell
 
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = (int)(mage.getRadiusMultiplier() * radius);		
-		FrostAction action = new FrostAction();
+		FrostAction action = new FrostAction(iceMaterial);
 
 		if (radius <= 1)
 		{
