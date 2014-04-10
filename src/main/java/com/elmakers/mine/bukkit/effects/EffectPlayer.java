@@ -74,7 +74,7 @@ public abstract class EffectPlayer {
 	public void load(Plugin plugin, ConfigurationNode configuration) {
 		this.plugin = plugin;
 		
-		delayTicks = configuration.getInt("delay", delayTicks);
+		delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
 		material1 = configuration.getMaterialAndData("material");
 		color1 = configuration.getColor("color", Color.PURPLE);
 		color2 = configuration.getColor("color2", Color.TEAL);
