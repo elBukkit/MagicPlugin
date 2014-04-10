@@ -2694,15 +2694,17 @@ wolfhouse:
         range: 16
         radius: 4
         type: sphere
-        cooldown: 3600000
+        cooldown: 600000
         material: schematic|wolfhouse
         omx: -3
         omy: -22 
         omz: 10
+        otx: 1
+        oty: 1
         mm: erase 
         transparent: transparent_to_construction
         commands:
-          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 omx 0 omy -46 omz -1 r 52 mm dirt
+          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 omx 0 omy -46 omz -1 r 52 mm dirt
           wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 omx 0 omy -46 omz -1 r 52 id water,stationary_water
           wolf_dome: castp @p[r=7] shell type sphere m stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35
           wolf_shields: castp @p[r=7] shell m obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37
@@ -2710,13 +2712,13 @@ wolfhouse:
           wolf_commit: castp @p[r=6] commit
           wolf_nothing: msg @p[r=6] Nothing here!
           wolf_clear: castp @p[r=7] blob type sphere m erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
-          wolf_destruct: castp @p[r=7] blob m erase cd true md 130 tx ~-5 ty ~24 tz ~11 r 60
+          wolf_destruct: castp @p[r=7] blob m erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60
           wolf_convert: castp @p convert radius 64 md 128 ty ~-1 omx -1 omz 2 m copy
           wolf_phase: castp @p[r=2] phase
           wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
           wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0
-          wolf_tp_hub:
-          wolf_tp_booth:
+          wolf_tp_hub: tp @p[r=4] ~-3 ~-2 ~24
+          wolf_tp_booth: tp @p[r=4] ~8.5 ~2 ~-28.5
           wolf_tp_enchanting: tp @p[r=3] ~-5 ~35 ~-17
           wolf_recall_wand: castp @p[r=2] recall type wand
           wolf_recall_death: castp @p[r=2] recall type death

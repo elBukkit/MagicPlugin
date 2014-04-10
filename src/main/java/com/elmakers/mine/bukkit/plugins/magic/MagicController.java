@@ -2096,8 +2096,8 @@ public class MagicController implements Listener
 				// Taking a wand out of the anvil's crafting slot
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(this, current);
-					wand.updateName(true);
 					wand.setDescription("");
+					wand.updateName(true);
 					if (event.getWhoClicked() instanceof Player) {
 						wand.tryToOwn((Player)event.getWhoClicked());
 					}
@@ -2514,8 +2514,15 @@ public class MagicController implements Listener
 	public boolean cast(Mage mage, String spellName, String[] parameters, CommandSender sender, Player player)
 	{
 		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
+		Location targetLocation = null;
 		if (mage == null) {
 			CommandSender mageController = player == null ? sender : player;
+			if (sender instanceof BlockCommandSender) {
+				targetLocation = ((BlockCommandSender)sender).getBlock().getLocation();
+			}
+			if (sender instanceof Player) {
+				targetLocation = ((Player)player).getLocation();
+			}
 			mage = getMage(mageController);
 		}
 		
@@ -2529,6 +2536,7 @@ public class MagicController implements Listener
 		}
 
 		// Make it free and skip cooldowns, if configured to do so.
+		spell.setLocation(targetLocation);
 		toggleCastCommandOverrides(mage, true);
 		spell.cast(parameters);
 		toggleCastCommandOverrides(mage, false);

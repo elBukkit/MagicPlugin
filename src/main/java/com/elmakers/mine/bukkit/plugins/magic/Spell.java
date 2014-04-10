@@ -432,7 +432,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		this.preCast();
 		this.target = null;
 		this.targetName = null;
-		location = mage.getLocation();
 		
 		final ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
@@ -523,6 +522,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	protected void initializeTargeting()
 	{
+		Location location = getLocation();
 		if (location == null) {
 			return;
 		}
@@ -714,8 +714,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			}
 		}
 		
-		location = parameters.getLocationOverride("p", mage.getLocation());
-		targetLocation = parameters.getLocationOverride("t", location == null ? mage.getLocation() : location);
+		Location defaultLocation = location == null ? mage.getLocation() : location;
+		Location locationOverride = parameters.getLocationOverride("p", defaultLocation);
+		if (locationOverride != null) {
+			location = locationOverride;
+		}
+		defaultLocation = location == null ? mage.getLocation() : location;
+		targetLocation = parameters.getLocationOverride("t", defaultLocation);
 		targetLocationOffset = null;
 		
 		Double otyValue = parameters.getDouble("oty", null);
@@ -729,7 +734,8 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		
 		// For two-click construction spells
-		targetLocation2 = parameters.getLocationOverride("t2", location == null ? mage.getLocation() : location);
+		defaultLocation = targetLocation == null ? defaultLocation : targetLocation;		
+		targetLocation2 = parameters.getLocationOverride("t2", defaultLocation);
 		
 		if (parameters.containsKey("player")) {
 			Player player = controller.getPlugin().getServer().getPlayer(parameters.getString("player"));
@@ -1144,11 +1150,16 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	protected Location getLocation()
 	{
-		if (location == null && mage != null) {
-			location = mage.getLocation();
+		if (location != null) return location.clone();
+		if (mage != null) {
+			return mage.getLocation();
 		}
-		if (location == null) return null;
-		return location.clone();
+		return null;
+	}
+	
+	protected void setLocation(Location location)
+	{
+		this.location = location;
 	}
 
 	protected Location getEyeLocation()
@@ -1367,6 +1378,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	 */
 	public Block getNextBlock()
 	{
+		Location location = getLocation();
 		lastX = targetX;
 		lastY = targetY;
 		lastZ = targetZ;

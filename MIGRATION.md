@@ -2,9 +2,9 @@
 
 ## 2.9.9
 
-* I removed the block populator. It will be part of a separate plugin, MagicWorlds. (TODO: add link)
+* I removed the block populator. It will be part of a separate plugin, MagicWorlds: http://dev.bukkit.org/bukkit-plugins/magicworlds/
 
-* I have renamed many of the default spell parameters, if you've been scripting, plesae check SPELLS.md (TODO: add link).
+* I have renamed many of the default spell parameters, if you've been scripting, plesae check SPELLS.md: https://github.com/elBukkit/MagicPlugin/blob/master/SPELLS.md
 
 * I broke any Wolf House's you may have made already, sorry! (Related to the above- you can fix it by re-casting at the center of your control booth)
 

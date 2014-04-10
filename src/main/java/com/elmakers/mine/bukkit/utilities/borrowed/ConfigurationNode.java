@@ -323,7 +323,7 @@ public class ConfigurationNode {
 				value = Double.parseDouble(override);
 			}	
 		} catch (Exception ex) {
-			
+			// ex.printStackTrace();
 		}
 		
 		return value;
@@ -337,17 +337,19 @@ public class ConfigurationNode {
 		String dxName = basePath + "dx";
 		String dyName = basePath + "dy";
 		String dzName = basePath + "dz";
-		boolean hasPosition = containsKey(xName) || containsKey(yName) || containsKey(zName) || containsKey(worldName);
+		boolean hasPosition = containsKey(xName) || containsKey(yName) || containsKey(zName);
 		boolean hasDirection = containsKey(dxName) || containsKey(dyName) || containsKey(dzName);
-		
-		if (!hasPosition && !hasDirection) return null; 
-
 		String worldOverride = getString(worldName);
+		boolean hasWorld = worldOverride != null && worldOverride.length() > 0;
+		
+		if (!hasPosition && !hasDirection && !hasWorld) return null;
+
 		if (location == null) {
-			if (worldOverride == null || worldOverride.length() == 0) return null;
+			if (!hasWorld || !hasPosition) return null;
 			location = new Location(Bukkit.getWorld(worldOverride), 0, 0, 0);
 		} else {
-			if (worldOverride != null && worldOverride.length() > 0) {
+			location = location.clone();
+			if (hasWorld) {
 				location.setWorld(Bukkit.getWorld(worldOverride));
 			}
 		}

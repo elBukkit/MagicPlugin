@@ -93,7 +93,7 @@ public class SimulateSpell extends BlockSpell {
 				for (int index = 0; index < items.length; index++) {
 					if (items[index] != null && items[index].getType() != Material.AIR) {
 						liveCounts.add(index + 1);
-						controller.getLogger().info("SimulateSpell: Added live rules for index " + (index + 1)  + " from chest at " + liveChestLocation.toVector());
+						// controller.getLogger().info("SimulateSpell: Added live rules for index " + (index + 1)  + " from chest at " + liveChestLocation.toVector());
 					}
 				}
 			} else {
@@ -119,7 +119,7 @@ public class SimulateSpell extends BlockSpell {
 				for (int index = 0; index < items.length; index++) {
 					if (items[index] != null && items[index].getType() != Material.AIR) {
 						birthCounts.add(index + 1);
-						controller.getLogger().info("SimulateSpell: Added birth rules for index " + (index + 1) + " from chest at " + birthChestLocation.toVector());
+						// controller.getLogger().info("SimulateSpell: Added birth rules for index " + (index + 1) + " from chest at " + birthChestLocation.toVector());
 					}
 				}
 			} else {

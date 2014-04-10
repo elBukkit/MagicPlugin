@@ -210,16 +210,8 @@ public class Mage implements CostReducer
 			return false;
 		}
 		
-		Player player = getPlayer();
 		HashMap<Integer, ItemStack> remainder = storedInventory.addItem(item);
-		
-		for (ItemStack remains : remainder.values()) {
-			if (player != null) {
-				player.getWorld().dropItemNaturally(player.getLocation(), remains);
-			}
-		}
-
-		return true;
+		return remainder.size() == 0;
 	}
 
 	public boolean storeInventory() {
@@ -781,7 +773,7 @@ public class Mage implements CostReducer
 	}
 	
 	public Location getLocation() {
-		if (location != null) return location;
+		if (location != null) return location.clone();
 		
 		Player player = getPlayer();
 		if (player == null) return null;
@@ -790,14 +782,21 @@ public class Mage implements CostReducer
 	
 	public Location getEyeLocation() {
 		Player player = getPlayer();
-		if (player == null) return null;
-		return player.getEyeLocation();
+		if (player != null) return player.getEyeLocation();
+		Location location = getLocation();
+		if (location != null) {
+			location.setY(location.getY() + 1.5);
+			return location;
+		}
+		return null;
 	}
 	
-	public Vector getDirection() {Player player = getPlayer();
-		// Default is straight up.
-		if (player == null) return new Vector(0, 1, 0);
-		return player.getLocation().getDirection().normalize();
+	public Vector getDirection() {
+		Location location = getLocation();
+		if (location != null) {
+			return location.getDirection();
+		}
+		return new Vector(0, 1, 0);
 	}
 	
 	public String getName() {
