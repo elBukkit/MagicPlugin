@@ -194,12 +194,14 @@ public class Wand implements CostReducer {
 				// Random wands take a few properties from the "random" template
 				locked = (boolean)randomTemplate.getBoolean("locked", false);
 				setEffectColor(randomTemplate.getString("effect_color"));
-				saveState(true);
+				suspendSave = false;
+				saveState();
 				return;
 			}
 			
 			if (!wandTemplates.containsKey(templateName)) {
-				saveState(true);
+				suspendSave = false;
+				saveState();
 				return;
 			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
@@ -213,7 +215,8 @@ public class Wand implements CostReducer {
 
 		setDescription(wandDescription);
 		setName(wandName);
-		saveState(true);
+		suspendSave = false;
+		saveState();
 	}
 	
 	public Wand(MagicController controller, Material icon, short iconData) {
@@ -404,7 +407,6 @@ public class Wand implements CostReducer {
 	public void setDescription(String description) {
 		this.description = description;
 		updateLore();
-		saveState();
 	}
 	
 	public void tryToOwn(Player player) {
@@ -421,7 +423,7 @@ public class Wand implements CostReducer {
 		if (controller != null && controller.keepWands()) {
 			keep = true;
 		}
-		saveState();
+		updateLore();
 	}
 	
 	public ItemStack getItem() {
@@ -703,11 +705,6 @@ public class Wand implements CostReducer {
 		itemStack.setItemMeta(meta);
 		updateMaterialName(itemStack, materialKey, wand);
 		return itemStack;
-	}
-
-	protected void saveState(boolean force) {
-		if (force) suspendSave = false;
-		saveState();
 	}
 
 	protected void saveState() {
@@ -1390,6 +1387,9 @@ public class Wand implements CostReducer {
 		if (EnableGlow) {
 			InventoryUtils.addGlow(item);
 		}
+		
+		// Setting lore will reset wand data
+		saveState();
 	}
 	
 	public int getRemainingUses() {
