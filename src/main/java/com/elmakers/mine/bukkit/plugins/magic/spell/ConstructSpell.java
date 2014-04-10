@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.ConstructBatch;
 import com.elmakers.mine.bukkit.block.ConstructionType;

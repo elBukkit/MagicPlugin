@@ -2573,7 +2573,8 @@ public class MagicController implements Listener
 			double radius = 3.0 * mage.getDamageMultiplier();
 			int width = (int)(2.0 * mage.getDamageMultiplier());
 			width = Math.min(8, width);
-			final Location location = mage.getLocation();
+			final Location location = spell.getLocation();
+			if (location == null) return;
 			Color color = mage.getEffectColor();
 			color = color == null ? Color.PURPLE : color;
 			final String worldName = location.getWorld().getName();

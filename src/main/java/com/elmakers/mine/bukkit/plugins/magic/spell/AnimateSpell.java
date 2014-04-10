@@ -16,7 +16,6 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AnimateSpell extends SimulateSpell 
 {
-	@SuppressWarnings("deprecation")
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -49,18 +48,15 @@ public class AnimateSpell extends SimulateSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		Material birthMaterial = targetBlock.getType();
-		byte birthData = targetBlock.getData();
 		int seedRadius = parameters.getInt("seed_radius", 0);
 		if (seedRadius > 0) {
-			birthMaterial = parameters.getMaterial("material", birthMaterial);
+			targetMaterial = parameters.getMaterialAndData("material", targetMaterial);
 			for (int dx = -seedRadius; dx < seedRadius; dx++) {
 				for (int dz = -seedRadius; dz < seedRadius; dz++) {
 					for (int dy = -seedRadius; dy < seedRadius; dy++) {
 						Block seedBlock = targetBlock.getRelative(dx, dy, dz);
 						if (isDestructible(seedBlock)) {
-							seedBlock.setType(birthMaterial);
-							seedBlock.setData(birthData);
+							targetMaterial.modify(seedBlock);
 						}
 					}
 				}
@@ -71,7 +67,7 @@ public class AnimateSpell extends SimulateSpell
 		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 		
 		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 bu true m " 
-				+ MaterialBrush.getMaterialKey(birthMaterial, birthData) +
+				+ targetMaterial.getKey() +
 				" cd " + (simCheckDestructible ? "true" : "false");
 		String commandName = parameters.getString("name", "Automata");
 		commandName = commandName + " " + MaterialBrush.getMaterialName(targetMaterial);

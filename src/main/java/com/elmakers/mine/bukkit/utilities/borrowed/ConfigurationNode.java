@@ -202,6 +202,8 @@ public class ConfigurationNode {
 	 */
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public void setProperty(String path, Object value) {
+		if (path == null || path.length() == 0) return;
+		
 		if (value == null) {
 			this.removeProperty(path);
 			return;

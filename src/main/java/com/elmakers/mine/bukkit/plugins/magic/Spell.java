@@ -1255,6 +1255,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
 			return new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
 		}
+		
+		Location location = getLocation();
+		if (targetType == TargetType.SELF && location != null) {
+			return new Target(location, location.getBlock());
+		}
+		
+		if (targetType == TargetType.SELF) {
+			return new Target(location);
+		}
 
 		if (targetType != TargetType.NONE && targetLocation != null) {
 			return new Target(getLocation(), targetLocation.getBlock());

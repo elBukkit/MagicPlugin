@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -174,14 +175,31 @@ public class SimulateBatch extends VolumeBatch {
 			}
 		}
 		if (deathSpell.length() > 0) {
-			Spell spell = mage.getSpell(deathSpell);
-			if (deathSpell != null) {
+			String spellName = deathSpell;
+			String[] defaultParameters = {"cost_reduction", "1", "destructible", "air," + birthMaterial.getMaterial().name().toLowerCase(), "target", "self"};
+			String[] parameters = defaultParameters;
+			
+			String[] pieces = StringUtils.split(deathSpell, " ");
+			if (pieces != null && pieces.length > 1) {
+				spellName = pieces[0];
+				parameters = new String[defaultParameters.length + pieces.length - 1];
+				for (int i = 0; i < defaultParameters.length; i++) {
+					parameters[i] = defaultParameters[i];
+				}
+				for (int i = 1; i < pieces.length; i++) {
+					parameters[i + defaultParameters.length - 1] = pieces[i];
+				}
+			}
+			Spell spell = mage.getSpell(spellName);
+			if (spell != null) {
 				if (DEBUG) {
 					controller.getLogger().info(commandName + " casting " + tickSpell + " on death");
 				}
-				String[] parameters = {"cost_reduction", "1", "material", birthMaterial.getMaterial().name().toLowerCase(), "target", "self"};
 				spell.cast(parameters);
 			}
+		}
+		if (includeCommands && castCommandBlock != null && castCommandBlock.getType() == Material.COMMAND) {
+			castCommandBlock.setType(Material.AIR);
 		}
 		if (!mage.isPlayer()) {
 			controller.forgetMage(mage);
@@ -220,6 +238,12 @@ public class SimulateBatch extends VolumeBatch {
 						powerSimMaterial.modify(checkForPower);
 						commandPowered = true;
 					}
+				}
+				
+				if (!commandPowered) {
+					die();
+					finish();
+					return processedBlocks;
 				}
 				
 				// Make this a normal block so the sim will process it
@@ -650,7 +674,7 @@ public class SimulateBatch extends VolumeBatch {
 		state = SimulationState.FINISHED;
 		if (!finished) {
 			super.finish();
-			mage.registerForUndo(modifiedBlocks);
+			spell.registerForUndo(modifiedBlocks);
 		}
 	}
 }

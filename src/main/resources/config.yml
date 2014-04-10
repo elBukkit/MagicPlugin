@@ -55,8 +55,5 @@
 # Whether wands can be upgraded on an enchanting table
 #enable_enchanting: true
 
-# Whether or not to add random wands to naturally spawned chests
-#enable_block_populator: false
-
 # Whether or not using a wand on an anvil will organize its inventory
 #enable_organizing: true
