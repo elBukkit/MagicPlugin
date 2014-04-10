@@ -3,8 +3,6 @@
 ## For 2.9.9
  
  - Why aren't chest contents loading properly in Life board?
- - Change dtx and otx parameters around for consistency
- - Make shrink turn entities to babies first
  - Place does NOT work with replicate (pillar/bridge a bit wonky too?)
  
  - Fix Automata variants... wool blue broke!

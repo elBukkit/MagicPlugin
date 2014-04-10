@@ -18,6 +18,7 @@
  - Add very basic beginnings of an API. Changed a lot of spell parameters for consistency.
  - Recall can now support CommandBook warps.
  - Renaming a wand on an anvil will clear its description.
+ - Shrink will change a mob to a baby before it turns it to a skull
 
 ## 2.9.8.AUTOMATA
 

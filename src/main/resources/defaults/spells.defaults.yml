@@ -2502,8 +2502,8 @@ shrink:
         target_type: LivingEntity
         allow_max_range: false
         range: 16
-        player_damage: 2
-        entity_damage: 20
+        player_damage: 4
+        entity_damage: 10
     costs:
         xp: 20
 flare:

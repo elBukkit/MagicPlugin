@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -58,7 +59,7 @@ public class ShrinkSpell extends BlockSpell
 				ownerName = ((Player)li).getName();
 			}
 			else
-			{
+			{	
 				li.damage(mage.getDamageMultiplier() * entityDamage);
 				switch (li.getType()) {
 					case CREEPER:
@@ -83,7 +84,15 @@ public class ShrinkSpell extends BlockSpell
 				
 			}
 			if ((ownerName != null || data != 3) && li.isDead() && !alreadyDead) {
-				dropHead(targetEntity.getLocation(), ownerName, itemName, data);
+				Location targetLocation = targetEntity.getLocation();
+				if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
+					LivingEntity baby = targetLocation.getWorld().spawnCreature(targetLocation, targetEntity.getType());
+					if (baby instanceof Ageable) {
+						((Ageable)baby).setBaby();
+					}
+				} else {
+					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
+				}
 			}
 		} else {
 			Block targetBlock = target.getBlock();
