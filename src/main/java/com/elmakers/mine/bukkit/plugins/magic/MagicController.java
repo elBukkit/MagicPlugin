@@ -2097,6 +2097,7 @@ public class MagicController implements Listener
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(this, current);
 					wand.updateName(true);
+					wand.setDescription("");
 					if (event.getWhoClicked() instanceof Player) {
 						wand.tryToOwn((Player)event.getWhoClicked());
 					}

@@ -401,9 +401,10 @@ public class Wand implements CostReducer {
 		return this.template;
 	}
 	
-	protected void setDescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 		updateLore();
+		saveState();
 	}
 	
 	public void tryToOwn(Player player) {
@@ -1389,9 +1390,6 @@ public class Wand implements CostReducer {
 		if (EnableGlow) {
 			InventoryUtils.addGlow(item);
 		}
-
-		// Reset spell list and wand config
-		saveState();
 	}
 	
 	public int getRemainingUses() {
