@@ -482,7 +482,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			}
 		}
 		
-		if (pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(mage.getLocation())) {
+		if (pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(mage.getLocation()) && !mage.isSuperPowered()) {
 			processResult(SpellResult.INSUFFICIENT_PERMISSION);
 			return false;
 		}

@@ -2,13 +2,6 @@
 
 ## For 2.9.9
  
- - Zombie + skellie horses
- - Allow pvp bypass by superpowered mages
- - Wolf House cooldown message spam
- - Wolf house constructed message is empty
- 
- - Clear description on wand rename
- - Option for Frost to change to packed ice
  - Why aren't chest contents loading properly in Life board?
  - Change dtx and otx parameters around for consistency
  - Make shrink turn entities to babies first
