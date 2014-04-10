@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -158,6 +157,16 @@ public class SimulateBatch extends VolumeBatch {
 			}
 		}
 	}
+	
+	protected void die() {
+		String message = spell.getMessage("death_broadcast").replace("$name", commandName);
+		if (message.length() > 0) {
+			controller.sendToMages(message, center, huntMaxRange);	
+		}
+		if (!mage.isPlayer()) {
+			controller.forgetMage(mage);
+		}
+	}
 
 	@Override
 	public int process(int maxBlocks) {
@@ -171,6 +180,13 @@ public class SimulateBatch extends VolumeBatch {
 					finish();
 					// TODO: Maybe Scatter-shot and register all 6 surrounding power blocks for reload toggle.
 					// Can't really do it without the chunk being loaded though, so hrm.
+					return processedBlocks;
+				}
+				
+				// Check for death since activation (e.g. during delay period)
+				if (castCommandBlock.getType() != Material.COMMAND) {
+					die();
+					finish();
 					return processedBlocks;
 				}
 				
@@ -342,27 +358,31 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		if (state == SimulationState.COMMAND_UPDATE) {
-			if (includeCommands && commandTargetBlock != null) {
-				if (!commandTargetBlock.getChunk().isLoaded()) {
-					commandTargetBlock.getChunk().load();
-					return processedBlocks;
-				}
-				
-				commandTargetBlock.setType(Material.COMMAND);
-				BlockState commandData = commandTargetBlock.getState();
-				if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
-					CommandBlock copyCommand = (CommandBlock)commandData;
-					copyCommand.setCommand(castCommand);
-					copyCommand.setName(commandName);
-					copyCommand.update();
+			if (includeCommands) {
+				if (commandTargetBlock != null) {
+					if (!commandTargetBlock.getChunk().isLoaded()) {
+						commandTargetBlock.getChunk().load();
+						return processedBlocks;
+					}
 					
-					// Also move the mage
-					Location newLocation = commandTargetBlock.getLocation();
-					newLocation.setPitch(center.getPitch());
-					newLocation.setYaw(center.getYaw());
-					mage.setLocation(newLocation);
+					commandTargetBlock.setType(Material.COMMAND);
+					BlockState commandData = commandTargetBlock.getState();
+					if (castCommand != null && commandData != null && commandData instanceof CommandBlock) {
+						CommandBlock copyCommand = (CommandBlock)commandData;
+						copyCommand.setCommand(castCommand);
+						copyCommand.setName(commandName);
+						copyCommand.update();
+						
+						// Also move the mage
+						Location newLocation = commandTargetBlock.getLocation();
+						newLocation.setPitch(center.getPitch());
+						newLocation.setYaw(center.getYaw());
+						mage.setLocation(newLocation);
+					} else {
+						commandTargetBlock = null;
+					}
 				} else {
-					commandTargetBlock = null;
+					die();
 				}
 			}
 			state = SimulationState.COMMAND_POWER;
@@ -511,7 +531,7 @@ public class SimulateBatch extends VolumeBatch {
 					center = RandomUtils.setDirection(center, direction);
 					targetLocation = center.clone().add(direction.normalize().multiply(huntMaxRange));
 					if (DEBUG) {
-						Bukkit.getLogger().info(" *Directed " + direction + " to " + targetLocation.toVector()); 
+						controller.getLogger().info(" *Directed " + direction + " to " + targetLocation.toVector()); 
 					}
 				} else {
 					targetLocation = bestTarget.getLocation();
@@ -526,7 +546,7 @@ public class SimulateBatch extends VolumeBatch {
 						Spell spell = mage.getSpell(castSpell);
 						if (castSpell != null) {
 							if (DEBUG) {
-								Bukkit.getLogger().info(commandName + " casting " + castSpell + " at " + targetDescription);
+								controller.getLogger().info(commandName + " casting " + castSpell + " at " + targetDescription);
 							}
 							String[] parameters = {"cost_reduction", "1", "target_through air,", birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
 							spell.cast(parameters);

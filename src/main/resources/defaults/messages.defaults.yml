@@ -306,6 +306,7 @@ spells:
         description: You probably don't want to cast this
         cast: What have you done?
         cast_broadcast: §c§o$name §r§5was born
+        death_broadcast: §c§o$name §r§5has been defeated
     hunter:
         no_target: You must target two blocks next to each other
         name: Hunter
@@ -313,12 +314,14 @@ spells:
         no_target: You must target two blocks next to each other
         cast: Destroy all humans!
         cast_broadcast: §c§o$name §r§5was born
+        death_broadcast: §c§o$name §r§5has been defeated
     defender:
         name: Defender
         description: Create an Automata hunter
         cast: I will hunt for you, human
         no_target: You must target two blocks next to each other
         cast_broadcast: §c§o$name §r§5was born
+        death_broadcast: §c§o$name §r§5has been defeated
     life:
         name: Life
         description: Create a HUGE Life board

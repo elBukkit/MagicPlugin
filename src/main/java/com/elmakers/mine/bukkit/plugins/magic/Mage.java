@@ -41,6 +41,7 @@ public class Mage implements CostReducer
 {
 	protected static int 						AUTOMATA_ONLINE_TIMEOUT = 5000;
 	
+	protected final String						id;
 	protected WeakReference<Player> 			player;
 	protected WeakReference<CommandSender>		commandSender;
 	protected String 							playerName;
@@ -64,6 +65,14 @@ public class Mage implements CostReducer
 	private long 				blockPlaceTimeout = 0;
 	private Location 			lastDeathLocation = null;
 	private final MaterialBrush		brush;
+	
+	public Mage(String id, MagicController controller) {
+		this.id = id;
+		this.controller = controller;
+		this.brush = new MaterialBrush(this, Material.DIRT, (byte)0);
+		player = new WeakReference<Player>(null);
+		commandSender = new WeakReference<CommandSender>(null);
+	}
 	
 	private static String defaultMageName = "Automaton";
 	
@@ -630,13 +639,6 @@ public class Mage implements CostReducer
 		return lastDeathLocation;
 	}
 
-	protected Mage(MagicController master, Player player)
-	{
-		this.controller = master;
-		this.player = new WeakReference<Player>(player);
-		this.brush = new MaterialBrush(this, Material.DIRT, (byte)0);
-	}
-
 	protected void setPlayer(Player player)
 	{
 		if (player != null) {
@@ -644,8 +646,8 @@ public class Mage implements CostReducer
 			this.player = new WeakReference<Player>(player);
 			this.commandSender = new WeakReference<CommandSender>(player);
 		} else {
-			if (this.player != null) this.player.clear();
-			if (this.commandSender != null) this.commandSender.clear();
+			this.player.clear();
+			this.commandSender.clear();
 		}
 	}
 	
@@ -670,10 +672,8 @@ public class Mage implements CostReducer
 			} else {
 				setLocation(null);
 			}
-		} else if (this.commandSender != null){
-			this.commandSender.clear();
-			setLocation(null);
 		} else {
+			this.commandSender.clear();
 			setLocation(null);
 		}
 	}
@@ -801,6 +801,10 @@ public class Mage implements CostReducer
 	
 	public String getName() {
 		return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public boolean addPendingBlockBatch(BlockBatch batch) {

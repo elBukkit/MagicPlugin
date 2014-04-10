@@ -158,7 +158,7 @@ public class MagicController implements Listener
 		Mage mage = null;
 		if (!mages.containsKey(mageId)) 
 		{
-			mage = new Mage(this, null);
+			mage = new Mage(mageId, this);
 			
 			// Check for existing data file
 			File playerFile = new File(playerDataFolder, mageId + ".dat");
@@ -759,6 +759,11 @@ public class MagicController implements Listener
 		// Set up the Block update timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
+				for (String id : forgetMages) {
+					mages.remove(id);
+				}
+				forgetMages.clear();
+				
 				List<Mage> pending = new ArrayList<Mage>();
 				pending.addAll(pendingConstruction.values());
 				for (Mage mage : pending) {
@@ -2714,6 +2719,10 @@ public class MagicController implements Listener
 		if (warpController == null) return null;
 		return warpController.getWarp(warpName);
 	}
+	
+	public void forgetMage(Mage mage) {
+		forgetMages.add(mage.getId());
+	}
 
 	/*
 	 * Private data
@@ -2786,6 +2795,7 @@ public class MagicController implements Listener
 	 
 	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
 	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();
+	 private final HashSet<String>				 forgetMages					= new HashSet<String>();
 	 private final HashMap<String, Mage>		 pendingConstruction			= new HashMap<String, Mage>();
 	 private final Map<String, WeakReference<Schematic>>	 schematics			= new HashMap<String, WeakReference<Schematic>>();
 

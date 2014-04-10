@@ -1544,6 +1544,8 @@ wolf:
         - pickpocket
         - virus
         - life
+        - hunter
+        - defender
         - glider
         - simulate
         - simulate3
