@@ -28,7 +28,7 @@ public class BridgeSpell extends BrushSpell
 
 		BlockFace direction = getPlayerFacing();
 		Block attachBlock = playerBlock;
-		Block targetBlock = attachBlock.getRelative(direction);
+		Block targetBlock = attachBlock;
 
 		int distance = 0;
 		while (isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)

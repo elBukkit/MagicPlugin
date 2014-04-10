@@ -20,7 +20,6 @@ public class PlaceSpell extends BrushSpell
 
 		MaterialBrush buildWith = getMaterialBrush();
 		buildWith.setTarget(attachToBlock.getLocation(), placeBlock.getLocation());
-		buildWith.setTarget(attachToBlock.getLocation());
 
 		if (!hasBuildPermission(placeBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
