@@ -993,3 +993,12 @@ wands:
     recalltoken:
         name: Recall Token
         description: Aim up and left-click
+    defenderheart:
+        name: Heart of Defender
+        description: It pulsates with power
+    virusheart:
+        name: Heart of Virus
+        description: This should be destroyed
+    hunterheart:
+        name: Heart of Hunter
+        description: It wants to be reborn

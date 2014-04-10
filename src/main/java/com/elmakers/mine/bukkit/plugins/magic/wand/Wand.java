@@ -169,7 +169,7 @@ public class Wand implements CostReducer {
 		this(controller, DefaultWandMaterial, (short)0);
 	}
 	
-	public Wand(MagicController controller, String templateName) {
+	protected Wand(MagicController controller, String templateName) throws IllegalArgumentException {
 		this(controller);
 		suspendSave = true;
 		String wandName = Messages.get("wand.default_name");
@@ -200,9 +200,7 @@ public class Wand implements CostReducer {
 			}
 			
 			if (!wandTemplates.containsKey(templateName)) {
-				suspendSave = false;
-				saveState();
-				return;
+				throw new IllegalArgumentException("No template named " + templateName);
 			}
 			ConfigurationNode wandConfig = wandTemplates.get(templateName);
 			// Default to localized names
@@ -1671,7 +1669,13 @@ public class Wand implements CostReducer {
 	}
 	
 	public static Wand createWand(MagicController controller, String templateName) {
-		return new Wand(controller, templateName);
+		Wand wand = null;
+		try {
+			wand = new Wand(controller, templateName);
+		} catch (IllegalArgumentException ex) {
+			
+		}
+		return wand; 
 	}
 	
 	public boolean add(Wand other) {

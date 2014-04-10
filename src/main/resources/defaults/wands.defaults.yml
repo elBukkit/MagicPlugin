@@ -2183,5 +2183,36 @@ recalltoken:
     effect_color: 'FF0000'
     spells:
         - recall
+hunterheart:
+    active_spell: hunter
+    icon: lever
+    indestructible: false
+    cost_reduction: 0.5
+    modifiable: false
+    uses: 1
+    effect_color: 'FF0000'
+    spells:
+        - hunter
+virusheart:
+    active_spell: virus
+    icon: fermented_spider_eye
+    indestructible: false
+    cost_reduction: 0.5
+    modifiable: false
+    uses: 1
+    effect_color: 'FF0000'
+    spells:
+        - virus
+defenderheart:
+    active_spell: defender
+    icon: redstone_torch_on
+    indestructible: false
+    cost_reduction: 0.5
+    modifiable: false
+    uses: 1
+    effect_color: 'FF0000'
+    spells:
+        - defender
+    
     
     

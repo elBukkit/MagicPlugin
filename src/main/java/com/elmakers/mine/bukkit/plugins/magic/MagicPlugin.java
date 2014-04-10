@@ -1147,11 +1147,15 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		}
 	
 		Wand wand = Wand.createWand(controller, wandKey);
-		if (giveItemToPlayer(player, wand.getItem())) {
-			wand.activate(mage);
-		}
-		if (sender != player) {
-			sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
+		if (wand != null) {
+			if (giveItemToPlayer(player, wand.getItem())) {
+				wand.activate(mage);
+			}
+			if (sender != player) {
+				sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
+			}
+		} else {
+			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
 		}
 		return true;
 	}
@@ -1175,13 +1179,17 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 			currentWand.closeInventory();
 		}
 	
-		Wand wand = new Wand(controller, wandKey);
-		wand.makeUpgrade();
-		if (giveItemToPlayer(player, wand.getItem())) {
-			wand.activate(mage);
-		}
-		if (sender != player) {
-			sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
+		Wand wand = Wand.createWand(controller, wandKey);
+		if (wand != null) {
+			wand.makeUpgrade();
+			if (giveItemToPlayer(player, wand.getItem())) {
+				wand.activate(mage);
+			}
+			if (sender != player) {
+				sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
+			}
+		} else  {
+			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
 		}
 		return true;
 	}

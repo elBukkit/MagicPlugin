@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.RandomUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
@@ -57,7 +58,10 @@ public class SimulateBatch extends VolumeBatch {
 	private Location targetLocation;
 	private String castCommand;
 	private String commandName;
-	private String castSpell;
+	private String tickSpell;
+	private String deathSpell;
+	private float castProbability;
+	private String dropItem;
 	private boolean reverseTargetDistanceScore = false;
 	private int commandMoveRangeSquared = 9;
 	private int huntMaxRange = 128;
@@ -162,6 +166,22 @@ public class SimulateBatch extends VolumeBatch {
 		String message = spell.getMessage("death_broadcast").replace("$name", commandName);
 		if (message.length() > 0) {
 			controller.sendToMages(message, center, huntMaxRange);	
+		}
+		if (dropItem != null && dropItem.length() > 0) {
+			Wand magicItem = Wand.createWand(controller, dropItem);
+			if (magicItem != null) {
+				center.getWorld().dropItemNaturally(center, magicItem.getItem());
+			}
+		}
+		if (deathSpell.length() > 0) {
+			Spell spell = mage.getSpell(deathSpell);
+			if (deathSpell != null) {
+				if (DEBUG) {
+					controller.getLogger().info(commandName + " casting " + tickSpell + " on death");
+				}
+				String[] parameters = {"cost_reduction", "1", "material", birthMaterial.getMaterial().name().toLowerCase(), "target", "self"};
+				spell.cast(parameters);
+			}
 		}
 		if (!mage.isPlayer()) {
 			controller.forgetMage(mage);
@@ -452,8 +472,17 @@ public class SimulateBatch extends VolumeBatch {
 		}
 	}
 	
-	public void setCast(String cast) {
-		castSpell = cast;
+	public void setDrop(String dropName) {
+		this.dropItem = dropName;
+	}
+	
+	public void setTickCast(String cast, float probability) {
+		tickSpell = cast;
+		castProbability = probability;
+	}
+	
+	public void setDeathCast(String cast) {
+		deathSpell = cast;
 	}
 	
 	public void setBirthRange(int range) {
@@ -539,16 +568,14 @@ public class SimulateBatch extends VolumeBatch {
 					center = RandomUtils.setDirection(center, direction);
 				}
 				
-				// JUST TESTING!
-				if (castSpell.length() > 0) {
-					float castProbability = 0.1f;
+				if (tickSpell.length() > 0) {
 					if (Math.random() < castProbability) {
-						Spell spell = mage.getSpell(castSpell);
-						if (castSpell != null) {
+						Spell spell = mage.getSpell(tickSpell);
+						if (spell != null) {
 							if (DEBUG) {
-								controller.getLogger().info(commandName + " casting " + castSpell + " at " + targetDescription);
+								controller.getLogger().info(commandName + " casting " + tickSpell + " at " + targetDescription);
 							}
-							String[] parameters = {"cost_reduction", "1", "target_through air,", birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
+							String[] parameters = {"cost_reduction", "1", "target_through", "air," + birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
 							spell.cast(parameters);
 						}
 					}

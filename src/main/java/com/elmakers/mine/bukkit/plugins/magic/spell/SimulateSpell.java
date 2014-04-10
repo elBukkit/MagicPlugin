@@ -170,9 +170,12 @@ public class SimulateSpell extends BlockSpell {
 			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
 			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
 
-			batch.setCast(parameters.getString("cast", ""));
-			
+			batch.setTickCast(parameters.getString("cast", ""), parameters.getFloat("cast_probability", 1.0f));
+			batch.setDeathCast(parameters.getString("death_cast", ""));
+					
 			batch.target(targetMode);
+			
+			batch.setDrop(parameters.getString("drop"));
 		}
 		
 		batch.setBirthRange(parameters.getInt("birth_range", 0));
