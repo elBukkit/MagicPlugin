@@ -40,7 +40,7 @@ public class ConstructBatch extends VolumeBatch {
 	private final Mage mage;
 	private final BrushSpell spell;
 	private final boolean spawnFallingBlocks;
-	private Vector fallingBlockVelocity = null;
+	private float fallingBlockSpeed = 0;
 	private boolean copyEntities = true;
 	private final Map<Long, BlockData> attachedBlockMap = new HashMap<Long, BlockData>();
 	private final List<BlockData> attachedBlockList = new ArrayList<BlockData>();
@@ -101,8 +101,8 @@ public class ConstructBatch extends VolumeBatch {
 		this.power = power;
 	}
 	
-	public void setFallingBlockVelocity(Vector velocity) {
-		fallingBlockVelocity = velocity;
+	public void setFallingBlockSpeed(float speed) {
+		fallingBlockSpeed = speed;
 	}
 	
 	public void setOrientDimensionMax(int maxDim) {
@@ -492,8 +492,9 @@ public class ConstructBatch extends VolumeBatch {
 			if (spawnFallingBlocks) {
 				FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
 				falling.setDropItem(false);
-				if (fallingBlockVelocity != null) {
-					falling.setVelocity(fallingBlockVelocity);
+				if (fallingBlockSpeed != 0) {
+					Vector direction = falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
+					falling.setVelocity(direction);
 				}
 			}
 		}

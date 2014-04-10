@@ -1870,7 +1870,7 @@ blast:
     parameters:
         allow_max_range: false
         range: 16
-        speed: 2
+        speed: 1.5
         falling: true
         material: air
         radius: 1

@@ -116,14 +116,6 @@ public class ConstructSpell extends BrushSpell
 
 		int thickness = parameters.getInt("thickness", 0);
 		
-		Vector forceVector = null;
-		if (falling)
-		{
-			if (force != 0) {
-				forceVector = getLocation().getDirection();
-				forceVector.setY(-forceVector.getY()).normalize().multiply(force);
-			}
-		}
 		String typeString = parameters.getString("type", "");
 
 		ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
@@ -144,8 +136,8 @@ public class ConstructSpell extends BrushSpell
 			}
 		} 
 		
-		if (forceVector != null) {
-			batch.setFallingBlockVelocity(forceVector);
+		if (falling) {
+			batch.setFallingBlockSpeed(force);
 		}
 		if (parameters.containsKey("orient_dimension_max")) {
 			batch.setOrientDimensionMax(parameters.getInteger("orient_dimension_max", null));
