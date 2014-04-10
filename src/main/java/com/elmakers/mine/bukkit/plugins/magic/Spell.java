@@ -553,7 +553,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		return getMessage(messageKey, "");
 	}
 	
-	@SuppressWarnings("deprecation")
 	public String getMessage(String messageKey, String def) {
 		String message = Messages.get("spells.default." + messageKey, def);
 		message = Messages.get("spells." + key + "." + messageKey, message);
@@ -569,14 +568,24 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		message = message.replace("$target", useTargetName);
 		
-		// TODO: See duplication in BrushSpell, need default material
 		String materialName = "None";
-		if (target != null && target.isValid()) {
-			materialName = MaterialBrush.getMaterialName(target.getBlock().getType(), target.getBlock().getData());
+		MaterialAndData displayMaterial = getDisplayMaterial();
+		if (displayMaterial != null) {
+			materialName = MaterialBrush.getMaterialName(displayMaterial);
 		}
 		message = message.replace("$material", materialName);
 		
 		return message;
+	}
+
+	@SuppressWarnings("deprecation")
+	protected MaterialAndData getDisplayMaterial()
+	{
+		if (target != null && target.isValid()) {
+			return new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
+		}
+		
+		return null;
 	}
 	
 	protected void setTargetName(String name) {
