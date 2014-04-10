@@ -537,12 +537,27 @@ public class ConfigurationNode {
 		 Color o = castColor(getProperty(path));
 		 return o == null ? def : o;
 	 }
+	 
+	 public static Set<Material> parseMaterials(String csv)
+	 {
+		 String[] nameList = StringUtils.split(csv, ',');
+		 Set<Material> materials = new HashSet<Material>();
+
+		 for (String matName : nameList)
+		 {
+			 Material material = toMaterial(matName);
+			 if (material != null) {
+				 materials.add(material);
+			 }
+		 }
+
+		 return materials;
+	 }
 
 	 public Set<Material> getMaterials(String key, String csvList)
 	 {
 		 List<String> defaultMatNames = new ArrayList<String>(Arrays.asList(StringUtils.split(csvList, ',')));
 		 List<String> materialData = getStringList(key, defaultMatNames);
-		 Set<String> matNames = new HashSet<String>();
 		 Set<Material> materials = new HashSet<Material>();
 
 		 for (String matName : materialData)
@@ -550,11 +565,8 @@ public class ConfigurationNode {
 			 Material material = toMaterial(matName);
 			 if (material != null) {
 				 materials.add(material);
-				 matNames.add(material.name().toLowerCase());
 			 }
 		 }
-
-		 setProperty(key, matNames);
 
 		 return materials;
 	 }

@@ -331,6 +331,9 @@ public class MagicController implements Listener
 
 	public Set<Material> getMaterialSet(String name)
 	{
+		if (name.contains(",")) {
+			return ConfigurationNode.parseMaterials(name);
+		}
 		if (!materialSets.containsKey(name)) {
 			return new HashSet<Material>();
 		}
