@@ -97,7 +97,7 @@ public class AnimateSpell extends SimulateSpell
 				controller.updateBlock(powerBlock);
 				registerForUndo(modifiedBlocks);
 			}
-		}, 1);
+		}, SimulateBatch.POWER_DELAY_TICKS + 1);
 		
 		return SpellResult.CAST;
 	}

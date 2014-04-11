@@ -47,6 +47,7 @@ public class SimulateBatch extends VolumeBatch {
 	};
 	
 	public static Material POWER_MATERIAL = Material.REDSTONE_BLOCK;
+	public static int POWER_DELAY_TICKS = 0;
 	
 	public static boolean DEBUG = false;
 	
@@ -91,6 +92,7 @@ public class SimulateBatch extends VolumeBatch {
 	private int z;
 	private int yRadius;
 	private int updatingIndex;
+	private int powerDelayTicks;
 	private ArrayList<Boolean> liveCounts = new ArrayList<Boolean>();
 	private ArrayList<Boolean> birthCounts = new ArrayList<Boolean>();
 	private SimulationState state;
@@ -429,6 +431,7 @@ public class SimulateBatch extends VolumeBatch {
 					die();
 				}
 			}
+			powerDelayTicks = POWER_DELAY_TICKS;
 			state = SimulationState.COMMAND_POWER;
 			return processedBlocks;
 		}
@@ -437,6 +440,12 @@ public class SimulateBatch extends VolumeBatch {
 			// Continue to power the command block
 			// Find a new direction, replace existing block
 			if (commandPowered && commandTargetBlock != null && includeCommands) {
+				// Wait a bit before powering for redstone signals to reset
+				if (powerDelayTicks > 0) {
+					powerDelayTicks--;
+					return processedBlocks;
+				}
+				
 				// First try and replace a live cell
 				BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
 				// Next try to replace a dead cell, which will affect the simulation outcome

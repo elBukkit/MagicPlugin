@@ -215,7 +215,7 @@ bounce:
         effect_damage_resistance: 600,5
 simulate:
     icon: double_plant:3
-    category: light
+    category: automata
     class: SimulateSpell
     effects:
         cast:
@@ -234,7 +234,7 @@ simulate:
         check_destructible: true
 simulate3:
     icon: sapling:3
-    category: master
+    category: automata
     class: SimulateSpell
     effects:
         cast:
@@ -256,7 +256,7 @@ simulate3:
         check_destructible: true
 glider:
     icon: sapling:2
-    category: master
+    category: automata
     class: ConstructSpell
     effects:
         cast:
@@ -279,7 +279,7 @@ glider:
         xp: 500
 virus:
     icon: fermented_spider_eye
-    category: dark
+    category: automata
     class: AnimateSpell
     effects:
         cast:
@@ -310,7 +310,7 @@ virus:
         xp: 2000
 hunter:
     icon: lever
-    category: dark
+    category: automata
     class: AnimateSpell
     effects:
         cast:
@@ -344,7 +344,7 @@ hunter:
         xp: 800
 defender:
     icon: redstone_torch_on
-    category: light
+    category: automata
     class: AnimateSpell
     effects:
         cast:
@@ -378,7 +378,7 @@ defender:
         xp: 500
 animate:
     icon: command_minecart
-    category: master
+    category: automata
     class: AnimateSpell
     effects:
         cast:
@@ -408,7 +408,7 @@ animate:
         xp: 1000
 life:
     icon: sapling:1
-    category: white
+    category: automata
     class: ConstructSpell
     effects:
         cast:
@@ -438,7 +438,7 @@ life:
         xp: 1500
 life3:
     icon: sapling:1
-    category: white
+    category: automata
     class: ConstructSpell
     effects:
         cast:
@@ -2222,7 +2222,7 @@ blob:
         xp: 25
 emp:
     icon: daylight_detector
-    category: master
+    category: automata
     class: ConstructSpell
     effects:
         cast:
@@ -2248,7 +2248,7 @@ emp:
         xp: 25
 superemp:
     icon: diode
-    category: master
+    category: automata
     class: ConstructSpell
     effects:
         cast:
