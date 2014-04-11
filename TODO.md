@@ -5,8 +5,8 @@
  - Why aren't chest contents loading properly in Life board?
  - Test place, pillar, bridge with replicate and clone materials
  
+ - Fix selling magic items to a trader not working
  - Fix Automata variants... wool blue broken? May be fixed.
- - Test/Fix Pickpocket
  - wandp configure glitch- maybe need to replace item in hand on reconfigure?
  
 ## For 3.0.0

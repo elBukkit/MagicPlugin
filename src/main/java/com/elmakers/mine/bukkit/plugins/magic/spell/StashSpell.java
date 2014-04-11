@@ -5,6 +5,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
@@ -23,7 +24,22 @@ public class StashSpell extends Spell
 		
 		Player showPlayer = mage.getPlayer();
 		if (showPlayer == null) return SpellResult.PLAYER_REQUIRED;
+		String typeString = parameters.getString("type", "ender");
 
+		// Special case for wands
+		if (targetEntity instanceof Player && targetEntity != showPlayer) {
+			Player targetPlayer = (Player)targetEntity;
+			Mage targetMage = controller.getMage(targetPlayer);
+			
+			if (!mage.isSuperPowered() && targetMage.isSuperProtected()) {
+				return SpellResult.NO_TARGET;
+			}
+			
+			if (targetMage != null && targetMage.getActiveWand() != null && typeString.equalsIgnoreCase("inventory")) {
+				targetMage.getActiveWand().closeInventory();
+			}
+		}
+		
 		// Make sure to close the player's wand
 		Wand activeWand = mage.getActiveWand();
 		if (activeWand != null) {
@@ -32,7 +48,6 @@ public class StashSpell extends Spell
 		
 		HumanEntity humanTarget = (HumanEntity)targetEntity;
 		
-		String typeString = parameters.getString("type", "ender");
 		if (typeString.equalsIgnoreCase("inventory")) {
 			Inventory inventory = humanTarget.getInventory();
 			showPlayer.openInventory(inventory);

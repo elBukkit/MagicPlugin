@@ -1043,10 +1043,14 @@ public class MagicController implements Listener
 			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
 				lastKey = wandEntry.getKey();
 				ConfigurationNode wandNode = lostWandsConfiguration.createChild(lastKey);
+				if (wandNode == null) {
+					getLogger().warning("Error saving lost wand data for " + lastKey + " " + lostWandsConfiguration.getProperty(lastKey));
+					continue;
+				}
 				wandEntry.getValue().save(wandNode);
 			}
 			lostWandsConfiguration.save();
-		} catch (Exception ex) {
+		} catch (Throwable ex) {
 			getLogger().warning("Error saving lost wand data for " + lastKey);
 			ex.printStackTrace();
 		}

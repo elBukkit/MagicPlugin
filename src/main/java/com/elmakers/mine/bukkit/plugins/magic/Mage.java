@@ -351,6 +351,7 @@ public class Mage implements CostReducer
 	{
 		if (activeWand != null && activeWand.getDamageReductionFire() > 0)
 		{
+			event.getEntity().setFireTicks(0);
 			event.setCancelled(true);
 		}
 	}
@@ -358,13 +359,13 @@ public class Mage implements CostReducer
 	public boolean isSuperProtected()
 	{
 		if (controller.hasPermission(getPlayer(), "Magic.protected")) return true;
-		return activeWand != null && activeWand.getDamageReduction() > 1;
+		return activeWand != null && activeWand.isSuperProtected();
 	}
 	
 	public boolean isSuperPowered()
 	{
 		if (controller.hasPermission(getPlayer(), "Magic.powered")) return true;		
-		return activeWand != null && activeWand.getPower() > 1;
+		return activeWand != null && activeWand.isSuperPowered();
 	}
 	
 	public void onPlayerDamage(EntityDamageEvent event)
@@ -380,6 +381,14 @@ public class Mage implements CostReducer
 		for (Spell listener : active)
 		{
 			listener.onPlayerDamage(event);
+		}
+		
+		if (isSuperProtected()) {
+			event.setCancelled(true);
+			if (player.getFireTicks() > 0) {
+				player.setFireTicks(0);
+			}
+			return;
 		}
 		
 		if (event.isCancelled()) return;

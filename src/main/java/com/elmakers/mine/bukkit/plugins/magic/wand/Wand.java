@@ -338,6 +338,7 @@ public class Wand implements CostReducer {
 	}
 
 	public float getCostReduction() {
+		if (isCostFree()) return 1.0f;
 		return controller.getCostReduction() + costReduction * WandLevel.maxCostReduction;
 	}
 	
@@ -351,6 +352,18 @@ public class Wand implements CostReducer {
 
 	public float getPower() {
 		return power;
+	}
+	
+	public boolean isSuperProtected() {
+		return damageReduction > 1;
+	}
+	
+	public boolean isSuperPowered() {
+		return power > 1;
+	}
+	
+	public boolean isCostFree() {
+		return costReduction > 1;
 	}
 
 	public float getDamageReduction() {

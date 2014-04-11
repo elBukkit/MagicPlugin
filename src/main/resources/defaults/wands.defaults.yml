@@ -1410,8 +1410,8 @@ green:
 admin:
     keep: true
     bound: true
-    cost_reduction: 10
-    protection: 10
+    cost_reduction: 2
+    protection: 2
     cooldown_reduction: 2
     health_regeneration: 2
     hunger_regeneration: 2
@@ -1443,9 +1443,8 @@ admin:
 wolf:
     keep: true
     bound: true
-    cost_reduction: 10
-    protection: 10
-    protection_fire: 1
+    cost_reduction: 2
+    protection: 2
     cooldown_reduction: 0.999
     health_regeneration: 1
     hunger_regeneration: 1
@@ -1454,7 +1453,7 @@ wolf:
     quiet: 1
     effect_color: '00AACC'
     effect_particle: magic_runes
-    effect_particle_count: 4
+    effect_particle_count: 1
     effect_particle_data: 1
     effect_sound: ambience_cave
     effect_sound_volume: 0.6
