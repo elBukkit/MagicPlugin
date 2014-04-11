@@ -87,8 +87,7 @@ public class AnimateSpell extends SimulateSpell
 
 		String message = getMessage("cast_broadcast").replace("$name", commandName);
 		if (message.length() > 0) {
-			int maxRange = parameters.getInt("target_max_range", 128);
-			controller.sendToMages(message, targetBlock.getLocation(), maxRange);	
+			controller.sendToMages(message, targetBlock.getLocation());	
 		}
 		
 		Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {

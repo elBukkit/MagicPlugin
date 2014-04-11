@@ -166,7 +166,7 @@ public class SimulateBatch extends VolumeBatch {
 	protected void die() {
 		String message = spell.getMessage("death_broadcast").replace("$name", commandName);
 		if (message.length() > 0) {
-			controller.sendToMages(message, center, huntMaxRange);	
+			controller.sendToMages(message, center);	
 		}
 		if (dropItem != null && dropItem.length() > 0) {
 			Wand magicItem = Wand.createWand(controller, dropItem);

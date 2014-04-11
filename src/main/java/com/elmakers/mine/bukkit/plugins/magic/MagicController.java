@@ -2691,7 +2691,7 @@ public class MagicController implements Listener
 							for (Automaton restoreBlock : restored) {
 								getLogger().info("Resuming block at " + restoreBlock.getLocation() + ": " + restoreBlock.getName());
 								restoreBlock.restore();
-								sendToMages(restoreBlock.getMessage(), restoreBlock.getLocation().toLocation(restoreBlock.getWorld()), toggleMessageRange);	
+								sendToMages(restoreBlock.getMessage(), restoreBlock.getLocation().toLocation(restoreBlock.getWorld()));	
 							}
 						}
 				}, 5);
@@ -2702,12 +2702,17 @@ public class MagicController implements Listener
 		}
 	}
 	
+	public void sendToMages(String message, Location location) {
+		sendToMages(message, location, toggleMessageRange);
+	}
+	
 	public void sendToMages(String message, Location location, int range) {
 		int rangeSquared = range * range;
 		if (message != null && message.length() > 0) {
 			for (Mage mage : mages.values())
 			{
 				if (!mage.isPlayer() || mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
+				if (!mage.getLocation().getWorld().equals(location.getWorld())) continue;
 				if (mage.getLocation().toVector().distanceSquared(location.toVector()) < rangeSquared) {
 					mage.sendMessage(message);
 				}
@@ -2816,7 +2821,7 @@ public class MagicController implements Listener
 	 private final File							 playerDataFolder;
 
 	 private int								 toggleCooldown					= 1000;
-	 private int								 toggleMessageRange				= 256;
+	 private int								 toggleMessageRange				= 1024;
 	 
 	 private boolean							 bypassBuildPermissions         = false;
 	 private boolean							 bypassPvpPermissions           = false;
