@@ -19,6 +19,7 @@
  - Recall can now support CommandBook warps.
  - Renaming a wand on an anvil will clear its description.
  - Shrink will change a mob to a baby before it turns it to a skull
+ - Add "wand duplicate" command
 
 ## 2.9.8.AUTOMATA
 

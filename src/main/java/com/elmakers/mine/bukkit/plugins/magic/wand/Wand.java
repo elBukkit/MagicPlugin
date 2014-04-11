@@ -229,9 +229,13 @@ public class Wand implements CostReducer {
 	
 	public void checkId() {
 		if (id.length() == 0) {
-			id = UUID.randomUUID().toString();
-			saveState();
+			generateId();
 		}
+	}
+	
+	public void generateId() {
+		id = UUID.randomUUID().toString();
+		saveState();
 	}
 	
 	public void unenchant() {

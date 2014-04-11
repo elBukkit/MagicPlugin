@@ -108,6 +108,8 @@ wand:
     player_enchanted: $name's $item has been enchanted
     unenchanted: Your wand has been unenchanted
     player_unenchanted: $name's wand has been unenchanted
+    duplicated: Your wand has been duplicated
+    player_duplciated: $name's wand has been duplicated
     unknown_template: Unknown wand name $name
     reconfigured: Wand reconfigured
     player_reconfigured: $name's wand reconfigured

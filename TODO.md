@@ -3,26 +3,18 @@
 ## For 2.9.9
  
  - Why aren't chest contents loading properly in Life board?
- - Place does NOT work with replicate (pillar/bridge a bit wonky too?)
+ - Test place, pillar, bridge with replicate and clone materials
  
- - Fix Automata variants... wool blue broke!
- - Automata cast spell on death, detect death and unload mage
- - Implode spell :)
- - Generalize automata spell casting
- 
- - Config-driven WandLevel limits
-
- - Interpolate autonoma directional changes, configurable speed
-
- - Traders losing prices!
-  
+ - Fix Automata variants... wool blue broken? May be fixed.
  - Test/Fix Pickpocket
  - wandp configure glitch- maybe need to replace item in hand on reconfigure?
-
- - Add "wand duplicate" command
  
 ## For 3.0.0
 
+ - Config-driven WandLevel limits
+ - Generalize automata spell casting
+ - Interpolate autonoma directional changes, configurable speed
+ - Futher investigate traders losing prices- not a problem anymore?
  - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Retry limit on construction batches
  - Customizable wand crafting recipes

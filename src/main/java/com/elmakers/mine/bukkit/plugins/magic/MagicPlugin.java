@@ -35,6 +35,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.MagicRunnable;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
@@ -700,6 +701,13 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 			onWandUnenchant(sender, player);
 			return true;
 		}
+		if (subCommand.equalsIgnoreCase("duplicate"))
+		{
+			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandDuplicate(sender, player);
+			return true;
+		}
 		if (subCommand.equalsIgnoreCase("organize"))
 		{
 			if (!controller.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -880,6 +888,26 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		mage.sendMessage(Messages.get("wand.unenchanted"));
 		if (sender != player) {
 			sender.sendMessage(Messages.getParameterized("wand.player_unenchanted", "$name", player.getName()));
+		}
+		return true;
+	}
+
+	public boolean onWandDuplicate(CommandSender sender, Player player)
+	{
+		if (!checkWand(sender, player, false, false)) {
+			return true;
+		}
+		Mage mage = controller.getMage(player);
+		Wand wand = mage.getActiveWand();
+
+		ItemStack newItem = InventoryUtils.getCopy(wand.getItem());
+		Wand newWand = new Wand(controller, newItem);
+		newWand.generateId();
+		giveItemToPlayer(player, newWand.getItem());
+		
+		mage.sendMessage(Messages.get("wand.duplicated"));
+		if (sender != player) {
+			sender.sendMessage(Messages.getParameterized("wand.player_duplicated", "$name", player.getName()));
 		}
 		return true;
 	}
