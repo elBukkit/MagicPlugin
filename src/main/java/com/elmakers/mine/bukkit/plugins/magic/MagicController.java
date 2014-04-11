@@ -1037,14 +1037,17 @@ public class MagicController implements Listener
 	}
 	
 	protected void saveLostWandData() {
+		String lastKey = "";
 		try {
 			Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
 			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
-				ConfigurationNode wandNode = lostWandsConfiguration.createChild(wandEntry.getKey());
+				lastKey = wandEntry.getKey();
+				ConfigurationNode wandNode = lostWandsConfiguration.createChild(lastKey);
 				wandEntry.getValue().save(wandNode);
 			}
 			lostWandsConfiguration.save();
 		} catch (Exception ex) {
+			getLogger().warning("Error saving lost wand data for " + lastKey);
 			ex.printStackTrace();
 		}
 	}
