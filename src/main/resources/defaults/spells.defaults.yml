@@ -299,11 +299,13 @@ virus:
         target_max_range: 256
         delay: 1500
         target_mode: hunt
-        target_types: any
+        target_types: mage
         live_rules: 3,4,5,6,7,8,9
         birth_rules: 5
         drop: virusheart
         death_cast: nuke
+        cast_probability: 0.1
+        cast: boom
     costs:
         xp: 2000
 hunter:
@@ -332,6 +334,7 @@ hunter:
         target_mode: hunt
         target_types: player
         cast: curse
+        cast_probability: 0.1
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         move: 3
@@ -370,8 +373,7 @@ defender:
         birth_rules: 4,5
         move: 4
         drop: defenderheart
-        death_cast: blast
-         blast radius 6
+        death_cast: blast radius 6
     costs:
         xp: 500
 animate:
