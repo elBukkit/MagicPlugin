@@ -3,6 +3,10 @@
 Any of these parameters may be used in spells.yml, or via command-line, command blocks or any
 plugins that support forcing Bukkit commands. If used in spells.yml, these go in the "parameters" map.
 
+Examples of usage can always be found in the spells.defaults.yml file:
+
+https://github.com/elBukkit/MagicPlugin/blob/master/src/main/resources/defaults/spells.defaults.yml
+
 If used command-line, they are paired as parameters, and can be used with /cast or /castp. Some examples:
 
 Encase the player in a glass shell
@@ -168,6 +172,7 @@ FireworkEffect: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/
 
 # Messages
 
-All spell text is contained in messages.yml, though non-builtin spells may include a default name and description in the spell definition.
+All spell text is contained in messages.yml, though non-builtin spells may 
+include a default name and description in the spells.yml definition.
 
 
