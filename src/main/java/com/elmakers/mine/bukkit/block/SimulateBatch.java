@@ -599,7 +599,7 @@ public class SimulateBatch extends VolumeBatch {
 							if (DEBUG) {
 								controller.getLogger().info(commandName + " casting " + tickSpell + " at " + targetDescription);
 							}
-							String[] parameters = {"cost_reduction", "1", "target_through", "air," + birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
+							String[] parameters = {"cost_reduction", "1", "transparent", "air," + birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
 							spell.cast(parameters);
 						}
 					}

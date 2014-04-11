@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectSingle;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
+import com.elmakers.mine.bukkit.plugins.magic.spell.AnimateSpell;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -408,7 +409,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 
 	public boolean cast()
 	{
-		return cast(new String[0]);
+		return cast(new String[0], null);
 	}
 
 	static public void addParameters(String[] extraParameters, ConfigurationNode parameters)
@@ -426,12 +427,20 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		
 	}
-
+	
 	public boolean cast(String[] extraParameters)
 	{
-		this.preCast();
+		return cast(extraParameters, null);
+	}
+
+	public boolean cast(String[] extraParameters, Location defaultLocation)
+	{
+		this.location = defaultLocation;
 		this.target = null;
 		this.targetName = null;
+		this.targetLocation = null;
+
+		this.preCast();
 		
 		final ConfigurationNode parameters = new ConfigurationNode(this.parameters);
 		addParameters(extraParameters, parameters);
@@ -499,6 +508,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			} else if (fizzleChance > 0 && Math.random() < fizzleChance) {
 				result = SpellResult.FIZZLE;
 			}
+		}
+		
+		if (this instanceof AnimateSpell && parameters.getBoolean("animate", false) == false) {
+			Bukkit.getLogger().info("ANIMATE cast by " + mage.getName());
+			Bukkit.getLogger().info("" + location);
+			Bukkit.getLogger().info("" + targetLocation);
+			Bukkit.getLogger().info(parameters.getString("material"));
 		}
 		
 		if (result == null) {
@@ -1152,11 +1168,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			return mage.getLocation();
 		}
 		return null;
-	}
-	
-	protected void setLocation(Location location)
-	{
-		this.location = location;
 	}
 
 	protected Location getEyeLocation()

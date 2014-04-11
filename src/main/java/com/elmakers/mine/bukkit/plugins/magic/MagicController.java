@@ -2551,9 +2551,8 @@ public class MagicController implements Listener
 		}
 
 		// Make it free and skip cooldowns, if configured to do so.
-		spell.setLocation(targetLocation);
 		toggleCastCommandOverrides(mage, true);
-		spell.cast(parameters);
+		spell.cast(parameters, targetLocation);
 		toggleCastCommandOverrides(mage, false);
 		if (sender != player && sender != null) {
 			String castMessage = "Cast " + spellName;
