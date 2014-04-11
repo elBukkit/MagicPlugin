@@ -671,10 +671,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		} else {
 			preventPassThroughMaterials = controller.getMaterialSet("indestructible");
 		}
-		
-		if (parameters.containsKey("target_through")) {
-			targetThroughMaterials = parameters.getMaterials("target_through");
-		} else if (parameters.containsKey("transparent")) {
+		if (parameters.containsKey("transparent")) {
 			targetThroughMaterials.clear();
 			targetThroughMaterials.addAll(controller.getMaterialSet(parameters.getString("transparent")));
 		} else {
