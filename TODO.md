@@ -1,16 +1,14 @@
 # TODO
-
-## For 2.9.9
- 
- - Why aren't chest contents loading properly in Life board?
- - Test place, pillar, bridge with replicate and clone materials
- 
- - Fix selling magic items to a trader not working
- - Fix Automata variants... wool blue broken? May be fixed.
- - wandp configure glitch- maybe need to replace item in hand on reconfigure?
  
 ## For 3.0.0
 
+ - Fix selling magic items to a trader not working
+ - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
+ - wandp configure glitch- maybe need to replace item in hand on reconfigure?
+ 
+ - Test place, pillar, bridge with replicate and clone materials
+ - Why aren't chest contents loading properly in Life board?
+ 
  - Config-driven WandLevel limits
  - Generalize automata spell casting
  - Interpolate autonoma directional changes, configurable speed
