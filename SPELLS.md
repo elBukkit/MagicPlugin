@@ -10,16 +10,23 @@ https://github.com/elBukkit/MagicPlugin/blob/master/src/main/resources/defaults/
 If used command-line, they are paired as parameters, and can be used with /cast or /castp. Some examples:
 
 Encase the player in a glass shell
+
+```
 castp @p shell target self material glass
+```
 
 Create an automated flare sentry, will always fire straight up
+
+```
 cast flare pdy 1 pdx 0 pdz 0 py ~5
+```
 
 For clarity, it is best to use the full parameter name in spells.yml - the shorthand names are meant for command block use.
 
 ## Common Parameters
 
 | Name                | Shorthand | Values       | Description
+|---------------------|-----------|--------------|-----------------
 | cooldown            | cool      | milliseconds | How long to wait between casts
 | range               |           | # blocks     | How far away the spell may target
 | allow_max_range     |           | true/false   | Whether or not a spell will cast without a target
@@ -45,16 +52,19 @@ These are spells that are activated, and generally drain mana or are
 deactivated after a certain time.
 
 | Name         | Shorthand | Values   | Description
+|--------------|-----------|----------|-----------------
 | duration     | duration  | millis   | How long before the spell deactivates
 
 ## Selection (Two-Click) Spells
 
 | Name          | Shorthand | Values         | Description
+|---------------|-----------|----------------|-----------------
 | t2x, t2y, t2z |           | block coords   | Initial (first-click) target, relative positions will be from player location
 
 ## Block Modification Spells
 
 | Name               | Shorthand | Values         | Description
+|--------------------|-----------|----------------|-----------------
 | indestructible     | id        | materials      | Which materials a spell will not ever modify
 | destructible       |           | materials      | Which materials a spell will modify if check_destructible is true (the default)
 | check_destructible | cd        | true/false     | Whether or not to check the "destructible" list when modifying blocks
@@ -63,6 +73,7 @@ deactivated after a certain time.
 ## Brush Spells
 
 | Name             | Shorthand | Values         | Description
+|------------------|-----------|----------------|-----------------
 | material         | m         | material       | The material to use, overriding the player or wand brush
 | mm               |           | material       | The "modification" material, generally used with "erase" in a schematic, clone or replicate spell.
 | omx, omy, omz    |           | vector         | The offset from the target location to use for material sampling (e.g. clone, schematic)
@@ -71,6 +82,7 @@ deactivated after a certain time.
 ## ConstructSpell
 
 | Name             | Shorthand | Values         | Description
+|------------------|-----------|----------------|-----------------
 | type             |           | cuboid, sphere, pyramid | The type of construction
 | radius           | r         | blocks         | The radius of this construction - the length from the center to the farthest side.
 | falling          |           | true/false     | Whether or not to spawn falling blocks
@@ -102,6 +114,7 @@ See https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/buk
 The following may be used outside of the "parameters" block in spells.yml to further customize spells:
 
 | Name             | Values         | Description
+|------------------|----------------|-----------------
 | icon             | material       | The icon to use for this spell in a wand. If ommited, this spell is command-line only.
 | category         | string         | A key that maps to a specific category. Used for grouping spells in a list, and wand organization
 | class            | Class name     | The class name for this spell. May be a builtin, or a fully-qualified classname for an external Spell
@@ -125,6 +138,7 @@ the player's experience will be drained.
 Each effect is configured using a "player" class and several common parameters:
 
 | Name              | Values         | Description
+|-------------------|----------------|-----------------
 | class             | Class name     | An effect player class, either a builtin or a fully-qualified external EffectPlayer
 | location          | target/origin/both | Where to play the effect
 | color             | RRGGBB         | The main color to use, only applies to some effects (like Fireworks)
@@ -148,6 +162,7 @@ Each effect is configured using a "player" class and several common parameters:
 ## Repeating Effects
 
 | Name              | Values         | Description
+|-------------------|----------------|-----------------
 | iterations        | count          | How many times to repeat the effect
 | period            | milliseconds   | How often to repeat the effect
 | reverse           | true/false     | Whether or not to play the effect in reverse
@@ -155,12 +170,14 @@ Each effect is configured using a "player" class and several common parameters:
 ## EffectRing
 
 | Name              | Values         | Description
+|-------------------|----------------|-----------------
 | radius            | blocks         | How large the ring should get
 | size              | count          | How many effects to spawn per ring
 
 ## EFfectTrail
 
 | Name              | Values         | Description
+|-------------------|----------------|-----------------
 | length            | blocks         | The length of the trail, may be automatic if a target was provided.
 
 enum reference:

@@ -6,10 +6,12 @@ https://github.com/elBukkit/MagicPlugin/blob/master/src/main/resources/defaults/
 
 Any of the parameters below may be used in a template, or applied to a wand in-game via any of the following commands
 
+```
 /wand configure
 /wand upgrade
 /wandp @p configure
 /wandp @p upgrade
+```
 
 The "upgrade" command will never lower a value on a wand, and is meant for in-game command block or other
 use, to allow players to upgrade their wands, such incrase mana regeneration to a set limit, while not
@@ -20,11 +22,8 @@ parent node.
 
 ## Parameters
 
-| cooldown            | cool      | milliseconds | How long to wait between casts
-
-
-
 | Name              	  	| Values       | Description
+|---------------------------|--------------|------------------------
 | active_spell				| spell name   | The currently active spell
 | active_material			| material     | The currently active material brush
 | xp						| integer      | Current stored xp (Mana)

@@ -21,7 +21,9 @@ If you want to change something you see in the defaults, add an entry to the cor
 
 For instance, if you want to disable wand crafting, add
 
+```
 enable_crafting: false
+```
 
 to plugins/Magic/config.yml
 
@@ -42,7 +44,8 @@ So, this would give the KaBoom spell a 1-minute cooldown.
 All in-game text is contained in messages.defaults.yml. You may override any of the messaging as you would any of the
 other configuration files. For instance, to change the cast message for nuke, you would add the following to plugins/Magic/messages.yml
 
+```
 spells:
   nuke:
     cast: Oh dear lord, no!!!!
-
+```

@@ -6,7 +6,7 @@ Automata are an experimental new aspect to Magic that can bring an interesting n
 
 TODO: Add more documentation!
 
-## Glider ## 
+## Glider
 
 The first automaton, a dumb drone that always travels SE, following the 2D Life rules. 
 
@@ -23,18 +23,18 @@ Do note that whatever material you cast the spell on (block you're pointing at),
 the automaton has free reign to destroy. It is otherwise normally non-destructive, 
 in that you can clear away anything it leaves behind and everything is intact underneath.
 
-## Virus ## 
+## Virus
 
 An unchecked experiment in 3D Life, is now on version 8.0 - 
 it will track down nearby mobs, focusing on players and other Automaton- 
 it leaves a huge swath of mess in its wake (not destruction, per se, it just encases things up)
 
-## Hunter ## 
+## Hunter
 
 A smaller, faster, more compact (about 5x5 blocks) version of the Virus, 
 tracks down players and suffocates them. 
 (The Virus is actually normally disperse enough that it does not kill you... a weakness!)
 
-## Defender ## 
+## Defender
 
 A slightly larger and more disperse version of Hunter that tracks down nearby Automata and disables them.
