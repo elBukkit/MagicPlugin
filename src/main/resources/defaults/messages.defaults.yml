@@ -117,10 +117,10 @@ wand:
     player_renamed: $name's wand renamed
     self_destruct: Your wands did not survive the dimensional shift!
 costs:
-    xp_amount: $amount Mana
+    xp_amount: $amount XP
     mana_amount: $amount Mana
     mana: Mana
-    xp: Mana
+    xp: XP
     insufficient_resources: Not enough $cost
 cooldown:
     wait_seconds: You must wait another $seconds seconds.

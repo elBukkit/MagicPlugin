@@ -127,10 +127,11 @@ public class CastingCost
 		if (item != null && getAmount() != 0) {
 			return MaterialBrush.getMaterialName(item);
 		}
-		if (reducer.usesMana()) {
-			return Messages.get("costs.mana");
+		if (reducer != null && !reducer.usesMana()) {
+			return Messages.get("costs.xp");
 		}
-		return Messages.get("costs.xp");
+
+		return Messages.get("costs.mana");
 	}
 
 	public String getFullDescription(CostReducer reducer)
@@ -138,9 +139,9 @@ public class CastingCost
 		if (item != null) {
 			return (int)getAmount(reducer) + " " + MaterialBrush.getMaterialName(item);
 		}
-		if (reducer != null && reducer.usesMana()) {
-			return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+		if (reducer != null && !reducer.usesMana()) {
+			return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
 		}
-		return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+		return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
 	}
 }
