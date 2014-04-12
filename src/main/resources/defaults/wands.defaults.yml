@@ -57,7 +57,7 @@
 #
 #       # If true, this wand can not be enchanted, combined or otherwise modified
 #
-#       modifiable: true
+#       locked: true
 #
 #       # Casting cost and cooldown reduction
 #
@@ -592,7 +592,7 @@ painter:
         - stained_glass_pane:15
         - schematic:rainbow
 decorator:
-    modifiable: false
+    locked: true
     cost_reduction: 1
     effect_color: '118811'
     active_spell: convert
@@ -1602,7 +1602,7 @@ wolf:
         - schematic:beacon
 CoOoD3R:
    hidden: true
-   modifiable: true
+   locked: false
    keep: true
    bound: true
    effect_color: 888888
@@ -1640,7 +1640,7 @@ CoOoD3R:
        - obsidian
 lathame:
    hidden: true
-   modifiable: true
+   locked: false
    keep: true
    bound: true
    effect_color: FF8888
@@ -2178,7 +2178,7 @@ recalltoken:
     icon: compass
     indestructible: false
     cost_reduction: 10
-    modifiable: false
+    locked: true
     uses: 10
     keep: true
     effect_color: 'FF0000'
@@ -2189,7 +2189,7 @@ hunterheart:
     icon: lever
     indestructible: false
     cost_reduction: 0.5
-    modifiable: false
+    locked: true
     uses: 1
     effect_color: 'FF0000'
     spells:
@@ -2199,7 +2199,7 @@ virusheart:
     icon: fermented_spider_eye
     indestructible: false
     cost_reduction: 0.5
-    modifiable: false
+    locked: true
     uses: 1
     effect_color: 'FF0000'
     spells:
@@ -2209,7 +2209,7 @@ defenderheart:
     icon: redstone_torch_on
     indestructible: false
     cost_reduction: 0.5
-    modifiable: false
+    locked: true
     uses: 1
     effect_color: 'FF0000'
     spells:
