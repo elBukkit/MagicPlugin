@@ -206,4 +206,10 @@ We've narrowed down the wands breaking to the "clicksort" plugin, when someone o
 
 ---
 
+Peda1996
+3 minutes ago - 0 likes Like
+Can you add the Feature that it is working on the Plugin shopkeepers?
+
+-----
+
 	
