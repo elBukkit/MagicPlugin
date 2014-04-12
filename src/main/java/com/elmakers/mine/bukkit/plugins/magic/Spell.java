@@ -37,7 +37,6 @@ import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectSingle;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
-import com.elmakers.mine.bukkit.plugins.magic.spell.AnimateSpell;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -508,13 +507,6 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 			} else if (fizzleChance > 0 && Math.random() < fizzleChance) {
 				result = SpellResult.FIZZLE;
 			}
-		}
-		
-		if (this instanceof AnimateSpell && parameters.getBoolean("animate", false) == false) {
-			Bukkit.getLogger().info("ANIMATE cast by " + mage.getName());
-			Bukkit.getLogger().info("" + location);
-			Bukkit.getLogger().info("" + targetLocation);
-			Bukkit.getLogger().info(parameters.getString("material"));
 		}
 		
 		if (result == null) {

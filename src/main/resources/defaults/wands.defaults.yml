@@ -2177,7 +2177,7 @@ recalltoken:
     active_spell: recall
     icon: compass
     indestructible: false
-    cost_reduction: 10
+    cost_reduction: 2
     locked: true
     uses: 10
     keep: true
