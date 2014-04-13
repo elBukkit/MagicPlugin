@@ -436,6 +436,13 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	public boolean cast(String[] extraParameters, Location defaultLocation)
 	{
 		this.location = defaultLocation;
+		Location mageLocation = mage != null ? mage.getLocation() : null;
+		
+		// Kind of a hack, but assume the default location has no direction.
+		if (defaultLocation != null && mageLocation != null) {
+			this.location.setPitch(mageLocation.getPitch());
+			this.location.setYaw(mageLocation.getYaw());
+		}
 		this.target = null;
 		this.targetName = null;
 		this.targetLocation = null;

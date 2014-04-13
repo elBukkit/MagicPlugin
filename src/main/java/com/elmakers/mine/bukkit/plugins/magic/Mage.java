@@ -155,6 +155,20 @@ public class Mage implements CostReducer
 		this.location = location;
 	}
 	
+	public void setLocation(Location location, boolean direction) {
+		if (!direction) {
+			if (this.location == null) {
+				this.location = location;
+			} else {
+				this.location.setX(location.getX());
+				this.location.setY(location.getY());
+				this.location.setZ(location.getZ());
+			}
+		} else {
+			this.location = location;
+		}
+	}
+	
 	public void clearCache() {
 		if (brush != null) {
 			brush.clearSchematic();
@@ -677,7 +691,7 @@ public class Mage implements CostReducer
 					location.setY(blockLocation.getY());
 					location.setZ(blockLocation.getZ());
 				}
-				setLocation(location);
+				setLocation(location, false);
 			} else {
 				setLocation(null);
 			}
