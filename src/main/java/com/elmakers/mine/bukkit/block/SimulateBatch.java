@@ -170,12 +170,30 @@ public class SimulateBatch extends VolumeBatch {
 		if (message.length() > 0) {
 			controller.sendToMages(message, center);	
 		}
+		
+		// Kill power block
+		if (castCommandBlock == null) {
+			castCommandBlock = center.getBlock();
+		}
+		for (BlockFace powerFace : POWER_FACES) {
+			Block checkForPower = castCommandBlock.getRelative(powerFace);
+			if (checkForPower.getType() == POWER_MATERIAL) {
+				if (commandReload) {
+					controller.unregisterBlockForReloadToggle(checkForPower);
+				}
+				powerSimMaterial.modify(checkForPower);
+			}
+		}
+		
+		// Drop item
 		if (dropItem != null && dropItem.length() > 0) {
 			Wand magicItem = Wand.createWand(controller, dropItem);
 			if (magicItem != null) {
 				center.getWorld().dropItemNaturally(center, magicItem.getItem());
 			}
 		}
+		
+		// Cast death spell
 		if (deathSpell.length() > 0) {
 			String spellName = deathSpell;
 			String[] defaultParameters = {"cost_reduction", "1", "destructible", "air," + birthMaterial.getMaterial().name().toLowerCase(), "target", "self"};
