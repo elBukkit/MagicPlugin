@@ -16,6 +16,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -64,6 +66,7 @@ public class SimulateBatch extends VolumeBatch {
 	private String deathSpell;
 	private float castProbability;
 	private String dropItem;
+	private int dropXp;
 	private boolean reverseTargetDistanceScore = false;
 	private int commandMoveRangeSquared = 9;
 	private int huntMaxRange = 128;
@@ -190,6 +193,15 @@ public class SimulateBatch extends VolumeBatch {
 			Wand magicItem = Wand.createWand(controller, dropItem);
 			if (magicItem != null) {
 				center.getWorld().dropItemNaturally(center, magicItem.getItem());
+			}
+		}
+		
+		// Drop Xp
+		if (dropXp > 0) {
+			Entity entity = center.getWorld().spawnEntity(center, EntityType.EXPERIENCE_ORB);
+			if (entity != null && entity instanceof ExperienceOrb) {
+				ExperienceOrb orb = (ExperienceOrb)entity;
+				orb.setExperience(dropXp);
 			}
 		}
 		
@@ -523,8 +535,9 @@ public class SimulateBatch extends VolumeBatch {
 		}
 	}
 	
-	public void setDrop(String dropName) {
+	public void setDrop(String dropName, int dropXp) {
 		this.dropItem = dropName;
+		this.dropXp = dropXp;
 	}
 	
 	public void setTickCast(String cast, float probability) {

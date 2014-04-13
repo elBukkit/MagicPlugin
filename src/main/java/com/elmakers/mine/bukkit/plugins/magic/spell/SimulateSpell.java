@@ -175,7 +175,7 @@ public class SimulateSpell extends BlockSpell {
 					
 			batch.target(targetMode);
 			
-			batch.setDrop(parameters.getString("drop"));
+			batch.setDrop(parameters.getString("drop"), parameters.getInt("drop_xp", 0));
 		}
 		
 		batch.setBirthRange(parameters.getInt("birth_range", 0));

@@ -306,6 +306,7 @@ virus:
         death_cast: nuke
         cast_probability: 0.1
         cast: boom
+        drop_xp: 1000
     costs:
         xp: 2000
 hunter:
@@ -339,6 +340,7 @@ hunter:
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         move: 3
         drop: hunterheart
+        drop_xp: 500
         death_cast: blast radius 4
     costs:
         xp: 800
@@ -374,6 +376,7 @@ defender:
         move: 4
         drop: defenderheart
         death_cast: blast radius 6
+        drop_xp: 100
     costs:
         xp: 500
 animate:
@@ -1605,7 +1608,7 @@ place:
     costs:
         xp: 10
 stalactite:
-    icon: wood_axe
+    icon: iron_axe
     category: engineering
     class: PillarSpell
     effects:
@@ -1795,6 +1798,53 @@ supercube:
         transparent: transparent_to_construction
     costs:
         xp: 150
+backup:
+    icon: diamond_pickaxe
+    category: engineering
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_retract
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        allow_max_range: false
+        range: 32
+        max_dimension: 16
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+        material: clone
+        mm: erase
+        otworld: world_backup
+        omworld: world
+        mtarget: true
+    costs:
+        xp: 500
+repair:
+    icon: gold_pickaxe
+    category: engineering
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_extend
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 32
+        radius: 4
+        type: cuboid
+        transparent: transparent_to_construction
+        material: clone
+        otworld: world
+        omworld: world_backup
+        mtarget: true
+    costs:
+        xp: 80
 workbench:
     icon: workbench
     category: engineering
@@ -1883,7 +1933,7 @@ blast:
     costs:
         xp: 45
 tunnel:
-    icon: gold_pickaxe
+    icon: iron_pickaxe
     category: earthbending
     class: TunnelSpell
     effects:
@@ -2131,7 +2181,7 @@ sandblast:
     costs:
         xp: 50
 mine:
-    icon: iron_pickaxe
+    icon: stone_pickaxe
     category: mining
     class: DropSpell
     effects:
@@ -2149,7 +2199,7 @@ mine:
     costs:
         xp: 10
 chop:
-    icon: iron_axe
+    icon: stone_axe
     category: farming
     class: DropSpell
     effects:
