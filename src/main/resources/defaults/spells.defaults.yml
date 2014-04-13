@@ -324,10 +324,10 @@ hunter:
         range: 32
         cooldown: 60000
         name: Hunter
-        radius: 5
-        yradius: 5
-        birth_range: 3
-        live_range: 3
+        radius: 6
+        yradius: 6
+        birth_range: 4
+        live_range: 4
         target_min_range: 1
         target_max_range: 128
         delay: 500
@@ -1386,7 +1386,7 @@ cushion:
     costs:
         xp: 10
 gasp:
-    icon: empty_bottle
+    icon: glass_bottle
     category: waterbending
     class: ConstructSpell
     effects:

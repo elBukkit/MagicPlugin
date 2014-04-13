@@ -526,7 +526,7 @@ spells:
         target_selected: Cast again to build box
         fail: Too large!
         cast_finish: Filled $count blocks with $material
-    superbox:
+    supercube:
         name: SuperCube
         description: Create a large solid cube
         usage: Cast twice to construct
