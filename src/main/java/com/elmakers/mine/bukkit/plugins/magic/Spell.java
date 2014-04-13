@@ -102,6 +102,7 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	private Location                            location;
 	private Location                            targetLocation;
 	private Vector								targetLocationOffset;
+	private World								targetLocationWorld;
 	protected Location                          targetLocation2;
 	private Entity								targetEntity = null;
 	private double                              xRotation, yRotation;
@@ -737,6 +738,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 					(otyValue == null ? 0 : otyValue), 
 					(otzValue == null ? 0 : otzValue));
 		}
+		targetLocationWorld = null;
+		String otWorldName = parameters.getString("otworld", null);
+		if (otWorldName != null && otWorldName.length() > 0) {
+			targetLocationWorld = Bukkit.getWorld(otWorldName);
+		}
 		
 		// For two-click construction spells
 		defaultLocation = targetLocation == null ? defaultLocation : targetLocation;		
@@ -1228,8 +1234,12 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	protected Target getTarget()
 	{
 		target = findTarget();
+		
 		if (targetLocationOffset != null) {
 			target.add(targetLocationOffset);
+		}
+		if (targetLocationWorld != null) {
+			target.setWorld(targetLocationWorld);
 		}
 		return target;
 	}

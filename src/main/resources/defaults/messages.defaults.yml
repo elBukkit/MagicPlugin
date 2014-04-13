@@ -469,7 +469,14 @@ spells:
         target_selected: Cast again to build sphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
-        target_selected: Cast again to build sphere
+    backup:
+        name: Backup
+        description: Save your target area for Repair
+        usage: Cast twice to save
+        cancel: Backup cancelled
+        fail: Too large!
+        cast_finish: Backed up $count blocks
+        target_selected: Cast again to backup
     superemp:
         name: SuperEMP
         description: Electrify a large area
@@ -646,6 +653,10 @@ spells:
         name: Blob
         description: Create a solid blob
         cast_finish: Blobbed $count blocks with $material
+    repair:
+        name: Repair
+        description: Repair an area saved with Backup
+        cast_finish: Repaired $count blocks
     emp:
         name: EMP
         description: Electrify the area

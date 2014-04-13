@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -28,15 +30,24 @@ public abstract class BrushSpell extends BlockSpell{
 			Double dmxValue = parameters.getDouble("omx", null);
 			Double dmyValue = parameters.getDouble("omy", null);
 			Double dmzValue = parameters.getDouble("omz", null);
-			if (dmxValue != null || dmyValue != null || dmzValue != null) {
+			String dmWorldValue = parameters.getString("omworld", null);
+			World targetWorld = null;
+			if (dmWorldValue != null && dmWorldValue.length() > 0) {
+				targetWorld = Bukkit.getWorld(dmWorldValue);
+			}
+			if (dmxValue != null || dmyValue != null || dmzValue != null || targetWorld != null) {
 				Vector offset = new Vector( 
 						dmxValue == null ? 0 : dmxValue, 
 						dmyValue == null ? 0 : dmyValue, 
 						dmzValue == null ? 0 : dmzValue);
 				
 				brush.clearCloneTarget();
-				brush.setTargetOffset(offset);
-			} 
+				brush.setTargetOffset(offset, targetWorld);
+			}
+			
+			if (parameters.getBoolean("mtarget", false)) {
+				brush.clearCloneLocation();
+			}
 		} else {
 			brush = null;
 		}

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.0
+
+ - Add Backup and Repair spells.
+
 ## 2.9.9
 
  - Change enchanting range to 10 - 35
