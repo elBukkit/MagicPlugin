@@ -1141,6 +1141,7 @@ public class MagicController implements Listener
 	}
 	
 	public boolean addLostWand(Wand wand, Location dropLocation) {
+		wand.checkId();
 		if (lostWands.containsKey(wand.getId())) {
 			updateLostWand(wand, dropLocation);
 			return false;
