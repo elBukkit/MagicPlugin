@@ -21,7 +21,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -288,7 +287,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 			return;
 		}
 		
-		giveItemToPlayer(player, itemStack);
+		controller.giveItemToPlayer(player, itemStack);
 	}
 	
 	protected void onGiveBrush(CommandSender sender, Player player, String materialKey)
@@ -299,7 +298,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 			return;
 		}
 		
-		giveItemToPlayer(player, itemStack);
+		controller.giveItemToPlayer(player, itemStack);
 	}
 	
 	protected boolean onMagicGive(CommandSender sender, Player player, String[] args)
@@ -903,7 +902,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		ItemStack newItem = InventoryUtils.getCopy(wand.getItem());
 		Wand newWand = new Wand(controller, newItem);
 		newWand.generateId();
-		giveItemToPlayer(player, newWand.getItem());
+		controller.giveItemToPlayer(player, newWand.getItem());
 		
 		mage.sendMessage(Messages.get("wand.duplicated"));
 		if (sender != player) {
@@ -1176,7 +1175,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	
 		Wand wand = Wand.createWand(controller, wandKey);
 		if (wand != null) {
-			if (giveItemToPlayer(player, wand.getItem())) {
+			if (controller.giveItemToPlayer(player, wand.getItem())) {
 				wand.activate(mage);
 			}
 			if (sender != player) {
@@ -1210,7 +1209,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		Wand wand = Wand.createWand(controller, wandKey);
 		if (wand != null) {
 			wand.makeUpgrade();
-			if (giveItemToPlayer(player, wand.getItem())) {
+			if (controller.giveItemToPlayer(player, wand.getItem())) {
 				wand.activate(mage);
 			}
 			if (sender != player) {
@@ -1220,23 +1219,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
 		}
 		return true;
-	}
-	
-	protected boolean giveItemToPlayer(Player player, ItemStack itemStack) {
-		// Place directly in hand if possible
-		PlayerInventory inventory = player.getInventory();
-		ItemStack inHand = inventory.getItemInHand();
-		if (inHand == null || inHand.getType() == Material.AIR) {
-			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
-			return true;
-		} else {
-			HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
-			if (returned.size() > 0) {
-				player.getWorld().dropItem(player.getLocation(), itemStack);
-			}
-		}
-		
-		return false;
 	}
 	
 	public boolean processCastCommand(CommandSender sender, Player player, String[] castParameters)

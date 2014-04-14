@@ -165,6 +165,9 @@ keep_wands_on_death: false
 # Wands are indestructible
 indestructible_wands: true
 
+# Give new players a wand when they join.
+welcome_wand:
+
 # Prefer alternate modes for wand mechanics.
 # Possible vales are:
 # "inventory" : The default, toggles the wand inventory in/out of your player inventory

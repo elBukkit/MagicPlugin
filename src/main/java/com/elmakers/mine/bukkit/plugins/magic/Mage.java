@@ -66,6 +66,8 @@ public class Mage implements CostReducer
 	private Location 			lastDeathLocation = null;
 	private final MaterialBrush		brush;
 	
+	private boolean isNewPlayer = true;
+	
 	public Mage(String id, MagicController controller) {
 		this.id = id;
 		this.controller = controller;
@@ -706,6 +708,7 @@ public class Mage implements CostReducer
 		try {
 			if (configNode == null) return;
 
+			isNewPlayer = false;
 			playerName = configNode.getString("name", playerName);
 			lastDeathLocation = configNode.getLocation("last_death_location");
 			location = configNode.getLocation("location");
@@ -948,5 +951,10 @@ public class Mage implements CostReducer
 	public boolean hasLocation()
 	{
 		return getLocation() != null;
+	}
+	
+	public boolean isNewPlayer()
+	{
+		return this.isNewPlayer;
 	}
 }
