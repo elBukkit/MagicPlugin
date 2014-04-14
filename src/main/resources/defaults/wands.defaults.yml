@@ -1698,6 +1698,77 @@ lathame:
        - erase
        - replicate
        - map
+Art10001:
+   hidden: true
+   locked: false
+   icon: diamond_axe
+   keep: true
+   bound: true
+   effect_color: 66FFFF
+   effect_particle: lava_dripping
+   effect_particle_count: 2
+   xp_regeneration: 500
+   xp_max: 2000
+   protection: 1
+   power: 1
+   spells:
+       - fly
+       - blink
+       - collapse
+       - sniper
+       - neutron
+       - fireball
+       - boon
+       - levitate
+       - lava
+       - fill
+       - camera
+       - breach
+       - superalter
+       - farm
+       - mob
+       - cloak
+       - cat
+       - volley
+       - curse
+       - recall
+       - disintegrate
+       - laser
+       - sandblast
+       - superblast
+       - flare
+       - toss
+       - arrowrain
+       - monster
+       - torch
+       - icbm
+       - storm
+       - day
+       - superblob
+       - grenade
+       - lightning
+       - gills
+       - paint
+       - inferno
+       - fling
+       - wither
+       - frost
+       - undo
+       - glider
+       - absorb
+       - tent
+       - wolfhouse
+   materials:
+       - schematic:arena
+       - stone
+       - obsidian
+       - dirt
+       - grass
+       - copy
+       - clone
+       - erase
+       - replicate
+       - map
 guest:
     effect_color: '00FF00'
     xp_regeneration: 5
@@ -2179,7 +2250,7 @@ recalltoken:
         - recall
 hunterheart:
     active_spell: hunter
-    icon: lever
+    icon: spider_eye
     indestructible: false
     cost_reduction: 0.5
     locked: true
@@ -2199,7 +2270,7 @@ virusheart:
         - virus
 defenderheart:
     active_spell: defender
-    icon: redstone_torch_on
+    icon: quartz
     indestructible: false
     cost_reduction: 0.5
     locked: true

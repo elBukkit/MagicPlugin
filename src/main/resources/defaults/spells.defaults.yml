@@ -83,7 +83,7 @@
 # 
 
 curse:
-    icon: spider_eye
+    icon: rotten_flesh
     category: dark
     class: PotionEffectSpell
     pvp_restricted: true
@@ -189,7 +189,6 @@ perk:
         effect_speed: 160,1
         effect_night_vision: 160,5
         effect_damage_resistance: 160,1
-        effect_saturation: 160,1
 bounce:
     icon: red_rose:8
     category: light
@@ -310,7 +309,7 @@ virus:
     costs:
         xp: 2000
 hunter:
-    icon: lever
+    icon: spider_eye
     category: automata
     class: AnimateSpell
     effects:
@@ -345,7 +344,7 @@ hunter:
     costs:
         xp: 800
 defender:
-    icon: redstone_torch_on
+    icon: quartz
     category: automata
     class: AnimateSpell
     effects:
@@ -722,7 +721,7 @@ pull:
     costs:
         xp: 25
 boom:
-    icon: cooked_chicken
+    icon: melon_seeds
     category: firebending
     class: BoomSpell
     pvp_restricted: true
@@ -743,7 +742,7 @@ boom:
     costs:
         xp: 20
 kaboom:
-    icon: raw_chicken
+    icon: fireball
     category: dark
     class: BoomSpell
     pvp_restricted: true
@@ -764,7 +763,7 @@ kaboom:
     costs:
         xp: 60
 nuke:
-    icon: fireball
+    icon: skull_item:4
     category: master
     class: BoomSpell
     pvp_restricted: true
@@ -776,12 +775,19 @@ nuke:
            firework: creeper
            color: '00FF00'
            color2: '88FF88'
+           iterations: 5
+        -  class: EffectRing
+           particle: huge_explosion
+           radius: 16
+           iterations: 8
+           location: target
+           size: 4
     parameters:
         target_type: LivingEntity
         allow_max_range: true
         range: 64
         cooldown: 60000
-        size: 16
+        size: 12
         break_blocks: true
     costs:
         xp: 500
