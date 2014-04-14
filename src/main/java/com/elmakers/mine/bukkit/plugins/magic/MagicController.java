@@ -173,23 +173,6 @@ public class MagicController implements Listener
 					getLogger().warning("Failed to load player data from file " + playerFile.getName());
 					ex.printStackTrace();
 				}
-			} else if (commandSender != null && commandSender instanceof Player) {
-				// TOOD: Remove legacy data migration.
-				Player player = (Player)commandSender;
-				File legacyFile = new File(playerDataFolder, player.getName() + ".yml");
-				if (legacyFile.exists()) 
-				{
-					getLogger().info("Migrating player data from file " + legacyFile.getName() + " for id " + mageId);
-					try {
-						Configuration playerData = new Configuration(legacyFile);
-						playerData.load();
-						mage.load(playerData);
-						legacyFile.renameTo(new File(playerDataFolder, player.getName() + ".yml.bak"));
-					} catch (Exception ex) {
-						getLogger().warning("Failed to migrate player data from file " + legacyFile.getName());
-						ex.printStackTrace();
-					}
-				}
 			}
 			
 			mages.put(mageId, mage);

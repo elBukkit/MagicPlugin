@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 3.0
+
+* I removed the legacy player data migration. If you still have old playername-based player data, you will need to
+  use 2.9.9 to migrate, and the player must log in. Player data has been UUID-based since 2.9.0 so hopefully you're all migrated by now.
+
 ## 2.9.9
 
 * I removed the block populator. It will be part of a separate plugin, MagicWorlds: http://dev.bukkit.org/bukkit-plugins/magicworlds/
