@@ -2035,6 +2035,11 @@ public class Wand implements CostReducer {
 			organizeInventory(mage);
 		}
 		
+		// Check for auto-bind
+		if (bound && (owner == null || owner.length() == 0)) {
+			takeOwnership(mage.getPlayer());
+		}
+		
 		checkActiveMaterial();
 		
 		saveState();
