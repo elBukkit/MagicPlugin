@@ -1820,6 +1820,7 @@ backup:
         otworld: world_backup
         omworld: world
         mtarget: true
+        bypass_undo: true
     costs:
         xp: 500
 repair:
