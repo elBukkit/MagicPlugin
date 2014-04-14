@@ -465,6 +465,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 					int shown = 0;
 					for (LostWand lostWand : lostWands) {
 						Location location = lostWand.getLocation();
+						if (location == null) continue;
 						if (owner.length() > 0 && !owner.equalsIgnoreCase	(lostWand.getOwner())) {
 							continue;
 						}

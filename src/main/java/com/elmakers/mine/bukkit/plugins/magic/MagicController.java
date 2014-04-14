@@ -1030,6 +1030,10 @@ public class MagicController implements Listener
 					getLogger().warning("Error saving lost wand data for " + lastKey + " " + lostWandsConfiguration.getProperty(lastKey));
 					continue;
 				}
+				if (!wandEntry.getValue().isValid()) {
+					getLogger().warning("Invalid lost and data for " + lastKey + " " + lostWandsConfiguration.getProperty(lastKey));
+					continue;
+				}
 				wandEntry.getValue().save(wandNode);
 			}
 			lostWandsConfiguration.save();
