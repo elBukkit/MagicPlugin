@@ -25,8 +25,6 @@ public class SimulateSpell extends BlockSpell {
 	
 	private static final int DEFAULT_RADIUS = 32;
 	
-	private Integer taskId = null;
-
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) {
 		Target t = getTarget();
@@ -187,10 +185,9 @@ public class SimulateSpell extends BlockSpell {
 		delay /= 50;
 		
 		boolean success = true;
-		if (delay > 0 && taskId == null) {
-			taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
+		if (delay > 0) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 				public void run() {
-					taskId = null;
 					mage.addPendingBlockBatch(batch);
 				}
 			}, delay);
