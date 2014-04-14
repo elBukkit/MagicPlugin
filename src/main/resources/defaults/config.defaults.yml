@@ -229,6 +229,11 @@ pending_depth: 8
 # The largest thing we'll persist in the undo queue (to a file)
 undo_max_persist_size: 4098
 
+# Auto-commit player undo data when they logout.
+# Enabling this can save memory, but it means you won't be able to Rollback
+# or Rewind a player's constructions after they log out.
+commit_on_quit: false
+
 # How long to wait until we stop checking player data for pending undo
 # 0 = Always check all players on load.
 # This value is in days.

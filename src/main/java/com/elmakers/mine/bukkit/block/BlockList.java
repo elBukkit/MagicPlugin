@@ -9,7 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Server;
 import org.bukkit.block.Block;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
@@ -46,6 +49,8 @@ public class BlockList implements Collection<BlockData>, Serializable
 
 	protected int                  passesRemaining  = 1;
 	protected int                  timeToLive       = 0;
+	
+	protected int				   taskId           = 0;
 	
 	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
@@ -384,5 +389,39 @@ public class BlockList implements Collection<BlockData>, Serializable
 	public String getWorldName() {
 		if (blockList.size() == 0) return null;
 		return blockList.get(0).getWorldName();
+	}
+	
+	public void scheduleCleanup(Mage mage) {
+		Plugin plugin = mage.getController().getPlugin();
+		Server server = plugin.getServer();
+		BukkitScheduler scheduler = server.getScheduler();
+
+		// scheduler works in ticks- 20 ticks per second.
+		long ticksToLive = timeToLive * 20 / 1000;
+		taskId = scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(mage, this), ticksToLive);
+	}
+	
+	public void onScheduledCleanup(Mage mage)
+	{
+		if (this.undo(mage)) {
+			mage.getUndoQueue().removeScheduledCleanup(this);
+		} else {
+			// TODO: Retry limit?
+			scheduleCleanup(mage);
+		}
+	}
+	
+	public boolean undoScheduled(Mage mage)
+	{
+		if (taskId > 0)
+		{
+			Plugin plugin = mage.getController().getPlugin();
+			Server server = plugin.getServer();
+			BukkitScheduler scheduler = server.getScheduler();
+			scheduler.cancelTask(taskId);
+			taskId = 0;
+		}
+		
+		return this.undo(mage);
 	}
 }

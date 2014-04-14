@@ -15,8 +15,6 @@ public class CleanupBlocksTask implements Runnable
 
 	public void run()
 	{
-		if (this.undoBlocks.undo(mage)) {
-			mage.getUndoQueue().removeScheduledCleanup(undoBlocks);
-		}
+		undoBlocks.onScheduledCleanup(mage);
 	}
 }

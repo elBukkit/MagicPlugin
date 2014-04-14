@@ -1297,6 +1297,7 @@ public class MagicController implements Listener
 		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
 		pendingQueueDepth = properties.getInteger("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInteger("undo_max_persist_size", undoMaxPersistSize);
+		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
 		playerDataThreshold = (long)(properties.getFloat("undo_max_persist_size", 0) * 1000 * 24 * 3600);
 		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
@@ -1934,6 +1935,13 @@ public class MagicController implements Listener
 		mage.restoreInventory();
 		
 		mage.onPlayerQuit(event);
+		UndoQueue undoQueue = mage.getUndoQueue();
+		
+		if (commitOnQuit && undoQueue != null && !undoQueue.isEmpty()) {
+			getLogger().info("Player logged out, committing constructions: " + mage.getName());
+			undoQueue.commit();
+			undoQueue.undoScheduled(mage);
+		}
 		
 		try {
 			File playerData = new File(playerDataFolder, player.getUniqueId().toString() + ".dat");
@@ -1947,9 +1955,8 @@ public class MagicController implements Listener
 		
 		// Let the GC collect the mage, unless they have some pending undo batches
 		// or an undo queue (for rewind)
-		UndoQueue undoQueue = mage.getUndoQueue();
 		if (undoQueue == null || undoQueue.isEmpty()) {
-			getLogger().info("Player has no pending undo actions, forgetting");
+			getLogger().info("Player has no pending undo actions, forgetting: " + mage.getName());
 			mages.remove(player.getUniqueId().toString());
 		}
 	}
@@ -2769,6 +2776,7 @@ public class MagicController implements Listener
 	 private int                                 undoQueueDepth                 = 256;
 	 private int								 pendingQueueDepth				= 16;
 	 private int                                 undoMaxPersistSize             = 0;
+	 private boolean                             commitOnQuit             		= false;
 	 private long                                playerDataThreshold            = 0;
 	 private WandMode							 defaultWandMode				= WandMode.INVENTORY;
 	 private boolean                             showMessages                   = true;

@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Server;
 import org.bukkit.block.Block;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
@@ -38,14 +35,17 @@ public class UndoQueue
 	{
 		blocks.prepareForUndo();
 		scheduledBlocks.add(blocks);
-		
-		Plugin plugin = mage.getController().getPlugin();
-		Server server = plugin.getServer();
-		BukkitScheduler scheduler = server.getScheduler();
 
-		// scheduler works in ticks- 20 ticks per second.
-		long ticksToLive = blocks.getTimeToLive() * 20 / 1000;
-		scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(mage, blocks), ticksToLive);
+		blocks.scheduleCleanup(mage);
+	}
+	
+	public void undoScheduled(Mage mage)
+	{
+		if (scheduledBlocks.size() == 0) return;
+		for (BlockList list : scheduledBlocks) {
+			list.undoScheduled(mage);
+		}
+		scheduledBlocks.clear();
 	}
 	
 	public boolean isEmpty()

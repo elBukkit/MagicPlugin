@@ -739,7 +739,7 @@ boom:
         allow_max_range: true
         range: 32
         break_blocks: false
-        size: 4
+        size: 3
     costs:
         xp: 20
 kaboom:
@@ -2546,7 +2546,7 @@ laser:
         material: air
         radius: 1
     costs:
-        xp: 30
+        xp: 120
 shrink:
     icon: skull_item
     category: dark

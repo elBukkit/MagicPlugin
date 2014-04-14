@@ -243,7 +243,6 @@ random:
       3: 0,   5,   20,  20, 0
       5: 0,   1,   10,  50, 0
     spells:
-      absorb: 0,0,0,1,100
       alter: 0,10,20,30,100
       superalter: 0,1,5,10,100
       arrow: 100,80,70,30,100
@@ -367,9 +366,6 @@ random:
       6: 0,  0,    5,   10, 100
     materials:
       erase: 0,0,0,1,100
-      copy: 0,0,0,1,100
-      clone: 0,0,0,1,100
-      replicate: 0,0,0,1,100
       map: 0,0,0,1,100
       lava: 0,0,15,30,100
       water: 0,0,30,90,100
@@ -393,9 +389,6 @@ random:
       leaves: 0,5,10,30,100
       ice: 10,20,25,30,100
       packed_ice: 10,20,25,30,100
-      diamond_block: 0,0,5,20,100
-      gold_block: 0,0,5,20,100
-      emerald_block: 0,0,5,20,100
       obsidian: 0,0,15,30,100
       redstone_block: 0,0,5,10,100
       wool|0: 80,60,50,20,100

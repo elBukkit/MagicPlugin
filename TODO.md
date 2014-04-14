@@ -2,7 +2,9 @@
  
 ## For 3.0.0
 
- - Fix selling magic items to a trader not working
+ - Add "give_on_join" and "auto_own" wand flags
+
+ - Fix selling magic items to a trader not working - seems related to traders losing prices + inventory, maybe?
  - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
  - wandp configure glitch- maybe need to replace item in hand on reconfigure?
  
