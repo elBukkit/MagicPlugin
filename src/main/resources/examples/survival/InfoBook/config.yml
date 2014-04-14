@@ -1,0 +1,71 @@
+#
+# This is just the configuration I use on my server for the InfoBook plugin.
+#
+# It's a great plugin, I suggest you check it out, and if you do, feel free to copy+paste from
+# here if you want to provide Wand instruction manuals.
+#
+
+# InfoBook
+
+# Plugin should check for new versions and inform you on server start?
+version-check: false
+
+# Every player will got books from that list on first login
+onlogin:
+  - server
+  - obtaining
+  - using
+
+# Player cannot drop books from that list.
+protected: {}
+   
+# Book definition
+server:
+  author: NathanWolf
+  title: Server Information
+  description:
+    - Information about this server
+  pages:
+    - '&cServer Information&x &x&0This is the official Survival server for the Magic plugin.&x &xIt is the first place you will see new Magic and MagicWorlds features and spells.'
+    - 'This world is an active story in progress.&x &xYou are invited to join in, participate, or add to the story.&x &xYou may choose the role you play.'
+    - 'You have been given a low-powered starter wand.&x &xYou may upgrade this wand via enchanting or by purchasing new spells and abilities.&x &xYou can also buy better wands'.
+    - 'This spawn area and other key buildings are protected. Many spells, destructive ones, will not work here.'
+    - 'Let an admin know if you would like to have something you have built here protected, or even included in the Magic plugin as a schematic.'
+    - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.'
+    - 'Any special effects or events you see on this server are made with vanilla command blocks and the Magic scripting system.'
+    - 'Due to the public and destructive nature of this server, heavy griefing may require occasional world rollbacks.'
+    - 'Magic is a plugin for Bukkit, a Minecraft server mod.&x &xBukkit is easy to use and set up if you wish to run your own server, or even use for single player.&x &xFor more information, see&x &xbukkit.org'
+    - '&cPlugins used on this server&x &x&0Magic&xdynmap*&xCommandBook*&xCitizens*&xdtlTraders*&xWorldGuard*&xInfoBook&xGroupManager&x &x* denotes Magic integration'
+    - 'See&xmine.elmakers.com&xfor more information.'
+obtaining:
+  author: NathanWolf
+  title: Obtaining Wands
+  description:
+    - How to get a wand
+  pages:
+    - '&cObtaining Wands&x &x&0Wands can be obtained on this server in a variety of ways.&x'
+    - '&x&0Wands can be crafted by obtaining a Nether Star and Blaze Rod.'
+    - 'A crafted wand will be a randomly generated low-powered wand.&x &xWands can be upgraded on an enchanting table. They may be upgraded multiple times.'
+    - 'Two wands may be combined on an anvil&x &x(WIP - click the empty result slot!)'
+    - '&cWand Shop&x &x&0Wands can be purchased in wand shops and from travelling traders.&x&xTraders may also sell spells or wand upgrades.'
+    - '&cFinding Wands&x &x&0Magic will randomly add wands to naturally-spawned chests found in dungeons, nether fortresses, villages.&x &xWands also appear on the dynmap, so keep a look out!&x &xThis is also useful if you die and wish to retrieve your wand.'
+    - 'Wands are indestructible. If you ever lose your wand, you can always retrieve it- unless someone else gets to it first.'
+using:
+  author: NathanWolf
+  title: Using Wands
+  description:
+    - How to use a wand
+  pages:
+    - '&cUsing Wands&x &x&0Once you have obtained a wand, you may use it to cast spells.&x &xEach wand is unique and may know one or more spells.'
+    - 'A wand is active when you are holding it.&x &xSome wands have special properties, such as protection or haste, that are only granted when active.'
+    - 'While holding a wand, left-click to cast its active spell.&x &xMost spells will target the block or entity at your cursor.'
+    - 'The wand lore, viewable in your inventory, will show the wand properties and active spell.'
+    - 'Wands that have more than one spell will have a "wand inventory".&x &xRight-click while holding a wand to view its inventory.&x &xRight-click again to close the inventory.'
+    - 'With the wand inventory open, you may use the hotbar buttons (1-9) to change the active spell.&x &xEach spell is represented by a material icon.'
+    - 'Information about spells may be viewed in their lore if you open the player inventory while the wand inventory is open.'
+    - 'Some wands may also contain materials.&x &xCertain spells (construction spells) can be modified to work with a selected material.'
+    - 'Materials may be selected in the same way as spells, move them to the hotbar and then use the hotbar buttons (1-9).'
+    - 'Spells and materials may also be quick-selected from the wand inventory using shift+click.'
+    - 'Wands that have many spells or materials may have more than one inventory "page".&x &xRight-click on an item in the wand inventory to go to the next page.'
+    - 'If your wand gets disorganized, use an anvil to organize its inventory.'
+    - 'Wands grow and become more powerful over time.&x &xSome spells will increase in power along with the wand.'
