@@ -3,6 +3,7 @@
 ## 3.0.0
 
  - Add Backup and Repair spells.
+ - Default "protected" and "powered" permissions to false
 
 ## 2.9.9
 

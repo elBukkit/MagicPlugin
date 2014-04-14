@@ -229,11 +229,11 @@ permissions:
     type: boolean
   Magic.protected:
     description: A player is always treated as if they have wand "Protection X".
-    default: op
+    default: false
     type: boolean
   Magic.powered:
     description: A player is always treated as if they have wand "Power X".
-    default: op
+    default: false
     type: boolean
   Magic.cast:
     description: The spells a player may cast
