@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.block;
+package com.elmakers.mine.bukkit.block;
 
 import java.util.Set;
 
@@ -16,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.api.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class MaterialAndData {
 	protected Material material;

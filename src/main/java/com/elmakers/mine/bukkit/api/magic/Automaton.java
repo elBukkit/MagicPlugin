@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.block;
+package com.elmakers.mine.bukkit.api.magic;
 
 import org.bukkit.util.BlockVector;
 

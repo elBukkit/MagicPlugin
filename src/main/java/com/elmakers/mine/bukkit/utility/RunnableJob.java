@@ -1,14 +1,14 @@
-package com.elmakers.mine.bukkit.api.magic;
+package com.elmakers.mine.bukkit.utility;
 
 import java.util.logging.Logger;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-public abstract class MagicRunnable extends BukkitRunnable {
+public abstract class RunnableJob extends BukkitRunnable {
 	protected boolean finished = false;
 	protected final Logger logger;
 	
-	protected MagicRunnable(Logger logger) {
+	protected RunnableJob(Logger logger) {
 		this.logger = logger;
 	}
 	

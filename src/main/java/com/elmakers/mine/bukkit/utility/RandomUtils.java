@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.utility;
+package com.elmakers.mine.bukkit.utility;
 
 import java.util.LinkedList;
 import java.util.Random;
