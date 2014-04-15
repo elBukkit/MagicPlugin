@@ -211,6 +211,8 @@ public class MaterialBrush extends MaterialAndData {
 			if (!allowItems && !basic.getMaterial().isBlock()) {
 				return null;
 			}
+			
+			return basic;
 		}
 				
 		return new MaterialAndData(material, data, customName);
@@ -248,7 +250,7 @@ public class MaterialBrush extends MaterialAndData {
 	
 	public void activate(final Location location, final String material) {
 		String materialKey = splitMaterialKey(material)[0];
-		if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY)) {
+		if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY) && location != null) {
 			Location cloneFrom = location.clone();
 			cloneFrom.setY(cloneFrom.getY() - 1);
 			setCloneLocation(cloneFrom);
