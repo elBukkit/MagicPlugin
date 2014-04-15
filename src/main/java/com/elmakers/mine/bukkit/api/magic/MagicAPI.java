@@ -100,4 +100,6 @@ public interface MagicAPI {
 	public void removeLostWand(String id);
 	
 	public Collection<Automaton> getAutomata();
+	
+	public void cast(String spellName, String[] parameters);
 }
