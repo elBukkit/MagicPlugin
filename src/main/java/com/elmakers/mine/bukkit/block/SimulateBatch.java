@@ -22,14 +22,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.utility.RandomUtils;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 

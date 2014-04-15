@@ -10,7 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.elmakers.mine.bukkit.api.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class EffectUtils extends NMSUtils {
 	

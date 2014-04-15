@@ -9,12 +9,12 @@ import java.util.TreeMap;
 import org.apache.commons.lang.StringUtils;
 
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
-import com.elmakers.mine.bukkit.api.utility.WeightedPair;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.RandomUtils;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class WandLevel {
 	private static TreeMap<Integer, WandLevel> levelMap = null;

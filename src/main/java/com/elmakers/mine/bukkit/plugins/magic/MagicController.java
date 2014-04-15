@@ -86,7 +86,6 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
-import com.elmakers.mine.bukkit.api.utility.NMSUtils;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -108,6 +107,7 @@ import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.warp.WarpController;
 
 public class MagicController implements Listener 

@@ -5,7 +5,7 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;

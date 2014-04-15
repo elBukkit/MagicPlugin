@@ -27,8 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.block.BlockBatch;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoBatch;
@@ -870,9 +870,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	 * API Implementation(non-Javadoc)
 	 */
 
-	public Collection<com.elmakers.mine.bukkit.api.block.BlockBatch> getPendingBatches() 
+	public Collection<com.elmakers.mine.bukkit.block.BlockBatch> getPendingBatches() 
 	{
-		Collection<com.elmakers.mine.bukkit.api.block.BlockBatch> pending = new ArrayList<com.elmakers.mine.bukkit.api.block.BlockBatch>();
+		Collection<com.elmakers.mine.bukkit.block.BlockBatch> pending = new ArrayList<com.elmakers.mine.bukkit.block.BlockBatch>();
 		pending.addAll(pendingBatches);
 		return pending;
 	}

@@ -9,7 +9,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.api.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class LightSource extends NMSUtils {
 	/*

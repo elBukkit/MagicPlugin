@@ -10,11 +10,11 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.magic.MagicRunnable;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.RunnableJob;
 
-public class WandCleanupRunnable extends MagicRunnable {
+public class WandCleanupRunnable extends RunnableJob {
 	private final LinkedList<LostWand> lostWands = new LinkedList<LostWand>();
 	private final World world;
 	private final MagicAPI api;

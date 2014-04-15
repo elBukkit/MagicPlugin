@@ -19,20 +19,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.api.block.Automaton;
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.magic.MagicRunnable;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.BlockBatch;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
+import com.elmakers.mine.bukkit.utility.RunnableJob;
 
 public class MagicCommandExecutor extends MagicTabExecutor {
 
-	private MagicRunnable runningTask = null;
+	private RunnableJob runningTask = null;
 	
 	public MagicCommandExecutor(MagicAPI api) {
 		super(api);
