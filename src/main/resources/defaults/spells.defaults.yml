@@ -270,7 +270,7 @@ glider:
         radius: 4
         type: sphere
         cooldown: 60000
-        material: schematic|glider
+        brush: schematic|glider
         transparent: transparent_to_construction
         commands:
           glider_simulate: cast simulate target self material obsidian animate true delay 500 radius 3
@@ -432,15 +432,15 @@ life:
         orient_dimension_min: 0
         type: sphere
         cooldown: 120000
-        material: schematic|life
+        brush: schematic|life
         transparent: transparent_to_construction
         commands:
           life_wiki: msg @p See http://en.wikipedia.org/wiki/Conway%27s_life for more info!
-          life_simulate: cast simulate bu true r 64 ty ~-14 tz ~-68 omy 16 omz 68 obcx -1 obcy 16 obcz 68 olcx 1 olcy 16 olcz 68
-          life_clear: castp @p box odmax 10 odmin 1 m erase cd false tx ~2 ty ~-17 tz ~-68 radius 64 md 300 thickness 0 cooldown 10000
-          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-68 radius 65 md 300 cd 60000 m copy omx -3 omy 18 omz 68
-          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 m copy omx -2 omy 18 omz 68
-          life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 m copy cd 10000 omx -15 omy 16 omz 36
+          life_simulate: cast simulate bu true r 64 ty ~-14 tz ~-68 oby 16 obz 68 obcx -1 obcy 16 obcz 68 olcx 1 olcy 16 olcz 68
+          life_clear: castp @p box odmax 10 odmin 1 brush erase cd false tx ~2 ty ~-17 tz ~-68 radius 64 md 300 thickness 0 cooldown 10000
+          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-68 radius 65 md 300 cd 60000 brush copy obx -3 oby 18 obz 68
+          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy oby -2 obz 18 obz 68
+          life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 brush copy cd 10000 obx -15 oby 16 obz 36
     costs:
         xp: 1500
 life3:
@@ -462,15 +462,15 @@ life3:
         orient_dimension_min: 0
         type: sphere
         cooldown: 120000
-        material: schematic|life3
+        brush: schematic|life3
         transparent: transparent_to_construction
         commands:
           life_wiki: msg @p See http://en.wikipedia.org/wiki/Conway%27s_life for more info!
-          life_simulate: cast simulate3 bu true r 16 yradius 16 tz ~-20 omy 2 omz 68 obcx -1 obcy 2 obcz 20 olcx 1 olcy 2 olcz 20
-          life_clear: castp @p box odmax 10 odmin 1 m erase cd false tx ~2 ty ~-17 tz ~-20 radius 16 md 300 thickness cool 10000
-          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-20 radius 17 md 300 cd 60000 m copy omx -3 omy 18 omz 20
-          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-20 radius 16 md 300 thickness 0 cd 60000 m copy omx -2 omy 18 dmz 20
-          life_line: castp @p fill tx ~-8 tz ~-16 t2x ~8 m copy cd 10000 omx -7 omy 2 omz 20
+          life_simulate: cast simulate3 bu true r 16 yradius 16 tz ~-20 oby 2 obz 68 obcx -1 obcy 2 obcz 20 olcx 1 olcy 2 olcz 20
+          life_clear: castp @p box odmax 10 odmin 1 brush erase cd false tx ~2 ty ~-17 tz ~-20 radius 16 md 300 thickness cool 10000
+          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-20 radius 17 md 300 cd 60000 brush copy obx -3 oby 18 obz 20
+          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-20 radius 16 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 dmz 20
+          life_line: castp @p fill tx ~-8 tz ~-16 t2x ~8 brush copy cd 10000 obx -7 oby 2 obz 20
     costs:
         xp: 1500
 shell:
@@ -1415,7 +1415,7 @@ gasp:
         target: any
         range: 16
         radius: 3
-        material: air
+        brush: air
         destructible: water
         check_destructible: true
         undo: 2000
@@ -1826,11 +1826,11 @@ backup:
         target: select
         type: cuboid
         transparent: transparent_to_construction
-        material: clone
-        mm: erase
+        brush: clone
+        brushmod: erase
         otworld: world_backup
-        omworld: world
-        mtarget: true
+        obworld: world
+        brushtarget: true
         bypass_undo: true
     costs:
         xp: 500
@@ -1851,10 +1851,10 @@ repair:
         radius: 4
         type: cuboid
         transparent: transparent_to_construction
-        material: clone
+        brush: clone
         otworld: world
-        omworld: world_backup
-        mtarget: true
+        obworld: world_backup
+        brushtarget: true
     costs:
         xp: 80
 workbench:
@@ -1873,7 +1873,7 @@ workbench:
         transparent: transparent_to_construction
         cooldown: 70000
         undo: 60000
-        material: workbench
+        brush: workbench
     costs:
         xp: 30
 stash:
@@ -1938,7 +1938,7 @@ blast:
         range: 16
         speed: 1.5
         falling: true
-        material: air
+        brush: air
         radius: 2
         type: sphere
         destructible: destructible_mining
@@ -1974,7 +1974,7 @@ superblast:
         range: 32
         speed: 3
         falling: false
-        material: air
+        brush: air
         radius: 5
         type: sphere
         transparent: transparent_to_construction
@@ -2037,7 +2037,7 @@ collapse:
     parameters:
         allow_max_range: false
         range: 16
-        material: air
+        brush: air
         falling: true
         check_destructible: false
         indestructible:
@@ -2061,7 +2061,7 @@ supercollapse:
         range: 32
         cooldown: 10000
         max_dimension: 5
-        material: air
+        brush: air
         falling: true
         check_destructible: false
         indestructible:
@@ -2145,7 +2145,7 @@ breach:
         indestructible:
         - air
         undo: 10000
-        material: air
+        brush: air
         radius: '4'
         type: sphere
     costs:
@@ -2167,7 +2167,7 @@ peek:
         indestructible:
         - air
         undo: 4000
-        material: glass
+        brush: glass
         radius: '3'
         type: sphere
     costs:
@@ -2186,7 +2186,7 @@ sandblast:
     parameters:
         allow_max_range: true
         range: 32
-        material: sand
+        brush: sand
         radius: 2
         type: cuboid
         y_offset: 32
@@ -2445,7 +2445,7 @@ lava:
         allow_max_range: true
         range: 64
         size: 16
-        material: lava
+        brush: lava
         increment_data: true
         undo: 200
     costs:
@@ -2465,7 +2465,7 @@ stream:
         allow_max_range: true
         range: 64
         size: 16
-        material: water
+        brush: water
         increment_data: true
         undo: 2000
     costs:
@@ -2535,7 +2535,7 @@ flamethrower:
         radius: 1
         reverse: false
         increment_data: false
-        material: fire
+        brush: fire
     costs:
         xp: 100
 laser:
@@ -2554,7 +2554,7 @@ laser:
         size: 32
         increment_data: false
         check_destructible: false
-        material: air
+        brush: air
         radius: 1
     costs:
         xp: 120
@@ -2722,7 +2722,7 @@ tent:
         radius: 8
         type: sphere
         cooldown: 3600000
-        material: schematic|tent
+        brush: schematic|tent
         transparent: transparent_to_construction
 cage:
     icon: iron_fence
@@ -2743,7 +2743,7 @@ cage:
         type: sphere
         cooldown: 60000
         undo: 30000
-        material: schematic|cage
+        brush: schematic|cage
         transparent: transparent_to_construction
     costs:
         xp: 50
@@ -2766,25 +2766,25 @@ wolfhouse:
         radius: 4
         type: sphere
         cooldown: 600000
-        material: schematic|wolfhouse
-        omx: -3
-        omy: -22 
-        omz: 10
+        brush: schematic|wolfhouse
+        obx: -3
+        oby: -22 
+        obz: 10
         otx: 1
         oty: 1
         mm: erase 
         transparent: transparent_to_construction
         commands:
-          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 omx 0 omy -46 omz -1 r 52 mm dirt
-          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 omx 0 omy -46 omz -1 r 52 id water,stationary_water
-          wolf_dome: castp @p[r=7] shell type sphere m stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35
-          wolf_shields: castp @p[r=7] shell m obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37
+          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
+          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water
+          wolf_dome: castp @p[r=7] shell type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35
+          wolf_shields: castp @p[r=7] shell brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37
           wolf_undo: castp @p[r=6] undo
           wolf_commit: castp @p[r=6] commit
           wolf_nothing: msg @p[r=6] Nothing here!
-          wolf_clear: castp @p[r=7] blob type sphere m erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
-          wolf_destruct: castp @p[r=7] blob m erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60
-          wolf_convert: castp @p convert radius 64 md 128 ty ~-1 omx -1 omz 2 m copy
+          wolf_clear: castp @p[r=7] blob type sphere brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
+          wolf_destruct: castp @p[r=7] blob brush erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60
+          wolf_convert: castp @p convert radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy
           wolf_phase: castp @p[r=2] phase
           wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
           wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0

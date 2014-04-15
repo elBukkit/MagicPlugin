@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -12,25 +15,30 @@ public abstract class BrushSpell extends BlockSpell{
 
 	private MaterialBrush brush;
 	private boolean hasBrush = false;
-
+	
+	public final static String[] BRUSH_PARAMETERS = {
+		"brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget"
+	};
+	
 	@Override
 	protected void processParameters(ConfigurationNode parameters)
 	{
 		super.processParameters(parameters);
-		String materialKey = parameters.getString("material", null);
-		materialKey = parameters.getString("m", materialKey);
+		
+		String materialKey = parameters.getString("brush", null);
+
 		if (materialKey != null) {
 			brush = new MaterialBrush(mage, getLocation(), materialKey);
 			
-			if (parameters.containsKey("mm")) {
-				brush.update(parameters.getString("mm"));
+			if (parameters.containsKey("brushmod")) {
+				brush.update(parameters.getString("brushmod"));
 				brush.update(materialKey);
 			}
 			
-			Double dmxValue = parameters.getDouble("omx", null);
-			Double dmyValue = parameters.getDouble("omy", null);
-			Double dmzValue = parameters.getDouble("omz", null);
-			String dmWorldValue = parameters.getString("omworld", null);
+			Double dmxValue = parameters.getDouble("obx", null);
+			Double dmyValue = parameters.getDouble("oby", null);
+			Double dmzValue = parameters.getDouble("obz", null);
+			String dmWorldValue = parameters.getString("obworld", null);
 			World targetWorld = null;
 			if (dmWorldValue != null && dmWorldValue.length() > 0) {
 				targetWorld = Bukkit.getWorld(dmWorldValue);
@@ -45,7 +53,7 @@ public abstract class BrushSpell extends BlockSpell{
 				brush.setTargetOffset(offset, targetWorld);
 			}
 			
-			if (parameters.getBoolean("mtarget", false)) {
+			if (parameters.getBoolean("brushtarget", false)) {
 				brush.clearCloneLocation();
 			}
 		} else {
@@ -90,5 +98,12 @@ public abstract class BrushSpell extends BlockSpell{
 		}
 		
 		return super.getDisplayMaterialName();
+	}
+
+	@Override
+	public void getParameters(Collection<String> parameters)
+	{
+		super.getParameters(parameters);
+		parameters.addAll(Arrays.asList(BRUSH_PARAMETERS));
 	}
 }
