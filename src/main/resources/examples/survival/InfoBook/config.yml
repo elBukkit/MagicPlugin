@@ -28,7 +28,7 @@ server:
   pages:
     - '&cServer Information&x &x&0This is the official Survival server for the Magic plugin.&x &xIt is the first place you will see new Magic and MagicWorlds features and spells.'
     - 'This world is an active story in progress.&x &xYou are invited to join in, participate, or add to the story.&x &xYou may choose the role you play.'
-    - 'You have been given a low-powered starter wand.&x &xYou may upgrade this wand via enchanting or by purchasing new spells and abilities.&x &xYou can also buy better wands'.
+    - 'You have been given a low-powered starter wand.&x &xYou may upgrade this wand via enchanting or by purchasing new spells and abilities.&x &xYou can also buy better wands.'
     - 'This spawn area and other key buildings are protected. Many spells, destructive ones, will not work here.'
     - 'Let an admin know if you would like to have something you have built here protected, or even included in the Magic plugin as a schematic.'
     - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.'
