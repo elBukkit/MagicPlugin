@@ -40,7 +40,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
@@ -1395,20 +1394,6 @@ public class MagicController implements Listener
 		allSpells.addAll(spells.values());
 		return allSpells;
 	}
-	
-	protected boolean allowPhysics(Block block)
-	{
-		if (physicsDisableTimeout == 0)
-			return true;
-		if (System.currentTimeMillis() > physicsDisableTimeout)
-			physicsDisableTimeout = 0;
-		return false;
-	}
-
-	public void disablePhysics(int interval)
-	{
-		physicsDisableTimeout = System.currentTimeMillis() + interval;
-	}
 
 	public boolean hasWandPermission(Player player)
 	{
@@ -1877,15 +1862,6 @@ public class MagicController implements Listener
 			} else {
 				mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
 			}
-		}
-	}
-
-	@EventHandler
-	public void onBlockPhysics(BlockPhysicsEvent event)
-	{
-		if (!allowPhysics(event.getBlock()))
-		{
-			event.setCancelled(true);
 		}
 	}
 
@@ -2763,7 +2739,6 @@ public class MagicController implements Listener
 	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
 	 private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
 	 
-	 private long                                physicsDisableTimeout          = 0;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;
 	 private int								 pendingQueueDepth				= 16;

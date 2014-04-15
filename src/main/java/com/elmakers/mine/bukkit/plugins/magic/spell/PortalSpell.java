@@ -45,7 +45,6 @@ public class PortalSpell extends BlockSpell
 		int timeToLive = parameters.getInt("undo", 5000);
 		BlockList portalBlocks = new BlockList();
 		portalBlocks.setTimeToLive(timeToLive);
-		controller.disablePhysics(1000);
 		buildPortalBlocks(portalBase.getLocation(), BlockFace.NORTH, portalBlocks);
 		registerForUndo(portalBlocks);
 

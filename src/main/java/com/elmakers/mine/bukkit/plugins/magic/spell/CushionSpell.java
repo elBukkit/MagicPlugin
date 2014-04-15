@@ -32,7 +32,6 @@ public class CushionSpell extends BlockSpell
 
 		BlockList cushionBlocks = new BlockList();
 		cushionBlocks.setTimeToLive(7000);
-		controller.disablePhysics(8000);
 
 		int bubbleStart = -cushionWidth  / 2;
 		int bubbleEnd = cushionWidth  / 2;
