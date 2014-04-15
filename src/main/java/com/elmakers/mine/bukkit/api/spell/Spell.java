@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
-public interface Spell extends Comparable<Spell> {
+public interface Spell extends Comparable<Spell>, CostReducer {
 	public String getName();
 	public String getDescription();
 	public String getKey();

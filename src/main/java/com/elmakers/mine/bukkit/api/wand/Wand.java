@@ -8,8 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
 
-public interface Wand {
+public interface Wand extends CostReducer {
 	public String getId();
 	public String getName();
 	public void closeInventory();

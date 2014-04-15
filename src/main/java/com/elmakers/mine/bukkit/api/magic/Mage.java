@@ -9,10 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
-public interface Mage {
+public interface Mage extends CostReducer {
 	/**
 	 * Return the list of pending construction batches for this Mage
 	 * 
