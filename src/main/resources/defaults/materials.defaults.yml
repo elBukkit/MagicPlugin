@@ -282,6 +282,44 @@ restricted:
 - portal
 - mob_spawner
 
+# Which materials the AnimateSpell can't be cast on
+# This generally means Autonoma cannot be made out of these materials.
+restricted_animate:
+- grass
+- dirt
+- mycel
+- glowstone
+- redstone_lamp
+- torch
+- ender_stone
+- water
+- stationary_water
+- lava
+- stationary_lava
+- glass
+- thing_glass
+- stained_glass
+- stained_glass_pane
+- stained_clay
+- wood
+- log
+- log_2
+- sandstone
+- stone
+- bedrock
+- command
+- ender_portal
+- portal
+- mob_spawner
+- redstone_block
+- sand
+- netherrack
+- quartz_block
+- iron_fence
+- cobble_fence
+- fence
+- nether_fence
+
 # Which materials are acceptable as building materials. This
 # affects what can be absorbed and added to a wand.
 building:

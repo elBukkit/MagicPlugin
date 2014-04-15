@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -34,6 +36,12 @@ public class AnimateSpell extends SimulateSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
+		Set<Material> restricted = controller.getMaterialSet(parameters.getString("restricted", "restricted"));
+		if (restricted.contains(targetMaterial.getMaterial()))
+		{
+			return SpellResult.RESTRICTED;
+		}
+		
 		BlockFace powerFace = SimulateBatch.findPowerLocation(targetBlock, targetMaterial);
 		if (powerFace == null)
 		{

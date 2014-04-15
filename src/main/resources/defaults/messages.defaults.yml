@@ -295,6 +295,9 @@ spells:
         description: Animate the target material
         cast: You create a Magic Golem
         no_target: You must target two blocks next to each other
+        restricted: You can not make a Golem out of $material
+        cast_broadcast: §c§o$name §r§5was born
+        death_broadcast: §c§o$name §r§5has been defeated
     simulate3:
         name: Simulate 3D
         description: Conway's Game of Life ... in 3D!
@@ -309,11 +312,14 @@ spells:
         cast: What have you done?
         cast_broadcast: §c§o$name §r§5was born
         death_broadcast: §c§o$name §r§5has been defeated
+        no_target: You must target two blocks next to each other
+        restricted: You can not make a Virus out of $material
     hunter:
         no_target: You must target two blocks next to each other
         name: Hunter
         description: Create a deadly Automaton
         no_target: You must target two blocks next to each other
+        restricted: You can not make a Hunter out of $material
         cast: Destroy all humans!
         cast_broadcast: §c§o$name §r§5was born
         death_broadcast: §c§o$name §r§5has been defeated
@@ -322,6 +328,7 @@ spells:
         description: Create an Automata hunter
         cast: I will hunt for you, human
         no_target: You must target two blocks next to each other
+        restricted: You can not make a Defender out of $material
         cast_broadcast: §c§o$name §r§5was born
         death_broadcast: §c§o$name §r§5has been defeated
     life:

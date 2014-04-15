@@ -600,7 +600,9 @@ public class SimulateBatch extends VolumeBatch {
 				{
 					if (mage == this.mage) continue;
 					if (targetType == TargetType.AUTOMATON && mage.getPlayer() != null) continue;
+					if (targetType == TargetType.PLAYER && mage.getPlayer() == null) continue;
 					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
+					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 					
 					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, false);
 					int score = newScore.getScore();
