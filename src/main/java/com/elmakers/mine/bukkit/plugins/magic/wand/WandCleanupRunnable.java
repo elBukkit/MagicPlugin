@@ -9,32 +9,34 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.LostWand;
+import com.elmakers.mine.bukkit.api.magic.Wand;
 import com.elmakers.mine.bukkit.utilities.MagicRunnable;
 
 public class WandCleanupRunnable extends MagicRunnable {
 	private final LinkedList<LostWand> lostWands = new LinkedList<LostWand>();
 	private final World world;
-	private final MagicController controller;
+	private final MagicAPI api;
 	private final String owner;
 	private final boolean removeAll;
 	
-	public WandCleanupRunnable(MagicController controller, World world, String owner) {
-		super(controller.getLogger());
+	public WandCleanupRunnable(MagicAPI api, World world, String owner) {
+		super(api.getLogger());
 		this.world = world;
-		this.controller = controller;
-		lostWands.addAll(controller.getLostWands());
+		this.api = api;
+		lostWands.addAll(api.getLostWands());
 		this.removeAll = false;
 		this.owner = owner == null ? "" : owner;
 	}
 	
-	public WandCleanupRunnable(MagicController controller, World world) {
-		super(controller.getLogger());
+	public WandCleanupRunnable(MagicAPI api, World world) {
+		super(api.getLogger());
 		this.world = world;
-		this.controller = controller;
+		this.api = api;
 		this.removeAll = true;
 		this.owner = "";
-		lostWands.addAll(controller.getLostWands());
+		lostWands.addAll(api.getLostWands());
 	}
 	
 	public void finish() {
@@ -78,12 +80,12 @@ public class WandCleanupRunnable extends MagicRunnable {
 			if (!(entity instanceof Item)) continue;
 			Item item = (Item)entity;
 			ItemStack itemStack = item.getItemStack();
-			if (Wand.isWand(itemStack)) {
-				Wand wand = new Wand(controller, itemStack);
+			if (api.isWand(itemStack)) {
+				Wand wand = api.getWand(itemStack);
 				if (wand.getId().equals(lostWand.getId())) {
 					logger.info("Removed lost wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in " +
 							location.getWorld().getName() + " at " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());					
-					controller.removeLostWand(lostWand.getId());
+					api.removeLostWand(lostWand.getId());
 					item.remove();
 					lostWands.removeFirst();
 					return;
@@ -92,7 +94,7 @@ public class WandCleanupRunnable extends MagicRunnable {
 		}
 		
 		lostWands.removeFirst();
-		controller.removeLostWand(lostWand.getId());
+		api.removeLostWand(lostWand.getId());
 		logger.info("Could not find wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + ", removing from list");
 	}
 }

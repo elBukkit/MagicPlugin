@@ -7,35 +7,29 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.BlockVector;
 
+import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.api.magic.LostWand;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.block.Automaton;
-import com.elmakers.mine.bukkit.block.BlockBatch;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
+import com.elmakers.mine.bukkit.plugins.magic.commands.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
-import com.elmakers.mine.bukkit.utilities.MagicRunnable;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -64,18 +58,13 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		BlockData.setServer(getServer());
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(controller, this);
+		
+		getCommand("magic").setExecutor(new MagicCommandExecutor(this));
 	}
 
 	protected void initialize()
 	{
 		controller.initialize();
-	}
-	
-	protected void checkRunningTask()
-	{
-		if (runningTask != null && runningTask.isFinished()) {
-			runningTask = null;
-		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -279,301 +268,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return options;
 	}
 	
-	protected void onGiveSpell(CommandSender sender, Player player, String spellKey)
-	{
-		ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
-		if (itemStack == null) {
-			sender.sendMessage("Failed to create spell item for " + spellKey);
-			return;
-		}
-		
-		controller.giveItemToPlayer(player, itemStack);
-	}
-	
-	protected void onGiveBrush(CommandSender sender, Player player, String materialKey)
-	{
-		ItemStack itemStack = Wand.createMaterialItem(materialKey, controller, null, true);
-		if (itemStack == null) {
-			sender.sendMessage("Failed to material spell item for " + materialKey);
-			return;
-		}
-		
-		controller.giveItemToPlayer(player, itemStack);
-	}
-	
-	protected boolean onMagicGive(CommandSender sender, Player player, String[] args)
-	{
-		String playerCommand = (sender instanceof Player) ? "" : "<player> ";
-		String usageString = "Usage: /magic give " + playerCommand + "<spellname|'material'|'upgrade'|'wand'> [materialname|wandname]";
-		if (args.length == 0) {
-			sender.sendMessage(usageString);
-			return true;
-		}
-		
-		String key = "";
-		boolean isMaterial = false;
-		boolean isWand = false;
-		boolean isUpgrade = false;
-		
-		if (args.length > 1 && !args[0].equals("material") && !args[0].equals("wand") && !args[0].equals("upgrade")) {
-			sender.sendMessage(usageString);
-			return true;
-		}
-		
-		if (args[0].equals("wand")) {
-			isWand = true;
-			key = args.length > 1 ? args[1] : "";
-		} else if (args[0].equals("upgrade")) {
-			isUpgrade = true;
-			key =  args.length > 1 ? args[1] : "";
-		} else if (args[0].equals("material")) {
-			if (args.length < 2) {
-				sender.sendMessage(usageString);
-				return true;
-			}
-			isMaterial = true;
-			key = args[1];
-		} else {
-			key = args[0];
-		}
-		
-		if (isWand) {
-			onGiveWand(sender, player, key);
-		} else if (isMaterial) {
-			onGiveBrush(sender, player, key);
-		} else if (isUpgrade) {
-			onGiveUpgrade(sender, player, key);
-		} else {
-			onGiveSpell(sender, player, key);
-		}
-		
-		return true;
-	}
-	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
 	{
-		if (commandLabel.equalsIgnoreCase("magic") && args.length > 0)
-		{
-			String subCommand = args[0];
-			if (sender instanceof Player)
-			{
-				if (!controller.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return false;
-			}
-			if (subCommand.equalsIgnoreCase("save"))
-			{
-				controller.save();
-				URLMap.save();
-				sender.sendMessage("Data saved.");
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("load"))
-			{		
-				controller.loadConfiguration();
-				URLMap.loadConfiguration();
-				sender.sendMessage("Configuration reloaded.");
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("clearcache"))
-			{		
-				controller.clearCache();
-				URLMap.clearCache();
-				sender.sendMessage("Image map and schematic caches cleared.");
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("commit"))
-			{
-				if (controller.commitAll()) {
-					sender.sendMessage("All changes committed");
-				} else {
-					sender.sendMessage("Nothing to commit");
-				}
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("give"))
-			{
-				Player player = null;
-				int argStart = 1;
-				
-				if (sender instanceof Player) {
-					player = (Player)sender;
-				} else {
-					argStart = 2;
-					player = Bukkit.getPlayer(args[0]);
-					if (player == null) {
-						sender.sendMessage("Can't find player " + args[0]);
-						return true;
-					}
-					if (!player.isOnline()) {
-						sender.sendMessage("Player " + args[0] + " is not online");
-						return true;
-					}
-				}
-				String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
-				return onMagicGive(sender, player, args2);
-			}
-			if (subCommand.equalsIgnoreCase("list"))
-			{
-				String usage = "Usage: magic list <wands [player]|maps [keyword]>";
-				String listCommand = "";
-				if (args.length > 1)
-				{
-					listCommand = args[1];
-					if (!controller.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) return false;
-				}
-				else
-				{
-					if (!controller.hasPermission(sender, "Magic.commands.magic." + listCommand)) return false;
-					
-					sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'wands', 'maps' or 'automata' parameter.");
-					
-					Collection<Mage> mages = controller.getMages();
-					List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
-					int magicTasks = 0;
-					for (BukkitTask task : tasks)  {
-						if (task.getOwner() == this) magicTasks++;
-					}
-					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + magicTasks + "/" + tasks.size());
-					
-					sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active players: " + mages.size());
-					sender.sendMessage(ChatColor.AQUA + "Pending construction batches (" + controller.getPending().size() + "): ");
-					for (Mage mage : mages) {
-						List<BlockBatch> pending = mage.getPendingBatches();
-						if (pending.size() > 0) {
-							int totalSize = 0;
-							int totalRemaining = 0;
-							for (BlockBatch batch : pending) {
-								totalSize += batch.size();
-								totalRemaining = batch.remaining();
-							}
-							
-							sender.sendMessage(ChatColor.AQUA + mage.getName() + " " + ChatColor.GRAY + " has "
-									+ ChatColor.WHITE + "" + pending.size() + "" + ChatColor.GRAY
-									+ " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
-									+ "" + ChatColor.GRAY + ")");
-						}
-					}
-					return true;
-				}
-				
-				if (listCommand.equalsIgnoreCase("wands")) {
-					String owner = "";
-					if (args.length > 2) {
-						owner = args[2];
-					}
-					Collection<LostWand> lostWands = controller.getLostWands();
-					int shown = 0;
-					for (LostWand lostWand : lostWands) {
-						Location location = lostWand.getLocation();
-						if (location == null) continue;
-						if (owner.length() > 0 && !owner.equalsIgnoreCase	(lostWand.getOwner())) {
-							continue;
-						}
-						shown++;
-						sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
-								location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
-					}
-					
-					sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
-					return true;
-				} else if (listCommand.equalsIgnoreCase("automata")) {
-					Collection<Automaton> automata = controller.getAutomata();
-					for (Automaton automaton : automata) {
-						BlockVector location = automaton.getLocation();
-						String worldName = automaton.getWorldName();
-						sender.sendMessage(ChatColor.AQUA + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
-								location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
-					}
-					
-					sender.sendMessage(automata.size() + " automata active");
-					return true;
-				}
-				else if (listCommand.equalsIgnoreCase("maps")) {
-					String keyword = "";
-					if (args.length > 2) {
-						keyword = args[2];
-					}
-
-					int shown = 0;
-					Set<Entry<Short, URLMap>> allMaps = URLMap.getAll();
-					for (Entry<Short, URLMap> mapRecord : allMaps) {
-						Short mapId = mapRecord.getKey();
-						URLMap map = mapRecord.getValue();
-						if (map == null || mapId == null) continue;
-						
-						if (map.matches(keyword)) {
-							shown++;
-							String name = map.getName();
-							name = (name == null ? "(None)" : name);
-							sender.sendMessage(ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": " + 
-									name + " => " + ChatColor.GRAY + map.getURL());
-						}
-					}
-					if (shown == 0) {
-						sender.sendMessage("No maps found" + (keyword.length() > 0 ? " matching " + keyword : "") + ", use /castp <player> camera [url|player] [...]");
-					} else {
-						sender.sendMessage(shown + " maps found matching " + keyword);
-					}
-					return true;
-				}
-			
-				sender.sendMessage(usage);
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("cancel"))
-			{ 
-				checkRunningTask();
-				if (runningTask != null) {
-					runningTask.cancel();
-					runningTask = null;
-					sender.sendMessage("Job cancelled");
-				} else {
-					sender.sendMessage("There is no job running");
-				}
-				
-				int stoppedPending = 0;
-				for (Mage mage : controller.getMages()) {
-					if (mage.cancelPending()) stoppedPending++;
-				}
-				
-				sender.sendMessage("Stopped " + stoppedPending + " pending construction batches");
-				
-				return true;
-			}
-			if (subCommand.equalsIgnoreCase("clean"))
-			{ 
-				checkRunningTask();
-				if (runningTask != null) {
-					sender.sendMessage("Cancel current job first");
-					return true;
-				}
-				World world = null;
-				String owner = null;
-				if (args.length > 1) {
-					owner = args[1];
-				}
-				if (sender instanceof Player) {
-					world = ((Player)sender).getWorld();
-				} else {
-					if (args.length > 2) {
-						String worldName = args[2];
-						world = Bukkit.getWorld(worldName);
-					}
-				}
-
-				String ownerName = owner == null ? "(Unowned)" : owner;
-				if (world == null) {
-					sender.sendMessage("Cleaning up lost wands in all worlds for owner: " + ownerName);
-				} else {
-					sender.sendMessage("Cleaning up lost wands in world " + world.getName() + " for owner " + ownerName);
-				}
-				runningTask = new WandCleanupRunnable(controller, world, owner);
-				runningTask.runTaskTimer(this, 5, 5);
-				
-				return true;
-			}
-		}
-
 		if (commandLabel.equalsIgnoreCase("wandp"))
 		{
 			if (args.length == 0) {
@@ -903,7 +600,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		ItemStack newItem = InventoryUtils.getCopy(wand.getItem());
 		Wand newWand = new Wand(controller, newItem);
 		newWand.generateId();
-		controller.giveItemToPlayer(player, newWand.getItem());
+		giveItemToPlayer(player, newWand.getItem());
 		
 		mage.sendMessage(Messages.get("wand.duplicated"));
 		if (sender != player) {
@@ -1176,9 +873,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	
 		Wand wand = Wand.createWand(controller, wandKey);
 		if (wand != null) {
-			if (controller.giveItemToPlayer(player, wand.getItem())) {
-				wand.activate(mage);
-			}
+			giveItemToPlayer(player, wand.getItem());
 			if (sender != player) {
 				sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
 			}
@@ -1197,29 +892,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		}
 		
 		return onGiveWand(sender, player, wandName);
-	}
-	
-	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey)
-	{
-		Mage mage = controller.getMage(player);
-		Wand currentWand =  mage.getActiveWand();
-		if (currentWand != null) {
-			currentWand.closeInventory();
-		}
-	
-		Wand wand = Wand.createWand(controller, wandKey);
-		if (wand != null) {
-			wand.makeUpgrade();
-			if (controller.giveItemToPlayer(player, wand.getItem())) {
-				wand.activate(mage);
-			}
-			if (sender != player) {
-				sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
-			}
-		} else  {
-			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
-		}
-		return true;
 	}
 	
 	public boolean processCastCommand(CommandSender sender, Player player, String[] castParameters)
@@ -1433,5 +1105,126 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	 * Private data
 	 */	
 	private MagicController controller = null;
-	private MagicRunnable runningTask = null;
+
+	/*
+	 * API Implementation
+	 */
+	
+	@Override
+	public Plugin getPlugin() {
+		return this;
+	}
+
+	@Override
+	public boolean hasPermission(CommandSender sender, String pNode) {
+		return controller.hasPermission(sender, pNode);
+	}
+
+	@Override
+	public void save() {
+		controller.save();
+		URLMap.save();
+	}
+
+	@Override
+	public void reload() {
+		controller.loadConfiguration();
+		URLMap.loadConfiguration();
+	}
+
+	@Override
+	public void clearCache() {
+		controller.clearCache();
+		URLMap.clearCache();
+	}
+	
+	@Override
+	public boolean commit() {
+		return controller.commitAll();
+	}
+	
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages() {
+		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<com.elmakers.mine.bukkit.api.magic.Mage>();
+		Collection<Mage> internal = controller.getMages();
+		for (Mage mage : internal) {
+			mages.add(mage);
+		}
+		return mages;
+	}
+	
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMagesWithPendingBatches() {
+		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<com.elmakers.mine.bukkit.api.magic.Mage>();
+		Collection<Mage> internal = controller.getPending();
+		mages.addAll(internal);
+		return mages;
+	}
+	
+	@Override
+	public Collection<LostWand> getLostWands() {
+		Collection<LostWand> lostWands = new ArrayList<LostWand>();
+		lostWands.addAll(controller.getLostWands());
+		return lostWands;
+	}
+	
+	@Override
+	public Collection<Automaton> getAutomata() {
+		Collection<Automaton> automata = new ArrayList<Automaton>();
+		automata.addAll(controller.getAutomata());
+		return automata;
+	}
+
+	@Override
+	public void removeLostWand(String id) {
+		controller.removeLostWand(id);
+	}
+
+	@Override
+	public com.elmakers.mine.bukkit.api.magic.Wand getWand(ItemStack itemStack) {
+		return new Wand(controller, itemStack);
+	}
+	
+	public boolean isWand(ItemStack item) {
+		return Wand.isWand(item);
+	}
+
+	@Override
+	public void giveItemToPlayer(Player player, ItemStack itemStack) {
+		// Place directly in hand if possible
+		PlayerInventory inventory = player.getInventory();
+		ItemStack inHand = inventory.getItemInHand();
+		if (inHand == null || inHand.getType() == Material.AIR) {
+			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
+			if (Wand.isWand(itemStack)) {
+				Wand wand = new Wand(controller, itemStack);
+				wand.activate(controller.getMage(player));
+			}
+		} else {
+			HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
+			if (returned.size() > 0) {
+				player.getWorld().dropItem(player.getLocation(), itemStack);
+			}
+		}
+	}
+
+	@Override
+	public com.elmakers.mine.bukkit.api.magic.Mage getMage(CommandSender sender) {
+		return controller.getMage(sender);
+	}
+
+	@Override
+	public com.elmakers.mine.bukkit.api.magic.Wand createWand(String wandKey) {
+		return Wand.createWand(controller, wandKey);
+	}
+
+	@Override
+	public ItemStack createSpellItem(String spellKey) {
+		return Wand.createSpellItem(spellKey, controller, null, true);
+	}
+
+	@Override
+	public ItemStack createBrushItem(String brushKey) {
+		return Wand.createMaterialItem(brushKey, controller, null, true);
+	}
 }

@@ -41,7 +41,7 @@ import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class Wand implements CostReducer {
+public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
 	
@@ -1982,33 +1982,6 @@ public class Wand implements CostReducer {
 		autoFill = false;
 		saveState();
 	}
-	
-	public void activate(Mage mage) {
-		Player player = mage.getPlayer();
-		if (!Wand.hasActiveWand(player)) {
-			controller.getLogger().warning("Wand activated without holding a wand!");
-			try {
-				throw new Exception("Wand activated without holding a wand!");
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			return;
-		}
-		
-		if (!canUse(player)) {
-			mage.sendMessage(Messages.get("wand.bound").replace("$name", owner));
-			player.setItemInHand(null);
-			Location location = player.getLocation();
-			location.setY(location.getY() + 1);
-			Item droppedItem = player.getWorld().dropItemNaturally(location, item);
-			Vector velocity = droppedItem.getVelocity();
-			velocity.setY(velocity.getY() * 2 + 1);
-			droppedItem.setVelocity(velocity);
-			return;
-		}
-		
-		activate(mage, player.getItemInHand());
-	}
 		
 	public void activate(Mage mage, ItemStack wandItem) {
 		if (mage == null || wandItem == null) return;
@@ -2351,10 +2324,6 @@ public class Wand implements CostReducer {
 		return mage;
 	}
 	
-	public String getId() {
-		return this.id;
-	}
-	
 	protected void clearInventories() {
 		inventories.clear();
 		hotbar.clear();
@@ -2382,5 +2351,43 @@ public class Wand implements CostReducer {
 	
 	public boolean showMessages() {
 		return quietLevel < 2;
+	}
+	
+	/*
+	 * Public API Implementation
+	 */
+	
+	public String getId() {
+		return this.id;
+	}
+
+	@Override
+	public void activate(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+		Player player = mage.getPlayer();
+		if (!Wand.hasActiveWand(player)) {
+			controller.getLogger().warning("Wand activated without holding a wand!");
+			try {
+				throw new Exception("Wand activated without holding a wand!");
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			return;
+		}
+		
+		if (!canUse(player)) {
+			mage.sendMessage(Messages.get("wand.bound").replace("$name", owner));
+			player.setItemInHand(null);
+			Location location = player.getLocation();
+			location.setY(location.getY() + 1);
+			Item droppedItem = player.getWorld().dropItemNaturally(location, item);
+			Vector velocity = droppedItem.getVelocity();
+			velocity.setY(velocity.getY() * 2 + 1);
+			droppedItem.setVelocity(velocity);
+			return;
+		}
+		
+		if (mage instanceof Mage) {
+			activate((Mage)mage, player.getItemInHand());
+		}
 	}
 }

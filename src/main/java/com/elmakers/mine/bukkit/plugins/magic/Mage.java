@@ -27,7 +27,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.magic.BlockBatch;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoBatch;
@@ -37,7 +37,7 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class Mage implements CostReducer
+public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage
 {
 	protected static int 						AUTOMATA_ONLINE_TIMEOUT = 5000;
 	
@@ -575,37 +575,6 @@ public class Mage implements CostReducer
 		return undoQueue;
 	}
 	
-	public boolean undo(Block target) {
-		return getUndoQueue().undo(this, target);
-	}
-	
-	public boolean cancelPending() {
-		boolean stoppedPending = false;
-		if (pendingBatches.size() > 0) {
-			List<BlockBatch> batches = new ArrayList<BlockBatch>();
-			batches.addAll(pendingBatches);
-			for (BlockBatch batch : batches) {
-				if (!(batch instanceof UndoBatch)) {
-					batch.finish();
-					pendingBatches.remove(batch);
-					stoppedPending = true;
-				}
-			}
-		}
-		return stoppedPending;
-	}
-	
-	public boolean undo() {
-		
-		if (cancelPending()) return true;
-		return getUndoQueue().undo(this);
-	}
-	
-	
-	public boolean commit() {
-		return getUndoQueue().commit();
-	}
-	
 	public void registerForUndo(BlockList blockList) {
 		UndoQueue queue = getUndoQueue();
 		int autoUndo = controller.getAutoUndoInterval();
@@ -798,41 +767,6 @@ public class Mage implements CostReducer
 		}
 	}
 	
-	public Location getLocation() {
-		if (location != null) return location.clone();
-		
-		Player player = getPlayer();
-		if (player == null) return null;
-		return player.getLocation();
-	}
-	
-	public Location getEyeLocation() {
-		Player player = getPlayer();
-		if (player != null) return player.getEyeLocation();
-		Location location = getLocation();
-		if (location != null) {
-			location.setY(location.getY() + 1.5);
-			return location;
-		}
-		return null;
-	}
-	
-	public Vector getDirection() {
-		Location location = getLocation();
-		if (location != null) {
-			return location.getDirection();
-		}
-		return new Vector(0, 1, 0);
-	}
-	
-	public String getName() {
-		return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
-	}
-	
-	public String getId() {
-		return id;
-	}
-	
 	public boolean addPendingBlockBatch(BlockBatch batch) {
 		if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
 			return false;
@@ -861,11 +795,6 @@ public class Mage implements CostReducer
 		if (pendingBatches.size() == 0) {
 			controller.removePending(this);
 		}
-	}
-	
-	public List<BlockBatch> getPendingBatches() 
-	{
-		return pendingBatches;
 	}
 	
 	public List<LostWand> getLostWands() {
@@ -956,5 +885,81 @@ public class Mage implements CostReducer
 	public boolean isNewPlayer()
 	{
 		return this.isNewPlayer;
+	}
+	
+	/*
+	 * API Implementation(non-Javadoc)
+	 */
+
+	public Collection<com.elmakers.mine.bukkit.api.magic.BlockBatch> getPendingBatches() 
+	{
+		Collection<com.elmakers.mine.bukkit.api.magic.BlockBatch> pending = new ArrayList<com.elmakers.mine.bukkit.api.magic.BlockBatch>();
+		pending.addAll(pendingBatches);
+		return pending;
+	}
+	
+	public String getName() {
+		return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public Location getLocation() {
+		if (location != null) return location.clone();
+		
+		Player player = getPlayer();
+		if (player == null) return null;
+		return player.getLocation();
+	}
+	
+	public Location getEyeLocation() {
+		Player player = getPlayer();
+		if (player != null) return player.getEyeLocation();
+		Location location = getLocation();
+		if (location != null) {
+			location.setY(location.getY() + 1.5);
+			return location;
+		}
+		return null;
+	}
+	
+	public Vector getDirection() {
+		Location location = getLocation();
+		if (location != null) {
+			return location.getDirection();
+		}
+		return new Vector(0, 1, 0);
+	}
+	
+	public boolean undo(Block target) {
+		return getUndoQueue().undo(this, target);
+	}
+	
+	public boolean cancelPending() {
+		boolean stoppedPending = false;
+		if (pendingBatches.size() > 0) {
+			List<BlockBatch> batches = new ArrayList<BlockBatch>();
+			batches.addAll(pendingBatches);
+			for (BlockBatch batch : batches) {
+				if (!(batch instanceof UndoBatch)) {
+					batch.finish();
+					pendingBatches.remove(batch);
+					stoppedPending = true;
+				}
+			}
+		}
+		return stoppedPending;
+	}
+	
+	public boolean undo() {
+		
+		if (cancelPending()) return true;
+		return getUndoQueue().undo(this);
+	}
+	
+	public boolean commit() {
+		return getUndoQueue().commit();
 	}
 }

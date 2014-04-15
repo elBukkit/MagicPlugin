@@ -56,6 +56,11 @@
 			<version>2.3</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.elmakers.mine.bukkit</groupId>
+			<artifactId>MagicAPI</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<repositories>
        <repository>

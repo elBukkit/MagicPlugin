@@ -4,7 +4,7 @@ import org.bukkit.Location;
 
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class LostWand {
+public class LostWand implements com.elmakers.mine.bukkit.api.magic.LostWand {
 	private Location location;
 	private String id;
 	private String name;

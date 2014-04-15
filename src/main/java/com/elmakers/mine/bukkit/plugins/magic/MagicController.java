@@ -1891,9 +1891,7 @@ public class MagicController implements Listener
 		} else if (mage.isNewPlayer() && welcomeWand.length() > 0) {
 			wand = Wand.createWand(this, welcomeWand);
 			if (wand != null) {
-				if (giveItemToPlayer(player, wand.getItem())) {
-					wand.activate(mage);
-				}
+				plugin.giveItemToPlayer(player, wand.getItem());
 				getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
 			} else {
 				getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
@@ -2743,23 +2741,6 @@ public class MagicController implements Listener
 	
 	public void forgetMage(Mage mage) {
 		forgetMages.add(mage.getId());
-	}
-
-	public boolean giveItemToPlayer(Player player, ItemStack itemStack) {
-		// Place directly in hand if possible
-		PlayerInventory inventory = player.getInventory();
-		ItemStack inHand = inventory.getItemInHand();
-		if (inHand == null || inHand.getType() == Material.AIR) {
-			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
-			return true;
-		} else {
-			HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
-			if (returned.size() > 0) {
-				player.getWorld().dropItem(player.getLocation(), itemStack);
-			}
-		}
-		
-		return false;
 	}
 
 	/*
