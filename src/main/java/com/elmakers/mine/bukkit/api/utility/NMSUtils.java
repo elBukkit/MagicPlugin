@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.magic;
+package com.elmakers.mine.bukkit.api.utility;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

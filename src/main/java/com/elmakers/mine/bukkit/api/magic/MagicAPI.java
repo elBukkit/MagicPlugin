@@ -3,10 +3,16 @@ package com.elmakers.mine.bukkit.api.magic;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.api.block.Automaton;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public interface MagicAPI {
 
@@ -35,6 +41,7 @@ public interface MagicAPI {
 	 * @return boolean true if the CommandSender has the requested permission
 	 */
 	public boolean hasPermission(CommandSender sender, String pNode);
+	public boolean hasPermission(CommandSender sender, String pNode, boolean defaultPermission);
 	
 	/**
 	 * Save all Magic data.
@@ -90,6 +97,7 @@ public interface MagicAPI {
 	public void giveItemToPlayer(Player player, ItemStack itemStack);
 	
 	public Wand getWand(ItemStack item);
+	public Wand createWand(Material iconMaterial, short iconData);
 	public Wand createWand(String wandKey);
 	public boolean isWand(ItemStack item);
 	
@@ -102,4 +110,9 @@ public interface MagicAPI {
 	public Collection<Automaton> getAutomata();
 	
 	public void cast(String spellName, String[] parameters);
+	public void cast(String spellName, String[] parameters, CommandSender sender, Player player);
+	
+	public Collection<Spell> getSpells();
+	public Collection<String> getWandKeys();
+	public Collection<String> getPlayerNames();
 }

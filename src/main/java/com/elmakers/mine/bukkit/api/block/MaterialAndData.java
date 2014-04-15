@@ -1,9 +1,11 @@
-package com.elmakers.mine.bukkit.api.magic;
+package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
@@ -13,6 +15,8 @@ import org.bukkit.block.Skull;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+
+import com.elmakers.mine.bukkit.api.utility.NMSUtils;
 
 public class MaterialAndData {
 	protected Material material;
@@ -349,5 +353,65 @@ public class MaterialAndData {
 	public boolean isValid()
 	{
 		return isValid;
+	}
+
+	public String getName() {
+		return getMaterialName(getKey());
+	}
+	@SuppressWarnings("deprecation")
+	public static String getMaterialName(String materialKey) {
+		if (materialKey == null) return null;
+		String materialName = materialKey;
+		String[] namePieces = splitMaterialKey(materialName);
+		if (namePieces.length == 0) return null;
+		
+		materialName = namePieces[0];
+	
+		MaterialAndData materialAndData = new MaterialAndData(materialKey);
+		if (!materialAndData.isValid()) return null;
+		
+		Material material = materialAndData.getMaterial();
+		byte data = materialAndData.getData();
+		String customName = materialAndData.getCustomName();
+		
+		// This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
+		/*
+		Class<? extends MaterialData> materialData = material.getData();
+		Bukkit.getLogger().info("Material " + material + " has " + materialData);
+		if (Wool.class.isAssignableFrom(materialData)) {
+			Wool wool = new Wool(material, data);
+			materialName += " " + wool.getColor().name();
+		} else if (Dye.class.isAssignableFrom(materialData)) {
+			Dye dye = new Dye(material, data);
+			materialName += " " + dye.getColor().name();
+		} else if (Dye.class.isAssignableFrom(materialData)) {
+			Dye dye = new Dye(material, data);
+			materialName += " " + dye.getColor().name();
+		}
+		*/
+		
+		// Using raw id's for 1.6 support... because... bukkit... bleh.
+		
+		//if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
+		if (material == Material.CARPET || material.getId() == 95 || material.getId() ==159 || material.getId() == 160 || material == Material.WOOL) {
+			// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
+			DyeColor color = DyeColor.getByWoolData(data);
+			if (color != null) {
+				materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
+			}
+		} else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
+			TreeSpecies treeSpecies = TreeSpecies.getByData(data);
+			if (treeSpecies != null) {
+				materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
+			}
+		} else if ((material == Material.SKULL || material == Material.MOB_SPAWNER) && customName != null && customName.length() > 0) {
+			materialName = materialName + " (" + customName + ")";
+		} else {
+			materialName = material.name();				
+		}
+		
+		materialName = materialName.toLowerCase().replace('_', ' ');
+		
+		return materialName;
 	}
 }

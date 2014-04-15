@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.magic;
+package com.elmakers.mine.bukkit.api.utility;
 
 import java.util.LinkedList;
 import java.util.Random;
@@ -6,6 +6,7 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
+
 
 public class RandomUtils {
 	private final static Random random = new Random();

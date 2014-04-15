@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.magic;
+package com.elmakers.mine.bukkit.api.utility;
 
 
 public class WeightedPair<T extends Object> {

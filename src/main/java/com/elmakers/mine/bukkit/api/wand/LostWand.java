@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.magic;
+package com.elmakers.mine.bukkit.api.wand;
 
 import org.bukkit.Location;
 

@@ -8,6 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+
 public interface Mage {
 	/**
 	 * Return the list of pending construction batches for this Mage
@@ -71,4 +75,5 @@ public interface Mage {
 	public boolean commit();
 	
 	public Wand getActiveWand();
+	public Spell getSpell(String key);
 }
