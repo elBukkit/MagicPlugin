@@ -584,24 +584,20 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		}
 		message = message.replace("$target", useTargetName);
 		
-		String materialName = "None";
-		MaterialAndData displayMaterial = getDisplayMaterial();
-		if (displayMaterial != null) {
-			materialName = MaterialBrush.getMaterialName(displayMaterial);
-		}
+		String materialName = getDisplayMaterialName();
 		message = message.replace("$material", materialName);
 		
 		return message;
 	}
 
 	@SuppressWarnings("deprecation")
-	protected MaterialAndData getDisplayMaterial()
+	protected String getDisplayMaterialName()
 	{
 		if (target != null && target.isValid()) {
-			return new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
+			return MaterialBrush.getMaterialName(target.getBlock().getType(), target.getBlock().getData());
 		}
 		
-		return null;
+		return "None";
 	}
 	
 	protected void setTargetName(String name) {

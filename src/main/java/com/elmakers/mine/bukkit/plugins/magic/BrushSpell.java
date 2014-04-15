@@ -82,13 +82,13 @@ public abstract class BrushSpell extends BlockSpell{
 	}
 	
 	@Override
-	protected MaterialAndData getDisplayMaterial()
+	protected String getDisplayMaterialName()
 	{
 		MaterialBrush useBrush = getMaterialBrush();
 		if (useBrush != null) {
-			return useBrush;
+			return useBrush.getName();
 		}
 		
-		return super.getDisplayMaterial();
+		return super.getDisplayMaterialName();
 	}
 }
