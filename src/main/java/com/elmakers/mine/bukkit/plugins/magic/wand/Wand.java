@@ -163,6 +163,7 @@ public class Wand implements CostReducer {
 		item = itemStack;
 		indestructible = controller.getIndestructibleWands();
 		loadState();
+		checkId();
 	}
 	
 	public Wand(MagicController controller) {
@@ -214,7 +215,9 @@ public class Wand implements CostReducer {
 		setDescription(wandDescription);
 		setName(wandName);
 		suspendSave = false;
-		saveState();
+		
+		// This will call saveState
+		generateId();
 	}
 	
 	public Wand(MagicController controller, Material icon, short iconData) {
@@ -224,6 +227,7 @@ public class Wand implements CostReducer {
 			InventoryUtils.addGlow(item);
 		}
 		wandName = Messages.get("wand.default_name");
+		generateId();
 		updateName();
 	}
 	
@@ -726,6 +730,14 @@ public class Wand implements CostReducer {
 		if (suspendSave || item == null) return;
 		
 		Object wandNode = InventoryUtils.createNode(item, "wand");
+		if (wandNode == null) {
+			item = InventoryUtils.getCopy(item);
+			wandNode = InventoryUtils.createNode(item, "wand");
+			if (wandNode == null) {
+				controller.getLogger().warning("Failed to save wand state for wand id " + id);
+				return;
+			}
+		}
 		ConfigurationNode stateNode = new ConfigurationNode();
 		saveProperties(stateNode);
 		InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
