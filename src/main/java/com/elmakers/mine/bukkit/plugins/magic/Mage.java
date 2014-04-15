@@ -27,7 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.BlockBatch;
+import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoBatch;
@@ -453,28 +454,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			event.setDamage(newDamage);
 		}
 	}
-
-	public Spell getSpell(String name)
-	{
-		return getSpell(name, getPlayer());
-	}
-	
-	public Spell getSpell(String name, Player usePermissions)
-	{
-		Spell spell = controller.getSpell(name);
-		if (spell == null || !spell.hasSpellPermission(usePermissions))
-			return null;
-
-		Spell playerSpell = spells.get(spell.getKey());
-		if (playerSpell == null)
-		{
-			playerSpell = (Spell)spell.clone();
-			spells.put(spell.getKey(), playerSpell);
-		}
-		playerSpell.setMage(this);
-
-		return playerSpell;
-	}
 	
 	public MagicController getController() {
 		return controller;
@@ -688,7 +667,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			if (spellNode != null) {
 				List<String> keys = spellNode.getKeys();
 				for (String key : keys) {
-					Spell spell = getSpell(key);
+					Spell spell = getSpell(key, getPlayer());
 					if (spell != null) {
 						spell.load(spellNode.getNode(key));
 					}
@@ -891,9 +870,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	 * API Implementation(non-Javadoc)
 	 */
 
-	public Collection<com.elmakers.mine.bukkit.api.magic.BlockBatch> getPendingBatches() 
+	public Collection<com.elmakers.mine.bukkit.api.block.BlockBatch> getPendingBatches() 
 	{
-		Collection<com.elmakers.mine.bukkit.api.magic.BlockBatch> pending = new ArrayList<com.elmakers.mine.bukkit.api.magic.BlockBatch>();
+		Collection<com.elmakers.mine.bukkit.api.block.BlockBatch> pending = new ArrayList<com.elmakers.mine.bukkit.api.block.BlockBatch>();
 		pending.addAll(pendingBatches);
 		return pending;
 	}
@@ -962,4 +941,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	public boolean commit() {
 		return getUndoQueue().commit();
 	}
+
+	public com.elmakers.mine.bukkit.api.spell.Spell getSpell(String name)
+	{
+		return getSpell(name, getPlayer());
+	}
+	
+	public Spell getSpell(String name, Player usePermissions)
+	{
+		Spell spell = controller.getSpell(name);
+		if (spell == null || !spell.hasSpellPermission(usePermissions))
+			return null;
+
+		Spell playerSpell = spells.get(spell.getKey());
+		if (playerSpell == null)
+		{
+			playerSpell = (Spell)spell.clone();
+			spells.put(spell.getKey(), playerSpell);
+		}
+		playerSpell.setMage(this);
+
+		return playerSpell;
+	}
+	
 }

@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -17,7 +16,7 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -148,7 +147,6 @@ public class MaterialBrush extends MaterialAndData {
 		return getMaterialName(getMaterialKey(material, data));
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static String getMaterialName(String materialKey) {
 		if (materialKey == null) return null;
 		String materialName = materialKey;
@@ -158,48 +156,7 @@ public class MaterialBrush extends MaterialAndData {
 		materialName = namePieces[0];
 		
 		if (!MaterialBrush.isSpecialMaterialKey(materialKey)) {
-			MaterialAndData brushData = parseMaterialKey(materialKey);
-			if (brushData == null) return null;
-			
-			Material material = brushData.getMaterial();
-			byte data = brushData.getData();
-			String customName = brushData.getCustomName();
-			
-			// This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
-			/*
-			Class<? extends MaterialData> materialData = material.getData();
-			Bukkit.getLogger().info("Material " + material + " has " + materialData);
-			if (Wool.class.isAssignableFrom(materialData)) {
-				Wool wool = new Wool(material, data);
-				materialName += " " + wool.getColor().name();
-			} else if (Dye.class.isAssignableFrom(materialData)) {
-				Dye dye = new Dye(material, data);
-				materialName += " " + dye.getColor().name();
-			} else if (Dye.class.isAssignableFrom(materialData)) {
-				Dye dye = new Dye(material, data);
-				materialName += " " + dye.getColor().name();
-			}
-			*/
-			
-			// Using raw id's for 1.6 support... because... bukkit... bleh.
-			
-			//if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
-			if (material == Material.CARPET || material.getId() == 95 || material.getId() ==159 || material.getId() == 160 || material == Material.WOOL) {
-				// Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
-				DyeColor color = DyeColor.getByWoolData(data);
-				if (color != null) {
-					materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
-				}
-			} else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
-				TreeSpecies treeSpecies = TreeSpecies.getByData(data);
-				if (treeSpecies != null) {
-					materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
-				}
-			} else if ((material == Material.SKULL || material == Material.MOB_SPAWNER) && customName != null && customName.length() > 0) {
-				materialName = materialName + " (" + customName + ")";
-			} else {
-				materialName = material.name();				
-			}
+			return MaterialAndData.getMaterialName(materialKey);
 		} else if (materialName.startsWith(MaterialBrush.SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
 			materialName = namePieces[1];
 		}

@@ -18,7 +18,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.NMSUtils;
+import com.elmakers.mine.bukkit.api.utility.NMSUtils;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;

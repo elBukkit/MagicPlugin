@@ -27,21 +27,21 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectRing;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
-import com.elmakers.mine.bukkit.plugins.magic.CostReducer;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wand {
+public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
 	
@@ -267,16 +267,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		updateName(true);
 		updateLore();
 	}
-
-	public void setActiveSpell(String activeSpell) {
-		this.activeSpell = activeSpell;
-		updateName();
-		updateInventory();
-		saveState();
-	}
 	
 	protected void activateBrush(String materialKey) {
-		setActiveMaterial(materialKey);
+		setActiveBrush(materialKey);
 		if (materialKey != null) {
 			MaterialBrush brush = mage.getBrush();
 			brush.activate(mage.getLocation(), materialKey);
@@ -286,14 +279,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 	public void activateBrush(ItemStack itemStack) {
 		if (!isBrush(itemStack)) return;
 		activateBrush(getMaterialKey(itemStack));
-	}
-	
-	protected void setActiveMaterial(String materialKey) {
-		this.activeMaterial = materialKey;
-		updateName();
-		updateActiveMaterial();
-		updateInventory();
-		saveState();
 	}
 	
 	public int getXpRegeneration() {
@@ -486,7 +471,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		return StringUtils.join(getSpells(true), ",");
 	}
 
-	public Set<String> getMaterialKeys() {
+	public Set<String> getBrushes() {
 		return getMaterialKeys(false);
 	}
 	
@@ -1039,155 +1024,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 			}
 		}
 	}
-
-	public boolean removeMaterial(String materialKey) {
-		if (!isModifiable() || materialKey == null) return false;
-		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
-		if (materialKey.equals(activeMaterial)) {
-			activeMaterial = null;
-		}
-		List<Inventory> allInventories = getAllInventories();
-		boolean found = false;
-		for (Inventory inventory : allInventories) {
-			ItemStack[] items = inventory.getContents();
-			for (int index = 0; index < items.length; index++) {
-				ItemStack itemStack = items[index];
-				if (itemStack != null && isBrush(itemStack)) {
-					String itemKey = getMaterialKey(itemStack);
-					if (itemKey.equals(materialKey)) {
-						found = true;
-						inventory.setItem(index, null);
-					} else if (activeMaterial == null) {
-						activeMaterial = materialKey;
-					}
-					if (found && activeMaterial != null) {
-						break;
-					}
-				}
-			}
-		}
-		updateActiveMaterial();
-		updateInventory();
-		updateName();
-		updateLore();
-		saveState();
-		if (isInventoryOpen()) {
-			updateInventory();
-		}
-		return found;
-	}
-	
-	public boolean hasMaterial(String materialKey) {
-		return getMaterialKeys().contains(materialKey);
-	}
-	
-	public boolean hasSpell(String spellName) {
-		return getSpells().contains(spellName);
-	}
-	
-	public boolean addMaterial(String materialKey) {
-		return addMaterial(materialKey, false, false);
-	}
-	
-	public boolean addMaterial(String materialKey, boolean makeActive, boolean force) {
-		if (!isModifiable() && !force) return false;
-		
-		boolean addedNew = !hasMaterial(materialKey);
-		if (addedNew) {
-			addToInventory(createMaterialIcon(materialKey));
-		}
-		if (activeMaterial == null || activeMaterial.length() == 0 || makeActive) {
-			setActiveMaterial(materialKey);
-		} else {
-			updateInventory();
-		}
-		updateLore();
-		saveState();
-		hasInventory = getSpells().size() + getMaterialKeys().size() > 1;
-		
-		return addedNew;
-	}
-	
-	public boolean addMaterial(Material material, byte data, boolean makeActive, boolean force) {
-		if (!isModifiable() && !force) return false;
-		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
-		String materialKey = MaterialBrush.getMaterialKey(material, data, false);
-		return addMaterial(materialKey, makeActive, force);
-	}
-	
-	public boolean removeSpell(String spellName) {
-		if (!isModifiable()) return false;
-		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
-		if (spellName.equals(activeSpell)) {
-			activeSpell = null;
-		}
-		
-		List<Inventory> allInventories = getAllInventories();
-		boolean found = false;
-		for (Inventory inventory : allInventories) {
-			ItemStack[] items = inventory.getContents();
-			for (int index = 0; index < items.length; index++) {
-				ItemStack itemStack = items[index];
-				if (itemStack != null && itemStack.getType() != Material.AIR && !isWand(itemStack) && isSpell(itemStack)) {
-					if (getSpell(itemStack).equals(spellName)) {
-						found = true;
-						inventory.setItem(index, null);
-					} else if (activeSpell == null) {
-						activeSpell = getSpell(itemStack);
-					}
-					if (found && activeSpell != null) {
-						break;
-					}
-				}
-			}
-		}
-		updateName();
-		updateLore();
-		saveState();
-		updateInventory();
-		
-		return found;
-	}
-	
-	public boolean addSpell(String spellName, boolean makeActive) {
-		if (!isModifiable()) return false;
-		
-		if (isInventoryOpen()) {
-			saveInventory();
-		}
-		boolean addedNew = !hasSpell(spellName);
-		ItemStack spellItem = createSpellIcon(spellName);
-		if (spellItem == null) {
-			controller.getPlugin().getLogger().info("Unknown spell: " + spellName);
-			return false;
-		}
-		if (addedNew) {
-			addToInventory(spellItem);
-		}
-		if (makeActive) {
-			setActiveSpell(spellName);
-		} else {
-			updateInventory();
-		}
-		hasInventory = getSpells().size() + getMaterialKeys().size() > 1;
-		updateLore();
-		saveState();
-		
-		return addedNew;
-	}
-	
-	public boolean addSpell(String spellName) {
-		return addSpell(spellName, false);
-	}
 	
 	private static String getSpellDisplayName(Spell spell, String materialKey) {
 		String name = "";
@@ -1294,7 +1130,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 	}
 
 	protected List<String> getLore() {
-		return getLore(getSpells().size(), getMaterialKeys().size());
+		return getLore(getSpells().size(), getBrushes().size());
 	}
 	
 	protected void addPropertyLore(List<String> lore)
@@ -1625,7 +1461,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		if (usage != null && usage.length() > 0) {
 			lore.add(usage);
 		}
-		List<CastingCost> costs = spell.getCosts();
+		Collection<CastingCost> costs = spell.getCosts();
 		if (costs != null) {
 			for (CastingCost cost : costs) {
 				if (cost.hasCosts(reducer)) {
@@ -1633,7 +1469,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 				}
 			}
 		}
-		List<CastingCost> activeCosts = spell.getActiveCosts();
+		Collection<CastingCost> activeCosts = spell.getActiveCosts();
 		if (activeCosts != null) {
 			for (CastingCost cost : activeCosts) {
 				if (cost.hasCosts(reducer)) {
@@ -1775,13 +1611,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		// Add spells
 		Set<String> spells = other.getSpells();
 		for (String spell : spells) {
-			addSpell(spell, false);
+			addSpell(spell);
 		}
 
 		// Add materials
-		Set<String> materials = other.getMaterialKeys();
+		Set<String> materials = other.getBrushes();
 		for (String material : materials) {
-			addMaterial(material, false, true);
+			addBrush(material);
 		}
 		
 		Player player = (mage == null) ? null : mage.getPlayer();
@@ -1798,13 +1634,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		updateLore();
 		
 		return true;
-	}
-	
-	public boolean canUse(Player player) {
-		if (!bound || owner == null || owner.length() == 0) return true;
-		if (controller.hasPermission(player, "Magic.wand.override_bind", false)) return true;
-		
-		return owner.equalsIgnoreCase(player.getName());
 	}
 	
 	public boolean keepOnDeath() {
@@ -1968,8 +1797,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		}
 	}
 	
-	public void fill(Player player) {
-		List<Spell> allSpells = controller.getAllSpells();
+	public boolean fill(Player player) {
+		Collection<Spell> allSpells = controller.getPlugin().getSpells();
 
 		for (Spell spell : allSpells)
 		{
@@ -1981,6 +1810,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		
 		autoFill = false;
 		saveState();
+		
+		// TODO: Detect changes
+		return true;
 	}
 		
 	public void activate(Mage mage, ItemStack wandItem) {
@@ -2046,7 +1878,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 	
 	protected void checkActiveMaterial() {
 		if (activeMaterial == null || activeMaterial.length() == 0) {
-			Set<String> materials = getMaterialKeys();
+			Set<String> materials = getBrushes();
 			if (materials.size() > 0) {
 				activeMaterial = materials.iterator().next();
 			}
@@ -2068,8 +1900,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 			}
 		} else if (isBrush(item)) {
 			String materialKey = getMaterialKey(item);
-			Set<String> materials = getMaterialKeys();
-			if (!materials.contains(materialKey) && addMaterial(materialKey)) {
+			Set<String> materials = getBrushes();
+			if (!materials.contains(materialKey) && addBrush(materialKey)) {
 				mage.sendMessage(Messages.get("wand.brush_added").replace("$brush", MaterialBrush.getMaterialName(materialKey)));
 				return true;
 			}
@@ -2288,7 +2120,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 	public void cycleMaterials(ItemStack newItem) {
 		if (isWand(newItem)) item = newItem;
 		
-		Set<String> materialsSet = getMaterialKeys();
+		Set<String> materialsSet = getBrushes();
 		ArrayList<String> materials = new ArrayList<String>(materialsSet);
 		if (materials.size() == 0) return;
 		if (activeMaterial == null) {
@@ -2310,14 +2142,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 	
 	public boolean hasExperience() {
 		return xpRegeneration > 0;
-	}
-	
-	public void organizeInventory(Mage mage) {
-		WandOrganizer organizer = new WandOrganizer(this, mage);
-		organizer.organize();
-		openInventoryPage = 0;
-		autoOrganize = false;
-		saveState();
 	}
 	
 	public Mage getActivePlayer() {
@@ -2389,5 +2213,209 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.magic.Wan
 		if (mage instanceof Mage) {
 			activate((Mage)mage, player.getItemInHand());
 		}
+	}
+
+	@Override
+	public void organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+			WandOrganizer organizer = new WandOrganizer(this, mage);
+			organizer.organize();
+			openInventoryPage = 0;
+			autoOrganize = false;
+			saveState();
+		}
+
+	@Override
+	public com.elmakers.mine.bukkit.api.wand.Wand duplicate() {
+		ItemStack newItem = InventoryUtils.getCopy(item);
+		Wand newWand = new Wand(controller, newItem);
+		newWand.generateId();
+		return newWand;
+	}
+
+	@Override
+	public boolean configure(Map<String, Object> properties) {
+		loadProperties(new ConfigurationNode(properties), false);
+		
+		// TODO: Detect changes
+		return true;
+	}
+
+	@Override
+	public boolean upgrade(Map<String, Object> properties) {
+		loadProperties(new ConfigurationNode(properties), true);
+		// TODO: Detect changes
+		return true;
+	}
+
+	@Override
+	public boolean isLocked() {
+		return this.locked;
+	}
+
+	@Override
+	public boolean canUse(Player player) {
+		if (!bound || owner == null || owner.length() == 0) return true;
+		if (controller.hasPermission(player, "Magic.wand.override_bind", false)) return true;
+		
+		return owner.equalsIgnoreCase(player.getName());
+	}
+	
+	public boolean addSpell(String spellName) {
+		if (!isModifiable()) return false;
+		
+		if (isInventoryOpen()) {
+			saveInventory();
+		}
+		boolean addedNew = !hasSpell(spellName);
+		ItemStack spellItem = createSpellIcon(spellName);
+		if (spellItem == null) {
+			controller.getPlugin().getLogger().info("Unknown spell: " + spellName);
+			return false;
+		}
+		if (addedNew) {
+			addToInventory(spellItem);
+		}
+		updateInventory();
+		hasInventory = getSpells().size() + getBrushes().size() > 1;
+		updateLore();
+		saveState();
+		
+		return addedNew;
+	}
+
+	@Override
+	public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other) {
+		if (other instanceof Wand) {
+			add((Wand)other);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean hasBrush(String materialKey) {
+		return getBrushes().contains(materialKey);
+	}
+	
+	@Override
+	public boolean hasSpell(String spellName) {
+		return getSpells().contains(spellName);
+	}
+	
+	@Override
+	public boolean addBrush(String materialKey) {
+		if (!isModifiable()) return false;
+		
+		boolean addedNew = !hasBrush(materialKey);
+		if (addedNew) {
+			addToInventory(createMaterialIcon(materialKey));
+		}
+		if (activeMaterial == null || activeMaterial.length() == 0) {
+			setActiveBrush(materialKey);
+		} else {
+			updateInventory();
+		}
+		updateLore();
+		saveState();
+		hasInventory = getSpells().size() + getBrushes().size() > 1;
+		
+		return addedNew;
+	}
+	
+	@Override
+	public void setActiveBrush(String materialKey) {
+		this.activeMaterial = materialKey;
+		updateName();
+		updateActiveMaterial();
+		updateInventory();
+		saveState();
+	}
+
+	@Override
+	public void setActiveSpell(String activeSpell) {
+		this.activeSpell = activeSpell;
+		updateName();
+		updateInventory();
+		saveState();
+	}
+
+	@Override
+	public boolean removeBrush(String materialKey) {
+		if (!isModifiable() || materialKey == null) return false;
+		
+		if (isInventoryOpen()) {
+			saveInventory();
+		}
+		if (materialKey.equals(activeMaterial)) {
+			activeMaterial = null;
+		}
+		List<Inventory> allInventories = getAllInventories();
+		boolean found = false;
+		for (Inventory inventory : allInventories) {
+			ItemStack[] items = inventory.getContents();
+			for (int index = 0; index < items.length; index++) {
+				ItemStack itemStack = items[index];
+				if (itemStack != null && isBrush(itemStack)) {
+					String itemKey = getMaterialKey(itemStack);
+					if (itemKey.equals(materialKey)) {
+						found = true;
+						inventory.setItem(index, null);
+					} else if (activeMaterial == null) {
+						activeMaterial = materialKey;
+					}
+					if (found && activeMaterial != null) {
+						break;
+					}
+				}
+			}
+		}
+		updateActiveMaterial();
+		updateInventory();
+		updateName();
+		updateLore();
+		saveState();
+		if (isInventoryOpen()) {
+			updateInventory();
+		}
+		return found;
+	}
+	
+	@Override
+	public boolean removeSpell(String spellName) {
+		if (!isModifiable()) return false;
+		
+		if (isInventoryOpen()) {
+			saveInventory();
+		}
+		if (spellName.equals(activeSpell)) {
+			activeSpell = null;
+		}
+		
+		List<Inventory> allInventories = getAllInventories();
+		boolean found = false;
+		for (Inventory inventory : allInventories) {
+			ItemStack[] items = inventory.getContents();
+			for (int index = 0; index < items.length; index++) {
+				ItemStack itemStack = items[index];
+				if (itemStack != null && itemStack.getType() != Material.AIR && !isWand(itemStack) && isSpell(itemStack)) {
+					if (getSpell(itemStack).equals(spellName)) {
+						found = true;
+						inventory.setItem(index, null);
+					} else if (activeSpell == null) {
+						activeSpell = getSpell(itemStack);
+					}
+					if (found && activeSpell != null) {
+						break;
+					}
+				}
+			}
+		}
+		updateName();
+		updateLore();
+		saveState();
+		updateInventory();
+		
+		return found;
 	}
 }

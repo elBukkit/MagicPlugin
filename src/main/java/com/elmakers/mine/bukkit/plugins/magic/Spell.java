@@ -30,7 +30,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.block.BlockAction;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
@@ -49,7 +50,7 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
  * Original targeting code ported from: HitBlox.java, Ho0ber@gmail.com 
  *
  */
-public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
+public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.spell.Spell>, Cloneable, CostReducer, com.elmakers.mine.bukkit.api.spell.Spell
 {	
 	// TODO: Configurable default? this does look cool, though.
 	protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
@@ -366,45 +367,15 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		this.mage = mage;
 	}
 
-	public final String getKey()
-	{
-		return key;
-	}
-
-	public final String getName()
-	{
-		return name;
-	}
-
-	public final MaterialAndData getIcon()
-	{
-		return icon;
-	}
-
-	public final String getDescription()
-	{
-		return description;
-	}
-
-	public final String getUsage()
-	{
-		return usage;
-	}
-
-	public final String getCategory()
-	{
-		return category;
-	}
-
 	public boolean isMatch(String spell, String[] params)
 	{
 		if (params == null) params = new String[0];
 		return (key.equalsIgnoreCase(spell) && parameters.equals(params));
 	}
 
-	public int compareTo(Spell other)
+	public int compareTo(com.elmakers.mine.bukkit.api.spell.Spell other)
 	{
-		return name.compareTo(other.name);
+		return name.compareTo(other.getName());
 	}
 
 	public boolean cast()
@@ -780,11 +751,11 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		return "Magic.cast." + key;
 	}
 
-	public boolean hasSpellPermission(Player player)
+	public boolean hasSpellPermission(CommandSender sender)
 	{
-		if (player == null) return true;
+		if (sender == null) return true;
 
-		return controller.hasPermission(player, getPermissionNode(), true);
+		return controller.hasPermission(sender, getPermissionNode(), true);
 	}
 
 	/**
@@ -1665,12 +1636,18 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 		return true;
 	}
 	
-	public List<CastingCost> getCosts() {
-		return costs;
+	public Collection<com.elmakers.mine.bukkit.api.spell.CastingCost> getCosts() {
+		if (costs == null) return null;
+		List<com.elmakers.mine.bukkit.api.spell.CastingCost> copy = new ArrayList<com.elmakers.mine.bukkit.api.spell.CastingCost>();
+		copy.addAll(costs);
+		return copy;
 	}
 	
-	public List<CastingCost> getActiveCosts() {
-		return activeCosts;
+	public Collection<com.elmakers.mine.bukkit.api.spell.CastingCost> getActiveCosts() {
+		if (activeCosts == null) return null;
+		List<com.elmakers.mine.bukkit.api.spell.CastingCost> copy = new ArrayList<com.elmakers.mine.bukkit.api.spell.CastingCost>();
+		copy.addAll(activeCosts);
+		return copy;
 	}
 
 	public boolean isInCircle(int x, int z, int R)
@@ -1947,4 +1924,39 @@ public abstract class Spell implements Comparable<Spell>, Cloneable, CostReducer
 	{
 		return mage.usesMana();
 	}
+	
+	//
+	// Public API Implementation
+	//
+	
+	public final String getKey()
+	{
+		return key;
+	}
+
+	public final String getName()
+	{
+		return name;
+	}
+
+	public final MaterialAndData getIcon()
+	{
+		return icon;
+	}
+
+	public final String getDescription()
+	{
+		return description;
+	}
+
+	public final String getUsage()
+	{
+		return usage;
+	}
+
+	public final String getCategory()
+	{
+		return category;
+	}
+
 }

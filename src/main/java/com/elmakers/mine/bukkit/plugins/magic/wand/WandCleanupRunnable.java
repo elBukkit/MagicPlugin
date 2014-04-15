@@ -10,9 +10,9 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.magic.LostWand;
 import com.elmakers.mine.bukkit.api.magic.MagicRunnable;
-import com.elmakers.mine.bukkit.api.magic.Wand;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public class WandCleanupRunnable extends MagicRunnable {
 	private final LinkedList<LostWand> lostWands = new LinkedList<LostWand>();

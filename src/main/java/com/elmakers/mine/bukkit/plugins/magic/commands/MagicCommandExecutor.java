@@ -1,12 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic.commands;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -14,54 +13,29 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.api.magic.BlockBatch;
-import com.elmakers.mine.bukkit.api.magic.LostWand;
+import com.elmakers.mine.bukkit.api.block.Automaton;
+import com.elmakers.mine.bukkit.api.block.BlockBatch;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicRunnable;
-import com.elmakers.mine.bukkit.api.magic.Wand;
-import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 
-public class MagicCommandExecutor implements CommandExecutor {
+public class MagicCommandExecutor extends MagicTabExecutor {
 
-	private MagicAPI api;
+	private MagicRunnable runningTask = null;
 	
 	public MagicCommandExecutor(MagicAPI api) {
-		this.api = api;
-	}
-	
-	public static String getMagicVersion() {
-        String result = "Unknown-Version";
-
-        InputStream stream = MagicAPI.class.getClassLoader().getResourceAsStream("META-INF/maven/com.elmakers.mine.bukkit.plugins/Magic/pom.properties");
-        Properties properties = new Properties();
-
-        if (stream != null) {
-            try {
-                properties.load(stream);
-
-                result = properties.getProperty("version");
-            } catch (IOException ex) {
-                Bukkit.getLogger().warning("Could not get Magic version");
-            }
-        }
-
-        return result;
-    }
-	
-	protected void sendNoPermission(CommandSender sender)
-	{
-		sender.sendMessage(ChatColor.RED + "You are not allowed to use that command.");
+		super(api);
 	}
 	
 	@Override
@@ -348,26 +322,6 @@ public class MagicCommandExecutor implements CommandExecutor {
 		
 		return true;
 	}
-
-	public boolean onGiveWand(CommandSender sender, Player player, String wandKey)
-	{
-		Mage mage = api.getMage(player);
-		Wand currentWand =  mage.getActiveWand();
-		if (currentWand != null) {
-			currentWand.closeInventory();
-		}
-	
-		Wand wand = api.createWand(wandKey);
-		if (wand != null) {
-			api.giveItemToPlayer(player, wand.getItem());
-			if (sender != player) {
-				sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
-			}
-		} else {
-			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
-		}
-		return true;
-	}
 	
 	protected void onGiveSpell(CommandSender sender, Player player, String spellKey)
 	{
@@ -418,6 +372,27 @@ public class MagicCommandExecutor implements CommandExecutor {
 			runningTask = null;
 		}
 	}
-
-	private MagicRunnable runningTask = null;
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
+		List<String> options = new ArrayList<String>();
+		if (args.length == 1) {
+			addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "clearcache");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "cancel");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "load");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "save");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "commit");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "give");
+			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
+		} else if (args.length == 2) {
+			if (args[1].equalsIgnoreCase("list")) {
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
+			}
+		}
+		Collections.sort(options);
+		return options;
+	}
 }

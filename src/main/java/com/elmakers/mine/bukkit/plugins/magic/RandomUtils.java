@@ -3,10 +3,10 @@ package com.elmakers.mine.bukkit.plugins.magic;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.elmakers.mine.bukkit.api.magic.WeightedPair;
+import com.elmakers.mine.bukkit.api.utility.WeightedPair;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class RandomUtils extends com.elmakers.mine.bukkit.api.magic.RandomUtils {
+public class RandomUtils extends com.elmakers.mine.bukkit.api.utility.RandomUtils {
 	public static <T extends Object> void populateProbabilityMap(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, ConfigurationNode nodeMap, int levelIndex, int nextLevelIndex, float distance) {
 		Float currentThreshold = 0.0f;
 		

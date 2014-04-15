@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
-public class Automaton extends BlockData implements com.elmakers.mine.bukkit.api.magic.Automaton {
+public class Automaton extends BlockData implements com.elmakers.mine.bukkit.api.block.Automaton {
 	private String message;
 	private String name;
 	private long createdAt;

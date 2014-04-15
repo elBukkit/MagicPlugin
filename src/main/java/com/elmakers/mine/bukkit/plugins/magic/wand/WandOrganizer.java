@@ -15,9 +15,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class WandOrganizer {
 	private final Wand wand;
@@ -134,7 +134,7 @@ public class WandOrganizer {
 			}
 		}
 		
-		Set<String> wandMaterials = wand.getMaterialKeys();
+		Set<String> wandMaterials = wand.getBrushes();
 		
 		for (String hotbarItemName : hotbarMaterialNames) {
 			wandMaterials.remove(hotbarItemName);

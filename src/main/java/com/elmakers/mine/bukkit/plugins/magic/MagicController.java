@@ -27,7 +27,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -87,7 +86,7 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
-import com.elmakers.mine.bukkit.api.magic.NMSUtils;
+import com.elmakers.mine.bukkit.api.utility.NMSUtils;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -1487,7 +1486,7 @@ public class MagicController implements Listener
 	{
 		// Check for spell or material selection
 		if (icon != null && icon.getType() != Material.AIR) {
-			Spell spell = mage.getSpell(Wand.getSpell(icon));
+			com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(Wand.getSpell(icon));
 			if (spell != null) {
 				activeWand.saveInventory();
 				activeWand.setActiveSpell(spell.getKey());
@@ -1847,11 +1846,11 @@ public class MagicController implements Listener
 				// Check for wand cycling
 				if (wand.getMode() == WandMode.CYCLE) {
 					if (player.isSneaking()) {
-						Spell activeSpell = wand.getActiveSpell();
+						com.elmakers.mine.bukkit.api.spell.Spell activeSpell = wand.getActiveSpell();
 						boolean cycleMaterials = false;
 						if (activeSpell != null && activeSpell instanceof BrushSpell) {
 							BrushSpell brushSpell = (BrushSpell)activeSpell;
-							cycleMaterials = brushSpell.hasBrushOverride() && wand.getMaterialKeys().size() > 0;
+							cycleMaterials = brushSpell.hasBrushOverride() && wand.getBrushes().size() > 0;
 						}
 						if (cycleMaterials) {
 							wand.cycleMaterials(player.getItemInHand());
@@ -2491,19 +2490,6 @@ public class MagicController implements Listener
 	
 	public float getCostReduction() {
 		return costReduction;
-	}
-	
-	public static List<String> getPlayerNames() {
-		List<String> playerNames = new ArrayList<String>();
-		List<World> worlds = Bukkit.getWorlds();
-		for (World world : worlds) {
-			List<Player> players = world.getPlayers();
-			for (Player player : players) {
-				if (player.hasMetadata("NPC")) continue;
-				playerNames.add(player.getName());
-			}
-		}
-		return playerNames;
 	}
 	
 	public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message) {

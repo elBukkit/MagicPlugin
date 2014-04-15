@@ -1,17 +1,17 @@
 package com.elmakers.mine.bukkit.plugins.magic.wand;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.elmakers.mine.bukkit.api.magic.WeightedPair;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.utility.WeightedPair;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
 import com.elmakers.mine.bukkit.plugins.magic.RandomUtils;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -167,7 +167,7 @@ public class WandLevel {
 			for (int i = 0; i < spellCount; i++) {
 				String spellKey = RandomUtils.weightedRandom(remainingSpells);
 				
-				if (wand.addSpell(spellKey, false)) {	
+				if (wand.addSpell(spellKey)) {	
 					if (firstSpell == null) {
 						firstSpell = wand.getMaster().getSpell(spellKey);
 					}
@@ -188,7 +188,7 @@ public class WandLevel {
 			Spell spell = wand.getMaster().getSpell(spellName);
 			if (spell != null) {
 				needsMaterials = needsMaterials || (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride();
-				List<CastingCost> costs = spell.getCosts();
+				Collection<CastingCost> costs = spell.getCosts();
 				if (costs != null) {
 					for (CastingCost cost : costs) {
 						maxXpCost = Math.max(maxXpCost, cost.getXP());
@@ -199,7 +199,7 @@ public class WandLevel {
 		
 		// Add random materials
 		boolean addedMaterials = false;
-		Set<String> wandMaterials = wand.getMaterialKeys();
+		Set<String> wandMaterials = wand.getBrushes();
 		LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<WeightedPair<String>>();
 		for (WeightedPair<String> material : materialProbability) {
 			String materialKey = material.getValue();
@@ -210,7 +210,7 @@ public class WandLevel {
 			}
 		}
 		if (needsMaterials && remainingMaterials.size() > 0) {
-			int currentMaterialCount = wand.getMaterialKeys().size();
+			int currentMaterialCount = wand.getBrushes().size();
 			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
 			
 			// Make sure the wand has at least one material.
@@ -221,7 +221,7 @@ public class WandLevel {
 			for (int i = 0; i < materialCount; i++) {
 				String materialKey = RandomUtils.weightedRandom(remainingMaterials);
 				materialKey = materialKey.replace("|", ":");
-				if (!wand.addMaterial(materialKey, false, false)) {
+				if (!wand.addBrush(materialKey)) {
 					// Try again up to a certain number if we picked one the wand already had.
 					if (retries-- > 0) i--;
 				} else {

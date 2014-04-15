@@ -19,7 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.api.magic.NMSUtils;
+import com.elmakers.mine.bukkit.api.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class InventoryUtils extends NMSUtils

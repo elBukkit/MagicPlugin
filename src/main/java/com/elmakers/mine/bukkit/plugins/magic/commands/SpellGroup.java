@@ -1,7 +1,9 @@
-package com.elmakers.mine.bukkit.plugins.magic;
+package com.elmakers.mine.bukkit.plugins.magic.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class SpellGroup implements Comparable<SpellGroup>
 {

@@ -11,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.api.magic.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 
