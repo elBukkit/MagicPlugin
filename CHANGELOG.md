@@ -5,6 +5,7 @@
  - Add Backup and Repair spells.
  - Default "protected" and "powered" permissions to false
  - Add commit_on_quit config.yml option to save memory (at the expense of undo ability after logout)
+ - Add some tab completion for /cast parameters, useful for experimentation
 
 ## 2.9.9
 

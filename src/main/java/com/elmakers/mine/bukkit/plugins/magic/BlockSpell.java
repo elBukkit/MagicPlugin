@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 
 import org.bukkit.Material;
@@ -15,6 +17,10 @@ public abstract class BlockSpell extends Spell {
 	private boolean checkDestructible = true;
 	private boolean bypassUndo				= false;
 	private int modifiedBlocks = 0;
+	
+	public final static String[] BLOCK_PARAMETERS = {
+		"indestructible", "destructible", "check_destructible", "bypass_undo"
+	};
 	
 	private boolean isIndestructible(Block block)
 	{
@@ -78,5 +84,12 @@ public abstract class BlockSpell extends Spell {
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);
 		return message.replace("$count", Integer.toString(modifiedBlocks));
+	}
+
+	@Override
+	public void getParameters(Collection<String> parameters)
+	{
+		super.getParameters(parameters);
+		parameters.addAll(Arrays.asList(BLOCK_PARAMETERS));
 	}
 }

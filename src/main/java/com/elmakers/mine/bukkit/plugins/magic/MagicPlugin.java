@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.plugins.magic.commands.CastCommandExecutor;
@@ -248,5 +249,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	@Override
 	public com.elmakers.mine.bukkit.api.wand.Wand createWand(Material iconMaterial, short iconData) {
 		return new Wand(controller, iconMaterial, iconData);
+	}
+
+	@Override
+	public Spell getSpell(String key) {
+		return controller.getSpell(key);
 	}
 }

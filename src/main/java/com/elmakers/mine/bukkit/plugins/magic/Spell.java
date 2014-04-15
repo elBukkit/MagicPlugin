@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,6 +55,12 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 {	
 	// TODO: Configurable default? this does look cool, though.
 	protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
+	
+	public final static String[] COMMON_PARAMETERS = {
+		"duration", "range", "allow_max_range", "prevent_passthrough", "transparent", "fizzle_chance", "backfire_chance",
+		"target", "target_npc", "target_type", "px", "py", "pz", "pdx", "pdy", "pdz", "pworld", "tx", "ty", "tz", "tworld", "otx", "oty", "otz", "otworld",
+		"t2x", "t2y", "t2z", "t2world", "bypass_build", "bypass_pvp", "cooldown_reduction"
+	};
 	
 	/*
 	 * protected members that are helpful to use
@@ -1320,8 +1327,10 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	}
 	
 	protected List<Target> getAllTargetEntities() {
-		List<Entity> entities = getWorld().getEntities();
 		List<Target> scored = new ArrayList<Target>();
+		World world = getWorld();
+		if (world == null) return scored;
+		List<Entity> entities = world.getEntities();
 		for (Entity entity : entities)
 		{
 			if (entity == getPlayer()) continue;
@@ -1376,6 +1385,8 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	public Block getNextBlock()
 	{
 		Location location = getLocation();
+		if (location == null) return null;
+		
 		lastX = targetX;
 		lastY = targetY;
 		lastZ = targetZ;
@@ -1959,4 +1970,8 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return category;
 	}
 
+	public void getParameters(Collection<String> parameters)
+	{
+		parameters.addAll(Arrays.asList(COMMON_PARAMETERS));
+	}
 }

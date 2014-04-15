@@ -79,10 +79,10 @@ public class CastCommandExecutor extends MagicTabExecutor {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
 		
-		if (comandName.equalsIgnoreCase("castp")) 
+		if (commandName.equalsIgnoreCase("castp")) 
 		{
 			if (args.length == 1) {
 				options.addAll(api.getPlayerNames());
@@ -96,11 +96,18 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		if (args.length == 1) {
 			Collection<Spell> spellList = api.getSpells();
 			for (Spell spell : spellList) {
-				addIfPermissible(sender, options, "Magic." + comandName+ ".", spell.getKey(), true);
+				addIfPermissible(sender, options, "Magic." + commandName+ ".", spell.getKey(), true);
 			}
 		}
 		
-		// TODO : Custom completion for spell parameters
+		if (args.length > 1)
+		{
+			String spellName = args[0];
+			Spell spell = api.getSpell(spellName);
+			if (spell != null) {
+				spell.getParameters(options);
+			}
+		}
 		
 		Collections.sort(options);
 		return options;
