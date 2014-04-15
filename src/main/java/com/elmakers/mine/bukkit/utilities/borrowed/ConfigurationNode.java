@@ -19,9 +19,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.magic.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.RandomUtils;
 import com.elmakers.mine.bukkit.block.BlockData;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utilities.RandomUtils;
 
 /**
  * Represents a configuration node.

@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.block;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -18,6 +17,7 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.magic.MaterialAndData;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
@@ -140,16 +140,6 @@ public class MaterialBrush extends MaterialAndData {
 			   MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
 	}
 	
-	public static String[] splitMaterialKey(String materialKey) {
-		if (materialKey.contains("|")) {
-			return StringUtils.split(materialKey, "|");
-		} else if (materialKey.contains(":")) {
-			return StringUtils.split(materialKey, ":");
-		}
-		
-		return new String[] { materialKey };
-	}
-	
 	public static String getMaterialName(MaterialAndData material) {
 		return getMaterialName(getMaterialKey(material));
 	}
@@ -236,11 +226,10 @@ public class MaterialBrush extends MaterialAndData {
 		return parseMaterialKey(materialKey, true);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static MaterialAndData parseMaterialKey(String materialKey, boolean allowItems) {
 		if (materialKey == null || materialKey.length() == 0) return null;
 		
-		Material material = Material.DIRT;
+		Material material = DEFAULT_MATERIAL;
 		byte data = 0;
 		String customName = "";
 		String[] pieces = splitMaterialKey(materialKey);
@@ -259,43 +248,14 @@ public class MaterialBrush extends MaterialAndData {
 			material = SchematicMaterial;
 			customName = pieces[1];
 		} else {
-			try {
-				if (pieces.length > 0) {
-					// Legacy material id loading
-					try {
-						Integer id = Integer.parseInt(pieces[0]);
-						material = Material.getMaterial(id);
-					} catch (Exception ex) {
-						material = Material.getMaterial(pieces[0].toUpperCase());
-					}
-				}
-				
-				// Prevent building with items
-				if (!allowItems && material != null && !material.isBlock()) {
-					material = null;
-				}
-			} catch (Exception ex) {
-				material = null;
-			}
-			try {
-				if (pieces.length > 1) {
-					data = Byte.parseByte(pieces[1]);
-				}
-			} catch (Exception ex) {
-				// Some special-cases
-				if (material == Material.SKULL || material == Material.MOB_SPAWNER) {
-					customName = pieces[1];
-					data = 3;
-				} else if (material == Material.SKULL || material == Material.MOB_SPAWNER) {
-					customName = pieces[1];
-					data = 0;
-				} else {
-					data = 0;
-					customName = "";
-				}
+			MaterialAndData basic = new MaterialAndData(materialKey);
+			
+			// Prevent building with items
+			if (!allowItems && !basic.getMaterial().isBlock()) {
+				return null;
 			}
 		}
-		if (material == null) return null;
+				
 		return new MaterialAndData(material, data, customName);
 	}
 	

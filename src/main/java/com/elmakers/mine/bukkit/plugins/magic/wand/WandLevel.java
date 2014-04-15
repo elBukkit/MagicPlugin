@@ -8,12 +8,12 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.elmakers.mine.bukkit.api.magic.WeightedPair;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.CastingCost;
+import com.elmakers.mine.bukkit.plugins.magic.RandomUtils;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.RandomUtils;
-import com.elmakers.mine.bukkit.utilities.WeightedPair;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandLevel {

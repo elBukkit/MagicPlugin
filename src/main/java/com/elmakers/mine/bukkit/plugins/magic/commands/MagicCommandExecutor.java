@@ -25,10 +25,10 @@ import com.elmakers.mine.bukkit.api.magic.BlockBatch;
 import com.elmakers.mine.bukkit.api.magic.LostWand;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.MagicRunnable;
 import com.elmakers.mine.bukkit.api.magic.Wand;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;
-import com.elmakers.mine.bukkit.utilities.MagicRunnable;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 

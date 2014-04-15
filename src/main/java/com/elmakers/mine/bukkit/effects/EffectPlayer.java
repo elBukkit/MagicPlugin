@@ -14,7 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.MaterialAndData;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public abstract class EffectPlayer {

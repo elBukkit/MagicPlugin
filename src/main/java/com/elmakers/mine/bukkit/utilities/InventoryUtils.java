@@ -19,78 +19,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.magic.NMSUtils;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class InventoryUtils extends NMSUtils
-{
-	protected static Object getNMSCopy(ItemStack stack) {
-    	Object nms = null;
-    	try {
-			Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
-			nms = copyMethod.invoke(null, stack);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return nms;
-    }
-
-	protected static Object getTag(Object mcItemStack) {		
-		Object tag = null;
-		try {
-			Field tagField = class_ItemStack.getField("tag");
-			tag = tagField.get(mcItemStack);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return tag;
-	}
-	
-	public static ItemStack getCopy(ItemStack stack) {
-		if (stack == null) return null;
-		
-        try {
-            Object craft = getNMSCopy(stack);
-            Method mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", craft.getClass());
-            stack = (ItemStack)mirrorMethod.invoke(null, craft);
-        } catch (Throwable ex) {
-            stack = null;
-        }
-
-        return stack;
-	}
-	
-	public static ItemStack makeReal(ItemStack stack) {
-		if (stack == null) return null;
-		if (getHandle(stack) != null) return stack;
-		
-		return getCopy(stack);
-	}
-	
-	public static String getMeta(ItemStack stack, String tag, String defaultValue) {
-		String result = getMeta(stack, tag);
-		return result == null ? defaultValue : result;
-	}
-
-	public static boolean hasMeta(ItemStack stack, String tag) {
-		return getNode(stack, tag) != null;
-	}
-	
-	public static Object getNode(ItemStack stack, String tag) {
-		if (stack == null) return null;
-		Object meta = null;
-		try {
-			Object craft = getHandle(stack);
-			if (craft == null) return null;
-			Object tagObject = getTag(craft);
-			if (tagObject == null) return null;
-			Method getMethod = class_NBTTagCompound.getMethod("get", String.class);
-			meta = getMethod.invoke(tagObject, tag);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return meta;
-	}
-	
+{	
 	public static boolean saveTagsToNBT(ConfigurationNode tags, Object node, String[] tagNames)
 	{
 		if (node == null) {
@@ -130,101 +63,6 @@ public class InventoryUtils extends NMSUtils
 		return true;
 	}
 	
-	public static Object createNode(ItemStack stack, String tag) {
-		if (stack == null) return null;
-		Object outputObject = getNode(stack, tag);
-		if (outputObject == null) {
-			try {
-				Object craft = getHandle(stack);
-				if (craft == null) return null;
-				Object tagObject = getTag(craft);
-				if (tagObject == null) return null;
-				outputObject = class_NBTTagCompound.newInstance();
-				Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
-				setMethod.invoke(tagObject, tag, outputObject);
-			} catch (Throwable ex) {
-				ex.printStackTrace();
-			}
-		}
-		return outputObject;
-	}
-	
-	public static String getMeta(Object node, String tag, String defaultValue) {
-		String meta = getMeta(node, tag);
-		return meta == null || meta.length() == 0 ? defaultValue : meta;
-	}
-	
-	public static String getMeta(Object node, String tag) {
-		if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
-		String meta = null;
-		try {
-			Method getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
-			meta = (String)getStringMethod.invoke(node, tag);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return meta;
-	}
-
-	public static void setMeta(Object node, String tag, String value) {
-		if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
-		try {
-			if (value == null || value.length() == 0) {
-				Method setStringMethod = class_NBTTagCompound.getMethod("remove", String.class);
-				setStringMethod.invoke(node, tag);
-			} else {
-				Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
-				setStringMethod.invoke(node, tag, value);
-			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	public static String getMeta(ItemStack stack, String tag) {
-		if (stack == null) return null;
-		String meta = null;
-		try {
-			Object craft = getHandle(stack);
-			if (craft == null) return null;
-			Object tagObject = getTag(craft);
-			if (tagObject == null) return null;
-			Method getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
-			meta = (String)getStringMethod.invoke(tagObject, tag);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-		return meta;
-	}
-
-	public static void setMeta(ItemStack stack, String tag, String value) {
-		if (stack == null) return;
-		try {
-			Object craft = getHandle(stack);
-			Object tagObject = getTag(craft);
-			Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
-			setStringMethod.invoke(tagObject, tag, value);
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	public static void addGlow(ItemStack stack) { 
-		if (stack == null) return;
-		
-		try {
-			Object craft = getHandle(stack);
-			if (craft == null) return;
-			Object tagObject = getTag(craft);
-			if (tagObject == null) return;
-			final Object enchList = class_NBTTagList.newInstance();
-			Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);		
-			setMethod.invoke(tagObject, "ench", enchList);
-		} catch (Throwable ex) {
-			
-		}
-    }
-
 	public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
 		Inventory inventory = null;
 		try {

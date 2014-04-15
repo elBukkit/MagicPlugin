@@ -9,6 +9,8 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.magic.NMSUtils;
+
 public class LightSource extends NMSUtils {
 	/*
 	 * This was modified by NathanWolf from the following code:
