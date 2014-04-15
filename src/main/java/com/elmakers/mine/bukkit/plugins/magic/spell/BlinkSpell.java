@@ -76,6 +76,8 @@ public class BlinkSpell extends Spell
 		if (autoPassthrough)
 		{
 			Block firstBlock = getNextBlock();
+			if (firstBlock == null) return SpellResult.NO_TARGET;
+			
 			if (!allowPassThrough(firstBlock.getType())) 
 			{
 				return SpellResult.NO_TARGET;

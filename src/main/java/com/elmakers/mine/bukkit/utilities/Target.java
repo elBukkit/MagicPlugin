@@ -141,6 +141,8 @@ public class Target implements Comparable<Target>
 
 	protected void calculateScore()
 	{
+		if (source == null) return;
+		
 		Vector playerFacing = source.getDirection();
 		Vector playerLoc = new Vector(source.getBlockX(), source.getBlockY(), source.getBlockZ());
 
