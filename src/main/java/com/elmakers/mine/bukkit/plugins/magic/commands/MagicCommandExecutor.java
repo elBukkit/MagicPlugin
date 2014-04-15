@@ -43,7 +43,7 @@ public class MagicCommandExecutor implements CommandExecutor {
 	public static String getMagicVersion() {
         String result = "Unknown-Version";
 
-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.elmakers.mine.bukkit.plugins/Magic/pom.properties");
+        InputStream stream = MagicAPI.class.getClassLoader().getResourceAsStream("META-INF/maven/com.elmakers.mine.bukkit.plugins/Magic/pom.properties");
         Properties properties = new Properties();
 
         if (stream != null) {
@@ -59,10 +59,19 @@ public class MagicCommandExecutor implements CommandExecutor {
         return result;
     }
 	
+	protected void sendNoPermission(CommandSender sender)
+	{
+		sender.sendMessage(ChatColor.RED + "You are not allowed to use that command.");
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 0)
 		{
+			if (!api.hasPermission(sender, "Magic.commands.magic")) {
+				sendNoPermission(sender);
+				return true;
+			}
 			sender.sendMessage("Magic " + getMagicVersion());
 			return true;
 		}
@@ -70,7 +79,10 @@ public class MagicCommandExecutor implements CommandExecutor {
 		String subCommand = args[0];
 		if (sender instanceof Player)
 		{
-			if (!api.hasPermission((Player)sender, "Magic.commands.magic." + subCommand)) return false;
+			if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand)) {
+				sendNoPermission(sender);
+				return true;
+			}
 		}
 		if (subCommand.equalsIgnoreCase("save"))
 		{
@@ -128,12 +140,13 @@ public class MagicCommandExecutor implements CommandExecutor {
 			if (args.length > 1)
 			{
 				listCommand = args[1];
-				if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) return false;
+				if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) {
+					sendNoPermission(sender);
+					return false;
+				}
 			}
 			else
-			{
-				if (!api.hasPermission(sender, "Magic.commands.magic." + listCommand)) return false;
-				
+			{				
 				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'wands', 'maps' or 'automata' parameter.");
 				
 				Collection<Mage> mages = api.getMages();
