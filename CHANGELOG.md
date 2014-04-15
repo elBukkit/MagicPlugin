@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.9.9.1
+
+ - Remove the block physics listener. This probably breaks the Portal spell, but I didn't check.
+
 ## 2.9.9
 
  - Change enchanting range to 10 - 35
