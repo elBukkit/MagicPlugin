@@ -94,10 +94,14 @@ public interface MagicAPI {
 	 * @param itemStack The ItemStack to giev the player, may be a Wand.
 	 */
 	public void giveItemToPlayer(Player player, ItemStack itemStack);
+
+	public Collection<String> getPlayerNames();
+
+	public Collection<String> getWandKeys();
+	public Wand createWand(String wandKey);
 	
 	public Wand getWand(ItemStack item);
 	public Wand createWand(Material iconMaterial, short iconData);
-	public Wand createWand(String wandKey);
 	public boolean isWand(ItemStack item);
 	
 	public ItemStack createSpellItem(String spellKey);
@@ -112,6 +116,5 @@ public interface MagicAPI {
 	public void cast(String spellName, String[] parameters, CommandSender sender, Player player);
 	
 	public Collection<Spell> getSpells();
-	public Collection<String> getWandKeys();
-	public Collection<String> getPlayerNames();
+	public Spell getSpell(String key);
 }

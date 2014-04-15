@@ -19,4 +19,5 @@ public interface Spell extends Comparable<Spell>, CostReducer {
 	public Collection<CastingCost> getCosts();
 	public Collection<CastingCost> getActiveCosts();
 	public long getCastCount();
+	public void getParameters(Collection<String> parameters);
 }
