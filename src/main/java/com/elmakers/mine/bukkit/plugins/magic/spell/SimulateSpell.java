@@ -178,6 +178,7 @@ public class SimulateSpell extends BlockSpell {
 		
 		batch.setBirthRange(parameters.getInt("birth_range", 0));
 		batch.setLiveRange(parameters.getInt("live_range", 0));
+		batch.setConcurrent(parameters.getBoolean("concurrent", false));
 		
 		// delay is in ms, gets converted.
 		int delay = parameters.getInt("delay", 0);

@@ -129,7 +129,7 @@ public class ConstructBatch extends VolumeBatch {
 	}
 	
 	public int remaining() {
-		return delayedBlocks.size() + attachedBlockList.size() + ((r - x) * (r - y) * (r - z)) * 4;
+		return delayedBlocks.size() + attachedBlockList.size() + ((r - x) * (r - y) * (r - z)) * 8;
 	}
 	
 	public int process(int maxBlocks) {
@@ -349,11 +349,6 @@ public class ConstructBatch extends VolumeBatch {
 			if (z != 0 && x != 0) success = success && constructBlock(-x, y, -z);
 		}
 		return success;
-	}
-
-	public int getDistanceSquared(int x, int y, int z)
-	{
-		return x * x + y * y + z * z;
 	}
 
 	@SuppressWarnings("deprecation")

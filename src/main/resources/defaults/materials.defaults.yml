@@ -319,6 +319,7 @@ restricted_animate:
 - cobble_fence
 - fence
 - nether_fence
+- gravel
 
 # Which materials are acceptable as building materials. This
 # affects what can be absorbed and added to a wand.

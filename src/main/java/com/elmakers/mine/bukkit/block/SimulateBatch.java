@@ -69,6 +69,7 @@ public class SimulateBatch extends VolumeBatch {
 	private String dropItem;
 	private int dropXp;
 	private boolean reverseTargetDistanceScore = false;
+	private boolean concurrent = false;
 	private int commandMoveRangeSquared = 9;
 	private int huntMaxRange = 128;
 	private int huntMinRange = 4;
@@ -85,15 +86,11 @@ public class SimulateBatch extends VolumeBatch {
 	private MaterialAndData powerSimMaterialBackup;
 	private MaterialAndData powerSimMaterial;
 	private boolean includeCommands;
-	private int startX;
-	private int startZ;
-	private int startY;
-	private int endY;
-	private int endX;
-	private int endZ;
+	private int radius;
 	private int x;
 	private int y;
 	private int z;
+	private int r;
 	private int yRadius;
 	private int updatingIndex;
 	private int powerDelayTicks;
@@ -112,6 +109,7 @@ public class SimulateBatch extends VolumeBatch {
 		this.spell = spell;
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
+		this.radius = radius;
 		this.center = center.clone();
 		this.targetLocation = center.clone();
 		
@@ -136,16 +134,10 @@ public class SimulateBatch extends VolumeBatch {
 		this.world = center.getWorld();
 		includeCommands = false;
 		
-		startY = center.getBlockY() - yRadius;
-		endY = center.getBlockY() + yRadius;
-		startX = center.getBlockX() - radius;
-		startZ = center.getBlockZ() - radius;
-		endX = center.getBlockX() + radius;
-		endZ = center.getBlockZ() + radius;
-		
-		x = startX;
-		y = startY;
-		z = startZ;
+		x = 0;
+		y = 0;
+		z = 0;
+		r = 0;
 		
 		state = SimulationState.SCANNING_COMMAND;
 		updatingIndex = 0;
@@ -156,12 +148,12 @@ public class SimulateBatch extends VolumeBatch {
 	}
 	
 	public int remaining() {
-		return (endX - x) * (endZ - z) * (endY - y);
+		return (radius - x) * (radius - z) * (radius - y) * 8;
 	}
 	
 	protected void checkForPotentialCommand(Block block, int distanceSquared) {
 		if (includeCommands) {
-			if (distanceSquared < commandMoveRangeSquared) {
+			if (distanceSquared <= commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
 				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
 				potentialCommandBlocks.add(new Target(targetLocation, block, huntMinRange, huntMaxRange, huntFov, reverseTargetDistanceScore));
@@ -238,6 +230,94 @@ public class SimulateBatch extends VolumeBatch {
 			controller.forgetMage(mage);
 		}
 	}
+	
+	protected void killBlock(Block block) {
+		if (concurrent) {
+			modifiedBlocks.add(block);
+			block.setType(deathMaterial);
+			controller.updateBlock(block);
+		} else {
+			deadBlocks.add(block);
+		}
+	}
+	
+	protected void birthBlock(Block block) {
+		if (concurrent) {
+			modifiedBlocks.add(block);
+			birthMaterial.modify(block);
+			controller.updateBlock(block);
+		} else {
+			bornBlocks.add(block);
+		}
+	}
+	
+	protected boolean simulateBlock(int dx, int dy, int dz) {
+		int x = center.getBlockX() + dx;
+		int y = center.getBlockY() + dy;
+		int z = center.getBlockZ() + dz;
+		Block block = world.getBlockAt(x, y, z);
+		if (!block.getChunk().isLoaded()) {
+			block.getChunk().load();
+			return false;
+		}
+		
+		Material blockMaterial = block.getType();
+		if (birthMaterial.is(block)) {
+			int distanceSquared = liveRangeSquared > 0 || includeCommands ? 
+					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
+
+			if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
+				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
+					killBlock(block);
+				} else {
+					checkForPotentialCommand(block, distanceSquared);
+				}
+			} else {
+				killBlock(block);
+			}
+		} else if (blockMaterial == deathMaterial) {
+			int distanceSquared = birthRangeSquared > 0 || includeCommands ? 
+					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
+
+			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
+				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+				if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
+					birthBlock(block);
+					checkForPotentialCommand(block, distanceSquared);
+				}
+			}
+		} else if (includeCommands && blockMaterial == Material.COMMAND && commandName != null && commandName.length() > 1) {
+			// Absorb nearby commands of the same name.
+			BlockState commandData = block.getState();
+			if (commandData != null && commandData instanceof CommandBlock) {
+				CommandBlock commandBlock = ((CommandBlock)commandData);
+				if (commandBlock.getName().equals(commandName)) {
+					block.setType(deathMaterial);
+					if (DEBUG) {
+						controller.getLogger().info("CONSUMED clone at " + block.getLocation().toVector());
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	protected boolean simulateBlocks(int x, int y, int z) {
+		boolean success = true;
+		if (y != 0) {
+			success = success && simulateBlock(x, -y, z);
+			if (x != 0) success = success && simulateBlock(-x, -y, z);
+			if (z != 0) success = success && simulateBlock(x, -y, -z);
+			if (x != 0 && z != 0) success = success && simulateBlock(-x, -y, -z);
+		}
+		success = success && simulateBlock(x, y, z);
+		if (x != 0) success = success && simulateBlock(-x, y, z);
+		if (z != 0) success = success && simulateBlock(x, y, -z);
+		if (z != 0 && x != 0) success = success && simulateBlock(-x, y, -z);
+		return success;
+	}
 
 	@Override
 	public int process(int maxBlocks) {
@@ -289,64 +369,27 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
-			Block block = world.getBlockAt(x, y, z);
-			if (!block.getChunk().isLoaded()) {
-				block.getChunk().load();
+			if (!simulateBlocks(x, y, z)) {
 				return processedBlocks;
 			}
 			
-			Material blockMaterial = block.getType();
-			if (birthMaterial.is(block)) {
-				int distanceSquared = liveRangeSquared > 0 || includeCommands ? 
-						(int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
-
-				if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
-					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-					if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
-						deadBlocks.add(block);
-					} else {
-						checkForPotentialCommand(block, distanceSquared);
-					}
+			y++;
+			if (y > radius) {
+				y = 0;
+				if (x < radius) {
+					x++;
 				} else {
-					deadBlocks.add(block);
-				}
-			} else if (blockMaterial == deathMaterial) {
-				int distanceSquared = birthRangeSquared > 0 || includeCommands ? 
-						(int)Math.floor(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
-
-				if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
-					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-					if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
-						bornBlocks.add(block);
-						checkForPotentialCommand(block, distanceSquared);
-					}
-				}
-			} else if (includeCommands && blockMaterial == Material.COMMAND && commandName != null && commandName.length() > 1) {
-				// Absorb nearby commands of the same name.
-				BlockState commandData = block.getState();
-				if (commandData != null && commandData instanceof CommandBlock) {
-					CommandBlock commandBlock = ((CommandBlock)commandData);
-					if (commandBlock.getName().equals(commandName)) {
-						block.setType(deathMaterial);
-						if (DEBUG) {
-							controller.getLogger().info("CONSUMED clone at " + block.getLocation().toVector());
-						}
+					z--;
+					if (z < 0) {
+						r++;
+						z = r;
+						x = 0;
 					}
 				}
 			}
 			
-			z++;
-			if (z > endZ) {
-				z = startZ;
-				x++;
-			}
-			if (x > endX) {
-				x = startX;
-				z = startZ;
-				y++;
-			}
-			
-			if (y > endY) {
+			if (r > radius) 
+			{
 				state = SimulationState.UPDATING;
 			}
 		}
@@ -710,6 +753,10 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		return liveCount;
+	}
+	
+	public void setConcurrent(boolean concurrent) {
+		this.concurrent = concurrent;
 	}
 	
 	@Override

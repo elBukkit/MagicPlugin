@@ -62,7 +62,7 @@ public class FillBatch extends VolumeBatch {
 	}
 	
 	public int remaining() {
-		return (absx - x) * (absy - y) * (absz - z);
+		return (absx - ix) * (absy - iy) * (absz - iz);
 	}
 	
 	public boolean checkDimension(int maxDimension) {
