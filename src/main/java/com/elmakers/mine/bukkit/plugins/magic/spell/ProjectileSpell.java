@@ -45,10 +45,11 @@ public class ProjectileSpell extends Spell
 		}
 
 		// Modify with wand power
-		count *= mage.getRadiusMultiplier();
+		// Turned some of this off for now
+		// count *= mage.getRadiusMultiplier();
 		size = (int)(mage.getRadiusMultiplier() * size);
 		float damageMultiplier = mage.getDamageMultiplier();
-		speed *= damageMultiplier;
+		// speed *= damageMultiplier;
 		damage *= damageMultiplier;
 		spread /= damageMultiplier;
 		
