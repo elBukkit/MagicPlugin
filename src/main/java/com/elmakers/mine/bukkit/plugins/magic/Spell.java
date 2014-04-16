@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,11 +57,52 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	// TODO: Configurable default? this does look cool, though.
 	protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
 	
-	public final static String[] COMMON_PARAMETERS = {
-		"duration", "range", "allow_max_range", "prevent_passthrough", "transparent", "fizzle_chance", "backfire_chance",
-		"target", "target_npc", "target_type", "px", "py", "pz", "pdx", "pdy", "pdz", "pworld", "tx", "ty", "tz", "tworld", "otx", "oty", "otz", "otworld",
-		"t2x", "t2y", "t2z", "t2world", "bypass_build", "bypass_pvp", "cooldown_reduction"
+	public final static String[] EXAMPLE_VECTOR_COMPONENTS = {"-1", "-0.5", "0", "0.5", "1", "~-1", "~-0.5", "~0", "~0.5", "~1"};
+	public final static String[] EXAMPLE_SIZES = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "12", "16", "32", "64"};
+	public final static String[] EXAMPLE_BOOLEANS = {"true", "false"};
+	public final static String[] EXAMPLE_DURATIONS = {"500", "1000", "2000", "5000", "10000", "60000", "120000"};
+	public final static String[] EXAMPLE_PERCENTAGES = {"0", "0.1", "0.25", "0.5", "0.75", "1"};
+	
+	public final static String[] OTHER_PARAMETERS = {
+		"transparent", "target", "target_type", "range", "duration", "player"
 	};
+	
+	public final static String[] WORLD_PARAMETERS = {
+		"pworld", "tworld", "otworld", "t2world"
+	};
+	
+	protected final static Set<String> worldParameterMap = new HashSet<String>(Arrays.asList(WORLD_PARAMETERS));
+	
+	public final static String[] VECTOR_PARAMETERS = {
+		"px", "py", "pz", "pdx", "pdy", "pdz", "tx", "ty", "tz", "otx", "oty", "otz", "t2x", "t2y", "t2z"
+	};
+
+	protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
+	
+	public final static String[] BOOLEAN_PARAMETERS = {
+		"allow_max_range", "prevent_passthrough", "bypass_build", "bypass_pvp", "target_npc"
+	};
+
+	protected final static Set<String> booleanParameterMap = new HashSet<String>(Arrays.asList(BOOLEAN_PARAMETERS));
+	
+	public final static String[] PERCENTAGE_PARAMETERS = {
+		"fizzle_chance", "backfire_chance", "cooldown_reduction"
+	};
+	
+	protected final static Set<String> percentageParameterMap = new HashSet<String>(Arrays.asList(PERCENTAGE_PARAMETERS));
+	
+	
+	public final static String[] COMMON_PARAMETERS = (String[])
+		ArrayUtils.addAll(
+			ArrayUtils.addAll(
+					ArrayUtils.addAll(
+							ArrayUtils.addAll(VECTOR_PARAMETERS, BOOLEAN_PARAMETERS), 
+							OTHER_PARAMETERS
+					),
+					WORLD_PARAMETERS
+			), 
+			PERCENTAGE_PARAMETERS
+		);
 	
 	/*
 	 * protected members that are helpful to use
@@ -303,7 +345,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 			            {
 			                if (o instanceof Map)
 			                {
-			                    Map<String, Object> effectValues = (Map<String, Object>)o;
+			                    Map<Object, Object> effectValues = (Map<Object, Object>)o;
 			                    if (effectValues.containsKey("class")) {
 			                    	Object oClass = effectValues.get("class");
 			                    	if (oClass instanceof String) {
@@ -1973,5 +2015,44 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	public void getParameters(Collection<String> parameters)
 	{
 		parameters.addAll(Arrays.asList(COMMON_PARAMETERS));
+	}
+	
+	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	{
+		if (parameterKey.equals("duration")) {
+			examples.addAll(Arrays.asList(EXAMPLE_DURATIONS));
+		} else if (parameterKey.equals("range")) {
+			examples.addAll(Arrays.asList(EXAMPLE_SIZES));
+		} else if (parameterKey.equals("transparent")) {
+			examples.addAll(controller.getMaterialSets());
+		} else if (parameterKey.equals("player")) {
+			examples.addAll(controller.getPlugin().getPlayerNames());
+		} else if (parameterKey.equals("target")) {
+			TargetType[] targetTypes = TargetType.values();
+			for (TargetType targetType : targetTypes) {
+				examples.add(targetType.name().toLowerCase());
+			}
+		} else if (parameterKey.equals("target")) {
+			TargetType[] targetTypes = TargetType.values();
+			for (TargetType targetType : targetTypes) {
+				examples.add(targetType.name().toLowerCase());
+			}
+		} else if (parameterKey.equals("target_type")) {
+			EntityType[] entityTypes = EntityType.values();
+			for (EntityType entityType : entityTypes) {
+				examples.add(entityType.name().toLowerCase());
+			}
+		} else if (booleanParameterMap.contains(parameterKey)) {
+			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
+		} else if (vectorParameterMap.contains(parameterKey)) {
+			examples.addAll(Arrays.asList(EXAMPLE_VECTOR_COMPONENTS));
+		} else if (worldParameterMap.contains(parameterKey)) {
+			List<World> worlds = Bukkit.getWorlds();
+			for (World world : worlds) {
+				examples.add(world.getName());
+			}
+		} else if (percentageParameterMap.contains(parameterKey)) {
+			examples.addAll(Arrays.asList(EXAMPLE_PERCENTAGES));
+		} 
 	}
 }

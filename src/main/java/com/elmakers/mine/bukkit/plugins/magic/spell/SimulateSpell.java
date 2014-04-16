@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +24,13 @@ import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class SimulateSpell extends BlockSpell {
+	
+	public final static String[] SIMULATE_PARAMETERS = {
+		"radius", "yradius", "material", "omx", "omy", "omz", "death_material",
+		"olcx", "olcy", "olcz", "obcx", "obcy", "obcz", "live_rules", "birth_rules",
+		"target_mode", "target_types", "move", "target_min_range", "target_max_range",
+		"cast", "death_cast", "cast_probability"
+	};
 	
 	private static final int DEFAULT_RADIUS = 32;
 	
@@ -202,5 +211,36 @@ public class SimulateSpell extends BlockSpell {
 		clearTarget();
 		
 		return success ? SpellResult.CAST : SpellResult.FAIL;
+	}
+
+	@Override
+	public void getParameters(Collection<String> parameters)
+	{
+		super.getParameters(parameters);
+		parameters.addAll(Arrays.asList(SIMULATE_PARAMETERS));
+	}
+	
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	{
+		super.getParameterOptions(examples, parameterKey);
+		
+		if (parameterKey.equals("material")) {
+			examples.addAll(controller.getMaterials());
+		} else if (parameterKey.equals("radius") || parameterKey.equals("yradis")) {
+			examples.addAll(Arrays.asList(EXAMPLE_SIZES));
+		} else if (parameterKey.equals("target_mode")) {
+			SimulateBatch.TargetMode[] targetModes = SimulateBatch.TargetMode.values();
+			for (SimulateBatch.TargetMode targetMode : targetModes) {
+				examples.add(targetMode.name().toLowerCase());
+			}
+		} else if (parameterKey.equals("target_types")) {
+			SimulateBatch.TargetType[] targetTypes = SimulateBatch.TargetType.values();
+			for (SimulateBatch.TargetType targetType : targetTypes) {
+				examples.add(targetType.name().toLowerCase());
+			}
+		} else if (parameterKey.equals("cast_probability")) {
+			examples.addAll(Arrays.asList(EXAMPLE_PERCENTAGES));
+		}
 	}
 }

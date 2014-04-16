@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -18,6 +20,10 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class AnimateSpell extends SimulateSpell 
 {
+	public final static String[] ANIMATE_PARAMETERS = {
+		"animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget"
+	};
+	
 	@Override
 	public SpellResult onCast(ConfigurationNode parameters) 
 	{
@@ -110,4 +116,20 @@ public class AnimateSpell extends SimulateSpell
 		return SpellResult.CAST;
 	}
 
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	{
+		super.getParameterOptions(examples, parameterKey);
+		
+		if (parameterKey.equals("animate") || parameterKey.equals("sim_check_destructible")) {
+			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
+		}
+	}
+
+	@Override
+	public void getParameters(Collection<String> parameters)
+	{
+		super.getParameters(parameters);
+		parameters.addAll(Arrays.asList(ANIMATE_PARAMETERS));
+	}
 }

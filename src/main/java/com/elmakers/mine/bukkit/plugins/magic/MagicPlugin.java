@@ -260,4 +260,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	public Collection<String> getSchematicNames() {
 		return controller.getSchematicNames();
 	}
+
+	@Override
+	public Collection<String> getBrushes() {
+		return controller.getMaterials();
+	}
 }

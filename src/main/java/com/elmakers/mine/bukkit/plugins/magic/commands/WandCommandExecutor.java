@@ -194,7 +194,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			}
 			
 			if (subCommand.equalsIgnoreCase("add") && subCommand2.equalsIgnoreCase("material")) {
-				addMaterials(options);
+				options.addAll(api.getBrushes());
 			}
 			
 			if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("upgrade")) {

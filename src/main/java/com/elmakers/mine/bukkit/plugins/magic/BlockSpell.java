@@ -92,4 +92,15 @@ public abstract class BlockSpell extends Spell {
 		super.getParameters(parameters);
 		parameters.addAll(Arrays.asList(BLOCK_PARAMETERS));
 	}
+	
+	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	{
+		super.getParameterOptions(examples, parameterKey);
+		
+		if (parameterKey.equals("indestructible") || parameterKey.equals("destructible")) {
+			examples.addAll(controller.getMaterialSets());
+		} else if (parameterKey.equals("check_destructible") || parameterKey.equals("bypass_undo")) {
+			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
+		}
+	}
 }

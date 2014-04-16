@@ -102,11 +102,14 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		
 		if (args.length > 1)
 		{
-			// TODO, only do this on even numbers, call to spell to get options for odd ones
 			String spellName = args[0];
 			Spell spell = api.getSpell(spellName);
 			if (spell != null) {
-				spell.getParameters(options);
+				if (args.length % 2 == 0 || args.length < 2) {
+					spell.getParameters(options);
+				} else {
+					spell.getParameterOptions(options, args[args.length - 2]);
+				}
 			}
 		}
 		

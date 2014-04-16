@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
+import java.util.Collection;
+
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -110,5 +112,14 @@ public class FlingSpell extends Spell
 			effect.setPeriod(effectPeriod);
 			effect.start(effectLocation, null);
 		}
+	}
+
+	@Override
+	public void getParameters(Collection<String> parameters)
+	{
+		super.getParameters(parameters);
+		parameters.add("cruising_altitude");
+		parameters.add("min_speed");
+		parameters.add("max_speed");
 	}
 }

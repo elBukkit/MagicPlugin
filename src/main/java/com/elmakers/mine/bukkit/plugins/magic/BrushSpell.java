@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -105,5 +106,24 @@ public abstract class BrushSpell extends BlockSpell{
 	{
 		super.getParameters(parameters);
 		parameters.addAll(Arrays.asList(BRUSH_PARAMETERS));
+	}
+	
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	{
+		super.getParameterOptions(examples, parameterKey);
+		
+		if (parameterKey.equals("bmod") || parameterKey.equals("brush")) {
+			examples.addAll(controller.getMaterials());
+		} else if (parameterKey.equals("btarget")) {
+			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
+		} else if (parameterKey.equals("obx") || parameterKey.equals("oby") || parameterKey.equals("obz")) {
+			examples.addAll(Arrays.asList(EXAMPLE_VECTOR_COMPONENTS));
+		} else if (parameterKey.equals("obworld")) {
+			List<World> worlds = Bukkit.getWorlds();
+			for (World world : worlds) {
+				examples.add(world.getName());
+			}
+		}
 	}
 }

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +22,12 @@ import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends BrushSpell
 {
+	public final static String[] CONSTRUCT_PARAMETERS = {
+		"radius", "undo", "falling", "speed", "max_dimension", "replace",
+		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
+		"power"
+	};
+	
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
 	private static final int DEFAULT_RADIUS						= 2;
 	private static final int DEFAULT_MAX_DIMENSION 				= 16;
@@ -191,5 +199,33 @@ public class ConstructSpell extends BrushSpell
 	{
 		super.loadTemplate(node);
 		powered = parameters.getBoolean("power", false);
+	}
+
+	@Override
+	public void getParameters(Collection<String> parameters)
+	{
+		super.getParameters(parameters);
+		parameters.addAll(Arrays.asList(CONSTRUCT_PARAMETERS));
+	}
+	
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	{
+		super.getParameterOptions(examples, parameterKey);
+	
+		if (parameterKey.equals("undo")) {
+			examples.addAll(Arrays.asList(EXAMPLE_DURATIONS));
+		} else if (parameterKey.equals("radius") || parameterKey.equals("max_dimension") 
+				|| parameterKey.equals("orient_dimension_max") || parameterKey.equals("orient_dimension_min")
+				|| parameterKey.equals("thickness") || parameterKey.equals("speed")) {
+			examples.addAll(Arrays.asList(EXAMPLE_SIZES));
+		} else if (parameterKey.equals("type")) {
+			ConstructionType[] constructionTypes = ConstructionType.values();
+			for (ConstructionType constructionType : constructionTypes) {
+				examples.add(constructionType.name().toLowerCase());
+			}
+		} else if (parameterKey.equals("power") || parameterKey.equals("replace") || parameterKey.equals("falling")) {
+			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
+		}
 	}
 }

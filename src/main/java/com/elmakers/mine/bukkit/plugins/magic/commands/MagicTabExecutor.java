@@ -3,13 +3,11 @@ package com.elmakers.mine.bukkit.plugins.magic.commands;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -18,7 +16,6 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utilities.Messages;
 
 public abstract class MagicTabExecutor implements TabExecutor {
@@ -66,27 +63,6 @@ public abstract class MagicTabExecutor implements TabExecutor {
 
         return result;
     }
-	
-	public void addMaterials(Collection<String> options) {
-		Material[] materials = Material.values();
-		for (Material material : materials) {
-			// Only show blocks
-			if (material.isBlock()) {
-				options.add(material.name().toLowerCase());
-			}
-		}
-		
-		// Add special materials
-		for (String brushName : MaterialBrush.SPECIAL_MATERIAL_KEYS) {
-			options.add(brushName.toLowerCase());
-		}
-		
-		// Add schematics
-		Collection<String> schematics = api.getSchematicNames();
-		for (String schematic : schematics) {
-			options.add("schematic:" + schematic);
-		}
-	}
 	
 	protected void sendNoPermission(CommandSender sender)
 	{

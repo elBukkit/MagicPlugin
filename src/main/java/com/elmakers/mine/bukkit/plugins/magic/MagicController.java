@@ -327,6 +327,11 @@ public class MagicController implements Listener
 		return materialSets.get(name);
 	}
 	
+	public Collection<String> getMaterialSets()
+	{
+		return materialSets.keySet();
+	}
+	
 	public float getMaxDamagePowerMultiplier() {
 		return maxDamagePowerMultiplier;
 	}
@@ -592,6 +597,30 @@ public class MagicController implements Listener
 		}
 		
 		return null;
+	}
+
+	public Collection<String> getMaterials() {
+		List<String> names = new ArrayList<String>();
+		Material[] materials = Material.values();
+		for (Material material : materials) {
+			// Only show blocks
+			if (material.isBlock()) {
+				names.add(material.name().toLowerCase());
+			}
+		}
+		
+		// Add special materials
+		for (String brushName : MaterialBrush.SPECIAL_MATERIAL_KEYS) {
+			names.add(brushName.toLowerCase());
+		}
+		
+		// Add schematics
+		Collection<String> schematics = getSchematicNames();
+		for (String schematic : schematics) {
+			names.add("schematic:" + schematic);
+		}
+		
+		return names;
 	}
 
 	public Collection<String> getSchematicNames() {

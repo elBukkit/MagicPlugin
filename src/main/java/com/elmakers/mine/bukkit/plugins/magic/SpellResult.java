@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic;
 
-
 public enum SpellResult {
 	CAST, 
 	AREA,
