@@ -295,20 +295,23 @@ virus:
         radius: 16
         yradius: 16
         birth_range: 17
-        live_range: 24
+        live_range: 32
         target_min_range: 24
         target_max_range: 256
-        delay: 1500
+        delay: 2000
         target_mode: hunt
         target_types: mage
-        live_rules: 3,4,5,6,7,8,9
-        birth_rules: 5
+        birth_rules: 1,2,3 
+        diagonal_birth_rules: 0,1
+        live_rules: 1,2,3
+        diagonal_live_rules: 0,1 
+        concurrent: true
         drop: virusheart
         death_cast: nuke
         cast_probability: 0.1
         cast: boom
         drop_xp: 1000
-        move: 8
+        move: 3
         restricted: restricted_animate
     costs:
         xp: 2000
@@ -338,15 +341,15 @@ hunter:
         target_mode: hunt
         target_types: player
         cast: curse
-        cast_probability: 0.1
+        cast_probability: 0.2
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
-        move: 3
+        concurrent: true
+        move: 2
         drop: hunterheart
         drop_xp: 500
         death_cast: blast radius 4
         restricted: restricted_animate
-        concurrent: true
     costs:
         xp: 800
 defender:

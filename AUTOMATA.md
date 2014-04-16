@@ -4,6 +4,12 @@ Automata are an experimental new aspect to Magic that can bring an interesting n
 
 *Warning* : Automota are in their early experimental stages, and not to be used in a world you don't want messed up!
 
+Much thanks to 
+
+https://sites.google.com/site/fishbikeonmefi/mefi-discussions/3d-game-of-life
+
+For paving the way on some of these rulesets!
+
 TODO: Add more documentation!
 
 ## Glider

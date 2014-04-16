@@ -32,9 +32,11 @@ import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 
 public class SimulateBatch extends VolumeBatch {
-	private static BlockFace[] neighborFaces = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
+	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
+	private static BlockFace[] DIAGONAL_FACES = {  BlockFace.SOUTH_EAST, BlockFace.NORTH_EAST, BlockFace.SOUTH_WEST, BlockFace.NORTH_WEST };
+	private static BlockFace[] MAIN_FACES = {  BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST };
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
@@ -96,6 +98,8 @@ public class SimulateBatch extends VolumeBatch {
 	private int powerDelayTicks;
 	private ArrayList<Boolean> liveCounts = new ArrayList<Boolean>();
 	private ArrayList<Boolean> birthCounts = new ArrayList<Boolean>();
+	private ArrayList<Boolean> diagonalLiveCounts = new ArrayList<Boolean>();
+	private ArrayList<Boolean> diagonalBirthCounts = new ArrayList<Boolean>();
 	private SimulationState state;
 	private Location center;
 
@@ -118,19 +122,8 @@ public class SimulateBatch extends VolumeBatch {
 		
 		this.powerSimMaterial = birthMaterial;
 		this.powerSimMaterialBackup = new MaterialAndData(deathMaterial);
-		
-		for (Integer liveCount : liveCounts) {
-			while (this.liveCounts.size() < liveCount) {
-				this.liveCounts.add(false);
-			}
-			this.liveCounts.add(true);
-		}
-		for (Integer birthCount : birthCounts) {
-			while (this.birthCounts.size() < birthCount) {
-				this.birthCounts.add(false);
-			}
-			this.birthCounts.add(true);
-		}
+		mapIntegers(liveCounts, this.liveCounts);
+		mapIntegers(birthCounts, this.birthCounts);
 		this.world = center.getWorld();
 		includeCommands = false;
 		
@@ -267,11 +260,22 @@ public class SimulateBatch extends VolumeBatch {
 					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
 
 			if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
-				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-				if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
-					killBlock(block);
+				if (diagonalLiveCounts.size() > 0) {
+					int faceNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, MAIN_FACES, true, true);
+					int diagonalNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, DIAGONAL_FACES, false, false);
+					if (faceNeighborCount >= liveCounts.size() || !liveCounts.get(faceNeighborCount)
+						|| diagonalNeighborCount >= diagonalLiveCounts.size() || !diagonalLiveCounts.get(diagonalNeighborCount)) {
+						killBlock(block);
+					} else {
+						checkForPotentialCommand(block, distanceSquared);
+					}
 				} else {
-					checkForPotentialCommand(block, distanceSquared);
+					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+					if (neighborCount >= liveCounts.size() || !liveCounts.get(neighborCount)) {
+						killBlock(block);
+					} else {
+						checkForPotentialCommand(block, distanceSquared);
+					}
 				}
 			} else {
 				killBlock(block);
@@ -281,10 +285,20 @@ public class SimulateBatch extends VolumeBatch {
 					(int)Math.ceil(block.getLocation().distanceSquared(castCommandBlock.getLocation())) : 0;
 
 			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
-				int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
-				if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
-					birthBlock(block);
-					checkForPotentialCommand(block, distanceSquared);
+				if (diagonalBirthCounts.size() > 0) {
+					int faceNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, MAIN_FACES, true, true);
+					int diagonalNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, DIAGONAL_FACES, false, false);
+					if (faceNeighborCount < birthCounts.size() && birthCounts.get(faceNeighborCount)
+						&& diagonalNeighborCount < diagonalBirthCounts.size() && diagonalBirthCounts.get(diagonalNeighborCount)) {
+						birthBlock(block);
+						checkForPotentialCommand(block, distanceSquared);
+					}
+				} else {
+					int neighborCount = getNeighborCount(block, birthMaterial, includeCommands);
+					if (neighborCount < birthCounts.size() && birthCounts.get(neighborCount)) {
+						birthBlock(block);
+						checkForPotentialCommand(block, distanceSquared);
+					}
 				}
 			}
 		} else if (includeCommands && blockMaterial == Material.COMMAND && commandName != null && commandName.length() > 1) {
@@ -721,10 +735,14 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		return null;
 	}
-
+	
 	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
+		return getNeighborCount(block, liveMaterial, includeCommands, NEIGHBOR_FACES, true, true);
+	}
+
+	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands, BlockFace[] faces, boolean includeUp, boolean includeDown) {
 		int liveCount = 0;
-		for (BlockFace face : neighborFaces) {
+		for (BlockFace face : faces) {
 			if (isAlive(block.getRelative(face), liveMaterial, includeCommands)) {
 				liveCount++;
 			}
@@ -735,7 +753,7 @@ public class SimulateBatch extends VolumeBatch {
 			if (isAlive(upBlock, liveMaterial, includeCommands)) {
 				liveCount++;
 			}
-			for (BlockFace face : neighborFaces) {
+			for (BlockFace face : faces) {
 				if (isAlive(upBlock.getRelative(face), liveMaterial, includeCommands)) {
 					liveCount++;
 				}
@@ -745,7 +763,7 @@ public class SimulateBatch extends VolumeBatch {
 			if (isAlive(downBlock, liveMaterial, includeCommands)) {
 				liveCount++;
 			}
-			for (BlockFace face : neighborFaces) {
+			for (BlockFace face : faces) {
 				if (isAlive(downBlock.getRelative(face), liveMaterial, includeCommands)) {
 					liveCount++;
 				}
@@ -766,5 +784,22 @@ public class SimulateBatch extends VolumeBatch {
 			super.finish();
 			spell.registerForUndo(modifiedBlocks);
 		}
+	}
+	
+	protected void mapIntegers(Collection<Integer> flags, List<Boolean> flagMap) {
+		for (Integer flag : flags) {
+			while (flagMap.size() <= flag) {
+				flagMap.add(false);
+			}
+			flagMap.set(flag, true);
+		}
+	}
+	
+	public void setDiagonalLiveRules(Collection<Integer> rules) {
+		mapIntegers(rules, this.diagonalLiveCounts);
+	}
+	
+	public void setDiagonalBirthRules(Collection<Integer> rules) {
+		mapIntegers(rules, this.diagonalBirthCounts);
 	}
 }

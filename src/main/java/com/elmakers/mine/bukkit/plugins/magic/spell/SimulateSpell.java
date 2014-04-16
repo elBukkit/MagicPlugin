@@ -29,7 +29,7 @@ public class SimulateSpell extends BlockSpell {
 		"radius", "yradius", "material", "omx", "omy", "omz", "death_material",
 		"olcx", "olcy", "olcz", "obcx", "obcy", "obcz", "live_rules", "birth_rules",
 		"target_mode", "target_types", "move", "target_min_range", "target_max_range",
-		"cast", "death_cast", "cast_probability"
+		"cast", "death_cast", "cast_probability", "diagonal_live_rules", "diagonal_birth_rules",
 	};
 	
 	private static final int DEFAULT_RADIUS = 32;
@@ -143,6 +143,14 @@ public class SimulateSpell extends BlockSpell {
 		}
 		
 		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
+		
+		if (parameters.containsKey("diagonal_live_rules")) {
+			batch.setDiagonalLiveRules(parameters.getIntList("diagonal_live_rules", new ArrayList<Integer>()));
+		}
+
+		if (parameters.containsKey("diagonal_birth_rules")) {
+			batch.setDiagonalBirthRules(parameters.getIntList("diagonal_birth_rules", new ArrayList<Integer>()));
+		}
 		
 		boolean includeCommands = parameters.getBoolean("animate", false);
 		if (includeCommands) {
