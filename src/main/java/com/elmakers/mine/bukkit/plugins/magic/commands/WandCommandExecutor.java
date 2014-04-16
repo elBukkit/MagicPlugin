@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,6 +27,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
@@ -192,24 +194,28 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			}
 			
 			if (subCommand.equalsIgnoreCase("add") && subCommand2.equalsIgnoreCase("material")) {
-				Material[] materials = Material.values();
-				for (Material material : materials) {
-					// Only show blocks
-					if (material.isBlock()) {
-						options.add(material.name().toLowerCase());
+				addMaterials(options);
+			}
+			
+			if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("upgrade")) {
+				if (subCommand2.equals("effect_sound")) {
+					Sound[] sounds = Sound.values();
+					for (Sound sound : sounds) {
+						options.add(sound.name().toLowerCase());
 					}
-				}
+				} else if (subCommand2.equals("effect_particle")) {
+					ParticleType[] particleTypes = ParticleType.values();
+					for (ParticleType particleType : particleTypes) {
+						options.add(particleType.name().toLowerCase());
+					}
+				} 
 			}
 		}
-		
-		// TODO : Custom completion for configure, upgrade
 		
 		Collections.sort(options);
 		return options;
 	}
 
-
-	
 	protected boolean processWandCommand(String command, CommandSender sender, Player player, String[] args)
 	{
 		String subCommand = "";
@@ -621,11 +627,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			}
 			
 			if (wand.addBrush(materialKey)) {
+				wand.setActiveBrush(materialKey);
 				mage.sendMessage("Material '" + materialKey + "' has been added to your wand");
 				if (sender != player) {
 					sender.sendMessage("Added material '" + materialKey + "' to " + player.getName() + "'s wand");
 				}
 			} else {
+				wand.setActiveBrush(materialKey);
 				mage.sendMessage("Material activated: " + materialKey);
 				if (sender != player) {
 					sender.sendMessage(player.getName() + "'s wand already has material " + materialKey);
@@ -641,11 +649,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 
 		if (wand.addSpell(spellName)) {
+			wand.setActiveSpell(spellName);
 			mage.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
 			if (sender != player) {
 				sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
 			}
 		} else {
+			wand.setActiveSpell(spellName);
 			mage.sendMessage(spell.getName() + " activated");
 			if (sender != player) {
 				sender.sendMessage(player.getName() + "'s wand already has " + spell.getName());

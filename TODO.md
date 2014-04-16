@@ -3,28 +3,32 @@
 ## For 3.0.0
 
  - Fix selling magic items to a trader not working - seems related to traders losing prices + inventory, maybe?
- - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
+ - Futher investigate traders losing prices
+ 
  - wandp configure glitch- maybe need to replace item in hand on reconfigure?
+ 
+ - Update GotoSpell, make it target players like Force. 
+   - May need custom targeting mode to target through blocks. 
+   - Cast down to cycle targets
+   - Cast up to tp yourself to target
  
  - Test place, pillar, bridge with replicate and clone materials
  - Why aren't chest contents loading properly in Life board?
+
+ - Generalize automata spell casting
+ - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
+ - Interpolate autonoma directional changes, configurable speed
  
  - Config-driven WandLevel limits
- - Generalize automata spell casting
- - Interpolate autonoma directional changes, configurable speed
- - Futher investigate traders losing prices- not a problem anymore?
- - Improve tab completion, add special brushes + schematics (preload schematics), add sounds and particle types, etc
  - Retry limit on construction batches
  - Customizable wand crafting recipes
- - Batch block populator for chests
  - Commandbook kit integration
  - Ability to have normal enchants on a sword/wand
  - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
  - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
 
  - Make "regengerate" undoable and safe.
- - Integrate with MobMoney to disallow money spamming
- - World-bound wands, add Tester wand
+ - Integrate with MobMoney to disallow money spamming (mob, farm spell, etc)
  - Scoreboard mana/spell display
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Add Multi-Spell Spell
@@ -34,15 +38,15 @@
 
  - Make push spell reflect projectiles (set fireball velocity)
  - Cast spells on WG region enter/exit (Darkrael)
- - Fix first construct of a schematic. (?)
  - A way to /wand enchant with auto-fill but not filling wand... ?
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
+ 
+ - Fix first construct of a schematic. (?)
 
  - Tweaking/Balancing - haste, cooldowns, etc
  - Finish localization
  - Arena spell/schematic
- - Add cast messages for all spells
- - Player-specific wands, check player data- CoOoD3R, lathame, rileycross, treed, Art1001 .. ?
+ - Player-specific wands, check player data- rileycross, treed, obibenkenobie .. ?
  
  - Test with CB 1.6
  

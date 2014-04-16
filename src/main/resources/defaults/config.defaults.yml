@@ -219,9 +219,10 @@ schematic_item: paper
 
 # The folder and file path to use for loading schematics. This will be relative to 
 # The server's /plugins folder.
-# You can use WorldEdit's schematics folder for easy access to saved schematics. The default
-# folder in Magic/schematics/ will always be checked first.
-schematic_files: WorldEdit/schematics/$name.schematic
+# You can use WorldEdit's schematics folder for easy access to saved schematics.
+# You can use this folder to override the built-in schematics, such as replacing the schematics
+# used for Tent or Cage.
+schematic_files: WorldEdit/schematics/
 
 # How many casts to track in the undo queue
 undo_depth: 64

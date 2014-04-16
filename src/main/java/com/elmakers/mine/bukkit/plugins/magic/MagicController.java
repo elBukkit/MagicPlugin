@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.security.CodeSource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -94,6 +98,7 @@ import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
+import com.elmakers.mine.bukkit.plugins.magic.commands.MagicTabExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
@@ -555,8 +560,8 @@ public class MagicController implements Listener
 				// Check extra path first
 				File extraSchematicFile = null;
 				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-					String extraFileName = extraSchematicFilePath.replace("$name", schematicName);
-					extraSchematicFile = new File(configFolder, "../" + extraFileName);
+					File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+					extraSchematicFile = new File(schematicFolder, schematicName);
 				}
 				
 				if (extraSchematicFile != null && extraSchematicFile.exists()) {
@@ -588,6 +593,49 @@ public class MagicController implements Listener
 		
 		return null;
 	}
+
+	public Collection<String> getSchematicNames() {
+		Collection<String> schematicNames = new ArrayList<String>();
+		if (!MaterialBrush.SchematicsEnabled) return schematicNames;
+		
+		// Load internal schematics.. this may be a bit expensive.
+		try {
+			CodeSource codeSource = MagicTabExecutor.class.getProtectionDomain().getCodeSource();
+			if (codeSource != null) {
+				URL jar = codeSource.getLocation();
+				ZipInputStream zip = new ZipInputStream(jar.openStream());
+				ZipEntry entry = zip.getNextEntry();
+				while (entry != null) {
+					String name = entry.getName();
+					if (name.startsWith("schematics/") && name.endsWith(".schematic")) {
+				    	String schematicName = name.replace(".schematic", "").replace("schematics/", "");
+				    	schematicNames.add(schematicName);
+					}
+					entry = zip.getNextEntry();
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		// Load external schematics
+		try {
+			// Check extra path first
+			if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+				File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+				for (File schematicFile : schematicFolder.listFiles()) {
+					if (schematicFile.getName().endsWith(".schematic")) {
+						String schematicName = schematicFile.getName().replace(".schematic", "");
+				    	schematicNames.add(schematicName);
+					}
+				}
+			}
+		} catch (Exception ex) {
+			
+		}
+		
+		return schematicNames;
+	}
 	
 	/*
 	 * Internal functions - don't call these, or really anything below here.
@@ -608,6 +656,8 @@ public class MagicController implements Listener
 					setIngredient('o', wandRecipeUpperMaterial).
 					setIngredient('i', wandRecipeLowerMaterial);
 			wandRecipe = recipe;
+			
+			getLogger().info("Wand crafting is enabled");
 		}
 		
 		// Try to link to Essentials:
@@ -1127,7 +1177,8 @@ public class MagicController implements Listener
 	}
 	
 	public boolean addLostWand(Wand wand, Location dropLocation) {
-		wand.checkId();
+		if (!wand.hasId()) return false;
+		
 		if (lostWands.containsKey(wand.getId())) {
 			updateLostWand(wand, dropLocation);
 			return false;

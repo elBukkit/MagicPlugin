@@ -255,4 +255,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	public Spell getSpell(String key) {
 		return controller.getSpell(key);
 	}
+
+	@Override
+	public Collection<String> getSchematicNames() {
+		return controller.getSchematicNames();
+	}
 }

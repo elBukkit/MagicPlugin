@@ -40,6 +40,10 @@ public class MaterialBrush extends MaterialAndData {
 	public static final String MAP_MATERIAL_KEY = "map";
 	public static final String SCHEMATIC_MATERIAL_KEY = "schematic";
 	
+	// This does not include schematics
+	public static final String[] SPECIAL_MATERIAL_KEYS = {ERASE_MATERIAL_KEY, COPY_MATERIAL_KEY,
+		CLONE_MATERIAL_KEY, REPLICATE_MATERIAL_KEY, MAP_MATERIAL_KEY};
+	
 	public static Material EraseMaterial = Material.SULPHUR;
 	public static Material CopyMaterial = Material.SUGAR;
 	public static Material CloneMaterial = Material.NETHER_STALK;
