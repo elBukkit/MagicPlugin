@@ -117,4 +117,8 @@ public interface MagicAPI {
 	
 	public Collection<Spell> getSpells();
 	public Spell getSpell(String key);
+	
+	public Collection<String> getBrushes();
+	
+	public Collection<String> getSchematicNames();
 }
