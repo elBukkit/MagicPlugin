@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
  * Represents a configuration node.
  */
 public class ConfigurationNode {
-	protected Map<String, Object> root;
+	protected Map<Object, Object> root;
 
 	@SuppressWarnings("unchecked")
 	public ConfigurationNode createChild(String name)
@@ -40,18 +40,18 @@ public class ConfigurationNode {
 
 		if (raw instanceof Map) 
 		{
-			return new ConfigurationNode((Map<String, Object>) raw);
+			return new ConfigurationNode((Map<Object, Object>) raw);
 		}
 
 		return null;
 	}
 
 	public ConfigurationNode() {
-		this.root = new HashMap<String, Object>();
+		this.root = new HashMap<Object, Object>();
 	}
 
 	public ConfigurationNode(ConfigurationNode copy) {
-		HashMap<String, Object> newRoot = new HashMap<String, Object>();
+		HashMap<Object, Object> newRoot = new HashMap<Object, Object>();
 		if (copy != null)
 		{
 			newRoot.putAll(copy.root);
@@ -59,7 +59,7 @@ public class ConfigurationNode {
 		this.root = newRoot;
 	}
 
-	public ConfigurationNode(Map<String, Object> root) {
+	public ConfigurationNode(Map<Object, Object> root) {
 		this.root = root;
 	}
 
@@ -71,17 +71,17 @@ public class ConfigurationNode {
 	 * @return A map of key value pairs with the path as the key and the object as the value
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> getAll() {
-		Map<String, Object> map = new TreeMap<String, Object>();
+	public Map<Object, Object> getAll() {
+		Map<Object, Object> map = new TreeMap<Object, Object>();
 
-		Set<String> keys = root.keySet();
-		for( String k : keys ) {
+		Set<Object> keys = root.keySet();
+		for (Object k : keys) {
 			Object tmp = root.get(k);
 			if( tmp instanceof Map<?,?> ) {
-				Map<String, Object> rec = recursiveBuilder((Map <String,Object>) tmp);
+				Map<Object, Object> rec = recursiveBuilder((Map <Object,Object>) tmp);
 
-				Set<String> subkeys = rec.keySet();
-				for( String sk : subkeys ) {
+				Set<Object> subkeys = rec.keySet();
+				for( Object sk : subkeys ) {
 					map.put(k + "." + sk, rec.get(sk));
 				}
 			}
@@ -101,17 +101,17 @@ public class ConfigurationNode {
 	 * @return The fully pathed map for that point in the tree, with the path as the key
 	 */
 	@SuppressWarnings("unchecked")
-	protected Map<String, Object> recursiveBuilder(Map<String, Object> node) {
-		Map<String, Object> map = new TreeMap<String, Object>();
+	protected Map<Object, Object> recursiveBuilder(Map<Object, Object> node) {
+		Map<Object, Object> map = new TreeMap<Object, Object>();
 
-		Set<String> keys = node.keySet();
-		for( String k : keys ) {
+		Set<Object> keys = node.keySet();
+		for (Object k : keys) {
 			Object tmp = node.get(k);
 			if( tmp instanceof Map<?,?> ) {
-				Map<String, Object> rec = recursiveBuilder((Map <String,Object>) tmp);
+				Map<Object, Object> rec = recursiveBuilder((Map<Object,Object>) tmp);
 
-				Set<String> subkeys = rec.keySet();
-				for( String sk : subkeys ) {
+				Set<Object> subkeys = rec.keySet();
+				for (Object sk : subkeys) {
 					map.put(k + "." + sk, rec.get(sk));
 				}
 			}
@@ -165,7 +165,7 @@ public class ConfigurationNode {
 		}
 
 		String[] parts = path.split("\\.");
-		Map<String, Object> node = root;
+		Map<Object, Object> node = root;
 
 		for (int i = 0; i < parts.length; i++) {
 			Object o = node.get(parts[i]);
@@ -179,7 +179,7 @@ public class ConfigurationNode {
 			}
 
 			try {
-				node = (Map<String, Object>) o;
+				node = (Map<Object, Object>) o;
 			} catch (ClassCastException e) {
 				return null;
 			}
@@ -249,7 +249,7 @@ public class ConfigurationNode {
 		}
 
 		String[] parts = path.split("\\.");
-		Map<String, Object> node = root;
+		Map<Object, Object> node = root;
 
 		for (int i = 0; i < parts.length; i++) {
 			Object o = node.get(parts[i]);
@@ -262,11 +262,11 @@ public class ConfigurationNode {
 
 			if (o == null || !(o instanceof Map)) {
 				// This will override existing configuration data!
-				o = new HashMap<String, Object>();
+				o = new HashMap<Object, Object>();
 				node.put(parts[i], o);
 			}
 
-			node = (Map<String, Object>) o;
+			node = (Map<Object, Object>) o;
 		}
 	}
 
@@ -707,7 +707,7 @@ public class ConfigurationNode {
 	  */
 	 public List<String> getKeys() {
 		 // Note that the YAML parser may have decided we want non-String keys :\
-		 Set<String> keys = root.keySet();
+		 Set<Object> keys = root.keySet();
 		 ArrayList<String> stringKeys = new ArrayList<String>();
 		 for (Object key : keys) {
 			 stringKeys.add(key.toString());
@@ -909,7 +909,7 @@ public class ConfigurationNode {
 
 		 for (Object o : raw) {
 			 if (o instanceof Map) {
-				 list.add(new ConfigurationNode((Map<String, Object>) o));
+				 list.add(new ConfigurationNode((Map<Object, Object>) o));
 			 }
 		 }
 
@@ -933,7 +933,7 @@ public class ConfigurationNode {
 		 Object raw = getProperty(path);
 
 		 if (raw instanceof Map) {
-			 return new ConfigurationNode((Map<String, Object>) raw);
+			 return new ConfigurationNode((Map<Object, Object>) raw);
 		 }
 
 		 return null;
@@ -958,7 +958,7 @@ public class ConfigurationNode {
 		 Object raw = getProperty(path);
 
 		 if (raw instanceof Map) {
-			 return new ConfigurationNode((Map<String, Object>) raw);
+			 return new ConfigurationNode((Map<Object, Object>) raw);
 		 }
 
 		 setProperty(path, def.getAll());
@@ -974,17 +974,17 @@ public class ConfigurationNode {
 	  * @return map of nodes
 	  */
 	 @SuppressWarnings("unchecked")
-	 public Map<String, ConfigurationNode> getNodes(String path) {
+	 public Map<Object, ConfigurationNode> getNodes(String path) {
 		 Object o = getProperty(path);
 
 		 if (o == null) {
 			 return null;
 		 } else if (o instanceof Map) {
-			 Map<String, ConfigurationNode> nodes = new HashMap<String, ConfigurationNode>();
+			 Map<Object, ConfigurationNode> nodes = new HashMap<Object, ConfigurationNode>();
 
-			 for (Map.Entry<String, Object> entry : ((Map<String, Object>) o).entrySet()) {
+			 for (Map.Entry<Object, Object> entry : ((Map<Object, Object>) o).entrySet()) {
 				 if (entry.getValue() instanceof Map) {
-					 nodes.put(entry.getKey(), new ConfigurationNode((Map<String, Object>) entry.getValue()));
+					 nodes.put(entry.getKey(), new ConfigurationNode((Map<Object, Object>) entry.getValue()));
 				 }
 			 }
 
@@ -1194,7 +1194,7 @@ public class ConfigurationNode {
 		 }
 
 		 String[] parts = path.split("\\.");
-		 Map<String, Object> node = root;
+		 Map<Object, Object> node = root;
 
 		 for (int i = 0; i < parts.length; i++) {
 			 Object o = node.get(parts[i]);
@@ -1205,19 +1205,19 @@ public class ConfigurationNode {
 				 return;
 			 }
 
-			 node = (Map<String, Object>) o;
+			 node = (Map<Object, Object>) o;
 		 }
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	protected void combine(Map<String, Object> to, Map<? extends Object, Object> from) {
+	protected void combine(Map<Object, Object> to, Map<? extends Object, Object> from) {
 		 for (Entry<? extends Object, Object> entry : from.entrySet()) {
 			 Object value = entry.getValue();
-			 String key = entry.getKey().toString();
+			 Object key = entry.getKey();
 			 if (value instanceof Map && to.containsKey(key)) {
 				 Object toValue = to.get(key);
 				 if (toValue instanceof Map) {
-					 combine((Map<String, Object>)toValue, (Map<Object, Object>)value);
+					 combine((Map<Object, Object>)toValue, (Map<Object, Object>)value);
 					 continue;
 				 }
 			 }

@@ -10,9 +10,9 @@ public class Messages {
 	public static Map<String, String> messageMap = new HashMap<String, String>();
 	
 	public static void load(ConfigurationNode messages) {
-		Map<String, Object> allMap = messages.getAll();
-		for (Entry<String, Object> entry : allMap.entrySet()) {
-			messageMap.put(entry.getKey(), (String)entry.getValue());
+		Map<Object, Object> allMap = messages.getAll();
+		for (Entry<Object, Object> entry : allMap.entrySet()) {
+			messageMap.put(entry.getKey().toString(), (String)entry.getValue());
 		}
 	}
 	
