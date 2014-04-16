@@ -76,14 +76,10 @@ public class IterateSpell extends BrushSpell
 			int spokes = 1;
 			// TODO: Handle radius > 1 algorithmically....
 			if (dr > 0) {
-				if (radius == 2) {
-					spokes = dr == 1 ? 8 : 12;
-				} else {
-					spokes = 4;
-				}
+				// 8, 16, 24, 32
+				spokes = dr * 8;
 			}
 			for (int dspoke = 0; dspoke < spokes; dspoke++) {
-				// TODO: Handle radius > 1
 				Vector currentLoc = targetLoc.clone();
 				if (dr > 0) {
 					// Arbitrary axis rotation would be better, but... math is hard! :P
