@@ -1182,7 +1182,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		}
 	}
 
-	protected Location getLocation()
+	public Location getLocation()
 	{
 		if (location != null) return location.clone();
 		if (mage != null) {
@@ -1191,7 +1191,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return null;
 	}
 
-	protected Location getEyeLocation()
+	public Location getEyeLocation()
 	{
 		Location location = getLocation();
 		if (location == null) return null;
@@ -1199,7 +1199,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return location;
 	}
 	
-	protected Vector getDirection()
+	public Vector getDirection()
 	{
 		if (location == null) {
 			return mage.getDirection();
