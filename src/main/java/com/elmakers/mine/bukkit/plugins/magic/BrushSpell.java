@@ -66,7 +66,7 @@ public abstract class BrushSpell extends BlockSpell{
 	protected void loadTemplate(ConfigurationNode node)
 	{
 		super.loadTemplate(node);
-		hasBrush = parameters.containsKey("material");
+		hasBrush = parameters.containsKey("brush");
 	}
 	
 	public MaterialBrush getMaterialBrush()
