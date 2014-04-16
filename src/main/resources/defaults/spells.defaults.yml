@@ -985,7 +985,7 @@ icbm:
         -  class: EffectSingle
            sound: ghast_fireball
     parameters:
-        size: 8
+        size: 5
         projectile: LargeFireball
     costs:
         xp: 100
@@ -2520,7 +2520,7 @@ superiterate:
         allow_max_range: true
         range: 64
         size: 32
-        radius: 1
+        radius: 3
         reverse: true
         increment_data: false
     costs:
@@ -2565,7 +2565,7 @@ laser:
         increment_data: false
         check_destructible: true
         brush: air
-        radius: 1
+        radius: 3
     costs:
         xp: 120
 shrink:
