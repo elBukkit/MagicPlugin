@@ -2563,7 +2563,7 @@ laser:
         range: 32
         size: 32
         increment_data: false
-        check_destructible: false
+        check_destructible: true
         brush: air
         radius: 1
     costs:
