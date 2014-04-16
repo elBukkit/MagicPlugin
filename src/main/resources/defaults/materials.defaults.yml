@@ -91,10 +91,12 @@ transparent_to_construction:
 destructible:
 - air
 - log
+- log_2
 - stone
 - grass
 - dirt
 - cobblestone
+- mossy_cobblestone
 - clay
 - water
 - stationary_water
@@ -114,6 +116,7 @@ destructible:
 - brown_mushroom
 - red_mushroom
 - leaves
+- leaves_2
 - sandstone
 - gold_ore
 - iron_ore
@@ -124,6 +127,10 @@ destructible:
 - glowing_redstone_ore
 - emerald_ore
 - quartz_ore
+- melon_block
+- pumpkin
+- huge_mushroom_1
+- huge_mushroom_2
 
 water:
 - water
