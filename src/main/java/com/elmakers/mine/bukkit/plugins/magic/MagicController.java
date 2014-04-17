@@ -944,6 +944,7 @@ public class MagicController implements Listener
 		}
 		
 		Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
+		ConfigurationUtils.addConfigurations(defaultConfig, config);
 		return defaultConfig;
 	}
 	

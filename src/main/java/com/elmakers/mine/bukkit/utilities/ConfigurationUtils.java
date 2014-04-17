@@ -234,11 +234,41 @@ public class ConfigurationUtils {
 		 return materials;
 	 }
 	
+	@SuppressWarnings("unchecked")
+	protected void combine(Map<Object, Object> to, Map<? extends Object, Object> from) {
+		 for (Entry<? extends Object, Object> entry : from.entrySet()) {
+			 Object value = entry.getValue();
+			 Object key = entry.getKey();
+			 if (value instanceof Map && to.containsKey(key)) {
+				 Object toValue = to.get(key);
+				 if (toValue instanceof Map) {
+					 combine((Map<Object, Object>)toValue, (Map<Object, Object>)value);
+					 continue;
+				 }
+			 }
+			 to.put(key, value);
+		 }
+	 }
+	
 	public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
 	{
 		Set<String> keys = second.getKeys(false);
 		for (String key : keys) {
-			first.set(key, second.get(key));
+			Object value = second.get(key);
+			if (value == null) continue;
+			
+			Object existingValue = first.get(key);
+			if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
+				ConfigurationSection addChild = (ConfigurationSection)value;
+				if (existingValue == null) {
+					ConfigurationSection newChild = first.createSection(key);
+					addConfigurations(newChild, addChild);
+				} else {
+					addConfigurations((ConfigurationSection)existingValue, addChild);
+				}
+			} else {
+				first.set(key, value);
+			}
 		}
 		
 		return first;
