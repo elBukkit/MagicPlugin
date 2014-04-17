@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 
@@ -22,7 +23,7 @@ public class Messages {
 	}
 	
 	public static String get(String key, String defaultValue) {
-		return messageMap.containsKey(key) ? messageMap.get(key) : defaultValue;
+		return messageMap.containsKey(key) ? ChatColor.translateAlternateColorCodes('&', messageMap.get(key)) : defaultValue;
 	}
 	
 	public static String get(String key) {

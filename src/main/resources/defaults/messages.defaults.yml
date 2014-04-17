@@ -42,7 +42,7 @@ general:
     spell_list_page: You know $count spells [page $page of $pages]
     spell_list: You know $count spells
 automata:
-    awaken: §c§o$name §r§5has awakened
+    awaken: "&c&o$name &r&5has awakened"
     default_name: Automaton
 wand:
     default_name: Wand
@@ -156,7 +156,7 @@ spells:
         backfire: Your spell backfired!
         fail: Your spell failed!
         insufficient_permissions: You don't have permission to cast that here.
-        cast_player_message: §d§o$player §r§5cast §3§o$spell §r§5on you!
+        cast_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
     light:
         name: Light
         description: Creates a magical light source
@@ -204,7 +204,7 @@ spells:
         cast: You leave a tag
         cast_player: You send $target a message
         cast_give: Have some signs!
-        cast_player_message: §5You hear a mysterious voice from §c§o$player §r§5... it says ... Hi!
+        cast_player_message: "&5You hear a mysterious voice from &c&o$player &r&5... it says ... Hi!"
         sign_message: was here
     arrow:
         name: Arrow
@@ -296,8 +296,8 @@ spells:
         cast: You create a Magic Golem
         no_target: You must target two blocks next to each other
         restricted: You can not make a Golem out of $material
-        cast_broadcast: §c§o$name §r§5was born
-        death_broadcast: §c§o$name §r§5has been defeated
+        cast_broadcast: "&c&o$name &r&5was born"
+        death_broadcast: "&c&o$name &r&5has been defeated"
     simulate3:
         name: Simulate 3D
         description: Conway's Game of Life ... in 3D!
@@ -310,8 +310,8 @@ spells:
         name: Virus
         description: You probably don't want to cast this
         cast: What have you done?
-        cast_broadcast: §c§o$name §r§5was born
-        death_broadcast: §c§o$name §r§5has been defeated
+        cast_broadcast: "&c&o$name &r&5was born"
+        death_broadcast: "&c&o$name &r&5has been defeated"
         no_target: You must target two blocks next to each other
         restricted: You can not make a Virus out of $material
     hunter:
@@ -321,16 +321,16 @@ spells:
         no_target: You must target two blocks next to each other
         restricted: You can not make a Hunter out of $material
         cast: Destroy all humans!
-        cast_broadcast: §c§o$name §r§5was born
-        death_broadcast: §c§o$name §r§5has been defeated
+        cast_broadcast: "&c&o$name &r&5was born"
+        death_broadcast: "&c&o$name &r&5has been defeated"
     defender:
         name: Defender
         description: Create an Automata hunter
         cast: I will hunt for you, human
         no_target: You must target two blocks next to each other
         restricted: You can not make a Defender out of $material
-        cast_broadcast: §c§o$name §r§5was born
-        death_broadcast: §c§o$name §r§5has been defeated
+        cast_broadcast: "&c&o$name &r&5was born"
+        death_broadcast: "&c&o$name &r&5has been defeated"
     life:
         name: Life
         description: Create a HUGE Life board

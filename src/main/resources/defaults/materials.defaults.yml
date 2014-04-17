@@ -370,6 +370,7 @@ restricted_animate:
 - activator_rail
 - double_plant
 - carpet
+- hard_clay
 
 # Which materials are acceptable as building materials. This
 # affects what can be absorbed and added to a wand.

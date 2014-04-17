@@ -87,10 +87,10 @@ show_messages: true
 show_cast_messages: true
 
 # A prefix to use for any important messages
-message_prefix: §d§o
+message_prefix: "&d&o"
 
 # A prefix to use for cast messages
-cast_message_prefix: §5§o
+cast_message_prefix: "&5&o"
 
 # Enable/Disable Sound Effects
 sounds: true

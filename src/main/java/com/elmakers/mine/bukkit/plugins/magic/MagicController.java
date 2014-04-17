@@ -22,6 +22,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -1330,8 +1331,6 @@ public class MagicController implements Listener
 		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
 		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
-		messagePrefix = properties.getString("message_prefix", messagePrefix);
-		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
 		clickCooldown = properties.getInt("click_cooldown", clickCooldown);
 		messageThrottle = properties.getInt("message_throttle", 0);
 		maxBlockUpdates = properties.getInt("max_block_updates", maxBlockUpdates);
@@ -1367,6 +1366,12 @@ public class MagicController implements Listener
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 
+		messagePrefix = properties.getString("message_prefix", messagePrefix);
+		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
+
+		messagePrefix = ChatColor.translateAlternateColorCodes('&', messagePrefix);
+		castMessagePrefix = ChatColor.translateAlternateColorCodes('&', castMessagePrefix);
+		
 		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", factionsManager.isEnabled()));
 		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
 		
