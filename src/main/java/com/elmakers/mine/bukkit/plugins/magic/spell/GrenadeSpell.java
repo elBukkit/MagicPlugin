@@ -4,20 +4,20 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class GrenadeSpell extends Spell
 {
 	int defaultSize = 6;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		int size = parameters.getInt("size", defaultSize);
 		int count = parameters.getInt("count", 1);

@@ -5,11 +5,11 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class BlinkSpell extends Spell
 {
@@ -51,7 +51,7 @@ public class BlinkSpell extends Spell
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		String elevateType = parameters.getString("type", "");
 		
@@ -84,7 +84,7 @@ public class BlinkSpell extends Spell
 			}
 			if (firstBlock != null && firstBlock.getType() != Material.AIR && !isWater(firstBlock.getType()))
 			{
-				int passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInteger("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
+				int passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
 				setMaxRange(passthroughRange);
 				offsetTarget(0, -1, 0);
 				setReverseTargeting(true);

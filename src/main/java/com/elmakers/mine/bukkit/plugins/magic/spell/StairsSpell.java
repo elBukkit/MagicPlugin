@@ -3,11 +3,11 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class StairsSpell extends BlockSpell
 {
@@ -17,7 +17,7 @@ public class StairsSpell extends BlockSpell
 	private int torchFrequency = 4;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
@@ -29,10 +29,10 @@ public class StairsSpell extends BlockSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		defaultDepth = parameters.getInteger("depth", defaultDepth);
-		defaultWidth = parameters.getInteger("width", defaultWidth);
-		defaultHeight = parameters.getInteger("height", defaultHeight);
-		torchFrequency = parameters.getInteger("torch_frequency", torchFrequency);
+		defaultDepth = parameters.getInt("depth", defaultDepth);
+		defaultWidth = parameters.getInt("width", defaultWidth);
+		defaultHeight = parameters.getInt("height", defaultHeight);
+		torchFrequency = parameters.getInt("torch_frequency", torchFrequency);
 
 		createStairs(targetBlock);
 

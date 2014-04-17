@@ -3,24 +3,24 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TorchSpell extends BlockSpell 
 {
 	private String timeType = "day";
 	
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		World world = getWorld();
 		if (world == null) {
 			return SpellResult.NO_TARGET;
 		}
-		if (parameters.containsKey("weather"))
+		if (parameters.contains("weather"))
 		{
 			String weatherString = parameters.getString("weather");
 			if (weatherString.equals("storm")) {
@@ -31,7 +31,7 @@ public class TorchSpell extends BlockSpell
 				world.setThundering(false);
 			}
 		}
-		if (parameters.containsKey("time"))
+		if (parameters.contains("time"))
 		{
 			long targetTime = 0;
 			timeType = parameters.getString("time", "day");

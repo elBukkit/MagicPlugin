@@ -6,19 +6,19 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class DropSpell extends BlockSpell
 {
 	private final static int DEFAULT_MAX_RECURSION = 16;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Block target = getTargetBlock();
 		if (target == null)
@@ -38,7 +38,7 @@ public class DropSpell extends BlockSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		int maxRecursion = parameters.getInteger("recursion_depth", DEFAULT_MAX_RECURSION);
+		int maxRecursion = parameters.getInt("recursion_depth", DEFAULT_MAX_RECURSION);
 		BlockList droppedBlocks = new BlockList();
 		drop(target, dropMaterials, droppedBlocks, maxRecursion);
 

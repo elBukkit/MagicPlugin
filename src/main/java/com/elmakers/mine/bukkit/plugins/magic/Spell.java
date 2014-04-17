@@ -20,6 +20,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -40,9 +42,9 @@ import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectSingle;
 import com.elmakers.mine.bukkit.effects.EffectTrail;
 import com.elmakers.mine.bukkit.effects.ParticleType;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**
  * 
@@ -122,7 +124,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
 
-	protected ConfigurationNode parameters = new ConfigurationNode();
+	protected ConfigurationSection parameters = null;
 
 	/*
 	 * private data
@@ -201,7 +203,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return baseClass.substring(0, baseClass.lastIndexOf('.'));
 	}
 
-	public static Spell loadSpell(String name, ConfigurationNode node, MagicController controller)
+	public static Spell loadSpell(String name, ConfigurationSection node, MagicController controller)
 	{
 		String builtinClassPath = getBuiltinClasspath();
 
@@ -286,12 +288,12 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		isActive = false;
 	}
 	
-	protected List<CastingCost> parseCosts(ConfigurationNode node) {
+	protected List<CastingCost> parseCosts(ConfigurationSection node) {
 		if (node == null) {
 			return null;
 		}
 		List<CastingCost> castingCosts = new ArrayList<CastingCost>();
-		List<String> costKeys = node.getKeys();
+		Set<String> costKeys = node.getKeys(false);
 		for (String key : costKeys)
 		{
 			castingCosts.add(new CastingCost(key, node.getDouble(key, 1)));
@@ -301,17 +303,17 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	}
 
 	// Override to load custom non-parameter data.
-	public void configure(ConfigurationNode node) {
+	public void configure(ConfigurationSection node) {
 	}
 
-	protected void loadTemplate(String key, ConfigurationNode node)
+	protected void loadTemplate(String key, ConfigurationSection node)
 	{
 		this.key = key;
 		this.loadTemplate(node);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void loadTemplate(ConfigurationNode node)
+	protected void loadTemplate(ConfigurationSection node)
 	{
 		// Get localizations
 		name = this.key;
@@ -322,51 +324,44 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		usage = Messages.get("spells." + key + ".usage", usage);
 
 		// Load basic properties
-		icon = node.getMaterialAndData("icon", icon.getMaterial());
+		icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
 		category = node.getString("category", category);
-		parameters = node.getNode("parameters", parameters);
+		parameters = node.getConfigurationSection("parameters");
 		pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
-		costs = parseCosts(node.getNode("costs"));
-		activeCosts = parseCosts(node.getNode("active_costs"));
+		costs = parseCosts(node.getConfigurationSection("costs"));
+		activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
 		
 		// Load effects ... Config API is kind of ugly here, and I'm not actually
 		// sure this is valid YML... :\
 		effects.clear();
-		if (node.containsKey("effects")) {
-			ConfigurationNode effectsNode = node.getNode("effects");
+		if (node.contains("effects")) {
+			ConfigurationSection effectsNode = node.getConfigurationSection("effects");
 			for (SpellResult resultType : SpellResult.values()) {
 				String typeName = resultType.name().toLowerCase();
-				if (effectsNode.containsKey(typeName)) {
-					List<Object> effectNodes = effectsNode.getList(typeName);
+				if (effectsNode.contains(typeName)) {
+					Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(effectsNode, typeName);
 			        if (effectNodes != null) 
 			        {
 			        	List<EffectPlayer> players = new ArrayList<EffectPlayer>();
-			            for (Object o : effectNodes)
+			            for (ConfigurationSection effectValues : effectNodes)
 			            {
-			                if (o instanceof Map)
-			                {
-			                    Map<Object, Object> effectValues = (Map<Object, Object>)o;
-			                    if (effectValues.containsKey("class")) {
-			                    	Object oClass = effectValues.get("class");
-			                    	if (oClass instanceof String) {
-			                    		String effectClass = (String)oClass;
-					                    try {
-					                    	Class<?> genericClass = Class.forName("com.elmakers.mine.bukkit.effects." + effectClass);
-					                    	if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
-					                    		throw new Exception("Must extend EffectPlayer");
-					                    	}
-					                    	
-											Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
-						                    EffectPlayer player = playerClass.newInstance();
-						                    ConfigurationNode effectNode = new ConfigurationNode(effectValues);
-						                    player.load(controller.getPlugin(), effectNode);
-						                    players.add(player);
-					                    } catch (Exception ex) {
-					                    	controller.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
-					                    }
+		                    if (effectValues.contains("class")) {
+		                    	String effectClass = effectValues.getString("class");
+			                    try {
+			                    	Class<?> genericClass = Class.forName("com.elmakers.mine.bukkit.effects." + effectClass);
+			                    	if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
+			                    		throw new Exception("Must extend EffectPlayer");
 			                    	}
+			                    	
+									Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
+				                    EffectPlayer player = playerClass.newInstance();
+				                    player.load(controller.getPlugin(), effectValues);
+				                    players.add(player);
+			                    } catch (Exception ex) {
+			                    	ex.printStackTrace();
+			                    	controller.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
 			                    }
-			                }
+		                    }
 			            }
 			            
 			            effects.put(resultType, players);
@@ -432,13 +427,13 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return cast(new String[0], null);
 	}
 
-	static public void addParameters(String[] extraParameters, ConfigurationNode parameters)
+	static public void addParameters(String[] extraParameters, ConfigurationSection parameters)
 	{
 		if (extraParameters != null)
 		{
 			for (int i = 0; i < extraParameters.length - 1; i += 2)
 			{
-				parameters.setProperty(extraParameters[i], extraParameters[i + 1]);
+				parameters.set(extraParameters[i], extraParameters[i + 1]);
 			}
 		}
 	}
@@ -469,7 +464,11 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 
 		this.preCast();
 		
-		final ConfigurationNode parameters = new ConfigurationNode(this.parameters);
+		if (this.parameters == null) {
+			this.parameters = new MemoryConfiguration();
+		}
+		final ConfigurationSection parameters = new MemoryConfiguration();
+		ConfigurationUtils.addConfigurations(parameters, this.parameters);
 		addParameters(extraParameters, parameters);
 		processParameters(parameters);
 		
@@ -525,7 +524,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return finalizeCast(parameters);
 	}
 	
-	protected boolean finalizeCast(ConfigurationNode parameters) {
+	protected boolean finalizeCast(ConfigurationSection parameters) {
 		SpellResult result = null;
 		if (!mage.isSuperPowered()) {
 			if (backfireChance > 0 && Math.random() < backfireChance) {
@@ -691,19 +690,19 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void processParameters(ConfigurationNode parameters) {
+	protected void processParameters(ConfigurationSection parameters) {
 		duration = parameters.getInt("duration", duration);
-		range = parameters.getInteger("range", range);
+		range = parameters.getInt("range", range);
 		allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 		
-		if (parameters.containsKey("prevent_passthrough")) {
+		if (parameters.contains("prevent_passthrough")) {
 			preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
-		} else if (parameters.containsKey("indestructible")) {
+		} else if (parameters.contains("indestructible")) {
 			preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("indestructible"));
 		} else {
 			preventPassThroughMaterials = controller.getMaterialSet("indestructible");
 		}
-		if (parameters.containsKey("transparent")) {
+		if (parameters.contains("transparent")) {
 			targetThroughMaterials.clear();
 			targetThroughMaterials.addAll(controller.getMaterialSet(parameters.getString("transparent")));
 		} else {
@@ -711,10 +710,10 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 			targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));			
 		}
 		
-		fizzleChance = parameters.getFloat("fizzle_chance", fizzleChance);
-		backfireChance = parameters.getFloat("backfire_chance", backfireChance);
+		fizzleChance = (float)parameters.getDouble("fizzle_chance", fizzleChance);
+		backfireChance = (float)parameters.getDouble("backfire_chance", backfireChance);
 		
-		if (parameters.containsKey("target")) {
+		if (parameters.contains("target")) {
 			String targetTypeName = parameters.getString("target");
 			try {
 				 targetType = TargetType.valueOf(targetTypeName.toUpperCase());
@@ -728,7 +727,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		
 		targetNPCs = parameters.getBoolean("target_npc", false);
 		
-		if (parameters.containsKey("target_type")) {
+		if (parameters.contains("target_type")) {
 			String entityTypeName = parameters.getString("target_type");
 			try {
 				 Class<?> typeClass = Class.forName("org.bukkit.entity." + entityTypeName);
@@ -744,17 +743,17 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		}
 		
 		Location defaultLocation = location == null ? mage.getLocation() : location;
-		Location locationOverride = parameters.getLocationOverride("p", defaultLocation);
+		Location locationOverride = ConfigurationUtils.getLocationOverride(parameters, "p", defaultLocation);
 		if (locationOverride != null) {
 			location = locationOverride;
 		}
 		defaultLocation = location == null ? mage.getLocation() : location;
-		targetLocation = parameters.getLocationOverride("t", defaultLocation);
+		targetLocation = ConfigurationUtils.getLocationOverride(parameters, "t", defaultLocation);
 		targetLocationOffset = null;
 		
-		Double otyValue = parameters.getDouble("oty", null);
-		Double otxValue = parameters.getDouble("otx", null);
-		Double otzValue = parameters.getDouble("otz", null);
+		Double otxValue = ConfigurationUtils.getDouble(parameters, "otx", null);
+		Double otyValue = ConfigurationUtils.getDouble(parameters, "oty", null);
+		Double otzValue = ConfigurationUtils.getDouble(parameters, "otz", null);
 		if (otxValue != null || otzValue != null || otyValue != null) {
 			targetLocationOffset = new Vector(
 					(otxValue == null ? 0 : otxValue),
@@ -769,9 +768,9 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		
 		// For two-click construction spells
 		defaultLocation = targetLocation == null ? defaultLocation : targetLocation;		
-		targetLocation2 = parameters.getLocationOverride("t2", defaultLocation);
+		targetLocation2 = ConfigurationUtils.getLocationOverride(parameters, "t2", defaultLocation);
 		
-		if (parameters.containsKey("player")) {
+		if (parameters.contains("player")) {
 			Player player = controller.getPlugin().getServer().getPlayer(parameters.getString("player"));
 			if (player != null) {
 				targetLocation = player.getLocation();
@@ -785,8 +784,8 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
 		bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
 		bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
-		costReduction = parameters.getFloat("cost_reduction", 0);
-		cooldownReduction = parameters.getFloat("cooldown_reduction", 0);
+		costReduction = (float)parameters.getDouble("cost_reduction", 0);
+		cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
 		
 		// Special hack that should work well in most casts.
 		if (isUnderwater()) {
@@ -818,7 +817,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	 * @param parameters Any parameters that were passed to this spell
 	 * @return true if the spell worked, false if it failed
 	 */
-	public abstract SpellResult onCast(ConfigurationNode parameters);
+	public abstract SpellResult onCast(ConfigurationSection parameters);
 
 	/**
 	 * Called when a material selection spell is cancelled mid-selection.
@@ -1766,7 +1765,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return mage;
 	}
 	
-	public void load(ConfigurationNode node) {
+	public void load(ConfigurationSection node) {
 		try {
 			castCount = node.getLong("cast_count", 0);
 			lastCast = node.getLong("last_cast", 0);
@@ -1776,10 +1775,10 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		}
 	}
 	
-	public void save(ConfigurationNode node) {
+	public void save(ConfigurationSection node) {
 		try {
-			node.setProperty("cast_count", castCount);
-			node.setProperty("last_cast", lastCast);
+			node.set("cast_count", castCount);
+			node.set("last_cast", lastCast);
 			onSave(node);
 		} catch (Exception ex) {
 			controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
@@ -1790,7 +1789,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	/**
 	 * Called on player data load.
 	 */
-	public void onLoad(ConfigurationNode node)
+	public void onLoad(ConfigurationSection node)
 	{
 		
 	}
@@ -1800,12 +1799,12 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	 * 
 	 * @param node The configuration node to load data from.
 	 */
-	public void onSave(ConfigurationNode node)
+	public void onSave(ConfigurationSection node)
 	{
 
 	}
 	
-	protected static Collection<PotionEffect> getPotionEffects(ConfigurationNode parameters)
+	protected static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters)
 	{		
 		List<PotionEffect> effects = new ArrayList<PotionEffect>();
 		PotionEffectType[] effectTypes = PotionEffectType.values();
@@ -1814,7 +1813,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 			if (effectType == null) continue;
 			
 			String parameterName = "effect_" + effectType.getName().toLowerCase();
-			if (parameters.containsKey(parameterName)) {
+			if (parameters.contains(parameterName)) {
 				String value = parameters.getString(parameterName);
 				String[] pieces = value.split(",");
 				try {
@@ -1826,7 +1825,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 					PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
 					effects.add(effect);
 				} catch (Exception ex) {
-					Bukkit.getLogger().warning("Error parsing potion effect for " + effectType + ": " + value + ": " + parameters.getKeys());
+					Bukkit.getLogger().warning("Error parsing potion effect for " + effectType + ": " + value);
 				}
 			}
 		}

@@ -11,11 +11,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 
 public abstract class EffectPlayer {
 	
@@ -71,39 +72,39 @@ public abstract class EffectPlayer {
 		this.plugin = plugin;
 	}
 	
-	public void load(Plugin plugin, ConfigurationNode configuration) {
+	public void load(Plugin plugin, ConfigurationSection configuration) {
 		this.plugin = plugin;
 		
 		delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
-		material1 = configuration.getMaterialAndData("material");
-		color1 = configuration.getColor("color", Color.PURPLE);
-		color2 = configuration.getColor("color2", Color.TEAL);
+		material1 = ConfigurationUtils.getMaterialAndData(configuration, "material");
+		color1 = ConfigurationUtils.getColor(configuration, "color", Color.PURPLE);
+		color2 = ConfigurationUtils.getColor(configuration, "color2", Color.TEAL);
 		
-		if (configuration.containsKey("effect")) {
+		if (configuration.contains("effect")) {
 			String effectName = configuration.getString("effect");
 			effect = Effect.valueOf(effectName.toUpperCase());
 			if (effect == null) {
 				plugin.getLogger().warning("Unknown effect type " + effectName);
 			} else {
-				effectData = configuration.getInteger("effect_data", effectData);
+				effectData = ConfigurationUtils.getInteger(configuration, "effect_data", effectData);
 			}
 		}
 
-		if (configuration.containsKey("sound")) {
+		if (configuration.contains("sound")) {
 			String soundName = configuration.getString("sound");
 			sound = Sound.valueOf(soundName.toUpperCase());
 			if (sound == null) {
 				plugin.getLogger().warning("Unknown sound type " + soundName);
 			} else {
-				soundVolume = configuration.getFloat("sound_volume", soundVolume);
-				soundPitch = configuration.getFloat("sound_pitch", soundPitch);
+				soundVolume = (float)configuration.getDouble("sound_volume", soundVolume);
+				soundPitch = (float)configuration.getDouble("sound_pitch", soundPitch);
 			}
 		}
 
-		if (configuration.containsKey("firework") || configuration.containsKey("firework_power")) {
+		if (configuration.contains("firework") || configuration.contains("firework_power")) {
 			hasFirework = true;
 			fireworkType = null;
-			if (configuration.containsKey("firework")) {
+			if (configuration.contains("firework")) {
 				String typeName = configuration.getString("firework");
 				fireworkType = FireworkEffect.Type.valueOf(typeName.toUpperCase());
 				if (fireworkType == null) {
@@ -112,20 +113,19 @@ public abstract class EffectPlayer {
 			}
 
 			fireworkPower = configuration.getInt("firework_power", fireworkPower);
-			fireworkFlicker = configuration.containsKey("firework_flicker") ? 
-					configuration.getBoolean("firework_flicker", false) : null;
+			fireworkFlicker = ConfigurationUtils.getBoolean(configuration, "firework_flicker", fireworkFlicker);
 		}
-		if (configuration.containsKey("particle")) {
+		if (configuration.contains("particle")) {
 			String typeName = configuration.getString("particle");
 			particleType = ParticleType.valueOf(typeName.toUpperCase());
 			if (particleType == null) {
 				plugin.getLogger().warning("Unknown particle type " + typeName);
 			} else {
 				particleSubType = configuration.getString("particle_sub_type", particleSubType);
-				particleData = configuration.getFloat("particle_data", particleData);
-				particleXOffset = configuration.getFloat("particle_offset_x", particleXOffset);
-				particleYOffset = configuration.getFloat("particle_offset_y", particleYOffset);
-				particleZOffset = configuration.getFloat("particle_offset_z", particleZOffset);
+				particleData = (float)configuration.getDouble("particle_data", particleData);
+				particleXOffset = (float)configuration.getDouble("particle_offset_x", particleXOffset);
+				particleYOffset = (float)configuration.getDouble("particle_offset_y", particleYOffset);
+				particleZOffset = (float)configuration.getDouble("particle_offset_z", particleZOffset);
 				particleCount = configuration.getInt("particle_count", particleCount);
 			}			
 		}

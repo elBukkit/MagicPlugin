@@ -3,13 +3,13 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.ConstructBatch;
 import com.elmakers.mine.bukkit.block.ConstructionType;
@@ -18,7 +18,6 @@ import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.TargetType;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ConstructSpell extends BrushSpell
 {
@@ -36,7 +35,7 @@ public class ConstructSpell extends BrushSpell
 	private boolean powered = false;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target t = getTarget();
 		Block target = t.getBlock();
@@ -72,8 +71,8 @@ public class ConstructSpell extends BrushSpell
 			}
 		} 
 
-		int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);
-		maxDimension = parameters.getInteger("md", maxDimension);
+		int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
+		maxDimension = parameters.getInt("md", maxDimension);
 		maxDimension = (int)(mage.getConstructionMultiplier() * (float)maxDimension);
 
 		int diameter = radius * 2;
@@ -112,7 +111,7 @@ public class ConstructSpell extends BrushSpell
 		}
 		
 		// TODO : Is this needed? Or just use "ty"?
-		if (parameters.containsKey("y_offset")) {
+		if (parameters.contains("y_offset")) {
 			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
 
@@ -134,10 +133,10 @@ public class ConstructSpell extends BrushSpell
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
 		
 		// Check for command block overrides
-		if (parameters.containsKey("commands"))
+		if (parameters.contains("commands"))
 		{
-			ConfigurationNode commandMap = parameters.getNode("commands");
-			List<String> keys = commandMap.getKeys();
+			ConfigurationSection commandMap = parameters.getConfigurationSection("commands");
+			Set<String> keys = commandMap.getKeys(false);
 			for (String key : keys) {
 				batch.addCommandMapping(key, commandMap.getString(key));
 			}
@@ -146,16 +145,16 @@ public class ConstructSpell extends BrushSpell
 		if (falling) {
 			batch.setFallingBlockSpeed(force);
 		}
-		if (parameters.containsKey("orient_dimension_max")) {
-			batch.setOrientDimensionMax(parameters.getInteger("orient_dimension_max", null));
-		} else if (parameters.containsKey("odmax")) {
-			batch.setOrientDimensionMax(parameters.getInteger("odmax", null));
+		if (parameters.contains("orient_dimension_max")) {
+			batch.setOrientDimensionMax(parameters.getInt("orient_dimension_max"));
+		} else if (parameters.contains("odmax")) {
+			batch.setOrientDimensionMax(parameters.getInt("odmax"));
 		}
 
-		if (parameters.containsKey("orient_dimension_min")) {
-			batch.setOrientDimensionMin(parameters.getInteger("orient_dimension_min", null));
-		} else if (parameters.containsKey("odmin")) {
-			batch.setOrientDimensionMin(parameters.getInteger("odmin", null));
+		if (parameters.contains("orient_dimension_min")) {
+			batch.setOrientDimensionMin(parameters.getInt("orient_dimension_min"));
+		} else if (parameters.contains("odmin")) {
+			batch.setOrientDimensionMin(parameters.getInt("odmin"));
 		}
 		if (timeToLive > 0) {
 			batch.setTimeToLive(timeToLive);
@@ -195,7 +194,7 @@ public class ConstructSpell extends BrushSpell
 	}
 	
 	@Override
-	protected void loadTemplate(ConfigurationNode node)
+	protected void loadTemplate(ConfigurationSection node)
 	{
 		super.loadTemplate(node);
 		powered = parameters.getBoolean("power", false);

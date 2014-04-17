@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.effects;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public abstract class EffectRepeating extends EffectPlayer implements Runnable {
 	protected int iterations = 4;
@@ -24,7 +24,7 @@ public abstract class EffectRepeating extends EffectPlayer implements Runnable {
 	protected int iteration = 0;
 	
 	@Override
-	public void load(Plugin plugin, ConfigurationNode configuration) {
+	public void load(Plugin plugin, ConfigurationSection configuration) {
 		super.load(plugin, configuration);
 		
 		iterations = configuration.getInt("iterations", iterations);

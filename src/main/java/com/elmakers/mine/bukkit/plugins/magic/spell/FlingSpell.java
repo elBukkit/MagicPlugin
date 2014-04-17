@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
@@ -15,7 +16,6 @@ import com.elmakers.mine.bukkit.effects.EffectRing;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FlingSpell extends Spell
 {
@@ -33,7 +33,7 @@ public class FlingSpell extends Spell
     private final static int maxDamageAmount = 200;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		int height = 0;
 		Block playerBlock = getLocation().getBlock();
@@ -41,10 +41,6 @@ public class FlingSpell extends Spell
 		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
 		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
 		double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
-		double yOffset = parameters.getDouble("yo", 0);
-		Double yValue = parameters.getDouble("dy", null);
-		Double xValue = parameters.getDouble("dx", null);
-		Double zValue = parameters.getDouble("dz", null);
 		
 		while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 		{
@@ -56,18 +52,6 @@ public class FlingSpell extends Spell
 		double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * heightModifier));
 
 		Vector velocity = mage.getLocation().getDirection();
-		if (yValue != null) {
-			velocity.setY(yValue);
-		} else if (yOffset > 0) {
-			velocity.setY(velocity.getY() + yOffset);
-		}
-		if (xValue != null) {
-			velocity.setX(xValue);
-		}
-		if (zValue != null) {
-			velocity.setZ(zValue);
-		}
-
 		if (mage.getLocation().getBlockY() >= 256)
 		{
 			velocity.setY(0);

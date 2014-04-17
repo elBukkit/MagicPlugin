@@ -5,12 +5,12 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class PhaseSpell extends Spell
 {
@@ -20,34 +20,34 @@ public class PhaseSpell extends Spell
 	private int retryCount = 0;
 	
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Location playerLocation = getLocation();
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
 		
-		if (parameters.containsKey("target_world"))
+		if (parameters.contains("target_world"))
 		{
 			World targetWorld = Bukkit.getWorld(parameters.getString("target_world"));
 			if (targetWorld == null) {
 				return SpellResult.INVALID_WORLD;
 			}
-			float scale = parameters.getFloat("scale", 1.0f);
+			float scale = (float)parameters.getDouble("scale", 1.0f);
 			if (targetWorld != null) {
 				targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
 			}
 		}
 		else
-		if (parameters.containsKey("worlds"))
+		if (parameters.contains("worlds"))
 		{
-			ConfigurationNode worldMap = parameters.getNode("worlds");
-			if (!worldMap.containsKey(worldName)) {
+			ConfigurationSection worldMap = parameters.getConfigurationSection("worlds");
+			if (!worldMap.contains(worldName)) {
 				return SpellResult.NO_TARGET;
 			}
 			
-			ConfigurationNode worldNode = worldMap.getNode(worldName);
+			ConfigurationSection worldNode = worldMap.getConfigurationSection(worldName);
 			World targetWorld = Bukkit.getWorld(worldNode.getString("target"));
-			float scale = worldNode.getFloat("scale", 1.0f);
+			float scale = (float)worldNode.getDouble("scale", 1.0f);
 			if (targetWorld != null) {
 				targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
 			}

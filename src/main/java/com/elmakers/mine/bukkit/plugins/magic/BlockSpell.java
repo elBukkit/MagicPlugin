@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.BlockList;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public abstract class BlockSpell extends Spell {
 	
@@ -47,17 +47,17 @@ public abstract class BlockSpell extends Spell {
 	}
 
 	@Override
-	protected void processParameters(ConfigurationNode parameters) {
+	protected void processParameters(ConfigurationSection parameters) {
 		super.processParameters(parameters);
 		indestructible = null;
-		if (parameters.containsKey("indestructible")) {
-			indestructible = parameters.getMaterials("indestructible", "");
+		if (parameters.contains("indestructible")) {
+			indestructible = controller.getMaterialSet(parameters.getString("indestructible"));
 		}
-		if (parameters.containsKey("id")) {
-			indestructible = parameters.getMaterials("id", "");
+		if (parameters.contains("id")) {
+			indestructible = controller.getMaterialSet(parameters.getString("id"));
 		}
 		destructible = null;
-		if (parameters.containsKey("destructible")) {
+		if (parameters.contains("destructible")) {
 			destructible = controller.getMaterialSet(parameters.getString("destructible"));
 		}
 		checkDestructible = parameters.getBoolean("check_destructible", true);

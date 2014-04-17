@@ -2005,8 +2005,7 @@ convert:
         allow_max_range: false
         range: 32
         check_destructible: false
-        indestructible:
-          - air
+        indestructible: air
         radius: 3
         replace: true
         transparent: transparent_to_construction
@@ -2026,8 +2025,7 @@ superconvert:
         allow_max_range: false
         range: 32
         max_dimension: 16
-        indestructible:
-          - air
+        indestructible: air
         target: select
         type: sphere
         replace: true
@@ -2050,8 +2048,7 @@ collapse:
         brush: air
         falling: true
         check_destructible: false
-        indestructible:
-          - air
+        indestructible: air
         radius: 2
         transparent: transparent_to_construction
     costs:
@@ -2074,8 +2071,7 @@ supercollapse:
         brush: air
         falling: true
         check_destructible: false
-        indestructible:
-          - air
+        indestructible: air
         target: select
         type: sphere
         transparent: transparent_to_construction
@@ -2152,8 +2148,7 @@ breach:
         allow_max_range: false
         check_destructible: false
         range: 32
-        indestructible:
-        - air
+        indestructible: air
         undo: 10000
         brush: air
         radius: '4'
@@ -2174,8 +2169,7 @@ peek:
         allow_max_range: false
         check_destructible: false
         range: 32
-        indestructible:
-        - air
+        indestructible: air
         undo: 4000
         brush: glass
         radius: '3'

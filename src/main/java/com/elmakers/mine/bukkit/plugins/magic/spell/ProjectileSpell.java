@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -20,7 +21,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ProjectileSpell extends Spell 
@@ -29,7 +29,7 @@ public class ProjectileSpell extends Spell
 	private Random random = new Random();
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		int count = parameters.getInt("count", 1);
 		int size = parameters.getInt("size", defaultSize);
@@ -54,7 +54,7 @@ public class ProjectileSpell extends Spell
 		spread /= damageMultiplier;
 		
 		boolean useFire = parameters.getBoolean("fire", true);
-		int tickIncrease = parameters.getInteger("tick_increase", 1180);
+		int tickIncrease = parameters.getInt("tick_increase", 1180);
 		
 		String projectileTypeName = parameters.getString("projectile", "Arrow");
 		final Class<?> projectileClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");

@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.effects;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 
 public class EffectRing extends EffectRepeating {
@@ -21,10 +21,10 @@ public class EffectRing extends EffectRepeating {
 	}
 	
 	@Override
-	public void load(Plugin plugin, ConfigurationNode configuration) {
+	public void load(Plugin plugin, ConfigurationSection configuration) {
 		super.load(plugin, configuration);
 		
-		radius = configuration.getFloat("radius", radius);
+		radius = (float)configuration.getDouble("radius", radius);
 		size = configuration.getInt("size", size);
 	}
 	

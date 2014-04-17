@@ -3,12 +3,12 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.RegenerateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.TargetType;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class RegenerateSpell extends BlockSpell 
 {
@@ -17,7 +17,7 @@ public class RegenerateSpell extends BlockSpell
 	private Block targetBlock = null;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Block targetBlock = getTargetBlock();
 		boolean singleBlock = getTargetType() != TargetType.SELECT;
@@ -48,7 +48,7 @@ public class RegenerateSpell extends BlockSpell
 		{
 			RegenerateBatch batch = new RegenerateBatch(this, this.targetBlock.getLocation(), targetBlock.getLocation());
 
-			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);		
+			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);		
 			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
 			
 			if (!batch.checkDimension(maxDimension))

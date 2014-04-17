@@ -3,11 +3,11 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class TunnelSpell extends BlockSpell
 {
@@ -18,13 +18,13 @@ public class TunnelSpell extends BlockSpell
 	private int torchFrequency = 4;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		defaultDepth = parameters.getInteger("depth", defaultDepth);
-		defaultWidth = parameters.getInteger("width", defaultWidth);
-		defaultHeight = parameters.getInteger("height", defaultHeight);
-		defaultSearchDistance = parameters.getInteger("search_distance", defaultSearchDistance);
-		torchFrequency = parameters.getInteger("torch_frequency", torchFrequency);
+		defaultDepth = parameters.getInt("depth", defaultDepth);
+		defaultWidth = parameters.getInt("width", defaultWidth);
+		defaultHeight = parameters.getInt("height", defaultHeight);
+		defaultSearchDistance = parameters.getInt("search_distance", defaultSearchDistance);
+		torchFrequency = parameters.getInt("torch_frequency", torchFrequency);
 
 		Block playerBlock = getPlayerBlock();
 		if (playerBlock == null) 

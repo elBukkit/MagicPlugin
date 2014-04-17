@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -17,7 +18,6 @@ import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class ShrinkSpell extends BlockSpell
 {
@@ -26,7 +26,7 @@ public class ShrinkSpell extends BlockSpell
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		String castType = parameters.getString("type");
 		if (castType != null && castType.equalsIgnoreCase("self")) {
@@ -44,8 +44,8 @@ public class ShrinkSpell extends BlockSpell
 		if (target.hasEntity()) {
 			if (!(target.getEntity() instanceof LivingEntity)) return SpellResult.NO_TARGET;
 			
-			int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
-			int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);
+			int playerDamage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
+			int entityDamage = parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
 			Entity targetEntity = target.getEntity();
 			LivingEntity li = (LivingEntity)targetEntity;

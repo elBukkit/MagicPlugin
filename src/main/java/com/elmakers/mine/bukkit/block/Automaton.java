@@ -1,16 +1,16 @@
 package com.elmakers.mine.bukkit.block;
 
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utilities.Messages;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Automaton extends BlockData implements com.elmakers.mine.bukkit.api.magic.Automaton {
 	private String message;
 	private String name;
 	private long createdAt;
 	
-	public Automaton(ConfigurationNode node) {
+	public Automaton(ConfigurationSection node) {
 		super(node);
 		name = node.getString("name");
 		message = node.getString("message");
@@ -26,11 +26,11 @@ public class Automaton extends BlockData implements com.elmakers.mine.bukkit.api
 	}
 	
 	@Override
-	public void save(ConfigurationNode node) {
+	public void save(ConfigurationSection node) {
 		super.save(node);
-		node.setProperty("name", name);
-		node.setProperty("message", message);
-		node.setProperty("created", createdAt);
+		node.set("name", name);
+		node.set("message", message);
+		node.set("created", createdAt);
 	}
 	
 	public String getMessage() {

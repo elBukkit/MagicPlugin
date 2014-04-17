@@ -1,17 +1,17 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CommitSpell extends Spell
 {
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		// You should really use /magic commit for this at this point.
 		String typeString = parameters.getString("type", "");

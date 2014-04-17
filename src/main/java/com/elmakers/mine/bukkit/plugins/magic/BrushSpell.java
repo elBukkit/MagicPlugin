@@ -6,11 +6,12 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 
 public abstract class BrushSpell extends BlockSpell{
 
@@ -22,7 +23,7 @@ public abstract class BrushSpell extends BlockSpell{
 	};
 	
 	@Override
-	protected void processParameters(ConfigurationNode parameters)
+	protected void processParameters(ConfigurationSection parameters)
 	{
 		super.processParameters(parameters);
 		
@@ -31,14 +32,14 @@ public abstract class BrushSpell extends BlockSpell{
 		if (materialKey != null) {
 			brush = new MaterialBrush(mage, getLocation(), materialKey);
 			
-			if (parameters.containsKey("brushmod")) {
+			if (parameters.contains("brushmod")) {
 				brush.update(parameters.getString("brushmod"));
 				brush.update(materialKey);
 			}
 			
-			Double dmxValue = parameters.getDouble("obx", null);
-			Double dmyValue = parameters.getDouble("oby", null);
-			Double dmzValue = parameters.getDouble("obz", null);
+			Double dmxValue = ConfigurationUtils.getDouble(parameters, "obx", null);
+			Double dmyValue = ConfigurationUtils.getDouble(parameters, "oby", null);
+			Double dmzValue = ConfigurationUtils.getDouble(parameters, "obz", null);
 			String dmWorldValue = parameters.getString("obworld", null);
 			World targetWorld = null;
 			if (dmWorldValue != null && dmWorldValue.length() > 0) {
@@ -63,10 +64,10 @@ public abstract class BrushSpell extends BlockSpell{
 	}
 	
 	@Override
-	protected void loadTemplate(ConfigurationNode node)
+	protected void loadTemplate(ConfigurationSection node)
 	{
 		super.loadTemplate(node);
-		hasBrush = parameters.containsKey("brush");
+		hasBrush = parameters.contains("brush");
 	}
 	
 	public MaterialBrush getMaterialBrush()

@@ -1,16 +1,17 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MailSpell extends Spell
 {
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		// TODO: Multi-word messages....
-		if (!parameters.containsKey("name") || !parameters.containsKey("message"))
+		if (!parameters.contains("name") || !parameters.contains("message"))
 		{
 			controller.getLogger().warning("Mail requires name and message parameters");
 			return SpellResult.FAIL;

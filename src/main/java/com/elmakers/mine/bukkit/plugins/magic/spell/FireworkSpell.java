@@ -7,16 +7,16 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.effects.EffectUtils;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FireworkSpell extends Spell
 {	
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Random rand = new Random();
 		int power = rand.nextInt(2) + 1;
@@ -29,19 +29,19 @@ public class FireworkSpell extends Spell
 		
 		// Configuration overrides
 		power = parameters.getInt("size", power);
-		if (parameters.containsKey("color1")) {
+		if (parameters.contains("color1")) {
 			color1 = getColor(parameters.getString("color1"));
 		} else if (mage.getEffectColor() != null) {
 			color1 = mage.getEffectColor();
 		}
-		if (parameters.containsKey("color2")) {
+		if (parameters.contains("color2")) {
 			color2 = getColor(parameters.getString("color2"));
 		}
-		if (parameters.containsKey("type")) {
+		if (parameters.contains("type")) {
 			fireworkType = getType(parameters.getString("type"));
 		}
-		flicker = parameters.getBoolean("flicker", flicker);
-		trail = parameters.getBoolean("trail", trail);
+		flicker = parameters.getBoolean("flicker");
+		trail = parameters.getBoolean("trail");
 		
 		int flareCount = parameters.getInt("count", 1);
 		Block target = getTarget().getBlock();

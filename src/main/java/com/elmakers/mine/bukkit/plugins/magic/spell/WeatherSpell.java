@@ -1,15 +1,15 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WeatherSpell extends Spell
 {
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		World world = getWorld();
 		boolean hasStorm = world.hasStorm();

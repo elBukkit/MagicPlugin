@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,8 +14,8 @@ import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.SimpleBlockAction;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FrostSpell extends BlockSpell
 {
@@ -78,7 +79,7 @@ public class FrostSpell extends BlockSpell
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
 
@@ -87,13 +88,13 @@ public class FrostSpell extends BlockSpell
 			return SpellResult.NO_TARGET;
 		}
 		
-		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
-		int entityDamage = parameters.getInteger("entity_damage", DEFALT_ENTITY_DAMAGE);
-		int defaultRadius = parameters.getInteger("radius", DEFAULT_RADIUS);
+		int playerDamage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
+		int entityDamage = parameters.getInt("entity_damage", DEFALT_ENTITY_DAMAGE);
+		int defaultRadius = parameters.getInt("radius", DEFAULT_RADIUS);
 		int timeToLive = parameters.getInt("undo", DEFAULT_TIME_TO_LIVE);
 		int slowness = parameters.getInt("slowness", DEFAULT_SLOWNESS);
 		int slownessDuration = parameters.getInt("slowness_duration", DEFAULT_SLOWNESS_DURATION);
-		Material iceMaterial = parameters.getMaterial("ice", Material.ICE);
+		Material iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
 
 		if (target.hasEntity())
 		{

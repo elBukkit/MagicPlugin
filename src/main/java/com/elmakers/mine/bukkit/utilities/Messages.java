@@ -1,18 +1,19 @@
 package com.elmakers.mine.bukkit.utilities;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import org.bukkit.configuration.ConfigurationSection;
+
 
 public class Messages {
 	public static Map<String, String> messageMap = new HashMap<String, String>();
 	
-	public static void load(ConfigurationNode messages) {
-		Map<Object, Object> allMap = messages.getAll();
-		for (Entry<Object, Object> entry : allMap.entrySet()) {
-			messageMap.put(entry.getKey().toString(), (String)entry.getValue());
+	public static void load(ConfigurationSection messages) {
+		Collection<String> keys = messages.getKeys(true);
+		for (String key : keys) {
+			messageMap.put(key, messages.getString(key));
 		}
 	}
 	

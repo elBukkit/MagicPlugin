@@ -9,10 +9,10 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 
 
 /**
@@ -120,15 +120,19 @@ public class BlockData extends MaterialAndData
 		this.world = world;
 	}
 	
-	public BlockData(ConfigurationNode node) {
-		this(node.getLocation("location"), node.getMaterial("material"), (byte)node.getInt("data", 0));
+	public BlockData(ConfigurationSection node) {
+		this(
+			ConfigurationUtils.getLocation(node, "location"), 
+			ConfigurationUtils.getMaterial(node, "material"), 
+			(byte)node.getInt("data", 0)
+		);
 	}
 	
-	public void save(ConfigurationNode node) {
-		node.setProperty("material", material);
-		node.setProperty("data", data);
+	public void save(ConfigurationSection node) {
+		node.set("material", ConfigurationUtils.fromMaterial(material));
+		node.set("data", data);
 		Location location = new Location(Bukkit.getWorld(world), this.location.getX(), this.location.getY(), this.location.getZ());
-		node.setProperty("location", location);
+		node.set("location", ConfigurationUtils.fromLocation(location));
 	}
 
 	protected boolean checkBlock()

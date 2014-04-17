@@ -26,31 +26,31 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 /**
  * Represents a configuration node.
  */
-public class ConfigurationNode {
+public class ConfigurationSection {
 	protected Map<Object, Object> root;
 
 	@SuppressWarnings("unchecked")
-	public ConfigurationNode createChild(String name)
+	public ConfigurationSection createChild(String name)
 	{
 		Map<String, Object> newChild = new HashMap<String, Object>();
 
-		setProperty(name, newChild);
+		set(name, newChild);
 
-		Object raw = getProperty(name);
+		Object raw = get(name);
 
 		if (raw instanceof Map) 
 		{
-			return new ConfigurationNode((Map<Object, Object>) raw);
+			return new ConfigurationSection((Map<Object, Object>) raw);
 		}
 
 		return null;
 	}
 
-	public ConfigurationNode() {
+	public ConfigurationSection() {
 		this.root = new HashMap<Object, Object>();
 	}
 
-	public ConfigurationNode(ConfigurationNode copy) {
+	public ConfigurationSection(ConfigurationSection copy) {
 		HashMap<Object, Object> newRoot = new HashMap<Object, Object>();
 		if (copy != null)
 		{
@@ -59,7 +59,7 @@ public class ConfigurationNode {
 		this.root = newRoot;
 	}
 
-	public ConfigurationNode(Map<Object, Object> root) {
+	public ConfigurationSection(Map<Object, Object> root) {
 		this.root = root;
 	}
 
@@ -134,7 +134,7 @@ public class ConfigurationNode {
 	 * @return object or null
 	 */
 	@SuppressWarnings("unchecked")
-	public Object getProperty(String path) {
+	public Object get(String path) {
 		// More nasty special cases since float keys look like paths! :\
 		boolean isFloat = false;
 		try {
@@ -203,7 +203,7 @@ public class ConfigurationNode {
 	 * @param value
 	 */
 	@SuppressWarnings({ "unchecked", "deprecation" })
-	public void setProperty(String path, Object value) {
+	public void set(String path, Object value) {
 		if (path == null || path.length() == 0) return;
 		
 		if (value == null) {
@@ -280,7 +280,7 @@ public class ConfigurationNode {
 	 * @return string or null
 	 */
 	public String getString(String path) {
-		Object o = getProperty(path);
+		Object o = get(path);
 
 		if (o == null) {
 			return null;
@@ -289,7 +289,7 @@ public class ConfigurationNode {
 	}
 
 	public Material getMaterial(String path) {
-		Object o = getProperty(path);
+		Object o = get(path);
 		if (o == null) {
 			return null;
 		}
@@ -298,7 +298,7 @@ public class ConfigurationNode {
 	}
 	
 	public MaterialAndData getMaterialAndData(String path) {
-		Object o = getProperty(path);
+		Object o = get(path);
 		if (o == null) {
 			return null;
 		}
@@ -307,7 +307,7 @@ public class ConfigurationNode {
 	}
 	
 	public Location getLocation(String path) {
-		Object o = getProperty(path);
+		Object o = get(path);
 		if (o == null) {
 			return null;
 		}
@@ -341,8 +341,8 @@ public class ConfigurationNode {
 		String dxName = basePath + "dx";
 		String dyName = basePath + "dy";
 		String dzName = basePath + "dz";
-		boolean hasPosition = containsKey(xName) || containsKey(yName) || containsKey(zName);
-		boolean hasDirection = containsKey(dxName) || containsKey(dyName) || containsKey(dzName);
+		boolean hasPosition = contains(xName) || contains(yName) || contains(zName);
+		boolean hasDirection = contains(dxName) || contains(dyName) || contains(dzName);
 		String worldOverride = getString(worldName);
 		boolean hasWorld = worldOverride != null && worldOverride.length() > 0;
 		
@@ -519,12 +519,12 @@ public class ConfigurationNode {
 	  * @return int or default
 	  */
 	 public int getInt(String path, int def) {
-		 Integer o = castInt(getProperty(path));
+		 Integer o = castInt(get(path));
 		 return o == null ? def : o;
 	 }
 	 
 	 public Integer getInteger(String path, Integer def) {
-		 Integer o = castInt(getProperty(path));
+		 Integer o = castInt(get(path));
 		 return o == null ? def : o;
 	 }
 
@@ -533,12 +533,12 @@ public class ConfigurationNode {
 	 }
 	 
 	 public long getLong(String path, long def) {
-		 Long o = castLong(getProperty(path));
+		 Long o = castLong(get(path));
 		 return o == null ? def : o;
 	 }
 	 
 	 public Color getColor(String path, Color def) {
-		 Color o = castColor(getProperty(path));
+		 Color o = castColor(get(path));
 		 return o == null ? def : o;
 	 }
 	 
@@ -605,7 +605,7 @@ public class ConfigurationNode {
 	  * @return double or default
 	  */
 	 public double getDouble(String path, double def) {
-		 Double o = castDouble(getProperty(path));
+		 Double o = castDouble(get(path));
 		 return o == null ? def : o;
 	 }
 
@@ -620,7 +620,7 @@ public class ConfigurationNode {
 	  * @return double or default
 	  */
 	 public Double getDouble(String path, Double def) {
-		 Double o = castDouble(getProperty(path));
+		 Double o = castDouble(get(path));
 		 return o == null ? def : o;
 	 }
 
@@ -635,7 +635,7 @@ public class ConfigurationNode {
 	  * @return float or default
 	  */
 	 public float getFloat(String path, float def) {
-		 Float o = castFloat(getProperty(path));
+		 Float o = castFloat(get(path));
 		 return o == null ? def : o;
 	 }
 
@@ -650,7 +650,7 @@ public class ConfigurationNode {
 	  * @return float or default
 	  */
 	 public Float getFloat(String path, Float def) {
-		 Float o = castFloat(getProperty(path));
+		 Float o = castFloat(get(path));
 		 return o == null ? def : o;
 	 }
 
@@ -664,12 +664,12 @@ public class ConfigurationNode {
 	  * @return boolean or default
 	  */
 	 public boolean getBoolean(String path, boolean def) {
-		 Boolean o = castBoolean(getProperty(path));
+		 Boolean o = castBoolean(get(path));
 		 return o == null ? def : o;
 	 }
 	 
 	 public Boolean getBoolean(String path, Boolean def) {
-		 Boolean o = castBoolean(getProperty(path));
+		 Boolean o = castBoolean(get(path));
 		 return o == null ? def : o;
 	 }
 	 
@@ -689,7 +689,7 @@ public class ConfigurationNode {
 		 if (path == null) {
 			 return getKeys();
 		 }
-		 Object o = getProperty(path);
+		 Object o = get(path);
 
 		 if (o == null) {
 			 return null;
@@ -724,7 +724,7 @@ public class ConfigurationNode {
 	  */
 	 @SuppressWarnings("unchecked")
 	 public List<Object> getList(String path) {
-		 Object o = getProperty(path);
+		 Object o = get(path);
 		 if (o == null) {
 			 return null;
 		 } else if (o instanceof List) {
@@ -898,25 +898,25 @@ public class ConfigurationNode {
 	  * @return list of integers
 	  */
 	 @SuppressWarnings("unchecked")
-	 public List<ConfigurationNode> getNodeList(String path, List<ConfigurationNode> def) {
+	 public List<ConfigurationSection> getNodeList(String path, List<ConfigurationSection> def) {
 		 List<Object> raw = getList(path);
 
 		 if (raw == null) {
-			 return def != null ? def : new ArrayList<ConfigurationNode>();
+			 return def != null ? def : new ArrayList<ConfigurationSection>();
 		 }
 
-		 List<ConfigurationNode> list = new ArrayList<ConfigurationNode>();
+		 List<ConfigurationSection> list = new ArrayList<ConfigurationSection>();
 
 		 for (Object o : raw) {
 			 if (o instanceof Map) {
-				 list.add(new ConfigurationNode((Map<Object, Object>) o));
+				 list.add(new ConfigurationSection((Map<Object, Object>) o));
 			 }
 		 }
 
 		 return list;
 	 }
 	 
-	 public List<ConfigurationNode> getNodeList(String path) {
+	 public List<ConfigurationSection> getNodeList(String path) {
 		 return getNodeList(path, null);
 	 }
 
@@ -929,19 +929,19 @@ public class ConfigurationNode {
 	  * @return node or null
 	  */
 	 @SuppressWarnings("unchecked")
-	 public ConfigurationNode getNode(String path) {
-		 Object raw = getProperty(path);
+	 public ConfigurationSection getConfigurationSection(String path) {
+		 Object raw = get(path);
 
 		 if (raw instanceof Map) {
-			 return new ConfigurationNode((Map<Object, Object>) raw);
+			 return new ConfigurationSection((Map<Object, Object>) raw);
 		 }
 
 		 return null;
 	 }
 
-	 public boolean containsKey(String path)
+	 public boolean contains(String path)
 	 {
-		 Object test = getProperty(path);
+		 Object test = get(path);
 		 return (test != null);
 	 }
 
@@ -954,14 +954,14 @@ public class ConfigurationNode {
 	  * @return node or null
 	  */
 	 @SuppressWarnings("unchecked")
-	 public ConfigurationNode getNode(String path, ConfigurationNode def) {
-		 Object raw = getProperty(path);
+	 public ConfigurationSection getNode(String path, ConfigurationSection def) {
+		 Object raw = get(path);
 
 		 if (raw instanceof Map) {
-			 return new ConfigurationNode((Map<Object, Object>) raw);
+			 return new ConfigurationSection((Map<Object, Object>) raw);
 		 }
 
-		 setProperty(path, def.getAll());
+		 set(path, def.getAll());
 
 		 return def;
 	 }
@@ -974,17 +974,17 @@ public class ConfigurationNode {
 	  * @return map of nodes
 	  */
 	 @SuppressWarnings("unchecked")
-	 public Map<Object, ConfigurationNode> getNodes(String path) {
-		 Object o = getProperty(path);
+	 public Map<Object, ConfigurationSection> getNodes(String path) {
+		 Object o = get(path);
 
 		 if (o == null) {
 			 return null;
 		 } else if (o instanceof Map) {
-			 Map<Object, ConfigurationNode> nodes = new HashMap<Object, ConfigurationNode>();
+			 Map<Object, ConfigurationSection> nodes = new HashMap<Object, ConfigurationSection>();
 
 			 for (Map.Entry<Object, Object> entry : ((Map<Object, Object>) o).entrySet()) {
 				 if (entry.getValue() instanceof Map) {
-					 nodes.put(entry.getKey(), new ConfigurationNode((Map<Object, Object>) entry.getValue()));
+					 nodes.put(entry.getKey(), new ConfigurationSection((Map<Object, Object>) entry.getValue()));
 				 }
 			 }
 
@@ -1229,7 +1229,7 @@ public class ConfigurationNode {
 	  * Adds a configuration node to this one, recursively.
 	  * @param other
 	  */
-	 public void add(ConfigurationNode other) {
+	 public void add(ConfigurationSection other) {
 		 combine(root, other.root);
 	 }
 }

@@ -18,6 +18,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -35,8 +36,8 @@ import com.elmakers.mine.bukkit.block.UndoBatch;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage
 {
@@ -651,54 +652,54 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		}
 	}
 	
-	protected void load(ConfigurationNode configNode)
+	protected void load(ConfigurationSection configNode)
 	{
 		try {
 			if (configNode == null) return;
 
 			isNewPlayer = false;
 			playerName = configNode.getString("name", playerName);
-			lastDeathLocation = configNode.getLocation("last_death_location");
-			location = configNode.getLocation("location");
+			lastDeathLocation = ConfigurationUtils.getLocation(configNode, "last_death_location");
+			location = ConfigurationUtils.getLocation(configNode, "location");
 			lastCast = configNode.getLong("last_cast", lastCast);
 			
 			getUndoQueue().load(this, configNode);
-			ConfigurationNode spellNode = configNode.getNode("spells");
+			ConfigurationSection spellNode = configNode.getConfigurationSection("spells");
 			if (spellNode != null) {
-				List<String> keys = spellNode.getKeys();
+				Set<String> keys = spellNode.getKeys(false);
 				for (String key : keys) {
 					Spell spell = getSpell(key, getPlayer());
 					if (spell != null) {
-						spell.load(spellNode.getNode(key));
+						spell.load(spellNode.getConfigurationSection(key));
 					}
 				}
 			}
 			
-			if (configNode.containsKey("brush")) {
-				brush.load(configNode.getNode("brush"));
+			if (configNode.contains("brush")) {
+				brush.load(configNode.getConfigurationSection("brush"));
 			}
 		} catch (Exception ex) {
 			controller.getPlugin().getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
 		}		
 	}
 	
-	protected void save(ConfigurationNode configNode)
+	protected void save(ConfigurationSection configNode)
 	{
 		try {
-			configNode.setProperty("name", playerName);
-			configNode.setProperty("last_cast", lastCast);
-			configNode.setProperty("last_death_location", lastDeathLocation);
+			configNode.set("name", playerName);
+			configNode.set("last_cast", lastCast);
+			configNode.set("last_death_location", ConfigurationUtils.fromLocation(lastDeathLocation));
 			if (location != null) {
-				configNode.setProperty("location", location);
+				configNode.set("location", ConfigurationUtils.fromLocation(location));
 			}
 			
-			ConfigurationNode brushNode = configNode.createChild("brush");
+			ConfigurationSection brushNode = configNode.createSection("brush");
 			brush.save(brushNode);
 			
 			getUndoQueue().save(this, configNode);
-			ConfigurationNode spellNode = configNode.createChild("spells");
+			ConfigurationSection spellNode = configNode.createSection("spells");
 			for (Spell spell : spells.values()) {
-				spell.save(spellNode.createChild(spell.getKey()));
+				spell.save(spellNode.createSection(spell.getKey()));
 			}
 		} catch (Exception ex) {
 			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
@@ -792,15 +793,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		brush.setMapId(mapId);
 	}
 	
-	protected void loadSpells(ConfigurationNode config)
+	protected void loadSpells(ConfigurationSection config)
 	{
 		if (config == null) return;
 		
 		// TODO: Handle disabled/removed spells?
 		for (Spell spell : spells.values()) {
 			String key = spell.getKey();
-			if (config.containsKey(key)) {
-				spell.loadTemplate(config.getNode(key));
+			if (config.contains(key)) {
+				spell.loadTemplate(config.getConfigurationSection(key));
 			}
 		}
 	}

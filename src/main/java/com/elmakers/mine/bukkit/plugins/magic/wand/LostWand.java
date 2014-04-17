@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.plugins.magic.wand;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+
 
 public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	private Location location;
@@ -11,7 +13,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	private String description;
 	private String owner;
 	
-	public LostWand(String id, ConfigurationNode config) {
+	public LostWand(String id, ConfigurationSection config) {
 		this.id = id;
 		load(config);
 	}
@@ -42,24 +44,24 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 		return location != null && id != null && id.length() > 0;
 	}
 	
-	public void save(ConfigurationNode configNode)
+	public void save(ConfigurationSection configNode)
 	{
 		try {
-			configNode.setProperty("location", location);
-			configNode.setProperty("name", name);
-			configNode.setProperty("description", description);
-			configNode.setProperty("owner", owner);
+			configNode.set("location", ConfigurationUtils.toLocation(location));
+			configNode.set("name", name);
+			configNode.set("description", description);
+			configNode.set("owner", owner);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}	
 	}
 	
-	public void load(ConfigurationNode configNode)
+	public void load(ConfigurationSection configNode)
 	{
 		try {
 			if (configNode == null) return;
 
-			location = configNode.getLocation("location");
+			location = ConfigurationUtils.getLocation(configNode, "location");
 			name = configNode.getString("name");
 			description = configNode.getString("description");
 			owner = configNode.getString("owner");

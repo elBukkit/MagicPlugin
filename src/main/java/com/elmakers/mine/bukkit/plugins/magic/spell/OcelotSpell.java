@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Ocelot;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class OcelotSpell extends Spell
 {
@@ -44,7 +44,7 @@ public class OcelotSpell extends Spell
 	}
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
 		ArrayList<Ocelot> newocelots = new ArrayList<Ocelot>();

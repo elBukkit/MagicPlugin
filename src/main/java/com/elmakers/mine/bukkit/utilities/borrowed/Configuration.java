@@ -55,7 +55,7 @@ import org.yaml.snakeyaml.representer.Representer;
  * </p>
  *
  */
-public class Configuration extends ConfigurationNode {
+public class Configuration extends ConfigurationSection {
 	private Yaml yaml;
 	private File file;
 	private InputStream inputStream;
@@ -202,8 +202,8 @@ public class Configuration extends ConfigurationNode {
 	 * default in methods that select a node from a node list.
 	 * @return
 	 */
-	public static ConfigurationNode getEmptyNode() {
-		return new ConfigurationNode(new HashMap<Object, Object>());
+	public static ConfigurationSection getEmptyNode() {
+		return new ConfigurationSection(new HashMap<Object, Object>());
 	}
 }
 

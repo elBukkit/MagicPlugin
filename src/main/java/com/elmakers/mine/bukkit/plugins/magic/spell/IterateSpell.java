@@ -4,6 +4,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.BlockList;
@@ -12,7 +13,6 @@ import com.elmakers.mine.bukkit.effects.EffectUtils;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class IterateSpell extends BrushSpell
 {
@@ -20,7 +20,7 @@ public class IterateSpell extends BrushSpell
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		int timeToLive = parameters.getInt("undo", 0);
 		boolean incrementData = parameters.getBoolean("increment_data", false);

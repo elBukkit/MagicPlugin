@@ -7,13 +7,14 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.RandomUtils;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class WandLevel {
@@ -75,7 +76,7 @@ public class WandLevel {
 		return levelMap.get(level);
 	}
 	
-	public static void mapLevels(ConfigurationNode template) {
+	public static void mapLevels(ConfigurationSection template) {
 		// Parse defined levels
 		levelMap = new TreeMap<Integer, WandLevel>();
 		String[] levelStrings = StringUtils.split(template.getString("levels"), ",");
@@ -89,7 +90,7 @@ public class WandLevel {
 		}
 	}
 	
-	private WandLevel(int level, ConfigurationNode template) {
+	private WandLevel(int level, ConfigurationSection template) {
 		int levelIndex = 0;
 		int nextLevelIndex = 0;
 		float distance = 1;
@@ -109,44 +110,44 @@ public class WandLevel {
 		}
 		
 		// Fetch spell probabilities
-		RandomUtils.populateStringProbabilityMap(spellProbability, template.getNode("spells"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spellProbability, template.getConfigurationSection("spells"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch spell count probabilities
-		RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template.getNode("spell_count"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template.getConfigurationSection("spell_count"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch material probabilities
-		RandomUtils.populateStringProbabilityMap(materialProbability, template.getNode("materials"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(materialProbability, template.getConfigurationSection("materials"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch material count probabilities
-		RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getNode("material_count"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch uses
-		RandomUtils.populateIntegerProbabilityMap(useProbability, template.getNode("uses"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateIntegerProbabilityMap(addUseProbability, template.getNode("add_uses"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(useProbability, template.getConfigurationSection("uses"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(addUseProbability, template.getConfigurationSection("add_uses"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch property count probability
-		RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template.getNode("property_count"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template.getConfigurationSection("property_count"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch cost and damage reduction
-		RandomUtils.populateFloatProbabilityMap(costReductionProbability, template.getNode("cost_reduction"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template.getNode("protection"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template.getNode("protection_physical"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template.getNode("protection_falling"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template.getNode("protection_projectiles"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template.getNode("protection_fire"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template.getNode("protection_explosions"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(costReductionProbability, template.getConfigurationSection("cost_reduction"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template.getConfigurationSection("protection"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template.getConfigurationSection("protection_physical"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template.getConfigurationSection("protection_falling"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template.getConfigurationSection("protection_projectiles"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template.getConfigurationSection("protection_fire"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template.getConfigurationSection("protection_explosions"), levelIndex, nextLevelIndex, distance);
 
 		// Fetch regeneration
-		RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getNode("xp_regeneration"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template.getNode("xp_max"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateIntegerProbabilityMap(healthRegenerationProbability, template.getNode("health_regeneration"), levelIndex, nextLevelIndex, distance);
-		RandomUtils.populateIntegerProbabilityMap(hungerRegenerationProbability, template.getNode("hunger_regeneration"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getConfigurationSection("xp_regeneration"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template.getConfigurationSection("xp_max"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(healthRegenerationProbability, template.getConfigurationSection("health_regeneration"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(hungerRegenerationProbability, template.getConfigurationSection("hunger_regeneration"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch haste
-		RandomUtils.populateFloatProbabilityMap(hasteProbability, template.getNode("haste"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(hasteProbability, template.getConfigurationSection("haste"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch power
-		RandomUtils.populateFloatProbabilityMap(powerProbability, template.getNode("power"), levelIndex, nextLevelIndex, distance);		
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(powerProbability, template.getConfigurationSection("power"), levelIndex, nextLevelIndex, distance);		
 	}
 	
 	private boolean randomizeWand(Wand wand, boolean additive) {
@@ -232,7 +233,7 @@ public class WandLevel {
 		
 		// Add random wand properties
 		Integer propertyCount = RandomUtils.weightedRandom(propertyCountProbability);
-		ConfigurationNode wandProperties = new ConfigurationNode();
+		ConfigurationSection wandProperties = new MemoryConfiguration();
 		double costReduction = wand.getCostReduction();
 		
 		while (propertyCount-- > 0) {
@@ -241,61 +242,61 @@ public class WandLevel {
 			case 0: 
 				if (costReduction < maxReduction) {
 					costReduction = Math.min(maxReduction, costReduction + RandomUtils.weightedRandom(costReductionProbability));
-					wandProperties.setProperty("cost_reduction", costReduction);
+					wandProperties.set("cost_reduction", costReduction);
 				}
 				break;
 			case 1:
 				float power = wand.getPower();
 				if (power < maxPower) {
-					wandProperties.setProperty("power", (Double)(double)(Math.min(maxPower, power + RandomUtils.weightedRandom(powerProbability))));
+					wandProperties.set("power", (Double)(double)(Math.min(maxPower, power + RandomUtils.weightedRandom(powerProbability))));
 				}
 				break;
 			case 2:
 				float damageReduction = wand.getDamageReduction();
 				if (damageReduction < maxReduction) {
-					wandProperties.setProperty("protection", (Double)(double)(Math.min(maxProtection, damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
+					wandProperties.set("protection", (Double)(double)(Math.min(maxProtection, damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
 				}
 				break;
 			case 3:
 				float damageReductionPhysical = wand.getDamageReductionPhysical();
 				if (damageReductionPhysical < maxReduction) {
-					wandProperties.setProperty("protection_physical", (Double)(double)(Math.min(maxProtection, damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
+					wandProperties.set("protection_physical", (Double)(double)(Math.min(maxProtection, damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
 				}
 				break;
 			case 4:
 				float damageReductionProjectiles = wand.getDamageReductionProjectiles();
 				if (damageReductionProjectiles < maxReduction) {
-					wandProperties.setProperty("protection_projectiles", (Double)(double)(Math.min(maxProtection, damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
+					wandProperties.set("protection_projectiles", (Double)(double)(Math.min(maxProtection, damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
 				}
 				break;
 			case 5:
 				float damageReductionFalling = wand.getDamageReductionFalling();
 				if (damageReductionFalling < maxReduction) {
-					wandProperties.setProperty("protection_falling", (Double)(double)(Math.min(maxProtection, damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
+					wandProperties.set("protection_falling", (Double)(double)(Math.min(maxProtection, damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
 				}
 				break;
 			case 6:
 				float damageReductionFire = wand.getDamageReductionFire();
 				if (damageReductionFire < maxReduction) {
-					wandProperties.setProperty("protection_fire", (Double)(double)(Math.min(maxProtection, damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
+					wandProperties.set("protection_fire", (Double)(double)(Math.min(maxProtection, damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
 				}
 				break;
 			case 7:
 				float damageReductionExplosions = wand.getDamageReductionExplosions();
 				if (damageReductionExplosions < maxReduction) {
-					wandProperties.setProperty("protection_explosions", (Double)(double)(Math.min(maxProtection, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
+					wandProperties.set("protection_explosions", (Double)(double)(Math.min(maxProtection, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
 				}
 				break;
 			case 10:
 				int healthRegeneration = wand.getHealthRegeneration();
 				if (healthRegeneration < maxRegeneration) {
-					wandProperties.setProperty("health_regeneration", (Integer)(int)(Math.min(maxRegeneration, healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability))));
+					wandProperties.set("health_regeneration", (Integer)(int)(Math.min(maxRegeneration, healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability))));
 				}
 				break;
 			case 11:
 				int hungerRegeneration = wand.getHungerRegeneration();
 				if (hungerRegeneration < maxRegeneration) {
-					wandProperties.setProperty("hunger_regeneration", (Integer)(int)(Math.min(maxRegeneration, hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability))));
+					wandProperties.set("hunger_regeneration", (Integer)(int)(Math.min(maxRegeneration, hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability))));
 				}
 				break;
 			}
@@ -305,24 +306,24 @@ public class WandLevel {
 
 		if (costReduction >= 1) {
 			// Cost-Free wands don't need mana.
-			wandProperties.setProperty("xp_regeneration", 0);
-			wandProperties.setProperty("xp_max", 0);
-			wandProperties.setProperty("xp", 0);
+			wandProperties.set("xp_regeneration", 0);
+			wandProperties.set("xp_max", 0);
+			wandProperties.set("xp", 0);
 		} else {
 			int xpRegeneration = wand.getXpRegeneration();
 			if (xpRegeneration < maxXpRegeneration) {
-				wandProperties.setProperty("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
+				wandProperties.set("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
 			}
 			int xpMax = wand.getXpMax();
 			if (xpMax < maxMaxXp) {
 				// Make sure the wand has at least enough xp to cast the highest costing spell it has.
 				xpMax = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
 				xpMax = Math.max(maxXpCost, xpMax);
-				wandProperties.setProperty("xp_max", xpMax);
+				wandProperties.set("xp_max", xpMax);
 			}
 			
 			// Refill the wand's xp, why not
-			wandProperties.setProperty("xp", xpMax);
+			wandProperties.set("xp", xpMax);
 		}
 		
 		// Add or set uses to the wand
@@ -330,10 +331,10 @@ public class WandLevel {
 			// Only add uses to a wand if it already has some.
 			int wandUses = wand.getUses();
 			if (wandUses > 0 && wandUses < maxUses) {
-				wandProperties.setProperty("uses", Math.min(maxUses, wandUses + RandomUtils.weightedRandom(addUseProbability)));
+				wandProperties.set("uses", Math.min(maxUses, wandUses + RandomUtils.weightedRandom(addUseProbability)));
 			}
 		} else {
-			wandProperties.setProperty("uses", Math.min(maxUses, RandomUtils.weightedRandom(useProbability)));
+			wandProperties.set("uses", Math.min(maxUses, RandomUtils.weightedRandom(useProbability)));
 			
 			// If we are creating a new wand, make a templatized name
 			// based on the first spell that was added to it.

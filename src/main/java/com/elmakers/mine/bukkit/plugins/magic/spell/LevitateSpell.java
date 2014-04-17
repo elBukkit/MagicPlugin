@@ -5,6 +5,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -14,7 +15,6 @@ import com.elmakers.mine.bukkit.effects.EffectRing;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class LevitateSpell extends Spell
 {
@@ -31,9 +31,9 @@ public class LevitateSpell extends Spell
     private float restoreFlySpeed = 0;
 	
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		flySpeedMultiplier = parameters.getFloat("speed", 0);
+		flySpeedMultiplier = (float)parameters.getDouble("speed", 0);
 		if (getPlayer().getAllowFlight()) {
 			deactivate();
 			return SpellResult.COST_FREE;

@@ -11,12 +11,12 @@ import java.util.Map;
 
 import org.bukkit.Server;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 /**
  * 
@@ -365,12 +365,14 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return true;
 	}
 	
-	public void load(ConfigurationNode node) {
+	public void load(ConfigurationSection node) {
 		timeToLive = node.getInt("time_to_live", timeToLive);
 		passesRemaining = node.getInt("passes_remaining", passesRemaining);
-		List<String> blockData = node.getStringList("blocks", null);
-		for (String blockString : blockData) {
-			add(BlockData.fromString(blockString));
+		List<String> blockData = node.getStringList("blocks");
+		if (blockData != null) {
+			for (String blockString : blockData) {
+				add(BlockData.fromString(blockString));
+			}
 		}
 	}
 	

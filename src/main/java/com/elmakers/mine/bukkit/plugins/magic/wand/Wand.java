@@ -18,6 +18,8 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -27,6 +29,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectRing;
@@ -34,12 +39,9 @@ import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.api.spell.CostReducer;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
@@ -147,7 +149,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean suspendSave = false;
 
 	// Wand configurations
-	protected static Map<String, ConfigurationNode> wandTemplates = new HashMap<String, ConfigurationNode>();
+	protected static Map<String, ConfigurationSection> wandTemplates = new HashMap<String, ConfigurationSection>();
 	
 	public static boolean displayManaAsBar = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
@@ -189,7 +191,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					String randomLevel = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
 					level = Integer.parseInt(randomLevel);
 				}
-				ConfigurationNode randomTemplate = wandTemplates.get("random");
+				ConfigurationSection randomTemplate = wandTemplates.get("random");
 				randomize(level, false);
 				// Random wands take a few properties from the "random" template
 				locked = (boolean)randomTemplate.getBoolean("locked", false);
@@ -202,7 +204,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (!wandTemplates.containsKey(templateName)) {
 				throw new IllegalArgumentException("No template named " + templateName);
 			}
-			ConfigurationNode wandConfig = wandTemplates.get(templateName);
+			ConfigurationSection wandConfig = wandTemplates.get(templateName);
 			// Default to localized names
 			wandName = Messages.get("wands." + templateName + ".name", wandName);
 			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
@@ -311,7 +313,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public boolean usesMana() {
-		return xpMax > 0 && xpRegeneration > 0 && getCostReduction() < 1;
+		return xpMax > 0 && xpRegeneration > 0 && !isCostFree();
 	}
 
 	public float getCooldownReduction() {
@@ -714,7 +716,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getLogger().warning("Failed to save wand state for wand id " + id + " to : " + item + " of class " + item.getClass());
 			return;
 		}
-		ConfigurationNode stateNode = new ConfigurationNode();
+		ConfigurationSection stateNode = new MemoryConfiguration();
 		saveProperties(stateNode);
 		InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
 	}
@@ -727,89 +729,89 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return;
 		}
 		
-		ConfigurationNode stateNode = new ConfigurationNode();
+		ConfigurationSection stateNode = new MemoryConfiguration();
 		InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
 		
 		loadProperties(stateNode);
 	}
 	
-	public void saveProperties(ConfigurationNode node) {
-		node.setProperty("id", id);
-		node.setProperty("materials", getMaterialString());
+	public void saveProperties(ConfigurationSection node) {
+		node.set("id", id);
+		node.set("materials", getMaterialString());
 		
-		node.setProperty("spells", getSpellString());
+		node.set("spells", getSpellString());
 		
-		node.setProperty("active_spell", activeSpell);
-		node.setProperty("active_material", activeMaterial);
-		node.setProperty("name", wandName);
-		node.setProperty("description", description);
-		node.setProperty("owner", owner);
+		node.set("active_spell", activeSpell);
+		node.set("active_material", activeMaterial);
+		node.set("name", wandName);
+		node.set("description", description);
+		node.set("owner", owner);
 	
-		node.setProperty("cost_reduction", costReduction);
-		node.setProperty("cooldown_reduction", cooldownReduction);
-		node.setProperty("power", power);
-		node.setProperty("protection", damageReduction);
-		node.setProperty("protection_physical", damageReductionPhysical);
-		node.setProperty("protection_projectiles", damageReductionProjectiles);
-		node.setProperty("protection_falling", damageReductionFalling);
-		node.setProperty("protection_fire", damageReductionFire);
-		node.setProperty("protection_explosions", damageReductionExplosions);
-		node.setProperty("haste", speedIncrease);
-		node.setProperty("xp", xp);
-		node.setProperty("xp_regeneration", xpRegeneration);
-		node.setProperty("xp_max", xpMax);
-		node.setProperty("health_regeneration", healthRegeneration);
-		node.setProperty("hunger_regeneration", hungerRegeneration);
-		node.setProperty("uses", uses);
-		node.setProperty("locked", locked);
-		node.setProperty("effect_color", Integer.toString(effectColor, 16));
-		node.setProperty("effect_bubbles", effectBubbles);
-		node.setProperty("effect_particle_data", Float.toString(effectParticleData));
-		node.setProperty("effect_particle_count", effectParticleCount);
-		node.setProperty("effect_particle_interval", effectParticleInterval);
-		node.setProperty("effect_sound_interval", effectSoundInterval);
-		node.setProperty("effect_sound_volume", Float.toString(effectSoundVolume));
-		node.setProperty("effect_sound_pitch", Float.toString(effectSoundPitch));
-		node.setProperty("quiet", quietLevel);
-		node.setProperty("keep", keep);
-		node.setProperty("bound", bound);
-		node.setProperty("indestructible", indestructible);
-		node.setProperty("fill", autoFill);
-		node.setProperty("upgrade", isUpgrade);
-		node.setProperty("organize", autoOrganize);
+		node.set("cost_reduction", costReduction);
+		node.set("cooldown_reduction", cooldownReduction);
+		node.set("power", power);
+		node.set("protection", damageReduction);
+		node.set("protection_physical", damageReductionPhysical);
+		node.set("protection_projectiles", damageReductionProjectiles);
+		node.set("protection_falling", damageReductionFalling);
+		node.set("protection_fire", damageReductionFire);
+		node.set("protection_explosions", damageReductionExplosions);
+		node.set("haste", speedIncrease);
+		node.set("xp", xp);
+		node.set("xp_regeneration", xpRegeneration);
+		node.set("xp_max", xpMax);
+		node.set("health_regeneration", healthRegeneration);
+		node.set("hunger_regeneration", hungerRegeneration);
+		node.set("uses", uses);
+		node.set("locked", locked);
+		node.set("effect_color", Integer.toString(effectColor, 16));
+		node.set("effect_bubbles", effectBubbles);
+		node.set("effect_particle_data", Float.toString(effectParticleData));
+		node.set("effect_particle_count", effectParticleCount);
+		node.set("effect_particle_interval", effectParticleInterval);
+		node.set("effect_sound_interval", effectSoundInterval);
+		node.set("effect_sound_volume", Float.toString(effectSoundVolume));
+		node.set("effect_sound_pitch", Float.toString(effectSoundPitch));
+		node.set("quiet", quietLevel);
+		node.set("keep", keep);
+		node.set("bound", bound);
+		node.set("indestructible", indestructible);
+		node.set("fill", autoFill);
+		node.set("upgrade", isUpgrade);
+		node.set("organize", autoOrganize);
 		if (effectSound != null) {
-			node.setProperty("effect_sound", effectSound.name());
+			node.set("effect_sound", effectSound.name());
 		} else {
-			node.removeProperty("effectSound");
+			node.set("effectSound", null);
 		}
 		if (effectParticle != null) {
-			node.setProperty("effect_particle", effectParticle.name());
+			node.set("effect_particle", effectParticle.name());
 		} else {
-			node.removeProperty("effect_particle");
+			node.set("effect_particle", null);
 		}
 		if (mode != null) {
-			node.setProperty("mode", mode.name());
+			node.set("mode", mode.name());
 		} else {
-			node.removeProperty("mode");
+			node.set("mode", null);
 		}
 		if (icon != null) {
 			String iconKey = MaterialBrush.getMaterialKey(icon);
 			if (iconKey != null && iconKey.length() > 0) {
-				node.setProperty("icon", iconKey);
+				node.set("icon", iconKey);
 			} else {
-				node.removeProperty("icon");
+				node.set("icon", null);
 			}
 		} else {
-			node.removeProperty("icon");
+			node.set("icon", null);
 		}
 		if (template != null && template.length() > 0) {
-			node.setProperty("template", template);
+			node.set("template", template);
 		} else {
-			node.removeProperty(template);
+			node.set("template", null);
 		}
 	}
 	
-	public void loadProperties(ConfigurationNode wandConfig) {
+	public void loadProperties(ConfigurationSection wandConfig) {
 		loadProperties(wandConfig, false);
 	}
 	
@@ -829,7 +831,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
-	public void loadProperties(ConfigurationNode wandConfig, boolean safe) {
+	public void loadProperties(ConfigurationSection wandConfig, boolean safe) {
 		locked = (boolean)wandConfig.getBoolean("locked", locked);
 		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
 		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
@@ -864,7 +866,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
 		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
 		
-		if (wandConfig.containsKey("effect_color") && !safe) {
+		if (wandConfig.contains("effect_color") && !safe) {
 			setEffectColor(wandConfig.getString("effect_color"));
 		}
 		
@@ -881,19 +883,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			autoFill = wandConfig.getBoolean("fill", autoFill);
 			isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
 			
-			if (wandConfig.containsKey("effect_particle")) {
+			if (wandConfig.contains("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));
 				effectParticleData = 0;
 			}
-			if (wandConfig.containsKey("effect_sound")) {
+			if (wandConfig.contains("effect_sound")) {
 				parseSoundEffect(wandConfig.getString("effect_sound"));
 			}
-			effectParticleData = wandConfig.getFloat("effect_particle_data", effectParticleData);
+			effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
 			effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
 			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
 			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
-			effectSoundVolume = wandConfig.getFloat("effect_sound_volume", effectSoundVolume);
-			effectSoundPitch = wandConfig.getFloat("effect_sound_pitch", effectSoundPitch);
+			effectSoundVolume = (float)wandConfig.getDouble("effect_sound_volume", effectSoundVolume);
+			effectSoundPitch = (float)wandConfig.getDouble("effect_sound_pitch", effectSoundPitch);
 			
 			setMode(parseWandMode(wandConfig.getString("mode"), mode));
 
@@ -914,8 +916,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				parseInventoryStrings(wandSpells, wandMaterials);
 			}
 			
-			if (wandConfig.containsKey("icon")) {
-				setIcon(wandConfig.getMaterialAndData("icon"));
+			if (wandConfig.contains("icon")) {
+				setIcon(ConfigurationUtils.getMaterialAndData(wandConfig, "icon"));
 			}
 		}
 		
@@ -1631,19 +1633,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return keep;
 	}
 	
-	public static void loadTemplates(ConfigurationNode properties) {
+	public static void loadTemplates(ConfigurationSection properties) {
 		wandTemplates.clear();
 		
-		List<String> wandKeys = properties.getKeys();
+		Set<String> wandKeys = properties.getKeys(false);
 		for (String key : wandKeys)
 		{
-			ConfigurationNode wandNode = properties.getNode(key);
-			wandNode.setProperty("key", key);
-			ConfigurationNode existing = wandTemplates.get(key);
+			ConfigurationSection wandNode = properties.getConfigurationSection(key);
+			wandNode.set("key", key);
+			ConfigurationSection existing = wandTemplates.get(key);
 			if (existing != null) {
-				List<String> overrideKeys = existing.getKeys();
+				Set<String> overrideKeys = existing.getKeys(false);
 				for (String propertyKey : overrideKeys) {
-					existing.setProperty(propertyKey, existing.getProperty(key));
+					existing.set(propertyKey, existing.get(key));
 				}
 			} else {
 				wandTemplates.put(key,  wandNode);
@@ -1661,7 +1663,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return wandTemplates.keySet();
 	}
 	
-	public static Collection<ConfigurationNode> getWandTemplates() {
+	public static Collection<ConfigurationSection> getWandTemplates() {
 		return wandTemplates.values();
 	}
 	
@@ -2228,7 +2230,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(new ConfigurationNode(convertedProperties), false);
+		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), false);
 		
 		// TODO: Detect changes
 		return true;
@@ -2237,7 +2239,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(new ConfigurationNode(convertedProperties), true);
+		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), true);
 		// TODO: Detect changes
 		return true;
 	}

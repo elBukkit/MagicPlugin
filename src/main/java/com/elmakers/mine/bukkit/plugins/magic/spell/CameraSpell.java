@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,21 +10,21 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utilities.URLMap;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CameraSpell extends Spell
 {
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		ItemStack newMapItem = null;
-		Integer priority = parameters.getInteger("priority", null);
+		Integer priority = ConfigurationUtils.getInteger(parameters, "priority", null);
 		
 		// Check for special case id
-		if (parameters.containsKey("id"))
+		if (parameters.contains("id"))
 		{
 			newMapItem = new ItemStack(Material.MAP, 1, (short)parameters.getInt("id", 0));
 			String mapName = parameters.getString("name", "Image");
@@ -85,7 +86,7 @@ public class CameraSpell extends Spell
 					playerName = player.getName();
 				}
 			}
-			if (parameters.containsKey("reload")) {
+			if (parameters.contains("reload")) {
 				URLMap.forceReloadPlayerPortrait(getWorld().getName(), playerName);
 			}
 			newMapItem = URLMap.getPlayerPortrait(getWorld().getName(), playerName, priority, metaName);

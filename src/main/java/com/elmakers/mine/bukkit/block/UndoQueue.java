@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -9,10 +10,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 
 public class UndoQueue
 {
@@ -121,21 +123,25 @@ public class UndoQueue
 		return false;
 	}
 	
-	public void load(Mage mage, ConfigurationNode node)
+	public void load(Mage mage, ConfigurationSection node)
 	{
 		try {
 			if (node == null) return;
-			List<ConfigurationNode> nodeList = node.getNodeList("undo", null);
-			for (ConfigurationNode listNode : nodeList) {
-				BlockList list = new BlockList();
-				list.load(listNode);
-				blockQueue.add(list);
+			Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(node, "undo");
+			if (nodeList != null) {
+				for (ConfigurationSection listNode : nodeList) {
+					BlockList list = new BlockList();
+					list.load(listNode);
+					blockQueue.add(list);
+				}
 			}
-			nodeList = node.getNodeList("scheduled", null);
-			for (ConfigurationNode listNode : nodeList) {
-				BlockList list = new BlockList();
-				list.load(listNode);
-				scheduleCleanup(mage, list);
+			nodeList = ConfigurationUtils.getNodeList(node, "scheduled");
+			if (nodeList != null) {
+				for (ConfigurationSection listNode : nodeList) {
+					BlockList list = new BlockList();
+					list.load(listNode);
+					scheduleCleanup(mage, list);
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -143,7 +149,7 @@ public class UndoQueue
 		}
 	}
 	
-	public void save(Mage mage, ConfigurationNode node)
+	public void save(Mage mage, ConfigurationSection node)
 	{
 		MagicController controller = mage.getController();
 		int maxSize = controller.getMaxUndoPersistSize();
@@ -158,14 +164,14 @@ public class UndoQueue
 				list.save(listNode);
 				nodeList.add(listNode);
 			}
-			node.setProperty("undo", nodeList);
+			node.set("undo", nodeList);
 			nodeList = new ArrayList<Map<String, Object>>();
 			for (BlockList list : scheduledBlocks) {
 				Map<String, Object> listNode = new HashMap<String, Object>();
 				list.save(listNode);
 				nodeList.add(listNode);
 			}
-			node.setProperty("scheduled", nodeList);
+			node.set("scheduled", nodeList);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			controller.getLogger().warning("Failed to save undo data: " + ex.getMessage());

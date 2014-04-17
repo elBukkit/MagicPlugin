@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class InvincibleSpell extends Spell 
 {
@@ -13,7 +13,7 @@ public class InvincibleSpell extends Spell
 	protected int amount = 100;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		amount = parameters.getInt("amount", amount);
 

@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,7 +30,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.utilities.Messages;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class WandCommandExecutor extends MagicTabExecutor {
 	
@@ -344,13 +344,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandList(CommandSender sender) {
-		Collection<ConfigurationNode> templates = com.elmakers.mine.bukkit.plugins.magic.wand.Wand.getWandTemplates();
-		Map<String, ConfigurationNode> nameMap = new TreeMap<String, ConfigurationNode>();
-		for (ConfigurationNode templateConfig : templates)
+		Collection<ConfigurationSection> templates = com.elmakers.mine.bukkit.plugins.magic.wand.Wand.getWandTemplates();
+		Map<String, ConfigurationSection> nameMap = new TreeMap<String, ConfigurationSection>();
+		for (ConfigurationSection templateConfig : templates)
 		{
 			nameMap.put(templateConfig.getString("key"), templateConfig);
 		}
-		for (ConfigurationNode templateConfig : nameMap.values())
+		for (ConfigurationSection templateConfig : nameMap.values())
 		{
 			if (templateConfig.getBoolean("hidden", false)) continue;
 			

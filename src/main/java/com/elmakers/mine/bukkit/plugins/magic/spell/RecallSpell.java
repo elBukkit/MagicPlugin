@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -17,8 +18,8 @@ import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class RecallSpell extends Spell
 {
@@ -49,7 +50,7 @@ public class RecallSpell extends Spell
 	};
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		boolean allowMarker = true;
 		selectedTypeIndex = 0;
@@ -61,7 +62,7 @@ public class RecallSpell extends Spell
 		for (RecallType testType : RecallType.values()) {
 			// Special-case for warps
 			if (testType == RecallType.WARPS) {
-				if (parameters.containsKey("allow_warps")) {
+				if (parameters.contains("allow_warps")) {
 					warps = parameters.getStringList("allow_warps");
 					enabledTypes.add(testType);
 					if (testType == selectedType) selectedTypeIndex = enabledTypes.size() - 1;
@@ -77,7 +78,7 @@ public class RecallSpell extends Spell
 		}
 
 		boolean reverseDirection = false;
-		if (parameters.containsKey("type")) {
+		if (parameters.contains("type")) {
 			cycleRetries = 0;
 			String typeString = parameters.getString("type", "");
 			if (isActive && typeString.equalsIgnoreCase("remove")) {
@@ -294,16 +295,16 @@ public class RecallSpell extends Spell
 	}
 	
 	@Override
-	public void onLoad(ConfigurationNode node)
+	public void onLoad(ConfigurationSection node)
 	{
 		isActive = node.getBoolean("active", false);
-		location = node.getLocation("location");
+		location = ConfigurationUtils.getLocation(node, "location");
 	}
 
 	@Override
-	public void onSave(ConfigurationNode node)
+	public void onSave(ConfigurationSection node)
 	{
-		node.setProperty("active", isActive);
-		node.setProperty("location", location);
+		node.set("active", isActive);
+		node.set("location", ConfigurationUtils.fromLocation(location));
 	}
 }

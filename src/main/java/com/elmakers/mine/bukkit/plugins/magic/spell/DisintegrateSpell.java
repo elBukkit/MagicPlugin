@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -10,7 +11,6 @@ import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class DisintegrateSpell extends BlockSpell
 {
@@ -18,12 +18,12 @@ public class DisintegrateSpell extends BlockSpell
 	private final static int             DEFAULT_ENTITY_DAMAGE = 100;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
 		
-		int playerDamage = parameters.getInteger("player_damage", DEFAULT_PLAYER_DAMAGE);
-		int entityDamage = parameters.getInteger("entity_damage", DEFAULT_ENTITY_DAMAGE);
+		int playerDamage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
+		int entityDamage = parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
 		if (target.hasEntity())
 		{

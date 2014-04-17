@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.FillBatch;
@@ -9,7 +10,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.TargetType;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class FillSpell extends BrushSpell 
 {
@@ -18,7 +18,7 @@ public class FillSpell extends BrushSpell
 	private Block targetBlock = null;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Block targetBlock = getTargetBlock();
 		boolean singleBlock = getTargetType() != TargetType.SELECT;
@@ -69,8 +69,8 @@ public class FillSpell extends BrushSpell
 			
 			FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
 
-			int maxDimension = parameters.getInteger("max_dimension", DEFAULT_MAX_DIMENSION);	
-			maxDimension = parameters.getInteger("md", maxDimension);	
+			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);	
+			maxDimension = parameters.getInt("md", maxDimension);	
 			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
 			
 			if (!batch.checkDimension(maxDimension))

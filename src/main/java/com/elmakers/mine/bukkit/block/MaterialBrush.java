@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Painting;
@@ -16,10 +17,9 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class MaterialBrush extends MaterialAndData {
 	
@@ -555,14 +555,14 @@ public class MaterialBrush extends MaterialAndData {
 		}
 	}
 
-	public void load(ConfigurationNode node)
+	public void load(ConfigurationSection node)
 	{
 		try {
-			cloneLocation = node.getLocation("clone_location");
-			cloneTarget = node.getLocation("clone_target");
-			materialTarget = node.getLocation("material_target");
+			cloneLocation = ConfigurationUtils.getLocation(node, "clone_location");
+			cloneTarget = ConfigurationUtils.getLocation(node, "clone_target");
+			materialTarget = ConfigurationUtils.getLocation(node, "material_target");
 			mapId = (short)node.getInt("map_id", mapId);
-			material = node.getMaterial("material", material);
+			material = ConfigurationUtils.getMaterial(node, "material", material);
 			data = (byte)node.getInt("data", data);
 			customName = node.getString("extra_data", customName);
 		} catch (Exception ex) {
@@ -571,22 +571,22 @@ public class MaterialBrush extends MaterialAndData {
 		}
 	}
 	
-	public void save(ConfigurationNode node)
+	public void save(ConfigurationSection node)
 	{
 		try {
 			if (cloneLocation != null) {
-				node.setProperty("clone_location", cloneLocation);
+				node.set("clone_location", ConfigurationUtils.fromLocation(cloneLocation));
 			}
 			if (cloneTarget != null) {
-				node.setProperty("clone_target", cloneTarget);
+				node.set("clone_target", ConfigurationUtils.fromLocation(cloneTarget));
 			}
 			if (materialTarget != null) {
-				node.setProperty("material_target", materialTarget);
+				node.set("material_target", ConfigurationUtils.fromLocation(materialTarget));
 			}
-			node.setProperty("map_id", (int)mapId);
-			node.setProperty("material", material);
-			node.setProperty("data", data);
-			node.setProperty("extra_data", customName);
+			node.set("map_id", (int)mapId);
+			node.set("material", ConfigurationUtils.fromMaterial(material));
+			node.set("data", data);
+			node.set("extra_data", customName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());

@@ -10,13 +10,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 
 public class AnimateSpell extends SimulateSpell 
 {
@@ -25,7 +26,7 @@ public class AnimateSpell extends SimulateSpell
 	};
 	
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		if (parameters.getBoolean("animate", false))
 		{
@@ -64,7 +65,7 @@ public class AnimateSpell extends SimulateSpell
 
 		int seedRadius = parameters.getInt("seed_radius", 0);
 		if (seedRadius > 0) {
-			targetMaterial = parameters.getMaterialAndData("material", targetMaterial);
+			targetMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", targetMaterial);
 			for (int dx = -seedRadius; dx < seedRadius; dx++) {
 				for (int dz = -seedRadius; dz < seedRadius; dz++) {
 					for (int dy = -seedRadius; dy < seedRadius; dy++) {

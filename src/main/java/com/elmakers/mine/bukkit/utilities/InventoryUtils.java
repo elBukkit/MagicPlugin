@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
@@ -19,12 +20,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class InventoryUtils extends NMSUtils
 {	
-	public static boolean saveTagsToNBT(ConfigurationNode tags, Object node, String[] tagNames)
+	public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, String[] tagNames)
 	{
 		if (node == null) {
 			Bukkit.getLogger().warning("Tring to save tags to a null node");
@@ -42,7 +42,7 @@ public class InventoryUtils extends NMSUtils
 		return true;
 	}
 	
-	public static boolean loadTagsFromNBT(ConfigurationNode tags, Object node, String[] tagNames)
+	public static boolean loadTagsFromNBT(ConfigurationSection tags, Object node, String[] tagNames)
 	{
 		if (node == null) {
 			Bukkit.getLogger().warning("Tring to load tags from a null node");
@@ -56,7 +56,7 @@ public class InventoryUtils extends NMSUtils
 		{
 			String meta = getMeta(node, tagName);
 			if (meta != null && meta.length() > 0) {
-				tags.setProperty(tagName, meta);
+				ConfigurationUtils.set(tags, tagName, meta);
 			}
 		}
 		

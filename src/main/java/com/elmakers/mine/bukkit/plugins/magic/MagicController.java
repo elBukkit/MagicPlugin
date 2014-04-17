@@ -31,6 +31,10 @@ import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -95,11 +99,11 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.WandMode;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.traders.TradersController;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utilities.DataStore;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.URLMap;
-import com.elmakers.mine.bukkit.utilities.borrowed.Configuration;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.warp.WarpController;
 
@@ -158,8 +162,7 @@ public class MagicController implements Listener
 			{
 				getLogger().info("Loading player data from file " + playerFile.getName());
 				try {
-					Configuration playerData = new Configuration(playerFile);
-					playerData.load();
+					Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
 					mage.load(playerData);
 				} catch (Exception ex) {
 					getLogger().warning("Failed to load player data from file " + playerFile.getName());
@@ -196,7 +199,7 @@ public class MagicController implements Listener
 		return getMage(mageId, commandSender);
 	}
 	
-	protected void loadMage(String playerId, ConfigurationNode node)
+	protected void loadMage(String playerId, ConfigurationSection node)
 	{
 		Mage mage = getMage(playerId);
 		try {
@@ -223,9 +226,9 @@ public class MagicController implements Listener
 
 	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString, String propertiesString, String costsString)
 	{
-		ConfigurationNode spellNode = new ConfigurationNode();
-		ConfigurationNode parameterNode = spellNode.createChild("parameters");
-		ConfigurationNode propertiesNode = spellNode.createChild("properties");
+		ConfigurationSection spellNode = new MemoryConfiguration();
+		ConfigurationSection parameterNode = spellNode.createSection("parameters");
+		ConfigurationSection propertiesNode = spellNode.createSection("properties");
 
 		if (parameterString != null && parameterString.length() > 0)
 		{
@@ -259,12 +262,12 @@ public class MagicController implements Listener
 				}
 			}
 
-			spellNode.setProperty("costs", costs);
+			spellNode.set("costs", costs);
 		}
 
-		spellNode.setProperty("description", description);
-		spellNode.setProperty("icon", icon);
-		spellNode.setProperty("category", category);
+		spellNode.set("description", description);
+		spellNode.set("icon", icon);
+		spellNode.set("category", category);
 
 		template.initialize(this);
 		template.loadTemplate(name, spellNode);
@@ -307,10 +310,10 @@ public class MagicController implements Listener
 	public Set<Material> getMaterialSet(String name)
 	{
 		if (name.contains(",")) {
-			return ConfigurationNode.parseMaterials(name);
+			return ConfigurationUtils.parseMaterials(name);
 		}
 		if (!materialSets.containsKey(name)) {
-			return new HashSet<Material>();
+			return ConfigurationUtils.parseMaterials(name);
 		}
 		return materialSets.get(name);
 	}
@@ -899,25 +902,24 @@ public class MagicController implements Listener
 		return dataFile;
 	}
 	
-	protected ConfigurationNode loadDataFile(String fileName)
+	protected ConfigurationSection loadDataFile(String fileName)
 	{
 		File dataFile = getDataFile(fileName);
 		if (!dataFile.exists()) {
 			return null;
 		}
-		Configuration configuration = new Configuration(dataFile);
-		configuration.load();
+		Configuration configuration = YamlConfiguration.loadConfiguration(dataFile);
 		return configuration;
 	}
 	
-	protected Configuration createDataFile(String fileName)
+	protected DataStore createDataFile(String fileName)
 	{
 		File dataFile = new File(dataFolder, fileName + ".yml");
-		Configuration configuration = new Configuration(dataFile);
+		DataStore configuration = new DataStore(getLogger(), dataFile);
 		return configuration;
 	}
 
-	protected ConfigurationNode loadConfigFile(String fileName, boolean loadDefaults)
+	protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults)
 	{
 		String configFileName = fileName + ".yml";
 		File configFile = new File(configFolder, configFileName);
@@ -928,19 +930,15 @@ public class MagicController implements Listener
 
 		String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 		plugin.saveResource(defaultsFileName, true);
-		
-		Configuration config = new Configuration(configFile);
+
 		getLogger().info("Loading " + configFile.getName());
-		config.load();
+		Configuration config = YamlConfiguration.loadConfiguration(configFile);
 		
 		if (!loadDefaults) {
 			return config;
 		}
 		
-		Configuration defaultConfig = new Configuration(plugin.getResource(defaultsFileName));
-		defaultConfig.load();
-		defaultConfig.add(config);
-		
+		Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
 		return defaultConfig;
 	}
 	
@@ -1003,9 +1001,8 @@ public class MagicController implements Listener
 			// Skip if older than 2 days
 			if (playerDataThreshold > 0 && playerFile.lastModified() < System.currentTimeMillis() - playerDataThreshold) continue;
 			
-			Configuration playerData = new Configuration(playerFile);
-			playerData.load();
-			if (playerData.containsKey("scheduled") && playerData.getList("scheduled").size() > 0) {
+			Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+			if (playerData.contains("scheduled") && playerData.getList("scheduled").size() > 0) {
 				String playerId = playerFile.getName().replaceFirst("[.][^.]+$", "");
 				loadMage(playerId, playerData);
 			}
@@ -1040,12 +1037,12 @@ public class MagicController implements Listener
 	protected void loadLostWands()
 	{
 		try {
-			ConfigurationNode lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
+			ConfigurationSection lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
 			if (lostWandConfiguration != null)
 			{
-				List<String> wandIds = lostWandConfiguration.getKeys();
+				Set<String> wandIds = lostWandConfiguration.getKeys(false);
 				for (String wandId : wandIds) {
-					LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getNode(wandId));
+					LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getConfigurationSection(wandId));
 					if (!lostWand.isValid()) {
 						getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
 						continue;
@@ -1061,16 +1058,16 @@ public class MagicController implements Listener
 	protected void saveLostWandData() {
 		String lastKey = "";
 		try {
-			Configuration lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
+			DataStore lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
 			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
 				lastKey = wandEntry.getKey();
-				ConfigurationNode wandNode = lostWandsConfiguration.createChild(lastKey);
+				ConfigurationSection wandNode = lostWandsConfiguration.createSection(lastKey);
 				if (wandNode == null) {
-					getLogger().warning("Error saving lost wand data for " + lastKey + " " + lostWandsConfiguration.getProperty(lastKey));
+					getLogger().warning("Error saving lost wand data for " + lastKey + " " + lostWandsConfiguration.get(lastKey));
 					continue;
 				}
 				if (!wandEntry.getValue().isValid()) {
-					getLogger().warning("Invalid lost and data for " + lastKey + " " + lostWandsConfiguration.getProperty(lastKey));
+					getLogger().warning("Invalid lost and data for " + lastKey + " " + lostWandsConfiguration.get(lastKey));
 					continue;
 				}
 				wandEntry.getValue().save(wandNode);
@@ -1085,16 +1082,16 @@ public class MagicController implements Listener
 	protected void loadAutomata()
 	{
 		try {
-			ConfigurationNode toggleBlockData = loadDataFile(AUTOMATA_FILE);
+			ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_FILE);
 			if (toggleBlockData != null)
 			{
-				List<String> chunkIds = toggleBlockData.getKeys();
+				Set<String> chunkIds = toggleBlockData.getKeys(false);
 				for (String chunkId : chunkIds) {
-					ConfigurationNode chunkNode = toggleBlockData.getNode(chunkId);
+					ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
 					Map<Long, Automaton> restoreChunk = new HashMap<Long, Automaton>();
-					List<String> blockIds = chunkNode.getKeys();
+					Set<String> blockIds = chunkNode.getKeys(false);
 					for (String blockId : blockIds) {
-						ConfigurationNode toggleConfig = chunkNode.getNode(blockId);
+						ConfigurationSection toggleConfig = chunkNode.getConfigurationSection(blockId);
 						Automaton toggle = new Automaton(toggleConfig);
 						restoreChunk.put(toggle.getId(), toggle);
 					}
@@ -1108,13 +1105,13 @@ public class MagicController implements Listener
 	protected void saveAutomata()
 	{
 		try {
-			Configuration automataData = createDataFile(AUTOMATA_FILE);
+			DataStore automataData = createDataFile(AUTOMATA_FILE);
 			for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
 				Collection<Automaton> blocks = toggleEntry.getValue().values();
 				if (blocks.size() > 0) {
-					ConfigurationNode chunkNode = automataData.createChild(toggleEntry.getKey());
+					ConfigurationSection chunkNode = automataData.createSection(toggleEntry.getKey());
 					for (Automaton block : blocks) {
-						ConfigurationNode node = chunkNode.createChild(Long.toString(block.getId()));
+						ConfigurationSection node = chunkNode.createSection(Long.toString(block.getId()));
 						block.save(node);
 					}
 				}
@@ -1216,7 +1213,7 @@ public class MagicController implements Listener
 		try {
 			for (Entry<String, Mage> mageEntry : mages.entrySet()) {
 				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
-				Configuration playerConfig = new Configuration(playerData);
+				DataStore playerConfig = new DataStore(getLogger(), playerData);
 				Mage mage = mageEntry.getValue();
 				mage.save(playerConfig);
 				playerConfig.save();
@@ -1256,17 +1253,17 @@ public class MagicController implements Listener
 		saveAutomata();
 	}
 	
-	protected void loadSpells(ConfigurationNode config)
+	protected void loadSpells(ConfigurationSection config)
 	{
 		if (config == null) return;
 		
 		// Reset existing spells.
 		spells.clear();
 		
-		List<String> spellKeys = config.getKeys();
+		Set<String> spellKeys = config.getKeys(false);
 		for (String key : spellKeys)
 		{
-			ConfigurationNode spellNode = config.getNode(key);
+			ConfigurationSection spellNode = config.getConfigurationSection(key);
 			if (!spellNode.getBoolean("enabled", true)) {
 				continue;
 			}
@@ -1286,13 +1283,13 @@ public class MagicController implements Listener
 		}
 	}
 	
-	protected void loadMaterials(ConfigurationNode materialNode)
+	protected void loadMaterials(ConfigurationSection materialNode)
 	{
 		if (materialNode == null) return;
 		
-		List<String> keys = materialNode.getKeys();
+		Set<String> keys = materialNode.getKeys(false);
 		for (String key : keys) {
-			materialSets.put(key,  materialNode.getMaterials(key));
+			materialSets.put(key, ConfigurationUtils.getMaterials(materialNode, key));
 		}
 		if (materialSets.containsKey("building")) {
 			buildingMaterials = materialSets.get("building");
@@ -1308,7 +1305,7 @@ public class MagicController implements Listener
 		}
 	}
 	
-	protected void loadProperties(ConfigurationNode properties)
+	protected void loadProperties(ConfigurationSection properties)
 	{
 		if (properties == null) return;
 
@@ -1320,12 +1317,12 @@ public class MagicController implements Listener
 		
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
-		maxTNTPerChunk = properties.getInteger("max_tnt_per_chunk", maxTNTPerChunk);
-		undoQueueDepth = properties.getInteger("undo_depth", undoQueueDepth);
-		pendingQueueDepth = properties.getInteger("pending_depth", pendingQueueDepth);
-		undoMaxPersistSize = properties.getInteger("undo_max_persist_size", undoMaxPersistSize);
+		maxTNTPerChunk = properties.getInt("max_tnt_per_chunk", maxTNTPerChunk);
+		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
+		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
+		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
-		playerDataThreshold = (long)(properties.getFloat("undo_max_persist_size", 0) * 1000 * 24 * 3600);
+		playerDataThreshold = (long)(properties.getDouble("undo_max_persist_size", 0) * 1000 * 24 * 3600);
 		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
 		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
@@ -1352,7 +1349,7 @@ public class MagicController implements Listener
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
-		autoUndo = properties.getInteger("auto_undo", autoUndo);
+		autoUndo = properties.getInt("auto_undo", autoUndo);
 		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
 		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
@@ -1369,28 +1366,28 @@ public class MagicController implements Listener
 		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", factionsManager.isEnabled()));
 		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
 		
-		if (properties.containsKey("mana_display")) {
+		if (properties.contains("mana_display")) {
 			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
 		}
 		
 		// Parse wand settings
-		Wand.DefaultUpgradeMaterial = properties.getMaterial("wand_upgrade_item", Wand.DefaultUpgradeMaterial);
-		Wand.DefaultWandMaterial = properties.getMaterial("wand_item", Wand.DefaultWandMaterial);
+		Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);
+		Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
 		Wand.EnableGlow = properties.getBoolean("enable_glow", Wand.EnableGlow);
-		MaterialBrush.CopyMaterial = properties.getMaterial("copy_item", MaterialBrush.CopyMaterial);
-		MaterialBrush.EraseMaterial = properties.getMaterial("erase_item", MaterialBrush.EraseMaterial);
-		MaterialBrush.CloneMaterial = properties.getMaterial("clone_item", MaterialBrush.CloneMaterial);
-		MaterialBrush.ReplicateMaterial = properties.getMaterial("replicate_item", MaterialBrush.ReplicateMaterial);
-		MaterialBrush.SchematicMaterial = properties.getMaterial("schematic_item", MaterialBrush.SchematicMaterial);
-		MaterialBrush.MapMaterial = properties.getMaterial("map_item", MaterialBrush.MapMaterial);
-		Wand.EnchantableWandMaterial = properties.getMaterial("wand_item_enchantable", Wand.EnchantableWandMaterial);
+		MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterial(properties, "copy_item", MaterialBrush.CopyMaterial);
+		MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterial(properties, "erase_item", MaterialBrush.EraseMaterial);
+		MaterialBrush.CloneMaterial = ConfigurationUtils.getMaterial(properties, "clone_item", MaterialBrush.CloneMaterial);
+		MaterialBrush.ReplicateMaterial = ConfigurationUtils.getMaterial(properties, "replicate_item", MaterialBrush.ReplicateMaterial);
+		MaterialBrush.SchematicMaterial = ConfigurationUtils.getMaterial(properties, "schematic_item", MaterialBrush.SchematicMaterial);
+		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterial(properties, "map_item", MaterialBrush.MapMaterial);
+		Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
 
 		// Parse crafting recipe settings
 		craftingEnabled = properties.getBoolean("enable_crafting", craftingEnabled);
 		if (craftingEnabled) {
 			recipeOutputTemplate = properties.getString("crafting_output", recipeOutputTemplate);
-			wandRecipeUpperMaterial = properties.getMaterial("crafting_material_upper", wandRecipeUpperMaterial);
-			wandRecipeLowerMaterial = properties.getMaterial("crafting_material_lower", wandRecipeLowerMaterial);
+			wandRecipeUpperMaterial = ConfigurationUtils.getMaterial(properties, "crafting_material_upper", wandRecipeUpperMaterial);
+			wandRecipeLowerMaterial = ConfigurationUtils.getMaterial(properties, "crafting_material_lower", wandRecipeLowerMaterial);
 		}
 		
 		// Set up other systems
@@ -1982,7 +1979,7 @@ public class MagicController implements Listener
 		try {
 			File playerData = new File(playerDataFolder, player.getUniqueId().toString() + ".dat");
 			getLogger().info("Player logged out, saving data to " + playerData.getName());
-			Configuration playerConfig = new Configuration(playerData);
+			DataStore playerConfig = new DataStore(getLogger(), playerData);
 			mage.save(playerConfig);
 			playerConfig.save();
 		} catch (Exception ex) {

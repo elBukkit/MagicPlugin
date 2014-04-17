@@ -3,11 +3,11 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class CushionSpell extends BlockSpell
 {
@@ -15,7 +15,7 @@ public class CushionSpell extends BlockSpell
 	private static final int DEFAULT_CUSHION_HEIGHT = 4;
 
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) 
+	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		World world = getWorld();
 		Block targetFace = getTargetBlock();
@@ -27,8 +27,8 @@ public class CushionSpell extends BlockSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		int cushionWidth = parameters.getInteger("width", DEFAULT_CUSHION_WIDTH);
-		int cushionHeight = parameters.getInteger("height", DEFAULT_CUSHION_HEIGHT);
+		int cushionWidth = parameters.getInt("width", DEFAULT_CUSHION_WIDTH);
+		int cushionHeight = parameters.getInt("height", DEFAULT_CUSHION_HEIGHT);
 
 		BlockList cushionBlocks = new BlockList();
 		cushionBlocks.setTimeToLive(7000);

@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.effects;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+
 
 public class EffectTrail extends EffectRepeating {
 
@@ -23,13 +25,12 @@ public class EffectTrail extends EffectRepeating {
 	}
 	
 	@Override
-	public void load(Plugin plugin, ConfigurationNode configuration) {
+	public void load(Plugin plugin, ConfigurationSection configuration) {
 		// Different default for a trail, more iterations are generally needed.
 		iterations = 8;
 		
 		super.load(plugin, configuration);
-
-		length = configuration.getDouble("length", length);
+		length = ConfigurationUtils.getDouble(configuration, "length", length);
 	}
 	
 	@Override

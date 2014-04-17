@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -12,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -20,8 +20,8 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utilities.borrowed.ConfigurationNode;
 
 public class SimulateSpell extends BlockSpell {
 	
@@ -35,7 +35,7 @@ public class SimulateSpell extends BlockSpell {
 	private static final int DEFAULT_RADIUS = 32;
 	
 	@Override
-	public SpellResult onCast(ConfigurationNode parameters) {
+	public SpellResult onCast(ConfigurationSection parameters) {
 		Target t = getTarget();
 		if (t == null) {
 			return SpellResult.NO_TARGET;
@@ -57,13 +57,12 @@ public class SimulateSpell extends BlockSpell {
 		yRadius *= mage.getConstructionMultiplier();
 		
 		MaterialAndData birthMaterial = new MaterialAndData(target);
-		birthMaterial = parameters.getMaterialAndData("material", birthMaterial);
-		birthMaterial = parameters.getMaterialAndData("m", birthMaterial);
+		birthMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", birthMaterial);
+		birthMaterial = ConfigurationUtils.getMaterialAndData(parameters, "m", birthMaterial);
 		
-		// Should this maybe use a brush?
-		Double dmxValue = parameters.getDouble("omx", null);
-		Double dmyValue = parameters.getDouble("omy", null);
-		Double dmzValue = parameters.getDouble("omz", null);
+		Double dmxValue = ConfigurationUtils.getDouble(parameters, "omx", null);
+		Double dmyValue = ConfigurationUtils.getDouble(parameters, "omy", null);
+		Double dmzValue = ConfigurationUtils.getDouble(parameters, "omz", null);
 		if (dmxValue != null || dmyValue != null || dmzValue != null) {
 			Vector offset = new Vector( 
 					dmxValue == null ? 0 : dmxValue, 
@@ -74,7 +73,7 @@ public class SimulateSpell extends BlockSpell {
 			birthMaterial = new MaterialAndData(targetLocation.getBlock());
 		}
 		
-		Material deathMaterial = parameters.getMaterial("death_material", Material.AIR);
+		Material deathMaterial = ConfigurationUtils.getMaterial(parameters, "death_material", Material.AIR);
 		
 		// use the target location with the player's facing
 		Location location = getLocation();
@@ -87,9 +86,9 @@ public class SimulateSpell extends BlockSpell {
 		Set<Integer> birthCounts = new HashSet<Integer>();
 		Set<Integer> liveCounts = new HashSet<Integer>();
 		
-		Double dlcxValue = parameters.getDouble("olcx", null);
-		Double dlcyValue = parameters.getDouble("olcy", null);
-		Double dlczValue = parameters.getDouble("olcz", null);
+		Double dlcxValue = ConfigurationUtils.getDouble(parameters, "olcx", null);
+		Double dlcyValue = ConfigurationUtils.getDouble(parameters, "olcy", null);
+		Double dlczValue = ConfigurationUtils.getDouble(parameters, "olcz", null);
 		if (dlcxValue != null || dlczValue != null || dlczValue != null) {
 			Location liveChestLocation = targetLocation.clone().add(new Vector(dlcxValue == null ? 0 : dlcxValue, dlcyValue == null ? 0 : 
 				dlcyValue, dlczValue == null ? 0 : dlczValue));
@@ -106,16 +105,16 @@ public class SimulateSpell extends BlockSpell {
 			} else {
 				controller.getLogger().warning("SimulateSpell: Chest for live rules not found at " + liveChestLocation.toVector());
 			}
-		} else if (parameters.containsKey("live_rules")) {
-			liveCounts.addAll(parameters.getIntList("live_rules", new ArrayList<Integer>()));
+		} else if (parameters.contains("live_rules")) {
+			liveCounts.addAll(parameters.getIntegerList("live_rules"));
 		} else {
 			liveCounts.add(2);
 			liveCounts.add(3);
 		}
 		
-		Double dbcxValue = parameters.getDouble("obcx", null);
-		Double dbcyValue = parameters.getDouble("obcy", null);
-		Double dbczValue = parameters.getDouble("obcz", null);
+		Double dbcxValue = ConfigurationUtils.getDouble(parameters, "obcx", null);
+		Double dbcyValue = ConfigurationUtils.getDouble(parameters, "obcy", null);
+		Double dbczValue = ConfigurationUtils.getDouble(parameters, "obcz", null);
 		if (dbcxValue != null || dbczValue != null || dbczValue != null) {
 			Location birthChestLocation = targetLocation.clone().add(new Vector(dbcxValue == null ? 0 : dbcxValue, dbcyValue == null ? 0 : 
 				dbcyValue, dbczValue == null ? 0 : dbczValue));
@@ -132,8 +131,8 @@ public class SimulateSpell extends BlockSpell {
 			} else {
 				controller.getLogger().warning("SimulateSpell: Chest for birth rules not found at " + birthChestLocation.toVector());
 			}
-		} else if (parameters.containsKey("birth_rules")) {
-			birthCounts.addAll(parameters.getIntList("birth_rules", new ArrayList<Integer>()));
+		} else if (parameters.contains("birth_rules")) {
+			birthCounts.addAll(parameters.getIntegerList("birth_rules"));
 		} else {
 			birthCounts.add(3);
 		}
@@ -144,12 +143,12 @@ public class SimulateSpell extends BlockSpell {
 		
 		final SimulateBatch batch = new SimulateBatch(this, targetLocation, radius, yRadius, birthMaterial, deathMaterial, liveCounts, birthCounts);
 		
-		if (parameters.containsKey("diagonal_live_rules")) {
-			batch.setDiagonalLiveRules(parameters.getIntList("diagonal_live_rules", new ArrayList<Integer>()));
+		if (parameters.contains("diagonal_live_rules")) {
+			batch.setDiagonalLiveRules(parameters.getIntegerList("diagonal_live_rules"));
 		}
 
-		if (parameters.containsKey("diagonal_birth_rules")) {
-			batch.setDiagonalBirthRules(parameters.getIntList("diagonal_birth_rules", new ArrayList<Integer>()));
+		if (parameters.contains("diagonal_birth_rules")) {
+			batch.setDiagonalBirthRules(parameters.getIntegerList("diagonal_birth_rules"));
 		}
 		
 		boolean includeCommands = parameters.getBoolean("animate", false);
@@ -185,7 +184,7 @@ public class SimulateSpell extends BlockSpell {
 			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
 			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
 
-			batch.setTickCast(parameters.getString("cast", ""), parameters.getFloat("cast_probability", 1.0f));
+			batch.setTickCast(parameters.getString("cast", ""), (float)parameters.getDouble("cast_probability", 1.0f));
 			batch.setDeathCast(parameters.getString("death_cast", ""));
 					
 			batch.target(targetMode);
