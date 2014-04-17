@@ -901,8 +901,6 @@ elder:
         - disarm
         - camera
     materials:
-        - water
-        - lava
         - glowstone
         - glass
         - erase
