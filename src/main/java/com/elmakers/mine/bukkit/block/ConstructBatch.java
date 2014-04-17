@@ -22,8 +22,8 @@ import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 public class ConstructBatch extends VolumeBatch {

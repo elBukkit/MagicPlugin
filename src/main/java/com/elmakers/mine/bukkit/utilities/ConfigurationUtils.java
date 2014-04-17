@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -375,4 +376,106 @@ public class ConfigurationUtils {
 			}
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Object> getList(ConfigurationSection section, String path) {
+		Object o = section.get(path);
+		if (o == null) {
+			return null;
+		} else if (o instanceof List) {
+			return (List<Object>) o;
+		} else if (o instanceof String) {
+			return new ArrayList<Object>(Arrays.asList(StringUtils.split((String) o, ',')));
+		} else {
+			List<Object> single = new ArrayList<Object>();
+			single.add(o);
+			return single;
+		}
+	}
+
+	public static List<String> getStringList(ConfigurationSection section, String path, List<String> def) {
+		List<String> list = getStringList(section, path);
+		return list == null ? (def == null ? new ArrayList<String>() : def) : list;
+	}
+
+	public static List<String> getStringList(ConfigurationSection section, String path) {
+		List<Object> raw = getList(section, path);
+
+		if (raw == null) {
+			return null;
+		}
+
+		List<String> list = new ArrayList<String>();
+
+		for (Object o : raw) {
+			if (o == null) {
+				continue;
+			}
+
+			list.add(o.toString());
+		}
+
+		return list;
+	}
+
+	 /**
+	  * Gets a list of integers. Non-valid entries will not be in the list.
+	  * There will be no null slots. If the list is not defined, the
+	  * default will be returned. 'null' can be passed for the default
+	  * and an empty list will be returned instead. The node must be
+	  * an actual list and not just an integer.
+	  *
+	  * @param path path to node (dot notation)
+	  * @param def default value or null for an empty list as default
+	  */
+	 public static List<Integer> getIntegerList(ConfigurationSection section, String path) {
+		 List<Object> raw = getList(section, path);
+
+		 if (raw == null) {
+			 return new ArrayList<Integer>();
+		 }
+		 List<Integer> list = new ArrayList<Integer>();
+
+		 for (Object o : raw) {
+			 Integer i = castInt(o);
+			 if (i != null) {
+				 list.add(i);
+			 }
+		 }
+
+		 return list;
+	 }
+	 
+	 /**
+	  * Casts a value to an integer. May return null.
+	  *
+	  * @param o
+	  * @return
+	  */
+	 private static Integer castInt(Object o) {
+		 if (o == null) {
+			 return null;
+		 } else if (o instanceof Byte) {
+			 return (int) (Byte) o;
+		 } else if (o instanceof Integer) {
+			 return (Integer) o;
+		 } else if (o instanceof Double) {
+			 return (int) (double) (Double) o;
+		 } else if (o instanceof Float) {
+			 return (int) (float) (Float) o;
+		 } else if (o instanceof Long) {
+			 return (int) (long) (Long) o;
+		 } else if (o instanceof String ) {
+			 try
+			 {
+				 return Integer.parseInt((String)o);
+			 }
+			 catch(NumberFormatException ex)
+			 {
+				 return null;
+			 }
+		 } else {
+			 return null;
+		 }
+	 }
 }

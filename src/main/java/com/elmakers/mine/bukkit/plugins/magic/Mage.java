@@ -34,6 +34,9 @@ import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoBatch;
 import com.elmakers.mine.bukkit.block.UndoQueue;
+import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
+import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
@@ -80,7 +83,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	private static String defaultMageName = "Automaton";
 	
-	protected void processResult(SpellResult result) {
+	public void processResult(SpellResult result) {
 		lastCast = System.currentTimeMillis();
 	}
 	
@@ -714,11 +717,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return (previous <= 0 || previous + maxInterval < now);
 	}
 	
-	protected void activateSpell(Spell spell) {
+	public void activateSpell(Spell spell) {
 		activeSpells.add(spell);
 	}
 	
-	protected void deactivateSpell(Spell spell) {
+	public void deactivateSpell(Spell spell) {
 		activeSpells.remove(spell);
 	}
 	
@@ -801,7 +804,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		for (Spell spell : spells.values()) {
 			String key = spell.getKey();
 			if (config.contains(key)) {
-				spell.loadTemplate(config.getConfigurationSection(key));
+				spell.loadTemplate(key, config.getConfigurationSection(key));
 			}
 		}
 	}

@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
+import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {

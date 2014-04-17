@@ -18,9 +18,8 @@ import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.plugins.magic.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.SpellResult;
-import com.elmakers.mine.bukkit.utilities.Target;
+import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
+import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class DynmapController {
 	 private final Plugin plugin;
@@ -72,10 +71,7 @@ public class DynmapController {
 				// Create a targeting indicator line
 				Location target = null;
 				if (result != SpellResult.AREA) {
-					Target spellTarget = spell.getCurrentTarget();
-					if (spellTarget != null) {
-						target = spellTarget.getLocation();
-					}
+					target = spell.getTargetLocation();
 					
 					if (target == null) {
 						target = location.clone();

@@ -7,8 +7,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 
 public class FillBatch extends VolumeBatch {
 	private final BlockList filledBlocks = new BlockList();
