@@ -1,6 +1,8 @@
 eclipse.preferences.version=1
+encoding//src/main/resources=UTF-8
 encoding//src/main/resources/defaults/config.defaults.yml=UTF-8
 encoding//src/main/resources/defaults/messages.defaults.yml=UTF-8
 encoding//src/main/resources/examples/localizations/messages.ZH.yml=UTF-8
 encoding//src/main/resources/messages.yml=UTF-8
+encoding/<project>=UTF-8
 encoding/TODO.md=UTF-8
