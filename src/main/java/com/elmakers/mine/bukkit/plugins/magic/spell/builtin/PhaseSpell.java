@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utilities.Messages;
 
 public class PhaseSpell extends TargetingSpell
 {
@@ -18,6 +19,7 @@ public class PhaseSpell extends TargetingSpell
 	private static int RETRY_INTERVAL = 10;
 	
 	private int retryCount = 0;
+	private String targetWorldName = "";
 	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
@@ -115,8 +117,16 @@ public class PhaseSpell extends TargetingSpell
 			
 			// TODO : Failure notification? Sounds at least? The async nature is difficult.
 			if (destination != null) {
+				targetWorldName = destination.getWorld().getName();
 				player.teleport(destination);
 			}
 		}
+	}
+	
+	@Override
+	public String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		targetWorldName = Messages.get("worlds." + targetWorldName + ".name", targetWorldName);
+		return message.replace("$world_name", targetWorldName);
 	}
 }

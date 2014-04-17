@@ -118,6 +118,13 @@ wand:
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
     self_destruct: Your wands did not survive the dimensional shift!
+worlds:
+    world:
+        name: The Overworld
+    world_nether:
+        name: The Nether
+    world_the_end:
+        name: The End
 costs:
     xp_amount: $amount XP
     mana_amount: $amount Mana
@@ -368,7 +375,8 @@ spells:
     phase:
         name: Phase
         description: Phase to another dimension
-        cast: You phase into another dimension
+        cast: You phase to $world_name
+        
     invincible:
         name: Invincible
         description: Make yourself impervious to damage
@@ -647,7 +655,7 @@ spells:
         name: Alter
         description: Alter certain objects
         usage: Use on wool, stairs, etc
-        cast_entity: You altered the target entity
+        cast_entity: You altered the target $target
         cast: You altered your target
         fail: Can't adjust that
     superalter:
@@ -836,6 +844,7 @@ spells:
     camera:
         name: Camera
         description: Take a portrait of yourself or others
+        cast_entity: You took a photo of $target
         fail: Failed to load photo
         cast: CLICK!
         cast_self: Selfie!

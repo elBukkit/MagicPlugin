@@ -2418,7 +2418,7 @@ absorb:
         xp: 30     
 hat:
     icon: leather_helmet
-    category: white
+    category: light
     class: HatSpell
     effects:
         cast:
@@ -2433,7 +2433,7 @@ hat:
         cooldown: 3000
         transparent: transparent_to_construction
     costs:
-        xp: 200
+        xp: 100
 lava:
     icon: ink_sack:14
     category: firebending
