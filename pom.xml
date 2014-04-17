@@ -12,6 +12,7 @@
 	</dependencyManagement>
 	<properties>
 		<build.version>3.0.0</build.version>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
 	</properties>
 	<dependencies>
 		<dependency>
