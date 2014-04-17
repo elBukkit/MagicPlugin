@@ -1062,8 +1062,8 @@ meteor:
         count: 12
         fire: true
         spread: 30
-        py: ~12
-        pdy: ~-0.2
+        y: ~12
+        dy: ~-0.2
         range: 64
         allow_max_range: true
     costs:
@@ -1715,8 +1715,8 @@ bomb:
         fuse: 60
         fire: true
         count: 12
-        dpy: 20
-        ddy: -0.75
+        py: 20
+        dy: -0.75
     costs:
         xp: 250
 superblob:
