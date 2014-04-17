@@ -2,8 +2,10 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -70,4 +72,32 @@ public class RandomUtils {
 
         return location;
     }
+
+	public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+		RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
+	}
+
+	public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+		RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
+	}
+
+	public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+		RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
+	}
+
+	public static <T extends Object> void populateProbabilityMap(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+		Float currentThreshold = 0.0f;
+		
+		if (nodeMap != null) {
+			Set<String> keys = nodeMap.getKeys(false);
+			for (String key : keys) {
+				// Kind of a hack, but the yaml parser doesn't like "." in a key.
+				String value = nodeMap.getString(key);
+				key = key.replace("|", ".");
+				
+				currentThreshold += lerp(value.split(","), levelIndex, nextLevelIndex, distance);
+				probabilityMap.add(new WeightedPair<T>(currentThreshold, key, valueClass));
+			}
+		}
+	}
 }
