@@ -24,7 +24,7 @@ public class SignSpell extends BlockSpell
 		String typeString = parameters.getString("type", "");
 		boolean autoAscend = parameters.getBoolean("auto_give", true);
 
-		if (typeString.equals("give") || (autoAscend && getYRotation() > 80))
+		if (typeString.equals("give") || (autoAscend && isLookingUp()))
 		{
 			castMessage(getMessage("cast_give"));
 			return giveMaterial(Material.SIGN, 8, (short)0, (byte)0) ? SpellResult.CAST : SpellResult.FAIL;

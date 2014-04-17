@@ -64,11 +64,11 @@ public class BlinkSpell extends Spell
 		boolean autoDescend = parameters.getBoolean("allow_descend", true);
 		boolean autoPassthrough = parameters.getBoolean("allow_passthrough", true);
 
-		if (elevateType.equals("descend") || (getYRotation() < -80 && autoDescend))
+		if (elevateType.equals("descend") || (isLookingDown() && autoDescend))
 		{
 			return descend();
 		}
-		else if (elevateType.equals("ascend") || (getYRotation() > 80 && autoAscend))
+		else if (elevateType.equals("ascend") || (isLookingUp() && autoAscend))
 		{
 			return ascend();
 		}

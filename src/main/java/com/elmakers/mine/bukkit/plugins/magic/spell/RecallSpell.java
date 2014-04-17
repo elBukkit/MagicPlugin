@@ -93,9 +93,9 @@ public class RecallSpell extends Spell
 			
 			selectedType = newType;
 		} 
-		else if (getYRotation() > 70 || getYRotation() < -70 || !allowMarker)
+		else if (isLookingDown() || isLookingUp() || !allowMarker)
 		{
-			reverseDirection = getYRotation() < 70;
+			reverseDirection = isLookingDown();
 			cycleTarget(reverseDirection);
 		}
 		else

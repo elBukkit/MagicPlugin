@@ -17,7 +17,7 @@ public class GotoSpell extends Spell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		if (getYRotation() > 80)
+		if (isLookingUp())
 		{
 			Player destination = getFarthestPlayer(getPlayer());
 			if (destination == null) return SpellResult.NO_TARGET;

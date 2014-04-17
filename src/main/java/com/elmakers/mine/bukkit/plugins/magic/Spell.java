@@ -32,6 +32,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -92,7 +93,10 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	};
 	
 	protected final static Set<String> percentageParameterMap = new HashSet<String>(Arrays.asList(PERCENTAGE_PARAMETERS));
-	
+
+	private static final int  MAX_RANGE  = 511;
+	private static final double VIEW_HEIGHT = 1.65;
+	private static final double LOOK_THRESHOLD_RADIANS = 0.8;
 	
 	public final static String[] COMMON_PARAMETERS = (String[])
 		ArrayUtils.addAll(
@@ -130,64 +134,54 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	 * private data
 	 */
 
-	private boolean                             allowMaxRange           = false;
 	private boolean                             pvpRestricted           = false;
 	private boolean								bypassBuildRestriction  = false;
 	private boolean								bypassPvpRestriction    = false;
 	private float                               cooldownReduction       = 0;
 	private float                               costReduction           = 0;
-	private int                                 range                   = 32;
-	private static int                          maxRange                = 511;
-	private double                              viewHeight              = 1.65;
-	private double                              step                    = 0.2;
-
+	
 	private int                                 cooldown                = 0;
 	private int                                 duration                = 0;
 	private long                                lastCast                = 0;
 	private long								castCount				= 0;
 	private long 								lastMessageSent 		= 0;
 
+	private Location                            location;
+	
+	private boolean								isActive				= false;
+	
+	private Map<SpellResult, List<EffectPlayer>> effects				= new HashMap<SpellResult, List<EffectPlayer>>();
+	
+	private float								fizzleChance			= 0.0f;
+	private float								backfireChance			= 0.0f;
+
+
+	private Target								target					= null;
+	private String								targetName			    = null;
+	private TargetType							targetType				= TargetType.OTHER;
+	private boolean								targetNPCs				= false;
 	private int                                 verticalSearchDistance  = 8;
-	private boolean                             targetingComplete;
+	private boolean                             targetingComplete		= false;
 	private boolean                             targetSpaceRequired     = false;
 	private Class<? extends Entity>             targetEntityType        = null;
-	private Location                            location;
 	private Location                            targetLocation;
 	private Vector								targetLocationOffset;
 	private World								targetLocationWorld;
 	protected Location                          targetLocation2;
 	private Entity								targetEntity = null;
-	private double                              xRotation, yRotation;
-	private double                              length, hLength;
-	private double                              xOffset, yOffset, zOffset;
-	private int                                 lastX, lastY, lastZ;
-	private int                                 targetX, targetY, targetZ;
+
+	private boolean                             allowMaxRange           = false;
+
+	private int                                 range                   = 32;
+	
 	private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
 	private Set<Material>                       preventPassThroughMaterials  	= null;
 	private boolean                             reverseTargeting        = false;
-	private boolean								isActive				= false;
 	
-	private Map<SpellResult, List<EffectPlayer>> effects				= new HashMap<SpellResult, List<EffectPlayer>>();
-	
-	private Target								target					= null;
-	private String								targetName			    = null;
-	private TargetType							targetType				= TargetType.OTHER;
-	private boolean								targetNPCs				= false;
-
-	private float								fizzleChance			= 0.0f;
-	private float								backfireChance			= 0.0f;
-
-	protected Object clone()
-	{
-		try
-		{
-			return super.clone();
-		}
-		catch (CloneNotSupportedException ex)
-		{
-			return null;
-		}
-	}
+	private BlockIterator						blockIterator = null;
+	private	Block								currentBlock = null;
+	private	Block								previousBlock = null;
+	private	Block								previousPreviousBlock = null;
 
 	/**
 	 * Default constructor, used to register spells.
@@ -561,18 +555,9 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		if (location == null) {
 			return;
 		}
-		length = 0;
+		blockIterator = new BlockIterator(location, VIEW_HEIGHT, getMaxRange());
 		targetSpaceRequired = false;
-		xRotation = (location.getYaw() + 90) % 360;
-		yRotation = location.getPitch() * -1;
 		reverseTargeting = false;
-
-		targetX = (int) Math.floor(location.getX());
-		targetY = (int) Math.floor(location.getY() + viewHeight);
-		targetZ = (int) Math.floor(location.getZ());
-		lastX = targetX;
-		lastY = targetY;
-		lastZ = targetZ;
 		targetingComplete = false;
 	}
 	
@@ -1106,7 +1091,11 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	 */
 	public BlockFace getPlayerFacing()
 	{
-		float playerRot = getPlayerRotation();
+		float playerRot = getLocation().getYaw();
+		while (playerRot < 0)
+			playerRot += 360;
+		while (playerRot > 360)
+			playerRot -= 360;
 
 		BlockFace direction = BlockFace.NORTH;
 		if (playerRot <= 45 || playerRot > 315)
@@ -1206,42 +1195,18 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return location.getDirection();
 	}
 	
-	/**
-	 * Get the (simplified) player pitch.
-	 * 
-	 * @return Player Y-axis rotation (pitch)
-	 */
-	public double getYRotation()
+	public boolean isLookingUp()
 	{
-		return yRotation;
+		Vector direction = getDirection();
+		if (direction == null) return false;
+		return direction.getY() > LOOK_THRESHOLD_RADIANS;
 	}
 
-	/**
-	 * Get the (simplified) player yaw.
-	 * @return Player X-axis rotation (yaw)
-	 */
-	public double getXRotation()
+	public boolean isLookingDown()
 	{
-		return xRotation;
-	}
-
-	/**
-	 * Gets the normal player rotation.
-	 * 
-	 * This differs from xRotation by 90 degrees. xRotation is ported from 
-	 * HitBlox, I really need to get rid of or refactor all that code, but it may be
-	 * worth just waiting for the Bukkit targeting implementation at this point.
-	 * 
-	 * @return The player X-rotation (yaw)
-	 */
-	public float getPlayerRotation()
-	{
-		float playerRot = getLocation().getYaw();
-		while (playerRot < 0)
-			playerRot += 360;
-		while (playerRot > 360)
-			playerRot -= 360;
-		return playerRot;
+		Vector direction = getDirection();
+		if (direction == null) return false;
+		return direction.getY() < -LOOK_THRESHOLD_RADIANS;
 	}
 
 	/*
@@ -1413,9 +1378,12 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	}
 
 	protected void offsetTarget(int dx, int dy, int dz) {
-		targetX += dx;
-		targetY += dy;
-		targetZ += dz;
+		Location location = getLocation();
+		if (location == null) {
+			return;
+		}
+		location.add(dx, dy, dz);
+		blockIterator = new BlockIterator(location, VIEW_HEIGHT, getMaxRange());
 	}
 	
 	/**
@@ -1425,35 +1393,11 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	 */
 	public Block getNextBlock()
 	{
-		Location location = getLocation();
-		if (location == null) return null;
-		
-		lastX = targetX;
-		lastY = targetY;
-		lastZ = targetZ;
-		int scaledRange = getMaxRange();
-		do
-		{
-			length += step;
-
-			hLength = (length * Math.cos(Math.toRadians(yRotation)));
-			yOffset = (length * Math.sin(Math.toRadians(yRotation)));
-			xOffset = (hLength * Math.cos(Math.toRadians(xRotation)));
-			zOffset = (hLength * Math.sin(Math.toRadians(xRotation)));
-
-			targetX = (int) Math.floor(xOffset + location.getX());
-			targetY = (int) Math.floor(yOffset + location.getY() + viewHeight);
-			targetZ = (int) Math.floor(zOffset + location.getZ());
-
-		}
-		while ((length <= scaledRange) && (targetY >= 1) && (targetY <= 256) && ((targetX == lastX) && (targetY == lastY) && (targetZ == lastZ)));
-		
-		if (length > scaledRange || targetY >= 256 || targetY <= 1)
-		{
-			return null;
-		}
-
-		return getBlockAt(targetX, targetY, targetZ);
+		previousPreviousBlock = previousBlock;
+		previousBlock = currentBlock;
+		if (blockIterator == null || !blockIterator.hasNext()) currentBlock = null;
+		currentBlock = blockIterator.next();
+		return currentBlock;
 	}
 
 	/**
@@ -1463,16 +1407,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	 */
 	public Block getCurBlock()
 	{
-		int scaledRange = getMaxRange();
-		
-		if (length > scaledRange && !allowMaxRange)
-		{
-			return null;
-		}
-		else
-		{
-			return getBlockAt(targetX, targetY, targetZ);
-		}
+		return currentBlock;
 	}
 
 	/**
@@ -1482,7 +1417,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	 */
 	public Block getLastBlock()
 	{
-		return getBlockAt(lastX, lastY, lastZ);
+		return previousBlock;
 	}
 	
 	/**
@@ -1599,13 +1534,9 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		{
 			return;
 		}
-		int scaledRange = getMaxRange();
-		while (length <= scaledRange)
+		Block block = getNextBlock();
+		while (block != null)
 		{
-			Block block = getNextBlock();
-			if (block == null) {
-				break;
-			}
 			if (targetSpaceRequired) {
 				if (isOkToStandIn(block.getType()) && isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
 					break;
@@ -1615,6 +1546,11 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 					break;
 				}
 			}
+			block = getNextBlock();
+		}
+		if (block == null && allowMaxRange) {
+			currentBlock = previousBlock;
+			previousBlock = previousPreviousBlock;
 		}
 		targetingComplete = true;
 	}
@@ -1626,8 +1562,8 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	
 	protected int getMaxRange()
 	{
-		if (allowMaxRange) return Math.min(maxRange, range);
-		return Math.min(maxRange, (int)(mage.getRangeMultiplier() * range));
+		if (allowMaxRange) return Math.min(MAX_RANGE, range);
+		return Math.min(MAX_RANGE, (int)(mage.getRangeMultiplier() * range));
 	}
 
 	protected int getMaxRangeSquared()
@@ -2053,5 +1989,17 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		} else if (percentageParameterMap.contains(parameterKey)) {
 			examples.addAll(Arrays.asList(EXAMPLE_PERCENTAGES));
 		} 
+	}
+	
+	protected Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException ex)
+		{
+			return null;
+		}
 	}
 }

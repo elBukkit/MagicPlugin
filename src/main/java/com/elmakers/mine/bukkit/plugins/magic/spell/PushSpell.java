@@ -68,7 +68,7 @@ public class PushSpell extends Spell
 		if 
 		(
 			allowAll
-			&&  (getYRotation() < -80 || getYRotation() > 80)
+			&&  (isLookingDown() || isLookingUp())
 		)
 		{
 			forceAll(multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);

@@ -66,7 +66,7 @@ public class TorchSpell extends BlockSpell
 		
 		boolean allowNight = parameters.getBoolean("allow_night", false);
 		boolean allowDay = parameters.getBoolean("allow_day", false);
-		if (getYRotation() > 80 && allowDay)
+		if (isLookingUp() && allowDay)
 		{
 			timeType = "day";
 			world.setTime(0);
@@ -74,7 +74,7 @@ public class TorchSpell extends BlockSpell
 		}
 
 
-		if (getYRotation() < -80 && allowNight)
+		if (isLookingDown() && allowNight)
 		{
 			timeType = "night";
 			world.setTime(13000);
