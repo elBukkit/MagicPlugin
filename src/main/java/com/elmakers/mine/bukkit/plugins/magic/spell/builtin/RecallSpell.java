@@ -6,9 +6,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -262,15 +260,6 @@ public class RecallSpell extends TargetingSpell
 		{
 			return false;
 		}
-		Block targetBlock = target.getRelative(BlockFace.UP);
-		if (targetBlock.getType() != Material.AIR)
-		{
-			targetBlock = getPreviousBlock();
-		}
-		if (targetBlock.getType() != Material.AIR)
-		{
-			return false;
-		}
 
 		if (removeMarker())
 		{
@@ -282,12 +271,12 @@ public class RecallSpell extends TargetingSpell
 		}
 
 		location = getLocation();
-		location.setX(targetBlock.getX());
-		location.setY(targetBlock.getY());
-		location.setZ(targetBlock.getZ());
+		location.setX(target.getX());
+		location.setY(target.getY());
+		location.setZ(target.getZ());
 
 		getPlayer().setCompassTarget(location);
-		EffectUtils.playEffect(targetBlock.getLocation(), ParticleType.CLOUD, 1, 1);
+		EffectUtils.playEffect(target.getLocation(), ParticleType.INSTANT_SPELL, 1, 8);
 		
 		isActive = true;
 
