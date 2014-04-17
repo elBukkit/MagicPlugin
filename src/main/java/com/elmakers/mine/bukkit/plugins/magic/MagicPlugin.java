@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.plugins.magic.commands.CastCommandExecutor;
@@ -216,8 +217,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
-	public Collection<com.elmakers.mine.bukkit.api.spell.Spell> getSpells() {
-		Collection<com.elmakers.mine.bukkit.api.spell.Spell> spells = new ArrayList<com.elmakers.mine.bukkit.api.spell.Spell>();
+	public Collection<SpellTemplate> getSpellTemplates() {
+		Collection<SpellTemplate> spells = new ArrayList<SpellTemplate>();
 		spells.addAll(controller.getAllSpells());
 		return spells;
 	}
@@ -252,7 +253,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
-	public Spell getSpell(String key) {
+	public Spell getSpellTemplate(String key) {
 		return controller.getSpell(key);
 	}
 

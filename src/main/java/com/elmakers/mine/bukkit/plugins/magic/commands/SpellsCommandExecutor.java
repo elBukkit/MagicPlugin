@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utilities.Messages;
 
 public class SpellsCommandExecutor extends MagicTabExecutor {
@@ -39,10 +39,10 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
 	public void listSpellsByCategory(CommandSender sender, String category)
 	{
-		List<Spell> categorySpells = new ArrayList<Spell>();
-		Collection<Spell> spellVariants = api.getSpells();
+		List<SpellTemplate> categorySpells = new ArrayList<SpellTemplate>();
+		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
 		Player player = sender instanceof Player ? (Player)sender : null;
-		for (Spell spell : spellVariants)
+		for (SpellTemplate spell : spellVariants)
 		{
 			String spellCategory = spell.getCategory();
 			if (spellCategory != null && spellCategory.equalsIgnoreCase(category) 
@@ -61,7 +61,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		}
 		sender.sendMessage(category + ":");
 		Collections.sort(categorySpells);
-		for (Spell spell : categorySpells)
+		for (SpellTemplate spell : categorySpells)
 		{
 			String name = spell.getName();
 			String description = spell.getDescription();
@@ -76,9 +76,9 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 	{
 		HashMap<String, Integer> spellCounts = new HashMap<String, Integer>();
 		List<String> spellGroups = new ArrayList<String>();
-		Collection<Spell> spellVariants = api.getSpells();
+		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
 
-		for (Spell spell : spellVariants)
+		for (SpellTemplate spell : spellVariants)
 		{
 			if (player != null && !spell.hasSpellPermission(player)) continue;
 			if (spell.getCategory() == null) continue;
@@ -117,10 +117,10 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		Player player = sender instanceof Player ? (Player)sender : null;
 
 		HashMap<String, SpellGroup> spellGroups = new HashMap<String, SpellGroup>();
-		Collection<Spell> spellVariants = api.getSpells();
+		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
 
 		int spellCount = 0;
-		for (Spell spell : spellVariants)
+		for (SpellTemplate spell : spellVariants)
 		{
 			if (player != null && !spell.hasSpellPermission(player))
 			{
@@ -170,7 +170,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
 			boolean isFirst = true;
 			Collections.sort(group.spells);
-			for (Spell spell : group.spells)
+			for (SpellTemplate spell : group.spells)
 			{
 				if (printedCount > maxLines && maxLines > 0) break;
 

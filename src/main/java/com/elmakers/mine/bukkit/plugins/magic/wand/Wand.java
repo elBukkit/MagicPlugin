@@ -32,6 +32,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.EffectRing;
@@ -1791,9 +1792,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public boolean fill(Player player) {
-		Collection<Spell> allSpells = controller.getPlugin().getSpells();
+		Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
 
-		for (Spell spell : allSpells)
+		for (SpellTemplate spell : allSpells)
 		{
 			if (spell.hasSpellPermission(player) && spell.getIcon().getMaterial() != Material.AIR)
 			{

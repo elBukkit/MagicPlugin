@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 	
@@ -94,8 +94,8 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		}
 		
 		if (args.length == 1) {
-			Collection<Spell> spellList = api.getSpells();
-			for (Spell spell : spellList) {
+			Collection<SpellTemplate> spellList = api.getSpellTemplates();
+			for (SpellTemplate spell : spellList) {
 				addIfPermissible(sender, options, "Magic." + commandName+ ".", spell.getKey(), true);
 			}
 		}
@@ -103,7 +103,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		if (args.length > 1)
 		{
 			String spellName = args[0];
-			Spell spell = api.getSpell(spellName);
+			SpellTemplate spell = api.getSpellTemplate(spellName);
 			if (spell != null) {
 				if (args.length % 2 == 0 || args.length < 2) {
 					spell.getParameters(options);
