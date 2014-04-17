@@ -96,8 +96,16 @@ public abstract class TargetingSpell extends BaseSpell {
 		// Escape targeting parameters
 		String useTargetName = targetName;
 		if (useTargetName == null) {
-			useTargetName = target != null && target.hasEntity() && target.getEntity() instanceof Player ?
-				((Player)target.getEntity()).getName() : "Unknown";
+			if (target != null && target.hasEntity()) {
+				if (target.getEntity() instanceof Player) {
+					useTargetName = ((Player)target.getEntity()).getName();
+				} else {
+					useTargetName = target.getEntity().getType().name().toLowerCase().replace('_', ' ');
+				}
+			}
+			else {
+				useTargetName = "Unknown";
+			}
 		}
 		message = message.replace("$target", useTargetName);
 		
