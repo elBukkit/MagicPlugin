@@ -47,7 +47,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	public void save(ConfigurationSection configNode)
 	{
 		try {
-			configNode.set("location", ConfigurationUtils.toLocation(location));
+			configNode.set("location", ConfigurationUtils.fromLocation(location));
 			configNode.set("name", name);
 			configNode.set("description", description);
 			configNode.set("owner", owner);
