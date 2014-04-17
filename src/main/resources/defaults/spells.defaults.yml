@@ -301,7 +301,7 @@ virus:
         target_max_range: 256
         delay: 2000
         target_mode: hunt
-        target_types: mage
+        target_types: any
         birth_rules: 1,2,3 
         diagonal_birth_rules: 0,1
         live_rules: 1,2,3
