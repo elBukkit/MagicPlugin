@@ -1,24 +1,20 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import java.util.Collection;
-
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-
-public interface Spell extends Comparable<Spell>, CostReducer {
-	public String getName();
-	public String getDescription();
-	public String getKey();
-	public String getCategory();
-	public String getUsage();
-	public MaterialAndData getIcon();
-	public boolean hasSpellPermission(CommandSender sender);
+public interface Spell extends SpellTemplate {
 	public boolean cast();
 	public boolean cast(String[] parameters);
-	public Collection<CastingCost> getCosts();
-	public Collection<CastingCost> getActiveCosts();
 	public long getCastCount();
-	public void getParameters(Collection<String> parameters);
-	public void getParameterOptions(Collection<String> examples, String parameterKey);
+	
+	public Player getPlayer();
+	public CommandSender getCommandSender();
+	public Location getLocation();
+	public Location getTargetLocation();
+	public Entity getTargetEntity();
+	public Vector getDirection();
 }

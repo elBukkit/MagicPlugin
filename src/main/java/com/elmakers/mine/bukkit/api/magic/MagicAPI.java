@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
@@ -115,8 +116,8 @@ public interface MagicAPI {
 	public void cast(String spellName, String[] parameters);
 	public void cast(String spellName, String[] parameters, CommandSender sender, Player player);
 	
-	public Collection<Spell> getSpells();
-	public Spell getSpell(String key);
+	public Collection<Spell> getSpellTemplates();
+	public SpellTemplate getSpellTemplate(String key);
 	
 	public Collection<String> getBrushes();
 	
