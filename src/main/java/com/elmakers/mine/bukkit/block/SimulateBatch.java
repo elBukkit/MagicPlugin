@@ -29,7 +29,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
@@ -627,6 +627,7 @@ public class SimulateBatch extends VolumeBatch {
 		this.targetType = targetType;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void target(TargetMode mode) {
 		targetMode = mode == null ? TargetMode.STABILIZE : mode;
 		switch (targetMode) 
@@ -681,7 +682,9 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				if (targetMode == TargetMode.DIRECTED) {
 					Vector direction = bestTarget.getLocation().getDirection();
-					center = RandomUtils.setDirection(center, direction);
+					
+					// TODO: Use location.setDirection in 1.7+
+					center = CompatibilityUtils.setDirection(center, direction);
 					targetLocation = center.clone().add(direction.normalize().multiply(huntMaxRange));
 					if (DEBUG) {
 						controller.getLogger().info(" *Directed " + direction + " to " + targetLocation.toVector()); 
@@ -689,7 +692,9 @@ public class SimulateBatch extends VolumeBatch {
 				} else {
 					targetLocation = bestTarget.getLocation();
 					Vector direction = targetMode == TargetMode.FLEE ? center.toVector().subtract(targetLocation.toVector()) : targetLocation.toVector().subtract(center.toVector());
-					center = RandomUtils.setDirection(center, direction);
+					
+					// TODO: Use location.setDirection in 1.7+
+					center = CompatibilityUtils.setDirection(center, direction);
 				}
 				
 				if (tickSpell.length() > 0) {

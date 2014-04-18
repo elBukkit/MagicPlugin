@@ -21,7 +21,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class ConfigurationUtils {
 	
@@ -292,6 +292,7 @@ public class ConfigurationUtils {
 		return value;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static Location getLocationOverride(ConfigurationSection node, String basePath, Location location) {
 		String worldName = basePath + "world";
 		String xName = basePath + "x";
@@ -327,7 +328,9 @@ public class ConfigurationUtils {
 			direction.setX(overrideDouble(node, direction.getX(), dxName));
 			direction.setY(overrideDouble(node, direction.getY(), dyName));
 			direction.setZ(overrideDouble(node, direction.getZ(), dzName));
-			RandomUtils.setDirection(location, direction);
+			
+			// TODO: Use location.setDirection in 1.7+
+			CompatibilityUtils.setDirection(location, direction);
 		}
 		
 		return location;

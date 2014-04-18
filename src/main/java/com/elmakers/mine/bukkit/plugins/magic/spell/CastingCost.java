@@ -100,7 +100,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 		return xp;
 	}
 
-	protected int getAmount(CostReducer reducer)
+	public int getAmount(CostReducer reducer)
 	{
 		double reducedAmount = amount;
 		float reduction = reducer == null ? 0 : reducer.getCostReduction();
@@ -110,7 +110,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 		return (int)Math.ceil(reducedAmount);
 	}
 
-	protected int getXP(CostReducer reducer)
+	public int getXP(CostReducer reducer)
 	{
 		float reducedAmount = xp;
 		float reduction = reducer == null ? 0 : reducer.getCostReduction();
