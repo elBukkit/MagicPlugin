@@ -4,12 +4,12 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.util.NumberConversions;
-import org.bukkit.util.Vector;
 
-
+/**
+ * Contains some general Randomization utitilies, including
+ * computing WeightedPair - based probability decisions.
+ */
 public class RandomUtils {
 	private final static Random random = new Random();
 	
@@ -33,47 +33,7 @@ public class RandomUtils {
 		return weightList.getFirst().getValue();
 	}
 	
-    /**
-     * This is shamelessly copied from org.bukkit.Location.setDirection.
-     * 
-     * It's only here for 1.6 backwards compatibility. It could and should
-     * be removed eventually, favoring use of the Bukkit API version.
-     * 
-     * Yay, open source!
-     * 
-     * Sets the {@link #getYaw() yaw} and {@link #getPitch() pitch} to point
-     * in the direction of the vector.
-     */
-    public static Location setDirection(Location location, Vector vector) {
-        /*
-         * Sin = Opp / Hyp
-         * Cos = Adj / Hyp
-         * Tan = Opp / Adj
-         *
-         * x = -Opp
-         * z = Adj
-         */
-        final double _2PI = 2 * Math.PI;
-        final double x = vector.getX();
-        final double z = vector.getZ();
-
-        if (x == 0 && z == 0) {
-            location.setPitch(vector.getY() > 0 ? -90 : 90);
-            return location;
-        }
-
-        double theta = Math.atan2(-x, z);
-        location.setYaw((float) Math.toDegrees((theta + _2PI) % _2PI));
-
-        double x2 = NumberConversions.square(x);
-        double z2 = NumberConversions.square(z);
-        double xz = Math.sqrt(x2 + z2);
-        location.setPitch((float) Math.toDegrees(Math.atan(-vector.getY() / xz)));
-
-        return location;
-    }
-
-	public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
+    public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
 		RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
 	}
 
