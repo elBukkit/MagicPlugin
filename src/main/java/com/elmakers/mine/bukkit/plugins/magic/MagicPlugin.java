@@ -81,11 +81,11 @@ import com.elmakers.mine.bukkit.utilities.URLMap;
 * &lt;repositories&gt;
 * &lt;repository&gt;
 *     &lt;id&gt;elMakers&lt;/id&gt;
-*     &lt;url&gt;http://maven.elmakers.com/repository/&lt;/url&gt;
+*     &lt;url&gt;http://maven.elmakers.com/repository/ &lt;/url&gt;
 * &lt;/repository&gt;
 * &lt;repository&gt;
 *     &lt;id&gt;bukkit-repo&lt;/id&gt;
-*     &lt;url&gt;http://repo.bukkit.org/content/groups/public/&lt;/url&gt;
+*     &lt;url&gt;http://repo.bukkit.org/content/groups/public/ &lt;/url&gt;
 * &lt;/repository&gt;
 * &lt;/repositories&gt;
 * </pre>
