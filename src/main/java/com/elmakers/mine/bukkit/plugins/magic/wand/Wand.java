@@ -669,8 +669,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (brushData == null) return null;
 		
 		Material material = brushData.getMaterial();
+		if (material == null) return null;
+		
 		byte dataId = brushData.getData();
-		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);	
+		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);
 		ItemStack itemStack = InventoryUtils.getCopy(originalItemStack);
 		if (itemStack == null) {
 			controller.getPlugin().getLogger().warning("Unable to create material icon for " + material.name() + ": " + originalItemStack.getType());	
@@ -2305,9 +2307,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean addBrush(String materialKey) {
 		if (!isModifiable()) return false;
 		
+		ItemStack itemStack = createMaterialIcon(materialKey);
+		if (itemStack == null) return false;
+		
 		boolean addedNew = !hasBrush(materialKey);
 		if (addedNew) {
-			addToInventory(createMaterialIcon(materialKey));
+			addToInventory(itemStack);
 		}
 		if (activeMaterial == null || activeMaterial.length() == 0) {
 			setActiveBrush(materialKey);
