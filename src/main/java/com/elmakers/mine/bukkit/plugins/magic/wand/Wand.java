@@ -633,6 +633,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		MaterialAndData icon = spell.getIcon();
 		if (icon == null) {
 			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
+			return null;
 		}
 		ItemStack itemStack = null;
 		ItemStack originalItemStack = null;
@@ -669,14 +670,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (brushData == null) return null;
 		
 		Material material = brushData.getMaterial();
-		if (material == null) return null;
+		if (material == null || material == Material.AIR) {
+			controller.getPlugin().getLogger().warning("Unable to create material icon for " + materialKey);
+			return null;
+		}
 		
 		byte dataId = brushData.getData();
 		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);
 		ItemStack itemStack = InventoryUtils.getCopy(originalItemStack);
 		if (itemStack == null) {
-			controller.getPlugin().getLogger().warning("Unable to create material icon for " + material.name() + ": " + originalItemStack.getType());	
-			return originalItemStack;
+			controller.getPlugin().getLogger().warning("Unable to create material icon for " + material.name() + ": " + materialKey);	
+			return null;
 		}
 		ItemMeta meta = itemStack.getItemMeta();
 		List<String> lore = new ArrayList<String>();
