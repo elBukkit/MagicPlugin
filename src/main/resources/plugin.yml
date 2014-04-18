@@ -1,6 +1,6 @@
 name: Magic
 main: com.elmakers.mine.bukkit.plugins.magic.MagicPlugin
-version: 3.0.0-SNAPSHOT
+version: 3.0-RC1
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
