@@ -1062,8 +1062,8 @@ meteor:
         count: 12
         fire: true
         spread: 30
-        y: ~12
-        dy: ~-0.2
+        py: ~12
+        pdy: ~-0.2
         range: 64
         allow_max_range: true
     costs:
@@ -1715,8 +1715,8 @@ bomb:
         fuse: 60
         fire: true
         count: 12
-        py: 20
-        dy: -0.75
+        py: ~20
+        pdy: -0.75
     costs:
         xp: 250
 superblob:
@@ -2305,7 +2305,7 @@ emp:
         target_type: LivingEntity
         allow_max_range: true
         range: 32
-        radius: 8
+        radius: 2
         type: sphere
         power: true
         cooldown: 1000

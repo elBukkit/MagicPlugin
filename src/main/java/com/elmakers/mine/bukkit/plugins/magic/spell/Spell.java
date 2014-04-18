@@ -41,8 +41,6 @@ import com.elmakers.mine.bukkit.utilities.Messages;
  * 
  * Base class for spells. Handles finding player location, targeting, and other
  * common spell activities.
- * 
- * Original targeting code ported from: HitBlox.java, Ho0ber@gmail.com 
  *
  */
 public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.spell.SpellTemplate>, Cloneable, CostReducer, com.elmakers.mine.bukkit.api.spell.Spell

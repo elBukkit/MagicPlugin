@@ -2,6 +2,12 @@
  
 ## For 3.0.0
 
+ - Cluster Bomb and Meteor shower are broken
+
+ - Generalize automata spell casting
+ - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
+ - Interpolate autonoma directional changes, configurable speed
+
  - Fix selling magic items to a trader not working - seems related to traders losing prices + inventory, maybe?
  - Futher investigate traders losing prices
  
@@ -14,10 +20,6 @@
  
  - Test place, pillar, bridge with replicate and clone materials
  - Why aren't chest contents loading properly in Life board?
-
- - Generalize automata spell casting
- - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
- - Interpolate autonoma directional changes, configurable speed
  
  - Config-driven WandLevel limits
  - Retry limit on construction batches
@@ -25,11 +27,14 @@
  - Commandbook kit integration
  - Ability to have normal enchants on a sword/wand
  - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
- - peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
 
  - Make "regengerate" undoable and safe.
+ 
  - Integrate with MobMoney to disallow money spamming (mob, farm spell, etc)
+ - Cast spells on WG region enter/exit (Darkrael)
+ 
  - Scoreboard mana/spell display
+ 
  - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
  - Add Multi-Spell Spell
  - Add Spell effect to projectile spell
@@ -37,8 +42,8 @@
  - Configurable randomization for Familiar spell
 
  - Make push spell reflect projectiles (set fireball velocity)
- - Cast spells on WG region enter/exit (Darkrael)
  - A way to /wand enchant with auto-fill but not filling wand... ?
+
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
  
  - Fix first construct of a schematic. (?)
@@ -52,6 +57,7 @@
  
 ## Post-3.0.0
 
+ - Peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Collapse blocklist chains on save (?)
  - Walls spell
  - Implement schematic saving as a "Snapshot" spell, restore with "Repair"?
@@ -67,28 +73,15 @@
  
 ## DOCUMENTATION / DEMO STUFF
 
- - check out node craft- thanks, Aireesan
+ - Thank Aireesan for NodeCraft recommendation
 
- - Add "wand properties" infobook
-
- - New spawn on dev server
-
- - Create new YouTube video(s)
- - Update "scripting" and "customization" documentation once tab completion is done.
- - API Tutorials, when API is complete.
- - Get Factions running on the demo server?
- 
- - Make RPG world - test MultiVerse inventories
- 
- - Build and have fun! ;)
+ - Add "wand properties" infobook, other admin-oriented books?
+ - Update web site wand instructions
 
 ##  API STUFF
 
- - Separate "Magic" API with a few simple methods like cast, undo, commit
  - ImageMap API
- - Spell API for custom spells
- - Sample custom spell plugin (soft-depend)
- - Sample API integration plugin (soft-depend)
+ - API Tutorials, when API is complete.
 
 ## NEAR-FUTURE STUFF
 
