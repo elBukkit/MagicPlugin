@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 3.0.0
+## 3.0 RC1
 
  - Add Backup and Repair spells.
  - Default "protected" and "powered" permissions to false
