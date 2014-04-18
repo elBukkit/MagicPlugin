@@ -912,7 +912,7 @@ wands:
         name: Earthbender
     fire_apprentice:
         name: Firebender
-    air_apprentice:
+    air:
         name: Airbending Master
     water:
         name: Waterbending Master

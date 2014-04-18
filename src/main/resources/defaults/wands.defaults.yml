@@ -910,7 +910,7 @@ elder:
         - clone
         - replicate
         - map
-air_studen:
+air_student:
     protection: 0.2
     protection_falling: 0.7
     xp_regeneration: 2
