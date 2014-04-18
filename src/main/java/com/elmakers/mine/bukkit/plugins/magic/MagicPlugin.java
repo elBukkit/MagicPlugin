@@ -80,7 +80,7 @@ import com.elmakers.mine.bukkit.utilities.URLMap;
 * &lt;/dependencies&gt;
 * &lt;repositories&gt;
 * &lt;repository&gt;
-*     &lt;id&gt;elMakers&lt;/id&gt;
+*     &lt;id&gt;elmakers-repo&lt;/id&gt;
 *     &lt;url&gt;http://maven.elmakers.com/repository/ &lt;/url&gt;
 * &lt;/repository&gt;
 * &lt;repository&gt;
