@@ -130,10 +130,12 @@
       		<id>dtlTraders</id>
       		<url>http://www.wbs-wireless.com:9090/plugin/repository/everything/</url>
       </repository>
+      <!-- Arg.
       <repository>
       		<id>Essentials</id>
       		<url>http://repo.ess3.net/content/groups/essentials</url>
       </repository>
+      -->
     </repositories>
 	<build>
 		<plugins>
