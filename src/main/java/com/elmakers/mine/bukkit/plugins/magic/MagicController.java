@@ -1059,6 +1059,8 @@ public class MagicController implements Listener
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		getLogger().info("Loaded " + lostWands.size() + " lost wands");
 	}
 	
 	protected void saveLostWandData() {
@@ -1087,6 +1089,7 @@ public class MagicController implements Listener
 
 	protected void loadAutomata()
 	{
+		int automataCount = 0;
 		try {
 			ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_FILE);
 			if (toggleBlockData != null)
@@ -1095,17 +1098,21 @@ public class MagicController implements Listener
 				for (String chunkId : chunkIds) {
 					ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
 					Map<Long, Automaton> restoreChunk = new HashMap<Long, Automaton>();
+					automata.put(chunkId, restoreChunk);
 					Set<String> blockIds = chunkNode.getKeys(false);
 					for (String blockId : blockIds) {
 						ConfigurationSection toggleConfig = chunkNode.getConfigurationSection(blockId);
 						Automaton toggle = new Automaton(toggleConfig);
 						restoreChunk.put(toggle.getId(), toggle);
+						automataCount++;
 					}
 				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		getLogger().info("Loaded " + automataCount + " automata");
 	}
 	
 	protected void saveAutomata()

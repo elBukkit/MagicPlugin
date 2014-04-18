@@ -105,6 +105,8 @@ public class URLMap extends MapRenderer  {
 				if (needsUpdate) {
 					save();
 				}
+				
+				info("Loaded " + keyMap.size() + " image maps");
 			} catch (Exception ex) {
 				warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
 			}
