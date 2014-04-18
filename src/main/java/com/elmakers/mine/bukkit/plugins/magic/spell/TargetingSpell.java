@@ -197,7 +197,7 @@ public abstract class TargetingSpell extends BaseSpell {
 	 * 
 	 * @return The block at the new location
 	 */
-	public Block getNextBlock()
+	protected Block getNextBlock()
 	{
 		previousPreviousBlock = previousBlock;
 		previousBlock = currentBlock;
@@ -470,6 +470,15 @@ public abstract class TargetingSpell extends BaseSpell {
 			previousBlock = previousPreviousBlock;
 		}
 		targetingComplete = true;
+	}
+	
+	public Block getInteractBlock() {
+		Location location = getEyeLocation();
+		if (location == null) return null;
+		Block playerBlock = location.getBlock();
+		if (isTargetable(playerBlock.getType())) return playerBlock;
+		Vector direction = location.getDirection().normalize();
+		return location.add(direction).getBlock();
 	}
 
 	public void coverSurface(Location center, int radius, BlockAction action)

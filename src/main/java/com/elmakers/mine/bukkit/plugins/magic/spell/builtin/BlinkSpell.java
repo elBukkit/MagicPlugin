@@ -73,9 +73,9 @@ public class BlinkSpell extends TargetingSpell
 			return ascend();
 		}
 		
-		if (autoPassthrough)
+		if (autoPassthrough && !isLookingUp() && !isLookingDown())
 		{
-			Block firstBlock = getNextBlock();
+			Block firstBlock = getInteractBlock();
 			if (firstBlock == null) return SpellResult.NO_TARGET;
 			
 			if (!allowPassThrough(firstBlock.getType())) 
