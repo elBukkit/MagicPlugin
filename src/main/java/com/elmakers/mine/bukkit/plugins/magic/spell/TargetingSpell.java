@@ -72,11 +72,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
 	protected void initializeTargeting()
 	{
-		Location location = getLocation();
-		if (location == null) {
-			return;
-		}
-		blockIterator = new BlockIterator(location, VIEW_HEIGHT, getMaxRange());
+		blockIterator = null;
 		targetSpaceRequired = false;
 		reverseTargeting = false;
 		targetingComplete = false;
@@ -170,7 +166,30 @@ public abstract class TargetingSpell extends BaseSpell {
 			return;
 		}
 		location.add(dx, dy, dz);
-		blockIterator = new BlockIterator(location, VIEW_HEIGHT, getMaxRange());
+		initializeBlockIterator(location);
+	}
+	
+	protected boolean initializeBlockIterator(Location location) {
+		if (location.getBlockY() < 0) {
+			location = location.clone();
+			location.setY(0);
+		}
+		if (location.getBlockY() > Spell.MAX_Y) {
+			location = location.clone();
+			location.setY(Spell.MAX_Y);
+		}
+		
+		try {
+			blockIterator = new BlockIterator(location, VIEW_HEIGHT, getMaxRange());
+		} catch (Exception ex) {
+			// This seems to happen randomly, like when you use the same target.
+			// Very annoying, and I now kind of regret switching to BlockIterator.
+			// At any rate, we're going to just re-use the last target block and 
+			// cross our fingers!
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -417,10 +436,21 @@ public abstract class TargetingSpell extends BaseSpell {
 
 	protected void findTargetBlock()
 	{
+		Location location = getLocation();
+		if (location == null) {
+			return;
+		}
 		if (targetingComplete)
 		{
 			return;
 		}
+		if (!initializeBlockIterator(location)) {
+			return;
+		}
+		currentBlock = null;
+		previousBlock = null;
+		previousPreviousBlock = null;
+
 		Block block = getNextBlock();
 		while (block != null)
 		{

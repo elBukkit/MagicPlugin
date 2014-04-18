@@ -24,13 +24,10 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
+import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 
 public class ConstructBatch extends VolumeBatch {
-	
-	// TODO: Global max-y config value
-	private final static int MAX_Y = 255;
-	
 	private final BlockList constructedBlocks = new BlockList();
 	private final Location center;
 	private Vector orient = null;
@@ -363,7 +360,7 @@ public class ConstructBatch extends VolumeBatch {
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
 		
-		if (y < 0 || y > MAX_Y) return true;
+		if (y < 0 || y > Spell.MAX_Y) return true;
 		
 		// Make sure the block is loaded.
 		Block block = center.getWorld().getBlockAt(x, y, z);
