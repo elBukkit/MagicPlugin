@@ -98,6 +98,8 @@ destructible:
 - cobblestone
 - mossy_cobblestone
 - clay
+- hard_clay
+- stained_clay
 - water
 - stationary_water
 - lava
