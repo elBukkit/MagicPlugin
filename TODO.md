@@ -2,8 +2,8 @@
  
 ## For 3.0.0
 
- - Cluster Bomb and Meteor shower are broken
-
+ - External schematic loading broken?
+ 
  - Generalize automata spell casting
  - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
  - Interpolate autonoma directional changes, configurable speed

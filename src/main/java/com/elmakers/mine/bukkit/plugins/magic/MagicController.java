@@ -1439,19 +1439,19 @@ public class MagicController implements Listener
 		allSpells.addAll(spells.values());
 		return allSpells;
 	}
-	
-	protected boolean allowPhysics(Block block)
-	{
-		if (physicsDisableTimeout == 0)
-			return true;
-		if (System.currentTimeMillis() > physicsDisableTimeout)
-			physicsDisableTimeout = 0;
-		return false;
-	}
 
 	public void disablePhysics(int interval)
 	{
-		physicsDisableTimeout = System.currentTimeMillis() + interval;
+		if (physicsHandler == null) {
+			physicsHandler = new PhysicsHandler(this, interval);
+			Bukkit.getPluginManager().registerEvents(physicsHandler, plugin);
+		}
+	}
+	
+	protected void unregisterPhysicsHandler(Listener listener)
+	{
+		BlockPhysicsEvent.getHandlerList().unregister(listener);
+		physicsHandler = null;
 	}
 
 	public boolean hasWandPermission(Player player)
@@ -1921,15 +1921,6 @@ public class MagicController implements Listener
 			} else {
 				mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
 			}
-		}
-	}
-
-	@EventHandler
-	public void onBlockPhysics(BlockPhysicsEvent event)
-	{
-		if (!allowPhysics(event.getBlock()))
-		{
-			event.setCancelled(true);
 		}
 	}
 
@@ -2732,7 +2723,6 @@ public class MagicController implements Listener
 	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
 	 private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
 	 
-	 private long                                physicsDisableTimeout          = 0;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;
 	 private int								 pendingQueueDepth				= 16;
@@ -2811,6 +2801,8 @@ public class MagicController implements Listener
 	 private DynmapController					 dynmap							= null;
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;
+	 
+	 private PhysicsHandler						 physicsHandler					= null;
 
 	 private Map<String, Map<Long, Automaton>> 	 automata			    		= new HashMap<String, Map<Long, Automaton>>();
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
