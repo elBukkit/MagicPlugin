@@ -120,6 +120,7 @@ public class URLMap extends MapRenderer  {
 	 * 
 	 * @param callingPlugin
 	 * @param configFile
+	 * @param cache
 	 */
 	public static void load(Plugin callingPlugin, File configFile, File cache) {
 		cacheFolder = cache;
@@ -210,7 +211,7 @@ public class URLMap extends MapRenderer  {
 	 * 
 	 * @param name
 	 * 	The display name to give the new item. Optional.
-	 * @param mapView
+	 * @param mapId
 	 * @return
 	 */
 	public static ItemStack getMapItem(String name, short mapId) {
@@ -226,7 +227,10 @@ public class URLMap extends MapRenderer  {
 	/**
 	 * Get an ItemStack that is a headshot of a player's skin.
 	 * 
+	 * @param worldName
 	 * @param playerName
+	 * @param priority
+	 * @param photoName
 	 * @return
 	 */
 	public static ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoName) {
@@ -262,6 +266,7 @@ public class URLMap extends MapRenderer  {
 	/**
 	 * Force reload of a player headshot.
 	 * 
+	 * @param worldName
 	 * @param playerName
 	 */
 	public static void forceReloadPlayerPortrait(String worldName, String playerName) {
@@ -271,6 +276,7 @@ public class URLMap extends MapRenderer  {
 	/**
 	 * Force reload of the specific url and cropping.
 	 * 
+	 * @param worldName
 	 * @param url
 	 * @param x
 	 * @param y

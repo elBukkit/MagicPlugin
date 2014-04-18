@@ -9,8 +9,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class GrenadeSpell extends BlockSpell
 {

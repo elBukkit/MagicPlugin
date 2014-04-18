@@ -30,6 +30,84 @@ import com.elmakers.mine.bukkit.plugins.magic.commands.WandCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.URLMap;
 
+/*! \mainpage Magic Bukkit Plugin
+*
+* \section intro_sec Introduction
+*
+* This is the documentation for the MagicPlugin. If you are looking to
+* integrate with Magic (but not extend it), see the MagicAPI:
+* 
+* http://github.com/elBukkit/MagicAPI
+* 
+* Building against MagicPlugin directly is only necessary if you want
+* to extend Magic, such as adding a new Spell or EffectPlayer.
+* 
+* \section start_sec Getting Started
+* 
+* If you haven't done so already, get started with Bukkit by getting a basic
+* shell of a plugin working. You should at least have a working Plugin that
+* loads in Bukkit (add a debug print to onEnable to be sure!) before you
+* start trying to integrate with other Plugins. See here for general help:
+* 
+* http://wiki.bukkit.org/Plugin_Tutorial
+* 
+* \section maven_sec Building with Maven
+* 
+* Once you have a project set up, it is easy to build against the Magic API
+* with Maven. Simply add the elmakers repository to your repository list,
+* and then add a dependency for MagicAPI. A typical setup would look like:
+* 
+* <pre>
+* &lt;dependencies&gt;
+* &lt;dependency&gt;
+* 	&lt;groupId&gt;org.bukkit&lt;/groupId&gt;
+* 	&lt;artifactId&gt;bukkit&lt;/artifactId&gt;
+* 	&lt;version&gt;1.6.4-R2.0&lt;/version&gt;
+* 	&lt;scope&gt;provided&lt;/scope&gt;
+* &lt;/dependency&gt;
+* &lt;dependency&gt;
+* 	&lt;groupId&gt;com.elmakers.mine.bukkit&lt;/groupId&gt;
+* 	&lt;artifactId&gt;MagicAPI&lt;/artifactId&gt;
+* 	&lt;version&gt;1.0&lt;/version&gt;
+* 	&lt;scope&gt;provided&lt;/scope&gt;
+* &lt;/dependency&gt;
+* &lt;dependency&gt;
+* 	&lt;groupId&gt;com.elmakers.mine.bukkit.plugins&lt;/groupId&gt;
+* 	&lt;artifactId&gt;Magic&lt;/artifactId&gt;
+* 	&lt;version&gt;3.0-RC1&lt;/version&gt;
+* 	&lt;scope&gt;provided&lt;/scope&gt;
+* &lt;/dependency&gt;
+* &lt;/dependencies&gt;
+* &lt;repositories&gt;
+* &lt;repository&gt;
+*     &lt;id&gt;elMakers&lt;/id&gt;
+*     &lt;url&gt;http://maven.elmakers.com/repository/&lt;/url&gt;
+* &lt;/repository&gt;
+* &lt;repository&gt;
+*     &lt;id&gt;bukkit-repo&lt;/id&gt;
+*     &lt;url&gt;http://repo.bukkit.org/content/groups/public/&lt;/url&gt;
+* &lt;/repository&gt;
+* &lt;/repositories&gt;
+* </pre>
+* 
+* \section example_sec Examples
+*
+* \subsection casting Casting Spells
+* 
+* A plugin may cast spells directly, or on behalf of logged in players.
+* 
+* \subsection wands Creating Wands
+* 
+* A plugin may create or modify Wand items.
+*/
+
+/**
+ * This is the main Plugin class for Magic.
+ * 
+ * An integrating Plugin should generally cast this to MagicAPI and
+ * use the API interface when interacting with Magic.
+ *
+ */
 public class MagicPlugin extends JavaPlugin implements MagicAPI
 {	
 	/*

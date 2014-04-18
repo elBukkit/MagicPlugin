@@ -11,12 +11,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.ConstructBatch;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.spell.TargetType;
 import com.elmakers.mine.bukkit.utilities.Target;
 
 public class ConstructSpell extends BrushSpell

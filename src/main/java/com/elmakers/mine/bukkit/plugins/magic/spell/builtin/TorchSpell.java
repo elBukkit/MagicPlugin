@@ -5,9 +5,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class TorchSpell extends BlockSpell 
 {

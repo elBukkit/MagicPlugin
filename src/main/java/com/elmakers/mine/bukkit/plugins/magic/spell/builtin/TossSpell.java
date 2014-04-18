@@ -6,9 +6,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class TossSpell extends BrushSpell
 { 

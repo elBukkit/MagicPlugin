@@ -17,9 +17,9 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class DynmapController {
 	 private final Plugin plugin;

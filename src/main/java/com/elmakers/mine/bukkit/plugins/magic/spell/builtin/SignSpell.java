@@ -11,9 +11,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.utilities.Target;
 
 public class SignSpell extends BlockSpell

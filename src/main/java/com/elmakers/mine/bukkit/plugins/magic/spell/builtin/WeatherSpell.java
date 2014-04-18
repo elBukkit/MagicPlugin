@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BaseSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class WeatherSpell extends BaseSpell
 {

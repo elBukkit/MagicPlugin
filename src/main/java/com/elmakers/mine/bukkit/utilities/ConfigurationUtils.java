@@ -455,8 +455,8 @@ public class ConfigurationUtils {
 	  * and an empty list will be returned instead. The node must be
 	  * an actual list and not just an integer.
 	  *
+	  * @param section the ConfigurationSection to load the list from
 	  * @param path path to node (dot notation)
-	  * @param def default value or null for an empty list as default
 	  */
 	 public static List<Integer> getIntegerList(ConfigurationSection section, String path) {
 		 List<Object> raw = getList(section, path);

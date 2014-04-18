@@ -77,6 +77,7 @@ public class LightSource extends NMSUtils {
 	/**
 	 * Updates the block making the light source return to what it actually is
 	 * @param l
+	 * @param players
 	 */
 	@SuppressWarnings("deprecation")
 	public static void deleteLightSource (Location l, Collection<Player> players) {
@@ -91,6 +92,7 @@ public class LightSource extends NMSUtils {
 	/**
 	 * Gets all the chunks touching/diagonal to the chunk the location is in and updates players with them.
 	 * @param l
+	 * @param players
 	 */
 	@SuppressWarnings("deprecation")
 	private static void updateChunk (Location l, Collection<Player> players) {

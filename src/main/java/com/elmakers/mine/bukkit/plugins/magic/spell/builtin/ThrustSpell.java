@@ -18,8 +18,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 
 public class ThrustSpell extends TargetingSpell

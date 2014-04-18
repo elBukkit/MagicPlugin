@@ -5,9 +5,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.SimpleBlockAction;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class FireSpell extends BlockSpell
 {

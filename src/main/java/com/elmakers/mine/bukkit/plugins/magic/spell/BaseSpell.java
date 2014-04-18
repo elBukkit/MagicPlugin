@@ -251,7 +251,6 @@ public abstract class BaseSpell extends Spell {
 	/**
 	 * Send a message to a player when a spell is cast.
 	 * 
-	 * @param player The player to send a message to 
 	 * @param message The message to send
 	 */
 	public void castMessage(String message)
@@ -268,7 +267,6 @@ public abstract class BaseSpell extends Spell {
 	 * 
 	 * Use this to send messages to the player that are important.
 	 * 
-	 * @param player The player to send the message to
 	 * @param message The message to send
 	 */
 	public void sendMessage(String message)

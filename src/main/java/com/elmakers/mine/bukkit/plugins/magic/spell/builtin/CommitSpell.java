@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utilities.Target;
 

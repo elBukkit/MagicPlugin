@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
 
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 
 public class MapSpell extends TargetingSpell

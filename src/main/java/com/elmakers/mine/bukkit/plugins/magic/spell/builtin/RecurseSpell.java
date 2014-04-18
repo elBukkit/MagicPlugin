@@ -4,11 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockRecurse;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 
 public class RecurseSpell extends BrushSpell 
 {

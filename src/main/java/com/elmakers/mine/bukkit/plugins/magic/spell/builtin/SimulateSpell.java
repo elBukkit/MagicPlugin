@@ -16,10 +16,10 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 

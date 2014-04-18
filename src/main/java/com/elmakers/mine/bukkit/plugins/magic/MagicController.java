@@ -83,6 +83,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -96,7 +97,6 @@ import com.elmakers.mine.bukkit.plugins.magic.commands.MagicTabExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
@@ -562,7 +562,8 @@ public class MagicController implements Listener
 				File extraSchematicFile = null;
 				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
 					File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-					extraSchematicFile = new File(schematicFolder, schematicName);
+					extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
+					getLogger().info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath());
 				}
 				
 				if (extraSchematicFile != null && extraSchematicFile.exists()) {

@@ -27,6 +27,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effects.EffectPlayer;
 import com.elmakers.mine.bukkit.effects.EffectSingle;
@@ -629,7 +631,6 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	/**
 	 * Listener method, called on player move for registered spells.
 	 * 
-	 * @param player The player that died
 	 * @param event The original entity death event
 	 * @see MagicController#registerEvent(SpellEventType, Spell)
 	 */
@@ -655,9 +656,6 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 
 	/**
 	 * Called by the Spells plugin to cancel this spell, do not call.
-	 * 
-	 * @param plugin The Spells plugin instance
-	 * @param player The player cancelling selection
 	 */
 	public boolean cancel()
 	{

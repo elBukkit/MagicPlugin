@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class BlockRecurse
 {

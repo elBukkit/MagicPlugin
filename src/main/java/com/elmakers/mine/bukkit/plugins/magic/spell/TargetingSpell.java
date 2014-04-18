@@ -23,6 +23,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.BlockAction;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;

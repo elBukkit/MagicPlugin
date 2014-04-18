@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockBatch;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -36,7 +37,6 @@ import com.elmakers.mine.bukkit.block.UndoBatch;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
@@ -486,9 +486,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 
 	/**
-	 * Send a message to a player when a spell is cast.
+	 * Send a message to this Mage when a spell is cast.
 	 * 
-	 * @param player The player to send a message to 
 	 * @param message The message to send
 	 */
 	public void castMessage(String message)
@@ -506,11 +505,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 
 	/**
-	 * Send a message to a player. 
+	 * Send a message to this Mage. 
 	 * 
 	 * Use this to send messages to the player that are important.
 	 * 
-	 * @param player The player to send the message to
 	 * @param message The message to send
 	 */
 	public void sendMessage(String message)

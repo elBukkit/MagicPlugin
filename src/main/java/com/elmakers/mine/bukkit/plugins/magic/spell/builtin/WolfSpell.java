@@ -11,7 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
 
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utilities.Target;
 

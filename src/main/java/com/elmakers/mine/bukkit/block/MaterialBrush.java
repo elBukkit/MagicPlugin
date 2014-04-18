@@ -66,6 +66,7 @@ public class MaterialBrush extends MaterialAndData {
 	private MaterialMapCanvas mapCanvas = null;
 	private Material mapMaterialBase = Material.STAINED_CLAY;
 	private Schematic schematic;
+	private String schematicName = "";
 	private boolean fillWithAir = true;
 	private Vector orientVector = null;
 	
@@ -155,14 +156,15 @@ public class MaterialBrush extends MaterialAndData {
 		if (materialKey == null) return null;
 		String materialName = materialKey;
 		String[] namePieces = splitMaterialKey(materialName);
+
 		if (namePieces.length == 0) return null;
 		
 		materialName = namePieces[0];
 		
-		if (!MaterialBrush.isSpecialMaterialKey(materialKey)) {
-			return MaterialAndData.getMaterialName(materialKey);
-		} else if (materialName.startsWith(MaterialBrush.SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
+		if (materialName.startsWith(MaterialBrush.SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
 			materialName = namePieces[1];
+		} else if (!MaterialBrush.isSpecialMaterialKey(materialKey)) {
+			return MaterialAndData.getMaterialName(materialKey);
 		}
 		
 		materialName = materialName.toLowerCase().replace('_', ' ');
@@ -177,7 +179,7 @@ public class MaterialBrush extends MaterialAndData {
 		case REPLICATE: brushKey = REPLICATE_MATERIAL_KEY; break;
 		case COPY: brushKey = COPY_MATERIAL_KEY; break;
 		case MAP: brushKey = MAP_MATERIAL_KEY; break;
-		case SCHEMATIC: brushKey = SCHEMATIC_MATERIAL_KEY + ":" + customName; break;
+		case SCHEMATIC: brushKey = SCHEMATIC_MATERIAL_KEY + ":" + schematicName; break;
 			default: break;
 		}
 		return getMaterialName(brushKey);
@@ -207,6 +209,7 @@ public class MaterialBrush extends MaterialAndData {
 			material = MapMaterial;
 		} else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY) && pieces.length > 1) {
 			material = SchematicMaterial;
+			// TODO: Kind of a hack, but I think I did this for display reasons? Need to circle back on it.
 			customName = pieces[1];
 		} else {
 			MaterialAndData basic = new MaterialAndData(materialKey);
@@ -308,7 +311,7 @@ public class MaterialBrush extends MaterialAndData {
 			fillWithAir = this.mode == BrushMode.ERASE;
 			this.mode = BrushMode.SCHEMATIC;
 		}
-		this.customName = name;
+		this.schematicName = name;
 		schematic = null;
 	}
 	
@@ -466,14 +469,14 @@ public class MaterialBrush extends MaterialAndData {
 		
 		if (mode == BrushMode.SCHEMATIC) {
 			if (schematic == null) {
-				if (customName.length() == 0) {
+				if (schematicName.length() == 0) {
 					isValid = false;
 					return true;
 				}
 				
-				schematic = mage.getController().loadSchematic(customName);
+				schematic = mage.getController().loadSchematic(schematicName);
 				if (schematic == null) {
-					customName = "";
+					schematicName = "";
 					isValid = false;
 					return true;
 				}
@@ -561,6 +564,7 @@ public class MaterialBrush extends MaterialAndData {
 			cloneLocation = ConfigurationUtils.getLocation(node, "clone_location");
 			cloneTarget = ConfigurationUtils.getLocation(node, "clone_target");
 			materialTarget = ConfigurationUtils.getLocation(node, "material_target");
+			schematicName = node.getString("schematic", schematicName);
 			mapId = (short)node.getInt("map_id", mapId);
 			material = ConfigurationUtils.getMaterial(node, "material", material);
 			data = (byte)node.getInt("data", data);
@@ -587,6 +591,7 @@ public class MaterialBrush extends MaterialAndData {
 			node.set("material", ConfigurationUtils.fromMaterial(material));
 			node.set("data", data);
 			node.set("extra_data", customName);
+			node.set("schematic", schematicName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());

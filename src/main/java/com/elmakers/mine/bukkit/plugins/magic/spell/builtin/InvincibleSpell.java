@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 
 public class InvincibleSpell extends TargetingSpell 
