@@ -1,6 +1,17 @@
 package com.elmakers.mine.bukkit.utility;
 
-
+/**
+ * Used by RandomUtils to create a randomly-selectable set of objects, based on each
+ * category having a weight.
+ * 
+ * This class may be used with any base type, so that a String may be randomly selected,
+ * or a numeric value.
+ * 
+ * RandomUtils also supports return linearly interpolated (lerp'd) values for numeric-based
+ * weighted pairs, for a smoothly sliding scale of weighted values.
+ * 
+ * @param <T> The type of Object to randomly select
+ */
 public class WeightedPair<T extends Object> {
 	private Float threshold;
 	private T value;

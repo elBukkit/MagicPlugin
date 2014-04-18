@@ -6,6 +6,13 @@ import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
+/**
+ * A Spell template, as defined in the spells configuration files.
+ * 
+ * Every spell uses a specific Class that must extend from
+ * com.elmakers.mine.bukkit.plugins.magic.spell.Spell. Implemeting the Spell or SpellTemplate
+ * interface is not sufficient for making a custom Spell, you must link to MagicPlugin directly.
+ */
 public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
 	public String getName();
 	public String getDescription();

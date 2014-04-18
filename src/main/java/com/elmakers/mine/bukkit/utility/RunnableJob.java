@@ -4,6 +4,10 @@ import java.util.logging.Logger;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * A simple BukkitRunnable variant that supports auto-finishing
+ * and notification.
+ */
 public abstract class RunnableJob extends BukkitRunnable {
 	protected boolean finished = false;
 	protected final Logger logger;

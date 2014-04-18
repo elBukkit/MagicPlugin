@@ -1,5 +1,17 @@
 package com.elmakers.mine.bukkit.block;
 
+/**
+ * Represents a batched Block update, usually started by a construction Spell.
+ * 
+ * Magic will process pending BlockBatch requests once every tick, up to a
+ * maximum number of Block updates per tick (the default is 1,000).
+ * 
+ * Every BlockBatch is required to perform only as many updates as requested,
+ * and to report how many updates were performed.
+ * 
+ * A BlockBatch must also report when it is finished, and perform any required
+ * actions on finish, such as registering an UndoBatch for undo.
+ */
 public interface BlockBatch {
 	/**
 	 * Process one iteration of this batch.

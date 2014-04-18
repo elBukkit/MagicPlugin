@@ -10,6 +10,15 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Contains some raw methods for doing some simple NMS utilities.
+ * 
+ * This is not meant to be a replacement for full-on NMS or Protocol libs,
+ * but it is enough for Magic to use internally without requiring any
+ * external dependencies.
+ * 
+ * Use any of this at your own risk!
+ */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class NMSUtils {
 	protected static String versionPrefix = "";
