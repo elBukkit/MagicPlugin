@@ -10,10 +10,56 @@
 		<dependencies>
 		</dependencies>
 	</dependencyManagement>
+	
+	<licenses>
+		<license>
+			<name>GNU General Public License 2.0</name>
+			<url>LICENSE</url>
+			<distribution>repo</distribution>
+			<comments>Free as in Everything</comments>
+		</license>
+	</licenses>
+  
+  	<issueManagement>
+		<system>Jira</system>
+		<url>http://jira.elmakers.com</url>
+	</issueManagement>
+  
+  	<ciManagement>
+    	<system>Jenkins</system>
+    	<url>http://jenkins.elmakers.com</url>
+  	</ciManagement>
+  
+  	<scm>
+    	<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
+    	<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
+    	<url>https://github.com/elBukkit/MagicPlugin</url>
+    	<tag>master</tag>
+  	</scm>
+  
+  	<mailingLists>
+    	<mailingList>
+      		<name>Developer Discussion</name>
+      		<archive>https://groups.google.com/forum/#!forum/magic-plugin</archive>
+    	</mailingList>
+  	</mailingLists>
+  
+  	<distributionManagement>
+    	<repository>
+      		<id>maven.elmakers.com</id>
+      		<url>http://maven.elmakers.com/repository/</url>
+    	</repository>
+    	<snapshotRepository>
+      		<id>maven.elmakers.com</id>
+      		<url>http://maven.elmakers.com/repository/</url>
+    	</snapshotRepository>
+  	</distributionManagement>
+	
 	<properties>
 		<build.version>3.0.0</build.version>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>		
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
@@ -48,7 +94,7 @@
 		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>worldguard</artifactId>
-			<version>5.9</version>
+			<version>5.8</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -64,7 +110,11 @@
 		</dependency>
 	</dependencies>
 	<repositories>
-       <repository>
+      <repository>
+            <id>elMakers</id>
+            <url>http://maven.elmakers.com/repository/</url>
+      </repository>
+      <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
       </repository>
@@ -77,12 +127,12 @@
       		<url>http://repo.mikeprimm.com/</url>
       </repository>
       <repository>
-      		<id>Essentials</id>
-      		<url>http://repo.ess3.net/content/groups/essentials</url>
-      </repository>
-      <repository>
       		<id>dtlTraders</id>
       		<url>http://www.wbs-wireless.com:9090/plugin/repository/everything/</url>
+      </repository>
+      <repository>
+      		<id>Essentials</id>
+      		<url>http://repo.ess3.net/content/groups/essentials</url>
       </repository>
     </repositories>
 	<build>
