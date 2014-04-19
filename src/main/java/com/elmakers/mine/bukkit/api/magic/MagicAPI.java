@@ -23,7 +23,13 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 * If you wish to extend Magic, such as by adding a completely new Spell
 * or EffectPlayer class, you will need to build against MagicPlugin directly:
 * 
-* http://github.com/elBukkit/MagicPlugin
+* http://jenkins.elmakers.com/job/MagicPlugin/doxygen/
+* 
+* \section issues_sec Issues
+* 
+* For issues with the API, or suggestions, use our Issue Tracker:
+* 
+* http://jira.elmakers.com/browse/API/
 * 
 * \section start_sec Getting Started
 * 

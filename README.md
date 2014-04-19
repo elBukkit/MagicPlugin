@@ -18,3 +18,9 @@ Other plugins may deeply extend Magic, such as by adding new spell or effect cla
 To do so, you may directly link to Magic, or you can try to work within the confines of MagicAPI - think of it as MagicAPI:Magic :: Bukkit:Craftbukkit.
 
 In either case, you will likely be making a hard dependency to make, in which case you can reference both MagicAPI and Magic as "provided" in your pom.xml (for Maven), since the classes will be provided by Magic at runtime.
+
+## Issues
+
+Issues, feature requests, or suggestions for this API should be made at our issue tracker:
+
+http://jira.elmakers.com/browse/API/
