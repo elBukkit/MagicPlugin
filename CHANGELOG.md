@@ -1,11 +1,14 @@
 # CHANGELOG
 
-## 3.0.0
+## 3.0-RC1
+
+ - First official release candidate!
 
  - Add Backup and Repair spells.
  - Default "protected" and "powered" permissions to false
  - Add commit_on_quit config.yml option to save memory (at the expense of undo ability after logout)
  - Improved tab completion for /cast and /wand parameters, useful for experimentation
+ - Add/Remove physics handler dynamically (thanks, @Silversbane!)
  - HUGE code cleanup, API preparation.
 
 ## 2.9.9
