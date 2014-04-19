@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -82,6 +83,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.mcstats.Metrics;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.Automaton;
@@ -131,7 +133,7 @@ public class MagicController implements Listener
 		playerDataFolder.mkdirs();
 
 		defaultsFolder = new File(configFolder, "defaults");
-		defaultsFolder.mkdirs();	
+		defaultsFolder.mkdirs();
 	}
 	
 	/*
@@ -670,10 +672,20 @@ public class MagicController implements Listener
 	/*
 	 * Saving and loading
 	 */
-
 	public void initialize()
 	{
 		load();
+
+		metrics = null;
+		if (metricsLevel > 0) {
+			try {
+			    metrics = new Metrics(plugin);
+			    metrics.start();
+			    plugin.getLogger().info("Activated MCStats");
+			} catch (IOException e) {
+			    plugin.getLogger().warning("Failed to load MCStats: " + e.getMessage());
+			}
+		}
 		
 		if (craftingEnabled) {
 			Wand wand = new Wand(this);
@@ -1383,6 +1395,8 @@ public class MagicController implements Listener
 		
 		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", factionsManager.isEnabled()));
 		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
+		
+		metricsLevel = properties.getInt("metrics_level", metricsLevel);
 		
 		if (properties.contains("mana_display")) {
 			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
@@ -2808,4 +2822,7 @@ public class MagicController implements Listener
 	 private Map<String, Map<Long, Automaton>> 	 automata			    		= new HashMap<String, Map<Long, Automaton>>();
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
 	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();
+	 
+	 private int								 metricsLevel					= 0;
+	 private Metrics							 metrics						= null;
 }
