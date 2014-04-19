@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Material;
@@ -46,6 +47,13 @@ public abstract class BlockSpell extends TargetingSpell {
 	protected void setDestructible(Set<Material> materials) {
 		checkDestructible = true;
 		destructible = materials;
+	}
+	
+	protected void addDestructible(Material material) {
+		if (destructible == null) {
+			destructible = new HashSet<Material>(controller.getDestructibleMaterials());
+		}
+		destructible.add(material);
 	}
 
 	@Override

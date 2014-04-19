@@ -43,29 +43,23 @@ public class AnimateSpell extends SimulateSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
+		if (parameters.contains("material")) {
+			targetMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", targetMaterial);
+			addDestructible(targetMaterial.getMaterial());
+		}
+
 		Set<Material> restricted = controller.getMaterialSet(parameters.getString("restricted", "restricted"));
 		if (restricted.contains(targetMaterial.getMaterial()))
 		{
 			return SpellResult.RESTRICTED;
 		}
-		
-		BlockFace powerFace = SimulateBatch.findPowerLocation(targetBlock, targetMaterial);
-		if (powerFace == null)
-		{
-			return SpellResult.NO_TARGET;
-		}
-		final Block powerBlock = targetBlock.getRelative(powerFace);
-		final BlockList modifiedBlocks = new BlockList();
-		modifiedBlocks.add(targetBlock);
-		modifiedBlocks.add(powerBlock);
-		
-		if (!isDestructible(targetBlock) || !isDestructible(powerBlock)) {
+
+		if (!isDestructible(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
 		int seedRadius = parameters.getInt("seed_radius", 0);
 		if (seedRadius > 0) {
-			targetMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", targetMaterial);
 			for (int dx = -seedRadius; dx < seedRadius; dx++) {
 				for (int dz = -seedRadius; dz < seedRadius; dz++) {
 					for (int dy = -seedRadius; dy < seedRadius; dy++) {
@@ -76,6 +70,21 @@ public class AnimateSpell extends SimulateSpell
 					}
 				}
 			}
+		}
+
+		BlockFace powerFace = SimulateBatch.findPowerLocation(targetBlock, targetMaterial);
+		if (powerFace == null)
+		{
+			return SpellResult.NO_TARGET;
+		}
+		
+		final Block powerBlock = targetBlock.getRelative(powerFace);
+		final BlockList modifiedBlocks = new BlockList();
+		modifiedBlocks.add(targetBlock);
+		modifiedBlocks.add(powerBlock);
+		
+		if (!isDestructible(powerBlock)) {
+			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
 		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
