@@ -2823,6 +2823,6 @@ public class MagicController implements Listener
 	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
 	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();
 	 
-	 private int								 metricsLevel					= 0;
+	 private int								 metricsLevel					= 5;
 	 private Metrics							 metrics						= null;
 }
