@@ -53,7 +53,7 @@ public class RandomUtils {
 			for (String key : keys) {
 				// Kind of a hack, but the yaml parser doesn't like "." in a key.
 				String value = nodeMap.getString(key);
-				key = key.replace("|", ".");
+				key = key.replace("^", ".");
 				
 				currentThreshold += lerp(value.split(","), levelIndex, nextLevelIndex, distance);
 				probabilityMap.add(new WeightedPair<T>(currentThreshold, key, valueClass));
