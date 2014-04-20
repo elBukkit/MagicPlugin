@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -22,11 +23,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utilities.Target;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -211,7 +211,7 @@ public class SimulateBatch extends VolumeBatch {
 			Spell spell = mage.getSpell(spellName);
 			if (spell != null) {
 				if (DEBUG) {
-					controller.getLogger().info(commandName + " casting " + tickSpell + " on death");
+					controller.getLogger().info(commandName + " casting " + deathSpell + " on death");
 				}
 				spell.cast(parameters);
 			}
@@ -388,7 +388,7 @@ public class SimulateBatch extends VolumeBatch {
 			}
 			
 			y++;
-			if (y > radius) {
+			if (y > yRadius) {
 				y = 0;
 				if (x < radius) {
 					x++;
@@ -699,13 +699,23 @@ public class SimulateBatch extends VolumeBatch {
 				
 				if (tickSpell.length() > 0) {
 					if (Math.random() < castProbability) {
-						Spell spell = mage.getSpell(tickSpell);
+						String[] baseParameters = {"cost_reduction", "1", "transparent", "air," + birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
+						List<String> parameters = new ArrayList<String>(Arrays.asList(baseParameters));
+						
+						String spellName = tickSpell;
+						if (spellName.contains(" ")) {
+							String[] pieces = StringUtils.split(spellName, ' ');
+							spellName = pieces[0];
+							for (int i = 1; i < pieces.length; i++) {
+								parameters.add(pieces[i]);
+							}
+						}
+						Spell spell = mage.getSpell(spellName);
 						if (spell != null) {
 							if (DEBUG) {
 								controller.getLogger().info(commandName + " casting " + tickSpell + " at " + targetDescription);
 							}
-							String[] parameters = {"cost_reduction", "1", "transparent", "air," + birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
-							spell.cast(parameters);
+							spell.cast(parameters.toArray(baseParameters));
 						}
 					}
 				}
@@ -726,12 +736,6 @@ public class SimulateBatch extends VolumeBatch {
 		commandMoveRangeSquared = commandRadius * commandRadius;
 	}
 	
-	protected boolean isAlive(Block block, MaterialAndData liveMaterial, boolean includeCommands)
-	{
-		Material neighborType = block.getType();
-		return (liveMaterial.is(block) || (includeCommands && (neighborType == Material.COMMAND || neighborType == POWER_MATERIAL)));
-	}
-	
 	public static BlockFace findPowerLocation(Block block, MaterialAndData targetMaterial) {
 		for (BlockFace face : POWER_FACES) {
 			if (targetMaterial.is(block.getRelative(face))) {
@@ -748,28 +752,28 @@ public class SimulateBatch extends VolumeBatch {
 	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands, BlockFace[] faces, boolean includeUp, boolean includeDown) {
 		int liveCount = 0;
 		for (BlockFace face : faces) {
-			if (isAlive(block.getRelative(face), liveMaterial, includeCommands)) {
+			if (liveMaterial.is(block.getRelative(face))) {
 				liveCount++;
 			}
 		}
 		
 		if (yRadius > 0) {
 			Block upBlock = block.getRelative(BlockFace.UP);
-			if (isAlive(upBlock, liveMaterial, includeCommands)) {
+			if (liveMaterial.is(upBlock)) {
 				liveCount++;
 			}
 			for (BlockFace face : faces) {
-				if (isAlive(upBlock.getRelative(face), liveMaterial, includeCommands)) {
+				if (liveMaterial.is(upBlock.getRelative(face))) {
 					liveCount++;
 				}
 			}
 
 			Block downBlock = block.getRelative(BlockFace.DOWN);
-			if (isAlive(downBlock, liveMaterial, includeCommands)) {
+			if (liveMaterial.is(downBlock)) {
 				liveCount++;
 			}
 			for (BlockFace face : faces) {
-				if (isAlive(downBlock.getRelative(face), liveMaterial, includeCommands)) {
+				if (liveMaterial.is(downBlock.getRelative(face))) {
 					liveCount++;
 				}
 			}

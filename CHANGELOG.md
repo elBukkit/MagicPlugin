@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0-RC2
+
+ - Added "Worm", a new Automaton. Improved and differentiated the others.
+
 ## 3.0-RC1
 
  - First official release candidate!

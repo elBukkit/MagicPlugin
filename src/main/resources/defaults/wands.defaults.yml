@@ -2251,7 +2251,6 @@ hunterheart:
     active_spell: hunter
     icon: spider_eye
     indestructible: false
-    cost_reduction: 0.1
     locked: true
     uses: 1
     effect_color: 'FF0000'
@@ -2261,7 +2260,6 @@ virusheart:
     active_spell: virus
     icon: fermented_spider_eye
     indestructible: false
-    cost_reduction: 0.2
     locked: true
     uses: 1
     effect_color: 'FF0000'
@@ -2271,22 +2269,29 @@ wormheart:
     active_spell: worm
     icon: string
     indestructible: false
-    cost_reduction: 0.2
     locked: true
     uses: 1
     effect_color: 'FF8800'
     spells:
-        - virus
+        - worm
 defenderheart:
     active_spell: defender
     icon: quartz
     indestructible: false
-    cost_reduction: 0.5
     locked: true
     uses: 1
     effect_color: 'FF0000'
     spells:
         - defender
+golemheart:
+    active_spell: animate
+    icon: trap_door
+    indestructible: false
+    locked: true
+    uses: 1
+    effect_color: '8888FF'
+    spells:
+        - animate
     
     
     

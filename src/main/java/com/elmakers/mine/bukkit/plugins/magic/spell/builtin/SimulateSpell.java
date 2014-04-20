@@ -52,9 +52,7 @@ public class SimulateSpell extends BlockSpell {
 		
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = parameters.getInt("r", radius);
-		radius *= mage.getConstructionMultiplier();
 		int yRadius = parameters.getInt("yradius", 0);
-		yRadius *= mage.getConstructionMultiplier();
 		
 		MaterialAndData birthMaterial = new MaterialAndData(target);
 		birthMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", birthMaterial);

@@ -8,32 +8,21 @@ http://jira.elmakers.com/browse/MAGIC
  
 ## For 3.0.0
  
- - A way to /wand enchant with auto-fill but not filling wand... ?
-
- - Magic stats (that persist) - block modified, etc. (Statistics API?)
- 
- - Fix first construct of a schematic. (?)
-
  - Tweaking/Balancing - haste, cooldowns, etc
  - Finish localization
- - Arena spell/schematic
  - Player-specific wands, check player data- rileycross, treed, obibenkenobie .. ?
  
- - Test with CB 1.6
- 
-## Post-3.0.0
+## To Add to JIRA
 
+ - Arena spell/schematic
+ - A way to /wand enchant with auto-fill but not filling wand... ?
+ - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Collapse blocklist chains on save (?)
  - Walls spell
- - Implement schematic saving as a "Snapshot" spell, restore with "Repair"?
  - Enchant count limit for wands
- - Magic bows that fire arrows that trigger spells... ?
- - Phase scaling in the End? Experiment...
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
- - Fix dtlTraders integration
- - Add schematic list command (just for magic-specific schematics, and/or WE ones, too)
-  - Support schematic entity import for paintings and item frames (at least)
+- Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
  - Async player data loading/saving
  
@@ -48,11 +37,6 @@ http://jira.elmakers.com/browse/MAGIC
 
  - ImageMap API
  - API Tutorials, when API is complete.
-
-## NEAR-FUTURE STUFF
-
- - Async player data save/load (... undo queue locking?)
- - investigate lag/slowdown - new dynmap stuff?
 
 ## NEW SPELLS
 
@@ -147,30 +131,27 @@ Wants scoreboard-based mana display
 -------
 
 alek123222
-Nov 27, 2013 at 15:35 - 1 like Unlike
 Can you make it compatible so when a user has over 20 health he can still be healed because at the moment the plugin just sets them back to 20 again.
-I am using a custom plugin thats based of this one: http://dev.bukkit.org/bukkit-plugins/lore-attrubites-revival/ Also cool downs seem not to work at all and also a message would be nice that when a spell is on cool down should pop up saying "Cool-down blah"
+I am using a custom plugin thats based of this one: http://dev.bukkit.org/bukkit-plugins/lore-attrubites-revival/ 
+
+Also cool downs seem not to work at all and also a message would be nice that when a spell is on cool down should pop up saying "Cool-down blah"
 ----
 
 Gitpw3d
-2 days, 11 hours ago - 0 likes Like
 My Mistake When the wand is selected the health is set to 20(normal)
 but ils messes with that becauses of the lvs the when the wand is unslected the health reverts to normal execpt needing to regen ~100-1000 hearts
-reply report create ticket delete #339
+
 Gitpw3d
-2 days, 16 hours ago - 1 like Unlike
 Hi elMaker im using ils lore stats which increases the health you get per lv but mana being displayed messed it up, do you have a solution? other then that this plugin is great
 
 ----
 
 diannetea
-4 minutes ago - 1 like Unlike
 We've narrowed down the wands breaking to the "clicksort" plugin, when someone organizes their inventory it breaks and you have to create a new one.
 
 ---
 
 Peda1996
-3 minutes ago - 0 likes Like
 Can you add the Feature that it is working on the Plugin shopkeepers?
 
 -----

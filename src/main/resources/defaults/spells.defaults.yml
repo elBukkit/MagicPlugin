@@ -272,6 +272,9 @@ glider:
         cooldown: 60000
         brush: schematic|glider
         transparent: transparent_to_construction
+        drop_xp: 400
+        cast: flare target self
+        death_cast: pull pdy -1 pdx 0 pdz 0 
         commands:
           glider_simulate: cast simulate target self material obsidian animate true delay 500 radius 3
     costs:
@@ -308,14 +311,14 @@ virus:
         diagonal_live_rules: 0,1 
         concurrent: true
         drop: virusheart
-        death_cast: nuke
-        cast_probability: 0.1
+        death_cast: neutron
+        cast_probability: 0.05
         cast: boom
-        drop_xp: 10000
+        drop_xp: 900
         move: 3
         restricted: restricted_animate
     costs:
-        xp: 2000
+        xp: 1000
 worm:
     icon: string
     category: automata
@@ -332,7 +335,7 @@ worm:
         check_destructible: false
         range: 32
         cooldown: 120000
-        name: Virus
+        name: Worm
         radius: 6
         yradius: 6
         birth_range: 6
@@ -342,20 +345,20 @@ worm:
         delay: 1000
         target_mode: hunt
         target_types: any
-        birth_rules: 1,2,3 
+        birth_rules: 1,2,3,4
         diagonal_birth_rules: 0,1
-        live_rules: 1,2,3
+        live_rules: 1,2,3,4
         diagonal_live_rules: 0,1 
         concurrent: true
-        drop: virusheart
-        death_cast: nuke
-        cast_probability: 0.1
-        cast: boom
-        drop_xp: 10000
+        drop: wormheart
+        death_cast: blast radius 8 speed -1
+        cast_probability: 0.01
+        cast: cage
+        drop_xp: 700
         move: 3
         restricted: restricted_animate
     costs:
-        xp: 1000
+        xp: 800
 hunter:
     icon: spider_eye
     category: automata
@@ -383,17 +386,17 @@ hunter:
         target_mode: hunt
         target_types: player
         cast: curse
-        cast_probability: 0.2
+        cast_probability: 0.1
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         concurrent: true
         move: 2
         drop: hunterheart
-        drop_xp: 1000
+        drop_xp: 500
         death_cast: blast radius 4
         restricted: restricted_animate
     costs:
-        xp: 800
+        xp: 600
 defender:
     icon: quartz
     category: automata
@@ -424,15 +427,17 @@ defender:
         target_max_range: 128
         live_rules: 3,4,5,6,7,8,9
         birth_rules: 4,5
+        cast_probability: 0.2
+        cast: convert brush stained_glass|1 radius 1 check_destructible true
         move: 4
         drop: defenderheart
         death_cast: blast radius 6
-        drop_xp: 100
+        drop_xp: 400
         restricted: restricted_animate
     costs:
-        xp: 500
+        xp: 400
 animate:
-    icon: command_minecart
+    icon: trap_door
     category: automata
     class: AnimateSpell
     effects:
@@ -448,21 +453,26 @@ animate:
         range: 32
         cooldown: 120000
         name: Magic Golem
-        radius: 7
-        yradius: 7
-        birth_range: 4
-        live_range: 4
+        radius: 4
+        yradius: 1
+        birth_range: 3
+        live_range: 3
         move: 4
         delay: 1000
         target_mode: directed
         target_types: mage
         target_min_range: 1
         target_max_range: 32
-        live_rules: 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
+        drop_xp: 200
+        cast: blessing
+        cast_probability: 0.1
+        death_cast: blast radius 6 speed -1
+        drop: golemheart
+        live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         restricted: restricted_animate
     costs:
-        xp: 1000
+        xp: 300
 life:
     icon: sapling:1
     category: automata
@@ -2345,13 +2355,13 @@ emp:
         target_type: LivingEntity
         allow_max_range: true
         range: 32
-        radius: 1
+        radius: 3
         type: sphere
         power: true
         cooldown: 1000
-        undo: 500
+        undo: 200
     costs:
-        xp: 25
+        xp: 50
 superemp:
     icon: diode
     category: automata
@@ -2373,8 +2383,8 @@ superemp:
         range: 32
         type: sphere
         power: true
-        cooldown: 3000
-        undo: 1000
+        cooldown: 5000
+        undo: 3000
     costs:
         xp: 25
 disintegrate:
@@ -2785,8 +2795,8 @@ cage:
         range: 16
         radius: 8
         type: sphere
-        cooldown: 60000
-        undo: 30000
+        cooldown: 30000
+        undo: 10000
         brush: schematic|cage
         transparent: transparent_to_construction
     costs:

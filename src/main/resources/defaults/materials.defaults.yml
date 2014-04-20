@@ -312,6 +312,12 @@ restricted_animate:
 - ender_portal
 - portal
 - mob_spawner
+- beacon
+- chest
+- dispenser
+- hopper
+- furnace
+- burning_furnace
 - redstone_block
 - sand
 - netherrack
