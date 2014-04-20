@@ -8,26 +8,6 @@ http://jira.elmakers.com/browse/MAGIC
  
 ## For 3.0.0
  
- - Retry limit on construction batches
- - Customizable wand crafting recipes
- - Commandbook kit integration
- - Ability to have normal enchants on a sword/wand
- - Consolidate "duration" parameter for PotionEffectSpell. Make activate/deactivate/mana drain version for no-duration.
-
- - Make "regengerate" undoable and safe.
- 
- - Integrate with MobMoney to disallow money spamming (mob, farm spell, etc)
- - Cast spells on WG region enter/exit (Darkrael)
- 
- - Scoreboard mana/spell display
- 
- - Add Mana Boost effect for projectile spells, (add to Blessing - cost 100 Mana, regenerates 50.. ?)
- - Add Multi-Spell Spell
- - Add Spell effect to projectile spell
- - Add Command spell
- - Configurable randomization for Familiar spell
-
- - Make push spell reflect projectiles (set fireball velocity)
  - A way to /wand enchant with auto-fill but not filling wand... ?
 
  - Magic stats (that persist) - block modified, etc. (Statistics API?)

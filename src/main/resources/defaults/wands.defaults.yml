@@ -1535,6 +1535,7 @@ wolf:
         - tag
         - pickpocket
         - virus
+        - worm
         - life
         - hunter
         - defender
@@ -2250,7 +2251,7 @@ hunterheart:
     active_spell: hunter
     icon: spider_eye
     indestructible: false
-    cost_reduction: 0.5
+    cost_reduction: 0.1
     locked: true
     uses: 1
     effect_color: 'FF0000'
@@ -2260,10 +2261,20 @@ virusheart:
     active_spell: virus
     icon: fermented_spider_eye
     indestructible: false
-    cost_reduction: 0.5
+    cost_reduction: 0.2
     locked: true
     uses: 1
     effect_color: 'FF0000'
+    spells:
+        - virus
+wormheart:
+    active_spell: worm
+    icon: string
+    indestructible: false
+    cost_reduction: 0.2
+    locked: true
+    uses: 1
+    effect_color: 'FF8800'
     spells:
         - virus
 defenderheart:

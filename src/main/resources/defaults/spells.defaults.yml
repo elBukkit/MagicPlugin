@@ -293,13 +293,53 @@ virus:
         range: 32
         cooldown: 120000
         name: Virus
-        radius: 8
-        yradius: 8
-        birth_range: 10
-        live_range: 16
+        radius: 12
+        yradius: 12
+        birth_range: 16
+        live_range: 24
         target_min_range: 8
         target_max_range: 256
-        delay: 1500
+        delay: 2000
+        target_mode: hunt
+        target_types: mage
+        birth_rules: 1,2,3 
+        diagonal_birth_rules: 0,1
+        live_rules: 1,2,3
+        diagonal_live_rules: 0,1 
+        concurrent: true
+        drop: virusheart
+        death_cast: nuke
+        cast_probability: 0.1
+        cast: boom
+        drop_xp: 10000
+        move: 3
+        restricted: restricted_animate
+    costs:
+        xp: 2000
+worm:
+    icon: string
+    category: automata
+    class: AnimateSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_growl
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        transparent: transparent_to_construction
+        check_destructible: false
+        range: 32
+        cooldown: 120000
+        name: Virus
+        radius: 6
+        yradius: 6
+        birth_range: 6
+        live_range: 16
+        target_min_range: 3
+        target_max_range: 128
+        delay: 1000
         target_mode: hunt
         target_types: any
         birth_rules: 1,2,3 
@@ -315,7 +355,7 @@ virus:
         move: 3
         restricted: restricted_animate
     costs:
-        xp: 2000
+        xp: 1000
 hunter:
     icon: spider_eye
     category: automata

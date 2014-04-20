@@ -321,6 +321,14 @@ spells:
         death_broadcast: "&c&o$name &r&5has been defeated"
         no_target: You must target two blocks next to each other
         restricted: You can not make a Virus out of $material
+    worm:
+        name: Worm
+        description: Release a dangerous giant worm
+        cast: It's not a virus, it's a worm!
+        cast_broadcast: "&c&o$name &r&5was born"
+        death_broadcast: "&c&o$name &r&5has been defeated"
+        no_target: You must target two blocks next to each other
+        restricted: You can not make a Worm out of $material
     hunter:
         no_target: You must target two blocks next to each other
         name: Hunter
