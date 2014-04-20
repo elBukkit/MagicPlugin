@@ -53,7 +53,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
  */
 public class MaterialAndData {
 	protected Material material;
-	protected byte data;
+	protected Byte data;
 	protected String[] signLines = null;
 	protected String commandLine = null;
 	protected String customName = null;
@@ -101,12 +101,16 @@ public class MaterialAndData {
 				
 		try {
 			if (pieces.length > 0) {
-				// Legacy material id loading
-				try {
-					Integer id = Integer.parseInt(pieces[0]);
-					material = Material.getMaterial(id);
-				} catch (Exception ex) {
-					material = Material.getMaterial(pieces[0].toUpperCase());
+				if (pieces[0].equals("*")) {
+					material = null;
+				} else {
+					// Legacy material id loading
+					try {
+						Integer id = Integer.parseInt(pieces[0]);
+						material = Material.getMaterial(id);
+					} catch (Exception ex) {
+						material = Material.getMaterial(pieces[0].toUpperCase());
+					}
 				}
 			}
 		} catch (Exception ex) {
@@ -114,7 +118,11 @@ public class MaterialAndData {
 		}
 		try {
 			if (pieces.length > 1) {
-				data = Byte.parseByte(pieces[1]);
+				if (pieces[1].equals("*")) {
+					data = null;
+				} else {
+					data = Byte.parseByte(pieces[1]);
+				}
 			}
 		} catch (Exception ex) {
 			// Some special-cases
@@ -132,6 +140,8 @@ public class MaterialAndData {
 		
 		if (material == null) {
 			isValid = false;
+			
+			// TODO: null these out?
 			material = DEFAULT_MATERIAL;
 			data = 0;
 			customName = "";
@@ -244,8 +254,13 @@ public class MaterialAndData {
 				inventory.clear();
 			}
 			
-			block.setType(material);
-			block.setData(data);
+			if (material != null) {
+				block.setType(material);
+			}
+			if (data != null) {
+				block.setData(data);
+			}
+			
 			BlockState blockState = block.getState();
 			if (blockState instanceof Sign && signLines != null) {
 				Sign sign = (Sign)blockState;
@@ -294,17 +309,21 @@ public class MaterialAndData {
 	}
 	
 	public String getKey() {
-		String materialKey = material.name().toLowerCase();
+		String materialKey = material == null ? "*" : material.name().toLowerCase();
 		
-		// Some special keys
-		if (material == Material.SKULL && data == 3 && customName != null && customName.length() > 0) {
-			materialKey += ":" + customName;
-		}
-		else if (material == Material.MOB_SPAWNER && customName != null && customName.length() > 0) {
-			materialKey += ":" + customName;
-		}
-		else if (data != 0) {
-			materialKey += ":" + data;
+		if (data == null) {
+			materialKey += ":*";
+		} else {
+			// Some special keys
+			if (material == Material.SKULL && data == 3 && customName != null && customName.length() > 0) {
+				materialKey += ":" + customName;
+			}
+			else if (material == Material.MOB_SPAWNER && customName != null && customName.length() > 0) {
+				materialKey += ":" + customName;
+			}
+			else if (data != 0) {
+				materialKey += ":" + data;
+			}
 		}
 		
 		return materialKey;
@@ -320,7 +339,7 @@ public class MaterialAndData {
 	public boolean isDifferent(Block block) {
 		Material blockMaterial = block.getType();
 		byte blockData = block.getData();
-		if (blockMaterial != material || blockData != data) {
+		if ((material != null && blockMaterial != material) || (data != null && blockData != data)) {
 			return true;
 		}
 		
@@ -391,6 +410,7 @@ public class MaterialAndData {
 	public String getName() {
 		return getMaterialName(getKey());
 	}
+	
 	@SuppressWarnings("deprecation")
 	public static String getMaterialName(String materialKey) {
 		if (materialKey == null) return null;
