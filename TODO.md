@@ -1,27 +1,13 @@
 # TODO
+
+## Transitioning
+
+This list is being transitioned to the issue tracker:
+
+http://jira.elmakers.com/browse/MAGIC
  
 ## For 3.0.0
-
- - External schematic loading broken?
  
- - Generalize automata spell casting
- - Fix Automata variants... wool blue broken? Seems like some weird redstone thing :\
- - Interpolate autonoma directional changes, configurable speed
-
- - Fix selling magic items to a trader not working - seems related to traders losing prices + inventory, maybe?
- - Futher investigate traders losing prices
- 
- - wandp configure glitch- maybe need to replace item in hand on reconfigure?
- 
- - Update GotoSpell, make it target players like Force. 
-   - May need custom targeting mode to target through blocks. 
-   - Cast down to cycle targets
-   - Cast up to tp yourself to target
- 
- - Test place, pillar, bridge with replicate and clone materials
- - Why aren't chest contents loading properly in Life board?
- 
- - Config-driven WandLevel limits
  - Retry limit on construction batches
  - Customizable wand crafting recipes
  - Commandbook kit integration

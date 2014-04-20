@@ -37,10 +37,16 @@ import com.elmakers.mine.bukkit.utilities.URLMap;
 * This is the documentation for the MagicPlugin. If you are looking to
 * integrate with Magic (but not extend it), see the MagicAPI:
 * 
-* http://github.com/elBukkit/MagicAPI
+* http://jenkins.elmakers.com/job/MagicAPI/doxygen/
 * 
 * Building against MagicPlugin directly is only necessary if you want
 * to extend Magic, such as adding a new Spell or EffectPlayer.
+* 
+* \section issues_sec Issues
+* 
+* For issues, bugs, feature requests, spell ideas, use our issue tracker:
+* 
+* http://jira.elmakers.com/browse/MAGIC/
 * 
 * \section start_sec Getting Started
 * 
