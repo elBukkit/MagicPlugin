@@ -216,6 +216,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		setDescription(wandDescription);
 		setName(wandName);
+		setTemplate(templateName);
 		suspendSave = false;
 		generateId();
 		saveState();
@@ -909,7 +910,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			owner = wandConfig.getString("owner", owner);
 			wandName = wandConfig.getString("name", wandName);			
 			description = wandConfig.getString("description", description);
-			template = wandConfig.getString(template, template);
+			template = wandConfig.getString("template", template);
 			
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
 			activeMaterial = wandConfig.getString("active_material", activeMaterial);
@@ -1054,7 +1055,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
-			name = name + " : " + ChatColor.RED + Messages.get("wand.uses_remaining_brief").replace("$count", ((Integer)remaining).toString());
+			// TODO apply this to lore
+			String message = (remaining == 1) ? Messages.get("wand.uses_remaining_singular") : Messages.get("wand.uses_remaining_brief");
+			name = name + " (" + ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()) + ")";
 		}
 		return name;
 	}
