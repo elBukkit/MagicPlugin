@@ -423,6 +423,12 @@ public abstract class TargetingSpell extends BaseSpell {
 					if (targetMage.isSuperProtected() && !isSourcePlayer) {
 						continue;
 					}
+
+					String playerMessage = getMessage("cast_player_message");
+					if (playerMessage.length() > 0) {
+						playerMessage = playerMessage.replace("$spell", getName());
+						targetMage.sendMessage(playerMessage);
+					}
 				}
 				
 				if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
