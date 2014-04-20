@@ -60,7 +60,9 @@ wand:
     building_material_description: Magic building material
     building_material_info: Uses $material with construction spells
     upgrade_uses: Adds $count Uses
+    upgrade_uses_singular: Adds $count Use
     uses_remaining_brief: $count Uses
+    uses_remaining_singular: $count Use
     uses_remaining: $count Uses Remaining
     enchantment_level_1: I
     enchantment_level_2: II

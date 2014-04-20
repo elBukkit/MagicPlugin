@@ -1055,7 +1055,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
-			// TODO apply this to lore
 			String message = (remaining == 1) ? Messages.get("wand.uses_remaining_singular") : Messages.get("wand.uses_remaining_brief");
 			name = name + " (" + ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()) + ")";
 		}
@@ -1232,9 +1231,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
 			if (isUpgrade) {
-				lore.add(ChatColor.RED + Messages.get("wand.upgrade_uses").replace("$count", ((Integer)remaining).toString()));
+				String message = (remaining == 1) ? Messages.get("wand.upgrade_uses_singular") : Messages.get("wand.upgrade_uses");
+				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			} else {
-				lore.add(ChatColor.RED + Messages.get("wand.uses_remaining").replace("$count", ((Integer)remaining).toString()));
+				String message = (remaining == 1) ? Messages.get("wand.uses_remaining_singular") : Messages.get("wand.uses_remaining_brief");
+				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			}
 		}
 		addPropertyLore(lore);
