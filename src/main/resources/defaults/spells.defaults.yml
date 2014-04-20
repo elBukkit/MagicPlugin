@@ -355,7 +355,7 @@ worm:
         cast_probability: 0.01
         cast: cage
         drop_xp: 700
-        move: 3
+        move: 5
         restricted: restricted_animate
     costs:
         xp: 800
@@ -390,7 +390,7 @@ hunter:
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         concurrent: true
-        move: 2
+        move: 3
         drop: hunterheart
         drop_xp: 500
         death_cast: blast radius 4
@@ -457,7 +457,7 @@ animate:
         yradius: 1
         birth_range: 3
         live_range: 3
-        move: 4
+        move: 1
         delay: 1000
         target_mode: directed
         target_types: mage

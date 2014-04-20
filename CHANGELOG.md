@@ -3,6 +3,7 @@
 ## 3.0-RC2
 
  - Added "Worm", a new Automaton. Improved and differentiated the others.
+ - MCStats integration - this can be turned off in config.yml.
 
 ## 3.0-RC1
 
