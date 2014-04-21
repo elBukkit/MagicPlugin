@@ -270,11 +270,12 @@ spells:
         cast_self: You play some music
     gather:
         name: Gather
-        description: Gather groups of players together
-        usage: Cast up to teleport yourself, aim to tp others
-        cast_to_player: Teleporting you to $to_player
-        cast_player_to_player: Teleporting $from_player to $to_player
-        cast_player_to_target: Teleporting $from_player to your target
+        description: Teleports other entities
+        usage: Cast up to teleport yourself, aim to TP others
+        cast_to_player: Teleporting you to $target
+        cast_entity: Teleporting $target to your target
+        cast_player_message: "&d&o$player &r&5folded space"
+        target_selected: You captured $target
     icbm:
         name: ICBM
         description: Cast an exploding fireball
@@ -840,7 +841,7 @@ spells:
         description: Use telekinesis
         usage: Cast to select and throw an entity
         cancel: Released target
-        target_selected: You capture your target
+        target_selected: You captured $target
     fireball:
         name: Fireball
         description: Cast an exploding fireball

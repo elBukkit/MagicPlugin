@@ -267,11 +267,20 @@ public class Target implements Comparable<Target>
 		}
 	}
 
-	public Object getExtraData() {
+	public Object getExtraData() 
+	{
 		return extraData;
 	}
 
-	public void setExtraData(Object extraData) {
+	public void setExtraData(Object extraData) 
+	{
 		this.extraData = extraData;
+	}
+	
+	public void setEntity(Entity entity)
+	{
+		this.entity = entity;
+		this.location = entity.getLocation();
+		this.calculateScore();
 	}
 }

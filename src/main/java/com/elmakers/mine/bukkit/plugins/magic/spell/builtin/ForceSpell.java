@@ -25,6 +25,11 @@ public class ForceSpell extends TargetingSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
+		effectColor = mage.getEffectColor();
+		if (effectColor == null) {
+			effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
+		}
+		
 		if (targetEntity != null)
 		{
 			if (targetEntity instanceof LivingEntity)
@@ -60,29 +65,23 @@ public class ForceSpell extends TargetingSpell
 
 			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
 			{
-				targetEntity = null;
 				return SpellResult.NO_TARGET;
 			}
 
-			targetEntity = (LivingEntity)target.getEntity();
+			releaseTarget();
+			LivingEntity checkTarget = (LivingEntity)target.getEntity();
 			
 			// Check for protected Mages
-			if (targetEntity instanceof Player) {
+			if (checkTarget instanceof Player) {
 				Mage targetMage = controller.getMage((Player)targetEntity);
 				// Check for protected players (admins, generally...)
 				if (targetMage.isSuperProtected()) {
 					return SpellResult.NO_TARGET;
 				}
 			}
-
-			effectColor = mage.getEffectColor();
-			if (effectColor == null) {
-				effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
-			}
-
-			if (effectColor != null) {
-				InventoryUtils.addPotionEffect(targetEntity, effectColor);
-			}
+			
+			selectTarget(checkTarget);
+			
 			return SpellResult.TARGET_SELECTED;
 		}
 
@@ -100,6 +99,16 @@ public class ForceSpell extends TargetingSpell
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
 		target.setVelocity(forceVector);
+	}
+	
+	protected void selectTarget(LivingEntity entity) {
+		releaseTarget();
+		targetEntity = entity;
+		getCurrentTarget().setEntity(entity);
+
+		if (effectColor != null) {
+			InventoryUtils.addPotionEffect(targetEntity, effectColor);
+		}
 	}
 	
 	protected void releaseTarget() {

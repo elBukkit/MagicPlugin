@@ -1,86 +1,144 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Target;
 
 public class GotoSpell extends TargetingSpell
 {
+	LivingEntity targetEntity = null;
+	int playerIndex = 0;
+	private Color effectColor = null;
+	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		if (isLookingUp())
-		{
-			Player destination = getFarthestPlayer(getPlayer());
-			if (destination == null) return SpellResult.NO_TARGET;
-			getPlayer().teleport(destination);
-			castMessage(getMessage("cast_to_player").replace("$to_player", destination.getName()));
-			return SpellResult.CAST;
-		}
-
-		Target target = getTarget();
-		Entity targetEntity = target.getEntity();
-
-		if (targetEntity != null && targetEntity instanceof Player)
-		{
-			Player targetedPlayer = (Player)targetEntity;
-			Player destination = getFarthestPlayer(targetedPlayer);
-			if (destination == null) return SpellResult.NO_TARGET;
-			targetedPlayer.teleport(destination);
-			castMessage(getMessage("cast_player_to_player").replace("$from_player", targetedPlayer.getName().replace("$to_player", destination.getName())));
-			return SpellResult.CAST;
-		}
-
-		Location destination = getPlayer().getLocation();
-		if (target.isValid())
-		{
-			destination = target.getLocation();
-			destination.setY(destination.getY() + 1);
+		effectColor = mage.getEffectColor();
+		if (effectColor == null) {
+			effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
 		}
 		
-		Player targetPlayer = getFarthestPlayer(getPlayer());
-
-		if (targetPlayer == null) return SpellResult.NO_TARGET;
-		targetPlayer.teleport(destination);
-		castMessage(getMessage("cast_player_to_target").replace("$from_player", targetPlayer.getName()));
-
-		return SpellResult.CAST;
-	}
-
-	protected Player getFarthestPlayer(Player fromPlayer)
-	{
-		Player destinationPlayer = null;
-		List<Player> players = fromPlayer.getLocation().getWorld().getPlayers();
-		double targetToDestinationDistance = 0;
-
-		for (Player d : players)
+		if (targetEntity != null && targetEntity instanceof LivingEntity)
 		{
-			if (d.hasMetadata("NPC")) continue;
-			if (d != fromPlayer)
+			if (!targetEntity.isValid() || targetEntity.isDead())
 			{
-				Mage targetMage = controller.getMage((Player)d);
+				releaseTarget();
+			} 
+			
+			// Check for protected Mages
+			if (targetEntity != null && targetEntity instanceof Player) {
+				Mage targetMage = controller.getMage((Player)targetEntity);
 				// Check for protected players (admins, generally...)
-				if (!mage.isSuperPowered() && targetMage.isSuperProtected()) {
-					continue;
-				}
-				
-				double dd = d.getLocation().distanceSquared(fromPlayer.getLocation());
-				if (destinationPlayer == null || dd > targetToDestinationDistance)
-				{
-					targetToDestinationDistance = dd;
-					destinationPlayer = d;
+				if (targetMage.isSuperProtected()) {
+					releaseTarget();
 				}
 			}
 		}
+		
+		if (targetEntity == null || (!isLookingUp() && !isLookingDown())) {
+			Target target = getTarget();
 
-		return destinationPlayer;
+			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
+			{
+				return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
+			}
+			
+			// Check for protected Mages
+			if (targetEntity instanceof Player) {
+				Mage targetMage = controller.getMage((Player)targetEntity);
+				// Check for protected players (admins, generally...)
+				if (targetMage.isSuperProtected()) {
+					return SpellResult.NO_TARGET;
+				}
+			}
+
+			selectTarget((LivingEntity)target.getEntity());
+			return SpellResult.TARGET_SELECTED;
+		}
+		
+		if (isLookingUp() && targetEntity != null)
+		{
+			getCurrentTarget().setEntity(targetEntity);
+			getPlayer().teleport(targetEntity.getLocation());
+			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
+			releaseTarget();
+			return SpellResult.CAST;
+		}
+
+		List<String> playerNames = new ArrayList<String>(controller.getPlugin().getPlayerNames());
+		if (playerNames.size() == 0) return SpellResult.NO_TARGET;
+		
+		if (playerIndex < 0) playerIndex = playerNames.size() - 1;
+		if (playerIndex >= playerNames.size()) {
+			playerIndex = 0;
+			releaseTarget();
+			return SpellResult.TARGET_SELECTED;
+		}
+		
+		Player player = getPlayer();
+		String playerName = playerNames.get(playerIndex);
+		if (player != null && playerName.equals(player.getName())) {
+			if (playerNames.size() == 1) return SpellResult.NO_TARGET;
+			playerIndex = (playerIndex + 1) % playerNames.size();
+			playerName = playerNames.get(playerIndex);
+		}
+		playerIndex++;
+		
+		Player targetPlayer = Bukkit.getPlayer(playerName);
+		if (targetPlayer == null) return SpellResult.NO_TARGET;
+		
+		selectTarget(targetPlayer);
+		return SpellResult.TARGET_SELECTED;
+	}
+	
+	protected boolean teleportTarget(Location location) {
+		if (targetEntity == null || location == null) return false;
+		
+		targetEntity.teleport(location);
+		this.getCurrentTarget().setEntity(targetEntity);
+		
+		return true;
+	}
+	
+	protected void selectTarget(LivingEntity entity) {
+		releaseTarget();
+
+		targetEntity = entity;
+		getCurrentTarget().setEntity(entity);
+
+		if (effectColor != null) {
+			InventoryUtils.addPotionEffect(targetEntity, effectColor);
+		}
+	}
+	
+	protected void releaseTarget() {
+		if (targetEntity != null && effectColor != null) {
+			InventoryUtils.clearPotionEffect(targetEntity);
+		}
+		targetEntity = null;
+	}
+
+	@Override
+	public boolean onCancel()
+	{
+		if (targetEntity != null)
+		{
+            releaseTarget();
+			return true;
+		}
+		
+		return false;
 	}
 }

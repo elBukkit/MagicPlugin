@@ -87,6 +87,15 @@ public abstract class TargetingSpell extends BaseSpell {
 		}
 	}
 	
+	protected static String getTargetName(Entity target)
+	{
+		if (target instanceof Player) {
+			return ((Player)target).getName();
+		}
+		
+		return target.getType().name().toLowerCase().replace('_', ' ');
+	}
+	
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);
 		
@@ -94,11 +103,7 @@ public abstract class TargetingSpell extends BaseSpell {
 		String useTargetName = targetName;
 		if (useTargetName == null) {
 			if (target != null && target.hasEntity()) {
-				if (target.getEntity() instanceof Player) {
-					useTargetName = ((Player)target.getEntity()).getName();
-				} else {
-					useTargetName = target.getEntity().getType().name().toLowerCase().replace('_', ' ');
-				}
+				useTargetName = getTargetName(target.getEntity());
 			}
 			else {
 				useTargetName = "Unknown";
@@ -328,6 +333,9 @@ public abstract class TargetingSpell extends BaseSpell {
 	
 	public Target getCurrentTarget()
 	{
+		if (target == null) {
+			target = new Target(getLocation());
+		}
 		return target;
 	}
 	
