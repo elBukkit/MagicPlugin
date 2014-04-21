@@ -1888,8 +1888,8 @@ backup:
         transparent: transparent_to_construction
         brush: clone
         brushmod: erase
-        otworld: world_backup
-        obworld: world
+        otworld: ~_backup
+        obworld: ~-_backup
         brushtarget: true
         bypass_undo: true
     costs:
@@ -1913,8 +1913,8 @@ repair:
         transparent: transparent_to_construction
         brush: clone
         brushmod: erase:
-        otworld: world
-        obworld: world_backup
+        otworld: ~-_backup
+        obworld: ~_backup
         brushtarget: true
     costs:
         xp: 80

@@ -291,9 +291,10 @@ public class ConfigurationUtils {
 		
 		return value;
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	public static Location getLocationOverride(ConfigurationSection node, String basePath, Location location) {
+	public static Location overrideLocation(ConfigurationSection node, String basePath, Location location, boolean canCreate)
+	{
 		String worldName = basePath + "world";
 		String xName = basePath + "x";
 		String yName = basePath + "y";
@@ -308,6 +309,22 @@ public class ConfigurationUtils {
 		
 		if (!hasPosition && !hasDirection && !hasWorld) return null;
 
+		if (hasWorld) {
+			worldOverride = worldOverride.trim();
+			if (worldOverride.charAt(0) == '~') {
+				String baseWorld = location.getWorld().getName();
+				worldOverride = worldOverride.substring(1);
+				worldOverride = worldOverride.trim();
+				if (worldOverride.charAt(0) == '~') {
+					worldOverride = worldOverride.substring(1);
+					worldOverride = worldOverride.trim();
+					worldOverride = baseWorld.replace(worldOverride, "");
+				} else {
+					worldOverride = baseWorld + worldOverride;
+				}
+			}
+		}
+		
 		if (location == null) {
 			if (!hasWorld || !hasPosition) return null;
 			location = new Location(Bukkit.getWorld(worldOverride), 0, 0, 0);
@@ -332,8 +349,13 @@ public class ConfigurationUtils {
 			// TODO: Use location.setDirection in 1.7+
 			CompatibilityUtils.setDirection(location, direction);
 		}
-		
+
 		return location;
+	}
+	
+	@Deprecated
+	public static Location getLocationOverride(ConfigurationSection node, String basePath, Location location) {
+		return overrideLocation(node, basePath, location, true);
 	}
 
 	public static Color getColor(ConfigurationSection node, String path, Color def) {
