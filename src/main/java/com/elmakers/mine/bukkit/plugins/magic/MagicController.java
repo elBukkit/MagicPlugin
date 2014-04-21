@@ -464,6 +464,11 @@ public class MagicController implements Listener
 	{
 		return keepingEnabled;
 	}
+	
+	public boolean canCreateWorlds()
+	{
+		return createWorldsEnabled;
+	}
 
 	/*
 	 * Get the log, if you need to debug or log errors.
@@ -1386,6 +1391,7 @@ public class MagicController implements Listener
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
+		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
 
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
 		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
@@ -2766,6 +2772,7 @@ public class MagicController implements Listener
 	 private boolean							 dynmapUpdate					= true;
 	 private boolean							 dynmapShowWands				= true;
 	 private boolean							 dynmapShowSpells				= true;
+	 private boolean							 createWorldsEnabled			= true;
 	 private float							 	 maxDamagePowerMultiplier	    = 2.0f;
 	 private float								 maxConstructionPowerMultiplier = 5.0f;
 	 private float								 maxRadiusPowerMultiplier 		= 2.5f;

@@ -589,7 +589,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		backfireChance = (float)parameters.getDouble("backfire_chance", backfireChance);
 	
 		Location defaultLocation = location == null ? mage.getLocation() : location;
-		Location locationOverride = ConfigurationUtils.getLocationOverride(parameters, "p", defaultLocation);
+		Location locationOverride = ConfigurationUtils.overrideLocation(parameters, "p", defaultLocation, controller.canCreateWorlds());
 		if (locationOverride != null) {
 			location = locationOverride;
 		}

@@ -15,6 +15,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -291,11 +292,50 @@ public class ConfigurationUtils {
 		
 		return value;
 	}
+	
+	public static World overrideWorld(ConfigurationSection node, String path, World world, boolean canCreateWorlds) {
+		return overrideWorld(node.getString(path), world, canCreateWorlds);
+	}
+	
+	public static World overrideWorld(String worldName, World world, boolean canCreateWorlds) {
+		if (worldName == null || worldName.length() == 0) return null;
+		
+		if (worldName.charAt(0) == '~') {
+			if (world == null) return null;
+			
+			String baseWorld = world.getName();
+			worldName = worldName.substring(1);
+			worldName = worldName.trim();
+			if (worldName.charAt(0) == '-') {
+				worldName = worldName.substring(1);
+				worldName = worldName.trim();
+				worldName = baseWorld.replace(worldName, "");
+			} else {
+				worldName = baseWorld + worldName;
+			}
+		}
+
+		World worldOverride = Bukkit.getWorld(worldName);
+		if (worldOverride == null) {
+			if (canCreateWorlds) {
+				Bukkit.getLogger().info("Creating/Loading world: " + worldName);
+				worldOverride = Bukkit.createWorld(new WorldCreator(worldName).copy(world));
+				if (worldOverride == null) {
+					Bukkit.getLogger().warning("Failed to load world: " + worldName);
+					return null;
+				}
+			} else {
+				Bukkit.getLogger().warning("Could not load world: " + worldName);
+				return null;
+			}
+		}
+		
+		return worldOverride;
+	}
 
 	@SuppressWarnings("deprecation")
-	public static Location overrideLocation(ConfigurationSection node, String basePath, Location location, boolean canCreate)
+	public static Location overrideLocation(ConfigurationSection node, String basePath, Location location, boolean canCreateWorlds)
 	{
-		String worldName = basePath + "world";
 		String xName = basePath + "x";
 		String yName = basePath + "y";
 		String zName = basePath + "z";
@@ -304,34 +344,19 @@ public class ConfigurationUtils {
 		String dzName = basePath + "dz";
 		boolean hasPosition = node.contains(xName) || node.contains(yName) || node.contains(zName);
 		boolean hasDirection = node.contains(dxName) || node.contains(dyName) || node.contains(dzName);
-		String worldOverride = node.getString(worldName);
-		boolean hasWorld = worldOverride != null && worldOverride.length() > 0;
-		
-		if (!hasPosition && !hasDirection && !hasWorld) return null;
 
-		if (hasWorld) {
-			worldOverride = worldOverride.trim();
-			if (worldOverride.charAt(0) == '~') {
-				String baseWorld = location.getWorld().getName();
-				worldOverride = worldOverride.substring(1);
-				worldOverride = worldOverride.trim();
-				if (worldOverride.charAt(0) == '~') {
-					worldOverride = worldOverride.substring(1);
-					worldOverride = worldOverride.trim();
-					worldOverride = baseWorld.replace(worldOverride, "");
-				} else {
-					worldOverride = baseWorld + worldOverride;
-				}
-			}
-		}
+		World baseWorld = location == null ? null : location.getWorld();
+		World worldOverride = overrideWorld(node, basePath + "world", baseWorld, canCreateWorlds);
 		
+		if (!hasPosition && !hasDirection && worldOverride == null) return null;
+
 		if (location == null) {
-			if (!hasWorld || !hasPosition) return null;
-			location = new Location(Bukkit.getWorld(worldOverride), 0, 0, 0);
+			if (worldOverride == null || !hasPosition) return null;
+			location = new Location(worldOverride, 0, 0, 0);
 		} else {
 			location = location.clone();
-			if (hasWorld) {
-				location.setWorld(Bukkit.getWorld(worldOverride));
+			if (worldOverride != null) {
+				location.setWorld(worldOverride);
 			}
 		}
 		if (hasPosition) {
@@ -351,11 +376,6 @@ public class ConfigurationUtils {
 		}
 
 		return location;
-	}
-	
-	@Deprecated
-	public static Location getLocationOverride(ConfigurationSection node, String basePath, Location location) {
-		return overrideLocation(node, basePath, location, true);
 	}
 
 	public static Color getColor(ConfigurationSection node, String path, Color def) {

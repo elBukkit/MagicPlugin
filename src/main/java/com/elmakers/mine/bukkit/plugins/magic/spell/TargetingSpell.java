@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -45,7 +44,7 @@ public abstract class TargetingSpell extends BaseSpell {
 	private Class<? extends Entity>             targetEntityType        = null;
 	private Location                            targetLocation;
 	private Vector								targetLocationOffset;
-	private World								targetLocationWorld;
+	private String								targetLocationWorldName;
 	protected Location                          targetLocation2;
 	private Entity								targetEntity = null;
 
@@ -247,8 +246,9 @@ public abstract class TargetingSpell extends BaseSpell {
 		if (targetLocationOffset != null) {
 			target.add(targetLocationOffset);
 		}
-		if (targetLocationWorld != null) {
-			target.setWorld(targetLocationWorld);
+		if (targetLocationWorldName != null && targetLocationWorldName.length() > 0) {
+			World targetWorld = target.getLocation().getWorld();
+			target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, controller.canCreateWorlds()));
 		}
 		return target;
 	}
@@ -595,7 +595,7 @@ public abstract class TargetingSpell extends BaseSpell {
 		}
 		
 		Location defaultLocation = getLocation();
-		targetLocation = ConfigurationUtils.getLocationOverride(parameters, "t", defaultLocation);
+		targetLocation = ConfigurationUtils.overrideLocation(parameters, "t", defaultLocation, controller.canCreateWorlds());
 		targetLocationOffset = null;
 		
 		Double otxValue = ConfigurationUtils.getDouble(parameters, "otx", null);
@@ -607,15 +607,11 @@ public abstract class TargetingSpell extends BaseSpell {
 					(otyValue == null ? 0 : otyValue), 
 					(otzValue == null ? 0 : otzValue));
 		}
-		targetLocationWorld = null;
-		String otWorldName = parameters.getString("otworld", null);
-		if (otWorldName != null && otWorldName.length() > 0) {
-			targetLocationWorld = Bukkit.getWorld(otWorldName);
-		}
+		targetLocationWorldName = parameters.getString("otworld");
 		
 		// For two-click construction spells
 		defaultLocation = targetLocation == null ? defaultLocation : targetLocation;		
-		targetLocation2 = ConfigurationUtils.getLocationOverride(parameters, "t2", defaultLocation);
+		targetLocation2 = ConfigurationUtils.overrideLocation(parameters, "t2", defaultLocation, controller.canCreateWorlds());
 		
 		if (parameters.contains("player")) {
 			Player player = controller.getPlugin().getServer().getPlayer(parameters.getString("player"));

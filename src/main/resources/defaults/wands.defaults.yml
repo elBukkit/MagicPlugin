@@ -317,6 +317,8 @@ random:
       lava: 0,10,30,20,100
       stream: 0,10,30,20,100
       shell: 0,5,40,50,100
+      backup: 0,0,0,1,100
+      repair: 1,10,30,50,100
       supershell: 0,0,1,10,100
       superblast: 0,0,1,5,100
       superbox: 0,0,1,10,100
@@ -1425,6 +1427,8 @@ admin:
         - gather
         - regenerate
         - pickpocket
+        - backup
+        - repair
     materials:
         - water
         - lava
@@ -1457,10 +1461,14 @@ wolf:
         - fly
         - fling
         - blink
-        - stash
         - superblob
+        - backup
+        - repair
         - day
+        - gather
+        - rewind
         - undo
+        - stash
         - emp
         - sniper 
         - force
@@ -1479,8 +1487,6 @@ wolf:
         - inferno
         - wolfhouse
         - disarm
-        - rewind
-        - gather
         - superconvert
         - supershell
         - superpyramid

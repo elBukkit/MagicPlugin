@@ -40,19 +40,15 @@ public abstract class BrushSpell extends BlockSpell {
 			Double dmxValue = ConfigurationUtils.getDouble(parameters, "obx", null);
 			Double dmyValue = ConfigurationUtils.getDouble(parameters, "oby", null);
 			Double dmzValue = ConfigurationUtils.getDouble(parameters, "obz", null);
-			String dmWorldValue = parameters.getString("obworld", null);
-			World targetWorld = null;
-			if (dmWorldValue != null && dmWorldValue.length() > 0) {
-				targetWorld = Bukkit.getWorld(dmWorldValue);
-			}
-			if (dmxValue != null || dmyValue != null || dmzValue != null || targetWorld != null) {
+			String targetWorldName = parameters.getString("obworld", null);
+			if (dmxValue != null || dmyValue != null || dmzValue != null || targetWorldName != null) {
 				Vector offset = new Vector( 
 						dmxValue == null ? 0 : dmxValue, 
 						dmyValue == null ? 0 : dmyValue, 
 						dmzValue == null ? 0 : dmzValue);
 				
 				brush.clearCloneTarget();
-				brush.setTargetOffset(offset, targetWorld);
+				brush.setTargetOffset(offset, targetWorldName);
 			}
 			
 			if (parameters.getBoolean("brushtarget", false)) {

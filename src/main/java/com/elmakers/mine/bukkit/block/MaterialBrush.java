@@ -60,7 +60,7 @@ public class MaterialBrush extends MaterialAndData {
 	private Location cloneTarget = null;
 	private Location materialTarget = null;
 	private Vector targetOffset = null;
-	private World targetWorld = null;
+	private String targetWorldName = null;
 	private final Mage mage;
 	private short mapId = -1;
 	private MaterialMapCanvas mapCanvas = null;
@@ -350,12 +350,12 @@ public class MaterialBrush extends MaterialAndData {
 	public void clearCloneTarget() {
 		cloneTarget = null;
 		targetOffset = null;
-		targetWorld = null;
+		targetWorldName = null;
 	}
 	
-	public void setTargetOffset(Vector offset, World world) {
+	public void setTargetOffset(Vector offset, String worldName) {
 		targetOffset = offset.clone();
-		targetWorld = world;
+		targetWorldName = worldName;
 	}
 	
 	public boolean hasCloneTarget() {
@@ -392,8 +392,9 @@ public class MaterialBrush extends MaterialAndData {
 				if (targetOffset != null) {
 					cloneTarget = cloneTarget.add(targetOffset);
 				}
-				if (targetWorld != null) {
-					cloneTarget.setWorld(targetWorld);
+				if (targetWorldName != null && targetWorldName.length() > 0) {
+					World targetWorld = cloneTarget.getWorld();
+					cloneTarget.setWorld(ConfigurationUtils.overrideWorld(targetWorldName, targetWorld, mage.getController().canCreateWorlds()));
 				}
 			} else if (mode == BrushMode.SCHEMATIC) {
 				if (schematic != null) {

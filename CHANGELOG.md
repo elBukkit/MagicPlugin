@@ -5,6 +5,8 @@
  - Added "Worm", a new Automaton. Improved and differentiated the others.
  - MCStats integration - this can be turned off in config.yml.
  - Improvements / Mechanics changes to Recall (and Recall Token item)
+ - The "Backup" and "Repair" spells will auto-create worlds (can be disabled in config.yml)
+ - Added "Backup" and "Repair" to the natural enchant list, and the Wolf and Admin wands.
 
 ## 3.0-RC1
 
