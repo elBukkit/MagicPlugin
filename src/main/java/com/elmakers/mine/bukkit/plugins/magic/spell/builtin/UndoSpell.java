@@ -10,6 +10,8 @@ import com.elmakers.mine.bukkit.utilities.Target;
 
 public class UndoSpell extends TargetingSpell
 {
+	String targetPlayerName;
+	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -41,6 +43,7 @@ public class UndoSpell extends TargetingSpell
 			}
 			else
 			{
+				setTargetName(mage.getName());
 				undone = mage.undo(target.getBlock());
 			}
 

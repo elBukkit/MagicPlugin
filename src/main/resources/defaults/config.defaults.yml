@@ -234,7 +234,7 @@ undo_depth: 64
 pending_depth: 8
 
 # The largest thing we'll persist in the undo queue (to a file)
-undo_max_persist_size: 4098
+undo_max_persist_size: 16384
 
 # Auto-commit player undo data when they logout.
 # Enabling this can save memory, but it means you won't be able to Rollback

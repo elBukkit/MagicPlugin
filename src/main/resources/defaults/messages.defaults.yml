@@ -601,9 +601,7 @@ spells:
         name: Rewind
         description: Undo the target action
         usage: Will undo the targeted action
-        cast: Your undo the target construction
-        cast_player: You undo $target's construction
-        cast_self: Your undo your construction
+        cast: "&5You undo &d&o$target's&r&5 construction"
         fail: Nothing to undo
     push:
         name: Push
