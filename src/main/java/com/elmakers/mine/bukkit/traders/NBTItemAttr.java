@@ -18,14 +18,12 @@ public abstract class NBTItemAttr extends ItemAttr
 	private String defaultValue = "";
 	private String defaultValue2 = "";
 	private String tagData = "";
-	private boolean playerOnly;
 	
 	public NBTItemAttr(String key, String tag, String subtag) 
 	{
 		super(key);
 		tagName = tag;
 		subtagName = subtag;
-		playerOnly = false;
 	}
 	
 	public NBTItemAttr(String key, String tag, String subtag, String def) 
@@ -34,7 +32,6 @@ public abstract class NBTItemAttr extends ItemAttr
 		tagName = tag;
 		subtagName = subtag;
 		defaultValue = def;
-		playerOnly = false;
 	}
 	
 	public NBTItemAttr(String key, String tag, String subtag, String def, String def2) 
@@ -44,15 +41,6 @@ public abstract class NBTItemAttr extends ItemAttr
 		subtagName = subtag;
 		defaultValue = def;
 		defaultValue2 = def2;
-		playerOnly = false;
-	}
-	
-	public NBTItemAttr(String key, String tag, String subtag, boolean forPlayer) 
-	{
-		super(key);
-		tagName = tag;
-		subtagName = subtag;
-		playerOnly = forPlayer;
 	}
 
 	@Override
@@ -128,14 +116,12 @@ public abstract class NBTItemAttr extends ItemAttr
 	{
 		if (tagData != null && tagData.length() > 0 && itemStack != null) 
 		{
-			if (!playerOnly || endItem) {
-				itemStack = InventoryUtils.makeReal(itemStack);
-				onAssign(itemStack);
-			
-				if (DEBUG) Bukkit.getLogger().info("NBTItem.onAssign for data " + tagName + "." + subtagName + "=" + tagData + " as " + itemStack 
-					  + " wand: "+ Wand.isWand(itemStack) + ", spell: " + Wand.isSpell(itemStack) 
-					  + ", brush: " + Wand.isBrush(itemStack));
-			}
+			itemStack = InventoryUtils.makeReal(itemStack);
+			onAssign(itemStack);
+		
+			if (DEBUG) Bukkit.getLogger().info("NBTItem.onAssign for data " + tagName + "." + subtagName + "=" + tagData + " as " + itemStack 
+				  + " wand: "+ Wand.isWand(itemStack) + ", spell: " + Wand.isSpell(itemStack) 
+				  + ", brush: " + Wand.isBrush(itemStack));
 		}
 		
 		return itemStack;
@@ -148,10 +134,15 @@ public abstract class NBTItemAttr extends ItemAttr
 	 */
 	public boolean equalsWeak(ItemAttr other)
 	{
+		// Bukkit.getLogger().info(" *TRADER: equalsWeak " + this.getKey() + ":" + this.tagName + "=" + this.tagData);
+		
 		if (other instanceof NBTItemAttr) 
 		{
+			// Bukkit.getLogger().info("   compare to : " + ((NBTItemAttr)other).tagData + " = " + tagData.equalsIgnoreCase(((NBTItemAttr)other).tagData));
 			return tagData.equalsIgnoreCase(((NBTItemAttr)other).tagData);
 		}
+		
+		// Bukkit.getLogger().info("   NOT an NBT item!");
 		return false;
 	}
 
@@ -162,10 +153,15 @@ public abstract class NBTItemAttr extends ItemAttr
 	 */
 	public boolean equalsStrong(ItemAttr other)
 	{
+		// Bukkit.getLogger().info(" *TRADER: equalsStrong " + this.getKey() + ":" + this.tagName + "=" + this.tagData);
+		
 		if (other instanceof NBTItemAttr) 
 		{
+			// Bukkit.getLogger().info("   compare to : " + ((NBTItemAttr)other).tagData + " = " + tagData.equalsIgnoreCase(((NBTItemAttr)other).tagData));
+			
 			return tagData.equalsIgnoreCase(((NBTItemAttr)other).tagData);
 		}
+		// Bukkit.getLogger().info("   NOT an NBT item!");
 		return false;
 	}
 }
