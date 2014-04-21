@@ -698,11 +698,14 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				
 				// Check for obstruction
+				// TODO Think about this more..
+				/*
 				Block block = spell.getInteractBlock();
 				if (block.getType() != Material.AIR && block.getType() != POWER_MATERIAL && !!birthMaterial.is(block)) {
 					// TODO: Use location.setDirection in 1.7+
 					center = CompatibilityUtils.setDirection(center, new Vector(0, 1, 0));
 				}
+				*/
 				
 				if (tickSpell.length() > 0) {
 					if (Math.random() < castProbability) {
