@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -29,12 +31,15 @@ public class RecallSpell extends TargetingSpell
 	
 	private int retryCount = 0;
 	private boolean allowCrossWorld = true;
-	private int selectedWarpIndex = 0;
+	private int selectedIndex = 0;
 	private List<String> warps = new ArrayList<String>();
 	
 	private RecallType selectedType = RecallType.MARKER;
 	private int selectedTypeIndex = 0;
 	private List<RecallType> enabledTypes = new ArrayList<RecallType>();
+	
+	private String castMessage;
+	private String failMessage;
 	
 	private enum RecallType
 	{
@@ -43,8 +48,19 @@ public class RecallSpell extends TargetingSpell
 		SPAWN,
 		HOME,
 		WAND,
-		WARPS
+		WARP
 	//	FHOME,
+	};
+	
+	private class Waypoint
+	{
+		public final RecallType type;
+		public  final int index;
+		
+		public Waypoint(RecallType type, int index) {
+			this.type = type;
+			this.index = index;
+		}
 	};
 
 	@Override
@@ -55,13 +71,16 @@ public class RecallSpell extends TargetingSpell
 		int cycleRetries = 5;
 		enabledTypes.clear();
 		warps = null;
+
+		Player player = getPlayer();
+		if (player == null) return SpellResult.PLAYER_REQUIRED;
 		
 		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values()) {
 			// Special-case for warps
-			if (testType == RecallType.WARPS) {
+			if (testType == RecallType.WARP) {
 				if (parameters.contains("allow_warps")) {
-					warps = parameters.getStringList("allow_warps");
+					warps = ConfigurationUtils.getStringList(parameters, "allow_warps");
 					enabledTypes.add(testType);
 					if (testType == selectedType) selectedTypeIndex = enabledTypes.size() - 1;
 				}
@@ -90,20 +109,69 @@ public class RecallSpell extends TargetingSpell
 			}
 			
 			selectedType = newType;
-		} 
-		else if (isLookingDown() || isLookingUp() || !allowMarker)
+			Location location = getTargetLocation(selectedType, 0);
+			return tryTeleport(location) ? SpellResult.CAST : SpellResult.FAIL;
+		}
+		
+		if (isLookingDown() && allowMarker)
 		{
-			reverseDirection = isLookingDown();
+			if (allowMarker) {
+				return placeMarker(getLocation().getBlock()) ? SpellResult.CAST : SpellResult.FAIL;
+			}
+			reverseDirection = true;
+			cycleTarget(reverseDirection);
+		}
+		else if (isLookingUp())
+		{
+			reverseDirection = false;
 			cycleTarget(reverseDirection);
 		}
 		else
 		{
-			Target target = getTarget();
-			if (!target.isValid()) {
+			Location location = getLocation();
+			List<Target> allWaypoints = new LinkedList<Target>();
+			for (RecallType selectedType : enabledTypes) {
+				if (selectedType == RecallType.WARP) {
+					for (int i = 0; i < warps.size(); i++) {
+						if (selectedType == this.selectedType && i == selectedIndex) continue;
+						Location targetLocation = getTargetLocation(selectedType, i);
+						if (targetLocation != null) {
+							Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
+							target.setExtraData(new Waypoint(selectedType, i));
+							allWaypoints.add(target);
+						}
+					}
+				} else if (selectedType == RecallType.WAND) {
+					List<LostWand> lostWands = mage.getLostWands();
+					for (int i = 0; i < lostWands.size(); i++) {
+						if (selectedType == this.selectedType && i == selectedIndex) continue;
+						Location targetLocation = getTargetLocation(selectedType, i);
+						if (targetLocation != null) {
+							Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
+							target.setExtraData(new Waypoint(selectedType, i));
+							allWaypoints.add(target);
+						}
+					}
+				} else {
+					if (selectedType == this.selectedType) continue;
+					Location targetLocation = getTargetLocation(selectedType, 0);
+					if (targetLocation != null) {
+						Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
+						target.setExtraData(new Waypoint(selectedType, 0));
+						allWaypoints.add(target);
+					}
+				}
+			}
+			if (allWaypoints.size() == 0) {
 				return SpellResult.NO_TARGET;
 			}
 			
-			return placeMarker(target.getBlock()) ? SpellResult.CAST : SpellResult.FAIL;
+			Collections.sort(allWaypoints);
+			Target targetWaypoint = allWaypoints.get(0);
+			Waypoint waypoint = (Waypoint)targetWaypoint.getExtraData();
+			selectedType = waypoint.type;
+			selectedIndex = waypoint.index;
+			return tryCurrentType(player) ? SpellResult.CAST : SpellResult.FAIL;
 		}
 
 		if (selectedType == null) {
@@ -111,19 +179,20 @@ public class RecallSpell extends TargetingSpell
 			selectedType = enabledTypes.get(0);
 		}
 		
-		Player player = getPlayer();
-		if (player == null) return SpellResult.PLAYER_REQUIRED;
-		
 		boolean success = false;
 		while (!success && cycleRetries >= 0) {
-			success = tryCurrentType(player, cycleRetries == 0);
+			success = tryCurrentType(player);
 			if (!success && cycleRetries > 0) {
 				cycleTarget(reverseDirection);
 			}
 			cycleRetries--;
 		}
 
-		return success ? SpellResult.CAST : SpellResult.FAIL;
+		if (!success) {
+			sendMessage(failMessage);
+			return SpellResult.FAIL;
+		}
+		return SpellResult.CAST;
 	}
 	
 	protected void cycleTargetType(boolean reverse) {
@@ -132,27 +201,53 @@ public class RecallSpell extends TargetingSpell
 		if (selectedTypeIndex < 0) selectedTypeIndex = enabledTypes.size() - 1;
 		if (selectedTypeIndex >= enabledTypes.size()) selectedTypeIndex = 0;
 		selectedType = enabledTypes.get(selectedTypeIndex);
-		if (selectedType == RecallType.WARPS) {
-			if (reverse) selectedWarpIndex = warps.size() - 1;
-			else selectedWarpIndex = 0;
+		if (selectedType == RecallType.WARP) {
+			if (reverse) selectedIndex = warps.size() - 1;
+			else selectedIndex = 0;
+		} else if (selectedType == RecallType.WAND) {
+			if (reverse) {
+				List<LostWand> lostWands = mage.getLostWands();
+				selectedIndex = lostWands.size() - 1;
+			}
+			else selectedIndex = 0;
+		} else {
+			selectedIndex = 0;
 		}
 	}
 	
 	protected void cycleTarget(boolean reverse) {
 		// Special-case for warps
-		if (selectedType == RecallType.WARPS) {
+		if (selectedType == RecallType.WARP) {
 			if (reverse) {
-				selectedWarpIndex--;
-				if (selectedWarpIndex < 0) {
-					selectedWarpIndex = warps.size() - 1;
+				selectedIndex--;
+				if (selectedIndex < 0) {
+					selectedIndex = warps.size() - 1;
 				} else {
 					return;
 				}
 			}
 			else {
-				selectedWarpIndex++;
-				if (selectedWarpIndex >= warps.size()) {
-					selectedWarpIndex = 0;
+				selectedIndex++;
+				if (selectedIndex >= warps.size()) {
+					selectedIndex = 0;
+				} else {
+					return;
+				}
+			}
+		} else if (selectedType == RecallType.WAND) {
+			List<LostWand> lostWands = mage.getLostWands();
+			if (reverse) {
+				selectedIndex--;
+				if (selectedIndex < 0) {
+					selectedIndex = lostWands.size() - 1;
+				} else {
+					return;
+				}
+			}
+			else {
+				selectedIndex++;
+				if (selectedIndex >= lostWands.size()) {
+					selectedIndex = 0;
 				} else {
 					return;
 				}
@@ -162,51 +257,47 @@ public class RecallSpell extends TargetingSpell
 		cycleTargetType(reverse);
 	}
 	
-	protected boolean tryCurrentType(Player player, boolean showFailMessage) {
-		switch (selectedType) {
+	protected Location getTargetLocation(RecallType type, int index) {
+		Player player = getPlayer();
+		castMessage = "";
+		failMessage = "";
+		switch (type) {
 		case MARKER:
-			if (!isActive) {
-				return placeMarker(getLocation().getBlock());
-			}
-			
-			return tryTeleport(location, getMessage("cast_marker"));
+			castMessage = getMessage("cast_marker");
+			return location;
 		case DEATH:
-			Location deathLocation = mage.getLastDeathLocation();
-			if (deathLocation == null)
-			{
-				if (showFailMessage) sendMessage(getMessage("no_target_death"));
-				return false;
-			}
-
-			return tryTeleport(deathLocation, getMessage("cast_death"));
+			castMessage = getMessage("cast_death");
+			failMessage = getMessage("no_target_death");
+			return mage.getLastDeathLocation();
 		case SPAWN:
-			return tryTeleport(getWorld().getSpawnLocation(), getMessage("cast_spawn"));
+			castMessage = getMessage("cast_spawn");
+			return getWorld().getSpawnLocation();
 		case HOME:
-			Location bedLocation = player.getBedSpawnLocation();
-			if (bedLocation == null) {
-				if (showFailMessage) castMessage(getMessage("no_target_home"));
-				return false;
-			}
-			return tryTeleport(bedLocation, getMessage("cast_home"));
+			castMessage = getMessage("cast_home");
+			failMessage = getMessage("no_target_home");
+			return player == null ? null : player.getBedSpawnLocation();
 		case WAND:
 			List<LostWand> lostWands = mage.getLostWands();
-			Location wandLocation = lostWands.size() > 0 ? lostWands.get(0).getLocation() : null;
-			if (wandLocation == null)
-			{
-				if (showFailMessage) sendMessage(getMessage("no_target_wand"));
-				return false;
-			}
-			
-			return tryTeleport(wandLocation, getMessage("cast_wand"));
-		case WARPS:
-			if (warps == null || selectedWarpIndex < 0 || selectedWarpIndex >= warps.size()) return false;
-			String warpName = warps.get(selectedWarpIndex);
-			Location warpLocation = controller.getWarp(warpName);
-			if (warpLocation == null) return false;
-			return tryTeleport(warpLocation, getMessage("cast_warp").replace("$name", warpName));
+			failMessage = getMessage("no_target_wand");
+			castMessage = getMessage("cast_wand");
+			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
+			return lostWands.get(index).getLocation();
+		case WARP:
+			if (warps == null || index < 0 || index >= warps.size()) return null;
+			String warpName = warps.get(index);
+			castMessage = getMessage("cast_warp").replace("$name", warpName);
+			return controller.getWarp(warpName);
 		}
 		
-		return false;
+		return null;
+	}
+	
+	protected boolean tryCurrentType(Player player) {
+		Location location = getTargetLocation(selectedType, selectedIndex);
+		if (location == null) {
+			return false;
+		}
+		return tryTeleport(location);
 	}
 
 	protected boolean removeMarker()
@@ -216,7 +307,11 @@ public class RecallSpell extends TargetingSpell
 		return true;
 	}
 	
-	protected boolean tryTeleport(final Location targetLocation, final String message) {
+	protected boolean tryTeleport(final Location targetLocation) {
+		if (targetLocation == null) {
+			sendMessage(failMessage);
+			return false;
+		}
 		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {
 			sendMessage(getMessage("cross_world_disallowed"));
 			return false;
@@ -230,7 +325,7 @@ public class RecallSpell extends TargetingSpell
 				final RecallSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
-						me.tryTeleport(targetLocation, message);
+						me.tryTeleport(targetLocation);
 					}
 				}, RETRY_INTERVAL);
 				
@@ -249,7 +344,7 @@ public class RecallSpell extends TargetingSpell
 			targetLocation.setYaw(playerLocation.getYaw());
 			targetLocation.setPitch(playerLocation.getPitch());
 			player.teleport(tryFindPlaceToStand(targetLocation));
-			castMessage(message);
+			castMessage(castMessage);
 		}
 		return true;
 	}

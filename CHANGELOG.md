@@ -4,6 +4,7 @@
 
  - Added "Worm", a new Automaton. Improved and differentiated the others.
  - MCStats integration - this can be turned off in config.yml.
+ - Improvements / Mechanics changes to Recall (and Recall Token item)
 
 ## 3.0-RC1
 

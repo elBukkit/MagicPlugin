@@ -193,21 +193,7 @@ public abstract class BaseSpell extends Spell {
 	 */
 	public Block getPlayerBlock()
 	{
-		Block playerBlock = null;
-		Location playerLoc = getLocation();
-		if (playerLoc == null) return null;
-		World world = playerLoc.getWorld();
-		if (world == null) return null;
-		int x = (int) Math.round(playerLoc.getX() - 0.5);
-		int y = (int) Math.round(playerLoc.getY() - 0.5);
-		int z = (int) Math.round(playerLoc.getZ() - 0.5);
-		int dy = 0;
-		while (dy > -3 && (playerBlock == null || isOkToStandIn(playerBlock.getType())))
-		{
-			playerBlock = world.getBlockAt(x, y + dy, z);
-			dy--;
-		}
-		return playerBlock;
+		return getLocation().getBlock().getRelative(BlockFace.DOWN);
 	}
 
 	/**

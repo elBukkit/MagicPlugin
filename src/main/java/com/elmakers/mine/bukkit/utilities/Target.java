@@ -25,6 +25,8 @@ public class Target implements Comparable<Target>
 	private double   distance    = 100000;
 	private double   angle       = 10000;
 	private int      score       = 0;
+	
+	private Object	 extraData	 = null;
 
 	public Target(Location sourceLocation)
 	{
@@ -36,6 +38,16 @@ public class Target implements Comparable<Target>
 		this.source = sourceLocation;
 		if (block != null) this.location = block.getLocation();
 		calculateScore();
+	}
+	
+	public Target(Location sourceLocation, Block block, int range)
+	{
+		this(sourceLocation, block, range, 0.3, false);
+	}
+	
+	public Target(Location sourceLocation, Block block, int range, double angle)
+	{
+		this(sourceLocation, block, range, angle, false);
 	}
 
 	public Target(Location sourceLocation, Block block, int range, double angle, boolean reverseDistance)
@@ -155,15 +167,18 @@ public class Target implements Comparable<Target>
 		distance = targetDirection.length();
 
 		score = 0;
-		if (angle > maxAngle) return;
-		if (distance > maxDistance) return;
+		if (maxAngle > 0 && angle > maxAngle) return;
+		if (maxDistance > 0 && distance > maxDistance) return;
 		if (distance < minDistance) return;
 		
 		if (reverseDistance) {
 			distance = maxDistance - distance;
 		}
 
-		score = (int)((maxDistance - distance) + (3 - angle) * 4);
+		score = 0;
+		
+		if (maxDistance > 0) score += (maxDistance - distance);
+		if (angle > 0) score += (3 - angle) * 4;
 
 		// Favor targeting players, a bit
 		// TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
@@ -250,5 +265,13 @@ public class Target implements Comparable<Target>
 		{
 			location.setWorld(world);
 		}
+	}
+
+	public Object getExtraData() {
+		return extraData;
+	}
+
+	public void setExtraData(Object extraData) {
+		this.extraData = extraData;
 	}
 }

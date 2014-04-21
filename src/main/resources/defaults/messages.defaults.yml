@@ -792,8 +792,8 @@ spells:
         cast: You fire some magical flares
     recall:
         name: Recall
-        description: Marks locations for return
-        usage: Aim UP and cast to teleport
+        description: Return you to previous locations
+        usage: Cast down to set a marker
         no_target: Can't place a marker there
         cast_marker_place: You place a recall marker
         cast_marker_move: You move your recall marker
@@ -1034,7 +1034,7 @@ wands:
         description: Tint your wand effects!
     recalltoken:
         name: Recall Token
-        description: Aim up and left-click
+        description: Cast to return
     defenderheart:
         name: Heart of Defender
         description: It pulsates with power
