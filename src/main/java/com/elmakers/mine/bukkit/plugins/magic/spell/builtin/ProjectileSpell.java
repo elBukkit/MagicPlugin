@@ -223,9 +223,14 @@ public class ProjectileSpell extends TargetingSpell
 		Method getHandleMethod = null;
 		
 		try {
-			lifeField = arrowClass.getDeclaredField("j");
+			// This is kinda hacky, like fer reals :\
+			try {
+				lifeField = arrowClass.getDeclaredField("at");
+			} catch (Throwable ignore) {
+				lifeField = arrowClass.getDeclaredField("j");
+			}
 			getHandleMethod = craftArrowClass.getMethod("getHandle");			
-		} catch (Exception ex) {
+		} catch (Throwable ex) {
 			lifeField = null;
 			getHandleMethod = null;
 			controller.getLogger().warning("Failed to create short-lived arrow. Are you running bukkit? Set tick_increase to 0 to avoid this message");			
