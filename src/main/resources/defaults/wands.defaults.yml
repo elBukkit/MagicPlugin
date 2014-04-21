@@ -2203,13 +2203,13 @@ aquaeffects:
     upgrade: true
     indestructible: false
     icon: carpet:3
-    effect_color: '0000FF'
+    effect_color: '00FFFF'
     effect_bubbles: true
 rainboweffects:
     upgrade: true
     indestructible: false
     icon: magma_cream
-    effect_color: 'FFFFFF'
+    effect_color: random
     effect_bubbles: false
     effect_particle: mob_spell
     effect_parcticle_data: 2
