@@ -1912,6 +1912,7 @@ repair:
         type: cuboid
         transparent: transparent_to_construction
         brush: clone
+        brushmod: erase:
         otworld: world
         obworld: world_backup
         brushtarget: true
