@@ -7,6 +7,7 @@
  - Improvements / Mechanics changes to Recall (and Recall Token item)
  - The "Backup" and "Repair" spells will auto-create worlds (can be disabled in config.yml)
  - Added "Backup" and "Repair" to the natural enchant list, and the Wolf and Admin wands.
+ - Improve /magic give, add tab-completion.
 
 ## 3.0-RC1
 

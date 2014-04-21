@@ -22,6 +22,7 @@ import org.bukkit.util.BlockVector;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.BlockBatch;
@@ -311,41 +312,56 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		}
 		
 		if (isWand) {
-			onGiveWand(sender, player, key);
+			onGiveWand(sender, player, key, false);
 		} else if (isMaterial) {
-			onGiveBrush(sender, player, key);
+			onGiveBrush(sender, player, key, false);
 		} else if (isUpgrade) {
-			onGiveUpgrade(sender, player, key);
+			onGiveUpgrade(sender, player, key, false);
 		} else {
-			onGiveSpell(sender, player, key);
+			onGive(sender, player, key);
 		}
 		
 		return true;
 	}
 	
-	protected void onGiveSpell(CommandSender sender, Player player, String spellKey)
+	protected void onGive(CommandSender sender, Player player, String key)
+	{
+		if (!onGiveSpell(sender, player, key, true)) {
+			if (!onGiveBrush(sender, player, key, true))
+			{
+				if (!onGiveWand(sender, player, key, true))
+				{
+					sender.sendMessage("Failed to create a spell, brush or wand item for " + key);
+				}
+			}
+		}
+	}
+	
+	protected boolean onGiveSpell(CommandSender sender, Player player, String spellKey, boolean quiet)
 	{
 		ItemStack itemStack = api.createSpellItem(spellKey);
 		if (itemStack == null) {
-			sender.sendMessage("Failed to create spell item for " + spellKey);
-			return;
+			if (!quiet) sender.sendMessage("Failed to spell spell item for " + spellKey);
+			return false;
 		}
 		
 		api.giveItemToPlayer(player, itemStack);
+		return true;
 	}
 	
-	protected void onGiveBrush(CommandSender sender, Player player, String materialKey)
+	protected boolean onGiveBrush(CommandSender sender, Player player, String materialKey, boolean quiet)
 	{
 		ItemStack itemStack = api.createBrushItem(materialKey);
 		if (itemStack == null) {
-			sender.sendMessage("Failed to material spell item for " + materialKey);
-			return;
+			if (!quiet) sender.sendMessage("Failed to material spell item for " + materialKey);
+			return false;
 		}
 		
 		api.giveItemToPlayer(player, itemStack);
+		return true;
 	}
 	
-	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey)
+	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey, boolean quiet)
 	{
 		Mage mage = api.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
@@ -357,11 +373,12 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		if (wand != null) {
 			wand.makeUpgrade();
 			api.giveItemToPlayer(player, wand.getItem());
-			if (sender != player) {
+			if (sender != player && !quiet) {
 				sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
 			}
 		} else  {
-			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
+			if (!quiet) sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
+			return false;
 		}
 		return true;
 	}
@@ -386,10 +403,34 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.magic.", "give");
 			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
 		} else if (args.length == 2) {
-			if (args[1].equalsIgnoreCase("list")) {
+			if (args[0].equalsIgnoreCase("list")) {
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
+			} else if (args[0].equalsIgnoreCase("give")) {
+				options.add("wand");
+				options.add("material");
+				options.add("upgrade");
+				Collection<SpellTemplate> spellList = api.getSpellTemplates();
+				for (SpellTemplate spell : spellList) {
+					options.add(spell.getKey());
+				}
+				Collection<String> allWands = api.getWandKeys();
+				for (String wandKey : allWands) {
+					options.add(wandKey);
+				}
+				options.addAll(api.getBrushes());
+			}
+		} else if (args.length == 3) {
+			if (args[0].equalsIgnoreCase("give")) {
+				if (args[1].equalsIgnoreCase("upgrade") || args[1].equalsIgnoreCase("wand")) {
+					Collection<String> allWands = api.getWandKeys();
+					for (String wandKey : allWands) {
+						options.add(wandKey);
+					}
+				} else if (args[1].equalsIgnoreCase("material")) {
+					options.addAll(api.getBrushes());
+				}
 			}
 		}
 		Collections.sort(options);

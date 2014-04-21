@@ -744,6 +744,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			wandName = parameters[0];
 		}
 		
-		return onGiveWand(sender, player, wandName);
+		return onGiveWand(sender, player, wandName, false);
 	}
 }
