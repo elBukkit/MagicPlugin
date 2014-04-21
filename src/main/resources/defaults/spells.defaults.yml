@@ -427,8 +427,8 @@ defender:
         target_max_range: 128
         live_rules: 3,4,5,6,7,8,9
         birth_rules: 4,5
-        cast_probability: 0.2
-        cast: convert brush stained_glass|1 radius 1 check_destructible true bypass_undo true
+        cast_probability: 0.1
+        cast: convert brush stained_glass|1 radius 3 check_destructible true undo 5000
         move: 4
         drop: defenderheart
         death_cast: collapse radius 12
