@@ -312,7 +312,7 @@ virus:
         concurrent: true
         drop: virusheart
         death_cast: neutron
-        cast_probability: 0.05
+        cast_probability: 0.5
         cast: boom
         drop_xp: 900
         move: 3
@@ -345,17 +345,17 @@ worm:
         delay: 1000
         target_mode: hunt
         target_types: mage
-        birth_rules: 1,2,3,4
-        diagonal_birth_rules: 0,1
-        live_rules: 1,2,3,4
-        diagonal_live_rules: 0,1 
+        birth_rules: 1,2,3,4,5,6,7
+        diagonal_birth_rules: 0,1,2,3
+        live_rules: 1,2,3,4,5,6,7
+        diagonal_live_rules: 0,1,2,3
         concurrent: true
         drop: wormheart
         death_cast: blast radius 8 speed -1
-        cast_probability: 0.01
-        cast: cage
+        cast_probability: 0.3
+        cast: curse
         drop_xp: 700
-        move: 5
+        move: 4
         restricted: restricted_animate
     costs:
         xp: 800
@@ -376,24 +376,24 @@ hunter:
         range: 32
         cooldown: 60000
         name: Hunter
-        radius: 6
-        yradius: 6
-        birth_range: 4
-        live_range: 4
+        radius: 4
+        yradius: 4
+        birth_range: 2
+        live_range: 2
         target_min_range: 1
         target_max_range: 128
-        delay: 1000
+        delay: 800
         target_mode: hunt
         target_types: player
-        cast: curse
-        cast_probability: 0.1
+        cast: pull
+        cast_probability: 0.3
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
-        birth_rules: 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
+        birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         concurrent: true
-        move: 3
+        move: 2
         drop: hunterheart
         drop_xp: 500
-        death_cast: blast radius 4
+        death_cast: blast radius 3
         restricted: restricted_animate
     costs:
         xp: 600
@@ -1887,6 +1887,7 @@ backup:
         type: cuboid
         transparent: transparent_to_construction
         brush: clone
+        check_destructible: false
         brushmod: erase
         otworld: ~_backup
         obworld: ~-_backup
@@ -1910,6 +1911,7 @@ repair:
         range: 32
         radius: 4
         type: cuboid
+        check_destructible: false
         transparent: transparent_to_construction
         brush: clone
         brushmod: erase
