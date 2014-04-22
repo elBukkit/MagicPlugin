@@ -1,9 +1,14 @@
 # CHANGELOG
 
+## 3.0-RC3
+
+ - Fix shading of mcstats to avoid conflicting with other plugins that use it.
+
 ## 3.0-RC2
 
  - Fix enchanting in CB 1.7.2 R3 and above (Woohoo! I guess this is not a CB bug, but a "feature"- though I did submit a pull request)
  - MCStats integration - this can be turned off in config.yml.
+ - Fix short-lived arrows in CB 1.7.5 and above
  - Added "Worm", a new Automaton. Improved and differentiated the others.
  - Improvements / Mechanics changes to Recall (and Recall Token item)
  - Improvements / Mechanics changes to Gather

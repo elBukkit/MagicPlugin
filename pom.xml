@@ -3,13 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>3.0-RC2</version>
+	<version>3.0-RC3-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
 		<dependencies>
 		</dependencies>
 	</dependencyManagement>
+	
+	<organization>
+		<name>elMakers</name>
+		<url>http://www.elmakers.com/</url>
+	</organization>
 	
 	<licenses>
 		<license>
@@ -166,7 +171,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
+				<version>1.5</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -174,15 +179,13 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
-										<Build-Version>${build.version}</Build-Version>
-									</manifestEntries>
-								</transformer>
-							</transformers>
+							<minimizeJar>true</minimizeJar>
+							<relocations>
+								<relocation>
+                                    <pattern>org.mcstats</pattern>
+                                    <shadedPattern>com.elmakers.mine.bukkit.plugins.magic.mcstats</shadedPattern>
+                                </relocation>
+							</relocations>
 						</configuration>
 					</execution>
 				</executions>
