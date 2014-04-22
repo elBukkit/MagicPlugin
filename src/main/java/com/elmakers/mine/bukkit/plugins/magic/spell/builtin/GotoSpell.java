@@ -47,14 +47,19 @@ public class GotoSpell extends TargetingSpell
 			}
 		}
 		
-		if (targetEntity == null || (!isLookingUp() && !isLookingDown())) {
+		if (!isLookingUp() && !isLookingDown()) {
 			Target target = getTarget();
-
-			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
-			{
+			
+			if (targetEntity != null) {
 				return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
 			}
 			
+			
+			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
+			{
+				return SpellResult.NO_TARGET;
+			}
+		
 			// Check for protected Mages
 			if (targetEntity instanceof Player) {
 				Mage targetMage = controller.getMage((Player)targetEntity);
@@ -75,6 +80,11 @@ public class GotoSpell extends TargetingSpell
 			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
 			releaseTarget();
 			return SpellResult.CAST;
+		}
+		
+		if (targetEntity != null) {
+			releaseTarget();
+			return SpellResult.TARGET_SELECTED;
 		}
 
 		List<String> playerNames = new ArrayList<String>(controller.getPlugin().getPlayerNames());
