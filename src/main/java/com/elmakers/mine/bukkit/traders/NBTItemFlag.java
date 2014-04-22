@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.traders;
 
+import net.dandielo.citizens.traders_v3.core.exceptions.InvalidItemException;
 import net.dandielo.citizens.traders_v3.core.exceptions.attributes.AttributeValueNotFoundException;
 import net.dandielo.citizens.traders_v3.utils.items.ItemFlag;
 
@@ -56,22 +57,30 @@ public abstract class NBTItemFlag extends ItemFlag
 	}
 	
 	@Override
-	public void onAssign(ItemStack itemStack)
+	public ItemStack onReturnAssign(ItemStack itemStack, boolean endItem) throws InvalidItemException
 	{
-		if (itemStack != null) 
+		if (itemStack == null) throw new InvalidItemException();
+		itemStack = InventoryUtils.makeReal(itemStack);
+		onAssign(itemStack);
+		return itemStack;
+	}
+	
+	@Override
+	public void onAssign(ItemStack itemStack) throws InvalidItemException
+	{
+		if (itemStack == null) throw new InvalidItemException();
+		
+		if (subtagName != null && subtagName.length() > 0) 
 		{
-			if (subtagName != null && subtagName.length() > 0) 
+			Object tagNode = InventoryUtils.createNode(itemStack, tagName);
+			if (tagNode != null) 
 			{
-				Object tagNode = InventoryUtils.createNode(itemStack, tagName);
-				if (tagNode != null) 
-				{
-					InventoryUtils.setMeta(tagNode, subtagName, "true");
-				}
-			} 
-			else 
-			{
-				InventoryUtils.setMeta(itemStack, tagName, "true");
+				InventoryUtils.setMeta(tagNode, subtagName, "true");
 			}
+		} 
+		else 
+		{
+			InventoryUtils.setMeta(itemStack, tagName, "true");
 		}
 	}
 }

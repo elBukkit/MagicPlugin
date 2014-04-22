@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.traders;
 
+import net.dandielo.citizens.traders_v3.core.exceptions.InvalidItemException;
 import net.dandielo.citizens.traders_v3.core.exceptions.attributes.AttributeInvalidValueException;
 import net.dandielo.citizens.traders_v3.core.exceptions.attributes.AttributeValueNotFoundException;
 import net.dandielo.citizens.traders_v3.utils.items.ItemAttr;
@@ -41,6 +42,11 @@ public abstract class NBTItemAttr extends ItemAttr
 		subtagName = subtag;
 		defaultValue = def;
 		defaultValue2 = def2;
+	}
+	
+	public String getData()
+	{
+		return tagData;
 	}
 
 	@Override
@@ -92,9 +98,11 @@ public abstract class NBTItemAttr extends ItemAttr
 	}
 	
 	@Override
-	public void onAssign(ItemStack itemStack)
+	public void onAssign(ItemStack itemStack) throws InvalidItemException
 	{
-		if (tagData != null && tagData.length() > 0 && itemStack != null) 
+		if (itemStack == null) throw new InvalidItemException();
+		
+		if (tagData.length() > 0) 
 		{
 			if (subtagName != null && subtagName.length() > 0) 
 			{
@@ -112,9 +120,11 @@ public abstract class NBTItemAttr extends ItemAttr
 	}
 	
 	@Override
-	public ItemStack onReturnAssign(ItemStack itemStack, boolean endItem)
+	public ItemStack onReturnAssign(ItemStack itemStack, boolean endItem) throws InvalidItemException
 	{
-		if (tagData != null && tagData.length() > 0 && itemStack != null) 
+		if (itemStack == null) throw new InvalidItemException();
+		
+		if (tagData != null && tagData.length() > 0) 
 		{
 			itemStack = InventoryUtils.makeReal(itemStack);
 			onAssign(itemStack);

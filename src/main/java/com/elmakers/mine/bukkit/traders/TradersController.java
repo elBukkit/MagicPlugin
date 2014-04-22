@@ -33,7 +33,6 @@ public class TradersController {
 		ItemAttr.registerAttr(WandHealthRegenerationAttr.class);
 		ItemAttr.registerAttr(WandHungerRegenerationAttr.class);
 		ItemAttr.registerAttr(WandIconAttr.class);
-		ItemAttr.registerAttr(WandIdAttr.class);
 		ItemAttr.registerAttr(WandManaAttr.class);
 		ItemAttr.registerAttr(WandManaMaxAttr.class);
 		ItemAttr.registerAttr(WandManaRegenerationAttr.class);
