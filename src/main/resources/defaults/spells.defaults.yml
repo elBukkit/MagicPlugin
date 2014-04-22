@@ -376,10 +376,10 @@ hunter:
         range: 32
         cooldown: 60000
         name: Hunter
-        radius: 4
-        yradius: 4
-        birth_range: 2
-        live_range: 2
+        radius: 5
+        yradius: 5
+        birth_range: 3
+        live_range: 3
         target_min_range: 1
         target_max_range: 128
         delay: 800
