@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.traders;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+
 import net.dandielo.citizens.traders_v3.utils.items.ItemAttr;
 
 public class InventoryItemAttr extends NBTItemAttr {
@@ -14,7 +19,12 @@ public class InventoryItemAttr extends NBTItemAttr {
 	 */
 	public boolean equalsWeak(ItemAttr other)
 	{
-		return equalsStrong(other);
+		if (!(other instanceof InventoryItemAttr)) return false;
+		
+		Set<String> inventory = getInventorySet(this.getData());
+		Set<String> otherInventory = getInventorySet(((InventoryItemAttr)other).getData());
+		
+		return inventory.containsAll(otherInventory);
 	}
 
 	/**
@@ -24,7 +34,26 @@ public class InventoryItemAttr extends NBTItemAttr {
 	 */
 	public boolean equalsStrong(ItemAttr other)
 	{
-		// TODO: Parse into list, ignore @ positional modifier and ignore order.
-		return super.equalsStrong(other);
+		if (!(other instanceof InventoryItemAttr)) return false;
+		
+		Set<String> inventory = getInventorySet(this.getData());
+		Set<String> otherInventory = getInventorySet(((InventoryItemAttr)other).getData());
+		
+		return inventory.equals(otherInventory);
+	}
+	
+	public static Set<String> getInventorySet(String csv) {
+		Set<String> inventory = new HashSet<String>();
+		String[] pieces = StringUtils.split(csv, ',');
+		for (String piece : pieces) {
+			if (piece.contains("@")) {
+				String[] bits = StringUtils.split(piece, '@');
+				piece = bits[0];
+			}
+			
+			inventory.add(piece);
+		}
+		
+		return inventory;
 	}
 }
