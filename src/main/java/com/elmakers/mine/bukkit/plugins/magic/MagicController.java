@@ -1405,6 +1405,7 @@ public class MagicController implements Listener
 		metricsLevel = properties.getInt("metrics_level", metricsLevel);
 		
 		if (properties.contains("mana_display")) {
+			Wand.retainLevelDisplay = properties.getString("mana_display").equals("hybrid");
 			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
 		}
 		

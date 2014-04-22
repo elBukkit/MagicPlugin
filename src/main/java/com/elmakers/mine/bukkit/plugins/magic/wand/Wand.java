@@ -153,6 +153,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected static Map<String, ConfigurationSection> wandTemplates = new HashMap<String, ConfigurationSection>();
 	
 	public static boolean displayManaAsBar = true;
+	public static boolean retainLevelDisplay = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
@@ -1961,7 +1962,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage != null && xpMax > 0 && xpRegeneration > 0) {
 			Player player = mage.getPlayer();
 			if (displayManaAsBar) {
-				player.setLevel(0);
+				if (!retainLevelDisplay) {
+					player.setLevel(0);
+				}
 				player.setExp((float)xp / (float)xpMax);
 			} else {
 				player.setLevel(xp);

@@ -178,8 +178,8 @@ welcome_wand:
 # "cycle" : Right-click will cycle to the next active spell (no inventory or icons)
 default_wand_mode: chest
 
-# How to display Mana. Options are "bar" and "number"
-mana_display: bar
+# How to display Mana. Options are "bar", "number" and "hybrid"
+mana_display: hybrid
 
 # Crafting settings for crafting wands
 crafting_material_upper: nether_star

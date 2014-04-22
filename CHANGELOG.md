@@ -3,6 +3,7 @@
 ## 3.0-RC3
 
  - Fix shading of mcstats to avoid conflicting with other plugins that use it.
+ - Add "hybrid" mana display, which is the new default.
 
 ## 3.0-RC2
 
