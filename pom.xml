@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.elmakers.mine.bukkit</groupId>
+	<artifactId>MagicLib</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>elMakers - Bukkit Plugins : Magic Lib</name>
+	<url>http://mine.elmakers.com</url>
+	<dependencyManagement>
+		<dependencies>
+		</dependencies>
+	</dependencyManagement>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License 2.0</name>
+			<url>LICENSE</url>
+			<distribution>repo</distribution>
+			<comments>Free as in Everything</comments>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system>Jira</system>
+		<url>http://jira.elmakers.com</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.elmakers.com</url>
+	</ciManagement>
+
+	<scm>
+		<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
+		<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
+		<url>https://github.com/elBukkit/MagicPlugin</url>
+		<tag>master</tag>
+	</scm>
+
+	<mailingLists>
+		<mailingList>
+			<name>Developer Discussion</name>
+			<archive>https://groups.google.com/forum/#!forum/magic-plugin</archive>
+		</mailingList>
+	</mailingLists>
+
+	<distributionManagement>
+		<repository>
+			<id>maven.elmakers.com</id>
+			<url>http://maven.elmakers.com/repository/</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven.elmakers.com</id>
+			<url>http://maven.elmakers.com/repository/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<properties>
+		<build.version>1.0</build.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.6.4-R2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.elmakers.mine.bukkit</groupId>
+			<artifactId>MagicAPI</artifactId>
+			<version>1.2-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>elMakers</id>
+			<url>http://maven.elmakers.com/repository/</url>
+		</repository>
+		<repository>
+			<id>bukkit-repo</id>
+			<url>http://repo.bukkit.org/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
+										<Build-Version>${build.version}</Build-Version>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
