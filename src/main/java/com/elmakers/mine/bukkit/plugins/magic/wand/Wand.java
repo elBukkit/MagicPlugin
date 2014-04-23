@@ -1731,7 +1731,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		if (isInventoryOpen()) {
 			saveInventory();
-			openInventoryPage = (openInventoryPage + 1) % inventories.size();
+			int inventoryCount = inventories.size();
+			openInventoryPage = inventoryCount == 0 ? 0 : (openInventoryPage + 1) % inventoryCount;
 			updateInventory();
 			if (mage != null && inventories.size() > 1) {
 				mage.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
