@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic.commands;
+package com.elmakers.mine.bukkit.plugins.magic.command;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.plugins.magic.commands;
+package com.elmakers.mine.bukkit.plugins.magic.command;
 
 import java.io.IOException;
 import java.io.InputStream;

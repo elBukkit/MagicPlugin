@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.effects;
+package com.elmakers.mine.bukkit.effect;
 
 import java.security.InvalidParameterException;
 import java.util.Random;

@@ -23,10 +23,10 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.BlockData;
-import com.elmakers.mine.bukkit.plugins.magic.commands.CastCommandExecutor;
-import com.elmakers.mine.bukkit.plugins.magic.commands.MagicCommandExecutor;
-import com.elmakers.mine.bukkit.plugins.magic.commands.SpellsCommandExecutor;
-import com.elmakers.mine.bukkit.plugins.magic.commands.WandCommandExecutor;
+import com.elmakers.mine.bukkit.plugins.magic.command.CastCommandExecutor;
+import com.elmakers.mine.bukkit.plugins.magic.command.MagicCommandExecutor;
+import com.elmakers.mine.bukkit.plugins.magic.command.SpellsCommandExecutor;
+import com.elmakers.mine.bukkit.plugins.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utility.URLMap;
 
