@@ -133,6 +133,8 @@ destructible:
 - pumpkin
 - huge_mushroom_1
 - huge_mushroom_2
+- ice
+- packed_ice
 
 water:
 - water
