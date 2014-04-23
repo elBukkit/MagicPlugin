@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.MaterialMapCanvas;
+import com.elmakers.mine.bukkit.utility.BufferedMapCanvas;
 
 public class MaterialBrush extends MaterialAndData {
 	
@@ -63,7 +63,7 @@ public class MaterialBrush extends MaterialAndData {
 	private String targetWorldName = null;
 	private final Mage mage;
 	private short mapId = -1;
-	private MaterialMapCanvas mapCanvas = null;
+	private BufferedMapCanvas mapCanvas = null;
 	private Material mapMaterialBase = Material.STAINED_CLAY;
 	private Schematic schematic;
 	private String schematicName = "";
@@ -503,7 +503,7 @@ public class MaterialBrush extends MaterialAndData {
 					if (mapView != null) {
 						List<MapRenderer> renderers = mapView.getRenderers();
 						if (renderers.size() > 0) {
-							mapCanvas = new MaterialMapCanvas();
+							mapCanvas = new BufferedMapCanvas();
 							MapRenderer renderer = renderers.get(0);
 							// This is mainly here as a hack for my own urlmaps that do their own caching
 							// Bukkit *seems* to want to do caching at the MapView level, but looking at the code-
@@ -528,17 +528,17 @@ public class MaterialBrush extends MaterialAndData {
 				if (orientVector.getBlockY() > orientVector.getBlockZ() || orientVector.getBlockY() > orientVector.getBlockX()) {
 					if (orientVector.getBlockX() > orientVector.getBlockZ()) {
 						mapColor = mapCanvas.getDyeColor(
-								Math.abs(diff.getBlockX() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
-								Math.abs(-diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+								Math.abs(diff.getBlockX() * 8 + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH, 
+								Math.abs(-diff.getBlockY() * 8 + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT);
 					} else {
 						mapColor = mapCanvas.getDyeColor(
-								Math.abs(diff.getBlockZ() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
-								Math.abs(-diff.getBlockY() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+								Math.abs(diff.getBlockZ() * 8 + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH, 
+								Math.abs(-diff.getBlockY() * 8 + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT);
 					}
 				} else {
 					mapColor = mapCanvas.getDyeColor(
-						Math.abs(diff.getBlockX() * 8 + MaterialMapCanvas.CANVAS_WIDTH / 2) % MaterialMapCanvas.CANVAS_WIDTH, 
-						Math.abs(diff.getBlockZ() * 8 + MaterialMapCanvas.CANVAS_HEIGHT / 2) % MaterialMapCanvas.CANVAS_HEIGHT);
+						Math.abs(diff.getBlockX() * 8 + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH, 
+						Math.abs(diff.getBlockZ() * 8 + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT);
 				}
 				if (mapColor != null) {
 					super.setMaterial(mapMaterialBase, mapColor.getData());
