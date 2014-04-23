@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.block.ConstructBatch;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
-import com.elmakers.mine.bukkit.utilities.Target;
+import com.elmakers.mine.bukkit.utility.Target;
 
 public class ConstructSpell extends BrushSpell
 {

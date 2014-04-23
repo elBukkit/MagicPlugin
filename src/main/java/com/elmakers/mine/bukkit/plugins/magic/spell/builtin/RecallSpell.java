@@ -19,7 +19,7 @@ import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utilities.Target;
+import com.elmakers.mine.bukkit.utility.Target;
 
 public class RecallSpell extends TargetingSpell
 {

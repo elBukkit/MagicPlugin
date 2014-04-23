@@ -21,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utilities.Target;
+import com.elmakers.mine.bukkit.utility.Target;
 
 public class FamiliarSpell extends TargetingSpell
 {

@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utilities.Target;
+import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateSpell extends BlockSpell {
 	

@@ -26,7 +26,7 @@ import org.bukkit.entity.Wolf;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utilities.Target;
+import com.elmakers.mine.bukkit.utility.Target;
 
 public class AlterSpell extends BlockSpell
 {
