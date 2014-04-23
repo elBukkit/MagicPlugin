@@ -7,6 +7,13 @@
 
 * I changed more spell parameters, mostly the material/brush related ones. Sorry, trying to get this settled for 3.0.
 
+* I made the wood_hoe the default wand item, instead of blaze_rod. You can change this back in config.yml if you wish, however this
+  was made to support the official Magic resource pack, which are free to use- simply add the following to your server.properties file:
+
+```  
+resource-pack=https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP.zip
+```
+
 ## 2.9.9
 
 * I removed the block populator. It will be part of a separate plugin, MagicWorlds: http://dev.bukkit.org/bukkit-plugins/magicworlds/

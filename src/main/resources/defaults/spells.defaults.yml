@@ -1636,7 +1636,7 @@ time:
     costs:
         xp: 40        
 bridge:
-    icon: wood_hoe
+    icon: iron_hoe
     category: engineering
     class: BridgeSpell
     effects:

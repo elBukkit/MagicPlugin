@@ -4,6 +4,7 @@
 
  - Fix shading of mcstats to avoid conflicting with other plugins that use it.
  - Add "hybrid" mana display, which is the new default.
+ - Add an official resource pack, with a special wand item (wood hoe) and command block texture.
 
 ## 3.0-RC2
 

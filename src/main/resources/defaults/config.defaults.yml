@@ -146,12 +146,12 @@ age_dropped_items: 0
 # 
 
 # Wand appearance
-wand_item: blaze_rod
+wand_item: wood_hoe
 wand_upgrade_item: nether_star
 wand_glow: true
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
-wand_item_enchantable: wood_sword
+wand_item_enchantable: wood_hoe
 
 # If true, fill wands with all known spells on creation
 fill_wands: false
