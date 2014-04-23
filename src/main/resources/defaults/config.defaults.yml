@@ -262,6 +262,30 @@ auto_undo: 0
 max_tnt_per_chunk: 16
 
 #
+# Control wand randomization
+# This only controls the maximum limits for everything
+# for details wand randomization customization, see the "random"
+# template in wands.defaults.yml.
+#
+
+min_enchant_level: 10
+max_enchant_level: 40
+max_property_value: 1.0
+max_uses: 500
+max_mana: 1500
+max_mana_regeneration: 150
+max_health_regeneration: 5
+max_hunger_regeneration: 5
+max_damage_reduction: 0.4
+max_cost_reduction: 0.5
+max_cooldown_reduction: 0.75
+max_fly_speed_increase: 0.2
+max_walk_speed_increase: 0.3
+max_fly_speed: 0.8
+max_walk_speed: 0.8
+
+
+#
 # Control wands' "Power" settings
 #
 # Wands have a power (from 0-1) that will change the effects of many spells:

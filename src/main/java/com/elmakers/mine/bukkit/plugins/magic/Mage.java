@@ -190,6 +190,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return activeWand == null ? cooldownReduction + controller.getCooldownReduction() : activeWand.getCooldownReduction() + cooldownReduction;
 	}
 	
+	public boolean isCooldownFree() {
+		return activeWand == null ? false : activeWand.isCooldownFree();
+	}
+	
 	public void setCooldownReduction(float reduction) {
 		cooldownReduction = reduction;
 	}

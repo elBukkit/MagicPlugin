@@ -411,25 +411,27 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		cooldown = parameters.getInt("cool", cooldown);
 		
 		long currentTime = System.currentTimeMillis();
-		double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
-		if (cooldownReduction < 1 && !isActive && cooldown > 0) {
-			int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-			if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
-			{
-				long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
-				if (seconds > 60 * 60 ) {
-					long hours = seconds / (60 * 60);
-					sendMessage(Messages.get("cooldown.wait_hours").replace("$hours", ((Long)hours).toString()));					
-				} else if (seconds > 60) {
-					long minutes = seconds / 60;
-					sendMessage(Messages.get("cooldown.wait_minutes").replace("$minutes", ((Long)minutes).toString()));					
-				} else if (seconds > 1) {
-					sendMessage(Messages.get("cooldown.wait_seconds").replace("$seconds", ((Long)seconds).toString()));
-				} else {
-					sendMessage(Messages.get("cooldown.wait_moment"));
+		if (!mage.isCooldownFree()) {
+			double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+			if (cooldownReduction < 1 && !isActive && cooldown > 0) {
+				int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+				if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
+				{
+					long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
+					if (seconds > 60 * 60 ) {
+						long hours = seconds / (60 * 60);
+						sendMessage(Messages.get("cooldown.wait_hours").replace("$hours", ((Long)hours).toString()));					
+					} else if (seconds > 60) {
+						long minutes = seconds / 60;
+						sendMessage(Messages.get("cooldown.wait_minutes").replace("$minutes", ((Long)minutes).toString()));					
+					} else if (seconds > 1) {
+						sendMessage(Messages.get("cooldown.wait_seconds").replace("$seconds", ((Long)seconds).toString()));
+					} else {
+						sendMessage(Messages.get("cooldown.wait_moment"));
+					}
+					processResult(SpellResult.COOLDOWN);
+					return false;
 				}
-				processResult(SpellResult.COOLDOWN);
-				return false;
 			}
 		}
 

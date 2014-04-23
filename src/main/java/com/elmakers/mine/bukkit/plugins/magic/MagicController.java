@@ -1447,6 +1447,9 @@ public class MagicController implements Listener
 					}, 
 					autoSaveIntervalTicks, autoSaveIntervalTicks);
 		}
+		
+		// Set up WandLevel limits
+		WandLevel.load(properties);
 	}
 
 	protected void clear()
