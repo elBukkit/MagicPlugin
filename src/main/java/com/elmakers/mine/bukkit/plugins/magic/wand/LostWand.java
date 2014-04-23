@@ -12,6 +12,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	private String name;
 	private String description;
 	private String owner;
+	private boolean indestructible;
 	
 	public LostWand(String id, ConfigurationSection config) {
 		this.id = id;
@@ -28,12 +29,14 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 		this.name = wand.getName();
 		this.owner = wand.getOwner();
 		this.description = wand.getHTMLDescription();
+		this.setIndestructible(wand.isIndestructible());
 	}
 	
 	public void update(LostWand other) {
 		this.location = other.location;
 		this.name = other.getName();
 		this.owner = other.getOwner();
+		this.setIndestructible(other.isIndestructible());
 		String description = other.getDescription();
 		if (description != null && description.length() > 0) {
 			this.description = description;
@@ -51,6 +54,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 			configNode.set("name", name);
 			configNode.set("description", description);
 			configNode.set("owner", owner);
+			configNode.set("indestructible", indestructible);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}	
@@ -65,6 +69,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 			name = configNode.getString("name");
 			description = configNode.getString("description");
 			owner = configNode.getString("owner");
+			indestructible = configNode.getBoolean("indestructible");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}		
@@ -115,5 +120,13 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+	public boolean isIndestructible() {
+		return indestructible;
+	}
+
+	public void setIndestructible(boolean indestructible) {
+		this.indestructible = indestructible;
 	}
 }

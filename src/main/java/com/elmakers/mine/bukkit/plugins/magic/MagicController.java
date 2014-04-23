@@ -2482,6 +2482,9 @@ public class MagicController implements Listener
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {
 		Location location = lostWand.getLocation();
+		if (!lostWand.isIndestructible()) {
+			return true;
+		}
 		return addMarker("wand-" + lostWand.getId(), "Wands", lostWand.getName(), location.getWorld().getName(),
 			location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
 		);
