@@ -1269,7 +1269,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			item.setType(icon.getMaterial());
 			item.setDurability(icon.getData());
 		} else {
-			Set<Material> enchantableMaterials = controller.getMaterialSet("echantable");
+			Set<Material> enchantableMaterials = controller.getMaterialSet("enchantable");
 			if (!enchantableMaterials.contains(item.getType())) {
 				item.setType(EnchantableWandMaterial);
 				item.setDurability((short)0);
