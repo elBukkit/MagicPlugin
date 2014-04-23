@@ -28,7 +28,7 @@ import com.elmakers.mine.bukkit.plugins.magic.commands.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.commands.SpellsCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.commands.WandCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.utilities.URLMap;
+import com.elmakers.mine.bukkit.utility.URLMap;
 
 /*! \mainpage Magic Bukkit Plugin
 *

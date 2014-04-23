@@ -110,8 +110,8 @@ import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.DataStore;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
 import com.elmakers.mine.bukkit.utilities.Messages;
-import com.elmakers.mine.bukkit.utilities.URLMap;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.URLMap;
 import com.elmakers.mine.bukkit.warp.WarpController;
 
 public class MagicController implements Listener 
