@@ -270,7 +270,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 						}
 						$name = isset($wand['name']) ? $wand['name'] : "($key)";
 						$wandClass = ($key == 'random') ? 'randomWandTitle' : 'wandTitle';
-						$icon = isset($wand['icon']) ? $wand['icon'] : $wandItem;
+						$icon = isset($wand['icon']) ? $wand['icon'] : 'wand';
 						$icon = printMaterial($icon, true);
 						echo '<li class="ui-widget-content" style="' . $extraStyle . '" id="wand-' . $key . '">' . $icon . '<span class="' . $wandClass . '">' . $name . '</span></li>';
 					}
