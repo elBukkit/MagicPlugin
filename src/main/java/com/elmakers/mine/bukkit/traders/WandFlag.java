@@ -32,7 +32,9 @@ public class WandFlag extends ItemFlag {
 		}
 	}
 
-	@Override
+	// TODO Have to wait for dtlTraders 3.1.0 for this!
+	// I'm hoping it still works right with the snapshot, in the meantime.
+	// @Override
 	public ItemStack onReturnAssign(ItemStack itemStack, boolean endItem) throws InvalidItemException
 	{
 		if (itemStack == null) throw new InvalidItemException();
