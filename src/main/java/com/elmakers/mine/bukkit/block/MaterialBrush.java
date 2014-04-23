@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utilities.MaterialMapCanvas;
+import com.elmakers.mine.bukkit.utility.MaterialMapCanvas;
 
 public class MaterialBrush extends MaterialAndData {
 	
