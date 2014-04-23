@@ -437,7 +437,7 @@ defender:
     costs:
         xp: 400
 animate:
-    icon: trap_door
+    icon: iron_ingot
     category: automata
     class: AnimateSpell
     effects:

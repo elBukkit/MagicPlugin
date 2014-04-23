@@ -1043,3 +1043,9 @@ wands:
     hunterheart:
         name: Heart of Hunter
         description: It wants to be reborn
+    golemheart:
+        name: Heart of Golem
+        description: Your new best friend
+    wormheart:
+        name: Heart of Worm
+        description: It will consume the world

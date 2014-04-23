@@ -2291,7 +2291,7 @@ defenderheart:
         - defender
 golemheart:
     active_spell: animate
-    icon: trap_door
+    icon: iron_ingot
     indestructible: false
     locked: true
     uses: 1
