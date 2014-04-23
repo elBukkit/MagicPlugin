@@ -87,6 +87,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	protected final static Set<String> percentageParameterMap = new HashSet<String>(Arrays.asList(PERCENTAGE_PARAMETERS));
 	
 	private static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.plugins.magic.spell.builtin";
+	private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect";
 	
 	public final static String[] COMMON_PARAMETERS = (String[])
 		ArrayUtils.addAll(
@@ -290,7 +291,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		                    if (effectValues.contains("class")) {
 		                    	String effectClass = effectValues.getString("class");
 			                    try {
-			                    	Class<?> genericClass = Class.forName("com.elmakers.mine.bukkit.effects." + effectClass);
+			                    	Class<?> genericClass = Class.forName(EFFECT_BUILTIN_CLASSPATH + "." + effectClass);
 			                    	if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
 			                    		throw new Exception("Must extend EffectPlayer");
 			                    	}
