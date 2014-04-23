@@ -1706,11 +1706,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void toggleInventory() {
 		if (!hasInventory) {
-			if (activeSpell != null && activeSpell.length() > 0) {
-				activeSpell = "";
-			} else {
+			if (activeSpell == null || activeSpell.length() == 0) {
 				Set<String> spells = getSpells();
-				// Sanity check, so it'll work next click.
+				// Sanity check, so it'll switch to inventory next time
 				if (spells.size() > 1) hasInventory = true;
 				if (spells.size() > 0) {
 					activeSpell = spells.iterator().next();
