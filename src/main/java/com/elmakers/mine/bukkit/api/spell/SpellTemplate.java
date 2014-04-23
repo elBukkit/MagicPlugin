@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 /**
  * A Spell template, as defined in the spells configuration files.

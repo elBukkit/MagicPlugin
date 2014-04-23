@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.api.block;
 
 /**
  * Represents a batched Block update, usually started by a construction Spell.

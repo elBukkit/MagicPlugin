@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 /**
  * This reprsents a cost required to cast a Spell.

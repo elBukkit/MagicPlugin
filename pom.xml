@@ -31,9 +31,9 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
-		<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
-		<url>https://github.com/elBukkit/MagicPlugin</url>
+		<connection>scm:git:git://github.com/elBukkit/MagicAPI.git</connection>
+		<developerConnection>scm:git:git@github.com:elBukkit/MagicAPI.git</developerConnection>
+		<url>https://github.com/elBukkit/MagicAPI</url>
 		<tag>master</tag>
 	</scm>
 
