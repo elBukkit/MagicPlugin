@@ -153,6 +153,13 @@ wand_glow: true
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
 wand_item_enchantable: wood_hoe
 
+# Used as a substitute item when the wand item is naturally crafted
+# This is mainly for the resource pack, so players don't craft a wood hoe
+# and get some weird non-wand but wand-looking item.
+# This means that, by default, crafting a wood hoe will get you an iron hoe.
+# If you don't want this behavior, just empty out this field.
+wand_item_substitute: iron_hoe
+
 # If true, fill wands with all known spells on creation
 fill_wands: false
 

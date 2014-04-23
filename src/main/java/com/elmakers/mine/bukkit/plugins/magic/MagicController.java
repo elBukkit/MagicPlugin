@@ -1420,7 +1420,8 @@ public class MagicController implements Listener
 		MaterialBrush.SchematicMaterial = ConfigurationUtils.getMaterial(properties, "schematic_item", MaterialBrush.SchematicMaterial);
 		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterial(properties, "map_item", MaterialBrush.MapMaterial);
 		Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
-
+		wantItemSubstitute = ConfigurationUtils.getMaterial(properties, "wand_item_substitute", null);
+		
 		// Parse crafting recipe settings
 		craftingEnabled = properties.getBoolean("enable_crafting", craftingEnabled);
 		if (craftingEnabled) {
@@ -2064,23 +2065,24 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
-		// TODO: Support enchanting other items?
+		// TODO: Configurable crafting recipes
 		Recipe recipe = event.getRecipe();
 		if (craftingEnabled && wandRecipe != null && recipe.getResult().getType() == Wand.DefaultWandMaterial) {
 			// Verify that this was our recipe
 			// Just in case something else can craft our base material (e.g. stick)
 			Inventory inventory = event.getInventory();
-			if (!inventory.contains(wandRecipeLowerMaterial) || !inventory.contains(wandRecipeUpperMaterial)) {
-				return;
+			if (inventory.contains(wandRecipeLowerMaterial) && !inventory.contains(wandRecipeUpperMaterial)) {
+				Wand defaultWand = Wand.createWand(this, null);
+				Wand wand = defaultWand;
+				if (recipeOutputTemplate != null && recipeOutputTemplate.length() > 0) {
+					Wand templateWand = Wand.createWand(this, recipeOutputTemplate);
+					templateWand.add(defaultWand);
+					wand = templateWand;
+				}
+				event.getInventory().setResult(wand.getItem());
+			} else if (wantItemSubstitute != null) {
+				event.getInventory().setResult(new ItemStack(wantItemSubstitute, 1));
 			}
-			Wand defaultWand = Wand.createWand(this, null);
-			Wand wand = defaultWand;
-			if (recipeOutputTemplate != null && recipeOutputTemplate.length() > 0) {
-				Wand templateWand = Wand.createWand(this, recipeOutputTemplate);
-				templateWand.add(defaultWand);
-				wand = templateWand;
-			}
-			event.getInventory().setResult(wand.getItem());
 		}
 	}
 	
@@ -2774,6 +2776,7 @@ public class MagicController implements Listener
 	 private int								 clickCooldown					= 150;
 	 private boolean							 craftingEnabled				= false;
 	 private boolean							 enchantingEnabled				= false;
+	 private Material						     wantItemSubstitute				= null;
 	 private boolean							 combiningEnabled				= false;
 	 private boolean							 bindingEnabled					= false;
 	 private boolean							 keepingEnabled					= false;
