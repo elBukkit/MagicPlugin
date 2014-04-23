@@ -21,7 +21,7 @@ import org.bukkit.map.MapView;
  * translation to DyeColor values.
  *
  */
-public class MaterialMapCanvas implements MapCanvas {
+public class BufferedMapCanvas implements MapCanvas {
 
 	public static int CANVAS_WIDTH = 128;
 	public static int CANVAS_HEIGHT = 128;

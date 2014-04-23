@@ -4,6 +4,7 @@
 
  - Add URLMap API
  - Add Target utility, a basic class for an entity/block targeting system
+ - Add BufferedMapCanvas API, for interrogating a Map image.
 
 ## 1.0
 
