@@ -58,7 +58,7 @@ public class FillBatch extends VolumeBatch {
 	}
 
 	public int size() {
-		return filledBlocks.size();
+		return absx * absy * absz;
 	}
 	
 	public int remaining() {
@@ -136,8 +136,7 @@ public class FillBatch extends VolumeBatch {
 			
 			spell.registerForUndo(filledBlocks);
 			String message = spell.getMessage("cast_finish");
-			message = message.replace("$count", Integer.toString(filledBlocks.size()));
-			spell.castMessage(message);
+			spell.sendMessage(message);
 		}
 	}
 	

@@ -19,7 +19,6 @@ import org.bukkit.util.Vector;
 public class BoundingBox
 {
 	protected BlockVector max;
-
 	protected BlockVector min;
 
 	/**
@@ -28,6 +27,12 @@ public class BoundingBox
 	public BoundingBox()
 	{
 
+	}
+	
+	public BoundingBox(Vector p1, Vector p2)
+	{
+		min = new BlockVector(Math.min(p1.getX(), p2.getX()), Math.min(p1.getY(), p2.getY()), Math.min(p1.getZ(), p2.getZ()));		
+		max = new BlockVector(Math.max(p1.getX(), p2.getX()), Math.max(p1.getY(), p2.getY()), Math.max(p1.getZ(), p2.getZ()));
 	}
 
 	/**
@@ -111,6 +116,18 @@ public class BoundingBox
 	 * @return true if this BB contains p
 	 */
 	public boolean contains(BlockVector p)
+	{
+		return p.isInAABB(min, max);
+	}
+
+	/**
+	 * Check to see if this BB contains a point
+	 * 
+	 * @param p
+	 *            The point to check for
+	 * @return true if this BB contains p
+	 */
+	public boolean contains(Vector p)
 	{
 		return p.isInAABB(min, max);
 	}

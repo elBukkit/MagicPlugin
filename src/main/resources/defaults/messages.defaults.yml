@@ -647,11 +647,11 @@ spells:
     regenerate:
         name: Regenerate
         description: Regenerate the target area
-        usage: Is not undoable!
+        usage: Cast twice to regenerate
         fail: Can't regenerate that much!
         cast: Regenerating area
         target_selected: Cast again to regenerate area
-        cast_finish: Regenerated $count chunks
+        cast_finish: Regenerated $count blocks
     recurse:
         name: Recurse
         description: Recursively fill blocks

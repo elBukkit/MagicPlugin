@@ -137,11 +137,12 @@ public class SimulateBatch extends VolumeBatch {
 	}
 
 	public int size() {
-		return modifiedBlocks.size();
+		return radius * radius * radius * 8;
 	}
 	
 	public int remaining() {
-		return (radius - x) * (radius - z) * (radius - y) * 8;
+		if (r >= radius) return 0;
+		return (radius - r) *  (radius - r) *  (radius - r) * 8;
 	}
 	
 	protected void checkForPotentialCommand(Block block, int distanceSquared) {

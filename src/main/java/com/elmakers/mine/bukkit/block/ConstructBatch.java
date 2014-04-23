@@ -122,11 +122,12 @@ public class ConstructBatch extends VolumeBatch {
 	}
 	
 	public int size() {
-		return constructedBlocks.size();
+		return radius * radius * radius * 8;
 	}
 	
 	public int remaining() {
-		return delayedBlocks.size() + attachedBlockList.size() + ((r - x) * (r - y) * (r - z)) * 8;
+		if (r >= radius) return 0;
+		return (radius - r) * (radius - r) * (radius - r) * 8;
 	}
 	
 	public int process(int maxBlocks) {
@@ -285,7 +286,7 @@ public class ConstructBatch extends VolumeBatch {
 			
 			String message = spell.getMessage("cast_finish");
 			message = message.replace("$count", Integer.toString(constructedBlocks.size()));
-			mage.castMessage(message);
+			mage.sendMessage(message);
 		}
 	}
 	
