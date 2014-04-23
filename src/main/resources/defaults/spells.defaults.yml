@@ -1896,7 +1896,7 @@ backup:
     costs:
         xp: 500
 repair:
-    icon: gold_pickaxe
+    icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
     effects:
@@ -1920,6 +1920,31 @@ repair:
         brushtarget: true
     costs:
         xp: 80
+superrepair:
+    icon: iron_pickaxe
+    category: engineering
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_extend
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: select
+        allow_max_range: false
+        max_dimension: 16
+        range: 32
+        type: cuboid
+        check_destructible: false
+        transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_backup
+        obworld: ~_backup
+        brushtarget: true
+    costs:
+        xp: 500
 workbench:
     icon: workbench
     category: engineering
@@ -2250,7 +2275,7 @@ sandblast:
     costs:
         xp: 50
 mine:
-    icon: stone_pickaxe
+    icon: wood_pickaxe
     category: mining
     class: DropSpell
     effects:

@@ -7,6 +7,7 @@
  - Add an official resource pack, with a special wand item (wood hoe) and command block texture.
  - Config-drive wand randomization limits, see new section in config.defaults.yml.
  - Make Regenerate safe and undoable.
+ - Add SuperRepair spell
 
 ## 3.0-RC2
 

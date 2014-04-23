@@ -318,6 +318,7 @@ random:
       stream: 0,10,30,20,100
       shell: 0,5,40,50,100
       backup: 0,0,0,1,100
+      superrepair: 0,0,0,1,100
       repair: 1,10,30,50,100
       supershell: 0,0,1,10,100
       superblast: 0,0,1,5,100
@@ -708,6 +709,9 @@ engineer:
         - superiterate
         - levitate
         - superalter
+        - repair
+        - backup
+        - superrepair
     materials:
         - stone
         - wood
@@ -1429,6 +1433,7 @@ admin:
         - pickpocket
         - backup
         - repair
+        - superrepair
     materials:
         - water
         - lava
@@ -1463,7 +1468,7 @@ wolf:
         - blink
         - superblob
         - backup
-        - repair
+        - superrepair
         - day
         - gather
         - rewind
@@ -1507,6 +1512,7 @@ wolf:
         - volley
         - stalactite
         - blob
+        - repair
         - blast
         - alter
         - superalter
