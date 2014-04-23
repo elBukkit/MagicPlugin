@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -25,8 +24,6 @@ public class BlockData extends MaterialAndData
 {
 	public static final BlockFace[] FACES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN };
 	public static final BlockFace[] SIDES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST };
-
-	protected static Server server;
 	
 	// Transient
 	protected Block     block;
@@ -36,10 +33,6 @@ public class BlockData extends MaterialAndData
 	// Persistent
 	protected BlockVector  location;
 	protected String       world;
-	
-	public static void setServer(Server server) {
-		BlockData.server = server;
-	}
 
 	public static long getBlockId(Block block)
 	{
@@ -147,15 +140,16 @@ public class BlockData extends MaterialAndData
 
 	public World getWorld()
 	{
-		return server.getWorld(world);
+		if (world == null || world.length() == 0) return null;
+		return Bukkit.getWorld(world);
 	}
 	
 	public Block getBlock()
 	{
-		if (block == null && location != null && server != null)
+		if (block == null && location != null)
 		{
+			World world = getWorld();
 			if (world != null) {
-				World world = getWorld();
 				block = world.getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 			}
 		}

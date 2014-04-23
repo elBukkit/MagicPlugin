@@ -47,15 +47,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -63,7 +60,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -79,10 +75,8 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.mcstats.Metrics;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -96,6 +90,9 @@ import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.plugins.magic.command.MagicTabExecutor;
+import com.elmakers.mine.bukkit.plugins.magic.listener.AnvilController;
+import com.elmakers.mine.bukkit.plugins.magic.listener.CraftingController;
+import com.elmakers.mine.bukkit.plugins.magic.listener.EnchantingController;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
@@ -679,6 +676,9 @@ public class MagicController implements Listener
 	 */
 	public void initialize()
 	{
+		crafting = new CraftingController(this);
+		enchanting = new EnchantingController(this);
+		anvil = new AnvilController(this);
 		load();
 
 		metrics = null;
@@ -690,17 +690,6 @@ public class MagicController implements Listener
 			} catch (IOException e) {
 			    plugin.getLogger().warning("Failed to load MCStats: " + e.getMessage());
 			}
-		}
-		
-		if (craftingEnabled) {
-			Wand wand = new Wand(this);
-			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
-			recipe.shape("o", "i").
-					setIngredient('o', wandRecipeUpperMaterial).
-					setIngredient('i', wandRecipeLowerMaterial);
-			wandRecipe = recipe;
-			
-			getLogger().info("Wand crafting is enabled");
 		}
 		
 		// Try to link to Essentials:
@@ -850,6 +839,16 @@ public class MagicController implements Listener
 				}
 			}
 		}, 0, 1);
+		
+		registerListeners();
+	}
+	
+	protected void registerListeners() {
+		PluginManager pm = plugin.getServer().getPluginManager();
+		pm.registerEvents(this, plugin);
+		pm.registerEvents(crafting, plugin);
+		pm.registerEvents(enchanting, plugin);
+		pm.registerEvents(anvil, plugin);
 	}
 	
 	public Collection<Mage> getPending() {
@@ -1379,11 +1378,8 @@ public class MagicController implements Listener
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
 		autoUndo = properties.getInt("auto_undo", autoUndo);
-		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
-		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
 		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
 		keepingEnabled = properties.getBoolean("enable_keeping", keepingEnabled);
-		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
@@ -1411,7 +1407,6 @@ public class MagicController implements Listener
 		
 		// Parse wand settings
 		Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);
-		Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
 		Wand.EnableGlow = properties.getBoolean("enable_glow", Wand.EnableGlow);
 		MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterial(properties, "copy_item", MaterialBrush.CopyMaterial);
 		MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterial(properties, "erase_item", MaterialBrush.EraseMaterial);
@@ -1419,16 +1414,6 @@ public class MagicController implements Listener
 		MaterialBrush.ReplicateMaterial = ConfigurationUtils.getMaterial(properties, "replicate_item", MaterialBrush.ReplicateMaterial);
 		MaterialBrush.SchematicMaterial = ConfigurationUtils.getMaterial(properties, "schematic_item", MaterialBrush.SchematicMaterial);
 		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterial(properties, "map_item", MaterialBrush.MapMaterial);
-		Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
-		wantItemSubstitute = ConfigurationUtils.getMaterial(properties, "wand_item_substitute", null);
-		
-		// Parse crafting recipe settings
-		craftingEnabled = properties.getBoolean("enable_crafting", craftingEnabled);
-		if (craftingEnabled) {
-			recipeOutputTemplate = properties.getString("crafting_output", recipeOutputTemplate);
-			wandRecipeUpperMaterial = ConfigurationUtils.getMaterial(properties, "crafting_material_upper", wandRecipeUpperMaterial);
-			wandRecipeLowerMaterial = ConfigurationUtils.getMaterial(properties, "crafting_material_lower", wandRecipeLowerMaterial);
-		}
 		
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
@@ -1450,6 +1435,11 @@ public class MagicController implements Listener
 		
 		// Set up WandLevel limits
 		WandLevel.load(properties);
+		
+		// Load sub-controllers
+		crafting.load(properties);
+		enchanting.load(properties);
+		anvil.load(properties);
 	}
 
 	protected void clear()
@@ -2058,49 +2048,7 @@ public class MagicController implements Listener
 				player.updateInventory();
 			}
 		}
-		
-		// Add our custom recipe if crafting is enabled
-		if (wandRecipe != null) {
-			plugin.getServer().addRecipe(wandRecipe);
-		}
-	}
-	
-	@EventHandler
-	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
-	{
-		// TODO: Configurable crafting recipes
-		Recipe recipe = event.getRecipe();
-		if (craftingEnabled && wandRecipe != null && recipe.getResult().getType() == Wand.DefaultWandMaterial) {
-			// Verify that this was our recipe
-			// Just in case something else can craft our base material (e.g. stick)
-			Inventory inventory = event.getInventory();
-			if (inventory.contains(wandRecipeLowerMaterial) && !inventory.contains(wandRecipeUpperMaterial)) {
-				Wand defaultWand = Wand.createWand(this, null);
-				Wand wand = defaultWand;
-				if (recipeOutputTemplate != null && recipeOutputTemplate.length() > 0) {
-					Wand templateWand = Wand.createWand(this, recipeOutputTemplate);
-					templateWand.add(defaultWand);
-					wand = templateWand;
-				}
-				event.getInventory().setResult(wand.getItem());
-			} else if (wantItemSubstitute != null) {
-				event.getInventory().setResult(new ItemStack(wantItemSubstitute, 1));
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onCraftItem(CraftItemEvent event) {
-		if (!(event.getWhoClicked() instanceof Player)) return;
-		
-		Player player = (Player)event.getWhoClicked();
-		Mage mage = getMage(player);
-		
-		// Don't allow crafting in the wand inventory.
-		if (mage.hasStoredInventory()) {
-			event.setCancelled(true); 
-			return;
-		}
+		crafting.enable(plugin);
 	}
 
 	@EventHandler
@@ -2124,6 +2072,7 @@ public class MagicController implements Listener
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
+		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
 
 		Player player = (Player)event.getWhoClicked();
@@ -2132,138 +2081,12 @@ public class MagicController implements Listener
 		
 		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 	
-		// Check for wand clicks to prevent grinding them to dust, or whatever.
 		InventoryType inventoryType = event.getInventory().getType();
-		SlotType slotType = event.getSlotType();
-		if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
-			if (Wand.isWand(event.getCursor())) {
-				event.setCancelled(true);
-				return;
-			}
-		}
 		
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
 		{
 			event.setCancelled(true);
 			return;
-		}
-		
-		if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
-		{
-			if (slotType == SlotType.CRAFTING) {
-				ItemStack cursor = event.getCursor();
-				ItemStack current = event.getCurrentItem();
-				
-				// Make wands into an enchantable item when placing
-				if (Wand.isWand(cursor)) {
-					Wand wand = new Wand(this, cursor);
-					if (wand.isModifiable()) {
-						wand.makeEnchantable(true);
-					}
-				}
-				// And turn them back when taking out
-				if (Wand.isWand(current)) {
-					Wand wand = new Wand(this, current);
-					if (wand.isModifiable()) {
-						wand.makeEnchantable(false);
-					}
-				}
-				return;
-			}
-		}
-		if (inventoryType == InventoryType.ANVIL)
-		{
-			ItemStack cursor = event.getCursor();
-			ItemStack current = event.getCurrentItem();
-			Inventory anvilInventory = event.getInventory();
-			
-			// Set/unset active names when starting to craft
-			if (slotType == SlotType.CRAFTING) {
-				// Putting a wand into the anvil's crafting slot
-				if (Wand.isWand(cursor)) {
-					Wand wand = new Wand(this, cursor);
-					wand.updateName(false);
-				} 
-				// Taking a wand out of the anvil's crafting slot
-				if (Wand.isWand(current)) {
-					Wand wand = new Wand(this, current);
-					wand.setDescription("");
-					wand.updateName(true);
-					if (event.getWhoClicked() instanceof Player) {
-						wand.tryToOwn((Player)event.getWhoClicked());
-					}
-				}
-				
-				return;
-			}
-			
-			// Rename wand when taking from result slot
-			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
-				ItemMeta meta = current.getItemMeta();
-				String newName = meta.getDisplayName();
-				
-				Wand wand = new Wand(this, current);
-				if (!wand.canUse(player)) {
-					event.setCancelled(true);
-					mage.sendMessage(Messages.get("wand.bound").replace("$name", wand.getOwner()));
-					return;
-				}
-				wand.setName(newName);
-				if (organizingEnabled) {
-					wand.organizeInventory(getMage(player));
-				}
-				wand.tryToOwn(player);
-				return;
-			}
-
-			if (combiningEnabled && slotType == SlotType.RESULT) {
-				// Check for wands in both slots
-				// ...... arg. So close.. and yet, not.
-				// I guess I need to wait for the long-awaited anvil API?
-				ItemStack firstItem = anvilInventory.getItem(0);
-				ItemStack secondItem = anvilInventory.getItem(1);
-				if (Wand.isWand(firstItem) && Wand.isWand(secondItem)) 
-				{
-					Wand firstWand = new Wand(this, firstItem);
-					Wand secondWand = new Wand(this, secondItem);
-					if (!firstWand.isModifiable() || !secondWand.isModifiable()) {
-						mage.sendMessage("One of your wands can not be combined");
-						return;
-					}
-					if (!firstWand.canUse(player) || !secondWand.canUse(player)) {
-						mage.sendMessage("One of those wands is not bound to you");
-						return;
-					}
-					
-					// TODO: Can't get the anvil's text from here.
-					firstWand.add(secondWand);
-					anvilInventory.setItem(0,  null);
-					anvilInventory.setItem(1,  null);
-					cursor.setType(Material.AIR);
-
-					if (organizingEnabled) {
-						firstWand.organizeInventory(mage);
-					}
-					firstWand.tryToOwn(player);
-					player.getInventory().addItem(firstWand.getItem());
-					mage.sendMessage("Your wands have been combined!");
-					
-					// This seems to work in the debugger, but.. doesn't do anything.
-					// InventoryUtils.setInventoryResults(anvilInventory, newWand.getItem());
-				} else if (organizingEnabled && Wand.isWand(firstItem)) {
-					Wand firstWand = new Wand(this, firstItem);
-					// TODO: Can't get the anvil's text from here.
-					anvilInventory.setItem(0,  null);
-					anvilInventory.setItem(1,  null);
-					cursor.setType(Material.AIR);
-					firstWand.organizeInventory(mage);
-					firstWand.tryToOwn(player);
-					player.getInventory().addItem(firstWand.getItem());
-					mage.sendMessage("Your wand has been organized!");
-				}
-				
-				return;
-			}
 		}
 		
 		// Check for wand cycling with active inventory
@@ -2422,64 +2245,6 @@ public class MagicController implements Listener
 		Mage mage = getMage(player);
 		if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler
-	public void onEnchantItem(EnchantItemEvent event) {
-		if (enchantingEnabled && Wand.isWand(event.getItem())) {
-			event.getEnchantsToAdd().clear();
-			int level = event.getExpLevelCost();
-			Wand wand = new Wand(this, event.getItem());
-			if (!WandLevel.randomizeWand(wand, true, level)) {
-				event.getEnchanter().sendMessage("This wand is fully enchanted (for now)");
-			}
-			wand.makeEnchantable(true);
-			event.setCancelled(false);
-			
-			// This is necessary due to a special-case check Bukkit added in 
-			// https://github.com/Bukkit/CraftBukkit/commit/ac1a2d0233eff169efcc7c807cbf799b57bf2306
-			// This will skip deducting XP costs (!!) if you don't return something to add to the item
-			// Unfortunately, adding an enchant to the item is going to blow away its data, soooo...
-			// 
-			// This is kind of an "FU" to this particular commit, in that it will trigger an NPE
-			// in NMS code that will get silently eaten, but avoid modifying the resultant ItemStack.
-			// :P
-			event.getEnchantsToAdd().put(null, 0);
-		}
-	}
-	
-	@EventHandler
-	public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
-		if (enchantingEnabled && Wand.isWand(event.getItem())) {
-			Wand wandItem = new Wand(this, event.getItem());
-			Player player = event.getEnchanter();
-			if (!wandItem.isModifiable()) {
-				event.setCancelled(true);
-				return;
-			}
-			
-			if (!wandItem.canUse(player)) {
-				event.setCancelled(true);
-				return;
-			}
-			wandItem.makeEnchantable(true);
-			Set<Integer> levelSet = WandLevel.getLevels();
-			ArrayList<Integer> levels = new ArrayList<Integer>();
-			levels.addAll(levelSet);
-			int[] offered = event.getExpLevelCostsOffered();
-			// bonusLevels caps at 20
-			int bonusLevels = event.getEnchantmentBonus();
-			int maxLevel = levels.get(levels.size() - 1) - 20 + bonusLevels;
-			
-			for (int i = 0; i < offered.length - 1; i++) {
-				int levelIndex = (int)((float)i * levels.size() / (float)offered.length);
-				levelIndex += (float)bonusLevels * ((i + 1) / offered.length);
-				levelIndex = Math.min(levelIndex, levels.size() - 1);
-				offered[i] = levels.get(levelIndex);
-			}
-			offered[offered.length - 1] = maxLevel;
-			event.setCancelled(false);
 		}
 	}
 	
@@ -2780,13 +2545,8 @@ public class MagicController implements Listener
 	 private String								 welcomeWand					= "";
 	 private int								 messageThrottle				= 0;
 	 private int								 clickCooldown					= 150;
-	 private boolean							 craftingEnabled				= false;
-	 private boolean							 enchantingEnabled				= false;
-	 private Material						     wantItemSubstitute				= null;
-	 private boolean							 combiningEnabled				= false;
 	 private boolean							 bindingEnabled					= false;
 	 private boolean							 keepingEnabled					= false;
-	 private boolean							 organizingEnabled				= false;
 	 private boolean                             fillingEnabled                 = false;
 	 private boolean							 essentialsSignsEnabled			= false;
 	 private boolean							 dynmapUpdate					= true;
@@ -2816,12 +2576,7 @@ public class MagicController implements Listener
 	 private final HashSet<String>				 forgetMages					= new HashSet<String>();
 	 private final HashMap<String, Mage>		 pendingConstruction			= new HashMap<String, Mage>();
 	 private final Map<String, WeakReference<Schematic>>	 schematics			= new HashMap<String, WeakReference<Schematic>>();
-
-	 private Recipe								 wandRecipe						= null;
-	 private Material							 wandRecipeUpperMaterial		= Material.DIAMOND;
-	 private Material							 wandRecipeLowerMaterial		= Material.BLAZE_ROD;
-	 private String								 recipeOutputTemplate			= "random(1)";
-	 
+ 
 	 private MagicPlugin                         plugin                         = null;
 	 private final File							 configFolder;
 	 private final File							 dataFolder;
@@ -2852,4 +2607,9 @@ public class MagicController implements Listener
 	 
 	 private int								 metricsLevel					= 5;
 	 private Metrics							 metrics						= null;
+	 
+	 // Sub-Controllers
+	 private CraftingController					 crafting						= null;
+	 private EnchantingController				 enchanting						= null;
+	 private AnvilController					 anvil						= null;
 }

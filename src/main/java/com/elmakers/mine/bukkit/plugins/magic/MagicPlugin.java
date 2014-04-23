@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.api.magic.Automaton;
@@ -22,7 +21,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.plugins.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.plugins.magic.command.SpellsCommandExecutor;
@@ -131,10 +129,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 			controller = new MagicController(this);
 		}
 		initialize();
+	}
 
-		BlockData.setServer(getServer());
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(controller, this);
+	protected void initialize()
+	{
+		controller.initialize();
 		
 		TabExecutor magicCommand = new MagicCommandExecutor(this);
 		getCommand("magic").setExecutor(magicCommand);
@@ -151,11 +150,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		getCommand("wandp").setTabCompleter(wandCommand);
 		TabExecutor spellsCommand = new SpellsCommandExecutor(this);
 		getCommand("spells").setExecutor(spellsCommand);
-	}
-
-	protected void initialize()
-	{
-		controller.initialize();
 	}
 
 	/* 
