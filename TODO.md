@@ -22,7 +22,7 @@ http://jira.elmakers.com/browse/MAGIC
  - Walls spell
  - Enchant count limit for wands
  - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
-- Support schematic entity import for paintings and item frames (at least)
+ - Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
  - Async player data loading/saving
  
@@ -35,7 +35,6 @@ http://jira.elmakers.com/browse/MAGIC
 
 ##  API STUFF
 
- - ImageMap API
  - API Tutorials, when API is complete.
 
 ## NEW SPELLS
@@ -70,9 +69,6 @@ http://jira.elmakers.com/browse/MAGIC
  - Separate material list for "super" building materials?
  
  - Fix up alter spell, remove id-based lists
- - urlmaps.yml got truncated?
-   - Check for duplicate keys when searching for a new one (?)
-  - first spell on wand is getting lost (?) - debug with elder wand and fling. (haven't seen this in a while) 
  
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.

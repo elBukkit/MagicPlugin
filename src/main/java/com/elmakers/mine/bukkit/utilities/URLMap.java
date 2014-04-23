@@ -34,6 +34,7 @@ import org.bukkit.plugin.Plugin;
 public class URLMap extends MapRenderer  {
 	private static File configurationFile = null;
 	private static File cacheFolder = null;
+	private static boolean disabled = false;
 	
 	// Public API
 	
@@ -98,7 +99,9 @@ public class URLMap extends MapRenderer  {
 							map.getMapView();
 						}
 					} catch (Exception ex) {
-						warning("Failed to load " + configurationFile.getAbsolutePath() + ": " + ex.getMessage());
+						warning("Failed to load " + configurationFile.getAbsolutePath() + 
+								": " + ex.getMessage() + ", saving will be disabled until this issues is resolved");
+						disabled = true;
 					}
 				}
 
@@ -135,7 +138,7 @@ public class URLMap extends MapRenderer  {
 	 * This is called automatically as changes are made, but you can call it in onDisable to be safe.
 	 */
 	public static void save() {
-		if (configurationFile == null) return;
+		if (configurationFile == null || disabled) return;
 		
 		YamlConfiguration configuration = new YamlConfiguration();
 		for (URLMap map : idMap.values()) {
