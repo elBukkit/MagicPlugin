@@ -119,6 +119,11 @@
 	        <version>R6</version>
 	        <scope>compile</scope>
 	    </dependency>
+		<dependency>
+			<groupId>com.elmakers.mine.bukkit</groupId>
+			<artifactId>MagicLib</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<repositories>
       <repository>

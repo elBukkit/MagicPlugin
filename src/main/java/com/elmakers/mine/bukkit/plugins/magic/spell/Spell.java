@@ -778,7 +778,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return name;
 	}
 
-	public final MaterialAndData getIcon()
+	public final com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon()
 	{
 		return icon;
 	}

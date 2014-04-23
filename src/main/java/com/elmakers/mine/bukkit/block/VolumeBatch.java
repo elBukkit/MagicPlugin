@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.block;
 
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.block.BlockBatch;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 
 public abstract class VolumeBatch implements BlockBatch {

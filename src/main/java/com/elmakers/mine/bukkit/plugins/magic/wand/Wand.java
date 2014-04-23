@@ -636,7 +636,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
 		Spell spell = controller.getSpell(spellKey);
 		if (spell == null) return null;
-		MaterialAndData icon = spell.getIcon();
+		com.elmakers.mine.bukkit.api.block.MaterialAndData icon = spell.getIcon();
 		if (icon == null) {
 			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
 			return null;
