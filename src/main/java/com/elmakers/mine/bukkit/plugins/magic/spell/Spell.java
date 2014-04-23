@@ -37,7 +37,7 @@ import com.elmakers.mine.bukkit.effects.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utility.Messages;
 
 /**
  * 

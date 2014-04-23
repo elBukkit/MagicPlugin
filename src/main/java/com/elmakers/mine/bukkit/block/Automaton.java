@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Automaton extends BlockData implements com.elmakers.mine.bukkit.api.magic.Automaton {
 	private String message;

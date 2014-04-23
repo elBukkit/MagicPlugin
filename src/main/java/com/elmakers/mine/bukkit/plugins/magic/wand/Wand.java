@@ -42,7 +42,7 @@ import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utilities.InventoryUtils;
-import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;

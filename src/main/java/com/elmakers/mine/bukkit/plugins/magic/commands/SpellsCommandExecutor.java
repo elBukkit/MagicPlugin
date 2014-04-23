@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utility.Messages;
 
 public class SpellsCommandExecutor extends MagicTabExecutor {
 

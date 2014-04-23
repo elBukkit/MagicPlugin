@@ -27,8 +27,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.utilities.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateBatch extends VolumeBatch {

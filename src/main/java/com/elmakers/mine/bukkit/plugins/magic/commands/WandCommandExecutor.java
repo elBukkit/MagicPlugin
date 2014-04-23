@@ -30,7 +30,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effects.ParticleType;
-import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utility.Messages;
 
 public class WandCommandExecutor extends MagicTabExecutor {
 	

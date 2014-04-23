@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.BlockBatch;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandCleanupRunnable;
-import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.utility.URLMap;
 

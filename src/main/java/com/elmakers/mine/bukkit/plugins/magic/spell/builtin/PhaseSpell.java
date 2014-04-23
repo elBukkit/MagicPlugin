@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utilities.Messages;
+import com.elmakers.mine.bukkit.utility.Messages;
 
 public class PhaseSpell extends TargetingSpell
 {
