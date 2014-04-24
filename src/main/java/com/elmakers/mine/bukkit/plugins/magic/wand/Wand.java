@@ -1567,8 +1567,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		speedIncrease = Math.max(speedIncrease, other.speedIncrease);
 		
 		// Mix colors
-		Color color1 = Color.fromBGR(effectColor);
-		Color color2 = Color.fromBGR(other.effectColor);
+		Color color1 = Color.fromRGB(effectColor);
+		Color color2 = Color.fromRGB(other.effectColor);
 		Color newColor = color1.mixColors(color2);
 		effectColor = newColor.asRGB();
 
