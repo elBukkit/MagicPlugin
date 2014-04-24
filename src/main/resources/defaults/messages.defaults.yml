@@ -1065,6 +1065,11 @@ automata:
            - Shiny
            - Shimmering
            - Stalwart
+           - Bright
+           - Savior
+           - Blessed
+           - Magic
+           - Enchanted
        suffixes:
            - of Holiness
            - of Honor
@@ -1072,6 +1077,8 @@ automata:
            - of Lightness
            - of Protection
            - of The Sun
+           - of Magic
+           - of The Blessed
     evil:
        prefixes:
            - Evil
@@ -1079,7 +1086,16 @@ automata:
            - Slimy
            - Dreadful
            - Dread
+           - Cursed
+           - Magic
+           - Enchanted
+           - Harbringer
+           - Nether
        suffixes:
            - of Darkness
            - of Evil
            - of The Night
+           - of Death
+           - of Doom
+           - of The Nether
+           - of Magic
