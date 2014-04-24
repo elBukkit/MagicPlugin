@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.block;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -126,8 +125,6 @@ public class RegenerateBatch extends VolumeBatch {
 
 			if (ix >= absx) 
 			{
-				Bukkit.getLogger().info("Saved " + restoredBlocks.size() 
-						+ " blocks for restorationg, " + regeneratedBlocks.size() + " for regeneration and undo queue");
 				state = RegenerateState.REGENERATING;
 				ix = 0;
 				iz = 0;

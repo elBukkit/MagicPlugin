@@ -146,7 +146,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 						}
 						
 						sender.sendMessage(ChatColor.AQUA + mage.getName() + " " + ChatColor.GRAY + " has "
-								+ ChatColor.WHITE + "" + pending.size() + "" + ChatColor.GRAY
+								+ ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
 								+ " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
 								+ "" + ChatColor.GRAY + ")");
 					}
