@@ -81,7 +81,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 		updateFrom(block);
 	}
 	
-	public MaterialAndData(MaterialAndData other) {
+	public MaterialAndData(com.elmakers.mine.bukkit.api.block.MaterialAndData other) {
 		updateFrom(other);
 	}
 	
