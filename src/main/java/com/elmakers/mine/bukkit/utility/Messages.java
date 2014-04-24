@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
@@ -10,12 +12,19 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class Messages {
 	public static Map<String, String> messageMap = new HashMap<String, String>();
+	public static ConfigurationSection configuration = null;
 	
 	public static void load(ConfigurationSection messages) {
+		configuration = messages;
 		Collection<String> keys = messages.getKeys(true);
 		for (String key : keys) {
 			messageMap.put(key, messages.getString(key));
 		}
+	}
+	
+	public static List<String> getAll(String path) {
+		if (configuration == null) return new ArrayList<String>();
+		return configuration.getStringList(path);
 	}
 	
 	public static void reset() {
