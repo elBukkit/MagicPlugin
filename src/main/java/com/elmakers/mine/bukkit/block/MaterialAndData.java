@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -299,7 +300,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 				spawner.update();
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Bukkit.getLogger().warning("Error updating block state: " + ex.getMessage());
 		}
 	}
 	

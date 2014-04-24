@@ -31,9 +31,9 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:git:git://github.com/elBukkit/MagicPlugin.git</connection>
-		<developerConnection>scm:git:git@github.com:elBukkit/MagicPlugin.git</developerConnection>
-		<url>https://github.com/elBukkit/MagicPlugin</url>
+		<connection>scm:git:git://github.com/elBukkit/MagicLib.git</connection>
+		<developerConnection>scm:git:git@github.com:elBukkit/MagicLib.git</developerConnection>
+		<url>https://github.com/elBukkit/MagicLib</url>
 		<tag>master</tag>
 	</scm>
 
@@ -58,6 +58,7 @@
 	<properties>
 		<build.version>1.0</build.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<api.version>1.2</api.version>
 	</properties>
 
 	<dependencies>
@@ -71,7 +72,6 @@
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicAPI</artifactId>
 			<version>1.2-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
@@ -103,7 +103,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
+				<version>1.5</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -111,15 +111,6 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
-										<Build-Version>${build.version}</Build-Version>
-									</manifestEntries>
-								</transformer>
-							</transformers>
 						</configuration>
 					</execution>
 				</executions>
