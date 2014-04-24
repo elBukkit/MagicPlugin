@@ -2247,6 +2247,11 @@ public class MagicController implements Listener
 		if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
 		}
+		
+		ItemStack itemStack = event.getItemInHand();
+		if (Wand.isWand(itemStack) || Wand.isBrush(itemStack) || Wand.isSpell(itemStack)) {
+			event.setCancelled(true);
+		}
 	}
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {

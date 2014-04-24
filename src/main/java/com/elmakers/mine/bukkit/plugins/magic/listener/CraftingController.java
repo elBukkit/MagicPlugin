@@ -115,7 +115,8 @@ public class CraftingController implements Listener {
 		
 		// Check for wand clicks to prevent grinding them to dust, or whatever.
 		if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
-			if (Wand.isWand(event.getCursor())) {
+			ItemStack cursor = event.getCursor();
+			if (Wand.isWand(cursor) || Wand.isBrush(cursor) || Wand.isSpell(cursor)) {
 				event.setCancelled(true);
 				return;
 			}
