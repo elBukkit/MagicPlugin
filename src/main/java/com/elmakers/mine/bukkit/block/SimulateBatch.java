@@ -62,7 +62,6 @@ public class SimulateBatch extends VolumeBatch {
 	private Block commandTargetBlock;
 	private TargetMode targetMode = TargetMode.STABILIZE;
 	private TargetType targetType = TargetType.PLAYER;
-	private Location targetLocation;
 	private String castCommand;
 	private String commandName;
 	private String tickSpell;
@@ -78,8 +77,8 @@ public class SimulateBatch extends VolumeBatch {
 	private int birthRangeSquared = 0;
 	private int liveRangeSquared = 0;
 	
-	// 3.0 is roughly 180 degrees, gives him a wider FOV
-	private float huntFov = 3.0f;
+	// 1.5 is roughly 90 degrees, gives him a wider FOV
+	private float huntFov = 1.5f;
 	private boolean commandReload;
 	private boolean commandPowered;
 	private World world;
@@ -115,7 +114,6 @@ public class SimulateBatch extends VolumeBatch {
 		this.yRadius = yRadius;
 		this.radius = radius;
 		this.center = center.clone();
-		this.targetLocation = center.clone();
 		
 		this.birthMaterial = birth;
 		this.deathMaterial = death;
@@ -150,7 +148,7 @@ public class SimulateBatch extends VolumeBatch {
 			if (distanceSquared <= commandMoveRangeSquared) {
 				// commandMoveRangeSquared is kind of too big, but it doesn't matter all that much
 				// we still look at targets that end up with a score of 0, it just affects the sort ordering.
-				potentialCommandBlocks.add(new Target(targetLocation, block, huntMinRange, huntMaxRange, huntFov, reverseTargetDistanceScore));
+				potentialCommandBlocks.add(new Target(center, block, huntMinRange, huntMaxRange, huntFov, reverseTargetDistanceScore));
 			}
 		}
 	}
@@ -636,12 +634,11 @@ public class SimulateBatch extends VolumeBatch {
 		case FLEE:
 		case HUNT:
 		case DIRECTED:
-			targetLocation = center.clone();
-			reverseTargetDistanceScore = targetMode == TargetMode.FLEE;
 			Target bestTarget = null;
+			reverseTargetDistanceScore = true;
 			if (targetType == TargetType.ANY || targetType == TargetType.MOB)
 			{
-				List<Entity> entities = targetLocation.getWorld().getEntities();
+				List<Entity> entities = center.getWorld().getEntities();
 				for (Entity entity : entities)
 				{
 					// We'll get the players from the Mages list
@@ -679,19 +676,18 @@ public class SimulateBatch extends VolumeBatch {
 				
 				if (DEBUG) {
 					controller.getLogger().info(" *Tracking " + targetDescription + 
-				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " min " + huntMinRange);
+				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " move " + commandMoveRangeSquared);
 				}
 				if (targetMode == TargetMode.DIRECTED) {
 					Vector direction = bestTarget.getLocation().getDirection();
 					
 					// TODO: Use location.setDirection in 1.7+
 					center = CompatibilityUtils.setDirection(center, direction);
-					targetLocation = center.clone().add(direction.normalize().multiply(huntMaxRange));
 					if (DEBUG) {
-						controller.getLogger().info(" *Directed " + direction + " to " + targetLocation.toVector()); 
+						controller.getLogger().info(" *Directed: " + direction); 
 					}
 				} else {
-					targetLocation = bestTarget.getLocation();
+					Location targetLocation = bestTarget.getLocation();
 					Vector direction = targetMode == TargetMode.FLEE ? center.toVector().subtract(targetLocation.toVector()) : targetLocation.toVector().subtract(center.toVector());
 					
 					// TODO: Use location.setDirection in 1.7+
@@ -733,12 +729,10 @@ public class SimulateBatch extends VolumeBatch {
 			}
 			break;
 		case GLIDE:
-			targetLocation = center.clone();
 			reverseTargetDistanceScore = true;
 			break;
 		default:
-			targetLocation = center.clone();
-			reverseTargetDistanceScore = true;
+			reverseTargetDistanceScore = false;
 		}
 	}
 	

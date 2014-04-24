@@ -41,9 +41,6 @@ general:
     no_spells_in_category: You don't know any spells in the $category category
     spell_list_page: You know $count spells [page $page of $pages]
     spell_list: You know $count spells
-automata:
-    awaken: "&c&o$name &r&5has awakened"
-    default_name: Automaton
 wand:
     default_name: Wand
     upgrade_name: Wand Upgrade
@@ -1059,6 +1056,8 @@ wands:
         name: Heart of Worm
         description: It will consume the world
 automata:
+    awaken: "&c&o$name &r&5has awakened"
+    default_name: Automaton
     good:
        prefixes:
            - Holy
