@@ -1487,6 +1487,23 @@ gasp:
     costs:
         xp: 20
 regenerate:
+    icon: gold_hoe
+    category: engineering
+    class: RegenerateSpell
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+           material: dirt
+    parameters:
+        allow_max_range: false
+        target: block
+        expand: true
+        range: 64
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
+superregenerate:
     icon: diamond_hoe
     category: engineering
     class: RegenerateSpell
@@ -1520,7 +1537,7 @@ paint:
     costs:
         xp: 1
 fill:
-    icon: gold_hoe
+    icon: iron_hoe
     category: engineering
     class: FillSpell
     effects:
@@ -1641,7 +1658,7 @@ time:
     costs:
         xp: 40        
 bridge:
-    icon: iron_hoe
+    icon: stone_hoe
     category: engineering
     class: BridgeSpell
     effects:

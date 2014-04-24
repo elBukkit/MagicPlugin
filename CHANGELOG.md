@@ -6,7 +6,7 @@
  - Add "hybrid" mana display, which is the new default.
  - Add an official resource pack, with a special wand item (wood hoe) and command block texture.
  - Config-drive wand randomization limits, see new section in config.defaults.yml.
- - Make Regenerate safe and undoable.
+ - Make Regenerate safe and undoable, add SuperRegenerate.
  - Add SuperRepair spell
  - Automata will have randomly generated names (thanks, @lathame!)
 

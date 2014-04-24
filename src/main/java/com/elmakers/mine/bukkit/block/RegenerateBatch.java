@@ -31,6 +31,7 @@ public class RegenerateBatch extends VolumeBatch {
 	private int blockZ = 0;
 	
 	private int restoringIndex = 0;
+	private boolean expand = false;
 	
 	private BoundingBox bounds = new BoundingBox();
 	
@@ -93,7 +94,7 @@ public class RegenerateBatch extends VolumeBatch {
 						finish();
 						return processedBlocks;
 					}
-					if (!bounds.contains(block.getLocation().toVector())) {
+					if (!expand && !bounds.contains(block.getLocation().toVector())) {
 						restoredBlocks.add(block);
 					} else {
 						regeneratedBlocks.add(block);
@@ -187,5 +188,9 @@ public class RegenerateBatch extends VolumeBatch {
 	
 	public int getZSize() {
 		return absz;
+	}
+
+	public void setExpand(boolean expand) {
+		this.expand = expand;
 	}
 }

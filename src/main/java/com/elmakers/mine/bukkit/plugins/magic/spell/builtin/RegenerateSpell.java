@@ -15,12 +15,12 @@ public class RegenerateSpell extends BlockSpell
 	private static final int DEFAULT_MAX_DIMENSION = 128;
 	
 	private Block targetBlock = null;
+	
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Block targetBlock = getTargetBlock();
-		boolean singleBlock = getTargetType() != TargetType.SELECT;
 
 		if (targetBlock == null) 
 		{
@@ -29,24 +29,15 @@ public class RegenerateSpell extends BlockSpell
 		if (!hasBuildPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-
-		if (singleBlock)
-		{
-			deactivate();
-			World world = targetBlock.getWorld();
-			Chunk chunk = targetBlock.getChunk();
-			world.regenerateChunk(chunk.getX(), chunk.getZ());
-			
-			return SpellResult.CAST;
-		}
 		
 		if (targetLocation2 != null) {
 			this.targetBlock = targetLocation2.getBlock();
 		}
 
-		if (this.targetBlock != null)
+		if (this.targetBlock != null || getTargetType() == TargetType.BLOCK)
 		{
-			RegenerateBatch batch = new RegenerateBatch(this, this.targetBlock.getLocation(), targetBlock.getLocation());
+			Block secondBlock = getTargetType() == TargetType.BLOCK ? targetBlock : this.targetBlock;
+			RegenerateBatch batch = new RegenerateBatch(this, secondBlock.getLocation(), targetBlock.getLocation());
 
 			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);		
 			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
@@ -55,6 +46,8 @@ public class RegenerateSpell extends BlockSpell
 			{
 				return SpellResult.FAIL;
 			}
+			
+			batch.setExpand(parameters.getBoolean("expand", false));
 
 			boolean success = mage.addPendingBlockBatch(batch);
 			

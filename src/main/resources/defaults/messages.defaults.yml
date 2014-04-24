@@ -577,7 +577,7 @@ spells:
         name: Kamikazee
         description: Kill yourself with an explosion
     superblast:
-        name: Superblast
+        name: SuperBlast
         description: Mine out a very large area
         cast_finish: Blasted $count blocks
     blast:
@@ -650,13 +650,18 @@ spells:
         target_selected: Cast again to fill with $material
         fail: Can't fill that much!
         cast_finish: Filled $count blocks with $material
-    regenerate:
-        name: Regenerate
+    superregenerate:
+        name: SuperRegenerate
         description: Regenerate the target area
         usage: Cast twice to regenerate
         fail: Can't regenerate that much!
         cast: Regenerating area
         target_selected: Cast again to regenerate area
+        cast_finish: Regenerated $count blocks
+    regenerate:
+        name: Regenerate
+        description: Regenerate a full chunk
+        cast: Regenerating chunk
         cast_finish: Regenerated $count blocks
     recurse:
         name: Recurse
