@@ -754,6 +754,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	public boolean addPendingBlockBatch(BlockBatch batch) {
 		if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
+			controller.getLogger().info("Rejected construction for " + getName() + ", already has " + pendingBatches.size()
+					+ "pending, limit: " + controller.getPendingQueueDepth());
+			
 			return false;
 		}
 		pendingBatches.addLast(batch);
@@ -767,13 +770,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			List<BlockBatch> processBatches = new ArrayList<BlockBatch>(pendingBatches);
 			pendingBatches.clear();
 			for (BlockBatch batch : processBatches) {
-				int batchUpdated = batch.process(maxBlockUpdates - updated);
-				updated += batchUpdated;
+				if (updated < maxBlockUpdates) {;
+					int batchUpdated = batch.process(maxBlockUpdates - updated);
+					updated += batchUpdated;
+				}
 				if (!batch.isFinished()) {
 					pendingBatches.add(batch);
 				}
-				
-				if (updated >= maxBlockUpdates) break;
 			}
 		}
 		

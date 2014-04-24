@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
