@@ -1038,7 +1038,7 @@ public class MagicController implements Listener
 				loadLostWands();
 				
 				// Load toggle-on-load blocks
-				getLogger().info("Loading autonoma data");
+				getLogger().info("Loading automata data");
 				loadAutomata();
 				
 				// Load URL Map Data
@@ -1279,7 +1279,7 @@ public class MagicController implements Listener
 		getLogger().info("Saving image map data");
 		URLMap.save();
 
-		getLogger().info("Saving autonoma data");
+		getLogger().info("Saving automata data");
 		saveAutomata();
 	}
 	
@@ -1624,24 +1624,23 @@ public class MagicController implements Listener
 		Mage mage = getMage(player);
 		final Wand activeWand = mage.getActiveWand();
 		if (activeWand != null) {
+			ItemStack droppedItem = event.getItemDrop().getItemStack();
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
 			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
-			if (Wand.isWand(event.getItemDrop().getItemStack()) && (inHand == null || inHand.getType() == Material.AIR)) {
+			if (Wand.isWand(droppedItem) && (inHand == null || inHand.getType() == Material.AIR)) {
 				activeWand.deactivate();
 				// Clear after inventory restore (potentially with deactivate), since that will put the wand back
 				if (Wand.hasActiveWand(player)) {
 					player.setItemInHand(new ItemStack(Material.AIR, 1));
 				}
 			} else if (activeWand.isInventoryOpen()) {
-				// Don't allow dropping anything out of the wand inventory, 
-				// but this will close the inventory.
-				// TODO: Is this exploitable?
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-					public void run() {
-						activeWand.closeInventory();
-					}
-				}, 1);
-				event.setCancelled(true);
+				// The item is already removed from the wand's inventory, but that should be ok
+				dropItemFromWand(activeWand, droppedItem, player.getLocation());
+				
+				// Cancelling the event causes some really strange behavior, including the item
+				// being put back in the inventory.
+				// instead of cancelling, change it to drop nothing
+				event.getItemDrop().setItemStack(null);
 			}
 		}
 	}
@@ -2070,6 +2069,33 @@ public class MagicController implements Listener
 		}
 	}
 	
+	protected boolean dropItemFromWand(Wand wand, ItemStack droppedItem, Location location) {
+		if (wand == null || droppedItem == null || location == null || Wand.isWand(droppedItem)) {
+			return false;
+		}
+		
+		ItemStack newDrop = null;
+		if (Wand.isSpell(droppedItem)) {
+			wand.removeSpell(Wand.getSpell(droppedItem));
+			wand.saveInventory();
+			
+			// Recreate the item for proper naming and lore
+			newDrop = Wand.createSpellItem(Wand.getSpell(droppedItem), this, null, true);
+		} else if (Wand.isBrush(droppedItem)) {
+			wand.removeBrush(Wand.getBrush(droppedItem));
+			wand.saveInventory();
+			
+			// Recreate the item for proper naming and lore
+			newDrop = Wand.createBrushItem(Wand.getBrush(droppedItem), this, null, true);
+		}
+
+		if (newDrop != null) {
+			Item item = location.getWorld().dropItem(location, newDrop);
+			item.setVelocity(location.getDirection().normalize().multiply(1.5));
+		}
+		return newDrop != null;
+	}
+	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (event.isCancelled()) return;
@@ -2083,9 +2109,13 @@ public class MagicController implements Listener
 	
 		InventoryType inventoryType = event.getInventory().getType();
 		
+		// Check for dropping items out of a wand's inventory
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
 		{
-			event.setCancelled(true);
+			ItemStack droppedItem = event.getCurrentItem();
+			if (!dropItemFromWand(activeWand, droppedItem, player.getLocation())) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 		

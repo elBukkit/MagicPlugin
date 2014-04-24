@@ -40,7 +40,7 @@ public class MagicItemDb extends ItemDb {
 			}
 		} else if (id.startsWith("brush:")) {
 			String brushKey = id.replace("brush:", "");
-			ItemStack itemStack = Wand.createMaterialItem(brushKey, controller, null, true);
+			ItemStack itemStack = Wand.createBrushItem(brushKey, controller, null, true);
 			if (itemStack != null) {
 				return itemStack;
 			}

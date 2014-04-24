@@ -275,7 +275,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void activateBrush(ItemStack itemStack) {
 		if (!isBrush(itemStack)) return;
-		activateBrush(getMaterialKey(itemStack));
+		activateBrush(getBrush(itemStack));
 	}
 	
 	public int getXpRegeneration() {
@@ -621,7 +621,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
-			ItemStack itemStack = createMaterialIcon(materialKey);
+			ItemStack itemStack = createBrushIcon(materialKey);
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
 				continue;
@@ -666,12 +666,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return getActiveWandName(spell, materialKey);
 	}
 	
-	protected ItemStack createMaterialIcon(String materialKey) {
-		return createMaterialItem(materialKey, controller, this, false);
+	protected ItemStack createBrushIcon(String materialKey) {
+		return createBrushItem(materialKey, controller, this, false);
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static ItemStack createMaterialItem(String materialKey, MagicController controller, Wand wand, boolean isItem) {
+	public static ItemStack createBrushItem(String materialKey, MagicController controller, Wand wand, boolean isItem) {
 		MaterialAndData brushData = MaterialBrush.parseMaterialKey(materialKey, false);
 		if (brushData == null) return null;
 		
@@ -1326,7 +1326,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return InventoryUtils.getMeta(spellNode, "key");
 	}
 
-	public static String getMaterialKey(ItemStack item) {
+	public static String getBrush(ItemStack item) {
 		if (!isBrush(item)) return null;
 		
 		Object brushNode = InventoryUtils.getNode(item, "brush");
@@ -1334,7 +1334,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected static String getMaterialKey(ItemStack itemStack, Integer index) {
-		String materialKey = getMaterialKey(itemStack);
+		String materialKey = getBrush(itemStack);
 		if (materialKey == null) return null;
 		
 		if (index != null) {
@@ -1351,7 +1351,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				updateSpellName(item, spell, activeName ? this : null, activeMaterial, false);
 			}
 		} else if (isBrush(item)) {
-			updateMaterialName(item, getMaterialKey(item), activeName ? this : null);
+			updateMaterialName(item, getBrush(item), activeName ? this : null);
 		}
 	}
 	
@@ -1948,7 +1948,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				}
 			}
 		} else if (isBrush(item)) {
-			String materialKey = getMaterialKey(item);
+			String materialKey = getBrush(item);
 			Set<String> materials = getBrushes();
 			if (!materials.contains(materialKey) && addBrush(materialKey)) {
 				mage.sendMessage(Messages.get("wand.brush_added").replace("$name", MaterialBrush.getMaterialName(materialKey)));
@@ -2360,7 +2360,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!isModifiable()) return false;
 		if (hasBrush(materialKey)) return false;
 		
-		ItemStack itemStack = createMaterialIcon(materialKey);
+		ItemStack itemStack = createBrushIcon(materialKey);
 		if (itemStack == null) return false;
 		
 		addToInventory(itemStack);
@@ -2410,7 +2410,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			for (int index = 0; index < items.length; index++) {
 				ItemStack itemStack = items[index];
 				if (itemStack != null && isBrush(itemStack)) {
-					String itemKey = getMaterialKey(itemStack);
+					String itemKey = getBrush(itemStack);
 					if (itemKey.equals(materialKey)) {
 						found = true;
 						inventory.setItem(index, null);

@@ -286,7 +286,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public ItemStack createBrushItem(String brushKey) {
-		return Wand.createMaterialItem(brushKey, controller, null, true);
+		return Wand.createBrushItem(brushKey, controller, null, true);
 	}
 
 	@Override

@@ -21,7 +21,6 @@ http://jira.elmakers.com/browse/MAGIC
  - Collapse blocklist chains on save (?)
  - Walls spell
  - Enchant count limit for wands
- - Maybe allow spells and building materials to spawn out of wands... sold on signs, etc?
  - Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
  - Async player data loading/saving

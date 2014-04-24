@@ -9,6 +9,7 @@
  - Make Regenerate safe and undoable, add SuperRegenerate.
  - Add SuperRepair spell
  - Automata will have randomly generated names (thanks, @lathame!)
+ - Allow removing brushes and spells from your wand
 
 ## 3.0-RC2
 

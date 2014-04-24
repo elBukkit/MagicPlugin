@@ -93,7 +93,7 @@ public class WandOrganizer {
 			if (spellName != null) {
 				hotbarSpellNames.add(spellName);
 			} else {
-				String materialKey = Wand.getMaterialKey(hotbarItem);
+				String materialKey = Wand.getBrush(hotbarItem);
 				if (materialKey != null) {
 					hotbarMaterialNames.add(materialKey);
 				}
@@ -158,7 +158,7 @@ public class WandOrganizer {
 			addToInventory(wand.createSpellIcon(hotbarSpellName));
 		}
 		for (String hotbarMaterialName : hotbarMaterialNames) {
-			addToInventory(wand.createMaterialIcon(hotbarMaterialName));
+			addToInventory(wand.createBrushIcon(hotbarMaterialName));
 		}
 		
 		// Put favorites
@@ -185,7 +185,7 @@ public class WandOrganizer {
 			nextInventory();
 			
 			for (String materialName : materials.values()) {
-				addToInventory(wand.createMaterialIcon(materialName));
+				addToInventory(wand.createBrushIcon(materialName));
 			}
 		}
 	}
