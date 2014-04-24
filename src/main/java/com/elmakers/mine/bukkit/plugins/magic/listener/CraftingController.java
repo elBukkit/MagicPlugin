@@ -27,7 +27,7 @@ public class CraftingController implements Listener {
 	private Material wantItemSubstitute = null;
 
 	private Recipe wandRecipe = null;
-	private Material wandRecipeUpperMaterial = Material.DIAMOND;
+	private Material wandRecipeUpperMaterial = Material.NETHER_STAR;
 	private Material wandRecipeLowerMaterial = Material.BLAZE_ROD;
 	private String recipeOutputTemplate = "random(1)";
 
@@ -90,7 +90,7 @@ public class CraftingController implements Listener {
 			// Verify that this was our recipe
 			// Just in case something else can craft our base material (e.g. stick)
 			Inventory inventory = event.getInventory();
-			if (inventory.contains(wandRecipeLowerMaterial) && !inventory.contains(wandRecipeUpperMaterial)) {
+			if (inventory.contains(wandRecipeLowerMaterial) && inventory.contains(wandRecipeUpperMaterial)) {
 				Wand defaultWand = Wand.createWand(controller, null);
 				Wand wand = defaultWand;
 				if (recipeOutputTemplate != null && recipeOutputTemplate.length() > 0) {
