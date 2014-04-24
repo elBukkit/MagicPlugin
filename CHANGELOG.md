@@ -8,6 +8,7 @@
  - Config-drive wand randomization limits, see new section in config.defaults.yml.
  - Make Regenerate safe and undoable.
  - Add SuperRepair spell
+ - Automata will have randomly generated names (thanks, @lathame!)
 
 ## 3.0-RC2
 

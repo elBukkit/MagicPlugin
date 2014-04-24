@@ -276,6 +276,7 @@ spells:
         cast_entity: Teleporting $target to your target
         cast_player_message: "&d&o$player &r&5folded space"
         target_selected: You captured $target
+        cancel: Released target
     icbm:
         name: ICBM
         description: Cast an exploding fireball
@@ -1057,3 +1058,29 @@ wands:
     wormheart:
         name: Heart of Worm
         description: It will consume the world
+automata:
+    good:
+       prefixes:
+           - Holy
+           - Light
+           - Shiny
+           - Shimmering
+           - Stalwart
+       suffixes:
+           - of Holiness
+           - of Honor
+           - of Light
+           - of Lightness
+           - of Protection
+           - of The Sun
+    evil:
+       prefixes:
+           - Evil
+           - Dark
+           - Slimy
+           - Dreadful
+           - Dread
+       suffixes:
+           - of Darkness
+           - of Evil
+           - of The Night

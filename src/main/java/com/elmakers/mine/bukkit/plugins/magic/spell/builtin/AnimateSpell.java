@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -15,12 +17,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
-import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.Messages;
 
 public class AnimateSpell extends SimulateSpell 
 {
+	private static Random random = new Random();
+	
 	public final static String[] ANIMATE_PARAMETERS = {
 		"animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget"
 	};
@@ -94,7 +98,13 @@ public class AnimateSpell extends SimulateSpell
 				+ targetMaterial.getKey() +
 				" cd " + (simCheckDestructible ? "true" : "false");
 		String commandName = parameters.getString("name", "Automata");
-		commandName = commandName + " " + MaterialBrush.getMaterialName(targetMaterial);
+		
+		String automataType = parameters.getString("message_type", "evil");
+		List<String> prefixes = Messages.getAll("automata." + automataType + ".prefixes");
+		List<String> suffixes = Messages.getAll("automata." + automataType + ".suffixes");
+		
+		commandName = prefixes.get(random.nextInt(prefixes.size())) 
+				+ " " + commandName + " " + suffixes.get(random.nextInt(suffixes.size()));
 		
 		targetBlock.setType(Material.COMMAND);
 		BlockState commandData = targetBlock.getState();
