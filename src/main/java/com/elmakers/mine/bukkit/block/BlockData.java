@@ -11,7 +11,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 
 /**

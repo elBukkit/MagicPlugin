@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class BrushSpell extends BlockSpell {
 

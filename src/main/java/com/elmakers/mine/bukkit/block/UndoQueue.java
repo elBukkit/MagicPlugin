@@ -14,7 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class UndoQueue
 {

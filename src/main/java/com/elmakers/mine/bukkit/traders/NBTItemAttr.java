@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
-import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public abstract class NBTItemAttr extends ItemAttr 
 {

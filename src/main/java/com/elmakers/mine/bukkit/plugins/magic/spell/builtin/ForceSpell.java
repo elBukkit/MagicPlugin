@@ -12,7 +12,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class ForceSpell extends TargetingSpell

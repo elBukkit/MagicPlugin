@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.wand;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 
 public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {

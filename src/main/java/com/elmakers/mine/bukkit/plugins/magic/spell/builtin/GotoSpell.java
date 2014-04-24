@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class GotoSpell extends TargetingSpell
@@ -84,7 +84,7 @@ public class GotoSpell extends TargetingSpell
 		
 		if (targetEntity != null) {
 			releaseTarget();
-			return SpellResult.TARGET_SELECTED;
+			return SpellResult.CANCEL;
 		}
 
 		List<String> playerNames = new ArrayList<String>(controller.getPlugin().getPlayerNames());

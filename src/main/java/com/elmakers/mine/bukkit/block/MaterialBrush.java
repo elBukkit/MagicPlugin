@@ -18,8 +18,8 @@ import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.BufferedMapCanvas;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MaterialBrush extends MaterialAndData {
 	

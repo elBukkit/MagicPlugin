@@ -25,7 +25,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
-import com.elmakers.mine.bukkit.utilities.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class ConstructBatch extends VolumeBatch {
 	private final BlockList constructedBlocks = new BlockList();

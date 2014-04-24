@@ -26,6 +26,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
@@ -33,10 +34,9 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.effect.EffectSingle;
 import com.elmakers.mine.bukkit.effect.EffectTrail;
-import com.elmakers.mine.bukkit.effect.ParticleType;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.utilities.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 /**
@@ -797,6 +797,11 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	public final String getCategory()
 	{
 		return category;
+	}
+	
+	public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
+		List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effects.get(result));
+		return effectList;
 	}
 	
 	public Collection<com.elmakers.mine.bukkit.api.spell.CastingCost> getCosts() {
