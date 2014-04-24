@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,6 +48,7 @@ public class ConstructBatch extends VolumeBatch {
 	private final Set<Material> attachablesWall;
 	private final Set<Material> attachablesDouble;
 	private final Set<Material> delayed;
+	private Set<Material> replace;
 	private Map<String, String> commandMap;
 	
 	private boolean finishedNonAttached = false;
@@ -461,6 +464,12 @@ public class ConstructBatch extends VolumeBatch {
 		{
 			return true;
 		}
+		
+		if (replace != null && replace.size() > 0 && !replace.contains(block.getType())) 
+		{
+			return true;
+		}
+		
 		if (!spell.hasBuildPermission(block)) 
 		{
 			return true;
@@ -504,5 +513,10 @@ public class ConstructBatch extends VolumeBatch {
 		}
 		
 		commandMap.put(key,  command);
+	}
+	
+	public void setReplace(Collection<Material> replace) {
+		this.replace = new HashSet<Material>();
+		this.replace.addAll(replace);
 	}
 }

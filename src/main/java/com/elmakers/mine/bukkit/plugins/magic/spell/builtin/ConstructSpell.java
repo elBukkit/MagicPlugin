@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -84,31 +85,6 @@ public class ConstructSpell extends BrushSpell
 		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		if (parameters.getBoolean("replace", false)) {
-			Set<Material> destructible = new HashSet<Material>();
-			Material targetMaterial = targetBlock != null ? targetBlock.getType() : target.getType();
-			destructible.add(targetMaterial);
-			
-			// A bit hacky, but is very handy!
-			if (targetMaterial == Material.STATIONARY_WATER)
-			{
-				destructible.add(Material.WATER);
-			}
-			else if (targetMaterial == Material.WATER)
-			{
-				destructible.add(Material.STATIONARY_WATER);
-			}
-			else if (targetMaterial == Material.STATIONARY_LAVA)
-			{
-				destructible.add(Material.LAVA);
-			}
-			else if (targetMaterial == Material.LAVA)
-			{
-				destructible.add(Material.STATIONARY_LAVA);
-			}
-			
-			setDestructible(destructible);
-		}
 		
 		// TODO : Is this needed? Or just use "ty"?
 		if (parameters.contains("y_offset")) {
@@ -131,6 +107,32 @@ public class ConstructSpell extends BrushSpell
 		}
 
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
+		
+		if (parameters.getBoolean("replace", false)) {
+			List<Material> replaceMaterials = new ArrayList<Material>();
+			Material targetMaterial = targetBlock != null ? targetBlock.getType() : target.getType();
+			replaceMaterials.add(targetMaterial);
+			
+			// A bit hacky, but is very handy!
+			if (targetMaterial == Material.STATIONARY_WATER)
+			{
+				replaceMaterials.add(Material.WATER);
+			}
+			else if (targetMaterial == Material.WATER)
+			{
+				replaceMaterials.add(Material.STATIONARY_WATER);
+			}
+			else if (targetMaterial == Material.STATIONARY_LAVA)
+			{
+				replaceMaterials.add(Material.LAVA);
+			}
+			else if (targetMaterial == Material.LAVA)
+			{
+				replaceMaterials.add(Material.STATIONARY_LAVA);
+			}
+			
+			batch.setReplace(replaceMaterials);
+		}
 		
 		// Check for command block overrides
 		if (parameters.contains("commands"))
