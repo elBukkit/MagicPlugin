@@ -369,7 +369,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player) {
-		if (!checkWand(sender, player, true, true)) {
+		if (!checkWand(sender, player, true, true, true)) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
@@ -523,25 +523,30 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	
 	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound)
 	{
+		return checkWand(sender, player, skipModifiable, skipBound, false);
+	}
+	
+	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
+	{
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
 		
 		if (wand == null) {
-			mage.sendMessage(Messages.get("wand.no_wand"));
+			if (!quiet) mage.sendMessage(Messages.get("wand.no_wand"));
 			if (sender != player) {
 				sender.sendMessage(Messages.getParameterized("wand.player_no_wand", "$name", player.getName()));
 			}
 			return false;
 		}
 		if (!skipModifiable && wand.isLocked()) {
-			mage.sendMessage(Messages.get("wand.unmodifiable"));
+			if (!quiet) mage.sendMessage(Messages.get("wand.unmodifiable"));
 			if (sender != player) {
 				sender.sendMessage(Messages.getParameterized("wand.player_unmodifiable", "$name", player.getName()));
 			}
 			return false;
 		}
 		if (!skipBound && !wand.canUse(mage.getPlayer()) ) {
-			mage.sendMessage(Messages.get("wand.bound_to_other"));
+			if (!quiet) mage.sendMessage(Messages.get("wand.bound_to_other"));
 			if (sender != player) {
 				sender.sendMessage(Messages.getParameterized("wand.player_unmodifiable", "$name", player.getName()));
 			}
@@ -591,7 +596,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
 		
+		wand.deactivate();
 		wand.fill(player);
+		wand.activate(mage);
 		mage.sendMessage(Messages.get("wand.filled"));
 		if (sender != player) {
 			sender.sendMessage(Messages.getParameterized("wand.player_filled", "$name", player.getName()));
@@ -626,7 +633,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage(materialKey + " is not a valid material");
 				return true;
 			}
-			
+
+			wand.deactivate();
 			if (wand.addBrush(materialKey)) {
 				wand.setActiveBrush(materialKey);
 				mage.sendMessage("Material '" + materialKey + "' has been added to your wand");
@@ -640,6 +648,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 					sender.sendMessage(player.getName() + "'s wand already has material " + materialKey);
 				}
 			}
+			wand.activate(mage);
+			
 			return true;
 		}
 		Spell spell = mage.getSpell(spellName);
@@ -649,6 +659,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
+		wand.deactivate();
 		if (wand.addSpell(spellName)) {
 			wand.setActiveSpell(spellName);
 			mage.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
@@ -662,6 +673,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage(player.getName() + "'s wand already has " + spell.getName());
 			}
 		}
+		wand.activate(mage);
 
 		return true;
 	}
@@ -687,6 +699,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				return true;
 			}
 			String materialKey = parameters[1];
+
+			wand.deactivate();
 			if (wand.removeBrush(materialKey)) {
 				mage.sendMessage("Material '" + materialKey + "' has been removed from your wand");
 				if (sender != player) {
@@ -697,8 +711,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 					sender.sendMessage(player.getName() + "'s wand does not have material " + materialKey);
 				}
 			}
+			wand.activate(mage);
+			
 			return true;
 		}
+		
+		wand.deactivate();
 		if (wand.removeSpell(spellName)) {
 			mage.sendMessage("Spell '" + spellName + "' has been removed from your wand");
 			if (sender != player) {
@@ -709,6 +727,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage(player.getName() + "'s wand does not have " + spellName);
 			}
 		}
+		wand.activate(mage);
 
 		return true;
 	}
@@ -727,7 +746,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
 		
+		wand.deactivate();
 		wand.setName(StringUtils.join(parameters, " "));
+		wand.activate(mage);
 		mage.sendMessage(Messages.get("wand.renamed"));
 		if (sender != player) {
 			sender.sendMessage(Messages.getParameterized("wand.player_renamed", "$name", player.getName()));
