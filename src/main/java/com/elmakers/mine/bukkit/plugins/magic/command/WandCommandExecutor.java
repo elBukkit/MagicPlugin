@@ -577,12 +577,15 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return false;
 		}
 		wand.deactivate();
-		wand.add(newWand);
+		boolean result = wand.add(newWand);
 		wand.activate(mage);
 		
-		mage.sendMessage(Messages.get("wand.upgraded"));
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_upgraded", "$name", player.getName()));
+			if (result) {
+				sender.sendMessage(Messages.getParameterized("wand.player_upgraded", "$name", player.getName()));
+			} else {
+				sender.sendMessage(Messages.getParameterized("wand.player_not_upgraded", "$name", player.getName()));
+			}
 		}
 		return true;
 	}

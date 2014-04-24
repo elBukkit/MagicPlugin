@@ -105,8 +105,10 @@ public class AnvilController implements Listener {
 						return;
 					}
 					
-					// TODO: Can't get the anvil's text from here.
-					firstWand.add(secondWand);
+					if (!firstWand.add(secondWand)) {
+						mage.sendMessage("This won't add anything to your wand");
+						return;
+					}
 					anvilInventory.setItem(0,  null);
 					anvilInventory.setItem(1,  null);
 					cursor.setType(Material.AIR);
