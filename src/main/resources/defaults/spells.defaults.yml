@@ -343,7 +343,7 @@ worm:
         live_range: 16
         target_min_range: 3
         target_max_range: 128
-        delay: 1000
+        delay: 1500
         target_mode: hunt
         target_types: mage
         birth_rules: 1,2,3,4,5,6,7
@@ -423,7 +423,7 @@ defender:
         live_range: 6
         target_min_range: 0
         target_max_range: 0
-        delay: 400
+        delay: 1000
         target_mode: hunt
         target_types: automaton
         target_min_range: 0
@@ -434,7 +434,7 @@ defender:
         cast: convert brush stained_glass|1 radius 3 check_destructible true undo 5000
         move: 4
         drop: defenderheart
-        death_cast: collapse radius 12
+        death_cast: collapse radius 7
         drop_xp: 400
         restricted: restricted_animate
         message_type: good
@@ -2124,6 +2124,7 @@ superconvert:
     parameters:
         allow_max_range: false
         range: 32
+        check_destructible: false
         max_dimension: 16
         indestructible: air
         target: select

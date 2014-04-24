@@ -661,6 +661,21 @@ public class SimulateBatch extends VolumeBatch {
 					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
 					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 					
+					if (!mage.isPlayer()) {
+						// Check for automata of the same type, kinda hacky.. ?
+						Block block = mage.getLocation().getBlock();
+						if (block.getType() == Material.COMMAND) {
+							BlockState blockState = block.getState();
+							if (blockState != null && blockState instanceof CommandBlock) {
+								CommandBlock command = (CommandBlock)blockState;
+								String commandString = command.getCommand();
+								if (commandString != null && commandString.length() > 0 && commandString.startsWith("cast " + spell.getKey())) {
+									continue;
+								}
+							}
+						}
+					}
+					
 					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
