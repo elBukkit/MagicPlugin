@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 3.0-RC3
+## 3.0
 
  - Fix shading of mcstats to avoid conflicting with other plugins that use it.
  - Add "hybrid" mana display, which is the new default.
@@ -10,6 +10,9 @@
  - Add SuperRepair spell
  - Automata will have randomly generated names (thanks, @lathame!)
  - Allow removing brushes and spells from your wand
+ - Finalize dtlTraders integration
+ 
+ - ... WHOOHOO!
 
 ## 3.0-RC2
 
