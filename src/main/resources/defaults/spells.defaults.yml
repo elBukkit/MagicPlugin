@@ -2250,9 +2250,10 @@ breach:
         check_destructible: false
         range: 32
         indestructible: air
+        transparent: transparent_to_construction
         undo: 10000
         brush: air
-        radius: '4'
+        radius: 4
         type: sphere
     costs:
         xp: 20
@@ -2267,16 +2268,18 @@ peek:
         -  class: EffectTrail
            particle: block_breaking
     parameters:
+        target: block
         allow_max_range: false
         check_destructible: false
         range: 32
         indestructible: air
+        transparent: transparent
         undo: 4000
         brush: glass
-        radius: '3'
+        radius: 3
         type: sphere
     costs:
-        xp: 3
+        xp: 5
 sandblast:
     icon: sandstone
     category: earthbending

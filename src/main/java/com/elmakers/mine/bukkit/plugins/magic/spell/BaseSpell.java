@@ -478,8 +478,6 @@ public abstract class BaseSpell extends Spell {
 
 		if (parameters.contains("prevent_passthrough")) {
 			preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
-		} else if (parameters.contains("indestructible")) {
-			preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("indestructible"));
 		} else {
 			preventPassThroughMaterials = controller.getMaterialSet("indestructible");
 		}
