@@ -2213,7 +2213,8 @@ public class MagicController implements Listener
 		}
 		
 		Wand activeWand = mage.getActiveWand();
-		if (activeWand != null && !Wand.isWand(pickup) && activeWand.isModifiable() && activeWand.addItem(pickup)) {
+		if (activeWand != null && (!Wand.isWand(pickup) || Wand.isWandUpgrade(pickup))
+			&& activeWand.isModifiable() && activeWand.addItem(pickup)) {
 			event.getItem().remove();
 			event.setCancelled(true);   
 			return;

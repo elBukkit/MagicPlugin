@@ -677,7 +677,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		Material material = brushData.getMaterial();
 		if (material == null || material == Material.AIR) {
-			controller.getPlugin().getLogger().warning("Unable to create material icon for " + materialKey);
 			return null;
 		}
 		
