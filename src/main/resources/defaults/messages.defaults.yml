@@ -93,10 +93,11 @@ wand:
     player_unmodifiable: $name's wand can not be modified
     bound_to_other: That wand is not bound to you
     bound: That wand is bound to $name
-    spell_added: $spell has been added to your wand
-    brush_added: The $brush material brush has been added to your wand
-    upgraded: Your wand has been upgraded
+    spell_added: "The &r&6$name &d&ospell has been added to your wand"
+    brush_added: The &r&7$name &d&obrush has been added to your wand
+    upgraded_property: Your wand has been upgraded to &r&b$name
     player_upgraded: $name's wand upgraded
+    player_not_upgraded: $name's wand not upgraded
     no_wand: You must be holding a wand
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item
