@@ -434,7 +434,7 @@ defender:
         cast: convert brush stained_glass|1 radius 3 check_destructible true undo 5000
         move: 4
         drop: defenderheart
-        death_cast: collapse radius 7
+        death_cast: collapse radius 7 check_destructible true
         drop_xp: 400
         restricted: restricted_animate
         message_type: good
@@ -470,7 +470,7 @@ animate:
         drop_xp: 200
         cast: blessing
         cast_probability: 0.1
-        death_cast: collapse radius 4
+        death_cast: collapse radius 4 check_destructible true
         drop: golemheart
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
