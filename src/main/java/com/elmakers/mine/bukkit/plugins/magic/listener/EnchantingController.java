@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.listener;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class EnchantingController implements Listener {
 	private final MagicController controller;
@@ -28,9 +30,9 @@ public class EnchantingController implements Listener {
 	
 	public void load(ConfigurationSection properties) {
 		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
+		Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);		
 	}
 
-	
 	@EventHandler
 	public void onEnchantItem(EnchantItemEvent event) {
 		if (enchantingEnabled && Wand.isWand(event.getItem())) {

@@ -156,7 +156,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static boolean retainLevelDisplay = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
-	public static Material EnchantableWandMaterial = Material.WOOD_SWORD;
+	public static Material EnchantableWandMaterial = null;
 	public static boolean EnableGlow = true;
 
 	public Wand(MagicController controller, ItemStack itemStack) {
@@ -1268,6 +1268,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void makeEnchantable(boolean enchantable) {
+		if (EnchantableWandMaterial == null) return;
+		
 		if (!enchantable) {
 			item.setType(icon.getMaterial());
 			item.setDurability(icon.getData());

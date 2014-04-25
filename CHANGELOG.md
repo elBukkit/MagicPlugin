@@ -4,6 +4,7 @@
 
  - Automata won't target cross-world
  - Recall won't warp cross-world, too confusing
+ - Make the wand enchantable item swapping optional, and off by default.
 
 ## 3.0
 

@@ -37,7 +37,6 @@ public class CraftingController implements Listener {
 	
 	public void load(ConfigurationSection properties) {
 		Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
-		Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
 		wantItemSubstitute = ConfigurationUtils.getMaterial(properties, "wand_item_substitute", null);
 		
 		// Parse crafting recipe settings
