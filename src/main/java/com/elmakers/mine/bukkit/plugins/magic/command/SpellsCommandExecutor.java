@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -186,7 +187,9 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 					if (!name.equals(spell.getKey())) {
 						description = name + " : " + description;
 					}
-					sender.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + spell.getIcon().getMaterial().name().toLowerCase() + "] : " + ChatColor.YELLOW + description);
+					MaterialAndData spellIcon = spell.getIcon();
+					String icon = spellIcon == null ? "None" : spellIcon.getMaterial().name().toLowerCase();
+					sender.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + icon + "] : " + ChatColor.YELLOW + description);
 					printedCount++;
 				}
 				lineCount++;
