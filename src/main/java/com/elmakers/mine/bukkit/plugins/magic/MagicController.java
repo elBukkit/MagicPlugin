@@ -1635,12 +1635,12 @@ public class MagicController implements Listener
 				}
 			} else if (activeWand.isInventoryOpen()) {
 				// The item is already removed from the wand's inventory, but that should be ok
-				dropItemFromWand(activeWand, droppedItem, player.getLocation());
+				removeItemFromWand(activeWand, droppedItem);
 				
 				// Cancelling the event causes some really strange behavior, including the item
 				// being put back in the inventory.
-				// instead of cancelling, change it to drop nothing
-				event.getItemDrop().setItemStack(null);
+				// So instead of cancelling, we'll try and update the returned item in place.
+				
 			}
 		}
 	}
@@ -1769,20 +1769,25 @@ public class MagicController implements Listener
 				getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 			}
 		} else if (ageDroppedItems > 0) {
-			try {
-				Class<?> itemClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityItem");
-				Item item = event.getEntity();
-				Object handle = NMSUtils.getHandle(item);
-				Field ageField = itemClass.getDeclaredField("age");
-				ageField.setAccessible(true);
-				int ticks = ageDroppedItems * 20 / 1000;
-				ageField.set(handle, ticks);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			int ticks = ageDroppedItems * 20 / 1000;
+			Item item = event.getEntity();
+			ageItem(item, ticks);
 		}
 	}
 
+	protected void ageItem(Item item, int ticksToAge)
+	{
+		try {
+			Class<?> itemClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityItem");
+			Object handle = NMSUtils.getHandle(item);
+			Field ageField = itemClass.getDeclaredField("age");
+			ageField.setAccessible(true);
+			ageField.set(handle, ticksToAge);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event)
 	{
@@ -2069,31 +2074,30 @@ public class MagicController implements Listener
 		}
 	}
 	
-	protected boolean dropItemFromWand(Wand wand, ItemStack droppedItem, Location location) {
-		if (wand == null || droppedItem == null || location == null || Wand.isWand(droppedItem)) {
-			return false;
+	protected ItemStack removeItemFromWand(Wand wand, ItemStack droppedItem) {
+		if (wand == null || droppedItem == null || Wand.isWand(droppedItem)) {
+			return null;
 		}
 		
-		ItemStack newDrop = null;
 		if (Wand.isSpell(droppedItem)) {
-			wand.removeSpell(Wand.getSpell(droppedItem));
+			String spellKey = Wand.getSpell(droppedItem);
+			wand.removeSpell(spellKey);
 			wand.saveInventory();
 			
-			// Recreate the item for proper naming and lore
-			newDrop = Wand.createSpellItem(Wand.getSpell(droppedItem), this, null, true);
+			// Update the item for proper naming and lore
+			Spell spell = getSpell(spellKey);
+			if (spell != null) {
+				Wand.updateSpellItem(droppedItem, spell, null, null, true);
+			}
 		} else if (Wand.isBrush(droppedItem)) {
-			wand.removeBrush(Wand.getBrush(droppedItem));
+			String brushKey = Wand.getBrush(droppedItem);
+			wand.removeBrush(brushKey);
 			wand.saveInventory();
 			
-			// Recreate the item for proper naming and lore
-			newDrop = Wand.createBrushItem(Wand.getBrush(droppedItem), this, null, true);
+			// Update the item for proper naming and lore
+			Wand.updateBrushItem(droppedItem, brushKey, null);
 		}
-
-		if (newDrop != null) {
-			Item item = location.getWorld().dropItem(location, newDrop);
-			item.setVelocity(location.getDirection().normalize().multiply(1.5));
-		}
-		return newDrop != null;
+		return droppedItem;
 	}
 	
 	@EventHandler
@@ -2113,7 +2117,16 @@ public class MagicController implements Listener
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
 		{
 			ItemStack droppedItem = event.getCurrentItem();
-			if (!dropItemFromWand(activeWand, droppedItem, player.getLocation())) {
+			ItemStack newDrop = removeItemFromWand(activeWand, droppedItem);
+			
+			if (newDrop != null) 
+			{
+				Location location = player.getLocation();
+				Item item = location.getWorld().dropItem(location, newDrop);
+				item.setVelocity(location.getDirection().normalize());
+			}
+			else 
+			{
 				event.setCancelled(true);
 			}
 			return;

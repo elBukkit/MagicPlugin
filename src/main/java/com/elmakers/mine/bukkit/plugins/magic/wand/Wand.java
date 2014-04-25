@@ -653,7 +653,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spellKey + " with material " + icon.getMaterial().name());	
 			return originalItemStack;
 		}
-		updateSpellName(itemStack, spell, wand, wand == null ? null : wand.activeMaterial, isItem);
+		updateSpellItem(itemStack, spell, wand, wand == null ? null : wand.activeMaterial, isItem);
 		return itemStack;
 	}
 	
@@ -713,7 +713,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
-		updateMaterialName(itemStack, materialKey, wand);
+		updateBrushItem(itemStack, materialKey, wand);
 		return itemStack;
 	}
 
@@ -1348,14 +1348,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isSpell(item)) {
 			Spell spell = mage.getSpell(getSpell(item));
 			if (spell != null) {
-				updateSpellName(item, spell, activeName ? this : null, activeMaterial, false);
+				updateSpellItem(item, spell, activeName ? this : null, activeMaterial, false);
 			}
 		} else if (isBrush(item)) {
-			updateMaterialName(item, getBrush(item), activeName ? this : null);
+			updateBrushItem(item, getBrush(item), activeName ? this : null);
 		}
 	}
 	
-	protected static void updateSpellName(ItemStack itemStack, Spell spell, Wand wand, String activeMaterial, boolean isItem) {
+	public static void updateSpellItem(ItemStack itemStack, Spell spell, Wand wand, String activeMaterial, boolean isItem) {
 		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
 		if (wand != null) {
@@ -1376,7 +1376,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		InventoryUtils.setMeta(spellNode, "key", spell.getKey());
 	}
 	
-	protected static void updateMaterialName(ItemStack itemStack, String materialKey, Wand wand) {
+	public static void updateBrushItem(ItemStack itemStack, String materialKey, Wand wand) {
 		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
 		if (wand != null) {
