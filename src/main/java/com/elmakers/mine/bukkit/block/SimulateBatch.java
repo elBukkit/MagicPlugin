@@ -643,6 +643,7 @@ public class SimulateBatch extends VolumeBatch {
 				{
 					// We'll get the players from the Mages list
 					if (entity instanceof Player || !(entity instanceof LivingEntity) || entity.isDead()) continue;
+					if (!entity.getLocation().getWorld().equals(center.getWorld())) continue;
 					Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
@@ -659,6 +660,7 @@ public class SimulateBatch extends VolumeBatch {
 					if (targetType == TargetType.AUTOMATON && mage.getPlayer() != null) continue;
 					if (targetType == TargetType.PLAYER && mage.getPlayer() == null) continue;
 					if (mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
+					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 					if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 					
 					if (!mage.isPlayer()) {

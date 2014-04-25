@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.1
+
+ - Automata won't target cross-world
+
 ## 3.0
 
  - Fix shading of mcstats to avoid conflicting with other plugins that use it.
