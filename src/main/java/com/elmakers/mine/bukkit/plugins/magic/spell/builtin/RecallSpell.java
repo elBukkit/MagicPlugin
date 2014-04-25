@@ -135,7 +135,7 @@ public class RecallSpell extends TargetingSpell
 					for (int i = 0; i < warps.size(); i++) {
 						if (selectedType == this.selectedType && i == selectedIndex) continue;
 						Location targetLocation = getTargetLocation(selectedType, i);
-						if (targetLocation != null) {
+						if (targetLocation != null && targetLocation.getWorld().equals(location.getWorld())) {
 							Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
 							target.setExtraData(new Waypoint(selectedType, i));
 							allWaypoints.add(target);
@@ -146,7 +146,7 @@ public class RecallSpell extends TargetingSpell
 					for (int i = 0; i < lostWands.size(); i++) {
 						if (selectedType == this.selectedType && i == selectedIndex) continue;
 						Location targetLocation = getTargetLocation(selectedType, i);
-						if (targetLocation != null) {
+						if (targetLocation != null && targetLocation.getWorld().equals(location.getWorld())) {
 							Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
 							target.setExtraData(new Waypoint(selectedType, i));
 							allWaypoints.add(target);
@@ -155,7 +155,7 @@ public class RecallSpell extends TargetingSpell
 				} else {
 					if (selectedType == this.selectedType) continue;
 					Location targetLocation = getTargetLocation(selectedType, 0);
-					if (targetLocation != null) {
+					if (targetLocation != null && targetLocation.getWorld().equals(location.getWorld())) {
 						Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
 						target.setExtraData(new Waypoint(selectedType, 0));
 						allWaypoints.add(target);

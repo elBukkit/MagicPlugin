@@ -3,6 +3,7 @@
 ## 3.1
 
  - Automata won't target cross-world
+ - Recall won't warp cross-world, too confusing
 
 ## 3.0
 
