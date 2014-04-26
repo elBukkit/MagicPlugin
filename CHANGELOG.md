@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3
+
+ - Add some automata-related API methods.
+
 ## 1.2
 
  - Add URLMap API

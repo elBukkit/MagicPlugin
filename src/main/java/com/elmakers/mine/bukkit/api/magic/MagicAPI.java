@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -400,4 +401,15 @@ public interface MagicAPI {
 	 * @return The list of known schematic names.
 	 */
 	public Collection<String> getSchematicNames();
+	
+	/**
+	 * Check to see if the given block is part of an Automata.
+	 * 
+	 * This currently only works if you specify the redstone block associated
+	 * with the automata, though this will hopefully be improved in the future.
+	 * 
+	 * @param block The block to check.
+	 * @return True if this is an Automata's power source.
+	 */
+	public boolean isAutomata(Block block);
 }
