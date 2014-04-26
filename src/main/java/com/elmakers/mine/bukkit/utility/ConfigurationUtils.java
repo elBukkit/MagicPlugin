@@ -282,6 +282,11 @@ public class ConfigurationUtils {
 			if (override.startsWith("~")) {
 				override = override.substring(1);
 				value = value + Double.parseDouble(override);
+			} else if (override.startsWith("*")) {
+				
+				
+				override = override.substring(1);
+				value = value * Double.parseDouble(override);
 			} else {
 				value = Double.parseDouble(override);
 			}	

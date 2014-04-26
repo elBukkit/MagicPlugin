@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit</groupId>
 	<artifactId>MagicLib</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic Lib</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
@@ -56,7 +56,7 @@
 	</distributionManagement>
 
 	<properties>
-		<build.version>1.0</build.version>
+		<build.version>1.1</build.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
