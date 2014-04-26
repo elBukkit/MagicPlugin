@@ -9,7 +9,6 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 
 public class ReplaceMaterialAction extends SimpleBlockAction

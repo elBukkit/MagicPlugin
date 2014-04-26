@@ -3,9 +3,9 @@ package com.elmakers.mine.bukkit.traders;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.dandielo.citizens.traders_v3.utils.items.ItemAttr;
+
+import org.apache.commons.lang.StringUtils;
 
 public class InventoryItemAttr extends NBTItemAttr {
 	public InventoryItemAttr(String key, String tag, String subtag) {
