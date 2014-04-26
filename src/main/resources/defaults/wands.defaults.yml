@@ -1446,7 +1446,7 @@ wolf:
     bound: true
     cost_reduction: 2
     protection: 2
-    cooldown_reduction: 0.999
+    cooldown_reduction: 2
     health_regeneration: 1
     hunger_regeneration: 1
     power: 2
