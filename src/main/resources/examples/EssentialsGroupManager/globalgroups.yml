@@ -20,7 +20,6 @@
     - Magic.commands.magic.give
     - Magic.commands.magic.commit
     - Magic.wand.override_bind
-    - Magic.protected
 
   g:magic_admin:
     permissions:
@@ -36,7 +35,6 @@
     - Magic.commands.magic.clean
     - Magic.commands.magic.clearcache
     - Magic.commands.cast
-    - Magic.powered
 
   g:magic_guest:
     permissions:

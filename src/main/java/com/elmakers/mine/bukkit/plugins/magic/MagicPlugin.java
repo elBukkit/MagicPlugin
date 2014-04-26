@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -343,5 +344,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	@Override
 	public Collection<String> getBrushes() {
 		return controller.getMaterials();
+	}
+
+	@Override
+	public boolean isAutomata(Block block) {
+		return controller.isAutomata(block);
 	}
 }

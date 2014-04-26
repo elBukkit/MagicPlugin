@@ -2460,7 +2460,7 @@ public class MagicController implements Listener
 		}
 	}
 	
-	public void registerBlockForReloadToggle(Block block, String name, String message) {
+	public void registerAutomata(Block block, String name, String message) {
 		String chunkId = getChunkKey(block.getChunk());
 		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload == null) {
@@ -2471,7 +2471,7 @@ public class MagicController implements Listener
 		toReload.put(data.getId(), data);
 	}
 
-	public void unregisterBlockForReloadToggle(Block block) {
+	public void unregisterAutomata(Block block) {
 		// Note that we currently don't clean up an empty entry,
 		// purposefully, to prevent thrashing the main map and adding lots
 		// of HashMap creation.
@@ -2480,6 +2480,15 @@ public class MagicController implements Listener
 		if (toReload != null) {
 			toReload.remove(BlockData.getBlockId(block));
 		}
+	}
+	
+	public boolean isAutomata(Block block) {
+		String chunkId = getChunkKey(block.getChunk());
+		Map<Long, Automaton> toReload = automata.get(chunkId);
+		if (toReload != null) {
+			return toReload.containsKey(BlockData.getBlockId(block));
+		}
+		return false;
 	}
 	
 	protected void triggerBlockToggle(final Chunk chunk) {

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,9 +22,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -165,7 +164,7 @@ public class SimulateBatch extends VolumeBatch {
 			Block checkForPower = castCommandBlock.getRelative(powerFace);
 			if (checkForPower.getType() == POWER_MATERIAL) {
 				if (commandReload) {
-					controller.unregisterBlockForReloadToggle(checkForPower);
+					controller.unregisterAutomata(checkForPower);
 				}
 				checkForPower.setType(Material.AIR);
 			}
@@ -361,7 +360,7 @@ public class SimulateBatch extends VolumeBatch {
 					Block checkForPower = castCommandBlock.getRelative(powerFace);
 					if (checkForPower.getType() == POWER_MATERIAL) {
 						if (commandReload) {
-							controller.unregisterBlockForReloadToggle(checkForPower);
+							controller.unregisterAutomata(checkForPower);
 						}
 						powerSimMaterial.modify(checkForPower);
 						commandPowered = true;
@@ -566,7 +565,7 @@ public class SimulateBatch extends VolumeBatch {
 						if (automataName == null || automataName.length() <= 1) {
 							automataName = Messages.get("automata.default_name");
 						}
-						controller.registerBlockForReloadToggle(powerBlock, automataName, "automata.awaken");
+						controller.registerAutomata(powerBlock, automataName, "automata.awaken");
 					}
 				}
 			}

@@ -2409,7 +2409,7 @@ emp:
         target_type: LivingEntity
         allow_max_range: true
         range: 8
-        radius: 1
+        radius: 3
         type: sphere
         power: true
         cooldown: 1000
