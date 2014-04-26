@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -76,9 +76,7 @@ public class SimulateBatch extends VolumeBatch {
 	private int huntMinRange = 4;
 	private int birthRangeSquared = 0;
 	private int liveRangeSquared = 0;
-	
-	// 1.5 is roughly 90 degrees, gives him a wider FOV
-	private float huntFov = 1.5f;
+	private double huntFov = Math.PI * 1.8;
 	private boolean commandReload;
 	private boolean commandPowered;
 	private World world;
@@ -169,7 +167,7 @@ public class SimulateBatch extends VolumeBatch {
 				if (commandReload) {
 					controller.unregisterBlockForReloadToggle(checkForPower);
 				}
-				powerSimMaterial.modify(checkForPower);
+				checkForPower.setType(Material.AIR);
 			}
 		}
 		
@@ -189,37 +187,41 @@ public class SimulateBatch extends VolumeBatch {
 				orb.setExperience(dropXp);
 			}
 		}
-		
-		// Cast death spell
-		if (deathSpell.length() > 0) {
-			String spellName = deathSpell;
-			String[] defaultParameters = {"cost_reduction", "1", "destructible", "air," + birthMaterial.getMaterial().name().toLowerCase(), "target", "self"};
-			String[] parameters = defaultParameters;
-			
-			String[] pieces = StringUtils.split(deathSpell, " ");
-			if (pieces != null && pieces.length > 1) {
-				spellName = pieces[0];
-				parameters = new String[defaultParameters.length + pieces.length - 1];
-				for (int i = 0; i < defaultParameters.length; i++) {
-					parameters[i] = defaultParameters[i];
-				}
-				for (int i = 1; i < pieces.length; i++) {
-					parameters[i + defaultParameters.length - 1] = pieces[i];
-				}
-			}
-			Spell spell = mage.getSpell(spellName);
-			if (spell != null) {
-				if (DEBUG) {
-					controller.getLogger().info(commandName + " casting " + deathSpell + " on death");
-				}
-				spell.cast(parameters);
-			}
-		}
 		if (includeCommands && castCommandBlock != null && castCommandBlock.getType() == Material.COMMAND) {
 			castCommandBlock.setType(Material.AIR);
 		}
+		
+		// Cast death spell
+		if (deathSpell.length() > 0) {
+			castSpell(deathSpell);
+		}
 		if (!mage.isPlayer()) {
 			controller.forgetMage(mage);
+		}
+	}
+	
+	protected void castSpell(String spellCommand) {
+		
+		String[] pieces = null;
+		if (spellCommand.contains(" ")) {
+			pieces = StringUtils.split(spellCommand, ' ');
+			spellCommand = pieces[0];
+		}
+
+		String[] parameters = null;
+		if (pieces != null && pieces.length > 1) {
+			parameters = new String[pieces.length - 1];
+			for (int i = 1; i < pieces.length; i++) {
+				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getKey());
+			}
+		}
+		
+		Spell spell = mage.getSpell(spellCommand);
+		if (spell != null) {
+			if (DEBUG) {
+				controller.getLogger().info(commandName + " casting " + spellCommand + " @ " + center);
+			}
+			spell.cast(parameters);
 		}
 	}
 	
@@ -723,24 +725,7 @@ public class SimulateBatch extends VolumeBatch {
 				
 				if (tickSpell.length() > 0) {
 					if (Math.random() < castProbability) {
-						String[] baseParameters = {"cost_reduction", "1", "transparent", "air," + birthMaterial.getMaterial().name().toLowerCase() + "," + Material.COMMAND.name().toLowerCase() + "," + POWER_MATERIAL.name().toLowerCase()};
-						List<String> parameters = new ArrayList<String>(Arrays.asList(baseParameters));
-						
-						String spellName = tickSpell;
-						if (spellName.contains(" ")) {
-							String[] pieces = StringUtils.split(spellName, ' ');
-							spellName = pieces[0];
-							for (int i = 1; i < pieces.length; i++) {
-								parameters.add(pieces[i]);
-							}
-						}
-						Spell spell = mage.getSpell(spellName);
-						if (spell != null) {
-							if (DEBUG) {
-								controller.getLogger().info(commandName + " casting " + tickSpell + " at " + targetDescription);
-							}
-							spell.cast(parameters.toArray(baseParameters));
-						}
+						castSpell(tickSpell);
 					}
 				}
 			}

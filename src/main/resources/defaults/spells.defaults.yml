@@ -274,7 +274,7 @@ glider:
         transparent: transparent_to_construction
         drop_xp: 400
         cast: flare target self
-        death_cast: pull pdy -1 pdx 0 pdz 0
+        death_cast: push pdy -1 pdx 0 pdz 0
         commands:
           glider_simulate: cast simulate target self material obsidian animate true delay 500 radius 3
     costs:
@@ -313,7 +313,7 @@ virus:
         drop: virusheart
         death_cast: neutron
         cast_probability: 0.5
-        cast: boom
+        cast: boom transparent air $birth redstone_block
         drop_xp: 900
         move: 3
         restricted: restricted_animate
@@ -352,9 +352,9 @@ worm:
         diagonal_live_rules: 0,1,2,3
         concurrent: true
         drop: wormheart
-        death_cast: blast radius 8 speed -1
+        death_cast: blast target self radius 8 speed -0.2 destructible $birth check_destructible true
         cast_probability: 0.3
-        cast: curse
+        cast: blob brush $birth radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block
         drop_xp: 700
         move: 4
         restricted: restricted_animate
@@ -387,7 +387,7 @@ hunter:
         delay: 800
         target_mode: hunt
         target_types: player
-        cast: pull
+        cast: pull transparent air $birth redstone_block
         cast_probability: 0.3
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
@@ -395,7 +395,7 @@ hunter:
         move: 2
         drop: hunterheart
         drop_xp: 500
-        death_cast: blast radius 3
+        death_cast: blast target self radius 3 destructible $birth check_destructible true
         restricted: restricted_animate
         message_type: evil
     costs:
@@ -431,10 +431,10 @@ defender:
         live_rules: 3,4,5,6,7,8,9
         birth_rules: 4,5
         cast_probability: 0.1
-        cast: convert brush stained_glass|1 radius 3 check_destructible true undo 5000
+        cast: convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block
         move: 4
         drop: defenderheart
-        death_cast: collapse radius 7 check_destructible true
+        death_cast: collapse target self radius 7 check_destructible true destructible $birth
         drop_xp: 400
         restricted: restricted_animate
         message_type: good
@@ -470,7 +470,7 @@ animate:
         drop_xp: 200
         cast: blessing
         cast_probability: 0.1
-        death_cast: collapse radius 4 check_destructible true
+        death_cast: collapse target self radius 4 check_destructible true destructible $birth
         drop: golemheart
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
@@ -2408,8 +2408,8 @@ emp:
     parameters:
         target_type: LivingEntity
         allow_max_range: true
-        range: 32
-        radius: 3
+        range: 8
+        radius: 1
         type: sphere
         power: true
         cooldown: 1000
@@ -2456,7 +2456,7 @@ disintegrate:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 8
+        range: 4
         target: other
         player_damage: 5
         entity_damage: 50
