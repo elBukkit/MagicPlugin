@@ -416,9 +416,21 @@ public class SimulateBatch extends VolumeBatch {
 					killBlock.getChunk().load();
 					return processedBlocks;
 				}
-				modifiedBlocks.add(killBlock);
-				killBlock.setType(deathMaterial);
-				controller.updateBlock(killBlock);
+				
+				if (birthMaterial.is(killBlock)) {
+					modifiedBlocks.add(killBlock);
+					killBlock.setType(deathMaterial);
+					controller.updateBlock(killBlock);
+				} else {
+					// If this block was destroyed while we were processing,
+					// avoid spawning a random birth block.
+					// This tries to make it so automata don't "cheat" when
+					// getting destroyed. A bit hacky though, I'm not about
+					// to re-simulate...
+					if (bornBlocks.size() > 0) {
+						bornBlocks.remove(bornBlocks.size() - 1);
+					}
+				}
 				processedBlocks++;
 			}
 			
