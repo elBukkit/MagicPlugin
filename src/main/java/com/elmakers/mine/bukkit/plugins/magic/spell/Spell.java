@@ -436,17 +436,20 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 			}
 		}
 
-		if (costs != null && !isActive)
+		if (!mage.isCostFree())
 		{
-			for (CastingCost cost : costs)
+			if (costs != null && !isActive)
 			{
-				if (!cost.has(this))
+				for (CastingCost cost : costs)
 				{
-					String baseMessage = Messages.get("costs.insufficient_resources");
-					String costDescription = cost.getDescription(mage);
-					sendMessage(baseMessage.replace("$cost", costDescription));
-					processResult(SpellResult.INSUFFICIENT_RESOURCES);
-					return false;
+					if (!cost.has(this))
+					{
+						String baseMessage = Messages.get("costs.insufficient_resources");
+						String costDescription = cost.getDescription(mage);
+						sendMessage(baseMessage.replace("$cost", costDescription));
+						processResult(SpellResult.INSUFFICIENT_RESOURCES);
+						return false;
+					}
 				}
 			}
 		}
@@ -486,7 +489,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		
 		if (result.isSuccess()) {
 			lastCast = System.currentTimeMillis();
-			if (costs != null) {
+			if (costs != null && !mage.isCostFree()) {
 				for (CastingCost cost : costs)
 				{
 					cost.use(this);

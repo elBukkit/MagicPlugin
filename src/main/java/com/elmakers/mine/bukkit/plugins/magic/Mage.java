@@ -182,6 +182,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		}
 	}
 	
+	public boolean isCostFree() {
+		// Special case for command blocks and Automata
+		if (player == null) return true;
+		return activeWand == null ? false : activeWand.isCooldownFree();
+	}
+	
 	public float getCostReduction() {
 		return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
 	}
