@@ -193,7 +193,9 @@ public abstract class BaseSpell extends Spell {
 	 */
 	public Block getPlayerBlock()
 	{
-		return getLocation().getBlock().getRelative(BlockFace.DOWN);
+		Location location = getLocation();
+		if (location == null) return null;
+		return location.getBlock().getRelative(BlockFace.DOWN);
 	}
 
 	/**
