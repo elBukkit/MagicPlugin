@@ -3,6 +3,7 @@
 ## 1.3
 
  - Add some automata-related API methods.
+ - Add getDuration and getCooldown methods to SpellTemplate.
 
 ## 1.2
 
