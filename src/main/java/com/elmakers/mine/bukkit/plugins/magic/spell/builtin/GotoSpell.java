@@ -115,7 +115,7 @@ public class GotoSpell extends TargetingSpell
 	
 	protected boolean teleportTarget(Location location) {
 		if (targetEntity == null || location == null) return false;
-		
+		location.setY(location.getY() + 1);
 		targetEntity.teleport(location);
 		this.getCurrentTarget().setEntity(targetEntity);
 		
