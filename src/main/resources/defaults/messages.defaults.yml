@@ -136,6 +136,10 @@ cooldown:
     wait_minutes: You must wait another $minutes minutes.
     wait_hours: You must wait another $hours hours.
     wait_moment: You must wait a moment.
+duration:
+    lasts_seconds: Lasts for $seconds seconds
+    lasts_minutes: Lasts for $minutes minutes
+    lasts_hours: Lasts for $hours hours
 categories:
     master:
         name: Master
@@ -386,12 +390,11 @@ spells:
         name: Phase
         description: Phase to another dimension
         cast: You phase to $world_name
-        
     invincible:
         name: Invincible
         description: Make yourself impervious to damage
         cast: You feel invincible!
-        cancel: You feel normal
+        deactivate: You feel normal
     inferno:
         name: Inferno
         description: Burn a wide area

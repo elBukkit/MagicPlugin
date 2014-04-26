@@ -230,6 +230,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		
 		mage.deactivateSpell(this);
 		isActive = false;
+		sendMessage(getMessage("deactivate"));
 	}
 	
 	protected List<CastingCost> parseCosts(ConfigurationSection node) {
@@ -863,6 +864,18 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		} else if (percentageParameterMap.contains(parameterKey)) {
 			examples.addAll(Arrays.asList(EXAMPLE_PERCENTAGES));
 		} 
+	}
+	
+	@Override
+	public long getCooldown()
+	{
+		return cooldown;
+	}
+	
+	@Override
+	public long getDuration()
+	{
+		return duration;
 	}
 	
 	//
