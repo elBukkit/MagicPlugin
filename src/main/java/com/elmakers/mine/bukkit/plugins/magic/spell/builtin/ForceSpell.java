@@ -74,6 +74,9 @@ public class ForceSpell extends TargetingSpell
 			// Check for protected Mages
 			if (checkTarget instanceof Player) {
 				Mage targetMage = controller.getMage((Player)targetEntity);
+				if (targetMage == null) {
+					return SpellResult.NO_TARGET;
+				}
 				// Check for protected players (admins, generally...)
 				if (targetMage.isSuperProtected()) {
 					return SpellResult.NO_TARGET;
