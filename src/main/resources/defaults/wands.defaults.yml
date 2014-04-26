@@ -338,7 +338,6 @@ random:
       pillar: 0,5,10,15,100
       place: 0,1,5,10,100
       stash: 0,1,5,10,100
-      pickpocket: 0,0,1,5,100
       stalactite: 0,5,10,15,100
       kaboom: 0,0,1,5,100
       icbm: 0,0,1,5,100
@@ -1275,7 +1274,6 @@ black:
         - portal
         - neutron
         - night
-        - pickpocket
     materials:
         - water
         - erase
