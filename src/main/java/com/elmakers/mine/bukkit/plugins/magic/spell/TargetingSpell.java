@@ -247,8 +247,11 @@ public abstract class TargetingSpell extends BaseSpell {
 			target.add(targetLocationOffset);
 		}
 		if (targetLocationWorldName != null && targetLocationWorldName.length() > 0) {
-			World targetWorld = target.getLocation().getWorld();
-			target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, controller.canCreateWorlds()));
+			Location location = target.getLocation();
+			if (location != null) {
+				World targetWorld = location.getWorld();
+				target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, controller.canCreateWorlds()));
+			}
 		}
 		return target;
 	}
