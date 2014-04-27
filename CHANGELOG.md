@@ -7,6 +7,7 @@
  - Make the wand enchantable item swapping optional, and off by default.
  - Automata can now randomly choose from a set of spells to cast
  - The Curse spell will now temporarily cripple a Mage
+ - A slightly better/hackier work-around for annoying Bukkit drag event
 
 ## 3.0
 

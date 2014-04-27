@@ -39,6 +39,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -73,6 +74,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
@@ -104,6 +106,7 @@ import com.elmakers.mine.bukkit.plugins.magic.wand.WandMode;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.traders.TradersController;
+import com.elmakers.mine.bukkit.utilities.CompleteDragTask;
 import com.elmakers.mine.bukkit.utilities.DataStore;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -1521,7 +1524,7 @@ public class MagicController implements Listener
 	 */
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent event) {
-		if (!enableItemHacks) return;
+		if (!enableItemHacks || event.isCancelled()) return;
 		
 		// this is a huge hack! :\
 		// I apologize for any weird behavior this causes.
@@ -1530,9 +1533,29 @@ public class MagicController implements Listener
 		// To make matters worse, Bukkit passes a copy of the item in the event, so we can't 
 		// even check for metadata and only cancel the event if it involves one of our special items.
 		// The best I can do is look for metadata at all, since Bukkit will retain the name and lore.
+		
+		// I have now decided to copy over the CB default handler for this, and cancel the event.
+		// The only change I have made is that *real* ItemStack copies are made, instead of shallow Bukkit ones.
 		ItemStack oldStack = event.getOldCursor();
-		if (oldStack != null && oldStack.hasItemMeta()) {
+		HumanEntity entity = event.getWhoClicked();
+		if (oldStack != null && oldStack.hasItemMeta() && entity instanceof Player) {
+			// Only do this if we're only dragging one item, since I don't 
+			// really know what happens or how you would drag more than one.
+			Map<Integer, ItemStack> draggedSlots = event.getNewItems();
+			if (draggedSlots.size() != 1) return;
+			
 			event.setCancelled(true);
+			
+			// Cancelling the event will put the item back on the cursor,
+			// and skip updating the inventory.
+			
+			// So we will wait one tick and then fix this up using the original item.
+			InventoryView view = event.getView();
+			for (Integer dslot : draggedSlots.keySet()) {
+				CompleteDragTask completeDrag = new CompleteDragTask((Player)entity, view, dslot);
+				completeDrag.runTaskLater(plugin, 1);
+            }
+			
 			return;
 		}
 	}

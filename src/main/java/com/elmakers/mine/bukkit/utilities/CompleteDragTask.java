@@ -1,0 +1,26 @@
+package com.elmakers.mine.bukkit.utilities;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+public class CompleteDragTask extends BukkitRunnable {
+	private final Player player;
+	private final int itemSlot;
+	private final InventoryView view;
+
+	public CompleteDragTask(Player player, InventoryView view, int slot) {
+		this.player = player;
+		this.itemSlot = slot;
+		this.view = view;
+	}
+
+	@SuppressWarnings("deprecation")
+	public void run() {
+		ItemStack heldItem = player.getItemOnCursor();
+		view.setItem(itemSlot, heldItem);
+		player.setItemOnCursor(null);
+		player.updateInventory();
+	}
+}
