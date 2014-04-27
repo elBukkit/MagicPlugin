@@ -68,7 +68,7 @@ public class RandomUtils {
 				key = key.replace("^", ".");
 				
 				String[] pieces = value.split(",");
-				if (pieces != null && pieces.length > 0) {
+				if (pieces != null && pieces.length > 1) {
 					currentThreshold += lerp(pieces, levelIndex, nextLevelIndex, distance);
 				} else {
 					currentThreshold = Float.parseFloat(value);
