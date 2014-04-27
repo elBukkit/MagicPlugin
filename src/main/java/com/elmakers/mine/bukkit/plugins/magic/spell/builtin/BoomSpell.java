@@ -20,7 +20,7 @@ public class BoomSpell extends BlockSpell {
 		}
 
 		Block block = target.getBlock();
-		if (!hasBuildPermission(block)) {
+		if ((breakBlocks || incendiary) && !hasBuildPermission(block)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		Location l = block.getLocation();
