@@ -34,6 +34,10 @@ public class PotionEffectSpell extends TargetingSpell
 				if (targetMage.isSuperProtected()) {
 					return SpellResult.NO_TARGET;
 				}
+				
+				if (parameters.getBoolean("deactivate_target_mage")) {
+					targetMage.deactivateAllSpells();
+				}
 			}
 		}
 		

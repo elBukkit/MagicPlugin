@@ -6,6 +6,7 @@
  - Recall won't warp cross-world, too confusing
  - Make the wand enchantable item swapping optional, and off by default.
  - Automata can now randomly choose from a set of spells to cast
+ - The Curse spell will now temporarily cripple a Mage
 
 ## 3.0
 

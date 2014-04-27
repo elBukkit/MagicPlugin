@@ -101,10 +101,11 @@ curse:
         xp: 50
     parameters:
         range: 32
+        deactivate_target_mage: true
         target_type: LivingEntity
         target: other
-        effect_slow: 100,5  
-        effect_confusion: 100,5
+        effect_slow: 200,5  
+        effect_confusion: 200,5
 blessing:
     icon: double_plant:5
     category: light

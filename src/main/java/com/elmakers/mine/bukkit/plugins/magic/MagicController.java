@@ -77,6 +77,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -1898,6 +1899,11 @@ public class MagicController implements Listener
 		
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
 		{
+			// Don't allow casting if the player is confused
+			if (!mage.isSuperPowered() && !mage.isSuperProtected() && player.hasPotionEffect(PotionEffectType.CONFUSION)) {
+				mage.processResult(SpellResult.FAIL);
+				return;
+			}
 			wand.cast();
 			return;
 		}
