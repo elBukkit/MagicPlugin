@@ -386,6 +386,8 @@ hunter:
     death_cast:
         "blast target self radius 3 destructible $birth check_destructible true": 100
     cast:
+        "boom transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 20
+        "arrowrain transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 30
         "pull transparent air,$birth,redstone_block": 100
         "curse transparent air,$birth,redstone_block": 100
         "blob brush $birth radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20

@@ -1079,6 +1079,11 @@ automata:
            - Blessed
            - Magic
            - Enchanted
+           - Enlightened
+           - Magnificent
+           - Magnamous
+           - Brave
+           - Loyal
        suffixes:
            - of Holiness
            - of Honor
@@ -1088,6 +1093,10 @@ automata:
            - of The Sun
            - of Magic
            - of The Blessed
+           - of Forgiveness
+           - of Loyalty
+           - of Retribution
+           - of Resilliance
     evil:
        prefixes:
            - Evil
@@ -1100,6 +1109,9 @@ automata:
            - Enchanted
            - Harbringer
            - Nether
+           - Infamous
+           - Nefarious
+           - Distastrous
        suffixes:
            - of Darkness
            - of Evil
@@ -1108,3 +1120,6 @@ automata:
            - of Doom
            - of The Nether
            - of Magic
+           - of Destruction
+           - of Desolation
+           - of Infamy
