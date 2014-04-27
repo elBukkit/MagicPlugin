@@ -2134,11 +2134,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		double maxFoodLevel = 20;
 		if (hungerRegeneration > 0 && player.getFoodLevel() < maxFoodLevel) {
-			double food = player.getFoodLevel() + hungerRegeneration * WandLevel.maxHungerRegeneration;
-			if (food >= 20) {
-				player.setExhaustion(0);
+			double regen = hungerRegeneration * WandLevel.maxHungerRegeneration;
+			if (regen < 1) {
+				regen = (Math.random() < regen) ? 1 : 0;
 			}
-			player.setFoodLevel(Math.min(20, (int)food));
+			if (regen > 0) {
+				double food = player.getFoodLevel() + regen;
+				if (food >= 20) {
+					player.setExhaustion(0);
+				}
+				player.setFoodLevel(Math.min(20, (int)food));
+			}
 		}
 		if (damageReductionFire > 0 && player.getFireTicks() > 0) {
 			player.setFireTicks(0);

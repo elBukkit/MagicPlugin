@@ -50,8 +50,8 @@ public class WandLevel {
 	public static int maxUses = 500;
 	public static int maxMaxXp = 1500;
 	public static int maxXpRegeneration = 150;
-	public static int maxHungerRegeneration = 5;
-	public static int maxHealthRegeneration = 5;
+	public static float maxHungerRegeneration = 0.2f;
+	public static float maxHealthRegeneration = 0.2f;
 	public static float maxDamageReduction = 0.4f;
 	public static float maxCostReduction = 0.5f;
 	public static float maxCooldownReduction = 0.5f;
@@ -67,8 +67,8 @@ public class WandLevel {
 		maxUses = properties.getInt("max_uses", maxUses);
 		maxMaxXp = properties.getInt("max_mana", maxMaxXp);
 		maxXpRegeneration = properties.getInt("max_mana_regeneration", maxXpRegeneration);
-		maxHealthRegeneration = properties.getInt("max_health_regeneration", maxHealthRegeneration);
-		maxHungerRegeneration = properties.getInt("max_hunger_regeneration", maxHungerRegeneration);
+		maxHealthRegeneration = (float)properties.getDouble("max_health_regeneration", maxHealthRegeneration);
+		maxHungerRegeneration = (float)properties.getDouble("max_hunger_regeneration", maxHungerRegeneration);
 
 		minLevel = properties.getInt("min_enchant_level", minLevel);
 		maxLevel = properties.getInt("max_enchant_level", maxLevel);

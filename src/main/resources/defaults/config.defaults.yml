@@ -280,16 +280,15 @@ max_property_value: 1.0
 max_uses: 500
 max_mana: 1500
 max_mana_regeneration: 150
-max_health_regeneration: 5
-max_hunger_regeneration: 5
-max_damage_reduction: 0.4
+max_health_regeneration: 0.2
+max_hunger_regeneration: 0.2
+max_damage_reduction: 0.2
 max_cost_reduction: 0.5
 max_cooldown_reduction: 0.75
 max_fly_speed_increase: 0.2
 max_walk_speed_increase: 0.3
 max_fly_speed: 0.8
 max_walk_speed: 0.8
-
 
 #
 # Control wands' "Power" settings
