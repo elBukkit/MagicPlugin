@@ -36,13 +36,25 @@ public class RandomUtils {
     public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
 		RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
 	}
+    
+    public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap) {
+		RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, 0, 0, 0);
+	}
 
 	public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
 		RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
 	}
 
+	public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap) {
+		RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, 0, 0, 0);
+	}
+
 	public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
 		RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
+	}
+	
+	public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap) {
+		RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, 0, 0, 0);
 	}
 
 	public static <T extends Object> void populateProbabilityMap(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
@@ -55,7 +67,12 @@ public class RandomUtils {
 				String value = nodeMap.getString(key);
 				key = key.replace("^", ".");
 				
-				currentThreshold += lerp(value.split(","), levelIndex, nextLevelIndex, distance);
+				String[] pieces = value.split(",");
+				if (pieces != null && pieces.length > 0) {
+					currentThreshold += lerp(pieces, levelIndex, nextLevelIndex, distance);
+				} else {
+					currentThreshold = Float.parseFloat(value);
+				}
 				probabilityMap.add(new WeightedPair<T>(currentThreshold, key, valueClass));
 			}
 		}

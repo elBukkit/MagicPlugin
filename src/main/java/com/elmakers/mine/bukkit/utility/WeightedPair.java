@@ -12,7 +12,7 @@ package com.elmakers.mine.bukkit.utility;
  * 
  * @param <T> The type of Object to randomly select
  */
-public class WeightedPair<T extends Object> {
+public class WeightedPair<T extends Object> implements Comparable<WeightedPair<? extends Object>> {
 	private Float threshold;
 	private T value;
 
@@ -43,5 +43,10 @@ public class WeightedPair<T extends Object> {
 	
 	public T getValue() {
 		return value;
+	}
+
+	@Override
+	public int compareTo(WeightedPair<? extends Object> other) {
+		return this.threshold.compareTo(other.threshold);
 	}
 }
