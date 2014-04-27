@@ -71,7 +71,7 @@ public class RandomUtils {
 				if (pieces != null && pieces.length > 1) {
 					currentThreshold += lerp(pieces, levelIndex, nextLevelIndex, distance);
 				} else {
-					currentThreshold = Float.parseFloat(value);
+					currentThreshold += Float.parseFloat(value);
 				}
 				probabilityMap.add(new WeightedPair<T>(currentThreshold, key, valueClass));
 			}
