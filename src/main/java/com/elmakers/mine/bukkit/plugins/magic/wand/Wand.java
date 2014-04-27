@@ -361,23 +361,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public float getDamageReductionPhysical() {
-		return damageReductionPhysical * WandLevel.maxDamageReduction;
+		return damageReductionPhysical * WandLevel.maxDamageReductionPhysical;
 	}
 	
 	public float getDamageReductionProjectiles() {
-		return damageReductionProjectiles * WandLevel.maxDamageReduction;
+		return damageReductionProjectiles * WandLevel.maxDamageReductionProjectiles;
 	}
 
 	public float getDamageReductionFalling() {
-		return damageReductionFalling * WandLevel.maxDamageReduction;
+		return damageReductionFalling * WandLevel.maxDamageReductionFalling;
 	}
 
 	public float getDamageReductionFire() {
-		return damageReductionFire * WandLevel.maxDamageReduction;
+		return damageReductionFire * WandLevel.maxDamageReductionFire;
 	}
 
 	public float getDamageReductionExplosions() {
-		return damageReductionExplosions * WandLevel.maxDamageReduction;
+		return damageReductionExplosions * WandLevel.maxDamageReductionExplosions;
 	}
 
 	public int getUses() {
@@ -1149,13 +1149,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString("wand.cooldown_reduction", cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString("wand.power", power));
 		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString("wand.haste", speedIncrease));
-		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection", damageReduction));
+		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection", damageReduction, WandLevel.maxDamageReduction));
 		if (damageReduction < 1) {
-			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_physical", damageReductionPhysical));
-			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_projectile", damageReductionProjectiles));
-			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_fall", damageReductionFalling));
-			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_fire", damageReductionFire));
-			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_blast", damageReductionExplosions));
+			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_physical", damageReductionPhysical, WandLevel.maxDamageReductionPhysical));
+			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_projectile", damageReductionProjectiles, WandLevel.maxDamageReductionProjectiles));
+			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_fall", damageReductionFalling, WandLevel.maxDamageReductionFalling));
+			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_fire", damageReductionFire, WandLevel.maxDamageReductionFire));
+			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_blast", damageReductionExplosions, WandLevel.maxDamageReductionExplosions));
 		}
 		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.health_regeneration", healthRegeneration, WandLevel.maxHealthRegeneration));
 		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.hunger_regeneration", hungerRegeneration, WandLevel.maxHungerRegeneration));

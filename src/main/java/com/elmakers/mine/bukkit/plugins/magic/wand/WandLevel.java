@@ -53,6 +53,11 @@ public class WandLevel {
 	public static float maxHungerRegeneration = 0.2f;
 	public static float maxHealthRegeneration = 0.2f;
 	public static float maxDamageReduction = 0.4f;
+	public static float maxDamageReductionExplosions = 0.3f;
+	public static float maxDamageReductionFalling = 0.9f;
+	public static float maxDamageReductionFire = 0.5f;
+	public static float maxDamageReductionPhysical = 0.1f;
+	public static float maxDamageReductionProjectiles = 0.2f;
 	public static float maxCostReduction = 0.5f;
 	public static float maxCooldownReduction = 0.5f;
 	public static float maxFlySpeedIncrease = 0.1f;
@@ -74,6 +79,11 @@ public class WandLevel {
 		maxLevel = properties.getInt("max_enchant_level", maxLevel);
 
 		maxDamageReduction = (float)properties.getDouble("max_damage_reduction", maxDamageReduction);
+		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_explosions", maxDamageReductionExplosions);
+		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_falling", maxDamageReductionFalling);
+		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_fire", maxDamageReductionFire);
+		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_physical", maxDamageReductionPhysical);
+		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_projectiles", maxDamageReductionProjectiles);
 		maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
 		maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
 		maxFlySpeedIncrease = (float)properties.getDouble("max_fly_speed_increase", maxFlySpeedIncrease);
