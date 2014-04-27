@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -74,6 +73,7 @@ public class SimulateBatch extends VolumeBatch {
 	private boolean concurrent = false;
 	private int commandMoveRangeSquared = 9;
 	private int huntMaxRange = 128;
+	private int castRange = 32;
 	private int huntMinRange = 4;
 	private int birthRangeSquared = 0;
 	private int liveRangeSquared = 0;
@@ -635,6 +635,10 @@ public class SimulateBatch extends VolumeBatch {
 	public void setMaxHuntRange(int range) {
 		huntMaxRange = range;
 	}
+	
+	public void setCastRange(int range) {
+		castRange = range;
+	}
 
 	public void setMinHuntRange(int range) {
 		huntMinRange = range;
@@ -739,7 +743,7 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				*/
 				
-				if (tickSpells != null && tickSpells.size() > 0) {
+				if (tickSpells != null && tickSpells.size() > 0 && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
 					String tickSpell = RandomUtils.weightedRandom(tickSpells);
 					if (tickSpell.length() > 0) {
 						castSpell(tickSpell);

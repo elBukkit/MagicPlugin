@@ -155,6 +155,8 @@ public class SimulateSpell extends BlockSpell {
 			batch.setDiagonalBirthRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_birth_rules"));
 		}
 		
+		batch.setCastRange(parameters.getInt("cast_range", 16));
+		
 		boolean includeCommands = parameters.getBoolean("animate", false);
 		if (includeCommands) {
 			if (mage.getCommandSender() instanceof BlockCommandSender) {
