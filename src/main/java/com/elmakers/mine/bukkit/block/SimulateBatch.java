@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -28,7 +29,9 @@ import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
@@ -63,9 +66,8 @@ public class SimulateBatch extends VolumeBatch {
 	private TargetType targetType = TargetType.PLAYER;
 	private String castCommand;
 	private String commandName;
-	private String tickSpell;
-	private String deathSpell;
-	private float castProbability;
+	private LinkedList<WeightedPair<String>> tickSpells;
+	private LinkedList<WeightedPair<String>> deathSpells;
 	private String dropItem;
 	private int dropXp;
 	private boolean reverseTargetDistanceScore = false;
@@ -191,8 +193,11 @@ public class SimulateBatch extends VolumeBatch {
 		}
 		
 		// Cast death spell
-		if (deathSpell.length() > 0) {
-			castSpell(deathSpell);
+		if (deathSpells != null && deathSpells.size() > 0) {
+			String deathSpell = RandomUtils.weightedRandom(deathSpells);
+			if (deathSpell != null && deathSpell.length() > 0) {
+				castSpell(deathSpell);
+			}
 		}
 		if (!mage.isPlayer()) {
 			controller.forgetMage(mage);
@@ -200,6 +205,7 @@ public class SimulateBatch extends VolumeBatch {
 	}
 	
 	protected void castSpell(String spellCommand) {
+		if (spellCommand == null || spellCommand.length() == 0 || spellCommand.equals("none")) return;
 		
 		String[] pieces = null;
 		if (spellCommand.contains(" ")) {
@@ -610,13 +616,12 @@ public class SimulateBatch extends VolumeBatch {
 		this.dropXp = dropXp;
 	}
 	
-	public void setTickCast(String cast, float probability) {
-		tickSpell = cast;
-		castProbability = probability;
+	public void setTickCast(LinkedList<WeightedPair<String>> cast) {
+		tickSpells = cast;
 	}
 	
-	public void setDeathCast(String cast) {
-		deathSpell = cast;
+	public void setDeathCast(LinkedList<WeightedPair<String>> cast) {
+		deathSpells = cast;
 	}
 	
 	public void setBirthRange(int range) {
@@ -734,8 +739,9 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				*/
 				
-				if (tickSpell.length() > 0) {
-					if (Math.random() < castProbability) {
+				if (tickSpells != null && tickSpells.size() > 0) {
+					String tickSpell = RandomUtils.weightedRandom(tickSpells);
+					if (tickSpell.length() > 0) {
 						castSpell(tickSpell);
 					}
 				}

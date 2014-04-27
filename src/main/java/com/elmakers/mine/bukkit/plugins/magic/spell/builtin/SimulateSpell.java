@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -21,7 +22,9 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class SimulateSpell extends BlockSpell {
 	
@@ -33,6 +36,9 @@ public class SimulateSpell extends BlockSpell {
 	};
 	
 	private static final int DEFAULT_RADIUS = 32;
+	
+	private LinkedList<WeightedPair<String>> tickSpells = null;
+	private LinkedList<WeightedPair<String>> deathSpells = null;
 	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) {
@@ -182,8 +188,8 @@ public class SimulateSpell extends BlockSpell {
 			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
 			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
 
-			batch.setTickCast(parameters.getString("cast", ""), (float)parameters.getDouble("cast_probability", 1.0f));
-			batch.setDeathCast(parameters.getString("death_cast", ""));
+			batch.setTickCast(tickSpells);
+			batch.setDeathCast(deathSpells);
 					
 			batch.target(targetMode);
 			
@@ -246,6 +252,20 @@ public class SimulateSpell extends BlockSpell {
 			}
 		} else if (parameterKey.equals("cast_probability")) {
 			examples.addAll(Arrays.asList(EXAMPLE_PERCENTAGES));
+		}
+	}
+	
+	@Override
+	protected void loadTemplate(ConfigurationSection template)
+	{
+		super.loadTemplate(template);
+		if (template.contains("cast")) {
+			tickSpells = new LinkedList<WeightedPair<String>>();
+			RandomUtils.populateStringProbabilityMap(tickSpells, template.getConfigurationSection("cast"));
+		}
+		if (template.contains("death_cast")) {
+			deathSpells = new LinkedList<WeightedPair<String>>();
+			RandomUtils.populateStringProbabilityMap(deathSpells, template.getConfigurationSection("death_cast"));
 		}
 	}
 }

@@ -263,6 +263,8 @@ glider:
            sound: ambience_cave
         -  class: EffectTrail
            effect: step_sound
+    death_cast:
+        "push pdy -1 pdx 0 pdz 0": 100
     parameters:
         allow_max_range: true
         check_destructible: true
@@ -274,7 +276,6 @@ glider:
         transparent: transparent_to_construction
         drop_xp: 400
         cast: flare target self
-        death_cast: push pdy -1 pdx 0 pdz 0
         commands:
           glider_simulate: cast simulate target self material obsidian animate true delay 500 radius 3
     costs:
@@ -289,6 +290,16 @@ virus:
            sound: enderdragon_growl
         -  class: EffectTrail
            effect: step_sound
+    cast:
+        "boom transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 100
+        "arrowrain transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 50
+        "neutron transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 5
+        "mob transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 5
+        "lightning transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 50
+        "none": 100
+    death_cast:
+        neutron: 100
+        storm: 100
     parameters:
         allow_max_range: false
         transparent: transparent_to_construction
@@ -315,9 +326,6 @@ virus:
         diagonal_birth_rules: 0,1,2
         live_rules: 1,2,3,4
         diagonal_live_rules: 0,1,2 
-        cast_probability: 0.5
-        cast: boom transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48
-        death_cast: neutron
     costs:
         xp: 1000
 worm:
@@ -330,6 +338,12 @@ worm:
            sound: enderdragon_growl
         -  class: EffectTrail
            effect: step_sound
+    death_cast:
+        "blast target self radius 8 speed -0^2 destructible $birth check_destructible true": 100
+    cast:
+        "blob brush $birth radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 50
+        "curse transparent air,$birth,redstone_block": 100
+        "none": 100
     parameters:
         allow_max_range: false
         transparent: transparent_to_construction
@@ -352,9 +366,6 @@ worm:
         diagonal_live_rules: 0,1,2,3
         concurrent: true
         drop: wormheart
-        death_cast: blast target self radius 8 speed -0.2 destructible $birth check_destructible true
-        cast_probability: 0.3
-        cast: blob brush $birth radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block
         drop_xp: 700
         move: 4
         restricted: restricted_animate
@@ -371,6 +382,13 @@ hunter:
            sound: enderman_scream
         -  class: EffectTrail
            effect: step_sound
+    death_cast:
+        "blast target self radius 3 destructible $birth check_destructible true": 100
+    cast:
+        "pull transparent air,$birth,redstone_block": 100
+        "curse transparent air,$birth,redstone_block": 100
+        "blob brush $birth radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20
+        "none": 300
     parameters:
         allow_max_range: false
         transparent: transparent_to_construction
@@ -387,15 +405,12 @@ hunter:
         delay: 800
         target_mode: hunt
         target_types: player
-        cast: pull transparent air,$birth,redstone_block
-        cast_probability: 0.3
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         concurrent: true
         move: 2
         drop: hunterheart
         drop_xp: 500
-        death_cast: blast target self radius 3 destructible $birth check_destructible true
         restricted: restricted_animate
         message_type: evil
     costs:
@@ -410,6 +425,11 @@ defender:
            sound: enderman_scream
         -  class: EffectTrail
            effect: step_sound
+    cast:
+        "convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block": 100
+        "none": 1000
+    death_cast:
+        "collapse target self radius 7 check_destructible true destructible $birth": 100
     parameters:
         allow_max_range: false
         transparent: transparent_to_construction
@@ -430,11 +450,8 @@ defender:
         target_max_range: 128
         live_rules: 3,4,5,6,7,8,9
         birth_rules: 4,5
-        cast_probability: 0.1
-        cast: convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block
         move: 4
         drop: defenderheart
-        death_cast: collapse target self radius 7 check_destructible true destructible $birth
         drop_xp: 400
         restricted: restricted_animate
         message_type: good
@@ -450,6 +467,11 @@ animate:
            sound: enderdragon_growl
         -  class: EffectTrail
            effect: step_sound
+    cast:
+        blessing: 100
+        "none": 1000
+    death_cast:
+        "collapse target self radius 4 check_destructible true destructible $birth": 100
     parameters:
         allow_max_range: false
         transparent: transparent_to_construction
@@ -468,9 +490,6 @@ animate:
         target_min_range: 0
         target_max_range: 16
         drop_xp: 200
-        cast: blessing
-        cast_probability: 0.1
-        death_cast: collapse target self radius 4 check_destructible true destructible $birth
         drop: golemheart
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
