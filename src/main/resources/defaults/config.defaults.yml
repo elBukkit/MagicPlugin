@@ -141,6 +141,12 @@ metrics_level: 5
 # 
 age_dropped_items: 0
 
+# Generally this hack is required, due to Bukkit not supporting custom items.
+# But just in case, in the future, or if maybe you're running a custom CB....
+# you can turn this off.
+# This disables the item drag event interceptor, and the creative mode wand special casing.
+enable_custom_item_hacks: true
+
 #
 # Wand configuration
 # 

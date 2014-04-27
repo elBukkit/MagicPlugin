@@ -1360,6 +1360,7 @@ public class MagicController implements Listener
 		messageThrottle = properties.getInt("message_throttle", 0);
 		maxBlockUpdates = properties.getInt("max_block_updates", maxBlockUpdates);
 		ageDroppedItems = properties.getInt("age_dropped_items", ageDroppedItems);
+		enableItemHacks = properties.getBoolean("enable_custom_item_hacks", enableItemHacks);
 		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
 		fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
 		indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
@@ -1519,6 +1520,8 @@ public class MagicController implements Listener
 	 */
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent event) {
+		if (!enableItemHacks) return;
+		
 		// this is a huge hack! :\
 		// I apologize for any weird behavior this causes.
 		// Bukkit, unfortunately, will blow away NBT data for anything you drag
@@ -2209,7 +2212,7 @@ public class MagicController implements Listener
 	@EventHandler
 	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event)
 	{
-		if (event.getNewGameMode() == GameMode.CREATIVE) {
+		if (event.getNewGameMode() == GameMode.CREATIVE && enableItemHacks) {
 			boolean ejected = false;
 			Player player = event.getPlayer();
 			Mage mage = getMage(player);
@@ -2244,7 +2247,7 @@ public class MagicController implements Listener
 		boolean isWand = Wand.isWand(pickup);
 		
 		// Creative mode inventory hacky work-around :\
-		if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand) {
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand && enableItemHacks) {
 			event.setCancelled(true);
 			return;
 		}
@@ -2641,6 +2644,7 @@ public class MagicController implements Listener
 	 private final File							 schematicFolder;
 	 private final File							 defaultsFolder;
 	 private final File							 playerDataFolder;
+	 private boolean							 enableItemHacks			 	= true;
 
 	 private int								 toggleCooldown					= 1000;
 	 private int								 toggleMessageRange				= 1024;

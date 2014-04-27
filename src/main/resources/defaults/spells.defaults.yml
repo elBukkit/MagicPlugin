@@ -305,7 +305,6 @@ virus:
         drop: virusheart
         restricted: restricted_animate
         message_type: evil
-        
         drop_xp: 900
         concurrent: false
         move: 8
