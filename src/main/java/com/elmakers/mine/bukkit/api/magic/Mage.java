@@ -220,6 +220,17 @@ public interface Mage extends CostReducer {
 	public Spell getSpell(String key);
 	
 	/**
+	 * Return a Spell, but use a different player for permission checks.
+	 * 
+	 * This can be used to force a player to cast a spell even if they don't have permission.
+	 * 
+	 * @param key The Spell to retrieve.
+	 * @param usePermissions The Player whose permissions should be used.
+	 * @returnThe Spell instance for this Mage, or null if the usePermissions Player does not have access to this Spell.
+	 */
+	public Spell getSpell(String key, Player usePermissions);
+	
+	/**
 	 * Set a Spell as "active". An "active" spell is generally a toggleable on/off
 	 * spell. These spells may be draining mana/xp while they are active, and
 	 * may self-deactivate after a specific duration, or if their resources deplete.
@@ -299,4 +310,6 @@ public interface Mage extends CostReducer {
 	public UndoQueue getUndoQueue();
 	public List<LostWand> getLostWands();
 	public Location getLastDeathLocation();
+	
+	public boolean hasStoredInventory();
 }

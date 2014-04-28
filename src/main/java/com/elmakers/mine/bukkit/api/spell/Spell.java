@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 /**
  * Represents a Spell that may be cast by a Mage.
@@ -46,4 +47,6 @@ public interface Spell extends SpellTemplate {
 	public void save(ConfigurationSection node);
 	
 	public void tick();
+	
+	public void initialize(MageController controller);
 }

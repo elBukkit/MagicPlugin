@@ -7,6 +7,9 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.Schematic;
@@ -63,4 +66,28 @@ public interface MageController {
 	public Set<Material> getDestructibleMaterials();
 	public Set<Material> getBuildingMaterials();
 	public Set<Material> getRestrictedMaterials();
+	
+	public Collection<String> getMaterialSets();
+	
+	public Collection<String> getPlayerNames();
+	
+	public int getMessageThrottle();
+	public Mage getMage(CommandSender sender);
+	
+	public Collection<String> getBrushKeys();
+	
+	public boolean commitAll();
+	
+	public void disablePhysics(int interval);
+	
+	public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue);
+	public boolean isPVPAllowed(Location location);
+	
+	public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message);
+	
+	public Location getWarp(String warpName);
+	
+	public void giveItemToPlayer(Player player, ItemStack itemStack);
+	
+	public Mage undoAny(Block target);
 }
