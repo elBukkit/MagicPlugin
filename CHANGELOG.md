@@ -3,6 +3,8 @@
 ## 1.1
 
  - Add "*1" format for multiplying directions.
+ - Add MaterialBrush
+ - Add UndoQueue and BlockList
 
 ## 1.0
 
