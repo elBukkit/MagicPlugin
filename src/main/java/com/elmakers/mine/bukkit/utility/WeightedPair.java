@@ -13,8 +13,8 @@ package com.elmakers.mine.bukkit.utility;
  * @param <T> The type of Object to randomly select
  */
 public class WeightedPair<T extends Object> implements Comparable<WeightedPair<? extends Object>> {
-	private Float threshold;
-	private T value;
+	private final Float threshold;
+	private final T value;
 
 	@SuppressWarnings("unchecked")
 	public WeightedPair(Float threshold, String value, Class<T> parseAs) {
@@ -27,8 +27,10 @@ public class WeightedPair<T extends Object> implements Comparable<WeightedPair<?
 			this.value = (T)(Float)Float.parseFloat(value);
 		} else if (parseAs == Double.class) {
 			this.value = (T)(Double)Double.parseDouble(value);
-		}else if (parseAs == String.class) {
+		} else if (parseAs == String.class) {
 			this.value = (T)value;
+		} else {
+			this.value = null;
 		}
 	}
 	

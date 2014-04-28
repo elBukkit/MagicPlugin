@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -16,7 +18,12 @@ public class RandomUtils {
 	public static float lerp(String[] list, int levelIndex, int nextLevelIndex, float distance) {
 		float previousValue = Float.parseFloat(list[levelIndex]);
 		float nextValue = Float.parseFloat(list[nextLevelIndex]);
-		return previousValue + distance * (nextValue - previousValue);
+		return lerp(previousValue, nextValue, distance);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends Number> T lerp(T previousValue, T nextValue, float distance) {
+		return (T)(Number)((Float)previousValue + distance * ((Float)nextValue - (Float)previousValue));
 	}
 	
 	public static <T extends Object> T weightedRandom(LinkedList<WeightedPair<T>> weightList) {
@@ -56,7 +63,7 @@ public class RandomUtils {
 	public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap) {
 		RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, 0, 0, 0);
 	}
-
+	
 	public static <T extends Object> void populateProbabilityMap(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
 		Float currentThreshold = 0.0f;
 		
@@ -74,6 +81,44 @@ public class RandomUtils {
 					currentThreshold += Float.parseFloat(value);
 				}
 				probabilityMap.add(new WeightedPair<T>(currentThreshold, key, valueClass));
+			}
+		}
+	}
+	
+	public static String getEntry(String csvList, int index) 
+	{
+		if (csvList == null) return null;
+		String[] pieces = csvList.split(",");
+		if (pieces == null || pieces.length <= 1) return csvList;
+		if (index < 0 || index >= pieces.length) return null;
+		return pieces[index];
+	}
+
+	public static void extrapolateFloatList(List<AscendingPair<Float>> list)
+	{
+		RandomUtils.extrapolateList(Float.class,list);
+	}
+    
+    public static void extrapolateIntegerList(List<AscendingPair<Integer>> list) 
+    {
+		RandomUtils.extrapolateList(Integer.class,list);
+	}
+    
+	public static <T extends Number> void extrapolateList(Class<T> valueClass, List<AscendingPair<T>> list)
+	{
+		Collections.sort(list);
+		int index = 0;
+		while (index < list.size() - 1) {
+			AscendingPair<T> current = list.get(index);
+			AscendingPair<T> next = list.get(index + 1);
+			long currentIndex = current.getIndex();
+			long nextIndex = next.getIndex();
+
+			index++;
+			if (nextIndex > currentIndex + 1) {
+				float distance = (float)(1 / (float)(nextIndex - currentIndex));
+				AscendingPair<T> inserted = new AscendingPair<T>(currentIndex + 1, lerp(current.getValue(), next.getValue(), distance));
+				list.add(index, inserted);
 			}
 		}
 	}
