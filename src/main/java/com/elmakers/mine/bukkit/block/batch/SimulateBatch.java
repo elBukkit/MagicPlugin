@@ -705,7 +705,18 @@ public class SimulateBatch extends VolumeBatch {
 					}
 				} else {
 					Location targetLocation = bestTarget.getLocation();
-					Vector direction = targetMode == TargetMode.FLEE ? center.toVector().subtract(targetLocation.toVector()) : targetLocation.toVector().subtract(center.toVector());
+					// Only flee along X/Z
+					Vector direction = null;
+					
+					if (targetMode == TargetMode.FLEE) {
+						direction = center.toVector().subtract(targetLocation.toVector());
+						// Don't Flee upward
+						if (direction.getY() > 0) {
+							direction.setY(-direction.getY());
+						}
+					} else {
+						direction = targetLocation.toVector().subtract(center.toVector());
+					}
 					
 					// TODO: Use location.setDirection in 1.7+
 					center = CompatibilityUtils.setDirection(center, direction);

@@ -295,6 +295,10 @@ virus:
         1: 100
         3: 40
         5: 20
+    radius: 10,12,16
+    yradius: 10,12,16
+    birth_range: 12,16,18
+    live_range: 20,24,28
     move: 8,10,16
     delay: 3500,3000,2500
     drop_xp: 800,900,1000
@@ -317,20 +321,15 @@ virus:
         range: 32
         cooldown: 120000
         name: Virus
-        radius: 12
-        yradius: 12
-        birth_range: 16
-        live_range: 24
-        target_max_range: 64
+        target_max_range: 12
+        target_min_range: 0
         delay: 3000
         drop: virusheart
         restricted: restricted_animate
         message_type: evil
         drop_xp: 900
         concurrent: false
-        move: 8
         target_types: any
-        target_min_range: 0
         target_mode: flee
         birth_rules: 1,2,3,4
         diagonal_birth_rules: 0,1,2
@@ -353,6 +352,10 @@ worm:
         3: 40
         5: 10
     move: 4,5,6
+    radius: 6,8,10
+    yradius: 6,8,10
+    birth_range: 6,8,10
+    live_range: 16,20,28
     delay: 1800,1500,1200
     drop_xp: 600,700,900
     death_cast:
@@ -375,10 +378,6 @@ worm:
         range: 32
         cooldown: 120000
         name: Worm
-        radius: 6
-        yradius: 6
-        birth_range: 6
-        live_range: 16
         target_min_range: 3
         target_max_range: 128
         delay: 1500
@@ -411,10 +410,10 @@ hunter:
         3: 40
         5: 10
     move: 2,2,3
-    radius: 5,6,6
-    yradius: 5,6,6
-    birth_range: 3,4,4
-    live_range: 3,4,4
+    radius: 5,6,7
+    yradius: 5,6,7
+    birth_range: 3,4,5
+    live_range: 3,4,5
     delay: 1200,800,500
     drop_xp: 300,500,700
     death_cast:
