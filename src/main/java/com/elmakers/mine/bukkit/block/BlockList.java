@@ -21,15 +21,12 @@ import com.elmakers.mine.bukkit.block.batch.CleanupBlocksTask;
 import com.elmakers.mine.bukkit.block.batch.UndoBatch;
 
 /**
- * 
  * Implements a Collection of Blocks, for quick getting/putting while iterating
  * over a set or area of blocks.
  * 
  * This stores BlockData objects, which are hashable via their Persisted
- * inheritence, and their LocationData id (which itself has a hash function
+ * inheritance, and their LocationData id (which itself has a hash function
  * based on world name and BlockVector's hash function)
- * 
- * @author NathanWolf
  * 
  */
 public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList

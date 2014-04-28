@@ -12,9 +12,6 @@ import org.bukkit.util.Vector;
 
 /**
  * Represents a BoundingBox, using two BlockVectors
- * 
- * @author NathanWolf
- * 
  */
 public class BoundingBox
 {

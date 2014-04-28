@@ -13,12 +13,15 @@ import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
  * 
- * @author NathanWolf
- *
+ * This also stores the block state using the MaterialAndData structure as a base, and can be
+ * used to restore a previously stored state.
+ * 
+ * In addition, BlockData instances can be linked to each other for layered undo queues that work
+ * even when undone out of order.
+ * 
  */
 public class BlockData extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.BlockData
 {

@@ -14,9 +14,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 * http://jenkins.elmakers.com/job/MagicAPI/doxygen/
 * 
 * If you wish to extend the Magic plugin, such as by adding a completely new Spell
-* or EffectPlayer class, you will need to build against MagicPlugin directly:
+* or EffectPlayer class, you can build against MagicLib. You should not need to build
+* directly against MagicPlugin.
 * 
-* http://jenkins.elmakers.com/job/MagicPlugin/doxygen/
+* If you wish to use MagicLib without the Magic plugin being present, you can, by
+* using MagicLib as a stand-alone plugin. Do not use Magic and MagicLib together,
+* they will conflict (Magic builds MagicLib into itself statically)
 * 
 * \section issues_sec Issues
 * 
