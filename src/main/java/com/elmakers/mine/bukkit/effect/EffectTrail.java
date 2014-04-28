@@ -45,6 +45,7 @@ public class EffectTrail extends EffectRepeating {
 		// Don't bother playing if it's right in front of us.
 		if (size < 1) {
 			stop();
+			return;
 		}
 		
 		direction = getDirection();
