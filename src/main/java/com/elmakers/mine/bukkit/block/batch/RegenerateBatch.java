@@ -1,11 +1,13 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.block.batch;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 
 public class RegenerateBatch extends VolumeBatch {

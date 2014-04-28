@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockList;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 

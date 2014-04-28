@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.block;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,7 +15,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.block.batch.CleanupBlocksTask;
+import com.elmakers.mine.bukkit.block.batch.UndoBatch;
 
 /**
  * 
@@ -30,7 +32,7 @@ import com.elmakers.mine.bukkit.plugins.magic.Mage;
  * @author NathanWolf
  * 
  */
-public class BlockList implements Collection<BlockData>, Serializable
+public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 {
 	/**
 	 * Default serial id, in case you want to serialize this (probably shouldn't
@@ -38,7 +40,6 @@ public class BlockList implements Collection<BlockData>, Serializable
 	 * 
 	 * Persist it instead, once I've got that working.
 	 */
-	private static final long      serialVersionUID = 1L;
 
 	protected BoundingBox          area;
 
@@ -63,7 +64,7 @@ public class BlockList implements Collection<BlockData>, Serializable
 	{
 		for (BlockData block : other)
 		{
-			BlockData newBlock = new BlockData(block);
+			BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(block);
 			add(newBlock);
 		}
 		timeToLive = other.timeToLive;
@@ -76,7 +77,7 @@ public class BlockList implements Collection<BlockData>, Serializable
 		{
 			return true;
 		}
-		BlockData newBlock = new BlockData(block);
+		BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(block);
 		return add(newBlock);
 	}
 	
@@ -110,6 +111,7 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return blockList.add(blockData);
 	}
 
+	@Override
 	public boolean addAll(Collection<? extends BlockData> blocks)
 	{
 		// Iterate to maintain BB area
@@ -121,6 +123,7 @@ public class BlockList implements Collection<BlockData>, Serializable
 		return added;
 	}
 
+	@Override
 	public void clear()
 	{
 		if (blockList == null)
@@ -133,7 +136,7 @@ public class BlockList implements Collection<BlockData>, Serializable
 	public boolean contains(Block block)
 	{
 		if (blockIdMap == null) return false;
-		return blockIdMap.contains(BlockData.getBlockId(block));
+		return blockIdMap.contains(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
 	}
 
 	public boolean contains(BlockData blockData)
@@ -371,20 +374,20 @@ public class BlockList implements Collection<BlockData>, Serializable
 		List<String> blockData = node.getStringList("blocks");
 		if (blockData != null) {
 			for (String blockString : blockData) {
-				add(BlockData.fromString(blockString));
+				add(com.elmakers.mine.bukkit.block.BlockData.fromString(blockString));
 			}
 		}
 	}
 	
-	public void save(Map<String, Object> dataMap) {
-		dataMap.put("time_to_live", (Integer)timeToLive);
-		dataMap.put("passes_remaining", (Integer)passesRemaining);
+	public void save(ConfigurationSection node) {
+		node.set("time_to_live", (Integer)timeToLive);
+		node.set("passes_remaining", (Integer)passesRemaining);
 		List<String> blockData = new ArrayList<String>();
 		if (blockList != null) {
 			for (BlockData block : blockList) {
 				blockData.add(block.toString());
 			}
-			dataMap.put("blocks", blockData);
+			node.set("blocks", blockData);
 		}
 	}
 	
@@ -401,16 +404,6 @@ public class BlockList implements Collection<BlockData>, Serializable
 		// scheduler works in ticks- 20 ticks per second.
 		long ticksToLive = timeToLive * 20 / 1000;
 		taskId = scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(mage, this), ticksToLive);
-	}
-	
-	public void onScheduledCleanup(Mage mage)
-	{
-		if (this.undo(mage)) {
-			mage.getUndoQueue().removeScheduledCleanup(this);
-		} else {
-			// TODO: Retry limit?
-			scheduleCleanup(mage);
-		}
 	}
 	
 	public boolean undoScheduled(Mage mage)

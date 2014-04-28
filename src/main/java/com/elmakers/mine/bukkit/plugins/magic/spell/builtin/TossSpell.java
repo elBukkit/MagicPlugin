@@ -7,7 +7,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 
 public class TossSpell extends BrushSpell

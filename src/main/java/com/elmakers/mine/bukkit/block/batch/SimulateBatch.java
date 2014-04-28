@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.block.batch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +21,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.block.AutomatonLevel;
+import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -101,8 +105,15 @@ public class SimulateBatch extends VolumeBatch {
 	private List<Target> potentialCommandBlocks = new LinkedList<Target>();
 	private BlockList modifiedBlocks = new BlockList();
 	
+	private MagicController _controller;
+	
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
 		super(spell.getMage().getController(), center.getWorld().getName());
+		
+		// This reaches deep into the internals of Magic.
+		if (controller instanceof MagicController) {
+			_controller = (MagicController)controller;
+		}
 		this.spell = spell;
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
@@ -169,7 +180,7 @@ public class SimulateBatch extends VolumeBatch {
 		
 		// Drop item
 		if (dropItem != null && dropItem.length() > 0) {
-			Wand magicItem = Wand.createWand(controller, dropItem);
+			Wand magicItem = Wand.createWand(_controller, dropItem);
 			if (magicItem != null) {
 				center.getWorld().dropItemNaturally(center, magicItem.getItem());
 			}
@@ -190,8 +201,8 @@ public class SimulateBatch extends VolumeBatch {
 		if (level != null) {
 			level.onDeath(mage, birthMaterial);
 		}
-		if (!mage.isPlayer()) {
-			controller.forgetMage(mage);
+		if (!mage.isPlayer() && _controller != null) {
+			_controller.forgetMage(mage);
 		}
 	}
 	

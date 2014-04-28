@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,17 +10,20 @@ import java.util.Set;
 
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 
+import com.elmakers.mine.bukkit.api.block.BlockList;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class UndoQueue
+public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
 	private final LinkedList<BlockList> blockQueue = new LinkedList<BlockList>();
 	private final Set<BlockList> 		scheduledBlocks = new HashSet<BlockList>();
 	private int                         maxSize    = 0;
 
+	@Override
 	public void add(BlockList blocks)
 	{
 		if (maxSize > 0 && blockQueue.size() > maxSize)
@@ -130,7 +132,7 @@ public class UndoQueue
 			Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(node, "undo");
 			if (nodeList != null) {
 				for (ConfigurationSection listNode : nodeList) {
-					BlockList list = new BlockList();
+					BlockList list = new com.elmakers.mine.bukkit.block.BlockList();
 					list.load(listNode);
 					blockQueue.add(list);
 				}
@@ -138,20 +140,20 @@ public class UndoQueue
 			nodeList = ConfigurationUtils.getNodeList(node, "scheduled");
 			if (nodeList != null) {
 				for (ConfigurationSection listNode : nodeList) {
-					BlockList list = new BlockList();
+					BlockList list = new com.elmakers.mine.bukkit.block.BlockList();
 					list.load(listNode);
 					scheduleCleanup(mage, list);
 				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			mage.getController().getPlugin().getLogger().warning("Failed to load undo data: " + ex.getMessage());
+			mage.getController().getLogger().warning("Failed to load undo data: " + ex.getMessage());
 		}
 	}
 	
 	public void save(Mage mage, ConfigurationSection node)
 	{
-		MagicController controller = mage.getController();
+		MageController controller = mage.getController();
 		int maxSize = controller.getMaxUndoPersistSize();
 		try {
 			List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
@@ -160,16 +162,16 @@ public class UndoQueue
 					controller.getLogger().info("Discarding undo batch, size " + list.size() + " for player " + mage.getName());
 					continue;
 				}
-				Map<String, Object> listNode = new HashMap<String, Object>();
+				MemoryConfiguration listNode = new MemoryConfiguration();		
 				list.save(listNode);
-				nodeList.add(listNode);
+				nodeList.add(listNode.getValues(true));
 			}
 			node.set("undo", nodeList);
 			nodeList = new ArrayList<Map<String, Object>>();
 			for (BlockList list : scheduledBlocks) {
-				Map<String, Object> listNode = new HashMap<String, Object>();
+				MemoryConfiguration listNode = new MemoryConfiguration();				
 				list.save(listNode);
-				nodeList.add(listNode);
+				nodeList.add(listNode.getValues(true));
 			}
 			node.set("scheduled", nodeList);
 		} catch (Exception ex) {

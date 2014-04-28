@@ -1,13 +1,15 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 
-public class InvincibleSpell extends TargetingSpell 
+public class InvincibleSpell extends TargetingSpell implements Listener
 {
 	protected float protectAmount = 0;
 	protected int amount = 100;
@@ -33,18 +35,19 @@ public class InvincibleSpell extends TargetingSpell
 	@Override
 	public void onDeactivate()
 	{
-		controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
+		mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this); 
 		protectAmount = 0;
 	}
 	
 	@Override
 	public void onActivate()
 	{
-		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		protectAmount = (float)amount / 100;
 	}
 	
 	@Override
+	@EventHandler
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
 		if (protectAmount > 0)

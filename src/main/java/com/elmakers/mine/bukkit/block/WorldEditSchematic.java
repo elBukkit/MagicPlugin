@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,6 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.jnbt.Tag;
 import com.sk89q.worldedit.CuboidClipboard;
@@ -19,13 +21,13 @@ import com.sk89q.worldedit.blocks.BaseItemStack;
 import com.sk89q.worldedit.blocks.ChestBlock;
 import com.sk89q.worldedit.blocks.SignBlock;
 
-public class Schematic {
+public class WorldEditSchematic implements Schematic{
 	
 	private final CuboidClipboard weSchematic;
 	private Vector center;
 	private Vector size;
 	
-	public Schematic(Object schematic) {
+	public WorldEditSchematic(Object schematic) {
 		weSchematic = (CuboidClipboard)schematic;
 		
 		// Center at the bottom X,Z center
@@ -47,6 +49,7 @@ public class Schematic {
 		}
 	}
 	
+	@Override
 	public boolean contains(Vector v) {
 		int x = v.getBlockX() + center.getBlockX();
 		int y = v.getBlockY() + center.getBlockY();
@@ -56,6 +59,7 @@ public class Schematic {
 	}
 	
 	@SuppressWarnings({ "deprecation" })
+	@Override
 	public MaterialAndData getBlock(Vector v) {
 		int x = v.getBlockX() + center.getBlockX();
 		int y = v.getBlockY() + center.getBlockY();
@@ -160,9 +164,16 @@ public class Schematic {
 		return null;
 	}
 
-	public List<EntityData> getEntities(Location center, int radius)
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getAllEntities()
 	{
-		List<EntityData> entities = new ArrayList<EntityData>();
+		List<com.elmakers.mine.bukkit.api.entity.EntityData> entities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();
+		return entities;
+	}
+	
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities(Location center, int radius)
+	{
 		/*
 		if (weSchematic == null) return entities;
 		// No accessor! :(
@@ -180,6 +191,6 @@ public class Schematic {
 			ex.printStackTrace();
 		}
 		*/
-		return entities;
+		return getAllEntities();
 	}
 }

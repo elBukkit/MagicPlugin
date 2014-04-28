@@ -18,8 +18,8 @@ import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
-import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class DynmapController {
 	 private final Plugin plugin;
@@ -45,8 +45,9 @@ public class DynmapController {
 				final String targetId = "SpellTarget-" + mage.getName();
 				
 				int range = 32;
-				double radius = 3.0 * mage.getDamageMultiplier();
-				int width = (int)(2.0 * mage.getDamageMultiplier());
+				double radius = 3.0 * mage.getPower() + 3;
+				int width = (int)(2.0 * mage.getPower()) + 1;
+				radius = Math.min(64, radius);
 				width = Math.min(8, width);
 				final Location location = spell.getLocation();
 				if (location == null) return;

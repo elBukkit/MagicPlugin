@@ -5,7 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.block.RegenerateBatch;
+import com.elmakers.mine.bukkit.block.batch.RegenerateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 
 public class RegenerateSpell extends BlockSpell 

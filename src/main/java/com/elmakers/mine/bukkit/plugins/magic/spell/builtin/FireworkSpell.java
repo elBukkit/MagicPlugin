@@ -46,7 +46,7 @@ public class FireworkSpell extends TargetingSpell
 		int flareCount = parameters.getInt("count", 1);
 		Block target = getTarget().getBlock();
 	     
-        FireworkEffect effect = mage.getFireworkEffect(color1, color2, fireworkType, flicker, trail);
+        FireworkEffect effect = getFireworkEffect(color1, color2, fireworkType, flicker, trail);
         
 		for (int i = 0; i < flareCount; i++)
 		{

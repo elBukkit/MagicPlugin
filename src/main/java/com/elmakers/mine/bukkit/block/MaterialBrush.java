@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -17,11 +18,13 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.api.block.Schematic;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.utility.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class MaterialBrush extends MaterialAndData {
+public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
 	
 	private enum BrushMode {
 		MATERIAL,
@@ -232,39 +235,6 @@ public class MaterialBrush extends MaterialAndData {
 	public static boolean isValidMaterial(String materialKey, boolean allowItems) {
 		return parseMaterialKey(materialKey, allowItems) != null;
 	}
-
-	public void update(String activeMaterial) {
-		String pieces[] = splitMaterialKey(activeMaterial);
-		if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
-			enableCopying();
-		} else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
-			enableCloning();
-		} else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
-			enableReplication();
-		} else if (activeMaterial.equals(MAP_MATERIAL_KEY)) {
-			enableMap();
-		} else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
-			enableErase();
-		} else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
-			enableSchematic(pieces[1]);
-		} else {
-			MaterialAndData material = parseMaterialKey(activeMaterial);
-			if (material != null) {
-				setMaterial(material.getMaterial(), material.getData());
-			}
-		}
-	}
-	
-	public void activate(final Location location, final String material) {
-		String materialKey = splitMaterialKey(material)[0];
-		if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY) && location != null) {
-			Location cloneFrom = location.clone();
-			cloneFrom.setY(cloneFrom.getY() - 1);
-			setCloneLocation(cloneFrom);
-		} else if (materialKey.equals(MAP_MATERIAL_KEY) || materialKey.equals(SCHEMATIC_MATERIAL_KEY)) {
-			clearCloneTarget();
-		} 
-	}
 	
 	@Override
 	public void setMaterial(Material material, byte data) {
@@ -375,57 +345,6 @@ public class MaterialBrush extends MaterialAndData {
 		return true;
 	}
 	
-	public void setTarget(Location target) {
-		setTarget(target, target);
-	}
-	
-	public void setTarget(Location target, Location center) {
-		orientVector = target.toVector().subtract(center.toVector());
-		orientVector.setX(Math.abs(orientVector.getX()));
-		orientVector.setY(Math.abs(orientVector.getY()));
-		orientVector.setZ(Math.abs(orientVector.getZ()));
-		
-		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP || mode == BrushMode.SCHEMATIC) {
-			if (cloneTarget == null || mode == BrushMode.CLONE || 
-				!center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
-				cloneTarget = center;
-				if (targetOffset != null) {
-					cloneTarget = cloneTarget.add(targetOffset);
-				}
-				if (targetWorldName != null && targetWorldName.length() > 0) {
-					World targetWorld = cloneTarget.getWorld();
-					cloneTarget.setWorld(ConfigurationUtils.overrideWorld(targetWorldName, targetWorld, mage.getController().canCreateWorlds()));
-				}
-			} else if (mode == BrushMode.SCHEMATIC) {
-				if (schematic != null) {
-					Vector diff = target.toVector().subtract(cloneTarget.toVector());
-					if (!schematic.contains(diff)) {
-						cloneTarget = center;
-						if (targetOffset != null) {
-							cloneTarget = cloneTarget.add(targetOffset);
-						}
-					}
-				}
-			}
-
-			if (cloneLocation == null) {
-				cloneLocation = cloneTarget;
-			}
-			if (materialTarget == null) {
-				materialTarget = cloneTarget;
-			}
-		}
-		if (mode == BrushMode.COPY) {
-			Block block = target.getBlock();
-			if (targetOffset != null) {
-				Location targetLocation = block.getLocation();
-				targetLocation = targetLocation.add(targetOffset);
-				block = targetLocation.getBlock();
-			}
-			updateFrom(block, mage.getRestrictedMaterials());
-		}
-	}
-	
 	public Location toTargetLocation(Location target) {
 		if (cloneLocation == null || cloneTarget == null) return null;
 		Location translated = cloneLocation.clone();
@@ -449,7 +368,7 @@ public class MaterialBrush extends MaterialAndData {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean update(Mage fromMage, Location target) {
+	public boolean update(final Mage fromMage, final Location target) {
 		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
 			if (cloneLocation == null) {
 				isValid = false;
@@ -487,7 +406,7 @@ public class MaterialBrush extends MaterialAndData {
 				return true;
 			}
 			Vector diff = target.toVector().subtract(cloneTarget.toVector());
-			MaterialAndData newMaterial = schematic.getBlock(diff);
+			com.elmakers.mine.bukkit.api.block.MaterialAndData newMaterial = schematic.getBlock(diff);
 			if (newMaterial == null) {
 				isValid = false;
 			} else {
@@ -572,7 +491,7 @@ public class MaterialBrush extends MaterialAndData {
 			customName = node.getString("extra_data", customName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			mage.getController().getPlugin().getLogger().warning("Failed to load brush data: " + ex.getMessage());
+			mage.getController().getLogger().warning("Failed to load brush data: " + ex.getMessage());
 		}
 	}
 	
@@ -599,15 +518,17 @@ public class MaterialBrush extends MaterialAndData {
 		}
 	}
 	
+	@Override
 	public boolean hasEntities()
 	{
 		// return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC;
 		return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE;
 	}
 	
-	public List<EntityData> getEntities(Location center, int radius)
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities(final Location center, final int radius)
 	{
-		List<EntityData> copyEntities = new ArrayList<EntityData>();
+		List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();
 		
 		int radiusSquared = radius * radius;
 		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)
@@ -649,13 +570,91 @@ public class MaterialBrush extends MaterialAndData {
 		return copyEntities;
 	}
 	
-	public String getCommandLine()
-	{
-		return commandLine;
+	@Override
+	public void activate(final Location location, final String material) {
+		String materialKey = splitMaterialKey(material)[0];
+		if (materialKey.equals(CLONE_MATERIAL_KEY) || materialKey.equals(REPLICATE_MATERIAL_KEY) && location != null) {
+			Location cloneFrom = location.clone();
+			cloneFrom.setY(cloneFrom.getY() - 1);
+			setCloneLocation(cloneFrom);
+		} else if (materialKey.equals(MAP_MATERIAL_KEY) || materialKey.equals(SCHEMATIC_MATERIAL_KEY)) {
+			clearCloneTarget();
+		} 
+	}
+
+	@Override
+	public void update(String activeMaterial) {
+		String pieces[] = splitMaterialKey(activeMaterial);
+		if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
+			enableCopying();
+		} else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
+			enableCloning();
+		} else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
+			enableReplication();
+		} else if (activeMaterial.equals(MAP_MATERIAL_KEY)) {
+			enableMap();
+		} else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
+			enableErase();
+		} else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
+			enableSchematic(pieces[1]);
+		} else {
+			MaterialAndData material = parseMaterialKey(activeMaterial);
+			if (material != null) {
+				setMaterial(material.getMaterial(), material.getData());
+			}
+		}
 	}
 	
-	public void setCommandLine(String command)
-	{
-		this.commandLine = command;
+	@Override
+	public void setTarget(Location target) {
+		setTarget(target, target);
+	}
+	
+	@Override
+	public void setTarget(Location target, Location center) {
+		orientVector = target.toVector().subtract(center.toVector());
+		orientVector.setX(Math.abs(orientVector.getX()));
+		orientVector.setY(Math.abs(orientVector.getY()));
+		orientVector.setZ(Math.abs(orientVector.getZ()));
+		
+		if (mode == BrushMode.REPLICATE || mode == BrushMode.CLONE || mode == BrushMode.MAP || mode == BrushMode.SCHEMATIC) {
+			if (cloneTarget == null || mode == BrushMode.CLONE || 
+				!center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
+				cloneTarget = center;
+				if (targetOffset != null) {
+					cloneTarget = cloneTarget.add(targetOffset);
+				}
+				if (targetWorldName != null && targetWorldName.length() > 0) {
+					World targetWorld = cloneTarget.getWorld();
+					cloneTarget.setWorld(ConfigurationUtils.overrideWorld(targetWorldName, targetWorld, mage.getController().canCreateWorlds()));
+				}
+			} else if (mode == BrushMode.SCHEMATIC) {
+				if (schematic != null) {
+					Vector diff = target.toVector().subtract(cloneTarget.toVector());
+					if (!schematic.contains(diff)) {
+						cloneTarget = center;
+						if (targetOffset != null) {
+							cloneTarget = cloneTarget.add(targetOffset);
+						}
+					}
+				}
+			}
+
+			if (cloneLocation == null) {
+				cloneLocation = cloneTarget;
+			}
+			if (materialTarget == null) {
+				materialTarget = cloneTarget;
+			}
+		}
+		if (mode == BrushMode.COPY) {
+			Block block = target.getBlock();
+			if (targetOffset != null) {
+				Location targetLocation = block.getLocation();
+				targetLocation = targetLocation.add(targetOffset);
+				block = targetLocation.getBlock();
+			}
+			updateFrom(block, mage.getRestrictedMaterials());
+		}
 	}
 }

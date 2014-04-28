@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -66,7 +65,7 @@ public abstract class BrushSpell extends BlockSpell {
 		hasBrush = parameters.contains("brush");
 	}
 	
-	public MaterialBrush getMaterialBrush()
+	public com.elmakers.mine.bukkit.api.block.MaterialBrush getMaterialBrush()
 	{
 		if (brush != null)
 		{
@@ -77,7 +76,7 @@ public abstract class BrushSpell extends BlockSpell {
 	}
 	
 	@Override
-	public MaterialAndData getEffectMaterial()
+	public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
 	{
 		return brush != null ? brush : mage.getBrush();
 	}
@@ -90,7 +89,7 @@ public abstract class BrushSpell extends BlockSpell {
 	@Override
 	protected String getDisplayMaterialName()
 	{
-		MaterialBrush useBrush = getMaterialBrush();
+		com.elmakers.mine.bukkit.api.block.MaterialBrush useBrush = getMaterialBrush();
 		if (useBrush != null) {
 			return useBrush.getName();
 		}

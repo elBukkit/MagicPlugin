@@ -8,7 +8,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.command.CastCommandExecutor;
@@ -207,12 +205,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages() {
-		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<com.elmakers.mine.bukkit.api.magic.Mage>();
-		Collection<Mage> internal = controller.getMages();
-		for (Mage mage : internal) {
-			mages.add(mage);
-		}
-		return mages;
+		return controller.getMages();
 	}
 	
 	@Override
@@ -332,8 +325,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
-	public Spell getSpellTemplate(String key) {
-		return controller.getSpell(key);
+	public SpellTemplate getSpellTemplate(String key) {
+		return controller.getSpellTemplate(key);
 	}
 
 	@Override
@@ -344,10 +337,5 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	@Override
 	public Collection<String> getBrushes() {
 		return controller.getMaterials();
-	}
-
-	@Override
-	public boolean isAutomata(Block block) {
-		return controller.isAutomata(block);
 	}
 }

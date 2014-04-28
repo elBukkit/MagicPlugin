@@ -680,7 +680,7 @@ public abstract class TargetingSpell extends BaseSpell {
 	}
 
 	@Override
-	public MaterialAndData getEffectMaterial()
+	public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
 	{
 		if (target != null && target.isValid()) {
 			Block block = target.getBlock();

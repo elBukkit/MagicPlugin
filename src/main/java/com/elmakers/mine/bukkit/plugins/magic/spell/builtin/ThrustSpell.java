@@ -12,14 +12,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 
 public class ThrustSpell extends TargetingSpell
@@ -31,9 +28,6 @@ public class ThrustSpell extends TargetingSpell
 	protected int groundHeight = 0;
 	protected float hoverHeight = 0;
 	protected long lastTick = 0;
-
-	private final long safetyLength = 20000;
-	private long lastLevitate = 0;
 
 	protected int checkFrequency = 10; // We'll check the ground every X steps 
 	protected int maxTerrainChangeHeight = 4;
@@ -65,27 +59,9 @@ public class ThrustSpell extends TargetingSpell
 			return players.containsKey(player.getName());
 		}
 
-		public void activate(ThrustSpell spell)
-		{
-			spell.controller.registerEvent(SpellEventType.PLAYER_DAMAGE, spell);
-
-			players.put(spell.getPlayer().getName(), spell);
-
-			spell.checkForGround();
-			scheduleForce();
-		}
-
 		protected void scheduleForce()
 		{
 			scheduler.scheduleSyncDelayedTask(plugin, this, tickSpan);
-		}
-
-		public void deactivate(ThrustSpell spell)
-		{
-			spell.controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, spell);
-
-			players.remove(spell.getPlayer().getName());
-			getPlayer().setVelocity(new Vector(0,0,0));
 		}
 
 		public void run()
@@ -168,7 +144,6 @@ public class ThrustSpell extends TargetingSpell
 	{
 		if (!isActive()) 
 		{
-			action.deactivate(this);
 			return;
 		}
 
@@ -266,32 +241,6 @@ public class ThrustSpell extends TargetingSpell
 		{
 			action = new LevitateAction(controller.getPlugin());
 		}
-
-		if (action.isActive(getPlayer()))
-		{
-			action.deactivate(this);
-		}
-		else
-		{
-			action.activate(this);
-		}
-
-		lastLevitate = System.currentTimeMillis();
-
 		return SpellResult.CAST;
-	}
-
-	@Override
-	public void onPlayerDamage(EntityDamageEvent event)
-	{
-		if (event.getCause() != DamageCause.FALL) return;
-
-		if (lastLevitate == 0) return;
-
-		if (lastLevitate + safetyLength > System.currentTimeMillis())
-		{
-			event.setCancelled(true);
-			lastLevitate = 0;
-		}
 	}
 }

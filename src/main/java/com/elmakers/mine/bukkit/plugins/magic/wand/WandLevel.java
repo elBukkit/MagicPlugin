@@ -11,9 +11,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -191,7 +191,7 @@ public class WandLevel {
 			}
 		}
 		
-		Spell firstSpell = null;		
+		SpellTemplate firstSpell = null;		
 		if (remainingSpells.size() > 0) {
 			Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
 			int retries = 10;
@@ -200,7 +200,7 @@ public class WandLevel {
 				
 				if (wand.addSpell(spellKey)) {	
 					if (firstSpell == null) {
-						firstSpell = wand.getMaster().getSpell(spellKey);
+						firstSpell = wand.getMaster().getSpellTemplate(spellKey);
 					}
 					addedSpells = true;
 				} else {
@@ -216,7 +216,7 @@ public class WandLevel {
 		int maxXpCost = 0;
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {
-			Spell spell = wand.getMaster().getSpell(spellName);
+			SpellTemplate spell = wand.getMaster().getSpellTemplate(spellName);
 			if (spell != null) {
 				needsMaterials = needsMaterials || (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride();
 				Collection<CastingCost> costs = spell.getCosts();

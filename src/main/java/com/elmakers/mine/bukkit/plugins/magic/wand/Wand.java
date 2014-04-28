@@ -268,8 +268,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void activateBrush(String materialKey) {
 		setActiveBrush(materialKey);
 		if (materialKey != null) {
-			MaterialBrush brush = mage.getBrush();
-			brush.activate(mage.getLocation(), materialKey);
+			com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
+			if (brush != null) {
+				brush.activate(mage.getLocation(), materialKey);
+			}
 		}
 	}
 	
@@ -634,7 +636,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	@SuppressWarnings("deprecation")
 	public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
-		Spell spell = controller.getSpell(spellKey);
+		SpellTemplate spell = controller.getSpellTemplate(spellKey);
 		if (spell == null) return null;
 		com.elmakers.mine.bukkit.api.block.MaterialAndData icon = spell.getIcon();
 		if (icon == null) {
@@ -662,7 +664,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	private String getActiveWandName(String materialKey) {
-		Spell spell = controller.getSpell(activeSpell);
+		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
 		return getActiveWandName(spell, materialKey);
 	}
 	
@@ -1030,7 +1032,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
-	private static String getSpellDisplayName(Spell spell, String materialKey) {
+	private static String getSpellDisplayName(SpellTemplate spell, String materialKey) {
 		String name = "";
 		if (spell != null) {
 			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
@@ -1047,7 +1049,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return name;
 	}
 
-	private String getActiveWandName(Spell spell, String materialKey) {
+	private String getActiveWandName(SpellTemplate spell, String materialKey) {
 
 		// Build wand name
 		ChatColor wandColor = isModifiable() ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.RED;
@@ -1065,14 +1067,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return name;
 	}
 	
-	private String getActiveWandName(Spell spell) {
+	private String getActiveWandName(SpellTemplate spell) {
 		return getActiveWandName(spell, activeMaterial);
 	}
 	
 	private String getActiveWandName() {
-		Spell spell = null;
+		SpellTemplate spell = null;
 		if (hasInventory && activeSpell != null && activeSpell.length() > 0) {
-			spell = controller.getSpell(activeSpell);
+			spell = controller.getSpellTemplate(activeSpell);
 		}
 		return getActiveWandName(spell);
 	}
@@ -1198,7 +1200,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	{
 		List<String> lore = new ArrayList<String>();
 		
-		Spell spell = controller.getSpell(activeSpell);
+		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
 		if (spell != null && spellCount == 1 && materialCount <= 1 && !isUpgrade) {
 			addSpellLore(spell, lore, this);
 		} else {
@@ -1357,7 +1359,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
-	public static void updateSpellItem(ItemStack itemStack, Spell spell, Wand wand, String activeMaterial, boolean isItem) {
+	public static void updateSpellItem(ItemStack itemStack, SpellTemplate spell, Wand wand, String activeMaterial, boolean isItem) {
 		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
 		if (wand != null) {
@@ -1462,7 +1464,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
-	protected static void addSpellLore(Spell spell, List<String> lore, CostReducer reducer) {
+	protected static void addSpellLore(SpellTemplate spell, List<String> lore, CostReducer reducer) {
 		String description = spell.getDescription();
 		String usage = spell.getUsage();
 		if (description != null && description.length() > 0) {
@@ -1558,6 +1560,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public static Wand createWand(MagicController controller, String templateName) {
+		if (controller == null) return null;
+		
 		Wand wand = null;
 		try {
 			wand = new Wand(controller, templateName);
@@ -1666,7 +1670,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (addSpell(spellKey)) {
 				modified = true;
 				String spellName = spellKey;
-				Spell spell = controller.getSpell(spellKey);
+				SpellTemplate spell = controller.getSpellTemplate(spellKey);
 				if (spell != null) spellName = spell.getName();
 				if (mage != null) mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spellName));
 			}
@@ -1755,7 +1759,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (activeMaterial == null) {
 			mage.clearBuildingMaterial();
 		} else {
-			MaterialBrush brush = mage.getBrush();
+			com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
 			brush.update(activeMaterial);
 		}
 	}
@@ -1957,7 +1961,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			String spellKey = getSpell(item);
 			Set<String> spells = getSpells();
 			if (!spells.contains(spellKey) && addSpell(spellKey)) {
-				Spell spell = controller.getSpell(spellKey);
+				SpellTemplate spell = controller.getSpellTemplate(spellKey);
 				if (spell != null) {
 					mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spell.getName()));
 					return true;

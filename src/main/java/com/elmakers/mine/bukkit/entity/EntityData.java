@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.entity;
 
 import org.bukkit.Art;
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
  * This class stores information about an Entity.
  *
  */
-public class EntityData {
+public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData {
 	protected Location location;
 	protected EntityType type;
 	protected Art art;
@@ -46,22 +46,31 @@ public class EntityData {
 		}
 	}
 	
+	/**
+	 * API Implementation
+	 */
+	
+	@Override
 	public Location getLocation() {
 		return location;
 	}
 
+	@Override
 	public EntityType getType() {
 		return type;
 	}
 	
+	@Override
 	public Art getArt() {
 		return art;
 	}
 
+	@Override
 	public BlockFace getFacing() {
 		return facing;
 	}
 
+	@Override
 	public ItemStack getItem() {
 		return item;
 	}

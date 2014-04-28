@@ -54,7 +54,7 @@ public class PortalSpell extends BlockSpell
 
 	protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)
 	{
-		Set<Material> destructible =mage.getController().getDestructibleMaterials();
+		Set<Material> destructible = mage.getController().getDestructibleMaterials();
 		BoundingBox container = new BoundingBox(centerBlock.getBlockX(), centerBlock.getBlockY(), centerBlock.getBlockZ(), centerBlock.getBlockX() + 2, centerBlock.getBlockY() + 3, centerBlock.getBlockZ() + 1);
 		container.fill(centerBlock.getWorld(), Material.PORTAL, destructible, blockList);
 	}

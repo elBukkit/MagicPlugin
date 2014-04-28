@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.block.batch;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -6,7 +6,9 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.block.BlockList;
 
 public class UndoBatch extends VolumeBatch {
 	private final BlockList blockList;
@@ -18,7 +20,7 @@ public class UndoBatch extends VolumeBatch {
 	private final Set<Material> attachablesDouble;
 	private final Set<Material> delayed;
 	
-	public UndoBatch(MagicController controller, BlockList blockList) {
+	public UndoBatch(MageController controller, BlockList blockList) {
 		super(controller, blockList.getWorldName());
 		this.blockList = blockList;
 		this.attachables = controller.getMaterialSet("attachable");

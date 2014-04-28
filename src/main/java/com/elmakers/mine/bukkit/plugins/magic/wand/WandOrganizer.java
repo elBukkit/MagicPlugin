@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 
@@ -105,9 +106,10 @@ public class WandOrganizer {
 		Map<String, Collection<String>> groupedSpells = new TreeMap<String, Collection<String>>();
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {
-			Spell spell = mage == null ? master.getSpell(spellName) : mage.getSpell(spellName);
+			Spell mageSpell = mage == null ? null : mage.getSpell(spellName);
+			SpellTemplate spell = mageSpell == null ? master.getSpellTemplate(spellName) : mageSpell;
 			if (spell != null && !hotbarSpellNames.contains(spellName)) {
-				long castCount = spell.getCastCount();
+				long castCount = mageSpell == null ? 0 : mageSpell.getCastCount();
 				if (castCount > favoriteCastCountThreshold) {
 					List<String> favorites = null;
 					if (!favoriteSpells.containsKey(castCount)) {

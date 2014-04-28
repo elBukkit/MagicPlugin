@@ -8,16 +8,18 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.EffectRing;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 
-public class FlingSpell extends TargetingSpell
+public class FlingSpell extends TargetingSpell implements Listener
 {
 	private final long safetyLength = 20000;
 	private long lastFling = 0;
@@ -60,18 +62,18 @@ public class FlingSpell extends TargetingSpell
 		velocity.multiply(magnitude);
 		getPlayer().setVelocity(velocity);
 
-		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling = System.currentTimeMillis();
 		return SpellResult.CAST;
 	}
 
 	@SuppressWarnings("deprecation")
-	@Override
+	@EventHandler
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
 		if (event.getCause() != DamageCause.FALL) return;
 
-		controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+		mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
 
 		if (lastFling == 0) return;
 

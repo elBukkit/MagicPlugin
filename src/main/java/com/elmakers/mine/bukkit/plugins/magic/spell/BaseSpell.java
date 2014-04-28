@@ -3,9 +3,12 @@ package com.elmakers.mine.bukkit.plugins.magic.spell;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -483,5 +486,40 @@ public abstract class BaseSpell extends Spell {
 		} else {
 			preventPassThroughMaterials = controller.getMaterialSet("indestructible");
 		}
+	}
+	
+	public FireworkEffect getFireworkEffect() {
+		return getFireworkEffect(null, null, null, null, null);
+	}
+	
+	public FireworkEffect getFireworkEffect(Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType) {
+			return getFireworkEffect(color1, color2, fireworkType, null, null);
+	}
+
+	public FireworkEffect getFireworkEffect(Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {
+		Color wandColor = mage == null ? null : mage.getEffectColor();
+		Random rand = new Random();
+		if (wandColor != null) {
+			color1 = wandColor;
+			color2 = wandColor.mixColors(color1, Color.WHITE);
+		} else {
+			if (color1 == null) {
+				color1 = Color.fromRGB(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+			}
+			if (color2 == null) {
+				color2 = Color.fromRGB(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+			}
+		}
+		if (fireworkType == null) {
+			fireworkType = org.bukkit.FireworkEffect.Type.values()[rand.nextInt(org.bukkit.FireworkEffect.Type.values().length)];
+		}
+		if (flicker == null) {
+			flicker = rand.nextBoolean();
+		}
+		if (trail == null) {
+			trail = rand.nextBoolean();
+		}
+		
+		return FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
 	}
 }

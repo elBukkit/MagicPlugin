@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.block.batch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,9 +24,13 @@ import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.block.ConstructionType;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class ConstructBatch extends VolumeBatch {
@@ -268,7 +272,7 @@ public class ConstructBatch extends VolumeBatch {
 			MaterialBrush brush = spell.getMaterialBrush();
 			if (copyEntities && thickness == 0 && brush != null && brush.hasEntities()) {
 				// TODO: Handle Non-spherical construction types!
-				List<EntityData> entities = brush.getEntities(center, radius);
+				Collection<EntityData> entities = brush.getEntities(center, radius);
 				
 				for (EntityData entity : entities) {
 					Location targetLocation = entity.getLocation();
@@ -289,7 +293,7 @@ public class ConstructBatch extends VolumeBatch {
 			
 			String message = spell.getMessage("cast_finish");
 			message = message.replace("$count", Integer.toString(constructedBlocks.size()));
-			mage.sendMessage(message);
+			spell.sendMessage(message);
 		}
 	}
 	
@@ -364,7 +368,7 @@ public class ConstructBatch extends VolumeBatch {
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
 		
-		if (y < 0 || y > Spell.MAX_Y) return true;
+		if (y < 0 || y > controller.getMaxY()) return true;
 		
 		// Make sure the block is loaded.
 		Block block = center.getWorld().getBlockAt(x, y, z);

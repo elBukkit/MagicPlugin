@@ -7,16 +7,18 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.EffectRing;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 
-public class LevitateSpell extends TargetingSpell
+public class LevitateSpell extends TargetingSpell implements Listener
 {
 	private long levitateEnded;
 	private final long safetyLength = 10000;
@@ -56,7 +58,7 @@ public class LevitateSpell extends TargetingSpell
 		player.setAllowFlight(false);
 		
 		// Prevent the player from death by fall
-		controller.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		levitateEnded = System.currentTimeMillis();
 	}
 	
@@ -85,11 +87,12 @@ public class LevitateSpell extends TargetingSpell
 
 	@SuppressWarnings("deprecation")
 	@Override
+	@EventHandler
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
 		if (event.getCause() != DamageCause.FALL) return;
 
-		controller.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+		mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
 
 		if (levitateEnded == 0) return;
 

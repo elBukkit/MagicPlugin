@@ -20,15 +20,15 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
  * @author NathanWolf
  *
  */
-public class BlockData extends MaterialAndData
+public class BlockData extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.BlockData
 {
 	public static final BlockFace[] FACES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.UP, BlockFace.DOWN };
 	public static final BlockFace[] SIDES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST };
 	
 	// Transient
 	protected Block     block;
-	protected BlockData	nextState;
-	protected BlockData	priorState;
+	protected com.elmakers.mine.bukkit.api.block.BlockData	nextState;
+	protected com.elmakers.mine.bukkit.api.block.BlockData	priorState;
 
 	// Persistent
 	protected BlockVector  location;
@@ -91,12 +91,11 @@ public class BlockData extends MaterialAndData
 		world = block.getWorld().getName();
 	}
 
-	public BlockData(BlockData copy)
+	public BlockData(com.elmakers.mine.bukkit.api.block.BlockData copy)
 	{
 		super(copy);
-		location = copy.location;
-		world = copy.world;
-		block = copy.block;
+		location = copy.getPosition();
+		world = copy.getWorldName();
 	}
 	
 	public BlockData(Location location, Material material, byte data)
@@ -138,35 +137,13 @@ public class BlockData extends MaterialAndData
 		return block != null;
 	}
 
-	public World getWorld()
-	{
-		if (world == null || world.length() == 0) return null;
-		return Bukkit.getWorld(world);
-	}
-	
-	public Block getBlock()
-	{
-		if (block == null && location != null)
-		{
-			World world = getWorld();
-			if (world != null) {
-				block = world.getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-			}
-		}
-		return block;
-	}
-
-	public BlockVector getPosition()
-	{
-		return location;
-	}
-
 	public void setPosition(BlockVector location)
 	{
 		this.location = location;
 	}
 
-	protected boolean undo()
+	@Override
+	public boolean undo()
 	{
 		if (!checkBlock())
 		{
@@ -196,7 +173,8 @@ public class BlockData extends MaterialAndData
 		return true;
 	}
 	
-	protected void commit()
+	@Override
+	public void commit()
 	{
 		if (nextState != null) {
 			nextState.setPriorState(null);
@@ -236,31 +214,59 @@ public class BlockData extends MaterialAndData
 		return result;
 	}
 	
+	@Override
+	public com.elmakers.mine.bukkit.api.block.BlockData getNextState() {
+		return nextState;
+	}
+	
+	@Override
+	public void setNextState(com.elmakers.mine.bukkit.api.block.BlockData next) {
+		nextState = next;
+	}
+	
+	@Override
+	public com.elmakers.mine.bukkit.api.block.BlockData getPriorState() {
+		return priorState;
+	}
+	
+	@Override
+	public void setPriorState(com.elmakers.mine.bukkit.api.block.BlockData prior) {
+		priorState = prior;
+	}
+	
+	@Override
+	public void restore() {
+		modify(getBlock());
+	}
+
+	@Override
 	public String getWorldName() {
 		return world;
 	}
 	
-	public BlockVector getLocation() {
+	@Override
+	public BlockVector getPosition()
+	{
 		return location;
 	}
-	
-	public BlockData getNextState() {
-		return nextState;
+
+	@Override
+	public World getWorld()
+	{
+		if (world == null || world.length() == 0) return null;
+		return Bukkit.getWorld(world);
 	}
 	
-	public void setNextState(BlockData next) {
-		nextState = next;
-	}
-	
-	public BlockData getPriorState() {
-		return priorState;
-	}
-	
-	public void setPriorState(BlockData prior) {
-		priorState = prior;
-	}
-	
-	public void restore() {
-		modify(getBlock());
+	@Override
+	public Block getBlock()
+	{
+		if (block == null && location != null)
+		{
+			World world = getWorld();
+			if (world != null) {
+				block = world.getBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+			}
+		}
+		return block;
 	}
 }

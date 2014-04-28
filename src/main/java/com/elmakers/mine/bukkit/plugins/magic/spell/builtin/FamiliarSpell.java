@@ -15,15 +15,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class FamiliarSpell extends TargetingSpell
+public class FamiliarSpell extends TargetingSpell implements Listener
 {
 	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow,Ozelot,HorseEntity";
 	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Giant,Silverfish,CaveSpider,Blaze,Bat,Witch";
@@ -248,14 +250,15 @@ public class FamiliarSpell extends TargetingSpell
 	{
 		if (familiars.hasFamiliar())
 		{
-			controller.registerEvent(SpellEventType.PLAYER_QUIT, this);
+			mage.registerEvent(SpellEventType.PLAYER_QUIT, this);
 		}
 		else
 		{
-			controller.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
+			mage.unregisterEvent(SpellEventType.PLAYER_QUIT, this);
 		}
 	}
 	
+	@EventHandler
 	public void onPlayerQuit(PlayerEvent event)
 	{
 		if (familiars.hasFamiliar())

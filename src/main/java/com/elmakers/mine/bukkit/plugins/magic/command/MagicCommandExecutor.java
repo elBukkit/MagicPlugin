@@ -177,7 +177,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			} else if (listCommand.equalsIgnoreCase("automata")) {
 				Collection<Automaton> automata = api.getAutomata();
 				for (Automaton automaton : automata) {
-					BlockVector location = automaton.getLocation();
+					BlockVector location = automaton.getPosition();
 					String worldName = automaton.getWorldName();
 					sender.sendMessage(ChatColor.AQUA + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
 							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());

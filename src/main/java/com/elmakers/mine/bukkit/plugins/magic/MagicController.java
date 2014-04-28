@@ -25,6 +25,7 @@ import java.util.zip.ZipInputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -82,11 +83,13 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.Schematic;
+import com.elmakers.mine.bukkit.block.WorldEditSchematic;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -98,7 +101,6 @@ import com.elmakers.mine.bukkit.plugins.magic.listener.CraftingController;
 import com.elmakers.mine.bukkit.plugins.magic.listener.EnchantingController;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 import com.elmakers.mine.bukkit.plugins.magic.spell.Spell;
-import com.elmakers.mine.bukkit.plugins.magic.spell.SpellEventType;
 import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.plugins.magic.wand.WandLevel;
@@ -115,7 +117,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.URLMap;
 import com.elmakers.mine.bukkit.warp.WarpController;
 
-public class MagicController implements Listener 
+public class MagicController implements Listener, MageController
 {
 	public MagicController(final MagicPlugin plugin)
 	{
@@ -135,14 +137,6 @@ public class MagicController implements Listener
 
 		defaultsFolder = new File(configFolder, "defaults");
 		defaultsFolder.mkdirs();
-	}
-	
-	/*
-	 * Public API - Use for hooking up a plugin, or calling a spell
-	 */
-	public Collection<Mage> getMages()
-	{
-		return mages.values();
 	}
 
 	public Mage getMage(Player player)
@@ -299,32 +293,6 @@ public class MagicController implements Listener
 	/*
 	 * Material use system
 	 */
-
-	public Set<Material> getBuildingMaterials()
-	{
-		return buildingMaterials;
-	}
-
-	public Set<Material> getDestructibleMaterials()
-	{
-		return destructibleMaterials;
-	}
-
-	protected Set<Material> getRestrictedMaterials()
-	{
-		return restrictedMaterials;
-	}
-
-	public Set<Material> getMaterialSet(String name)
-	{
-		if (name.contains(",")) {
-			return ConfigurationUtils.parseMaterials(name);
-		}
-		if (!materialSets.containsKey(name)) {
-			return ConfigurationUtils.parseMaterials(name);
-		}
-		return materialSets.get(name);
-	}
 	
 	public Collection<String> getMaterialSets()
 	{
@@ -374,10 +342,6 @@ public class MagicController implements Listener
 	public int getPendingQueueDepth() {
 		return pendingQueueDepth;
 	}
-	
-	public int getMaxUndoPersistSize() {
-		return undoMaxPersistSize;
-	}
 
 	public Mage undoAny(Block target)
 	{
@@ -399,22 +363,6 @@ public class MagicController implements Listener
 			undid = mage.commit() || undid;
 		}
 		return undid;
-	}
-
-	/*
-	 * Event registration- call to listen for events
-	 */
-
-	public void registerEvent(SpellEventType type, Spell spell)
-	{
-		Mage mage = getMage(spell.getPlayer());
-		mage.registerEvent(type, spell);
-	}
-
-	public void unregisterEvent(SpellEventType type, Spell spell)
-	{
-		Mage mage = getMage(spell.getPlayer());
-		mage.unregisterEvent(type, spell);
 	}
 
 	/*
@@ -465,11 +413,6 @@ public class MagicController implements Listener
 	{
 		return keepingEnabled;
 	}
-	
-	public boolean canCreateWorlds()
-	{
-		return createWorldsEnabled;
-	}
 
 	/*
 	 * Get the log, if you need to debug or log errors.
@@ -477,11 +420,6 @@ public class MagicController implements Listener
 	public Logger getLogger()
 	{
 		return plugin.getLogger();
-	}
-
-	public MagicPlugin getPlugin()
-	{
-		return plugin;
 	}
 
 	public boolean isIndestructible(Location location) 
@@ -549,13 +487,13 @@ public class MagicController implements Listener
 		}
 	}
 	
-	public Schematic loadSchematic(String schematicName) {
+	public WorldEditSchematic loadSchematic(String schematicName) {
 		if (schematicName == null || schematicName.length() == 0 || !schematicsEnabled()) return null;
 		
 		if (schematics.containsKey(schematicName)) {
-			WeakReference<Schematic> schematic = schematics.get(schematicName);
+			WeakReference<WorldEditSchematic> schematic = schematics.get(schematicName);
 			if (schematic != null) {
-				Schematic cached = schematic.get();
+				WorldEditSchematic cached = schematic.get();
 				if (cached != null) {
 					return cached;
 				}
@@ -594,8 +532,8 @@ public class MagicController implements Listener
 		try {
 			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
 			getLogger().info("Loading schematic file: " + schematicFile.getAbsolutePath());
-			Schematic schematic = new Schematic(loadSchematicMethod.invoke(null, schematicFile));
-			schematics.put(schematicName, new WeakReference<Schematic>(schematic));
+			WorldEditSchematic schematic = new WorldEditSchematic(loadSchematicMethod.invoke(null, schematicFile));
+			schematics.put(schematicName, new WeakReference<WorldEditSchematic>(schematic));
 			return schematic;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -865,27 +803,6 @@ public class MagicController implements Listener
 	
 	protected void removePending(Mage mage) {
 		pendingConstruction.remove(mage.getName());
-	}
-	
-	public void updateBlock(Block block)
-	{
-		updateBlock(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
-	}
-	
-	public void updateBlock(String worldName, int x, int y, int z)
-	{
-		if (dynmap != null && dynmapUpdate)
-		{
-			dynmap.triggerRenderOfBlock(worldName, x, y, z);
-		}
-	}
-	
-	public void updateVolume(String worldName, int minx, int miny, int minz, int maxx, int maxy, int maxz)
-	{
-		if (dynmap != null && dynmapUpdate)
-		{
-			dynmap.triggerRenderOfVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
-		}
 	}
 	
 	public boolean removeMarker(String id, String group)
@@ -1924,7 +1841,9 @@ public class MagicController implements Listener
 		{
 			// Don't allow casting if the player is confused
 			if (!mage.isSuperPowered() && !mage.isSuperProtected() && player.hasPotionEffect(PotionEffectType.CONFUSION)) {
-				mage.processResult(SpellResult.FAIL);
+				if (soundsEnabled) {
+					player.playEffect(EntityEffect.HURT);
+				}
 				return;
 			}
 			wand.cast();
@@ -2117,7 +2036,7 @@ public class MagicController implements Listener
 			wand.saveInventory();
 			
 			// Update the item for proper naming and lore
-			Spell spell = getSpell(spellKey);
+			SpellTemplate spell = getSpellTemplate(spellKey);
 			if (spell != null) {
 				Wand.updateSpellItem(droppedItem, spell, null, null, true);
 			}
@@ -2404,7 +2323,7 @@ public class MagicController implements Listener
 		triggerBlockToggle(e.getChunk());
 	}
 	
-	public Spell getSpell(String name) {
+	public SpellTemplate getSpellTemplate(String name) {
 		if (name == null || name.length() == 0) return null;
 		return spells.get(name);
 	}
@@ -2435,8 +2354,8 @@ public class MagicController implements Listener
 		return defaultMaterial;
 	}
 	
-	public Collection<LostWand> getLostWands() {
-		return lostWands.values();
+	public Collection<com.elmakers.mine.bukkit.api.wand.LostWand> getLostWands() {
+		return new ArrayList<com.elmakers.mine.bukkit.api.wand.LostWand>(lostWands.values());
 	}
 	
 	public Collection<Automaton> getAutomata() {
@@ -2462,7 +2381,7 @@ public class MagicController implements Listener
 			mage = getMage(mageController);
 		}
 		
-		Spell spell = mage.getSpell(spellName, usePermissions);
+		com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(spellName, usePermissions);
 		if (spell == null)
 		{
 			if (sender != null) {
@@ -2486,41 +2405,10 @@ public class MagicController implements Listener
 		return true;
 	}
 	
-	public void onCast(Mage mage, Spell spell, SpellResult result) {
+	public void onCast(Mage mage, com.elmakers.mine.bukkit.api.spell.Spell spell, SpellResult result) {
 		if (dynmapShowSpells && dynmap != null) {
 			dynmap.showCastMarker(mage, spell, result);
 		}
-	}
-	
-	public void registerAutomata(Block block, String name, String message) {
-		String chunkId = getChunkKey(block.getChunk());
-		Map<Long, Automaton> toReload = automata.get(chunkId);
-		if (toReload == null) {
-			toReload = new HashMap<Long, Automaton>();
-			automata.put(chunkId, toReload);
-		}
-		Automaton data = new Automaton(block, name, message);
-		toReload.put(data.getId(), data);
-	}
-
-	public void unregisterAutomata(Block block) {
-		// Note that we currently don't clean up an empty entry,
-		// purposefully, to prevent thrashing the main map and adding lots
-		// of HashMap creation.
-		String chunkId = getChunkKey(block.getChunk());
-		Map<Long, Automaton> toReload = automata.get(chunkId);
-		if (toReload != null) {
-			toReload.remove(BlockData.getBlockId(block));
-		}
-	}
-	
-	public boolean isAutomata(Block block) {
-		String chunkId = getChunkKey(block.getChunk());
-		Map<Long, Automaton> toReload = automata.get(chunkId);
-		if (toReload != null) {
-			return toReload.containsKey(BlockData.getBlockId(block));
-		}
-		return false;
 	}
 	
 	protected void triggerBlockToggle(final Chunk chunk) {
@@ -2550,9 +2438,9 @@ public class MagicController implements Listener
 					new Runnable() {
 						public void run() {
 							for (Automaton restoreBlock : restored) {
-								getLogger().info("Resuming block at " + restoreBlock.getLocation() + ": " + restoreBlock.getName());
+								getLogger().info("Resuming block at " + restoreBlock.getPosition() + ": " + restoreBlock.getName());
 								restoreBlock.restore();
-								sendToMages(restoreBlock.getMessage(), restoreBlock.getLocation().toLocation(restoreBlock.getWorld()));	
+								sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));	
 							}
 						}
 				}, 5);
@@ -2561,10 +2449,6 @@ public class MagicController implements Listener
 				automata.remove(chunkKey);
 			}
 		}
-	}
-	
-	public void sendToMages(String message, Location location) {
-		sendToMages(message, location, toggleMessageRange);
 	}
 	
 	public void sendToMages(String message, Location location, int range) {
@@ -2590,8 +2474,135 @@ public class MagicController implements Listener
 		return warpController.getWarp(warpName);
 	}
 	
-	public void forgetMage(Mage mage) {
+	public void forgetMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
 		forgetMages.add(mage.getId());
+	}
+	
+	/*
+	 * API Implementation
+	 */
+	
+	@Override
+	public boolean isAutomata(Block block) {
+		String chunkId = getChunkKey(block.getChunk());
+		Map<Long, Automaton> toReload = automata.get(chunkId);
+		if (toReload != null) {
+			return toReload.containsKey(BlockData.getBlockId(block));
+		}
+		return false;
+	}
+	
+	@Override
+	public void updateBlock(Block block)
+	{
+		updateBlock(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+	}
+	
+	@Override
+	public void updateBlock(String worldName, int x, int y, int z)
+	{
+		if (dynmap != null && dynmapUpdate)
+		{
+			dynmap.triggerRenderOfBlock(worldName, x, y, z);
+		}
+	}
+	
+	@Override
+	public void updateVolume(String worldName, int minx, int miny, int minz, int maxx, int maxy, int maxz)
+	{
+		if (dynmap != null && dynmapUpdate)
+		{
+			dynmap.triggerRenderOfVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
+		}
+	}
+	
+	@Override
+	public boolean canCreateWorlds()
+	{
+		return createWorldsEnabled;
+	}
+
+	@Override
+	public Set<Material> getMaterialSet(String name)
+	{
+		if (name.contains(",")) {
+			return ConfigurationUtils.parseMaterials(name);
+		}
+		if (!materialSets.containsKey(name)) {
+			return ConfigurationUtils.parseMaterials(name);
+		}
+		return materialSets.get(name);
+	}
+	
+	@Override public int getMaxY() {
+		return Spell.MAX_Y;
+	}
+	
+	@Override
+	public void sendToMages(String message, Location location) {
+		sendToMages(message, location, toggleMessageRange);
+	}
+	
+	@Override
+	public void registerAutomata(Block block, String name, String message) {
+		String chunkId = getChunkKey(block.getChunk());
+		Map<Long, Automaton> toReload = automata.get(chunkId);
+		if (toReload == null) {
+			toReload = new HashMap<Long, Automaton>();
+			automata.put(chunkId, toReload);
+		}
+		Automaton data = new Automaton(block, name, message);
+		toReload.put(data.getId(), data);
+	}
+
+	@Override
+	public boolean unregisterAutomata(Block block) {
+		// Note that we currently don't clean up an empty entry,
+		// purposefully, to prevent thrashing the main map and adding lots
+		// of HashMap creation.
+		String chunkId = getChunkKey(block.getChunk());
+		Map<Long, Automaton> toReload = automata.get(chunkId);
+		if (toReload != null) {
+			toReload.remove(BlockData.getBlockId(block));
+		}
+		
+		return toReload != null;
+	}
+	
+	@Override
+	public int getMaxUndoPersistSize() {
+		return undoMaxPersistSize;
+	}
+
+	@Override
+	public MagicPlugin getPlugin()
+	{
+		return plugin;
+	}
+	
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages()
+	{
+		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mageInterfaces = new ArrayList<com.elmakers.mine.bukkit.api.magic.Mage>(mages.values());
+		return mageInterfaces;
+	}
+
+	@Override
+	public Set<Material> getBuildingMaterials()
+	{
+		return buildingMaterials;
+	}
+
+	@Override
+	public Set<Material> getDestructibleMaterials()
+	{
+		return destructibleMaterials;
+	}
+
+	@Override
+	public Set<Material> getRestrictedMaterials()
+	{
+		return restrictedMaterials;
 	}
 
 	/*
@@ -2665,7 +2676,7 @@ public class MagicController implements Listener
 	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();
 	 private final HashSet<String>				 forgetMages					= new HashSet<String>();
 	 private final HashMap<String, Mage>		 pendingConstruction			= new HashMap<String, Mage>();
-	 private final Map<String, WeakReference<Schematic>>	 schematics			= new HashMap<String, WeakReference<Schematic>>();
+	 private final Map<String, WeakReference<WorldEditSchematic>>	 schematics			= new HashMap<String, WeakReference<WorldEditSchematic>>();
  
 	 private MagicPlugin                         plugin                         = null;
 	 private final File							 configFolder;

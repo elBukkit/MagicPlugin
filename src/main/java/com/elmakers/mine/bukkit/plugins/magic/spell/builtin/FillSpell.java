@@ -7,8 +7,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.BlockList;
-import com.elmakers.mine.bukkit.block.FillBatch;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.batch.FillBatch;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 
 public class FillSpell extends BrushSpell 

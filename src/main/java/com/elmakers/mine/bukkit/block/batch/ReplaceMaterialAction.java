@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.block.batch;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +9,10 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.SimpleBlockAction;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {

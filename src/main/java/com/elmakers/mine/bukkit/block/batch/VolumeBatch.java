@@ -1,12 +1,13 @@
-package com.elmakers.mine.bukkit.block;
+package com.elmakers.mine.bukkit.block.batch;
 
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.block.BlockData;
 
 public abstract class VolumeBatch implements BlockBatch {
-	protected final MagicController controller;
+	protected final MageController controller;
 	private String worldName;
 	
 	protected boolean finished = false;
@@ -18,7 +19,7 @@ public abstract class VolumeBatch implements BlockBatch {
 	private Integer maxy = null;
 	private Integer maxz = null;
 	
-	public VolumeBatch(MagicController controller, String worldName) {
+	public VolumeBatch(MageController controller, String worldName) {
 		this.controller = controller;
 		this.worldName = worldName;
 	}

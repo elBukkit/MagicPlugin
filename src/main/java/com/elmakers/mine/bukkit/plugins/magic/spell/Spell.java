@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
@@ -34,7 +35,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.effect.EffectSingle;
 import com.elmakers.mine.bukkit.effect.EffectTrail;
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -218,21 +218,6 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		}
 	}
 	
-	protected void activate() {
-		onActivate();
-		
-		mage.activateSpell(this);
-		isActive = true;
-	}
-	
-	public void deactivate() {
-		onDeactivate();
-		
-		mage.deactivateSpell(this);
-		isActive = false;
-		sendMessage(getMessage("deactivate"));
-	}
-	
 	protected List<CastingCost> parseCosts(ConfigurationSection node) {
 		if (node == null) {
 			return null;
@@ -245,16 +230,6 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		}
 		
 		return castingCosts;
-	}
-
-	// Override to load custom non-parameter data.
-	public void configure(ConfigurationSection node) {
-	}
-
-	public void loadTemplate(String key, ConfigurationSection node)
-	{
-		this.key = key;
-		this.loadTemplate(node);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -348,11 +323,6 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
 		effectList.add(defaultEffect);
 		effects.put(result, effectList);
-	}
-
-	public void setMage(Mage mage)
-	{
-		this.mage = mage;
 	}
 
 	public boolean isMatch(String spell, String[] params)
@@ -528,12 +498,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	
 	protected void processResult(SpellResult result) {
 		if (mage != null) {
-			mage.processResult(result);
-		}
-		if (result.isSuccess()) {
-			// Notify controller of successful casts,
-			// this if for dynmap display or other global-level processing.
-			controller.onCast(mage, this, result);
+			mage.onCast(this, result);
 		}
 		
 		// Show messaging
@@ -584,7 +549,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return null;
 	}
 	
-	public MaterialAndData getEffectMaterial()
+	public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
 	{
 		return new MaterialAndData(DEFAULT_EFFECT_MATERIAL);
 	}
@@ -660,18 +625,6 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	{
 		this.controller = instance;
 	}
-
-	/**
-	 * Called by the Spells plugin to cancel this spell, do not call.
-	 */
-	public boolean cancel()
-	{
-		boolean cancelled = onCancel();
-		if (cancelled) {
-			sendMessage(getMessage("cancel"));
-		}
-		return cancelled;
-	}
 	
 	public long getCastCount()
 	{
@@ -686,31 +639,6 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 
 	}
 	
-	public Mage getMage() {
-		return mage;
-	}
-	
-	public void load(ConfigurationSection node) {
-		try {
-			castCount = node.getLong("cast_count", 0);
-			lastCast = node.getLong("last_cast", 0);
-			onLoad(node);
-		} catch (Exception ex) {
-			controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
-		}
-	}
-	
-	public void save(ConfigurationSection node) {
-		try {
-			node.set("cast_count", castCount);
-			node.set("last_cast", lastCast);
-			onSave(node);
-		} catch (Exception ex) {
-			controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
-			ex.printStackTrace();
-		}
-	}
-
 	/**
 	 * Called on player data load.
 	 */
@@ -733,6 +661,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	// Cloneable implementation
 	//
 	
+	@Override
 	public Object clone()
 	{
 		try
@@ -749,11 +678,13 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	// CostReducer Implementation
 	//
 	
+	@Override
 	public float getCostReduction()
 	{
 		return costReduction + mage.getCostReduction();
 	}
 	
+	@Override
 	public boolean usesMana() 
 	{
 		return mage.usesMana();
@@ -763,51 +694,67 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	// Public API Implementation
 	//
 	
+	@Override
+	public com.elmakers.mine.bukkit.api.spell.Spell createSpell()
+	{
+		return (Spell)this.clone();
+	}
+	
+	@Override
 	public boolean cast()
 	{
 		return cast(new String[0], null);
 	}
 	
+	@Override
 	public boolean cast(String[] extraParameters)
 	{
 		return cast(extraParameters, null);
 	}
 
+	@Override
 	public final String getKey()
 	{
 		return key;
 	}
 
+	@Override
 	public final String getName()
 	{
 		return name;
 	}
 
+	@Override
 	public final com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon()
 	{
 		return icon;
 	}
 
+	@Override
 	public final String getDescription()
 	{
 		return description;
 	}
 
+	@Override
 	public final String getUsage()
 	{
 		return usage;
 	}
 
+	@Override
 	public final String getCategory()
 	{
 		return category;
 	}
 	
+	@Override
 	public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
 		List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effects.get(result));
 		return effectList;
 	}
 	
+	@Override
 	public Collection<com.elmakers.mine.bukkit.api.spell.CastingCost> getCosts() {
 		if (costs == null) return null;
 		List<com.elmakers.mine.bukkit.api.spell.CastingCost> copy = new ArrayList<com.elmakers.mine.bukkit.api.spell.CastingCost>();
@@ -815,6 +762,7 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return copy;
 	}
 	
+	@Override
 	public Collection<com.elmakers.mine.bukkit.api.spell.CastingCost> getActiveCosts() {
 		if (activeCosts == null) return null;
 		List<com.elmakers.mine.bukkit.api.spell.CastingCost> copy = new ArrayList<com.elmakers.mine.bukkit.api.spell.CastingCost>();
@@ -822,11 +770,13 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 		return copy;
 	}
 	
+	@Override
 	public void getParameters(Collection<String> parameters)
 	{
 		parameters.addAll(Arrays.asList(COMMON_PARAMETERS));
 	}
 	
+	@Override
 	public void getParameterOptions(Collection<String> examples, String parameterKey)
 	{
 		if (parameterKey.equals("duration")) {
@@ -877,11 +827,89 @@ public abstract class Spell implements Comparable<com.elmakers.mine.bukkit.api.s
 	{
 		return duration;
 	}
+
+	@Override
+	public void setMage(Mage mage)
+	{
+		this.mage = mage;
+	}
+	
+	@Override
+	public boolean cancel()
+	{
+		boolean cancelled = onCancel();
+		if (cancelled) {
+			sendMessage(getMessage("cancel"));
+		}
+		return cancelled;
+	}
+	
+	@Override
+	public void activate() {
+		if (!isActive) {
+			isActive = true;
+			onActivate();
+			
+			mage.activateSpell(this);
+		}
+	}
+	
+	@Override
+	public void deactivate() {
+		if (isActive) {
+			isActive = false;
+			onDeactivate();
+			
+			mage.deactivateSpell(this);
+			sendMessage(getMessage("deactivate"));
+		}
+	}
+	
+	@Override
+	public Mage getMage() {
+		return mage;
+	}
+	
+	@Override
+	public void load(ConfigurationSection node) {
+		try {
+			castCount = node.getLong("cast_count", 0);
+			lastCast = node.getLong("last_cast", 0);
+			onLoad(node);
+		} catch (Exception ex) {
+			controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
+		}
+	}
+	
+	@Override
+	public void save(ConfigurationSection node) {
+		try {
+			node.set("cast_count", castCount);
+			node.set("last_cast", lastCast);
+			onSave(node);
+		} catch (Exception ex) {
+			controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
+			ex.printStackTrace();
+		}
+	}
+
+	@Override
+	public void loadTemplate(String key, ConfigurationSection node)
+	{
+		this.key = key;
+		this.loadTemplate(node);
+	}
+	
+	@Override
+	public void tick()
+	{
+		checkActiveDuration();
+		checkActiveCosts();
+	}
 	
 	//
 	// Spell abstract interface
 	//
-
 
 	/**
 	 * Called when this spell is cast.

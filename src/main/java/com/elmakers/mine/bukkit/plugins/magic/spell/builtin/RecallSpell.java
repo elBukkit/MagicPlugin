@@ -15,9 +15,9 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
 import com.elmakers.mine.bukkit.plugins.magic.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.plugins.magic.wand.LostWand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
