@@ -466,6 +466,7 @@ random:
       schematic|blacksmith: 0,0,5,10,100
       schematic|garden_house: 0,5,10,15,100
       schematic|compact_house: 5,10,15,20,100
+      schematic|small_house: 5,10,15,20,100
       schematic|beacon: 0,5,10,15,100
       schematic|flare_beacon: 0,0,1,10,100
       schematic|tech_tower: 0,0,1,5,100
@@ -743,6 +744,7 @@ engineer:
         - schematic:church
         - schematic:blacksmith
         - schematic:compact_house
+        - schematic:small_house
         - schematic:elder_tree
         - schematic:garden_house
         - schematic:beacon
@@ -1599,6 +1601,7 @@ wolf:
         - schematic:church
         - schematic:blacksmith
         - schematic:compact_house
+        - schematic:small_house
         - schematic:elder_tree
         - schematic:garden_house
         - schematic:stash_chest
