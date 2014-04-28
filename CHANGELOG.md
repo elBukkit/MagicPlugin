@@ -8,6 +8,9 @@
  - Automata can now randomly choose from a set of spells to cast, and have multiple difficult levels
  - The Curse spell will now temporarily cripple a Mage
  - A slightly better/hackier work-around for annoying Bukkit drag event
+ - Large code refactor, move base spell classes to MagicLib. 
+   * Devs can now add custom spells to your Plugin without building against MagicPlugin.
+   * MagicLib has no dependencies other than MagicAPI and Bukkit.
 
 ## 3.0
 

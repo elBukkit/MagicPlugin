@@ -2,17 +2,12 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -246,21 +241,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {
-		// Place directly in hand if possible
-		PlayerInventory inventory = player.getInventory();
-		ItemStack inHand = inventory.getItemInHand();
-		if (inHand == null || inHand.getType() == Material.AIR) {
-			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
-			if (Wand.isWand(itemStack)) {
-				Wand wand = new Wand(controller, itemStack);
-				wand.activate(controller.getMage(player));
-			}
-		} else {
-			HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
-			if (returned.size() > 0) {
-				player.getWorld().dropItem(player.getLocation(), itemStack);
-			}
-		}
+		controller.giveItemToPlayer(player, itemStack);
 	}
 
 	@Override
@@ -307,16 +288,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public Collection<String> getPlayerNames() {
-		List<String> playerNames = new ArrayList<String>();
-		List<World> worlds = Bukkit.getWorlds();
-		for (World world : worlds) {
-			List<Player> players = world.getPlayers();
-			for (Player player : players) {
-				if (player.hasMetadata("NPC")) continue;
-				playerNames.add(player.getName());
-			}
-		}
-		return playerNames;
+		return controller.getPlayerNames();
 	}
 
 	@Override
@@ -336,6 +308,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public Collection<String> getBrushes() {
-		return controller.getMaterials();
+		return controller.getBrushKeys();
 	}
 }

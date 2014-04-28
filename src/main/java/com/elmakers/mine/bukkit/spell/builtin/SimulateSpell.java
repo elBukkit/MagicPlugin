@@ -243,7 +243,7 @@ public class SimulateSpell extends BlockSpell {
 		super.getParameterOptions(examples, parameterKey);
 		
 		if (parameterKey.equals("material")) {
-			examples.addAll(controller.getMaterials());
+			examples.addAll(controller.getBrushKeys());
 		} else if (parameterKey.equals("radius") || parameterKey.equals("yradis")) {
 			examples.addAll(Arrays.asList(EXAMPLE_SIZES));
 		} else if (parameterKey.equals("target_mode")) {

@@ -30,6 +30,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -89,8 +90,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.WorldEditSchematic;
 import com.elmakers.mine.bukkit.block.UndoQueue;
+import com.elmakers.mine.bukkit.block.WorldEditSchematic;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -138,18 +139,6 @@ public class MagicController implements Listener, MageController
 		defaultsFolder = new File(configFolder, "defaults");
 		defaultsFolder.mkdirs();
 	}
-
-	public Mage getMage(Player player)
-	{
-		if (player == null) return null;
-		String id = player.getUniqueId().toString();
-		
-		// Check for Citizens NPC!
-		if (player.hasMetadata("NPC")) {
-			id = "NPC-" + player.getName();
-		}
-		return getMage(id, player);
-	}
 	
 	public Mage getMage(String mageId, CommandSender commandSender)
 	{
@@ -181,24 +170,6 @@ public class MagicController implements Listener, MageController
 			mage.setPlayer((Player)commandSender);
 		}
 		return mage;
-	}
-	
-	public Mage getMage(CommandSender commandSender)
-	{
-		String mageId = "COMMAND";
-		if (commandSender instanceof ConsoleCommandSender) {
-			mageId = "CONSOLE";
-		} else if (commandSender instanceof Player) {
-			mageId = ((Player)commandSender).getUniqueId().toString();
-		} else if (commandSender instanceof BlockCommandSender) {
-			BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
-			String commandName = commandBlock.getName();
-			if (commandName != null && commandName.length() > 0) {
-				mageId = "COMMAND-" + commandBlock.getName();
-			}
-		}
-		
-		return getMage(mageId, commandSender);
 	}
 	
 	protected void loadMage(String playerId, ConfigurationSection node)
@@ -289,15 +260,6 @@ public class MagicController implements Listener, MageController
 			spells.put(variant.getKey(), variant);
 		}
 	}
-
-	/*
-	 * Material use system
-	 */
-	
-	public Collection<String> getMaterialSets()
-	{
-		return materialSets.keySet();
-	}
 	
 	public float getMaxDamagePowerMultiplier() {
 		return maxDamagePowerMultiplier;
@@ -343,28 +305,6 @@ public class MagicController implements Listener, MageController
 		return pendingQueueDepth;
 	}
 
-	public Mage undoAny(Block target)
-	{
-		for (Mage mage : mages.values())
-		{
-			if (mage.undo(target))
-			{
-				return mage;
-			}
-		}
-
-		return null;
-	}
-	
-	public boolean commitAll()
-	{
-		boolean undid = false;
-		for (Mage mage : mages.values()) {
-			undid = mage.commit() || undid;
-		}
-		return undid;
-	}
-
 	/*
 	 * Random utility functions
 	 */
@@ -387,11 +327,6 @@ public class MagicController implements Listener, MageController
 	public boolean showMessages()
 	{
 		return showMessages;
-	}
-	
-	public int getMessageThrottle()
-	{
-		return messageThrottle;
 	}
 
 	public boolean soundsEnabled()
@@ -457,12 +392,6 @@ public class MagicController implements Listener, MageController
 		allowed = allowed && factionsManager.hasBuildPermission(player, block);
 		
 		return allowed;
-	}
-	
-	public boolean isPVPAllowed(Location location)
-	{
-		if (bypassPvpPermissions) return true;
-		return worldGuardManager.isPVPAllowed(location);
 	}
 	
 	public boolean schematicsEnabled() {
@@ -542,7 +471,8 @@ public class MagicController implements Listener, MageController
 		return null;
 	}
 
-	public Collection<String> getMaterials() {
+	@Override
+	public Collection<String> getBrushKeys() {
 		List<String> names = new ArrayList<String>();
 		Material[] materials = Material.values();
 		for (Material material : materials) {
@@ -1377,14 +1307,6 @@ public class MagicController implements Listener, MageController
 		allSpells.addAll(spells.values());
 		return allSpells;
 	}
-
-	public void disablePhysics(int interval)
-	{
-		if (physicsHandler == null) {
-			physicsHandler = new PhysicsHandler(this, interval);
-			Bukkit.getPluginManager().registerEvents(physicsHandler, plugin);
-		}
-	}
 	
 	protected void unregisterPhysicsHandler(Listener listener)
 	{
@@ -1907,10 +1829,29 @@ public class MagicController implements Listener, MageController
 		} else if (mage.isNewPlayer() && welcomeWand.length() > 0) {
 			wand = Wand.createWand(this, welcomeWand);
 			if (wand != null) {
-				plugin.giveItemToPlayer(player, wand.getItem());
+				giveItemToPlayer(player, wand.getItem());
 				getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
 			} else {
 				getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+			}
+		}
+	}
+	
+	@Override
+	public void giveItemToPlayer(Player player, ItemStack itemStack) {
+		// Place directly in hand if possible
+		PlayerInventory inventory = player.getInventory();
+		ItemStack inHand = inventory.getItemInHand();
+		if (inHand == null || inHand.getType() == Material.AIR) {
+			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
+			if (Wand.isWand(itemStack)) {
+				Wand wand = new Wand(this, itemStack);
+				wand.activate(this.getMage((CommandSender)player));
+			}
+		} else {
+			HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
+			if (returned.size() > 0) {
+				player.getWorld().dropItem(player.getLocation(), itemStack);
 			}
 		}
 	}
@@ -2328,10 +2269,14 @@ public class MagicController implements Listener, MageController
 		return spells.get(name);
 	}
 	
-	public void toggleCastCommandOverrides(Mage mage, boolean override) {
-		mage.setCostReduction(override ? castCommandCostReduction : 0);
-		mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
-		mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
+	public void toggleCastCommandOverrides(com.elmakers.mine.bukkit.api.magic.Mage _mage, boolean override) {
+		// Reach into internals a bit here.
+		if (_mage instanceof Mage) {
+			Mage mage = (Mage)_mage;
+			mage.setCostReduction(override ? castCommandCostReduction : 0);
+			mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
+			mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);	
+		}
 	}
 	
 	public float getCooldownReduction() {
@@ -2340,14 +2285,6 @@ public class MagicController implements Listener, MageController
 	
 	public float getCostReduction() {
 		return costReduction;
-	}
-	
-	public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message) {
-		if (mailer != null) {
-			return mailer.sendMail(sender, fromPlayer, toPlayer, message);
-		}
-		
-		return false;
 	}
 	
 	public Material getDefaultMaterial() {
@@ -2366,7 +2303,7 @@ public class MagicController implements Listener, MageController
 		return all;
 	}
 	
-	public boolean cast(Mage mage, String spellName, String[] parameters, CommandSender sender, Player player)
+	public boolean cast(com.elmakers.mine.bukkit.api.magic.Mage mage, String spellName, String[] parameters, CommandSender sender, Player player)
 	{
 		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
 		Location targetLocation = null;
@@ -2467,11 +2404,6 @@ public class MagicController implements Listener, MageController
 	
 	public boolean getIndestructibleWands() {
 		return indestructibleWands;
-	}
-	
-	public Location getWarp(String warpName) {
-		if (warpController == null) return null;
-		return warpController.getWarp(warpName);
 	}
 	
 	public void forgetMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
@@ -2603,6 +2535,119 @@ public class MagicController implements Listener, MageController
 	public Set<Material> getRestrictedMaterials()
 	{
 		return restrictedMaterials;
+	}
+	
+	@Override
+	public int getMessageThrottle()
+	{
+		return messageThrottle;
+	}
+
+	protected Mage getMage(Player player)
+	{
+		if (player == null) return null;
+		String id = player.getUniqueId().toString();
+		
+		// Check for Citizens NPC!
+		if (player.hasMetadata("NPC")) {
+			id = "NPC-" + player.getUniqueId();
+		}
+		return getMage(id, player);
+	}
+	
+	@Override
+	public com.elmakers.mine.bukkit.api.magic.Mage getMage(CommandSender commandSender)
+	{
+		String mageId = "COMMAND";
+		if (commandSender instanceof ConsoleCommandSender) {
+			mageId = "CONSOLE";
+		} else if (commandSender instanceof Player) {
+			return getMage((Player)commandSender);
+		} else if (commandSender instanceof BlockCommandSender) {
+			BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
+			String commandName = commandBlock.getName();
+			if (commandName != null && commandName.length() > 0) {
+				mageId = "COMMAND-" + commandBlock.getName();
+			}
+		}
+		
+		return getMage(mageId, commandSender);
+	}
+	
+	@Override
+	public Collection<String> getMaterialSets()
+	{
+		return materialSets.keySet();
+	}
+	
+	@Override
+	public Collection<String> getPlayerNames() 
+	{
+		List<String> playerNames = new ArrayList<String>();
+		List<World> worlds = Bukkit.getWorlds();
+		for (World world : worlds) {
+			List<Player> players = world.getPlayers();
+			for (Player player : players) {
+				if (player.hasMetadata("NPC")) continue;
+				playerNames.add(player.getName());
+			}
+		}
+		return playerNames;
+	}
+
+	@Override
+	public void disablePhysics(int interval)
+	{
+		if (physicsHandler == null) {
+			physicsHandler = new PhysicsHandler(this, interval);
+			Bukkit.getPluginManager().registerEvents(physicsHandler, plugin);
+		}
+	}
+	
+	@Override
+	public boolean commitAll()
+	{
+		boolean undid = false;
+		for (Mage mage : mages.values()) {
+			undid = mage.commit() || undid;
+		}
+		return undid;
+	}
+	
+	@Override
+	public boolean isPVPAllowed(Location location)
+	{
+		if (bypassPvpPermissions) return true;
+		return worldGuardManager.isPVPAllowed(location);
+	}
+	
+	@Override
+	public Location getWarp(String warpName) {
+		if (warpController == null) return null;
+		return warpController.getWarp(warpName);
+	}
+	
+	@Override
+	public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message) {
+		if (mailer != null) {
+			return mailer.sendMail(sender, fromPlayer, toPlayer, message);
+		}
+		
+		return false;
+	}
+
+	@Override
+	public Mage undoAny(Block target)
+	{
+		for (Mage mage : mages.values())
+		{
+			if (mage.undo(target))
+			{
+				return mage;
+			}
+		}
+
+		return null;
 	}
 
 	/*
