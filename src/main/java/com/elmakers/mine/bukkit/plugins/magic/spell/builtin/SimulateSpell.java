@@ -1,10 +1,13 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,13 +21,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class SimulateSpell extends BlockSpell {
 	
@@ -36,9 +38,8 @@ public class SimulateSpell extends BlockSpell {
 	};
 	
 	private static final int DEFAULT_RADIUS = 32;
-	
-	private LinkedList<WeightedPair<String>> tickSpells = null;
-	private LinkedList<WeightedPair<String>> deathSpells = null;
+
+	private TreeMap<Integer, AutomatonLevel> levelMap = null;
 	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) {
@@ -154,8 +155,13 @@ public class SimulateSpell extends BlockSpell {
 		if (parameters.contains("diagonal_birth_rules")) {
 			batch.setDiagonalBirthRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_birth_rules"));
 		}
+
 		
+		batch.setBirthRange(parameters.getInt("birth_range", 0));
+		batch.setLiveRange(parameters.getInt("live_range", 0));
+		batch.setConcurrent(parameters.getBoolean("concurrent", false));
 		batch.setCastRange(parameters.getInt("cast_range", 16));
+		int delay = parameters.getInt("delay", 0);
 		
 		boolean includeCommands = parameters.getBoolean("animate", false);
 		if (includeCommands) {
@@ -189,21 +195,19 @@ public class SimulateSpell extends BlockSpell {
 			batch.setTargetType(targetType);
 			batch.setMinHuntRange(parameters.getInt("target_min_range", 4));
 			batch.setMaxHuntRange(parameters.getInt("target_max_range", 128));
-
-			batch.setTickCast(tickSpells);
-			batch.setDeathCast(deathSpells);
-					
-			batch.target(targetMode);
-			
 			batch.setDrop(parameters.getString("drop"), parameters.getInt("drop_xp", 0));
+
+			int level = parameters.getInt("level", 1);
+			if (level < 1) level = 1;
+			if (levelMap != null) {
+				AutomatonLevel automatonLevel = levelMap.get(level);
+				batch.setLevel(automatonLevel);
+				delay = automatonLevel.getDelay(delay);
+			}
+			batch.target(targetMode);
 		}
 		
-		batch.setBirthRange(parameters.getInt("birth_range", 0));
-		batch.setLiveRange(parameters.getInt("live_range", 0));
-		batch.setConcurrent(parameters.getBoolean("concurrent", false));
-		
 		// delay is in ms, gets converted.
-		int delay = parameters.getInt("delay", 0);
 		// 1000 ms in a second, 20 ticks in a second - 1000 / 20 = 50.
 		delay /= 50;
 		
@@ -257,17 +261,33 @@ public class SimulateSpell extends BlockSpell {
 		}
 	}
 	
+	static final Integer[] emptyList = {};
+	
 	@Override
 	protected void loadTemplate(ConfigurationSection template)
 	{
 		super.loadTemplate(template);
-		if (template.contains("cast")) {
-			tickSpells = new LinkedList<WeightedPair<String>>();
-			RandomUtils.populateStringProbabilityMap(tickSpells, template.getConfigurationSection("cast"));
-		}
-		if (template.contains("death_cast")) {
-			deathSpells = new LinkedList<WeightedPair<String>>();
-			RandomUtils.populateStringProbabilityMap(deathSpells, template.getConfigurationSection("death_cast"));
+		
+		if (template.contains("levels")) {
+			ConfigurationSection levelTemplate = template.getConfigurationSection("levels");
+			Collection<String> levelKeys = levelTemplate.getKeys(false);
+			List<Integer> levels = new ArrayList<Integer>(levelKeys.size());
+			for (String levelString : levelKeys) {
+				levels.add(Integer.parseInt(levelString));
+			}
+			
+			if (levels.size() == 0) return;
+			
+			levelMap = new TreeMap<Integer, AutomatonLevel>();	
+			Collections.sort(levels);
+			
+			Integer[] levelsArray = levels.toArray(emptyList);
+			for (int level = 1; level <= levelsArray[levelsArray.length - 1]; level++) {
+				levelMap.put(level, new AutomatonLevel(level, levelsArray, template));
+			}
+		} else {
+			levelMap = new TreeMap<Integer, AutomatonLevel>();
+			levelMap.put(1, new AutomatonLevel(1, null, template));
 		}
 	}
 }

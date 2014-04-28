@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.plugins.magic.spell.builtin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -18,13 +20,18 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.SimulateBatch;
+import com.elmakers.mine.bukkit.utilities.TextUtils;
+import com.elmakers.mine.bukkit.utility.AscendingPair;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class AnimateSpell extends SimulateSpell 
 {
 	private static Random random = new Random();
-	
+	private LinkedList<WeightedPair<Integer>> levelWeights = null;
+
 	public final static String[] ANIMATE_PARAMETERS = {
 		"animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget"
 	};
@@ -91,12 +98,21 @@ public class AnimateSpell extends SimulateSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
+		// Look for randomized levels
+		int level = 0;
+		if (parameters.contains("level")) {
+			level = parameters.getInt("level", level);
+		}
+		else if (levelWeights != null) {
+			level = RandomUtils.weightedRandom(levelWeights);
+		}
+		
 		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
 		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 		
 		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 bu true m " 
 				+ targetMaterial.getKey() +
-				" cd " + (simCheckDestructible ? "true" : "false");
+				" cd " + (simCheckDestructible ? "true" : "false") + " level " + level;
 		String commandName = parameters.getString("name", "Automata");
 		
 		String automataType = parameters.getString("message_type", "evil");
@@ -106,9 +122,15 @@ public class AnimateSpell extends SimulateSpell
 		commandName = prefixes.get(random.nextInt(prefixes.size())) 
 				+ " " + commandName + " " + suffixes.get(random.nextInt(suffixes.size()));
 		
+		if (level > 1) 
+		{
+			commandName += " " + escapeLevel("automata.level", level);
+		}
+		
 		targetBlock.setType(Material.COMMAND);
 		BlockState commandData = targetBlock.getState();
-		if (commandData == null || !(commandData instanceof CommandBlock)) {
+		if (commandData == null || !(commandData instanceof CommandBlock)) 
+		{
 			return SpellResult.FAIL;
 		}
 			
@@ -151,5 +173,46 @@ public class AnimateSpell extends SimulateSpell
 	{
 		super.getParameters(parameters);
 		parameters.addAll(Arrays.asList(ANIMATE_PARAMETERS));
+	}
+	
+	@Override
+	protected void loadTemplate(ConfigurationSection template)
+	{
+		super.loadTemplate(template);
+		
+		if (template.contains("levels")) {
+			ConfigurationSection levelTemplate = template.getConfigurationSection("levels");
+			Collection<String> levelKeys = levelTemplate.getKeys(false);
+			
+			List<AscendingPair<Float>> levels = new ArrayList<AscendingPair<Float>>();
+			
+			for (String levelString : levelKeys) {
+				int level =  Integer.parseInt(levelString);
+				double weight = levelTemplate.getDouble(levelString);
+				levels.add(new AscendingPair<Float>(level, (float)weight));
+			};
+			
+			RandomUtils.extrapolateFloatList(levels);
+			
+			levelWeights = new LinkedList<WeightedPair<Integer>>();
+			float threshold = 0;
+			for (AscendingPair<Float> level : levels) {
+				float weight = level.getValue();
+				int levelIndex = (int)level.getIndex();
+				threshold += weight;
+				levelWeights.add(new WeightedPair<Integer>(threshold, levelIndex));
+			}
+		} else {
+			levelWeights = null;
+		}
+	}
+	
+	protected static String escapeLevel(String templateName, int level)
+	{
+		String templateString = Messages.get(templateName);
+		if (templateString.contains("$roman")) {
+			return templateString.replace("$roman", TextUtils.roman(level));
+		}
+		return templateString.replace("$amount", Integer.toString((int)level));
 	}
 }

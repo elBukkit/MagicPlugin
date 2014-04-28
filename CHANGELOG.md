@@ -5,7 +5,7 @@
  - Automata won't target cross-world
  - Recall won't warp cross-world, too confusing
  - Make the wand enchantable item swapping optional, and off by default.
- - Automata can now randomly choose from a set of spells to cast
+ - Automata can now randomly choose from a set of spells to cast, and have multiple difficult levels
  - The Curse spell will now temporarily cripple a Mage
  - A slightly better/hackier work-around for annoying Bukkit drag event
 

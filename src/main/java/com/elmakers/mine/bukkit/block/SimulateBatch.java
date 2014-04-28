@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,15 +21,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.plugins.magic.Mage;
 import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
 import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
@@ -65,8 +61,7 @@ public class SimulateBatch extends VolumeBatch {
 	private TargetType targetType = TargetType.PLAYER;
 	private String castCommand;
 	private String commandName;
-	private LinkedList<WeightedPair<String>> tickSpells;
-	private LinkedList<WeightedPair<String>> deathSpells;
+	private AutomatonLevel level;
 	private String dropItem;
 	private int dropXp;
 	private boolean reverseTargetDistanceScore = false;
@@ -192,41 +187,11 @@ public class SimulateBatch extends VolumeBatch {
 			castCommandBlock.setType(Material.AIR);
 		}
 		
-		// Cast death spell
-		if (deathSpells != null && deathSpells.size() > 0) {
-			String deathSpell = RandomUtils.weightedRandom(deathSpells);
-			if (deathSpell != null && deathSpell.length() > 0) {
-				castSpell(deathSpell);
-			}
+		if (level != null) {
+			level.onDeath(mage, birthMaterial);
 		}
 		if (!mage.isPlayer()) {
 			controller.forgetMage(mage);
-		}
-	}
-	
-	protected void castSpell(String spellCommand) {
-		if (spellCommand == null || spellCommand.length() == 0 || spellCommand.equals("none")) return;
-		
-		String[] pieces = null;
-		if (spellCommand.contains(" ")) {
-			pieces = StringUtils.split(spellCommand, ' ');
-			spellCommand = pieces[0];
-		}
-
-		String[] parameters = null;
-		if (pieces != null && pieces.length > 1) {
-			parameters = new String[pieces.length - 1];
-			for (int i = 1; i < pieces.length; i++) {
-				parameters[i - 1] = pieces[i].replace("$birth", birthMaterial.getKey());
-			}
-		}
-		
-		Spell spell = mage.getSpell(spellCommand);
-		if (spell != null) {
-			if (DEBUG) {
-				controller.getLogger().info(commandName + " casting " + spellCommand + " @ " + center);
-			}
-			spell.cast(parameters);
 		}
 	}
 	
@@ -616,12 +581,14 @@ public class SimulateBatch extends VolumeBatch {
 		this.dropXp = dropXp;
 	}
 	
-	public void setTickCast(LinkedList<WeightedPair<String>> cast) {
-		tickSpells = cast;
-	}
-	
-	public void setDeathCast(LinkedList<WeightedPair<String>> cast) {
-		deathSpells = cast;
+	public void setLevel(AutomatonLevel level) {
+		this.level = level;
+		this.commandMoveRangeSquared = level.getMoveRangeSquared(commandMoveRangeSquared);
+		this.dropXp = level.getDropXp(dropXp);
+		this.liveRangeSquared = level.getLiveRangeSquared(liveRangeSquared);
+		this.birthRangeSquared = level.getBirthRangeSquared(birthRangeSquared);
+		this.radius = level.getRadius(radius);
+		this.yRadius = level.getYRadius(yRadius);
 	}
 	
 	public void setBirthRange(int range) {
@@ -743,11 +710,8 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				*/
 				
-				if (tickSpells != null && tickSpells.size() > 0 && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
-					String tickSpell = RandomUtils.weightedRandom(tickSpells);
-					if (tickSpell.length() > 0) {
-						castSpell(tickSpell);
-					}
+				if (level != null && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
+					level.onTick(mage, birthMaterial);
 				}
 			}
 			break;

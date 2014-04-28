@@ -1067,6 +1067,7 @@ wands:
 automata:
     awaken: "&c&o$name &r&5has awakened"
     default_name: Automaton
+    level: Level $roman
     good:
        prefixes:
            - Holy

@@ -1166,7 +1166,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return getLevelString(templateName, amount, 1);
 	}
 	
-	private String getLevelString(String templateName, float amount, float max)
+	private static String getLevelString(String templateName, float amount, float max)
 	{
 		String templateString = Messages.get(templateName);
 		if (templateString.contains("$roman")) {
@@ -1175,7 +1175,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return templateString.replace("$amount", Integer.toString((int)amount));
 	}
 
-	private String getRomanString(float amount) {
+	private static String getRomanString(float amount) {
 		String roman = "";
 
 		if (amount > 1) {
