@@ -8,8 +8,8 @@ import net.dandielo.citizens.traders_v3.utils.items.ItemAttr;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.wand.Wand;
 
 public abstract class NBTItemAttr extends ItemAttr 
 {

@@ -1,5 +1,5 @@
 name: Magic
-main: com.elmakers.mine.bukkit.plugins.magic.MagicPlugin
+main: com.elmakers.mine.bukkit.magic.MagicPlugin
 version: 3.1
 website: http://mine.elmakers.com
 author: NathanWolf

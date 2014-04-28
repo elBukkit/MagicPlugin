@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
+import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class FillBatch extends VolumeBatch {
 	private final BlockList filledBlocks = new BlockList();

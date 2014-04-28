@@ -6,7 +6,7 @@ import net.dandielo.citizens.traders_v3.utils.items.ItemFlag;
 
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class TradersController {
 	

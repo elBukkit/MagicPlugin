@@ -14,7 +14,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.plugins.magic.Mage;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue

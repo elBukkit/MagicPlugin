@@ -24,13 +24,13 @@ import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.plugins.magic.spell.BrushSpell;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class ConstructBatch extends VolumeBatch {

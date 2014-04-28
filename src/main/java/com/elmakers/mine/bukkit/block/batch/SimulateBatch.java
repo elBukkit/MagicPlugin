@@ -25,12 +25,12 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
-import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.wand.Wand;
 
 public class SimulateBatch extends VolumeBatch {
 	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 

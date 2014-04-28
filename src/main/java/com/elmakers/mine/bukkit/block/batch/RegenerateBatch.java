@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.BoundingBox;
-import com.elmakers.mine.bukkit.plugins.magic.spell.BlockSpell;
+import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class RegenerateBatch extends VolumeBatch {
 	private final BlockList regeneratedBlocks = new BlockList();

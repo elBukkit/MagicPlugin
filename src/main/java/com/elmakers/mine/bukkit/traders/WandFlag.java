@@ -9,8 +9,8 @@ import net.dandielo.citizens.traders_v3.utils.items.ItemFlag;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.wand.Wand;
 
 @Attribute(name = "Magic Wand", key = ".wand")
 public class WandFlag extends ItemFlag {

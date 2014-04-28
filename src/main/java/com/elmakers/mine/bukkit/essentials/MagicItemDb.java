@@ -5,8 +5,8 @@ import net.ess3.api.IEssentials;
 import org.bukkit.inventory.ItemStack;
 
 import com.earth2me.essentials.ItemDb;
-import com.elmakers.mine.bukkit.plugins.magic.MagicController;
-import com.elmakers.mine.bukkit.plugins.magic.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.wand.Wand;
 
 public class MagicItemDb extends ItemDb {
 	
