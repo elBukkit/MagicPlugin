@@ -385,10 +385,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 	public void setInventoryContents(ItemStack[] contents) {
 		inventoryContents = contents;
 	}
-	
-	public void setCommandLine(String command) {
-		commandLine = command;
-	}
 
 	@SuppressWarnings("deprecation")
 	public ItemStack getItemStack(int amount)
@@ -471,5 +467,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 		materialName = materialName.toLowerCase().replace('_', ' ');
 		
 		return materialName;
+	}
+	
+	@Override
+	public void setCommandLine(String command) {
+		commandLine = command;
+	}
+	
+	@Override
+	public String getCommandLine() {
+		return commandLine;
+	}
+	
+	@Override
+	public void setData(byte data) {
+		this.data = data;
 	}
 }
