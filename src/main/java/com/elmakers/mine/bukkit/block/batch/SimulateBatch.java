@@ -695,29 +695,19 @@ public class SimulateBatch extends VolumeBatch {
 					controller.getLogger().info(" *Tracking " + targetDescription + 
 				 		" score: " + bestTarget.getScore() + " location: " + center + " -> " + bestTarget.getLocation() + " move " + commandMoveRangeSquared);
 				}
+				Vector direction = null;
+				
 				if (targetMode == TargetMode.DIRECTED) {
-					Vector direction = bestTarget.getLocation().getDirection();
-					
-					// TODO: Use location.setDirection in 1.7+
-					center = CompatibilityUtils.setDirection(center, direction);
+					direction = bestTarget.getLocation().getDirection();
 					if (DEBUG) {
-						controller.getLogger().info(" *Directed: " + direction); 
+						controller.getLogger().info(" *Directed: " + direction);
 					}
 				} else {
 					Location targetLocation = bestTarget.getLocation();
-					// Only flee along X/Z
-					Vector direction = null;
-					
-					if (targetMode == TargetMode.FLEE) {
-						direction = center.toVector().subtract(targetLocation.toVector());
-						// Don't Flee upward
-						if (direction.getY() > 0) {
-							direction.setY(-direction.getY());
-						}
-					} else {
-						direction = targetLocation.toVector().subtract(center.toVector());
-					}
-					
+					direction = targetLocation.toVector().subtract(center.toVector());
+				}
+				
+				if (direction != null) {
 					// TODO: Use location.setDirection in 1.7+
 					center = CompatibilityUtils.setDirection(center, direction);
 				}
@@ -734,6 +724,15 @@ public class SimulateBatch extends VolumeBatch {
 				
 				if (level != null && center.distanceSquared(bestTarget.getLocation()) < castRange * castRange) {
 					level.onTick(mage, birthMaterial);
+				}
+				
+				// After ticking, re-position for movement. This way spells still fire towards the target.
+				if (targetMode == TargetMode.FLEE) {
+					direction = direction.multiply(-1);
+					// Don't Flee upward
+					if (direction.getY() > 0) {
+						direction.setY(-direction.getY());
+					}
 				}
 			}
 			break;

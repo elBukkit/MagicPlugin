@@ -303,13 +303,13 @@ virus:
     delay: 3500,3000,2500
     drop_xp: 800,900,1000
     cast:
-        "boom transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 100,100,100
-        "arrowrain transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 50,70,90
-        "sniper transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 50,90,200
-        "neutron transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 5,10,20
-        "mob transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 5,10,10
-        "lightning transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 50,70,90
-        "storm transparent air,$birth,command,redstone_block pdx *-1 pdy *-1 pdz *-1 range 48": 10,20,50
+        "boom transparent air,$birth,command,redstone_block range 48": 100,100,100
+        "arrowrain transparent air,$birth,command,redstone_block range 48": 50,70,90
+        "sniper transparent air,$birth,command,redstone_block range 48": 50,90,200
+        "neutron transparent air,$birth,command,redstone_block range 48": 5,10,20
+        "mob transparent air,$birth,command,redstone_block range 48": 5,10,10
+        "lightning transparent air,$birth,command,redstone_block range 48": 50,70,90
+        "storm transparent air,$birth,command,redstone_block range 48": 10,20,50
         "none": 100,80,50
     death_cast:
         neutron: 100,200,300
