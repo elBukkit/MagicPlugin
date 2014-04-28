@@ -1,10 +1,11 @@
-package com.elmakers.mine.bukkit.effect;
+package com.elmakers.mine.bukkit.effect.builtin;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.effect.EffectRepeating;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class EffectTrail extends EffectRepeating {
