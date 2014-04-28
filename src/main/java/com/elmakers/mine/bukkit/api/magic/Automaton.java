@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.api.magic;
 
-import org.bukkit.util.BlockVector;
+import com.elmakers.mine.bukkit.api.block.BlockData;
 
 /**
  * Represents an Automaton, which is generally a command block
@@ -9,22 +9,7 @@ import org.bukkit.util.BlockVector;
  * This class handles tracking these "Entities", and will toggle
  * the redstone block on chunk reload, re-enabling the Automaton.
  */
-public interface Automaton {
-	/**
-	 * Get the location of this Automaton's redstone block
-	 * power source
-	 * 
-	 * @return BlockVector power location
-	 */
-	public BlockVector getLocation();
-
-	/**
-	 * Get which World this Automaton is in, by name.
-	 * 
-	 * @return String the name of the world
-	 */
-	public String getWorldName();
-	
+public interface Automaton extends BlockData {
 	/**
 	 * Get the name of this Automaton. This most likely
 	 * matches the name of the command block and Mage

@@ -1,16 +1,28 @@
 package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.block.BlockList;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellEventType;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 /**
@@ -206,4 +218,85 @@ public interface Mage extends CostReducer {
 	 * @return The Spell instance for this Mage, or null if the Mage does not have access to this Spell.
 	 */
 	public Spell getSpell(String key);
+	
+	/**
+	 * Set a Spell as "active". An "active" spell is generally a toggleable on/off
+	 * spell. These spells may be draining mana/xp while they are active, and
+	 * may self-deactivate after a specific duration, or if their resources deplete.
+	 * 
+	 * @param spell The spell to activate.
+	 */
+	public void activateSpell(Spell spell);
+	
+	/**
+	 * Deactivate a currently active spell. A spell may call this to deactivate
+	 * itself.
+	 * 
+	 * If the given spell is not currently active, nothing will happen.
+	 * 
+	 * @param spell The spell to deactivate
+	 */
+	public void deactivateSpell(Spell spell);
+	
+	/**
+	 * Deactivate all active spells for this Mage.
+	 */
+	public void deactivateAllSpells();
+	
+	public boolean isCooldownFree();
+	public float getCooldownReduction();
+	public boolean isCostFree();
+	public float getCostReduction();
+	
+	public boolean isSuperPowered();
+	public boolean isSuperProtected();
+	
+	public float getRangeMultiplier();
+	public float getDamageMultiplier();
+	public float getRadiusMultiplier();
+	public float getConstructionMultiplier();
+	
+	public Color getEffectColor();
+	public float getPower();
+	
+	public boolean isPlayer();
+	public boolean isOnline();
+	public boolean isDead();
+	public boolean hasLocation();
+	
+	public void setLocation(Location location);
+	
+	/**
+	 * This should be called by a Spell upon
+	 * completion, to notify the Mage that it cast a spell.
+	 * 
+	 * @param result The result of the cast.
+	 */
+	public void onCast(Spell spell, SpellResult result);
+	
+	public boolean isRestricted(Material material);
+	public Set<Material> getRestrictedMaterials();
+	
+	public MageController getController();
+	public boolean hasBuildPermission(Block block);
+	public boolean isIndestructible(Block block);
+	public boolean isDestructible(Block block);
+	
+	public boolean registerForUndo(BlockList blocks);
+	
+	public Inventory getInventory();
+	
+	public MaterialBrush getBrush();
+	
+	public void removeExperience(int xp);
+	public int getExperience();
+	
+	public boolean addPendingBlockBatch(BlockBatch batch);
+	
+	public void registerEvent(SpellEventType type, Listener spell);
+	public void unregisterEvent(SpellEventType type, Listener spell);
+	
+	public UndoQueue getUndoQueue();
+	public List<LostWand> getLostWands();
+	public Location getLastDeathLocation();
 }

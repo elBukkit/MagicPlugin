@@ -11,6 +11,7 @@ public interface MaterialAndData {
 	public void updateFrom(Block block);
 	public void modify(Block block);
 	public byte getData();
+	public void setData(byte data);
 	public Material getMaterial();
 	public String getKey();
 	public String getName();
@@ -18,4 +19,6 @@ public interface MaterialAndData {
 	public boolean isDifferent(Block block);
 	public ItemStack getItemStack(int amount);
 	public boolean isValid();
+	public String getCommandLine();
+	public void setCommandLine(String commandLine);
 }

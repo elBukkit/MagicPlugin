@@ -4,6 +4,7 @@
 
  - Add some automata-related API methods.
  - Add getDuration and getCooldown methods to SpellTemplate.
+ - Add a ton of new API interfaces and methods for interacting with Mages and Spells.
 
 ## 1.2
 

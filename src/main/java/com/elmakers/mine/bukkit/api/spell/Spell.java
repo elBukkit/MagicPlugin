@@ -2,9 +2,12 @@ package com.elmakers.mine.bukkit.api.spell;
 
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.api.magic.Mage;
 
 /**
  * Represents a Spell that may be cast by a Mage.
@@ -23,6 +26,7 @@ import org.bukkit.util.Vector;
 public interface Spell extends SpellTemplate {
 	public boolean cast();
 	public boolean cast(String[] parameters);
+	public boolean cast(String[] parameters, Location defaultLocation);
 	public long getCastCount();
 	public Player getPlayer();
 	public CommandSender getCommandSender();
@@ -30,4 +34,16 @@ public interface Spell extends SpellTemplate {
 	public Location getTargetLocation();
 	public Entity getTargetEntity();
 	public Vector getDirection();
+	
+	public void activate();
+	public void deactivate();
+	public boolean cancel();
+	
+	public void setMage(Mage mage);
+	public Mage getMage();
+	
+	public void load(ConfigurationSection node);
+	public void save(ConfigurationSection node);
+	
+	public void tick();
 }

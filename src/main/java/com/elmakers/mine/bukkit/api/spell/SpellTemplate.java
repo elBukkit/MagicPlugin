@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.spell;
 import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -29,4 +30,6 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
 	public void getParameterOptions(Collection<String> examples, String parameterKey);
 	public long getDuration();
 	public long getCooldown();
+	public Spell createSpell();
+	public void loadTemplate(String key, ConfigurationSection node);
 }
