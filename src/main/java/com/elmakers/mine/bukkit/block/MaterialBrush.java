@@ -59,7 +59,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	public static final Material DEFAULT_MATERIAL = Material.DIRT;
 	
 	private BrushMode mode = BrushMode.MATERIAL;
-	private Location cloneLocation = null;
+	private Location cloneSource = null;
 	private Location cloneTarget = null;
 	private Location materialTarget = null;
 	private Vector targetOffset = null;
@@ -306,14 +306,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	}
 	
 	public void setCloneLocation(Location cloneFrom) {
-		cloneLocation = cloneFrom;
+		cloneSource = cloneFrom;
 		materialTarget = cloneFrom;
 		cloneTarget = null;
 	}
-
 	
 	public void clearCloneLocation() {
-		cloneLocation = null;
+		cloneSource = null;
 		materialTarget = null;		
 	}
 	
@@ -329,7 +328,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	}
 	
 	public boolean hasCloneTarget() {
-		return cloneLocation != null && cloneTarget != null;
+		return cloneSource != null && cloneTarget != null;
 	}
 	
 	public void enableCopying() {
@@ -346,20 +345,20 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	}
 	
 	public Location toTargetLocation(Location target) {
-		if (cloneLocation == null || cloneTarget == null) return null;
-		Location translated = cloneLocation.clone();
+		if (cloneSource == null || cloneTarget == null) return null;
+		Location translated = cloneSource.clone();
 		translated.subtract(cloneTarget.toVector());
 		translated.add(target.toVector());
 		return translated;
 	}
 	
 	public Location fromTargetLocation(World targetWorld, Location target) {
-		if (cloneLocation == null || cloneTarget == null) return null;
+		if (cloneSource == null || cloneTarget == null) return null;
 		Location translated = target.clone();
 		translated.setX(translated.getBlockX());
 		translated.setY(translated.getBlockY());
 		translated.setZ(translated.getBlockZ());
-		Vector cloneVector = new Vector(cloneLocation.getBlockX(), cloneLocation.getBlockY(), cloneLocation.getBlockZ());
+		Vector cloneVector = new Vector(cloneSource.getBlockX(), cloneSource.getBlockY(), cloneSource.getBlockZ());
 		translated.subtract(cloneVector);
 		Vector cloneTargetVector = new Vector(cloneTarget.getBlockX(), cloneTarget.getBlockY(), cloneTarget.getBlockZ());
 		translated.add(cloneTargetVector);
@@ -370,7 +369,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	@SuppressWarnings("deprecation")
 	public boolean update(final Mage fromMage, final Location target) {
 		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
-			if (cloneLocation == null) {
+			if (cloneSource == null) {
 				isValid = false;
 				return true;
 			}
@@ -470,7 +469,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	}
 	
 	public void prepare() {
-		if (cloneLocation != null) {
+		if (cloneSource != null) {
 			Block block = cloneTarget.getBlock();
 			if (!block.getChunk().isLoaded()) {
 				block.getChunk().load(true);
@@ -481,7 +480,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	public void load(ConfigurationSection node)
 	{
 		try {
-			cloneLocation = ConfigurationUtils.getLocation(node, "clone_location");
+			cloneSource = ConfigurationUtils.getLocation(node, "clone_location");
 			cloneTarget = ConfigurationUtils.getLocation(node, "clone_target");
 			materialTarget = ConfigurationUtils.getLocation(node, "material_target");
 			schematicName = node.getString("schematic", schematicName);
@@ -498,8 +497,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	public void save(ConfigurationSection node)
 	{
 		try {
-			if (cloneLocation != null) {
-				node.set("clone_location", ConfigurationUtils.fromLocation(cloneLocation));
+			if (cloneSource != null) {
+				node.set("clone_location", ConfigurationUtils.fromLocation(cloneSource));
 			}
 			if (cloneTarget != null) {
 				node.set("clone_target", ConfigurationUtils.fromLocation(cloneTarget));
@@ -552,18 +551,19 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities()
 	{
-		if (cloneTarget == null || cloneLocation == null) return null;
+		if (cloneTarget == null || cloneSource == null) return null;
 		
 		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)
 		{
 			List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();			
 	
-			World sourceWorld = cloneLocation.getWorld();
+			World sourceWorld = cloneSource.getWorld();
 			List<Entity> entities = sourceWorld.getEntities();
 			for (Entity entity : entities) {
 				if (!(entity instanceof Player || entity instanceof Item)) {
 					Location entityLocation = entity.getLocation();
-					EntityData entityData = new EntityData(fromTargetLocation(cloneTarget.getWorld(), entityLocation), entity);
+					Location translated = fromTargetLocation(cloneTarget.getWorld(), entityLocation);
+					EntityData entityData = new EntityData(translated, entity);
 					copyEntities.add(entityData);
 				}
 			}
@@ -635,10 +635,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 				if (targetOffset != null) {
 					cloneTarget = cloneTarget.add(targetOffset);
 				}
-				if (targetWorldName != null && targetWorldName.length() > 0) {
-					World targetWorld = cloneTarget.getWorld();
-					cloneTarget.setWorld(ConfigurationUtils.overrideWorld(targetWorldName, targetWorld, mage.getController().canCreateWorlds()));
-				}
 			} else if (mode == BrushMode.SCHEMATIC) {
 				if (schematic != null) {
 					Vector diff = target.toVector().subtract(cloneTarget.toVector());
@@ -651,8 +647,12 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 				}
 			}
 
-			if (cloneLocation == null) {
-				cloneLocation = cloneTarget;
+			if (cloneSource == null) {
+				cloneSource = cloneTarget.clone();
+				if (targetWorldName != null && targetWorldName.length() > 0) {
+					World sourceWorld = cloneSource.getWorld();
+					cloneSource.setWorld(ConfigurationUtils.overrideWorld(targetWorldName, sourceWorld, mage.getController().canCreateWorlds()));
+				}
 			}
 			if (materialTarget == null) {
 				materialTarget = cloneTarget;
