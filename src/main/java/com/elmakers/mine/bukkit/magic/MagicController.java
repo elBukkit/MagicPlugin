@@ -1469,8 +1469,6 @@ public class MagicController implements Listener, MageController
 	@EventHandler(priority = EventPriority.LOW)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		Entity explodingEntity = event.getEntity();
-		
-		// TODO: Handle non-entity explosions, or make BoomSpell somehow set this to be from the player?
 		if (explodingEntity == null) return;
 		
 		UndoList blockList = null;

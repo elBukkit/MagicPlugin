@@ -15,6 +15,7 @@
    * Collapse, SuperCollapse, Blast
    * Grenade, Cluster Bomb, Incendiary Grenade, Cluster Grenade
    * Fireball, ICBM, Wither, Meteor Shower, Carpet Bomb
+   * Boom, KaBoom, Nuke
 
 ## 3.0
 

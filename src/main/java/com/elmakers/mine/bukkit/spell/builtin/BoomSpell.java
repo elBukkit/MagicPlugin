@@ -3,9 +3,11 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class BoomSpell extends BlockSpell {
@@ -24,8 +26,11 @@ public class BoomSpell extends BlockSpell {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		Location l = block.getLocation();
-		getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
+		Player player = getPlayer();
+		watch(player);
+		NMSUtils.createExplosion(player, getWorld(), l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 		controller.updateBlock(block);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 
