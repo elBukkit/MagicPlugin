@@ -1464,11 +1464,28 @@ public class MagicController implements Listener, MageController
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onEntityExplode(EntityExplodeEvent event) {
-		Entity expodingEntity = event.getEntity();
-		if (maxTNTPerChunk > 0 && expodingEntity != null && expodingEntity.getType() == EntityType.PRIMED_TNT) {
-			Chunk chunk = expodingEntity.getLocation().getChunk();
+		Entity explodingEntity = event.getEntity();
+		
+		// TODO: Handle non-entity explosions, or make BoomSpell somehow set this to be from the player?
+		if (explodingEntity == null) return;
+		
+		BlockList blockList = null;
+		if (explodingEntity.hasMetadata("MagicBlockList")) {
+			List<MetadataValue> values = explodingEntity.getMetadata("MagicBlockList");  
+			for (MetadataValue value : values) {
+				if (value.getOwningPlugin() == plugin) {
+					blockList = (BlockList)value.value();
+				}
+			}
+		}
+		
+		if (event.isCancelled()) {
+			if (blockList != null) blockList.cancelExplosion(explodingEntity);
+		}
+		else if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
+			Chunk chunk = explodingEntity.getLocation().getChunk();
 			if (chunk == null || !chunk.isLoaded()) return;
 			
 			int tntCount = 0;
@@ -1480,7 +1497,13 @@ public class MagicController implements Listener, MageController
 			}
 			if (tntCount > maxTNTPerChunk) {
 				event.setCancelled(true);
+				if (blockList != null) blockList.cancelExplosion(explodingEntity);
+			} else {
+				if (blockList != null) blockList.explode(explodingEntity, event.blockList());
 			}
+		} 
+		else if (blockList != null) {
+			blockList.explode(explodingEntity, event.blockList());
 		}
 	}
 	

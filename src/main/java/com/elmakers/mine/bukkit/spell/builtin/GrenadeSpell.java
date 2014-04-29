@@ -10,21 +10,21 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class GrenadeSpell extends BlockSpell
 {
-	int defaultSize = 6;
-
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		int size = parameters.getInt("size", defaultSize);
+		int size = parameters.getInt("size", 6);
 		int count = parameters.getInt("count", 1);
 		size = (int)(mage.getRadiusMultiplier() * size);		
 		int fuse = parameters.getInt("fuse", 80);
 		boolean useFire = parameters.getBoolean("fire", false);
 
+		BlockList undoList = new BlockList();
 		Block target = getTarget().getBlock();
 		if (target == null) {
 			return SpellResult.NO_TARGET;
@@ -52,8 +52,10 @@ public class GrenadeSpell extends BlockSpell
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);
+			undoList.addExplodingEntity(controller.getPlugin(), grenade);
 		}
 		
+		registerForUndo(undoList);
 		return SpellResult.CAST;
 	}
 }
