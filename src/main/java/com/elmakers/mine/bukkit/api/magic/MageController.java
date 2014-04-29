@@ -12,8 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public interface MageController {
 	
@@ -42,12 +44,24 @@ public interface MageController {
 	 */
 	public Collection<LostWand> getLostWands();
 	
+	/**
+	 * Create a new Wand from a template.
+	 * 
+	 * Once created, a Wand is a unique item. It "remembers" which template
+	 * it was created from, but this is currently not used for anything.
+	 * 
+	 * @param wandKey The template key, or blank for a default wand.
+	 * @return A new Wand instance, with a useable ItemStack.
+	 */
+	public Wand createWand(String wandKey);
+	
 	public void registerAutomata(Block block, String name, String message);
 	public boolean unregisterAutomata(Block block);
 	
 	public void updateBlock(Block block);
 	public void updateBlock(String worldName, int x, int y, int z);
 	public void updateVolume(String worldName, int minx, int miny, int minz, int maxx, int maxy, int maxz);
+	public void update(BlockList blockList);
 	
 	public boolean canCreateWorlds();
 	public int getMaxUndoPersistSize();
@@ -90,4 +104,5 @@ public interface MageController {
 	public void giveItemToPlayer(Player player, ItemStack itemStack);
 	
 	public Mage undoAny(Block target);
+	public void forgetMage(Mage mage);
 }

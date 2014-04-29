@@ -400,4 +400,15 @@ public interface MagicAPI {
 	 * @return The list of known schematic names.
 	 */
 	public Collection<String> getSchematicNames();
+	
+	/**
+	 * Get the MageController.
+	 * 
+	 * The controller is used for more advanced plugin interaction, and is 
+	 * used heavily by Spells themselves to interact with the Magic plugin's
+	 * internal functionality.
+	 * 
+	 * @return The current MageController, there is only one.
+	 */
+	public MageController getController();
 }

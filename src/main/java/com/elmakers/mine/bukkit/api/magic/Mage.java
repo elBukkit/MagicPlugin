@@ -15,8 +15,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
-import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -293,7 +293,7 @@ public interface Mage extends CostReducer {
 	public boolean isIndestructible(Block block);
 	public boolean isDestructible(Block block);
 	
-	public boolean registerForUndo(BlockList blocks);
+	public boolean registerForUndo(UndoList blocks);
 	
 	public Inventory getInventory();
 	

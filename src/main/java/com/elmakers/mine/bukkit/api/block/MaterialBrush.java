@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.block;
 import java.util.Collection;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -10,7 +11,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 public interface MaterialBrush extends MaterialAndData {
 	public void prepare();
 	public boolean isReady();
-	public Collection<EntityData> getEntities(final Location center, final int radius);
+	public Collection<EntityData> getEntities();
+	public Collection<Entity> getTargetEntities();
 	public boolean hasEntities();
 	public boolean update(final Mage mage, final Location location);
 	public void update(String activeMaterial);
