@@ -87,6 +87,7 @@ import org.mcstats.Metrics;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -102,8 +103,6 @@ import com.elmakers.mine.bukkit.magic.listener.CraftingController;
 import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
-import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.spell.Spell;
 import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.CompleteDragTask;
 import com.elmakers.mine.bukkit.utilities.DataStore;
@@ -206,13 +205,13 @@ public class MagicController implements Listener, MageController
 		if (parameterString != null && parameterString.length() > 0)
 		{
 			String[] parameters = parameterString.split(" ");
-			Spell.addParameters(parameters, parameterNode);
+			ConfigurationUtils.addParameters(parameters, parameterNode);
 		}
 
 		if (propertiesString != null && propertiesString.length() > 0)
 		{
 			String[] properties = propertiesString.split(" ");
-			Spell.addParameters(properties, propertiesNode);
+			ConfigurationUtils.addParameters(properties, propertiesNode);
 		}
 
 		if (costsString != null && costsString.length() > 0)
@@ -1149,7 +1148,7 @@ public class MagicController implements Listener, MageController
 				continue;
 			}
 			
-			Spell newSpell = Spell.loadSpell(key, spellNode, this);
+			Spell newSpell = loadSpell(key, spellNode, this);
 			if (newSpell == null)
 			{
 				getLogger().warning("Magic: Error loading spell " + key);
@@ -1162,6 +1161,54 @@ public class MagicController implements Listener, MageController
 		for (Mage mage : mages.values()) {
 			mage.loadSpells(config);
 		}
+	}
+
+	public static Spell loadSpell(String name, ConfigurationSection node, MageController controller)
+	{
+		String className = node.getString("class");
+		if (className == null) return null;
+
+		if (className.indexOf('.') <= 0)
+		{
+			className = BUILTIN_SPELL_CLASSPATH + "." + className;
+		}
+
+		Class<?> spellClass = null;
+		try
+		{
+			spellClass = Class.forName(className);
+		}
+		catch (Throwable ex)
+		{
+			controller.getLogger().warning("Error loading spell: " + className);
+			ex.printStackTrace();
+			return null;
+		}
+
+		Object newObject;
+		try
+		{
+			newObject = spellClass.newInstance();
+		}
+		catch (Throwable ex)
+		{
+
+			controller.getLogger().warning("Error loading spell: " + className);
+			ex.printStackTrace();
+			return null;
+		}
+
+		if (newObject == null || !(newObject instanceof Spell))
+		{
+			controller.getLogger().warning("Error loading spell: " + className + ", does it extend Spell?");
+			return null;
+		}
+
+		Spell newSpell = (Spell)newObject;
+		newSpell.initialize(controller);
+		newSpell.loadTemplate(name, node);
+
+		return newSpell;
 	}
 	
 	protected void loadMaterials(ConfigurationSection materialNode)
@@ -1796,9 +1843,8 @@ public class MagicController implements Listener, MageController
 					if (player.isSneaking()) {
 						com.elmakers.mine.bukkit.api.spell.Spell activeSpell = wand.getActiveSpell();
 						boolean cycleMaterials = false;
-						if (activeSpell != null && activeSpell instanceof BrushSpell) {
-							BrushSpell brushSpell = (BrushSpell)activeSpell;
-							cycleMaterials = brushSpell.hasBrushOverride() && wand.getBrushes().size() > 0;
+						if (activeSpell != null) {
+							cycleMaterials = activeSpell.hasBrushOverride() && wand.getBrushes().size() > 0;
 						}
 						if (cycleMaterials) {
 							wand.cycleMaterials(player.getItemInHand());
@@ -2467,7 +2513,7 @@ public class MagicController implements Listener, MageController
 	}
 	
 	@Override public int getMaxY() {
-		return Spell.MAX_Y;
+		return MAX_Y;
 	}
 	
 	@Override
@@ -2653,6 +2699,10 @@ public class MagicController implements Listener, MageController
 	/*
 	 * Private data
 	 */
+	 private final static int MAX_Y = 255;	
+	 private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
+
+	
 	 private final String                        SPELLS_FILE                 	= "spells";
 	 private final String                        CONFIG_FILE             		= "config";
 	 private final String                        WANDS_FILE             		= "wands";
