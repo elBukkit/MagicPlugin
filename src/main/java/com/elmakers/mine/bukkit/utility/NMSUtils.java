@@ -6,7 +6,9 @@ import java.util.Collection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -405,4 +407,21 @@ public class NMSUtils {
 		}
     }
 
+	public static boolean createExplosion(Entity entity, World world, double x, double y, double z, float power, boolean setFire, boolean breakBlocks) {
+		boolean result = false;
+		try {
+			Object worldHandle = getHandle(world);
+			if (worldHandle == null) return false;
+			Object entityHandle = entity == null ? null : getHandle(entity);
+			 
+			Method explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);		
+			Object explosion = explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
+			Field cancelledField = explosion.getClass().getDeclaredField("wasCanceled");
+			result = (Boolean)cancelledField.get(explosion);
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+    }
 }

@@ -202,11 +202,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		return this.undo(mage);
 	}
 	
+	public void watch(Entity entity)
+	{
+		if (entity == null) return;
+		entity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
+	}
+	
 	public void add(Entity entity)
 	{
 		if (entities == null) entities = new HashSet<Entity>();
 		entities.add(entity);
-		entity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
+		watch(entity);
 	}
 	
 	public void addRemoved(Entity entity)
