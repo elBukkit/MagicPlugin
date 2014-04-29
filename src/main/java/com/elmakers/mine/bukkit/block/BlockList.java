@@ -12,6 +12,7 @@ import java.util.Set;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -54,7 +55,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 	protected int				   taskId           = 0;
 	
 	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
-	protected Set<FallingBlock> fallingBlocks = new HashSet<FallingBlock>();
+	protected Set<FallingBlock> 	fallingBlocks = new HashSet<FallingBlock>();
+	protected Set<Entity> 			explodingEntities = new HashSet<Entity>();
 	
 	public BlockList()
 	{
@@ -365,6 +367,10 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 			falling.remove();
 		}
 		fallingBlocks.clear();
+		for (Entity entity : explodingEntities) {
+			entity.remove();
+		}
+		explodingEntities.clear();
 		
 		UndoBatch batch = new UndoBatch(mage.getController(), this);
 		if (!mage.addPendingBlockBatch(batch)) {
@@ -437,5 +443,24 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 	{
 		fallingBlocks.remove(fallingBlock);
 		add(block);
+	}
+	
+	public void addExplodingEntity(Plugin plugin, Entity explodingEntity)
+	{
+		explodingEntities.add(explodingEntity);
+		explodingEntity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
+	}
+	
+	public void explode(Entity explodingEntity, List<Block> blocks)
+	{
+		explodingEntities.remove(explodingEntity);
+		for (Block block : blocks) {
+			add(block);
+		}
+	}
+	
+	public void cancelExplosion(Entity explodingEntity)
+	{
+		explodingEntities.remove(explodingEntity);
 	}
 }
