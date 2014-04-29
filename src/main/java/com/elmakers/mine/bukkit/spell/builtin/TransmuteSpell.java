@@ -39,7 +39,7 @@ public class TransmuteSpell extends BrushSpell
 			return SpellResult.NO_TARGET;
 		}
 
-		MaterialBrush buildWith = getMaterialBrush();
+		MaterialBrush buildWith = getBrush();
 		for (BlockData undoBlock : transmuteAction)
 		{
 			Block block = undoBlock.getBlock();

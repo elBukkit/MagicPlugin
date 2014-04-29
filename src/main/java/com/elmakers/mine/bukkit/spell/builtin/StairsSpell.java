@@ -6,7 +6,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class StairsSpell extends BlockSpell
@@ -48,8 +47,6 @@ public class StairsSpell extends BlockSpell
 		int height = defaultHeight;
 		int width = defaultWidth;
 
-		BlockList tunneledBlocks = new BlockList();
-		BlockList stairBlocks = new BlockList();
 		Material fillMaterial = targetBlock.getType();
 
 		BlockFace toTheLeft = goLeft(horzDirection);
@@ -97,24 +94,24 @@ public class StairsSpell extends BlockSpell
 						boolean useStairs = (h == 0);
 						if (useStairs)
 						{
-							stairBlocks.add(targetBlock);
+							registerForUndo(targetBlock);
 							targetBlock.setType(stairsMaterial);
 						}
 						else
 							if (useTorch)
 							{
-								tunneledBlocks.add(targetBlock);
+								registerForUndo(targetBlock);
 								targetBlock.setType(Material.TORCH);
 							}
 							else
 							{
-								tunneledBlocks.add(targetBlock);
+								registerForUndo(targetBlock);
 								targetBlock.setType(Material.AIR);
 							}
 						Block standingBlock = targetBlock.getRelative(BlockFace.DOWN);
 						if (standingBlock.getType() == Material.AIR)
 						{
-							stairBlocks.add(standingBlock);
+							registerForUndo(standingBlock);
 							standingBlock.setType(fillMaterial);
 						}
 					}
@@ -126,8 +123,7 @@ public class StairsSpell extends BlockSpell
 			bottomLeftBlock = bottomLeftBlock.getRelative(vertDirection);
 		}
 
-		registerForUndo(tunneledBlocks);
-		registerForUndo(stairBlocks);
+		registerForUndo();
 	}	
 
 	protected void createSpiralStairs(Block targetBlock)

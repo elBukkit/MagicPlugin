@@ -595,23 +595,23 @@ spells:
         cast_self: You turn yourself invisible
     undo:
         name: Rollback
-        description: Undo your last action
-        cast: Your undo the target construction
-        cast_player: You undo $target's construction
-        cast_self: Your undo your construction
+        description: Undo your last spell
+        cast: Your undo a spell
+        cast_player: You undo $target's last spell
+        cast_self: Your undo your last spell
         fail: Nothing to undo
     commit:
         name: Commit
-        description: Commit your actions
+        description: Make your spells permanent
         usage: Clears your undo queue
-        cast_player: You commit $target's constructions
+        cast_player: You commit $target's spells
         cast: Your Rollback queue has been cleared
         fail: Nothing to commit
     rewind:
         name: Rewind
-        description: Undo the target action
-        usage: Will undo the targeted action
-        cast: "&5You undo &d&o$target's&r&5 construction"
+        description: Undo the target spell
+        usage: Will undo the targeted spell
+        cast: "&5You undo &d&o$target's&r&5 spell"
         fail: Nothing to undo
     push:
         name: Push

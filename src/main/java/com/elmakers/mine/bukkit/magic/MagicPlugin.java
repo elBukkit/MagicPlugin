@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
@@ -20,7 +21,7 @@ import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.utility.URLMap;
-import com.elmakers.mine.wand.Wand;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 /*! \mainpage Magic Bukkit Plugin
 *
@@ -309,5 +310,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	@Override
 	public Collection<String> getBrushes() {
 		return controller.getBrushKeys();
+	}
+	
+	@Override
+	public MageController getController() {
+		return controller;
 	}
 }

@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -86,11 +85,14 @@ public class ShrinkSpell extends BlockSpell
 			if ((ownerName != null || data != 3) && li.isDead() && !alreadyDead) {
 				Location targetLocation = targetEntity.getLocation();
 				if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
+					registerRemoved(targetEntity);
 					LivingEntity baby = targetLocation.getWorld().spawnCreature(targetLocation, targetEntity.getType());
 					if (baby instanceof Ageable) {
 						((Ageable)baby).setBaby();
 					}
+					registerForUndo(baby);
 				} else {
+					registerRemoved(targetEntity);
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
 			}
@@ -110,13 +112,11 @@ public class ShrinkSpell extends BlockSpell
 			{
 				return SpellResult.NO_TARGET;
 			}
-
-			BlockList shrunk = new BlockList();
-			shrunk.add(targetBlock);
-
+			
+			registerForUndo(targetBlock);
 			dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
 			targetBlock.setType(Material.AIR);
-			registerForUndo(shrunk);
+			registerForUndo();
 		}
 		
 		return SpellResult.CAST;

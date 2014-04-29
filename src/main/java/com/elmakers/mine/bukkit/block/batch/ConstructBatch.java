@@ -24,27 +24,19 @@ import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.block.BlockData;
-import com.elmakers.mine.bukkit.block.BlockList;
-import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
-public class ConstructBatch extends VolumeBatch {
-	private final BlockList constructedBlocks = new BlockList();
+public class ConstructBatch extends BrushBatch {
 	private final Location center;
 	private Vector orient = null;
 	private final int radius;
 	private final ConstructionType type;
 	private final int thickness;
-	private final Mage mage;
-	private final BrushSpell spell;
 	private final boolean spawnFallingBlocks;
 	private float fallingBlockSpeed = 0;
-	private boolean copyEntities = true;
 	private final Map<Long, BlockData> attachedBlockMap = new HashMap<Long, BlockData>();
 	private final List<BlockData> attachedBlockList = new ArrayList<BlockData>();
 	private final List<BlockData> delayedBlocks = new ArrayList<BlockData>();
@@ -72,14 +64,12 @@ public class ConstructBatch extends VolumeBatch {
 	// TODO.. min X, Z, etc
 	
 	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, int thickness, boolean spawnFallingBlocks, Location orientToLocation) {
-		super(spell.getMage().getController(), center.getWorld().getName());
+		super(spell);
 		this.center = center;
 		this.radius = radius;
 		this.type = type;
 		this.thickness = thickness;
 		this.spawnFallingBlocks = spawnFallingBlocks;
-		this.mage = spell.getMage();
-		this.spell = spell;
 		this.attachables = mage.getController().getMaterialSet("attachable");
 		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
 		this.attachablesDouble = mage.getController().getMaterialSet("attachable_double");
@@ -150,7 +140,7 @@ public class ConstructBatch extends VolumeBatch {
 					return processedBlocks;
 				}
 				
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				delayed.modify(block);
 				
 				delayedBlockIndex++;
@@ -201,7 +191,7 @@ public class ConstructBatch extends VolumeBatch {
 				}
 				
 				if (ok) {
-					constructedBlocks.add(block);
+					registerForUndo(block);
 					attach.modify(block);
 				}
 				
@@ -262,43 +252,6 @@ public class ConstructBatch extends VolumeBatch {
 		}
 		
 		return processedBlocks;
-	}
-	
-	@Override
-	public void finish() {
-		if (!finished) {
-			super.finish();
-			
-			MaterialBrush brush = spell.getMaterialBrush();
-			if (copyEntities && thickness == 0 && brush != null && brush.hasEntities()) {
-				// TODO: Handle Non-spherical construction types!
-				Collection<EntityData> entities = brush.getEntities(center, radius);
-				
-				for (EntityData entity : entities) {
-					Location targetLocation = entity.getLocation();
-					
-					switch (entity.getType()) {
-					case PAINTING:
-						InventoryUtils.spawnPainting(targetLocation, entity.getFacing(), entity.getArt());
-					break;
-					case ITEM_FRAME:
-						InventoryUtils.spawnItemFrame(targetLocation, entity.getFacing(), entity.getItem());
-						break;
-					default: break;
-					}
-				}
-			}
-			
-			spell.registerForUndo(constructedBlocks);
-			
-			String message = spell.getMessage("cast_finish");
-			message = message.replace("$count", Integer.toString(constructedBlocks.size()));
-			spell.sendMessage(message);
-		}
-	}
-	
-	public void  setCopyEntities(boolean doCopy) {
-		copyEntities = doCopy;
 	}
 
 	public boolean fillBlock(int x, int y, int z)
@@ -386,27 +339,27 @@ public class ConstructBatch extends VolumeBatch {
 			boolean powerBlock = false;
 			if (data instanceof Button) {
 				Button powerData = (Button)data;
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				powerData.setPowered(!powerData.isPowered());
 				powerBlock = true;
 			} else if (data instanceof Lever) {
 				Lever powerData = (Lever)data;
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				powerData.setPowered(!powerData.isPowered());
 				powerBlock = true;
 			} else if (data instanceof PistonBaseMaterial) {
 				PistonBaseMaterial powerData = (PistonBaseMaterial)data;
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				powerData.setPowered(!powerData.isPowered());
 				powerBlock = true;
 			} else if (data instanceof PoweredRail) {
 				PoweredRail powerData = (PoweredRail)data;
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				powerData.setPowered(!powerData.isPowered());
 				powerBlock = true;
 			} else if (data instanceof RedstoneWire) {
 				RedstoneWire wireData = (RedstoneWire)data;
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				wireData.setData((byte)(15 - wireData.getData()));
 				powerBlock = true;
 			} else if (material == Material.REDSTONE_BLOCK) {
@@ -415,25 +368,22 @@ public class ConstructBatch extends VolumeBatch {
 				// It'd be really cool to maybe find the associated command
 				// block and temporarily disable it, or something.
 				if (!controller.isAutomata(block)) {
-					constructedBlocks.add(block);
+					registerForUndo(block);
 					block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
 					block.setType(Material.AIR);
 				}
 			} else if (material == Material.REDSTONE_TORCH_OFF) {
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				block.setType(Material.REDSTONE_TORCH_ON);
 			} else if (material == Material.REDSTONE_TORCH_ON) {
-				constructedBlocks.add(block);
+				registerForUndo(block);
 				block.setType(Material.REDSTONE_TORCH_OFF);
 			} else if (material == Material.TNT) {
-				// Not adding this to the undo batch because
-				// A) The main use of this is for the EMP spell, which auto-undoes itself
-				// B) We're about to spawn primed TNT, so there's no going back anyway...
-				//    (or the hopefully-future snapshot undo feature will take over anyway... maybe?)
-				// constructedBlocks.add(block);
+				registerForUndo(block);
 				block.setType(Material.AIR);
-				// Um, sure why not?
-				block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
+				
+				// Kaboomy time!
+				registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
 			}
 			
 			if (powerBlock) {
@@ -445,7 +395,7 @@ public class ConstructBatch extends VolumeBatch {
 
 		// Prepare material brush, it may update
 		// given the current target (clone, replicate)
-		MaterialBrush brush = spell.getMaterialBrush();
+		MaterialBrush brush = spell.getBrush();
 		brush.update(mage, block.getLocation());
 		
 		// Make sure the brush is ready, it may need to load chunks.
@@ -489,8 +439,7 @@ public class ConstructBatch extends VolumeBatch {
 		byte previousData = block.getData();
 		
 		if (brush.isDifferent(block)) {			
-			updateBlock(center.getWorld().getName(), x, y, z);
-			constructedBlocks.add(block);
+			registerForUndo(block);
 			
 			// Check for command overrides
 			if (commandMap != null && brush.getMaterial() == Material.COMMAND) {
@@ -508,14 +457,10 @@ public class ConstructBatch extends VolumeBatch {
 					Vector direction = falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
 					falling.setVelocity(direction);
 				}
-				constructedBlocks.add(controller.getPlugin(), falling);
+				registerForUndo(falling);
 			}
 		}
 		return true;
-	}
-	
-	public void setTimeToLive(int timeToLive) {
-		this.constructedBlocks.setTimeToLive(timeToLive);
 	}
 	
 	public void addCommandMapping(String key, String command) {
@@ -529,5 +474,25 @@ public class ConstructBatch extends VolumeBatch {
 	public void setReplace(Collection<Material> replace) {
 		this.replace = new HashSet<Material>();
 		this.replace.addAll(replace);
+	}
+	
+	@Override
+	protected boolean contains(Location location) {
+		if (thickness != 0) return false;
+		if (!location.getWorld().equals(center.getWorld())) return false;
+		
+		// TODO: Handle PYRAMID better, thickness, max dimensions, etc.
+		switch (type) {
+		case SPHERE:
+			int radiusSquared = radius * radius;
+				return (location.distanceSquared(center) <= radiusSquared);
+		default:
+			return location.getBlockX() >= center.getBlockX() - radius
+				&& location.getBlockX() <= center.getBlockX() + radius
+				&& location.getBlockY() >= center.getBlockY() - radius
+				&& location.getBlockY() <= center.getBlockY() + radius
+				&& location.getBlockZ() >= center.getBlockZ() - radius
+				&& location.getBlockZ() <= center.getBlockZ() + radius;
+		}
 	}
 }

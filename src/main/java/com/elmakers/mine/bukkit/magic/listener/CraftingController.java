@@ -19,7 +19,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.wand.Wand;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 public class CraftingController implements Listener {
 	private final MagicController controller;

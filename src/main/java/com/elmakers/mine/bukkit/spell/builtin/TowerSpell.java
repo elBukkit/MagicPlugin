@@ -5,7 +5,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class TowerSpell extends BlockSpell {
@@ -51,7 +50,6 @@ public class TowerSpell extends BlockSpell {
 			}
 		}
 
-		BlockList towerBlocks = new BlockList();
 		for (int i = 0; i < height; i++)
 		{
 			midY++;
@@ -68,14 +66,14 @@ public class TowerSpell extends BlockSpell {
 						Block block = target.getWorld().getBlockAt(x, y, z);
 						if (isDestructible(block) && hasBuildPermission(block)) {
 							blocksCreated++;
-							towerBlocks.add(block);
+							registerForUndo(block);
 							block.setTypeId(material);
 						}
 					}					
 				}
 			}
 		}
-		registerForUndo(towerBlocks);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 	

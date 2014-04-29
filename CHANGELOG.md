@@ -11,6 +11,10 @@
  - Large code refactor, move base spell classes to MagicLib. 
    * Devs can now add custom spells to your Plugin without building against MagicPlugin.
    * MagicLib has no dependencies other than MagicAPI and Bukkit.
+ - Many spells are now undoable (with Rollback or Rewind):
+   * Collapse, SuperCollapse, Blast
+   * Grenade, Cluster Bomb, Incendiary Grenade, Cluster Grenade
+   * Fireball, ICBM, Wither, Meteor Shower, Carpet Bomb
 
 ## 3.0
 

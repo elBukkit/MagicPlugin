@@ -16,8 +16,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.wand.Wand;
-import com.elmakers.mine.wand.WandLevel;
+import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandLevel;
 
 public class EnchantingController implements Listener {
 	private final MagicController controller;

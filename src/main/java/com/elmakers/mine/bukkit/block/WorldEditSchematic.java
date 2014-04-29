@@ -1,12 +1,9 @@
 package com.elmakers.mine.bukkit.block;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -163,16 +160,9 @@ public class WorldEditSchematic implements Schematic{
 		
 		return null;
 	}
-
-	@Override
-	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getAllEntities()
-	{
-		List<com.elmakers.mine.bukkit.api.entity.EntityData> entities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();
-		return entities;
-	}
 	
 	@Override
-	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities(Location center, int radius)
+	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities()
 	{
 		/*
 		if (weSchematic == null) return entities;
@@ -191,6 +181,6 @@ public class WorldEditSchematic implements Schematic{
 			ex.printStackTrace();
 		}
 		*/
-		return getAllEntities();
+		return null;
 	}
 }

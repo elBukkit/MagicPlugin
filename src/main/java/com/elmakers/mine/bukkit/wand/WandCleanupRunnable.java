@@ -1,4 +1,4 @@
-package com.elmakers.mine.wand;
+package com.elmakers.mine.bukkit.wand;
 
 import java.util.LinkedList;
 

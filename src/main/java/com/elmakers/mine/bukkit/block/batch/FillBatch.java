@@ -7,17 +7,15 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
-public class FillBatch extends VolumeBatch {
-	private final BlockList filledBlocks = new BlockList();
+public class FillBatch extends BrushBatch {
 	private final MaterialBrush brush;
 	private final World world;
 	private final Mage mage;
-	private final BrushSpell spell;
 
 	private final int absx;
 	private final int absy;
@@ -32,12 +30,14 @@ public class FillBatch extends VolumeBatch {
 	private int iy = 0;
 	private int iz = 0;
 	
+	private final BoundingBox bounds;
+	
 	private boolean spawnFallingBlocks = false;
 	private Vector fallingBlockVelocity = null;
 	
 	public FillBatch(BrushSpell spell, Location p1, Location p2, MaterialBrush brush) {
-		super(spell.getMage().getController(), p1.getWorld().getName());
-		this.spell = spell;
+		super(spell);
+		this.bounds = new BoundingBox(p1.toVector(), p2.toVector());
 		this.brush = brush;
 		this.mage = spell.getMage();
 		this.world = p1.getWorld();
@@ -97,8 +97,7 @@ public class FillBatch extends VolumeBatch {
 				byte previousData = block.getData();
 				
 				if (brush.isDifferent(block)) {
-					updateBlock(world.getName(), x, y, z);
-					filledBlocks.add(block);
+					registerForUndo(block);
 					brush.modify(block);
 					
 					if (spawnFallingBlocks) {
@@ -125,21 +124,9 @@ public class FillBatch extends VolumeBatch {
 		if (ix >= absx) 
 		{
 			finish();
-			
 		}
 		
 		return processedBlocks;
-	}
-	
-	@Override
-	public void finish() {
-		if (!finished) {
-			super.finish();
-			
-			spell.registerForUndo(filledBlocks);
-			String message = spell.getMessage("cast_finish");
-			spell.sendMessage(message);
-		}
 	}
 	
 	public int getXSize() {
@@ -153,8 +140,9 @@ public class FillBatch extends VolumeBatch {
 	public int getZSize() {
 		return absz;
 	}
-	
-	public void setTimeToLive(int timeToLive) {
-		this.filledBlocks.setTimeToLive(timeToLive);
+
+	@Override
+	protected boolean contains(Location location) {
+		return bounds.contains(location.toVector());
 	}
 }

@@ -23,7 +23,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class ConstructSpell extends BrushSpell
 {
 	public final static String[] CONSTRUCT_PARAMETERS = {
-		"radius", "undo", "falling", "speed", "max_dimension", "replace",
+		"radius", "falling", "speed", "max_dimension", "replace",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
 		"power"
 	};
@@ -45,7 +45,6 @@ public class ConstructSpell extends BrushSpell
 			return SpellResult.NO_TARGET;
 		}
 
-		int timeToLive = parameters.getInt("undo", 0);
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = parameters.getInt("r", radius);
 		radius = parameters.getInt("size", radius);
@@ -91,7 +90,7 @@ public class ConstructSpell extends BrushSpell
 			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
 
-		MaterialBrush buildWith = getMaterialBrush();
+		MaterialBrush buildWith = getBrush();
 		buildWith.setTarget(target.getLocation());
 		
 		ConstructionType conType = DEFAULT_CONSTRUCTION_TYPE;
@@ -158,16 +157,11 @@ public class ConstructSpell extends BrushSpell
 		} else if (parameters.contains("odmin")) {
 			batch.setOrientDimensionMin(parameters.getInt("odmin"));
 		}
-		if (timeToLive > 0) {
-			batch.setTimeToLive(timeToLive);
-		}
 		if (parameters.getBoolean("power", false)) {
 			batch.setPower(true);
 		}
-		boolean success = mage.addPendingBlockBatch(batch);
-		
+		boolean success = mage.addPendingBlockBatch(batch);		
 		deactivate();
-
 		return success ? SpellResult.CAST : SpellResult.FAIL;
 	}
 	
@@ -214,9 +208,7 @@ public class ConstructSpell extends BrushSpell
 	{
 		super.getParameterOptions(examples, parameterKey);
 	
-		if (parameterKey.equals("undo")) {
-			examples.addAll(Arrays.asList(EXAMPLE_DURATIONS));
-		} else if (parameterKey.equals("radius") || parameterKey.equals("max_dimension") 
+		if (parameterKey.equals("radius") || parameterKey.equals("max_dimension") 
 				|| parameterKey.equals("orient_dimension_max") || parameterKey.equals("orient_dimension_min")
 				|| parameterKey.equals("thickness") || parameterKey.equals("speed")) {
 			examples.addAll(Arrays.asList(EXAMPLE_SIZES));

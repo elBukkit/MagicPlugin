@@ -5,7 +5,7 @@ import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockData;
-import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.block.UndoList;
 
 public class BlockRecurse
 {
@@ -19,7 +19,7 @@ public class BlockRecurse
 
 	protected void recurse(Block block, BlockAction recurseAction, BlockFace nextFace, int rDepth)
 	{
-		BlockList affectedBlocks = recurseAction.getBlocks();
+		UndoList affectedBlocks = recurseAction.getBlocks();
 		if (nextFace != null)
 		{
 			block = block.getRelative(nextFace);

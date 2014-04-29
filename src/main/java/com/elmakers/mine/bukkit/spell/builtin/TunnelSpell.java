@@ -6,7 +6,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class TunnelSpell extends BlockSpell
@@ -49,8 +48,6 @@ public class TunnelSpell extends BlockSpell
 		int height = defaultHeight;
 		int width = defaultWidth;
 
-		BlockList tunneledBlocks = new BlockList();
-
 		BlockFace toTheLeft = goLeft(direction);
 		BlockFace toTheRight = goRight(direction);
 		Block bottomBlock = searchBlock.getRelative(BlockFace.DOWN);
@@ -83,7 +80,7 @@ public class TunnelSpell extends BlockSpell
 						);
 						 */
 						boolean useTorch = false; // TODO!
-						tunneledBlocks.add(targetBlock);
+						registerForUndo(targetBlock);
 						if (useTorch)
 						{
 							// First check to see if the torch will stick to the wall
@@ -118,7 +115,7 @@ public class TunnelSpell extends BlockSpell
 			bottomLeftBlock = bottomLeftBlock.getRelative(direction);
 		}
 
-		registerForUndo(tunneledBlocks);
+		registerForUndo();
 
 		return SpellResult.CAST;
 	}

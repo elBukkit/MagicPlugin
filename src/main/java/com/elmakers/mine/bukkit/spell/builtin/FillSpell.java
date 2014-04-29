@@ -4,10 +4,9 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.block.BlockList;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.batch.FillBatch;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
@@ -31,23 +30,19 @@ public class FillSpell extends BrushSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		MaterialBrush buildWith = getMaterialBrush();
+		MaterialBrush buildWith = getBrush();
 		if (singleBlock)
 		{
 			deactivate();
 
-			BlockList filledBlocks = new BlockList();
-			int undoTime = parameters.getInt("undo", 0);
-			undoTime = parameters.getInt("u", undoTime);
-			filledBlocks.setTimeToLive(undoTime);
-			filledBlocks.add(targetBlock);
+			registerForUndo(targetBlock);
 
 			buildWith.setTarget(targetBlock.getLocation());
 			buildWith.update(mage, targetBlock.getLocation());
 			buildWith.modify(targetBlock);
 			
 			controller.updateBlock(targetBlock);
-			registerForUndo(filledBlocks);
+			registerForUndo();
 			
 			return SpellResult.CAST;
 		}
@@ -77,7 +72,6 @@ public class FillSpell extends BrushSpell
 			{
 				return SpellResult.FAIL;
 			}
-			batch.setTimeToLive(parameters.getInt("undo", 0));
 			boolean success = mage.addPendingBlockBatch(batch);
 			
 			deactivate();

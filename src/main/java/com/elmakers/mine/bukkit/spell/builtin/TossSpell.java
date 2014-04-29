@@ -6,9 +6,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class TossSpell extends BrushSpell
@@ -22,7 +21,7 @@ public class TossSpell extends BrushSpell
 		}
 
 		location.setY(location.getY() - 1);
-		MaterialBrush buildWith = getMaterialBrush();
+		MaterialBrush buildWith = getBrush();
 		buildWith.setTarget(location);
 
 		Material material = buildWith.getMaterial();
@@ -41,7 +40,6 @@ public class TossSpell extends BrushSpell
 		perp.copy(direction);
 		perp.crossProduct(up);
 		
-		BlockList tossedBlocks = new BlockList();
 		for (int i = 0; i < tossCount; i++)
 		{
 			FallingBlock block = null;
@@ -53,15 +51,15 @@ public class TossSpell extends BrushSpell
 
 			if (block == null)
 			{
-				registerForUndo(tossedBlocks);
+				registerForUndo();
 				return SpellResult.FAIL;
 			}
-			tossedBlocks.add(controller.getPlugin(), block);
+			registerForUndo(block);
 			block.setDropItem(false);
 			block.setVelocity(direction);	
 		}
 
-		registerForUndo(tossedBlocks);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 }

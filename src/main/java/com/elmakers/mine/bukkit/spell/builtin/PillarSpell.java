@@ -4,9 +4,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class PillarSpell extends BrushSpell 
@@ -49,19 +48,15 @@ public class PillarSpell extends BrushSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		MaterialBrush buildWith = getMaterialBrush();
+		MaterialBrush buildWith = getBrush();
 
-		BlockList pillarBlocks = new BlockList();
 		Block pillar = targetBlock;
 		buildWith.setTarget(attachBlock.getLocation(), pillar.getLocation());
 		buildWith.update(mage, pillar.getLocation());
-		pillarBlocks.add(pillar);
+		registerForUndo(pillar);
 		buildWith.modify(pillar);
 		
-		pillarBlocks.setTimeToLive(parameters.getInt("undo", 0));
-		
-		registerForUndo(pillarBlocks);
-		controller.updateBlock(pillar);
+		registerForUndo();
 		
 		return SpellResult.CAST;
 	}

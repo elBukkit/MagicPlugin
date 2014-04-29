@@ -24,7 +24,6 @@ import org.bukkit.entity.Villager.Profession;
 import org.bukkit.entity.Wolf;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -92,7 +91,6 @@ public class AlterSpell extends BlockSpell
 			return SpellResult.NO_TARGET;
 		}
 
-		BlockList undoList = new BlockList();
 		int originalData = targetBlock.getData();
 
 		int materialIndex = adjustableMaterials.indexOf(targetBlock.getTypeId());
@@ -104,29 +102,26 @@ public class AlterSpell extends BlockSpell
 
 		boolean recursive = recurseDistance > 0;
 
-		adjust(targetBlock, data, undoList, recursive, recurseDistance, 0);
-
-		registerForUndo(undoList);
-
-		controller.updateBlock(targetBlock);
+		adjust(targetBlock, data, recursive, recurseDistance, 0);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 
 	@SuppressWarnings("deprecation")
-	protected void adjust(Block block, byte dataValue, BlockList adjustedBlocks, boolean recursive, int recurseDistance, int rDepth)
+	protected void adjust(Block block, byte dataValue, boolean recursive, int recurseDistance, int rDepth)
 	{
-		adjustedBlocks.add(block);
+		registerForUndo(block);
 		block.setData(dataValue);
 
 		if (recursive && rDepth < recurseDistance)
 		{
 			Material targetMaterial = block.getType();
-			tryAdjust(block.getRelative(BlockFace.NORTH), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.WEST), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.SOUTH), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.EAST), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);
-			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, adjustedBlocks, recurseDistance, rDepth + 1);			
+			tryAdjust(block.getRelative(BlockFace.NORTH), dataValue,targetMaterial, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.WEST), dataValue,targetMaterial, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.SOUTH), dataValue,targetMaterial, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.EAST), dataValue,targetMaterial, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, recurseDistance, rDepth + 1);
+			tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, recurseDistance, rDepth + 1);			
 		}
 	}
 	
@@ -198,13 +193,13 @@ public class AlterSpell extends BlockSpell
 		return SpellResult.CAST;
 	}
 
-	protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, BlockList adjustedBlocks, int recurseDistance, int rDepth)
+	protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, int recurseDistance, int rDepth)
 	{
-		if (target.getType() != targetMaterial || adjustedBlocks.contains(target))
+		if (target.getType() != targetMaterial || contains(target))
 		{
 			return;
 		}
 
-		adjust(target, dataValue, adjustedBlocks, true, recurseDistance, rDepth);
+		adjust(target, dataValue, true, recurseDistance, rDepth);
 	}
 }

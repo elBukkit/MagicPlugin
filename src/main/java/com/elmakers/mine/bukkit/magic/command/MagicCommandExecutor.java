@@ -29,7 +29,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.utility.URLMap;
-import com.elmakers.mine.wand.WandCleanupRunnable;
+import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
 public class MagicCommandExecutor extends MagicTabExecutor {
 

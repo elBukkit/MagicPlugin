@@ -87,14 +87,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
 
+import com.elmakers.mine.bukkit.api.block.BlockList;
+import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.block.WorldEditSchematic;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
@@ -115,11 +117,11 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.URLMap;
+import com.elmakers.mine.bukkit.wand.LostWand;
+import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandLevel;
+import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.warp.WarpController;
-import com.elmakers.mine.wand.LostWand;
-import com.elmakers.mine.wand.Wand;
-import com.elmakers.mine.wand.WandLevel;
-import com.elmakers.mine.wand.WandMode;
 
 public class MagicController implements Listener, MageController
 {
@@ -1419,7 +1421,7 @@ public class MagicController implements Listener, MageController
 			List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
 			for (MetadataValue value : values) {
 				if (value.getOwningPlugin() == plugin) {
-					BlockList blockList = (BlockList)value.value();
+					UndoList blockList = (UndoList)value.value();
 					blockList.convert((FallingBlock)entity, event.getBlock());
 				}
 			}
@@ -1471,12 +1473,12 @@ public class MagicController implements Listener, MageController
 		// TODO: Handle non-entity explosions, or make BoomSpell somehow set this to be from the player?
 		if (explodingEntity == null) return;
 		
-		BlockList blockList = null;
+		UndoList blockList = null;
 		if (explodingEntity.hasMetadata("MagicBlockList")) {
 			List<MetadataValue> values = explodingEntity.getMetadata("MagicBlockList");  
 			for (MetadataValue value : values) {
 				if (value.getOwningPlugin() == plugin) {
-					blockList = (BlockList)value.value();
+					blockList = (UndoList)value.value();
 				}
 			}
 		}
@@ -2535,6 +2537,22 @@ public class MagicController implements Listener, MageController
 		}
 	}
 	
+	public void update(String worldName, BoundingBox area)
+	{
+		if (dynmap != null && dynmapUpdate)
+		{
+			dynmap.triggerRenderOfVolume(worldName, 
+				area.getMin().getBlockX(), area.getMin().getBlockY(), area.getMin().getBlockZ(), 
+				area.getMax().getBlockX(), area.getMax().getBlockY(), area.getMax().getBlockZ());
+		}
+	}
+	
+	@Override
+	public void update(BlockList blockList)
+	{
+		update(blockList.getWorldName(), blockList.getArea());
+	}
+	
 	@Override
 	public boolean canCreateWorlds()
 	{
@@ -2685,7 +2703,7 @@ public class MagicController implements Listener, MageController
 	@Override
 	public void disablePhysics(int interval)
 	{
-		if (physicsHandler == null) {
+		if (physicsHandler == null && interval > 0) {
 			physicsHandler = new PhysicsHandler(this, interval);
 			Bukkit.getPluginManager().registerEvents(physicsHandler, plugin);
 		}
@@ -2737,12 +2755,18 @@ public class MagicController implements Listener, MageController
 		return null;
 	}
 
+	@Override
+	public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) 
+	{
+		return Wand.createWand(this, wandKey);
+	}
+
 	/*
 	 * Private data
 	 */
+	
 	 private final static int MAX_Y = 255;	
 	 private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
-
 	
 	 private final String                        SPELLS_FILE                 	= "spells";
 	 private final String                        CONFIG_FILE             		= "config";

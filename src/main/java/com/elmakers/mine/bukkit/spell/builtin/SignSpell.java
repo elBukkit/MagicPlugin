@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -87,9 +86,8 @@ public class SignSpell extends BlockSpell
 				sign.setLine(3, timeFormat.format(currentDate));
 				sign.update();
 				
-				BlockList signBlocks = new BlockList();
-				signBlocks.add(targetBlock);
-				registerForUndo(signBlocks);
+				registerForUndo(targetBlock);
+				registerForUndo();
 				controller.updateBlock(targetBlock);
 				
 				return SpellResult.CAST;

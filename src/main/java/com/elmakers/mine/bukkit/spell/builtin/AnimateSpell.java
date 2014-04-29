@@ -17,7 +17,6 @@ import org.bukkit.block.CommandBlock;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.batch.SimulateBatch;
 import com.elmakers.mine.bukkit.utilities.TextUtils;
@@ -90,9 +89,8 @@ public class AnimateSpell extends SimulateSpell
 		}
 		
 		final Block powerBlock = targetBlock.getRelative(powerFace);
-		final BlockList modifiedBlocks = new BlockList();
-		modifiedBlocks.add(targetBlock);
-		modifiedBlocks.add(powerBlock);
+		registerForUndo(targetBlock);
+		registerForUndo(powerBlock);
 		
 		if (!isDestructible(powerBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
@@ -150,8 +148,7 @@ public class AnimateSpell extends SimulateSpell
 
 			public void run() {
 				powerBlock.setType(Material.REDSTONE_BLOCK);
-				controller.updateBlock(powerBlock);
-				registerForUndo(modifiedBlocks);
+				registerForUndo();
 			}
 		}, SimulateBatch.POWER_DELAY_TICKS + 1);
 		

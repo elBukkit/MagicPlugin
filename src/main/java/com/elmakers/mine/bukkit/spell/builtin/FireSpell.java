@@ -5,8 +5,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.SimpleBlockAction;
+import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.block.batch.SimpleBlockAction;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class FireSpell extends BlockSpell
@@ -15,6 +17,11 @@ public class FireSpell extends BlockSpell
     
 	public class FireAction extends SimpleBlockAction
 	{
+		public FireAction(MageController controller, UndoList undoList)
+		{
+			super(controller, undoList);
+		}
+		
 		public SpellResult perform(Block block)
 		{
 			if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
@@ -31,7 +38,6 @@ public class FireSpell extends BlockSpell
 			{
 				block = block.getRelative(BlockFace.UP);
 			}
-
 			super.perform(block);
 			block.setType(material);
 
@@ -56,7 +62,7 @@ public class FireSpell extends BlockSpell
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = (int)(mage.getRadiusMultiplier() * radius);
 		
-		FireAction action = new FireAction();
+		FireAction action = new FireAction(controller, getUndoList());
 
 		if (radius <= 1)
 		{
@@ -67,8 +73,7 @@ public class FireSpell extends BlockSpell
 			this.coverSurface(target.getLocation(), radius, action);
 		}
 
-		registerForUndo(action.getBlocks());
-		controller.updateBlock(target);
+		registerForUndo();
 
 		return SpellResult.CAST;
 	}

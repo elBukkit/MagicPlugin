@@ -6,7 +6,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class CushionSpell extends BlockSpell
@@ -30,9 +29,7 @@ public class CushionSpell extends BlockSpell
 		int cushionWidth = parameters.getInt("width", DEFAULT_CUSHION_WIDTH);
 		int cushionHeight = parameters.getInt("height", DEFAULT_CUSHION_HEIGHT);
 
-		BlockList cushionBlocks = new BlockList();
-		cushionBlocks.setTimeToLive(7000);
-		controller.disablePhysics(8000);
+		controller.disablePhysics(parameters.getInt("disable_physics", 0));
 
 		int bubbleStart = -cushionWidth  / 2;
 		int bubbleEnd = cushionWidth  / 2;
@@ -49,14 +46,14 @@ public class CushionSpell extends BlockSpell
 					Block block = world.getBlockAt(x, y, z);
 					if (block.getType() == Material.AIR)
 					{
-						cushionBlocks.add(block);
+						registerForUndo(block);
 						block.setType(Material.STATIONARY_WATER);
 					}
 				}
 			}
 		}
 
-		registerForUndo(cushionBlocks);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 }

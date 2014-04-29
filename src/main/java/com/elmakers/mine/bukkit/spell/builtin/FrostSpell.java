@@ -10,27 +10,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
-import com.elmakers.mine.bukkit.block.SimpleBlockAction;
+import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.block.batch.SimpleBlockAction;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class FrostSpell extends BlockSpell
 {
-	private static final int			DEFAULT_RADIUS			= 2;
-	private static final int            DEFAULT_TIME_TO_LIVE = 0;
-	private static final int            DEFAULT_PLAYER_DAMAGE = 1;
-	private static final int            DEFALT_ENTITY_DAMAGE = 10;
-	private static final int			DEFAULT_SLOWNESS = 1;
-	private static final int			DEFAULT_SLOWNESS_DURATION = 200;
+	private static final int			DEFAULT_RADIUS				= 2;
+	private static final int            DEFAULT_PLAYER_DAMAGE 		= 1;
+	private static final int            DEFALT_ENTITY_DAMAGE 		= 10;
+	private static final int			DEFAULT_SLOWNESS 			= 1;
+	private static final int			DEFAULT_SLOWNESS_DURATION 	= 200;
 
 	public class FrostAction extends SimpleBlockAction
 	{
 		private Material iceMaterial;
 		
-		public FrostAction(Material iceMaterial) {
+		public FrostAction(MageController controller, UndoList undoList, Material iceMaterial)
+		{
+			super(controller, undoList);
 			this.iceMaterial = iceMaterial;
 		}
 		
@@ -91,7 +93,6 @@ public class FrostSpell extends BlockSpell
 		int playerDamage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
 		int entityDamage = parameters.getInt("entity_damage", DEFALT_ENTITY_DAMAGE);
 		int defaultRadius = parameters.getInt("radius", DEFAULT_RADIUS);
-		int timeToLive = parameters.getInt("undo", DEFAULT_TIME_TO_LIVE);
 		int slowness = parameters.getInt("slowness", DEFAULT_SLOWNESS);
 		int slownessDuration = parameters.getInt("slowness_duration", DEFAULT_SLOWNESS_DURATION);
 		Material iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
@@ -123,7 +124,7 @@ public class FrostSpell extends BlockSpell
 
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = (int)(mage.getRadiusMultiplier() * radius);		
-		FrostAction action = new FrostAction(iceMaterial);
+		FrostAction action = new FrostAction(controller, getUndoList(), iceMaterial);
 
 		if (radius <= 1)
 		{
@@ -133,12 +134,7 @@ public class FrostSpell extends BlockSpell
 		{
 			this.coverSurface(target.getLocation(), radius, action);
 		}
-
-
-		BlockList frozenBlocks = action.getBlocks();
-		frozenBlocks.setTimeToLive(timeToLive);
-		registerForUndo(frozenBlocks);
-		controller.updateBlock(target.getBlock());
+		registerForUndo();
 
 		return SpellResult.CAST;
 	}

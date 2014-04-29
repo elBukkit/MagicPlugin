@@ -22,10 +22,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class FamiliarSpell extends TargetingSpell implements Listener
+public class FamiliarSpell extends UndoableSpell implements Listener
 {
 	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow,Ozelot,HorseEntity";
 	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Giant,Silverfish,CaveSpider,Blaze,Bat,Witch";
@@ -214,7 +214,10 @@ public class FamiliarSpell extends TargetingSpell implements Listener
 				{
 					newFamiliars.add(entity);
 					spawnCount++;
+					registerForUndo(entity);
 				}
+				
+				registerForUndo();
 			}
 		}
 

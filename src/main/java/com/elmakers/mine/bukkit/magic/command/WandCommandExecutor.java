@@ -140,7 +140,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			}
 			
 			if (subCommand.equalsIgnoreCase("configure")) {
-				for (String key : com.elmakers.mine.wand.Wand.PROPERTY_KEYS) {
+				for (String key : com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS) {
 					options.add(key);
 				}
 			}
@@ -345,7 +345,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandList(CommandSender sender) {
-		Collection<ConfigurationSection> templates = com.elmakers.mine.wand.Wand.getWandTemplates();
+		Collection<ConfigurationSection> templates = com.elmakers.mine.bukkit.wand.Wand.getWandTemplates();
 		Map<String, ConfigurationSection> nameMap = new TreeMap<String, ConfigurationSection>();
 		for (ConfigurationSection templateConfig : templates)
 		{
@@ -478,7 +478,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	{
 		if (parameters.length < 1) {
 			sender.sendMessage("Use: /wand configure <property> <value>");
-			sender.sendMessage("Properties: " + StringUtils.join(com.elmakers.mine.wand.Wand.PROPERTY_KEYS, ", "));
+			sender.sendMessage("Properties: " + StringUtils.join(com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS, ", "));
 			return false;
 		}
 		

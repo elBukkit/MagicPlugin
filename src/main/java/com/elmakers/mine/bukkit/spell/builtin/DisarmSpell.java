@@ -14,7 +14,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.wand.Wand;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 public class DisarmSpell extends TargetingSpell 
 {   

@@ -1515,6 +1515,8 @@ cushion:
         range: 128
         width: 3
         cooldown: 100
+        undo: 7000
+        disable_physics: 8000
     costs:
         xp: 10
 gasp:

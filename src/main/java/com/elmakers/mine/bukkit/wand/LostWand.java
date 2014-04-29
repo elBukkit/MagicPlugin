@@ -1,4 +1,4 @@
-package com.elmakers.mine.wand;
+package com.elmakers.mine.bukkit.wand;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

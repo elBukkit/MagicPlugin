@@ -5,7 +5,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.batch.BlockRecurse;
 import com.elmakers.mine.bukkit.block.batch.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
@@ -28,14 +27,12 @@ public class RecurseSpell extends BrushSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		MaterialBrush buildWith = getMaterialBrush();
-
 		int size = parameters.getInt("size", 8);
 		size = (int)(mage.getRadiusMultiplier() * size);
 		blockRecurse.setMaxRecursion(size);
 
 		Material targetMaterial = targetBlock.getType();
-		ReplaceMaterialAction action = new ReplaceMaterialAction(mage, targetBlock, buildWith);
+		ReplaceMaterialAction action = new ReplaceMaterialAction(this, targetBlock);
 
 		// A bit hacky, but is very handy!
 		if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)

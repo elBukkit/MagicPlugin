@@ -6,7 +6,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class TorchSpell extends BlockSpell 
@@ -121,10 +120,9 @@ public class TorchSpell extends BlockSpell
 			target = face;
 		}	
 
-		BlockList torchBlock = new BlockList();
 		target.setType(targetMaterial);
-		torchBlock.add(target);
-		registerForUndo(torchBlock);
+		registerForUndo(target);
+		registerForUndo();
 		controller.updateBlock(target);
 
 		return SpellResult.CAST;

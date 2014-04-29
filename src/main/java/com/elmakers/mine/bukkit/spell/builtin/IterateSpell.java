@@ -7,10 +7,9 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
@@ -22,7 +21,6 @@ public class IterateSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		int timeToLive = parameters.getInt("undo", 0);
 		boolean incrementData = parameters.getBoolean("increment_data", false);
 		int radius = parameters.getInt("radius", 0);
 		// radius = (int)(radius * mage.getRadiusMultiplier());
@@ -68,10 +66,9 @@ public class IterateSpell extends BrushSpell
 			targetLoc.add(aim);
 		}
 
-		MaterialBrush buildWith = getMaterialBrush();
+		MaterialBrush buildWith = getBrush();
 		buildWith.setTarget(target.getLocation());
 		buildWith.update(mage, target.getLocation());
-		BlockList iteratedBlocks = new BlockList();
 		for (int dr = 0; dr <= radius; dr++) {
 			int spokes = 1;
 			// TODO: Handle radius > 1 algorithmically....
@@ -122,7 +119,7 @@ public class IterateSpell extends BrushSpell
 					Block currentTarget = target.getWorld().getBlockAt(currentLoc.getBlockX(), currentLoc.getBlockY(), currentLoc.getBlockZ());
 					if (!isTargetable(currentTarget.getType()) && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
 					{
-						iteratedBlocks.add(currentTarget);
+						registerForUndo(currentTarget);
 		
 						buildWith.update(mage, currentTarget.getLocation());
 		
@@ -155,11 +152,7 @@ public class IterateSpell extends BrushSpell
 			}
 		}
 
-		if (iteratedBlocks.size() > 0)
-		{
-			iteratedBlocks.setTimeToLive(timeToLive);
-			registerForUndo(iteratedBlocks);
-		}
+		registerForUndo();
 
 		return SpellResult.CAST;
 	}

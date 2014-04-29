@@ -4,9 +4,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class BridgeSpell extends BrushSpell 
@@ -45,17 +44,13 @@ public class BridgeSpell extends BrushSpell
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		MaterialBrush buildWith = getMaterialBrush();
+		MaterialBrush buildWith = getBrush();
 		buildWith.setTarget(attachBlock.getLocation(), targetBlock.getLocation());
 		buildWith.update(mage, targetBlock.getLocation());
 		
-		BlockList bridgeBlocks = new BlockList();
-		bridgeBlocks.add(targetBlock);
+		registerForUndo(targetBlock);
 		buildWith.modify(targetBlock);
-
-		bridgeBlocks.setTimeToLive(parameters.getInt("undo", 0));
-		registerForUndo(bridgeBlocks);
-		controller.updateBlock(targetBlock);
+		registerForUndo();
 
 		//castMessage("Facing " + playerRot + " : " + direction.name() + ", " + distance + " spaces to " + attachBlock.getType().name());
 

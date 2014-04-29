@@ -5,14 +5,16 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.BoundingBox;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
-public class RegenerateBatch extends VolumeBatch {
-	private final BlockList regeneratedBlocks = new BlockList();
-	private final BlockList restoredBlocks = new BlockList();
+public class RegenerateBatch extends UndoableBatch {
+	private static final BlockData[] template = new BlockData[0];
+	
+	private final UndoList restoredBlocks;
 	private final World world;
 	private final Mage mage;
 	private final BlockSpell spell;
@@ -31,6 +33,7 @@ public class RegenerateBatch extends VolumeBatch {
 	private int blockX = 0;
 	private int blockZ = 0;
 	
+	private BlockData[] restoreBlocks;
 	private int restoringIndex = 0;
 	private boolean expand = false;
 	
@@ -43,7 +46,8 @@ public class RegenerateBatch extends VolumeBatch {
 	private RegenerateState state;
 	
 	public RegenerateBatch(BlockSpell spell, Location p1, Location p2) {
-		super(spell.getMage().getController(), p1.getWorld().getName());
+		super(spell.getMage(), spell.getUndoList());
+		this.restoredBlocks = new UndoList(spell.getMage().getController().getPlugin());
 		this.mage = spell.getMage();
 		this.world = this.mage.getPlayer().getWorld();
 		this.spell = spell;
@@ -98,7 +102,7 @@ public class RegenerateBatch extends VolumeBatch {
 					if (!expand && !bounds.contains(block.getLocation().toVector())) {
 						restoredBlocks.add(block);
 					} else {
-						regeneratedBlocks.add(block);
+						registerForUndo(block);
 					}
 					processedBlocks++;
 					
@@ -152,12 +156,13 @@ public class RegenerateBatch extends VolumeBatch {
 			
 			if (ix >= absx) 
 			{
+				restoreBlocks = restoredBlocks.toArray(template);
 				state = RegenerateState.RESTORING;
 			}
 			break;
 		case RESTORING:
-			while (processedBlocks < maxBlocks && restoringIndex < restoredBlocks.size()) {
-				restoredBlocks.get(restoringIndex).restore();
+			while (processedBlocks < maxBlocks && restoringIndex < restoreBlocks.length) {
+				restoreBlocks[restoringIndex].restore();
 				restoringIndex++;
 				processedBlocks++;
 			}
@@ -168,17 +173,6 @@ public class RegenerateBatch extends VolumeBatch {
 		}
 		
 		return processedBlocks;
-	}
-	
-	@Override
-	public void finish() {
-		if (!finished) {
-			super.finish();
-
-			spell.registerForUndo(regeneratedBlocks);
-			String message = spell.getMessage("cast_finish");
-			spell.sendMessage(message);
-		}
 	}
 	
 	public int getXSize() {

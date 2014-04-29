@@ -4,20 +4,23 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.SimpleBlockAction;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.block.batch.SimpleBlockAction;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class LightningSpell extends TargetingSpell
+public class LightningSpell extends UndoableSpell
 {
 	public class ShockAction extends SimpleBlockAction
 	{
 		protected double density;
 		protected int    thunderThreshold;
 
-		public ShockAction(double density, int thunderThreshold)
+		public ShockAction(MageController controller, UndoList undoList, double density, int thunderThreshold)
 		{
+			super(controller, undoList);
 			this.density = density;
 			this.thunderThreshold = thunderThreshold;
 		}
@@ -26,9 +29,10 @@ public class LightningSpell extends TargetingSpell
 		{
 			if (Math.random() > density) return SpellResult.COST_FREE;
 
+			super.perform(block);
 			World world = block.getWorld();
 			world.strikeLightning(block.getLocation());
-			super.perform(block);
+			
 			// TODO: Make this a special parameter
 			/*
 			if (blocks.size() > thunderThreshold)
@@ -54,7 +58,7 @@ public class LightningSpell extends TargetingSpell
 		radius = (int)(mage.getRadiusMultiplier() * radius);	
 
 		double ratio = (radius < 2) ? 1.0 : (radius < 4) ? 0.5 : 0.25;
-		ShockAction action = new ShockAction(ratio, 5);
+		ShockAction action = new ShockAction(controller, null, ratio, 5);
 
 		if (radius <= 1)
 		{
@@ -64,6 +68,8 @@ public class LightningSpell extends TargetingSpell
 		{
 			this.coverSurface(target.getLocation(), radius, action);
 		}
+		
+		registerForUndo();
 
 		return SpellResult.CAST;
 	}

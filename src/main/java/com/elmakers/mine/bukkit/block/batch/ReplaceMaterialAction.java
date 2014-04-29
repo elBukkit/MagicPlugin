@@ -8,11 +8,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.SimpleBlockAction;
-import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {
@@ -23,17 +23,19 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 	private boolean spawnFallingBlocks = false;
 	private Vector fallingBlockVelocity = null;
 	
-	public ReplaceMaterialAction(Mage mage, Block targetBlock, MaterialBrush brush)
+	public ReplaceMaterialAction(BrushSpell spell, Block targetBlock)
 	{
-		this.mage = mage;
-		replaceable.add(new MaterialAndData(targetBlock));
-		this.brush = brush;
+		super(spell.getMage().getController(), spell.getUndoList());
+		this.mage = spell.getMage();
+		this.brush = spell.getBrush();
+		if (targetBlock != null) {
+			replaceable.add(new MaterialAndData(targetBlock));
+		}
 	}
 
-	public ReplaceMaterialAction(Mage playerSpells, MaterialBrush brush)
+	public ReplaceMaterialAction(BrushSpell spell)
 	{
-		this.mage = playerSpells;
-		this.brush = brush;
+		this(spell, null);
 	}
 
 	public void addReplaceable(Material material)

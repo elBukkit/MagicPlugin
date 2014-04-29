@@ -38,13 +38,12 @@ import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.block.batch.UndoBatch;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.wand.Wand;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage
 {
@@ -390,26 +389,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	public UndoQueue getUndoQueue() {
 		if (undoQueue == null) {
-			undoQueue = new UndoQueue();
+			undoQueue = new UndoQueue(controller.getPlugin());
 			undoQueue.setMaxSize(controller.getUndoQueueDepth());
 		}
 		return undoQueue;
 	}
 	
-	public boolean registerForUndo(com.elmakers.mine.bukkit.api.block.BlockList _blockList) {
-		// for now we only support the internal type.
-		if (!(_blockList instanceof BlockList)) return false;
-		BlockList blockList = (BlockList)_blockList;
-		
+	public boolean registerForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
 		UndoQueue queue = getUndoQueue();
 		int autoUndo = controller.getAutoUndoInterval();
-		if (autoUndo > 0 && blockList.getTimeToLive() == 0) {
-			blockList.setTimeToLive(autoUndo);
+		if (autoUndo > 0 && undoList.getScheduledUndo() == 0) {
+			undoList.setScheduleUndo(autoUndo);
 		}
-		if (blockList.getTimeToLive() > 0) {
-			queue.scheduleCleanup(this, blockList);
+		if (undoList.getScheduledUndo() > 0) {
+			queue.scheduleCleanup(this, undoList);
 		} else {
-			queue.add(blockList);
+			queue.add(undoList);
 		}
 		
 		return true;
@@ -957,7 +952,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	public boolean addPendingBlockBatch(com.elmakers.mine.bukkit.api.block.BlockBatch batch) {
 		if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
 			controller.getLogger().info("Rejected construction for " + getName() + ", already has " + pendingBatches.size()
-					+ "pending, limit: " + controller.getPendingQueueDepth());
+					+ " pending, limit: " + controller.getPendingQueueDepth());
 			
 			return false;
 		}

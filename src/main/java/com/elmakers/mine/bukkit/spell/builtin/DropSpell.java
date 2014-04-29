@@ -10,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class DropSpell extends BlockSpell
@@ -39,23 +38,22 @@ public class DropSpell extends BlockSpell
 		}
 
 		int maxRecursion = parameters.getInt("recursion_depth", DEFAULT_MAX_RECURSION);
-		BlockList droppedBlocks = new BlockList();
-		drop(target, dropMaterials, droppedBlocks, maxRecursion);
+		drop(target, dropMaterials, maxRecursion);
 
 		// Make this undoable.. even though it means you can exploit it for ore with Rewind. Meh!
-		registerForUndo(droppedBlocks);
+		registerForUndo();
 
 		return SpellResult.CAST;
 	}
 
-	protected void drop(Block block, Set<Material> dropTypes, BlockList minedBlocks, int maxRecursion)
+	protected void drop(Block block, Set<Material> dropTypes, int maxRecursion)
 	{		
-		drop(block, dropTypes, minedBlocks, maxRecursion, 0);
+		drop(block, dropTypes, maxRecursion, 0);
 	}
 
-	protected void drop(Block block, Set<Material> dropTypes, BlockList droppedBlocks, int maxRecursion, int rDepth)
+	protected void drop(Block block, Set<Material> dropTypes, int maxRecursion, int rDepth)
 	{
-		droppedBlocks.add(block);
+		registerForUndo(block);
 		Collection<ItemStack> drops = block.getDrops();
 		for (ItemStack drop : drops) {
 			block.getWorld().dropItemNaturally(block.getLocation(), drop);
@@ -65,22 +63,22 @@ public class DropSpell extends BlockSpell
 		
 		if (rDepth < maxRecursion)
 		{
-			tryDrop(block.getRelative(BlockFace.NORTH), dropTypes, droppedBlocks, maxRecursion, rDepth + 1);
-			tryDrop(block.getRelative(BlockFace.WEST), dropTypes, droppedBlocks, maxRecursion, rDepth + 1);
-			tryDrop(block.getRelative(BlockFace.SOUTH), dropTypes, droppedBlocks, maxRecursion, rDepth + 1);
-			tryDrop(block.getRelative(BlockFace.EAST), dropTypes, droppedBlocks, maxRecursion, rDepth + 1);
-			tryDrop(block.getRelative(BlockFace.UP), dropTypes, droppedBlocks, maxRecursion, rDepth + 1);
-			tryDrop(block.getRelative(BlockFace.DOWN), dropTypes, droppedBlocks, maxRecursion, rDepth + 1);
+			tryDrop(block.getRelative(BlockFace.NORTH), dropTypes, maxRecursion, rDepth + 1);
+			tryDrop(block.getRelative(BlockFace.WEST), dropTypes, maxRecursion, rDepth + 1);
+			tryDrop(block.getRelative(BlockFace.SOUTH), dropTypes, maxRecursion, rDepth + 1);
+			tryDrop(block.getRelative(BlockFace.EAST), dropTypes, maxRecursion, rDepth + 1);
+			tryDrop(block.getRelative(BlockFace.UP), dropTypes, maxRecursion, rDepth + 1);
+			tryDrop(block.getRelative(BlockFace.DOWN), dropTypes, maxRecursion, rDepth + 1);
 		}
 	}
 
-	protected void tryDrop(Block target, Set<Material> dropTypes, BlockList minedBlocks, int maxRecursion, int rDepth)
+	protected void tryDrop(Block target, Set<Material> dropTypes, int maxRecursion, int rDepth)
 	{
-		if (!dropTypes.contains(target.getType()) || minedBlocks.contains(target))
+		if (!dropTypes.contains(target.getType()) || contains(target))
 		{
 			return;
 		}
 
-		drop(target, dropTypes, minedBlocks, maxRecursion, rDepth);
+		drop(target, dropTypes, maxRecursion, rDepth);
 	}
 }

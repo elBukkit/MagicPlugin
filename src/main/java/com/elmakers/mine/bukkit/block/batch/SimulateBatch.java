@@ -22,17 +22,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.AutomatonLevel;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.wand.Wand;
 
-public class SimulateBatch extends VolumeBatch {
+public class SimulateBatch extends UndoableBatch {
 	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
@@ -103,17 +101,10 @@ public class SimulateBatch extends VolumeBatch {
 	private List<Block> deadBlocks = new ArrayList<Block>();
 	private List<Block> bornBlocks = new ArrayList<Block>();
 	private List<Target> potentialCommandBlocks = new LinkedList<Target>();
-	private BlockList modifiedBlocks = new BlockList();
-	
-	private MagicController _controller;
 	
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
-		super(spell.getMage().getController(), center.getWorld().getName());
+		super(spell.getMage(), spell.getUndoList());
 		
-		// This reaches deep into the internals of Magic.
-		if (controller instanceof MagicController) {
-			_controller = (MagicController)controller;
-		}
 		this.spell = spell;
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
@@ -180,7 +171,7 @@ public class SimulateBatch extends VolumeBatch {
 		
 		// Drop item
 		if (dropItem != null && dropItem.length() > 0) {
-			Wand magicItem = Wand.createWand(_controller, dropItem);
+			Wand magicItem = controller.createWand(dropItem);
 			if (magicItem != null) {
 				center.getWorld().dropItemNaturally(center, magicItem.getItem());
 			}
@@ -201,16 +192,15 @@ public class SimulateBatch extends VolumeBatch {
 		if (level != null) {
 			level.onDeath(mage, birthMaterial);
 		}
-		if (!mage.isPlayer() && _controller != null) {
-			_controller.forgetMage(mage);
+		if (!mage.isPlayer()) {
+			controller.forgetMage(mage);
 		}
 	}
 	
 	protected void killBlock(Block block) {
 		if (concurrent) {
-			modifiedBlocks.add(block);
+			registerForUndo(block);
 			block.setType(deathMaterial);
-			controller.updateBlock(block);
 		} else {
 			deadBlocks.add(block);
 		}
@@ -218,9 +208,8 @@ public class SimulateBatch extends VolumeBatch {
 	
 	protected void birthBlock(Block block) {
 		if (concurrent) {
-			modifiedBlocks.add(block);
+			registerForUndo(block);
 			birthMaterial.modify(block);
-			controller.updateBlock(block);
 		} else {
 			bornBlocks.add(block);
 		}
@@ -400,9 +389,8 @@ public class SimulateBatch extends VolumeBatch {
 				}
 				
 				if (birthMaterial.is(killBlock)) {
-					modifiedBlocks.add(killBlock);
+					registerForUndo(killBlock);
 					killBlock.setType(deathMaterial);
-					controller.updateBlock(killBlock);
 				} else {
 					// If this block was destroyed while we were processing,
 					// avoid spawning a random birth block.
@@ -423,9 +411,8 @@ public class SimulateBatch extends VolumeBatch {
 					birthBlock.getChunk().load();
 					return processedBlocks;
 				}
-				modifiedBlocks.add(birthBlock);
+				registerForUndo(birthBlock);
 				birthMaterial.modify(birthBlock);
-				controller.updateBlock(birthBlock);
 			}
 			
 			updatingIndex++;
@@ -802,10 +789,7 @@ public class SimulateBatch extends VolumeBatch {
 	@Override
 	public void finish() {
 		state = SimulationState.FINISHED;
-		if (!finished) {
-			super.finish();
-			spell.registerForUndo(modifiedBlocks);
-		}
+		super.finish();
 	}
 	
 	protected void mapIntegers(Collection<Integer> flags, List<Boolean> flagMap) {

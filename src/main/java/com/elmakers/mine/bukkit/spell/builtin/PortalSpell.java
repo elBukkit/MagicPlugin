@@ -9,7 +9,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
@@ -42,20 +41,17 @@ public class PortalSpell extends BlockSpell
 			return SpellResult.NO_TARGET;		
 		}
 
-		int timeToLive = parameters.getInt("undo", 5000);
-		BlockList portalBlocks = new BlockList();
-		portalBlocks.setTimeToLive(timeToLive);
 		controller.disablePhysics(1000);
-		buildPortalBlocks(portalBase.getLocation(), BlockFace.NORTH, portalBlocks);
-		registerForUndo(portalBlocks);
+		buildPortalBlocks(portalBase.getLocation(), BlockFace.NORTH);
+		registerForUndo();
 
 		return SpellResult.CAST;
 	}
 
-	protected void buildPortalBlocks(Location centerBlock, BlockFace facing, BlockList blockList)
+	protected void buildPortalBlocks(Location centerBlock, BlockFace facing)
 	{
 		Set<Material> destructible = mage.getController().getDestructibleMaterials();
 		BoundingBox container = new BoundingBox(centerBlock.getBlockX(), centerBlock.getBlockY(), centerBlock.getBlockZ(), centerBlock.getBlockX() + 2, centerBlock.getBlockY() + 3, centerBlock.getBlockZ() + 1);
-		container.fill(centerBlock.getWorld(), Material.PORTAL, destructible, blockList);
+		container.fill(centerBlock.getWorld(), Material.PORTAL, destructible, getUndoList());
 	}
 }

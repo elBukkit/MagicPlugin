@@ -8,7 +8,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -38,6 +37,10 @@ public class DisintegrateSpell extends BlockSpell
 				else
 				{
 					li.damage(mage.getDamageMultiplier() * entityDamage, getPlayer());
+					if (li.isDead()) {
+						registerRemoved(li);
+						registerForUndo();
+					}
 				}
 				return SpellResult.CAST;
 			}
@@ -58,8 +61,7 @@ public class DisintegrateSpell extends BlockSpell
 			return SpellResult.NO_TARGET;
 		}
 
-		BlockList disintigrated = new BlockList();
-		disintigrated.add(targetBlock);
+		registerForUndo(targetBlock);
 		
 		if (isUnderwater())
 		{
@@ -70,7 +72,7 @@ public class DisintegrateSpell extends BlockSpell
 			targetBlock.setType(Material.AIR);
 		}
 		
-		registerForUndo(disintigrated);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 }
