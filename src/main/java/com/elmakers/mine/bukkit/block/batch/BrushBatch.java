@@ -9,11 +9,11 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
-public abstract class BrushBatch extends UndoableBatch {
+public abstract class BrushBatch extends SpellBatch {
 	protected final BrushSpell spell;
 	
 	public BrushBatch(BrushSpell spell) {
-		super(spell.getMage(), spell.getUndoList());
+		super(spell);
 		this.spell = spell;
 	}
 	
@@ -46,8 +46,6 @@ public abstract class BrushBatch extends UndoableBatch {
 					}
 				}
 			}
-
-			spell.sendMessage(spell.getMessage("cast_finish"));
 			super.finish();
 		}
 	}
