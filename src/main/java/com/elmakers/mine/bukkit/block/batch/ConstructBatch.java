@@ -508,6 +508,7 @@ public class ConstructBatch extends VolumeBatch {
 					Vector direction = falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
 					falling.setVelocity(direction);
 				}
+				constructedBlocks.add(controller.getPlugin(), falling);
 			}
 		}
 		return true;

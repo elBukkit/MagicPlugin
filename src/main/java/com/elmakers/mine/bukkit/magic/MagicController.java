@@ -41,6 +41,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -50,6 +51,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -79,17 +81,19 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.block.WorldEditSchematic;
@@ -1408,6 +1412,20 @@ public class MagicController implements Listener, MageController
 	/*
 	 * Listeners / callbacks
 	 */
+	@EventHandler
+	public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
+		Entity entity = event.getEntity();
+		if (entity instanceof FallingBlock && event.getEntity().hasMetadata("MagicBlockList")) {
+			List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
+			for (MetadataValue value : values) {
+				if (value.getOwningPlugin() == plugin) {
+					BlockList blockList = (BlockList)value.value();
+					blockList.convert((FallingBlock)entity, event.getBlock());
+				}
+			}
+		}
+	}
+	
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent event) {
 		if (!enableItemHacks || event.isCancelled()) return;

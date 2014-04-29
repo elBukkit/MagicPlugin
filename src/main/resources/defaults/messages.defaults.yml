@@ -472,7 +472,7 @@ spells:
     collapse:
         name: Collapse
         description: Collapse a spherical area of blocks
-        cast_finish: Collapsed $count blocks]
+        cast_finish: Collapsed $count blocks
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
