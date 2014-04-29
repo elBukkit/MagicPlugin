@@ -7,10 +7,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockVector;
@@ -51,7 +54,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 	protected int				   taskId           = 0;
 	
 	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
-
+	protected Set<FallingBlock> fallingBlocks = new HashSet<FallingBlock>();
+	
 	public BlockList()
 	{
 
@@ -356,6 +360,12 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 	{
 		if (blockList == null) return true;
 
+		// This part doesn't happen asynchronously
+		for (FallingBlock falling : fallingBlocks) {
+			falling.remove();
+		}
+		fallingBlocks.clear();
+		
 		UndoBatch batch = new UndoBatch(mage.getController(), this);
 		if (!mage.addPendingBlockBatch(batch)) {
 			return false;
@@ -415,5 +425,17 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 		}
 		
 		return this.undo(mage);
+	}
+	
+	public void add(Plugin plugin, FallingBlock fallingBlock)
+	{
+		fallingBlocks.add(fallingBlock);
+		fallingBlock.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
+	}
+	
+	public void convert(FallingBlock fallingBlock, Block block)
+	{
+		fallingBlocks.remove(fallingBlock);
+		add(block);
 	}
 }
