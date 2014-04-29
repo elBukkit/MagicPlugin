@@ -331,10 +331,10 @@ virus:
         concurrent: false
         target_types: any
         target_mode: flee
-        birth_rules: 1,2,3,4
-        diagonal_birth_rules: 0,1,2
-        live_rules: 1,2,3,4
-        diagonal_live_rules: 0,1,2 
+        birth_rules: 1,2,3
+        diagonal_birth_rules: 0,1
+        live_rules: 1,2,3
+        diagonal_live_rules: 0,1
     costs:
         xp: 1000
 worm:
