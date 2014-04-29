@@ -199,6 +199,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 	
 	@SuppressWarnings("deprecation")
 	public void updateFrom(Block block, Set<Material> restrictedMaterials) {
+		if (block == null) {
+			isValid = false;
+			return;
+		}
 		if (!block.getChunk().isLoaded()) {
 			block.getChunk().load(true);
 			return;
