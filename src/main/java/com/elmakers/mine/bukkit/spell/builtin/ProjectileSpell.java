@@ -20,10 +20,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
-public class ProjectileSpell extends TargetingSpell 
+public class ProjectileSpell extends BlockSpell 
 {
 	private int defaultSize = 1;
 	private Random random = new Random();
@@ -115,6 +116,7 @@ public class ProjectileSpell extends TargetingSpell
 		// Spawn projectiles
 		Object nmsWorld = NMSUtils.getHandle(location.getWorld());
 		Player player = getPlayer();
+		BlockList undoList = new BlockList();
 		for (int i = 0; i < count; i++) {
 			try {
 				// Spawn a new projectile
@@ -169,6 +171,7 @@ public class ProjectileSpell extends TargetingSpell
 					Fireball fireball = (Fireball)projectile;
 					fireball.setIsIncendiary(useFire);
 					fireball.setYield(size);
+					undoList.addExplodingEntity(controller.getPlugin(), projectile);
 				}
 				if (projectile instanceof Arrow) {
 					Arrow arrow = (Arrow)projectile;
@@ -204,6 +207,8 @@ public class ProjectileSpell extends TargetingSpell
 		if (tickIncrease > 0 && projectiles.size() > 0 && arrowClass != null) {
 			scheduleProjectileCheck(projectiles, tickIncrease, effects, radius, arrowClass, craftArrowClass, 5);
 		}
+		
+		registerForUndo(undoList);
 		return SpellResult.CAST;
 	}
 	
