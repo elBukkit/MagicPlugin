@@ -179,9 +179,9 @@ public abstract class TargetingSpell extends BaseSpell {
 			location = location.clone();
 			location.setY(0);
 		}
-		if (location.getBlockY() > Spell.MAX_Y) {
+		if (location.getBlockY() > controller.getMaxY()) {
 			location = location.clone();
-			location.setY(Spell.MAX_Y);
+			location.setY(controller.getMaxY());
 		}
 		
 		try {
