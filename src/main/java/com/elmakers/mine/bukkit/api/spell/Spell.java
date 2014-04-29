@@ -49,4 +49,5 @@ public interface Spell extends SpellTemplate {
 	public void tick();
 	
 	public void initialize(MageController controller);
+	public boolean hasBrushOverride();
 }
