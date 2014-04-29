@@ -2537,7 +2537,7 @@ public class MagicController implements Listener, MageController
 	
 	public void update(String worldName, BoundingBox area)
 	{
-		if (dynmap != null && dynmapUpdate)
+		if (dynmap != null && dynmapUpdate && area != null)
 		{
 			dynmap.triggerRenderOfVolume(worldName, 
 				area.getMin().getBlockX(), area.getMin().getBlockY(), area.getMin().getBlockZ(), 
@@ -2548,7 +2548,9 @@ public class MagicController implements Listener, MageController
 	@Override
 	public void update(BlockList blockList)
 	{
-		update(blockList.getWorldName(), blockList.getArea());
+		if (blockList != null) {
+			update(blockList.getWorldName(), blockList.getArea());
+		}
 	}
 	
 	@Override

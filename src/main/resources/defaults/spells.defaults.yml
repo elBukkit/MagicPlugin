@@ -1552,12 +1552,12 @@ regenerate:
            material: dirt
     parameters:
         allow_max_range: false
-        target: block
-        expand: true
+        target: select
         range: 64
+        max_dimension: 32
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 500
 superregenerate:
     icon: diamond_hoe
     category: engineering
@@ -1572,9 +1572,10 @@ superregenerate:
         target: select
         range: 64
         max_dimension: 64
+        expand: true
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 1000
 paint:
     icon: painting
     category: engineering
