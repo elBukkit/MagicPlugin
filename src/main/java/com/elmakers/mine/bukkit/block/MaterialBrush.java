@@ -12,8 +12,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Painting;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
@@ -526,48 +526,59 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 	}
 	
 	@Override
-	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities(final Location center, final int radius)
+	public Collection<Entity> getTargetEntities()
 	{
-		List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();
+		if (cloneTarget == null) return null;
 		
-		int radiusSquared = radius * radius;
+		// TODO: Add SCHEMATIC here once we're adding schematic entities
 		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)
 		{
-			World targetWorld = center.getWorld();
-	
-			// First clear all hanging entities from the area.
+			List<Entity> targetData = new ArrayList<Entity>();			
+			World targetWorld = cloneTarget.getWorld();
 			List<Entity> targetEntities = targetWorld.getEntities();
 			for (Entity entity : targetEntities) {
-				// Specific check only for what we copy. This could be more abstract.
-				if (entity instanceof Painting || entity instanceof ItemFrame) {
-					if (entity.getLocation().distanceSquared(center) <= radiusSquared) {
-						entity.remove();
-					}
+				// Note that we'll clear Item entities even though we can't respawn them!
+				if (!(entity instanceof Player)) {
+					targetData.add(entity);
 				}
 			}
 			
-			// Now copy all hanging entities from the source location
-			Location cloneLocation = toTargetLocation(center);
+			return targetData;
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities()
+	{
+		if (cloneTarget == null || cloneLocation == null) return null;
+		
+		if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)
+		{
+			List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();			
+	
 			World sourceWorld = cloneLocation.getWorld();
 			List<Entity> entities = sourceWorld.getEntities();
 			for (Entity entity : entities) {
-				if (entity instanceof Painting || entity instanceof ItemFrame) {
+				if (!(entity instanceof Player || entity instanceof Item)) {
 					Location entityLocation = entity.getLocation();
-					if (entity.getLocation().distanceSquared(cloneLocation) > radiusSquared) continue;
-					EntityData entityData = new EntityData(fromTargetLocation(center.getWorld(), entityLocation), entity);
+					EntityData entityData = new EntityData(fromTargetLocation(cloneTarget.getWorld(), entityLocation), entity);
 					copyEntities.add(entityData);
 				}
 			}
+			
+			return copyEntities;
 		} 
 		else if (mode == BrushMode.SCHEMATIC)
 		{
 			if (schematic != null)
 			{
-				return schematic.getEntities(center, radius);
+				return schematic.getEntities();
 			}
 		}
 			
-		return copyEntities;
+		return null;
 	}
 	
 	@Override

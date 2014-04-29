@@ -10,19 +10,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.block.BlockList;
+public abstract class BlockSpell extends UndoableSpell {
 
-public abstract class BlockSpell extends TargetingSpell {
-
-	private boolean		bypassBuildRestriction  = false;
 	private Set<Material>	indestructible;
 	private Set<Material>	destructible;
-	private boolean checkDestructible = true;
-	private boolean bypassUndo				= false;
-	private int modifiedBlocks = 0;
+	private boolean			bypassBuildRestriction  = false;
+	private boolean 		checkDestructible 		= true;
 	
 	public final static String[] BLOCK_PARAMETERS = {
-		"indestructible", "destructible", "check_destructible", "bypass_undo"
+		"indestructible", "destructible", "check_destructible", "bypass_undo", "undo"
 	};
 	
 	private boolean isIndestructible(Block block)
@@ -72,31 +68,14 @@ public abstract class BlockSpell extends TargetingSpell {
 		}
 		checkDestructible = parameters.getBoolean("check_destructible", true);
 		checkDestructible = parameters.getBoolean("cd", checkDestructible);
-		bypassUndo = parameters.getBoolean("bypass_undo", false);
-		bypassUndo = parameters.getBoolean("bu", bypassUndo);
 		bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
 		bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
-	}
-	
-	public void registerForUndo(BlockList list)
-	{
-		modifiedBlocks += list.size();
-		if (!bypassUndo) {
-			mage.registerForUndo(list);
-		}
-	}
-	
-	@Override
-	protected void preCast()
-	{
-		super.preCast();
-		modifiedBlocks = 0;
 	}
 	
 	@Override
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);
-		return message.replace("$count", Integer.toString(modifiedBlocks));
+		return message.replace("$count", Integer.toString(getModifiedCount()));
 	}
 
 	@Override
@@ -110,7 +89,10 @@ public abstract class BlockSpell extends TargetingSpell {
 	{
 		super.getParameterOptions(examples, parameterKey);
 		
-		if (parameterKey.equals("indestructible") || parameterKey.equals("destructible")) {
+		if (parameterKey.equals("undo")) {
+			examples.addAll(Arrays.asList(EXAMPLE_DURATIONS));
+		} 
+		else if (parameterKey.equals("indestructible") || parameterKey.equals("destructible")) {
 			examples.addAll(controller.getMaterialSets());
 		} else if (parameterKey.equals("check_destructible") || parameterKey.equals("bypass_undo")) {
 			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));

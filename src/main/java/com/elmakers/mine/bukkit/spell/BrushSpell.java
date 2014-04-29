@@ -65,7 +65,7 @@ public abstract class BrushSpell extends BlockSpell {
 		hasBrush = parameters.contains("brush");
 	}
 	
-	public com.elmakers.mine.bukkit.api.block.MaterialBrush getMaterialBrush()
+	public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
 	{
 		if (brush != null)
 		{
@@ -90,7 +90,7 @@ public abstract class BrushSpell extends BlockSpell {
 	@Override
 	protected String getDisplayMaterialName()
 	{
-		com.elmakers.mine.bukkit.api.block.MaterialBrush useBrush = getMaterialBrush();
+		com.elmakers.mine.bukkit.api.block.MaterialBrush useBrush = getBrush();
 		if (useBrush != null) {
 			return useBrush.getName();
 		}

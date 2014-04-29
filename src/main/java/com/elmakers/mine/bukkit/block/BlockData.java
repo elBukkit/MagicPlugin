@@ -35,7 +35,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
 	// Persistent
 	protected BlockVector  location;
-	protected String       world;
+	protected String       worldName;
 
 	public static long getBlockId(Block block)
 	{
@@ -55,9 +55,24 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 			| ((long)y & 0xFF);
 	}
 	
+	@Override
+	public int hashCode()
+	{
+		return (int)getId();
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other instanceof BlockData) {
+			return getId() == ((BlockData)other).getId();
+		}
+		return super.equals(other);
+	}
+	
 	public long getId()
 	{
-		return getBlockId(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+		return getBlockId(worldName, location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
 
 	public static BlockFace getReverseFace(BlockFace blockFace)
@@ -91,28 +106,28 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 		this.block = block;
 
 		location = new BlockVector(block.getX(), block.getY(), block.getZ());
-		world = block.getWorld().getName();
+		worldName = block.getWorld().getName();
 	}
 
 	public BlockData(com.elmakers.mine.bukkit.api.block.BlockData copy)
 	{
 		super(copy);
 		location = copy.getPosition();
-		world = copy.getWorldName();
+		worldName = copy.getWorldName();
 	}
 	
 	public BlockData(Location location, Material material, byte data)
 	{
 		super(material, data);
 		this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-		this.world = location.getWorld().getName();
+		this.worldName = location.getWorld().getName();
 	}
 	
 	public BlockData(int x, int y, int z, String world, Material material, byte data)
 	{
 		super(material, data);
 		this.location = new BlockVector(x, y, z);
-		this.world = world;
+		this.worldName = world;
 	}
 	
 	public BlockData(ConfigurationSection node) {
@@ -126,7 +141,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 	public void save(ConfigurationSection node) {
 		node.set("material", ConfigurationUtils.fromMaterial(material));
 		node.set("data", data);
-		Location location = new Location(Bukkit.getWorld(world), this.location.getX(), this.location.getY(), this.location.getZ());
+		Location location = new Location(Bukkit.getWorld(worldName), this.location.getX(), this.location.getY(), this.location.getZ());
 		node.set("location", ConfigurationUtils.fromLocation(location));
 	}
 
@@ -181,7 +196,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 	{
 		if (nextState != null) {
 			nextState.setPriorState(null);
-			nextState.updateFrom(block);
+			nextState.updateFrom(getBlock());
 		}
 		
 		if (priorState != null) {
@@ -193,7 +208,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 	
 	@SuppressWarnings("deprecation")
 	public String toString() {
-		return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + world + "|" + getMaterial().getId() + ":" + getData();
+		return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + worldName + "|" + getMaterial().getId() + ":" + getData();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -244,7 +259,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
 	@Override
 	public String getWorldName() {
-		return world;
+		return worldName;
 	}
 	
 	@Override
@@ -256,8 +271,8 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 	@Override
 	public World getWorld()
 	{
-		if (world == null || world.length() == 0) return null;
-		return Bukkit.getWorld(world);
+		if (worldName == null || worldName.length() == 0) return null;
+		return Bukkit.getWorld(worldName);
 	}
 	
 	@Override

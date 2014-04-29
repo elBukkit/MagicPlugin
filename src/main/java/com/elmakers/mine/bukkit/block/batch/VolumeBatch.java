@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.block.batch;
 
+import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public abstract class VolumeBatch implements BlockBatch {
 	protected final MageController controller;
@@ -19,17 +20,25 @@ public abstract class VolumeBatch implements BlockBatch {
 	private Integer maxy = null;
 	private Integer maxz = null;
 	
-	public VolumeBatch(MageController controller, String worldName) {
+	public VolumeBatch(MageController controller) {
 		this.controller = controller;
-		this.worldName = worldName;
+		this.worldName = null;
 	}
 	
 	protected void updateBlock(BlockData data) {
 		BlockVector location = data.getPosition();
-		updateBlock(worldName, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+		updateBlock(data.getWorldName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
 	
-	protected void updateBlock(int x, int y, int z) {
+	protected void updateBlock(Block block) {
+		updateBlock(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+	}
+	
+	protected void updateBlock(String worldName, int x, int y, int z) {
+		if (this.worldName != null && !this.worldName.equals(worldName)) {
+			return;
+		}
+		if (this.worldName == null) this.worldName = worldName;
 		if (minx == null) {
 			minx = x;
 			miny = y;
@@ -46,16 +55,10 @@ public abstract class VolumeBatch implements BlockBatch {
 			maxz = Math.max(z, maxz);
 		}
 	}
-
-	
-	protected void updateBlock(String worldName, int x, int y, int z) {
-		this.worldName = worldName;
-		updateBlock(x, y, z);
-	}
 	
 	public void finish() {
 		if (!finished) {
-			if (worldName != null && minx !=null && miny != null && minz != null && maxx !=null && maxy != null && maxz != null) {
+			if (worldName != null && minx != null && miny != null && minz != null && maxx !=null && maxy != null && maxz != null) {
 				controller.updateVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
 			}
 			finished = true;

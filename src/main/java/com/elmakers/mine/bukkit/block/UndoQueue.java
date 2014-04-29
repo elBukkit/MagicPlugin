@@ -11,42 +11,46 @@ import java.util.Set;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.block.BlockList;
-import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
-	private final LinkedList<BlockList> blockQueue = new LinkedList<BlockList>();
-	private final Set<BlockList> 		scheduledBlocks = new HashSet<BlockList>();
+	private final Plugin				plugin;
+	private final LinkedList<UndoList> 	changeQueue = new LinkedList<UndoList>();
+	private final Set<UndoList> 		scheduledBlocks = new HashSet<UndoList>();
 	private int                         maxSize    = 0;
 
-	@Override
-	public void add(BlockList blocks)
+	public UndoQueue(Plugin plugin)
 	{
-		if (maxSize > 0 && blockQueue.size() > maxSize)
-		{
-			BlockList expired = blockQueue.removeFirst();
-			expired.commit();
-		}
-		blocks.prepareForUndo();
-		blockQueue.add(blocks);
+		this.plugin = plugin;
 	}
 	
-	public void scheduleCleanup(Mage mage, BlockList blocks)
+	@Override
+	public void add(UndoList blocks)
 	{
-		blocks.prepareForUndo();
+		if (maxSize > 0 && changeQueue.size() > maxSize)
+		{
+			UndoList expired = changeQueue.removeFirst();
+			expired.commit();
+		}
+		changeQueue.add(blocks);
+	}
+	
+	public void scheduleCleanup(Mage mage, UndoList blocks)
+	{
 		scheduledBlocks.add(blocks);
-
 		blocks.scheduleCleanup(mage);
 	}
 	
 	public void undoScheduled(Mage mage)
 	{
 		if (scheduledBlocks.size() == 0) return;
-		for (BlockList list : scheduledBlocks) {
+		for (UndoList list : scheduledBlocks) {
 			list.undoScheduled(mage);
 		}
 		scheduledBlocks.clear();
@@ -54,30 +58,30 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 	
 	public boolean isEmpty()
 	{
-		 return scheduledBlocks.isEmpty() && blockQueue.isEmpty();
+		 return scheduledBlocks.isEmpty() && changeQueue.isEmpty();
 	}
 	
-	public void removeScheduledCleanup(BlockList blockList)
+	public void removeScheduledCleanup(UndoList blockList)
 	{
 		scheduledBlocks.remove(blockList);
 	}
 
-	public BlockList getLast()
+	public UndoList getLast()
 	{
-		if (blockQueue.isEmpty())
+		if (changeQueue.isEmpty())
 		{
 			return null;
 		}
-		return blockQueue.getLast();
+		return changeQueue.getLast();
 	}
 
-	public BlockList getLast(Block target)
+	public UndoList getLast(Block target)
 	{
-		if (blockQueue.size() == 0)
+		if (changeQueue.size() == 0)
 		{
 			return null;
 		}
-		for (BlockList blocks : blockQueue)
+		for (UndoList blocks : changeQueue)
 		{
 			if (blocks.contains(target))
 			{
@@ -94,23 +98,23 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 
 	public boolean undo(Mage mage)
 	{
-		if (blockQueue.size() == 0)
+		if (changeQueue.size() == 0)
 		{
 			return false;
 		}
 
-		BlockList blocks = blockQueue.removeLast();
+		UndoList blocks = changeQueue.removeLast();
 		if (blocks.undo(mage)) {
 			return true;
 		}
 		
-		blockQueue.add(blocks);
+		changeQueue.add(blocks);
 		return false;
 	}
 
 	public boolean undo(Mage mage, Block target)
 	{
-		BlockList lastActionOnTarget = getLast(target);
+		UndoList lastActionOnTarget = getLast(target);
 
 		if (lastActionOnTarget == null)
 		{
@@ -118,7 +122,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 		}
 
 		if (lastActionOnTarget.undo(mage)) {
-			blockQueue.remove(lastActionOnTarget);
+			changeQueue.remove(lastActionOnTarget);
 			return true;
 		}
 		
@@ -132,15 +136,15 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 			Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(node, "undo");
 			if (nodeList != null) {
 				for (ConfigurationSection listNode : nodeList) {
-					BlockList list = new com.elmakers.mine.bukkit.block.BlockList();
+					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(plugin);
 					list.load(listNode);
-					blockQueue.add(list);
+					changeQueue.add(list);
 				}
 			}
 			nodeList = ConfigurationUtils.getNodeList(node, "scheduled");
 			if (nodeList != null) {
 				for (ConfigurationSection listNode : nodeList) {
-					BlockList list = new com.elmakers.mine.bukkit.block.BlockList();
+					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(plugin);
 					list.load(listNode);
 					scheduleCleanup(mage, list);
 				}
@@ -157,7 +161,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 		int maxSize = controller.getMaxUndoPersistSize();
 		try {
 			List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
-			for (BlockList list : blockQueue) {
+			for (UndoList list : changeQueue) {
 				if (maxSize > 0 && list.size() > maxSize) {
 					controller.getLogger().info("Discarding undo batch, size " + list.size() + " for player " + mage.getName());
 					continue;
@@ -168,7 +172,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 			}
 			node.set("undo", nodeList);
 			nodeList = new ArrayList<Map<String, Object>>();
-			for (BlockList list : scheduledBlocks) {
+			for (UndoList list : scheduledBlocks) {
 				MemoryConfiguration listNode = new MemoryConfiguration();				
 				list.save(listNode);
 				nodeList.add(listNode.getValues(true));
@@ -182,16 +186,16 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 	
 	public int getSize()
 	{
-		return blockQueue.size();
+		return changeQueue.size();
 	}
 	
 	public boolean commit()
 	{
-		if (blockQueue.size() == 0) return false;
-		for (BlockList list : blockQueue) {
+		if (changeQueue.size() == 0) return false;
+		for (UndoList list : changeQueue) {
 			list.commit();
 		}
-		blockQueue.clear();
+		changeQueue.clear();
 		return true;
 	}
 }

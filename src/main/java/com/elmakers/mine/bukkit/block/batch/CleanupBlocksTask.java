@@ -1,14 +1,14 @@
 package com.elmakers.mine.bukkit.block.batch;
 
-import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class CleanupBlocksTask implements Runnable
 {
 	protected Mage mage;
-	protected BlockList undoBlocks;
+	protected UndoList undoBlocks;
 
-	public CleanupBlocksTask(Mage mage, BlockList cleanup)
+	public CleanupBlocksTask(Mage mage, UndoList cleanup)
 	{
 		this.undoBlocks = cleanup;
 		this.mage = mage;

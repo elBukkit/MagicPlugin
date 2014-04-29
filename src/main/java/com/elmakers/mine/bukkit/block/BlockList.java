@@ -2,76 +2,43 @@ package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.block.batch.CleanupBlocksTask;
-import com.elmakers.mine.bukkit.block.batch.UndoBatch;
 
-/**
- * Implements a Collection of Blocks, for quick getting/putting while iterating
- * over a set or area of blocks.
- * 
- * This stores BlockData objects, which are hashable via their Persisted
- * inheritance, and their LocationData id (which itself has a hash function
- * based on world name and BlockVector's hash function)
- * 
- */
-public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
-{
-	/**
-	 * Default serial id, in case you want to serialize this (probably shouldn't
-	 * though!)
-	 * 
-	 * Persist it instead, once I've got that working.
-	 */
+public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
-	protected BoundingBox          area;
+	protected BoundingBox          	area;
+	protected String				worldName;
 
-	// HashMap backing and easy persistence - need an extra list for this right
-	// now.
-	protected ArrayList<BlockData> blockList;
-	protected HashSet<Long>        blockIdMap;
-
-	protected int                  passesRemaining  = 1;
-	protected int                  timeToLive       = 0;
-	
-	protected int				   taskId           = 0;
+	protected LinkedList<BlockData> 	blockList;
+	protected HashSet<Long>        		blockIdMap;
 	
 	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
-	protected Set<FallingBlock> 	fallingBlocks = new HashSet<FallingBlock>();
-	protected Set<Entity> 			explodingEntities = new HashSet<Entity>();
-	
+
 	public BlockList()
 	{
-
+		
 	}
-
+	
 	public BlockList(BlockList other)
 	{
+		this.worldName = other.worldName;
 		for (BlockData block : other)
 		{
 			BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(block);
 			add(newBlock);
 		}
-		timeToLive = other.timeToLive;
-		passesRemaining = other.passesRemaining;
 	}
 
 	public boolean add(Block block)
@@ -97,7 +64,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 
 		if (blockList == null)
 		{
-			blockList = new ArrayList<BlockData>();
+			blockList = new LinkedList<BlockData>();
 		}
 		BlockVector blockLocation = blockData.getPosition();
 
@@ -111,7 +78,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 		}
 
 		blockIdMap.add(blockData.getId());
-		return blockList.add(blockData);
+		blockList.addLast(blockData);
+		return true;
 	}
 
 	@Override
@@ -184,25 +152,26 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 		return area;
 	}
 
-	public ArrayList<BlockData> getBlockList()
+	public Collection<BlockData> getBlockList()
 	{
 		return blockList;
 	}
 
+	public int size()
+	{
+		return blockList == null ? 0 :blockList.size();
+	}
+
 	public boolean isEmpty()
 	{
-		if (blockList == null)
-		{
-			return true;
-		}
-		return blockList.isEmpty();
+		return blockList == null || blockList.isEmpty();
 	}
 
 	public Iterator<BlockData> iterator()
 	{
 		if (blockList == null)
 		{
-			return null;
+			return Collections.<BlockData>emptyList().iterator();
 		}
 		return blockList.iterator();
 	}
@@ -240,46 +209,18 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 		this.area = area;
 	}
 
-	public void setBlockList(ArrayList<BlockData> blockList)
+	public void setBlockList(Collection<BlockData> blockList)
 	{
-		this.blockList = blockList;
+		this.blockList = null;
 		if (blockList != null)
 		{
+			this.blockList = new LinkedList<BlockData>(blockList);
 			blockIdMap = new HashSet<Long>();
 			for (BlockData block : blockList)
 			{
 				blockIdMap.add(block.getId());
 			}
 		}
-	}
-
-	public void setRepetitions(int repeat)
-	{
-		passesRemaining = repeat;
-	}
-
-	public boolean isComplete()
-	{
-		return passesRemaining <= 0;
-	}
-
-	public void setTimeToLive(int ttl)
-	{
-		timeToLive = ttl;
-	}
-
-	public int getTimeToLive()
-	{
-		return timeToLive;
-	}
-
-	public int size()
-	{
-		if (blockList == null)
-		{
-			return 0;
-		}
-		return blockList.size();
 	}
 
 	public BlockData get(int index)
@@ -309,92 +250,20 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 		return blockList.toArray(arg0);
 	}
 	
-	public void prepareForUndo()
-	{
-		if (blockList == null) return;
-		
-		for (BlockData blockData : blockList) 
-		{
-			BlockData priorState = modified.get(blockData.getId());
-			if (priorState != null)
-			{
-				priorState.setNextState(blockData);
-				blockData.setPriorState(priorState);
-			}
-
-			modified.put(blockData.getId(), blockData);
-		}
-	}
-
-	public void commit()
-	{
-		if (blockList == null) return;
-		
-		for (BlockData block : blockList)
-		{
-			BlockData currentState = modified.get(block.getId());
-			if (currentState == block)
-			{
-				modified.remove(block.getId());
-			}
-
-			block.commit();
-		}
-	}
-	
-	public boolean undo(BlockData undoBlock)
-	{
-		if (undoBlock.undo()) {
-			BlockData currentState = modified.get(undoBlock.getId());
-			if (currentState == undoBlock) {
-				modified.put(undoBlock.getId(), undoBlock.getPriorState());
-			}
-			
-			undoBlock.undo();
-			
-			return true;
-		}
-		
-		return false;
-	}
-
-	public boolean undo(Mage mage)
-	{
-		if (blockList == null) return true;
-
-		// This part doesn't happen asynchronously
-		for (FallingBlock falling : fallingBlocks) {
-			falling.remove();
-		}
-		fallingBlocks.clear();
-		for (Entity entity : explodingEntities) {
-			entity.remove();
-		}
-		explodingEntities.clear();
-		
-		UndoBatch batch = new UndoBatch(mage.getController(), this);
-		if (!mage.addPendingBlockBatch(batch)) {
-			return false;
-		}
-		passesRemaining--;
-		
-		return true;
-	}
-	
 	public void load(ConfigurationSection node) {
-		timeToLive = node.getInt("time_to_live", timeToLive);
-		passesRemaining = node.getInt("passes_remaining", passesRemaining);
+		worldName = node.getString("world");
 		List<String> blockData = node.getStringList("blocks");
 		if (blockData != null) {
 			for (String blockString : blockData) {
-				add(com.elmakers.mine.bukkit.block.BlockData.fromString(blockString));
+				BlockData deserialized = com.elmakers.mine.bukkit.block.BlockData.fromString(blockString);
+				if (worldName == null) worldName = deserialized.getWorldName();
+				add(deserialized);
 			}
 		}
 	}
 	
 	public void save(ConfigurationSection node) {
-		node.set("time_to_live", (Integer)timeToLive);
-		node.set("passes_remaining", (Integer)passesRemaining);
+		node.set("world", worldName);
 		List<String> blockData = new ArrayList<String>();
 		if (blockList != null) {
 			for (BlockData block : blockList) {
@@ -405,62 +274,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList
 	}
 	
 	public String getWorldName() {
-		if (blockList.size() == 0) return null;
-		return blockList.get(0).getWorldName();
-	}
-	
-	public void scheduleCleanup(Mage mage) {
-		Plugin plugin = mage.getController().getPlugin();
-		Server server = plugin.getServer();
-		BukkitScheduler scheduler = server.getScheduler();
-
-		// scheduler works in ticks- 20 ticks per second.
-		long ticksToLive = timeToLive * 20 / 1000;
-		taskId = scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(mage, this), ticksToLive);
-	}
-	
-	public boolean undoScheduled(Mage mage)
-	{
-		if (taskId > 0)
-		{
-			Plugin plugin = mage.getController().getPlugin();
-			Server server = plugin.getServer();
-			BukkitScheduler scheduler = server.getScheduler();
-			scheduler.cancelTask(taskId);
-			taskId = 0;
-		}
-		
-		return this.undo(mage);
-	}
-	
-	public void add(Plugin plugin, FallingBlock fallingBlock)
-	{
-		fallingBlocks.add(fallingBlock);
-		fallingBlock.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
-	}
-	
-	public void convert(FallingBlock fallingBlock, Block block)
-	{
-		fallingBlocks.remove(fallingBlock);
-		add(block);
-	}
-	
-	public void addExplodingEntity(Plugin plugin, Entity explodingEntity)
-	{
-		explodingEntities.add(explodingEntity);
-		explodingEntity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
-	}
-	
-	public void explode(Entity explodingEntity, List<Block> blocks)
-	{
-		explodingEntities.remove(explodingEntity);
-		for (Block block : blocks) {
-			add(block);
-		}
-	}
-	
-	public void cancelExplosion(Entity explodingEntity)
-	{
-		explodingEntities.remove(explodingEntity);
+		return worldName;
 	}
 }

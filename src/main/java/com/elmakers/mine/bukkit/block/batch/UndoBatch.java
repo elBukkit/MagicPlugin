@@ -1,18 +1,18 @@
 package com.elmakers.mine.bukkit.block.batch;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.block.BlockList;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.block.UndoList;
 
-public class UndoBatch extends VolumeBatch {
-	private final BlockList blockList;
-	private int blockIndex = 0;
+public class UndoBatch extends UndoableBatch {
+	private static final BlockData[] template = new BlockData[0];
+	private final BlockData[] undoBlocks;
+	private int undoIndex = 0;
 	private boolean finishedAttachables = false;
 
 	private final Set<Material> attachables;
@@ -20,28 +20,38 @@ public class UndoBatch extends VolumeBatch {
 	private final Set<Material> attachablesDouble;
 	private final Set<Material> delayed;
 	
-	public UndoBatch(MageController controller, BlockList blockList) {
-		super(controller, blockList.getWorldName());
-		this.blockList = blockList;
+	public UndoBatch(Mage mage, UndoList blockList) {
+		this(mage, blockList, null);
+	}
+	
+	public UndoBatch(Mage mage, UndoList blockList, UndoList redoList) {
+		super(mage, redoList);
+		
+		this.undoBlocks = blockList.toArray(template);
 		this.attachables = controller.getMaterialSet("attachable");
 		this.attachablesWall = controller.getMaterialSet("attachable_wall");
 		this.attachablesDouble = controller.getMaterialSet("attachable_double");
 		this.delayed = controller.getMaterialSet("delayed");
+		
+		// It's a little weird to use UndoableBatch as a base class, but
+		// A) We could theoretically support a "Redo" queue in the future
+		// B) This nicely handles volume updates (dynmap, etc).
+		// But by default we won't actually add this to the undo queue, that'd be confusing.
+		this.bypassUndo = true;
 	}
 
 	public int size() {
-		return blockList.size();
+		return undoList.size();
 	}
 	
 	public int remaining() {
-		return blockList.size() - blockIndex;
+		return undoList.size() - undoIndex;
 	}
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
-		ArrayList<BlockData> undoList = blockList.getBlockList();
-		while (undoList != null && blockIndex < undoList.size() && processedBlocks < maxBlocks) {
-			BlockData blockData = undoList.get(blockIndex);
+		while (undoBlocks != null && undoIndex < undoBlocks.length && processedBlocks < maxBlocks) {
+			BlockData blockData = undoBlocks[undoIndex];
 			Block block = blockData.getBlock();
 			if (!block.getChunk().isLoaded()) {
 				block.getChunk().load();
@@ -51,19 +61,21 @@ public class UndoBatch extends VolumeBatch {
 			boolean isAttachable = attachables.contains(material) || attachablesWall.contains(material) 
 					|| attachablesDouble.contains(material) || delayed.contains(material);
 			if ((isAttachable && !finishedAttachables) || (!isAttachable && finishedAttachables)) {
-				if (!blockList.undo(blockData)) {
+				
+				registerForUndo(blockData);
+				
+				if (!undoList.undo(blockData)) {
 					break;
 				}
-				updateBlock(blockData);
 			}
-			blockIndex++;
+			undoIndex++;
 			processedBlocks++;
 		}
-		if (undoList == null || (blockIndex >= undoList.size() && finishedAttachables)) {
+		if (undoBlocks == null || (undoIndex >= undoBlocks.length && finishedAttachables)) {
 			finish();
-		} else if (blockIndex >= undoList.size()) {
+		} else if (undoIndex >= undoBlocks.length) {
 			finishedAttachables = true;
-			blockIndex = 0;
+			undoIndex = 0;
 		}
 		
 		return processedBlocks;

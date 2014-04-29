@@ -7,8 +7,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
 import org.bukkit.inventory.ItemStack;
+
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 /**
  * This class stores information about an Entity.
@@ -20,10 +23,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	protected Art art;
 	protected BlockFace facing;
 	protected ItemStack item;
+	protected double health = 1;
 	
-	public EntityData(Location location, EntityType type) {
-		this.type = type;
-		this.location = location;
+	public EntityData(Entity entity) {
+		this(entity.getLocation(), entity);
 	}
 	
 	public EntityData(Location location, Entity entity) {
@@ -43,6 +46,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 		if (entity instanceof ItemFrame) {
 			ItemFrame itemFrame = (ItemFrame)entity;
 			item = itemFrame.getItem();
+		}
+		if (entity instanceof LivingEntity) {
+			LivingEntity li = (LivingEntity)entity;
+			// This is a bit of a hack, but we don't generally store dead entities
+			// unless we want to bring them back to life.
+			if (li.isDead() || li.getHealth() <= 0) {
+				this.health = li.getMaxHealth();
+			} else {
+				this.health = li.getHealth();
+			}
 		}
 	}
 	
@@ -73,5 +86,33 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	@Override
 	public ItemStack getItem() {
 		return item;
+	}
+
+	@Override
+	public double getHealth() {
+		return health;
+	}
+	
+	@Override
+	public Entity spawn() {
+		Entity spawned = null;
+		switch (type) {
+		case PAINTING:
+			spawned = InventoryUtils.spawnPainting(location, facing, art);
+		break;
+		case ITEM_FRAME:
+			spawned = InventoryUtils.spawnItemFrame(location, facing, item);
+			break;
+		default: 
+			spawned = location.getWorld().spawnEntity(location, type);
+			if (spawned instanceof LivingEntity) {
+				LivingEntity li = (LivingEntity)spawned;
+				if (health <= li.getMaxHealth()) {
+					li.setHealth(health);
+				}
+			}
+		}
+		
+		return spawned;
 	}
 }

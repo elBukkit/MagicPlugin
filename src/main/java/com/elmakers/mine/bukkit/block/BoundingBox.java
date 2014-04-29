@@ -13,7 +13,7 @@ import org.bukkit.util.Vector;
 /**
  * Represents a BoundingBox, using two BlockVectors
  */
-public class BoundingBox
+public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingBox
 {
 	protected BlockVector max;
 	protected BlockVector min;
@@ -112,18 +112,6 @@ public class BoundingBox
 	 *            The point to check for
 	 * @return true if this BB contains p
 	 */
-	public boolean contains(BlockVector p)
-	{
-		return p.isInAABB(min, max);
-	}
-
-	/**
-	 * Check to see if this BB contains a point
-	 * 
-	 * @param p
-	 *            The point to check for
-	 * @return true if this BB contains p
-	 */
 	public boolean contains(Vector p)
 	{
 		return p.isInAABB(min, max);
@@ -168,10 +156,7 @@ public class BoundingBox
 	 * This function respects a MaterialList to determine which blocks are ok to
 	 * replace.
 	 * 
-	 * It also returns any blocks placed in "blocks", which will become a
-	 * BlockList eventually.
-	 * 
-	 * Note that the HashMap will become a MaterialList soon!
+	 * It also returns any blocks placed in the "affected" UndoList.
 	 * 
 	 * @param world
 	 *            The world to fill
@@ -183,7 +168,7 @@ public class BoundingBox
 	 *            A BlockList, which will be filled with the blocks that are
 	 *            replaced
 	 */
-	public void fill(World world, Material material, Set<Material> destructable, BlockList affected)
+	public void fill(World world, Material material, Set<Material> destructable, UndoList affected)
 	{
 		for (int x = min.getBlockX(); x < max.getBlockX(); x++)
 		{
@@ -224,7 +209,7 @@ public class BoundingBox
 	 * 
 	 * Chunks must be loaded first!
 	 * 
-	 * Note: the List will become a BlockList eventually.
+	 * It also returns any blocks placed in the "affected" UndoList.
 	 * 
 	 * @param world
 	 *            The world to fetch blocks from
