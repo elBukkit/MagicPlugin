@@ -81,6 +81,7 @@ public abstract class BrushSpell extends BlockSpell {
 		return brush != null ? brush : mage.getBrush();
 	}
 	
+	@Override
 	public boolean hasBrushOverride() 
 	{
 		return brush != null || hasBrush;

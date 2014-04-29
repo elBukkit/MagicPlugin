@@ -557,4 +557,15 @@ public class ConfigurationUtils {
 			 return null;
 		 }
 	 }
+
+	static public void addParameters(String[] extraParameters, ConfigurationSection parameters)
+	{
+		if (extraParameters != null)
+		{
+			for (int i = 0; i < extraParameters.length - 1; i += 2)
+			{
+				ConfigurationUtils.set(parameters, extraParameters[i], extraParameters[i + 1]);
+			}
+		}
+	}
 }
