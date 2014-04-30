@@ -2270,7 +2270,7 @@ undo:
     costs:
         xp: 20
 commit:
-    icon: book
+    icon: enchanted_book
     category: engineering
     class: CommitSpell
     effects:
