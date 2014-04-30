@@ -201,12 +201,18 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 		if (nextState != null) {
 			nextState.setPriorState(null);
 			nextState.updateFrom(getBlock());
+			nextState = null;
 		}
 		
 		if (priorState != null) {
 			// Very important for recursion!
 			priorState.setNextState(null);
+			
+			// Cascade the commit downward, unlinking everything,
+			// in case other BlockLists contain these records
+			priorState.updateFrom(getBlock());
 			priorState.commit();
+			priorState = null;
 		}
 	}
 	
