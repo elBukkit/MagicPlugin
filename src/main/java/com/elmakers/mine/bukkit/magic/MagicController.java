@@ -87,7 +87,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
 
-import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -2546,10 +2545,16 @@ public class MagicController implements Listener, MageController
 	}
 	
 	@Override
-	public void update(BlockList blockList)
+	public void update(com.elmakers.mine.bukkit.api.block.BlockList blockList)
 	{
 		if (blockList != null) {
-			update(blockList.getWorldName(), blockList.getArea());
+			if (blockList.size() > VOLUME_UPDATE_THRESHOLD) {
+				update(blockList.getWorldName(), blockList.getArea());
+			} else {
+				for (com.elmakers.mine.bukkit.api.block.BlockData blockData : blockList) {
+					updateBlock(blockData.getWorldName(), blockData.getPosition().getBlockX(), blockData.getPosition().getBlockY(), blockData.getPosition().getBlockZ());
+				}
+			}
 		}
 	}
 	
@@ -2767,7 +2772,8 @@ public class MagicController implements Listener, MageController
 	
 	 private final static int MAX_Y = 255;	
 	 private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
-	
+	 private static int VOLUME_UPDATE_THRESHOLD = 32;	
+
 	 private final String                        SPELLS_FILE                 	= "spells";
 	 private final String                        CONFIG_FILE             		= "config";
 	 private final String                        WANDS_FILE             		= "wands";

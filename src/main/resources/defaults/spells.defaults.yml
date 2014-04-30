@@ -359,8 +359,8 @@ worm:
     delay: 1800,1500,1200
     drop_xp: 600,700,900
     death_cast:
-        "blast target self radius 8 speed -0^2 destructible $birth check_destructible true": 100,100,100
-        "blast target self radius 8 speed -0^5 destructible $birth check_destructible true": 20,50,200
+        "blast target self radius 12 speed -0^2 destructible $birth check_destructible true": 100,100,100
+        "blast target self radius 12 speed -0^5 destructible $birth check_destructible true": 20,50,200
     cast:
         "blob brush $birth radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 50,100,200
         "curse transparent air,$birth,redstone_block": 100,100,200
@@ -409,7 +409,7 @@ hunter:
         1: 100
         3: 40
         5: 10
-    move: 2,2,3
+    move: 2,2,2
     radius: 5,6,7
     yradius: 5,6,7
     birth_range: 3,4,5
@@ -417,10 +417,10 @@ hunter:
     delay: 1200,800,500
     drop_xp: 300,500,700
     death_cast:
-        "blast target self radius 4 speed 0^1 destructible $birth check_destructible true": 500,300,50
-        "blast target self radius 4 speed 0^5 destructible $birth check_destructible true": 300,200,100
-        "blast target self radius 4 speed 1^0 destructible $birth check_destructible true": 250,200,150
-        "blast target self radius 4 speed 1^5 destructible $birth check_destructible true": 100,100,200
+        "blast target self radius 7 speed 0^1 destructible $birth check_destructible true": 500,300,50
+        "blast target self radius 7 speed 0^5 destructible $birth check_destructible true": 300,200,100
+        "blast target self radius 7 speed 1^0 destructible $birth check_destructible true": 250,200,150
+        "blast target self radius 7 speed 1^5 destructible $birth check_destructible true": 100,100,200
     cast:
         "boom transparent air,$birth,command,redstone_block": 20,40,100
         "shrink transparent air,$birth,command,redstone_block": 30,40,50

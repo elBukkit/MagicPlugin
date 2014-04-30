@@ -99,20 +99,9 @@
 		</dependency>
 		<dependency>
 			<groupId>com.sk89q</groupId>
-			<artifactId>worldguard</artifactId>
-			<version>5.9</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sk89q</groupId>
 			<artifactId>commandbook</artifactId>
 			<version>2.3</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.elmakers.mine.bukkit</groupId>
-			<artifactId>MagicAPI</artifactId>
-			<version>1.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 	        <groupId>org.mcstats.bukkit</groupId>
@@ -124,6 +113,12 @@
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicLib</artifactId>
 			<version>1.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldguard</artifactId>
+			<version>5.9</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
@@ -151,12 +146,10 @@
         <id>Plugin Metrics</id>
         <url>http://repo.mcstats.org/content/repositories/public</url>
       </repository>
-      <!-- Arg.
       <repository>
       		<id>Essentials</id>
       		<url>http://repo.ess3.net/content/groups/essentials</url>
       </repository>
-      -->
     </repositories>
 	<build>
 		<plugins>
