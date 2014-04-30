@@ -23,6 +23,18 @@ public abstract class UndoableSpell extends TargetingSpell {
 	}
 	
 	@Override
+	protected void loadTemplate(ConfigurationSection node)
+	{
+		super.loadTemplate(node);
+		
+		// Also load this here so it is available from templates, prior to casting
+		bypassUndo = parameters.getBoolean("bypass_undo", false);
+		bypassUndo = parameters.getBoolean("bu", bypassUndo);
+		autoUndo = parameters.getInt("undo", 0);
+		autoUndo = parameters.getInt("u", autoUndo);
+	}
+	
+	@Override
 	protected void preCast()
 	{
 		super.preCast();
