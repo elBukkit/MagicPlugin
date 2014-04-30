@@ -126,7 +126,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		}
 	}
 	
-	public boolean undo(BlockData undoBlock)
+	public static boolean undo(BlockData undoBlock)
 	{
 		if (undoBlock.undo()) {
 			BlockData currentState = modified.get(undoBlock.getId());
