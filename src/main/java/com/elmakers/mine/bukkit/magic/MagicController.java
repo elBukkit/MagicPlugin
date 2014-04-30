@@ -88,6 +88,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
 
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -95,7 +96,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.block.WorldEditSchematic;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
@@ -1365,6 +1365,11 @@ public class MagicController implements Listener, MageController
 		BlockPhysicsEvent.getHandlerList().unregister(listener);
 		physicsHandler = null;
 	}
+	
+	protected void registerForUndo(Mage mage)
+	{
+		pendingUndo.add(mage.getId());
+	}
 
 	public boolean hasWandPermission(Player player)
 	{
@@ -1416,13 +1421,37 @@ public class MagicController implements Listener, MageController
 	@EventHandler
 	public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
 		Entity entity = event.getEntity();
-		if (entity instanceof FallingBlock && event.getEntity().hasMetadata("MagicBlockList")) {
-			List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
-			for (MetadataValue value : values) {
-				if (value.getOwningPlugin() == plugin) {
-					UndoList blockList = (UndoList)value.value();
-					blockList.convert((FallingBlock)entity, event.getBlock());
+
+		if (entity instanceof FallingBlock) {
+			if (event.getEntity().hasMetadata("MagicBlockList")) {
+				List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
+				for (MetadataValue value : values) {
+					if (value.getOwningPlugin() == plugin) {
+						UndoList blockList = (UndoList)value.value();
+						blockList.convert(entity, event.getBlock());
+					}
 				}
+			} else {
+				registerFallingBlock(entity, event.getBlock());
+			}
+		}
+	}
+	
+	protected void registerFallingBlock(Entity fallingBlock, Block block) {
+		long now = System.currentTimeMillis();
+		Collection<String> keys = new ArrayList<String>(pendingUndo);
+		
+		for (String key : keys) {
+			if (mages.containsKey(key)) {
+				Mage mage = mages.get(key);
+				UndoList lastUndo = mage.getLastUndoList();			
+				if (lastUndo.getCreatedTime() < now - undoTimeWindow) {
+					pendingUndo.remove(key);
+				} else if (lastUndo.contains(fallingBlock.getLocation(), undoBlockBorderSize)) {
+					lastUndo.fall(fallingBlock, block);
+				}
+			} else {
+				pendingUndo.remove(key);
 			}
 		}
 	}
@@ -1467,11 +1496,21 @@ public class MagicController implements Listener, MageController
 	
 	@EventHandler(priority = EventPriority.LOW)
 	public void onEntityExplode(EntityExplodeEvent event) {
+		if (event.isCancelled()) return;
+		
 		Entity explodingEntity = event.getEntity();
 		if (explodingEntity == null) return;
 		
 		UndoList blockList = null;
-		if (explodingEntity.hasMetadata("MagicBlockList")) {
+		if (explodingEntity instanceof Player) {
+			Mage mage = getMage((Player)explodingEntity);
+			
+			// Hm, kinda hacky.
+			Object lastUndo = mage.getLastUndoList();
+			if (lastUndo instanceof UndoList) {
+				blockList = (UndoList)lastUndo;
+			}
+		} else if (explodingEntity.hasMetadata("MagicBlockList")) {
 			List<MetadataValue> values = explodingEntity.getMetadata("MagicBlockList");  
 			for (MetadataValue value : values) {
 				if (value.getOwningPlugin() == plugin) {
@@ -2795,6 +2834,8 @@ public class MagicController implements Listener, MageController
 	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
 	 private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
 	 
+	 private int								 undoTimeWindow					= 10000;
+	 private int								 undoBlockBorderSize			= 2;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;
 	 private int								 pendingQueueDepth				= 16;
@@ -2838,11 +2879,12 @@ public class MagicController implements Listener, MageController
 	 private int								 autoSaveTaskId					= 0;
 	 private WarpController						 warpController					= null;
 	 
-	 private final HashMap<String, Spell>        spells                         = new HashMap<String, Spell>();
-	 private final HashMap<String, Mage> 		 mages                  		= new HashMap<String, Mage>();
-	 private final HashSet<String>				 forgetMages					= new HashSet<String>();
-	 private final HashMap<String, Mage>		 pendingConstruction			= new HashMap<String, Mage>();
-	 private final Map<String, WeakReference<WorldEditSchematic>>	 schematics			= new HashMap<String, WeakReference<WorldEditSchematic>>();
+	 private final Map<String, Spell>       	spells                         = new HashMap<String, Spell>();
+	 private final Map<String, Mage> 		 	mages                  		= new HashMap<String, Mage>();
+	 private final Set<String>				 	forgetMages					= new HashSet<String>();
+	 private final Map<String, Mage>		 	pendingConstruction			= new HashMap<String, Mage>();
+	 private final Set<String>  	 			pendingUndo					= new HashSet<String>();
+	 private final Map<String, WeakReference<WorldEditSchematic>>	 schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
  
 	 private MagicPlugin                         plugin                         = null;
 	 private final File							 configFolder;

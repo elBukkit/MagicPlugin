@@ -27,7 +27,6 @@ public class BoomSpell extends BlockSpell {
 		}
 		Location l = block.getLocation();
 		Player player = getPlayer();
-		watch(player);
 		NMSUtils.createExplosion(player, getWorld(), l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 		controller.updateBlock(block);
 		registerForUndo();

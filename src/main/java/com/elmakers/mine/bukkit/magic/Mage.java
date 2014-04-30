@@ -31,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -395,8 +396,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return undoQueue;
 	}
 	
+	public UndoList getLastUndoList() {
+		if (undoQueue == null || undoQueue.isEmpty()) return null;
+		return undoQueue.getLast();
+	}
+	
 	public boolean registerForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
-		controller.update(undoList);
+		if (undoList == null) return false;
 		if (undoList.bypass()) return true;
 		
 		UndoQueue queue = getUndoQueue();
@@ -409,6 +415,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		} else {
 			queue.add(undoList);
 		}
+		controller.registerForUndo(this);
 		
 		return true;
 	}
