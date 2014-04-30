@@ -84,4 +84,9 @@ public abstract class UndoableSpell extends TargetingSpell {
 	{
 		return autoUndo;
 	}
+	
+	public boolean isUndoable()
+	{
+		return !bypassUndo && autoUndo == 0;
+	}
 }
