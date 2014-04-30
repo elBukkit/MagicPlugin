@@ -186,4 +186,13 @@ public class RegenerateBatch extends SpellBatch {
 	public void setExpand(boolean expand) {
 		this.expand = expand;
 	}
+	
+	@Override
+	public void finish() {
+		if (!finished) {
+			UndoList modified = spell.getUndoList();
+			modified.prune();
+			super.finish();
+		}
+	}
 }
