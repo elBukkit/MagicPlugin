@@ -1,7 +1,10 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -30,6 +33,8 @@ import com.elmakers.mine.bukkit.entity.EntityData;
  */
 public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.block.UndoList
 {
+	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
+
 	protected Set<Entity> 		   	entities;
 	protected Set<EntityData> 	   	removedEntities;
 	protected final Plugin		   	plugin;
@@ -126,17 +131,39 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		}
 	}
 	
+	@Override
+	public boolean remove(Object o)
+	{
+		if (o instanceof BlockData)
+		{
+			BlockData block = (BlockData)o;
+			removeFromModified(block);
+		}
+		
+		return super.remove(o);
+	}
+	
+	protected static void removeFromModified(BlockData block)
+	{
+		BlockData currentState = modified.get(block.getId());
+		if (currentState == block) 
+		{
+			BlockData priorState = block.getPriorState();
+			if (priorState == null) 
+			{
+				modified.remove(block.getId());
+			}
+			else
+			{
+				modified.put(block.getId(), priorState);
+			}
+		}
+	}
+	
 	public static boolean undo(BlockData undoBlock)
 	{
 		if (undoBlock.undo()) {
-			BlockData currentState = modified.get(undoBlock.getId());
-			if (currentState == undoBlock) 
-			{
-				modified.put(undoBlock.getId(), undoBlock.getPriorState());
-			}
-			
-			undoBlock.undo();
-			
+			removeFromModified(undoBlock);
 			return true;
 		}
 		
@@ -289,5 +316,24 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		if (!location.getWorld().getName().equals(worldName)) return false;
 		
 		return area.contains(location.toVector(), threshold);
+	}
+	
+	public void prune()
+	{
+		if (blockList == null) return;
+		
+		List<BlockData> current = new ArrayList<BlockData>(blockList);
+		
+		blockList = null;
+		blockIdMap = null;
+		for (BlockData block : current)
+		{
+			if (block.isDifferent()) {
+				super.add(block);
+			} else {
+				removeFromModified(block);
+				block.unlink();
+			}
+		}
 	}
 }

@@ -3,12 +3,10 @@ package com.elmakers.mine.bukkit.block;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,8 +23,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 	protected LinkedList<BlockData> 	blockList;
 	protected HashSet<Long>        		blockIdMap;
 	
-	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
-
 	public BlockList()
 	{
 		
