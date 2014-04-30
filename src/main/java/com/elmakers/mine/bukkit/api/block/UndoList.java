@@ -1,5 +1,11 @@
 package com.elmakers.mine.bukkit.api.block;
 
+import java.util.List;
+
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public interface UndoList extends BlockList {
@@ -12,4 +18,13 @@ public interface UndoList extends BlockList {
 	public void setScheduleUndo(int ttl);
 	public int getScheduledUndo();
 	public boolean bypass();
+	public long getCreatedTime();
+	
+	public void add(Entity entity);
+	
+	public void convert(Entity entity, Block block);
+	public void explode(Entity entity, List<Block> explodedBlocks);
+	public void cancelExplosion(Entity entity);
+	
+	public boolean contains(Location location, int threshold);
 }

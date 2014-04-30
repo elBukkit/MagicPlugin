@@ -8,4 +8,5 @@ public interface BoundingBox {
 	public BlockVector getMax();
 	public BlockVector getCenter();
 	public boolean contains(Vector p);
+	public boolean contains(Vector p, int threshold);
 }
