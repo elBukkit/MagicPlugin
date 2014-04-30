@@ -14,7 +14,6 @@ public abstract class BlockSpell extends UndoableSpell {
 
 	private Set<Material>	indestructible;
 	private Set<Material>	destructible;
-	private boolean			bypassBuildRestriction  = false;
 	private boolean 		checkDestructible 		= true;
 	
 	public final static String[] BLOCK_PARAMETERS = {
@@ -68,8 +67,6 @@ public abstract class BlockSpell extends UndoableSpell {
 		}
 		checkDestructible = parameters.getBoolean("check_destructible", true);
 		checkDestructible = parameters.getBoolean("cd", checkDestructible);
-		bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
-		bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
 	}
 	
 	@Override
@@ -97,12 +94,6 @@ public abstract class BlockSpell extends UndoableSpell {
 		} else if (parameterKey.equals("check_destructible") || parameterKey.equals("bypass_undo")) {
 			examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
 		}
-	}
-	
-	public boolean hasBuildPermission(Block block)
-	{
-		if (bypassBuildRestriction) return true;
-		return mage.hasBuildPermission(block);
 	}
 
 	/**

@@ -47,6 +47,7 @@ public abstract class TargetingSpell extends BaseSpell {
 	private String								targetLocationWorldName;
 	protected Location                          targetLocation2;
 	private Entity								targetEntity = null;
+	private boolean								bypassBuildRestriction  = false;
 
 	private boolean                             allowMaxRange           = false;
 
@@ -163,6 +164,12 @@ public abstract class TargetingSpell extends BaseSpell {
 
 	public void setTarget(Location location) {
 		target = new Target(getLocation(), location.getBlock());
+	}
+	
+	public boolean hasBuildPermission(Block block)
+	{
+		if (bypassBuildRestriction) return true;
+		return mage.hasBuildPermission(block);
 	}
 
 	protected void offsetTarget(int dx, int dy, int dz) {
@@ -559,6 +566,8 @@ public abstract class TargetingSpell extends BaseSpell {
 		
 		bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
 		bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
+		bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
+		bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
 		
 		if (parameters.contains("transparent")) {
 			targetThroughMaterials.clear();
