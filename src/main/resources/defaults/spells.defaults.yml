@@ -631,7 +631,7 @@ dome:
         thickness: 1
         radius: 6
         type: sphere
-        y_min: 1
+        orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
         xp: 60
@@ -735,7 +735,7 @@ superdome:
         thickness: 1
         target: select
         type: sphere
-        y_min: 1
+        orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
         xp: 100
