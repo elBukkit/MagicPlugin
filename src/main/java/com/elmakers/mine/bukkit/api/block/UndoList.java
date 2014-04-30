@@ -11,4 +11,5 @@ public interface UndoList extends BlockList {
 	
 	public void setScheduleUndo(int ttl);
 	public int getScheduledUndo();
+	public boolean bypass();
 }
