@@ -108,7 +108,7 @@ public class AnimateSpell extends SimulateSpell
 		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
 		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 		
-		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 bu true m " 
+		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 m " 
 				+ targetMaterial.getKey() +
 				" cd " + (simCheckDestructible ? "true" : "false") + " level " + level;
 		String commandName = parameters.getString("name", "Automata");

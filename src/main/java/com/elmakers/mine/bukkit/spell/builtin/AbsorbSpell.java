@@ -54,4 +54,16 @@ public class AbsorbSpell extends BrushSpell
 		
 		return SpellResult.CAST;
 	}
+	
+	@Override
+	public boolean hasBrushOverride() 
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean isUndoable()
+	{
+		return false;
+	}
 }

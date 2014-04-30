@@ -372,6 +372,7 @@ worm:
         "shell brush $birth radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
         "none": 100,50,20
     parameters:
+        bypass_undo: true
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false
@@ -431,6 +432,7 @@ hunter:
         "shell brush $birth radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
         "none": 300,200,50
     parameters:
+        bypass_undo: true
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false
@@ -465,6 +467,7 @@ defender:
     death_cast:
         "collapse target self radius 7 check_destructible true destructible $birth": 100
     parameters:
+        bypass_undo: true
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false
@@ -507,6 +510,7 @@ animate:
     death_cast:
         "collapse target self radius 4 check_destructible true destructible $birth": 100
     parameters:
+        bypass_undo: true
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false

@@ -7,9 +7,9 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
-public class TreeSpell extends BlockSpell
+public class TreeSpell extends TargetingSpell
 {
 	private TreeType defaultTreeType = null;
 	private TreeType lastTreeType = null;

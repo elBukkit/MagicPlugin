@@ -1508,7 +1508,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if ((spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
 			lore.add(ChatColor.GOLD + Messages.get("spell.brush"));
 		}
-		if (spell instanceof UndoableSpell) {
+		if (spell instanceof UndoableSpell && ((UndoableSpell)spell).isUndoable()) {
 			lore.add(ChatColor.GRAY + Messages.get("spell.undoable"));
 		}
 	}
