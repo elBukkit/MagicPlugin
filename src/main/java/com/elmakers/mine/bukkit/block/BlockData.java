@@ -29,7 +29,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 	public static final BlockFace[] SIDES = new BlockFace[] { BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST };
 	
 	// Transient
-	protected Block     block;
 	protected com.elmakers.mine.bukkit.api.block.BlockData	nextState;
 	protected com.elmakers.mine.bukkit.api.block.BlockData	priorState;
 
@@ -103,8 +102,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 	public BlockData(Block block)
 	{
 		super(block);
-		this.block = block;
-
 		location = new BlockVector(block.getX(), block.getY(), block.getZ());
 		worldName = block.getWorld().getName();
 	}
@@ -147,12 +144,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
 	protected boolean checkBlock()
 	{
-		if (block == null)
-		{
-			block = getBlock();
-		}
-
-		return block != null;
+		return getBlock() != null;
 	}
 
 	public void setPosition(BlockVector location)
@@ -160,10 +152,24 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 		this.location = location;
 	}
 
+	public void unlink()
+	{
+		if (priorState != null) {
+			priorState.setNextState(nextState);
+		}
+		if (nextState != null) {
+			nextState.setPriorState(priorState);
+		}
+		
+		priorState = null;
+		nextState = null;
+	}
+	
 	@Override
 	public boolean undo()
 	{
-		if (!checkBlock())
+		Block block = getBlock();
+		if (block == null)
 		{
 			return true;
 		}
@@ -180,13 +186,11 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 			modify(block);
 		}
 		
-		if (priorState != null) {
-			priorState.setNextState(nextState);
-		}
+		// Pass state up the chain
 		if (nextState != null) {
-			nextState.setPriorState(priorState);
 			nextState.updateFrom(this);
 		}
+		unlink();
 
 		return true;
 	}
@@ -278,7 +282,8 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 	@Override
 	public Block getBlock()
 	{
-		if (block == null && location != null)
+		Block block = null;
+		if (location != null)
 		{
 			World world = getWorld();
 			if (world != null) {
@@ -286,5 +291,11 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 			}
 		}
 		return block;
+	}
+	
+	@Override
+	public boolean isDifferent()
+	{
+		return isDifferent(getBlock());
 	}
 }
