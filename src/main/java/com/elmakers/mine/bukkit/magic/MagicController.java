@@ -1444,8 +1444,8 @@ public class MagicController implements Listener, MageController
 		for (String key : keys) {
 			if (mages.containsKey(key)) {
 				Mage mage = mages.get(key);
-				UndoList lastUndo = mage.getLastUndoList();			
-				if (lastUndo.getCreatedTime() < now - undoTimeWindow) {
+				UndoList lastUndo = mage.getLastUndoList();
+				if (lastUndo == null || lastUndo.getCreatedTime() < now - undoTimeWindow) {
 					pendingUndo.remove(key);
 				} else if (lastUndo.contains(fallingBlock.getLocation(), undoBlockBorderSize)) {
 					lastUndo.fall(fallingBlock, block);

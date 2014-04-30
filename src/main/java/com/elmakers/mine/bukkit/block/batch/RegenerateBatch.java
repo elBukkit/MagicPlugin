@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
-public class RegenerateBatch extends UndoableBatch {
+public class RegenerateBatch extends SpellBatch {
 	private static final BlockData[] template = new BlockData[0];
 	
 	private final UndoList restoredBlocks;
@@ -46,11 +46,11 @@ public class RegenerateBatch extends UndoableBatch {
 	private RegenerateState state;
 	
 	public RegenerateBatch(BlockSpell spell, Location p1, Location p2) {
-		super(spell.getMage(), spell.getUndoList());
+		super(spell);
+		this.spell = spell;
 		this.restoredBlocks = new UndoList(spell.getMage().getController().getPlugin());
 		this.mage = spell.getMage();
 		this.world = this.mage.getPlayer().getWorld();
-		this.spell = spell;
 		this.state = RegenerateState.SAVING;
 		
 		int deltax = p2.getBlock().getChunk().getX() - p1.getChunk().getX();

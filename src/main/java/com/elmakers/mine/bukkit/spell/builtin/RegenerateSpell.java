@@ -13,7 +13,6 @@ public class RegenerateSpell extends BlockSpell
 	private static final int DEFAULT_MAX_DIMENSION = 128;
 	
 	private Block targetBlock = null;
-	
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
