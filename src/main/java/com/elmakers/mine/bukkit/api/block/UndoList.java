@@ -19,6 +19,8 @@ public interface UndoList extends BlockList {
 	public int getScheduledUndo();
 	public boolean bypass();
 	public long getCreatedTime();
+
+	public void prune();
 	
 	public void add(Entity entity);
 	

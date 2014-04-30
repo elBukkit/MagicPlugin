@@ -23,7 +23,9 @@ public interface BlockData extends MaterialAndData {
 	public void restore();
 	public void commit();
 	public boolean undo();
+	public boolean isDifferent();
 
+	public void unlink();
 	public BlockData getNextState();
 	public void setNextState(BlockData next);
 	public BlockData getPriorState();
