@@ -40,6 +40,7 @@ import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -1502,6 +1503,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			} else {
 				lore.add(Messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
 			}
+		}
+		
+		if ((spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
+			lore.add(ChatColor.GOLD + Messages.get("spell.brush"));
+		}
+		if (spell instanceof UndoableSpell) {
+			lore.add(ChatColor.GRAY + Messages.get("spell.undoable"));
 		}
 	}
 	

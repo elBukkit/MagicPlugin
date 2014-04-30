@@ -118,6 +118,9 @@ wand:
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
     self_destruct: Your wands did not survive the dimensional shift!
+spell:
+    brush: Uses Material Brushes
+    undoable: Undoable with Rollback
 worlds:
     world:
         name: The Overworld
