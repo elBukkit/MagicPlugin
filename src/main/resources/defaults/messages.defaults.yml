@@ -594,7 +594,7 @@ spells:
         cast: You turn your target invisible
         cast_self: You turn yourself invisible
     undo:
-        name: Rewind
+        name: Rollback
         description: Undo your last spell
         cast: Your undo a spell
         cast_player: You undo $target's last spell
@@ -603,9 +603,9 @@ spells:
     commit:
         name: Commit
         description: Make your spells permanent
-        usage: Clears your Rewind queue
+        usage: Clears your Rollback queue
         cast_player: You commit $target's spells
-        cast: Your Rewind queue has been cleared
+        cast: Your Rollback queue has been cleared
         fail: Nothing to commit
     rewind:
         name: Rewind

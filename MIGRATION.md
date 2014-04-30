@@ -4,7 +4,6 @@
 
 * I removed the swapping out of enchantable items by default, custom enchanting works in recent CB builds. Change "wand_item_enchantable" in
   config.yml back if you still need this functionality.
-* Rollback was renamed to Rewind for clarity (hopefully)
 
 ## 3.0
 
