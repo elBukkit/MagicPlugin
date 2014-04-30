@@ -913,6 +913,9 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 		message = message.replace("$player", playerName);
 		
 		String materialName = getDisplayMaterialName();
+		
+		// TODO: Localize "None", provide static getter
+		materialName = materialName == null ? "None" : materialName;
 		message = message.replace("$material", materialName);
 		
 		return message;
