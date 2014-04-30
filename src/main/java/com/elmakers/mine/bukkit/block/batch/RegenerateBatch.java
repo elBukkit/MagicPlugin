@@ -161,12 +161,12 @@ public class RegenerateBatch extends UndoableBatch {
 			}
 			break;
 		case RESTORING:
-			while (processedBlocks < maxBlocks && restoringIndex < restoreBlocks.length) {
+			while (restoreBlocks != null && processedBlocks < maxBlocks && restoringIndex < restoreBlocks.length) {
 				restoreBlocks[restoringIndex].restore();
 				restoringIndex++;
 				processedBlocks++;
 			}
-			if (restoringIndex >= restoredBlocks.size()) {
+			if (restoreBlocks == null || restoringIndex >= restoredBlocks.size()) {
 				finish();
 			}
 			break;

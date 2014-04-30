@@ -657,16 +657,19 @@ spells:
         cast_finish: Filled $count blocks with $material
     superregenerate:
         name: SuperRegenerate
-        description: Regenerate the target area
+        description: Regenerate full chunks
         usage: Cast twice to regenerate
         fail: Can't regenerate that much!
-        cast: Regenerating area
-        target_selected: Cast again to regenerate area
+        cast: Regenerating chunks
+        target_selected: Cast again to regenerate chunks
         cast_finish: Regenerated $count blocks
     regenerate:
         name: Regenerate
-        description: Regenerate a full chunk
-        cast: Regenerating chunk
+        description: Regenerate a selected area
+        fail: Can't regenerate that much!
+        usage: Cast twice to regenerate
+        cast: Regenerating area
+        target_selected: Cast again to regenerate area
         cast_finish: Regenerated $count blocks
     recurse:
         name: Recurse
