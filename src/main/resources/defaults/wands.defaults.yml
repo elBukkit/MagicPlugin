@@ -250,6 +250,7 @@ random:
       blast: 30,40,50,30,100
       blink: 0,0,0,20,100
       blob: 0,10,40,10,100
+      pyramid: 0,10,40,10,100
       boom: 20,50,60,40,100
       boon: 0,5,10,20,100
       emp: 0,0,10,20,100
@@ -691,6 +692,7 @@ engineer:
         - rewind
         - commit
         - blob
+        - pyramid
         - stalactite
         - shell
         - iterate
@@ -884,6 +886,7 @@ elder:
         - stalactite
         - fill
         - blob
+        - pyramid
         - blast
         - pillar
         - place

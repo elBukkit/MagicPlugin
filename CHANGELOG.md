@@ -16,6 +16,8 @@
    * Grenade, Cluster Bomb, Incendiary Grenade, Cluster Grenade
    * Fireball, ICBM, Wither, Meteor Shower, Carpet Bomb
    * Boom, KaBoom, Nuke
+   * Sandblast, other falling blocks
+ - Add Pyramid spell, Blob is now a sphere again
 
 ## 3.0
 

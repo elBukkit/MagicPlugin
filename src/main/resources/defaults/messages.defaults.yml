@@ -699,6 +699,10 @@ spells:
         name: Blob
         description: Create a solid blob
         cast_finish: Blobbed $count blocks with $material
+    pyramid:
+        name: Pyramid
+        description: Create a solid pyramid
+        cast_finish: Made a pyramid out of $count blocks with $material
     repair:
         name: Repair
         description: Repair an area saved with Backup

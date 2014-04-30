@@ -1084,7 +1084,7 @@ gather:
     costs:
         xp: 50
 icbm:
-    icon: grilled_pork
+    icon: golden_carrot
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
@@ -1784,7 +1784,7 @@ grenade:
     parameters:
         allow_max_range: true
         range: 32
-        size: 4
+        size: 3
         fuse: 60
     costs:
         xp: 40
@@ -1800,7 +1800,7 @@ frag:
     parameters:
         allow_max_range: true
         range: 32
-        size: 7
+        size: 5
         fuse: 60
         fire: true
     costs:
@@ -1868,7 +1868,7 @@ superblob:
     costs:
         xp: 100
 superpyramid:
-    icon: long_grass:2
+    icon: speckled_melon
     category: engineering
     class: ConstructSpell
     effects:
@@ -2442,6 +2442,25 @@ blob:
         allow_max_range: true
         range: 32
         radius: 3
+        type: sphere
+        transparent: transparent_to_construction
+    costs:
+        xp: 25
+pyramid:
+    icon: melon
+    category: earthbending
+    class: ConstructSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: slime_walk
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 4
         type: pyramid
         transparent: transparent_to_construction
     costs:
