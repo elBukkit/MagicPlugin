@@ -14,7 +14,8 @@ import org.bukkit.util.Vector;
  * Represents a BoundingBox, using two BlockVectors
  */
 public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingBox
-{
+{	
+	protected static final Vector UNIT_VECTOR = new Vector(1, 1, 1);
 	protected BlockVector max;
 	protected BlockVector min;
 
@@ -115,6 +116,23 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
 	public boolean contains(Vector p)
 	{
 		return p.isInAABB(min, max);
+	}
+
+
+	/**
+	 * Check to see if this BB contains a point
+	 * 
+	 * @param p
+	 *            The point to check for
+	 * @param threshold a threshold range, for a fuzzy check
+	 * @return true if this BB contains p
+	 */
+	public boolean contains(Vector p, int threshold)
+	{
+		if (threshold == 0) return contains(p);
+		Vector adjustedMin = UNIT_VECTOR.clone().multiply(-threshold).add(min);
+		Vector adjustedMax = UNIT_VECTOR.clone().multiply(threshold).add(max);
+		return p.isInAABB(adjustedMin, adjustedMax);
 	}
 
 	/**

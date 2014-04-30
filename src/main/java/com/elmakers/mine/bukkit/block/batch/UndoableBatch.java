@@ -23,6 +23,7 @@ public abstract class UndoableBatch implements BlockBatch {
 		this.controller = mage.getController();
 		this.mage = mage;
 		this.undoList = undoList == null ?  new UndoList(controller.getPlugin()) : undoList;
+		mage.registerForUndo(this.undoList);
 	}
 	
 	public void registerForUndo(BlockData block) {
@@ -40,7 +41,7 @@ public abstract class UndoableBatch implements BlockBatch {
 	public void finish() {
 		if (!finished) {
 			finished = true;
-			mage.registerForUndo(undoList);
+			controller.update(undoList);
 		}
 	}
 	

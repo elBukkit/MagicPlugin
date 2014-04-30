@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -40,10 +40,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	protected int				   	taskId           = 0;
 	
 	protected boolean				bypass		 	= false;
+	protected final long			created;
 	
 	public UndoList(Plugin plugin)
 	{
 		this.plugin = plugin;
+		created = System.currentTimeMillis();
 	}
 
 	public UndoList(UndoList other)
@@ -52,6 +54,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		this.plugin = other.plugin;
 		timeToLive = other.timeToLive;
 		passesRemaining = other.passesRemaining;
+		created = other.created;
 	}
 
 	@Override
@@ -230,7 +233,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		removedEntities.add(entity);
 	}
 	
-	public void convert(FallingBlock fallingBlock, Block block)
+	public void convert(Entity fallingBlock, Block block)
 	{
 		if (entities != null) {
 			entities.remove(fallingBlock);
@@ -263,5 +266,18 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	public void setBypass(boolean bypass)
 	{
 		this.bypass = bypass;
+	}
+	
+	public long getCreatedTime()
+	{
+		return this.created;
+	}
+	
+	public boolean contains(Location location, int threshold)
+	{
+		if (location == null || area == null || worldName == null) return false;
+		if (!location.getWorld().getName().equals(worldName)) return false;
+		
+		return area.contains(location.toVector(), threshold);
 	}
 }

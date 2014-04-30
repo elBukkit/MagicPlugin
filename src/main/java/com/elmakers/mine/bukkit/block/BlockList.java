@@ -18,8 +18,8 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 
 public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
-	protected BoundingBox          	area;
-	protected String				worldName;
+	protected BoundingBox          		area;
+	protected String					worldName;
 
 	protected LinkedList<BlockData> 	blockList;
 	protected HashSet<Long>        		blockIdMap;
@@ -56,6 +56,12 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 		// First do a sanity check with the map
 		// Currently, we don't replace blocks!
 		if (contains(blockData)) return true;
+
+		// Check the world name
+		if (worldName != null && !worldName.equals(blockData.getWorldName())) return false;
+		
+		// Set a world name if this block list doesn't have one yet
+		if (worldName == null || worldName.length() == 0) worldName = blockData.getWorldName();
 			
 		if (blockIdMap == null)
 		{

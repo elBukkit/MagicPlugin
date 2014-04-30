@@ -37,7 +37,7 @@ public abstract class UndoableSpell extends TargetingSpell {
 	public void registerForUndo()
 	{
 		if (modifiedBlocks == null || modifiedBlocks.isEmpty()) return;
-		
+		controller.update(modifiedBlocks);
 		mage.registerForUndo(modifiedBlocks);	
 	}
 	
