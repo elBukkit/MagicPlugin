@@ -79,7 +79,7 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
 	 *            The new center for this BB
 	 * @return A new BoundingBox representing this BB translated to newCenter
 	 */
-	public BoundingBox centered(BlockVector newCenter)
+	public BoundingBox centered(Vector newCenter)
 	{
 		// TODO
 		// BlockVector currentCenter = getCenter();
@@ -91,9 +91,9 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
 	 * 
 	 * @param newPoint
 	 *            the point to contain
-	 * @return This BB, if it already contains newPoint, else a new BB
+	 * @return This BB
 	 */
-	public BoundingBox contain(BlockVector newPoint)
+	public BoundingBox contain(Vector newPoint)
 	{
 		if (contains(newPoint))
 		{
@@ -102,8 +102,10 @@ public class BoundingBox implements com.elmakers.mine.bukkit.api.block.BoundingB
 
 		BlockVector newMin = new BlockVector(Vector.getMinimum(min, newPoint));
 		BlockVector newMax = new BlockVector(Vector.getMaximum(max, newPoint));
-		BoundingBox newBB = new BoundingBox(newMin, newMax);
-		return newBB;
+		min = newMin;
+		max = newMax;
+		
+		return this;
 	}
 
 	/**

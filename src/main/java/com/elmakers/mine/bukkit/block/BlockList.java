@@ -13,6 +13,7 @@ import java.util.Map;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 
@@ -73,19 +74,23 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 			blockList = new LinkedList<BlockData>();
 		}
 		BlockVector blockLocation = blockData.getPosition();
-
-		if (area == null)
-		{
-			area = new BoundingBox(blockLocation, blockLocation);
-		}
-		else
-		{
-			area = area.contain(blockLocation);
-		}
+		contain(blockLocation);
 
 		blockIdMap.add(blockData.getId());
 		blockList.addLast(blockData);
 		return true;
+	}
+	
+	public void contain(Vector vector)
+	{
+		if (area == null)
+		{
+			area = new BoundingBox(vector, vector);
+		}
+		else
+		{
+			area.contain(vector);
+		}
 	}
 
 	@Override
