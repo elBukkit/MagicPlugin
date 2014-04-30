@@ -218,7 +218,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	public void add(Entity entity)
 	{
 		if (entities == null) entities = new HashSet<Entity>();
-		if (worldName != null && !entity.getWorld().equals(worldName)) return;
+		if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
 		if (worldName == null) worldName = entity.getWorld().getName();
 		
 		entities.add(entity);
