@@ -38,16 +38,7 @@ public abstract class UndoableSpell extends TargetingSpell {
 	{
 		if (modifiedBlocks == null || modifiedBlocks.isEmpty()) return;
 		
-		if (!bypassUndo) 
-		{
-			if (autoUndo > 0) 
-			{
-				modifiedBlocks.setScheduleUndo(autoUndo);
-			}
-			mage.registerForUndo(modifiedBlocks);
-		}
-		
-		controller.update(modifiedBlocks);
+		mage.registerForUndo(modifiedBlocks);	
 	}
 	
 	public void registerForUndo(Block block)
@@ -75,7 +66,11 @@ public abstract class UndoableSpell extends TargetingSpell {
 	
 	public UndoList getUndoList()
 	{
-		if (modifiedBlocks == null) modifiedBlocks = new UndoList(controller.getPlugin());
+		if (modifiedBlocks == null) {
+			modifiedBlocks = new UndoList(controller.getPlugin());
+			modifiedBlocks.setBypass(bypassUndo);
+			modifiedBlocks.setScheduleUndo(autoUndo);
+		}
 		return modifiedBlocks;
 	}
 	

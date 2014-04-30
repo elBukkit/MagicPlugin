@@ -30,14 +30,16 @@ import com.elmakers.mine.bukkit.entity.EntityData;
  */
 public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.block.UndoList
 {
-	protected Set<Entity> 		   entities;
-	protected Set<EntityData> 	   removedEntities;
-	protected final Plugin		   plugin;
+	protected Set<Entity> 		   	entities;
+	protected Set<EntityData> 	   	removedEntities;
+	protected final Plugin		   	plugin;
 
-	protected int                  passesRemaining  = 1;
-	protected int                  timeToLive       = 0;
+	protected int                  	passesRemaining  = 1;
+	protected int                  	timeToLive       = 0;
 	
-	protected int				   taskId           = 0;
+	protected int				   	taskId           = 0;
+	
+	protected boolean				bypass		 	= false;
 	
 	public UndoList(Plugin plugin)
 	{
@@ -92,6 +94,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	public boolean add(BlockData blockData)
 	{
 		if (!super.add(blockData)) return false;
+		if (bypass) return true;
 		
 		BlockData priorState = modified.get(blockData.getId());
 		if (priorState != null)
@@ -124,7 +127,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	{
 		if (undoBlock.undo()) {
 			BlockData currentState = modified.get(undoBlock.getId());
-			if (currentState == undoBlock) {
+			if (currentState == undoBlock) 
+			{
 				modified.put(undoBlock.getId(), undoBlock.getPriorState());
 			}
 			
@@ -249,5 +253,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		if (entities != null) {
 			entities.remove(explodingEntity);
 		}
+	}
+	
+	public boolean bypass()
+	{
+		return bypass;
+	}
+	
+	public void setBypass(boolean bypass)
+	{
+		this.bypass = bypass;
 	}
 }

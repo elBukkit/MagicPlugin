@@ -10,12 +10,9 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.UndoList;
 
 public abstract class UndoableBatch implements BlockBatch {
-	protected static int VOLUME_UPDATE_THRESHOLD = 32;
-	
 	protected final MageController controller;
 	protected final UndoList undoList;
 	protected final Mage mage;
-	protected boolean bypassUndo = false; 
 	protected boolean finished = false;
 	
 	public UndoableBatch(Mage mage) {
@@ -43,21 +40,8 @@ public abstract class UndoableBatch implements BlockBatch {
 	public void finish() {
 		if (!finished) {
 			finished = true;
-			if (!bypassUndo) {
-				mage.registerForUndo(undoList);
-			}
-			if (undoList.size() > VOLUME_UPDATE_THRESHOLD) {
-				controller.update(undoList);
-			} else {
-				for (BlockData blockData : undoList) {
-					controller.updateBlock(blockData.getWorldName(), blockData.getPosition().getBlockX(), blockData.getPosition().getBlockY(), blockData.getPosition().getBlockZ());
-				}
-			}
+			mage.registerForUndo(undoList);
 		}
-	}
-	
-	public void setBypassUndo(boolean bypassUndo) {
-		this.bypassUndo = bypassUndo;
 	}
 	
 	@Override

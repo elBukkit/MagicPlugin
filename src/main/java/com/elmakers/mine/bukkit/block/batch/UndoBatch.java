@@ -21,11 +21,7 @@ public class UndoBatch extends UndoableBatch {
 	private final Set<Material> delayed;
 	
 	public UndoBatch(Mage mage, UndoList blockList) {
-		this(mage, blockList, null);
-	}
-	
-	public UndoBatch(Mage mage, UndoList blockList, UndoList redoList) {
-		super(mage, redoList);
+		super(mage, null);
 		
 		this.undoBlocks = blockList.toArray(template);
 		this.attachables = controller.getMaterialSet("attachable");
@@ -37,7 +33,7 @@ public class UndoBatch extends UndoableBatch {
 		// A) We could theoretically support a "Redo" queue in the future
 		// B) This nicely handles volume updates (dynmap, etc).
 		// But by default we won't actually add this to the undo queue, that'd be confusing.
-		this.bypassUndo = true;
+		undoList.setBypass(true);
 	}
 
 	public int size() {
