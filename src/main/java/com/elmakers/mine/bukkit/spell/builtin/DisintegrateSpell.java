@@ -29,6 +29,9 @@ public class DisintegrateSpell extends BlockSpell
 			Entity targetEntity = target.getEntity();
 			if (targetEntity instanceof LivingEntity)
 			{
+				// Register for undo in advance to catch entity death.
+				registerForUndo();
+				
 				LivingEntity li = (LivingEntity)targetEntity;
 				if (li instanceof Player)
 				{

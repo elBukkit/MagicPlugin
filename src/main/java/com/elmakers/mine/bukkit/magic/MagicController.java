@@ -44,6 +44,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -53,6 +54,7 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -1445,7 +1447,7 @@ public class MagicController implements Listener, MageController
 			if (mages.containsKey(key)) {
 				Mage mage = mages.get(key);
 				UndoList lastUndo = mage.getLastUndoList();
-				if (lastUndo == null || lastUndo.getCreatedTime() < now - undoTimeWindow) {
+				if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
 					pendingUndo.remove(key);
 				} else if (lastUndo.contains(fallingBlock.getLocation(), undoBlockBorderSize)) {
 					lastUndo.fall(fallingBlock, block);
@@ -1495,29 +1497,56 @@ public class MagicController implements Listener, MageController
 	}
 	
 	@EventHandler(priority = EventPriority.LOW)
-	public void onEntityExplode(EntityExplodeEvent event) {
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.isCancelled()) return;
+		Entity entity = event.getEntity();
+		boolean trackEntity = entity.isDead();
 		
-		Entity explodingEntity = event.getEntity();
-		if (explodingEntity == null) return;
+		if (!trackEntity && entity instanceof LivingEntity) {
+			LivingEntity li = (LivingEntity)entity;
+			if (li.getHealth() <= event.getDamage()) {
+				trackEntity = true;
+			}
+		}
 		
+		if (trackEntity) {
+			Entity damager = event.getDamager();
+			UndoList undoList = getEntityUndo(damager);
+			if (undoList != null) {
+				undoList.remove(entity);
+			}
+		}
+	}
+	
+	protected UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
-		if (explodingEntity instanceof Player) {
-			Mage mage = getMage((Player)explodingEntity);
+		if (entity == null) return null;
+		if (entity instanceof Player) {
+			Mage mage = getMage((Player)entity);
 			
 			// Hm, kinda hacky.
 			Object lastUndo = mage.getLastUndoList();
 			if (lastUndo instanceof UndoList) {
 				blockList = (UndoList)lastUndo;
 			}
-		} else if (explodingEntity.hasMetadata("MagicBlockList")) {
-			List<MetadataValue> values = explodingEntity.getMetadata("MagicBlockList");  
+		} else if (entity.hasMetadata("MagicBlockList")) {
+			List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
 			for (MetadataValue value : values) {
 				if (value.getOwningPlugin() == plugin) {
 					blockList = (UndoList)value.value();
 				}
 			}
 		}
+		
+		return blockList;
+	}
+	
+	@EventHandler(priority = EventPriority.LOW)
+	public void onEntityExplode(EntityExplodeEvent event) {
+		Entity explodingEntity = event.getEntity();
+		if (explodingEntity == null) return;
+		
+		UndoList blockList = getEntityUndo(explodingEntity);
 		
 		if (event.isCancelled()) {
 			if (blockList != null) blockList.cancelExplosion(explodingEntity);
@@ -2834,7 +2863,7 @@ public class MagicController implements Listener, MageController
 	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
 	 private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
 	 
-	 private int								 undoTimeWindow					= 10000;
+	 private int								 undoTimeWindow					= 6000;
 	 private int								 undoBlockBorderSize			= 2;
 	 private int								 maxTNTPerChunk					= 0;
 	 private int                                 undoQueueDepth                 = 256;

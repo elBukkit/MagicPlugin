@@ -43,6 +43,9 @@ public class ShrinkSpell extends BlockSpell
 		if (target.hasEntity()) {
 			if (!(target.getEntity() instanceof LivingEntity)) return SpellResult.NO_TARGET;
 			
+			// Register for undo in advance to catch entity death.
+			registerForUndo();
+			
 			int playerDamage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
 			int entityDamage = parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
@@ -59,7 +62,7 @@ public class ShrinkSpell extends BlockSpell
 			}
 			else
 			{	
-				li.damage(mage.getDamageMultiplier() * entityDamage);
+				li.damage(mage.getDamageMultiplier() * entityDamage, getPlayer());
 				switch (li.getType()) {
 					case CREEPER:
 						data = 4;
@@ -85,14 +88,12 @@ public class ShrinkSpell extends BlockSpell
 			if ((ownerName != null || data != 3) && li.isDead() && !alreadyDead) {
 				Location targetLocation = targetEntity.getLocation();
 				if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
-					registerRemoved(targetEntity);
 					LivingEntity baby = targetLocation.getWorld().spawnCreature(targetLocation, targetEntity.getType());
 					if (baby instanceof Ageable) {
 						((Ageable)baby).setBaby();
 					}
 					registerForUndo(baby);
 				} else {
-					registerRemoved(targetEntity);
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
 			}
@@ -113,10 +114,11 @@ public class ShrinkSpell extends BlockSpell
 				return SpellResult.NO_TARGET;
 			}
 			
-			registerForUndo(targetBlock);
+			registerForUndo(targetBlock);		
+			registerForUndo();
+
 			dropHead(targetBlock.getLocation(), blockSkin, targetBlock.getType().name(), (byte)3);
 			targetBlock.setType(Material.AIR);
-			registerForUndo();
 		}
 		
 		return SpellResult.CAST;
