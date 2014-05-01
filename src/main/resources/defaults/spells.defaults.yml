@@ -2268,7 +2268,7 @@ undo:
     parameters:
         target: self
     costs:
-        xp: 20
+        xp: 100
 commit:
     icon: enchanted_book
     category: engineering
@@ -2280,7 +2280,7 @@ commit:
     parameters:
         target: self
     costs:
-        xp: 50
+        xp: 500
 rewind:
     icon: written_book
     category: engineering
@@ -2294,7 +2294,7 @@ rewind:
         range: 128
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 250
 breach:
     icon: seeds
     category: earthbending
@@ -2616,7 +2616,7 @@ hat:
         cooldown: 3000
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 30
 lava:
     icon: ink_sack:14
     category: firebending

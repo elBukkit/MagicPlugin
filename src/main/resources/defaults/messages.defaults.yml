@@ -739,6 +739,9 @@ spells:
         name: Hat
         description: Wear your target
         cast: You put $material on your head
+        removed: You remove your magical hat
+        hat_name: Hat of $material
+        hat_lore: Will disappear if clicked
     stalactite:
         name: Stalactite
         description: Create a downward pillar

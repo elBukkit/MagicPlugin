@@ -2174,21 +2174,34 @@ public class MagicController implements Listener, MageController
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
+		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
 
 		Player player = (Player)event.getWhoClicked();
 		Mage mage = getMage(player);
-		Wand activeWand = mage.getActiveWand();
 		
-		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+		// Check for temporary items
+		ItemStack clickedItem = event.getCurrentItem();
+		
+		if (clickedItem != null && NMSUtils.isTemporary(clickedItem)) {
+			String message = NMSUtils.getTemporaryMessage(clickedItem);
+			if (message != null && message.length() > 1) {
+				mage.sendMessage(message);
+			}
+			event.setCurrentItem(null);
+			event.setCancelled(true);
+			return;
+		}
+		Wand activeWand = mage.getActiveWand();
 	
 		InventoryType inventoryType = event.getInventory().getType();
 		
 		// Check for dropping items out of a wand's inventory
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
 		{
-			ItemStack droppedItem = event.getCurrentItem();
+			ItemStack droppedItem = clickedItem;
 			ItemStack newDrop = removeItemFromWand(activeWand, droppedItem);
 			
 			if (newDrop != null) 
@@ -2223,7 +2236,6 @@ public class MagicController implements Listener, MageController
 					
 					// Chest mode falls back to selection from here.
 					if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST) {
-						ItemStack clickedItem = event.getCurrentItem();
 						onPlayerActivateIcon(mage, activeWand, clickedItem);
 						player.closeInventory();
 						event.setCancelled(true);
@@ -2231,7 +2243,7 @@ public class MagicController implements Listener, MageController
 					}
 					
 					// Prevent wand duplication
-					if (Wand.isWand(event.getCursor()) || Wand.isWand(event.getCurrentItem())) {
+					if (Wand.isWand(event.getCursor()) || Wand.isWand(clickedItem)) {
 						event.setCancelled(true);
 					}
 				}

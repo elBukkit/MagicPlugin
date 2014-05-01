@@ -1,19 +1,23 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class HatSpell extends TargetingSpell 
-{   
-	@SuppressWarnings("deprecation")
+{
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -21,9 +25,6 @@ public class HatSpell extends TargetingSpell
 		if (player == null) {
 			return SpellResult.PLAYER_REQUIRED;
 		}
-		Material material = Material.AIR;
-		Set<Material> buildingMaterials = controller.getBuildingMaterials();
-		byte data = 0;
 		if (!isUnderwater())
 		{
 			noTargetThrough(Material.STATIONARY_WATER);
@@ -36,17 +37,23 @@ public class HatSpell extends TargetingSpell
 			return SpellResult.NO_TARGET;
 		}
 	
-		material = target.getType();
-		data = target.getData();
-		
-		if (material == null || material == Material.AIR || !buildingMaterials.contains(material))
+		MaterialAndData material = new MaterialAndData(target);
+		if (material.getMaterial() == Material.AIR)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		ItemStack hatItem = new ItemStack(material, 1, (short)data);
+		ItemStack hatItem = material.getItemStack(1);
 		ItemStack itemStack = player.getInventory().getHelmet();
+		ItemMeta meta = hatItem.getItemMeta();
+		meta.setDisplayName(getMessage("hat_name").replace("$material", material.getName()));
+		List<String> lore = new ArrayList<String>();
+		lore.add(getMessage("hat_lore"));
+		meta.setLore(lore);
+		hatItem.setItemMeta(meta);
+		hatItem = InventoryUtils.makeReal(hatItem);
+		NMSUtils.makeTemporary(hatItem, getMessage("removed").replace("$material", material.getName()));
 		player.getInventory().setHelmet(hatItem);
-		if (itemStack != null && itemStack.getType() != Material.AIR) {
+		if (itemStack != null && itemStack.getType() != Material.AIR && !NMSUtils.isTemporary(itemStack)) {
 			player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
 		}
 		return SpellResult.CAST;
