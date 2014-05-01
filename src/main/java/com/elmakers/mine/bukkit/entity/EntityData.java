@@ -1,15 +1,25 @@
 package com.elmakers.mine.bukkit.entity;
 
 import org.bukkit.Art;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hanging;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Painting;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Colorable;
 
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
@@ -24,6 +34,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	protected BlockFace facing;
 	protected ItemStack item;
 	protected double health = 1;
+	protected boolean isBaby;
+	protected DyeColor dyeColor;
+	protected Horse.Color horseColor;
+	protected Horse.Variant horseVariant;
+	protected Horse.Style horseStyle;
+	protected SkeletonType skeletonType;
+	protected Ocelot.Type ocelotType;
+	protected Villager.Profession villagerProfession;
 	
 	public EntityData(Entity entity) {
 		this(entity.getLocation(), entity);
@@ -39,24 +57,46 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 			// Bukkit gives us a one-off location, it's the attached block)
 			this.location = location.getBlock().getRelative(facing.getOppositeFace()).getLocation();
 		}
+
+		if (entity instanceof LivingEntity) {
+			LivingEntity li = (LivingEntity)entity;
+			this.health = li.getHealth();
+		}
+		
+		if (entity instanceof Ageable) {
+			Ageable ageable = (Ageable)entity;
+			this.isBaby = !ageable.isAdult();
+		}
+		
+		if (entity instanceof Colorable) {
+			Colorable colorable = (Colorable)entity;
+			dyeColor = colorable.getColor();
+		}
+
 		if (entity instanceof Painting) {
 			Painting painting = (Painting)entity;
 			art = painting.getArt();
-		}
-		if (entity instanceof ItemFrame) {
+		} else if (entity instanceof ItemFrame) {
 			ItemFrame itemFrame = (ItemFrame)entity;
 			item = itemFrame.getItem();
-		}
-		if (entity instanceof LivingEntity) {
-			LivingEntity li = (LivingEntity)entity;
-			// This is a bit of a hack, but we don't generally store dead entities
-			// unless we want to bring them back to life.
-			if (li.isDead() || li.getHealth() <= 0) {
-				this.health = li.getMaxHealth();
-			} else {
-				this.health = li.getHealth();
-			}
-		}
+		} else if (entity instanceof Horse) {
+			Horse horse = (Horse)entity;
+			horseVariant = horse.getVariant();
+			horseColor = horse.getColor();
+			horseStyle = horse.getStyle();
+		} else if (entity instanceof Skeleton) {
+			Skeleton skeleton = (Skeleton)entity;
+			skeletonType = skeleton.getSkeletonType();
+		} else if (entity instanceof Villager) {
+			Villager villager = (Villager)entity;
+			villagerProfession = villager.getProfession();
+		} else if (entity instanceof Wolf) {
+			Wolf wolf = (Wolf)entity;
+			dyeColor = wolf.getCollarColor();
+		} else if (entity instanceof Ocelot) {
+			Ocelot ocelot = (Ocelot)entity;
+			ocelotType = ocelot.getCatType();
+		} 
 	}
 	
 	/**
@@ -112,14 +152,78 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 			break;
 		default: 
 			spawned = location.getWorld().spawnEntity(location, type);
-			if (spawned instanceof LivingEntity) {
-				LivingEntity li = (LivingEntity)spawned;
-				if (health <= li.getMaxHealth()) {
-					li.setHealth(health);
-				}
+		}
+		
+		modify(spawned);
+		
+		return spawned;
+	}
+	
+	@Override
+	public boolean modify(Entity entity) {
+		if (entity == null || entity.getType() != type) return false;
+		if (entity instanceof Player) return false;
+		
+		// Re-spawn if dead
+		if (!entity.isValid()) {
+			try {
+				entity = location.getWorld().spawnEntity(location, type);
+			} catch (Exception ex) {
+				return false;
 			}
 		}
 		
-		return spawned;
+		if (entity instanceof Ageable) {
+			Ageable ageable = (Ageable)entity;
+			if (isBaby) {
+				ageable.setBaby();
+			} else {
+				ageable.setAdult();
+			}
+		}
+		
+		if (entity instanceof Colorable) {
+			Colorable colorable = (Colorable)entity;
+			colorable.setColor(dyeColor);
+		}
+
+		if (entity instanceof Painting) {
+			Painting painting = (Painting) entity;
+			painting.setArt(art, true);
+			painting.setFacingDirection(facing, true);
+		} 
+		else if (entity instanceof ItemFrame) {
+			ItemFrame itemFrame = (ItemFrame)entity;
+			itemFrame.setItem(item);
+			itemFrame.setFacingDirection(facing, true);
+		} else if (entity instanceof Horse) {
+			Horse horse = (Horse)entity;
+			horse.setVariant(horseVariant);
+			horse.setStyle(horseStyle);
+			horse.setColor(horseColor);
+		} else if (entity instanceof Skeleton) {
+			Skeleton skeleton = (Skeleton)entity;
+			skeleton.setSkeletonType(skeletonType);
+		} else if (entity instanceof Villager) {
+			Villager villager = (Villager)entity;
+			villager.setProfession(villagerProfession);
+		} else if (entity instanceof Wolf) {
+			Wolf wolf = (Wolf)entity;
+			wolf.setCollarColor(dyeColor);
+		} else if (entity instanceof Ocelot) {
+			Ocelot ocelot = (Ocelot)entity;
+			ocelot.setCatType(ocelotType);
+		}
+
+		
+		if (entity instanceof LivingEntity) {
+			LivingEntity li = (LivingEntity)entity;
+			try {
+				li.setHealth(Math.min(health, li.getMaxHealth()));
+			} catch (Throwable ex) {
+			}
+		}
+		
+		return true;
 	}
 }

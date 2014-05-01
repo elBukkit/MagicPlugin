@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -12,8 +13,6 @@ import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -37,8 +36,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 {
 	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
-	protected Set<Entity> 		   	entities;
-	protected Set<EntityData> 	   	removedEntities;
+	protected Set<Entity> 		   			entities;
+	protected HashMap<Entity, EntityData> 	modifiedEntities;
 	protected final Plugin		   	plugin;
 
 	protected int                  	passesRemaining  = 1;
@@ -187,11 +186,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 			}
 			entities = null;
 		}
-		if (removedEntities != null) {
-			for (EntityData entity : removedEntities) {
-				entity.spawn();
+		if (modifiedEntities != null) {
+			for (Entry<Entity, EntityData> entry : modifiedEntities.entrySet()) {
+				entry.getValue().modify(entry.getKey());
 			}
-			removedEntities = null;
+			modifiedEntities = null;
 		}
 
 		if (blockList == null) return true;
@@ -263,25 +262,29 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		modifiedTime = System.currentTimeMillis();
 	}
 	
-	public void remove(Entity entity)
+	public void modify(Entity entity)
 	{
-		if (entities != null && entities.contains(entity)) {
+		// Check to see if this is something we spawned, and has now been destroyed
+		if (entities != null && entities.contains(entity) && !entity.isValid()) {
 			entities.remove(entity);
-			// We don't store things that we can't respawn.
-		} else if (!(entity instanceof Player || entity instanceof Item)){
-			// Special tag to make sure we don't double-add entities
-			if (!entity.hasMetadata("MagicDead")) {
-				entity.setMetadata("MagicDead", new FixedMetadataValue(plugin, true));
-				remove(new EntityData(entity));
+		} else {
+			if (modifiedEntities == null) modifiedEntities = new HashMap<Entity, EntityData>();
+			EntityData entityData = modifiedEntities.get(entity);
+			if (entityData == null) {
+				modifiedEntities.put(entity, new EntityData(entity));
 			}
 		}
 		modifiedTime = System.currentTimeMillis();
 	}
 	
-	protected void remove(EntityData entity)
+	public void remove(Entity entity)
 	{
-		if (removedEntities == null) removedEntities = new HashSet<EntityData>();
-		removedEntities.add(entity);
+		if (entities != null && entities.contains(entity)) {
+			entities.remove(entity);
+		}
+		if (modifiedEntities != null && modifiedEntities.containsKey(entity)) {
+			entities.remove(entity);
+		}
 		modifiedTime = System.currentTimeMillis();
 	}
 	
