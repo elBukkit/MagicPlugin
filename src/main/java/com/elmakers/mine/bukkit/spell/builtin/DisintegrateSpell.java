@@ -41,7 +41,7 @@ public class DisintegrateSpell extends BlockSpell
 				{
 					li.damage(mage.getDamageMultiplier() * entityDamage, getPlayer());
 					if (li.isDead()) {
-						registerRemoved(li);
+						registerModified(li);
 						registerForUndo();
 					}
 				}

@@ -129,6 +129,7 @@ public class AlterSpell extends BlockSpell
 		EntityType entityType = entity.getType();
 		switch (entityType) {
 			case HORSE:
+				registerModified(entity);
 				Horse horse = (Horse)entity;
 
 				Color color = horse.getColor();
@@ -148,6 +149,7 @@ public class AlterSpell extends BlockSpell
 				horse.setVariant(variant);
 			break;
 			case OCELOT:
+				registerModified(entity);
 				Ocelot ocelot = (Ocelot)entity;
 				Type catType = ocelot.getCatType();
 				Type[] typeValues = Type.values();
@@ -155,6 +157,7 @@ public class AlterSpell extends BlockSpell
 				ocelot.setCatType(catType);
 				break;
 			case VILLAGER:
+				registerModified(entity);
 				Villager villager = (Villager)entity;
 				Profession profession = villager.getProfession();
 				Profession[] professionValues = Profession.values();
@@ -163,6 +166,7 @@ public class AlterSpell extends BlockSpell
 				break;
 			case WOLF:
 			{
+				registerModified(entity);
 				Wolf wolf = (Wolf)entity;
 				DyeColor dyeColor = wolf.getCollarColor();
 				DyeColor[] dyeColorValues = DyeColor.values();
@@ -172,6 +176,7 @@ public class AlterSpell extends BlockSpell
 				break;
 			case SHEEP:
 				{
+					registerModified(entity);
 					Sheep sheep = (Sheep)entity;
 					DyeColor dyeColor = sheep.getColor();
 					DyeColor[] dyeColorValues = DyeColor.values();
@@ -180,6 +185,7 @@ public class AlterSpell extends BlockSpell
 				}
 				break;
 			case SKELETON:
+				registerModified(entity);
 				Skeleton skeleton = (Skeleton)entity;
 				SkeletonType skeletonType = skeleton.getSkeletonType();
 				SkeletonType[] skeletonTypeValues = SkeletonType.values();
@@ -189,7 +195,7 @@ public class AlterSpell extends BlockSpell
 			default:
 				return SpellResult.NO_TARGET;
 		};
-		
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 

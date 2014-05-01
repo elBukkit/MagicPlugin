@@ -97,17 +97,22 @@ public class ShrinkSpell extends BlockSpell
 				}
 			}
 			else if (li.getType() == EntityType.GIANT) {
+				registerModified(li);
 				li.remove();
 				Entity zombie = targetLocation.getWorld().spawnEntity(targetLocation, EntityType.ZOMBIE);
 				registerForUndo(zombie);
 			}
 			else if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
+				registerModified(li);
 				((Ageable)li).setBaby();
 			} else  if (li instanceof Zombie && !((Zombie)li).isBaby()) {
+				registerModified(li);
 				((Zombie)li).setBaby(true);
 			} else  if (li instanceof PigZombie && !((PigZombie)li).isBaby()) {
+				registerModified(li);
 				((PigZombie)li).setBaby(true);
 			} else  if (li instanceof Slime && ((Slime)li).getSize() > 1) {
+				registerModified(li);
 				Slime slime = (Slime)li;
 				slime.setSize(slime.getSize() - 1);
 			} else {

@@ -44,7 +44,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -1500,21 +1499,10 @@ public class MagicController implements Listener, MageController
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.isCancelled()) return;
 		Entity entity = event.getEntity();
-		boolean trackEntity = entity.isDead();
-		
-		if (!trackEntity && entity instanceof LivingEntity) {
-			LivingEntity li = (LivingEntity)entity;
-			if (li.getHealth() <= event.getDamage()) {
-				trackEntity = true;
-			}
-		}
-		
-		if (trackEntity) {
-			Entity damager = event.getDamager();
-			UndoList undoList = getEntityUndo(damager);
-			if (undoList != null) {
-				undoList.remove(entity);
-			}
+		Entity damager = event.getDamager();
+		UndoList undoList = getEntityUndo(damager);
+		if (undoList != null) {
+			undoList.modify(entity);
 		}
 	}
 	
@@ -1789,13 +1777,35 @@ public class MagicController implements Listener, MageController
 				Location dropLocation = event.getLocation();
 				getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 			}
-		} else if (ageDroppedItems > 0) {
-			int ticks = ageDroppedItems * 20 / 1000;
-			Item item = event.getEntity();
-			ageItem(item, ticks);
+		} else  {
+			registerEntityForUndo(event.getEntity());
+			if (ageDroppedItems > 0) {
+				int ticks = ageDroppedItems * 20 / 1000;
+				Item item = event.getEntity();
+				ageItem(item, ticks);
+			}
 		}
 	}
 
+	protected void registerEntityForUndo(Entity entity) {
+		long now = System.currentTimeMillis();
+		Collection<String> keys = new ArrayList<String>(pendingUndo);
+		
+		for (String key : keys) {
+			if (mages.containsKey(key)) {
+				Mage mage = mages.get(key);
+				UndoList lastUndo = mage.getLastUndoList();
+				if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
+					pendingUndo.remove(key);
+				} else if (lastUndo.contains(entity.getLocation(), undoBlockBorderSize)) {
+					lastUndo.add(entity);
+				}
+			} else {
+				pendingUndo.remove(key);
+			}
+		}
+	}
+	
 	protected void ageItem(Item item, int ticksToAge)
 	{
 		try {
