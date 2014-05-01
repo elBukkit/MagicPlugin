@@ -38,6 +38,7 @@ public interface Spell extends SpellTemplate {
 	
 	public void activate();
 	public void deactivate();
+	public void reactivate();
 	public boolean isActive();
 	public boolean cancel();
 	
