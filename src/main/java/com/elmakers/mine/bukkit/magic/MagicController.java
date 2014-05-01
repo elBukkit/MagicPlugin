@@ -45,6 +45,8 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -1505,6 +1507,8 @@ public class MagicController implements Listener, MageController
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.isCancelled()) return;
 		Entity entity = event.getEntity();
+		if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
+		
 		Entity damager = event.getDamager();
 		UndoList undoList = getEntityUndo(damager);
 		if (undoList != null) {
