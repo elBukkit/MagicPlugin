@@ -1344,6 +1344,12 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 		checkActiveCosts();
 	}
 	
+	@Override
+	public boolean isActive()
+	{
+		 return isActive;
+	}
+	
 	//
 	// Spell abstract interface
 	//
