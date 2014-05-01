@@ -1282,11 +1282,14 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 	}
 	
 	@Override
+	public void reactivate() {
+		isActive = true;
+		onActivate();	
+	}
+	@Override
 	public void activate() {
 		if (!isActive) {
-			isActive = true;
-			onActivate();
-			
+			reactivate();
 			mage.activateSpell(this);
 		}
 	}
@@ -1312,6 +1315,7 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 		try {
 			castCount = node.getLong("cast_count", 0);
 			lastCast = node.getLong("last_cast", 0);
+			isActive = node.getBoolean("active", false);
 			onLoad(node);
 		} catch (Exception ex) {
 			controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
@@ -1323,6 +1327,7 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 		try {
 			node.set("cast_count", castCount);
 			node.set("last_cast", lastCast);
+			node.set("active", isActive);
 			onSave(node);
 		} catch (Exception ex) {
 			controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
