@@ -6,10 +6,14 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Slime;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -46,8 +50,7 @@ public class ShrinkSpell extends BlockSpell
 			// Register for undo in advance to catch entity death.
 			registerForUndo();
 			
-			int playerDamage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
-			int entityDamage = parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
+			int damage =  parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
 			Entity targetEntity = target.getEntity();
 			LivingEntity li = (LivingEntity)targetEntity;
@@ -55,14 +58,14 @@ public class ShrinkSpell extends BlockSpell
 			String ownerName = null;
 			String itemName = null;
 			byte data = 3;
+			
 			if (li instanceof Player)
 			{
-				li.damage(mage.getDamageMultiplier() * playerDamage, getPlayer());
+				damage = parameters.getInt("player_damage", DEFAULT_PLAYER_DAMAGE);
 				ownerName = ((Player)li).getName();
 			}
 			else
 			{	
-				li.damage(mage.getDamageMultiplier() * entityDamage, getPlayer());
 				switch (li.getType()) {
 					case CREEPER:
 						data = 4;
@@ -85,15 +88,31 @@ public class ShrinkSpell extends BlockSpell
 				}
 				
 			}
-			if ((ownerName != null || data != 3) && li.isDead() && !alreadyDead) {
-				Location targetLocation = targetEntity.getLocation();
-				if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
-					LivingEntity baby = targetLocation.getWorld().spawnCreature(targetLocation, targetEntity.getType());
-					if (baby instanceof Ageable) {
-						((Ageable)baby).setBaby();
-					}
-					registerForUndo(baby);
-				} else {
+			
+			Location targetLocation = targetEntity.getLocation();
+			if (li instanceof Player) {
+				li.damage(damage, getPlayer());
+				if (ownerName != null || data != 3 && li.isDead() && !alreadyDead) {
+					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
+				}
+			}
+			else if (li.getType() == EntityType.GIANT) {
+				li.remove();
+				Entity zombie = targetLocation.getWorld().spawnEntity(targetLocation, EntityType.ZOMBIE);
+				registerForUndo(zombie);
+			}
+			else if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
+				((Ageable)li).setBaby();
+			} else  if (li instanceof Zombie && !((Zombie)li).isBaby()) {
+				((Zombie)li).setBaby(true);
+			} else  if (li instanceof PigZombie && !((PigZombie)li).isBaby()) {
+				((PigZombie)li).setBaby(true);
+			} else  if (li instanceof Slime && ((Slime)li).getSize() > 1) {
+				Slime slime = (Slime)li;
+				slime.setSize(slime.getSize() - 1);
+			} else {
+				li.damage(damage, getPlayer());
+				if (ownerName != null || data != 3 && (li.isDead() || li.getHealth() == 0) && !alreadyDead) {
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
 			}
