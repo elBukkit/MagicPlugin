@@ -12,6 +12,8 @@ import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -45,12 +47,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	protected int				   	taskId           = 0;
 	
 	protected boolean				bypass		 	= false;
-	protected final long			created;
+	protected final long			createdTime;
+	protected long					modifiedTime;
 	
 	public UndoList(Plugin plugin)
 	{
 		this.plugin = plugin;
-		created = System.currentTimeMillis();
+		createdTime = System.currentTimeMillis();
+		modifiedTime = createdTime;
 	}
 
 	public UndoList(UndoList other)
@@ -59,7 +63,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		this.plugin = other.plugin;
 		timeToLive = other.timeToLive;
 		passesRemaining = other.passesRemaining;
-		created = other.created;
+		createdTime = other.createdTime;
+		modifiedTime = other.modifiedTime;
 	}
 
 	@Override
@@ -112,6 +117,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		}
 
 		modified.put(blockData.getId(), blockData);
+		modifiedTime = System.currentTimeMillis();
 		return true;
 	}
 
@@ -242,6 +248,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	{
 		if (entity == null) return;
 		entity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
+		modifiedTime = System.currentTimeMillis();
 	}
 	
 	public void add(Entity entity)
@@ -253,21 +260,29 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		entities.add(entity);
 		watch(entity);
 		contain(entity.getLocation().toVector());
+		modifiedTime = System.currentTimeMillis();
 	}
 	
 	public void remove(Entity entity)
 	{
 		if (entities.contains(entity)) {
 			entities.remove(entity);
-		} else {
-			remove(new EntityData(entity));
+			// We don't store things that we can't respawn.
+		} else if (!(entity instanceof Player || entity instanceof Item)){
+			// Special tag to make sure we don't double-add entities
+			if (!entity.hasMetadata("MagicDead")) {
+				entity.setMetadata("MagicDead", new FixedMetadataValue(plugin, true));
+				remove(new EntityData(entity));
+			}
 		}
+		modifiedTime = System.currentTimeMillis();
 	}
 	
 	protected void remove(EntityData entity)
 	{
 		if (removedEntities == null) removedEntities = new HashSet<EntityData>();
 		removedEntities.add(entity);
+		modifiedTime = System.currentTimeMillis();
 	}
 	
 	public void convert(Entity fallingBlock, Block block)
@@ -276,12 +291,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 			entities.remove(fallingBlock);
 		}
 		add(block);
+		modifiedTime = System.currentTimeMillis();
 	}
 	
 	public void fall(Entity fallingBlock, Block block)
 	{
 		add(fallingBlock);
 		add(block);
+		modifiedTime = System.currentTimeMillis();
 	}
 	
 	public void explode(Entity explodingEntity, List<Block> blocks)
@@ -292,12 +309,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		for (Block block : blocks) {
 			add(block);
 		}
+		modifiedTime = System.currentTimeMillis();
 	}
 	
 	public void cancelExplosion(Entity explodingEntity)
 	{
 		if (entities != null) {
 			entities.remove(explodingEntity);
+			modifiedTime = System.currentTimeMillis();
 		}
 	}
 	
@@ -313,7 +332,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	
 	public long getCreatedTime()
 	{
-		return this.created;
+		return this.createdTime;
+	}
+	
+	public long getModifiedTime()
+	{
+		return this.modifiedTime;
 	}
 	
 	public boolean contains(Location location, int threshold)
@@ -341,5 +365,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 				block.unlink();
 			}
 		}
+		
+		modifiedTime = System.currentTimeMillis();
 	}
 }
