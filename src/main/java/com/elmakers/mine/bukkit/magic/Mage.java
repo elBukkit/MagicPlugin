@@ -201,7 +201,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		boolean result = false;
 		for (Spell spell : spells.values())
 		{
-			result = result || spell.cancel();
+			result = spell.cancel() || result;
 		}
 		return result;
 	}

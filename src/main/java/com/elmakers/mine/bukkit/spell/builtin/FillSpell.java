@@ -90,6 +90,8 @@ public class FillSpell extends BrushSpell
 	{
 		if (targetBlock != null)
 		{
+			// Extra set here, just in case we're not in sync with active state.
+			targetBlock = null;
 			deactivate();
 			return true;
 		}
