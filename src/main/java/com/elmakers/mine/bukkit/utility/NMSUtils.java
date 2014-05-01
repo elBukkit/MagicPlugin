@@ -383,7 +383,9 @@ public class NMSUtils {
 		if (stack == null) return;
 		try {
 			Object craft = getHandle(stack);
+			if (craft == null) return;
 			Object tagObject = getTag(craft);
+			if (tagObject == null) return;
 			Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
 			setStringMethod.invoke(tagObject, tag, value);
 		} catch (Throwable ex) {
