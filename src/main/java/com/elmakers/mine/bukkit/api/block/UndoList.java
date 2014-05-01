@@ -23,6 +23,7 @@ public interface UndoList extends BlockList {
 	public void prune();
 	
 	public void add(Entity entity);
+	public void remove(Entity entity);
 	
 	public void convert(Entity entity, Block block);
 	public void fall(Entity entity, Block block);
