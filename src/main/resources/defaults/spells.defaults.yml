@@ -362,14 +362,14 @@ worm:
         "blast target self radius 12 speed -0^2 destructible $birth check_destructible true": 100,100,100
         "blast target self radius 12 speed -0^5 destructible $birth check_destructible true": 20,50,200
     cast:
-        "blob brush $birth radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 50,100,200
+        "blob brush stained_glass:15 radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 50,100,200
         "curse transparent air,$birth,redstone_block": 100,100,200
         "shrink transparent air,$birth,command,redstone_block": 30,50,70
         "push transparent air,$birth,redstone_block": 100,100,100
-        "blob brush $birth radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20,40,80
+        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20,40,80
         "lava transparent air,$birth,redstone_block": 0,10,20
         "lightning transparent air,$birth,redstone_block": 0,10,20
-        "shell brush $birth radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
+        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
         "none": 100,50,20
     parameters:
         bypass_undo: true
@@ -427,9 +427,9 @@ hunter:
         "shrink transparent air,$birth,command,redstone_block": 30,40,50
         "pull transparent air,$birth,redstone_block": 100,100,100
         "curse transparent air,$birth,redstone_block": 100,100,150
-        "blob brush $birth radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20,40,80
+        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20,40,80
         "lava transparent air,$birth,redstone_block": 0,10,20
-        "shell brush $birth radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
+        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
         "none": 300,200,50
     parameters:
         bypass_undo: true
@@ -561,7 +561,7 @@ life:
           life_simulate: cast simulate bu true r 64 ty ~-14 tz ~-68 oby 16 obz 68 obcx -1 obcy 16 obcz 68 olcx 1 olcy 16 olcz 68
           life_clear: castp @p box odmax 10 odmin 1 brush erase cd false tx ~2 ty ~-17 tz ~-68 radius 64 md 300 thickness 0 cooldown 10000
           life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-68 radius 65 md 300 cd 60000 brush copy obx -3 oby 18 obz 68
-          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy oby -2 obz 18 obz 68
+          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 obz 68
           life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 brush copy cd 10000 obx -15 oby 16 obz 36
     costs:
         xp: 1500
