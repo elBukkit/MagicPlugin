@@ -326,6 +326,7 @@ random:
       superbox: 0,0,1,10,100
       superpyramid: 0,0,1,10,100
       superblob: 0,0,1,10,100
+      superemp: 0,0,0,5,100
       superdisc: 0,0,1,10,100
       superring: 0,0,1,10,100
       superconvert: 0,0,1,10,100
@@ -700,6 +701,7 @@ engineer:
         - dome
         - disc
         - convert
+        - superemp
         - superblob
         - superbox
         - supershell
