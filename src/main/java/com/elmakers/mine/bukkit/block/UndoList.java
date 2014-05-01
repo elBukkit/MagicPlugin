@@ -175,7 +175,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		// This part doesn't happen asynchronously
 		if (entities != null) {
 			for (Entity entity : entities) {
-				entity.remove();
+				if (entity.isValid()) {
+					entity.remove();
+				}
 			}
 			entities = null;
 		}
@@ -253,12 +255,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		contain(entity.getLocation().toVector());
 	}
 	
-	public void addRemoved(Entity entity)
+	public void remove(Entity entity)
 	{
-		addRemoved(new EntityData(entity));
+		if (entities.contains(entity)) {
+			entities.remove(entity);
+		} else {
+			remove(new EntityData(entity));
+		}
 	}
 	
-	public void addRemoved(EntityData entity)
+	protected void remove(EntityData entity)
 	{
 		if (removedEntities == null) removedEntities = new HashSet<EntityData>();
 		removedEntities.add(entity);

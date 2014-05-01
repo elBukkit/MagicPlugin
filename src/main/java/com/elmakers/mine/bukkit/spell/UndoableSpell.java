@@ -68,7 +68,7 @@ public abstract class UndoableSpell extends TargetingSpell {
 	public void registerRemoved(Entity entity)
 	{
 		if (entity instanceof Player) return;
-		getUndoList().addRemoved(entity);
+		getUndoList().remove(entity);
 	}
 	
 	public void watch(Entity entity)

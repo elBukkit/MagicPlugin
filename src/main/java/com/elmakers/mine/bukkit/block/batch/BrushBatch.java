@@ -33,7 +33,7 @@ public abstract class BrushBatch extends SpellBatch {
 					for (Entity entity : targetEntities) {
 						if (contains(entity.getLocation())) {
 							entity.remove();
-							undoList.addRemoved(entity);
+							undoList.remove(entity);
 						}
 					}
 				}
