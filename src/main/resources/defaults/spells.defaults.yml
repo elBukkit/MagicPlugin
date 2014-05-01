@@ -654,7 +654,7 @@ disc:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 10
+        xp: 45
 superdisc:
     icon: ink_sack:13
     category: engineering
@@ -675,7 +675,7 @@ superdisc:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 50 
+        xp: 150
 superring:
     icon: ink_sack:9
     category: engineering
@@ -697,7 +697,7 @@ superring:
         thickness: 1
         transparent: transparent_to_construction
     costs:
-        xp: 30 
+        xp: 100
 supershell:
     icon: magma_cream
     category: engineering
@@ -717,7 +717,7 @@ supershell:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 200
 superdome:
     icon: mushroom_soup
     category: engineering
@@ -738,7 +738,7 @@ superdome:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 150
 tag:
     icon: sign
     category: dark
@@ -770,7 +770,7 @@ toss:
     parameters:
       speed: 2
     costs:
-        xp: 10
+        xp: 20
 volley:
     icon: stone_button
     category: earthbending
@@ -785,7 +785,7 @@ volley:
       speed: 1.5
       count: 8
     costs:
-        xp: 10   
+        xp: 40   
 push:
     icon: rails
     category: airbending
@@ -1870,7 +1870,7 @@ superblob:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 500
 superpyramid:
     icon: speckled_melon
     category: engineering
@@ -1890,7 +1890,7 @@ superpyramid:
         type: pyramid
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 500
 box:
     icon: gold_helmet
     category: earthbending
@@ -1911,7 +1911,7 @@ box:
         transparent: transparent_to_construction
         y_offset: 4
     costs:
-        xp: 10
+        xp: 60
 superbox:
     icon: diamond_helmet
     category: engineering
@@ -1931,7 +1931,7 @@ superbox:
         type: cuboid
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 400
 supercube:
     icon: nether_brick_item
     category: engineering
@@ -1950,7 +1950,7 @@ supercube:
         type: cuboid
         transparent: transparent_to_construction
     costs:
-        xp: 150
+        xp: 500
 backup:
     icon: diamond_pickaxe
     category: engineering
@@ -1976,7 +1976,7 @@ backup:
         brushtarget: true
         bypass_undo: true
     costs:
-        xp: 500
+        xp: 900
 repair:
     icon: iron_pickaxe
     category: engineering
@@ -2001,7 +2001,7 @@ repair:
         obworld: ~_backup
         brushtarget: true
     costs:
-        xp: 80
+        xp: 200
 superrepair:
     icon: iron_pickaxe
     category: engineering
@@ -2170,7 +2170,7 @@ convert:
         replace: true
         transparent: transparent_to_construction
     costs:
-        xp: 30
+        xp: 100
 superconvert:
     icon: diamond_spade
     category: engineering
@@ -2192,7 +2192,7 @@ superconvert:
         replace: true
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 300
 collapse:
     icon: iron_plate
     category: earthbending
@@ -2213,7 +2213,7 @@ collapse:
         radius: 2
         transparent: transparent_to_construction
     costs:
-        xp: 10
+        xp: 50
 supercollapse:
     icon: gold_plate
     category: master
@@ -2237,7 +2237,7 @@ supercollapse:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        xp: 250
 cloak:
     icon: chainmail_chestplate
     category: master
@@ -2291,6 +2291,7 @@ rewind:
            sound: anvil_break
     parameters:
         allow_max_range: false
+        target_type: Player
         range: 128
         transparent: transparent_to_construction
     costs:
@@ -2449,7 +2450,7 @@ blob:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 25
+        xp: 50
 pyramid:
     icon: melon
     category: earthbending
@@ -2468,7 +2469,7 @@ pyramid:
         type: pyramid
         transparent: transparent_to_construction
     costs:
-        xp: 25
+        xp: 50
 emp:
     icon: daylight_detector
     category: automata
@@ -2494,7 +2495,7 @@ emp:
         cooldown: 1000
         undo: 200
     costs:
-        xp: 50
+        xp: 45
 superemp:
     icon: diode
     category: automata
@@ -2519,7 +2520,7 @@ superemp:
         cooldown: 5000
         undo: 3000
     costs:
-        xp: 25
+        xp: 200
 disintegrate:
     icon: bone
     category: dark
@@ -2541,7 +2542,7 @@ disintegrate:
         entity_damage: 50
         check_destructible: false
     costs:
-        xp: 30
+        xp: 50
 blink:
     icon: eye_of_ender
     category: master
