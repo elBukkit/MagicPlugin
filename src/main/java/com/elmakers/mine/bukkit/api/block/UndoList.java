@@ -19,6 +19,7 @@ public interface UndoList extends BlockList {
 	public int getScheduledUndo();
 	public boolean bypass();
 	public long getCreatedTime();
+	public long getModifiedTime();
 
 	public void prune();
 	
