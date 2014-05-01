@@ -220,6 +220,15 @@ public interface Mage extends CostReducer {
 	public Spell getSpell(String key);
 	
 	/**
+	 * Return all of the Spell objects registered to this Mage.
+	 * 
+	 * This will generally be any Spells the Mage has ever cast.
+	 * 
+	 * @return A Collection of Spell objects this Mage has cast.
+	 */
+	public Collection<Spell> getSpells();
+	
+	/**
 	 * Return a Spell, but use a different player for permission checks.
 	 * 
 	 * This can be used to force a player to cast a spell even if they don't have permission.
