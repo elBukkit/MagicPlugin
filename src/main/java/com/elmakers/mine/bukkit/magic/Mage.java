@@ -474,10 +474,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			ConfigurationSection spellNode = configNode.getConfigurationSection("spells");
 			if (spellNode != null) {
 				Set<String> keys = spellNode.getKeys(false);
-				for (String key : keys) {
+				for (String key : keys) {					
 					Spell spell = getSpell(key, getPlayer());
+					ConfigurationSection spellSection = spellNode.getConfigurationSection(key);
 					if (spell != null) {
-						spell.load(spellNode.getConfigurationSection(key));
+						spell.load(spellSection);
 					}
 				}
 			}
@@ -506,7 +507,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			getUndoQueue().save(this, configNode);
 			ConfigurationSection spellNode = configNode.createSection("spells");
 			for (Spell spell : spells.values()) {
-				spell.save(spellNode.createSection(spell.getKey()));
+				ConfigurationSection section = spellNode.createSection(spell.getKey());
+				section.set("active", spell.isActive());
+				spell.save(section);
 			}
 		} catch (Exception ex) {
 			controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
@@ -523,17 +526,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	// This gets called every second (or so - 20 ticks)
 	protected void tick() {
-		// TODO: Won't need this online check once we're cleaning up on logout, I think.
-		// Also this theoretically should never happen since we deactive wands on logout. Shrug.
 		Player player = getPlayer();
-		if (activeWand != null && player != null && player.isOnline()) {
-			activeWand.tick();
-		}
 		
-		// Copy this set since spells may get removed while iterating!
-		List<Spell> active = new ArrayList<Spell>(activeSpells);
-		for (Spell spell : active) {
-			spell.tick();
+		// We don't tick non-player or offline Mages
+		if (player != null && player.isOnline()) {
+			if (activeWand != null) {
+				activeWand.tick();
+			}
+			
+			// Copy this set since spells may get removed while iterating!
+			List<Spell> active = new ArrayList<Spell>(activeSpells);
+			for (Spell spell : active) {
+				spell.tick();
+				if (!spell.isActive()) {
+					deactivateSpell(spell);
+				}
+			}
 		}
 	}
 	
@@ -672,6 +680,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return getSpell(name, getPlayer());
 	}
 	
+	@Override
+	public Collection<Spell> getSpells() {
+		return spells.values();
+	}
+	
 	public Spell getSpell(String name, Player usePermissions)
 	{
 		SpellTemplate spell = controller.getSpellTemplate(name);
@@ -693,9 +706,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	public void activateSpell(Spell spell) {
 		activeSpells.add(spell);
 		
-		// If this was called by the Spell itself, the following
-		// should do nothing as the spell is already marked as active.
-		spell.activate();
+		// Call reactivate to avoid the Spell calling back to this method,
+		// and to force activation if some state has gone wrong.
+		spell.reactivate();
 	}
 	
 	@Override
@@ -714,6 +727,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		for (Spell spell : active) {
 			spell.deactivate();
 		}
+		activeSpells.clear();
 	}
 	
 	@Override

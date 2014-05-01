@@ -80,7 +80,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 			public void run() {
 				player.setAllowFlight(true);
 				player.setFlying(true);
-				
 			}
 		}, 2);
 	}

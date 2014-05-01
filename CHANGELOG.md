@@ -17,7 +17,10 @@
    * Fireball, ICBM, Wither, Meteor Shower, Carpet Bomb
    * Boom, KaBoom, Nuke
    * Sandblast, other falling blocks
+ - Entity changes are now undable - even spells like Arrow Rain, Meteor Shower .. bring back the dead with Recall!
+ - Improved Shrink - works on giants, pigmen, slimes.
  - Add Pyramid spell, Blob is now a sphere again
+ - Spells will automatically reactivate on login (Fly, Levitate, etc)
 
 ## 3.0
 

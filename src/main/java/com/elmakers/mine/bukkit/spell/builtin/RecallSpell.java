@@ -24,7 +24,7 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class RecallSpell extends TargetingSpell
 {
 	public Location location;
-	public boolean isActive;
+	public boolean hasMarker;
 
 	private static int MAX_RETRY_COUNT = 8;
 	private static int RETRY_INTERVAL = 10;
@@ -98,7 +98,7 @@ public class RecallSpell extends TargetingSpell
 		if (parameters.contains("type")) {
 			cycleRetries = 0;
 			String typeString = parameters.getString("type", "");
-			if (isActive && typeString.equalsIgnoreCase("remove")) {
+			if (hasMarker && typeString.equalsIgnoreCase("remove")) {
 				removeMarker();
 				return SpellResult.TARGET_SELECTED;
 			}
@@ -302,8 +302,8 @@ public class RecallSpell extends TargetingSpell
 
 	protected boolean removeMarker()
 	{
-		if (!isActive || location == null) return false;
-		isActive = false;
+		if (!hasMarker || location == null) return false;
+		hasMarker = false;
 		return true;
 	}
 	
@@ -336,7 +336,7 @@ public class RecallSpell extends TargetingSpell
 		Player player = getPlayer();
 		if (player != null) {
 			// Update the marker so they can get back, if there is no marker set.
-			if (!isActive) {
+			if (!hasMarker) {
 				placeMarker(getLocation().getBlock());
 			}
 			
@@ -373,22 +373,21 @@ public class RecallSpell extends TargetingSpell
 		getPlayer().setCompassTarget(location);
 		EffectUtils.playEffect(target.getLocation(), ParticleType.INSTANT_SPELL, 1, 8);
 		
-		isActive = true;
-
+		hasMarker = true;
 		return true;
 	}
 	
 	@Override
 	public void onLoad(ConfigurationSection node)
 	{
-		isActive = node.getBoolean("active", false);
+		hasMarker = node.getBoolean("active", false);
 		location = ConfigurationUtils.getLocation(node, "location");
 	}
 
 	@Override
 	public void onSave(ConfigurationSection node)
 	{
-		node.set("active", isActive);
+		node.set("active", hasMarker);
 		node.set("location", ConfigurationUtils.fromLocation(location));
 	}
 }

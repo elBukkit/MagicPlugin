@@ -151,6 +151,10 @@ public class MagicController implements Listener, MageController
 		if (!mages.containsKey(mageId)) 
 		{
 			mage = new Mage(mageId, this);
+			mage.setCommandSender(commandSender);
+			if (commandSender instanceof Player) {
+				mage.setPlayer((Player)commandSender);
+			}
 			
 			// Check for existing data file
 			File playerFile = new File(playerDataFolder, mageId + ".dat");
@@ -169,10 +173,12 @@ public class MagicController implements Listener, MageController
 			mages.put(mageId, mage);
 		} else {
 			mage = mages.get(mageId);
-		}
-		mage.setCommandSender(commandSender);
-		if (commandSender instanceof Player) {
-			mage.setPlayer((Player)commandSender);
+			
+			// Re-set command sender to update position
+			mage.setCommandSender(commandSender);
+			if (commandSender instanceof Player) {
+				mage.setPlayer((Player)commandSender);
+			}
 		}
 		return mage;
 	}
@@ -1999,6 +2005,15 @@ public class MagicController implements Listener, MageController
 				getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
 			}
 		}
+		
+		Collection<Spell> spells = mage.getSpells();
+		for (Spell spell : spells) {
+			// Reactivate spells that were active on logout.
+			if (spell.isActive()) {
+				mage.sendMessage(Messages.get("spell.reactivate").replace("$name", spell.getName()));
+				mage.activateSpell(spell);
+			}
+		}
 	}
 	
 	@Override
@@ -2043,14 +2058,6 @@ public class MagicController implements Listener, MageController
 		URLMap.resend(player.getName());
 		
 		Mage mage = getMage(player);
-		Wand wand = mage.getActiveWand();
-		if (wand != null) {
-			wand.deactivate();
-		}
-		
-		// Just in case...
-		mage.restoreInventory();
-		
 		mage.onPlayerQuit(event);
 		UndoQueue undoQueue = mage.getUndoQueue();
 		
@@ -2069,6 +2076,15 @@ public class MagicController implements Listener, MageController
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		// Close the wand inventory to make sure the player's normal inventory gets saved
+		Wand wand = mage.getActiveWand();
+		if (wand != null) {
+			wand.closeInventory();
+		}
+		
+		// Just in case...
+		mage.restoreInventory();
 		
 		// Let the GC collect the mage, unless they have some pending undo batches
 		// or an undo queue (for rewind)

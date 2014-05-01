@@ -121,6 +121,7 @@ wand:
 spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback
+    reactivate: Reactivating $name
 worlds:
     world:
         name: The Overworld
