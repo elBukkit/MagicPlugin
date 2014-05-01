@@ -426,4 +426,18 @@ public class NMSUtils {
 		}
 		return result;
     }
+	
+	public static void makeTemporary(ItemStack itemStack, String message) {
+		setMeta(itemStack, "temporary", message);
+	}
+
+	
+	public static boolean isTemporary(ItemStack itemStack) {
+		return hasMeta(itemStack, "temporary");
+	}
+
+	
+	public static String getTemporaryMessage(ItemStack itemStack) {
+		return getMeta(itemStack, "temporary");
+	}
 }
