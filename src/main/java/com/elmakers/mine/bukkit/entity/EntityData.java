@@ -97,6 +97,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	public Entity spawn() {
 		Entity spawned = null;
 		switch (type) {
+		case PLAYER:
+			// Nope!
+		break;
 		case PAINTING:
 			spawned = InventoryUtils.spawnPainting(location, facing, art);
 		break;
@@ -104,7 +107,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 			spawned = InventoryUtils.spawnItemFrame(location, facing, item);
 			break;
 		case DROPPED_ITEM:
-			// TODO: Handle this
+			// TODO: Handle this, would need to store item data.
 			spawned = null;
 			break;
 		default: 

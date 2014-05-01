@@ -265,7 +265,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	
 	public void remove(Entity entity)
 	{
-		if (entities.contains(entity)) {
+		if (entities != null && entities.contains(entity)) {
 			entities.remove(entity);
 			// We don't store things that we can't respawn.
 		} else if (!(entity instanceof Player || entity instanceof Item)){
