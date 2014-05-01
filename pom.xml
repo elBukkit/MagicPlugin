@@ -120,6 +120,11 @@
 			<version>5.9</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>info.nothingspecial</groupId>
+			<artifactId>Splateds_Elementals</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<repositories>
       <repository>
