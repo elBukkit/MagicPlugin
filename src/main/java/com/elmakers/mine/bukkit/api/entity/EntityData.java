@@ -16,4 +16,5 @@ public interface EntityData {
 	public double getHealth();
 	
 	public Entity spawn();
+	public boolean modify(Entity entity);
 }
