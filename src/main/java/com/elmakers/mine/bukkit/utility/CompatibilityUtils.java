@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.Collection;
+
 import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -57,6 +61,29 @@ public class CompatibilityUtils {
 	    location.setPitch((float) Math.toDegrees(Math.atan(-vector.getY() / xz)));
 	
 	    return location;
+	}
+	
+	public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
+		for (PotionEffect effect: effects) {
+			applyPotionEffect(entity, effect);
+		}
+	}
+
+	public static void applyPotionEffect(LivingEntity entity, PotionEffect effect) {
+		// Avoid nerfing existing effects
+		boolean applyEffect = true;
+		Collection<PotionEffect> currentEffects = entity.getActivePotionEffects();
+		for (PotionEffect currentEffect : currentEffects) {
+			if (currentEffect.getType().equals(effect.getType())) {
+				if (currentEffect.getAmplifier() > effect.getAmplifier()) {
+					applyEffect = false;
+					break;
+				}
+			}
+		}
+		if (applyEffect) {
+			entity.addPotionEffect(effect, true);
+		}
 	}
 
 }

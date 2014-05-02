@@ -27,6 +27,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.batch.BlockAction;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -454,8 +455,7 @@ public abstract class TargetingSpell extends BaseSpell {
 				if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 				
 				if (entity.getLocation().distanceSquared(location) < radiusSquared) {
-					LivingEntity living = (LivingEntity)entity;
-					living.addPotionEffects(potionEffects);
+					CompatibilityUtils.applyPotionEffects((LivingEntity)entity, potionEffects);
 					
 					if (targetMage != null) {
 						String playerMessage = getMessage("cast_player_message");
