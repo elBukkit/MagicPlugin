@@ -279,8 +279,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 		if (origin == null) {
 			throw new InvalidParameterException("Origin cannot be null");
 		}
+		
+		// Kinda hacky, but makes cross-world trails (e.g. Repair, Backup) work
 		if (target != null && !origin.getWorld().equals(target.getWorld())) {
-			return;
+			target.setWorld(origin.getWorld());
 		}
 		this.origin = origin;
 		this.target = target;
