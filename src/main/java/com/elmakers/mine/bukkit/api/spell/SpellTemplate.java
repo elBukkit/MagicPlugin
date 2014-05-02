@@ -10,19 +10,16 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 
 /**
  * A Spell template, as defined in the spells configuration files.
- * 
- * Every spell uses a specific Class that must extend from
- * com.elmakers.mine.bukkit.plugins.magic.spell.Spell. Implemeting the Spell or SpellTemplate
- * interface is not sufficient for making a custom Spell, you must link to MagicPlugin directly.
  */
 public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
 	public String getName();
 	public String getDescription();
 	public String getKey();
-	public String getCategory();
+	public SpellCategory getCategory();
+	public long getCastCount();
 	public String getUsage();
 	public MaterialAndData getIcon();
-	public boolean hasSpellPermission(CommandSender sender);
+	public boolean hasCastPermission(CommandSender sender);
 	public Collection<CastingCost> getCosts();
 	public Collection<CastingCost> getActiveCosts();
 	public Collection<EffectPlayer> getEffects(SpellResult result);

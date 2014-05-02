@@ -227,18 +227,7 @@ public interface Mage extends CostReducer {
 	 * @return A Collection of Spell objects this Mage has cast.
 	 */
 	public Collection<Spell> getSpells();
-	
-	/**
-	 * Return a Spell, but use a different player for permission checks.
-	 * 
-	 * This can be used to force a player to cast a spell even if they don't have permission.
-	 * 
-	 * @param key The Spell to retrieve.
-	 * @param usePermissions The Player whose permissions should be used.
-	 * @returnThe Spell instance for this Mage, or null if the usePermissions Player does not have access to this Spell.
-	 */
-	public Spell getSpell(String key, Player usePermissions);
-	
+		
 	/**
 	 * Set a Spell as "active". An "active" spell is generally a toggleable on/off
 	 * spell. These spells may be draining mana/xp while they are active, and
@@ -298,6 +287,7 @@ public interface Mage extends CostReducer {
 	public Set<Material> getRestrictedMaterials();
 	
 	public MageController getController();
+	public boolean hasCastPermission(Spell spell);
 	public boolean hasBuildPermission(Block block);
 	public boolean isIndestructible(Block block);
 	public boolean isDestructible(Block block);

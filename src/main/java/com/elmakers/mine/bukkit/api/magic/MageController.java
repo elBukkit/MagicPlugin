@@ -15,6 +15,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.Schematic;
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
@@ -55,6 +57,11 @@ public interface MageController {
 	 * @return A new Wand instance, with a useable ItemStack.
 	 */
 	public Wand createWand(String wandKey);
+	
+	public SpellCategory getCategory(String key);
+	public Collection<SpellCategory> getCategories();
+	public Collection<SpellTemplate> getSpellTemplates();
+	public SpellTemplate getSpellTemplate(String key);
 	
 	public void registerAutomata(Block block, String name, String message);
 	public boolean unregisterAutomata(Block block);
