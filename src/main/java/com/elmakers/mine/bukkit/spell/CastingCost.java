@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -58,7 +59,8 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 
 	public boolean has(Spell spell)
 	{
-		Mage mage = spell.getMage();
+		if (!(spell instanceof MageSpell)) return false;
+		Mage mage = ((MageSpell)spell).getMage();
 		Inventory inventory = mage.getInventory();
 		int amount = getAmount(spell);
 		boolean hasItem = item == null || amount <= 0 || inventory.containsAtLeast(item.getItemStack(amount), amount);
@@ -68,7 +70,8 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 
 	public void use(Spell spell)
 	{
-		Mage mage = spell.getMage();
+		if (!(spell instanceof MageSpell)) return;
+		Mage mage = ((MageSpell)spell).getMage();
 		Inventory inventory = mage.getInventory();
 		int amount = getAmount(spell);
 		if (item != null && amount > 0) {

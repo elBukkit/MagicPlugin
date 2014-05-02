@@ -37,11 +37,10 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.CostReducer;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -50,7 +49,7 @@ import com.elmakers.mine.bukkit.effect.builtin.EffectTrail;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
-public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable, CostReducer, Spell {
+public abstract class BaseSpell implements MageSpell, Cloneable {
 	protected static final double VIEW_HEIGHT = 1.65;
 	protected static final double LOOK_THRESHOLD_RADIANS = 0.8;
 	private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
@@ -119,7 +118,8 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 	private String name;
 	private String description;
 	private String usage;
-	private String category;
+	private SpellCategory category;
+	private BaseSpell template;
 	private MaterialAndData icon = new MaterialAndData(Material.AIR);
 	private List<CastingCost> costs = null;
 	private List<CastingCost> activeCosts = null;
@@ -683,7 +683,7 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 
 		// Load basic properties
 		icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
-		category = node.getString("category", category);
+		category = controller.getCategory(node.getString("category"));
 		parameters = node.getConfigurationSection("parameters");
 		costs = parseCosts(node.getConfigurationSection("costs"));
 		activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
@@ -767,11 +767,6 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 	{
 		if (params == null) params = new String[0];
 		return (key.equalsIgnoreCase(spell) && parameters.equals(params));
-	}
-
-	public int compareTo(com.elmakers.mine.bukkit.api.spell.SpellTemplate other)
-	{
-		return name.compareTo(other.getName());
 	}
 	
 	protected void preCast()
@@ -894,6 +889,9 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 				}
 			}
 			castCount++;
+			if (template != null) {
+				template.castCount++;
+			}
 		}
 		
 		return result.isSuccess();
@@ -1009,13 +1007,6 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 	public String getPermissionNode()
 	{
 		return "Magic.cast." + key;
-	}
-
-	public boolean hasSpellPermission(CommandSender sender)
-	{
-		if (sender == null) return true;
-
-		return controller.hasPermission(sender, getPermissionNode(), true);
 	}
 	
 	/**
@@ -1134,7 +1125,9 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 	@Override
 	public com.elmakers.mine.bukkit.api.spell.Spell createSpell()
 	{
-		return (Spell)this.clone();
+		BaseSpell spell = (BaseSpell)this.clone();
+		spell.template = this;
+		return spell;
 	}
 	
 	@Override
@@ -1180,7 +1173,7 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 	}
 
 	@Override
-	public final String getCategory()
+	public final SpellCategory getCategory()
 	{
 		return category;
 	}
@@ -1353,6 +1346,20 @@ public abstract class BaseSpell implements Comparable<SpellTemplate>, Cloneable,
 	public boolean isActive()
 	{
 		 return isActive;
+	}
+
+	@Override
+	public int compareTo(com.elmakers.mine.bukkit.api.spell.SpellTemplate other)
+	{
+		return name.compareTo(other.getName());
+	}
+
+	@Override
+	public boolean hasCastPermission(CommandSender sender)
+	{
+		if (sender == null) return true;
+
+		return controller.hasPermission(sender, getPermissionNode(), true);
 	}
 	
 	//
