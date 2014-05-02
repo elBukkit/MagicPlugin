@@ -720,6 +720,14 @@ public class MagicController implements Listener, MageController
 		// Set up the PlayerSpells timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
+				long threshold = System.currentTimeMillis() - MAGE_FORGET_THRESHOLD;
+				for (Entry<String, Long> mageEntry : forgetMages.entrySet()) {
+					if (mageEntry.getValue() < threshold)
+					mages.remove(mageEntry.getKey());
+				}
+				forgetMages.clear();
+				
+				
 				for (Mage mage : mages.values()) {
 					mage.tick();
 				}
@@ -729,11 +737,6 @@ public class MagicController implements Listener, MageController
 		// Set up the Block update timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
-				for (String id : forgetMages) {
-					mages.remove(id);
-				}
-				forgetMages.clear();
-				
 				List<Mage> pending = new ArrayList<Mage>();
 				pending.addAll(pendingConstruction.values());
 				for (Mage mage : pending) {
@@ -1119,8 +1122,6 @@ public class MagicController implements Listener, MageController
 	}
 	
 	protected void savePlayerData() {
-		List<String> forgetIds = new ArrayList<String>();
-		
 		try {
 			for (Entry<String, Mage> mageEntry : mages.entrySet()) {
 				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
@@ -1135,7 +1136,7 @@ public class MagicController implements Listener, MageController
 					UndoQueue undoQueue = mage.getUndoQueue();
 					if (undoQueue == null || undoQueue.isEmpty()) {
 						getLogger().info("Offline player " + player.getName() + " has no pending undo actions, forgetting");
-						forgetIds.add(mageEntry.getKey());
+						forgetMages.put(mageEntry.getKey(), 0l);
 					}
 				}
 			}
@@ -1144,9 +1145,10 @@ public class MagicController implements Listener, MageController
 		}
 		
 		// Forget players we don't need to keep in memory
-		for (String forgetId : forgetIds) {
+		for (String forgetId : forgetMages.keySet()) {
 			mages.remove(forgetId);
 		}
+		forgetMages.clear();
 	}
 	
 	public void save()
@@ -2620,7 +2622,7 @@ public class MagicController implements Listener, MageController
 	}
 	
 	public void forgetMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
-		forgetMages.add(mage.getId());
+		forgetMages.put(mage.getId(), System.currentTimeMillis());
 	}
 	
 	/*
@@ -2937,6 +2939,7 @@ public class MagicController implements Listener, MageController
 	 private final static int MAX_Y = 255;	
 	 private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
 	 private static int VOLUME_UPDATE_THRESHOLD = 32;	
+	 private static int MAGE_FORGET_THRESHOLD = 30000;
 
 	 private final String                        SPELLS_FILE                 	= "spells";
 	 private final String                        CONFIG_FILE             		= "config";
@@ -3006,7 +3009,7 @@ public class MagicController implements Listener, MageController
 	 
 	 private final Map<String, Spell>       	spells                         = new HashMap<String, Spell>();
 	 private final Map<String, Mage> 		 	mages                  		= new HashMap<String, Mage>();
-	 private final Set<String>				 	forgetMages					= new HashSet<String>();
+	 private final Map<String, Long>			forgetMages					= new HashMap<String, Long>();
 	 private final Map<String, Mage>		 	pendingConstruction			= new HashMap<String, Mage>();
 	 private final Set<String>  	 			pendingUndo					= new HashSet<String>();
 	 private final Map<String, WeakReference<WorldEditSchematic>>	 schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
