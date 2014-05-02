@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -758,12 +757,16 @@ public class MagicController implements Listener, MageController
 			    	for (final SpellCategory category : categories.values()) {
 			    		categoryGraph.addPlotter(new Metrics.Plotter(category.getName()) {						
 							@Override public int getValue() { 
-								Collection<SpellTemplate> spells = category.getSpells();
 								long castCount = 0;
-								for (SpellTemplate spell : spells) {
-									if (spell instanceof MageSpell) {
-										castCount += ((MageSpell)spell).getCastCount();
+								try {
+									Collection<SpellTemplate> spells = category.getSpells();
+									for (SpellTemplate spell : spells) {
+										if (spell instanceof MageSpell) {
+											castCount += ((MageSpell)spell).getCastCount();
+										}
 									}
+								} catch (Exception ex) {
+									ex.printStackTrace();
 								}
 								return (int)castCount; 
 							}
@@ -777,8 +780,12 @@ public class MagicController implements Listener, MageController
 			    		spellGraph.addPlotter(new Metrics.Plotter(spell.getName()) {						
 							@Override public int getValue() { 
 								long castCount = 0;
-								if (spell instanceof MageSpell) {
-									castCount = ((MageSpell)spell).getCastCount();
+								try {
+									if (spell instanceof MageSpell) {
+										castCount = ((MageSpell)spell).getCastCount();
+									}
+								} catch (Exception ex) {
+									ex.printStackTrace();
 								}
 								return (int)castCount; 
 							}
@@ -788,8 +795,8 @@ public class MagicController implements Listener, MageController
 			    
 			    metrics.start();
 			    plugin.getLogger().info("Activated MCStats");
-			} catch (IOException e) {
-			    plugin.getLogger().warning("Failed to load MCStats: " + e.getMessage());
+			} catch (Exception ex) {
+			    plugin.getLogger().warning("Failed to load MCStats: " + ex.getMessage());
 			}
 		}
 	}
@@ -1960,12 +1967,13 @@ public class MagicController implements Listener, MageController
 		}
 	}
 	
-	@EventHandler(priority=EventPriority.HIGHEST)
+	@EventHandler(priority=EventPriority.LOW)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.isCancelled())
             return;
         
-        // Check for clicking on a Citizens NPC
+        // Check for clicking on a Citizens NPC, in case
+        // this hasn't been cancelled yet
         if (event.getRightClicked().hasMetadata("NPC")) {
         	Player player = event.getPlayer();		
     		Mage mage = getMage(player);
@@ -1973,12 +1981,19 @@ public class MagicController implements Listener, MageController
         	if (wand != null) {
         		wand.closeInventory();
         	}
+        	
+        	// Don't let it re-open right away
+        	mage.checkLastClick(0);
         }
     }
 
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
+		// Note that an interact on air event will arrive pre-cancelled
+		// So this is kind of useless. :\
+		//if (event.isCancelled()) return;
+		
 		// Block block = event.getClickedBlock();
 		// getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
 		
@@ -2041,6 +2056,7 @@ public class MagicController implements Listener, MageController
 				return;
 			}
 			wand.cast();
+			event.setCancelled(true);
 			return;
 		}
 		
@@ -2082,6 +2098,7 @@ public class MagicController implements Listener, MageController
 				} else {
 					wand.toggleInventory();
 				}
+				event.setCancelled(true);
 			} else {
 				mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
 			}
