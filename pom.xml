@@ -123,7 +123,7 @@
 		<dependency>
 			<groupId>info.nothingspecial</groupId>
 			<artifactId>Splateds_Elementals</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>B.1.6</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
