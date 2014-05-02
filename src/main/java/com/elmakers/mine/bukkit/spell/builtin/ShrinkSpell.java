@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -45,14 +46,30 @@ public class ShrinkSpell extends BlockSpell
 		Target target = getTarget();
 
 		if (target.hasEntity()) {
-			if (!(target.getEntity() instanceof LivingEntity)) return SpellResult.NO_TARGET;
+			Entity targetEntity = target.getEntity();
+			if (controller.isElemental(targetEntity))
+			{
+				double elementalSize = controller.getElementalScale(targetEntity);
+				Bukkit.getLogger().info("ELEMENTAL: " + elementalSize);
+				
+				if (elementalSize < 0.1) {
+					int elementalDamage = parameters.getInt("elemental_damage", DEFAULT_ENTITY_DAMAGE);
+					controller.damageElemental(targetEntity, elementalDamage, 0, getPlayer());
+				} else {
+					elementalSize /= 2;
+					controller.setElementalScale(targetEntity, elementalSize);
+				}
+				
+				return SpellResult.CAST;
+			}
+			
+			if (!(targetEntity instanceof LivingEntity)) return SpellResult.NO_TARGET;
 			
 			// Register for undo in advance to catch entity death.
 			registerForUndo();
 			
 			int damage =  parameters.getInt("entity_damage", DEFAULT_ENTITY_DAMAGE);
 
-			Entity targetEntity = target.getEntity();
 			LivingEntity li = (LivingEntity)targetEntity;
 			boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
 			String ownerName = null;

@@ -814,7 +814,7 @@ spells:
         description: Hurts and shrinks various things
         usage: Must kill the target to receive skull
         cast: Shrink!
-        cast_entity: ZAP!
+        cast_entity: You shrink $target
     flare:
         name: Flare
         description: Fire off flares

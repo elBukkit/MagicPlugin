@@ -22,6 +22,7 @@ public class FrostSpell extends BlockSpell
 {
 	private static final int			DEFAULT_RADIUS				= 2;
 	private static final int            DEFAULT_PLAYER_DAMAGE 		= 1;
+	private final static int			DEFAULT_ELEMENTAL_DAMAGE 	= 10;
 	private static final int            DEFALT_ENTITY_DAMAGE 		= 10;
 	private static final int			DEFAULT_SLOWNESS 			= 1;
 	private static final int			DEFAULT_SLOWNESS_DURATION 	= 200;
@@ -102,6 +103,7 @@ public class FrostSpell extends BlockSpell
 			Entity targetEntity = target.getEntity();
 			if (targetEntity instanceof LivingEntity)
 			{
+				registerModified(targetEntity);
 				LivingEntity li = (LivingEntity)targetEntity;
 				if (slowness > 0) {
 					PotionEffect effect = new PotionEffect(PotionEffectType.SLOW, slownessDuration, slowness, false);
@@ -115,6 +117,11 @@ public class FrostSpell extends BlockSpell
 				{
 					li.damage(entityDamage, getPlayer());
 				}
+			} 
+			else if (controller.isElemental(targetEntity)) {
+				controller.damageElemental(targetEntity, 
+						parameters.getDouble("elemental_damage", DEFAULT_ELEMENTAL_DAMAGE), 
+						0, getPlayer());
 			}
 		}
 		

@@ -103,6 +103,7 @@ import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.block.WorldEditSchematic;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
@@ -682,7 +683,7 @@ public class MagicController implements Listener, MageController
 		// Try to (dynamically) link to WorldGuard:
 		worldGuardManager.initialize(plugin);
 		
-		// Try to (dynamically) link to dynmap:
+		// Try to link to dynmap:
 		try {
 			Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
 			if (dynmapPlugin != null) {
@@ -698,6 +699,22 @@ public class MagicController implements Listener, MageController
 			getLogger().info("dynmap not found, not integrating.");
 		} else {
 			getLogger().info("dynmap found, integrating.");
+		}
+		
+		// Try to link to Elementals:
+		try {
+			Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
+			if (elementalsPlugin != null) {
+				elementals = new ElementalsController(elementalsPlugin);
+			} else {
+				elementals = null;
+			}
+		} catch (Throwable ex) {
+			plugin.getLogger().warning(ex.getMessage());
+		}
+		
+		if (elementals != null) {
+			getLogger().info("Elementals found, integrating.");
 		}
 		
 		// Set up the PlayerSpells timer
@@ -2876,6 +2893,43 @@ public class MagicController implements Listener, MageController
 		return Wand.createWand(this, wandKey);
 	}
 
+	@Override
+	public boolean elementalsEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean createElemental(Location location, String templateName,
+			CommandSender creator) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isElemental(Entity entity) {
+		if (elementals == null || entity.getType() != EntityType.FALLING_BLOCK) return false;
+		return elementals.isElemental(entity);
+	}
+
+	@Override
+	public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker) {
+		if (elementals == null) return false;
+		return elementals.damageElemental(entity, damage, fireTicks, attacker);
+	}
+
+	@Override
+	public boolean setElementalScale(Entity entity, double scale) {
+		if (elementals == null) return false;
+		return elementals.setElementalScale(entity, scale);
+	}
+
+	@Override
+	public double getElementalScale(Entity entity) {
+		if (elementals == null) return 0;
+		return elementals.getElementalScale(entity);
+	}
+
 	/*
 	 * Private data
 	 */
@@ -2977,6 +3031,7 @@ public class MagicController implements Listener, MageController
 	 private String								 extraSchematicFilePath			= null;
 	 private Class<?>							 cuboidClipboardClass           = null;
 	 private DynmapController					 dynmap							= null;
+	 private ElementalsController				 elementals						= null;
 	 private Mailer								 mailer							= null;
 	 private Material							 defaultMaterial				= Material.DIRT;
 	 
@@ -2992,5 +3047,5 @@ public class MagicController implements Listener, MageController
 	 // Sub-Controllers
 	 private CraftingController					 crafting						= null;
 	 private EnchantingController				 enchanting						= null;
-	 private AnvilController					 anvil						= null;
+	 private AnvilController					 anvil							= null;
 }

@@ -4,16 +4,20 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.block.batch.SimpleBlockAction;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.Target;
 
 public class FireSpell extends BlockSpell
 {
 	private final static int		DEFAULT_RADIUS	= 4;
+	private final static int		DEFAULT_ELEMENTAL_DAMAGE = 5;
+	private final static int		DEFAULT_ELEMENTAL_FIRE_TICKS = 200;
     
 	public class FireAction extends SimpleBlockAction
 	{
@@ -48,15 +52,23 @@ public class FireSpell extends BlockSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		Block target = getTargetBlock();
-		if (target == null) 
+		Target target = getTarget();
+		if (target == null || !target.isValid()) 
 		{
 			return SpellResult.NO_TARGET;
 		}
 
-		if (!hasBuildPermission(target)) 
+		Block targetBlock = target.getBlock();
+		if (!hasBuildPermission(targetBlock)) 
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
+		}
+		
+		Entity entity = target.getEntity();
+		if (entity != null && controller.isElemental(entity)) {
+			controller.damageElemental(entity, 
+					parameters.getDouble("elemental_damage", DEFAULT_ELEMENTAL_DAMAGE), 
+					parameters.getInt("fire_ticks", DEFAULT_ELEMENTAL_FIRE_TICKS), getPlayer());
 		}
 
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
@@ -66,7 +78,7 @@ public class FireSpell extends BlockSpell
 
 		if (radius <= 1)
 		{
-			action.perform(target);
+			action.perform(targetBlock);
 		}
 		else
 		{

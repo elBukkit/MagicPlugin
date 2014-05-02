@@ -22,6 +22,7 @@
  - Add Pyramid spell, Blob is now a sphere again
  - Spells will automatically reactivate on login (Fly, Levitate, etc)
  - Fix Hat being exploitable for blocks
+ - Add Elementals integration
 
 ## 3.0
 

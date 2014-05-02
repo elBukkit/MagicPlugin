@@ -27,7 +27,13 @@ public class DisintegrateSpell extends BlockSpell
 		if (target.hasEntity())
 		{
 			Entity targetEntity = target.getEntity();
-			if (targetEntity instanceof LivingEntity)
+			if (controller.isElemental(targetEntity))
+			{
+				int elementalDamage = parameters.getInt("elemental_damage", DEFAULT_ENTITY_DAMAGE);
+				controller.damageElemental(targetEntity, elementalDamage, 0, getPlayer());
+				return SpellResult.CAST;
+			}
+			else if (targetEntity instanceof LivingEntity)
 			{
 				// Register for undo in advance to catch entity death.
 				registerForUndo();
