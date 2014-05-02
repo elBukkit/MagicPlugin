@@ -436,6 +436,7 @@ public abstract class TargetingSpell extends BaseSpell {
 		List<Entity> entities = location.getWorld().getEntities();
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity) {
+				Mage targetMage = null;
 				if (entity instanceof Player) {
 					Player targetPlayer = (Player)entity;
 					boolean isSourcePlayer = targetPlayer.getName().equals(mage.getName());
@@ -443,17 +444,10 @@ public abstract class TargetingSpell extends BaseSpell {
 						continue;
 					}
 					
-					Mage targetMage = controller.getMage(targetPlayer);
-					
+					targetMage = controller.getMage(targetPlayer);
 					// Check for protected players
 					if (targetMage.isSuperProtected() && !isSourcePlayer) {
 						continue;
-					}
-
-					String playerMessage = getMessage("cast_player_message");
-					if (playerMessage.length() > 0) {
-						playerMessage = playerMessage.replace("$spell", getName());
-						targetMage.sendMessage(playerMessage);
 					}
 				}
 				
@@ -462,6 +456,14 @@ public abstract class TargetingSpell extends BaseSpell {
 				if (entity.getLocation().distanceSquared(location) < radiusSquared) {
 					LivingEntity living = (LivingEntity)entity;
 					living.addPotionEffects(potionEffects);
+					
+					if (targetMage != null) {
+						String playerMessage = getMessage("cast_player_message");
+						if (playerMessage.length() > 0) {
+							playerMessage = playerMessage.replace("$spell", getName());
+							targetMage.sendMessage(playerMessage);
+						}
+					}
 				}
 			}
 		}
