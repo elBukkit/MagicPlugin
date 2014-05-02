@@ -1308,6 +1308,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 		try {
 			castCount = node.getLong("cast_count", 0);
 			lastCast = node.getLong("last_cast", 0);
+			if (category != null && template == null) {
+				category.addCasts(castCount, lastCast);
+			}
 			isActive = node.getBoolean("active", false);
 			onLoad(node);
 		} catch (Exception ex) {

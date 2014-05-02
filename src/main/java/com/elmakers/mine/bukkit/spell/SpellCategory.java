@@ -55,6 +55,15 @@ public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCa
 	}
 	
 	/* (non-Javadoc)
+	 * @see com.elmakers.mine.bukkit.spell.SpellCategoryInterface#addCasts()
+	 */
+	@Override
+	public void addCasts(long castCount, long lastCast) {
+		this.castCount += castCount;
+		this.lastCast = Math.max(this.lastCast, lastCast);
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.elmakers.mine.bukkit.spell.SpellCategoryInterface#getCastCount()
 	 */
 	@Override
