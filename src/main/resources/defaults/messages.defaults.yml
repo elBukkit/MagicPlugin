@@ -145,26 +145,47 @@ duration:
     lasts_minutes: Lasts for $minutes minutes
     lasts_hours: Lasts for $hours hours
 categories:
+    automata:
+        name: Automata
+        description: Create Life!
+        color: '00AACC'
     master:
         name: Master
-    air:
+        description: All the Really Powerful Stuff
+        color: 'FFA500'
+    airbending:
         name: Airbending
+        description: Spells for moving things with air
     waterbending:
         name: Waterbending
+        description: Control the element of water
+        color: '000088'
     earthbending:
         name: Earthbending
+        description: Control the element of earth
+        color: 'A52A2A'
     firebending:
         name: Firebending
-    xperimental:
-        name: Experimental or Deprecated
+        description: Control the element of fire
+        color: 'FF0000'
     dark:
         name: Dark Magic
+        description: Evil Stuff!
+        color: '010101'
     light:
         name: Light Magic
+        description: Good Stuff
+        color: 'DDDDDD'
     engineering:
         name: Engineering
+        description: Spells for magical building
+        color: '00FFFF'
     elemental:
         name: Elemental
+        description: Control Nature
+    mining:
+        name: Mining
+        description: Spells to help you mine
 spells:
     default:
         fizzle: Your spell fizzled!

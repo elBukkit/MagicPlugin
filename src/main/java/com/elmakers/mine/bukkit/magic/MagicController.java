@@ -37,7 +37,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -93,6 +92,7 @@ import org.mcstats.Metrics;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -112,6 +112,7 @@ import com.elmakers.mine.bukkit.magic.listener.CraftingController;
 import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
+import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.CompleteDragTask;
 import com.elmakers.mine.bukkit.utilities.DataStore;
@@ -201,73 +202,12 @@ public class MagicController implements Listener, MageController
 		return getMage(mageId, null);
 	}
 
-	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString)
-	{
-		createSpell(template, name, icon, description, category, parameterString, null, null);
-	}
-
-	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString, String propertiesString)
-	{
-		createSpell(template, name, icon, description, category, parameterString, propertiesString, null);    
-	}
-
-	public void createSpell(Spell template, String name, Material icon, String description, String category, String parameterString, String propertiesString, String costsString)
-	{
-		ConfigurationSection spellNode = new MemoryConfiguration();
-		ConfigurationSection parameterNode = spellNode.createSection("parameters");
-		ConfigurationSection propertiesNode = spellNode.createSection("properties");
-
-		if (parameterString != null && parameterString.length() > 0)
-		{
-			String[] parameters = parameterString.split(" ");
-			ConfigurationUtils.addParameters(parameters, parameterNode);
-		}
-
-		if (propertiesString != null && propertiesString.length() > 0)
-		{
-			String[] properties = propertiesString.split(" ");
-			ConfigurationUtils.addParameters(properties, propertiesNode);
-		}
-
-		if (costsString != null && costsString.length() > 0)
-		{
-			List< Map<String, Object> > costs = new ArrayList< Map<String, Object> >();
-			String[] costPairs = costsString.split(" ");
-			for (int i = 0; i < costPairs.length - 1; i += 2)
-			{
-				try
-				{
-					int amount = Integer.parseInt(costPairs[i + 1]);
-					Map<String, Object> cost = new HashMap<String, Object>();
-					cost.put("material", costPairs[i]);
-					cost.put("amount", amount);
-					costs.add(cost);
-				}
-				catch(Exception ex)
-				{
-
-				}
-			}
-
-			spellNode.set("costs", costs);
-		}
-
-		spellNode.set("description", description);
-		spellNode.set("icon", icon);
-		spellNode.set("category", category);
-
-		template.initialize(this);
-		template.loadTemplate(name, spellNode);
-
-		addSpell(template);
-	}
-
 	public void addSpell(Spell variant)
 	{
-		Spell conflict = spells.get(variant.getKey());
+		SpellTemplate conflict = spells.get(variant.getKey());
 		if (conflict != null)
 		{
-			getLogger().log(Level.WARNING, "Duplicate spell name: '" + conflict.getKey() + "'");
+			getLogger().log(Level.WARNING, "Duplicate spell key: '" + conflict.getKey() + "'");
 		}
 		else
 		{
@@ -275,35 +215,43 @@ public class MagicController implements Listener, MageController
 		}
 	}
 	
-	public float getMaxDamagePowerMultiplier() {
+	public float getMaxDamagePowerMultiplier() 
+	{
 		return maxDamagePowerMultiplier;
 	}
 	
-	public float getMaxConstructionPowerMultiplier() {
+	public float getMaxConstructionPowerMultiplier() 
+	{
 		return maxConstructionPowerMultiplier;
 	}
 	
-	public float getMaxRadiusPowerMultiplier() {
+	public float getMaxRadiusPowerMultiplier() 
+	{
 		return maxRadiusPowerMultiplier;
 	}
 	
-	public float getMaxRadiusPowerMultiplierMax() {
+	public float getMaxRadiusPowerMultiplierMax() 
+	{
 		return maxRadiusPowerMultiplierMax;
 	}
 	
-	public float getMaxRangePowerMultiplier() {
+	public float getMaxRangePowerMultiplier() 
+	{
 		return maxRangePowerMultiplier;
 	}
 	
-	public float getMaxRangePowerMultiplierMax() {
+	public float getMaxRangePowerMultiplierMax() 
+	{
 		return maxRangePowerMultiplierMax;
 	}
 	
-	public int getAutoUndoInterval() {
+	public int getAutoUndoInterval() 
+	{
 		return autoUndo;
 	}
 	
-	public float getMaxPower() {
+	public float getMaxPower() 
+	{
 		return maxPower;
 	}
 	
@@ -311,11 +259,13 @@ public class MagicController implements Listener, MageController
 	 * Undo system
 	 */
 
-	public int getUndoQueueDepth() {
+	public int getUndoQueueDepth() 
+	{
 		return undoQueueDepth;
 	}
 	
-	public int getPendingQueueDepth() {
+	public int getPendingQueueDepth() 
+	{
 		return pendingQueueDepth;
 	}
 
@@ -1231,16 +1181,19 @@ public class MagicController implements Listener, MageController
 			return null;
 		}
 
-		if (newObject == null || !(newObject instanceof Spell))
+		if (newObject == null || !(newObject instanceof MageSpell))
 		{
-			controller.getLogger().warning("Error loading spell: " + className + ", does it extend Spell?");
+			controller.getLogger().warning("Error loading spell: " + className + ", does it implement MageSpell?");
 			return null;
 		}
 
-		Spell newSpell = (Spell)newObject;
+		MageSpell newSpell = (MageSpell)newObject;
 		newSpell.initialize(controller);
 		newSpell.loadTemplate(name, node);
-
+		com.elmakers.mine.bukkit.api.spell.SpellCategory category = newSpell.getCategory();
+		if (category instanceof SpellCategory) {
+			((SpellCategory)category).addSpellTemplate(newSpell);
+		}
 		return newSpell;
 	}
 	
@@ -1379,13 +1332,6 @@ public class MagicController implements Listener, MageController
 		mages.clear();
 		pendingConstruction.clear();
 		spells.clear();
-	}
-
-	public List<Spell> getAllSpells()
-	{
-		List<Spell> allSpells = new ArrayList<Spell>();
-		allSpells.addAll(spells.values());
-		return allSpells;
 	}
 	
 	protected void unregisterPhysicsHandler(Listener listener)
@@ -2479,11 +2425,6 @@ public class MagicController implements Listener, MageController
 		triggerBlockToggle(e.getChunk());
 	}
 	
-	public SpellTemplate getSpellTemplate(String name) {
-		if (name == null || name.length() == 0) return null;
-		return spells.get(name);
-	}
-	
 	public void toggleCastCommandOverrides(com.elmakers.mine.bukkit.api.magic.Mage _mage, boolean override) {
 		// Reach into internals a bit here.
 		if (_mage instanceof Mage) {
@@ -2533,7 +2474,15 @@ public class MagicController implements Listener, MageController
 			mage = getMage(mageController);
 		}
 		
-		com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(spellName, usePermissions);
+		SpellTemplate template = getSpellTemplate(spellName);
+		if (template == null || !template.hasCastPermission(usePermissions))
+		{
+			if (sender != null) {
+				sender.sendMessage("Spell " + spellName + " unknown");
+			}
+			return false;
+		}
+		com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(spellName);
 		if (spell == null)
 		{
 			if (sender != null) {
@@ -2896,40 +2845,76 @@ public class MagicController implements Listener, MageController
 	}
 
 	@Override
-	public boolean elementalsEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean elementalsEnabled() 
+	{
+		return (elementals != null);
 	}
 
 	@Override
-	public boolean createElemental(Location location, String templateName,
-			CommandSender creator) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createElemental(Location location, String templateName, CommandSender creator) 
+	{
+		return elementals.createElemental(location, templateName, creator);
 	}
 
 	@Override
-	public boolean isElemental(Entity entity) {
+	public boolean isElemental(Entity entity) 
+	{
 		if (elementals == null || entity.getType() != EntityType.FALLING_BLOCK) return false;
 		return elementals.isElemental(entity);
 	}
 
 	@Override
-	public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker) {
+	public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker) 
+	{
 		if (elementals == null) return false;
 		return elementals.damageElemental(entity, damage, fireTicks, attacker);
 	}
 
 	@Override
-	public boolean setElementalScale(Entity entity, double scale) {
+	public boolean setElementalScale(Entity entity, double scale) 
+	{
 		if (elementals == null) return false;
 		return elementals.setElementalScale(entity, scale);
 	}
 
 	@Override
-	public double getElementalScale(Entity entity) {
+	public double getElementalScale(Entity entity) 
+	{
 		if (elementals == null) return 0;
 		return elementals.getElementalScale(entity);
+	}
+
+	@Override
+	public com.elmakers.mine.bukkit.api.spell.SpellCategory getCategory(String key) 
+	{
+		SpellCategory category = categories.get(key);
+		if (category == null) {
+			category = new com.elmakers.mine.bukkit.spell.SpellCategory(key, this);
+			categories.put(key, category);
+		}
+		return category;
+	}
+
+	@Override
+	public Collection<com.elmakers.mine.bukkit.api.spell.SpellCategory> getCategories()
+	{
+		List<com.elmakers.mine.bukkit.api.spell.SpellCategory> allCategories = new ArrayList<com.elmakers.mine.bukkit.api.spell.SpellCategory>();
+		allCategories.addAll(categories.values());
+		return allCategories;
+	}
+
+	@Override
+	public Collection<SpellTemplate> getSpellTemplates()
+	{
+		List<SpellTemplate> allSpells = new ArrayList<SpellTemplate>();
+		allSpells.addAll(spells.values());
+		return allSpells;
+	}
+	
+	public SpellTemplate getSpellTemplate(String name) 
+	{
+		if (name == null || name.length() == 0) return null;
+		return spells.get(name);
 	}
 
 	/*
@@ -3007,7 +2992,8 @@ public class MagicController implements Listener, MageController
 	 private int								 autoSaveTaskId					= 0;
 	 private WarpController						 warpController					= null;
 	 
-	 private final Map<String, Spell>       	spells                         = new HashMap<String, Spell>();
+	 private final Map<String, SpellTemplate>   spells              		= new HashMap<String, SpellTemplate>();
+	 private final Map<String, SpellCategory>   categories              	= new HashMap<String, SpellCategory>();
 	 private final Map<String, Mage> 		 	mages                  		= new HashMap<String, Mage>();
 	 private final Map<String, Long>			forgetMages					= new HashMap<String, Long>();
 	 private final Map<String, Mage>		 	pendingConstruction			= new HashMap<String, Mage>();

@@ -272,9 +272,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public Collection<SpellTemplate> getSpellTemplates() {
-		Collection<SpellTemplate> spells = new ArrayList<SpellTemplate>();
-		spells.addAll(controller.getAllSpells());
-		return spells;
+		return controller.getSpellTemplates();
 	}
 
 	@Override

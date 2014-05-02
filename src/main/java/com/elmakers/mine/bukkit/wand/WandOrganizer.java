@@ -122,7 +122,7 @@ public class WandOrganizer {
 					spell = null;
 				}
 				if (spell != null) {
-					String category = spell.getCategory();
+					String category = spell.getCategory().getKey();
 					if (category == null || category.length() == 0) {
 						category = "default";
 					}

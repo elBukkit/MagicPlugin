@@ -1878,7 +1878,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		for (SpellTemplate spell : allSpells)
 		{
-			if (spell.hasSpellPermission(player) && spell.getIcon().getMaterial() != Material.AIR)
+			if (spell.hasCastPermission(player) && spell.getIcon().getMaterial() != Material.AIR)
 			{
 				addSpell(spell.getKey());
 			}

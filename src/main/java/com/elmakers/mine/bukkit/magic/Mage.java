@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.api.block.BlockBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -59,27 +60,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	protected WeakReference<CommandSender>		_commandSender;
 	protected String 							playerName;
 	protected final MagicController				controller;
-	protected HashMap<String, Spell> 			spells 						  = new HashMap<String, Spell>();
-	private Inventory							storedInventory  			   = null;
-	private Wand								activeWand					   = null;
-	private final Collection<Listener>          quitListeners                  = new HashSet<Listener>();
-	private final Collection<Listener>          deathListeners                 = new HashSet<Listener>();
-	private final Collection<Listener>          damageListeners                = new HashSet<Listener>();
-	private final Set<Spell>					activeSpells				   = new HashSet<Spell>();
-	private UndoQueue          					undoQueue               	   = null;
+	protected HashMap<String, MageSpell> 		spells 						   	= new HashMap<String, MageSpell>();
+	private Inventory							storedInventory  			   	= null;
+	private Wand								activeWand					   	= null;
+	private final Collection<Listener>          quitListeners                  	= new HashSet<Listener>();
+	private final Collection<Listener>          deathListeners                 	= new HashSet<Listener>();
+	private final Collection<Listener>          damageListeners                	= new HashSet<Listener>();
+	private final Set<MageSpell>					activeSpells				= new HashSet<MageSpell>();
+	private UndoQueue          					undoQueue               	   	= null;
 	private LinkedList<BlockBatch>				pendingBatches					= new LinkedList<BlockBatch>();
 	
-	private Location			location;
-	private float 				costReduction = 0;
-	private float 				cooldownReduction = 0;
-	private float 				powerMultiplier = 1;
-	private long 				lastClick = 0;
-	private long 				lastCast = 0;
-	private long 				blockPlaceTimeout = 0;
-	private Location 			lastDeathLocation = null;
+	private Location				location;
+	private float 					costReduction = 0;
+	private float 					cooldownReduction = 0;
+	private float 					powerMultiplier = 1;
+	private long 					lastClick = 0;
+	private long 					lastCast = 0;
+	private long 					blockPlaceTimeout = 0;
+	private Location 				lastDeathLocation = null;
 	private final MaterialBrush		brush;
 	
-	private boolean isNewPlayer = true;
+	private boolean 				isNewPlayer = true;
 	
 	public Mage(String id, MagicController controller) {
 		this.id = id;
@@ -199,7 +200,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	public boolean cancel()
 	{
 		boolean result = false;
-		for (Spell spell : spells.values())
+		for (MageSpell spell : spells.values())
 		{
 			result = spell.cancel() || result;
 		}
@@ -475,10 +476,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			if (spellNode != null) {
 				Set<String> keys = spellNode.getKeys(false);
 				for (String key : keys) {					
-					Spell spell = getSpell(key, getPlayer());
-					ConfigurationSection spellSection = spellNode.getConfigurationSection(key);
-					if (spell != null) {
-						spell.load(spellSection);
+					Spell spell = getSpell(key);
+					if (spell != null && spell instanceof MageSpell) {
+						ConfigurationSection spellSection = spellNode.getConfigurationSection(key);
+						((MageSpell)spell).load(spellSection);
 					}
 				}
 			}
@@ -506,7 +507,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			
 			getUndoQueue().save(this, configNode);
 			ConfigurationSection spellNode = configNode.createSection("spells");
-			for (Spell spell : spells.values()) {
+			for (MageSpell spell : spells.values()) {
 				ConfigurationSection section = spellNode.createSection(spell.getKey());
 				section.set("active", spell.isActive());
 				spell.save(section);
@@ -535,8 +536,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			}
 			
 			// Copy this set since spells may get removed while iterating!
-			List<Spell> active = new ArrayList<Spell>(activeSpells);
-			for (Spell spell : active) {
+			List<MageSpell> active = new ArrayList<MageSpell>(activeSpells);
+			for (MageSpell spell : active) {
 				spell.tick();
 				if (!spell.isActive()) {
 					deactivateSpell(spell);
@@ -680,35 +681,43 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return getSpell(name, getPlayer());
 	}
 	
-	@Override
-	public Collection<Spell> getSpells() {
-		return spells.values();
+	public boolean hasCastPermission(Spell spell)
+	{
+		return spell.hasCastPermission(getCommandSender());
 	}
 	
-	public Spell getSpell(String name, Player usePermissions)
+	public Spell getSpell(String key, Player usePermissions)
 	{
-		SpellTemplate spell = controller.getSpellTemplate(name);
-		if (spell == null || !spell.hasSpellPermission(usePermissions))
-			return null;
-
-		Spell playerSpell = spells.get(spell.getKey());
+		MageSpell playerSpell = spells.get(key);
 		if (playerSpell == null)
 		{
-			playerSpell = spell.createSpell();
-			spells.put(spell.getKey(), playerSpell);
+			SpellTemplate spellTemplate = controller.getSpellTemplate(key);
+			if (spellTemplate == null) return null;
+			Spell newSpell = spellTemplate.createSpell();
+			if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
+			spells.put(newSpell.getKey(), (MageSpell)newSpell);
 		}
 		playerSpell.setMage(this);
 
 		return playerSpell;
 	}
+	
+	@Override
+	public Collection<Spell> getSpells() {
+		List<Spell> export = new ArrayList<Spell>(spells.values());
+		return export;
+	}
 
 	@Override
 	public void activateSpell(Spell spell) {
-		activeSpells.add(spell);
-		
-		// Call reactivate to avoid the Spell calling back to this method,
-		// and to force activation if some state has gone wrong.
-		spell.reactivate();
+		if (spell instanceof MageSpell) {
+			MageSpell mageSpell = ((MageSpell)spell);
+			activeSpells.add(mageSpell);
+			
+			// Call reactivate to avoid the Spell calling back to this method,
+			// and to force activation if some state has gone wrong.
+			mageSpell.reactivate();
+		}
 	}
 	
 	@Override
@@ -717,14 +726,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		
 		// If this was called by the Spell itself, the following
 		// should do nothing as the spell is already marked as inactive.
-		spell.deactivate();
+		if (spell instanceof MageSpell) {
+			((MageSpell)spell).deactivate();
+		}
 	}
 	
 	@Override
 	public void deactivateAllSpells() {
 		// Copy this set since spells will get removed while iterating!
-		List<Spell> active = new ArrayList<Spell>(activeSpells);
-		for (Spell spell : active) {
+		List<MageSpell> active = new ArrayList<MageSpell>(activeSpells);
+		for (MageSpell spell : active) {
 			spell.deactivate();
 		}
 		activeSpells.clear();

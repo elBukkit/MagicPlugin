@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.Messages;
 
@@ -45,9 +46,9 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		Player player = sender instanceof Player ? (Player)sender : null;
 		for (SpellTemplate spell : spellVariants)
 		{
-			String spellCategory = spell.getCategory();
-			if (spellCategory != null && spellCategory.equalsIgnoreCase(category) 
-				&& (player == null || spell.hasSpellPermission(player)))
+			SpellCategory spellCategory = spell.getCategory();
+			if (spellCategory != null && spellCategory.getKey().equalsIgnoreCase(category) 
+				&& (player == null || spell.hasCastPermission(player)))
 			{
 				categorySpells.add(spell);
 			}
@@ -76,23 +77,23 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 	public void listCategories(Player player)
 	{
 		HashMap<String, Integer> spellCounts = new HashMap<String, Integer>();
-		List<String> spellGroups = new ArrayList<String>();
+		List<SpellCategory> spellGroups = new ArrayList<SpellCategory>();
 		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
 
 		for (SpellTemplate spell : spellVariants)
 		{
-			if (player != null && !spell.hasSpellPermission(player)) continue;
+			if (player != null && !spell.hasCastPermission(player)) continue;
 			if (spell.getCategory() == null) continue;
 			
 			Integer spellCount = spellCounts.get(spell.getCategory());
 			if (spellCount == null || spellCount == 0)
 			{
-				spellCounts.put(spell.getCategory(), 1);
+				spellCounts.put(spell.getCategory().getKey(), 1);
 				spellGroups.add(spell.getCategory());
 			}
 			else
 			{
-				spellCounts.put(spell.getCategory(), spellCount + 1);
+				spellCounts.put(spell.getCategory().getKey(), spellCount + 1);
 			}
 		}
 		if (spellGroups.size() == 0)
@@ -102,9 +103,9 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		}
 
 		Collections.sort(spellGroups);
-		for (String group : spellGroups)
+		for (SpellCategory group : spellGroups)
 		{
-			player.sendMessage(group + " [" + spellCounts.get(group) + "]");
+			player.sendMessage(group.getName() + " [" + spellCounts.get(group) + "]");
 		}
 	}
 
@@ -116,31 +117,27 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 			return;
 		}
 		Player player = sender instanceof Player ? (Player)sender : null;
-
-		HashMap<String, SpellGroup> spellGroups = new HashMap<String, SpellGroup>();
 		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
 
 		int spellCount = 0;
 		for (SpellTemplate spell : spellVariants)
 		{
-			if (player != null && !spell.hasSpellPermission(player))
+			if (player != null && !spell.hasCastPermission(player))
 			{
 				continue;
 			}
 			if (spell.getCategory() == null) continue;
 			spellCount++;
-			SpellGroup group = spellGroups.get(spell.getCategory());
-			if (group == null)
-			{
-				group = new SpellGroup();
-				group.groupName = spell.getCategory();
-				spellGroups.put(group.groupName, group);	
-			}
-			group.spells.add(spell);
 		}
 
-		List<SpellGroup> sortedGroups = new ArrayList<SpellGroup>();
-		sortedGroups.addAll(spellGroups.values());
+		// Kinda hacky internals-reaching
+		Collection<SpellCategory> allCategories = api.getController().getCategories();
+		List<com.elmakers.mine.bukkit.spell.SpellCategory> sortedGroups = new ArrayList<com.elmakers.mine.bukkit.spell.SpellCategory>();
+		for (SpellCategory checkCategory : allCategories) {
+			if (checkCategory instanceof com.elmakers.mine.bukkit.spell.SpellCategory) {
+				sortedGroups.add((com.elmakers.mine.bukkit.spell.SpellCategory)checkCategory);
+			}
+		}
 		Collections.sort(sortedGroups);
 
 		int maxLines = -1;
@@ -165,21 +162,22 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		int currentPage = 1;
 		int lineCount = 0;
 		int printedCount = 0;
-		for (SpellGroup group : sortedGroups)
+		for (com.elmakers.mine.bukkit.spell.SpellCategory group : sortedGroups)
 		{
 			if (printedCount > maxLines && maxLines > 0) break;
 
 			boolean isFirst = true;
-			Collections.sort(group.spells);
-			for (SpellTemplate spell : group.spells)
+			Collection<SpellTemplate> spells = group.getSpells();
+			for (SpellTemplate spell : spells)
 			{
 				if (printedCount > maxLines && maxLines > 0) break;
+				if (!spell.hasCastPermission(sender)) continue;
 
 				if (currentPage == pageNumber || maxLines < 0)
 				{
 					if (isFirst)
 					{
-						sender.sendMessage(group.groupName + ":");
+						sender.sendMessage(group.getName() + ":");
 						isFirst = false;
 					}
 					String name = spell.getName();

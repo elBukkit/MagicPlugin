@@ -2381,7 +2381,7 @@ mine:
         xp: 10
 chop:
     icon: stone_axe
-    category: farming
+    category: elemental
     class: DropSpell
     effects:
         cast:
