@@ -1,6 +1,6 @@
 name: MagicLib
 main: com.elmakers.mine.bukkit.lib.MagicLibPlugin
-version: 1.0
+version: ${project.version}
 website: http://mine.elmakers.com
 author: NathanWolf
 description : A provider of the MagicLib functionality, don't use with Magic.
