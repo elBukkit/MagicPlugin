@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -105,4 +106,61 @@ public interface MageController {
 	
 	public Mage undoAny(Block target);
 	public void forgetMage(Mage mage);
+	
+	/**
+	 * Check to see if the Elementals plugin is present an enabled.
+	 * 
+	 * If so, Magic will work as a passthrough API.
+	 * 
+	 * @return
+	 */
+	public boolean elementalsEnabled();
+	
+	/**
+	 * Create an Elemental of a specific type at a certain location.
+	 * 
+	 * @param location The location at which to create the elemental.
+	 * @param templateName The name of the elemental's template description
+	 * @param creator The creator of the elemental, may be null.
+	 * @return False on failure, such as if there are already too many elementals in the world.
+	 */
+	public boolean createElemental(Location location, String templateName, CommandSender creator);
+	
+	/**
+	 * Check to see if the given Entity is an Elemental, or part of an Elemental.
+	 * 
+	 * @param entity The entity to check
+	 * @return true if this Entity is an Elemental, or part of one.
+	 */
+	public boolean isElemental(Entity entity);
+	
+	/**
+	 * Damage the Elemental represented by the given Entity.
+	 * 
+	 * @param entity The entity to use to determine which Elemental to damage.
+	 * @param damage The amount of damage to apply.
+	 * @param fireTicks The duration of fire, if any, to apply.
+	 * @param attacker The attacker, initiator of damage. May be a command block or console, or null.
+	 * @return False if the entity is not a living Elemental.
+	 */
+	public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker);
+	
+	/**
+	 * Change the scale of an Elemental, making it bigger or smaller.
+	 * 
+	 * Elementals will limit their own size within sane limits. (0.1 - 5.0 for instance).
+	 * 
+	 * @param entity The entity representing the Elemental to scale
+	 * @param scale The new scale
+	 * @return False if the entity is not an Elemental, or other failure
+	 */
+	public boolean setElementalScale(Entity entity, double scale);
+	
+	/**
+	 * Get the current scale of an Elemental.
+	 * 
+	 * @param entity The entity representing the Elemental to interrogate
+	 * @return The scale of the elemental, or 0 on error.
+	 */
+	public double getElementalScale(Entity entity);
 }
