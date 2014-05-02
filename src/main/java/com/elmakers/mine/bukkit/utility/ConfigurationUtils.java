@@ -383,11 +383,11 @@ public class ConfigurationUtils {
 	}
 
 	public static Color getColor(ConfigurationSection node, String path, Color def) {
-		Color o = castColor(node.get(path));
+		Color o = toColor(node.get(path));
 		return o == null ? def : o;
 	}
 
-	private static Color castColor(Object o) {
+	public static Color toColor(Object o) {
 		if (o == null) {
 			return null;
 		} else if (o instanceof Byte) {
@@ -402,7 +402,9 @@ public class ConfigurationUtils {
 			return Color.fromRGB((int) (long) (Long) o);
 		} else if (o instanceof String) {
 			try {
-				Integer rgb = Integer.parseInt((String) o, 16);
+				String s = (String)o;
+				if (s.length() == 0) return null;
+				Integer rgb = Integer.parseInt(s, 16);
 				return Color.fromRGB(rgb);
 			} catch (NumberFormatException ex) {
 				return null;

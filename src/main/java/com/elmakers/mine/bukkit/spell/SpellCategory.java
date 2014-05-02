@@ -8,6 +8,7 @@ import org.bukkit.Color;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCategory {
@@ -15,7 +16,7 @@ public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCa
 	protected final String key;
 	protected final String name;
 	protected final String description;
-	protected Color color = null;
+	protected final Color color;
 	protected long castCount = 0;
 	protected long lastCast = 0;
 	protected final MageController controller;
@@ -25,17 +26,13 @@ public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCa
 		this.controller = controller;
 		name = Messages.get("categories." + key + ".name", key);
 		description = Messages.get("categories." + key + ".description", "");
+		color = ConfigurationUtils.toColor(Messages.get("categories." + key + ".color", ""));
 	}
 	
 	public SpellCategory(String key, MageController controller, long castCount, long lastCast) {
 		this(key, controller);
 		this.castCount = castCount;
 		this.lastCast = lastCast;
-	}
-	
-	public SpellCategory(String key, MageController controller, long castCount, long lastCast, Color color) {
-		this(key, controller, castCount, lastCast);
-		this.color = color;
 	}
 	
 	public void addSpellTemplate(SpellTemplate template)
