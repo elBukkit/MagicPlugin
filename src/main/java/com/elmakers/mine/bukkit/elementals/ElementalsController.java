@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.elementals;
 
 import info.nothingspecial.api.elementals.ElementalsAPI;
 
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
@@ -27,5 +28,9 @@ public class ElementalsController {
 
 	public double getElementalScale(Entity entity) {
 		return api.getElementalScale(entity);
+	}
+	
+	public boolean createElemental(Location location, String templateName, CommandSender creator) {
+		return api.createElemental(location, templateName, creator);
 	}
 }
