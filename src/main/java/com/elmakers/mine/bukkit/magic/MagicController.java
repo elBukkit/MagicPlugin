@@ -88,6 +88,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
+import org.mcstats.Metrics.Graph;
 
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -516,21 +517,11 @@ public class MagicController implements Listener, MageController
 		enchanting = new EnchantingController(this);
 		anvil = new AnvilController(this);
 		load();
-
-		metrics = null;
-		if (metricsLevel > 0) {
-			try {
-			    metrics = new Metrics(plugin);
-			    metrics.start();
-			    plugin.getLogger().info("Activated MCStats");
-			} catch (IOException e) {
-			    plugin.getLogger().warning("Failed to load MCStats: " + e.getMessage());
-			}
-		}
 		
 		// Try to link to Essentials:
 		Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
-		if (essentials != null) {
+		hasEssentials = essentials != null;
+		if (hasEssentials) {
 			try {
 				mailer = new Mailer(essentials);
 			} catch (Exception ex) {
@@ -601,6 +592,7 @@ public class MagicController implements Listener, MageController
 			if (loadSchematicMethod != null) {
 				getLogger().info("WorldEdit found, schematic brushes enabled.");
 				MaterialBrush.SchematicsEnabled = true;
+				hasWorldEdit = true;
 			} else {
 				cuboidClipboardClass = null;
 			}
@@ -608,12 +600,14 @@ public class MagicController implements Listener, MageController
 		}
 		
 		// Try to link to CommandBook
+		hasCommandBook = false;
 		try {
 			Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
 			if (commandBookPlugin != null) {
 				warpController = new WarpController();
 				if (warpController.setCommandBook(commandBookPlugin)) {
 					getLogger().info("CommandBook found, integrating for Recall warps");
+					hasCommandBook = true;
 				} else {
 					getLogger().warning("CommandBook integration failed");
 				}
@@ -625,6 +619,7 @@ public class MagicController implements Listener, MageController
 		if (cuboidClipboardClass == null) {
 			getLogger().info("WorldEdit not found, schematic brushes will not work.");
 			MaterialBrush.SchematicsEnabled = false;
+			hasWorldEdit = false;
 		}
 		
 		// Link to factions
@@ -667,6 +662,9 @@ public class MagicController implements Listener, MageController
 			getLogger().info("Elementals found, integrating.");
 		}
 		
+		// Activate Metrics
+		activateMetrics();
+		
 		// Set up the PlayerSpells timer
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run() {
@@ -696,6 +694,71 @@ public class MagicController implements Listener, MageController
 		}, 0, 1);
 		
 		registerListeners();
+	}
+	
+	protected void activateMetrics()
+	{
+		// Activate Metrics
+		final MagicController controller = this;
+		metrics = null;
+		if (metricsLevel > 0) {
+			try {
+			    metrics = new Metrics(plugin);
+			   
+			    if (metricsLevel > 1) {
+			    	Graph integrationGraph = metrics.createGraph("Plugin Integration");
+			    	integrationGraph.addPlotter(new Metrics.Plotter("Essentials") {						
+						@Override public int getValue() { return controller.hasEssentials ? 1 : 0; }
+					});
+			    	integrationGraph.addPlotter(new Metrics.Plotter("WorldEdit") {						
+						@Override public int getValue() { return controller.hasWorldEdit ? 1 : 0; }
+					});
+			    	integrationGraph.addPlotter(new Metrics.Plotter("Dynmap") {						
+						@Override public int getValue() { return controller.hasDynmap ? 1 : 0; }
+					});
+			    	integrationGraph.addPlotter(new Metrics.Plotter("Factions") {						
+						@Override public int getValue() { return controller.factionsManager.isEnabled() ? 1 : 0; }
+					});
+			    	integrationGraph.addPlotter(new Metrics.Plotter("WorldGuard") {						
+						@Override public int getValue() { return controller.worldGuardManager.isEnabled() ? 1 : 0; }
+					});
+			    	integrationGraph.addPlotter(new Metrics.Plotter("Elementals") {						
+						@Override public int getValue() { return controller.elementalsEnabled() ? 1 : 0; }
+					});
+			    	integrationGraph.addPlotter(new Metrics.Plotter("Traders") {						
+						@Override public int getValue() { return controller.tradersController != null ? 1 : 0; }
+					});
+			    	integrationGraph.addPlotter(new Metrics.Plotter("CommandBook") {						
+						@Override public int getValue() { return controller.hasCommandBook ? 1 : 0; }
+					});
+			    	
+			    	Graph featuresGraph = metrics.createGraph("Features Enabled");
+			    	featuresGraph.addPlotter(new Metrics.Plotter("Crafting") {						
+						@Override public int getValue() { return controller.crafting.isEnabled() ? 1 : 0; }
+					});
+			    	featuresGraph.addPlotter(new Metrics.Plotter("Enchanting") {						
+						@Override public int getValue() { return controller.enchanting.isEnabled() ? 1 : 0; }
+					});
+			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Combining") {						
+						@Override public int getValue() { return controller.anvil.isCombiningEnabled() ? 1 : 0; }
+					});
+			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Organizing") {						
+						@Override public int getValue() { return controller.anvil.isOrganizingEnabled() ? 1 : 0; }
+					});
+			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Binding") {						
+						@Override public int getValue() { return controller.bindingEnabled ? 1 : 0; }
+					});
+			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Keeping") {						
+						@Override public int getValue() { return controller.keepingEnabled ? 1 : 0; }
+					});
+			    }
+			    
+			    metrics.start();
+			    plugin.getLogger().info("Activated MCStats");
+			} catch (IOException e) {
+			    plugin.getLogger().warning("Failed to load MCStats: " + e.getMessage());
+			}
+		}
 	}
 	
 	protected void registerListeners() {
@@ -3032,6 +3095,10 @@ public class MagicController implements Listener, MageController
 	 
 	 private int								 metricsLevel					= 5;
 	 private Metrics							 metrics						= null;
+	 private boolean							 hasDynmap						= false;
+	 private boolean							 hasEssentials					= false;
+	 private boolean							 hasCommandBook					= false;
+	 private boolean							 hasWorldEdit					= false;
 	 
 	 // Sub-Controllers
 	 private CraftingController					 crafting						= null;

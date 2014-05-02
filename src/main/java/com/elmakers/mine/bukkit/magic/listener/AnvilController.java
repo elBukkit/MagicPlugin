@@ -138,4 +138,14 @@ public class AnvilController implements Listener {
 			}
 		}
 	}
+	
+	public boolean isCombiningEnabled()
+	{
+		return combiningEnabled;
+	}
+	
+	public boolean isOrganizingEnabled()
+	{
+		return organizingEnabled;
+	}
 }

@@ -127,4 +127,9 @@ public class EnchantingController implements Listener {
 			}
 		}
 	}
+	
+	public boolean isEnabled()
+	{
+		return enchantingEnabled;
+	}
 }

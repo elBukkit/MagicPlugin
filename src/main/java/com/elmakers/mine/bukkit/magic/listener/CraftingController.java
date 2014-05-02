@@ -121,4 +121,9 @@ public class CraftingController implements Listener {
 			}
 		}
 	}
+	
+	public boolean isEnabled()
+	{
+		return craftingEnabled;
+	}
 }
