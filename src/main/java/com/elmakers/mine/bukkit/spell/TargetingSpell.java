@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -87,10 +88,16 @@ public abstract class TargetingSpell extends BaseSpell {
 		}
 	}
 	
-	protected static String getTargetName(Entity target)
+	protected String getTargetName(Entity target)
 	{
-		if (target instanceof Player) {
+		if (target instanceof Player) 
+		{
 			return ((Player)target).getName();
+		}
+		
+		if (controller.isElemental(target))
+		{
+			return "Elemental";
 		}
 		
 		return target.getType().name().toLowerCase().replace('_', ' ');
@@ -376,13 +383,23 @@ public abstract class TargetingSpell extends BaseSpell {
 		{
 			if (entity == getPlayer()) continue;
 			if (!targetNPCs && entity.hasMetadata("NPC")) continue;
-			if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
+			
+			// Special check for Elementals
+			if (!controller.isElemental(entity) && targetEntityType != null && !targetEntityType.isAssignableFrom(entity.getClass())) continue;
 			if (entity instanceof Player) {
 				Mage targetMage = controller.getMage((Player)entity);
 				if (targetMage.isSuperProtected()) continue;
 			}
 
 			Target newScore = new Target(getLocation(), entity, getMaxRange());
+			
+
+			if (controller.isElemental(entity)) {
+				Bukkit.getLogger().info("TARGET ELEMENTAL: " + newScore.getScore());
+			}
+			
+			
+			
 			if (newScore.getScore() > 0)
 			{
 				scored.add(newScore);
