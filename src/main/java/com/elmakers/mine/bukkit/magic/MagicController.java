@@ -753,6 +753,39 @@ public class MagicController implements Listener, MageController
 					});
 			    }
 			    
+			    if (metricsLevel > 2) {
+			    	Graph categoryGraph = metrics.createGraph("Casts by Category");
+			    	for (final SpellCategory category : categories.values()) {
+			    		categoryGraph.addPlotter(new Metrics.Plotter(category.getName()) {						
+							@Override public int getValue() { 
+								Collection<SpellTemplate> spells = category.getSpells();
+								long castCount = 0;
+								for (SpellTemplate spell : spells) {
+									if (spell instanceof MageSpell) {
+										castCount += ((MageSpell)spell).getCastCount();
+									}
+								}
+								return (int)castCount; 
+							}
+						});
+			    	}
+			    }
+
+			    if (metricsLevel > 3) {
+			    	Graph spellGraph = metrics.createGraph("Casts");
+			    	for (final SpellTemplate spell : spells.values()) {
+			    		spellGraph.addPlotter(new Metrics.Plotter(spell.getName()) {						
+							@Override public int getValue() { 
+								long castCount = 0;
+								if (spell instanceof MageSpell) {
+									castCount = ((MageSpell)spell).getCastCount();
+								}
+								return (int)castCount; 
+							}
+						});
+			    	}
+			    }
+			    
 			    metrics.start();
 			    plugin.getLogger().info("Activated MCStats");
 			} catch (IOException e) {
