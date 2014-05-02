@@ -8,6 +8,7 @@ public interface SpellCategory extends Comparable<SpellCategory> {
 	public abstract String getDescription();
 	public abstract Color getColor();
 	public abstract void addCast();
+	public abstract void addCasts(long castCount, long lastCastTime);
 	public abstract long getCastCount();
 	public abstract long getLastCast();
 }
