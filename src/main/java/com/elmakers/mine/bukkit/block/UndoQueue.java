@@ -160,15 +160,19 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 		MageController controller = mage.getController();
 		int maxSize = controller.getMaxUndoPersistSize();
 		try {
+			int discarded = 0;
 			List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
 			for (UndoList list : changeQueue) {
 				if (maxSize > 0 && list.size() > maxSize) {
-					controller.getLogger().info("Discarding undo batch, size " + list.size() + " for player " + mage.getName());
+					discarded++;
 					continue;
 				}
 				MemoryConfiguration listNode = new MemoryConfiguration();		
 				list.save(listNode);
 				nodeList.add(listNode.getValues(true));
+			}
+			if (discarded > 0) {
+				controller.getLogger().info("Not saving " + discarded + " undo batches for player " + mage.getName() + ", over max size of " + maxSize);
 			}
 			node.set("undo", nodeList);
 			nodeList = new ArrayList<Map<String, Object>>();
