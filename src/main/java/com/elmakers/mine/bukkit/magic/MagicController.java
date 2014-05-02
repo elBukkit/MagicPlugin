@@ -805,20 +805,7 @@ public class MagicController implements Listener, MageController
 	
 	protected File getDataFile(String fileName)
 	{
-		File dataFile = new File(dataFolder, fileName + ".yml");
-
-		// Migration - TODO: Remove
-		File legacyFile = new File(configFolder, fileName + ".yml");
-		// Extra-special hacky migration!
-		if (fileName.equals(URL_MAPS_FILE)) {
-			legacyFile = new File(configFolder,"urlmaps.yml");
-		}
-		if (legacyFile.exists() && !dataFile.exists()) {
-			getLogger().info("MIGRATING " + legacyFile.getName() + ", you should only see this once.");
-			legacyFile.renameTo(dataFile);
-		}
-		
-		return dataFile;
+		return new File(dataFolder, fileName + ".yml");
 	}
 	
 	protected ConfigurationSection loadDataFile(String fileName)
@@ -906,9 +893,31 @@ public class MagicController implements Listener, MageController
 		getLogger().info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
 	}
 	
+	protected void loadSpellData()
+	{
+		try {
+			ConfigurationSection configNode = loadDataFile(SPELLS_DATA_FILE);
+			if (configNode == null) return;
+
+			Set<String> keys = configNode.getKeys(false);
+			for (String key : keys) {					
+				SpellTemplate spell = getSpellTemplate(key);
+				
+				// Bit hacky to use the Spell load method on a SpellTemplate, but... meh!
+				if (spell != null && spell instanceof MageSpell) {
+					ConfigurationSection spellSection = configNode.getConfigurationSection(key);
+					((MageSpell)spell).load(spellSection);
+				}
+			}
+		} catch (Exception ex) {
+			getLogger().warning("Failed to load spell metrics");
+		}
+	}
+	
 	public void load()
 	{
 		loadConfiguration();
+		loadSpellData();
 		
 		File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -977,7 +986,31 @@ public class MagicController implements Listener, MageController
 		getLogger().info("Loaded " + lostWands.size() + " lost wands");
 	}
 	
-	protected void saveLostWandData() {
+	protected void saveSpellData()
+	{
+		String lastKey = "";
+		try {
+			DataStore spellsDataFile = createDataFile(SPELLS_DATA_FILE);
+			for (SpellTemplate spell : spells.values()) {
+				lastKey = spell.getKey();
+				ConfigurationSection spellNode = spellsDataFile.createSection(lastKey);
+				if (spellNode == null) {
+					getLogger().warning("Error saving spell data for " + lastKey);
+					continue;
+				}
+				// Hackily re-using save
+				if (spell != null && spell instanceof MageSpell) {
+					((MageSpell)spell).save(spellNode);
+				}
+			}
+			spellsDataFile.save();
+		} catch (Throwable ex) {
+			getLogger().warning("Error saving spell data for " + lastKey);
+			ex.printStackTrace();
+		}
+	}
+	
+	protected void saveLostWands() {
 		String lastKey = "";
 		try {
 			DataStore lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
@@ -985,11 +1018,11 @@ public class MagicController implements Listener, MageController
 				lastKey = wandEntry.getKey();
 				ConfigurationSection wandNode = lostWandsConfiguration.createSection(lastKey);
 				if (wandNode == null) {
-					getLogger().warning("Error saving lost wand data for " + lastKey + " " + lostWandsConfiguration.get(lastKey));
+					getLogger().warning("Error saving lost wand data for " + lastKey);
 					continue;
 				}
 				if (!wandEntry.getValue().isValid()) {
-					getLogger().warning("Invalid lost and data for " + lastKey + " " + lostWandsConfiguration.get(lastKey));
+					getLogger().warning("Invalid lost and data for " + lastKey);
 					continue;
 				}
 				wandEntry.getValue().save(wandNode);
@@ -1168,9 +1201,12 @@ public class MagicController implements Listener, MageController
 	{
 		getLogger().info("Saving player data");
 		savePlayerData();
+		
+		getLogger().info("Saving spell data");
+		saveSpellData();
 
 		getLogger().info("Saving lost wands data");
-		saveLostWandData();
+		saveLostWands();
 
 		getLogger().info("Saving image map data");
 		URLMap.save();
@@ -2995,6 +3031,7 @@ public class MagicController implements Listener, MageController
 	 private final String                        MESSAGES_FILE             		= "messages";
 	 private final String                        MATERIALS_FILE             	= "materials";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
+	 private final String						 SPELLS_DATA_FILE				= "spells";
 	 private final String						 AUTOMATA_FILE					= "automata";
 	 private final String						 URL_MAPS_FILE					= "imagemaps";
 	 
