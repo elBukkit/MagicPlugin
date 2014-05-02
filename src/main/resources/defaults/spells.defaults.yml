@@ -157,7 +157,7 @@ boon:
         target: any
         range: 32
         target_type: LivingEntity
-        effect_speed: 600,5   
+        effect_speed: 600,5
         effect_jump: 600,5
         effect_water_breathing: 600,5
         effect_night_vision: 600,5

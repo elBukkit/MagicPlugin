@@ -44,6 +44,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -2124,20 +2125,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				hasteEffect = new PotionEffect(PotionEffectType.SPEED, 40, hasteLevel, true);
 			}
 			
-			// Avoid nerfing other effects
-			boolean applyHaste = true;
-			Collection<PotionEffect> effects = player.getActivePotionEffects();
-			for (PotionEffect effect : effects) {
-				if (effect.getType() == PotionEffectType.SPEED) {
-					if (effect.getAmplifier() > hasteEffect.getAmplifier()) {
-						applyHaste = false;
-						break;
-					}
-				}
-			}
-			if (applyHaste) {
-				player.addPotionEffect(hasteEffect, true);
-			}
+			CompatibilityUtils.applyPotionEffect(player, hasteEffect);
 		}
 		if (usesMana()) {
 			xp = Math.min(xpMax, xp + xpRegeneration);

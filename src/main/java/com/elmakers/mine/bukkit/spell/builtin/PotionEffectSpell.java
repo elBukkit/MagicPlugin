@@ -10,6 +10,7 @@ import org.bukkit.potion.PotionEffect;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class PotionEffectSpell extends TargetingSpell
@@ -42,7 +43,7 @@ public class PotionEffectSpell extends TargetingSpell
 		}
 		
 		Collection<PotionEffect> effects = getPotionEffects(parameters);
-		targetEntity.addPotionEffects(effects);
+		CompatibilityUtils.applyPotionEffects(targetEntity, effects);
 		return SpellResult.CAST;
 	}
 }
