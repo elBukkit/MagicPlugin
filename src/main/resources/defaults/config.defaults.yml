@@ -290,10 +290,7 @@ max_damage_reduction_physical: 0.1
 max_damage_reduction_projectiles: 0.2
 max_cost_reduction: 0.5
 max_cooldown_reduction: 0.75
-max_fly_speed_increase: 0.2
-max_walk_speed_increase: 0.3
-max_fly_speed: 0.8
-max_walk_speed: 0.8
+max_haste: 10
 
 #
 # Control wands' "Power" settings

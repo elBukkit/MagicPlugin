@@ -27,6 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
@@ -131,9 +133,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private float effectSoundVolume = 0;
 	private float effectSoundPitch = 0;
 	
-	private float defaultWalkSpeed = 0.2f;
-	private float defaultFlySpeed = 0.1f;
 	private float speedIncrease = 0;
+	private PotionEffect hasteEffect = null;
 	
 	private int storedXpLevel = 0;
 	private int storedXp = 0;
@@ -1850,30 +1851,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		saveState();
 	}
 	
-	protected void updateSpeed(Player player) {
-		if (speedIncrease > 0) {
-			try {
-				float newWalkSpeed = defaultWalkSpeed + (speedIncrease * WandLevel.maxWalkSpeedIncrease);
-				newWalkSpeed = Math.min(WandLevel.maxWalkSpeed, newWalkSpeed);
-				if (newWalkSpeed != player.getWalkSpeed()) {
-					player.setWalkSpeed(newWalkSpeed);
-				}
-				float newFlySpeed = defaultFlySpeed + (speedIncrease * WandLevel.maxFlySpeedIncrease);
-				newFlySpeed = Math.min(WandLevel.maxFlySpeed, newFlySpeed);
-				if (newFlySpeed != player.getFlySpeed()) {
-					player.setFlySpeed(newFlySpeed);
-				}
-			} catch(Exception ex2) {
-				try {
-					player.setWalkSpeed(defaultWalkSpeed);
-					player.setFlySpeed(defaultFlySpeed);
-				}  catch(Exception ex) {
-					
-				}
-			}
-		}
-	}
-	
 	public boolean fill(Player player) {
 		Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
 
@@ -1940,7 +1917,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		saveState();
 		
 		mage.setActiveWand(this);
-		updateSpeed(player);
 		if (usesMana()) {
 			storedXpLevel = player.getLevel();
 			storedXpProgress = player.getExp();
@@ -2073,14 +2049,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
-		if (speedIncrease > 0) {
-			try {
-				mage.getPlayer().setWalkSpeed(defaultWalkSpeed);
-				mage.getPlayer().setFlySpeed(defaultFlySpeed);
-			}  catch(Exception ex) {
-				
-			}
-		}
 		mage.setActiveWand(null);
 		mage = null;
 	}
@@ -2148,7 +2116,29 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage == null) return;
 		
 		Player player = mage.getPlayer();
-		updateSpeed(player);
+		if (player == null) return;
+		
+		if (speedIncrease > 0) {
+			int hasteLevel = (int)(speedIncrease * WandLevel.maxHasteLevel);
+			if (hasteEffect == null || hasteEffect.getAmplifier() != hasteLevel) {
+				hasteEffect = new PotionEffect(PotionEffectType.SPEED, 40, hasteLevel, true);
+			}
+			
+			// Avoid nerfing other effects
+			boolean applyHaste = true;
+			Collection<PotionEffect> effects = player.getActivePotionEffects();
+			for (PotionEffect effect : effects) {
+				if (effect.getType() == PotionEffectType.SPEED) {
+					if (effect.getAmplifier() > hasteEffect.getAmplifier()) {
+						applyHaste = false;
+						break;
+					}
+				}
+			}
+			if (applyHaste) {
+				player.addPotionEffect(hasteEffect, true);
+			}
+		}
 		if (usesMana()) {
 			xp = Math.min(xpMax, xp + xpRegeneration);
 			updateMana();

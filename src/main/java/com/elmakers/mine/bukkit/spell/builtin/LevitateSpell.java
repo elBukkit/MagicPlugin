@@ -20,6 +20,8 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class LevitateSpell extends TargetingSpell implements Listener
 {
+	private static final float defaultFlySpeed = 0.1f;
+	
 	private long levitateEnded;
 	private final long safetyLength = 10000;
 
@@ -29,13 +31,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private final static int maxRingEffectRange = 8;
     private final static int maxDamageAmount = 150;
     
-    private float flySpeedMultiplier = 0;
-    private float restoreFlySpeed = 0;
+    private float flySpeed = 0;
 	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		flySpeedMultiplier = (float)parameters.getDouble("speed", 0);
+		flySpeed = (float)parameters.getDouble("speed", 0);
 		if (getPlayer().getAllowFlight()) {
 			deactivate();
 			return SpellResult.COST_FREE;
@@ -50,8 +51,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		final Player player = getPlayer();
 		if (player == null) return;
 		
-		if (restoreFlySpeed > 0) {
-			player.setFlySpeed(restoreFlySpeed);
+		if (flySpeed > 0) {
+			player.setFlySpeed(defaultFlySpeed);
 		}
 		
 		player.setFlying(false);
@@ -67,10 +68,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		final Player player = getPlayer();
 		if (player == null) return;
 		
-		// Store and modify fly speed
-		if (flySpeedMultiplier > 0) {
-			restoreFlySpeed = player.getFlySpeed();
-			player.setFlySpeed(restoreFlySpeed * flySpeedMultiplier);
+		if (flySpeed > 0) {
+			player.setFlySpeed(flySpeed * defaultFlySpeed);
 		}
 		
 		Vector velocity = getPlayer().getVelocity();

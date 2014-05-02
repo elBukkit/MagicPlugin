@@ -24,6 +24,7 @@
  - Fix Hat being exploitable for blocks
  - Add Elementals integration
  - Wand color will morph depending on spells cast with it
+ - Wand haste uses potion effect to avoid walk/fly speed bugs and conflicts
 
 ## 3.0
 

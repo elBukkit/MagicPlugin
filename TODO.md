@@ -24,7 +24,6 @@ http://jira.elmakers.com/browse/MAGIC
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
  - Async player data loading/saving
  - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
- - Apply potion effects while holding wand, Could replace haste with this.
  
 ## DOCUMENTATION / DEMO STUFF
 

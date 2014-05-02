@@ -60,10 +60,7 @@ public class WandLevel {
 	public static float maxDamageReductionProjectiles = 0.2f;
 	public static float maxCostReduction = 0.5f;
 	public static float maxCooldownReduction = 0.5f;
-	public static float maxFlySpeedIncrease = 0.1f;
-	public static float maxWalkSpeedIncrease = 0.4f;
-	public static float maxFlySpeed = 0.8f;
-	public static float maxWalkSpeed = 0.8f;
+	public static float maxHasteLevel = 20;
 	public static int minLevel = 10;
 	public static int maxLevel = 40;
 	
@@ -86,10 +83,7 @@ public class WandLevel {
 		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_projectiles", maxDamageReductionProjectiles);
 		maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
 		maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
-		maxFlySpeedIncrease = (float)properties.getDouble("max_fly_speed_increase", maxFlySpeedIncrease);
-		maxWalkSpeedIncrease = (float)properties.getDouble("max_walk_speed_increase", maxWalkSpeedIncrease);
-		maxFlySpeed = (float)properties.getDouble("max_fly_speed", maxFlySpeed);
-		maxWalkSpeed = (float)properties.getDouble("max_walk_speed", maxWalkSpeed);
+		maxHasteLevel = (float)properties.getDouble("max_haste", maxHasteLevel);
 	}
 	
 	public static WandLevel getLevel(int level) {
