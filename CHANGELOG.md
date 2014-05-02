@@ -24,7 +24,8 @@
  - Fix Hat being exploitable for blocks
  - Add Elementals integration
  - Wand color will morph depending on spells cast with it
- - Wand haste uses potion effect to avoid walk/fly speed bugs and conflicts
+ - Wand haste, hunger and health regen use potion effects (looks better, avoids conflicts)
+ - Curse, Boon, Wither etc effects stack properly
 
 ## 3.0
 

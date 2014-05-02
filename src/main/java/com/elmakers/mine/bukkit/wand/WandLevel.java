@@ -50,8 +50,8 @@ public class WandLevel {
 	public static int maxUses = 500;
 	public static int maxMaxXp = 1500;
 	public static int maxXpRegeneration = 150;
-	public static float maxHungerRegeneration = 0.2f;
-	public static float maxHealthRegeneration = 0.2f;
+	public static float maxHungerRegeneration = 5;
+	public static float maxHealthRegeneration = 5;
 	public static float maxDamageReduction = 0.4f;
 	public static float maxDamageReductionExplosions = 0.3f;
 	public static float maxDamageReductionFalling = 0.9f;
@@ -321,14 +321,14 @@ public class WandLevel {
 				}
 				break;
 			case 10:
-				int healthRegeneration = wand.getHealthRegeneration();
+				float healthRegeneration = wand.getHealthRegeneration();
 				if (healthRegeneration < maxValue) {
 					addedProperties = true;
 					wandProperties.set("health_regeneration", (Integer)(int)(Math.min(maxValue, healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability))));
 				}
 				break;
 			case 11:
-				int hungerRegeneration = wand.getHungerRegeneration();
+				float hungerRegeneration = wand.getHungerRegeneration();
 				if (hungerRegeneration < maxValue) {
 					addedProperties = true;
 					wandProperties.set("hunger_regeneration", (Integer)(int)(Math.min(maxValue, hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability))));

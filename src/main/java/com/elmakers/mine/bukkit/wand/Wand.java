@@ -116,8 +116,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	private int xpRegeneration = 0;
 	private int xpMax = 0;
-	private int healthRegeneration = 0;
-	private int hungerRegeneration = 0;
+	private float healthRegeneration = 0;
+	private PotionEffect healthRegenEffect = null;
+	private float hungerRegeneration = 0;
+	private PotionEffect hungerRegenEffect = null;
 	
 	private int effectColor = 0;
 	private ParticleType effectParticle = null;
@@ -301,11 +303,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateMana();
 	}
 
-	public int getHealthRegeneration() {
+	public float getHealthRegeneration() {
 		return healthRegeneration;
 	}
 
-	public int getHungerRegeneration() {
+	public float getHungerRegeneration() {
 		return hungerRegeneration;
 	}
 	
@@ -875,9 +877,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		xpMax = safe ? Math.max(_xpMax, xpMax) : _xpMax;
 		int _xp = wandConfig.getInt("xp", xp);
 		xp = safe ? Math.max(_xp, xp) : _xp;
-		int _healthRegeneration = wandConfig.getInt("health_regeneration", healthRegeneration);
+		float _healthRegeneration = (float)wandConfig.getDouble("health_regeneration", healthRegeneration);
 		healthRegeneration = safe ? Math.max(_healthRegeneration, healthRegeneration) : _healthRegeneration;
-		int _hungerRegeneration = wandConfig.getInt("hunger_regeneration", hungerRegeneration);
+		float _hungerRegeneration = (float)wandConfig.getDouble("hunger_regeneration", hungerRegeneration);
 		hungerRegeneration = safe ? Math.max(_hungerRegeneration, hungerRegeneration) : _hungerRegeneration;
 		int _uses = wandConfig.getInt("uses", uses);
 		uses = safe ? Math.max(_uses, uses) : _uses;
@@ -1163,8 +1165,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_fire", damageReductionFire, WandLevel.maxDamageReductionFire));
 			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString("wand.protection_blast", damageReductionExplosions, WandLevel.maxDamageReductionExplosions));
 		}
-		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.health_regeneration", healthRegeneration, WandLevel.maxHealthRegeneration));
-		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.hunger_regeneration", hungerRegeneration, WandLevel.maxHungerRegeneration));
+		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.health_regeneration", healthRegeneration));
+		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.hunger_regeneration", hungerRegeneration));
 	}
 	
 	private String getLevelString(String templateName, float amount)
@@ -1602,8 +1604,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_falling", damageReductionFalling)); }
 		if (other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_fire", damageReductionFire)); }
 		if (other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_explosions", damageReductionExplosions)); }
-		if (other.healthRegeneration > healthRegeneration) { healthRegeneration = other.healthRegeneration; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.health_regeneration", healthRegeneration, WandLevel.maxHungerRegeneration)); }
-		if (other.hungerRegeneration > hungerRegeneration) { hungerRegeneration = other.hungerRegeneration; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.hunger_regeneration", hungerRegeneration, WandLevel.maxHealthRegeneration)); }
+		if (other.healthRegeneration > healthRegeneration) { healthRegeneration = other.healthRegeneration; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.health_regeneration", healthRegeneration)); }
+		if (other.hungerRegeneration > hungerRegeneration) { hungerRegeneration = other.hungerRegeneration; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.hunger_regeneration", hungerRegeneration)); }
 		if (other.speedIncrease > speedIncrease) { speedIncrease = other.speedIncrease; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.haste", speedIncrease)); }
 		
 		// Mix colors
@@ -2127,28 +2129,25 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			
 			CompatibilityUtils.applyPotionEffect(player, hasteEffect);
 		}
+		if (healthRegeneration > 0) {
+			int regenLevel = (int)(healthRegeneration * WandLevel.maxHealthRegeneration);
+			if (healthRegenEffect == null || healthRegenEffect.getAmplifier() != regenLevel) {
+				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, 40, regenLevel, true);
+			}
+			
+			CompatibilityUtils.applyPotionEffect(player, healthRegenEffect);
+		}
+		if (hungerRegeneration > 0) {
+			int regenLevel = (int)(hungerRegeneration * WandLevel.maxHungerRegeneration);
+			if (hungerRegenEffect == null || hungerRegenEffect.getAmplifier() != regenLevel) {
+				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, 40, regenLevel, true);
+			}
+			
+			CompatibilityUtils.applyPotionEffect(player, hungerRegenEffect);
+		}
 		if (usesMana()) {
 			xp = Math.min(xpMax, xp + xpRegeneration);
 			updateMana();
-		}
-		double maxHealth = player.getMaxHealth();
-		if (healthRegeneration > 0 && player.getHealth() < maxHealth) {
-			double health = healthRegeneration * WandLevel.maxHealthRegeneration;
-			player.setHealth(Math.min(maxHealth, player.getHealth() + health));
-		}
-		double maxFoodLevel = 20;
-		if (hungerRegeneration > 0 && player.getFoodLevel() < maxFoodLevel) {
-			double regen = hungerRegeneration * WandLevel.maxHungerRegeneration;
-			if (regen < 1) {
-				regen = (Math.random() < regen) ? 1 : 0;
-			}
-			if (regen > 0) {
-				double food = player.getFoodLevel() + regen;
-				if (food >= 20) {
-					player.setExhaustion(0);
-				}
-				player.setFoodLevel(Math.min(20, (int)food));
-			}
 		}
 		if (damageReductionFire > 0 && player.getFireTicks() > 0) {
 			player.setFireTicks(0);
