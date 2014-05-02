@@ -1139,7 +1139,7 @@ wither:
         xp: 60
 arrowrain:
     icon: bow
-    category: dark
+    category: combat
     class: ProjectileSpell
     pvp_restricted: true
     effects:
@@ -1182,7 +1182,7 @@ meteor:
         xp: 80
 arrow:
     icon: arrow
-    category: dark
+    category: combat
     class: ProjectileSpell
     pvp_restricted: true
     effects:
@@ -1198,7 +1198,7 @@ arrow:
         xp: 25
 sniper:
     icon: gold_nugget
-    category: dark
+    category: combat
     class: ProjectileSpell
     pvp_restricted: true
     effects:
@@ -1212,7 +1212,7 @@ sniper:
       fire: false
       speed: 6
       spread: 0
-      damage: 2.5
+      damage: 2
     costs:
         xp: 50
 weather:
@@ -2523,7 +2523,7 @@ superemp:
         xp: 200
 disintegrate:
     icon: bone
-    category: dark
+    category: combat
     pvp_restricted: true
     class: DisintegrateSpell
     effects:
@@ -2748,7 +2748,7 @@ laser:
         xp: 120
 shrink:
     icon: skull_item
-    category: dark
+    category: combat
     class: ShrinkSpell
     pvp_restricted: true
     effects:

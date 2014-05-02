@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -2093,6 +2094,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Spell spell = getActiveSpell();
 		if (spell != null) {
 			if (spell.cast()) {
+				SpellCategory spellCategory = spell.getCategory();
+				Color categoryColor = spellCategory == null ? null : spellCategory.getColor();
+				if (categoryColor != null) {
+					Color currentColor = Color.fromRGB(effectColor);
+					Color newColor = currentColor.mixColors(categoryColor, currentColor, currentColor, currentColor, currentColor);
+					effectColor = newColor.asRGB();
+					// Note that we don't save this change.
+					// The hope is that the wand will get saved at some point later
+					// And we don't want to trigger NBT writes every spell cast.
+					// And the effect color morphing isn't all that important if a few
+					// casts get lost.
+				}
+				
 				use();
 				return true;
 			}

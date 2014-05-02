@@ -23,6 +23,7 @@
  - Spells will automatically reactivate on login (Fly, Levitate, etc)
  - Fix Hat being exploitable for blocks
  - Add Elementals integration
+ - Wand color will morph depending on spells cast with it
 
 ## 3.0
 

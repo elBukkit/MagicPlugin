@@ -145,6 +145,9 @@ duration:
     lasts_minutes: Lasts for $minutes minutes
     lasts_hours: Lasts for $hours hours
 categories:
+    combat:
+        name: Combat Magic
+        description: Basic Attack Spells
     automata:
         name: Automata
         description: Create Life!

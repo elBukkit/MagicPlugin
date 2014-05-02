@@ -10,7 +10,6 @@ http://jira.elmakers.com/browse/MAGIC
  
  - Tweaking/Balancing - haste, cooldowns, etc
  - Finish localization
- - Player-specific wands, check player data- rileycross, treed, obibenkenobie .. ?
  
 ## To Add to JIRA
 
@@ -24,6 +23,8 @@ http://jira.elmakers.com/browse/MAGIC
  - Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
  - Async player data loading/saving
+ - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
+ - Apply potion effects while holding wand, Could replace haste with this.
  
 ## DOCUMENTATION / DEMO STUFF
 
@@ -31,10 +32,6 @@ http://jira.elmakers.com/browse/MAGIC
 
  - Add "wand properties" infobook, other admin-oriented books?
  - Update web site wand instructions
-
-##  API STUFF
-
- - API Tutorials, when API is complete.
 
 ## NEW SPELLS
 
@@ -52,16 +49,9 @@ http://jira.elmakers.com/browse/MAGIC
  - Biome modification (mega-frost).
  - Decorate, places paintings at target
 
-## WAND PROGRESSION
-
- - Wand auto-colorization (via spell categories)
- - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
- - Add option to not be able to use another player's wand
-
 ## OTHER STUFF
  
  - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
- - Apply potion effects while holding wand, Could replace haste with this.
  - Add fall protection to bounce spell (generalize it)
  - Make volley multi-sample?
  - Alter names sheep "jeb_", - others "Dinnerbone" ?
@@ -71,9 +61,6 @@ http://jira.elmakers.com/browse/MAGIC
  
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.
- - Add safe undo:
-   - Track falling block entities (sandblast, toss, etc)
-   - Auto-expand?
  - prevent pillar from passing through non-air blocks of different materials than the target
  - If possible, label more material data like stair direction.
  - Add locale option to suffix messages.yml
