@@ -642,12 +642,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 	
 	@Override
-	public boolean undo(Block target) {
+	public boolean undo(Block target) 
+	{
 		return getUndoQueue().undo(this, target);
 	}
 	
 	@Override
-	public boolean cancelPending() {
+	public boolean cancelPending() 
+	{
 		boolean stoppedPending = false;
 		if (pendingBatches.size() > 0) {
 			List<BlockBatch> batches = new ArrayList<BlockBatch>();
@@ -664,21 +666,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 	
 	@Override
-	public boolean undo() {
+	public boolean undo() 
+	{
 		
 		if (cancelPending()) return true;
 		return getUndoQueue().undo(this);
 	}
 	
 	@Override
-	public boolean commit() {
-		return getUndoQueue().commit();
-	}
-
-	@Override
-	public Spell getSpell(String name)
+	public boolean commit() 
 	{
-		return getSpell(name, getPlayer());
+		return getUndoQueue().commit();
 	}
 	
 	public boolean hasCastPermission(Spell spell)
@@ -686,7 +684,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return spell.hasCastPermission(getCommandSender());
 	}
 	
-	public Spell getSpell(String key, Player usePermissions)
+	@Override
+	public Spell getSpell(String key)
 	{
 		MageSpell playerSpell = spells.get(key);
 		if (playerSpell == null)
@@ -695,7 +694,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			if (spellTemplate == null) return null;
 			Spell newSpell = spellTemplate.createSpell();
 			if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
-			spells.put(newSpell.getKey(), (MageSpell)newSpell);
+			playerSpell = (MageSpell)newSpell;
+			spells.put(newSpell.getKey(), playerSpell);
 		}
 		playerSpell.setMage(this);
 
