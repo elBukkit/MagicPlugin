@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -392,14 +391,6 @@ public abstract class TargetingSpell extends BaseSpell {
 			}
 
 			Target newScore = new Target(getLocation(), entity, getMaxRange());
-			
-
-			if (controller.isElemental(entity)) {
-				Bukkit.getLogger().info("TARGET ELEMENTAL: " + newScore.getScore());
-			}
-			
-			
-			
 			if (newScore.getScore() > 0)
 			{
 				scored.add(newScore);
