@@ -462,7 +462,6 @@ random:
       schematic|rainbow: 0,2,5,10,100
       schematic|lantern: 0,1,20,50,100
       schematic|creeper_rug: 0,0,5,10,100
-      schematic|stash_chest: 0,0,0,1,100
       schematic|elder_tree: 0,0,0,1,100
       schematic|church: 0,0,5,10,100
       schematic|blacksmith: 0,0,5,10,100

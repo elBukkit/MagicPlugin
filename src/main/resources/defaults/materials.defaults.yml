@@ -292,6 +292,19 @@ restricted:
 - ender_portal
 - portal
 - mob_spawner
+- iron_block
+- gold_block
+- diamond_block
+- emerald_block
+- coal_block
+- iron_ore
+- gold_ore
+- diamond_ore
+- emerald_ore
+- coal_ore
+- redstone_ore
+- anvil
+- chest
 
 # Which materials the AnimateSpell can't be cast on
 # This generally means Autonoma cannot be made out of these materials.
