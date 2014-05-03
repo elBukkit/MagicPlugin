@@ -751,14 +751,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public boolean isSuperProtected()
 	{
-		if (controller.hasPermission(getPlayer(), "Magic.protected")) return true;
+		// if (controller.hasPermission(getPlayer(), "Magic.protected")) return true;
 		return activeWand != null && activeWand.isSuperProtected();
 	}
 	
 	@Override
 	public boolean isSuperPowered()
 	{
-		if (controller.hasPermission(getPlayer(), "Magic.powered")) return true;		
+		// if (controller.hasPermission(getPlayer(), "Magic.powered")) return true;		
 		return activeWand != null && activeWand.isSuperPowered();
 	}
 	

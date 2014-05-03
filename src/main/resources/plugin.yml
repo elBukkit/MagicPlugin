@@ -227,14 +227,6 @@ permissions:
     description: A player may use a wand even if it is bound to another player.
     default: op
     type: boolean
-  Magic.protected:
-    description: A player is always treated as if they have wand "Protection X".
-    default: false
-    type: boolean
-  Magic.powered:
-    description: A player is always treated as if they have wand "Power X".
-    default: false
-    type: boolean
   Magic.cast:
     description: The spells a player may cast
     type: list
