@@ -111,8 +111,7 @@
 		<dependency>
 	        <groupId>org.mcstats.bukkit</groupId>
 	        <artifactId>metrics</artifactId>
-	        <version>R6</version>
-	        <scope>compile</scope>
+	        <version>R7</version>
 	    </dependency>
 		<dependency>
 			<groupId>com.sk89q</groupId>
