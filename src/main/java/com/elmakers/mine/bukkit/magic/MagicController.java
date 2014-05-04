@@ -110,6 +110,9 @@ import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
 import com.elmakers.mine.bukkit.magic.listener.CraftingController;
 import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
+import com.elmakers.mine.bukkit.metrics.CategoryCastPlotter;
+import com.elmakers.mine.bukkit.metrics.DeltaPlotter;
+import com.elmakers.mine.bukkit.metrics.SpellCastPlotter;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
@@ -755,41 +758,26 @@ public class MagicController implements Listener, MageController
 			    if (metricsLevel > 2) {
 			    	Graph categoryGraph = metrics.createGraph("Casts by Category");
 			    	for (final SpellCategory category : categories.values()) {
-			    		categoryGraph.addPlotter(new Metrics.Plotter(category.getName()) {						
-							@Override public int getValue() { 
-								long castCount = 0;
-								try {
-									Collection<SpellTemplate> spells = category.getSpells();
-									for (SpellTemplate spell : spells) {
-										if (spell instanceof MageSpell) {
-											castCount += ((MageSpell)spell).getCastCount();
-										}
-									}
-								} catch (Exception ex) {
-									ex.printStackTrace();
-								}
-								return (int)castCount; 
-							}
-						});
+			    		categoryGraph.addPlotter(new DeltaPlotter(new CategoryCastPlotter(category)));
+			    	}
+			    	
+			    	Graph totalCategoryGraph = metrics.createGraph("Total Casts by Category");
+			    	for (final SpellCategory category : categories.values()) {
+			    		totalCategoryGraph.addPlotter(new CategoryCastPlotter(category));
 			    	}
 			    }
 
 			    if (metricsLevel > 3) {
 			    	Graph spellGraph = metrics.createGraph("Casts");
 			    	for (final SpellTemplate spell : spells.values()) {
-			    		spellGraph.addPlotter(new Metrics.Plotter(spell.getName()) {						
-							@Override public int getValue() { 
-								long castCount = 0;
-								try {
-									if (spell instanceof MageSpell) {
-										castCount = ((MageSpell)spell).getCastCount();
-									}
-								} catch (Exception ex) {
-									ex.printStackTrace();
-								}
-								return (int)castCount; 
-							}
-						});
+			    		if (!(spell instanceof Spell)) continue;
+			    		spellGraph.addPlotter(new DeltaPlotter(new SpellCastPlotter((Spell)spell)));
+			    	}
+			    	
+			    	Graph totalCastGraph = metrics.createGraph("Total Casts");
+			    	for (final SpellTemplate spell : spells.values()) {
+			    		if (!(spell instanceof Spell)) continue;
+			    		totalCastGraph.addPlotter(new SpellCastPlotter((Spell)spell));
 			    	}
 			    }
 			    
