@@ -305,6 +305,7 @@ restricted:
 - redstone_ore
 - anvil
 - chest
+- furnace
 
 # Which materials the AnimateSpell can't be cast on
 # This generally means Autonoma cannot be made out of these materials.
@@ -318,8 +319,6 @@ restricted_animate:
 - stationary_lava
 - stained_clay
 - wood
-- log
-- log_2
 - sandstone
 - stone
 - bedrock
