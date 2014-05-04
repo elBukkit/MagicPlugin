@@ -50,8 +50,6 @@ public class ShrinkSpell extends BlockSpell
 			if (controller.isElemental(targetEntity))
 			{
 				double elementalSize = controller.getElementalScale(targetEntity);
-				Bukkit.getLogger().info("ELEMENTAL: " + elementalSize);
-				
 				if (elementalSize < 0.1) {
 					int elementalDamage = parameters.getInt("elemental_damage", DEFAULT_ENTITY_DAMAGE);
 					controller.damageElemental(targetEntity, elementalDamage, 0, getPlayer());
@@ -109,7 +107,7 @@ public class ShrinkSpell extends BlockSpell
 			Location targetLocation = targetEntity.getLocation();
 			if (li instanceof Player) {
 				li.damage(damage, getPlayer());
-				if (ownerName != null || data != 3 && li.isDead() && !alreadyDead) {
+				if (ownerName != null && li.isDead() && !alreadyDead) {
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
 			}
@@ -134,7 +132,7 @@ public class ShrinkSpell extends BlockSpell
 				slime.setSize(slime.getSize() - 1);
 			} else {
 				li.damage(damage, getPlayer());
-				if (ownerName != null || data != 3 && (li.isDead() || li.getHealth() == 0) && !alreadyDead) {
+				if ((ownerName != null || data != 3) && (li.isDead() || li.getHealth() == 0) && !alreadyDead) {
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
 			}
