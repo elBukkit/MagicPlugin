@@ -12,6 +12,7 @@ public class CategoryCastPlotter extends Plotter {
 	private final SpellCategory category;
 	
 	public CategoryCastPlotter(SpellCategory category) {
+		super(category.getName());
 		this.category = category;
 	}
 	

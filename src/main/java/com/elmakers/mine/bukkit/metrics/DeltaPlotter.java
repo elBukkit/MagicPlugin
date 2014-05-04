@@ -7,6 +7,7 @@ public class DeltaPlotter extends Plotter {
 	private int previousValue;
 	
 	public DeltaPlotter(Plotter plotter) {
+		super(plotter.getColumnName());
 		this.plotter = plotter;
 		previousValue = plotter.getValue();
 	}
