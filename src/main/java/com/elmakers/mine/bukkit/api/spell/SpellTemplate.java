@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.spell;
 
 import java.util.Collection;
 
+import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -15,6 +16,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
 	public String getName();
 	public String getDescription();
 	public String getKey();
+	public Color getColor();
 	public SpellCategory getCategory();
 	public long getCastCount();
 	public String getUsage();
