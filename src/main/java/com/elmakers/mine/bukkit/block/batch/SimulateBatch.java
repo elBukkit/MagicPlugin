@@ -19,6 +19,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -631,6 +632,8 @@ public class SimulateBatch extends UndoableBatch {
 					// We'll get the players from the Mages list
 					if (entity instanceof Player || !(entity instanceof LivingEntity) || entity.isDead()) continue;
 					if (!entity.getLocation().getWorld().equals(center.getWorld())) continue;
+					LivingEntity li = (LivingEntity)entity;
+					if (li.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 					Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, false);
 					int score = newScore.getScore();
 					if (bestTarget == null || score > bestTarget.getScore()) {
@@ -663,6 +666,9 @@ public class SimulateBatch extends UndoableBatch {
 								}
 							}
 						}
+					} else {
+						Player player = mage.getPlayer();
+						if (player.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 					}
 					
 					Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, false);
