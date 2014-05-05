@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.spell;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.block.UndoList;
 
@@ -61,13 +60,11 @@ public abstract class UndoableSpell extends TargetingSpell {
 	
 	public void registerForUndo(Entity entity)
 	{
-		if (entity instanceof Player) return;
 		getUndoList().add(entity);
 	}
 	
 	public void registerModified(Entity entity)
 	{
-		if (entity instanceof Player) return;
 		getUndoList().modify(entity);
 	}
 	
