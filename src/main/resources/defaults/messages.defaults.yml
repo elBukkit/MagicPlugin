@@ -151,11 +151,11 @@ categories:
     automata:
         name: Automata
         description: Create Life!
-        color: '00AACC'
+        color: 'FFA500'
     master:
         name: Master
         description: All the Really Powerful Stuff
-        color: 'FFA500'
+        color: '00AACC'
     airbending:
         name: Airbending
         description: Spells for moving things with air

@@ -372,7 +372,7 @@ worm:
         "lava transparent air,$birth,redstone_block": 0,10,20
         "lightning transparent air,$birth,redstone_block": 0,10,20
         "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
-        "none": 100,50,20
+        "none": 20,10,5
     parameters:
         bypass_undo: true
         allow_max_range: false
@@ -2769,7 +2769,7 @@ shrink:
         xp: 20
 flare:
     icon: firework
-    category: firebending
+    category: light
     class: FireworkSpell
     effects:
         cast:
@@ -2831,9 +2831,11 @@ fly:
            particle: spell
            particle_count: 20
     parameters:
-        speed: 1.8
+        speed: 2
     costs:
-        xp: 500
+        xp: 100
+    active_costs:
+        xp: 50
 force:
     icon: leash
     category: airbending
