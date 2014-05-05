@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.lang.ref.WeakReference;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -18,7 +20,7 @@ public class Target implements Comparable<Target>
 
 	private Location source;
 	private Location location;
-	private Entity   entity;
+	private WeakReference<Entity>   _entity;
 	private Mage	 mage;
 	private boolean  reverseDistance = false;
 
@@ -75,7 +77,7 @@ public class Target implements Comparable<Target>
 	{
 		this.maxDistance = range;
 		this.source = sourceLocation;
-		this.entity = entity;
+		this._entity = new WeakReference<Entity>(entity);
 		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
@@ -85,7 +87,7 @@ public class Target implements Comparable<Target>
 		this.maxDistance = range;
 		this.maxAngle = angle;
 		this.source = sourceLocation;
-		this.entity = entity;
+		this._entity = new WeakReference<Entity>(entity);
 		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
@@ -96,7 +98,7 @@ public class Target implements Comparable<Target>
 		this.maxAngle = angle;
 		this.reverseDistance = reverseDistance;
 		this.source = sourceLocation;
-		this.entity = entity;
+		this._entity = new WeakReference<Entity>(entity);
 		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
@@ -108,7 +110,7 @@ public class Target implements Comparable<Target>
 		this.maxAngle = angle;
 		this.reverseDistance = reverseDistance;
 		this.source = sourceLocation;
-		this.entity = entity;
+		this._entity = new WeakReference<Entity>(entity);
 		if (entity != null) this.location = entity.getLocation();
 		calculateScore();
 	}
@@ -121,7 +123,9 @@ public class Target implements Comparable<Target>
 		this.reverseDistance = reverseDistance;
 		this.source = sourceLocation;
 		this.mage = mage;
-		if (mage != null) this.entity = mage.getPlayer();
+		if (mage != null) {
+			this._entity = new WeakReference<Entity>(mage.getPlayer());
+		}
 		if (mage != null) this.location = mage.getLocation();
 		calculateScore();
 	}
@@ -130,7 +134,7 @@ public class Target implements Comparable<Target>
 	{
 		this.maxDistance = 0;
 		this.source = sourceLocation;
-		this.entity = entity;
+		this._entity = new WeakReference<Entity>(entity);
 		if (entity != null) this.location = entity.getLocation();
 	}
 	
@@ -138,7 +142,7 @@ public class Target implements Comparable<Target>
 	{
 		this.maxDistance = 0;
 		this.source = sourceLocation;
-		this.entity = entity;
+		this._entity = new WeakReference<Entity>(entity);
 		if (block != null) {
 			this.location = block.getLocation();
 		} else if (entity != null) {
@@ -182,6 +186,7 @@ public class Target implements Comparable<Target>
 
 		// Favor targeting players, a bit
 		// TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
+		Entity entity = getEntity();
 		if (entity != null && entity.hasMetadata("NPC"))
 		{
 			score = score - 1;
@@ -213,7 +218,7 @@ public class Target implements Comparable<Target>
 
 	public boolean hasEntity()
 	{
-		return entity != null;
+		return getEntity() != null;
 	}
 
 	public boolean isValid()
@@ -228,7 +233,7 @@ public class Target implements Comparable<Target>
 
 	public Entity getEntity()
 	{
-		return entity;
+		return _entity == null ? null : _entity.get();
 	}
 
 	public Block getBlock()
@@ -279,8 +284,10 @@ public class Target implements Comparable<Target>
 	
 	public void setEntity(Entity entity)
 	{
-		this.entity = entity;
-		this.location = entity.getLocation();
+		this._entity = new WeakReference<Entity>(entity);
+		if (entity != null) {
+			this.location = entity.getLocation();
+		}
 		this.calculateScore();
 	}
 }

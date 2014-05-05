@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -37,9 +40,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 {
 	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
-	protected Set<Entity> 		   			entities;
+	protected Set<UUID> 		   			entities;
 	protected List<Runnable>				runnables;
-	protected HashMap<Entity, EntityData> 	modifiedEntities;
+	protected HashMap<UUID, EntityData> 	modifiedEntities;
 	
 	protected final Mage			owner;
 	protected final Plugin		   	plugin;
@@ -194,21 +197,38 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
 	public boolean undo()
 	{
-		// This part doesn't happen asynchronously
-		if (entities != null) {
-			for (Entity entity : entities) {
-				if (entity.isValid()) {
-					entity.remove();
+		// This part doesn't happen in a batch, and may lag on large lists
+		if (entities != null || modifiedEntities != null) {
+			Map<UUID, Entity> currentEntities = new HashMap<UUID, Entity>();
+			World world = Bukkit.getWorld(worldName);
+			if (world != null) {
+				List<Entity> entities = world.getEntities();
+				for (Entity entity : entities) {
+					currentEntities.put(entity.getUniqueId(), entity);
 				}
 			}
-			entities = null;
-		}
-		if (modifiedEntities != null) {
-			for (Entry<Entity, EntityData> entry : modifiedEntities.entrySet()) {
-				entry.getValue().modify(entry.getKey());
+			if (entities != null) {
+				for (UUID entityID : entities) {
+					Entity entity = currentEntities.get(entityID);
+					if (entity != null && entity.isValid()) {
+						entity.remove();
+					}
+				}
+				entities = null;
 			}
-			modifiedEntities = null;
+			if (modifiedEntities != null) {
+				for (Entry<UUID, EntityData> entry : modifiedEntities.entrySet()) {
+					Entity entity = currentEntities.get(entry.getKey());
+					if (entity == null) {
+						entry.getValue().spawn();
+					} else {
+						entry.getValue().modify(entity);
+					}
+				}
+				modifiedEntities = null;
+			}
 		}
+		
 		if (runnables != null) {
 			for (Runnable runnable : runnables) {
 				runnable.run();
@@ -218,6 +238,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
 		if (blockList == null) return true;
 
+		// Block changes will be performed in a batch
 		UndoBatch batch = new UndoBatch(this);
 		if (!owner.addPendingBlockBatch(batch)) {
 			return false;
@@ -277,11 +298,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	
 	public void add(Entity entity)
 	{
-		if (entities == null) entities = new HashSet<Entity>();
+		if (entities == null) entities = new HashSet<UUID>();
 		if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
 		if (worldName == null) worldName = entity.getWorld().getName();
 		
-		entities.add(entity);
+		entities.add(entity.getUniqueId());
 		watch(entity);
 		contain(entity.getLocation().toVector());
 		modifiedTime = System.currentTimeMillis();
@@ -305,11 +326,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		if (entities != null && entities.contains(entity) && !entity.isValid()) {
 			entities.remove(entity);
 		} else {
-			if (modifiedEntities == null) modifiedEntities = new HashMap<Entity, EntityData>();
+			if (modifiedEntities == null) modifiedEntities = new HashMap<UUID, EntityData>();
 			EntityData entityData = modifiedEntities.get(entity);
 			if (entityData == null) {
 				entityData = new EntityData(entity);
-				modifiedEntities.put(entity, entityData);
+				modifiedEntities.put(entity.getUniqueId(), entityData);
 			}
 			entityData.setHasMoved(hasMoved);
 			entityData.setHasPotionEffects(hasPotionEffects);
