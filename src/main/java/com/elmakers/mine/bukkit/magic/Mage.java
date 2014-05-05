@@ -780,7 +780,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public Color getEffectColor() {
 		if (activeWand == null) return null;
-		return Color.fromRGB(activeWand.getEffectColor());
+		return activeWand.getEffectColor();
 	}
 	
 	@Override

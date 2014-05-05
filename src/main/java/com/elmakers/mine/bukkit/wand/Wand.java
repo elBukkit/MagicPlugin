@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -44,6 +45,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -52,6 +54,8 @@ import com.elmakers.mine.bukkit.utility.Messages;
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
+	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
+	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
 	
 	// REMEMBER! Each of these MUST have a corresponding class in .traders, else traders will
 	// destroy the corresponding data.
@@ -121,7 +125,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private float hungerRegeneration = 0;
 	private PotionEffect hungerRegenEffect = null;
 	
-	private int effectColor = 0;
+	private ColorHD effectColor = null;
+	private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
+	private float effectColorMixWeight = DEFAULT_WAND_COLOR_MIX_WEIGHT;	
 	private ParticleType effectParticle = null;
 	private float effectParticleData = 0;
 	private int effectParticleCount = 0;
@@ -784,7 +790,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("hunger_regeneration", hungerRegeneration);
 		node.set("uses", uses);
 		node.set("locked", locked);
-		node.set("effect_color", Integer.toString(effectColor, 16));
+		node.set("effect_color", effectColor == null ? "none" : effectColor.toString());
 		node.set("effect_bubbles", effectBubbles);
 		node.set("effect_particle_data", Float.toString(effectParticleData));
 		node.set("effect_particle_count", effectParticleCount);
@@ -836,19 +842,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void setEffectColor(String hexColor) {
-		if (hexColor == null || hexColor.length() == 0) {
-			effectColor = 0;
+		if (hexColor == null || hexColor.length() == 0 || hexColor.equals("none")) {
+			effectColor = null;
 			return;
 		}
-		try {
-			if (hexColor.equals("random")) {
-				effectColor = (int)(Math.random() * 0xFFFFFF);
-			} else {
-				effectColor = Integer.parseInt(hexColor, 16);
-			}
-		} catch (Exception ex) {
-			
-		}
+		effectColor = new ColorHD(hexColor);
 	}
 	
 	public void loadProperties(ConfigurationSection wandConfig, boolean safe) {
@@ -1578,8 +1576,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Wand wand = null;
 		try {
 			wand = new Wand(controller, templateName);
-		} catch (IllegalArgumentException ex) {
-			
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return wand; 
 	}
@@ -1609,11 +1607,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.speedIncrease > speedIncrease) { speedIncrease = other.speedIncrease; modified = true; sendAddMessage("wand.upgraded_property", getLevelString("wand.haste", speedIncrease)); }
 		
 		// Mix colors
-		if (other.effectColor > 0) {
-			Color color1 = Color.fromRGB(effectColor);
-			Color color2 = Color.fromRGB(other.effectColor);
-			Color newColor = color1.mixColors(color2);
-			effectColor = newColor.asRGB();
+		if (other.effectColor != null) {
+			if (this.effectColor == null) {
+				this.effectColor = other.effectColor;
+			} else {
+				this.effectColor = this.effectColor.mixColor(other.effectColor, other.effectColorMixWeight);
+			}
 			modified = true;
 		}
 		
@@ -1977,7 +1976,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Update Bubble effects effects
 		if (effectBubbles) {
-			InventoryUtils.addPotionEffect(player, effectColor);
+			InventoryUtils.addPotionEffect(player, effectColor.getColor());
 		}
 		
 		Location location = mage.getLocation();
@@ -2067,10 +2066,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (spell.cast()) {
 				SpellCategory spellCategory = spell.getCategory();
 				Color categoryColor = spellCategory == null ? null : spellCategory.getColor();
-				if (categoryColor != null) {
-					Color currentColor = Color.fromRGB(effectColor);
-					Color newColor = currentColor.mixColors(categoryColor, currentColor, currentColor, currentColor, currentColor);
-					effectColor = newColor.asRGB();
+				if (categoryColor != null && this.effectColor != null) {
+					ColorHD oldColor = this.effectColor;
+					this.effectColor = this.effectColor.mixColor(categoryColor, effectColorSpellMixWeight);
+					
+					Bukkit.getLogger().info("Blended " + oldColor + " with " + categoryColor + " and got " + this.effectColor);
 					// Note that we don't save this change.
 					// The hope is that the wand will get saved at some point later
 					// And we don't want to trigger NBT writes every spell cast.
@@ -2124,7 +2124,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (speedIncrease > 0) {
 			int hasteLevel = (int)(speedIncrease * WandLevel.maxHasteLevel);
 			if (hasteEffect == null || hasteEffect.getAmplifier() != hasteLevel) {
-				hasteEffect = new PotionEffect(PotionEffectType.SPEED, 40, hasteLevel, true);
+				hasteEffect = new PotionEffect(PotionEffectType.SPEED, 80, hasteLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, hasteEffect);
@@ -2132,7 +2132,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (healthRegeneration > 0) {
 			int regenLevel = (int)(healthRegeneration * WandLevel.maxHealthRegeneration);
 			if (healthRegenEffect == null || healthRegenEffect.getAmplifier() != regenLevel) {
-				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, 40, regenLevel, true);
+				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, 80, regenLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, healthRegenEffect);
@@ -2140,7 +2140,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (hungerRegeneration > 0) {
 			int regenLevel = (int)(hungerRegeneration * WandLevel.maxHungerRegeneration);
 			if (hungerRegenEffect == null || hungerRegenEffect.getAmplifier() != regenLevel) {
-				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, 40, regenLevel, true);
+				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, 80, regenLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, hungerRegenEffect);
@@ -2230,8 +2230,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		hotbar.clear();
 	}
 	
-	public int getEffectColor() {
-		return effectColor;
+	public Color getEffectColor() {
+		return effectColor == null ? null : effectColor.getColor();
 	}
 	
 	public Inventory getHotbar() {
