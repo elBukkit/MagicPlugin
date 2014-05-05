@@ -38,6 +38,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
 	protected Set<Entity> 		   			entities;
 	protected HashMap<Entity, EntityData> 	modifiedEntities;
+	
+	protected final Mage			owner;
 	protected final Plugin		   	plugin;
 
 	protected int                  	passesRemaining  = 1;
@@ -49,9 +51,18 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	protected final long			createdTime;
 	protected long					modifiedTime;
 	
-	public UndoList(Plugin plugin)
+	protected String				name;
+
+	public UndoList(Mage mage, String name)
 	{
-		this.plugin = plugin;
+		this(mage);
+		this.name = name;
+	}
+	
+	public UndoList(Mage mage)
+	{
+		this.plugin = mage.getController().getPlugin();
+		this.owner = mage;
 		createdTime = System.currentTimeMillis();
 		modifiedTime = createdTime;
 	}
@@ -59,6 +70,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	public UndoList(UndoList other)
 	{
 		super(other);
+		this.owner = other.owner;
+		this.name = other.name;
 		this.plugin = other.plugin;
 		timeToLive = other.timeToLive;
 		passesRemaining = other.passesRemaining;
@@ -210,6 +223,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		super.load(node);
 		timeToLive = node.getInt("time_to_live", timeToLive);
 		passesRemaining = node.getInt("passes_remaining", passesRemaining);
+		name = node.getString("name", name);
 	}
 	
 	@Override
@@ -218,6 +232,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		super.save(node);
 		node.set("time_to_live", (Integer)timeToLive);
 		node.set("passes_remaining", (Integer)passesRemaining);
+		node.set("name", name);
 	}
 	
 	public void scheduleCleanup(Mage mage) 
@@ -370,5 +385,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		}
 		
 		modifiedTime = System.currentTimeMillis();
+	}
+	
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public Mage getOwner()
+	{
+		return owner;
 	}
 }

@@ -11,7 +11,6 @@ import java.util.Set;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -20,14 +19,14 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
-	private final Plugin				plugin;
+	private final Mage					owner;
 	private final LinkedList<UndoList> 	changeQueue = new LinkedList<UndoList>();
 	private final Set<UndoList> 		scheduledBlocks = new HashSet<UndoList>();
 	private int                         maxSize    = 0;
 
-	public UndoQueue(Plugin plugin)
+	public UndoQueue(Mage mage)
 	{
-		this.plugin = plugin;
+		this.owner = mage;
 	}
 	
 	@Override
@@ -96,37 +95,37 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 		maxSize = size;
 	}
 
-	public boolean undo(Mage mage)
+	public UndoList undo(Mage mage)
 	{
 		if (changeQueue.size() == 0)
 		{
-			return false;
+			return null;
 		}
 
 		UndoList blocks = changeQueue.removeLast();
 		if (blocks.undo(mage)) {
-			return true;
+			return blocks;
 		}
 		
 		changeQueue.add(blocks);
-		return false;
+		return null;
 	}
 
-	public boolean undo(Mage mage, Block target)
+	public UndoList undo(Mage mage, Block target)
 	{
 		UndoList lastActionOnTarget = getLast(target);
 
 		if (lastActionOnTarget == null)
 		{
-			return false;
+			return null;
 		}
 
 		if (lastActionOnTarget.undo(mage)) {
 			changeQueue.remove(lastActionOnTarget);
-			return true;
+			return lastActionOnTarget;
 		}
 		
-		return false;
+		return null;
 	}
 	
 	public void load(Mage mage, ConfigurationSection node)
@@ -136,7 +135,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 			Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(node, "undo");
 			if (nodeList != null) {
 				for (ConfigurationSection listNode : nodeList) {
-					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(plugin);
+					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
 					list.load(listNode);
 					changeQueue.add(list);
 				}
@@ -144,7 +143,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 			nodeList = ConfigurationUtils.getNodeList(node, "scheduled");
 			if (nodeList != null) {
 				for (ConfigurationSection listNode : nodeList) {
-					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(plugin);
+					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
 					list.load(listNode);
 					scheduleCleanup(mage, list);
 				}

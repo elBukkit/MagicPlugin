@@ -80,7 +80,7 @@ public abstract class UndoableSpell extends TargetingSpell {
 	public UndoList getUndoList()
 	{
 		if (modifiedBlocks == null) {
-			modifiedBlocks = new UndoList(controller.getPlugin());
+			modifiedBlocks = new UndoList(mage, this.getName());
 			modifiedBlocks.setBypass(bypassUndo);
 			modifiedBlocks.setScheduleUndo(autoUndo);
 		}

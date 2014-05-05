@@ -32,7 +32,7 @@ public class UndoBatch implements BlockBatch {
 		// But this doens't get put back in the undo queue, or
 		// it will just flip-flop forever between these two actions.
 		// Maybe eventually we'll have a "redo" queue.
-		trackUndoBlocks = new UndoList(controller.getPlugin());
+		trackUndoBlocks = new UndoList(mage, "Undo");
 		trackUndoBlocks.setBypass(true);
 		
 		this.undoBlocks = blockList.toArray(template);

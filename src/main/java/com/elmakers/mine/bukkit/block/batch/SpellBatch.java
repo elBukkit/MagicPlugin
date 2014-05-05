@@ -17,4 +17,8 @@ public abstract class SpellBatch extends UndoableBatch {
 			super.finish();
 		}
 	}
+	
+	public UndoableSpell getSpell() {
+		return spell;
+	}
 }
