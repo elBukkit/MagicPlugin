@@ -2393,9 +2393,10 @@ chop:
            particle: block_breaking
            material: log
     parameters:
+        bypass_undo: true
         allow_max_range: false
         range: 32
-        recursion_depth: 128
+        recursion_depth: 32
         drop: trees
     costs:
         xp: 10
