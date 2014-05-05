@@ -17,12 +17,27 @@ import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class RecallSpell extends TargetingSpell
+public class RecallSpell extends UndoableSpell
 {
+	private class UndoMarkerMove implements Runnable {
+		private final Location location;
+		private final RecallSpell spell;
+		
+		public UndoMarkerMove(RecallSpell spell, Location currentLocation) {
+			this.location = currentLocation;
+			this.spell = spell;
+		}
+		
+		@Override
+		public void run() {
+			spell.location = this.location;
+		}
+	}
+	
 	public Location location;
 
 	private static int MAX_RETRY_COUNT = 8;
@@ -109,13 +124,22 @@ public class RecallSpell extends TargetingSpell
 			
 			selectedType = newType;
 			Location location = getTargetLocation(selectedType, 0);
-			return tryTeleport(location) ? SpellResult.CAST : SpellResult.FAIL;
+			if (tryTeleport(location)) {
+				registerForUndo();
+				return SpellResult.CAST;
+			}
+			return SpellResult.FAIL;
 		}
 		
 		if (isLookingDown() && allowMarker)
 		{
 			if (allowMarker) {
-				return placeMarker(getLocation().getBlock()) ? SpellResult.CAST : SpellResult.FAIL;
+				if (placeMarker(getLocation().getBlock())) {
+					registerForUndo();
+					return SpellResult.CAST;
+				}
+				
+				return SpellResult.FAIL;
 			}
 			reverseDirection = true;
 			cycleTarget(reverseDirection);
@@ -170,7 +194,12 @@ public class RecallSpell extends TargetingSpell
 			Waypoint waypoint = (Waypoint)targetWaypoint.getExtraData();
 			selectedType = waypoint.type;
 			selectedIndex = waypoint.index;
-			return tryCurrentType(player) ? SpellResult.CAST : SpellResult.FAIL;
+			if (tryCurrentType(player)) {
+				registerForUndo();
+				return SpellResult.CAST;
+			}
+			
+			return SpellResult.FAIL;
 		}
 
 		if (selectedType == null) {
@@ -191,6 +220,7 @@ public class RecallSpell extends TargetingSpell
 			sendMessage(failMessage);
 			return SpellResult.FAIL;
 		}
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 	
@@ -339,6 +369,7 @@ public class RecallSpell extends TargetingSpell
 				placeMarker(getLocation().getBlock());
 			}
 			
+			registerMoved(player);
 			Location playerLocation = player.getLocation();
 			targetLocation.setYaw(playerLocation.getYaw());
 			targetLocation.setPitch(playerLocation.getPitch());
@@ -355,8 +386,10 @@ public class RecallSpell extends TargetingSpell
 			return false;
 		}
 
-		if (removeMarker())
+		registerForUndo(new UndoMarkerMove(this, location));
+		if (location != null) 
 		{
+			removeMarker();
 			castMessage(getMessage("cast_marker_move"));
 		}
 		else
@@ -369,7 +402,6 @@ public class RecallSpell extends TargetingSpell
 		location.setY(target.getY());
 		location.setZ(target.getZ());
 
-		getPlayer().setCompassTarget(location);
 		EffectUtils.playEffect(target.getLocation(), ParticleType.INSTANT_SPELL, 1, 8);
 		
 		return true;

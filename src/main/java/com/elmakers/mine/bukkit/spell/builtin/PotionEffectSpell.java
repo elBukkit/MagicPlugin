@@ -7,13 +7,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class PotionEffectSpell extends TargetingSpell
+public class PotionEffectSpell extends UndoableSpell
 {
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
@@ -43,7 +43,9 @@ public class PotionEffectSpell extends TargetingSpell
 		}
 		
 		Collection<PotionEffect> effects = getPotionEffects(parameters);
+		registerPotionEffects(targetEntity);
 		CompatibilityUtils.applyPotionEffects(targetEntity, effects);
+		registerForUndo();
 		return SpellResult.CAST;
 	}
 }

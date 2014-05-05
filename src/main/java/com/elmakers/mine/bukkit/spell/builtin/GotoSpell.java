@@ -10,13 +10,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class GotoSpell extends TargetingSpell
+public class GotoSpell extends UndoableSpell
 {
 	LivingEntity targetEntity = null;
 	int playerIndex = 0;
@@ -75,10 +75,16 @@ public class GotoSpell extends TargetingSpell
 		
 		if (isLookingUp() && targetEntity != null)
 		{
+			Player player = getPlayer();
+			if (player == null) {
+				return SpellResult.PLAYER_REQUIRED;
+			}
 			getCurrentTarget().setEntity(targetEntity);
+			registerModified(player);
 			getPlayer().teleport(targetEntity.getLocation());
 			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
 			releaseTarget();
+			registerForUndo();
 			return SpellResult.CAST;
 		}
 		
@@ -115,9 +121,11 @@ public class GotoSpell extends TargetingSpell
 	
 	protected boolean teleportTarget(Location location) {
 		if (targetEntity == null || location == null) return false;
+		registerMoved(targetEntity);
 		location.setY(location.getY() + 1);
 		targetEntity.teleport(location);
 		this.getCurrentTarget().setEntity(targetEntity);
+		registerForUndo();
 		
 		return true;
 	}
