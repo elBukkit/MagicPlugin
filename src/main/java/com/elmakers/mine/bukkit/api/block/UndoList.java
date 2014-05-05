@@ -33,4 +33,7 @@ public interface UndoList extends BlockList {
 	public void cancelExplosion(Entity entity);
 	
 	public boolean contains(Location location, int threshold);
+	
+	public String getName();
+	public Mage getOwner();
 }

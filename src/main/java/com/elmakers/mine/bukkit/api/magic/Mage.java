@@ -154,9 +154,9 @@ public interface Mage extends CostReducer {
 	/**
 	 * Cancel any pending construction batches.
 	 * 
-	 * @return true if something was cancelled
+	 * @return The batch that was cancelled, or null if nothing was pending.
 	 */
-	public boolean cancelPending();
+	public BlockBatch cancelPending();
 	
 	/**
 	 * Undo the last construction performed by this Mage.
@@ -165,9 +165,9 @@ public interface Mage extends CostReducer {
 	 * construction spell, and remove that construction from
 	 * the Mage's UndoQueue.
 	 * 
-	 * @return True if anything was undone, false if the Mage has no undo queue.
+	 * @return The UndoList that was undone, or null if none.
 	 */
-	public boolean undo();
+	public UndoList undo();
 	
 	/**
 	 * Undo the last construction performed by this Mage against the
@@ -178,9 +178,9 @@ public interface Mage extends CostReducer {
 	 * even if it was not the most recent Spell cast by that Mage.
 	 * 
 	 * @param block The block to check for modifications.
-	 * @return True if anything was undone, false if the Mage has no constructions for the given Block.
+	 * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
 	 */
-	public boolean undo(Block block);
+	public UndoList undo(Block block);
 	
 	/**
 	 * Commit this Mage's UndoQueue.

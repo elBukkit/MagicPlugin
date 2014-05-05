@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.Schematic;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
@@ -111,7 +112,7 @@ public interface MageController {
 	
 	public void giveItemToPlayer(Player player, ItemStack itemStack);
 	
-	public Mage undoAny(Block target);
+	public UndoList undoAny(Block target);
 	public void forgetMage(Mage mage);
 	
 	/**
