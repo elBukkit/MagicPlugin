@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -62,17 +63,15 @@ public class WorldEditSchematic implements Schematic{
 		int y = v.getBlockY() + center.getBlockY();
 		int z = v.getBlockZ() + center.getBlockZ();
 		
-		// TODO: Support Y-mirroring
-		/*
-		if (y < 0) {
-			y = -y;
-		}
-		*/
-		
 		try {
+            if (x < 0 || x >= size.getBlockZ() || y < 0 || y >= size.getBlockY() || z < 0 || z >= size.getBlockZ()) {
+                return null;
+            }
+
 			com.sk89q.worldedit.Vector vector = new com.sk89q.worldedit.Vector(x, y, z);
 			BaseBlock baseBlock = weSchematic.getBlock(vector);
 			Material material = Material.getMaterial(baseBlock.getId());
+
 			int materialData = baseBlock.getData();
 			MaterialAndData blockData = new MaterialAndData(material, (byte)materialData);
 			
@@ -153,7 +152,6 @@ public class WorldEditSchematic implements Schematic{
 			}
 			
 			return blockData;
-		} catch (ArrayIndexOutOfBoundsException ignore) {
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
