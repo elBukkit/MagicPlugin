@@ -1,14 +1,18 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -25,14 +29,20 @@ public class GotoSpell extends UndoableSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
+		Player player = getPlayer();
+		if (player == null) 
+		{
+			return SpellResult.PLAYER_REQUIRED;
+		}
 		effectColor = mage.getEffectColor();
-		if (effectColor == null) {
+		if (effectColor == null) 
+		{
 			effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
 		}
 		
 		if (targetEntity != null && targetEntity instanceof LivingEntity)
 		{
-			if (!targetEntity.isValid() || targetEntity.isDead())
+			if (!mage.isSuperPowered() || !targetEntity.isValid() || targetEntity.isDead())
 			{
 				releaseTarget();
 			} 
@@ -45,6 +55,32 @@ public class GotoSpell extends UndoableSpell
 					releaseTarget();
 				}
 			}
+		}
+		
+		// Totally different behavior for superpowered mages...
+		if (!mage.isSuperPowered())
+		{
+			Location location = getLocation();
+			List<Target> allTargets = new LinkedList<Target>();
+			List<Player> players = player.getWorld().getPlayers();
+			for (Player targetPlayer : players) {
+				if (targetPlayer == player) continue;
+				if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY));
+				allTargets.add(new Target(location, targetPlayer, 512, Math.PI));
+			}
+			if (allTargets.size() == 0) return SpellResult.NO_TARGET;
+			
+			registerMoved(player);
+			registerForUndo();
+			
+			Collections.sort(allTargets);
+			Entity targetEntity = allTargets.get(0).getEntity();
+			getCurrentTarget().setEntity(targetEntity);
+			registerModified(player);
+			getPlayer().teleport(targetEntity.getLocation());
+			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
+			
+			return SpellResult.CAST;
 		}
 		
 		if (!isLookingUp() && !isLookingDown()) {
@@ -75,10 +111,6 @@ public class GotoSpell extends UndoableSpell
 		
 		if (isLookingUp() && targetEntity != null)
 		{
-			Player player = getPlayer();
-			if (player == null) {
-				return SpellResult.PLAYER_REQUIRED;
-			}
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
 			getPlayer().teleport(targetEntity.getLocation());
@@ -94,19 +126,15 @@ public class GotoSpell extends UndoableSpell
 		}
 
 		List<String> playerNames = new ArrayList<String>(controller.getPlayerNames());
-		if (playerNames.size() == 0) return SpellResult.NO_TARGET;
+		if (playerNames.size() == 1) return SpellResult.NO_TARGET;
 		
 		if (playerIndex < 0) playerIndex = playerNames.size() - 1;
 		if (playerIndex >= playerNames.size()) {
 			playerIndex = 0;
-			releaseTarget();
-			return SpellResult.TARGET_SELECTED;
 		}
 		
-		Player player = getPlayer();
 		String playerName = playerNames.get(playerIndex);
 		if (player != null && playerName.equals(player.getName())) {
-			if (playerNames.size() == 1) return SpellResult.NO_TARGET;
 			playerIndex = (playerIndex + 1) % playerNames.size();
 			playerName = playerNames.get(playerIndex);
 		}

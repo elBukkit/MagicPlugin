@@ -334,7 +334,8 @@ random:
       flamethrower: 0,5,10,20,100
       superdome: 0,0,1,10,100
       tunnel: 5,10,20,30,100
-      undo: 0,0,1,10,100
+      undo: 1,5,10,50,100
+      gather: 0,1,5,10,100
       commit: 0,0,0,1,100
       rewind: 0,0,0,5,100
       pillar: 0,5,10,15,100
