@@ -259,8 +259,10 @@ commit_on_quit: false
 # This value is in days.
 player_data_expire_threshold: 2 
 
-# If set to non-zero, represents a time (in milliseconds) after which all construction
-# spells will be reversed.
+# DEPRECATED
+# Nearly all spells undo, so this setting will produce strange behavior.
+# You will need to add "undo" to individual spells in spells.yml if you want auto-undo behavior.
+# If set to non-zero, represents a time (in milliseconds) after which all spells will be reversed.
 auto_undo: 0
 
 # Throttle TNT explosions

@@ -15,10 +15,6 @@
 # Localizations are also separate, in messages.yml. 
 #
 
-# For example, to make it so all construction spells automatically undo their effects
-# after ten seconds:
-#
-# auto_undo: 10000
 #
 # More examples can be found at
 # 

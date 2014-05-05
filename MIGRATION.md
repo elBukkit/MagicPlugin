@@ -5,6 +5,9 @@
 * I removed the swapping out of enchantable items by default, custom enchanting works in recent CB builds. Change "wand_item_enchantable" in
   config.yml back if you still need this functionality.
 
+* The auto_undo configuration option is deprecated, now that nearly all spells undo it will produce strange behavior. You
+  will need to add "undo" to individual spells if you want auto-undo behavior .. sorry!
+
 ## 3.0
 
 * I removed the legacy player data migration. If you still have old playername-based player data, you will need to
