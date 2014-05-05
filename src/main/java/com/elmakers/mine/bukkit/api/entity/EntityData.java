@@ -14,6 +14,7 @@ public interface EntityData {
 	public BlockFace getFacing();
 	public ItemStack getItem();
 	public double getHealth();
+	public void setHasMoved(boolean hasMoved);
 	
 	public Entity spawn();
 	public boolean modify(Entity entity);
