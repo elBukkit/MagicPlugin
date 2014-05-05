@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit</groupId>
 	<artifactId>MagicAPI</artifactId>
-	<version>1.3-SNAPSHOT</version>
+	<version>1.3</version>
 	<name>elMakers - Bukkit Plugins : Magic API</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
