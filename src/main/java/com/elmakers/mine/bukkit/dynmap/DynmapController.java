@@ -46,13 +46,15 @@ public class DynmapController {
 				
 				int range = 32;
 				double radius = 3.0 * mage.getPower() + 3;
-				int width = (int)(2.0 * mage.getPower()) + 1;
+				int width = (int)(2.0 * mage.getPower()) + 2;
 				radius = Math.min(64, radius);
 				width = Math.min(8, width);
 				final Location location = spell.getLocation();
 				if (location == null) return;
-				Color color = mage.getEffectColor();
-				color = color == null ? Color.PURPLE : color;
+				Color spellColor = spell.getColor();
+				spellColor = spellColor == null ? Color.WHITE : spellColor;
+				Color mageColor = mage.getEffectColor();
+				mageColor = mageColor == null ? Color.PURPLE : mageColor;
 				final String worldName = location.getWorld().getName();
 				Date now = new Date();
 				String label = spell.getName() + " : " + mage.getName() + " @ " + dateFormatter.format(now);
@@ -66,8 +68,8 @@ public class DynmapController {
 					marker = spellSet.createCircleMarker(markerId, label, false, worldName, location.getX(), location.getY(), location.getZ(), radius, radius, false);
 				}
 				marker.setRadius(radius, radius);
-				marker.setLineStyle(1, 0.9, color.asRGB());
-				marker.setFillStyle(0.5, color.asRGB());
+				marker.setLineStyle(1, 0.9, spellColor.asRGB());
+				marker.setFillStyle(0.5, mageColor.asRGB());
 				
 				// Create a targeting indicator line
 				Location target = null;
@@ -96,7 +98,7 @@ public class DynmapController {
 					
 					targetMarker = spellSet.createPolyLineMarker(targetId, label, false, worldName, x, y, z, false);
 				}
-				targetMarker.setLineStyle(width, 0.8, color.asRGB());
+				targetMarker.setLineStyle(width, 0.8, spellColor.asRGB());
 				
 				/*
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
