@@ -1,10 +1,20 @@
 package com.elmakers.mine.bukkit.spell;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public abstract class UndoableSpell extends TargetingSpell {
 	private UndoList 		modifiedBlocks 			= null;
@@ -72,6 +82,11 @@ public abstract class UndoableSpell extends TargetingSpell {
 	{
 		getUndoList().modify(entity);
 	}
+
+	public void registerPotionEffects(Entity entity)
+	{
+		getUndoList().addPotionEffects(entity);
+	}
 	
 	public void registerMoved(Entity entity)
 	{
@@ -108,4 +123,45 @@ public abstract class UndoableSpell extends TargetingSpell {
 	{
 		return !bypassUndo && autoUndo == 0;
 	}
+	
+	protected void applyPotionEffects(Location location, int radius, Collection<PotionEffect> potionEffects) {
+		if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
+		
+		int radiusSquared = radius * 2;
+		List<Entity> entities = location.getWorld().getEntities();
+		for (Entity entity : entities) {
+			if (entity instanceof LivingEntity) {
+				Mage targetMage = null;
+				if (entity instanceof Player) {
+					Player targetPlayer = (Player)entity;
+					boolean isSourcePlayer = targetPlayer.getName().equals(mage.getName());
+					if (isSourcePlayer && getTargetType() != TargetType.ANY && getTargetType() != TargetType.SELF) {
+						continue;
+					}
+					
+					targetMage = controller.getMage(targetPlayer);
+					// Check for protected players
+					if (targetMage.isSuperProtected() && !isSourcePlayer) {
+						continue;
+					}
+				}
+				
+				if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
+				
+				if (entity.getLocation().distanceSquared(location) < radiusSquared) {
+					registerPotionEffects(entity);
+					CompatibilityUtils.applyPotionEffects((LivingEntity)entity, potionEffects);
+					
+					if (targetMage != null) {
+						String playerMessage = getMessage("cast_player_message");
+						if (playerMessage.length() > 0) {
+							playerMessage = playerMessage.replace("$spell", getName());
+							targetMage.sendMessage(playerMessage);
+						}
+					}
+				}
+			}
+		}
+	}
+
 }

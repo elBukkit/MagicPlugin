@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.spell;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -16,9 +15,7 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
@@ -27,7 +24,6 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.batch.BlockAction;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -42,7 +38,7 @@ public abstract class TargetingSpell extends BaseSpell {
 	private int                                 verticalSearchDistance  = 8;
 	private boolean                             targetingComplete		= false;
 	private boolean                             targetSpaceRequired     = false;
-	private Class<? extends Entity>             targetEntityType        = null;
+	protected Class<? extends Entity>           targetEntityType        = null;
 	private Location                            targetLocation;
 	private Vector								targetLocationOffset;
 	private String								targetLocationWorldName;
@@ -430,45 +426,6 @@ public abstract class TargetingSpell extends BaseSpell {
 		return targetThroughMaterials.contains(material);
 	}
 	
-	protected void applyPotionEffects(Location location, int radius, Collection<PotionEffect> potionEffects) {
-		if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
-		
-		int radiusSquared = radius * 2;
-		List<Entity> entities = location.getWorld().getEntities();
-		for (Entity entity : entities) {
-			if (entity instanceof LivingEntity) {
-				Mage targetMage = null;
-				if (entity instanceof Player) {
-					Player targetPlayer = (Player)entity;
-					boolean isSourcePlayer = targetPlayer.getName().equals(mage.getName());
-					if (isSourcePlayer && getTargetType() != TargetType.ANY && getTargetType() != TargetType.SELF) {
-						continue;
-					}
-					
-					targetMage = controller.getMage(targetPlayer);
-					// Check for protected players
-					if (targetMage.isSuperProtected() && !isSourcePlayer) {
-						continue;
-					}
-				}
-				
-				if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
-				
-				if (entity.getLocation().distanceSquared(location) < radiusSquared) {
-					CompatibilityUtils.applyPotionEffects((LivingEntity)entity, potionEffects);
-					
-					if (targetMage != null) {
-						String playerMessage = getMessage("cast_player_message");
-						if (playerMessage.length() > 0) {
-							playerMessage = playerMessage.replace("$spell", getName());
-							targetMage.sendMessage(playerMessage);
-						}
-					}
-				}
-			}
-		}
-	}
-
 	protected void findTargetBlock()
 	{
 		Location location = getLocation();

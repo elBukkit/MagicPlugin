@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.entity;
 
+import java.util.Collection;
+
 import org.bukkit.Art;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -20,6 +22,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
+import org.bukkit.potion.PotionEffect;
 
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
@@ -43,14 +46,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	protected SkeletonType skeletonType;
 	protected Ocelot.Type ocelotType;
 	protected Villager.Profession villagerProfession;
+	protected Collection<PotionEffect> potionEffects = null;
+	protected boolean hasPotionEffects = false;
 	
 	public EntityData(Entity entity) {
 		this(entity.getLocation(), entity);
-	}
-	
-	public EntityData(Entity entity, boolean hasMoved) {
-		this(entity.getLocation(), entity);
-		this.hasMoved = hasMoved;
 	}
 	
 	public EntityData(Location location, Entity entity) {
@@ -67,6 +67,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 		if (entity instanceof LivingEntity) {
 			LivingEntity li = (LivingEntity)entity;
 			this.health = li.getHealth();
+			this.potionEffects = li.getActivePotionEffects();
 		}
 		
 		if (entity instanceof Ageable) {
@@ -231,6 +232,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
 		if (entity instanceof LivingEntity) {
 			LivingEntity li = (LivingEntity)entity;
+			if (hasPotionEffects) {
+				Collection<PotionEffect> currentEffects = li.getActivePotionEffects();
+				for (PotionEffect effect : currentEffects) {
+					li.removePotionEffect(effect.getType());
+				}
+				if (potionEffects != null) {
+					for (PotionEffect effect : potionEffects) {
+						li.addPotionEffect(effect);
+					}
+				}
+			}
+			
 			try {
 				li.setHealth(Math.min(health, li.getMaxHealth()));
 			} catch (Throwable ex) {
@@ -246,5 +259,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	
 	public void setHasMoved(boolean moved) {
 		this.hasMoved = moved;
+	}
+
+	public void setHasPotionEffects(boolean changed) {
+		this.hasPotionEffects = changed;
 	}
 }
