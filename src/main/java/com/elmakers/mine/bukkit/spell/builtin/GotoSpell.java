@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -77,7 +78,7 @@ public class GotoSpell extends UndoableSpell
 			Entity targetEntity = allTargets.get(0).getEntity();
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
-			getPlayer().teleport(targetEntity.getLocation());
+			teleportTo(targetEntity);
 			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
 			
 			return SpellResult.CAST;
@@ -89,7 +90,6 @@ public class GotoSpell extends UndoableSpell
 			if (targetEntity != null) {
 				return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
 			}
-			
 			
 			if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
 			{
@@ -113,7 +113,7 @@ public class GotoSpell extends UndoableSpell
 		{
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
-			getPlayer().teleport(targetEntity.getLocation());
+			teleportTo(targetEntity);
 			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
 			releaseTarget();
 			registerForUndo();
@@ -156,6 +156,21 @@ public class GotoSpell extends UndoableSpell
 		registerForUndo();
 		
 		return true;
+	}
+	
+	protected void teleportTo(Entity targetEntity) {
+		Location targetLocation = targetEntity.getLocation();
+		
+		// Try to place you in front of the other player, and facing them
+		BlockFace targetFacing = getFacing(targetEntity.getLocation());
+		Location candidate = findPlaceToStand(targetLocation.getBlock().getRelative(targetFacing).getRelative(targetFacing).getLocation(), 4, 4);
+		if (candidate != null) {
+			candidate.setPitch(0);
+			candidate.setYaw(360 - targetLocation.getYaw());
+			targetLocation = candidate;
+		}
+		
+		getPlayer().teleport(targetLocation);
 	}
 	
 	protected void selectTarget(LivingEntity entity) {

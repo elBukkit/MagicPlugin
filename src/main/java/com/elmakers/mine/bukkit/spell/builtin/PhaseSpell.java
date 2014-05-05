@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -111,9 +110,7 @@ public class PhaseSpell extends TargetingSpell
 			Location playerLocation = player.getLocation();
 			targetLocation.setYaw(playerLocation.getYaw());
 			targetLocation.setPitch(playerLocation.getPitch());
-			final int maxY = targetLocation.getWorld().getEnvironment() == Environment.NETHER ? 118 : 255;
-			
-			Location destination = tryFindPlaceToStand(targetLocation, 4, maxY);
+			Location destination = tryFindPlaceToStand(targetLocation);
 			
 			// TODO : Failure notification? Sounds at least? The async nature is difficult.
 			if (destination != null) {

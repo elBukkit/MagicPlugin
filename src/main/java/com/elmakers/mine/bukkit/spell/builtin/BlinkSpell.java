@@ -89,6 +89,7 @@ public class BlinkSpell extends TargetingSpell
 				offsetTarget(0, -1, 0);
 				setReverseTargeting(true);
 				setTargetSpaceRequired();
+				clearTargetThrough();
 				targetThrough(Material.AIR);
 			}
 		}

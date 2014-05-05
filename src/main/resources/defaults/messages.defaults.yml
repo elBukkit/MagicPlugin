@@ -300,8 +300,7 @@ spells:
         cast_self: You play some music
     gather:
         name: Gather
-        description: Teleports other entities
-        usage: Cast up to teleport yourself, aim to TP others
+        description: Teleport you to other players
         cast_to_player: Teleporting you to $target
         cast_entity: Teleporting $target to your target
         cast_player_message: "&d&o$player &r&5folded space"
