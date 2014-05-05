@@ -15,7 +15,9 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
@@ -387,6 +389,9 @@ public abstract class TargetingSpell extends BaseSpell {
 				if (targetMage.isSuperProtected()) continue;
 			}
 
+			// Ignore invisible entities
+			if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
+			
 			Target newScore = new Target(getLocation(), entity, getMaxRange());
 			if (newScore.getScore() > 0)
 			{
