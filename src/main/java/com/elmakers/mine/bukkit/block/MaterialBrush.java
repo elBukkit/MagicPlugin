@@ -388,7 +388,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 		
 		if (mode == BrushMode.SCHEMATIC) {
 			if (schematic == null) {
-				if (schematicName.length() == 0) {
+                if (schematicName.length() == 0) {
 					isValid = false;
 					return true;
 				}
@@ -402,14 +402,14 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 			}
 			if (cloneTarget == null) {
 				isValid = false;
-				return true;
+                return true;
 			}
 			Vector diff = target.toVector().subtract(cloneTarget.toVector());
 			com.elmakers.mine.bukkit.api.block.MaterialAndData newMaterial = schematic.getBlock(diff);
 			if (newMaterial == null) {
-				isValid = false;
+                isValid = false;
 			} else {
-				updateFrom(newMaterial);
+                updateFrom(newMaterial);
 				isValid = fillWithAir || newMaterial.getMaterial() != Material.AIR;
 			}
 		}
@@ -636,15 +636,22 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 					cloneTarget = cloneTarget.add(targetOffset);
 				}
 			} else if (mode == BrushMode.SCHEMATIC) {
+                if (schematic == null && schematicName != null) {
+                    schematic = mage.getController().loadSchematic(schematicName);
+                }
+                boolean recenter = true;
+
 				if (schematic != null) {
 					Vector diff = target.toVector().subtract(cloneTarget.toVector());
-					if (!schematic.contains(diff)) {
-						cloneTarget = center;
-						if (targetOffset != null) {
-							cloneTarget = cloneTarget.add(targetOffset);
-						}
-					}
+                    recenter = (!schematic.contains(diff));
 				}
+
+                if (recenter) {
+                    cloneTarget = center;
+                    if (targetOffset != null) {
+                        cloneTarget = cloneTarget.add(targetOffset);
+                    }
+                }
 			}
 
 			if (cloneSource == null) {
