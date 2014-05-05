@@ -35,7 +35,8 @@ public class AnimateSpell extends SimulateSpell
 		"animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget"
 	};
 	
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		if (parameters.getBoolean("animate", false))
@@ -43,7 +44,7 @@ public class AnimateSpell extends SimulateSpell
 			return super.onCast(parameters);
 		}
 		
-		Block targetBlock = getTargetBlock();
+		final Block targetBlock = getTargetBlock();
 		if (targetBlock == null) 
 		{
 			return SpellResult.NO_TARGET;
@@ -108,7 +109,7 @@ public class AnimateSpell extends SimulateSpell
 		boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
 		simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 		
-		String commandLine = "cast " + getKey() + " animate true target self cooldown 0 m " 
+		final String commandLine = "cast " + getKey() + " animate true target self cooldown 0 m "
 				+ targetMaterial.getKey() +
 				" cd " + (simCheckDestructible ? "true" : "false") + " level " + level;
 		String commandName = parameters.getString("name", "Automata");
@@ -124,34 +125,37 @@ public class AnimateSpell extends SimulateSpell
 		{
 			commandName += " " + escapeLevel("automata.level", level);
 		}
-		
-		targetBlock.setType(Material.COMMAND);
-		BlockState commandData = targetBlock.getState();
-		if (commandData == null || !(commandData instanceof CommandBlock)) 
-		{
-			return SpellResult.FAIL;
-		}
-			
-		CommandBlock copyCommand = (CommandBlock)commandData;
-		copyCommand.setCommand(commandLine);
-		copyCommand.setName(commandName);
-		copyCommand.update();
-		
-		controller.updateBlock(targetBlock);
+
+        // Hack to work-around weird issues with redstone blocks not signaling when replacing a variant material.
+        targetBlock.setData((byte)0);
+        powerBlock.setData((byte)0);
 
 		String message = getMessage("cast_broadcast").replace("$name", commandName);
 		if (message.length() > 0) {
 			controller.sendToMages(message, targetBlock.getLocation());	
 		}
+
+        final String commandBlockName = commandName;
+        Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+            public void run() {
+                targetBlock.setType(Material.COMMAND);
+                BlockState commandData = targetBlock.getState();
+                if (commandData != null && (commandData instanceof CommandBlock)) {
+                    CommandBlock copyCommand = (CommandBlock) commandData;
+                    copyCommand.setCommand(commandLine);
+                    copyCommand.setName(commandBlockName);
+                    copyCommand.update();
+                }
+            }
+        }, SimulateBatch.POWER_DELAY_TICKS + 1);
 		
 		Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-
 			public void run() {
 				powerBlock.setType(Material.REDSTONE_BLOCK);
-				registerForUndo();
 			}
-		}, SimulateBatch.POWER_DELAY_TICKS + 1);
-		
+		}, SimulateBatch.POWER_DELAY_TICKS + 2);
+
+        registerForUndo();
 		return SpellResult.CAST;
 	}
 
@@ -187,7 +191,7 @@ public class AnimateSpell extends SimulateSpell
 				int level =  Integer.parseInt(levelString);
 				double weight = levelTemplate.getDouble(levelString);
 				levels.add(new AscendingPair<Float>(level, (float)weight));
-			};
+			}
 			
 			RandomUtils.extrapolateFloatList(levels);
 			
@@ -210,6 +214,6 @@ public class AnimateSpell extends SimulateSpell
 		if (templateString.contains("$roman")) {
 			return templateString.replace("$roman", TextUtils.roman(level));
 		}
-		return templateString.replace("$amount", Integer.toString((int)level));
+		return templateString.replace("$amount", Integer.toString(level));
 	}
 }

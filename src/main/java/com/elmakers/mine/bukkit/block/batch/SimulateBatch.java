@@ -40,7 +40,7 @@ public class SimulateBatch extends UndoableBatch {
 	private static BlockFace[] POWER_FACES = { BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP };
 	
 	private enum SimulationState {
-		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND_SEARCH, COMMAND_UPDATE, COMMAND_POWER, FINISHED
+		SCANNING_COMMAND, SCANNING, UPDATING, COMMAND_SEARCH, COMMON_RESET_REDSTONE, COMMAND_UPDATE, COMMAND_POWER, FINISHED
 	};
 	
 	public enum TargetMode {
@@ -60,6 +60,7 @@ public class SimulateBatch extends UndoableBatch {
 	private BlockSpell spell;
 	private Block castCommandBlock;
 	private Block commandTargetBlock;
+    private Block powerTargetBlock;
 	private TargetMode targetMode = TargetMode.STABILIZE;
 	private TargetType targetType = TargetType.PLAYER;
 	private String castCommand;
@@ -442,6 +443,7 @@ public class SimulateBatch extends UndoableBatch {
 				}
 				
 				// Find a valid block for the command
+                powerTargetBlock = null;
 				commandTargetBlock = null;
 				Block backupBlock = null;
 				while (commandTargetBlock == null && potentialCommandBlocks.size() > 0) {
@@ -463,15 +465,56 @@ public class SimulateBatch extends UndoableBatch {
 				// If we didn't find any powerable blocks, but we did find at least one valid sim block
 				// just use that one.
 				if (commandTargetBlock == null) commandTargetBlock = backupBlock;
+
+                // Search for a power block
+                if (commandTargetBlock != null) {
+                    // First try and replace a live cell
+                    BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
+                    // Next try to replace a dead cell, which will affect the simulation outcome
+                    // but this is perhaps better than it dying?
+                    if (powerDirection == null) {
+                        if (DEBUG) {
+                            controller.getLogger().info("Had to fall back to backup location, pattern may diverge");
+                        }
+                        powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
+                    }
+                    // If it's *still* not valid, search for something breakable.
+                    if (powerDirection == null) {
+                        for (BlockFace face : POWER_FACES) {
+                            if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
+                                if (DEBUG) {
+                                    controller.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
+                                }
+                                powerDirection = face;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (powerDirection != null) {
+                        powerTargetBlock = commandTargetBlock.getRelative(powerDirection);
+                    }
+                }
 			}
 			if (DEBUG) {
 				if (commandTargetBlock != null) {
 					controller.getLogger().info("MOVED: " + commandTargetBlock.getLocation().toVector().subtract(center.toVector()));
 				}
 			}
-			state = SimulationState.COMMAND_UPDATE;
+			state = SimulationState.COMMON_RESET_REDSTONE;
 			return processedBlocks;
 		}
+
+        if (state == SimulationState.COMMON_RESET_REDSTONE) {
+            if (includeCommands && commandTargetBlock != null) {
+                commandTargetBlock.setData((byte)0);
+            }
+            if (includeCommands && powerTargetBlock != null) {
+                powerTargetBlock.setData((byte)0);
+            }
+            state = SimulationState.COMMAND_UPDATE;
+            return processedBlocks;
+        }
 		
 		if (state == SimulationState.COMMAND_UPDATE) {
 			if (includeCommands) {
@@ -508,46 +551,21 @@ public class SimulateBatch extends UndoableBatch {
 		
 		if (state == SimulationState.COMMAND_POWER) {
 			// Continue to power the command block
-			// Find a new direction, replace existing block
-			if (commandPowered && commandTargetBlock != null && includeCommands) {
+			if (commandPowered && powerTargetBlock != null && includeCommands) {
 				// Wait a bit before powering for redstone signals to reset
 				if (powerDelayTicks > 0) {
 					powerDelayTicks--;
 					return processedBlocks;
 				}
-				
-				// First try and replace a live cell
-				BlockFace powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterial);
-				// Next try to replace a dead cell, which will affect the simulation outcome
-				// but this is perhaps better than it dying?
-				if (powerDirection == null) {
-					if (DEBUG) {
-						controller.getLogger().info("Had to fall back to backup location, pattern may diverge");
-					}
-					powerDirection = findPowerLocation(commandTargetBlock, powerSimMaterialBackup);
-				}
-				// If it's *still* not valid, search for something breakable.
-				if (powerDirection == null) {
-					for (BlockFace face : POWER_FACES) {
-						if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
-							if (DEBUG) {
-								controller.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
-							}
-							powerDirection = face;
-							break;
-						}
-					}
-				}
-				
-				if (powerDirection != null) {
-					Block powerBlock = commandTargetBlock.getRelative(powerDirection);
-					powerBlock.setType(POWER_MATERIAL);
+
+				if (powerTargetBlock != null) {
+                    powerTargetBlock.setType(POWER_MATERIAL);
 					if (commandReload) {
 						String automataName = commandName;
 						if (automataName == null || automataName.length() <= 1) {
 							automataName = Messages.get("automata.default_name");
 						}
-						controller.registerAutomata(powerBlock, automataName, "automata.awaken");
+						controller.registerAutomata(powerTargetBlock, automataName, "automata.awaken");
 					}
 				}
 			}
