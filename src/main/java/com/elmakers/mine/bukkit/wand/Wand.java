@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -2067,10 +2066,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				SpellCategory spellCategory = spell.getCategory();
 				Color categoryColor = spellCategory == null ? null : spellCategory.getColor();
 				if (categoryColor != null && this.effectColor != null) {
-					ColorHD oldColor = this.effectColor;
 					this.effectColor = this.effectColor.mixColor(categoryColor, effectColorSpellMixWeight);
-					
-					Bukkit.getLogger().info("Blended " + oldColor + " with " + categoryColor + " and got " + this.effectColor);
 					// Note that we don't save this change.
 					// The hope is that the wand will get saved at some point later
 					// And we don't want to trigger NBT writes every spell cast.
