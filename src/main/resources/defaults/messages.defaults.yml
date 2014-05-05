@@ -196,25 +196,20 @@ spells:
         fail: Your spell failed!
         insufficient_permissions: You don't have permission to cast that here.
         cast_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
-    light:
-        name: Light
-        description: Creates a magical light source
-        usage: The blast of the light may wipe nearby signs, and is permanent!
-        cast: You shouldn't have done that!
     curse:
         name: Curse
         description: Slows down and weakens the target
-        cast: You curse your target
+        cast: You curse $target
     boon:
         name: Boon
         description: Makes you temporarily superpowered
         cast_self: You give yourself a boon
-        cast: You give your target a boon
+        cast: You give $target a boon
     perk:
         name: Perk
         description: Give a little boost
         cast_self: You give yourself a perk
-        cast: You give your target a perk
+        cast: You give $target a perk
     blessing:
         name: Blessing
         description: Bless a large area of followers
@@ -223,7 +218,11 @@ spells:
         name: Bounce
         description: Gives super jump power
         cast_self: You give yourself high jumping
-        cast: You give your target high jumping
+        cast: You give $target high jumping
+    mount:
+        name: Mount
+        description: Mount your target
+        cast: You mount $target
     disc:
         name: Disc
         description: Create a platform in front of you

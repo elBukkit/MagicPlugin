@@ -1088,7 +1088,24 @@ gather:
         allow_max_range: false
         range: 64
     costs:
-        xp: 50
+        xp: 150
+mount:
+    icon: saddle
+    category: master
+    class: MountSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_hit
+        -  class: EffectTrail
+           particle: portal
+           particle_count: 4
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+    costs:
+        xp: 60
 icbm:
     icon: golden_carrot
     category: dark

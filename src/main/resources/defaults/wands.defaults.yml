@@ -336,6 +336,7 @@ random:
       tunnel: 5,10,20,30,100
       undo: 1,5,10,50,100
       gather: 0,1,5,10,100
+      mount: 0,1,5,10,100
       commit: 0,0,0,1,100
       rewind: 0,0,0,5,100
       pillar: 0,5,10,15,100
@@ -1561,6 +1562,7 @@ wolf:
         - simulate
         - simulate3
         - animate
+        - mount
     materials:  
         - lapis_block
         - water
