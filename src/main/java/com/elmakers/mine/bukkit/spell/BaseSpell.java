@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -230,18 +231,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 	
 	public Location tryFindPlaceToStand(Location targetLoc)
 	{
-		return tryFindPlaceToStand(targetLoc, 4, 253);
+		return tryFindPlaceToStand(targetLoc, 255, 255);
 	}
 	
-	public Location tryFindPlaceToStand(Location targetLoc, int minY, int maxY)
+	public Location tryFindPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
 	{
-		Location location = findPlaceToStand(targetLoc, minY, maxY);
+		Location location = findPlaceToStand(targetLoc, maxDownDelta, maxUpDelta);
 		return location == null ? targetLoc : location;
 	}
 	
-	public Location findPlaceToStand(Location targetLoc, int minY, int maxY)
+	public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
 	{
 		if (!targetLoc.getBlock().getChunk().isLoaded()) return null;
+		int minY = 4;
+		int maxY = targetLoc.getWorld().getEnvironment() == Environment.NETHER ? 120 : 255;
 		
 		int targetY = targetLoc.getBlockY();
 		if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) return targetLoc;
@@ -250,25 +253,24 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 		if (targetY < minY) {
 			location = targetLoc.clone();
 			location.setY(minY);
-			location = findPlaceToStand(location, true, minY, maxY);
+			location = findPlaceToStand(location, true, maxUpDelta);
 		} else if (targetY > maxY) {
 			location = targetLoc.clone();
 			location.setY(maxY);
-			location = findPlaceToStand(location, false, minY, maxY);
+			location = findPlaceToStand(location, false, maxDownDelta);
 		} else {
 			// First look down just a little bit
-			int y = targetLoc.getBlockY();
-			int testMinY = Math.max(minY,  y - 4);
-			location = findPlaceToStand(targetLoc, false, testMinY, maxY);
+			int testMinY = Math.max(maxDownDelta,  4);
+			location = findPlaceToStand(targetLoc, false, testMinY);
 			
 			// Then look up
 			if (location == null) {
-				location = findPlaceToStand(targetLoc, true, minY, maxY);
+				location = findPlaceToStand(targetLoc, true, maxUpDelta);
 			}
 			
 			// Then look allll the way down.
 			if (location == null) {
-				location = findPlaceToStand(targetLoc, false, minY, maxY);
+				location = findPlaceToStand(targetLoc, false, maxDownDelta);
 			}
 		}
 		return location;
@@ -276,16 +278,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 	
 	public Location findPlaceToStand(Location target, boolean goUp)
 	{
-		return findPlaceToStand(target, goUp, 4, 253);
+		return findPlaceToStand(target, goUp, 255);
 	}
 	
-	public Location findPlaceToStand(Location target, boolean goUp, int minY, int maxY)
+	public Location findPlaceToStand(Location target, boolean goUp, int maxDelta)
 	{
 		int direction = goUp ? 1 : -1;
 		
 		// search for a spot to stand
 		Location targetLocation = target.clone();
-		while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY)
+		int yDelta = 0;
+		int minY = 4;
+		int maxY = targetLocation.getWorld().getEnvironment() == Environment.NETHER ? 120 : 255;
+		
+		while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY && yDelta < maxDelta)
 		{
 			Block block = targetLocation.getBlock();
 			if 
@@ -302,6 +308,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 				return null;
 			}
 			
+			yDelta++;
 			targetLocation.setY(targetLocation.getY() + direction);
 		}
 
@@ -320,15 +327,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 		if (location == null) return null;
 		return location.getBlock().getRelative(BlockFace.DOWN);
 	}
-
+	
 	/**
 	 * Get the direction the player is facing as a BlockFace.
 	 * 
 	 * @return a BlockFace representing the direction the player is facing
 	 */
 	public BlockFace getPlayerFacing()
+	{	
+		return getFacing(getLocation());
+	}
+
+	public static BlockFace getFacing(Location location)
 	{
-		float playerRot = getLocation().getYaw();
+		float playerRot = location.getYaw();
 		while (playerRot < 0)
 			playerRot += 360;
 		while (playerRot > 360)

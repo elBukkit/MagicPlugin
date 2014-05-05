@@ -122,6 +122,11 @@ public abstract class TargetingSpell extends BaseSpell {
 	protected void setTargetName(String name) {
 		targetName = name;
 	}
+	
+	public void clearTargetThrough()
+	{
+		targetThroughMaterials.clear();
+	}
 
 	public void targetThrough(Material mat)
 	{
