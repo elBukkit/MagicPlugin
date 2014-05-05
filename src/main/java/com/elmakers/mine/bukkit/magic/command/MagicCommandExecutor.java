@@ -231,7 +231,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			
 			int stoppedPending = 0;
 			for (Mage mage : api.getMages()) {
-				if (mage.cancelPending()) stoppedPending++;
+				while (mage.cancelPending() != null) stoppedPending++;
 			}
 			
 			sender.sendMessage("Stopped " + stoppedPending + " pending construction batches");

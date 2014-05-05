@@ -4,14 +4,17 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.batch.SpellBatch;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class UndoSpell extends TargetingSpell
 {
-	String targetPlayerName;
+	private String undoListName;
 	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
@@ -26,35 +29,48 @@ public class UndoSpell extends TargetingSpell
 			}
 			
 			Mage mage = controller.getMage((Player)target.getEntity());
-			return mage.undo() ? SpellResult.CAST : SpellResult.FAIL;
+			UndoList undoList = mage.undo();
+			if (undoList != null) {
+				undoListName = undoList.getName();
+			}
+			return undoList != null ? SpellResult.CAST : SpellResult.FAIL;
 		}
 		
 		Block targetBlock = isLookingDown() ? getLocation().getBlock() : target.getBlock();
 		if (targetBlock != null)
 		{
 			boolean targetAll = mage.isSuperPowered();
-			boolean undone = false;
 			if (targetAll)
 			{
-				Mage targetMage = controller.undoAny(targetBlock);
-				if (targetMage != null) 
+				UndoList undid = controller.undoAny(targetBlock);
+				if (undid != null) 
 				{
-					undone = true;
+					Mage targetMage = undid.getOwner();
+					undoListName = undid.getName();
 					setTargetName(targetMage.getName());
+					return SpellResult.CAST;
 				}
 			}
 			else
 			{
 				setTargetName(mage.getName());
-				undone = mage.undo(targetBlock);
-			}
-
-			if (undone)
-			{
+				BlockBatch batch = mage.cancelPending();
+				if (batch != null) {
+					undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
+					return SpellResult.COST_FREE;
+				}
+				UndoList undoList = mage.undo(targetBlock);
+				undoListName = undoList.getName();
 				return SpellResult.CAST;
 			}
 		}
 		
 		return SpellResult.NO_TARGET;	
+	}
+	
+	@Override
+	public String getMessage(String messageKey, String def) {
+		String message = super.getMessage(messageKey, def);
+		return message.replace("$spell", undoListName == null ? "Unknown" : undoListName);
 	}
 }

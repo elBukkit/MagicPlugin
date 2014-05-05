@@ -26,6 +26,7 @@
  - Wand color will morph depending on spells cast with it
  - Wand haste, hunger and health regen use potion effects (looks better, avoids conflicts)
  - Curse, Boon, Wither etc effects stack properly
+ - Rewind and Rollback will show the name of the spell they undid
 
 ## 3.0
 

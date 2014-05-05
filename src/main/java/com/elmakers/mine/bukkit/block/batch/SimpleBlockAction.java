@@ -5,7 +5,6 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.block.batch.BlockAction;
 
 public class SimpleBlockAction implements BlockAction
 {
@@ -15,12 +14,6 @@ public class SimpleBlockAction implements BlockAction
 	public SimpleBlockAction(MageController controller, UndoList undoList)
 	{
 		modified = undoList;
-		this.controller = controller;
-	}
-	
-	public SimpleBlockAction(MageController controller)
-	{
-		modified = new UndoList(controller.getPlugin());
 		this.controller = controller;
 	}
 

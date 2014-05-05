@@ -391,7 +391,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	public UndoQueue getUndoQueue() {
 		if (undoQueue == null) {
-			undoQueue = new UndoQueue(controller.getPlugin());
+			undoQueue = new UndoQueue(this);
 			undoQueue.setMaxSize(controller.getUndoQueueDepth());
 		}
 		return undoQueue;
@@ -642,15 +642,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 	
 	@Override
-	public boolean undo(Block target) 
+	public UndoList undo(Block target) 
 	{
 		return getUndoQueue().undo(this, target);
 	}
 	
 	@Override
-	public boolean cancelPending() 
+	public BlockBatch cancelPending() 
 	{
-		boolean stoppedPending = false;
+		BlockBatch stoppedPending = null;
 		if (pendingBatches.size() > 0) {
 			List<BlockBatch> batches = new ArrayList<BlockBatch>();
 			batches.addAll(pendingBatches);
@@ -658,7 +658,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 				if (!(batch instanceof UndoBatch)) {
 					batch.finish();
 					pendingBatches.remove(batch);
-					stoppedPending = true;
+					stoppedPending = batch;
+					break;
 				}
 			}
 		}
@@ -666,10 +667,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 	
 	@Override
-	public boolean undo() 
+	public UndoList undo() 
 	{
-		
-		if (cancelPending()) return true;
 		return getUndoQueue().undo(this);
 	}
 	

@@ -624,9 +624,9 @@ spells:
     undo:
         name: Rollback
         description: Undo your last spell
-        cast: Your undo a spell
-        cast_player: You undo $target's last spell
-        cast_self: Your undo your last spell
+        cast: "&5Your undo your &6$spell cast"
+        cast_self: "&5You undo your &6$spell &5cast"
+        cost_free: "&5You cancel your &6$spell &5cast"
         fail: Nothing to undo
     commit:
         name: Commit
@@ -639,7 +639,7 @@ spells:
         name: Rewind
         description: Undo the target spell
         usage: Will undo the targeted spell
-        cast: "&5You undo &d&o$target's&r&5 spell"
+        cast: "&5You undo &d&o$target's&r&6 $spell &5cast"
         fail: Nothing to undo
         no_target: Nothing to undo there
     push:

@@ -2962,13 +2962,14 @@ public class MagicController implements Listener, MageController
 	}
 
 	@Override
-	public Mage undoAny(Block target)
+	public UndoList undoAny(Block target)
 	{
 		for (Mage mage : mages.values())
 		{
-			if (mage.undo(target))
+			UndoList undid = mage.undo(target);
+			if (undid != null)
 			{
-				return mage;
+				return undid;
 			}
 		}
 
