@@ -25,7 +25,8 @@ public class UndoBatch implements BlockBatch {
 	private final Set<Material> attachablesDouble;
 	private final Set<Material> delayed;
 	
-	public UndoBatch(Mage mage, UndoList blockList) {
+	public UndoBatch(UndoList blockList) {
+		Mage mage = blockList.getOwner();
 		controller = mage.getController();
 		
 		// We're going to track the blocks we undo

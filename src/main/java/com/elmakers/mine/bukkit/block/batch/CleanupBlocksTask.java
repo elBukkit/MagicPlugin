@@ -16,11 +16,11 @@ public class CleanupBlocksTask implements Runnable
 
 	public void run()
 	{
-		if (undoBlocks.undo(mage)) {
+		if (undoBlocks.undo()) {
 			mage.getUndoQueue().removeScheduledCleanup(undoBlocks);
 		} else {
 			// TODO: Retry limit?
-			undoBlocks.scheduleCleanup(mage);
+			undoBlocks.scheduleCleanup();
 		}
 	}
 }

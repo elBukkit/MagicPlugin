@@ -188,7 +188,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		return false;
 	}
 
-	public boolean undo(Mage mage)
+	public boolean undo()
 	{
 		// This part doesn't happen asynchronously
 		if (entities != null) {
@@ -208,8 +208,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
 		if (blockList == null) return true;
 
-		UndoBatch batch = new UndoBatch(mage, this);
-		if (!mage.addPendingBlockBatch(batch)) {
+		UndoBatch batch = new UndoBatch(this);
+		if (!owner.addPendingBlockBatch(batch)) {
 			return false;
 		}
 		passesRemaining--;
@@ -235,17 +235,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		node.set("name", name);
 	}
 	
-	public void scheduleCleanup(Mage mage) 
+	public void scheduleCleanup() 
 	{
 		Server server = plugin.getServer();
 		BukkitScheduler scheduler = server.getScheduler();
 
 		// scheduler works in ticks- 20 ticks per second.
 		long ticksToLive = timeToLive * 20 / 1000;
-		taskId = scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(mage, this), ticksToLive);
+		taskId = scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(owner, this), ticksToLive);
 	}
 	
-	public boolean undoScheduled(Mage mage)
+	public boolean undoScheduled()
 	{
 		if (taskId > 0)
 		{
@@ -255,7 +255,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 			taskId = 0;
 		}
 		
-		return this.undo(mage);
+		return this.undo();
 	}
 	
 	public void watch(Entity entity)

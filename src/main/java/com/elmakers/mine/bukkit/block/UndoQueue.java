@@ -43,14 +43,14 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 	public void scheduleCleanup(Mage mage, UndoList blocks)
 	{
 		scheduledBlocks.add(blocks);
-		blocks.scheduleCleanup(mage);
+		blocks.scheduleCleanup();
 	}
 	
 	public void undoScheduled(Mage mage)
 	{
 		if (scheduledBlocks.size() == 0) return;
 		for (UndoList list : scheduledBlocks) {
-			list.undoScheduled(mage);
+			list.undoScheduled();
 		}
 		scheduledBlocks.clear();
 	}
@@ -103,7 +103,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 		}
 
 		UndoList blocks = changeQueue.removeLast();
-		if (blocks.undo(mage)) {
+		if (blocks.undo()) {
 			return blocks;
 		}
 		
@@ -120,7 +120,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 			return null;
 		}
 
-		if (lastActionOnTarget.undo(mage)) {
+		if (lastActionOnTarget.undo()) {
 			changeQueue.remove(lastActionOnTarget);
 			return lastActionOnTarget;
 		}
