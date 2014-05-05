@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
  */
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData {
 	protected Location location;
+	protected boolean hasMoved = false;
 	protected EntityType type;
 	protected Art art;
 	protected BlockFace facing;
@@ -133,28 +134,38 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 		return health;
 	}
 	
+	protected Entity trySpawn() {
+		Entity spawned = null;
+		try {
+			switch (type) {
+			case PLAYER:
+				// Nope!
+			break;
+			case PAINTING:
+				spawned = InventoryUtils.spawnPainting(location, facing, art);
+			break;
+			case ITEM_FRAME:
+				spawned = InventoryUtils.spawnItemFrame(location, facing, item);
+				break;
+			case DROPPED_ITEM:
+				// TODO: Handle this, would need to store item data.
+				spawned = null;
+				break;
+			default: 
+				spawned = location.getWorld().spawnEntity(location, type);
+			}
+		} catch (Exception ex) {
+			
+		}
+		return spawned;
+	}
+		
 	@Override
 	public Entity spawn() {
-		Entity spawned = null;
-		switch (type) {
-		case PLAYER:
-			// Nope!
-		break;
-		case PAINTING:
-			spawned = InventoryUtils.spawnPainting(location, facing, art);
-		break;
-		case ITEM_FRAME:
-			spawned = InventoryUtils.spawnItemFrame(location, facing, item);
-			break;
-		case DROPPED_ITEM:
-			// TODO: Handle this, would need to store item data.
-			spawned = null;
-			break;
-		default: 
-			spawned = location.getWorld().spawnEntity(location, type);
+		Entity spawned = trySpawn();
+		if (spawned != null) {
+			modify(spawned);
 		}
-		
-		modify(spawned);
 		
 		return spawned;
 	}
@@ -162,14 +173,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	@Override
 	public boolean modify(Entity entity) {
 		if (entity == null || entity.getType() != type) return false;
-		if (entity instanceof Player) return false;
 		
 		// Re-spawn if dead
-		if (!entity.isValid()) {
-			try {
-				entity = location.getWorld().spawnEntity(location, type);
-			} catch (Exception ex) {
-				return false;
+		if (!entity.isValid() && !(entity instanceof Player)) {
+			Entity tryEntity = trySpawn();
+			if (tryEntity != null) {
+				entity = tryEntity;
 			}
 		}
 		
@@ -215,7 +224,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 			ocelot.setCatType(ocelotType);
 		}
 
-		
 		if (entity instanceof LivingEntity) {
 			LivingEntity li = (LivingEntity)entity;
 			try {
@@ -224,6 +232,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 			}
 		}
 		
+		if (hasMoved) {
+			entity.teleport(location);
+		}
+		
 		return true;
+	}
+	
+	public void setHasMoved(boolean moved) {
+		this.hasMoved = moved;
 	}
 }
