@@ -1,31 +1,27 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.Art;
+import org.bukkit.Bukkit;
+import org.bukkit.map.MapView;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
+import org.bukkit.entity.*;
 import org.bukkit.entity.Horse.Color;
 import org.bukkit.entity.Horse.Style;
 import org.bukkit.entity.Horse.Variant;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Ocelot.Type;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
-import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
-import org.bukkit.entity.Wolf;
+import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utility.Target;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlterSpell extends BlockSpell
 {
@@ -128,6 +124,33 @@ public class AlterSpell extends BlockSpell
 	protected SpellResult alterEntity(Entity entity) {
 		EntityType entityType = entity.getType();
 		switch (entityType) {
+            case PAINTING:
+                registerModified(entity);
+                Painting painting = (Painting)entity;
+                Art[] artValues = Art.values();
+                Art newArt = artValues[(painting.getArt().ordinal() + 1) % artValues.length];
+                painting.setArt(newArt);
+                break;
+            case ITEM_FRAME:
+                ItemFrame itemFrame = (ItemFrame)entity;
+                ItemStack frameItem = itemFrame.getItem();
+                if (frameItem == null || frameItem.getType() != Material.MAP) {
+                    return SpellResult.NO_TARGET;
+                }
+                short data = frameItem.getDurability();
+                data++;
+                MapView mapView = Bukkit.getMap(data);
+                if (mapView == null) {
+                    data = 0;
+                    mapView = Bukkit.getMap(data);
+                    if (mapView == null) {
+                        return SpellResult.NO_TARGET;
+                    }
+                }
+                registerModified(entity);
+                frameItem.setDurability(data);
+                itemFrame.setItem(frameItem);
+                break;
 			case HORSE:
 				registerModified(entity);
 				Horse horse = (Horse)entity;
@@ -147,7 +170,7 @@ public class AlterSpell extends BlockSpell
 				horse.setStyle(horseStyle);
 				horse.setColor(color);
 				horse.setVariant(variant);
-			break;
+			    break;
 			case OCELOT:
 				registerModified(entity);
 				Ocelot ocelot = (Ocelot)entity;
@@ -165,24 +188,20 @@ public class AlterSpell extends BlockSpell
 				villager.setProfession(profession);
 				break;
 			case WOLF:
-			{
-				registerModified(entity);
-				Wolf wolf = (Wolf)entity;
-				DyeColor dyeColor = wolf.getCollarColor();
-				DyeColor[] dyeColorValues = DyeColor.values();
-				dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
-				wolf.setCollarColor(dyeColor);
-			}
+                registerModified(entity);
+                Wolf wolf = (Wolf)entity;
+                DyeColor wolfColor = wolf.getCollarColor();
+                DyeColor[] wolfColorValues = DyeColor.values();
+                wolfColor = wolfColorValues[(wolfColor.ordinal() + 1) % wolfColorValues.length];
+                wolf.setCollarColor(wolfColor);
 				break;
 			case SHEEP:
-				{
-					registerModified(entity);
-					Sheep sheep = (Sheep)entity;
-					DyeColor dyeColor = sheep.getColor();
-					DyeColor[] dyeColorValues = DyeColor.values();
-					dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
-					sheep.setColor(dyeColor);
-				}
+                registerModified(entity);
+                Sheep sheep = (Sheep)entity;
+                DyeColor dyeColor = sheep.getColor();
+                DyeColor[] dyeColorValues = DyeColor.values();
+                dyeColor = dyeColorValues[(dyeColor.ordinal() + 1) % dyeColorValues.length];
+                sheep.setColor(dyeColor);
 				break;
 			case SKELETON:
 				registerModified(entity);
