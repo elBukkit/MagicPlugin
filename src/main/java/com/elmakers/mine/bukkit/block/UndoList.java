@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,6 +38,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
 	protected Set<Entity> 		   			entities;
+	protected List<Runnable>				runnables;
 	protected HashMap<Entity, EntityData> 	modifiedEntities;
 	
 	protected final Mage			owner;
@@ -84,7 +86,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	{
 		return (
 				(blockList == null ? 0 :blockList.size()) 
-			+ 	(entities == null ? 0 : entities.size()));
+			+ 	(entities == null ? 0 : entities.size())) 
+			+ 	(runnables == null ? 0 : runnables.size());
 	}
 
 	@Override
@@ -92,7 +95,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	{
 		return (
 			(blockList == null || blockList.isEmpty()) 
-		&& 	(entities == null || entities.isEmpty()));
+		&& 	(entities == null || entities.isEmpty()) 
+		&& 	(runnables == null || runnables.isEmpty()));
 	}
 
 	public void setRepetitions(int repeat)
@@ -205,6 +209,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 			}
 			modifiedEntities = null;
 		}
+		if (runnables != null) {
+			for (Runnable runnable : runnables) {
+				runnable.run();
+			}
+			runnables = null;
+		}
 
 		if (blockList == null) return true;
 
@@ -274,6 +284,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		entities.add(entity);
 		watch(entity);
 		contain(entity.getLocation().toVector());
+		modifiedTime = System.currentTimeMillis();
+	}
+
+	public void add(Runnable runnable)
+	{
+		if (runnables == null) runnables = new LinkedList<Runnable>();
+		runnables.add(runnable);
 		modifiedTime = System.currentTimeMillis();
 	}
 	

@@ -58,6 +58,11 @@ public abstract class UndoableSpell extends TargetingSpell {
 		getUndoList().add(block);
 	}
 	
+	public void registerForUndo(Runnable runnable)
+	{
+		getUndoList().add(runnable);
+	}
+	
 	public void registerForUndo(Entity entity)
 	{
 		getUndoList().add(entity);
