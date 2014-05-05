@@ -17,12 +17,15 @@ public class PlaceSpell extends BrushSpell
 		if (!attachToBlock.isValid()) return SpellResult.NO_TARGET;
 		Block placeBlock = getPreviousBlock();
 
-		MaterialBrush buildWith = getBrush();
-		buildWith.setTarget(attachToBlock.getLocation(), placeBlock.getLocation());
-
 		if (!hasBuildPermission(placeBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+
+
+        MaterialBrush buildWith = getBrush();
+        buildWith.setTarget(attachToBlock.getLocation(), placeBlock.getLocation());
+        buildWith.update(mage, placeBlock.getLocation());
+
 		registerForUndo(placeBlock);
 		buildWith.modify(placeBlock);
 
