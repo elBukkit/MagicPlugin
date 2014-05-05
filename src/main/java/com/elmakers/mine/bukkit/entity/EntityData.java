@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData {
 	protected Location location;
 	protected boolean hasMoved = false;
+    protected String name = null;
 	protected EntityType type;
 	protected Art art;
 	protected BlockFace facing;
@@ -56,6 +57,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 	public EntityData(Location location, Entity entity) {
 		this.type = entity.getType();
 		this.location = location;
+
 		if (entity instanceof Hanging) {
 			Hanging hanging = (Hanging)entity;
 			facing = hanging.getFacing();
@@ -66,6 +68,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
 		if (entity instanceof LivingEntity) {
 			LivingEntity li = (LivingEntity)entity;
+            name = li.getCustomName();
 			this.health = li.getHealth();
 			this.potionEffects = li.getActivePotionEffects();
 		}
@@ -243,6 +246,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 					}
 				}
 			}
+
+            if (name != null && name.length() > 0) {
+                li.setCustomName(name);
+            }
 			
 			try {
 				li.setHealth(Math.min(health, li.getMaxHealth()));
