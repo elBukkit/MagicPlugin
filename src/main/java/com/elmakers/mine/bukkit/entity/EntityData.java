@@ -48,6 +48,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 		this(entity.getLocation(), entity);
 	}
 	
+	public EntityData(Entity entity, boolean hasMoved) {
+		this(entity.getLocation(), entity);
+		this.hasMoved = hasMoved;
+	}
+	
 	public EntityData(Location location, Entity entity) {
 		this.type = entity.getType();
 		this.location = location;
