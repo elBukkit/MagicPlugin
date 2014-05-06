@@ -10,7 +10,8 @@
 # /wand and /wandp commands.
 #
 # To see the default wands and configurations, look in defaults/wands.defaults.yml
-# There are more instructions in that file, as well as many examples to look at.
+#
+# See https://github.com/elBukkit/MagicPlugin/blob/master/WANDS.md for more information.
 #
 # Once a wand is created, it is its own unique item. It may be modified after that,
 # and may bear no direct relationship back to the template that created it.

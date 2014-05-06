@@ -7,6 +7,8 @@
 # only modify the lines you wish to change. If you want to modify or disable a spell, add its key to
 # spells.yml and add "enabled: false" or whatever other properties you want to change.
 #
+# See https://github.com/elBukkit/MagicPlugin/blob/master/SPELLS.md for more information.
+#
 # LOCALIZATION
 #
 # Note that ALL in-game text is contained in messages.yml

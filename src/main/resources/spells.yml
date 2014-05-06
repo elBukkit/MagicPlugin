@@ -7,10 +7,10 @@
 # This is the Spell configuration file for the Magic plugin.
 #
 # Here you may alter default spell behavior, or add and remove spells.
-# See http://dev.bukkit.org/bukkit-plugins/magic/ for more information.
+#
+# See https://github.com/elBukkit/MagicPlugin/blob/master/SPELLS.md for more information.
 #
 # To see the default spells and configurations, look in defaults/spells.defaults.yml
-# There are more instructions in that file, as well as many examples to look at.
 # 
 # The name, description, and usage of a spell should be defined in messages.yml as
 #  messages.spells.<spellkey>.name
