@@ -2,13 +2,16 @@
 
 ## 3.1
 
- - Automata won't target cross-world
- - Recall won't warp cross-world, too confusing
- - Make the wand enchantable item swapping optional, and off by default.
- - Automata can now randomly choose from a set of spells to cast, and have multiple difficult levels
+### The Rollback Release!
+
  - The Curse spell will now temporarily cripple a Mage
- - A slightly better/hackier work-around for annoying Bukkit drag event
- - Large code refactor, move base spell classes to MagicLib. 
+ - Improved Shrink - works on giants, pigmen, slimes.
+ - Add Pyramid spell, Blob is now a sphere again
+ - Spells will automatically reactivate on login (Fly, Levitate, etc)
+ - Fix Hat being exploitable for blocks
+ - Add Mount spell
+ - Curse, Boon, Wither etc effects stack properly
+ - Large code refactor, move base spell classes to MagicLib.
    * Devs can now add custom spells to your Plugin without building against MagicPlugin.
    * MagicLib has no dependencies other than MagicAPI and Bukkit.
  - Many spells are now undoable (with Rollback or Rewind):
@@ -20,16 +23,15 @@
    * Curse, Boon, Perk, Blessing
    * Recall, Gather
  - Entity changes are now undable - even spells like Arrow Rain, Meteor Shower .. bring back the dead with Recall!
- - Improved Shrink - works on giants, pigmen, slimes.
- - Add Pyramid spell, Blob is now a sphere again
- - Spells will automatically reactivate on login (Fly, Levitate, etc)
- - Fix Hat being exploitable for blocks
- - Add Elementals integration
+ - Rewind and Rollback will show the name of the spell they undid
+ - Automata won't target cross-world
+ - Recall won't warp cross-world, too confusing
+ - Make the wand enchantable item swapping optional, and off by default.
+ - Automata can now randomly choose from a set of spells to cast, and have multiple difficultly levels
+ - A slightly better/hackier work-around for annoying Bukkit drag event
  - Wand color will morph depending on spells cast with it
  - Wand haste, hunger and health regen use potion effects (looks better, avoids conflicts)
- - Curse, Boon, Wither etc effects stack properly
- - Rewind and Rollback will show the name of the spell they undid
- - Add Mount spell
+ - Add Elementals integration
 
 ## 3.0
 
