@@ -463,7 +463,6 @@ random:
       schematic|compact_house: 5,10,15,20,100
       schematic|small_house: 5,10,15,20,100
       schematic|flare_beacon: 0,0,1,10,100
-      schematic|tech_tower: 0,0,1,5,100
 
 #
 #
