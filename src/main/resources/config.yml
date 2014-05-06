@@ -14,7 +14,7 @@
 # Wand and Spell configurations are separate, in wands.yml and spells.yml.
 # Localizations are also separate, in messages.yml. 
 #
-
+# For more information, see: https://github.com/elBukkit/MagicPlugin/blob/master/CONFIGURATION.md
 #
 # More examples can be found at
 # 

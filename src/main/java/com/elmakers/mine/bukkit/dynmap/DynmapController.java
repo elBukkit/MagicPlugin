@@ -51,10 +51,10 @@ public class DynmapController {
 				width = Math.min(8, width);
 				final Location location = spell.getLocation();
 				if (location == null) return;
+                Color mageColor = mage.getEffectColor();
+                mageColor = mageColor == null ? Color.PURPLE : mageColor;
 				Color spellColor = spell.getColor();
-				spellColor = spellColor == null ? Color.WHITE : spellColor;
-				Color mageColor = mage.getEffectColor();
-				mageColor = mageColor == null ? Color.PURPLE : mageColor;
+				spellColor = spellColor == null ? mageColor : spellColor;
 				final String worldName = location.getWorld().getName();
 				Date now = new Date();
 				String label = spell.getName() + " : " + mage.getName() + " @ " + dateFormatter.format(now);

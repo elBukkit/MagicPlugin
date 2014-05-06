@@ -5,6 +5,8 @@
 #
 # If you wish to customize this plugin, edit the "config.yml" file instead.
 #
+# For more information, see: https://github.com/elBukkit/MagicPlugin/blob/master/CONFIGURATION.md
+#
 # ALSO IMPORTANT
 #
 # Note that configurations are additive- meaning you only need to set what you want to *modify* in your custom configuration.
