@@ -1573,7 +1573,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		Wand wand = null;
 		try {
-			wand = new Wand(controller, templateName);
+            wand = new Wand(controller, templateName);
+        } catch (IllegalArgumentException ignore) {
+            // the Wand constructor throws an exception on an unknown tempalte
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
