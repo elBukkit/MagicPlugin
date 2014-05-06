@@ -234,8 +234,8 @@ public class SimulateBatch extends UndoableBatch {
 
 			if (liveRangeSquared <= 0 || distanceSquared <= liveRangeSquared) {
 				if (diagonalLiveCounts.size() > 0) {
-					int faceNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, MAIN_FACES, true, true);
-					int diagonalNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, DIAGONAL_FACES, false, false);
+					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, includeCommands);
+					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, includeCommands);
 					if (faceNeighborCount >= liveCounts.size() || !liveCounts.get(faceNeighborCount)
 						|| diagonalNeighborCount >= diagonalLiveCounts.size() || !diagonalLiveCounts.get(diagonalNeighborCount)) {
 						killBlock(block);
@@ -259,8 +259,8 @@ public class SimulateBatch extends UndoableBatch {
 
 			if (birthRangeSquared <= 0 || distanceSquared <= birthRangeSquared) {	
 				if (diagonalBirthCounts.size() > 0) {
-					int faceNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, MAIN_FACES, true, true);
-					int diagonalNeighborCount = getNeighborCount(block, birthMaterial, includeCommands, DIAGONAL_FACES, false, false);
+					int faceNeighborCount = getFaceNeighborCount(block, birthMaterial, includeCommands);
+					int diagonalNeighborCount = getDiagonalNeighborCount(block, birthMaterial, includeCommands);
 					if (faceNeighborCount < birthCounts.size() && birthCounts.get(faceNeighborCount)
 						&& diagonalNeighborCount < diagonalBirthCounts.size() && diagonalBirthCounts.get(diagonalNeighborCount)) {
 						birthBlock(block);
@@ -770,42 +770,46 @@ public class SimulateBatch extends UndoableBatch {
 	}
 	
 	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
-		return getNeighborCount(block, liveMaterial, includeCommands, NEIGHBOR_FACES, true, true);
+        return getDiagonalNeighborCount(block, liveMaterial, includeCommands) + getFaceNeighborCount(block, liveMaterial, includeCommands);
 	}
 
-	protected int getNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands, BlockFace[] faces, boolean includeUp, boolean includeDown) {
-		int liveCount = 0;
-		for (BlockFace face : faces) {
-			if (liveMaterial.is(block.getRelative(face))) {
-				liveCount++;
-			}
-		}
-		
-		if (yRadius > 0) {
-			Block upBlock = block.getRelative(BlockFace.UP);
-			if (liveMaterial.is(upBlock)) {
-				liveCount++;
-			}
-			for (BlockFace face : faces) {
-				if (liveMaterial.is(upBlock.getRelative(face))) {
-					liveCount++;
-				}
-			}
+    protected int getFaceNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
+        int liveCount = 0;
+        BlockFace[] faces = yRadius > 0 ? POWER_FACES : MAIN_FACES;
+        for (BlockFace face : faces) {
+            if (liveMaterial.is(block.getRelative(face))) {
+                liveCount++;
+            }
+        }
+        return liveCount;
+    }
 
-			Block downBlock = block.getRelative(BlockFace.DOWN);
-			if (liveMaterial.is(downBlock)) {
-				liveCount++;
-			}
-			for (BlockFace face : faces) {
-				if (liveMaterial.is(downBlock.getRelative(face))) {
-					liveCount++;
-				}
-			}
-		}
-		
-		return liveCount;
-	}
-	
+    protected int getDiagonalNeighborCount(Block block, MaterialAndData liveMaterial, boolean includeCommands) {
+        int liveCount = 0;
+        for (BlockFace face : DIAGONAL_FACES) {
+            if (liveMaterial.is(block.getRelative(face))) {
+                liveCount++;
+            }
+        }
+
+        if (yRadius > 0) {
+            Block upBlock = block.getRelative(BlockFace.UP);
+            for (BlockFace face : NEIGHBOR_FACES) {
+                if (liveMaterial.is(upBlock.getRelative(face))) {
+                    liveCount++;
+                }
+            }
+
+            Block downBlock = block.getRelative(BlockFace.DOWN);
+            for (BlockFace face : NEIGHBOR_FACES) {
+                if (liveMaterial.is(downBlock.getRelative(face))) {
+                    liveCount++;
+                }
+            }
+        }
+        return liveCount;
+    }
+
 	public void setConcurrent(boolean concurrent) {
 		this.concurrent = concurrent;
 	}
