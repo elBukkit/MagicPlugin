@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 3.2
+
 ## 3.1
 
 ### The Rollback Release!
