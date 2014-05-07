@@ -2092,6 +2092,12 @@ public class MagicController implements Listener, MageController
 	
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {
+        // Check for wand inventory
+        Mage mage = getMage(player);
+        if (mage.hasStoredInventory()) {
+            mage.addToStoredInventory(itemStack);
+            return;
+        }
 		// Place directly in hand if possible
 		PlayerInventory inventory = player.getInventory();
 		ItemStack inHand = inventory.getItemInHand();
