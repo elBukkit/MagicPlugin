@@ -1174,7 +1174,7 @@ public class MagicController implements Listener, MageController
 				
 				// Check for players we can forget
 				Player player = mage.getPlayer();
-				if (player != null && !player.isOnline() && !player.hasMetadata("NPC")) {
+				if (player != null && !player.isOnline() && !isNPC(player)) {
 					UndoQueue undoQueue = mage.getUndoQueue();
 					if (undoQueue == null || undoQueue.isEmpty()) {
 						getLogger().info("Offline player " + player.getName() + " has no pending undo actions, forgetting");
@@ -1930,7 +1930,7 @@ public class MagicController implements Listener, MageController
         
         // Check for clicking on a Citizens NPC, in case
         // this hasn't been cancelled yet
-        if (event.getRightClicked().hasMetadata("NPC")) {
+        if (isNPC(event.getRightClicked())) {
         	Player player = event.getPlayer();		
     		Mage mage = getMage(player);
         	Wand wand = mage.getActiveWand();
@@ -2652,6 +2652,11 @@ public class MagicController implements Listener, MageController
 		}
 		return false;
 	}
+
+    @Override
+    public boolean isNPC(Entity entity) {
+        return (entity != null && (entity.hasMetadata("NPC") || entity.hasMetadata("shopkeeper")));
+    }
 	
 	@Override
 	public void updateBlock(Block block)
@@ -2802,7 +2807,7 @@ public class MagicController implements Listener, MageController
 		String id = player.getUniqueId().toString();
 		
 		// Check for Citizens NPC!
-		if (player.hasMetadata("NPC")) {
+		if (isNPC(player)) {
 			id = "NPC-" + player.getUniqueId();
 		}
 		return getMage(id, player);
@@ -2841,7 +2846,7 @@ public class MagicController implements Listener, MageController
 		for (World world : worlds) {
 			List<Player> players = world.getPlayers();
 			for (Player player : players) {
-				if (player.hasMetadata("NPC")) continue;
+				if (isNPC(player)) continue;
 				playerNames.add(player.getName());
 			}
 		}

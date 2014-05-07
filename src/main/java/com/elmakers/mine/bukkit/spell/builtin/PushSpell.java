@@ -29,7 +29,7 @@ public class PushSpell extends TargetingSpell
 		for (Entity target : entities)
 		{
 			if (target == getPlayer()) continue;
-			if (target.hasMetadata("NPC")) continue;
+			if (controller.isNPC(target)) continue;
 			Location playerLocation = getLocation();
 			Location targetLocation = target.getLocation();
 
