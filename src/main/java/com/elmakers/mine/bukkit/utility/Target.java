@@ -187,7 +187,7 @@ public class Target implements Comparable<Target>
 		// Favor targeting players, a bit
 		// TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
 		Entity entity = getEntity();
-		if (entity != null && entity.hasMetadata("NPC"))
+		if (entity != null && mage != null && mage.getController().isNPC(entity))
 		{
 			score = score - 1;
 		}

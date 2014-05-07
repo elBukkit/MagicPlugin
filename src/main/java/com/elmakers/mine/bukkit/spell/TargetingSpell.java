@@ -385,7 +385,7 @@ public abstract class TargetingSpell extends BaseSpell {
 		for (Entity entity : entities)
 		{
 			if (entity == getPlayer()) continue;
-			if (!targetNPCs && entity.hasMetadata("NPC")) continue;
+			if (!targetNPCs && controller.isNPC(entity)) continue;
 			
 			// Special check for Elementals
 			if (!controller.isElemental(entity) && targetEntityType != null && !targetEntityType.isAssignableFrom(entity.getClass())) continue;

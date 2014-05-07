@@ -538,7 +538,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 			for (Entity entity : targetEntities) {
 				// Note that we'll clear Item entities even though we can't respawn them!
                 // Also note that we ignore players and NPCs
-				if (!(entity instanceof Player) && !entity.hasMetadata("NPC")) {
+				if (!(entity instanceof Player) && mage.getController().isNPC(entity)) {
 					targetData.add(entity);
 				}
 			}
