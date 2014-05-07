@@ -999,6 +999,7 @@ public class MagicController implements Listener, MageController
 			{
 				Set<String> wandIds = lostWandConfiguration.getKeys(false);
 				for (String wandId : wandIds) {
+                    if (wandId == null || wandId.length() == 0) continue;
 					LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getConfigurationSection(wandId));
 					if (!lostWand.isValid()) {
 						getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
@@ -1044,6 +1045,7 @@ public class MagicController implements Listener, MageController
 			DataStore lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
 			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
 				lastKey = wandEntry.getKey();
+                if (lastKey == null || lastKey.length() == 0) continue;
 				ConfigurationSection wandNode = lostWandsConfiguration.createSection(lastKey);
 				if (wandNode == null) {
 					getLogger().warning("Error saving lost wand data for " + lastKey);
