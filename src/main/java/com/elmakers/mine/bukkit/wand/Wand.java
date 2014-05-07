@@ -431,7 +431,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void tryToOwn(Player player) {
         if (ownerId == null || ownerId.length() == 0) {
-            // Backwards-compatibility, don't overrwrite unless the
+            // Backwards-compatibility, don't overwrite unless the
             // name matches
             if (owner != null && !owner.equals(player.getName())) {
                 return;
@@ -439,14 +439,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             takeOwnership(player);
         }
 	}
-	
-	protected void takeOwnership(Player player) {
+
+    protected void takeOwnership(Player player) {
+        takeOwnership(player, controller != null && controller.bindWands(), controller != null && controller.keepWands());
+    }
+
+     public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
 		owner = player.getName();
         ownerId = player.getUniqueId().toString();
-		if (controller != null && controller.bindWands()) {
+		if (setBound) {
 			bound = true;
 		}
-		if (controller != null && controller.keepWands()) {
+		if (setKeep) {
 			keep = true;
 		}
 		updateLore();

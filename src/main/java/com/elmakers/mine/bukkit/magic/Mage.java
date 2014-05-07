@@ -588,7 +588,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	{
 		return this.isNewPlayer;
 	}
-	
+
+    public void clearNewPlayer() { this.isNewPlayer = false; }
+
 	/*
 	 * API Implementation
 	 */

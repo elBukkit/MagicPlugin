@@ -2073,7 +2073,9 @@ public class MagicController implements Listener, MageController
 		if (wand != null) {
 			wand.activate(mage);
 		} else if (mage.isNewPlayer() && welcomeWand.length() > 0) {
+            mage.clearNewPlayer();
 			wand = Wand.createWand(this, welcomeWand);
+            wand.takeOwnership(player, false, false);
 			if (wand != null) {
 				giveItemToPlayer(player, wand.getItem());
 				getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
