@@ -68,6 +68,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	{
 		this.plugin = mage.getController().getPlugin();
 		this.owner = mage;
+        Location location = mage.getLocation();
+        this.worldName = location == null ? null : location.getWorld().getName();
 		createdTime = System.currentTimeMillis();
 		modifiedTime = createdTime;
 	}
@@ -75,6 +77,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	public UndoList(UndoList other)
 	{
 		super(other);
+        this.worldName = other.worldName;
 		this.owner = other.owner;
 		this.name = other.name;
 		this.plugin = other.plugin;
@@ -200,7 +203,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		// This part doesn't happen in a batch, and may lag on large lists
 		if (entities != null || modifiedEntities != null) {
 			Map<UUID, Entity> currentEntities = new HashMap<UUID, Entity>();
-			World world = Bukkit.getWorld(worldName);
+			World world = worldName != null && worldName.length() > 0 ? Bukkit.getWorld(worldName) : null;
 			if (world != null) {
 				List<Entity> entities = world.getEntities();
 				for (Entity entity : entities) {
@@ -292,6 +295,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	public void watch(Entity entity)
 	{
 		if (entity == null) return;
+        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
+        if (worldName == null) worldName = entity.getWorld().getName();
+
 		entity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, this));
 		modifiedTime = System.currentTimeMillis();
 	}
@@ -300,8 +306,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	{
 		if (entities == null) entities = new HashSet<UUID>();
 		if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
-		if (worldName == null) worldName = entity.getWorld().getName();
-		
+
 		entities.add(entity.getUniqueId());
 		watch(entity);
 		contain(entity.getLocation().toVector());
@@ -322,6 +327,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	
 	protected void modify(Entity entity, boolean hasMoved, boolean hasPotionEffects)
 	{
+        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
+        if (worldName == null) worldName = entity.getWorld().getName();
+
 		// Check to see if this is something we spawned, and has now been destroyed
 		if (entities != null && entities.contains(entity) && !entity.isValid()) {
 			entities.remove(entity);
