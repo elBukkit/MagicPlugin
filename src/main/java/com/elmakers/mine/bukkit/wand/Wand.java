@@ -285,6 +285,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public String getLostId() { return id; }
+    public void clearLostId() {
+        if (id != null) {
+            id = null;
+            saveState();
+        }
+    }
 	
 	public int getXpRegeneration() {
 		return xpRegeneration;

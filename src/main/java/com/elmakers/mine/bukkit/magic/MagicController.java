@@ -1137,7 +1137,7 @@ public class MagicController implements Listener, MageController
 	}
 
 	public boolean removeLostWand(String wandId) {
-		if (wandId == null || !lostWands.containsKey(wandId)) return false;
+		if (wandId == null || wandId.length() == 0 || !lostWands.containsKey(wandId)) return false;
 		
 		LostWand lostWand = lostWands.get(wandId);
 		lostWands.remove(wandId);
@@ -2337,31 +2337,37 @@ public class MagicController implements Listener, MageController
 		
 		Wand previousWand = mage.getActiveWand();
 		
-		// Save the inventory state the the current wand if its spell inventory is open
+		// Save the inventory state of the current wand if its spell inventory is open
 		// This is just to make sure we don't lose changes made to the inventory
 		if (previousWand != null && previousWand.isInventoryOpen()) {
 			if (previousWand.getMode() == WandMode.INVENTORY) {
 				previousWand.saveInventory();
 			} else if (previousWand.getMode() == WandMode.CHEST) {
 				// First check for chest inventory mode, we may just be closing a display inventory.
-				previousWand.closeInventory();
+				// In theory you can't re-arrange items in here.
+                previousWand.closeInventory();
 				return;
 			}
-		}
-		
-		Wand wand = Wand.getActiveWand(this, player);
-		boolean changedWands = false;
-		if (previousWand != null && wand == null) changedWands = true;
-		if (previousWand == null && wand != null) changedWands = true;
-		if (previousWand != null && wand != null && !previousWand.equals(wand)) changedWands = true;
-		if (changedWands) {
-			if (previousWand != null) {
-				previousWand.deactivate();
-			}
-			if (wand != null) {
-				wand.activate(mage);
-			}
-		}
+		} else {
+            // If we're not in a wand inventory, check for the player
+            // having re-arranged their items such that a new wand is now active
+            // we don't get an equip event for this.
+            // Note that ".equals" is very strong and will detect any changes at all
+            // in the wand item, including an active spell change.
+            Wand wand = Wand.getActiveWand(this, player);
+            boolean changedWands = false;
+            if (previousWand != null && wand == null) changedWands = true;
+            if (previousWand == null && wand != null) changedWands = true;
+            if (previousWand != null && wand != null && !previousWand.equals(wand)) changedWands = true;
+            if (changedWands) {
+                if (previousWand != null) {
+                    previousWand.deactivate();
+                }
+                if (wand != null) {
+                    wand.activate(mage);
+                }
+            }
+        }
 	}
 	
 	@EventHandler
@@ -2400,19 +2406,25 @@ public class MagicController implements Listener, MageController
 		Mage mage = getMage(event.getPlayer());
 		ItemStack pickup = event.getItem().getItemStack();
 		boolean isWand = Wand.isWand(pickup);
-		
+
 		// Creative mode inventory hacky work-around :\
 		if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand && enableItemHacks) {
 			event.setCancelled(true);
 			return;
 		}
-		
-		if (dynmapShowWands && isWand) {
+
+        // Remove lost wands from map
+        if (isWand) {
 			Wand wand = new Wand(this, pickup);
-			plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
-			removeLostWand(wand.getLostId());
+            if (dynmapShowWands) {
+                if (removeLostWand(wand.getLostId())) {
+                    plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
+                }
+            }
+            wand.clearLostId();;
 		}
-		
+
+        // Wands will absorb spells and upgrade items
 		Wand activeWand = mage.getActiveWand();
 		if (activeWand != null && (!Wand.isWand(pickup) || Wand.isWandUpgrade(pickup))
 			&& activeWand.isModifiable() && activeWand.addItem(pickup)) {
@@ -2420,7 +2432,8 @@ public class MagicController implements Listener, MageController
 			event.setCancelled(true);   
 			return;
 		}
-		
+
+        // If a wand's inventory is active, add the item there
 		if (mage.hasStoredInventory()) {
 			event.setCancelled(true);   		
 			if (mage.addToStoredInventory(event.getItem().getItemStack())) {
@@ -2430,7 +2443,7 @@ public class MagicController implements Listener, MageController
 			// Hackiness needed because we don't get an equip event for this!
 			PlayerInventory inventory = event.getPlayer().getInventory();
 			ItemStack inHand = inventory.getItemInHand();
-			if (Wand.isWand(pickup) && (inHand == null || inHand.getType() == Material.AIR)) {
+			if (isWand && (inHand == null || inHand.getType() == Material.AIR)) {
 				Wand wand = new Wand(this, pickup);
 				event.setCancelled(true);
 				event.getItem().remove();
