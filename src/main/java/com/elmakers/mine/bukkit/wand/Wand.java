@@ -229,7 +229,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		setName(wandName);
 		setTemplate(templateName);
 		suspendSave = false;
-		generateId();
 		saveState();
 	}
 	
@@ -241,12 +240,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (EnableGlow) {
 			InventoryUtils.addGlow(item);
 		}
-		generateId();
 		saveState();
-	}
-	
-	protected void generateId() {
-		id = UUID.randomUUID().toString();
 	}
 	
 	public void unenchant() {
@@ -289,6 +283,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!isBrush(itemStack)) return;
 		activateBrush(getBrush(itemStack));
 	}
+
+    public String getLostId() { return id; }
 	
 	public int getXpRegeneration() {
 		return xpRegeneration;
@@ -731,10 +727,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	protected void saveState() {
 		if (suspendSave || item == null) return;
-		if (id == null || id.length() == 0) {
-			generateId();
-		}
-		
+
 		Object wandNode = InventoryUtils.createNode(item, "wand");
 		if (wandNode == null) {
 			controller.getLogger().warning("Failed to save wand state for wand id " + id + " to : " + item + " of class " + item.getClass());
@@ -760,7 +753,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void saveProperties(ConfigurationSection node) {
-		node.set("id", id);
+        if (id != null) {
+            node.set("id", id);
+        }
 		node.set("materials", getMaterialString());
 		
 		node.set("spells", getSpellString());
@@ -1870,11 +1865,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// TODO: Detect changes
 		return true;
 	}
-	
-	public boolean hasId() {
-		return id != null && id.length() > 0;
-	}
-		
+
 	public void activate(Mage mage, ItemStack wandItem) {
 		if (mage == null || wandItem == null) return;
 		
@@ -2152,17 +2143,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateEffects();
 	}
 	
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) return false;
-		if (!(other instanceof Wand)) return false;
-		
-		Wand otherWand =  ((Wand)other);
-		if (this.id.length() == 0 || otherWand.id.length() == 0) return false;
-		
-		return otherWand.id.equals(this.id);
-	}
-	
 	public MagicController getMaster() {
 		return controller;
 	}
@@ -2253,10 +2233,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	/*
 	 * Public API Implementation
 	 */
-	
-	public String getId() {
-		return this.id;
+
+    @Override
+	public boolean isLost()
+    {
+		return this.id != null;
 	}
+
+    @Override
+    public LostWand makeLost(Location location)
+    {
+        if (id == null) id = UUID.randomUUID().toString();
+        return new LostWand(this, location);
+    }
 
 	@Override
 	public void activate(com.elmakers.mine.bukkit.api.magic.Mage mage) {
@@ -2276,12 +2265,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			player.setItemInHand(null);
 			Location location = player.getLocation();
 			location.setY(location.getY() + 1);
+            controller.addLostWand(makeLost(location));
+            saveState();
 			Item droppedItem = player.getWorld().dropItemNaturally(location, item);
 			Vector velocity = droppedItem.getVelocity();
 			velocity.setY(velocity.getY() * 2 + 1);
 			droppedItem.setVelocity(velocity);
 			return;
 		}
+
+        id = null;
 		
 		if (mage instanceof Mage) {
 			activate((Mage)mage, player.getItemInHand());
@@ -2301,7 +2294,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public com.elmakers.mine.bukkit.api.wand.Wand duplicate() {
 		ItemStack newItem = InventoryUtils.getCopy(item);
 		Wand newWand = new Wand(controller, newItem);
-		newWand.generateId();
 		newWand.saveState();
 		return newWand;
 	}

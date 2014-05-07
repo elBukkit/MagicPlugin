@@ -24,12 +24,7 @@ public class WandFlag extends ItemFlag {
 	public void onAssign(ItemStack itemStack) throws InvalidItemException
 	{
 		if (itemStack == null) throw new InvalidItemException();
-		
-		// We'll generate a new id each time.
-		Object wandNode = InventoryUtils.createNode(itemStack, "wand");
-		if (wandNode != null) {
-			InventoryUtils.setMeta(wandNode, "id", UUID.randomUUID().toString());
-		}
+        // We're going to rely on other wand attributes to add the root node
 	}
 
 	// TODO Have to wait for dtlTraders 3.1.0 for this!

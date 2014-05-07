@@ -5,7 +5,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-
 public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	private Location location;
 	private String id;
@@ -25,7 +24,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	
 	public void update(Wand wand, Location location) {
 		this.location = location;
-		this.id = wand.getId();
+		this.id = wand.getLostId();
 		this.name = wand.getName();
 		this.owner = wand.getOwner();
 		this.description = wand.getHTMLDescription();

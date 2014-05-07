@@ -1114,12 +1114,7 @@ public class MagicController implements Listener, MageController
 		return chunk.getWorld().getName() + "|" + chunk.getX() + "," + chunk.getZ();
 	}
 	
-	protected boolean addLostWand(LostWand lostWand) {
-		if (lostWands.containsKey(lostWand.getId())) {
-			updateLostWand(lostWand);
-			
-			return false;
-		}
+	public boolean addLostWand(LostWand lostWand) {
 		lostWands.put(lostWand.getId(), lostWand);
 		String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
 		Set<String> chunkWands = lostWandChunks.get(chunkKey);
@@ -1136,36 +1131,13 @@ public class MagicController implements Listener, MageController
 		return true;
 	}
 	
-	protected void updateLostWand(Wand wand, Location dropLocation) {
-		LostWand lostWand = lostWands.get(wand.getId());
-		lostWand.update(wand, dropLocation);
-		addLostWandMarker(lostWand);
-	}
-
-	protected void updateLostWand(LostWand newLost) {
-		LostWand currentLostWand = lostWands.get(newLost.getId());
-		currentLostWand.update(newLost);
-		
-		if (dynmapShowWands) {
-			addLostWandMarker(currentLostWand);
-		}
-	}
-	
 	public boolean addLostWand(Wand wand, Location dropLocation) {
-		if (!wand.hasId()) return false;
-		
-		if (lostWands.containsKey(wand.getId())) {
-			updateLostWand(wand, dropLocation);
-			return false;
-		}
-		LostWand lostWand = new LostWand(wand, dropLocation);
-		addLostWand(lostWand);
-		
+		addLostWand(wand.makeLost(dropLocation));
 		return true;
 	}
 
 	public boolean removeLostWand(String wandId) {
-		if (!lostWands.containsKey(wandId)) return false;
+		if (wandId == null || !lostWands.containsKey(wandId)) return false;
 		
 		LostWand lostWand = lostWands.get(wandId);
 		lostWands.remove(wandId);
@@ -1186,11 +1158,7 @@ public class MagicController implements Listener, MageController
 		
 		return true;
 	}
-	
-	public boolean removeLostWand(Wand wand) {
-		return removeLostWand(wand.getId());
-	}
-	
+
 	public WandMode getDefaultWandMode() {
 		return defaultWandMode;
 	}
@@ -1860,7 +1828,7 @@ public class MagicController implements Listener, MageController
 				event.getEntity().setTicksLived(1);
 				event.setCancelled(true);
 			} else if (dynmapShowWands) {
-				removeLostWand(wand);
+				removeLostWand(wand.getLostId());
 			}
 		}
 	}
@@ -1871,13 +1839,13 @@ public class MagicController implements Listener, MageController
 		if (Wand.isWand(event.getEntity().getItemStack()))
 		{
 			Wand wand = new Wand(this, event.getEntity().getItemStack());
-			if (wand != null && wand.isIndestructible()) {
+			if (wand.isIndestructible()) {
 				InventoryUtils.setInvulnerable(event.getEntity());
 
 				// Don't show non-indestructible wands on dynmap
 				addLostWand(wand, event.getEntity().getLocation());		
 				Location dropLocation = event.getLocation();
-				getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+				getLogger().info("Wand " + wand.getName() + ", id " + wand.getLostId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 			}
 		} else  {
 			registerEntityForUndo(event.getEntity());
@@ -1941,8 +1909,8 @@ public class MagicController implements Listener, MageController
 	            	if (wand.isIndestructible()) {
 	                     event.setCancelled(true);
 	            	} else if (event.getDamage() >= itemStack.getDurability()) {
-	                	if (removeLostWand(wand)) {
-	                		plugin.getLogger().info("Wand " + wand.getName() + ", id " + wand.getId() + " destroyed");
+	                	if (removeLostWand(wand.getLostId())) {
+	                		plugin.getLogger().info("Wand " + wand.getName() + ", id " + wand.getLostId() + " destroyed");
 	                	}
 	                }
 				}  
@@ -2441,8 +2409,8 @@ public class MagicController implements Listener, MageController
 		
 		if (dynmapShowWands && isWand) {
 			Wand wand = new Wand(this, pickup);
-			plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getId());
-			removeLostWand(wand);
+			plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
+			removeLostWand(wand.getLostId());
 		}
 		
 		Wand activeWand = mage.getActiveWand();
@@ -2496,69 +2464,10 @@ public class MagicController implements Listener, MageController
 			location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
 		);
 	}
-	
-	protected void checkForWands(final Chunk chunk, final int retries) {
-		if (dynmapShowWands && dynmap != null) {
-			if (!dynmap.isReady()) {
-				if (retries > 0) {
-					final MagicController me = this;
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							me.checkForWands(chunk, retries + 1);
-						}
-					}, 10);
-				}
-				return;
-			}
-			Entity[] entities = chunk.getEntities();
-			Set<String> presentWandIds = new HashSet<String>();
-			for (Entity entity : entities) {
-				if (!(entity instanceof Item)) continue;
-				Item item = (Item)entity;
-				ItemStack itemStack = item.getItemStack();
-				if (Wand.isWand(itemStack)) {
-					Wand wand = new Wand(this, itemStack);
-					addLostWand(wand, item.getLocation());
-					presentWandIds.add(wand.getId());
-				}
-			}
-			
-			// Remove missing lost wands
-			String chunkKey = getChunkKey(chunk);
-			Set<String> chunkWands = lostWandChunks.get(chunkKey);
-			if (chunkWands != null) {
-				List<String> iterateWands = new ArrayList<String>(chunkWands);
-				for (String wandId : iterateWands) {
-					if (!presentWandIds.contains(wandId)) {
-						LostWand lostWand = lostWands.get(wandId);
-						String name = null;
-						String owner = null;
-						if (lostWand != null) {
-							name = lostWand.getName();
-							owner = lostWand.getOwner();
-						}
-						name = name == null ? "(Unknown)" : name;
-						owner = owner == null ? "(Unknown)" : owner;
-						plugin.getLogger().info("Wand " + wandId + ": " + name + "@" + owner + ", not found in chunk, presumed lost");
-						removeLostWand(wandId);
-					}
-				}
-			}
-		}
-	}
 
 	@EventHandler
 	public void onChunkLoad(ChunkLoadEvent e) {
-		// Look for wands in the chunk
-		final MagicController me = this;
-		final ChunkLoadEvent event = e;
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			public void run() {
-				me.checkForWands(event.getChunk(), 10);
-			}
-		}, 5);
-		
-		// Also check for any blocks we need to toggle.
+		// Check for any blocks we need to toggle.
 		triggerBlockToggle(e.getChunk());
 	}
 	
