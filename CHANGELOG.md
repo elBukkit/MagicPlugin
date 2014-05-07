@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.3.1
+
+ - Re-work the Wand/Lost wand relationship. Id's are only for lost wands.
+ - I'm making this a point release mainly to try and sync up the Magic and Magic API version #'s.
+
 ## 1.3
 
  - Add some automata-related API methods.

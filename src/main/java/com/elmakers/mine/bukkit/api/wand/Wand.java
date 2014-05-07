@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Collection;
 import java.util.Map;
 
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,6 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
  *
  */
 public interface Wand extends CostReducer {
-	public String getId();
 	public String getName();
 	public void closeInventory();
 	public void activate(Mage mage);
@@ -53,4 +53,7 @@ public interface Wand extends CostReducer {
 	public void setActiveSpell(String key);
 	public void setName(String name);
 	public void setDescription(String description);
+
+    public LostWand makeLost(Location location);
+    public boolean isLost();
 }
