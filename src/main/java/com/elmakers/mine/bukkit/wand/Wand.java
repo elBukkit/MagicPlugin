@@ -73,7 +73,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"materials", "spells"
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
-		"id", "owner", "name", "description", "template",
+		"id", "owner", "owner_id", "name", "description", "template",
 		"organize", "fill"
 	};
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
@@ -92,6 +92,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected String wandName = "";
 	protected String description = "";
 	private String owner = "";
+    private String ownerId = "";
 	private String template = "";
 	private boolean bound = false;
 	private boolean indestructible = false;
@@ -409,7 +410,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public String getOwner() {
 		return owner;
 	}
-	
+
 	public void setName(String name) {
 		wandName = ChatColor.stripColor(name);
 		updateName();
@@ -429,13 +430,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void tryToOwn(Player player) {
-		if (owner == null || owner.length() == 0) {
-			takeOwnership(player);
-		}
+        if (ownerId == null || ownerId.length() == 0) {
+            // Backwards-compatibility, don't overrwrite unless the
+            // name matches
+            if (owner != null && !owner.equals(player.getName())) {
+                return;
+            }
+            takeOwnership(player);
+        }
 	}
 	
 	protected void takeOwnership(Player player) {
 		owner = player.getName();
+        ownerId = player.getUniqueId().toString();
 		if (controller != null && controller.bindWands()) {
 			bound = true;
 		}
@@ -757,12 +764,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		loadProperties(stateNode);
 	}
-	
+
 	public void saveProperties(ConfigurationSection node) {
-        if (id != null) {
-            node.set("id", id);
-        }
-		node.set("materials", getMaterialString());
+        node.set("id", id);
+        node.set("materials", getMaterialString());
 		
 		node.set("spells", getSpellString());
 		
@@ -771,6 +776,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("name", wandName);
 		node.set("description", description);
 		node.set("owner", owner);
+        node.set("owner_id", ownerId);
 	
 		node.set("cost_reduction", costReduction);
 		node.set("cooldown_reduction", cooldownReduction);
@@ -917,6 +923,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			setMode(parseWandMode(wandConfig.getString("mode"), mode));
 
 			owner = wandConfig.getString("owner", owner);
+            ownerId = wandConfig.getString("owner_id", ownerId);
 			wandName = wandConfig.getString("name", wandName);			
 			description = wandConfig.getString("description", description);
 			template = wandConfig.getString("template", template);
@@ -1907,8 +1914,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		// Check for auto-bind
-		if (bound && (owner == null || owner.length() == 0)) {
-			takeOwnership(mage.getPlayer());
+		if (bound && (ownerId == null || ownerId.length() == 0)) {
+            // Backwards-compatibility, don't overrwrite unless the
+            // name matches
+            if (owner == null || owner.equals(player.getName())) {
+                takeOwnership(mage.getPlayer());
+            }
 		}
 		
 		checkActiveMaterial();
@@ -2330,8 +2341,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean canUse(Player player) {
 		if (!bound || owner == null || owner.length() == 0) return true;
 		if (controller.hasPermission(player, "Magic.wand.override_bind", false)) return true;
-		
-		return owner.equalsIgnoreCase(player.getName());
+
+        // Backwards-compatibility
+        if (ownerId == null || ownerId.length() == 0) {
+            return owner.equalsIgnoreCase(player.getName());
+        }
+
+		return ownerId.equalsIgnoreCase(player.getUniqueId().toString());
 	}
 	
 	public boolean addSpell(String spellName) {
