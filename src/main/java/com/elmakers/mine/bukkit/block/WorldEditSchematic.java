@@ -152,6 +152,8 @@ public class WorldEditSchematic implements Schematic{
 			}
 			
 			return blockData;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // TODO: Figure out why this still happens, even with the size check
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
