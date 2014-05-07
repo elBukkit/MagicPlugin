@@ -141,6 +141,14 @@ public interface MageController {
 	 * @return true if this Entity is an Elemental, or part of one.
 	 */
 	public boolean isElemental(Entity entity);
+
+    /**
+     * Check to see if the given Entity is an NPC of any kind.
+     *
+     * This currently integrates with Citizens and Shopkeepers, and
+     * relies on Entity metadata.
+     */
+    public boolean isNPC(Entity entity);
 	
 	/**
 	 * Damage the Elemental represented by the given Entity.
