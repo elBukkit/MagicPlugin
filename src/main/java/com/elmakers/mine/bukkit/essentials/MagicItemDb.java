@@ -44,7 +44,14 @@ public class MagicItemDb extends ItemDb {
 			if (itemStack != null) {
 				return itemStack;
 			}
-		}
+		} else if (id.startsWith("upgrade:")) {
+            String wandId = id.replace("upgrade:", "");
+            Wand wand = Wand.createWand(controller, wandId.trim());
+            if (wand != null) {
+                wand.makeUpgrade();
+                return wand.getItem();
+            }
+        }
 		
 		return super.get(id);
 	}
