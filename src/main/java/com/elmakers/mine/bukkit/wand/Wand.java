@@ -218,8 +218,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				throw new IllegalArgumentException("No template named " + templateName);
 			}
 			ConfigurationSection wandConfig = wandTemplates.get(templateName);
-			// Default to localized names
+
+			// Default to template names, override with localizations
+            wandName = wandConfig.getString("name", wandName);
 			wandName = Messages.get("wands." + templateName + ".name", wandName);
+            wandDescription = wandConfig.getString("description", wandDescription);
 			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
 			
 			// Load all properties
@@ -261,13 +264,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void makeUpgrade() {
-		isUpgrade = true;
-		wandName = Messages.get("wand.upgrade_name");
-		description = Messages.get("wand.upgrade_default_description");
-		setIcon(DefaultUpgradeMaterial, (byte)0);
-		saveState();
-		updateName(true);
-		updateLore();
+        if (!isUpgrade) {
+            isUpgrade = true;
+            wandName = Messages.get("wand.upgrade_name");
+            description = Messages.get("wand.upgrade_default_description");
+            setIcon(DefaultUpgradeMaterial, (byte) 0);
+            saveState();
+            updateName(true);
+            updateLore();
+        }
 	}
 	
 	protected void activateBrush(String materialKey) {
