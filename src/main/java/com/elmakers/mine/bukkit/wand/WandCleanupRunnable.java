@@ -74,24 +74,24 @@ public class WandCleanupRunnable extends RunnableJob {
 			chunk.load();
 			return;
 		}
-		
-		Entity[] entities = chunk.getEntities();
-		for (Entity entity : entities) {
-			if (!(entity instanceof Item)) continue;
-			Item item = (Item)entity;
-			ItemStack itemStack = item.getItemStack();
-			if (api.isWand(itemStack)) {
-				Wand wand = api.getWand(itemStack);
-				if (wand.getId().equals(lostWand.getId())) {
-					logger.info("Removed lost wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in " +
-							location.getWorld().getName() + " at " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());					
-					api.removeLostWand(lostWand.getId());
-					item.remove();
-					lostWands.removeFirst();
-					return;
-				}
-			}
-		}
+
+        Entity[] entities = chunk.getEntities();
+        for (Entity entity : entities) {
+            if (!(entity instanceof Item)) continue;
+            Item item = (Item)entity;
+            ItemStack itemStack = item.getItemStack();
+            if (api.isWand(itemStack)) {
+                Wand wand = api.getWand(itemStack);
+                if (wand.isLost(lostWand)) {
+                    logger.info("Removed lost wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in " +
+                            location.getWorld().getName() + " at " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+                    api.removeLostWand(lostWand.getId());
+                    item.remove();
+                    lostWands.removeFirst();
+                    return;
+                }
+            }
+        }
 		
 		lostWands.removeFirst();
 		api.removeLostWand(lostWand.getId());
