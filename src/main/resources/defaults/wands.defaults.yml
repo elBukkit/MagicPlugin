@@ -2238,6 +2238,12 @@ mana3:
     icon: nether_star
     xp_max: 1000
     xp_regeneration: 100
+mana4:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 1500
+    xp_regeneration: 150
 manaboost:
     upgrade: true
     indestructible: false

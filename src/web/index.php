@@ -26,6 +26,8 @@ try {
 	die($ex->getMessage());
 }
 
+$upgrades = array();
+
 ksort($spells);
 
 // Look up localizations
@@ -43,6 +45,12 @@ foreach ($wands as $key => $wand) {
 	}
 	if (isset($wand['upgrade']) && $wand['upgrade']) {
 		unset($wands[$key]);
+
+		$wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
+        $wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
+        $wand['spells'] = isset($wand['spells']) ? $wand['spells'] : array();
+		$upgrades[$key] = $wand;
+
 		continue;
 	}
 	if ($key == 'random') {
@@ -68,6 +76,7 @@ foreach ($wands as $key => $wand) {
 	$wands[$key] = $wand;
 }
 ksort($wands);
+ksort($upgrades);
 
 // Move randomized wand to top
 if (isset($wands['random'])) {
@@ -137,6 +146,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 		<script>
 			var spells = <?= json_encode($spells); ?>;
 			var wands = <?= json_encode($wands); ?>;
+			var upgrades = <?= json_encode($upgrades); ?>;
 			var eraseMaterial = '<?= $eraseMaterial ?>';
 			var copyMaterial = '<?= $copyMaterial ?>';
 			var cloneMaterial = '<?= $cloneMaterial ?>';
@@ -153,13 +163,14 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<li><a href="#overview">Overview</a></li>
 				<li><a href="#spells">Spells</a></li>
 				<li><a href="#wands">Wands</a></li>
+				<li><a href="#upgrades">Upgrades</a></li>
 				<li id="booksTab"><a href="#books">Books</a></li>
 			</ul>
 			<div id="overview">
 			  <div class="scrollingTab">
 				<h2>Obtaining a Wand</h2>
 				<div>
-				In order to cast spells, you must find a wand. Each wand is unique and knows one or more spells. Wands can also be imbued with
+				In order to cast spells, you must obtain a wand. Each wand is unique and knows one or more spells. Wands can also be imbued with
 				special properties and materials. Players do not "know" spells- if you lose your wand, you have no magic.<br/><br/>
 				You may find a wand in one of the following ways:
 				<ul>
@@ -185,7 +196,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<?php 
 				if ($combiningEnabled) {
 					?>
-					<div>You may combine two wands on an anvil (WIP).</div>
+					<div>You may combine two wands on an anvil. (Click the empty result slot, it's WIP!)</div>
 				<?php 
 				} ?>
 				<h2>Using a Wand</h2>
@@ -195,9 +206,16 @@ function printMaterial($materialKey, $iconOnly = null) {
 					Swing a wand (left-click) to cast its active spell. Some wands may have more than one spell. If a wand has multiple spells, you use the
 					interact (right-click) action to select spells.
 					<br/><br/>
-					<?php if ($rightClickCycles)  { ?>
-						Right-click with your wand to cycle to the next spell.
-					<?php } else {?>
+
+						For detailed instructions, see this video:<br/><br/>
+						<iframe width="640" height="360" src="//www.youtube.com/embed/<?= $youTubeVideo ?>" frameborder="0" allowfullscreen></iframe>
+						<br/><br/>
+					    Wands may function in one of three modes:<br/>
+					    <b>Chest Mode</b><br/>
+					    In the default mode, right-clicking with your wand will pop up a chest inventory. Click on a spell icon to activate it.<br/><br/>
+					    If your wand has a lot of spells, right-click in the inventory to move to the next page.
+					    <br/><br/>
+					    <b>Inventory Mode</b><br/>
 						Right-click with your wand to toggle the wand inventory. When the wand's inventory is active, your survival items are stored
 						and your player's inventory will change to show the spells and materials bound to your active wand:
 						<br/><br/>
@@ -220,9 +238,9 @@ function printMaterial($materialKey, $iconOnly = null) {
 						<br/><br/>
 						A spell or material can be quick-selected from an open wand inventory using shift+click.
 						<br/><br/>
-						For detailed instructions, see this video: (TODO: Updated Video!)<br/><br/>
-						<iframe width="640" height="360" src="//www.youtube.com/embed/<?= $youTubeVideo ?>" frameborder="0" allowfullscreen></iframe>
-					<?php } ?>
+						<b>Cycle Mode</b><br/>
+						This mode only works well with low-powered wands, ones that only have a few spells. In this mode
+						you right-click to cycle through available spells- there is no menu, and no icons.
 				</div>
 				<h2>Costs</h2>
 				<div>
@@ -282,6 +300,33 @@ function printMaterial($materialKey, $iconOnly = null) {
 			  	Select a wand for details.
 			  </div>
 			</div>
+			<div id="upgrades">
+              <div class="scrollingTab">
+                <div class="navigation">
+                <ol id="upgradeList">
+                <?php
+                    foreach ($upgrades as $key => $upgrade) {
+                        $extraStyle = '';
+                        if (isset($upgrade['effect_color'])) {
+                            $effectColor = $upgrade['effect_color'];
+                            if ($effectColor == 'FFFFFF') {
+                                $effectColor = 'DDDDDD';
+                            }
+                            $extraStyle = 'font-weight: bold; color: #' . $effectColor;
+                        }
+                        $name = isset($upgrade['name']) ? $upgrade['name'] : "($key)";
+                        $icon = isset($upgrade['icon']) ? $upgrade['icon'] : 'nether_star';
+                        $icon = printMaterial($icon, true);
+                        echo '<li class="ui-widget-content" style="' . $extraStyle . '" id="wand-' . $key . '">' . $icon . '<span class="wandTitle">' . $name . '</span></li>';
+                    }
+                ?>
+                </ol>
+              </div>
+              </div>
+              <div class="details" id="upgradeDetails">
+                Select an item for details.
+              </div>
+            </div>
 			<div id="books">
 			  <div class="scrollingTab">
 				<div class="navigation">

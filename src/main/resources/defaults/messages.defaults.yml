@@ -1083,6 +1083,24 @@ wands:
     aquaeffects:
         name: Aqua Wand Effects
         description: Tint your wand effects!
+    rainboweffects:
+        name: Rainbow Wand Effects
+        description: Color-changing particles
+    mana1:
+        name: Mana Upgrade Level 1
+        description: Upgrade to 20/200 Mana
+    mana2:
+        name: Mana Upgrade Level 2
+        description: Upgrade to 40/400 Mana
+    mana3:
+        name: Mana Upgrade Level 3
+        description: Upgrade to 100/1000 Mana
+    mana4:
+        name: Mana Upgrade Level 4
+        description: Upgrade to 150/1500 Mana
+    manaboost:
+        name: Mana Boost
+        description: An instant boost to 1000 Mana (or your max)
     recalltoken:
         name: Recall Token
         description: Cast to return

@@ -247,10 +247,24 @@ function chatColorToHex(chatChar)
 
 function getWandDetails(key)
 {
-	if (!(key in wands)) {
+    if (!(key in wands)) {
 		return $('<span/>').text("Sorry, something went wrong!");
 	}
 	var wand = wands[key];
+	return getWandItemDetails(key, wand);
+}
+
+function getWandUpgradeDetails(key)
+{
+    if (!(key in upgrades)) {
+		return $('<span/>').text("Sorry, something went wrong!");
+	}
+	var wand = upgrades[key];
+	return getWandItemDetails(key, wand);
+}
+
+function getWandItemDetails(key, wand)
+{
 	var detailsDiv = $('<div/>');
 	var title = $('<div class="wandTitleBanner"/>').text(wand.name);
 	var scrollingContainer = $('<div class="wandContainer"/>');
@@ -379,6 +393,14 @@ $(document).ready(function() {
 			var key = selected.prop('id').substr(5);
 			$('#wandDetails').empty();
 			$('#wandDetails').append(getWandDetails(key));
+		}
+    });
+    $("#upgradeList").selectable({
+		selected: function(event, ui) {
+			var selected = jQuery(".ui-selected", this);
+			var key = selected.prop('id').substr(5);
+			$('#upgradeDetails').empty();
+			$('#upgradeDetails').append(getWandUpgradeDetails(key));
 		}
     });
 });
