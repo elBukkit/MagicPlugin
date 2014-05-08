@@ -15,6 +15,7 @@ onlogin:
   - server
   - obtaining
   - using
+  - economy
 
 # Player cannot drop books from that list.
 protected: {}
@@ -26,30 +27,26 @@ server:
   description:
     - Information about this server
   pages:
-    - '&cServer Information&x &x&0This is a development server for the Magic plugin.&x &xIt is mainly for testing and as a demo for the plugin functionality.'
+    - '&cServer Information&x &x&0This is the official survival server for the Magic plugin.&x &xIt is here to demo and test new Magic functionality, but is also an attempt to create a real, functional Survival + Magic experience.'
     - 'Magic is a plugin for Bukkit, a Minecraft server mod.&x &xBukkit is easy to use and set up if you wish to run your own server, or even use for single player.&x &xFor more information, see&x &xbukkit.org'
-    - 'This spawn temple is a protected area. Many spells, destructive ones, will not work here.&x &xExplore around, get the hang of wands, then leave the temple to really test them out.'
-    - 'This world is actively being improved, secrets will be added in around the temple over time.'
     - 'You are free to play here, and build here.&x &xGriefing is tolerated, though not necessarily appreciated.'
-    - 'The server has made you a millionaire. This should let you play with wands for quite a while.&x &xIf you wish to be moved to a survival/building area, your balance will be wiped.'
-    - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.'
+    - 'There are areas around town that are protected from PVP or destructive Magic, and you may request such a plot for yourself if you wish.&x &xOtherwise, it is mostly free reign here.'
+    - 'There will will be storylines, quests, and other RPG elements here over time. There is currently a parallel dimension I call "The Other Side" you can visit, and fight Artificial life I call "Automata".'
+    - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.&x &xYou may find many of your favorite commands missing, but you will hopefully soon find magical replacements.'
     - 'Any special effects or events you see on this server are made with vanilla command blocks and the Magic scripting system.'
-    - 'If you want to build and you behave well, send NathanWolf a message and I will give you a WorldGuard plot and an engineering wand.'
-    - 'Due to the public and destructive nature of this server, heavy griefing may require occasional world rollbacks.'
-    - 'Magic is a very flexible plugin. Many of the possible configurations and uses are on display here, but not all.'
-    - '&cPlugins used on this server&x &x&0Magic&xdynmap*&xEssentials*&xWorldGuard*&xInfoBook&xGroupManager&x &x* denotes Magic integration'
-    - 'See&xmine.elmakers.com&xfor more information.'
+    - '&cPlugins used on this server&x &x&0Magic&xdynmap*&xCommandBook*&xWorldGuard*&xInfoBook&xGroupManager&x&xCitizens*&xShopkeepers* &x* denotes Magic integration'
+    - 'See&xhttp://mine.elmakers.com&xfor more information.'
 obtaining:
   author: NathanWolf
   title: Obtaining Wands
   description:
     - How to get a wand
   pages:
-    - '&cObtaining Wands&x &x&0Wands can be obtained on this server in a variety of ways.&x &xOn other servers, this is left up to the server administrator.'
-    - '&cSurvival Wands&x &x&0Wands can be crafted by obtaining a Nether Star and Blaze Rod.&x &xThese items are provided in the temple for demo purposes.'
+    - '&cObtaining Wands&x &x&0Wands can be obtained on this server in a variety of ways.&x &xYou have been given a basic starter wand.&x &xYou may choose to keep it and upgrade it, or trade it in for a better wand.'
+    - '&cCrafting Wands&x &x&0Wands can be crafted by obtaining a Nether Star and Blaze Rod.'
     - 'A crafted wand will be a randomly generated low-powered wand.&x &xWands can be upgraded on an enchanting table. They may be upgraded multiple times.'
     - 'Two wands may be combined on an anvil&x &x(WIP - click the empty result slot!)'
-    - '&cWand Shop&x &x&0Wands can be purchased in an Essentials shop.&x &xFree money is provided on this server for demo purposes.'
+    - '&cWand Shop&x &x&0Wands can be purchased from Villager Shopkeepers you will find around town.&x &xMoney can be obtained by trading, and hunting for mobs and Automata.'
     - 'Wands can also be upgraded directly via console commands, which can be used in other plugins or command blocks.'
     - 'This could be used as a level progression mechanism, or quest rewards, or any number of other creative things.'
     - '&cFinding Wands&x &x&0Magic will randomly add wands to naturally-spawned chests found in dungeons, nether fortresses, villages.&x &xWands also appear on the dynmap, so keep a look out!&x &xThis is also useful if you die and wish to retrieve your wand.'
@@ -65,12 +62,24 @@ using:
     - 'A wand is active when you are holding it.&x &xSome wands have special properties, such as protection or haste, that are only granted when active.'
     - 'While holding a wand, left-click to cast its active spell.&x &xMost spells will target the block or entity at your cursor.'
     - 'The wand lore, viewable in your inventory, will show the wand properties and active spell.'
-    - 'Wands that have more than one spell will have a "wand inventory".&x &xRight-click while holding a wand to view its inventory.&x &xRight-click again to close the inventory.'
+    - 'Wands that have more than one spell will have a "wand inventory".&x &xA wand may function in one of several modes to access the inventory.'
+    - '&cChest Mode&x &x&0Right-click while holding a wand to open its inventory as a chest.&x &xClick a spell to activate it.'
+    - '&cInventory Mode&x &x&0Right-click while holding a wand to view its inventory.&x &xRight-click again to close the inventory.'
     - 'With the wand inventory open, you may use the hotbar buttons (1-9) to change the active spell.&x &xEach spell is represented by a material icon.'
-    - 'Information about spells may be viewed in their lore if you open the player inventory while the wand inventory is open.'
-    - 'Some wands may also contain materials.&x &xCertain spells (construction spells) can be modified to work with a selected material.'
-    - 'Materials may be selected in the same way as spells, move them to the hotbar and then use the hotbar buttons (1-9).'
     - 'Spells and materials may also be quick-selected from the wand inventory using shift+click.'
-    - 'Wands that have many spells or materials may have more than one inventory "page".&x &xRight-click on an item in the wand inventory to go to the next page.'
+    - 'Information about spells may be viewed in their lore if you open the player inventory while the wand inventory is open.'
+    - '&cInventory Pages&x &x&0If your wand has a lot of spells, you may right-click in the inventory to cycle to the next page.'
+    - '&cMaterial Brushes&x &x&0Some wands may also contain materials.&x &xCertain spells (construction spells) can be modified to work with a selected material.'
+    - 'Materials may be selected in the same way as spells.'
     - 'If your wand gets disorganized, use an anvil to organize its inventory.'
     - 'Wands grow and become more powerful over time.&x &xSome spells will increase in power along with the wand.'
+economy:
+  author: NathanWolf
+  title: The Economy
+  description:
+    - The in-game economy
+  pages:
+    - '&cPhysical Economy&x &x&0We use a "physical", item-based ecnonomy on this server. &x &xThis means you do not have an account or a balance.'
+    - 'The primary unit of currency are Emeralds. &x &xDiamonds and gold nuggets are also generally used as lower denominations.'
+    - 'I will make every attempt to ensure that none of these valuables, or anything that can be traded for them, is duplicatable using Magic or other methods. &x &xThis may prove challenging!'
+    - 'Note that we are currently transitioning from iConomy, I urge all older players to cash out for emeralds as soon as you can.&x &xGo to the Bank!'
