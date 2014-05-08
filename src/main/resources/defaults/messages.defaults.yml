@@ -1042,10 +1042,10 @@ wands:
         name: Excaliber
         description: From The Lady
     legend:
-        name: The Legendary Sword
+        name: The Legendary Wand
         description: It's legen ... 
     overseer:
-        name: The Overseer Sword
+        name: The Overseer Wand
         description: ... DARY!
     wizard:
         name: The Wizard Wand
