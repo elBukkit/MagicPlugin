@@ -193,6 +193,12 @@
 	font-weight: bold;
 }
 
+.worthHeading
+{
+	margin-top: 4px;
+	font-weight: bold;
+}
+
 .wandContainer
 {
 	position:absolute;

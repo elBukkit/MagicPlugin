@@ -34,7 +34,7 @@ server:
     - 'There will will be storylines, quests, and other RPG elements here over time. There is currently a parallel dimension I call "The Other Side" you can visit, and fight Artificial life I call "Automata".'
     - 'Magic is meant primarily to be an add-on to vanilla survival.&x &xAs such, there are very few non-vanilla features available here, and none of the Magic commands are available.&x &xYou may find many of your favorite commands missing, but you will hopefully soon find magical replacements.'
     - 'Any special effects or events you see on this server are made with vanilla command blocks and the Magic scripting system.'
-    - '&cPlugins used on this server&x &x&0Magic&xdynmap*&xCommandBook*&xWorldGuard*&xInfoBook&xGroupManager&x&xCitizens*&xShopkeepers* &x* denotes Magic integration'
+    - '&cPlugins used on this server&x &x&0Magic&xdynmap*&xCommandBook*&xWorldGuard*&xInfoBook&xGroupManager&xCitizens*&xShopkeepers*&xMythicMobs &x* denotes Magic integration'
     - 'See&xhttp://mine.elmakers.com&xfor more information.'
 obtaining:
   author: NathanWolf

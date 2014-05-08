@@ -2537,7 +2537,7 @@ alter:
         depth: 0
         transparent: transparent_to_construction
     costs:
-        xp: 1
+        xp: 3
 superalter:
     icon: ink_sack:1
     category: engineering

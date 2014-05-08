@@ -321,25 +321,72 @@ max_power_range_multiplier_max: 5.0
 max_power: 100.0
 
 ### Economy Helpers
+# These values are used to help create a balanced economy if you plan on selling wands, spells, or upgrades.
+# Currently they are only visible on the Magic website, though I plan to incorporate them into the plugin in the near future.
+# This will probably appear in the form of a "/magic sell <item>" command. This would work just like "/magic give <item>"
+# except it would also give you the "worth" of the item as defined by your economy.
 
-worth_use_percentage: 0.05
-worth_mana: 0.1
-worth_mana_max: 2
-worth_mana_regeneration: 20
-worth_health_regeneration: 500
-worth_hunger_regeneration: 500
-worth_hunger_regeneration: 500
-worth_damage_reduction: 1500
-worth_damage_reduction_explosions: 800
-worth_damage_reduction_falling: 300
-worth_damage_reduction_fire: 500
-worth_damage_reduction_physical: 1000
-worth_damage_reduction_projectiles: 800
-worth_cost_reduction: 1000
-worth_cooldown_reduction: 1000
-worth_haste: 500
-worth_brush: 100
+# This may be a simple chat message for balance-based economies (e.g. MSRP: $1,000), or it may
+# give you physical items for an item-based economy. See the "worth_items" section below.
 
+# The following modifiers affect wand pricing.
+# A wand's price is calculated using the sum of the prices of all of its spells as a base.
+# Wand properties  (mana, protection, etc) may also add value.
+# Each of these values is multiplied by the wand property. Keep in mind that most properties naturally scale
+# from 0-1, with some exceptions like mana regeneration and limits. Refer to the maximums set above (e.g. max_mana)
+# for a good idea of how those values are going to scale.
+
+# These numbers may look a little screwy,
+# I was going for a base-2 kind of thing to hopefully make
+# costs fall along even item stack limits. (64)
+
+worth_use_multiplier: 0.125
+worth_mana: 0.0078125
+worth_mana_max: 1
+worth_mana_regeneration: 8
+worth_health_regeneration: 512
+worth_hunger_regeneration: 512
+worth_damage_reduction: 1024
+worth_damage_reduction_explosions: 768
+worth_damage_reduction_falling: 256
+worth_damage_reduction_fire: 512
+worth_damage_reduction_physical: 1024
+worth_damage_reduction_projectiles: 768
+worth_cost_reduction: 1024
+worth_cooldown_reduction: 1024
+worth_haste: 512
+
+# A wand may have additional value for each brush it contains
+# Brushes are currently not able to have specific values, though this may be a future addition.
+# Some brushes, like copy and clone, are tremendously more powerful than others, like dirt, and hence
+# should be more valuable.
+worth_brush: 32
+
+# The following are added in if the wand has the specific property at all, they do not scale.
+worth_effect_color: 2
+worth_effect_particle: 4
+worth_effect_sound: 8
+
+# This will be used as a base multiplier for all values. Once spells and wand properties are balanced relative
+# to each other (which will hopefully be the default...) you can use this to scale the overall worth of Magic
+# items relative to the rest of your economy.
+worth_base: 8
+
+# By default the Magic ecnonomy is set up for a physical, item-based ecnonomy. I have chosen to use a tiered
+# set of items: emerald, diamond, gold_nugget.
+# I did some research into various economies- looked at MC item distribution statistics, Essentials' item db valuations,
+# anything I could find. I think this may over-value emeralds given the variable of Villager trading, but
+# I figure there are plugins that can re-balance that if you wish.
+# Other than via trading, emeralds are incredibly rare so I feel like is a good choice for the "top tier" currency.
+# I've tried to balance them against diamonds and gold in a natural way, but also in a way that will hopefully result
+# in item prices that stack well.
+#
+# This setup will work very well with the Shopkeepers plugin, or any other item-based trading shop. It could also
+# be used as a basis for player trading of wands, spells, and items.
+#
+# This could also be used to help facilitate dtlTraders setup. Change the values below to the respective amounts
+# of cobblestone/stone/wood that dtlTraders uses as currency icons, and (eventually..) Magic will be able to
+# give you the proper amounts of each to set up the price of your item in the Trader, using the in-game menu.
 worth_items:
   gold_nugget: 1
   diamond: 16

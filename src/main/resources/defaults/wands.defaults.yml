@@ -1921,7 +1921,7 @@ legend:
     xp_max: 200
     effect_particle: town_aura
     effect_particle_count: 2
-    icon: diamond_sword
+    icon: blaze_rod
     protection_falling: 0.8
     protection_physical: 0.8
     protection_fire: 0.3
@@ -1955,7 +1955,7 @@ overseer:
     xp_max: 250
     effect_particle: town_aura
     effect_particle_count: 2
-    icon: diamond_sword
+    icon: blaze_rod
     protection_falling: 0.8
     protection_physical: 0.8
     protection_fire: 0.5
@@ -1993,7 +1993,6 @@ wizard:
     xp_max: 400
     effect_particle: portal
     effect_particle_count: 2
-    icon: blaze_rod
     protection_falling: 1.0
     protection: 0.8
     spells:
@@ -2037,7 +2036,6 @@ nether:
     protection_falling: 1.0
     protection: 0.8
     protection_fire: 1.0
-    icon: blaze_rod
     spells:
         - portal
         - tag
@@ -2080,7 +2078,6 @@ ender:
     effect_particle: lava_dripping
     effect_particle_count: 4
     effect_bubbles: true
-    icon: blaze_rod
     protection_falling: 1.0
     protection: 0.9
     protection_fire: 1.0
