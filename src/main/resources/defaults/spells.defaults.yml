@@ -81,6 +81,7 @@ curse:
     category: dark
     class: PotionEffectSpell
     pvp_restricted: true
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -105,6 +106,7 @@ blessing:
     category: light
     class: ProjectileSpell
     pvp_restricted: false
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -132,6 +134,7 @@ blessing:
 boon:
     icon: red_rose:2
     category: light
+    worth: 10
     class: PotionEffectSpell
     effects:
         cast:
@@ -163,6 +166,7 @@ perk:
     icon: yellow_flower
     category: light
     class: PotionEffectSpell
+    worth: 5
     effects:
         cast:
         -  class: EffectSingle
@@ -188,6 +192,7 @@ bounce:
     icon: red_rose:8
     category: light
     class: PotionEffectSpell
+    worth: 8
     effects:
         cast:
         -  class: EffectSingle
@@ -211,6 +216,7 @@ simulate:
     icon: double_plant:3
     category: automata
     class: SimulateSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -230,6 +236,7 @@ simulate3:
     icon: sapling:3
     category: automata
     class: SimulateSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -252,6 +259,7 @@ glider:
     icon: sapling:2
     category: automata
     class: ConstructSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -279,6 +287,7 @@ virus:
     icon: fermented_spider_eye
     category: automata
     class: AnimateSpell
+    worth: 1000
     effects:
         cast:
         -  class: EffectSingle
@@ -337,6 +346,7 @@ worm:
     icon: string
     category: automata
     class: AnimateSpell
+    worth: 800
     effects:
         cast:
         -  class: EffectSingle
@@ -396,6 +406,7 @@ hunter:
     icon: spider_eye
     category: automata
     class: AnimateSpell
+    worth: 600
     effects:
         cast:
         -  class: EffectSingle
@@ -451,6 +462,7 @@ defender:
     icon: quartz
     category: automata
     class: AnimateSpell
+    worth: 400
     effects:
         cast:
         -  class: EffectSingle
@@ -494,6 +506,7 @@ animate:
     icon: iron_ingot
     category: automata
     class: AnimateSpell
+    worth: 300
     effects:
         cast:
         -  class: EffectSingle
@@ -535,6 +548,7 @@ life:
     icon: sapling:1
     category: automata
     class: ConstructSpell
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -565,6 +579,7 @@ life3:
     icon: sapling:1
     category: automata
     class: ConstructSpell
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -595,6 +610,7 @@ shell:
     icon: ender_pearl
     category: earthbending
     class: ConstructSpell
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -615,6 +631,7 @@ dome:
     icon: bowl
     category: earthbending
     class: ConstructSpell
+    worth: 60
     effects:
         cast:
         -  class: EffectSingle
@@ -635,6 +652,7 @@ disc:
     icon: ink_sack:8
     category: earthbending
     class: ConstructSpell
+    worth: 45
     effects:
         cast:
         -  class: EffectSingle
@@ -655,6 +673,7 @@ superdisc:
     icon: ink_sack:13
     category: engineering
     class: ConstructSpell
+    worth: 150
     effects:
         cast:
         -  class: EffectSingle
@@ -676,6 +695,7 @@ superring:
     icon: ink_sack:9
     category: engineering
     class: ConstructSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -698,6 +718,7 @@ supershell:
     icon: magma_cream
     category: engineering
     class: ConstructSpell
+    worth: 200
     effects:
         cast:
         -  class: EffectSingle
@@ -718,6 +739,7 @@ superdome:
     icon: mushroom_soup
     category: engineering
     class: ConstructSpell
+    worth: 150
     effects:
         cast:
         -  class: EffectSingle
@@ -739,6 +761,7 @@ tag:
     icon: sign
     category: dark
     class: SignSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -757,6 +780,7 @@ toss:
     icon: wood_button
     category: earthbending
     class: TossSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectRing
@@ -772,6 +796,7 @@ volley:
     category: earthbending
     class: TossSpell
     pvp_restricted: true
+    worth: 40
     effects:
         cast:
         -  class: EffectRing
@@ -787,6 +812,7 @@ push:
     category: airbending
     class: PushSpell
     pvp_restricted: true
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -816,6 +842,7 @@ pull:
     category: airbending
     class: PushSpell
     pvp_restricted: true
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -848,6 +875,7 @@ boom:
     category: firebending
     class: BoomSpell
     pvp_restricted: true
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -869,6 +897,7 @@ kaboom:
     category: dark
     class: BoomSpell
     pvp_restricted: true
+    worth: 60
     effects:
         cast:
         -  class: EffectSingle
@@ -889,6 +918,7 @@ nuke:
     icon: skull_item:4
     category: master
     class: BoomSpell
+    worth: 500
     pvp_restricted: true
     effects:
         cast:
@@ -919,6 +949,7 @@ frost:
     category: waterbending
     class: FrostSpell
     pvp_restricted: true
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -941,6 +972,7 @@ lightning:
     category: firebending
     class: LightningSpell
     pvp_restricted: true
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -953,12 +985,13 @@ lightning:
         allow_max_range: true
         range: 32
     costs:
-        xp: 10
+        xp: 80
 storm:
     icon: raw_fish:3
     category: firebending
     class: LightningSpell
     pvp_restricted: true
+    worth: 200
     effects:
         cast:
         -  class: EffectSingle
@@ -972,11 +1005,12 @@ storm:
         range: 64
         radius: '10'
     costs:
-        xp: 100
+        xp: 200
 tree:
     icon: sapling
     category: elemental
     class: TreeSpell
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -995,6 +1029,7 @@ disarm:
     category: light
     class: DisarmSpell
     pvp_restricted: true
+    worth: 110
     effects:
         cast:
         -  class: EffectSingle
@@ -1027,6 +1062,7 @@ heal:
     icon: bread
     category: light
     class: HealSpell
+    worth: 200
     effects:
         cast:
         -  class: EffectSingle
@@ -1047,6 +1083,7 @@ music:
     icon: gold_record
     category: light
     class: MusicSpell
+    worth: 10
     effects:
         cast:
         -  class: EffectTrail
@@ -1066,6 +1103,7 @@ gather:
     icon: glowstone_dust
     category: master
     class: GotoSpell
+    worth: 150
     effects:
         cast:
         -  class: EffectSingle
@@ -1087,6 +1125,7 @@ mount:
     icon: saddle
     category: master
     class: MountSpell
+    worth: 40
     effects:
         cast:
         -  class: EffectSingle
@@ -1105,6 +1144,7 @@ icbm:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -1119,6 +1159,7 @@ neutron:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -1139,6 +1180,7 @@ wither:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -1155,6 +1197,7 @@ arrowrain:
     category: combat
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -1174,6 +1217,7 @@ meteor:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 90
     effects:
         cast:
         -  class: EffectSingle
@@ -1198,6 +1242,7 @@ arrow:
     category: combat
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 2
     effects:
         cast:
         -  class: EffectSingle
@@ -1214,6 +1259,7 @@ sniper:
     category: combat
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 70
     effects:
         cast:
         -  class: EffectSingle
@@ -1232,6 +1278,7 @@ weather:
     icon: water
     category: elemental
     class: WeatherSpell
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -1250,11 +1297,12 @@ weather:
     parameters:
         cooldown: 30000
     costs:
-        xp: 10
+        xp: 80
 fling:
     icon: feather
     category: airbending
     class: FlingSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -1273,6 +1321,7 @@ leap:
     icon: leather_boots
     category: airbending
     class: FlingSpell
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -1286,11 +1335,12 @@ leap:
         min_speed: 3
         max_speed: 3
     costs:
-        xp: 2
+        xp: 5
 torch:
     icon: torch
     category: engineering
     class: TorchSpell
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -1310,6 +1360,7 @@ familiar:
     icon: monster_egg
     category: elemental
     class: FamiliarSpell
+    worth: 40
     effects:
         cast:
         -  class: EffectSingle
@@ -1322,12 +1373,13 @@ familiar:
         allow_max_range: false
         range: 32
     costs:
-        xp: 10
+        xp: 20
 monster:
     icon: pumpkin
     category: dark
     class: FamiliarSpell
     pvp_restricted: true
+    worth: 70
     effects:
         cast:
         -  class: EffectSingle
@@ -1347,6 +1399,7 @@ mob:
     category: dark
     class: FamiliarSpell
     pvp_restricted: true
+    worth: 120
     effects:
         cast:
         -  class: EffectSingle
@@ -1367,6 +1420,7 @@ farm:
     icon: wheat
     category: elemental
     class: FamiliarSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -1387,6 +1441,7 @@ wolf:
     category: elemental
     class: WolfSpell
     pvp_restricted: true
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -1405,6 +1460,7 @@ cat:
     icon: raw_fish
     category: elemental
     class: OcelotSpell
+    worth: 40
     effects:
         cast:
         -  class: EffectSingle
@@ -1423,6 +1479,7 @@ portal:
     icon: portal
     category: master
     class: PortalSpell
+    worth: 60
     effects:
         cast:
         -  class: EffectSingle
@@ -1441,6 +1498,7 @@ phase:
     icon: ender_portal
     category: master
     class: PhaseSpell
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -1458,6 +1516,7 @@ invincible:
     icon: golden_apple
     category: master
     class: InvincibleSpell
+    worth: 150
     effects:
         cast:
         -  class: EffectSingle
@@ -1477,6 +1536,7 @@ fire:
     category: firebending
     class: FireSpell
     pvp_restricted: true
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -1489,7 +1549,7 @@ fire:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
-        radius: 2
+        radius: 1
         vertical_search_distance: 8
     costs:
         xp: 35
@@ -1498,6 +1558,7 @@ inferno:
     category: firebending
     class: FireSpell
     pvp_restricted: true
+    worth: 60
     effects:
         cast:
         -  class: EffectSingle
@@ -1518,6 +1579,7 @@ cushion:
     icon: bed
     category: waterbending
     class: CushionSpell
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -1540,6 +1602,7 @@ gasp:
     icon: glass_bottle
     category: waterbending
     class: ConstructSpell
+    worth: 3
     effects:
         cast:
         -  class: EffectSingle
@@ -1562,6 +1625,7 @@ regenerate:
     icon: gold_hoe
     category: engineering
     class: RegenerateSpell
+    worth: 500
     effects:
         cast:
         -  class: EffectTrail
@@ -1579,6 +1643,7 @@ superregenerate:
     icon: diamond_hoe
     category: engineering
     class: RegenerateSpell
+    worth: 1000
     effects:
         cast:
         -  class: EffectTrail
@@ -1597,6 +1662,7 @@ paint:
     icon: painting
     category: engineering
     class: FillSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectTrail
@@ -1608,11 +1674,12 @@ paint:
         check_destructible: false
         transparent: transparent_to_construction
     costs:
-        xp: 1
+        xp: 5
 fill:
     icon: iron_hoe
     category: engineering
     class: FillSpell
+    worth: 200
     effects:
         cast:
         -  class: EffectTrail
@@ -1630,6 +1697,7 @@ recurse:
     icon: wood_spade
     category: engineering
     class: RecurseSpell
+    worth: 150
     effects:
         cast:
         -  class: EffectTrail
@@ -1647,6 +1715,7 @@ gills:
     icon: cooked_fish
     category: light
     class: PotionEffectSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -1670,6 +1739,7 @@ day:
     icon: emerald
     category: master
     class: TorchSpell
+    worth: 120
     effects:
         cast:
         -  class: EffectSingle
@@ -1692,6 +1762,7 @@ night:
     icon: coal
     category: master
     class: TorchSpell
+    worth: 130
     effects:
         cast:
         -  class: EffectSingle
@@ -1713,6 +1784,7 @@ time:
     icon: watch
     category: master
     class: TorchSpell
+    worth: 150
     effects:
         cast:
         -  class: EffectSingle
@@ -1734,6 +1806,7 @@ bridge:
     icon: stone_hoe
     category: engineering
     class: BridgeSpell
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -1747,6 +1820,7 @@ pillar:
     icon: gold_axe
     category: engineering
     class: PillarSpell
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -1762,6 +1836,7 @@ place:
     icon: diamond_axe
     category: engineering
     class: PlaceSpell
+    worth: 40
     effects:
         cast:
         -  class: EffectSingle
@@ -1777,6 +1852,7 @@ stalactite:
     icon: iron_axe
     category: engineering
     class: PillarSpell
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -1794,6 +1870,7 @@ grenade:
     category: firebending
     pvp_restricted: true
     class: GrenadeSpell
+    worth: 25
     effects:
         cast:
         -  class: EffectSingle
@@ -1810,6 +1887,7 @@ frag:
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
+    worth: 150
     effects:
         cast:
         -  class: EffectSingle
@@ -1827,6 +1905,7 @@ cluster:
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
+    worth: 160
     effects:
         cast:
         -  class: EffectSingle
@@ -1845,6 +1924,7 @@ bomb:
     category: dark
     class: GrenadeSpell
     pvp_restricted: true
+    worth: 250
     effects:
         cast:
         -  class: EffectSingle
@@ -1868,6 +1948,7 @@ superblob:
     icon: slime_ball
     category: engineering
     class: ConstructSpell
+    worth: 500
     effects:
         cast:
         -  class: EffectSingle
@@ -1888,6 +1969,7 @@ superpyramid:
     icon: speckled_melon
     category: engineering
     class: ConstructSpell
+    worth: 500
     effects:
         cast:
         -  class: EffectSingle
@@ -1908,6 +1990,7 @@ box:
     icon: gold_helmet
     category: earthbending
     class: ConstructSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -1929,6 +2012,7 @@ superbox:
     icon: diamond_helmet
     category: engineering
     class: ConstructSpell
+    worth: 500
     effects:
         cast:
         -  class: EffectSingle
@@ -1949,6 +2033,7 @@ supercube:
     icon: nether_brick_item
     category: engineering
     class: ConstructSpell
+    worth: 500
     effects:
         cast:
         -  class: EffectSingle
@@ -1968,6 +2053,7 @@ backup:
     icon: diamond_pickaxe
     category: engineering
     class: ConstructSpell
+    worth: 2000
     effects:
         cast:
         -  class: EffectSingle
@@ -1994,6 +2080,7 @@ repair:
     icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -2019,6 +2106,7 @@ superrepair:
     icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
+    worth: 500
     effects:
         cast:
         -  class: EffectSingle
@@ -2044,6 +2132,7 @@ workbench:
     icon: workbench
     category: engineering
     class: PillarSpell
+    worth: 8
     effects:
         cast:
         -  class: EffectSingle
@@ -2063,6 +2152,7 @@ stash:
     icon: ender_chest
     category: master
     class: StashSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -2078,6 +2168,7 @@ pickpocket:
     icon: shears
     category: dark
     class: StashSpell
+    worth: 1000
     effects:
         cast:
         -  class: EffectSingle
@@ -2095,13 +2186,14 @@ kamikazee:
     icon: skull_item:4
     category: dark
     class: BoomSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
            sound: explode
     parameters:
         cooldown: 60000
-        size: '8'
+        size: 8
         target: self
         break_blocks: false
     costs:
@@ -2110,6 +2202,7 @@ blast:
     icon: iron_spade
     category: mining
     class: ConstructSpell
+    worth: 12
     effects:
         cast:
         -  class: EffectSingle
@@ -2131,6 +2224,7 @@ tunnel:
     icon: iron_pickaxe
     category: earthbending
     class: TunnelSpell
+    worth: 15
     effects:
         cast:
         -  class: EffectSingle
@@ -2146,6 +2240,7 @@ superblast:
     icon: red_mushroom
     category: mining
     class: ConstructSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -2168,6 +2263,7 @@ convert:
     icon: gold_spade
     category: earthbending
     class: ConstructSpell
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -2188,6 +2284,7 @@ superconvert:
     icon: diamond_spade
     category: engineering
     class: ConstructSpell
+    worth: 500
     effects:
         cast:
         -  class: EffectSingle
@@ -2210,6 +2307,7 @@ collapse:
     icon: iron_plate
     category: earthbending
     class: ConstructSpell
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -2231,6 +2329,7 @@ supercollapse:
     icon: gold_plate
     category: master
     class: ConstructSpell
+    worth: 800
     effects:
         cast:
         -  class: EffectSingle
@@ -2255,6 +2354,7 @@ cloak:
     icon: chainmail_chestplate
     category: master
     class: PotionEffectSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -2274,6 +2374,7 @@ undo:
     icon: book_and_quill
     category: engineering
     class: UndoSpell
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -2286,6 +2387,7 @@ commit:
     icon: enchanted_book
     category: engineering
     class: CommitSpell
+    worth: 150
     effects:
         cast:
         -  class: EffectSingle
@@ -2293,11 +2395,12 @@ commit:
     parameters:
         target: self
     costs:
-        xp: 500
+        xp: 200
 rewind:
     icon: written_book
     category: engineering
     class: UndoSpell
+    worth: 250
     effects:
         cast:
         -  class: EffectSingle
@@ -2313,6 +2416,7 @@ breach:
     icon: seeds
     category: earthbending
     class: ConstructSpell
+    worth: 60
     effects:
         cast:
         -  class: EffectSingle
@@ -2335,6 +2439,7 @@ peek:
     icon: sugar_cane
     category: mining
     class: ConstructSpell
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -2359,6 +2464,7 @@ sandblast:
     category: earthbending
     class: ConstructSpell
     pvp_restricted: true
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -2378,6 +2484,7 @@ mine:
     icon: wood_pickaxe
     category: mining
     class: DropSpell
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -2396,6 +2503,7 @@ chop:
     icon: stone_axe
     category: elemental
     class: DropSpell
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -2415,6 +2523,7 @@ alter:
     icon: ink_sack
     category: engineering
     class: AlterSpell
+    worth: 8
     effects:
         cast:
         -  class: EffectSingle
@@ -2433,6 +2542,7 @@ superalter:
     icon: ink_sack:1
     category: engineering
     class: AlterSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -2450,6 +2560,7 @@ blob:
     icon: clay_ball
     category: earthbending
     class: ConstructSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -2469,6 +2580,7 @@ pyramid:
     icon: melon
     category: earthbending
     class: ConstructSpell
+    worth: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -2488,6 +2600,7 @@ emp:
     icon: daylight_detector
     category: automata
     class: ConstructSpell
+    worth: 15
     effects:
         cast:
         -  class: EffectSingle
@@ -2514,6 +2627,7 @@ superemp:
     icon: diode
     category: automata
     class: ConstructSpell
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -2540,6 +2654,7 @@ disintegrate:
     category: combat
     pvp_restricted: true
     class: DisintegrateSpell
+    worth: 25
     effects:
         cast:
         -  class: EffectSingle
@@ -2561,6 +2676,7 @@ blink:
     icon: eye_of_ender
     category: master
     class: BlinkSpell
+    worth: 120
     effects:
         cast:
         -  class: EffectSingle
@@ -2583,6 +2699,7 @@ tesseract:
     icon: web
     category: airbending
     class: BlinkSpell
+    worth: 30
     effects:
         cast:
         -  class: EffectSingle
@@ -2601,6 +2718,7 @@ absorb:
     icon: bucket
     category: engineering
     class: AbsorbSpell
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -2618,6 +2736,7 @@ hat:
     icon: leather_helmet
     category: light
     class: HatSpell
+    worth: 18
     effects:
         cast:
         -  class: EffectSingle
@@ -2637,6 +2756,7 @@ lava:
     category: firebending
     class: IterateSpell
     pvp_restricted: true
+    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -2657,6 +2777,7 @@ stream:
     category: waterbending
     class: IterateSpell
     pvp_restricted: true
+    worth: 60
     effects:
         cast:
         -  class: EffectSingle
@@ -2677,6 +2798,7 @@ earth:
     category: earthbending
     class: IterateSpell
     pvp_restricted: true
+    worth: 70
     effects:
         cast:
         -  class: EffectSingle
@@ -2695,6 +2817,7 @@ iterate:
     icon: ink_sack:2
     category: engineering
     class: IterateSpell
+    worth: 150
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -2707,6 +2830,7 @@ superiterate:
     icon: ink_sack:4
     category: engineering
     class: IterateSpell
+    worth: 300
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -2721,6 +2845,7 @@ flamethrower:
     icon: fire
     category: firebending
     class: IterateSpell
+    worth: 90
     effects:
         cast:
         -  class: EffectSingle
@@ -2744,6 +2869,7 @@ laser:
     icon: ink_sack:11
     category: dark
     class: IterateSpell
+    worth: 130
     effects:
         cast:
         -  class: EffectSingle
@@ -2765,6 +2891,7 @@ shrink:
     category: combat
     class: ShrinkSpell
     pvp_restricted: true
+    worth: 40
     effects:
         cast:
         -  class: EffectSingle
@@ -2783,6 +2910,7 @@ flare:
     icon: firework
     category: light
     class: FireworkSpell
+    worth: 2
     effects:
         cast:
         -  class: EffectSingle
@@ -2797,6 +2925,7 @@ recall:
     icon: compass
     category: master
     class: RecallSpell
+    worth: 25
     effects:
         cast:
         -  class: EffectSingle
@@ -2819,6 +2948,7 @@ levitate:
     icon: gold_boots
     category: master
     class: LevitateSpell
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -2835,6 +2965,7 @@ fly:
     icon: diamond_boots
     category: master
     class: LevitateSpell
+    worth: 600
     effects:
         cast:
         -  class: EffectSingle
@@ -2853,6 +2984,7 @@ force:
     category: airbending
     class: ForceSpell
     pvp_restricted: true
+    worth: 200
     effects:
         cast:
         -  class: EffectSingle
@@ -2872,6 +3004,7 @@ fireball:
     category: firebending
     class: ProjectileSpell
     pvp_restricted: true
+    worth: 35
     effects:
         cast:
         -  class: EffectSingle
@@ -2883,6 +3016,7 @@ fireball:
         xp: 15
 map:
     icon: map
+    worth: 45
     category: master
     class: MapSpell
     parameters:
@@ -2893,6 +3027,7 @@ camera:
     icon: double_plant
     category: light
     class: CameraSpell
+    worth: 8
     effects:
         cast:
         -  class: EffectSingle
@@ -2911,6 +3046,7 @@ tent:
     icon: sapling:4
     category: master
     class: ConstructSpell
+    worth: 350
     effects:
         cast:
         -  class: EffectSingle
@@ -2932,6 +3068,7 @@ cage:
     icon: iron_fence
     category: master
     class: ConstructSpell
+    worth: 250
     effects:
         cast:
         -  class: EffectSingle
@@ -2955,6 +3092,7 @@ wolfhouse:
     icon: sapling:5
     category: master
     class: ConstructSpell
+    worth: 2000
     effects:
         cast:
         -  class: EffectSingle

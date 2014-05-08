@@ -320,6 +320,31 @@ max_power_range_multiplier: 2.0
 max_power_range_multiplier_max: 5.0
 max_power: 100.0
 
+### Economy Helpers
+
+worth_use_percentage: 0.05
+worth_mana: 0.1
+worth_mana_max: 2
+worth_mana_regeneration: 20
+worth_health_regeneration: 500
+worth_hunger_regeneration: 500
+worth_hunger_regeneration: 500
+worth_damage_reduction: 1500
+worth_damage_reduction_explosions: 800
+worth_damage_reduction_falling: 300
+worth_damage_reduction_fire: 500
+worth_damage_reduction_physical: 1000
+worth_damage_reduction_projectiles: 800
+worth_cost_reduction: 1000
+worth_cooldown_reduction: 1000
+worth_haste: 500
+worth_brush: 100
+
+worth_items:
+  gold_nugget: 1
+  diamond: 16
+  emerald: 256
+
 ### Plugin Integration
 
 # Allow wands to be purchased on Essentials' signs, if present.
