@@ -1144,7 +1144,7 @@ icbm:
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
-    worth: 100
+    worth: 500
     effects:
         cast:
         -  class: EffectSingle

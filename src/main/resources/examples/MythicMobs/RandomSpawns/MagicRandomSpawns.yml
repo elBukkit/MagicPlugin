@@ -1,0 +1,26 @@
+RandomWraith:
+  Mobname: Wraith
+  Worlds: world
+  Chance: 0.005
+  Priority: 1
+  Conditions:
+  - outside true
+RandomDreaKnight:
+  Mobname: DreadKnight
+  Worlds: world
+  Chance: 0.01
+  Priority: 1
+  Conditions:
+  - outside true
+RandomSludge:
+  Mobname: Sludge
+  Worlds: world
+  Chance: 0.002
+  Priority: 1
+RandomWarlock:
+  Mobname: Warlock
+  Worlds: world
+  Chance: 0.005
+  Priority: 1
+  Conditions:
+  - outside true

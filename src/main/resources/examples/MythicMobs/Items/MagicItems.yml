@@ -1,0 +1,22 @@
+WraithSword:
+  Id: 276
+  Data: 0
+  Display: '&3Greatsword of the Wraith King'
+  Lore:
+  - '&6A powerful sword used by'
+  - '&6Wraiths.'
+  Enchantments:
+  - DAMAGE_ALL:5
+  - KNOCKBACK:2
+  - FIRE_ASPECT:2
+  Options:
+    Health: 10
+    MovementSpeed: 0.1
+WarlockTunic:
+  Id: 299
+  Display: '&Warlock Tunic'
+  Lore:
+  - '&6A leather tunic taken from'
+  - '&6the corpse of a warlock.'
+  Options:
+    Color: 255,40,40

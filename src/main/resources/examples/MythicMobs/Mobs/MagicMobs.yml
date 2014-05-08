@@ -1,0 +1,69 @@
+Wraith:
+  Mobtype: witherskeleton
+  Display: '&6Wraith'
+  Health: 500
+  Damage: 10
+  Skills:
+  - skill SummonWraithlets >0 0.1
+  Equipment:
+  - WraithSword:0
+  Drops:
+  - MidBoss
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.2
+    MaxCombatDistance: 25'
+    PreventOtherDrops: true
+Wraithlet:
+  Mobtype: skeleton
+  Display: '&2Wraithlet'
+  Health: 20
+  Damage: 3
+  Options:
+    MovementSpeed: 0.1
+DreadKnight:
+  Mobtype: witherskeleton
+  Display: '&2DreadKnight'
+  Health: 50
+  Damage: 8
+  Drops:
+  - MinorBoss
+  DropsPerLevel:
+  - goldnugget 1 0.5
+  LevelModifiers:
+  - health 5
+  - damage 0.5
+  Options:
+    MovementSpeed: 0.1
+Sludge:
+  Mobtype: slime
+  Display: Sludge
+  Health: 60
+  Damage: 2
+  Drops:
+  - MinorBoss
+  Options:
+    Size: 10
+    MovementSpeed: 0.1
+    PreventSlimeSplit: true
+    PreventOtherDrops: true
+    MaxCombatDistance: 30
+    KnockbackResistance: 1
+  Skills:
+  - skill SludgePoison >0 0.2
+Warlock:
+  Mobtype: witch
+  Display: Warlock
+  Health: 120
+  Damage: 4
+  Equipment:
+  - WarlockTunic
+  Drops:
+  - MidBoss
+  Options:
+    Size: 20
+    MovementSpeed: 0.1
+    MaxCombatDistance: 30
+    KnockbackResistance: 1
+  Skills:
+  - skill SludgePoison >0 0.2
