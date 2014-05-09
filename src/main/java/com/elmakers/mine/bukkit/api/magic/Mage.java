@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -115,6 +117,26 @@ public interface Mage extends CostReducer {
 	 * @return The player backed by this Mage, or null for Automaton Mages.
 	 */
 	public Player getPlayer();
+
+    /**
+     * Get the Entity instance backed by this Mage.
+     *
+     * This may be a Player or other Entity, or null in the case of a
+     * CommandSender-based Mage, like an Automaton.
+     *
+     * @return The Entity represented by this Mage
+     */
+    public Entity getEntity();
+
+    /**
+     * Get the LivingEntity instance backed by this Mage.
+     *
+     * This is basically a helper wrapper for getEntity that does a typecheck
+     * for you.
+     *
+     * @return The LivingEntity represented by this Mage
+     */
+    public LivingEntity getLivingEntity();
 	
 	/**
 	 * Get the CommandSender backed by this Mage.
