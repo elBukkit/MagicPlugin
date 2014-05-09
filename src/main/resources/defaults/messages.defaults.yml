@@ -194,7 +194,7 @@ spells:
         fizzle: Your spell fizzled!
         backfire: Your spell backfired!
         fail: Your spell failed!
-        insufficient_permissions: You don't have permission to cast that here.
+        insufficient_permission: You don't have permission to cast that here.
         cast_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
     curse:
         name: Curse
