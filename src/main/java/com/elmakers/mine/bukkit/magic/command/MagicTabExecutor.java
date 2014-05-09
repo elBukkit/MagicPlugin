@@ -66,7 +66,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 	
 	protected void sendNoPermission(CommandSender sender)
 	{
-		sender.sendMessage(ChatColor.RED + "You are not allowed to use that command.");
+        if (sender != null) sender.sendMessage(ChatColor.RED + "You are not allowed to use that command.");
 	}
 
 	protected void addIfPermissible(CommandSender sender, List<String> options, String permissionPrefix, String option)

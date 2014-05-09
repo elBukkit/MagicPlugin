@@ -2392,7 +2392,6 @@ public class MagicController implements Listener, MageController
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-
         // Check for temporary items
 		ItemStack clickedItem = event.getCurrentItem();
 		

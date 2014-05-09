@@ -37,7 +37,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 				return true;
 			}
 			if (args.length < 1) {
-				sender.sendMessage("Usage: /castp [player] [spell] <parameters>");
+                if (sender != null) sender.sendMessage("Usage: /castp [player] [spell] <parameters>");
 				return true;
 			}
             String playerName = args[0];
@@ -49,11 +49,17 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 MageController controller = api.getController();
                 Mage mage = controller.getMage(mageId, mageName);
                 String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
-                if (castParameters.length < 1) return false;
+                if (castParameters.length < 1) {
+                    if (sender != null) sender.sendMessage("Invalid command line, expecting more parameters");
+                    return false;
+                }
 
                 String spellName = castParameters[0];
                 Spell spell = mage.getSpell(spellName);
-                if (spell == null) return false;
+                if (spell == null) {
+                    if (sender != null) sender.sendMessage("Unknown spell " + spellName);
+                    return false;
+                }
 
                 String[] parameters = new String[castParameters.length - 1];
                 for (int i = 1; i < castParameters.length; i++)
@@ -61,16 +67,17 @@ public class CastCommandExecutor extends MagicTabExecutor {
                     parameters[i - 1] = castParameters[i];
                 }
 
+                if (sender != null) sender.sendMessage("Casting " + spell.getName() + " on " + mageName);
                 return spell.cast(parameters);
             }
 
             Player player = Bukkit.getPlayer(playerName);
             if (player == null) {
-                sender.sendMessage("Can't find player " + playerName);
+                if (sender != null) sender.sendMessage("Can't find player " + playerName);
                 return true;
             }
             if (!player.isOnline()) {
-                sender.sendMessage("Player " + playerName + " is not online");
+                if (sender != null) sender.sendMessage("Player " + playerName + " is not online");
                 return true;
             }
 			String[] args2 = Arrays.copyOfRange(args, 1, args.length);

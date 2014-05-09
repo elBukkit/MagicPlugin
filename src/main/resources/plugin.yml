@@ -12,7 +12,7 @@ commands:
     permission: Magic.commands.cast
   castp:
     description: Cast a spell directly on another player
-    usage: cast <player> <spellname> [parameters]
+    usage: castp <player> <spellname> [parameters]
     permission: Magic.commands.cast
   spells:
     description: List all the spells you know
