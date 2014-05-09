@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -355,9 +356,9 @@ public interface MagicAPI {
 	 * @param spellName The key name of the Spell to cast
 	 * @param parameters A list of parameters, as if cast from the command-line.
 	 * @param sender The CommandSender that originated this Spell
-	 * @param player The Player this Spell is cast on behalf of, may differ from sender
+	 * @param entity The Enttiy this Spell is cast on behalf of, may be Player or differ from sender
 	 */
-	public void cast(String spellName, String[] parameters, CommandSender sender, Player player);
+	public void cast(String spellName, String[] parameters, CommandSender sender, Entity entity);
 	
 	/**
 	 * Get a list of all currently loaded SpellTemplate records, as defined in spells.defaults.yml

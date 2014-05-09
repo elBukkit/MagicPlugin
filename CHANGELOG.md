@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.3.2
+
+ - Add getEntityName, helper method for making a nice name for any entity
+ - Add several getMage variants for using Entity-based Mages
+
 ## 1.3.1
 
  - Re-work the Wand/Lost wand relationship. Id's are only for lost wands.

@@ -96,6 +96,9 @@ public interface MageController {
 	
 	public int getMessageThrottle();
 	public Mage getMage(CommandSender sender);
+    public Mage getMage(Player player);
+    public Mage getMage(Entity entity);
+    public Mage getMage(String id, String name);
 	
 	public Collection<String> getBrushKeys();
 	
@@ -114,6 +117,8 @@ public interface MageController {
 	
 	public UndoList undoAny(Block target);
 	public void forgetMage(Mage mage);
+
+    public String getEntityName(Entity entity);
 	
 	/**
 	 * Check to see if the Elementals plugin is present an enabled.
