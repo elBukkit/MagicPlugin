@@ -31,11 +31,6 @@ public class ShrinkSpell extends BlockSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		String castType = parameters.getString("type");
-		if (castType != null && castType.equalsIgnoreCase("self")) {
-			dropHead(getLocation(), getPlayer().getName(), null, (byte)3);
-			return SpellResult.CAST;
-		}
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
 			dropHead(getLocation(), giveName, null, (byte)3);
@@ -51,7 +46,7 @@ public class ShrinkSpell extends BlockSpell
 				double elementalSize = controller.getElementalScale(targetEntity);
 				if (elementalSize < 0.1) {
 					int elementalDamage = parameters.getInt("elemental_damage", DEFAULT_ENTITY_DAMAGE);
-					controller.damageElemental(targetEntity, elementalDamage, 0, getPlayer());
+					controller.damageElemental(targetEntity, elementalDamage, 0, mage.getCommandSender());
 				} else {
 					elementalSize /= 2;
 					controller.setElementalScale(targetEntity, elementalSize);
@@ -105,7 +100,7 @@ public class ShrinkSpell extends BlockSpell
 			
 			Location targetLocation = targetEntity.getLocation();
 			if (li instanceof Player) {
-				li.damage(damage, getPlayer());
+				li.damage(damage, mage.getEntity());
 				if (ownerName != null && li.isDead() && !alreadyDead) {
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
@@ -130,7 +125,7 @@ public class ShrinkSpell extends BlockSpell
 				Slime slime = (Slime)li;
 				slime.setSize(slime.getSize() - 1);
 			} else {
-				li.damage(damage, getPlayer());
+				li.damage(damage, mage.getEntity());
 				if ((ownerName != null || data != 3) && (li.isDead() || li.getHealth() == 0) && !alreadyDead) {
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}

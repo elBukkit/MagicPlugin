@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
@@ -20,7 +21,7 @@ public class UndoSpell extends TargetingSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		Player player = getPlayer();
+		Entity player = mage.getEntity();
 		if (target.hasEntity() && target.getEntity() instanceof Player)
 		{
 			// Don't let just anyone rewind someone else's thing

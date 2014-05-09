@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -26,6 +27,10 @@ public class PhaseSpell extends TargetingSpell
 		Location playerLocation = getLocation();
 		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
+        LivingEntity entity = mage.getLivingEntity();
+        if (entity == null) {
+            return SpellResult.LIVING_ENTITY_REQUIRED;
+        }
 		
 		if (parameters.contains("target_world"))
 		{
@@ -83,12 +88,12 @@ public class PhaseSpell extends TargetingSpell
 		}
 		
 		retryCount = 0;
-		tryPhase(targetLocation);
+		tryPhase(entity, targetLocation);
 		
 		return SpellResult.CAST;
 	}
 	
-	protected void tryPhase(final Location targetLocation) {
+	protected void tryPhase(final LivingEntity entity, final Location targetLocation) {
 		Chunk chunk = targetLocation.getBlock().getChunk();
 		if (!chunk.isLoaded()) {
 			chunk.load(true);
@@ -97,7 +102,7 @@ public class PhaseSpell extends TargetingSpell
 				final PhaseSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
-						me.tryPhase(targetLocation);
+						me.tryPhase(entity, targetLocation);
 					}
 				}, RETRY_INTERVAL);
 				
@@ -105,19 +110,16 @@ public class PhaseSpell extends TargetingSpell
 			}
 		}
 		
-		Player player = getPlayer();
-		if (player != null) {
-			Location playerLocation = player.getLocation();
-			targetLocation.setYaw(playerLocation.getYaw());
-			targetLocation.setPitch(playerLocation.getPitch());
-			Location destination = tryFindPlaceToStand(targetLocation);
-			
-			// TODO : Failure notification? Sounds at least? The async nature is difficult.
-			if (destination != null) {
-				targetWorldName = destination.getWorld().getName();
-				player.teleport(destination);
-			}
-		}
+        Location playerLocation = entity.getLocation();
+        targetLocation.setYaw(playerLocation.getYaw());
+        targetLocation.setPitch(playerLocation.getPitch());
+        Location destination = tryFindPlaceToStand(targetLocation);
+
+        // TODO : Failure notification? Sounds at least? The async nature is difficult.
+        if (destination != null) {
+            targetWorldName = destination.getWorld().getName();
+            entity.teleport(destination);
+        }
 	}
 	
 	@Override

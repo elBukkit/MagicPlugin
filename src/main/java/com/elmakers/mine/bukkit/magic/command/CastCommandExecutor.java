@@ -9,9 +9,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -31,19 +36,43 @@ public class CastCommandExecutor extends MagicTabExecutor {
 				sendNoPermission(sender);
 				return true;
 			}
-			if (args.length == 0) {
+			if (args.length < 1) {
 				sender.sendMessage("Usage: /castp [player] [spell] <parameters>");
 				return true;
 			}
-			Player player = Bukkit.getPlayer(args[0]);
-			if (player == null) {
-				sender.sendMessage("Can't find player " + args[0]);
-				return true;
-			}
-			if (!player.isOnline()) {
-				sender.sendMessage("Player " + args[0] + " is not online");
-				return true;
-			}
+            String playerName = args[0];
+            if (playerName.contains(":")) {
+                String[] pieces = StringUtils.split(playerName, ":");
+                String mageId = pieces[0];
+                String mageName = (pieces.length > 0) ? pieces[1] : mageId;
+
+                MageController controller = api.getController();
+                Mage mage = controller.getMage(mageId, mageName);
+                String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
+                if (castParameters.length < 1) return false;
+
+                String spellName = castParameters[0];
+                Spell spell = mage.getSpell(spellName);
+                if (spell == null) return false;
+
+                String[] parameters = new String[castParameters.length - 1];
+                for (int i = 1; i < castParameters.length; i++)
+                {
+                    parameters[i - 1] = castParameters[i];
+                }
+
+                return spell.cast(parameters);
+            }
+
+            Player player = Bukkit.getPlayer(playerName);
+            if (player == null) {
+                sender.sendMessage("Can't find player " + playerName);
+                return true;
+            }
+            if (!player.isOnline()) {
+                sender.sendMessage("Player " + playerName + " is not online");
+                return true;
+            }
 			String[] args2 = Arrays.copyOfRange(args, 1, args.length);
 			return processCastCommand(sender, player, args2);
 		}
@@ -64,7 +93,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		return false;
 	}
 
-	public boolean processCastCommand(CommandSender sender, Player player, String[] castParameters)
+	public boolean processCastCommand(CommandSender sender, Entity entity, String[] castParameters)
 	{
 		if (castParameters.length < 1) return false;
 
@@ -74,7 +103,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		{
 			parameters[i - 1] = castParameters[i];
 		}
-		api.cast(spellName, parameters, sender, player);
+		api.cast(spellName, parameters, sender, entity);
 		return true;
 	}
 

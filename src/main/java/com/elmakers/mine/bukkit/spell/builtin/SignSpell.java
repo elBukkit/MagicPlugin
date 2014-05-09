@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,11 +23,16 @@ public class SignSpell extends BlockSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		String typeString = parameters.getString("type", "");
-		boolean autoAscend = parameters.getBoolean("auto_give", true);
+		boolean autoGive = parameters.getBoolean("auto_give", true);
 
-		if (typeString.equals("give") || (autoAscend && isLookingUp()))
+        Entity sourceEntity = mage.getEntity();
+        if (sourceEntity == null) {
+            return SpellResult.ENTITY_REQUIRED;
+        }
+
+		if (typeString.equals("give") || (autoGive && isLookingUp()))
 		{
-			Player player = getPlayer();
+			Player player = mage.getPlayer();
 			if (player == null) {
 				return SpellResult.PLAYER_REQUIRED;
 			}
@@ -75,7 +81,7 @@ public class SignSpell extends BlockSpell
 			if (targetBlock.getState() instanceof Sign)
 			{
 				Sign sign = (Sign)targetBlock.getState();
-				String playerName = getPlayer().getName();
+				String playerName = controller.getEntityName(sourceEntity);
 				playerName = mage.getController().getMessagePrefix() + playerName;
 				sign.setLine(0, playerName);
 				sign.setLine(1, getMessage("sign_message"));

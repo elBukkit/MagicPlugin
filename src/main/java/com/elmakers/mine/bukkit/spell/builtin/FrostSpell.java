@@ -111,17 +111,17 @@ public class FrostSpell extends BlockSpell
 				}
 				if (li instanceof Player)
 				{
-					li.damage(playerDamage, getPlayer());
+					li.damage(playerDamage, mage.getEntity());
 				}
 				else
 				{
-					li.damage(entityDamage, getPlayer());
+					li.damage(entityDamage, mage.getEntity());
 				}
 			} 
 			else if (controller.isElemental(targetEntity)) {
 				controller.damageElemental(targetEntity, 
 						parameters.getDouble("elemental_damage", DEFAULT_ELEMENTAL_DAMAGE), 
-						0, getPlayer());
+						0, mage.getCommandSender());
 			}
 		}
 		

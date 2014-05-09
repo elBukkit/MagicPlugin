@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -40,6 +41,11 @@ public class FlingSpell extends TargetingSpell implements Listener
 		int height = 0;
 		Block playerBlock = getLocation().getBlock();
 
+        LivingEntity entity = mage.getLivingEntity();
+        if (entity == null) {
+            return SpellResult.LIVING_ENTITY_REQUIRED;
+        }
+
 		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
 		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
 		double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
@@ -60,7 +66,7 @@ public class FlingSpell extends TargetingSpell implements Listener
 		}
 
 		velocity.multiply(magnitude);
-		getPlayer().setVelocity(velocity);
+		entity.setVelocity(velocity);
 
 		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling = System.currentTimeMillis();

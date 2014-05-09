@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -25,10 +26,10 @@ public class BoomSpell extends BlockSpell {
 		if ((breakBlocks || incendiary) && !hasBuildPermission(block)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+        Entity entity = mage.getEntity();
 		Location l = block.getLocation();
-		Player player = getPlayer();
 		registerForUndo();
-		NMSUtils.createExplosion(player, getWorld(), l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
+		NMSUtils.createExplosion(entity, target.getWorld(), l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
 		controller.updateBlock(block);
 		return SpellResult.CAST;
 	}

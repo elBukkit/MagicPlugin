@@ -18,6 +18,8 @@ import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -57,6 +59,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	protected final String						id;
 	protected WeakReference<Player> 			_player;
+    protected WeakReference<Entity> 			_entity;
 	protected WeakReference<CommandSender>		_commandSender;
 	protected String 							playerName;
 	protected final MagicController				controller;
@@ -87,6 +90,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		this.controller = controller;
 		this.brush = new MaterialBrush(this, Material.DIRT, (byte)0);
 		_player = new WeakReference<Player>(null);
+        _entity = new WeakReference<Entity>(null);
 		_commandSender = new WeakReference<CommandSender>(null);
 	}
 	
@@ -108,9 +112,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 	
 	public void setLocation(Location location) {
-		Player player = getPlayer();
-		if (player != null && location != null) {
-			player.teleport(location);
+		LivingEntity entity = getLivingEntity();
+		if (entity != null && location != null) {
+            entity.teleport(location);
 			return;
 		}
 		this.location = location;
@@ -383,10 +387,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	}
 	
 	public void playSound(Sound sound, float volume, float pitch) {
+        if (!controller.soundsEnabled()) return;
+
 		Player player = getPlayer();
-		if (player != null && controller.soundsEnabled()) {
+		if (player != null) {
 			player.playSound(player.getLocation(), sound, volume, pitch);
-		}
+		} else {
+            Entity entity = getEntity();
+            entity.getLocation().getWorld().playSound(entity.getLocation(), sound, volume, pitch);
+        }
 	}
 	
 	public UndoQueue getUndoQueue() {
@@ -426,12 +435,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		if (player != null) {
 			playerName = player.getName();
 			this._player = new WeakReference<Player>(player);
+            this._entity = new WeakReference<Entity>(player);
 			this._commandSender = new WeakReference<CommandSender>(player);
 		} else {
 			this._player.clear();
+            this._entity.clear();
 			this._commandSender.clear();
 		}
 	}
+
+    protected void setEntity(Entity entity)
+    {
+        if (entity != null) {
+            playerName = entity.getType().name().toLowerCase().replace("_", " ");
+            if (entity instanceof LivingEntity) {
+                LivingEntity li = (LivingEntity)entity;
+                String customName = li.getCustomName();
+                if (customName != null && customName.length() > 0) {
+                    playerName = customName;
+                }
+            }
+            this._entity = new WeakReference<Entity>(entity);
+        } else {
+            this._entity.clear();
+        }
+    }
 	
 	protected void setCommandSender(CommandSender sender)
 	{
@@ -607,7 +635,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	public String getName() {
 		return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
 	}
-	
+
+    public void setName(String name) {
+        playerName = name;
+    }
+
 	@Override
 	public String getId() {
 		return id;
@@ -617,15 +649,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	public Location getLocation() {
 		if (location != null) return location.clone();
 		
-		Player player = getPlayer();
-		if (player == null) return null;
-		return player.getLocation();
+		LivingEntity livingEntity = getLivingEntity();
+		if (livingEntity == null) return null;
+		return livingEntity.getLocation();
 	}
 	
 	@Override
 	public Location getEyeLocation() {
-		Player player = getPlayer();
-		if (player != null) return player.getEyeLocation();
+		LivingEntity entity = getLivingEntity();
+		if (entity != null) return entity.getEyeLocation();
+
 		Location location = getLocation();
 		if (location != null) {
 			location.setY(location.getY() + 1.5);
@@ -841,9 +874,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public boolean isDead()
 	{
-		Player player = getPlayer();
-		if (player != null) {
-			return player.isDead();
+		LivingEntity entity = getLivingEntity();
+		if (entity != null) {
+			return entity.isDead();
 		}
 		// Check for automata
 		CommandSender sender = getCommandSender();
@@ -882,8 +915,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	@Override
 	public Inventory getInventory() {
+        if (hasStoredInventory()) {
+            return getStoredInventory();
+        }
+
 		Player player = getPlayer();
-		return hasStoredInventory() ? getStoredInventory() : (player == null ? null : player.getInventory());
+        if (player != null) {
+            return player.getInventory();
+        }
+        // TODO: Maybe wrap EntityEquipment in an Inventory... ? Could be hacky.
+        return null;
 	}
 	
 	@Override
@@ -1039,6 +1080,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	{
 		return _player.get();
 	}
+
+    @Override
+    public Entity getEntity()
+    {
+        return _entity.get();
+    }
+
+    @Override
+    public LivingEntity getLivingEntity()
+    {
+        Entity entity = _entity.get();
+        return (entity != null && entity instanceof LivingEntity) ? (LivingEntity)entity : null;
+    }
 	
 	@Override
 	public CommandSender getCommandSender()

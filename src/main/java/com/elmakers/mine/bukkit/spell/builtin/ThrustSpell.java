@@ -110,7 +110,7 @@ public class ThrustSpell extends TargetingSpell
 		// if the terrain has changed more than the auto-hover tolerance, re-adjust hover height and keep level.
 		if (groundHeight == 0 || targetHeight == 0)
 		{
-			hoverHeight = getPlayer().getLocation().getBlockY() - newGroundHeight;
+			hoverHeight = mage.getEntity().getLocation().getBlockY() - newGroundHeight;
 			if (hoverHeight < defaultHoverHeight)
 			{
 				hoverHeight = defaultHoverHeight;
@@ -137,7 +137,7 @@ public class ThrustSpell extends TargetingSpell
 
 	public boolean isActive()
 	{
-		return (getPlayer() != null && !getPlayer().isDead() && getPlayer().isOnline());
+		return (!mage.isDead() && mage.isOnline());
 	}
 
 	protected void applyForce()
@@ -164,7 +164,7 @@ public class ThrustSpell extends TargetingSpell
 		float speedMinMagnitude =  (float)minSpeed * timeDeltaSeconds;
 		float speedMaxMagnitude =  (float)maxSpeed * timeDeltaSeconds;
 
-		Location playerLocation = getPlayer().getLocation();
+		Location playerLocation = mage.getEntity().getLocation();
 
 		float pitch = playerLocation.getPitch();
 		float yaw = playerLocation.getYaw();
@@ -216,7 +216,8 @@ public class ThrustSpell extends TargetingSpell
 
 		// Steer- faster at higher altitudes, and scaled based on angle away from center (look up or down to stop)
 		float multiplier = speedMinMagnitude;
-		if (!getPlayer().isSneaking())
+        Player player = mage.getPlayer();
+		if (player == null || !player.isSneaking())
 		{
 			int heightFactor = hoverHeight > maxSpeedAtElevation ? maxSpeedAtElevation : (int)hoverHeight;
 			multiplier *= (float)speedMaxMagnitude * heightFactor / maxSpeedAtElevation;
@@ -226,7 +227,7 @@ public class ThrustSpell extends TargetingSpell
 		aim.setY(0);
 		scaledForce.add(aim);
 
-		getPlayer().setVelocity(scaledForce);
+		mage.getEntity().setVelocity(scaledForce);
 
 		this.lastTick = System.currentTimeMillis();
 	}

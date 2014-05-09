@@ -36,8 +36,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
+        Player player = mage.getPlayer();
+        if (player == null) {
+            return SpellResult.PLAYER_REQUIRED;
+        }
 		flySpeed = (float)parameters.getDouble("speed", 0);
-		if (getPlayer().getAllowFlight()) {
+		if (player.getAllowFlight()) {
 			deactivate();
 			return SpellResult.COST_FREE;
 		}
@@ -48,7 +52,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	
 	@Override
 	public void onDeactivate() {
-		final Player player = getPlayer();
+		final Player player = mage.getPlayer();
 		if (player == null) return;
 		
 		if (flySpeed > 0) {
@@ -65,16 +69,16 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	
 	@Override
 	public void onActivate() {
-		final Player player = getPlayer();
+		final Player player = mage.getPlayer();
 		if (player == null) return;
 		
 		if (flySpeed > 0) {
 			player.setFlySpeed(flySpeed * defaultFlySpeed);
 		}
 		
-		Vector velocity = getPlayer().getVelocity();
+		Vector velocity = player.getVelocity();
 		velocity.setY(velocity.getY() + 2);
-		getPlayer().setVelocity(velocity);
+        player.setVelocity(velocity);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			public void run() {
 				player.setAllowFlight(true);

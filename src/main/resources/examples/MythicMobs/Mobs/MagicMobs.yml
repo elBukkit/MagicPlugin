@@ -66,4 +66,5 @@ Warlock:
     MaxCombatDistance: 30
     KnockbackResistance: 1
   Skills:
-  - skill SludgePoison >0 0.2
+  - skill Pull ~onAttack >0 0.5
+  - skill SludgePoison ~onAttack >0 0.1

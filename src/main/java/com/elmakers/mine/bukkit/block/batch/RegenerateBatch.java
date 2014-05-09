@@ -50,7 +50,7 @@ public class RegenerateBatch extends SpellBatch {
 		this.spell = spell;
 		this.restoredBlocks = new UndoList(spell.getMage(), spell.getName());
 		this.mage = spell.getMage();
-		this.world = this.mage.getPlayer().getWorld();
+		this.world = this.mage.getLocation().getWorld();
 		this.state = RegenerateState.SAVING;
 		
 		int deltax = p2.getBlock().getChunk().getX() - p1.getChunk().getX();

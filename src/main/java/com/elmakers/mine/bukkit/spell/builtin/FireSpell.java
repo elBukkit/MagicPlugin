@@ -68,7 +68,7 @@ public class FireSpell extends BlockSpell
 		if (entity != null && controller.isElemental(entity)) {
 			controller.damageElemental(entity, 
 					parameters.getDouble("elemental_damage", DEFAULT_ELEMENTAL_DAMAGE), 
-					parameters.getInt("fire_ticks", DEFAULT_ELEMENTAL_FIRE_TICKS), getPlayer());
+					parameters.getInt("fire_ticks", DEFAULT_ELEMENTAL_FIRE_TICKS), mage.getCommandSender());
 		}
 
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);

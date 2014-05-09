@@ -30,7 +30,7 @@ public class GotoSpell extends UndoableSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		Player player = getPlayer();
+		Player player = mage.getPlayer();
 		if (player == null) 
 		{
 			return SpellResult.PLAYER_REQUIRED;
@@ -79,8 +79,8 @@ public class GotoSpell extends UndoableSpell
 			Entity targetEntity = allTargets.get(0).getEntity();
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
-			teleportTo(targetEntity);
-			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
+			teleportTo(player, targetEntity);
+			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityName(targetEntity)));
 			
 			return SpellResult.CAST;
 		}
@@ -114,8 +114,8 @@ public class GotoSpell extends UndoableSpell
 		{
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
-			teleportTo(targetEntity);
-			castMessage(getMessage("cast_to_player").replace("$target", getTargetName(targetEntity)));
+			teleportTo(player, targetEntity);
+			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityName(targetEntity)));
 			releaseTarget();
 			registerForUndo();
 			return SpellResult.CAST;
@@ -159,7 +159,7 @@ public class GotoSpell extends UndoableSpell
 		return true;
 	}
 	
-	protected void teleportTo(Entity targetEntity) {
+	protected void teleportTo(Entity sourceEntity, Entity targetEntity) {
 		Location targetLocation = targetEntity.getLocation();
 		
 		// Try to place you in front of the other player, and facing them
@@ -170,8 +170,8 @@ public class GotoSpell extends UndoableSpell
 			candidate.setYaw(360 - targetLocation.getYaw());
 			targetLocation = candidate;
 		}
-		
-		getPlayer().teleport(targetLocation);
+
+        sourceEntity.teleport(targetLocation);
 	}
 	
 	protected void selectTarget(LivingEntity entity) {

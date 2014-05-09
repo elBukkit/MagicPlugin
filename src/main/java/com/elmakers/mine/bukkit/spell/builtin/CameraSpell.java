@@ -79,7 +79,7 @@ public class CameraSpell extends TargetingSpell
 
 				if (playerName == null)
 				{
-					Player player = getPlayer();
+					Player player = mage.getPlayer();
 					if (player == null) {
 						return SpellResult.NO_TARGET;
 					}

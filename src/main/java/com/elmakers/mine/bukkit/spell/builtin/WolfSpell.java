@@ -6,10 +6,7 @@ import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
@@ -92,6 +89,9 @@ public class WolfSpell extends TargetingSpell
 		wolfie.setAngry(false);
 		wolfie.setHealth(8);
 		wolfie.setTamed(true);
-		wolfie.setOwner(getPlayer());
+        Player owner = mage.getPlayer();
+        if (owner != null) {
+            wolfie.setOwner(owner);
+        }
 	}
 }

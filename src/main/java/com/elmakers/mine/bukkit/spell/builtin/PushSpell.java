@@ -20,7 +20,7 @@ public class PushSpell extends TargetingSpell
 	private int DEFAULT_ENTITY_MAGNITUDE = 3;
 	private int DEFAULT_MAX_ALL_DISTANCE = 20;
 
-	public void forceAll(double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance)
+	public void forceAll(Entity sourceEntity, double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance)
 	{
 		float maxDistance = (float)maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
@@ -28,7 +28,7 @@ public class PushSpell extends TargetingSpell
 		List<Entity> entities = getWorld().getEntities();
 		for (Entity target : entities)
 		{
-			if (target == getPlayer()) continue;
+			if (target == sourceEntity) continue;
 			if (controller.isNPC(target)) continue;
 			Location playerLocation = getLocation();
 			Location targetLocation = target.getLocation();
@@ -48,6 +48,7 @@ public class PushSpell extends TargetingSpell
 	{
 		boolean push = false;
 		boolean pull = false;
+        Entity sourceEntity = mage.getEntity();
 
 		String typeString = parameters.getString("type", "");
 		push = typeString.equals("push");
@@ -71,7 +72,7 @@ public class PushSpell extends TargetingSpell
 			&&  (isLookingDown() || isLookingUp())
 		)
 		{
-			forceAll(multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);
+			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);
 			return SpellResult.AREA;
 		}
 

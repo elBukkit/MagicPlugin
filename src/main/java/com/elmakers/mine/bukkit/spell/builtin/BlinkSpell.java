@@ -6,6 +6,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -16,7 +18,7 @@ public class BlinkSpell extends TargetingSpell
 	private int verticalSearchDistance = 255;
 	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
 
-	protected SpellResult ascend()
+	protected SpellResult ascend(Entity entity)
 	{
 		Location targetLocation = getLocation();
 		for (int i = 0; i < 2; i++) {
@@ -27,13 +29,13 @@ public class BlinkSpell extends TargetingSpell
 		if (location != null) 
 		{
 			setTarget(location);
-			getPlayer().teleport(location);
+            entity.teleport(location);
 			return SpellResult.CAST;
 		}
 		return SpellResult.NO_TARGET;
 	}
 
-	protected SpellResult descend()
+	protected SpellResult descend(Entity entity)
 	{
 		Location targetLocation = getLocation();
 		for (int i = 0; i < 2; i++) {
@@ -44,7 +46,7 @@ public class BlinkSpell extends TargetingSpell
 		if (location != null) 
 		{
 			setTarget(location);
-			getPlayer().teleport(location);
+            entity.teleport(location);
 			return SpellResult.CAST;
 		}
 		return SpellResult.NO_TARGET;
@@ -55,9 +57,9 @@ public class BlinkSpell extends TargetingSpell
 	{
 		String elevateType = parameters.getString("type", "");
 		
-		Player player = getPlayer();
-		if (player == null) {
-			return SpellResult.PLAYER_REQUIRED;
+		Entity entity = mage.getLivingEntity();
+        if (entity == null) {
+			return SpellResult.ENTITY_REQUIRED;
 		}
 
 		boolean autoAscend = parameters.getBoolean("allow_ascend", true);
@@ -66,11 +68,11 @@ public class BlinkSpell extends TargetingSpell
 
 		if (elevateType.equals("descend") || (isLookingDown() && autoDescend))
 		{
-			return descend();
+			return descend(entity);
 		}
 		else if (elevateType.equals("ascend") || (isLookingUp() && autoAscend))
 		{
-			return ascend();
+			return ascend(entity);
 		}
 		
 		if (autoPassthrough && !isLookingUp() && !isLookingDown())
@@ -114,7 +116,7 @@ public class BlinkSpell extends TargetingSpell
 		}
 		
 		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
-		if (!player.isFlying()) {
+		if (!(entity instanceof Player && ((Player)entity).isFlying())) {
 			Block groundBlock = destination.getRelative(BlockFace.DOWN);
 			while (distanceDown < verticalSearchDistance && !isOkToStandOn(groundBlock.getType()))
 			{
@@ -180,11 +182,11 @@ public class BlinkSpell extends TargetingSpell
 			destination.getX() + 0.5,
 			destination.getY(),
 			destination.getZ() + 0.5,
-			getPlayer().getLocation().getYaw(),
-			getPlayer().getLocation().getPitch()
+			entity.getLocation().getYaw(),
+            entity.getLocation().getPitch()
 		);
 		setTarget(targetLocation);
-		player.teleport(targetLocation);
+        entity.teleport(targetLocation);
 		return SpellResult.CAST;
 	}
 }

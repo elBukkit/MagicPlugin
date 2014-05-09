@@ -42,6 +42,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
@@ -91,6 +92,7 @@ import org.mcstats.Metrics.Graph;
 
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -151,14 +153,27 @@ public class MagicController implements Listener, MageController
 		defaultsFolder = new File(configFolder, "defaults");
 		defaultsFolder.mkdirs();
 	}
-	
-	public Mage getMage(String mageId, CommandSender commandSender)
+
+    @Override
+    public Mage getMage(String mageId, String mageName)
+    {
+        return getMage(mageId, mageName, null, null);
+    }
+
+    public Mage getMage(String mageId, CommandSender commandSender, Entity entity)
+    {
+        return getMage(mageId, null, commandSender, entity);
+    }
+
+    protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity)
 	{
-		Mage mage = null;
-		if (!mages.containsKey(mageId)) 
+        Mage apiMage = null;
+		if (!mages.containsKey(mageId))
 		{
-			mage = new Mage(mageId, this);
+            com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
 			mage.setCommandSender(commandSender);
+            mage.setEntity(entity);
+            mage.setName(mageName);
 			if (commandSender instanceof Player) {
 				mage.setPlayer((Player)commandSender);
 			}
@@ -178,31 +193,78 @@ public class MagicController implements Listener, MageController
 			}
 			
 			mages.put(mageId, mage);
+            apiMage = mage;
 		} else {
-			mage = mages.get(mageId);
-			
-			// Re-set command sender to update position
-			mage.setCommandSender(commandSender);
-			if (commandSender instanceof Player) {
-				mage.setPlayer((Player)commandSender);
-			}
+            apiMage = mages.get(mageId);
+            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+                // Re-set mage properties
+                mage.setName(mageName);
+                mage.setCommandSender(commandSender);
+                mage.setEntity(entity);
+                if (commandSender instanceof Player) {
+                    mage.setPlayer((Player)commandSender);
+                }
+            }
 		}
-		return mage;
+		return apiMage;
 	}
+
+    @Override
+    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Player player)
+    {
+        return getMage((Entity)player, player);
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity)
+    {
+        CommandSender commandSender = (entity instanceof Player) ? (Player)entity : null;
+        return getMage(entity, commandSender);
+    }
+
+    protected com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender commandSender)
+    {
+        if (entity == null) return getMage(commandSender);
+        String id = entity.getUniqueId().toString();
+
+        // Check for Citizens NPC
+        if (isNPC(entity)) {
+            id = "NPC-" + entity.getUniqueId();
+        }
+        return getMage(id, commandSender, entity);
+    }
+
+    @Override
+    public Mage getMage(CommandSender commandSender)
+    {
+        String mageId = "COMMAND";
+        if (commandSender instanceof ConsoleCommandSender) {
+            mageId = "CONSOLE";
+        } else if (commandSender instanceof Player) {
+            return getMage((Player)commandSender);
+        } else if (commandSender instanceof BlockCommandSender) {
+            BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
+            String commandName = commandBlock.getName();
+            if (commandName != null && commandName.length() > 0) {
+                mageId = "COMMAND-" + commandBlock.getName();
+            }
+        }
+
+        return getMage(mageId, commandSender, null);
+    }
 	
 	protected void loadMage(String playerId, ConfigurationSection node)
 	{
-		Mage mage = getMage(playerId);
+		Mage mage = getMage(playerId, null, null);
 		try {
-			mage.load(node);
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).load(node);
+            }
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
-	
-	protected Mage getMage(String mageId)
-	{
-		return getMage(mageId, null);
 	}
 
 	public void addSpell(Spell variant)
@@ -379,7 +441,9 @@ public class MagicController implements Listener, MageController
 		
 		schematics.clear();
 		for (Mage mage : mages.values()) {
-			mage.clearCache();
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).clearCache();
+            }
 		}
 	}
 	
@@ -679,7 +743,9 @@ public class MagicController implements Listener, MageController
 				
 				
 				for (Mage mage : mages.values()) {
-					mage.tick();
+                    if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                        ((com.elmakers.mine.bukkit.magic.Mage)mage).tick();
+                    }
 				}
 			}
 		}, 0, 20);
@@ -690,7 +756,9 @@ public class MagicController implements Listener, MageController
 				List<Mage> pending = new ArrayList<Mage>();
 				pending.addAll(pendingConstruction.values());
 				for (Mage mage : pending) {
-					mage.processPendingBatches(maxBlockUpdates);
+                    if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                        ((com.elmakers.mine.bukkit.magic.Mage) mage).processPendingBatches(maxBlockUpdates);
+                    }
 				}
 			}
 		}, 0, 1);
@@ -1171,15 +1239,22 @@ public class MagicController implements Listener, MageController
 				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
 				DataStore playerConfig = new DataStore(getLogger(), playerData);
 				Mage mage = mageEntry.getValue();
-				mage.save(playerConfig);
+                if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                    ((com.elmakers.mine.bukkit.magic.Mage)mage).save(playerConfig);
+                }
 				playerConfig.save();
 				
 				// Check for players we can forget
 				Player player = mage.getPlayer();
-				if (player != null && !player.isOnline() && !isNPC(player)) {
-					UndoQueue undoQueue = mage.getUndoQueue();
+                LivingEntity livingEntity = mage.getLivingEntity();
+                boolean isOfflinePlayer = player != null && !player.isOnline() && !isNPC(player);
+                boolean isDeadEntity = livingEntity != null && livingEntity.isDead() && player == null;
+                // Automata theoretically handle themselves by sticking around for a while
+                // but maybe some extra safety here would be good?
+                if (isOfflinePlayer || isDeadEntity) {
+					UndoQueue undoQueue = (mage instanceof com.elmakers.mine.bukkit.magic.Mage) ? ((com.elmakers.mine.bukkit.magic.Mage)mage).getUndoQueue() : null;
 					if (undoQueue == null || undoQueue.isEmpty()) {
-						getLogger().info("Offline player " + player.getName() + " has no pending undo actions, forgetting");
+						getLogger().info("Offline mage " + mage.getName() + " has no pending undo actions, forgetting");
 						forgetMages.put(mageEntry.getKey(), 0l);
 					}
 				}
@@ -1239,7 +1314,9 @@ public class MagicController implements Listener, MageController
 		
 		// Update registered mages so their spells are current
 		for (Mage mage : mages.values()) {
-			mage.loadSpells(config);
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).loadSpells(config);
+            }
 		}
 	}
 
@@ -1512,12 +1589,14 @@ public class MagicController implements Listener, MageController
 		for (String key : keys) {
 			if (mages.containsKey(key)) {
 				Mage mage = mages.get(key);
-				UndoList lastUndo = mage.getLastUndoList();
-				if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
-					pendingUndo.remove(key);
-				} else if (lastUndo.contains(fallingBlock.getLocation(), undoBlockBorderSize)) {
-					lastUndo.fall(fallingBlock, block);
-				}
+                if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                    UndoList lastUndo = ((com.elmakers.mine.bukkit.magic.Mage)mage).getLastUndoList();
+                    if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
+                        pendingUndo.remove(key);
+                    } else if (lastUndo.contains(fallingBlock.getLocation(), undoBlockBorderSize)) {
+                        lastUndo.fall(fallingBlock, block);
+                    }
+                }
 			} else {
 				pendingUndo.remove(key);
 			}
@@ -1582,10 +1661,12 @@ public class MagicController implements Listener, MageController
 			Mage mage = getMage((Player)entity);
 			
 			// Hm, kinda hacky.
-			Object lastUndo = mage.getLastUndoList();
-			if (lastUndo instanceof UndoList) {
-				blockList = (UndoList)lastUndo;
-			}
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                Object lastUndo = ((com.elmakers.mine.bukkit.magic.Mage)mage).getLastUndoList();
+                if (lastUndo instanceof UndoList) {
+                    blockList = (UndoList) lastUndo;
+                }
+            }
 		} else if (entity.hasMetadata("MagicBlockList")) {
 			List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
 			for (MetadataValue value : values) {
@@ -1662,7 +1743,10 @@ public class MagicController implements Listener, MageController
 		ItemStack next = inventory.getItem(event.getNewSlot());
 		ItemStack previous = inventory.getItem(event.getPreviousSlot());
 
-		Mage mage = getMage(player);
+		Mage apiMage = getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
 		Wand activeWand = mage.getActiveWand();
 		
 		// Check for active Wand
@@ -1683,7 +1767,7 @@ public class MagicController implements Listener, MageController
 		// If we're switching to a wand, activate it.
 		if (next != null && Wand.isWand(next)) {
 			Wand newWand = new Wand(this, next);
-			newWand.activate(mage, next);			
+			newWand.activate(mage, next);
 		}
 		
 		// Check for map selection if no wand is active
@@ -1699,8 +1783,11 @@ public class MagicController implements Listener, MageController
 	public void onPlayerDropItem(PlayerDropItemEvent event)
 	{
 		Player player = event.getPlayer();
-		Mage mage = getMage(player);
-		final Wand activeWand = mage.getActiveWand();
+        Mage apiMage = getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        final Wand activeWand = mage.getActiveWand();
 		if (activeWand != null) {
 			ItemStack droppedItem = event.getItemDrop().getItemStack();
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
@@ -1735,9 +1822,12 @@ public class MagicController implements Listener, MageController
 	{
 		String rule = player.getWorld().getGameRuleValue("keepInventory");
 		if (rule.equals("true")) return;
-		
-		Mage mage = getMage(player);
-		List<ItemStack> drops = event.getDrops();
+
+        Mage apiMage = getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        List<ItemStack> drops = event.getDrops();
 		Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			// Retrieve stored inventory before deactivating the wand
@@ -1803,18 +1893,23 @@ public class MagicController implements Listener, MageController
 		mage.onPlayerDeath(event);
 	}
 
-	public void onPlayerDamage(Player player, EntityDamageEvent event)
+	public void onPlayerDamage(EntityDamageEvent event)
 	{
-		Mage mage = getMage(player);
-		mage.onPlayerDamage(event);
+        Mage apiMage = getMage(event.getEntity());
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        mage.onPlayerDamage(event);
 	}
 	
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent event)
 	{
-		if (!(event.getEntity() instanceof Player)) return;
-		Mage mage = getMage((Player)event.getEntity());
-		mage.onPlayerCombust(event);
+		Mage apiMage = getMage(event.getEntity());
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        mage.onPlayerCombust(event);
 	}
 	
 	@EventHandler
@@ -1862,8 +1957,12 @@ public class MagicController implements Listener, MageController
 		
 		for (String key : keys) {
 			if (mages.containsKey(key)) {
-				Mage mage = mages.get(key);
-				UndoList lastUndo = mage.getLastUndoList();
+				Mage apiMage = mages.get(key);
+
+                if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) continue;
+                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+                UndoList lastUndo = mage.getLastUndoList();
 				if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
 					pendingUndo.remove(key);
 				} else if (lastUndo.contains(entity.getLocation(), undoBlockBorderSize)) {
@@ -1893,10 +1992,10 @@ public class MagicController implements Listener, MageController
 	{
 		try {
 			Entity entity = event.getEntity();
+            // We don't process all Mages for performance reasons
 			if (entity instanceof Player)
 			{
-				Player player = (Player)event.getEntity();
-				onPlayerDamage(player, event);
+				onPlayerDamage(event);
 			}
 	        if (entity instanceof Item)
 	        {
@@ -1930,9 +2029,12 @@ public class MagicController implements Listener, MageController
         // Check for clicking on a Citizens NPC, in case
         // this hasn't been cancelled yet
         if (isNPC(event.getRightClicked())) {
-        	Player player = event.getPlayer();		
-    		Mage mage = getMage(player);
-        	Wand wand = mage.getActiveWand();
+        	Player player = event.getPlayer();
+            Mage apiMage = getMage(event.getPlayer());
+            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+            Wand wand = mage.getActiveWand();
         	if (wand != null) {
         		wand.closeInventory();
         	}
@@ -1952,9 +2054,12 @@ public class MagicController implements Listener, MageController
 		// Block block = event.getClickedBlock();
 		// getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
 		
-		Player player = event.getPlayer();		
-		Mage mage = getMage(player);
-		if (!mage.checkLastClick(clickCooldown)) {
+		Player player = event.getPlayer();
+        Mage apiMage = getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        if (!mage.checkLastClick(clickCooldown)) {
 			return;
 		}
 		
@@ -2065,8 +2170,11 @@ public class MagicController implements Listener, MageController
 	{
 		// Check for wand re-activation.
 		Player player = event.getPlayer();
-		Mage mage = getMage(player);
-		Wand wand = Wand.getActiveWand(this, player);
+        Mage apiMage = getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        Wand wand = Wand.getActiveWand(this, player);
 		if (wand != null) {
 			wand.activate(mage);
 		} else if (mage.isNewPlayer() && welcomeWand.length() > 0) {
@@ -2094,7 +2202,10 @@ public class MagicController implements Listener, MageController
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {
         // Check for wand inventory
-        Mage mage = getMage(player);
+        Mage apiMage = getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
         if (mage.hasStoredInventory()) {
             mage.addToStoredInventory(itemStack);
             return;
@@ -2123,8 +2234,12 @@ public class MagicController implements Listener, MageController
 		if (event.getAmount() <= 0) return;
 		
 		Player player = event.getPlayer();
-		Mage mage = getMage(player);
-		Wand wand = mage.getActiveWand();
+        Mage apiMage = mages.get(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			wand.onPlayerExpChange(event);
 		}
@@ -2137,9 +2252,13 @@ public class MagicController implements Listener, MageController
 		
 		// Make sure they get their portraits re-rendered on relogin.
 		URLMap.resend(player.getName());
-		
-		Mage mage = getMage(player);
-		mage.onPlayerQuit(event);
+
+        Mage apiMage = mages.get(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        mage.onPlayerQuit(event);
 		UndoQueue undoQueue = mage.getUndoQueue();
 		
 		if (commitOnQuit && undoQueue != null && !undoQueue.isEmpty()) {
@@ -2179,8 +2298,11 @@ public class MagicController implements Listener, MageController
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event)
 	{
-		for (Mage mage : mages.values()) {
-			Player player = mage.getPlayer();
+		for (Mage apiMage : mages.values()) {
+            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) continue;
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+            Player player = mage.getPlayer();
 			if (player == null) continue;
 			
 			Wand wand = mage.getActiveWand();
@@ -2213,8 +2335,12 @@ public class MagicController implements Listener, MageController
 		if (!(event.getPlayer() instanceof Player)) return;
 		
 		Player player = (Player)event.getPlayer();
-		Mage mage = getMage(player);
-		Wand wand = mage.getActiveWand();
+        Mage apiMage = mages.get(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			// NOTE: The type will never actually be CRAFTING, at least for now.
 			// But we can hope for server-side player inventory open notification one day, right?
@@ -2261,9 +2387,13 @@ public class MagicController implements Listener, MageController
 		if (!(event.getWhoClicked() instanceof Player)) return;
 
 		Player player = (Player)event.getWhoClicked();
-		Mage mage = getMage(player);
-		
-		// Check for temporary items
+        Mage apiMage = mages.get(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+
+        // Check for temporary items
 		ItemStack clickedItem = event.getCurrentItem();
 		
 		if (clickedItem != null && NMSUtils.isTemporary(clickedItem)) {
@@ -2340,9 +2470,12 @@ public class MagicController implements Listener, MageController
 
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
-		Mage mage = getMage(player);
-		
-		Wand previousWand = mage.getActiveWand();
+        Mage apiMage = mages.get(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        Wand previousWand = mage.getActiveWand();
 		
 		// Save the inventory state of the current wand if its spell inventory is open
 		// This is just to make sure we don't lose changes made to the inventory
@@ -2383,8 +2516,12 @@ public class MagicController implements Listener, MageController
 		if (event.getNewGameMode() == GameMode.CREATIVE && enableItemHacks) {
 			boolean ejected = false;
 			Player player = event.getPlayer();
-			Mage mage = getMage(player);
-			Wand activeWand = mage.getActiveWand();
+            Mage apiMage = mages.get(player);
+
+            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+            Wand activeWand = mage.getActiveWand();
 			if (activeWand != null) {
 				activeWand.deactivate();
 			}
@@ -2409,9 +2546,14 @@ public class MagicController implements Listener, MageController
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
 		if (event.isCancelled()) return;
-		
-		Mage mage = getMage(event.getPlayer());
-		ItemStack pickup = event.getItem().getItemStack();
+
+        Player player = event.getPlayer();
+        Mage apiMage = mages.get(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        ItemStack pickup = event.getItem().getItemStack();
 		boolean isWand = Wand.isWand(pickup);
 
 		// Creative mode inventory hacky work-around :\
@@ -2464,8 +2606,12 @@ public class MagicController implements Listener, MageController
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Player player = event.getPlayer();
-		Mage mage = getMage(player);
-		if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
+        Mage apiMage = mages.get(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
 		}
 		
@@ -2491,10 +2637,10 @@ public class MagicController implements Listener, MageController
 		triggerBlockToggle(e.getChunk());
 	}
 	
-	public void toggleCastCommandOverrides(com.elmakers.mine.bukkit.api.magic.Mage _mage, boolean override) {
+	public void toggleCastCommandOverrides(Mage apiMage, boolean override) {
 		// Reach into internals a bit here.
-		if (_mage instanceof Mage) {
-			Mage mage = (Mage)_mage;
+		if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 			mage.setCostReduction(override ? castCommandCostReduction : 0);
 			mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
 			mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);	
@@ -2525,17 +2671,21 @@ public class MagicController implements Listener, MageController
 		return all;
 	}
 	
-	public boolean cast(com.elmakers.mine.bukkit.api.magic.Mage mage, String spellName, String[] parameters, CommandSender sender, Player player)
+	public boolean cast(Mage mage, String spellName, String[] parameters, CommandSender sender, Entity entity)
 	{
-		Player usePermissions = (sender == player) ? player : (sender instanceof Player ? (Player)sender : null);
+		Player usePermissions = (sender == entity && entity instanceof Player) ? (Player)entity
+                : (sender instanceof Player ? (Player)sender : null);
+        if (entity == null && sender instanceof Player) {
+            entity = (Player)sender;
+        }
 		Location targetLocation = null;
 		if (mage == null) {
-			CommandSender mageController = player == null ? sender : player;
+			CommandSender mageController = (entity != null && entity instanceof Player) ? (Player)entity : sender;
 			if (sender instanceof BlockCommandSender) {
 				targetLocation = ((BlockCommandSender)sender).getBlock().getLocation();
 			}
-			if (sender instanceof Player) {
-				targetLocation = ((Player)player).getLocation();
+			if (entity != null) {
+				targetLocation = entity.getLocation();
 			}
 			mage = getMage(mageController);
 		}
@@ -2561,10 +2711,10 @@ public class MagicController implements Listener, MageController
 		toggleCastCommandOverrides(mage, true);
 		spell.cast(parameters, targetLocation);
 		toggleCastCommandOverrides(mage, false);
-		if (sender != player && sender != null) {
+		if (sender != entity && sender != null) {
 			String castMessage = "Cast " + spellName;
-			if (player != null) {
-				castMessage += " on " + player.getName();
+			if (entity != null) {
+				castMessage += " on " + getEntityName(entity);
 			}
 			sender.sendMessage(castMessage);
 		}
@@ -2636,7 +2786,7 @@ public class MagicController implements Listener, MageController
 		return indestructibleWands;
 	}
 	
-	public void forgetMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+	public void forgetMage(Mage mage) {
 		forgetMages.put(mage.getId(), System.currentTimeMillis());
 	}
 	
@@ -2772,9 +2922,9 @@ public class MagicController implements Listener, MageController
 	}
 	
 	@Override
-	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMages()
+	public Collection<Mage> getMages()
 	{
-		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mageInterfaces = new ArrayList<com.elmakers.mine.bukkit.api.magic.Mage>(mages.values());
+		Collection<Mage> mageInterfaces = new ArrayList<Mage>(mages.values());
 		return mageInterfaces;
 	}
 
@@ -2800,37 +2950,6 @@ public class MagicController implements Listener, MageController
 	public int getMessageThrottle()
 	{
 		return messageThrottle;
-	}
-
-	protected Mage getMage(Player player)
-	{
-		if (player == null) return null;
-		String id = player.getUniqueId().toString();
-		
-		// Check for Citizens NPC!
-		if (isNPC(player)) {
-			id = "NPC-" + player.getUniqueId();
-		}
-		return getMage(id, player);
-	}
-	
-	@Override
-	public com.elmakers.mine.bukkit.api.magic.Mage getMage(CommandSender commandSender)
-	{
-		String mageId = "COMMAND";
-		if (commandSender instanceof ConsoleCommandSender) {
-			mageId = "CONSOLE";
-		} else if (commandSender instanceof Player) {
-			return getMage((Player)commandSender);
-		} else if (commandSender instanceof BlockCommandSender) {
-			BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
-			String commandName = commandBlock.getName();
-			if (commandName != null && commandName.length() > 0) {
-				mageId = "COMMAND-" + commandBlock.getName();
-			}
-		}
-		
-		return getMage(mageId, commandSender);
 	}
 	
 	@Override
@@ -2982,12 +3101,38 @@ public class MagicController implements Listener, MageController
 		allSpells.addAll(spells.values());
 		return allSpells;
 	}
-	
+
+    @Override
 	public SpellTemplate getSpellTemplate(String name) 
 	{
 		if (name == null || name.length() == 0) return null;
 		return spells.get(name);
 	}
+
+    @Override
+    public String getEntityName(Entity target)
+    {
+        if (target instanceof Player)
+        {
+            return ((Player)target).getName();
+        }
+
+        if (isElemental(target))
+        {
+            return "Elemental";
+        }
+
+        if (target instanceof LivingEntity)
+        {
+            LivingEntity li = (LivingEntity)target;
+            String customName = li.getCustomName();
+            if (customName != null && customName.length() > 0) {
+                return customName;
+            }
+        }
+
+        return target.getType().name().toLowerCase().replace('_', ' ');
+    }
 
 	/*
 	 * Private data

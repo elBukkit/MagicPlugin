@@ -86,8 +86,10 @@ public class RecallSpell extends UndoableSpell
 		enabledTypes.clear();
 		warps = null;
 
-		Player player = getPlayer();
-		if (player == null) return SpellResult.PLAYER_REQUIRED;
+		Player player = mage.getPlayer();
+		if (player == null) {
+            return SpellResult.PLAYER_REQUIRED;
+        }
 		
 		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values()) {
@@ -123,8 +125,8 @@ public class RecallSpell extends UndoableSpell
 			}
 			
 			selectedType = newType;
-			Location location = getTargetLocation(selectedType, 0);
-			if (tryTeleport(location)) {
+			Location location = getTargetLocation(player, selectedType, 0);
+			if (tryTeleport(player, location)) {
 				registerForUndo();
 				return SpellResult.CAST;
 			}
@@ -157,7 +159,7 @@ public class RecallSpell extends UndoableSpell
 				if (selectedType == RecallType.WARP) {
 					for (int i = 0; i < warps.size(); i++) {
 						if (selectedType == this.selectedType && i == selectedIndex) continue;
-						Location targetLocation = getTargetLocation(selectedType, i);
+						Location targetLocation = getTargetLocation(player, selectedType, i);
 						if (targetLocation != null && targetLocation.getWorld().equals(location.getWorld())) {
 							Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
 							target.setExtraData(new Waypoint(selectedType, i));
@@ -168,7 +170,7 @@ public class RecallSpell extends UndoableSpell
 					List<LostWand> lostWands = mage.getLostWands();
 					for (int i = 0; i < lostWands.size(); i++) {
 						if (selectedType == this.selectedType && i == selectedIndex) continue;
-						Location targetLocation = getTargetLocation(selectedType, i);
+						Location targetLocation = getTargetLocation(player, selectedType, i);
 						if (targetLocation != null && targetLocation.getWorld().equals(location.getWorld())) {
 							Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
 							target.setExtraData(new Waypoint(selectedType, i));
@@ -177,7 +179,7 @@ public class RecallSpell extends UndoableSpell
 					}
 				} else {
 					if (selectedType == this.selectedType) continue;
-					Location targetLocation = getTargetLocation(selectedType, 0);
+					Location targetLocation = getTargetLocation(player, selectedType, 0);
 					if (targetLocation != null && targetLocation.getWorld().equals(location.getWorld())) {
 						Target target = new Target(location, targetLocation.getBlock(), 0, Math.PI);
 						target.setExtraData(new Waypoint(selectedType, 0));
@@ -286,8 +288,7 @@ public class RecallSpell extends UndoableSpell
 		cycleTargetType(reverse);
 	}
 	
-	protected Location getTargetLocation(RecallType type, int index) {
-		Player player = getPlayer();
+	protected Location getTargetLocation(Player player, RecallType type, int index) {
 		castMessage = "";
 		failMessage = "";
 		switch (type) {
@@ -322,11 +323,11 @@ public class RecallSpell extends UndoableSpell
 	}
 	
 	protected boolean tryCurrentType(Player player) {
-		Location location = getTargetLocation(selectedType, selectedIndex);
+		Location location = getTargetLocation(player, selectedType, selectedIndex);
 		if (location == null) {
 			return false;
 		}
-		return tryTeleport(location);
+		return tryTeleport(player, location);
 	}
 
 	protected boolean removeMarker()
@@ -336,7 +337,7 @@ public class RecallSpell extends UndoableSpell
 		return true;
 	}
 	
-	protected boolean tryTeleport(final Location targetLocation) {
+	protected boolean tryTeleport(final Player player, final Location targetLocation) {
 		if (targetLocation == null) {
 			sendMessage(failMessage);
 			return false;
@@ -354,7 +355,7 @@ public class RecallSpell extends UndoableSpell
 				final RecallSpell me = this;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
-						me.tryTeleport(targetLocation);
+						me.tryTeleport(player, targetLocation);
 					}
 				}, RETRY_INTERVAL);
 				
@@ -362,20 +363,17 @@ public class RecallSpell extends UndoableSpell
 			}
 		}
 		
-		Player player = getPlayer();
-		if (player != null) {
-			// Update the marker so they can get back, if there is no marker set.
-			if (location == null) {
-				placeMarker(getLocation().getBlock());
-			}
-			
-			registerMoved(player);
-			Location playerLocation = player.getLocation();
-			targetLocation.setYaw(playerLocation.getYaw());
-			targetLocation.setPitch(playerLocation.getPitch());
-			player.teleport(tryFindPlaceToStand(targetLocation));
-			castMessage(castMessage);
-		}
+        // Update the marker so they can get back, if there is no marker set.
+        if (location == null) {
+            placeMarker(getLocation().getBlock());
+        }
+
+        registerMoved(player);
+        Location playerLocation = player.getLocation();
+        targetLocation.setYaw(playerLocation.getYaw());
+        targetLocation.setPitch(playerLocation.getPitch());
+        player.teleport(tryFindPlaceToStand(targetLocation));
+        castMessage(castMessage);
 		return true;
 	}
 

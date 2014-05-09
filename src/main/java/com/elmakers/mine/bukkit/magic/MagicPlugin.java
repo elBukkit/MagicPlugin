@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -207,7 +208,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	@Override
 	public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getMagesWithPendingBatches() {
 		Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = new ArrayList<com.elmakers.mine.bukkit.api.magic.Mage>();
-		Collection<Mage> internal = controller.getPending();
+		Collection<com.elmakers.mine.bukkit.api.magic.Mage> internal = controller.getPending();
 		mages.addAll(internal);
 		return mages;
 	}
@@ -281,8 +282,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
-	public void cast(String spellName, String[] parameters, CommandSender sender, Player player) {
-		controller.cast(null, spellName, parameters, sender, player);
+	public void cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
+		controller.cast(null, spellName, parameters, sender, entity);
 	}
 
 	@Override

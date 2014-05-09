@@ -11,11 +11,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
@@ -114,7 +110,7 @@ public class ProjectileSpell extends UndoableSpell
 		
 		// Spawn projectiles
 		Object nmsWorld = NMSUtils.getHandle(location.getWorld());
-		Player player = getPlayer();
+        LivingEntity player = mage.getLivingEntity();
 		for (int i = 0; i < count; i++) {
 			try {
 				// Spawn a new projectile

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -11,23 +12,26 @@ public class MountSpell extends TargetingSpell {
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) {
-		Player player = getPlayer();
+		LivingEntity player = mage.getLivingEntity();
 		if (player == null) {
-			return SpellResult.PLAYER_REQUIRED;
+			return SpellResult.LIVING_ENTITY_REQUIRED;
 		}
-		Entity current = player.getVehicle();
-		
+
 		// Make it so this spell can be used to get someone off of you
-		player.eject();
-		if (current != null) {
-			current.eject();
-		}
+        if (isLookingUp()) {
+            player.eject();
+        }
+
+        Entity current = player.getVehicle();
+        if (current != null) {
+            current.eject();
+        }
 		Entity targetEntity = getTarget().getEntity();
 		if (targetEntity == null) {
 			return SpellResult.NO_TARGET;
 		}
 		
-		targetEntity.setPassenger(getPlayer());
+		targetEntity.setPassenger(player);
 		
 		return SpellResult.CAST;
 	}

@@ -30,7 +30,7 @@ public class DisintegrateSpell extends BlockSpell
 			if (controller.isElemental(targetEntity))
 			{
 				int elementalDamage = parameters.getInt("elemental_damage", DEFAULT_ENTITY_DAMAGE);
-				controller.damageElemental(targetEntity, elementalDamage, 0, getPlayer());
+				controller.damageElemental(targetEntity, elementalDamage, 0, mage.getCommandSender());
 				return SpellResult.CAST;
 			}
 			else if (targetEntity instanceof LivingEntity)
@@ -41,11 +41,11 @@ public class DisintegrateSpell extends BlockSpell
 				LivingEntity li = (LivingEntity)targetEntity;
 				if (li instanceof Player)
 				{
-					li.damage(mage.getDamageMultiplier() * playerDamage, getPlayer());
+					li.damage(mage.getDamageMultiplier() * playerDamage, mage.getEntity());
 				}
 				else
 				{
-					li.damage(mage.getDamageMultiplier() * entityDamage, getPlayer());
+					li.damage(mage.getDamageMultiplier() * entityDamage, mage.getEntity());
 					if (li.isDead()) {
 						registerModified(li);
 						registerForUndo();

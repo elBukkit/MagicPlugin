@@ -21,7 +21,7 @@ public class HatSpell extends TargetingSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		Player player = getPlayer();
+		Player player = mage.getPlayer();
 		if (player == null) {
 			return SpellResult.PLAYER_REQUIRED;
 		}
