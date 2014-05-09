@@ -149,16 +149,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 	
 	private long 								lastMessageSent 			= 0;
 	private Set<Material>						preventPassThroughMaterials = null;
-	
-	public Player getPlayer()
-	{
-		return mage.getPlayer();
-	}
-
-	public CommandSender getCommandSender()
-	{
-		return mage.getCommandSender();
-	}
 
 	public boolean allowPassThrough(Material mat)
 	{
@@ -1037,7 +1027,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 	 * Listener method, called on player quit for registered spells.
 	 * 
 	 * @param event The player who just quit
-	 * @see MagicController#registerEvent(SpellEventType, DeleteSpell)
 	 */
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
@@ -1048,7 +1037,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 	 * Listener method, called on player move for registered spells.
 	 * 
 	 * @param event The original entity death event
-	 * @see MagicController#registerEvent(SpellEventType, DeleteSpell)
 	 */
 	public void onPlayerDeath(EntityDeathEvent event)
 	{
