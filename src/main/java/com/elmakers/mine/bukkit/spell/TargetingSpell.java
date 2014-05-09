@@ -639,6 +639,7 @@ public abstract class TargetingSpell extends BaseSpell {
 	
 	@Override
 	protected boolean canCast() {
+        if (!super.canCast()) return false;
 		return !pvpRestricted || bypassPvpRestriction || controller.isPVPAllowed(mage.getLocation()) || mage.isSuperPowered();
 	}
 	

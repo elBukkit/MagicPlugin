@@ -801,12 +801,19 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
 	public boolean cast(String[] extraParameters, Location defaultLocation)
 	{
-		this.location = defaultLocation;
 		this.reset();
-		
-		if (this.parameters == null) {
+
+        if (!canCast()) {
+            processResult(SpellResult.INSUFFICIENT_PERMISSION);
+            return false;
+        }
+
+        if (this.parameters == null) {
 			this.parameters = new MemoryConfiguration();
 		}
+
+        this.location = defaultLocation;
+
 		final ConfigurationSection parameters = new MemoryConfiguration();
 		ConfigurationUtils.addConfigurations(parameters, this.parameters);
 		ConfigurationUtils.addParameters(extraParameters, parameters);
@@ -861,16 +868,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 			}
 		}
 		
-		if (!canCast()) {
-			processResult(SpellResult.INSUFFICIENT_PERMISSION);
-			return false;
-		}
-		
 		return finalizeCast(parameters);
 	}
 	
 	protected boolean canCast() {
-		return true;
+		return hasCastPermission(mage.getCommandSender());
 	}
 	
 	protected void onBackfire() {
