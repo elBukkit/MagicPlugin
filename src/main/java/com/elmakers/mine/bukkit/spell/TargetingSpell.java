@@ -97,6 +97,15 @@ public abstract class TargetingSpell extends BaseSpell {
 		{
 			return "Elemental";
 		}
+
+        if (target instanceof LivingEntity)
+        {
+            LivingEntity li = (LivingEntity)target;
+            String customName = li.getCustomName();
+            if (customName != null && customName.length() > 0) {
+                return customName;
+            }
+        }
 		
 		return target.getType().name().toLowerCase().replace('_', ' ');
 	}
