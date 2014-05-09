@@ -269,7 +269,7 @@ public abstract class TargetingSpell extends BaseSpell {
 			return new Target(getLocation(), targetEntity);
 		}
 		
-		Player player = getPlayer();
+		Entity player = mage.getPlayer();
 		if (targetType == TargetType.SELF && player != null) {
 			return new Target(getLocation(), player);
 		}
@@ -369,7 +369,7 @@ public abstract class TargetingSpell extends BaseSpell {
 		List<Entity> entities = world.getEntities();
 		for (Entity entity : entities)
 		{
-			if (entity == getPlayer()) continue;
+			if (entity == mage.getEntity()) continue;
 			if (!targetNPCs && controller.isNPC(entity)) continue;
 			
 			// Special check for Elementals
