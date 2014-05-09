@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -179,7 +180,15 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				for (Automaton automaton : automata) {
 					BlockVector location = automaton.getPosition();
 					String worldName = automaton.getWorldName();
-					sender.sendMessage(ChatColor.AQUA + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
+                    boolean isOnline = false;
+                    World world = Bukkit.getWorld(worldName);
+                    if (worldName != null) {
+                        Location automatonLocation = new Location(world, location.getX(), location.getY(), location.getZ());
+                        Chunk chunk = world.getChunkAt(automatonLocation);
+                        isOnline = chunk.isLoaded();
+                    }
+                    ChatColor nameColor = isOnline ? ChatColor.AQUA : ChatColor.GRAY;
+					sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
 							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
 				}
 				

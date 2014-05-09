@@ -2,6 +2,12 @@
 
 ## 3.2
 
+ - Fix for permissions issues in 3.1 (also in 3.1.1 hotfix)
+ - Fix automata passing through diagonal walls (like a dome)
+ - Store owner UUID in wand data as well as owner name
+ - Add some economy helper functions and price automation
+ - Show custom entity names in targeting messages
+
 ## 3.1
 
 ### The Rollback Release!

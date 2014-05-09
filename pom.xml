@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>3.1.1</version>
+	<version>3.2-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
@@ -76,7 +76,7 @@
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicLib</artifactId>
-			<version>1.1.1</version>
+			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sk89q</groupId>
@@ -116,7 +116,7 @@
 		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>worldguard</artifactId>
-			<version>5.9</version>
+			<version>5.9.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
