@@ -411,6 +411,7 @@ public class NMSUtils {
 
 	public static boolean createExplosion(Entity entity, World world, double x, double y, double z, float power, boolean setFire, boolean breakBlocks) {
 		boolean result = false;
+        if (world == null) return false;
 		try {
 			Object worldHandle = getHandle(world);
 			if (worldHandle == null) return false;
