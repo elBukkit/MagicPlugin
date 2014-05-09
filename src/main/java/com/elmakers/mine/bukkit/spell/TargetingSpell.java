@@ -86,30 +86,6 @@ public abstract class TargetingSpell extends BaseSpell {
 		}
 	}
 	
-	protected String getTargetName(Entity target)
-	{
-		if (target instanceof Player) 
-		{
-			return ((Player)target).getName();
-		}
-		
-		if (controller.isElemental(target))
-		{
-			return "Elemental";
-		}
-
-        if (target instanceof LivingEntity)
-        {
-            LivingEntity li = (LivingEntity)target;
-            String customName = li.getCustomName();
-            if (customName != null && customName.length() > 0) {
-                return customName;
-            }
-        }
-		
-		return target.getType().name().toLowerCase().replace('_', ' ');
-	}
-	
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);
 		
@@ -117,7 +93,7 @@ public abstract class TargetingSpell extends BaseSpell {
 		String useTargetName = targetName;
 		if (useTargetName == null) {
 			if (target != null && target.hasEntity()) {
-				useTargetName = getTargetName(target.getEntity());
+				useTargetName = controller.getEntityName(target.getEntity());
 			}
 			else {
 				useTargetName = "Unknown";

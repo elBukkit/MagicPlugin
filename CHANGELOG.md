@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2
+
+ - Add Entity-based Mage support.
+
 ## 1.1
 
  - Add "*1" format for multiplying directions.
