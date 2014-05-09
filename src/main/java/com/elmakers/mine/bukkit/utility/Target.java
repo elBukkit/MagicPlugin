@@ -124,7 +124,7 @@ public class Target implements Comparable<Target>
 		this.source = sourceLocation;
 		this.mage = mage;
 		if (mage != null) {
-			this._entity = new WeakReference<Entity>(mage.getPlayer());
+			this._entity = new WeakReference<Entity>(mage.getLivingEntity());
 		}
 		if (mage != null) this.location = mage.getLocation();
 		calculateScore();

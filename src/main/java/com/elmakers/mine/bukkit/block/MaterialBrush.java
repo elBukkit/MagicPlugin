@@ -419,8 +419,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 				try {
 					MapView mapView = Bukkit.getMap(mapId);
 					if (mapView != null) {
+                        Player player = fromMage.getPlayer();
 						List<MapRenderer> renderers = mapView.getRenderers();
-						if (renderers.size() > 0) {
+						if (renderers.size() > 0 && player != null) {
 							mapCanvas = new BufferedMapCanvas();
 							MapRenderer renderer = renderers.get(0);
 							// This is mainly here as a hack for my own urlmaps that do their own caching
@@ -429,7 +430,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 							// Anyway render gets called constantly so I'm not re-rendering on each render... but then
 							// how to force a render to a canvas? So we re-initialize.
 							renderer.initialize(mapView);
-							renderer.render(mapView, mapCanvas, fromMage.getPlayer());
+							renderer.render(mapView, mapCanvas, player);
 						}
 					}
 				} catch (Exception ex) {

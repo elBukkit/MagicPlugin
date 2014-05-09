@@ -948,9 +948,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 		// Show messaging
 		if (result == SpellResult.CAST) {
 			String message = getMessage(result.name().toLowerCase());
-			Player player = mage.getPlayer();
+			LivingEntity sourceEntity = mage.getLivingEntity();
 			Entity targetEntity = getTargetEntity();
-			if (targetEntity == player) {
+			if (targetEntity == sourceEntity) {
 				message = getMessage("cast_self", message);
 			} else if (targetEntity instanceof Player) {
 				message = getMessage("cast_player", message);
