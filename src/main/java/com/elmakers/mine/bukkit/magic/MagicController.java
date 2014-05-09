@@ -1452,22 +1452,19 @@ public class MagicController implements Listener, MageController
 		// Should this return defaultValue? Can't give perms to console.
 		if (player == null) return true;
 		
-		// Seems like the GM should handle this, but no?
-		// I mean.. really? It Essentials GM doesn't handle wildcards? Holy cow...
+		// The GM won't handle this properly because we are unable to register
+        // dynamic lists (spells, wands, brushes) in plugin.yml
 		if (pNode.contains(".")) {
 			String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";
 			boolean isParentSet = player.isPermissionSet(parentNode);
-			if (isParentSet) {
+            if (isParentSet) {
 				defaultValue = player.hasPermission(parentNode);
 			}
 		}
-		
-		boolean isSet = player.isPermissionSet(pNode);
-		if (defaultValue) {
-			return isSet ? player.hasPermission(pNode) : defaultValue;
-		}
-		return player.hasPermission(pNode);
-	}
+
+        boolean isSet = player.isPermissionSet(pNode);
+        return isSet ? player.hasPermission(pNode) : defaultValue;
+    }
 
 	public boolean hasPermission(Player player, String pNode)
 	{
