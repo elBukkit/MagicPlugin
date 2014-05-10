@@ -14,6 +14,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -41,13 +43,62 @@ public class CastCommandExecutor extends MagicTabExecutor {
 				return true;
 			}
             String playerName = args[0];
-            if (playerName.contains(":")) {
+
+            // Look for Entity-based Mages
+            Mage mage = null;
+            if (playerName.contains(",")) {
+                String[] idPieces = StringUtils.split(playerName, ",");
+                if (idPieces.length == 4) {
+                    try {
+                        String worldName = idPieces[0];
+                        long x = Long.parseLong(idPieces[1]);
+                        long z = Long.parseLong(idPieces[2]);
+                        String entityId = idPieces[3];
+
+                        World world = Bukkit.getWorld(worldName);
+                        if (world == null) {
+                            if (sender != null) sender.sendMessage("Unknown world: " + worldName);
+                            return false;
+                        }
+                        Chunk chunk = world.getChunkAt((int)(x >> 4), (int)(z >> 4));
+                        if (chunk == null || !chunk.isLoaded()) {
+                            if (sender != null) sender.sendMessage("Entity not loaded");
+                            return false;
+                        }
+                        Entity entity = null;
+                        for (Entity testEntity : chunk.getEntities()) {
+                            if (testEntity.getUniqueId().equals(entityId)) {
+                                entity = testEntity;
+                                break;
+                            }
+                        }
+
+                        if (entity == null) {
+                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId);
+                            return false;
+                        }
+
+                        MageController controller = api.getController();
+                        mage = controller.getMage(entity);
+
+                    } catch (Throwable ex) {
+                        if (sender != null) sender.sendMessage("Your spell failed (badly... check server logs)");
+                        ex.printStackTrace();
+                        return false;
+                    }
+                }
+            }
+            else if (playerName.contains(":")) {
+                // Look for custom id/name Mages
                 String[] pieces = StringUtils.split(playerName, ":");
                 String mageId = pieces[0];
                 String mageName = (pieces.length > 0) ? pieces[1] : mageId;
 
                 MageController controller = api.getController();
-                Mage mage = controller.getMage(mageId, mageName);
+                mage = controller.getMage(mageId, mageName);
+            }
+
+            if (mage != null) {
                 String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
                 if (castParameters.length < 1) {
                     if (sender != null) sender.sendMessage("Invalid command line, expecting more parameters");
@@ -67,7 +118,8 @@ public class CastCommandExecutor extends MagicTabExecutor {
                     parameters[i - 1] = castParameters[i];
                 }
 
-                if (sender != null) sender.sendMessage("Casting " + spell.getName() + " on " + mageName);
+                // This will spam the console if used via a script.
+                // if (sender != null) sender.sendMessage("Casting " + spell.getName() + " as " + mage.getName());
                 return spell.cast(parameters);
             }
 
