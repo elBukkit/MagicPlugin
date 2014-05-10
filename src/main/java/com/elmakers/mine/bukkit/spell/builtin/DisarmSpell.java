@@ -36,9 +36,8 @@ public class DisarmSpell extends TargetingSpell
 		}
 		
 		// Special case for wands
-		if (Wand.isWand(stack) && entity instanceof Player) {
-			Player targetPlayer = (Player)entity;
-			Mage targetMage = controller.getMage(targetPlayer);
+		if (Wand.isWand(stack) && controller.isMage(entity)) {
+			Mage targetMage = controller.getMage(entity);
 			
 			// Check for protected players (admins, generally...)
 			// This gets overridden by superpower...

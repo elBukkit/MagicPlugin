@@ -1657,10 +1657,8 @@ public class MagicController implements Listener, MageController
 	protected UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
 		if (entity == null) return null;
-		if (entity instanceof Player) {
-			Mage mage = getMage((Player)entity);
-			
-			// Hm, kinda hacky.
+        if (isMage(entity)) {
+			Mage mage = getMage(entity);
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 Object lastUndo = ((com.elmakers.mine.bukkit.magic.Mage)mage).getLastUndoList();
                 if (lastUndo instanceof UndoList) {
@@ -1813,19 +1811,22 @@ public class MagicController implements Listener, MageController
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
 	{
-		if (event.getEntityType() == EntityType.PLAYER && event.getEntity() instanceof Player) {
-			onPlayerDeath((Player)event.getEntity(), event);
-		}
-	}
+        Entity entity = event.getEntity();
+        if (!isMage(entity)) return;
 
-	protected void onPlayerDeath(final Player player, EntityDeathEvent event)
-	{
-		String rule = player.getWorld().getGameRuleValue("keepInventory");
-		if (rule.equals("true")) return;
-
-        Mage apiMage = getMage(player);
+        Mage apiMage = getMage(entity);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        mage.onPlayerDeath(event);
+
+        if (!(entity instanceof Player)) {
+            return;
+        }
+        final Player player = (Player)entity;
+
+		String rule = entity.getWorld().getGameRuleValue("keepInventory");
+		if (rule.equals("true")) return;
 
         List<ItemStack> drops = event.getDrops();
 		Wand wand = mage.getActiveWand();
@@ -1889,29 +1890,13 @@ public class MagicController implements Listener, MageController
 				}
 			, 5);
 		}
-
-		mage.onPlayerDeath(event);
-	}
-
-	public void onPlayerDamage(EntityDamageEvent event)
-	{
-        // Avoid creating mages for every entity in the world!
-        // TODO: Let this happen, but don't create a Mage?
-        if (event.getEntity() instanceof Player) {
-            Mage apiMage = getMage(event.getEntity());
-            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-
-            mage.onPlayerDamage(event);
-        }
 	}
 	
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent event)
 	{
-        // Avoid creating mages for every entity in the world!
-        // TODO: Let this happen, but don't create a Mage?
-        if (event.getEntity() instanceof Player) {
+        Entity entity = event.getEntity();
+        if (isMage(entity)) {
             Mage apiMage = getMage(event.getEntity());
             if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
@@ -2000,10 +1985,14 @@ public class MagicController implements Listener, MageController
 	{
 		try {
 			Entity entity = event.getEntity();
-            // We don't process all Mages for performance reasons
-			if (entity instanceof Player)
+
+			if (isMage(entity))
 			{
-				onPlayerDamage(event);
+                Mage apiMage = getMage(event.getEntity());
+                if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
+
+                mage.onPlayerDamage(event);
 			}
 	        if (entity instanceof Item)
 	        {
@@ -2340,8 +2329,6 @@ public class MagicController implements Listener, MageController
 
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
-		if (!(event.getPlayer() instanceof Player)) return;
-		
 		Player player = (Player)event.getPlayer();
         Mage apiMage = getMage(player);
 

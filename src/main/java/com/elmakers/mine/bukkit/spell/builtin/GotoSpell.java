@@ -49,8 +49,8 @@ public class GotoSpell extends UndoableSpell
 			} 
 			
 			// Check for protected Mages
-			if (targetEntity != null && targetEntity instanceof Player) {
-				Mage targetMage = controller.getMage((Player)targetEntity);
+			if (targetEntity != null && controller.isMage(targetEntity)) {
+				Mage targetMage = controller.getMage(targetEntity);
 				// Check for protected players (admins, generally...)
 				if (targetMage.isSuperProtected()) {
 					releaseTarget();
@@ -98,8 +98,8 @@ public class GotoSpell extends UndoableSpell
 			}
 		
 			// Check for protected Mages
-			if (targetEntity instanceof Player) {
-				Mage targetMage = controller.getMage((Player)targetEntity);
+			if (controller.isMage(targetEntity)) {
+				Mage targetMage = controller.getMage(targetEntity);
 				// Check for protected players (admins, generally...)
 				if (targetMage.isSuperProtected()) {
 					return SpellResult.NO_TARGET;

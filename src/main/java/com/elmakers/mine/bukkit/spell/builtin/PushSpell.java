@@ -99,8 +99,8 @@ public class PushSpell extends TargetingSpell
 	protected void forceEntity(Entity target, double multiplier, Location from, Location to, int magnitude)
 	{
 		// Check for protected Mages
-		if (target instanceof Player) {
-			Mage targetMage = controller.getMage((Player)target);
+		if (controller.isMage(target)) {
+			Mage targetMage = controller.getMage(target);
 			// Check for protected players (admins, generally...)
 			if (targetMage.isSuperProtected()) {
 				return;
