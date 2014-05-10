@@ -2045,8 +2045,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage == null) return;
 		saveState();
 
-		if (effectBubbles) {
-			InventoryUtils.removePotionEffect(mage.getPlayer());
+        Player player = mage.getPlayer();
+		if (effectBubbles && player != null) {
+			InventoryUtils.removePotionEffect(player);
 		}
 		
 		// This is a tying wands together with other spells, potentially
@@ -2060,10 +2061,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Extra just-in-case
 		mage.restoreInventory();
 		
-		if (usesMana()) {
-			mage.getPlayer().setExp(storedXpProgress);
-			mage.getPlayer().setLevel(storedXpLevel);
-			mage.getPlayer().giveExp(storedXp);
+		if (usesMana() && player != null) {
+            player.setExp(storedXpProgress);
+            player.setLevel(storedXpLevel);
+            player.giveExp(storedXp);
 			storedXp = 0;
 			storedXpProgress = 0;
 			storedXpLevel = 0;
