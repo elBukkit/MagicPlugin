@@ -95,6 +95,7 @@ public interface MageController {
 	public Collection<String> getPlayerNames();
 	
 	public int getMessageThrottle();
+    public boolean isMage(Entity entity);
 	public Mage getMage(CommandSender sender);
     public Mage getMage(Player player);
     public Mage getMage(Entity entity);
