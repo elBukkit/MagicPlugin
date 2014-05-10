@@ -1895,21 +1895,29 @@ public class MagicController implements Listener, MageController
 
 	public void onPlayerDamage(EntityDamageEvent event)
 	{
-        Mage apiMage = getMage(event.getEntity());
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        // Avoid creating mages for every entity in the world!
+        // TODO: Let this happen, but don't create a Mage?
+        if (event.getEntity() instanceof Player) {
+            Mage apiMage = getMage(event.getEntity());
+            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
 
-        mage.onPlayerDamage(event);
+            mage.onPlayerDamage(event);
+        }
 	}
 	
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent event)
 	{
-		Mage apiMage = getMage(event.getEntity());
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        // Avoid creating mages for every entity in the world!
+        // TODO: Let this happen, but don't create a Mage?
+        if (event.getEntity() instanceof Player) {
+            Mage apiMage = getMage(event.getEntity());
+            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
 
-        mage.onPlayerCombust(event);
+            mage.onPlayerCombust(event);
+        }
 	}
 	
 	@EventHandler
