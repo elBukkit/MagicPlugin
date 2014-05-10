@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.EntityEffect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -755,6 +756,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 		if (!effects.containsKey(SpellResult.COST_FREE) && effects.containsKey(SpellResult.CAST)) {
 			effects.put(SpellResult.COST_FREE, effects.get(SpellResult.CAST));
 		}
+
+        if (!effects.containsKey(SpellResult.CURSED)) {
+            List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
+            EffectPlayer hurtEffect = new EffectSingle(controller.getPlugin());
+            hurtEffect.setEntityEffect(EntityEffect.HURT);
+            effectList.add(hurtEffect);
+            effects.put(SpellResult.CURSED, effectList);
+        }
 	}
 	
 	protected void initializeDefaultSound(SpellResult result, Sound sound, float volume, float pitch) {
@@ -795,6 +804,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         if (!canCast()) {
             processResult(SpellResult.INSUFFICIENT_PERMISSION);
+            return false;
+        }
+
+        // Don't allow casting if the player is confused
+        LivingEntity livingEntity = mage.getLivingEntity();
+        if (livingEntity != null && !mage.isSuperPowered() && !mage.isSuperProtected() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
+            processResult(SpellResult.CURSED);
             return false;
         }
 
@@ -970,7 +986,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 				// Set material and color
 				player.setMaterial(getEffectMaterial());
 				player.setColor(mage.getEffectColor());
-				player.start(mageLocation, targetLocation);
+                Entity entity = mage.getEntity();
+                if (entity != null) {
+                    player.start(entity, targetLocation);
+                } else {
+                    player.start(mageLocation, targetLocation);
+                }
 			}
 		}
 	}
