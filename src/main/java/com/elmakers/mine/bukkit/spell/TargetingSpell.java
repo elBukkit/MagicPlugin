@@ -374,8 +374,10 @@ public abstract class TargetingSpell extends BaseSpell {
 			
 			// Special check for Elementals
 			if (!controller.isElemental(entity) && targetEntityType != null && !targetEntityType.isAssignableFrom(entity.getClass())) continue;
-			if (entity instanceof Player) {
-				Mage targetMage = controller.getMage((Player)entity);
+
+            // check for Superprotected Mages
+            if (controller.isMage(entity)) {
+				Mage targetMage = controller.getMage(entity);
 				if (targetMage.isSuperProtected()) continue;
 			}
 

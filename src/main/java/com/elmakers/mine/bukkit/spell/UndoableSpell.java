@@ -132,19 +132,19 @@ public abstract class UndoableSpell extends TargetingSpell {
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity) {
 				Mage targetMage = null;
-				if (entity instanceof Player) {
-					Player targetPlayer = (Player)entity;
-					boolean isSourcePlayer = targetPlayer.getName().equals(mage.getName());
-					if (isSourcePlayer && getTargetType() != TargetType.ANY && getTargetType() != TargetType.SELF) {
-						continue;
-					}
+                if (controller.isMage(entity)) {
+                    targetMage = controller.getMage(entity);
+                }
+
+                boolean isSourcePlayer = entity == mage.getEntity();
+                if (isSourcePlayer && getTargetType() != TargetType.ANY && getTargetType() != TargetType.SELF) {
+                    continue;
+                }
 					
-					targetMage = controller.getMage(targetPlayer);
-					// Check for protected players
-					if (targetMage.isSuperProtected() && !isSourcePlayer) {
-						continue;
-					}
-				}
+                // Check for protected players
+                if (targetMage != null && targetMage.isSuperProtected() && !isSourcePlayer) {
+                    continue;
+                }
 				
 				if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
 				
