@@ -2958,8 +2958,13 @@ public class MagicController implements Listener, MageController
 	{
 		return messageThrottle;
 	}
-	
-	@Override
+
+    @Override
+    public boolean isMage(Entity entity) {
+        return mages.containsKey(entity.getUniqueId().toString());
+    }
+
+    @Override
 	public Collection<String> getMaterialSets()
 	{
 		return materialSets.keySet();
