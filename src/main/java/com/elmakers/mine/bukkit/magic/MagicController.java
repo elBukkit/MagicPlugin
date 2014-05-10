@@ -2105,13 +2105,6 @@ public class MagicController implements Listener, MageController
 		
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
 		{
-			// Don't allow casting if the player is confused
-			if (!mage.isSuperPowered() && !mage.isSuperProtected() && player.hasPotionEffect(PotionEffectType.CONFUSION)) {
-				if (soundsEnabled) {
-					player.playEffect(EntityEffect.HURT);
-				}
-				return;
-			}
 			wand.cast();
 			event.setCancelled(true);
 			return;
