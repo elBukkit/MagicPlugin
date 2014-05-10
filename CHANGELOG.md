@@ -3,6 +3,7 @@
 ## 1.2
 
  - Add Entity-based Mage support.
+ - Add EntityEffect support to the EffectPlayer.
 
 ## 1.1
 

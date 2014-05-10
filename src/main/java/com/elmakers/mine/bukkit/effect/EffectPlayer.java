@@ -1,17 +1,20 @@
 package com.elmakers.mine.bukkit.effect;
 
+import java.lang.ref.WeakReference;
 import java.security.InvalidParameterException;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Effect;
+import org.bukkit.EntityEffect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -40,7 +43,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 	protected MaterialAndData material1;
 	protected Color color1 = Color.PURPLE;
 	protected Color color2 = Color.TEAL;
-	
+
+    protected EntityEffect entityEffect = null;
+    protected WeakReference<Entity> entity = null;
+
 	protected Effect effect = null;
 	protected Integer effectData = null;
 	
@@ -90,6 +96,14 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 				effectData = ConfigurationUtils.getInteger(configuration, "effect_data", effectData);
 			}
 		}
+
+        if (configuration.contains("entity_effect")) {
+            String effectName = configuration.getString("entity_effect");
+            entityEffect = EntityEffect.valueOf(effectName.toUpperCase());
+            if (entityEffect == null) {
+                plugin.getLogger().warning("Unknown entity effect type " + effectName);
+            }
+        }
 
 		if (configuration.contains("sound")) {
 			String soundName = configuration.getString("sound");
@@ -175,7 +189,15 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 	public void setEffect(Effect effect) {
 		this.effect = effect;
 	}
-	
+
+    public void setEntityEffect(EntityEffect entityEffect) {
+        this.entityEffect = entityEffect;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = new WeakReference<Entity>(entity);
+    }
+
 	public void setParticleType(ParticleType particleType) {
 		this.particleType = particleType;
 	}
@@ -220,6 +242,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 			}
 			location.getWorld().playEffect(location, effect, data);
 		}
+        if (entityEffect != null && entity != null) {
+            Entity targetEntity = entity.get();
+            if (targetEntity != null) {
+                targetEntity.playEffect(entityEffect);
+            }
+        }
 		if (sound != null) {
 			location.getWorld().playSound(location, sound, soundVolume, soundPitch);
 		}
@@ -274,7 +302,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 	public void setDelayTicks(int ticks) {
 		delayTicks = ticks;
 	}
-	
+
+    public void start(Entity origin, Location target) {
+        setEntity(origin);
+        start(origin.getLocation(), target);
+    }
+
 	public void start(Location origin, Location target) {
 		if (origin == null) {
 			throw new InvalidParameterException("Origin cannot be null");
