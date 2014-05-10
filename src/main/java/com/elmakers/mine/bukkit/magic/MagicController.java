@@ -2234,7 +2234,7 @@ public class MagicController implements Listener, MageController
 		if (event.getAmount() <= 0) return;
 		
 		Player player = event.getPlayer();
-        Mage apiMage = mages.get(player);
+        Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2253,7 +2253,7 @@ public class MagicController implements Listener, MageController
 		// Make sure they get their portraits re-rendered on relogin.
 		URLMap.resend(player.getName());
 
-        Mage apiMage = mages.get(player);
+        Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2335,7 +2335,7 @@ public class MagicController implements Listener, MageController
 		if (!(event.getPlayer() instanceof Player)) return;
 		
 		Player player = (Player)event.getPlayer();
-        Mage apiMage = mages.get(player);
+        Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2381,13 +2381,13 @@ public class MagicController implements Listener, MageController
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot() + " . " + event.getCancelled());
 
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
 
 		Player player = (Player)event.getWhoClicked();
-        Mage apiMage = mages.get(player);
+        Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2428,7 +2428,7 @@ public class MagicController implements Listener, MageController
 		}
 		
 		// Check for wand cycling with active inventory
-		if (activeWand != null) {
+    	if (activeWand != null) {
 			WandMode wandMode = activeWand.getMode();
 			if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
 			    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
@@ -2469,7 +2469,7 @@ public class MagicController implements Listener, MageController
 
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
-        Mage apiMage = mages.get(player);
+        Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2515,7 +2515,7 @@ public class MagicController implements Listener, MageController
 		if (event.getNewGameMode() == GameMode.CREATIVE && enableItemHacks) {
 			boolean ejected = false;
 			Player player = event.getPlayer();
-            Mage apiMage = mages.get(player);
+            Mage apiMage = getMage(player);
 
             if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2547,7 +2547,7 @@ public class MagicController implements Listener, MageController
 		if (event.isCancelled()) return;
 
         Player player = event.getPlayer();
-        Mage apiMage = mages.get(player);
+        Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2605,7 +2605,7 @@ public class MagicController implements Listener, MageController
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Player player = event.getPlayer();
-        Mage apiMage = mages.get(player);
+        Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
