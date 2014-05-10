@@ -12,6 +12,7 @@ public enum SpellResult {
 	AREA,
 	FIZZLE,
 	BACKFIRE,
+    CURSED,
 	FAIL,
 	CANCEL,
 	INSUFFICIENT_RESOURCES, 
