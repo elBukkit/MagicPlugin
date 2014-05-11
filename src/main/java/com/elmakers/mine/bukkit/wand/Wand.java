@@ -2275,7 +2275,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public LostWand makeLost(Location location)
     {
-        if (id == null || id.length() == 0) id = UUID.randomUUID().toString();
+        if (id == null || id.length() == 0) {
+            id = UUID.randomUUID().toString();
+            saveState();
+        }
         return new LostWand(this, location);
     }
 

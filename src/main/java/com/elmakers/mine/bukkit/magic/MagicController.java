@@ -2549,16 +2549,14 @@ public class MagicController implements Listener, MageController
 			return;
 		}
 
-        // Remove lost wands from map
+        // Remove lost wands from records
         if (isWand) {
-			Wand wand = new Wand(this, pickup);
-            if (dynmapShowWands) {
-                if (removeLostWand(wand.getLostId())) {
-                    plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
-                }
+            Wand wand = new Wand(this, pickup);
+            if (removeLostWand(wand.getLostId())) {
+                plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
             }
-            wand.clearLostId();;
-		}
+            wand.clearLostId();
+        }
 
         // Wands will absorb spells and upgrade items
 		Wand activeWand = mage.getActiveWand();
