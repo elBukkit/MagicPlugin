@@ -268,13 +268,19 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				}
 			}
 
+            boolean check = false;
+            if (owner != null && owner.equals("check")){
+                check = true;
+                owner = "ALL";
+            }
+            String description = check ? "Checking for" : "Cleaning up";
 			String ownerName = owner == null ? "(Unowned)" : owner;
 			if (world == null) {
-				sender.sendMessage("Cleaning up lost wands in all worlds for owner: " + ownerName);
+				sender.sendMessage(description + " lost wands in all worlds for owner: " + ownerName);
 			} else {
-				sender.sendMessage("Cleaning up lost wands in world " + world.getName() + " for owner " + ownerName);
+				sender.sendMessage(description + " lost wands in world " + world.getName() + " for owner " + ownerName);
 			}
-			runningTask = new WandCleanupRunnable(api, world, owner);
+			runningTask = new WandCleanupRunnable(api, world, owner, check);
 			runningTask.runTaskTimer(api.getPlugin(), 5, 5);
 			
 			return true;

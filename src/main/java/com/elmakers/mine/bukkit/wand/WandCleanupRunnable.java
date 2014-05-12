@@ -20,13 +20,15 @@ public class WandCleanupRunnable extends RunnableJob {
 	private final MagicAPI api;
 	private final String owner;
 	private final boolean removeAll;
+    private final boolean check;
 	
-	public WandCleanupRunnable(MagicAPI api, World world, String owner) {
+	public WandCleanupRunnable(MagicAPI api, World world, String owner, boolean check) {
 		super(api.getLogger());
 		this.world = world;
 		this.api = api;
 		lostWands.addAll(api.getLostWands());
-		this.removeAll = false;
+		this.removeAll = owner.equals("ALL");
+        this.check = check;
 		this.owner = owner == null ? "" : owner;
 	}
 	
@@ -35,6 +37,7 @@ public class WandCleanupRunnable extends RunnableJob {
 		this.world = world;
 		this.api = api;
 		this.removeAll = true;
+        this.check = false;
 		this.owner = "";
 		lostWands.addAll(api.getLostWands());
 	}
@@ -82,11 +85,23 @@ public class WandCleanupRunnable extends RunnableJob {
             ItemStack itemStack = item.getItemStack();
             if (api.isWand(itemStack)) {
                 Wand wand = api.getWand(itemStack);
-                if (wand.isLost(lostWand)) {
-                    logger.info("Removed lost wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in " +
+                boolean isLost = false;
+                if (wand instanceof com.elmakers.mine.bukkit.wand.Wand) {
+                    String lostId = ((com.elmakers.mine.bukkit.wand.Wand)wand).getLostId();
+                    isLost = (lostId == null || lostId.length() == 0);
+                }
+                if (isLost || wand.isLost(lostWand)) {
+                    String description = check ? "Found" : "Removed";
+                    logger.info(description + " lost wand " + lostWand.getName() + " (" + lostWand.getOwner() + "), id " + lostWand.getId() + " in " +
                             location.getWorld().getName() + " at " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
-                    api.removeLostWand(lostWand.getId());
-                    item.remove();
+                    if (check) {
+                        if (lostWand instanceof com.elmakers.mine.bukkit.wand.LostWand) {
+                            ((com.elmakers.mine.bukkit.wand.LostWand)lostWand).setLocation(entity.getLocation());
+                        }
+                    } else {
+                        api.removeLostWand(lostWand.getId());
+                        item.remove();
+                    }
                     lostWands.removeFirst();
                     return;
                 }
