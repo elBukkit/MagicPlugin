@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -21,21 +22,22 @@ public class UndoSpell extends TargetingSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		Entity player = mage.getEntity();
-		if (target.hasEntity() && target.getEntity() instanceof Player)
+		Entity caster = mage.getEntity();
+        int timeout = parameters.getInt("target_timeout", 0);
+		if (target.hasEntity() && controller.isMage(target.getEntity()))
 		{
-			// Don't let just anyone rewind someone else's thing
-			if (player != null && target.getEntity() != player && !mage.isSuperPowered()) {
-				return SpellResult.NO_TARGET;
-			}
-			
-			Mage mage = controller.getMage((Player)target.getEntity());
-			UndoList undoList = mage.undo();
+			Mage mage = controller.getMage(target.getEntity());
+            UndoQueue queue = mage.getUndoQueue();
+			UndoList undoList = queue.undoRecent(timeout);
 			if (undoList != null) {
 				undoListName = undoList.getName();
 			}
 			return undoList != null ? SpellResult.CAST : SpellResult.FAIL;
 		}
+
+        if (!parameters.getBoolean("target_blocks", true)) {
+            return SpellResult.NO_TARGET;
+        }
 		
 		Block targetBlock = isLookingDown() ? getLocation().getBlock() : target.getBlock();
 		if (targetBlock != null)
@@ -43,7 +45,7 @@ public class UndoSpell extends TargetingSpell
 			boolean targetAll = mage.isSuperPowered();
 			if (targetAll)
 			{
-				UndoList undid = controller.undoAny(targetBlock);
+				UndoList undid = controller.undoRecent(targetBlock, timeout);
 				if (undid != null) 
 				{
 					Mage targetMage = undid.getOwner();

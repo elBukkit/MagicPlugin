@@ -421,7 +421,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			undoList.setScheduleUndo(autoUndo);
 		}
 		if (undoList.getScheduledUndo() > 0) {
-			queue.scheduleCleanup(this, undoList);
+			queue.scheduleCleanup(undoList);
 		} else {
 			queue.add(undoList);
 		}
@@ -499,7 +499,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			location = ConfigurationUtils.getLocation(configNode, "location");
 			lastCast = configNode.getLong("last_cast", lastCast);
 			
-			getUndoQueue().load(this, configNode);
+			getUndoQueue().load(configNode);
 			ConfigurationSection spellNode = configNode.getConfigurationSection("spells");
 			if (spellNode != null) {
 				Set<String> keys = spellNode.getKeys(false);
@@ -533,7 +533,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			ConfigurationSection brushNode = configNode.createSection("brush");
 			brush.save(brushNode);
 			
-			getUndoQueue().save(this, configNode);
+			getUndoQueue().save(configNode);
 			ConfigurationSection spellNode = configNode.createSection("spells");
 			for (MageSpell spell : spells.values()) {
 				ConfigurationSection section = spellNode.createSection(spell.getKey());
@@ -679,7 +679,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public UndoList undo(Block target) 
 	{
-		return getUndoQueue().undo(this, target);
+		return getUndoQueue().undo(target);
 	}
 	
 	@Override
@@ -704,7 +704,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public UndoList undo() 
 	{
-		return getUndoQueue().undo(this);
+		return getUndoQueue().undo();
 	}
 	
 	@Override

@@ -2432,11 +2432,30 @@ rewind:
            sound: anvil_break
     parameters:
         allow_max_range: false
-        target_type: Player
         range: 128
         transparent: transparent_to_construction
     costs:
         xp: 250
+
+counterspell:
+    icon: diamond
+    category: master
+    class: UndoSpell
+    worth: 250
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_break
+        -  class: EffectTrail
+           particle: smoke
+    parameters:
+        allow_max_range: false
+        target: other
+        target_blocks: false
+        target_timeout: 5000
+        range: 32
+    costs:
+        xp: 150
 breach:
     icon: seeds
     category: earthbending

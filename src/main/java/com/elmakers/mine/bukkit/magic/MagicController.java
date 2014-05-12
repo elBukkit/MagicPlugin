@@ -2254,7 +2254,7 @@ public class MagicController implements Listener, MageController
 		if (commitOnQuit && undoQueue != null && !undoQueue.isEmpty()) {
 			getLogger().info("Player logged out, committing constructions: " + mage.getName());
 			undoQueue.commit();
-			undoQueue.undoScheduled(mage);
+			undoQueue.undoScheduled();
 		}
 		
 		try {
@@ -3018,6 +3018,22 @@ public class MagicController implements Listener, MageController
 
 		return null;
 	}
+
+    @Override
+    public UndoList undoRecent(Block target, int timeout)
+    {
+        for (Mage mage : mages.values())
+        {
+            com.elmakers.mine.bukkit.api.block.UndoQueue queue = mage.getUndoQueue();
+            UndoList undid = queue.undoRecent(target, timeout);
+            if (undid != null)
+            {
+                return undid;
+            }
+        }
+
+        return null;
+    }
 
 	@Override
 	public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) 

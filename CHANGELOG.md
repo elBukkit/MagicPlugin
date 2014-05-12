@@ -9,6 +9,7 @@
  - Show custom entity names in targeting messages
  - Add support for Entity-based Mages (MythicMobs integration)
  - Add Cure spell
+ - Add Counterspell spell
 
 ## 3.1
 

@@ -645,6 +645,12 @@ spells:
         cast: "&5You undo &d&o$target's&r&6 $spell &5cast"
         fail: Nothing to undo
         no_target: Nothing to undo there
+    counterspell:
+        name: Counterspell
+        description: Counter target player's spell
+        usage: Only works on recently cast spells
+        cast: "&5You undo &d&o$target's&r&6 $spell &5cast"
+        fail: Nothing to counter
     push:
         name: Push
         description: Push things away from you

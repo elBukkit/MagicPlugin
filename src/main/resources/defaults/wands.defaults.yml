@@ -275,7 +275,8 @@ random:
       gills: 10,11,20,25,100
       grenade: 30,50,70,20,100
       hat: 110,80,60,20,100
-      heal: 1,5,10,30,100
+      cure: 1,5,10,30,100
+      heal: 0,1,5,20,100
       tesseract: 80,50,40,20,100
       torch: 80,60,50,10,100
       workbench: 80,60,50,10,100
@@ -331,6 +332,7 @@ random:
       mount: 0,1,5,10,100
       commit: 0,0,0,1,100
       rewind: 0,0,0,5,100
+      counterspell: 0,1,5,15,100
       pillar: 0,5,10,15,100
       place: 0,1,5,10,100
       stash: 0,1,5,10,100
@@ -903,6 +905,7 @@ elder:
         - day
         - disarm
         - camera
+        - counterspell
     materials:
         - glowstone
         - glass
@@ -1554,6 +1557,7 @@ wolf:
         - simulate3
         - animate
         - mount
+        - counterspell
     materials:  
         - lapis_block
         - water
