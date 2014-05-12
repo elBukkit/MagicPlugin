@@ -118,8 +118,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                     parameters[i - 1] = castParameters[i];
                 }
 
-                // This will spam the console if used via a script.
-                // if (sender != null) sender.sendMessage("Casting " + spell.getName() + " as " + mage.getName());
+                if (sender != null) sender.sendMessage("Casting " + spell.getName() + " as " + mage.getName());
                 return spell.cast(parameters);
             }
 
