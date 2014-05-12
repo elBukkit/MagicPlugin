@@ -117,6 +117,7 @@ public interface MageController {
 	public void giveItemToPlayer(Player player, ItemStack itemStack);
 	
 	public UndoList undoAny(Block target);
+    public UndoList undoRecent(Block target, int timeout);
 	public void forgetMage(Mage mage);
 
     public String getEntityName(Entity entity);
