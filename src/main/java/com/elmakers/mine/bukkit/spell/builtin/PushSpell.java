@@ -61,6 +61,7 @@ public class PushSpell extends TargetingSpell
 		int count = parameters.getInt("count", 0);
 		
 		boolean allowAll = parameters.getBoolean("allow_area", true);
+        boolean forceArea = parameters.getBoolean("area", false);
 		int itemMagnitude = parameters.getInt("item_force", DEFAULT_ITEM_MAGNITUDE);
 		int entityMagnitude = parameters.getInt("entity_force", DEFAULT_ENTITY_MAGNITUDE);
 		int maxAllDistance = parameters.getInt("area_range", DEFAULT_MAX_ALL_DISTANCE);
@@ -69,7 +70,7 @@ public class PushSpell extends TargetingSpell
 		if 
 		(
 			allowAll
-			&&  (isLookingDown() || isLookingUp())
+			&&  (forceArea || isLookingDown() || isLookingUp())
 		)
 		{
 			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);
