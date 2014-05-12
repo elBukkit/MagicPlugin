@@ -10,6 +10,7 @@
  - Add support for Entity-based Mages (MythicMobs integration)
  - Add Cure spell
  - Add Counterspell spell
+ - Add Shields spell. Placeholder until 1.8's Barrier block arrives :)
 
 ## 3.1
 

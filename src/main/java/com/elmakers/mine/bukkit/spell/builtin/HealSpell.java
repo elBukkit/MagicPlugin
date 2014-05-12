@@ -34,16 +34,16 @@ public class HealSpell extends TargetingSpell
         }
         LivingEntity li = (LivingEntity)targetEntity;
 
-        double health = 0;
+        double health = li.getHealth();
         if (parameters.contains("amount")) {
-            health = parameters.getDouble("amount");
+            health = health + parameters.getDouble("amount");
         } else if (parameters.contains("percentage")) {
-            health *= parameters.getDouble("percentage");
+            health = health + li.getMaxHealth() * parameters.getDouble("percentage");
         } else {
             health = li.getMaxHealth();
         }
 
-        li.setHealth(health);
+        li.setHealth(Math.min(health, li.getMaxHealth()));
         if (targetEntity instanceof Player && parameters.getBoolean("feed", false)) {
             Player p = (Player)targetEntity;
             p.setExhaustion(0);

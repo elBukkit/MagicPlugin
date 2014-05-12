@@ -231,6 +231,10 @@ spells:
         name: Dome
         description: Create a large dome
         cast_finish: Filled $count blocks with $material
+    shields:
+        name: Shields
+        description: Create a temporary shell
+        cast_finish: Shields Up!
     shell:
         name: Shell
         description: Create a large spherical shell

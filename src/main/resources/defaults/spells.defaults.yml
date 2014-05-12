@@ -627,6 +627,27 @@ shell:
         transparent: transparent_to_construction
     costs:
         xp: 50
+shields:
+    icon: iron_helmet
+    category: white
+    class: ConstructSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target: self
+        thickness: 1
+        radius: 2
+        type: sphere
+        brush: stained_glass:15
+        undo: 5000
+        transparent: transparent_to_construction
+    costs:
+        xp: 20
 dome:
     icon: bowl
     category: earthbending
