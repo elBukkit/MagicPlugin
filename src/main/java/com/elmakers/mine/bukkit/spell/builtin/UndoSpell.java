@@ -63,8 +63,10 @@ public class UndoSpell extends TargetingSpell
 					return SpellResult.COST_FREE;
 				}
 				UndoList undoList = mage.undo(targetBlock);
-				undoListName = undoList.getName();
-				return SpellResult.CAST;
+                if (undoList != null) {
+                    undoListName = undoList.getName();
+                    return SpellResult.CAST;
+                }
 			}
 		}
 		
