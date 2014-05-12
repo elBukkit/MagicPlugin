@@ -1020,7 +1020,9 @@ public class MagicController implements Listener, MageController
 		        return name.toLowerCase().endsWith(".dat");
 		    }
 		});
-		
+
+        Bukkit.getLogger().info("Scanning " + playerFiles.length + " save files for pending undo info. Adjust player_data_expire_threshold if this is taking a long time.");
+
 		for (File playerFile : playerFiles)
 		{
 			// Skip if older than 2 days
@@ -1410,7 +1412,7 @@ public class MagicController implements Listener, MageController
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
-		playerDataThreshold = (long)(properties.getDouble("undo_max_persist_size", 0) * 1000 * 24 * 3600);
+		playerDataThreshold = (long)(properties.getDouble("player_data_expire_threshold", 0) * 1000 * 24 * 3600);
 		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
 		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
