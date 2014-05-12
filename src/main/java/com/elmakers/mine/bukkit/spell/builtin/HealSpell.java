@@ -8,10 +8,23 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class HealSpell extends TargetingSpell 
 {
-	@Override
+    private final static PotionEffectType[] _negativeEffects =
+            {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
+             PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
+             PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
+    protected final static Set<PotionEffectType> negativeEffects = new HashSet<PotionEffectType>(Arrays.asList(_negativeEffects));
+
+    @Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
@@ -20,11 +33,29 @@ public class HealSpell extends TargetingSpell
             return SpellResult.NO_TARGET;
         }
         LivingEntity li = (LivingEntity)targetEntity;
-        li.setHealth(li.getMaxHealth());
-        if (targetEntity instanceof Player) {
+
+        double health = 0;
+        if (parameters.contains("amount")) {
+            health = parameters.getDouble("amount");
+        } else if (parameters.contains("percentage")) {
+            health *= parameters.getDouble("percentage");
+        } else {
+            health = li.getMaxHealth();
+        }
+
+        li.setHealth(health);
+        if (targetEntity instanceof Player && parameters.getBoolean("feed", false)) {
             Player p = (Player)targetEntity;
             p.setExhaustion(0);
             p.setFoodLevel(20);
+        }
+        if (parameters.getBoolean("cure", false)) {
+            Collection<PotionEffect> effects = li.getActivePotionEffects();
+            for (PotionEffect effect : effects) {
+                if (negativeEffects.contains(effect.getType())) {
+                    li.removePotionEffect(effect.getType());
+                }
+            }
         }
         return SpellResult.CAST;
 	}

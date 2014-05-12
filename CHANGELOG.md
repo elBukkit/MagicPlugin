@@ -7,6 +7,8 @@
  - Store owner UUID in wand data as well as owner name
  - Add some economy helper functions and price automation
  - Show custom entity names in targeting messages
+ - Add support for Entity-based Mages (MythicMobs integration)
+ - Add Cure spell
 
 ## 3.1
 

@@ -290,8 +290,13 @@ spells:
     heal:
         name: Heal
         description: Heal yourself or others
-        cast: You heal your target
+        cast: You heal $target
         cast_self: You heal yourself
+    cure:
+        name: Cure
+        description: Heal yourself or others a little bit
+        cast: You cure $target
+        cast_self: You cure yourself
     music:
         name: Music
         description: Play some tunes

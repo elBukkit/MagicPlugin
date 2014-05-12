@@ -1058,6 +1058,30 @@ disarm:
         backfire_chance: 0.05
     costs:
         xp: 75
+cure:
+    icon: cookie
+    category: light
+    class: HealSpell
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_purr
+        -  class: EffectTrail
+           particle: heart
+        -  class: EffectRing
+           particle: heart
+           location: target
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        feed: false
+        cure: true
+        percentage: 0.1
+    costs:
+        xp: 20
 heal:
     icon: bread
     category: light
@@ -1077,6 +1101,7 @@ heal:
         target: any
         allow_max_range: false
         range: 32
+        feed: true
     costs:
         xp: 100
 music:
