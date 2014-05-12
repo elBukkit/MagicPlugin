@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.block.batch.SpellBatch;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -137,20 +138,25 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				Collection<Mage> pending = api.getMagesWithPendingBatches();
 				sender.sendMessage(ChatColor.AQUA + "Pending construction batches (" + pending.size() + "): ");
 				for (Mage mage : pending) {
+                    int totalSize = 0;
+                    int totalRemaining = 0;
 					Collection<BlockBatch> pendingBatches = mage.getPendingBatches();
+                    String names = "";
 					if (pendingBatches.size() > 0) {
-						int totalSize = 0;
-						int totalRemaining = 0;
-						for (BlockBatch batch : pendingBatches) {
-							totalSize += batch.size();
-							totalRemaining = batch.remaining();
-						}
-						
-						sender.sendMessage(ChatColor.AQUA + mage.getName() + " " + ChatColor.GRAY + " has "
-								+ ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
-								+ " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
-								+ "" + ChatColor.GRAY + ")");
+                        for (BlockBatch batch : pendingBatches) {
+                            if (batch instanceof SpellBatch) {
+                                names = names + ((SpellBatch)batch).getSpell().getName() + " ";
+                            }
+
+                            totalSize += batch.size();
+                            totalRemaining = batch.remaining();
+                        }
 					}
+
+                    sender.sendMessage(ChatColor.AQUA + mage.getName() + ChatColor.GRAY + " has "
+                            + ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
+                            + " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
+                            + "" + ChatColor.GRAY + ") (" + names + ")");
 				}
 				return true;
 			}
