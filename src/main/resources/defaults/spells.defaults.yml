@@ -2471,7 +2471,6 @@ counterspell:
            particle: smoke
     parameters:
         allow_max_range: false
-        target_type: Player
         target: other
         target_blocks: false
         target_timeout: 10000
