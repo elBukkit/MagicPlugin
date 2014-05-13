@@ -2471,9 +2471,10 @@ counterspell:
            particle: smoke
     parameters:
         allow_max_range: false
+        target_type: Player
         target: other
         target_blocks: false
-        target_timeout: 5000
+        target_timeout: 10000
         range: 32
     costs:
         xp: 150
