@@ -55,7 +55,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
 	final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
 	
-	private static String defaultMageName = "Automaton";
+	private static String defaultMageName = "Mage";
 	
 	protected final String						id;
 	protected WeakReference<Player> 			_player;
