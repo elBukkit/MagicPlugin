@@ -31,6 +31,14 @@ Lightning:
   Cooldown: 10
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid lightning' >0 1
+Fireball:
+  Cooldown: 10
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid fireball' >0 1
+Wither:
+  Cooldown: 10
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid wither' >0 1
 Curse:
   Cooldown: 10
   Skills:
@@ -39,3 +47,7 @@ ArrowRain:
   Cooldown: 10
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid arrowrain' >0 1
+Fling:
+  Cooldown: 10
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid fling pdy 1' >0 1

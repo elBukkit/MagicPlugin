@@ -61,15 +61,44 @@ Warlock:
   Drops:
   - MidBoss
   Options:
-    Size: 20
-    MovementSpeed: 0.1
-    MaxCombatDistance: 30
+    MaxCombatDistance: 32
     KnockbackResistance: 1
   Skills:
-  - skill Pull ~onAttack >0 0.5
-  - skill Push ~onAttack >0 0.2
-  - skill Curse ~onAttack >0 0.05
-  - skill PullArea ~onAttack >0 0.1
-  - skill PushArea ~onAttack >0 0.05
-  - skill ArrowRain ~onAttack >0 0.05
-  - skill SludgePoison ~onAttack >0 0.1
+  - skill Curse >0 0.05
+  - skill ArrowRain >0 0.5
+  - skill Fireball >0 0.3
+  - skill Wither >0 0.2
+  - skill Lightning >0 0.1
+  - skill SludgePoison >0 0.1
+Airbender:
+  Mobtype: villager
+  Display: Airbender
+  Health: 80
+  Damage: 2
+  Drops:
+  - MidBoss
+  Options:
+    MaxCombatDistance: 40
+    KnockbackResistance: 1
+  Skills:
+  - skill Pull >0 0.5
+  - skill Push >0 0.2
+  - skill PullArea >0 0.1
+  - skill PushArea >0 0.05
+  - skill Fling >0 0.05
+ZombieAirbender:
+  Mobtype: zombie
+  Display: Airbender
+  Health: 80
+  Damage: 2
+  Drops:
+  - MidBoss
+  Options:
+    MaxCombatDistance: 32
+    KnockbackResistance: 1
+  Skills:
+  - skill Pull >0 0.5
+  - skill Push >0 0.2
+  - skill PullArea >0 0.1
+  - skill PushArea >0 0.05
+  - skill Fling >0 0.05
