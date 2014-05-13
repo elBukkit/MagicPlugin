@@ -118,8 +118,12 @@ public class CastCommandExecutor extends MagicTabExecutor {
                     parameters[i - 1] = castParameters[i];
                 }
 
-                if (sender != null) sender.sendMessage("Casting " + spell.getName() + " as " + mage.getName());
-                return spell.cast(parameters);
+                if (spell.cast(parameters)) {
+                    if (sender != null) sender.sendMessage("Cast " + spell.getName() + " as " + mage.getName());
+                } else {
+                    if (sender != null) sender.sendMessage("Failed to cast " + spell.getName() + " as " + mage.getName());
+                }
+                return true;
             }
 
             Player player = Bukkit.getPlayer(playerName);

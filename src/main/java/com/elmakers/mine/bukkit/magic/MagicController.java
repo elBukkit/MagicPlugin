@@ -171,9 +171,9 @@ public class MagicController implements Listener, MageController
 		if (!mages.containsKey(mageId))
 		{
             com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
+            mage.setName(mageName);
 			mage.setCommandSender(commandSender);
             mage.setEntity(entity);
-            mage.setName(mageName);
 			if (commandSender instanceof Player) {
 				mage.setPlayer((Player)commandSender);
 			}
@@ -231,7 +231,7 @@ public class MagicController implements Listener, MageController
 
         // Check for Citizens NPC
         if (isNPC(entity)) {
-            id = "NPC-" + entity.getUniqueId();
+            id = "NPC-" + id;
         }
         return getMage(id, commandSender, entity);
     }
