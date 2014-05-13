@@ -81,6 +81,9 @@ public class CastCommandExecutor extends MagicTabExecutor {
                         MageController controller = api.getController();
                         mage = controller.getMage(entity);
 
+                        // If we have the mage, we no longer want to send anything to the console.
+                        sender = null;
+
                     } catch (Throwable ex) {
                         if (sender != null) sender.sendMessage("Your spell failed (badly... check server logs)");
                         ex.printStackTrace();
