@@ -1574,8 +1574,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!additive) {
 			wandName = Messages.get("wands.random.name", wandName);
 		}
-		
+
 		int maxLevel = WandLevel.getMaxLevel();
+
+        // Just a hard-coded sanity check
+        totalLevels = Math.min(totalLevels, maxLevel * 50);
+
 		int addLevels = Math.min(totalLevels, maxLevel);
 		while (addLevels > 0) {
 			WandLevel.randomizeWand(this, additive, addLevels);
