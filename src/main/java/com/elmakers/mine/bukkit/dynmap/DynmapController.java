@@ -41,8 +41,8 @@ public class DynmapController {
 				if (spellSet == null) {
 					spellSet = markers.createMarkerSet("Spells", "Spell Casts", null, false);
 				}
-				final String markerId = "Spell-" + mage.getName();
-				final String targetId = "SpellTarget-" + mage.getName();
+				final String markerId = "Spell-" + mage.getId();
+				final String targetId = "SpellTarget-" + mage.getId();
 				
 				int range = 32;
 				double radius = 3.0 * mage.getPower() + 3;
