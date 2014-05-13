@@ -67,14 +67,14 @@ public class CastCommandExecutor extends MagicTabExecutor {
                         }
                         Entity entity = null;
                         for (Entity testEntity : chunk.getEntities()) {
-                            if (testEntity.getUniqueId().equals(entityId)) {
+                            if (testEntity.getUniqueId().toString().equals(entityId)) {
                                 entity = testEntity;
                                 break;
                             }
                         }
 
                         if (entity == null) {
-                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId);
+                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId + " at " + world.getName() + "," + x + "," + z);
                             return false;
                         }
 
