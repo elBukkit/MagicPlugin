@@ -910,7 +910,8 @@ boom:
         allow_max_range: true
         range: 32
         break_blocks: false
-        size: 4
+        size: 2
+        cooldown: 2000
     costs:
         xp: 20
 kaboom:
@@ -931,7 +932,7 @@ kaboom:
         target_type: LivingEntity
         allow_max_range: true
         cooldown: 7000
-        size: 6
+        size: 4
         break_blocks: true
     costs:
         xp: 60
@@ -961,7 +962,7 @@ nuke:
         allow_max_range: true
         range: 64
         cooldown: 60000
-        size: 12
+        size: 10
         break_blocks: true
     costs:
         xp: 500
