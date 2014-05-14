@@ -182,12 +182,12 @@ public class MagicController implements Listener, MageController
 			File playerFile = new File(playerDataFolder, mageId + ".dat");
 			if (playerFile.exists()) 
 			{
-				getLogger().info("Loading player data from file " + playerFile.getName());
+				getLogger().info("Loading mage data from file " + playerFile.getName());
 				try {
 					Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
 					mage.load(playerData);
 				} catch (Exception ex) {
-					getLogger().warning("Failed to load player data from file " + playerFile.getName());
+					getLogger().warning("Failed to load mage data from file " + playerFile.getName());
 					ex.printStackTrace();
 				}
 			}
