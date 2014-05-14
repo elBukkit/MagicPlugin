@@ -3,33 +3,28 @@ package com.elmakers.mine.bukkit.warp;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
-import com.sk89q.commandbook.CommandBook;
-import com.sk89q.commandbook.locations.NamedLocation;
-import com.sk89q.commandbook.locations.RootLocationManager;
-import com.sk89q.commandbook.locations.WarpsComponent;
-import com.zachsthings.libcomponents.ComponentManager;
-import com.zachsthings.libcomponents.bukkit.BukkitComponent;
-
 public class WarpController {
-	private RootLocationManager<NamedLocation> locationManager = null;
+    private CommandBookWarps commandBook;
+    private EssentialsWarps essentials;
 	
 	public Location getWarp(String warpName) {
-		if (locationManager == null) return null;
-		NamedLocation location = locationManager.get(null, warpName);
-		if (location == null) return null;
-		return location.getLocation();
+        Location warp = null;
+        if (commandBook != null) {
+            warp = commandBook.getWarp(warpName);
+        }
+        if (warp == null && essentials != null) {
+            warp = essentials.getWarp(warpName);
+        }
+		return warp;
 	}
 	
-	public boolean setCommandBook(Plugin commandBook) {
-		if (commandBook instanceof CommandBook) {
-			ComponentManager<BukkitComponent> componentManager = ((CommandBook)commandBook).getComponentManager();
-			WarpsComponent component = componentManager.getComponent(WarpsComponent.class);
-			if (component == null) return false;
-			
-			locationManager = component.getManager();
-			return locationManager != null;
-		}
-		
-		return false;
+	public boolean setCommandBook(Plugin plugin) {
+        commandBook = CommandBookWarps.create(plugin);
+        return (commandBook != null);
 	}
+
+    public boolean setEssentials(Plugin plugin) {
+        essentials = EssentialsWarps.create(plugin);
+        return (essentials != null);
+    }
 }

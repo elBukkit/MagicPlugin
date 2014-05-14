@@ -579,7 +579,8 @@ public class MagicController implements Listener, MageController
 	 */
 	public void initialize()
 	{
-		crafting = new CraftingController(this);
+        warpController = new WarpController();
+        crafting = new CraftingController(this);
 		enchanting = new EnchantingController(this);
 		anvil = new AnvilController(this);
 		load();
@@ -588,6 +589,9 @@ public class MagicController implements Listener, MageController
 		Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
 		hasEssentials = essentials != null;
 		if (hasEssentials) {
+            if (warpController.setEssentials(plugin)) {
+                getLogger().info("Integrating with Essentials for Recall warps");
+            }
 			try {
 				mailer = new Mailer(essentials);
 			} catch (Exception ex) {
@@ -670,7 +674,6 @@ public class MagicController implements Listener, MageController
 		try {
 			Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
 			if (commandBookPlugin != null) {
-				warpController = new WarpController();
 				if (warpController.setCommandBook(commandBookPlugin)) {
 					getLogger().info("CommandBook found, integrating for Recall warps");
 					hasCommandBook = true;
