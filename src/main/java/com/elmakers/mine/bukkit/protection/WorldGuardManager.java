@@ -47,8 +47,10 @@ public class WorldGuardManager {
 		if (!enabled || worldGuard == null || location == null) return true;
 				 
 		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+        if (regionManager == null) return true;
+
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
-		if (checkSet.size() == 0) return true;
+		if (checkSet == null || checkSet.size() == 0) return true;
 		return checkSet.allows(DefaultFlag.PVP);
 	}
 	
@@ -56,8 +58,10 @@ public class WorldGuardManager {
 		if (!enabled || worldGuard == null || location == null) return true;
 				 
 		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+        if (regionManager == null) return true;
+
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
-		if (checkSet.size() == 0) return true;
+		if (checkSet == null || checkSet.size() == 0) return true;
 		return checkSet.allows(DefaultFlag.PASSTHROUGH);
 	}
 	
