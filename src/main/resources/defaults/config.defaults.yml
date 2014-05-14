@@ -232,7 +232,7 @@ replicate_item: pumpkin_seeds
 # use one of the other types if it was the last material on your brush.
 map_item: map
 # The schematic material brush can be used (if WorldEdit is present) to construct with
-# schematic files that have been defined in schematics.yml (WIP)
+# schematic files
 schematic_item: paper
 
 # The folder and file path to use for loading schematics. This will be relative to 
