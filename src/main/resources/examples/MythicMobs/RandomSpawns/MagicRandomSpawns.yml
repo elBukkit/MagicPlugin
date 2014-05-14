@@ -1,26 +1,47 @@
 RandomWraith:
   Mobname: Wraith
   Worlds: world
-  Chance: 0.001
+  Chance: 0.0001
   Priority: 1
   Conditions:
   - outside true
 RandomDreadKnight:
   Mobname: DreadKnight
   Worlds: world
-  Chance: 0.005
+  Chance: 0.0005
   Priority: 1
   Conditions:
   - outside true
 RandomSludge:
   Mobname: Sludge
   Worlds: world
-  Chance: 0.0002
+  Chance: 0.00002
   Priority: 1
 RandomWarlock:
   Mobname: Warlock
   Worlds: world
-  Chance: 0.0005
+  Chance: 0.005
+  Priority: 1
+  Conditions:
+  - outside true
+RandomWarlock:
+  Mobname: Airbender
+  Worlds: world
+  Chance: 0.010
+  Priority: 1
+  Conditions:
+  - outside true
+RandomWarlock:
+  Mobname: ZombieAirbender
+  Worlds: world
+  Chance: 0.005
+  Priority: 1
+  Conditions:
+  - outside true
+RandomWarlock:
+  Mobname: Firebender
+  Worlds: world
+  Chance: 0.001
   Priority: 1
   Conditions:
   - outside true

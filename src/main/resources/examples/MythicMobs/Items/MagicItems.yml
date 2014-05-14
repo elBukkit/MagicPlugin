@@ -20,3 +20,43 @@ WarlockTunic:
   - '&6the corpse of a warlock.'
   Options:
     Color: 255,40,40
+Firebender_Helmet:
+  Id: 298
+  Data: 0
+  Options:
+    Color: 255,0,0
+Firebender_Chestplate:
+  Id: 299
+  Data: 0
+  Options:
+    Color: 255,0,0
+Firebender_Leggings:
+  Id: 300
+  Data: 0
+  Options:
+    Color: 255,0,0
+Firebender_Boots:
+  Id: 301
+  Data: 0
+  Options:
+    Color: 255,0,0
+Airbender_Helmet:
+  Id: 298
+  Data: 0
+  Options:
+    Color: 255,255,255
+Airbender_Chestplate:
+  Id: 299
+  Data: 0
+  Options:
+    Color: 255,255,255
+Airebender_Leggings:
+  Id: 300
+  Data: 0
+  Options:
+    Color: 255,255,255
+Airbender_Boots:
+  Id: 301
+  Data: 0
+  Options:
+    Color: 255,255,255

@@ -57,48 +57,89 @@ Warlock:
   Health: 120
   Damage: 4
   Equipment:
-  - WarlockTunic
+  - wood_hoe:0
+  - WarlockTunic:3
   Drops:
   - MidBoss
   Options:
     MaxCombatDistance: 32
     KnockbackResistance: 1
   Skills:
-  - skill Curse >0 0.05
-  - skill ArrowRain >0 0.5
-  - skill Fireball >0 0.3
-  - skill Wither >0 0.2
-  - skill Lightning >0 0.1
-  - skill SludgePoison >0 0.1
+  - skill Curse ~onTimer:30 >0 0.05
+  - skill ArrowRain ~onTimer:52 >0 0.5
+  - skill Fireball ~onTimer:73 >0 0.3
+  - skill Wither ~onTimer:85 >0 0.2
+  - skill Lightning ~onTimer:105 >0 0.1
 Airbender:
-  Mobtype: villager
+  Mobtype: skeleton
   Display: Airbender
-  Health: 80
+  Health: 50
   Damage: 2
+  Equipment:
+  - wood_hoe:0
+  - Airbender_Helmet:4
+  - Airbender_Chestplate:3
+  - Airbender_Leggings:2
+  - Airbender_Boots:1
   Drops:
   - MidBoss
   Options:
     MaxCombatDistance: 40
     KnockbackResistance: 1
   Skills:
-  - skill Pull >0 0.5
-  - skill Push >0 0.2
-  - skill PullArea >0 0.1
-  - skill PushArea >0 0.05
-  - skill Fling >0 0.05
+  - skill Fling ~onTimer:10 >0 0.8
+  - skill Pull ~onTimer:12 >0 0.5
+  - skill Push ~onTimer:15 >0 0.2
+  - skill PullArea ~onTimer:23 >0 0.1
+  - skill PushArea ~onTimer:25 >0 0.05
+Firebender:
+  Mobtype: angrypigzombie
+  Display: Firebender
+  Health: 200
+  Damage: 3
+  DamageModifiers:
+  - FIRE 0
+  - FIRE_TICK 0
+  - LAVA 0
+  Equipment:
+  - wood_hoe:0
+  - Firebender_Helmet:4
+  - Firebender_Chestplate:3
+  - Firebender_Leggings:2
+  - Firebender_Boots:1
+  Drops:
+  - Boss
+  Options:
+    MaxCombatDistance: 40
+    KnockbackResistance: 1
+  Skills:
+  - skill Fire ~onTimer:10 >0 0.5
+  - skill Fireball ~onTimer:30 >0 0.5
+  - skill Flamethrower ~onTimer:55 >0 0.2
+  - skill Lava ~onTimer:70 >0 0.1
+  - skill Inferno ~onTimer:85 >0 0.05
+  - skill Grenade ~onTimer:90 >0 0.05
+  - skill Meteor ~onTimer:111 >0 0.01
+  - skill Frag ~onTimer:142 >0 0.01
 ZombieAirbender:
   Mobtype: zombie
-  Display: Airbender
-  Health: 80
+  Display: '&2Zombie Airbender'
+  Health: 100
   Damage: 2
+  Equipment:
+  - wood_hoe:0
+  - Airbender_Helmet:4
+  - Airbender_Chestplate:3
+  - Airbender_Leggings:2
+  - Airbender_Boots:1
   Drops:
   - MidBoss
   Options:
     MaxCombatDistance: 32
     KnockbackResistance: 1
   Skills:
-  - skill Pull >0 0.5
-  - skill Push >0 0.2
-  - skill PullArea >0 0.1
-  - skill PushArea >0 0.05
-  - skill Fling >0 0.05
+  - skill Fling ~onTimer:10 >0 0.8
+  - skill Pull ~onTimer:12 >0 0.5
+  - skill Push ~onTimer:15 >0 0.2
+  - skill PullArea ~onTimer:23 >0 0.1
+  - skill PushArea ~onTimer:25 >0 0.05
