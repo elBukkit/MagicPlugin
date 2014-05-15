@@ -59,4 +59,14 @@ public class EffectTrail extends EffectRepeating {
 		current.add(delta.multiply(scale(size) + 1));
 		playEffect(current);
 	}
+
+    @Override
+    protected void checkLocations() {
+        if (target == null) {
+            Vector delta = origin.getDirection().clone().normalize();
+            target = origin.clone();
+            target.add(delta.multiply(size + 1));
+        }
+        super.checkLocations();
+    }
 }

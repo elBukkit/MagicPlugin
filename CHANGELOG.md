@@ -4,6 +4,7 @@
 
  - Add Entity-based Mage support.
  - Add EntityEffect support to the EffectPlayer.
+ - Add EffectLib integration to EffectPlayer.
 
 ## 1.1
 

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.lang.ref.WeakReference;
 import java.security.InvalidParameterException;
+import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -23,13 +25,29 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
-	
+
+    public static boolean setEffectManager(Object manager) {
+        effectLib = new EffectLibManager(manager);
+        if (!effectLib.initialize()) {
+            effectLib = null;
+            return false;
+        }
+        return true;
+    }
+
+    private static EffectLibManager effectLib = null;
+    private ConfigurationSection effectLibConfig = null;
+
 	public static boolean SOUNDS_ENABLED = true;
 	
 	protected Plugin plugin;
 	
 	protected Location origin;
 	protected Location target;
+    protected Vector originOffset;
+    protected Vector targetOffset;
+    protected WeakReference<Entity> originEntity;
+    protected WeakReference<Entity> targetEntity;
 
 	// These are ignored by the Trail type, need multi-inheritance :\
 	protected boolean playAtOrigin = true;
@@ -45,7 +63,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 	protected Color color2 = Color.TEAL;
 
     protected EntityEffect entityEffect = null;
-    protected WeakReference<Entity> entity = null;
 
 	protected Effect effect = null;
 	protected Integer effectData = null;
@@ -72,7 +89,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 	protected Vector offset = new Vector(0, 0, 0);
 	
 	public EffectPlayer() {
-		
 	}
 
 	public EffectPlayer(Plugin plugin) {
@@ -81,7 +97,30 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 	
 	public void load(Plugin plugin, ConfigurationSection configuration) {
 		this.plugin = plugin;
-		
+
+        if (effectLib != null && configuration.contains("effectlib")) {
+            effectLibConfig = configuration.getConfigurationSection("effectlib");
+            // I feel like ConfigurationSection should be smart enough for the above
+            // to work, but it is not.
+            // I suspect this is due to having Maps in Lists. Oh well.
+            if (effectLibConfig == null) {
+                Object rawConfig = configuration.get("effectlib");
+                if (rawConfig instanceof Map) {
+                    effectLibConfig = new MemoryConfiguration();
+                    Map<String, Object> map = (Map<String, Object>)rawConfig;
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+                        effectLibConfig.set(entry.getKey(), entry.getValue());
+                    }
+                } else {
+                    plugin.getLogger().warning("Could not load effectlib node of type " + rawConfig.getClass());
+                }
+            }
+        } else {
+            effectLibConfig = null;
+        }
+
+        originOffset = ConfigurationUtils.getVector(configuration, "origin_offset");
+        targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
 		delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
 		material1 = ConfigurationUtils.getMaterialAndData(configuration, "material");
 		color1 = ConfigurationUtils.getColor(configuration, "color", Color.PURPLE);
@@ -194,10 +233,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.entityEffect = entityEffect;
     }
 
-    public void setEntity(Entity entity) {
-        this.entity = new WeakReference<Entity>(entity);
-    }
-
 	public void setParticleType(ParticleType particleType) {
 		this.particleType = particleType;
 	}
@@ -242,10 +277,16 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 			}
 			location.getWorld().playEffect(location, effect, data);
 		}
-        if (entityEffect != null && entity != null) {
-            Entity targetEntity = entity.get();
-            if (targetEntity != null) {
-                targetEntity.playEffect(entityEffect);
+        if (entityEffect != null && originEntity != null && playAtOrigin) {
+            Entity entity = originEntity.get();
+            if (entity != null) {
+                entity.playEffect(entityEffect);
+            }
+        }
+        if (entityEffect != null && targetEntity != null && playAtTarget) {
+            Entity entity = targetEntity.get();
+            if (entity != null) {
+                entity.playEffect(entityEffect);
             }
         }
 		if (sound != null) {
@@ -303,11 +344,19 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 		delayTicks = ticks;
 	}
 
-    public void start(Entity origin, Location target) {
-        setEntity(origin);
-        start(origin.getLocation(), target);
+    @Override
+    public void start(Entity originEntity, Entity targetEntity) {
+        start(originEntity == null ? null : originEntity.getLocation(), originEntity, targetEntity == null ? null : targetEntity.getLocation(), targetEntity);
     }
 
+    @Override
+    public void start(Location origin, Entity originEntity, Location target, Entity targetEntity) {
+        this.originEntity = new WeakReference<Entity>(originEntity);
+        this.targetEntity = new WeakReference<Entity>(targetEntity);
+        start(origin, target);
+    }
+
+    @Override
 	public void start(Location origin, Location target) {
 		if (origin == null) {
 			throw new InvalidParameterException("Origin cannot be null");
@@ -325,18 +374,38 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 		} else {
 			fireworkEffect = null;
 		}
-		
+
+        // Should I let EffectLib handle delay?
 		if (delayTicks > 0 && plugin != null) {
 			final EffectPlayer player = this;
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				public void run() {
-					player.play();
+					player.startPlay();
 				}
 			}, delayTicks);			
 		} else {
-			play();
+            startPlay();
 		}
 	}
+
+    protected void checkLocations() {
+        if (origin != null && originOffset != null) {
+            origin = origin.add(originOffset);
+        }
+        if (target != null && targetOffset != null) {
+            target = target.add(targetOffset);
+        }
+    }
+
+    protected void startPlay() {
+        if (effectLib != null && effectLibConfig != null) {
+            // Generate a target location for compatibility if none exists.
+            checkLocations();
+            effectLib.play(plugin, effectLibConfig, this);
+        } else {
+            play();
+        }
+    }
 	
 	protected Vector getDirection() {
 		Vector direction = target == null ? origin.getDirection() : target.toVector().subtract(origin.toVector());

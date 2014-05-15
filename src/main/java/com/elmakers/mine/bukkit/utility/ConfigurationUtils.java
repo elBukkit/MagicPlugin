@@ -26,13 +26,22 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 public class ConfigurationUtils {
 	
 	public static Location getLocation(ConfigurationSection node, String path) {
-		String stringData = node.getString(path);
-		if (stringData == null) {
-			return null;
-		}
+        String stringData = node.getString(path);
+        if (stringData == null) {
+            return null;
+        }
 
-		return toLocation(stringData);
-	}
+        return toLocation(stringData);
+    }
+
+    public static Vector getVector(ConfigurationSection node, String path) {
+        String stringData = node.getString(path);
+        if (stringData == null) {
+            return null;
+        }
+
+        return toVector(stringData);
+    }
 	
 	public static Material getMaterial(ConfigurationSection node, String path, Material def) {
 		String stringData = node.getString(path);
@@ -126,6 +135,24 @@ public class ConfigurationUtils {
 		}
 		return null;
 	}
+
+    public static Vector toVector(Object o) {
+        if (o instanceof Vector) {
+            return (Vector)o;
+        }
+        if (o instanceof String) {
+            try {
+                String[] pieces = StringUtils.split((String)o, ',');
+                double x = Double.parseDouble(pieces[0]);
+                double y = Double.parseDouble(pieces[1]);
+                double z = Double.parseDouble(pieces[2]);
+                return new Vector(x, y, z);
+            } catch(Exception ex) {
+                return null;
+            }
+        }
+        return null;
+    }
 
 	@SuppressWarnings("deprecation")
 	public static Material toMaterial(Object o)

@@ -981,17 +981,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 		Location mageLocation = getEffectLocation();
 		if (effects.containsKey(result) && mageLocation != null) {
 			Location targetLocation = getTargetLocation();
+            Entity targetEntity = getTargetEntity();
 			List<EffectPlayer> resultEffects = effects.get(result);
 			for (EffectPlayer player : resultEffects) {
 				// Set material and color
 				player.setMaterial(getEffectMaterial());
 				player.setColor(mage.getEffectColor());
                 Entity entity = mage.getEntity();
-                if (entity != null) {
-                    player.start(entity, targetLocation);
-                } else {
-                    player.start(mageLocation, targetLocation);
-                }
+                player.start(mageLocation, entity, targetLocation, targetEntity);
 			}
 		}
 	}
