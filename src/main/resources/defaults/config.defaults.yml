@@ -159,7 +159,7 @@ wand_upgrade_item: nether_star
 wand_glow: true
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
-wand_item_enchantable:
+wand_item_enchantable: wood_sword
 
 # Used as a substitute item when the wand item is naturally crafted
 # This is mainly for the resource pack, so players don't craft a wood hoe
