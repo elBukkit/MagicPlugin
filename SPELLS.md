@@ -140,6 +140,7 @@ Each effect is configured using a "player" class and several common parameters:
 | Name              | Values         | Description
 |-------------------|----------------|-----------------
 | class             | Class name     | An effect player class, either a builtin or a fully-qualified external EffectPlayer
+| effectlib         | EffectLib Class | If EffectLib is present, it will be used in place of the builtin effect.
 | location          | target/origin/both | Where to play the effect
 | color             | RRGGBB         | The main color to use, only applies to some effects (like Fireworks)
 | color1            | RRGGBB         | The secondary color to use, only applies to some effects (like Fireworks)
@@ -174,7 +175,7 @@ Each effect is configured using a "player" class and several common parameters:
 | radius            | blocks         | How large the ring should get
 | size              | count          | How many effects to spawn per ring
 
-## EFfectTrail
+## EffectTrail
 
 | Name              | Values         | Description
 |-------------------|----------------|-----------------
@@ -182,10 +183,11 @@ Each effect is configured using a "player" class and several common parameters:
 
 enum reference:
 
-Sound: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/Sound.java
-Effect: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/Effect.java
-ParticleType: https://raw.githubusercontent.com/elBukkit/MagicPlugin/master/src/main/java/com/elmakers/mine/bukkit/effects/ParticleType.java
-FireworkEffect: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/FireworkEffect.java
+* Sound: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/Sound.java
+* Effect: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/Effect.java
+* ParticleType: https://raw.githubusercontent.com/elBukkit/MagicAPI/master/src/main/java/com/elmakers/mine/bukkit/api/effect/ParticleType.java
+* FireworkEffect: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/FireworkEffect.java
+* EffectLib Classes: http://dev.bukkit.org/bukkit-plugins/effectlib/
 
 # Messages
 

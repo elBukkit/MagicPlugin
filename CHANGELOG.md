@@ -11,6 +11,7 @@
  - Add Cure spell
  - Add Counterspell spell
  - Add Shields spell. Placeholder until 1.8's Barrier block arrives :)
+ - Add EffectLib integration (awesomesauce)
 
 ## 3.1
 
