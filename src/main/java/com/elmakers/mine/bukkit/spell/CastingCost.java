@@ -26,7 +26,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 		if (key.toLowerCase().equals("xp")) {
 			this.xp = (int)cost;
 		} else {
-			this.item = MaterialBrush.parseMaterialKey(key, true);
+			this.item = new MaterialAndData(key);
 			this.amount = cost;
 		}
 	}
@@ -50,7 +50,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 	public Map<String, Object> export()
 	{
 		Map<String, Object> cost = new HashMap<String, Object>();
-		cost.put("material", MaterialBrush.getMaterialName(item));
+		cost.put("material", item.getName());
 		cost.put("amount", amount);
 		cost.put("xp", xp);
 
@@ -131,7 +131,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 	public String getDescription(CostReducer reducer)
 	{
 		if (item != null && getAmount() != 0) {
-			return MaterialBrush.getMaterialName(item);
+			return item.getName();
 		}
 		if (reducer != null && !reducer.usesMana()) {
 			return Messages.get("costs.xp");
@@ -143,7 +143,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 	public String getFullDescription(CostReducer reducer)
 	{
 		if (item != null) {
-			return (int)getAmount(reducer) + " " + MaterialBrush.getMaterialName(item);
+			return (int)getAmount(reducer) + " " + item.getName();
 		}
 		if (reducer != null && !reducer.usesMana()) {
 			return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
