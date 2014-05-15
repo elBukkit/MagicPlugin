@@ -24,21 +24,14 @@ RandomWarlock:
   Priority: 1
   Conditions:
   - outside true
-RandomWarlock:
+RandomAirbender:
   Mobname: Airbender
   Worlds: world
   Chance: 0.010
   Priority: 1
   Conditions:
   - outside true
-RandomWarlock:
-  Mobname: ZombieAirbender
-  Worlds: world
-  Chance: 0.005
-  Priority: 1
-  Conditions:
-  - outside true
-RandomWarlock:
+RandomFirebender:
   Mobname: Firebender
   Worlds: world
   Chance: 0.001

@@ -60,3 +60,6 @@ Airbender_Boots:
   Data: 0
   Options:
     Color: 255,255,255
+Wand:
+  Id: 290
+  Data: 0
