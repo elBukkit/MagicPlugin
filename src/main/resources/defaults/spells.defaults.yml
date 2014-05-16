@@ -2256,7 +2256,7 @@ backup:
     parameters:
         allow_max_range: false
         range: 32
-        max_dimension: 16
+        max_dimension: 32
         target: select
         type: cuboid
         transparent: transparent_to_construction
@@ -2309,7 +2309,7 @@ superrepair:
     parameters:
         target: select
         allow_max_range: false
-        max_dimension: 16
+        max_dimension: 32
         range: 32
         type: cuboid
         check_destructible: false
