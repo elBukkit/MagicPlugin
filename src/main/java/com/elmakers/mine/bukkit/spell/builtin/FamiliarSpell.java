@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,6 +8,7 @@ import java.util.Random;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,6 +19,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,14 +47,14 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 	public class PlayerFamiliar
 	{
-		public List<Creature> familiars = null;
+		public List<LivingEntity> familiars = null;
 
 		public boolean hasFamiliar()
 		{
 			return familiars != null;
 		}
 
-		public void setFamiliars(List<Creature> f)
+		public void setFamiliars(List<LivingEntity> f)
 		{
 			familiars = f;
 		}
@@ -60,7 +63,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		{
 			if (familiars != null)
 			{
-				for (Creature familiar : familiars)
+				for (LivingEntity familiar : familiars)
 				{
 					familiar.setHealth(0);
 				}
@@ -72,8 +75,8 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		{
 			if (familiars != null)
 			{
-				List<Creature> iterate = new ArrayList<Creature>(familiars);
-				for (Creature familiar : iterate)
+				List<LivingEntity> iterate = new ArrayList<LivingEntity>(familiars);
+				for (LivingEntity familiar : iterate)
 				{
 					if (familiar.getUniqueId() == entity.getUniqueId()) {
 						familiar.setHealth(0);
@@ -88,7 +91,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		{
 			if (familiars == null) return false;
 
-			for (Creature c : familiars)
+			for (LivingEntity c : familiars)
 			{
 				if (c.getEntityId() == e.getEntityId()) return true;
 			}
@@ -179,7 +182,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			famClass = FamiliarClass.SPECIFIC;
 		}
 
-		List<Creature> newFamiliars = new ArrayList<Creature>();
+		List<LivingEntity> newFamiliars = new ArrayList<LivingEntity>();
 		Location centerLoc = targetBlock.getLocation();
 		for (int i = 0; i < famCount; i++)
 		{
@@ -209,7 +212,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * famCount) - famCount);
 			}
 			if (famType != null) {
-				Creature entity =  spawnFamiliar(targetLoc, famType, targetEntity);
+                LivingEntity entity = spawnFamiliar(targetLoc, famType, targetEntity);
 				if (entity != null)
 				{
 					newFamiliars.add(entity);
@@ -227,21 +230,31 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 	}
 
-	protected Creature spawnFamiliar(Location target, EntityType famType, LivingEntity targetEntity)
+	protected LivingEntity spawnFamiliar(Location target, EntityType famType, LivingEntity targetEntity)
 	{
-		Creature familiar = null;
+        LivingEntity familiar = null;
 		try {
-			Entity famEntity = getWorld().spawnEntity(target, famType);
-			if (!(famEntity instanceof Creature)) return null;
+            World world = getWorld();
+            Entity famEntity = null;
+            try {
+                Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
+                famEntity = (Entity)spawnMethod.invoke(world, target, famType.getEntityClass(), CreatureSpawnEvent.SpawnReason.EGG);
+            } catch (Exception ex) {
+                famEntity = getWorld().spawnEntity(target, famType);
+            }
+
+			if (famEntity == null || !(famEntity instanceof LivingEntity)) return null;
 	
-			familiar = (Creature)famEntity;
+			familiar = (LivingEntity)famEntity;
 			if (familiar instanceof Skeleton) {
 				Skeleton skellie = (Skeleton)familiar;
 				skellie.getEquipment().setItemInHand(new ItemStack(Material.BOW));
 			}
 			if (targetEntity != null)
 			{
-				familiar.setTarget(targetEntity);
+                if (familiar instanceof Creature) {
+                    ((Creature)familiar).setTarget(targetEntity);
+                }
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
