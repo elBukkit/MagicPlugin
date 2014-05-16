@@ -69,7 +69,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		this.plugin = mage.getController().getPlugin();
 		this.owner = mage;
         Location location = mage.getLocation();
-        this.worldName = location == null ? null : location.getWorld().getName();
 		createdTime = System.currentTimeMillis();
 		modifiedTime = createdTime;
 	}
@@ -129,6 +128,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 	public boolean add(BlockData blockData)
 	{
 		if (!super.add(blockData)) return false;
+        modifiedTime = System.currentTimeMillis();
 		if (bypass) return true;
 		
 		BlockData priorState = modified.get(blockData.getId());
@@ -139,7 +139,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 		}
 
 		modified.put(blockData.getId(), blockData);
-		modifiedTime = System.currentTimeMillis();
 		return true;
 	}
 
