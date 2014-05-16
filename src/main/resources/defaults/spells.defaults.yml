@@ -1481,6 +1481,15 @@ familiar:
     category: elemental
     class: FamiliarSpell
     worth: 40
+    entity_types:
+        chicken: 30
+        cow: 100
+        pig: 100
+        mushroom_cow: 15
+        bat: 15
+        horse: 5
+        snowman: 5
+        iron_golem: 2
     effects:
         cast:
         -  class: EffectSingle
@@ -1501,6 +1510,7 @@ familiar:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
+        cooldown: 5000
         range: 32
     costs:
         xp: 20
@@ -1510,6 +1520,22 @@ monster:
     class: FamiliarSpell
     pvp_restricted: true
     worth: 70
+    entity_types:
+        zombie: 100
+        skeleton: 100
+        spider: 110
+        creeper: 30
+        witch: 20
+        slime: 20
+        blaze: 15
+        bat: 15
+        magma_cube: 10
+        pig_zombie: 10
+        cave_spider: 10
+        silverfish: 8
+        ghast: 5
+        enderman: 5
+        giant: 1
     effects:
         cast:
         -  class: EffectSingle
@@ -1532,8 +1558,8 @@ monster:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
+        cooldown: 5000
         range: 32
-        type: mob
     costs:
         xp: 40
 mob:
@@ -1542,6 +1568,22 @@ mob:
     class: FamiliarSpell
     pvp_restricted: true
     worth: 120
+    entity_types:
+        zombie: 100
+        skeleton: 100
+        spider: 110
+        creeper: 30
+        witch: 20
+        slime: 20
+        blaze: 15
+        bat: 15
+        magma_cube: 10
+        pig_zombie: 10
+        cave_spider: 10
+        silverfish: 8
+        ghast: 5
+        enderman: 5
+        giant: 1
     effects:
         cast:
         -  class: EffectSingle
@@ -1565,7 +1607,6 @@ mob:
         range: 32
         cooldown: 45000
         count: 20
-        type: mob
     costs:
         xp: 100
 farm:
@@ -1573,6 +1614,12 @@ farm:
     category: elemental
     class: FamiliarSpell
     worth: 100
+    entity_types:
+        chicken: 30
+        cow: 100
+        pig: 100
+        mushroom_cow: 15
+        horse: 5
     effects:
         cast:
         -  class: EffectSingle
@@ -1625,6 +1672,7 @@ wolf:
         target_type: LivingEntity
         max_wolves: 5
         allow_max_range: false
+        cooldown: 5000
         range: 32
     costs:
         xp: 50
@@ -1655,6 +1703,7 @@ cat:
         max_ocelots: 5
         allow_max_range: false
         range: 32
+        cooldown: 5000
     costs:
         xp: 30
 portal:

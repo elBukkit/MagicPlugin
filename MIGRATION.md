@@ -1,5 +1,11 @@
 # Migration Notes
 
+## 3.2
+
+ * FamiliarSpell has been modified, you will need to update any customized
+   configurations of Mob, Monster, Familiar or Farm. The spell now supports
+   custom weighted probability lists for mob spawns.
+
 ## 3.1
 
 * I removed the swapping out of enchantable items by default, custom enchanting works in recent CB builds. Change "wand_item_enchantable" in

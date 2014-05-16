@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
+import com.elmakers.mine.bukkit.utility.AscendingPair;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,20 +31,11 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class FamiliarSpell extends UndoableSpell implements Listener
 {
-	private String DEFAULT_FAMILIARS = "Chicken,Sheep,Cow,Pig,Wolf,Villager,MushroomCow,Ozelot,HorseEntity";
-	private String DEFAULT_MONSTERS = "Creeper,PigZombie,Skeleton,Spider,Zombie,Giant,Silverfish,CaveSpider,Blaze,Bat,Witch";
+    private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<WeightedPair<String>>();
 
 	private final Random rand = new Random();
 	private PlayerFamiliar familiars = new PlayerFamiliar();
 	private int spawnCount = 0;
-
-	public enum FamiliarClass
-	{
-		SPECIFIC,
-		ANY,
-		FRIENDLY,
-		MONSTER
-	}
 
 	public class PlayerFamiliar
 	{
@@ -147,62 +139,38 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
 
-		EntityType famType = EntityType.PIG;
-		FamiliarClass famClass = FamiliarClass.FRIENDLY;
+		EntityType famType = null;
 		int famCount = parameters.getInt("count", 1);
 
 		String famTypeName = parameters.getString("type", "");
-
-		if (famTypeName.equalsIgnoreCase("any"))
-		{
-			famClass = FamiliarClass.ANY;
-		}
-		else if (famTypeName.equalsIgnoreCase("mob"))
-		{
-			famClass = FamiliarClass.MONSTER;
-		}
-		else if (famTypeName.length() > 1)
-		{
-			// annoying- why do they have to CamelCase???
-			String testType = famTypeName.toUpperCase();
-			for (EntityType ct : EntityType.values())
-			{
-				String name = ct.getName();
-				if (name != null && name.toUpperCase().equals(testType))
-				{
-					famType = ct;
-					famClass = FamiliarClass.SPECIFIC;
-				}
-			}
-		}
+        if (famTypeName != null) {
+            try {
+                famType = EntityType.fromName(famTypeName);
+            } catch (Throwable ex) {
+                mage.sendMessage("Unknown entity type: " + famTypeName);
+                return SpellResult.FAIL;
+            }
+        }
 
 		if (originalTarget.getType() == Material.WATER || originalTarget.getType() == Material.STATIONARY_WATER)
 		{
 			famType = EntityType.SQUID;
-			famClass = FamiliarClass.SPECIFIC;
 		}
 
 		List<LivingEntity> newFamiliars = new ArrayList<LivingEntity>();
 		Location centerLoc = targetBlock.getLocation();
 		for (int i = 0; i < famCount; i++)
 		{
-			if (famClass != FamiliarClass.SPECIFIC)
+            EntityType entityType = famType;
+			if (entityType == null)
 			{
-				if (famClass == FamiliarClass.ANY)
-				{
-					int randomFamiliar = rand.nextInt(EntityType.values().length - 1);
-					famType = EntityType.values()[randomFamiliar];                        
-				}
-				else
-				{
-					String[] types = StringUtils.split(DEFAULT_FAMILIARS, ',');
-					if (famClass == FamiliarClass.MONSTER)
-					{
-						types = StringUtils.split(DEFAULT_MONSTERS, ',');
-					}
-					int randomFamiliar = rand.nextInt(types.length);
-					famType = EntityType.fromName(types[randomFamiliar]);
-				}
+				String randomType = RandomUtils.weightedRandom(entityTypeProbability);
+                try {
+                    entityType = EntityType.fromName(randomType);
+                } catch (Throwable ex) {
+                    mage.sendMessage("Unknown entity type: " + randomType);
+                    return SpellResult.FAIL;
+                }
 			}      
 
 			Location targetLoc = centerLoc.clone();
@@ -211,8 +179,8 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 				targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * famCount) - famCount);
 				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * famCount) - famCount);
 			}
-			if (famType != null) {
-                LivingEntity entity = spawnFamiliar(targetLoc, famType, targetEntity);
+			if (entityType != null) {
+                LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetEntity);
 				if (entity != null)
 				{
 					newFamiliars.add(entity);
@@ -235,7 +203,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
         LivingEntity familiar = null;
 		try {
             World world = getWorld();
-            Entity famEntity = null;
+            Entity famEntity;
             try {
                 Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
                 famEntity = (Entity)spawnMethod.invoke(world, target, famType.getEntityClass(), CreatureSpawnEvent.SpawnReason.EGG);
@@ -289,4 +257,16 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		String message = super.getMessage(messageKey, def);
 		return message.replace("$count", Integer.toString(spawnCount));
 	}
+
+    @Override
+    protected void loadTemplate(ConfigurationSection template)
+    {
+        super.loadTemplate(template);
+
+        if (template.contains("entity_types")) {
+            RandomUtils.populateStringProbabilityMap(entityTypeProbability, template.getConfigurationSection("entity_types"), 0, 0, 0);
+        } else {
+            entityTypeProbability.add(new WeightedPair<String>(100.0f, "pig"));
+        }
+    }
 }
