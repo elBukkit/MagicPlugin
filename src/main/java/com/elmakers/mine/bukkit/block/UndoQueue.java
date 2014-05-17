@@ -152,6 +152,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      * the specified timeout.
      *
      * @param block The block to check for modifications.
+     * @param timeout How long ago the UndoList may have been modified
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
     public UndoList undoRecent(Block block, int timeout)
