@@ -2700,8 +2700,7 @@ public class MagicController implements Listener, MageController
 			if (sender != null && entity != null && sender != entity) {
                 if (sender instanceof BlockCommandSender) {
                     targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
-                }
-                if (entity != null) {
+                } else if (entity != null) {
                     targetLocation = entity.getLocation();
                 }
             }
