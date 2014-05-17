@@ -104,6 +104,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 	{
 		return undoRecent(target, 0);
 	}
+
     /**
      * Undo a recent construction performed by this Mage.
      *
@@ -114,6 +115,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      * It will skip undoing if the UndoList is older than
      * the specified timeout.
      *
+     * @param timeout How long ago the UndoList may have been modified
      * @return The UndoList that was undone, or null if none.
      */
     public UndoList undoRecent(int timeout)
