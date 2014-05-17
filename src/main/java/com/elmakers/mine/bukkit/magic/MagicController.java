@@ -25,7 +25,6 @@ import java.util.zip.ZipInputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
-import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -87,7 +86,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.potion.PotionEffectType;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
@@ -1052,7 +1050,7 @@ public class MagicController implements Listener, MageController
 		    }
 		});
 
-        Bukkit.getLogger().info("Scanning " + playerFiles.length + " save files for pending undo info. Adjust player_data_expire_threshold if this is taking a long time.");
+        getLogger().info("Scanning " + playerFiles.length + " save files for pending undo info. Adjust player_data_expire_threshold if this is taking a long time.");
 
 		for (File playerFile : playerFiles)
 		{
@@ -2699,12 +2697,14 @@ public class MagicController implements Listener, MageController
 		Location targetLocation = null;
 		if (mage == null) {
 			CommandSender mageController = (entity != null && entity instanceof Player) ? (Player)entity : sender;
-			if (sender instanceof BlockCommandSender) {
-				targetLocation = ((BlockCommandSender)sender).getBlock().getLocation();
-			}
-			if (entity != null) {
-				targetLocation = entity.getLocation();
-			}
+			if (sender != null && entity != null && sender != entity) {
+                if (sender instanceof BlockCommandSender) {
+                    targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
+                }
+                if (entity != null) {
+                    targetLocation = entity.getLocation();
+                }
+            }
 			mage = getMage(mageController);
 		}
 		
