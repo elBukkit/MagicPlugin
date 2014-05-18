@@ -59,11 +59,22 @@ public class AnimateSpell extends SimulateSpell
 			addDestructible(targetMaterial.getMaterial());
 		}
 
-		Set<Material> restricted = controller.getMaterialSet(parameters.getString("restricted", "restricted"));
-		if (restricted.contains(targetMaterial.getMaterial()))
-		{
-			return SpellResult.RESTRICTED;
-		}
+        if (!mage.isSuperPowered()) {
+            Set<Material> restricted = controller.getMaterialSet("restricted");
+            if (restricted.contains(targetMaterial.getMaterial())) {
+                return SpellResult.RESTRICTED;
+            }
+
+            if (parameters.contains("restricted")) {
+                String customRestricted = parameters.getString("restricted");
+                if (customRestricted != null && customRestricted.length() > 0 && !customRestricted.equals("restricted")) {
+                    restricted = controller.getMaterialSet(customRestricted);
+                    if (restricted.contains(targetMaterial.getMaterial())) {
+                        return SpellResult.RESTRICTED;
+                    }
+                }
+            }
+        }
 
 		if (!isDestructible(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
