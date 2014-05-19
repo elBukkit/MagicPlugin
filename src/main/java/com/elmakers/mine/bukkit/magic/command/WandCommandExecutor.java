@@ -369,7 +369,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player) {
-		if (!checkWand(sender, player, true, true, true)) {
+		if (!checkWand(sender, player, true, true, sender != player)) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
