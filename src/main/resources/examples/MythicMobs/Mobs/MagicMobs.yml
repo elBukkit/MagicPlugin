@@ -69,13 +69,14 @@ Warlock:
 Firebender:
   Mobtype: angrypigzombie
   Display: Firebender
-  Health: 200
-  Damage: 3
+  Health: 100
+  Damage: 4
   DamageModifiers:
   - FIRE 0
   - FIRE_TICK 0
   - LAVA 0
   Equipment:
+  - Fire:0
   - Firebender_Helmet:4
   - Firebender_Chestplate:3
   - Firebender_Leggings:2
@@ -86,13 +87,14 @@ Firebender:
     MaxCombatDistance: 40
     KnockbackResistance: 1
   Skills:
-  - skill Firebending ~onTimer:20 >0 0.9
+  - skill Firebending ~onTimer:40 >0 0.9
 Airbender:
   Mobtype: skeleton
   Display: Airbender
   Health: 50
   Damage: 2
   Equipment:
+  - Air:0
   - Airbender_Helmet:4
   - Airbender_Chestplate:3
   - Airbender_Leggings:2
@@ -103,4 +105,40 @@ Airbender:
     MaxCombatDistance: 40
     KnockbackResistance: 1
   Skills:
-  - skill Airbending ~onTimer:10 >0 0.8
+  - skill Airbending ~onTimer:20 >0 0.8
+Waterbender:
+  Mobtype: villagezombie
+  Display: Airbender
+  Health: 70
+  Damage: 4
+  Equipment:
+  - Water:0
+  - Waterbender_Helmet:4
+  - Waterbender_Chestplate:3
+  - Waterbender_Leggings:2
+  - Waterbender_Boots:1
+  Drops:
+  - MidBoss
+  Options:
+    MaxCombatDistance: 40
+    KnockbackResistance: 1
+  Skills:
+  - skill Waterbending ~onTimer:30 >0 0.8
+Earthbender:
+  Mobtype: angrypigzombievillager
+  Display: Earthbender
+  Health: 150
+  Damage: 5
+  Equipment:
+  - Earth:0
+  - Earthbender_Helmet:4
+  - Earthbender_Chestplate:3
+  - Earthbender_Leggings:2
+  - Earthbender_Boots:1
+  Drops:
+  - MidBoss
+  Options:
+    MaxCombatDistance: 40
+    KnockbackResistance: 1
+  Skills:
+  - skill Earthbending ~onTimer:50 >0 0.8
