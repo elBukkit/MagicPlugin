@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>3.2</version>
+	<version>3.3-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
@@ -151,10 +151,12 @@
         <id>Plugin Metrics</id>
         <url>http://repo.mcstats.org/content/repositories/public</url>
       </repository>
+      <!-- Biggest plugin in the world can't keep their repo up? :\
       <repository>
       		<id>Essentials</id>
       		<url>http://repo.ess3.net/content/groups/essentials</url>
       </repository>
+      -->
     </repositories>
 	<build>
 	<resources>
