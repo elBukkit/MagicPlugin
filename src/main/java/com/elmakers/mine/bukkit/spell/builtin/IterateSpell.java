@@ -47,7 +47,7 @@ public class IterateSpell extends BrushSpell
 		iterateBlocks = Math.min(iterateBlocks, size);
 
 		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
-		Vector playerLoc = new Vector(getLocation().getX(), getLocation().getY() + 1, getLocation().getZ());
+		Vector playerLoc = getEyeLocation().toVector();
 
 		Vector aim = null;
 		if (reverse) {
