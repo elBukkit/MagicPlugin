@@ -88,7 +88,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			}
 			return true;
 		}
-		if (subCommand.equalsIgnoreCase("give"))
+		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell") || subCommand.equalsIgnoreCase("worth"))
 		{
 			Player player = null;
 			int argStart = 1;
@@ -108,7 +108,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				}
 			}
 			String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
-			return onMagicGive(sender, player, args2);
+			return onMagicGive(sender, player, subCommand, args2);
 		}
 		if (subCommand.equalsIgnoreCase("list"))
 		{
@@ -296,7 +296,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
-	protected boolean onMagicGive(CommandSender sender, Player player, String[] args)
+	protected boolean onMagicGive(CommandSender sender, Player player, String command, String[] args)
 	{
 		String playerCommand = (sender instanceof Player) ? "" : "<player> ";
 		String usageString = "Usage: /magic give " + playerCommand + "<spellname|'material'|'upgrade'|'wand'> [materialname|wandname]";
@@ -331,26 +331,30 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		} else {
 			key = args[0];
 		}
-		
+
+        boolean giveItem = command.equals("give") || command.equals("sell");
+        boolean showWorth = command.equals("worth") || command.equals("sell");
+        boolean giveValue = command.equals("sell");
+
 		if (isWand) {
-			onGiveWand(sender, player, key, false);
+			onGiveWand(sender, player, key, false, giveItem, giveValue, showWorth);
 		} else if (isMaterial) {
-			onGiveBrush(sender, player, key, false);
+			onGiveBrush(sender, player, key, false, giveItem, giveValue, showWorth);
 		} else if (isUpgrade) {
-			onGiveUpgrade(sender, player, key, false);
+			onGiveUpgrade(sender, player, key, false, giveItem, giveValue, showWorth);
 		} else {
-			onGive(sender, player, key);
+			onGive(sender, player, key, giveItem, giveValue, showWorth);
 		}
 		
 		return true;
 	}
 	
-	protected void onGive(CommandSender sender, Player player, String key)
+	protected void onGive(CommandSender sender, Player player, String key, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
-		if (!onGiveSpell(sender, player, key, true)) {
-			if (!onGiveBrush(sender, player, key, true))
+		if (!onGiveSpell(sender, player, key, true, giveItem, giveValue, showWorth)) {
+			if (!onGiveBrush(sender, player, key, true, giveItem, giveValue, showWorth))
 			{
-				if (!onGiveWand(sender, player, key, true))
+				if (!onGiveWand(sender, player, key, true, giveItem, giveValue, showWorth))
 				{
 					sender.sendMessage("Failed to create a spell, brush or wand item for " + key);
 				}
@@ -358,31 +362,35 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		}
 	}
 	
-	protected boolean onGiveSpell(CommandSender sender, Player player, String spellKey, boolean quiet)
+	protected boolean onGiveSpell(CommandSender sender, Player player, String spellKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		ItemStack itemStack = api.createSpellItem(spellKey);
 		if (itemStack == null) {
 			if (!quiet) sender.sendMessage("Failed to spell spell item for " + spellKey);
 			return false;
 		}
-		
-		api.giveItemToPlayer(player, itemStack);
+
+        if (giveItem) {
+            api.giveItemToPlayer(player, itemStack);
+        }
 		return true;
 	}
 	
-	protected boolean onGiveBrush(CommandSender sender, Player player, String materialKey, boolean quiet)
+	protected boolean onGiveBrush(CommandSender sender, Player player, String materialKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		ItemStack itemStack = api.createBrushItem(materialKey);
 		if (itemStack == null) {
 			if (!quiet) sender.sendMessage("Failed to material spell item for " + materialKey);
 			return false;
 		}
-		
-		api.giveItemToPlayer(player, itemStack);
+
+        if (giveItem) {
+            api.giveItemToPlayer(player, itemStack);
+        }
 		return true;
 	}
 	
-	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey, boolean quiet)
+	protected boolean onGiveUpgrade(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		Mage mage = api.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
@@ -422,13 +430,15 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.magic.", "save");
 			addIfPermissible(sender, options, "Magic.commands.magic.", "commit");
 			addIfPermissible(sender, options, "Magic.commands.magic.", "give");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "worth");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "sell");
 			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
 		} else if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("list")) {
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
-			} else if (args[0].equalsIgnoreCase("give")) {
+			} else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
 				options.add("wand");
 				options.add("material");
 				options.add("upgrade");
@@ -443,7 +453,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				options.addAll(api.getBrushes());
 			}
 		} else if (args.length == 3) {
-			if (args[0].equalsIgnoreCase("give")) {
+			if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
 				if (args[1].equalsIgnoreCase("upgrade") || args[1].equalsIgnoreCase("wand")) {
 					Collection<String> allWands = api.getWandKeys();
 					for (String wandKey : allWands) {

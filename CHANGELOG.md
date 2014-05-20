@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 3.3
+
+ - Add CommandSpell. WIP.
+ - Add Respawn spell and Respawn Token items.
+
 ## 3.2
 
  - Fix for permissions issues in 3.1 (also in 3.1.1 hotfix)

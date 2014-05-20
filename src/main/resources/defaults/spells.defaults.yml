@@ -3189,7 +3189,7 @@ flare:
     costs:
         xp: 10
 recall:
-    icon: compass
+    icon: redstone
     category: master
     class: RecallSpell
     worth: 25
@@ -3211,6 +3211,26 @@ recall:
         allow_wand: true
         allow_home: true
         allow_cross_world: true
+    costs:
+        xp: 50
+respawn:
+    icon: compass
+    category: master
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           location: both
+        -  class: EffectRing
+           particle: portal
+           particle_count: 6
+           location: both
+           effectlib:
+             class: WarpEntityEffect
+    parameters:
+        command: spawn
     costs:
         xp: 20
 levitate:
