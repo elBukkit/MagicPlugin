@@ -26,7 +26,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -45,7 +44,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -483,20 +481,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected Set<String> getSpells(boolean includePositions) {
 		Set<String> spellNames = new TreeSet<String>();
 		List<Inventory> allInventories = getAllInventories();
-		int index = 0;
 		for (Inventory inventory : allInventories) {
 			ItemStack[] items = inventory.getContents();
 			for (int i = 0; i < items.length; i++) {
-				if (items[i] != null && !isWand(items[i])) {
-					if (isSpell(items[i])) {
-						String spellName = getSpell(items[i]);
-						if (includePositions) {
-							spellName += "@" + index;
-						}
-						spellNames.add(spellName);
-					}
-				}	
-				index++;
+				if (items[i] != null && isSpell(items[i])) {
+                    String spellName = getSpell(items[i]);
+                    if (includePositions) {
+                        spellName += "@" + i;
+                    }
+                    spellNames.add(spellName);
+				}
 			}
 		}
 		return spellNames;
@@ -515,15 +509,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
 		allInventories.add(hotbar);
 		allInventories.addAll(inventories);
-		Integer index = 0;
 		for (Inventory inventory : allInventories) {
 			ItemStack[] items = inventory.getContents();
 			for (int i = 0; i < items.length; i++) {
-				String materialKey = getMaterialKey(items[i], includePositions ? index : null);
-				if (materialKey != null) {
-					materialNames.add(materialKey);
-				}
-				index++;
+                if (items[i] != null && isBrush(items[i])) {
+                    String materialKey = getMaterialKey(items[i], includePositions ? i : null);
+                    if (materialKey != null) {
+                        materialNames.add(materialKey);
+                    }
+                }
 			}
 		}
 		return materialNames;	
@@ -772,6 +766,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return;
         }
 
+        // Clean up any extra data that might be on here
+        if (isUpgrade) {
+            CompatibilityUtils.removeMetadata(item, metadataProvider, "wand");
+        } else {
+            CompatibilityUtils.removeMetadata(item, metadataProvider, "upgrade");
+        }
+        CompatibilityUtils.removeMetadata(item, metadataProvider, "spell");
+        CompatibilityUtils.removeMetadata(item, metadataProvider, "brush");
+
         InventoryUtils.saveTagsToNBT(stateNode, magicNode, ALL_PROPERTY_KEYS);
 	}
 	
@@ -936,15 +939,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Don't change any of this stuff in safe mode
 		if (!safe) {
 			id = wandConfig.getString("id", id);
-			if (id == null) id = "";
-			quietLevel = wandConfig.getInt("quiet", quietLevel);
+            isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
+            quietLevel = wandConfig.getInt("quiet", quietLevel);
 			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			keep = wandConfig.getBoolean("keep", keep);
 			indestructible = wandConfig.getBoolean("indestructible", indestructible);
 			bound = wandConfig.getBoolean("bound", bound);
 			autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
 			autoFill = wandConfig.getBoolean("fill", autoFill);
-			isUpgrade = wandConfig.getBoolean("upgrade", isUpgrade);
 			
 			if (wandConfig.contains("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));
@@ -1351,16 +1353,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public static boolean isWand(ItemStack item) {
-		// Note that WandUpgrades also show up here!
 		return item != null && (CompatibilityUtils.hasMetadata(item, metadataProvider, "wand") || isLegacyWand(item));
 	}
 
     public static boolean isLegacyWand(ItemStack item) {
-        // Note that WandUpgrades also show up here!
-        return item != null && InventoryUtils.hasMeta(item, "wand");
+        return item != null && InventoryUtils.hasMeta(item, "wand") && !isLegacyUpgrade(item);
     }
 
-	public static boolean isLegacyWandUpgrade(ItemStack item) {
+	public static boolean isLegacyUpgrade(ItemStack item) {
 		if (item == null) return false;
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		
@@ -1370,10 +1370,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return upgradeData != null && upgradeData.equals("true");
 	}
 
-    public static boolean isWandUpgrade(ItemStack item) {
+    public static boolean isUpgrade(ItemStack item) {
         if (item == null) return false;
-        if (isLegacyWandUpgrade(item)) return true;
-        if (!isWand(item)) return false;
+        if (isLegacyUpgrade(item)) return true;
 
         return item != null && CompatibilityUtils.hasMetadata(item, metadataProvider, "upgrade");
     }
@@ -1966,6 +1965,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public void activate(Mage mage, ItemStack wandItem) {
 		if (mage == null || wandItem == null) return;
+
+        if (this.isUpgrade) {
+            controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
+            return;
+        }
 		
 		// Update held item, it may have been copied since this wand was created.
 		this.item = wandItem;
@@ -2054,7 +2058,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				mage.sendMessage(Messages.get("wand.brush_added").replace("$name", MaterialBrush.getMaterialName(materialKey)));
 				return true;
 			}
-		} else if (isWandUpgrade(item)) {
+		} else if (isUpgrade(item)) {
 			Wand wand = new Wand(controller, item);
 			return this.add(wand);
 		}
@@ -2580,7 +2584,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			ItemStack[] items = inventory.getContents();
 			for (int index = 0; index < items.length; index++) {
 				ItemStack itemStack = items[index];
-				if (itemStack != null && itemStack.getType() != Material.AIR && !isWand(itemStack) && isSpell(itemStack)) {
+				if (itemStack != null && itemStack.getType() != Material.AIR && isSpell(itemStack)) {
 					if (getSpell(itemStack).equals(spellName)) {
 						found = true;
 						inventory.setItem(index, null);

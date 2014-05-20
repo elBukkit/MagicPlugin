@@ -2129,7 +2129,7 @@ public class MagicController implements Listener, MageController
 				ItemStack[] items = inventory.getContents();
 				for (int i = 0; i < items.length; i++) {
 					ItemStack item = items[i];
-					if (Wand.isWand(item) || Wand.isSpell(item) || Wand.isBrush(item)) {
+					if (Wand.isWand(item) || Wand.isSpell(item) || Wand.isBrush(item) || Wand.isUpgrade(item)) {
 						items[i] = null;
 					}
 				}
@@ -2596,8 +2596,10 @@ public class MagicController implements Listener, MageController
 
         // Wands will absorb spells and upgrade items
 		Wand activeWand = mage.getActiveWand();
-		if (activeWand != null && (!Wand.isWand(pickup) || Wand.isWandUpgrade(pickup))
-			&& activeWand.isModifiable() && activeWand.addItem(pickup)) {
+		if (activeWand != null
+            && activeWand.isModifiable()
+            && (Wand.isSpell(pickup) || Wand.isBrush(pickup) || Wand.isUpgrade(pickup))
+			&& activeWand.addItem(pickup)) {
 			event.getItem().remove();
 			event.setCancelled(true);   
 			return;
@@ -2637,7 +2639,7 @@ public class MagicController implements Listener, MageController
 		}
 		
 		ItemStack itemStack = event.getItemInHand();
-		if (Wand.isWand(itemStack) || Wand.isBrush(itemStack) || Wand.isSpell(itemStack)) {
+		if (Wand.isWand(itemStack) || Wand.isBrush(itemStack) || Wand.isSpell(itemStack) || Wand.isUpgrade(itemStack)) {
 			event.setCancelled(true);
 		}
 	}
