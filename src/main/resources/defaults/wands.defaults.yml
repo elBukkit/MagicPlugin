@@ -2255,9 +2255,21 @@ manaboost:
  #
  # ITEMS
  #
- 
+
 recalltoken:
     active_spell: recall
+    icon: redstone
+    indestructible: false
+    cost_reduction: 2
+    locked: true
+    uses: 5
+    keep: true
+    effect_color: 'FF0000'
+    spells:
+        - recall
+
+respawntoken:
+    active_spell: respawn
     icon: compass
     indestructible: false
     cost_reduction: 2
@@ -2266,7 +2278,7 @@ recalltoken:
     keep: true
     effect_color: 'FF0000'
     spells:
-        - recall
+        - respawn
 hunterheart:
     active_spell: hunter
     icon: spider_eye

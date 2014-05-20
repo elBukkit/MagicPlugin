@@ -857,6 +857,10 @@ spells:
         name: Flare
         description: Fire off flares
         cast: You fire some magical flares
+    respawn:
+        name: Respawn
+        description: Return to spawn
+        cast: You teleport back to safety
     recall:
         name: Recall
         description: Return you to previous locations
@@ -1120,6 +1124,9 @@ wands:
     recalltoken:
         name: Recall Token
         description: Cast to return
+    respawntoken:
+        name: Respawn Token
+        description: Cast to return to spawn
     defenderheart:
         name: Heart of Defender
         description: It pulsates with power
