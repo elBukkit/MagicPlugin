@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -255,7 +256,7 @@ public class NMSUtils {
 		return nms;
     }
 
-	protected static Object getTag(Object mcItemStack) {		
+	public static Object getTag(Object mcItemStack) {
 		Object tag = null;
 		try {
 			Field tagField = class_ItemStack.getField("tag");
@@ -311,6 +312,44 @@ public class NMSUtils {
 		}
 		return meta;
 	}
+
+    public static boolean containsNode(Object nbtBase, String tag) {
+        if (nbtBase == null) return false;
+        Boolean result = false;
+        try {
+            Method hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
+            result = (Boolean)hasKeyMethod.invoke(nbtBase, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public static Object getNode(Object nbtBase, String tag) {
+        if (nbtBase == null) return null;
+        Object meta = null;
+        try {
+            Method getMethod = class_NBTTagCompound.getMethod("get", String.class);
+            meta = getMethod.invoke(nbtBase, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
+
+    public static Object createNode(Object nbtBase, String tag) {
+        if (nbtBase == null) return null;
+        Object meta = null;
+        try {
+            Method getMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
+            meta = getMethod.invoke(nbtBase, tag);
+            Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
+            setMethod.invoke(nbtBase, tag, meta);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
 	
 	public static Object createNode(ItemStack stack, String tag) {
 		if (stack == null) return null;
@@ -352,8 +391,8 @@ public class NMSUtils {
 		if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
 		try {
 			if (value == null || value.length() == 0) {
-				Method setStringMethod = class_NBTTagCompound.getMethod("remove", String.class);
-				setStringMethod.invoke(node, tag);
+				Method removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
+                removeMethod.invoke(node, tag);
 			} else {
 				Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
 				setStringMethod.invoke(node, tag, value);
@@ -362,6 +401,16 @@ public class NMSUtils {
 			ex.printStackTrace();
 		}
 	}
+
+    public static void removeMeta(Object node, String tag) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            Method removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
+            removeMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
 	
 	public static String getMeta(ItemStack stack, String tag) {
 		if (stack == null) return null;
@@ -404,8 +453,13 @@ public class NMSUtils {
 			final Object enchList = class_NBTTagList.newInstance();
 			Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);		
 			setMethod.invoke(tagObject, "ench", enchList);
+
+            // Testing Glow API based on ItemMetadata storage
+            Object bukkitData = createNode(stack, "bukkit");
+            Method setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
+            setBooleanMethod.invoke(bukkitData, "glow", true);
 		} catch (Throwable ex) {
-			
+
 		}
     }
 

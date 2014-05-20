@@ -1,9 +1,12 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
@@ -86,4 +89,97 @@ public class CompatibilityUtils {
 		}
 	}
 
+    public static boolean hasMetadata(ItemStack itemStack, Plugin plugin, String key) {
+        Object handle = InventoryUtils.getHandle(itemStack);
+        if (handle == null) return false;
+        Object tag = NMSUtils.getTag(handle);
+        if (tag == null) return false;
+
+        Object bukkitRoot = NMSUtils.getNode(tag, "bukkit");
+        if (bukkitRoot == null) return false;
+        Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
+        if (pluginsRoot == null) return false;
+        Object dataRoot = NMSUtils.getNode(pluginsRoot, key);
+
+        return dataRoot != null && NMSUtils.containsNode(dataRoot, plugin.getName());
+    }
+
+    public static String getMetadata(ItemStack itemStack, Plugin plugin, String key) {
+        Object handle = InventoryUtils.getHandle(itemStack);
+        if (handle == null) return null;
+        Object tag = NMSUtils.getTag(handle);
+        if (tag == null) return null;
+
+        Object bukkitRoot = NMSUtils.getNode(tag, "bukkit");
+        if (bukkitRoot == null) return null;
+        Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
+        if (pluginsRoot == null) return null;
+        Object dataRoot = NMSUtils.getNode(pluginsRoot, key);
+        if (dataRoot == null) return null;
+        return NMSUtils.getMeta(dataRoot, plugin.getName());
+    }
+
+    public static boolean setMetadata(ItemStack itemStack, Plugin plugin, String key, String value) {
+        Object handle = InventoryUtils.getHandle(itemStack);
+        if (handle == null) return false;
+        Object tag = NMSUtils.getTag(handle);
+        if (tag == null) return false;
+
+        Object bukkitRoot = NMSUtils.createNode(tag, "bukkit");
+        if (bukkitRoot == null) return false;
+        Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
+        if (pluginsRoot == null) return false;
+        Object dataRoot = NMSUtils.createNode(pluginsRoot, key);
+        if (dataRoot == null) return false;
+        NMSUtils.setMeta(dataRoot, plugin.getName(), value);
+        return true;
+    }
+
+    public static boolean removeMetadata(ItemStack itemStack, Plugin plugin, String key) {
+        Object handle = InventoryUtils.getHandle(itemStack);
+        if (handle == null) return false;
+        Object tag = NMSUtils.getTag(handle);
+        if (tag == null) return false;
+
+        Object bukkitRoot = NMSUtils.createNode(tag, "bukkit");
+        if (bukkitRoot == null) return false;
+        Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
+        if (pluginsRoot == null) return false;
+        Object dataRoot = NMSUtils.createNode(pluginsRoot, key);
+        if (dataRoot == null) return false;
+        NMSUtils.removeMeta(dataRoot, plugin.getName());
+        return true;
+    }
+
+    public static Object getMetadataNode(ItemStack itemStack, Plugin plugin, String key) {
+        Object handle = InventoryUtils.getHandle(itemStack);
+        if (handle == null) return null;
+        Object tag = NMSUtils.getTag(handle);
+        if (tag == null) return null;
+
+        Object bukkitRoot = NMSUtils.getNode(tag, "bukkit");
+        if (bukkitRoot == null) return null;
+        Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
+        if (pluginsRoot == null) return null;
+        Object dataRoot = NMSUtils.getNode(pluginsRoot, key);
+        if (dataRoot == null) return null;
+
+        return NMSUtils.getNode(dataRoot, plugin.getName());
+    }
+
+    public static Object createMetadataNode(ItemStack itemStack, Plugin plugin, String key) {
+        Object handle = InventoryUtils.getHandle(itemStack);
+        if (handle == null) return null;
+        Object tag = NMSUtils.getTag(handle);
+        if (tag == null) return null;
+
+        Object bukkitRoot = NMSUtils.createNode(tag, "bukkit");
+        if (bukkitRoot == null) return null;
+        Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
+        if (pluginsRoot == null) return null;
+        Object dataRoot = NMSUtils.createNode(pluginsRoot, key);
+        if (dataRoot == null) return null;
+
+        return NMSUtils.createNode(dataRoot, plugin.getName());
+    }
 }
