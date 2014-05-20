@@ -13,75 +13,75 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
  * 
  */
 public interface CastingCost {
-	/**
-	 * Whether or not this record has any costs associated with it,
-	 * after being reduced
-	 * 
-	 * @param reducer The CostReducer to use for calculating costs
-	 * @return True if this has any non-zero costs.
-	 */
-	public boolean hasCosts(CostReducer reducer);
-	
-	/**
-	 * Get a human-readable description of this cost.
-	 * 
-	 * For XP, display text will be determined by the
-	 * CostReducer if it uses Mana.
-	 * 
-	 * This does not include the amount, and only the label - e.g. "Bread" or "Mana" or "XP".
-	 * 
-	 * @param reducer The CostReducer to use to calculate costs and determine display type
-	 * @return A printable String to display this casting cost to a Player.
-	 */
-	public String getDescription(CostReducer reducer);
-	
-	/**
-	 * Get a human-readable description of this cost.
-	 * 
-	 * For XP, display text will be determined by the
-	 * CostReducer if it uses Mana.
-	 * 
-	 * This includes the amount as well as the label - e.g. "2 Bread" or "30 Mana" or "50 XP".
-	 * 
-	 * @param reducer The CostReducer to use to calculate costs and determine display type
-	 * @return A printable String to display this casting cost to a Player.
-	 */
-	public String getFullDescription(CostReducer reducer);
-	
-	/**
-	 * Returns the raw XP cost.
-	 * 
-	 * @return The raw XP cost, without reduction. 
-	 */
-	public int getXP();
-	
-	/**
-	 * Returns the raw item amount cost.
-	 * 
-	 * @return The raw item amount cost, without reduction. 
-	 */
-	public int getAmount();
-	
-	/**
-	 * Returns the XP/Mana amount to deduct
-	 * 
-	 * @param reducer The CostReducer to use to calculate costs
-	 * @return The XP/Mana amount cost
-	 */
-	public int getXP(CostReducer reducer);
-	
-	/**
-	 * Returns the item amount to deduct
-	 * 
-	 * @param reducer The CostReducer to use to calculate costs
-	 * @return The item amount cost
-	 */
-	public int getAmount(CostReducer reducer);
+    /**
+     * Whether or not this record has any costs associated with it,
+     * after being reduced
+     *
+     * @param reducer The CostReducer to use for calculating costs
+     * @return True if this has any non-zero costs.
+     */
+    public boolean hasCosts(CostReducer reducer);
 
-	/**
-	 * Get the item, if any, associated with this cost.
-	 * 
-	 * @return The item to consume, or null if none.
-	 */
-	public MaterialAndData getMaterial();
+    /**
+     * Get a human-readable description of this cost.
+     *
+     * For XP, display text will be determined by the
+     * CostReducer if it uses Mana.
+     *
+     * This does not include the amount, and only the label - e.g. "Bread" or "Mana" or "XP".
+     *
+     * @param reducer The CostReducer to use to calculate costs and determine display type
+     * @return A printable String to display this casting cost to a Player.
+     */
+    public String getDescription(CostReducer reducer);
+
+    /**
+     * Get a human-readable description of this cost.
+     *
+     * For XP, display text will be determined by the
+     * CostReducer if it uses Mana.
+     *
+     * This includes the amount as well as the label - e.g. "2 Bread" or "30 Mana" or "50 XP".
+     *
+     * @param reducer The CostReducer to use to calculate costs and determine display type
+     * @return A printable String to display this casting cost to a Player.
+     */
+    public String getFullDescription(CostReducer reducer);
+
+    /**
+     * Returns the raw XP cost.
+     *
+     * @return The raw XP cost, without reduction.
+     */
+    public int getXP();
+
+    /**
+     * Returns the raw item amount cost.
+     *
+     * @return The raw item amount cost, without reduction.
+     */
+    public int getAmount();
+
+    /**
+     * Returns the XP/Mana amount to deduct
+     *
+     * @param reducer The CostReducer to use to calculate costs
+     * @return The XP/Mana amount cost
+     */
+    public int getXP(CostReducer reducer);
+
+    /**
+     * Returns the item amount to deduct
+     *
+     * @param reducer The CostReducer to use to calculate costs
+     * @return The item amount cost
+     */
+    public int getAmount(CostReducer reducer);
+
+    /**
+     * Get the item, if any, associated with this cost.
+     *
+     * @return The item to consume, or null if none.
+     */
+    public MaterialAndData getMaterial();
 }

@@ -38,20 +38,20 @@ import org.bukkit.inventory.ItemStack;
  * be saved.
  */
 public interface MaterialAndData {
-	public void updateFrom(MaterialAndData other);
-	public void setMaterial(Material material, byte data);
-	public void setMaterial(Material material);
-	public void updateFrom(Block block);
-	public void modify(Block block);
-	public byte getData();
-	public void setData(byte data);
-	public Material getMaterial();
-	public String getKey();
-	public String getName();
-	public boolean is(Block block);
-	public boolean isDifferent(Block block);
-	public ItemStack getItemStack(int amount);
-	public boolean isValid();
-	public String getCommandLine();
-	public void setCommandLine(String commandLine);
+    public void updateFrom(MaterialAndData other);
+    public void setMaterial(Material material, byte data);
+    public void setMaterial(Material material);
+    public void updateFrom(Block block);
+    public void modify(Block block);
+    public byte getData();
+    public void setData(byte data);
+    public Material getMaterial();
+    public String getKey();
+    public String getName();
+    public boolean is(Block block);
+    public boolean isDifferent(Block block);
+    public ItemStack getItemStack(int amount);
+    public boolean isValid();
+    public String getCommandLine();
+    public void setCommandLine(String commandLine);
 }

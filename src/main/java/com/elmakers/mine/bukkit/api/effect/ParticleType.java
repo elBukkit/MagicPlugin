@@ -25,7 +25,7 @@ public enum ParticleType {
     FOOTSTEP("footstep"),
     SPLASH("splash"),
     WAKE("wake"),
-	LARGE_SMOKE("largesmoke"),
+    LARGE_SMOKE("largesmoke"),
     CLOUD("cloud"),
     RED_DUST("reddust"),
     SNOWBALL_POOF("snowballpoof"),
@@ -37,32 +37,32 @@ public enum ParticleType {
     HAPPY_VILLAGER("happyVillager"),
     SNOW_SHOVEL("snowshovel"),
 
-	BLOCK_BREAKING("iconcrack_{subtype}"),
-	TOOL_BREAKING("tilecrack_{subtype}"),
+    BLOCK_BREAKING("iconcrack_{subtype}"),
+    TOOL_BREAKING("tilecrack_{subtype}"),
 
-	UNKNOWN("nil");
+    UNKNOWN("nil");
 
-	private String particleName;
-	
-	private ParticleType(String particleName) {
-		this.particleName = particleName;
-	}
-	
-	public String getParticleName() {
-		return particleName;
-	}
-	
-	public String getParticleName(String subtype) {
-		return particleName.replace("{subtype}", subtype);
-	}
-	
-	public static ParticleType fromName(String name, ParticleType particle) {
-		for (ParticleType t : ParticleType.values()) {
-			if (t.getParticleName().replace("_", "").equalsIgnoreCase(name.replace("_", ""))) {
-				particle = t;
-				break;
-			}
-		}
-		return particle;
-	}
+    private String particleName;
+
+    private ParticleType(String particleName) {
+        this.particleName = particleName;
+    }
+
+    public String getParticleName() {
+        return particleName;
+    }
+
+    public String getParticleName(String subtype) {
+        return particleName.replace("{subtype}", subtype);
+    }
+
+    public static ParticleType fromName(String name, ParticleType particle) {
+        for (ParticleType t : ParticleType.values()) {
+            if (t.getParticleName().replace("_", "").equalsIgnoreCase(name.replace("_", ""))) {
+                particle = t;
+                break;
+            }
+        }
+        return particle;
+    }
 }

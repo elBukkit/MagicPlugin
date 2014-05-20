@@ -8,14 +8,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public interface EntityData {
-	public Location getLocation();
-	public EntityType getType();
-	public Art getArt();
-	public BlockFace getFacing();
-	public ItemStack getItem();
-	public double getHealth();
-	public void setHasMoved(boolean hasMoved);
-	
-	public Entity spawn();
-	public boolean modify(Entity entity);
+    public Location getLocation();
+    public EntityType getType();
+    public Art getArt();
+    public BlockFace getFacing();
+    public ItemStack getItem();
+    public double getHealth();
+    public void setHasMoved(boolean hasMoved);
+
+    public Entity spawn();
+    public boolean modify(Entity entity);
 }

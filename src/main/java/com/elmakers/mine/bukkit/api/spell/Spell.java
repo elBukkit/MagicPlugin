@@ -19,13 +19,13 @@ import org.bukkit.util.Vector;
  * implement the MageSpell interface.
  */
 public interface Spell extends SpellTemplate {
-	public boolean cast();
-	public boolean cast(String[] parameters);
-	public boolean cast(String[] parameters, Location defaultLocation);
-	public Location getLocation();
-	public Location getTargetLocation();
-	public Entity getTargetEntity();
-	public Vector getDirection();
-	public boolean isActive();
-	public boolean hasBrushOverride();
+    public boolean cast();
+    public boolean cast(String[] parameters);
+    public boolean cast(String[] parameters, Location defaultLocation);
+    public Location getLocation();
+    public Location getTargetLocation();
+    public Entity getTargetEntity();
+    public Vector getDirection();
+    public boolean isActive();
+    public boolean hasBrushOverride();
 }

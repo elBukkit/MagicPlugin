@@ -56,7 +56,6 @@
 	</distributionManagement>
 
 	<properties>
-		<build.version>1.3</build.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

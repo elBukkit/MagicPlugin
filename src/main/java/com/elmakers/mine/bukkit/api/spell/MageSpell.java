@@ -29,18 +29,18 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
  * MagicLib is not considered a strong API as such.
  */
 public interface MageSpell extends Spell, CostReducer {
-	public void activate();
-	public void deactivate();
-	public void reactivate();
-	public boolean cancel();
-	
-	public void setMage(Mage mage);
-	public Mage getMage();
-	
-	public void load(ConfigurationSection node);
-	public void save(ConfigurationSection node);
-	
-	public void tick();
-	
-	public void initialize(MageController controller);
+    public void activate();
+    public void deactivate();
+    public void reactivate();
+    public boolean cancel();
+
+    public void setMage(Mage mage);
+    public Mage getMage();
+
+    public void load(ConfigurationSection node);
+    public void save(ConfigurationSection node);
+
+    public void tick();
+
+    public void initialize(MageController controller);
 }

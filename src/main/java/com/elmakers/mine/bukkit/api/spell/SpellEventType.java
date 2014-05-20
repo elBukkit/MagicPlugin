@@ -5,7 +5,7 @@ package com.elmakers.mine.bukkit.api.spell;
  */
 public enum SpellEventType
 {
-	PLAYER_QUIT,
-	PLAYER_DEATH,
-	PLAYER_DAMAGE
+    PLAYER_QUIT,
+    PLAYER_DEATH,
+    PLAYER_DAMAGE
 }

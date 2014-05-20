@@ -52,71 +52,71 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
  * and so will always fail unless cast by a player or with "castp".
  */
 public interface Mage extends CostReducer {
-	/**
-	 * Return the list of pending construction batches for this Mage
-	 * 
-	 * @return Collection<BlockBatch> pending construction batches
-	 */
-	public Collection<BlockBatch> getPendingBatches();
-	
-	/**
-	 * Get the name of this mage. This may be the Player's display name, or
-	 * the name of a command block (for Automata)
-	 * 
-	 * @return String the display name of this mage
-	 */
-	public String getName();
-	
-	/**
-	 * Get the unique id of this mage. May be a UUID for a player, or
-	 * a command block name for Automata.
-	 * 
-	 * @return String the unique id of this Mage
-	 */
-	public String getId();
-	
-	/**
-	 * Get the location of this Mage. This may be a Player location,
-	 * a Command block location, or null for console casting.
-	 * 
-	 * @return Location the location of this Mage.
-	 */
-	public Location getLocation();
-	
-	/**
-	 * Get the eye location of this Mage. May be the Player eye
-	 * location, or the Location of the Mage plus 1.5 y.
-	 * 
-	 * @return Location the location of the Mage's eyes, used for targeting.
-	 */
-	public Location getEyeLocation();
-	
-	/**
-	 * Get the direction this Mage is facing.
-	 * 
-	 * @return Vector the facing direction
-	 */
-	public Vector getDirection();
-	
-	/**
-	 * Get the Player instance backed by this Mage.
-	 * 
-	 * This may return null for Command block or console-based mages.
-	 * 
-	 * A Spell should detect this and, if the Spell absolutely requires a 
-	 * Player, should return SpellResult.PLAYER_REQUIRED.
-	 * 
-	 * Spells should attempt to avoid requiring a player, do not use the 
-	 * Player object to get a Location or Vector direction, generally
-	 * try to use the Spell or Mage methods for that. This will make
-	 * sure that parameter overrides and command-block usage function properly.
-	 * 
-	 * A Player should only be needed if a Spell does something very Player-specific,
-	 * such as open an inventory to show the Player in-game, like StashSpell does.
-	 * 
-	 * @return The player backed by this Mage, or null for Automaton Mages.
-	 */
-	public Player getPlayer();
+    /**
+     * Return the list of pending construction batches for this Mage
+     *
+     * @return Collection<BlockBatch> pending construction batches
+     */
+    public Collection<BlockBatch> getPendingBatches();
+
+    /**
+     * Get the name of this mage. This may be the Player's display name, or
+     * the name of a command block (for Automata)
+     *
+     * @return String the display name of this mage
+     */
+    public String getName();
+
+    /**
+     * Get the unique id of this mage. May be a UUID for a player, or
+     * a command block name for Automata.
+     *
+     * @return String the unique id of this Mage
+     */
+    public String getId();
+
+    /**
+     * Get the location of this Mage. This may be a Player location,
+     * a Command block location, or null for console casting.
+     *
+     * @return Location the location of this Mage.
+     */
+    public Location getLocation();
+
+    /**
+     * Get the eye location of this Mage. May be the Player eye
+     * location, or the Location of the Mage plus 1.5 y.
+     *
+     * @return Location the location of the Mage's eyes, used for targeting.
+     */
+    public Location getEyeLocation();
+
+    /**
+     * Get the direction this Mage is facing.
+     *
+     * @return Vector the facing direction
+     */
+    public Vector getDirection();
+
+    /**
+     * Get the Player instance backed by this Mage.
+     *
+     * This may return null for Command block or console-based mages.
+     *
+     * A Spell should detect this and, if the Spell absolutely requires a
+     * Player, should return SpellResult.PLAYER_REQUIRED.
+     *
+     * Spells should attempt to avoid requiring a player, do not use the
+     * Player object to get a Location or Vector direction, generally
+     * try to use the Spell or Mage methods for that. This will make
+     * sure that parameter overrides and command-block usage function properly.
+     *
+     * A Player should only be needed if a Spell does something very Player-specific,
+     * such as open an inventory to show the Player in-game, like StashSpell does.
+     *
+     * @return The player backed by this Mage, or null for Automaton Mages.
+     */
+    public Player getPlayer();
 
     /**
      * Get the Entity instance backed by this Mage.
@@ -137,200 +137,200 @@ public interface Mage extends CostReducer {
      * @return The LivingEntity represented by this Mage
      */
     public LivingEntity getLivingEntity();
-	
-	/**
-	 * Get the CommandSender backed by this Mage.
-	 * 
-	 * This should generally always be non-null, and can be used to send a message
-	 * to the Mage. This may show in the server console, Player chat, or get
-	 * eaten by a Command block.
-	 * 
-	 * @return CommandSender The sender driving this Mage.
-	 */
-	public CommandSender getCommandSender();
-	
-	/**
-	 * Send a message to this Mage.
-	 * 
-	 * This will respect the global plugin message cooldown, message
-	 * display settings and the Mage's active Wand "quiet" setting.
-	 * 
-	 * A Wand "quiet" setting of 2 will disable these messages.
-	 * 
-	 * @param message The message to send.
-	 */
-	public void sendMessage(String message);
-	
-	/**
-	 * Send a message to this Mage.
-	 * 
-	 * This will respect the global plugin "cast" message cooldown, message
-	 * display settings and the Mage's active Wand "quiet" setting.
-	 * 
-	 * A Wand "quiet" setting of 1 will disable these messages.
-	 * 
-	 * @param message The message to send.
-	 */
-	public void castMessage(String message);
-	
-	/**
-	 * Cancel any pending construction batches.
-	 * 
-	 * @return The batch that was cancelled, or null if nothing was pending.
-	 */
-	public BlockBatch cancelPending();
-	
-	/**
-	 * Undo the last construction performed by this Mage.
-	 * 
-	 * This will restore anything changed by the last-cast
-	 * construction spell, and remove that construction from
-	 * the Mage's UndoQueue.
-	 * 
-	 * @return The UndoList that was undone, or null if none.
-	 */
-	public UndoList undo();
-	
-	/**
-	 * Undo the last construction performed by this Mage against the
-	 * given Block
-	 * 
-	 * This will restore anything changed by the last-cast
-	 * construction spell by this Mage that targeted the specific Block,
-	 * even if it was not the most recent Spell cast by that Mage.
-	 * 
-	 * @param block The block to check for modifications.
-	 * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
-	 */
-	public UndoList undo(Block block);
-	
-	/**
-	 * Commit this Mage's UndoQueue.
-	 * 
-	 * This will cause anything in the undo queue to become permanent-
-	 * meaning other overlapping spells won't undo this construction, even
-	 * if they were cast before the spells in this undo queue.
-	 * 
-	 * This also clears the Mage's undo queue, which may allow them to be
-	 * destroyed if they are no longer active (e.g. the Player logged out).
-	 * 
-	 * This has no effect on the Mage's scheduled undo batches.
-	 * 
-	 * @return True if anything was commited, false if the Mage has no undo queue.
-	 */
-	public boolean commit();
-	
-	/**
-	 * Get the active Wand being used by this Mage.
-	 * 
-	 * This will generally be the Wand represented by the ItemStack held by the 
-	 * Player this Mage represents.
-	 * 
-	 * Automata and other non-Player Mages generally do not have Wands.
-	 * 
-	 * @return The Mage's active Wand.
-	 */
-	public Wand getActiveWand();
-	
-	/**
-	 * Return a Spell for this Mage, which can be used to programatically
-	 * cast or modify a Spell on behalf of this Mage.
-	 * 
-	 * @param key The key of the Spell to retrieve.
-	 * @return The Spell instance for this Mage, or null if the Mage does not have access to this Spell.
-	 */
-	public Spell getSpell(String key);
-	
-	/**
-	 * Return all of the Spell objects registered to this Mage.
-	 * 
-	 * This will generally be any Spells the Mage has ever cast.
-	 * 
-	 * @return A Collection of Spell objects this Mage has cast.
-	 */
-	public Collection<Spell> getSpells();
-		
-	/**
-	 * Set a Spell as "active". An "active" spell is generally a toggleable on/off
-	 * spell. These spells may be draining mana/xp while they are active, and
-	 * may self-deactivate after a specific duration, or if their resources deplete.
-	 * 
-	 * @param spell The spell to activate.
-	 */
-	public void activateSpell(Spell spell);
-	
-	/**
-	 * Deactivate a currently active spell. A spell may call this to deactivate
-	 * itself.
-	 * 
-	 * If the given spell is not currently active, nothing will happen.
-	 * 
-	 * @param spell The spell to deactivate
-	 */
-	public void deactivateSpell(Spell spell);
-	
-	/**
-	 * Deactivate all active spells for this Mage.
-	 */
-	public void deactivateAllSpells();
-	
-	public boolean isCooldownFree();
-	public float getCooldownReduction();
-	public boolean isCostFree();
-	public float getCostReduction();
-	
-	public boolean isSuperPowered();
-	public boolean isSuperProtected();
-	
-	public float getRangeMultiplier();
-	public float getDamageMultiplier();
-	public float getRadiusMultiplier();
-	public float getConstructionMultiplier();
-	
-	public Color getEffectColor();
-	public float getPower();
-	
-	public boolean isPlayer();
-	public boolean isOnline();
-	public boolean isDead();
-	public boolean hasLocation();
-	
-	public void setLocation(Location location);
-	
-	/**
-	 * This should be called by a Spell upon
-	 * completion, to notify the Mage that it cast a spell.
-	 * 
-	 * @param result The result of the cast.
-	 */
-	public void onCast(Spell spell, SpellResult result);
-	
-	public boolean isRestricted(Material material);
-	public Set<Material> getRestrictedMaterials();
-	
-	public MageController getController();
-	public boolean hasCastPermission(Spell spell);
-	public boolean hasBuildPermission(Block block);
-	public boolean isIndestructible(Block block);
-	public boolean isDestructible(Block block);
-	
-	public boolean registerForUndo(UndoList blocks);
-	
-	public Inventory getInventory();
-	
-	public MaterialBrush getBrush();
-	
-	public void removeExperience(int xp);
-	public int getExperience();
-	
-	public boolean addPendingBlockBatch(BlockBatch batch);
-	
-	public void registerEvent(SpellEventType type, Listener spell);
-	public void unregisterEvent(SpellEventType type, Listener spell);
-	
-	public UndoQueue getUndoQueue();
-	public List<LostWand> getLostWands();
-	public Location getLastDeathLocation();
-	
-	public boolean hasStoredInventory();
+
+    /**
+     * Get the CommandSender backed by this Mage.
+     *
+     * This should generally always be non-null, and can be used to send a message
+     * to the Mage. This may show in the server console, Player chat, or get
+     * eaten by a Command block.
+     *
+     * @return CommandSender The sender driving this Mage.
+     */
+    public CommandSender getCommandSender();
+
+    /**
+     * Send a message to this Mage.
+     *
+     * This will respect the global plugin message cooldown, message
+     * display settings and the Mage's active Wand "quiet" setting.
+     *
+     * A Wand "quiet" setting of 2 will disable these messages.
+     *
+     * @param message The message to send.
+     */
+    public void sendMessage(String message);
+
+    /**
+     * Send a message to this Mage.
+     *
+     * This will respect the global plugin "cast" message cooldown, message
+     * display settings and the Mage's active Wand "quiet" setting.
+     *
+     * A Wand "quiet" setting of 1 will disable these messages.
+     *
+     * @param message The message to send.
+     */
+    public void castMessage(String message);
+
+    /**
+     * Cancel any pending construction batches.
+     *
+     * @return The batch that was cancelled, or null if nothing was pending.
+     */
+    public BlockBatch cancelPending();
+
+    /**
+     * Undo the last construction performed by this Mage.
+     *
+     * This will restore anything changed by the last-cast
+     * construction spell, and remove that construction from
+     * the Mage's UndoQueue.
+     *
+     * @return The UndoList that was undone, or null if none.
+     */
+    public UndoList undo();
+
+    /**
+     * Undo the last construction performed by this Mage against the
+     * given Block
+     *
+     * This will restore anything changed by the last-cast
+     * construction spell by this Mage that targeted the specific Block,
+     * even if it was not the most recent Spell cast by that Mage.
+     *
+     * @param block The block to check for modifications.
+     * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
+     */
+    public UndoList undo(Block block);
+
+    /**
+     * Commit this Mage's UndoQueue.
+     *
+     * This will cause anything in the undo queue to become permanent-
+     * meaning other overlapping spells won't undo this construction, even
+     * if they were cast before the spells in this undo queue.
+     *
+     * This also clears the Mage's undo queue, which may allow them to be
+     * destroyed if they are no longer active (e.g. the Player logged out).
+     *
+     * This has no effect on the Mage's scheduled undo batches.
+     *
+     * @return True if anything was commited, false if the Mage has no undo queue.
+     */
+    public boolean commit();
+
+    /**
+     * Get the active Wand being used by this Mage.
+     *
+     * This will generally be the Wand represented by the ItemStack held by the
+     * Player this Mage represents.
+     *
+     * Automata and other non-Player Mages generally do not have Wands.
+     *
+     * @return The Mage's active Wand.
+     */
+    public Wand getActiveWand();
+
+    /**
+     * Return a Spell for this Mage, which can be used to programatically
+     * cast or modify a Spell on behalf of this Mage.
+     *
+     * @param key The key of the Spell to retrieve.
+     * @return The Spell instance for this Mage, or null if the Mage does not have access to this Spell.
+     */
+    public Spell getSpell(String key);
+
+    /**
+     * Return all of the Spell objects registered to this Mage.
+     *
+     * This will generally be any Spells the Mage has ever cast.
+     *
+     * @return A Collection of Spell objects this Mage has cast.
+     */
+    public Collection<Spell> getSpells();
+
+    /**
+     * Set a Spell as "active". An "active" spell is generally a toggleable on/off
+     * spell. These spells may be draining mana/xp while they are active, and
+     * may self-deactivate after a specific duration, or if their resources deplete.
+     *
+     * @param spell The spell to activate.
+     */
+    public void activateSpell(Spell spell);
+
+    /**
+     * Deactivate a currently active spell. A spell may call this to deactivate
+     * itself.
+     *
+     * If the given spell is not currently active, nothing will happen.
+     *
+     * @param spell The spell to deactivate
+     */
+    public void deactivateSpell(Spell spell);
+
+    /**
+     * Deactivate all active spells for this Mage.
+     */
+    public void deactivateAllSpells();
+
+    public boolean isCooldownFree();
+    public float getCooldownReduction();
+    public boolean isCostFree();
+    public float getCostReduction();
+
+    public boolean isSuperPowered();
+    public boolean isSuperProtected();
+
+    public float getRangeMultiplier();
+    public float getDamageMultiplier();
+    public float getRadiusMultiplier();
+    public float getConstructionMultiplier();
+
+    public Color getEffectColor();
+    public float getPower();
+
+    public boolean isPlayer();
+    public boolean isOnline();
+    public boolean isDead();
+    public boolean hasLocation();
+
+    public void setLocation(Location location);
+
+    /**
+     * This should be called by a Spell upon
+     * completion, to notify the Mage that it cast a spell.
+     *
+     * @param result The result of the cast.
+     */
+    public void onCast(Spell spell, SpellResult result);
+
+    public boolean isRestricted(Material material);
+    public Set<Material> getRestrictedMaterials();
+
+    public MageController getController();
+    public boolean hasCastPermission(Spell spell);
+    public boolean hasBuildPermission(Block block);
+    public boolean isIndestructible(Block block);
+    public boolean isDestructible(Block block);
+
+    public boolean registerForUndo(UndoList blocks);
+
+    public Inventory getInventory();
+
+    public MaterialBrush getBrush();
+
+    public void removeExperience(int xp);
+    public int getExperience();
+
+    public boolean addPendingBlockBatch(BlockBatch batch);
+
+    public void registerEvent(SpellEventType type, Listener spell);
+    public void unregisterEvent(SpellEventType type, Listener spell);
+
+    public UndoQueue getUndoQueue();
+    public List<LostWand> getLostWands();
+    public Location getLastDeathLocation();
+
+    public boolean hasStoredInventory();
 }

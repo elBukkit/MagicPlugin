@@ -7,7 +7,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 
 public interface Schematic {
-	public boolean contains(Vector v);
-	public MaterialAndData getBlock(Vector v);
-	public Collection<EntityData> getEntities();
+    public boolean contains(Vector v);
+    public MaterialAndData getBlock(Vector v);
+    public Collection<EntityData> getEntities();
 }

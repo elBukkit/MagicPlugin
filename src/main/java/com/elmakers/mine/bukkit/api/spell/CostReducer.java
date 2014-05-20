@@ -8,17 +8,17 @@ package com.elmakers.mine.bukkit.api.spell;
  * else that cares to implement this interface)
  */
 public interface CostReducer {
-	/**
-	 * Get the percent cost reduction, from 0.0 to 1.0
-	 * @return The percent cost reduction.
-	 */
-	public float getCostReduction();
-	
-	/**
-	 * Get whether or not the display should use Mana
-	 * instead of XP.
-	 * 
-	 * @return True if a Mana display should be used.
-	 */
-	public boolean usesMana();
+    /**
+     * Get the percent cost reduction, from 0.0 to 1.0
+     * @return The percent cost reduction.
+     */
+    public float getCostReduction();
+
+    /**
+     * Get whether or not the display should use Mana
+     * instead of XP.
+     *
+     * @return True if a Mana display should be used.
+     */
+    public boolean usesMana();
 }

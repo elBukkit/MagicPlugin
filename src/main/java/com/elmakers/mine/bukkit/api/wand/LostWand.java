@@ -19,8 +19,8 @@ import org.bukkit.Location;
  * as well as to repopulate dynmap after a restart, since the markers are not persistent.
  */
 public interface LostWand {
-	public Location getLocation();
-	public String getName();
-	public String getId();
-	public String getOwner();
+    public Location getLocation();
+    public String getName();
+    public String getId();
+    public String getOwner();
 }

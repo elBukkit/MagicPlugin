@@ -13,8 +13,8 @@ import org.bukkit.configuration.ConfigurationSection;
  * A BlockList should not contain blocks from more than one World in it.
  */
 public interface BlockList extends Collection<BlockData> {
-	public void save(ConfigurationSection node);
-	public void load(ConfigurationSection node);
-	public String getWorldName();
-	public BoundingBox getArea();
+    public void save(ConfigurationSection node);
+    public void load(ConfigurationSection node);
+    public String getWorldName();
+    public BoundingBox getArea();
 }

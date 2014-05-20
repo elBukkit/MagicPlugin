@@ -15,19 +15,19 @@ import org.bukkit.util.BlockVector;
  * 
  */
 public interface BlockData extends MaterialAndData {
-	public long getId();
-	public World getWorld();
-	public String getWorldName();
-	public Block getBlock();
-	public BlockVector getPosition();
-	public void restore();
-	public void commit();
-	public boolean undo();
-	public boolean isDifferent();
+    public long getId();
+    public World getWorld();
+    public String getWorldName();
+    public Block getBlock();
+    public BlockVector getPosition();
+    public void restore();
+    public void commit();
+    public boolean undo();
+    public boolean isDifferent();
 
-	public void unlink();
-	public BlockData getNextState();
-	public void setNextState(BlockData next);
-	public BlockData getPriorState();
-	public void setPriorState(BlockData prior);
+    public void unlink();
+    public BlockData getNextState();
+    public void setNextState(BlockData next);
+    public BlockData getPriorState();
+    public void setPriorState(BlockData prior);
 }

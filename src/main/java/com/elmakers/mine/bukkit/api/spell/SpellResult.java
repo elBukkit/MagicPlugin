@@ -8,33 +8,33 @@ package com.elmakers.mine.bukkit.api.spell;
  * A Spell that fails to cast will not consume costs or register for cooldown.
  */
 public enum SpellResult {
-	CAST, 
-	AREA,
-	FIZZLE,
-	BACKFIRE,
+    CAST,
+    AREA,
+    FIZZLE,
+    BACKFIRE,
     CURSED,
-	FAIL,
-	CANCEL,
-	INSUFFICIENT_RESOURCES, 
-	INSUFFICIENT_PERMISSION, 
-	COOLDOWN, 
-	NO_TARGET,
-	RESTRICTED,
-	TARGET_SELECTED,
+    FAIL,
+    CANCEL,
+    INSUFFICIENT_RESOURCES,
+    INSUFFICIENT_PERMISSION,
+    COOLDOWN,
+    NO_TARGET,
+    RESTRICTED,
+    TARGET_SELECTED,
     ENTITY_REQUIRED,
     LIVING_ENTITY_REQUIRED,
     PLAYER_REQUIRED,
     LOCATION_REQUIRED,
     WORLD_REQUIRED,
-	INVALID_WORLD,
-	COST_FREE;
-	
-	/**
-	 * Determine if this result is a success or not.
-	 * 
-	 * @return True if this cast was a success.
-	 */
-	public boolean isSuccess() {
-		return this == CAST || this == AREA || this == FIZZLE || this == BACKFIRE;
-	}
+    INVALID_WORLD,
+    COST_FREE;
+
+    /**
+     * Determine if this result is a success or not.
+     *
+     * @return True if this cast was a success.
+     */
+    public boolean isSuccess() {
+        return this == CAST || this == AREA || this == FIZZLE || this == BACKFIRE;
+    }
 }

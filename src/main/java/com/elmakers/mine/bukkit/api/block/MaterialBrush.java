@@ -9,14 +9,14 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public interface MaterialBrush extends MaterialAndData {
-	public void prepare();
-	public boolean isReady();
-	public Collection<EntityData> getEntities();
-	public Collection<Entity> getTargetEntities();
-	public boolean hasEntities();
-	public boolean update(final Mage mage, final Location location);
-	public void update(String activeMaterial);
-	public void activate(final Location location, final String material);
-	public void setTarget(Location target);
-	public void setTarget(Location target, Location center);
+    public void prepare();
+    public boolean isReady();
+    public Collection<EntityData> getEntities();
+    public Collection<Entity> getTargetEntities();
+    public boolean hasEntities();
+    public boolean update(final Mage mage, final Location location);
+    public void update(String activeMaterial);
+    public void activate(final Location location, final String material);
+    public void setTarget(Location target);
+    public void setTarget(Location target, Location center);
 }
