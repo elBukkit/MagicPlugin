@@ -27,7 +27,7 @@ public class WandCleanupRunnable extends RunnableJob {
 		this.world = world;
 		this.api = api;
 		lostWands.addAll(api.getLostWands());
-		this.removeAll = owner.equals("ALL");
+		this.removeAll = owner != null && owner.equals("ALL");
         this.check = check;
 		this.owner = owner == null ? "" : owner;
 	}
