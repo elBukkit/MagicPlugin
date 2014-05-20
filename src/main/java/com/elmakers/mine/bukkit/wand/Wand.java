@@ -9,6 +9,24 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import com.elmakers.mine.bukkit.api.effect.ParticleType;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
+import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.ColorHD;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -27,29 +45,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
-import com.elmakers.mine.bukkit.api.spell.CostReducer;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
-import com.elmakers.mine.bukkit.magic.Mage;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.ColorHD;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.Messages;
-
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
+    public static Plugin metadataProvider;
+
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
@@ -642,7 +646,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
 				continue;
 			}
-			if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey;	
+			if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey;
 			addToInventory(itemStack, slot);
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
@@ -750,28 +754,55 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void saveState() {
 		if (suspendSave || item == null) return;
 
+        ConfigurationSection stateNode = new MemoryConfiguration();
+        saveProperties(stateNode);
+
+        // Save legacy data as well until migration is settled
 		Object wandNode = InventoryUtils.createNode(item, "wand");
 		if (wandNode == null) {
-			controller.getLogger().warning("Failed to save wand state for wand id " + id + " to : " + item + " of class " + item.getClass());
-			return;
-		}
-		ConfigurationSection stateNode = new MemoryConfiguration();
-		saveProperties(stateNode);
-		InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
+			controller.getLogger().warning("Failed to save legacy wand state for wand id " + id + " to : " + item + " of class " + item.getClass());
+		} else {
+            InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
+        }
+
+        // TODO: Re-implement using Metadata API in 4.0
+        Object magicNode = CompatibilityUtils.createMetadataNode(item, metadataProvider, isUpgrade ? "upgrade" : "wand");
+        if (magicNode == null) {
+            controller.getLogger().warning("Failed to save wand state for wand id " + id + " to : " + item + " of class " + item.getClass());
+            return;
+        }
+
+        InventoryUtils.saveTagsToNBT(stateNode, magicNode, ALL_PROPERTY_KEYS);
 	}
 	
 	protected void loadState() {
 		if (item == null) return;
-		
-		Object wandNode = InventoryUtils.getNode(item, "wand");
-		if (wandNode == null) {
-            return;
-		}
-		
-		ConfigurationSection stateNode = new MemoryConfiguration();
-		InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
-		
-		loadProperties(stateNode);
+
+        boolean isWand = CompatibilityUtils.hasMetadata(item, metadataProvider, "wand");
+        boolean isUpgrade = !isWand && CompatibilityUtils.hasMetadata(item, metadataProvider, "upgrade");
+        if (isWand || isUpgrade) {
+
+            // TODO: Re-implement using Metadata API in 4.0
+            Object magicNode = CompatibilityUtils.getMetadataNode(item, metadataProvider, isUpgrade ? "upgrade" : "wand");
+            if (magicNode == null) {
+                return;
+            }
+
+            ConfigurationSection stateNode = new MemoryConfiguration();
+            InventoryUtils.loadTagsFromNBT(stateNode, magicNode, ALL_PROPERTY_KEYS);
+
+            loadProperties(stateNode);
+        } else {
+            Object wandNode = InventoryUtils.getNode(item, "wand");
+            if (wandNode == null) {
+                return;
+            }
+
+            ConfigurationSection stateNode = new MemoryConfiguration();
+            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
+
+            loadProperties(stateNode);
+        }
 	}
 
 	public void saveProperties(ConfigurationSection node) {
@@ -942,7 +973,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			
 			String wandMaterials = wandConfig.getString("materials", "");
 			String wandSpells = wandConfig.getString("spells", "");
-			
+
 			if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
 				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
 				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
@@ -1321,10 +1352,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public static boolean isWand(ItemStack item) {
 		// Note that WandUpgrades also show up here!
-		return item != null && InventoryUtils.hasMeta(item, "wand");
+		return item != null && (CompatibilityUtils.hasMetadata(item, metadataProvider, "wand") || isLegacyWand(item));
 	}
 
-	public static boolean isWandUpgrade(ItemStack item) {
+    public static boolean isLegacyWand(ItemStack item) {
+        // Note that WandUpgrades also show up here!
+        return item != null && InventoryUtils.hasMeta(item, "wand");
+    }
+
+	public static boolean isLegacyWandUpgrade(ItemStack item) {
 		if (item == null) return false;
 		Object wandNode = InventoryUtils.getNode(item, "wand");
 		
@@ -1334,27 +1370,65 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return upgradeData != null && upgradeData.equals("true");
 	}
 
+    public static boolean isWandUpgrade(ItemStack item) {
+        if (item == null) return false;
+        if (isLegacyWandUpgrade(item)) return true;
+        if (!isWand(item)) return false;
+
+        return item != null && CompatibilityUtils.hasMetadata(item, metadataProvider, "upgrade");
+    }
+
+    public static boolean isLegacySpell(ItemStack item) {
+        return item != null && InventoryUtils.hasMeta(item, "spell");
+    }
+
 	public static boolean isSpell(ItemStack item) {
-		return item != null && InventoryUtils.hasMeta(item, "spell");
+		return item != null && (CompatibilityUtils.hasMetadata(item, metadataProvider, "spell") || isLegacySpell(item));
 	}
+
+    public static boolean isLegacyBrush(ItemStack item) {
+        return item != null && InventoryUtils.hasMeta(item, "brush");
+    }
 
 	public static boolean isBrush(ItemStack item) {
-		return item != null && InventoryUtils.hasMeta(item, "brush");
-	}
-	
-	public static String getSpell(ItemStack item) {
-		if (!isSpell(item)) return null;
-		
-		Object spellNode = InventoryUtils.getNode(item, "spell");
-		return InventoryUtils.getMeta(spellNode, "key");
+		return item != null && (CompatibilityUtils.hasMetadata(item, metadataProvider, "brush") || isLegacyBrush(item));
 	}
 
-	public static String getBrush(ItemStack item) {
-		if (!isBrush(item)) return null;
+    public static String getLegacySpell(ItemStack item) {
+        if (!isLegacySpell(item)) return null;
+
+        Object spellNode = InventoryUtils.getNode(item, "spell");
+        return InventoryUtils.getMeta(spellNode, "key");
+    }
+	
+	public static String getSpell(ItemStack item) {
+		if (!isSpell(item)) {
+            if (isLegacySpell(item)) {
+                return getLegacySpell(item);
+            }
+            return null;
+        }
+
+        return CompatibilityUtils.getMetadata(item, metadataProvider, "spell");
+	}
+
+	public static String getLegacyBrush(ItemStack item) {
+		if (!isLegacyBrush(item)) return null;
 		
 		Object brushNode = InventoryUtils.getNode(item, "brush");
 		return InventoryUtils.getMeta(brushNode, "key");
 	}
+
+    public static String getBrush(ItemStack item) {
+        if (!isBrush(item)) {
+            if (isLegacyBrush(item)) {
+                return getLegacyBrush(item);
+            }
+            return null;
+        }
+
+        return CompatibilityUtils.getMetadata(item, metadataProvider, "brush");
+    }
 	
 	protected static String getMaterialKey(ItemStack itemStack, Integer index) {
 		String materialKey = getBrush(itemStack);
@@ -1380,7 +1454,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public static void updateSpellItem(ItemStack itemStack, SpellTemplate spell, Wand wand, String activeMaterial, boolean isItem) {
 		ItemMeta meta = itemStack.getItemMeta();
-		String displayName = null;
+		String displayName;
 		if (wand != null) {
 			displayName = wand.getActiveWandName(spell);
 		} else {
@@ -1395,8 +1469,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
 		InventoryUtils.addGlow(itemStack);
-		Object spellNode = InventoryUtils.createNode(itemStack, "spell");
-		InventoryUtils.setMeta(spellNode, "key", spell.getKey());
+		CompatibilityUtils.setMetadata(itemStack, metadataProvider, "spell", spell.getKey());
 	}
 	
 	public static void updateBrushItem(ItemStack itemStack, String materialKey, Wand wand) {
@@ -1409,8 +1482,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		meta.setDisplayName(displayName);
 		itemStack.setItemMeta(meta);
-		Object brushNode = InventoryUtils.createNode(itemStack, "brush");
-		InventoryUtils.setMeta(brushNode, "key", materialKey);
+        CompatibilityUtils.setMetadata(itemStack, metadataProvider, "brush", materialKey);
 	}
 
 	@SuppressWarnings("deprecation")
