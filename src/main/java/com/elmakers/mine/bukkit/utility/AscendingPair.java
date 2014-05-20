@@ -11,24 +11,24 @@ package com.elmakers.mine.bukkit.utility;
  * @param <T> The type of Numeric to randomly select
  */
 public class AscendingPair<T extends Number> implements Comparable<AscendingPair<? extends Object>> {
-	private final Long index;
-	private final T value;
+    private final Long index;
+    private final T value;
 
-	public AscendingPair(long index, T value) {
-		this.index = index;
-		this.value = value;
-	}
-	
-	public long getIndex() {
-		return index;
-	}
-	
-	public T getValue() {
-		return value;
-	}
+    public AscendingPair(long index, T value) {
+        this.index = index;
+        this.value = value;
+    }
 
-	@Override
-	public int compareTo(AscendingPair<? extends Object> other) {
-		return this.index.compareTo(other.index);
-	}
+    public long getIndex() {
+        return index;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    @Override
+    public int compareTo(AscendingPair<? extends Object> other) {
+        return this.index.compareTo(other.index);
+    }
 }

@@ -13,42 +13,42 @@ package com.elmakers.mine.bukkit.utility;
  * @param <T> The type of Object to randomly select
  */
 public class WeightedPair<T extends Object> implements Comparable<WeightedPair<? extends Object>> {
-	private final Float threshold;
-	private final T value;
+    private final Float threshold;
+    private final T value;
 
-	@SuppressWarnings("unchecked")
-	public WeightedPair(Float threshold, String value, Class<T> parseAs) {
-		this.threshold = threshold;
-		// This is pretty ugly, but not as ugly as trying to
-		// infer the generic type argument.
-		if (parseAs == Integer.class) {
-			this.value = (T)(Integer)Integer.parseInt(value);
-		} else if (parseAs == Float.class) {
-			this.value = (T)(Float)Float.parseFloat(value);
-		} else if (parseAs == Double.class) {
-			this.value = (T)(Double)Double.parseDouble(value);
-		} else if (parseAs == String.class) {
-			this.value = (T)value;
-		} else {
-			this.value = null;
-		}
-	}
-	
-	public WeightedPair(Float threshold, T value) {
-		this.threshold = threshold;
-		this.value = value;
-	}
-	
-	public Float getThreshold() {
-		return threshold;
-	}
-	
-	public T getValue() {
-		return value;
-	}
+    @SuppressWarnings("unchecked")
+    public WeightedPair(Float threshold, String value, Class<T> parseAs) {
+        this.threshold = threshold;
+        // This is pretty ugly, but not as ugly as trying to
+        // infer the generic type argument.
+        if (parseAs == Integer.class) {
+            this.value = (T)(Integer)Integer.parseInt(value);
+        } else if (parseAs == Float.class) {
+            this.value = (T)(Float)Float.parseFloat(value);
+        } else if (parseAs == Double.class) {
+            this.value = (T)(Double)Double.parseDouble(value);
+        } else if (parseAs == String.class) {
+            this.value = (T)value;
+        } else {
+            this.value = null;
+        }
+    }
 
-	@Override
-	public int compareTo(WeightedPair<? extends Object> other) {
-		return this.threshold.compareTo(other.threshold);
-	}
+    public WeightedPair(Float threshold, T value) {
+        this.threshold = threshold;
+        this.value = value;
+    }
+
+    public Float getThreshold() {
+        return threshold;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    @Override
+    public int compareTo(WeightedPair<? extends Object> other) {
+        return this.threshold.compareTo(other.threshold);
+    }
 }

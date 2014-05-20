@@ -17,137 +17,137 @@ import com.elmakers.mine.bukkit.utility.Messages;
 
 public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCost
 {
-	protected MaterialAndData item;
-	protected double amount;
-	protected int xp;
+    protected MaterialAndData item;
+    protected double amount;
+    protected int xp;
 
-	public CastingCost(String key, double cost)
-	{
-		if (key.toLowerCase().equals("xp")) {
-			this.xp = (int)cost;
-		} else {
-			this.item = new MaterialAndData(key);
-			this.amount = cost;
-		}
-	}
+    public CastingCost(String key, double cost)
+    {
+        if (key.toLowerCase().equals("xp")) {
+            this.xp = (int)cost;
+        } else {
+            this.item = new MaterialAndData(key);
+            this.amount = cost;
+        }
+    }
 
-	public CastingCost(Material item, double amount)
-	{
-		this.item = new MaterialAndData(item, (byte)0);
-		this.amount = amount;
-	}
+    public CastingCost(Material item, double amount)
+    {
+        this.item = new MaterialAndData(item, (byte)0);
+        this.amount = amount;
+    }
 
-	public CastingCost(Material item, byte data, double amount)
-	{
-		this.item = new MaterialAndData(item, data);
-		this.amount = amount;
-	}
-	
-	public MaterialAndData getMaterial() {
-		return item;
-	}
+    public CastingCost(Material item, byte data, double amount)
+    {
+        this.item = new MaterialAndData(item, data);
+        this.amount = amount;
+    }
 
-	public Map<String, Object> export()
-	{
-		Map<String, Object> cost = new HashMap<String, Object>();
-		cost.put("material", item.getName());
-		cost.put("amount", amount);
-		cost.put("xp", xp);
+    public MaterialAndData getMaterial() {
+        return item;
+    }
 
-		return cost;
-	}
+    public Map<String, Object> export()
+    {
+        Map<String, Object> cost = new HashMap<String, Object>();
+        cost.put("material", item.getName());
+        cost.put("amount", amount);
+        cost.put("xp", xp);
 
-	public boolean has(Spell spell)
-	{
-		if (!(spell instanceof MageSpell)) return false;
-		Mage mage = ((MageSpell)spell).getMage();
-		Inventory inventory = mage.getInventory();
-		int amount = getAmount(spell);
-		boolean hasItem = item == null || amount <= 0 || inventory.containsAtLeast(item.getItemStack(amount), amount);
-		boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
-		return hasItem && hasXp;
-	}
+        return cost;
+    }
 
-	public void use(Spell spell)
-	{
-		if (!(spell instanceof MageSpell)) return;
-		Mage mage = ((MageSpell)spell).getMage();
-		Inventory inventory = mage.getInventory();
-		int amount = getAmount(spell);
-		if (item != null && amount > 0) {
-			ItemStack itemStack = getItemStack(spell);
-			inventory.removeItem(itemStack);
-		}
-		int xp = getXP(spell);
-		if (xp > 0) {
-			mage.removeExperience(xp);
-		}
-	}
+    public boolean has(Spell spell)
+    {
+        if (!(spell instanceof MageSpell)) return false;
+        Mage mage = ((MageSpell)spell).getMage();
+        Inventory inventory = mage.getInventory();
+        int amount = getAmount(spell);
+        boolean hasItem = item == null || amount <= 0 || inventory.containsAtLeast(item.getItemStack(amount), amount);
+        boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
+        return hasItem && hasXp;
+    }
 
-	protected ItemStack getItemStack()
-	{
-		return item.getItemStack(getAmount());
-	}
+    public void use(Spell spell)
+    {
+        if (!(spell instanceof MageSpell)) return;
+        Mage mage = ((MageSpell)spell).getMage();
+        Inventory inventory = mage.getInventory();
+        int amount = getAmount(spell);
+        if (item != null && amount > 0) {
+            ItemStack itemStack = getItemStack(spell);
+            inventory.removeItem(itemStack);
+        }
+        int xp = getXP(spell);
+        if (xp > 0) {
+            mage.removeExperience(xp);
+        }
+    }
 
-	protected ItemStack getItemStack(CostReducer reducer)
-	{
-		return item.getItemStack(getAmount(reducer));
-	}
+    protected ItemStack getItemStack()
+    {
+        return item.getItemStack(getAmount());
+    }
 
-	public int getAmount()
-	{
-		return (int)Math.ceil(amount);
-	}
+    protected ItemStack getItemStack(CostReducer reducer)
+    {
+        return item.getItemStack(getAmount(reducer));
+    }
 
-	public int getXP()
-	{
-		return xp;
-	}
+    public int getAmount()
+    {
+        return (int)Math.ceil(amount);
+    }
 
-	public int getAmount(CostReducer reducer)
-	{
-		double reducedAmount = amount;
-		float reduction = reducer == null ? 0 : reducer.getCostReduction();
-		if (reduction > 0) {
-			reducedAmount = (1.0f - reduction) * reducedAmount;
-		}
-		return (int)Math.ceil(reducedAmount);
-	}
+    public int getXP()
+    {
+        return xp;
+    }
 
-	public int getXP(CostReducer reducer)
-	{
-		float reducedAmount = xp;
-		float reduction = reducer == null ? 0 : reducer.getCostReduction();
-		if (reduction > 0) {
-			reducedAmount = (1.0f - reduction) * reducedAmount;
-		}
-		return (int)Math.ceil(reducedAmount);
-	}
-	
-	public boolean hasCosts(CostReducer reducer) {
-		return (item != null && getAmount(reducer) > 0) || getXP(reducer) > 0;
-	}
+    public int getAmount(CostReducer reducer)
+    {
+        double reducedAmount = amount;
+        float reduction = reducer == null ? 0 : reducer.getCostReduction();
+        if (reduction > 0) {
+            reducedAmount = (1.0f - reduction) * reducedAmount;
+        }
+        return (int)Math.ceil(reducedAmount);
+    }
 
-	public String getDescription(CostReducer reducer)
-	{
-		if (item != null && getAmount() != 0) {
-			return item.getName();
-		}
-		if (reducer != null && !reducer.usesMana()) {
-			return Messages.get("costs.xp");
-		}
+    public int getXP(CostReducer reducer)
+    {
+        float reducedAmount = xp;
+        float reduction = reducer == null ? 0 : reducer.getCostReduction();
+        if (reduction > 0) {
+            reducedAmount = (1.0f - reduction) * reducedAmount;
+        }
+        return (int)Math.ceil(reducedAmount);
+    }
 
-		return Messages.get("costs.mana");
-	}
+    public boolean hasCosts(CostReducer reducer) {
+        return (item != null && getAmount(reducer) > 0) || getXP(reducer) > 0;
+    }
 
-	public String getFullDescription(CostReducer reducer)
-	{
-		if (item != null) {
-			return (int)getAmount(reducer) + " " + item.getName();
-		}
-		if (reducer != null && !reducer.usesMana()) {
-			return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
-		}
-		return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
-	}
+    public String getDescription(CostReducer reducer)
+    {
+        if (item != null && getAmount() != 0) {
+            return item.getName();
+        }
+        if (reducer != null && !reducer.usesMana()) {
+            return Messages.get("costs.xp");
+        }
+
+        return Messages.get("costs.mana");
+    }
+
+    public String getFullDescription(CostReducer reducer)
+    {
+        if (item != null) {
+            return (int)getAmount(reducer) + " " + item.getName();
+        }
+        if (reducer != null && !reducer.usesMana()) {
+            return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+        }
+        return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+    }
 }

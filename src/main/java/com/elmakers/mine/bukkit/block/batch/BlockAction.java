@@ -7,6 +7,6 @@ import com.elmakers.mine.bukkit.block.UndoList;
 
 public interface BlockAction
 {
-	public SpellResult perform(Block block);
-	public UndoList getBlocks();
+    public SpellResult perform(Block block);
+    public UndoList getBlocks();
 }

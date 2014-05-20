@@ -19,91 +19,91 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
-	private final Mage					owner;
-	private final LinkedList<UndoList> 	changeQueue = new LinkedList<UndoList>();
-	private final Set<UndoList> 		scheduledBlocks = new HashSet<UndoList>();
-	private int                         maxSize    = 0;
+    private final Mage					owner;
+    private final LinkedList<UndoList> 	changeQueue = new LinkedList<UndoList>();
+    private final Set<UndoList> 		scheduledBlocks = new HashSet<UndoList>();
+    private int                         maxSize    = 0;
 
-	public UndoQueue(Mage mage)
-	{
-		this.owner = mage;
-	}
-	
-	@Override
-	public void add(UndoList blocks)
-	{
-		if (maxSize > 0 && changeQueue.size() > maxSize)
-		{
-			UndoList expired = changeQueue.removeFirst();
-			expired.commit();
-		}
-		changeQueue.add(blocks);
-	}
-	
-	public void scheduleCleanup(UndoList blocks)
-	{
-		scheduledBlocks.add(blocks);
-		blocks.scheduleCleanup();
-	}
-	
-	public void undoScheduled()
-	{
-		if (scheduledBlocks.size() == 0) return;
-		for (UndoList list : scheduledBlocks) {
-			list.undoScheduled();
-		}
-		scheduledBlocks.clear();
-	}
-	
-	public boolean isEmpty()
-	{
-		 return scheduledBlocks.isEmpty() && changeQueue.isEmpty();
-	}
-	
-	public void removeScheduledCleanup(UndoList blockList)
-	{
-		scheduledBlocks.remove(blockList);
-	}
+    public UndoQueue(Mage mage)
+    {
+        this.owner = mage;
+    }
 
-	public UndoList getLast()
-	{
-		if (changeQueue.isEmpty())
-		{
-			return null;
-		}
-		return changeQueue.getLast();
-	}
+    @Override
+    public void add(UndoList blocks)
+    {
+        if (maxSize > 0 && changeQueue.size() > maxSize)
+        {
+            UndoList expired = changeQueue.removeFirst();
+            expired.commit();
+        }
+        changeQueue.add(blocks);
+    }
 
-	public UndoList getLast(Block target)
-	{
-		if (changeQueue.size() == 0)
-		{
-			return null;
-		}
-		for (UndoList blocks : changeQueue)
-		{
-			if (blocks.contains(target))
-			{
-				return blocks;
-			}
-		}
-		return null;
-	}
+    public void scheduleCleanup(UndoList blocks)
+    {
+        scheduledBlocks.add(blocks);
+        blocks.scheduleCleanup();
+    }
 
-	public void setMaxSize(int size)
-	{
-		maxSize = size;
-	}
+    public void undoScheduled()
+    {
+        if (scheduledBlocks.size() == 0) return;
+        for (UndoList list : scheduledBlocks) {
+            list.undoScheduled();
+        }
+        scheduledBlocks.clear();
+    }
 
-	public UndoList undo()
-	{
-		return undoRecent(0);
-	}
+    public boolean isEmpty()
+    {
+         return scheduledBlocks.isEmpty() && changeQueue.isEmpty();
+    }
 
-	public UndoList undo(Block target)
-	{
-		return undoRecent(target, 0);
-	}
+    public void removeScheduledCleanup(UndoList blockList)
+    {
+        scheduledBlocks.remove(blockList);
+    }
+
+    public UndoList getLast()
+    {
+        if (changeQueue.isEmpty())
+        {
+            return null;
+        }
+        return changeQueue.getLast();
+    }
+
+    public UndoList getLast(Block target)
+    {
+        if (changeQueue.size() == 0)
+        {
+            return null;
+        }
+        for (UndoList blocks : changeQueue)
+        {
+            if (blocks.contains(target))
+            {
+                return blocks;
+            }
+        }
+        return null;
+    }
+
+    public void setMaxSize(int size)
+    {
+        maxSize = size;
+    }
+
+    public UndoList undo()
+    {
+        return undoRecent(0);
+    }
+
+    public UndoList undo(Block target)
+    {
+        return undoRecent(target, 0);
+    }
 
     /**
      * Undo a recent construction performed by this Mage.
@@ -176,78 +176,78 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 
         return null;
     }
-	
-	public void load(ConfigurationSection node)
-	{
-		try {
-			if (node == null) return;
-			Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(node, "undo");
-			if (nodeList != null) {
-				for (ConfigurationSection listNode : nodeList) {
-					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
-					list.load(listNode);
-					changeQueue.add(list);
-				}
-			}
-			nodeList = ConfigurationUtils.getNodeList(node, "scheduled");
-			if (nodeList != null) {
-				for (ConfigurationSection listNode : nodeList) {
-					UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
-					list.load(listNode);
-					scheduleCleanup(list);
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+
+    public void load(ConfigurationSection node)
+    {
+        try {
+            if (node == null) return;
+            Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(node, "undo");
+            if (nodeList != null) {
+                for (ConfigurationSection listNode : nodeList) {
+                    UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
+                    list.load(listNode);
+                    changeQueue.add(list);
+                }
+            }
+            nodeList = ConfigurationUtils.getNodeList(node, "scheduled");
+            if (nodeList != null) {
+                for (ConfigurationSection listNode : nodeList) {
+                    UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
+                    list.load(listNode);
+                    scheduleCleanup(list);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
             owner.getController().getLogger().warning("Failed to load undo data: " + ex.getMessage());
-		}
-	}
-	
-	public void save(ConfigurationSection node)
-	{
-		MageController controller = owner.getController();
-		int maxSize = controller.getMaxUndoPersistSize();
-		try {
-			int discarded = 0;
-			List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
-			for (UndoList list : changeQueue) {
-				if (maxSize > 0 && list.size() > maxSize) {
-					discarded++;
-					continue;
-				}
-				MemoryConfiguration listNode = new MemoryConfiguration();		
-				list.save(listNode);
-				nodeList.add(listNode.getValues(true));
-			}
-			if (discarded > 0) {
-				controller.getLogger().info("Not saving " + discarded + " undo batches for mage " + owner.getName() + ", over max size of " + maxSize);
-			}
-			node.set("undo", nodeList);
-			nodeList = new ArrayList<Map<String, Object>>();
-			for (UndoList list : scheduledBlocks) {
-				MemoryConfiguration listNode = new MemoryConfiguration();				
-				list.save(listNode);
-				nodeList.add(listNode.getValues(true));
-			}
-			node.set("scheduled", nodeList);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			controller.getLogger().warning("Failed to save undo data: " + ex.getMessage());
-		}
-	}
-	
-	public int getSize()
-	{
-		return changeQueue.size();
-	}
-	
-	public boolean commit()
-	{
-		if (changeQueue.size() == 0) return false;
-		for (UndoList list : changeQueue) {
-			list.commit();
-		}
-		changeQueue.clear();
-		return true;
-	}
+        }
+    }
+
+    public void save(ConfigurationSection node)
+    {
+        MageController controller = owner.getController();
+        int maxSize = controller.getMaxUndoPersistSize();
+        try {
+            int discarded = 0;
+            List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
+            for (UndoList list : changeQueue) {
+                if (maxSize > 0 && list.size() > maxSize) {
+                    discarded++;
+                    continue;
+                }
+                MemoryConfiguration listNode = new MemoryConfiguration();
+                list.save(listNode);
+                nodeList.add(listNode.getValues(true));
+            }
+            if (discarded > 0) {
+                controller.getLogger().info("Not saving " + discarded + " undo batches for mage " + owner.getName() + ", over max size of " + maxSize);
+            }
+            node.set("undo", nodeList);
+            nodeList = new ArrayList<Map<String, Object>>();
+            for (UndoList list : scheduledBlocks) {
+                MemoryConfiguration listNode = new MemoryConfiguration();
+                list.save(listNode);
+                nodeList.add(listNode.getValues(true));
+            }
+            node.set("scheduled", nodeList);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            controller.getLogger().warning("Failed to save undo data: " + ex.getMessage());
+        }
+    }
+
+    public int getSize()
+    {
+        return changeQueue.size();
+    }
+
+    public boolean commit()
+    {
+        if (changeQueue.size() == 0) return false;
+        for (UndoList list : changeQueue) {
+            list.commit();
+        }
+        changeQueue.clear();
+        return true;
+    }
 }

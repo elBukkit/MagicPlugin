@@ -14,280 +14,280 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class Target implements Comparable<Target>
 {
-	protected int    maxDistance = 512;
-	protected int    minDistance = 0;
-	protected double maxAngle    = 0.3;
+    protected int    maxDistance = 512;
+    protected int    minDistance = 0;
+    protected double maxAngle    = 0.3;
 
-	private Location source;
-	private Location location;
-	private WeakReference<Entity>   _entity;
-	private Mage	 mage;
-	private boolean  reverseDistance = false;
+    private Location source;
+    private Location location;
+    private WeakReference<Entity>   _entity;
+    private Mage	 mage;
+    private boolean  reverseDistance = false;
 
-	private double   distance    = 100000;
-	private double   angle       = 10000;
-	private int      score       = 0;
-	
-	private Object	 extraData	 = null;
+    private double   distance    = 100000;
+    private double   angle       = 10000;
+    private int      score       = 0;
 
-	public Target(Location sourceLocation)
-	{
-		this.source = sourceLocation;
-	}
-	
-	public Target(Location sourceLocation, Block block)
-	{
-		this.source = sourceLocation;
-		if (block != null) this.location = block.getLocation();
-		calculateScore();
-	}
-	
-	public Target(Location sourceLocation, Block block, int range)
-	{
-		this(sourceLocation, block, range, 0.3, false);
-	}
-	
-	public Target(Location sourceLocation, Block block, int range, double angle)
-	{
-		this(sourceLocation, block, range, angle, false);
-	}
+    private Object	 extraData	 = null;
 
-	public Target(Location sourceLocation, Block block, int range, double angle, boolean reverseDistance)
-	{
-		this.maxDistance = range;
-		this.maxAngle = angle;
-		this.reverseDistance = reverseDistance;
-		this.source = sourceLocation;
-		if (block != null) this.location = block.getLocation();
-		calculateScore();
-	}
+    public Target(Location sourceLocation)
+    {
+        this.source = sourceLocation;
+    }
 
-	public Target(Location sourceLocation, Block block, int minRange, int maxRange, double angle, boolean reverseDistance)
-	{
-		this.maxDistance = maxRange;
-		this.minDistance = minRange;
-		this.maxAngle = angle;
-		this.reverseDistance = reverseDistance;
-		this.source = sourceLocation;
-		if (block != null) this.location = block.getLocation();
-		calculateScore();
-	}
+    public Target(Location sourceLocation, Block block)
+    {
+        this.source = sourceLocation;
+        if (block != null) this.location = block.getLocation();
+        calculateScore();
+    }
 
-	public Target(Location sourceLocation, Entity entity, int range)
-	{
-		this.maxDistance = range;
-		this.source = sourceLocation;
-		this._entity = new WeakReference<Entity>(entity);
-		if (entity != null) this.location = entity.getLocation();
-		calculateScore();
-	}
+    public Target(Location sourceLocation, Block block, int range)
+    {
+        this(sourceLocation, block, range, 0.3, false);
+    }
 
-	public Target(Location sourceLocation, Entity entity, int range, double angle)
-	{
-		this.maxDistance = range;
-		this.maxAngle = angle;
-		this.source = sourceLocation;
-		this._entity = new WeakReference<Entity>(entity);
-		if (entity != null) this.location = entity.getLocation();
-		calculateScore();
-	}
+    public Target(Location sourceLocation, Block block, int range, double angle)
+    {
+        this(sourceLocation, block, range, angle, false);
+    }
 
-	public Target(Location sourceLocation, Entity entity, int range, double angle, boolean reverseDistance)
-	{
-		this.maxDistance = range;
-		this.maxAngle = angle;
-		this.reverseDistance = reverseDistance;
-		this.source = sourceLocation;
-		this._entity = new WeakReference<Entity>(entity);
-		if (entity != null) this.location = entity.getLocation();
-		calculateScore();
-	}
+    public Target(Location sourceLocation, Block block, int range, double angle, boolean reverseDistance)
+    {
+        this.maxDistance = range;
+        this.maxAngle = angle;
+        this.reverseDistance = reverseDistance;
+        this.source = sourceLocation;
+        if (block != null) this.location = block.getLocation();
+        calculateScore();
+    }
 
-	public Target(Location sourceLocation, Entity entity, int minRange, int maxRange, double angle, boolean reverseDistance)
-	{
-		this.maxDistance = maxRange;
-		this.minDistance = minRange;
-		this.maxAngle = angle;
-		this.reverseDistance = reverseDistance;
-		this.source = sourceLocation;
-		this._entity = new WeakReference<Entity>(entity);
-		if (entity != null) this.location = entity.getLocation();
-		calculateScore();
-	}
+    public Target(Location sourceLocation, Block block, int minRange, int maxRange, double angle, boolean reverseDistance)
+    {
+        this.maxDistance = maxRange;
+        this.minDistance = minRange;
+        this.maxAngle = angle;
+        this.reverseDistance = reverseDistance;
+        this.source = sourceLocation;
+        if (block != null) this.location = block.getLocation();
+        calculateScore();
+    }
 
-	public Target(Location sourceLocation, Mage mage, int minRange, int maxRange, double angle, boolean reverseDistance)
-	{
-		this.maxDistance = maxRange;
-		this.minDistance = minRange;
-		this.maxAngle = angle;
-		this.reverseDistance = reverseDistance;
-		this.source = sourceLocation;
-		this.mage = mage;
-		if (mage != null) {
-			this._entity = new WeakReference<Entity>(mage.getLivingEntity());
-		}
-		if (mage != null) this.location = mage.getLocation();
-		calculateScore();
-	}
-	
-	public Target(Location sourceLocation, Entity entity)
-	{
-		this.maxDistance = 0;
-		this.source = sourceLocation;
-		this._entity = new WeakReference<Entity>(entity);
-		if (entity != null) this.location = entity.getLocation();
-	}
-	
-	public Target(Location sourceLocation, Entity entity, Block block)
-	{
-		this.maxDistance = 0;
-		this.source = sourceLocation;
-		this._entity = new WeakReference<Entity>(entity);
-		if (block != null) {
-			this.location = block.getLocation();
-		} else if (entity != null) {
-			this.location = entity.getLocation();
-		}
-	}
+    public Target(Location sourceLocation, Entity entity, int range)
+    {
+        this.maxDistance = range;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = entity.getLocation();
+        calculateScore();
+    }
 
-	public int getScore()
-	{
-		return score;
-	}
+    public Target(Location sourceLocation, Entity entity, int range, double angle)
+    {
+        this.maxDistance = range;
+        this.maxAngle = angle;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = entity.getLocation();
+        calculateScore();
+    }
 
-	protected void calculateScore()
-	{
-		if (source == null) return;
-		
-		Vector playerFacing = source.getDirection();
-		Vector playerLoc = new Vector(source.getBlockX(), source.getBlockY(), source.getBlockZ());
+    public Target(Location sourceLocation, Entity entity, int range, double angle, boolean reverseDistance)
+    {
+        this.maxDistance = range;
+        this.maxAngle = angle;
+        this.reverseDistance = reverseDistance;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = entity.getLocation();
+        calculateScore();
+    }
 
-		Location targetLocation = getLocation();
-		if (targetLocation == null) return;
+    public Target(Location sourceLocation, Entity entity, int minRange, int maxRange, double angle, boolean reverseDistance)
+    {
+        this.maxDistance = maxRange;
+        this.minDistance = minRange;
+        this.maxAngle = angle;
+        this.reverseDistance = reverseDistance;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = entity.getLocation();
+        calculateScore();
+    }
 
-		Vector targetLoc = new Vector(targetLocation.getBlockX(), targetLocation.getBlockY(), targetLocation.getBlockZ());
-		Vector targetDirection = new Vector(targetLoc.getBlockX() - playerLoc.getBlockX(), targetLoc.getBlockY() - playerLoc.getBlockY(), targetLoc.getBlockZ() - playerLoc.getBlockZ());
-		angle = targetDirection.angle(playerFacing);
-		distance = targetDirection.length();
+    public Target(Location sourceLocation, Mage mage, int minRange, int maxRange, double angle, boolean reverseDistance)
+    {
+        this.maxDistance = maxRange;
+        this.minDistance = minRange;
+        this.maxAngle = angle;
+        this.reverseDistance = reverseDistance;
+        this.source = sourceLocation;
+        this.mage = mage;
+        if (mage != null) {
+            this._entity = new WeakReference<Entity>(mage.getLivingEntity());
+        }
+        if (mage != null) this.location = mage.getLocation();
+        calculateScore();
+    }
 
-		score = 0;
-		if (maxAngle > 0 && angle > maxAngle) return;
-		if (maxDistance > 0 && distance > maxDistance) return;
-		if (distance < minDistance) return;
-		
-		if (reverseDistance) {
-			distance = maxDistance - distance;
-		}
+    public Target(Location sourceLocation, Entity entity)
+    {
+        this.maxDistance = 0;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = entity.getLocation();
+    }
 
-		score = 0;
-		
-		if (maxDistance > 0) score += (maxDistance - distance);
-		if (angle > 0) score += (3 - angle) * 4;
+    public Target(Location sourceLocation, Entity entity, Block block)
+    {
+        this.maxDistance = 0;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        if (block != null) {
+            this.location = block.getLocation();
+        } else if (entity != null) {
+            this.location = entity.getLocation();
+        }
+    }
 
-		// Favor targeting players, a bit
-		// TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
-		Entity entity = getEntity();
-		if (entity != null && mage != null && mage.getController().isNPC(entity))
-		{
-			score = score - 1;
-		}
-		else
-		if (mage != null)
-		{
-			score = score + 5;
-		}
-		else
-		if (entity instanceof Player)
-		{
-			score = score + 3;
-		}
-		else  if (entity instanceof LivingEntity)
-		{
-			score = score + 2;
-		}
-		else
-		{
-			score = score + 1;
-		}
-	}
+    public int getScore()
+    {
+        return score;
+    }
 
-	public int compareTo(Target other) 
-	{
-		return other.score - this.score;
-	}
+    protected void calculateScore()
+    {
+        if (source == null) return;
 
-	public boolean hasEntity()
-	{
-		return getEntity() != null;
-	}
+        Vector playerFacing = source.getDirection();
+        Vector playerLoc = new Vector(source.getBlockX(), source.getBlockY(), source.getBlockZ());
 
-	public boolean isValid()
-	{
-		return location != null;
-	}
+        Location targetLocation = getLocation();
+        if (targetLocation == null) return;
 
-	public boolean hasTarget()
-	{
-		return location != null;
-	}
+        Vector targetLoc = new Vector(targetLocation.getBlockX(), targetLocation.getBlockY(), targetLocation.getBlockZ());
+        Vector targetDirection = new Vector(targetLoc.getBlockX() - playerLoc.getBlockX(), targetLoc.getBlockY() - playerLoc.getBlockY(), targetLoc.getBlockZ() - playerLoc.getBlockZ());
+        angle = targetDirection.angle(playerFacing);
+        distance = targetDirection.length();
 
-	public Entity getEntity()
-	{
-		return _entity == null ? null : _entity.get();
-	}
+        score = 0;
+        if (maxAngle > 0 && angle > maxAngle) return;
+        if (maxDistance > 0 && distance > maxDistance) return;
+        if (distance < minDistance) return;
 
-	public Block getBlock()
-	{
-		if (location == null)
-		{
-			return null;
-		}
-		
-		return location.getBlock();
-	}
+        if (reverseDistance) {
+            distance = maxDistance - distance;
+        }
 
-	public double getDistance()
-	{
-		return distance;
-	}
+        score = 0;
 
-	public Location getLocation()
-	{
-		return location;
-	}
-	
-	public void add(Vector offset)
-	{
-		if (location != null)
-		{
-			location = location.add(offset);
-		}
-	}
-	
-	public void setWorld(World world)
-	{
-		if (location != null) 
-		{
-			location.setWorld(world);
-		}
-	}
+        if (maxDistance > 0) score += (maxDistance - distance);
+        if (angle > 0) score += (3 - angle) * 4;
 
-	public Object getExtraData() 
-	{
-		return extraData;
-	}
+        // Favor targeting players, a bit
+        // TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
+        Entity entity = getEntity();
+        if (entity != null && mage != null && mage.getController().isNPC(entity))
+        {
+            score = score - 1;
+        }
+        else
+        if (mage != null)
+        {
+            score = score + 5;
+        }
+        else
+        if (entity instanceof Player)
+        {
+            score = score + 3;
+        }
+        else  if (entity instanceof LivingEntity)
+        {
+            score = score + 2;
+        }
+        else
+        {
+            score = score + 1;
+        }
+    }
 
-	public void setExtraData(Object extraData) 
-	{
-		this.extraData = extraData;
-	}
-	
-	public void setEntity(Entity entity)
-	{
-		this._entity = new WeakReference<Entity>(entity);
-		if (entity != null) {
-			this.location = entity.getLocation();
-		}
-		this.calculateScore();
-	}
+    public int compareTo(Target other)
+    {
+        return other.score - this.score;
+    }
+
+    public boolean hasEntity()
+    {
+        return getEntity() != null;
+    }
+
+    public boolean isValid()
+    {
+        return location != null;
+    }
+
+    public boolean hasTarget()
+    {
+        return location != null;
+    }
+
+    public Entity getEntity()
+    {
+        return _entity == null ? null : _entity.get();
+    }
+
+    public Block getBlock()
+    {
+        if (location == null)
+        {
+            return null;
+        }
+
+        return location.getBlock();
+    }
+
+    public double getDistance()
+    {
+        return distance;
+    }
+
+    public Location getLocation()
+    {
+        return location;
+    }
+
+    public void add(Vector offset)
+    {
+        if (location != null)
+        {
+            location = location.add(offset);
+        }
+    }
+
+    public void setWorld(World world)
+    {
+        if (location != null)
+        {
+            location.setWorld(world);
+        }
+    }
+
+    public Object getExtraData()
+    {
+        return extraData;
+    }
+
+    public void setExtraData(Object extraData)
+    {
+        this.extraData = extraData;
+    }
+
+    public void setEntity(Entity entity)
+    {
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) {
+            this.location = entity.getLocation();
+        }
+        this.calculateScore();
+    }
 }
