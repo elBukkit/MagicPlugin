@@ -114,8 +114,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "combine");
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "upgrade");
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "describe");
-		
-			Collection<String> allWands = api.getWandKeys();
+            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "enchant");
+            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "unenchant");
+            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "duplicate");
+
+            Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
 				addIfPermissible(sender, options, "Magic.commands." + commandName + ".wand.", wandKey, true);
 			}
@@ -755,6 +758,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			wandName = parameters[0];
 		}
 		
-		return onGiveWand(sender, player, wandName, false, true, false, false);
+		return giveWand(sender, player, wandName, false, true, false, false);
 	}
 }
