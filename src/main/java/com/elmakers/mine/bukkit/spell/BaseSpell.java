@@ -120,6 +120,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String name;
     private String description;
     private String usage;
+    private long worth;
     private Color color;
     private SpellCategory category;
     private BaseSpell template;
@@ -688,6 +689,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Load basic properties
         icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
         color = ConfigurationUtils.getColor(node, "color", null);
+        worth = node.getLong("worth", worth);
         category = controller.getCategory(node.getString("category"));
         parameters = node.getConfigurationSection("parameters");
         costs = parseCosts(node.getConfigurationSection("costs"));
@@ -1192,6 +1194,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public final String getUsage()
     {
         return usage;
+    }
+
+    @Override
+    public final long getWorth()
+    {
+        return worth;
     }
 
     @Override
