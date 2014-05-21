@@ -1133,6 +1133,18 @@ wands:
     antihunger:
         name: Anti-Hunger Upgrade
         description: Never go hungry again!
+    chestmode:
+        name: Chest Mode
+        description: A simpler wand mechanic
+    cyclemode:
+        name: Cycle Mode
+        description: The simplest wand mechanic
+    inventorymode:
+        name: Inventory Mode
+        description: For expert wizards
+    organizer:
+        name: The Organizer
+        description: Re-organizes your wand inventory
     manaboost:
         name: Mana Boost
         description: An instant boost to 1000 Mana (or your max)
