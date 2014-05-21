@@ -8,6 +8,12 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 
+/**
+ * TODO: Remove all this, it's broken with the Metadata-based Wands.
+ *
+ * This should be replaced with a general "custom data" tag, IMO.
+ * Preferably this would be an internal dtlTraders attribute.
+ */
 public class TradersController {
 	
 	private static MagicController controller;

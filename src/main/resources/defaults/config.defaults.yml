@@ -82,6 +82,12 @@ load_default_spells: true
 # in the future.
 load_default_wands: true
 
+# Set to false to skip loading defaults/enchanting.defaults.yml entirely.
+load_default_enchanting: true
+
+# Set to false to skip loading defaults/crafting.defaults.yml entirely.
+load_default_crafting: true
+
 # Whether or not to show any messages (in chat) 
 show_messages: true
 
@@ -161,13 +167,6 @@ wand_glow: true
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
 wand_item_enchantable: wood_sword
 
-# Used as a substitute item when the wand item is naturally crafted
-# This is mainly for the resource pack, so players don't craft a wood hoe
-# and get some weird non-wand but wand-looking item.
-# This means that, by default, crafting a wood hoe will get you an iron hoe.
-# If you don't want this behavior, just empty out this field.
-wand_item_substitute: iron_hoe
-
 # If true, fill wands with all known spells on creation
 fill_wands: false
 
@@ -191,15 +190,15 @@ welcome_wand:
 # "inventory" : The default, toggles the wand inventory in/out of your player inventory
 # "chest" : Bring up a Wand inventory on right-click.
 # "cycle" : Right-click will cycle to the next active spell (no inventory or icons)
-default_wand_mode: chest
+default_wand_mode: inventory
+
+# The default enchanting path.
+# The default default is "master" for backwards compatibility reasons
+# This means that wands prior to 3.3 will be counted as Master wands regardless of type.
+default_wand_path: master
 
 # How to display Mana. Options are "bar", "number" and "hybrid"
 mana_display: hybrid
-
-# Crafting settings for crafting wands
-crafting_material_upper: nether_star
-crafting_material_lower: blaze_rod
-crafting_output: random(1)
 
 # A cooldown value in milliseconds between clicks. Mainly used to prevent Bukkit/MC double-event bugs.
 click_cooldown: 150

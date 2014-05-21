@@ -603,9 +603,9 @@ engineer:
 apprentice:
     levels: 1,25,35,40,45
     property_count:
-      0: 100,100, 50,   0,  0
-      1: 5,  10,  100,  20, 0
-      2: 0,   5,   60,  80, 0
+      0: 100, 100, 50,   0, 0
+      1: 1,   5,   30,  20, 0
+      2: 0,   1,   20,  80, 0
       3: 0,   0,    0,  50, 100
     max_power: 0.6
     power:
@@ -704,24 +704,18 @@ apprentice:
       cat: 5,20,50,10,100
       cloak: 10,20,30,20,100
       collapse: 0,5,30,50,100
-      convert: 0,5,40,50,100
       curse: 0,1,10,25,100
       cushion: 10,40,20,10,100
       disintegrate: 0,10,40,50,100
-      dome: 0,5,40,50,100
       shields: 1,15,50,70,100
       earth: 5,20,50,20,100
       familiar: 10,30,40,20,100
       farm: 0,0,10,20,100
-      fill: 0,0,1,5,100
       fire: 50,70,60,50,100
       fireball: 60,70,80,50,100
       flare: 110,80,60,20,100
       fling: 0,5,70,80,100
       force: 5,10,20,60,100
-      frag: 0,0,10,90,100
-      cluster: 0,0,5,50,100
-      bomb: 0,0,1,20,100
       frost: 80,70,50,10,100
       gills: 10,11,20,25,100
       grenade: 30,50,70,20,100
@@ -746,56 +740,27 @@ apprentice:
       inferno: 0,0,10,90,100
       sandblast: 20,30,40,10,100
       lava: 5,20,50,20,100
-      recurse: 0,5,20,40,100
-      paint: 1,20,45,15,100
       phase: 0,0,0,1,100
       portal: 0,5,25,35,100
       recall: 0,5,15,25,100
-      toss: 2,25,35,50,100
-      volley: 0,0,45,70,100
       shrink: 5,20,30,90,100
       invincible: 0,0,10,20,100
       levitate: 0,0,10,30,100
       fly: 0,0,0,1,100
-      iterate: 0,0,40,20,100
-      laser: 0,0,10,5,100
       lava: 0,10,30,20,100
       stream: 0,10,30,20,100
-      shell: 0,5,40,50,100
-      backup: 0,0,0,1,100
-      superrepair: 0,0,0,1,100
-      repair: 1,10,30,50,100
-      supershell: 0,0,1,10,100
-      superblast: 0,0,1,5,100
-      superbox: 0,0,1,10,100
-      superpyramid: 0,0,1,10,100
-      superblob: 0,0,1,10,100
-      superemp: 0,0,0,5,100
-      superdisc: 0,0,1,10,100
-      superring: 0,0,1,10,100
-      superconvert: 0,0,1,10,100
-      superiterate: 0,0,1,10,100
       flamethrower: 0,5,10,20,100
-      superdome: 0,0,1,10,100
-      tunnel: 5,10,20,30,100
       undo: 1,5,10,50,100
       gather: 0,1,5,10,100
       mount: 0,1,5,10,100
-      commit: 0,0,0,1,100
-      rewind: 0,0,0,5,100
       counterspell: 0,1,5,15,100
-      pillar: 0,5,10,15,100
-      place: 0,1,5,10,100
       stash: 0,1,5,10,100
-      stalactite: 0,5,10,15,100
       kaboom: 0,0,1,5,100
-      icbm: 0,0,1,5,100
       neutron: 0,0,10,15,100
       wither: 5,10,20,30,100
       mine: 1,20,30,40,100
       chop: 1,20,30,40,100
       tree: 5,20,35,45,100
-      nuke: 0,0,0,1,100
       day: 0,5,10,30,100
       night: 0,0,1,5,100
       time: 0,0,0,1,100
@@ -803,51 +768,39 @@ apprentice:
       weather: 0,0,0,1,100
       cage: 0,0,2,10,100
       tent: 0,0,5,15,100
-      wolfhouse: 0,0,0,1,100
-      simulate: 0,0,0,1,100
-      glider: 0,0,0,1,100
-      meteor: 0,0,0,1,100
-      cluster: 0,0,0,1,100
-      bomb: 0,0,0,1,100
 
 student:
     levels: 1,25,35,40,45
     property_count:
-      0: 100,100, 50,   0,  0
-      1: 5,  10,  100,  20, 0
-      2: 0,   5,   60,  80, 0
+      0: 100, 100, 50,   0, 0
+      1: 1,   5,   30,  20, 0
+      2: 0,   1,   20,  80, 0
       3: 0,   0,    0,  50, 100
-    max_power: 0.6
+    max_power: 0.3
     power:
       0:   100,100,80, 30, 0
       0^1: 0,   0, 40, 50, 0
       0^2: 0 ,  0, 20, 30, 0
       0^3: 0 ,  0, 10, 20, 100
-    max_cost_reduction: 0.3
-    cost_reduction:
-      0:   100,100,80, 30, 0
-      0^1: 2,  30, 40, 50, 0
-      0^2: 0 , 10, 20, 30, 0
-      0^3: 0 ,  0, 10, 20, 100
-    max_protection: 0.2
+    max_protection: 0.1
     protection:
       0:   100,100,90, 80, 0
       0^1: 0,   5, 10, 20, 0
       0^2: 0 ,  1, 5,  15, 0
       0^3: 0 ,  0, 1,  10, 100
-    max_protection_physical: 0.5
+    max_protection_physical: 0.4
     protection_physical:
       0:   100,100,90, 80, 0
       0^1: 1,  10, 20, 30, 0
       0^2: 0 , 15, 15, 40, 0
       0^3: 0 ,  0, 10, 50, 100
-    max_protection_projectiles: 0.5
+    max_protection_projectiles: 0.3
     protection_projectiles:
       0:   100,100,90, 80, 0
       0^1: 1,  10, 20, 30, 0
       0^2: 0 , 15, 15, 40, 0
       0^3: 0 ,  0, 10, 50, 100
-    max_protection_falling: 0.8
+    max_protection_falling: 0.6
     protection_falling:
       0:   100,100,90, 80, 0
       0^1: 1,  10, 20, 30, 0
@@ -859,37 +812,31 @@ student:
       0^1: 1,  10, 20, 30, 0
       0^2: 0 , 15, 15, 40, 0
       0^3: 0 ,  0, 10, 50, 100
-    max_protection_explosions: 0.7
+    max_protection_explosions: 0.5
     protection_explosions:
       0:   100,100,90, 80, 0
       0^1: 1,  10, 20, 30, 0
       0^2: 0 , 15, 15, 40, 0
       0^3: 0 ,  0, 10, 50, 100
-    max_xp_regeneration: 100
+    max_xp_regeneration: 50
     xp_regeneration:
       1: 100,30, 5,  0,   0
       10: 20, 30, 40, 10, 0
       20: 0 , 10, 10, 30, 0
       25: 0 ,  0, 1,  5,  100
-    max_xp_max: 1000
+    max_xp_max: 500
     xp_max:
       5:   100,10,  0, 0,  0
       20:  20, 30, 50, 10, 0
       30:  5 , 20, 30, 50, 0
       50: 0 , 0,  5,  20, 100
-    max_health_regeneration: 0.2
-    health_regeneration:
-      0: 100,100,90, 80, 0
-      1: 1,   5, 10, 15, 0
-      2: 0 , 10, 15, 30, 0
-      4: 0 , 15, 20, 40, 100
-    max_hunger_regeneration: 0.2
+    max_hunger_regeneration: 0.1
     hunger_regeneration:
       0: 100,100,80,  0, 0
       1: 80, 80, 80, 10, 0
       2: 0 , 20, 25, 30, 0
       4: 0 , 15, 20, 40, 100
-    max_haste: 0.5
+    max_haste: 0.3
     haste:
       0:    100,100,80, 60, 0
       0^1:  0 ,  0, 20, 30, 0
@@ -901,43 +848,30 @@ student:
       3: 0,   5,   20,  20, 0
       5: 0,   1,   10,  50, 100
     spells:
-      alter: 0,10,20,30,100
-      superalter: 0,1,5,10,100
       arrow: 100,80,70,30,100
       arrowrain: 10,30,50,40,100
       blast: 30,40,50,30,100
       blink: 0,0,0,20,100
-      blob: 0,10,40,10,100
-      pyramid: 0,10,40,10,100
       boom: 20,50,60,40,100
       boon: 0,5,10,20,100
       emp: 0,0,10,20,100
-      blessing: 0,1,5,10,100
-      box: 0,5,40,50,100
       breach: 5,20,30,40,100
-      bridge: 0,5,10,15,100
       camera: 0,10,30,40,100
       cat: 5,20,50,10,100
       cloak: 10,20,30,20,100
       collapse: 0,5,30,50,100
-      convert: 0,5,40,50,100
       curse: 0,1,10,25,100
       cushion: 10,40,20,10,100
       disintegrate: 0,10,40,50,100
-      dome: 0,5,40,50,100
       shields: 1,15,50,70,100
       earth: 5,20,50,20,100
       familiar: 10,30,40,20,100
       farm: 0,0,10,20,100
-      fill: 0,0,1,5,100
       fire: 50,70,60,50,100
       fireball: 60,70,80,50,100
       flare: 110,80,60,20,100
       fling: 0,5,70,80,100
       force: 5,10,20,60,100
-      frag: 0,0,10,90,100
-      cluster: 0,0,5,50,100
-      bomb: 0,0,1,20,100
       frost: 80,70,50,10,100
       gills: 10,11,20,25,100
       grenade: 30,50,70,20,100
@@ -952,79 +886,27 @@ student:
       pull: 10,20,40,30,100
       sniper: 0,0,30,40,100
       peek: 10,30,40,30,100
-      mob: 0,0,5,10,100
       monster: 5,20,30,30,100
       music: 110,80,60,20,100
       perk: 5,15,20,30,100
       wolf: 0,10,20,50,100
       lightning: 40,50,30,5,100
-      storm: 0,0,10,90,100
-      inferno: 0,0,10,90,100
-      sandblast: 20,30,40,10,100
       lava: 5,20,50,20,100
-      recurse: 0,5,20,40,100
-      paint: 1,20,45,15,100
       phase: 0,0,0,1,100
       portal: 0,5,25,35,100
       recall: 0,5,15,25,100
-      toss: 2,25,35,50,100
-      volley: 0,0,45,70,100
       shrink: 5,20,30,90,100
-      invincible: 0,0,10,20,100
       levitate: 0,0,10,30,100
-      fly: 0,0,0,1,100
-      iterate: 0,0,40,20,100
-      laser: 0,0,10,5,100
       lava: 0,10,30,20,100
       stream: 0,10,30,20,100
-      shell: 0,5,40,50,100
-      backup: 0,0,0,1,100
-      superrepair: 0,0,0,1,100
-      repair: 1,10,30,50,100
-      supershell: 0,0,1,10,100
-      superblast: 0,0,1,5,100
-      superbox: 0,0,1,10,100
-      superpyramid: 0,0,1,10,100
-      superblob: 0,0,1,10,100
-      superemp: 0,0,0,5,100
-      superdisc: 0,0,1,10,100
-      superring: 0,0,1,10,100
-      superconvert: 0,0,1,10,100
-      superiterate: 0,0,1,10,100
       flamethrower: 0,5,10,20,100
-      superdome: 0,0,1,10,100
-      tunnel: 5,10,20,30,100
-      undo: 1,5,10,50,100
       gather: 0,1,5,10,100
       mount: 0,1,5,10,100
-      commit: 0,0,0,1,100
-      rewind: 0,0,0,5,100
-      counterspell: 0,1,5,15,100
-      pillar: 0,5,10,15,100
-      place: 0,1,5,10,100
       stash: 0,1,5,10,100
-      stalactite: 0,5,10,15,100
-      kaboom: 0,0,1,5,100
-      icbm: 0,0,1,5,100
-      neutron: 0,0,10,15,100
       wither: 5,10,20,30,100
       mine: 1,20,30,40,100
       chop: 1,20,30,40,100
       tree: 5,20,35,45,100
-      nuke: 0,0,0,1,100
-      day: 0,5,10,30,100
-      night: 0,0,1,5,100
-      time: 0,0,0,1,100
-      disarm: 0,0,0,1,100
-      weather: 0,0,0,1,100
-      cage: 0,0,2,10,100
-      tent: 0,0,5,15,100
-      wolfhouse: 0,0,0,1,100
-      simulate: 0,0,0,1,100
-      glider: 0,0,0,1,100
-      meteor: 0,0,0,1,100
-      cluster: 0,0,0,1,100
-      bomb: 0,0,0,1,100
 
 battle:
     levels: 1,25,35,40,45
@@ -1117,60 +999,38 @@ battle:
       3: 0,   5,   20,  20, 0
       5: 0,   1,   10,  50, 100
     spells:
-      alter: 0,10,20,30,100
-      superalter: 0,1,5,10,100
       arrow: 100,80,70,30,100
       arrowrain: 10,30,50,40,100
       blast: 30,40,50,30,100
       blink: 0,0,0,20,100
-      blob: 0,10,40,10,100
-      pyramid: 0,10,40,10,100
       boom: 20,50,60,40,100
       boon: 0,5,10,20,100
-      emp: 0,0,10,20,100
       blessing: 0,1,5,10,100
-      box: 0,5,40,50,100
       breach: 5,20,30,40,100
-      bridge: 0,5,10,15,100
-      camera: 0,10,30,40,100
-      cat: 5,20,50,10,100
       cloak: 10,20,30,20,100
-      collapse: 0,5,30,50,100
-      convert: 0,5,40,50,100
       curse: 0,1,10,25,100
       cushion: 10,40,20,10,100
       disintegrate: 0,10,40,50,100
-      dome: 0,5,40,50,100
       shields: 1,15,50,70,100
       earth: 5,20,50,20,100
       familiar: 10,30,40,20,100
-      farm: 0,0,10,20,100
-      fill: 0,0,1,5,100
       fire: 50,70,60,50,100
       fireball: 60,70,80,50,100
       flare: 110,80,60,20,100
       fling: 0,5,70,80,100
       force: 5,10,20,60,100
-      frag: 0,0,10,90,100
-      cluster: 0,0,5,50,100
-      bomb: 0,0,1,20,100
       frost: 80,70,50,10,100
       gills: 10,11,20,25,100
       grenade: 30,50,70,20,100
-      hat: 110,80,60,20,100
       cure: 1,5,10,30,100
       heal: 0,1,5,20,100
       tesseract: 80,50,40,20,100
-      torch: 80,60,50,10,100
-      workbench: 80,60,50,10,100
       leap: 70,80,60,40,100
       push: 10,20,40,30,100
       pull: 10,20,40,30,100
       sniper: 0,0,30,40,100
-      peek: 10,30,40,30,100
       mob: 0,0,5,10,100
       monster: 5,20,30,30,100
-      music: 110,80,60,20,100
       perk: 5,15,20,30,100
       wolf: 0,10,20,50,100
       lightning: 40,50,30,5,100
@@ -1178,66 +1038,21 @@ battle:
       inferno: 0,0,10,90,100
       sandblast: 20,30,40,10,100
       lava: 5,20,50,20,100
-      recurse: 0,5,20,40,100
-      paint: 1,20,45,15,100
       phase: 0,0,0,1,100
-      portal: 0,5,25,35,100
       recall: 0,5,15,25,100
-      toss: 2,25,35,50,100
-      volley: 0,0,45,70,100
       shrink: 5,20,30,90,100
       invincible: 0,0,10,20,100
       levitate: 0,0,10,30,100
-      fly: 0,0,0,1,100
-      iterate: 0,0,40,20,100
-      laser: 0,0,10,5,100
       lava: 0,10,30,20,100
       stream: 0,10,30,20,100
-      shell: 0,5,40,50,100
-      backup: 0,0,0,1,100
-      superrepair: 0,0,0,1,100
-      repair: 1,10,30,50,100
-      supershell: 0,0,1,10,100
-      superblast: 0,0,1,5,100
-      superbox: 0,0,1,10,100
-      superpyramid: 0,0,1,10,100
-      superblob: 0,0,1,10,100
-      superemp: 0,0,0,5,100
-      superdisc: 0,0,1,10,100
-      superring: 0,0,1,10,100
-      superconvert: 0,0,1,10,100
-      superiterate: 0,0,1,10,100
       flamethrower: 0,5,10,20,100
-      superdome: 0,0,1,10,100
-      tunnel: 5,10,20,30,100
       undo: 1,5,10,50,100
       gather: 0,1,5,10,100
       mount: 0,1,5,10,100
-      commit: 0,0,0,1,100
-      rewind: 0,0,0,5,100
       counterspell: 0,1,5,15,100
-      pillar: 0,5,10,15,100
-      place: 0,1,5,10,100
       stash: 0,1,5,10,100
-      stalactite: 0,5,10,15,100
       kaboom: 0,0,1,5,100
-      icbm: 0,0,1,5,100
       neutron: 0,0,10,15,100
       wither: 5,10,20,30,100
-      mine: 1,20,30,40,100
-      chop: 1,20,30,40,100
-      tree: 5,20,35,45,100
-      nuke: 0,0,0,1,100
-      day: 0,5,10,30,100
-      night: 0,0,1,5,100
-      time: 0,0,0,1,100
       disarm: 0,0,0,1,100
-      weather: 0,0,0,1,100
       cage: 0,0,2,10,100
-      tent: 0,0,5,15,100
-      wolfhouse: 0,0,0,1,100
-      simulate: 0,0,0,1,100
-      glider: 0,0,0,1,100
-      meteor: 0,0,0,1,100
-      cluster: 0,0,0,1,100
-      bomb: 0,0,0,1,100

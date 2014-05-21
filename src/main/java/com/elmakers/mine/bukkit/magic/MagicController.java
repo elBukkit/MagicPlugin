@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.wand.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -125,10 +126,6 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.URLMap;
-import com.elmakers.mine.bukkit.wand.LostWand;
-import com.elmakers.mine.bukkit.wand.Wand;
-import com.elmakers.mine.bukkit.wand.WandLevel;
-import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.warp.WarpController;
 
 public class MagicController implements Listener, MageController
@@ -1012,15 +1009,26 @@ public class MagicController implements Listener, MageController
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
+        getLogger().info("Loaded " + spells.size());
+
+        // Load enchanting paths
+        try {
+            WandUpgradePath.loadPaths(loadConfigFile(ENCHANTING_FILE, loadDefaultEnchanting));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        getLogger().info("Loaded " +  WandUpgradePath.getPathKeys().size() + " enchanting paths");
+
 		// Load wand templates
 		try {
 			Wand.loadTemplates(loadConfigFile(WANDS_FILE, loadDefaultWands));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
-		getLogger().info("Magic: Loaded " + spells.size() + " spells and " + Wand.getWandTemplates().size() + " wands");
+
+        getLogger().info("Loaded " +  Wand.getWandTemplates().size() + " wands");
 	}
 	
 	protected void loadSpellData()
@@ -1268,6 +1276,10 @@ public class MagicController implements Listener, MageController
 	public WandMode getDefaultWandMode() {
 		return defaultWandMode;
 	}
+
+    public String getDefaultWandPath() {
+        return defaultWandPath;
+    }
 	
 	protected void savePlayerData() {
 		try {
@@ -1441,13 +1453,16 @@ public class MagicController implements Listener, MageController
 		
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
-		maxTNTPerChunk = properties.getInt("max_tnt_per_chunk", maxTNTPerChunk);
+        loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
+        loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
+        maxTNTPerChunk = properties.getInt("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
 		playerDataThreshold = (long)(properties.getDouble("player_data_expire_threshold", 0) * 1000 * 24 * 3600);
-		defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
+        defaultWandPath = properties.getString("default_wand_path", "");
+        defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
 		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
 		clickCooldown = properties.getInt("click_cooldown", clickCooldown);
@@ -3191,7 +3206,9 @@ public class MagicController implements Listener, MageController
 	 private final String                        SPELLS_FILE                 	= "spells";
 	 private final String                        CONFIG_FILE             		= "config";
 	 private final String                        WANDS_FILE             		= "wands";
-	 private final String                        MESSAGES_FILE             		= "messages";
+     private final String                        ENCHANTING_FILE             	= "enchanting";
+     private final String                        CRAFTING_FILE             		= "crafting";
+     private final String                        MESSAGES_FILE             		= "messages";
 	 private final String                        MATERIALS_FILE             	= "materials";
 	 private final String						 LOST_WANDS_FILE				= "lostwands";
 	 private final String						 SPELLS_DATA_FILE				= "spells";
@@ -3200,6 +3217,8 @@ public class MagicController implements Listener, MageController
 	 
 	 private boolean 							loadDefaultSpells				= true;
 	 private boolean 							loadDefaultWands				= true;
+     private boolean 							loadDefaultEnchanting			= true;
+     private boolean 							loadDefaultCrafting				= true;
 
 	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
 	 static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
@@ -3218,6 +3237,7 @@ public class MagicController implements Listener, MageController
 	 private int                                 undoMaxPersistSize             = 0;
 	 private boolean                             commitOnQuit             		= false;
 	 private long                                playerDataThreshold            = 0;
+     private String                              defaultWandPath                = "master";
 	 private WandMode							 defaultWandMode				= WandMode.INVENTORY;
 	 private boolean                             showMessages                   = true;
 	 private boolean                             showCastMessages               = false;

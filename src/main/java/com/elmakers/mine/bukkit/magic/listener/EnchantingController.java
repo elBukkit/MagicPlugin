@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
-import com.elmakers.mine.bukkit.wand.WandLevel;
 
 public class EnchantingController implements Listener {
 	private final MagicController controller;
@@ -38,7 +38,7 @@ public class EnchantingController implements Listener {
 			event.getEnchantsToAdd().clear();
 			int level = event.getExpLevelCost();
 			Wand wand = new Wand(controller, event.getItem());
-			if (!WandLevel.randomizeWand(wand, true, level)) {
+			if (!wand.enchant(level)) {
 				event.getEnchanter().sendMessage("This wand is fully enchanted (for now)");
 			}
 			wand.makeEnchantable(true);
@@ -75,7 +75,12 @@ public class EnchantingController implements Listener {
 				return;
 			}
 			wandItem.makeEnchantable(true);
-			Set<Integer> levelSet = WandLevel.getLevels();
+            WandUpgradePath path = wandItem.getPath();
+            if (path == null) {
+                event.setCancelled(true);
+                return;
+            }
+			Set<Integer> levelSet = path.getLevels();
 			ArrayList<Integer> levels = new ArrayList<Integer>();
 			levels.addAll(levelSet);
 			int[] offered = event.getExpLevelCostsOffered();
@@ -123,7 +128,6 @@ public class EnchantingController implements Listener {
 						wand.makeEnchantable(false);
 					}
 				}
-				return;
 			}
 		}
 	}

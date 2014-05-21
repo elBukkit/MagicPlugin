@@ -60,7 +60,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	// REMEMBER! Each of these MUST have a corresponding class in .traders, else traders will
 	// destroy the corresponding data.
 	public final static String[] PROPERTY_KEYS = {
-		"active_spell", "active_material", 
+		"active_spell", "active_material",
+        "path",
 		"xp", "xp_regeneration", "xp_max",
 		"bound", "uses", "upgrade", "indestructible",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
@@ -96,6 +97,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private String owner = "";
     private String ownerId = "";
 	private String template = "";
+    private String path = "";
 	private boolean bound = false;
 	private boolean indestructible = false;
 	private boolean keep = false;
@@ -430,6 +432,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public String getTemplate() {
 		return this.template;
 	}
+
+    public WandUpgradePath getPath() {
+        String pathKey = path;
+        if (pathKey == null || pathKey.length() == 0) {
+            pathKey = controller.getDefaultWandPath();
+        }
+        return WandUpgradePath.getPath(pathKey);
+    }
 	
 	public void setDescription(String description) {
 		this.description = description;
@@ -883,6 +893,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("template", null);
 		}
+        if (path != null && path.length() > 0) {
+            node.set("path", path);
+        } else {
+            node.set("path", null);
+        }
 	}
 	
 	public void loadProperties(ConfigurationSection wandConfig) {
@@ -969,6 +984,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			wandName = wandConfig.getString("name", wandName);			
 			description = wandConfig.getString("description", description);
 			template = wandConfig.getString("template", template);
+            path = wandConfig.getString("path", path);
 			
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
 			activeMaterial = wandConfig.getString("active_material", activeMaterial);
@@ -1639,25 +1655,31 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ItemStack activeItem = player.getInventory().getItemInHand();
 		return isWand(activeItem);
 	}
-	
-	protected void randomize(int totalLevels, boolean additive) {
-		if (!wandTemplates.containsKey("random")) return;	
-		if (!additive) {
-			wandName = Messages.get("wands.random.name", wandName);
-		}
 
-		int maxLevel = WandLevel.getMaxLevel();
+    public boolean enchant(int totalLevels) {
+        return randomize(totalLevels, true);
+    }
+
+	protected boolean randomize(int totalLevels, boolean additive) {
+        WandUpgradePath path = getPath();
+		if (path == null) return false;
+
+		int maxLevel = path.getMaxLevel();
 
         // Just a hard-coded sanity check
         totalLevels = Math.min(totalLevels, maxLevel * 50);
 
 		int addLevels = Math.min(totalLevels, maxLevel);
-		while (addLevels > 0) {
-			WandLevel.randomizeWand(this, additive, addLevels);
+        boolean modified = true;
+		while (addLevels > 0 && modified) {
+            WandLevel level = path.getLevel(addLevels);
+            modified = level.randomizeWand(this, additive);
 			totalLevels -= maxLevel;
 			addLevels = Math.min(totalLevels, maxLevel);
 			additive = true;
 		}
+
+        return modified;
 	}
 	
 	public static Wand createWand(MagicController controller, String templateName) {
@@ -1737,8 +1759,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectSoundPitch = other.effectSoundPitch;
 		}
 		
-		if (other.template != null && other.template.length() > 0) {
-			modified = modified | (!template.equals(other.template));
+		if ((template == null || template.length() == 0) && (other.template != null && other.template.length() > 0)) {
+			modified = true;
 			template = other.template;
 		}
 		
@@ -1832,9 +1854,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 			if (!wandNode.getBoolean("enabled", true)) {
 				wandTemplates.remove(key);
-			}
-			if (key.equals("random")) {
-				WandLevel.mapLevels(wandNode);
 			}
 		}
 	}

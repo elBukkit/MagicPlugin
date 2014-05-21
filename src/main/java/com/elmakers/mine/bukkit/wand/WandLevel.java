@@ -18,9 +18,6 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class WandLevel {
-	private static TreeMap<Integer, WandLevel> levelMap = null;
-	private static int[] levels = null;
-	
 	private final LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<String>> spellProbability = new LinkedList<WeightedPair<String>>();
@@ -45,13 +42,12 @@ public class WandLevel {
 	
 	private final LinkedList<WeightedPair<Float>> hasteProbability = new LinkedList<WeightedPair<Float>>();
 	
-	// TODO- Config-driven!
 	public static float maxValue = 1.0f;
 	public static int maxUses = 500;
 	public static int maxMaxXp = 1500;
 	public static int maxXpRegeneration = 150;
-	public static float maxHungerRegeneration = 5;
-	public static float maxHealthRegeneration = 5;
+	public static float maxHungerRegeneration = 2;
+	public static float maxHealthRegeneration = 2;
 	public static float maxDamageReduction = 0.4f;
 	public static float maxDamageReductionExplosions = 0.3f;
 	public static float maxDamageReductionFalling = 0.9f;
@@ -86,53 +82,7 @@ public class WandLevel {
 		maxHasteLevel = (float)properties.getDouble("max_haste", maxHasteLevel);
 	}
 	
-	public static WandLevel getLevel(int level) {
-		if (levelMap == null) return null;
-		
-		if (!levelMap.containsKey(level)) {
-			if (level > levelMap.lastKey()) {
-				return levelMap.lastEntry().getValue();
-			}
-			
-			return levelMap.firstEntry().getValue();
-		}
-		
-		return levelMap.get(level);
-	}
-	
-	public static void mapLevels(ConfigurationSection template) {
-		// Parse defined levels
-		levelMap = new TreeMap<Integer, WandLevel>();
-		String[] levelStrings = StringUtils.split(template.getString("levels"), ",");
-		levels = new int[levelStrings.length];
-		for (int i = 0; i < levels.length; i++) {
-			levels[i] = Integer.parseInt(levelStrings[i]);
-		}
-		
-		for (int level = 1; level <= levels[levels.length - 1]; level++) {
-			levelMap.put(level, new WandLevel(level, template));
-		}
-	}
-	
-	private WandLevel(int level, ConfigurationSection template) {
-		int levelIndex = 0;
-		int nextLevelIndex = 0;
-		float distance = 1;
-		for (levelIndex = 0; levelIndex < levels.length; levelIndex++) {
-			if (level == levels[levelIndex] || levelIndex == levels.length - 1) {
-				nextLevelIndex = levelIndex;
-				distance = 0;
-				break;
-			}
-			
-			if (level > levels[levelIndex]) {
-				nextLevelIndex = levelIndex + 1;
-				int previousLevel = levels[levelIndex];
-				int nextLevel = levels[nextLevelIndex];				
-				distance = (float)(level - previousLevel) / (float)(nextLevel - previousLevel);
-			}
-		}
-		
+	protected WandLevel(ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
 		// Fetch spell probabilities
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spellProbability, template.getConfigurationSection("spells"), levelIndex, nextLevelIndex, distance);
 		
@@ -174,7 +124,7 @@ public class WandLevel {
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(powerProbability, template.getConfigurationSection("power"), levelIndex, nextLevelIndex, distance);		
 	}
 	
-	private boolean randomizeWand(Wand wand, boolean additive) {
+	public boolean randomizeWand(Wand wand, boolean additive) {
 		// Add random spells to the wand
 		boolean addedSpells = false;
 		Set<String> wandSpells = wand.getSpells();
@@ -388,27 +338,5 @@ public class WandLevel {
 		wand.loadProperties(wandProperties);
 		
 		return addedMaterials || addedSpells || addedProperties;
-	}
-	
-	public static boolean randomizeWand(Wand wand, boolean additive, int level) {
-		WandLevel wandLevel = getLevel(level);
-		return wandLevel.randomizeWand(wand, additive);
-	}
-	
-	public static Set<Integer> getLevels() {
-		if (levels == null) return null;
-		Set<Integer> filteredLevels = new HashSet<Integer>();
-		for (Integer level : levels) {
-			if (level >= minLevel && level <= maxLevel) {
-				filteredLevels.add(level);
-			}
-		}
-		return filteredLevels;
-	}
-	
-	public static int getMaxLevel() {
-		if (levels == null) return 0;
-		
-		return Math.min(levels[levels.length - 1], maxLevel);
 	}
 }

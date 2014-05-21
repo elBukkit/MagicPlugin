@@ -4,6 +4,7 @@
 
  - Add CommandSpell. WIP.
  - Add Respawn spell and Respawn Token items.
+ - Add configurable wand enchanting paths
 
 ## 3.2
 

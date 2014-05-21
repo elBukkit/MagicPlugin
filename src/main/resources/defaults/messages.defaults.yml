@@ -935,6 +935,24 @@ spells:
         no_target: Nothing to transmute
         cast: You transmute your structure to $material
 wands:
+    master:
+        name: Wand of {Spell}
+        description: The ultimate wand
+    student:
+        name: Wand of {Spell}
+        description: Low-powered magic for beginners
+    apprentice:
+        name: Wand of {Spell}
+        description: Moderately Powerful
+    battle:
+        name: Sword of {Spell}
+        description: Attack and Slice
+    engineer:
+        name: Engineering Wand
+        description: Has powerful building spells
+    architect:
+        name: The Architect
+        description: Master Engineering Wand
     random:
         name: Wand of {Spell}
         description: This will randomly generate a wand
@@ -950,12 +968,6 @@ wands:
     painter:
         name: Painting Wand
         description: For the designer in all of us
-    engineer:
-        name: Engineering Wand
-        description: Has powerful building spells
-    battle:
-        name: Battle Wand
-        description: Has some moderate attack spells
     mining:
         name: Mining Wand
         description: For mining
@@ -1118,6 +1130,9 @@ wands:
     mana4:
         name: Mana Upgrade Level 4
         description: Upgrade to 1500 Mana
+    antihunger:
+        name: Anti-Hunger Upgrade
+        description: Never go hungry again!
     manaboost:
         name: Mana Boost
         description: An instant boost to 1000 Mana (or your max)
