@@ -420,6 +420,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return owner;
 	}
 
+    public long getWorth() {
+        long worth = 0;
+        // TODO: Item properties, brushes, etc
+        Set<String> spells = getSpells();
+        for (String spellKey : spells) {
+            SpellTemplate spell = controller.getSpellTemplate(spellKey);
+            if (spell != null) {
+                worth += spell.getWorth();
+            }
+        }
+        return worth;
+    }
+
 	public void setName(String name) {
 		wandName = ChatColor.stripColor(name);
 		updateName();
@@ -491,16 +504,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected Set<String> getSpells(boolean includePositions) {
 		Set<String> spellNames = new TreeSet<String>();
 		List<Inventory> allInventories = getAllInventories();
+        int index = 0;
 		for (Inventory inventory : allInventories) {
 			ItemStack[] items = inventory.getContents();
 			for (int i = 0; i < items.length; i++) {
 				if (items[i] != null && isSpell(items[i])) {
                     String spellName = getSpell(items[i]);
                     if (includePositions) {
-                        spellName += "@" + i;
+                        spellName += "@" + index;
                     }
                     spellNames.add(spellName);
 				}
+                index++;
 			}
 		}
 		return spellNames;
@@ -519,15 +534,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
 		allInventories.add(hotbar);
 		allInventories.addAll(inventories);
+        int index = 0;
 		for (Inventory inventory : allInventories) {
 			ItemStack[] items = inventory.getContents();
 			for (int i = 0; i < items.length; i++) {
                 if (items[i] != null && isBrush(items[i])) {
-                    String materialKey = getMaterialKey(items[i], includePositions ? i : null);
+                    String materialKey = getMaterialKey(items[i], includePositions ? index : null);
                     if (materialKey != null) {
                         materialNames.add(materialKey);
                     }
                 }
+                index++;
 			}
 		}
 		return materialNames;	
@@ -563,11 +580,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 		
-		List<Inventory> checkInventories = wandMode == WandMode.INVENTORY ? getAllInventories() : inventories;
+		List<Inventory> checkInventories = getAllInventories();
 		boolean added = false;
 		
 		for (Inventory inventory : checkInventories) {
 			HashMap<Integer, ItemStack> returned = inventory.addItem(itemStack);
+
 			if (returned.size() == 0) {
 				added = true;
 				break;
