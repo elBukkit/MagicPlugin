@@ -153,7 +153,7 @@ engineer:
     effect_color: '00FF00'
     path: engineer
     mode: chest
-    icon: stick
+    icon: wood_axe
     xp_regeneration: 5
     xp_max: 50
 

@@ -236,10 +236,36 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
 		return new Wand(controller, itemStack);
 	}
-	
+
+    @Override
 	public boolean isWand(ItemStack item) {
 		return Wand.isWand(item);
 	}
+
+    @Override
+    public String getSpell(ItemStack item) {
+        return Wand.getSpell(item);
+    }
+
+    @Override
+    public boolean isBrush(ItemStack item) {
+        return Wand.isBrush(item);
+    }
+
+    @Override
+    public boolean isSpell(ItemStack item) {
+        return Wand.isSpell(item);
+    }
+
+    @Override
+    public String getBrush(ItemStack item) {
+        return Wand.getBrush(item);
+    }
+
+    @Override
+    public boolean isUpgrade(ItemStack item) {
+        return Wand.isUpgrade(item);
+    }
 
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {

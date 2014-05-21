@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,6 +18,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.Messages;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class MagicTabExecutor implements TabExecutor {
 	protected MagicAPI api;
@@ -85,7 +87,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 		}
 	}
 
-	public boolean onGiveWand(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
+	public boolean giveWand(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
 		Mage mage = api.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
@@ -101,10 +103,46 @@ public abstract class MagicTabExecutor implements TabExecutor {
                     sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
                 }
             }
+            if (showWorth) {
+                showWorth(sender, wand.getItem());
+            }
 		} else {
 			if (!quiet) sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
 			return false;
 		}
 		return true;
 	}
+
+    protected void showWorth(CommandSender sender, ItemStack item)
+    {
+       if (api.isWand(item) || (api.isUpgrade(item))) {
+            Wand wand = api.getWand(item);
+           if (wand == null) {
+               sender.sendMessage("I'm not sure what that's worth, sorry!");
+               return;
+           }
+           sender.sendMessage(ChatColor.AQUA + "WIP: Wand " + ChatColor.GOLD + wand.getName()
+                   + ChatColor.AQUA + " is worth " + ChatColor.GREEN + wand.getWorth());
+       } else if (api.isSpell(item)) {
+           SpellTemplate template = api.getSpellTemplate(api.getSpell(item));
+           if (template == null) {
+               sender.sendMessage("I'm not sure what that's worth, sorry!");
+               return;
+           }
+           sender.sendMessage(ChatColor.AQUA + "WIP: Spell " + ChatColor.GOLD + template.getName()
+                + ChatColor.AQUA + " is worth " + ChatColor.GREEN + template.getWorth());
+       } else if (api.isBrush(item)) {
+           String materialBrush = api.getBrush(item);
+           if (materialBrush == null) {
+               sender.sendMessage("I'm not sure what that's worth, sorry!");
+               return;
+           }
+           // TODO: Config-driven!
+           int brushWorth = 500;
+           sender.sendMessage(ChatColor.AQUA + "WIP: Brush " + ChatColor.GOLD + materialBrush
+                   + ChatColor.AQUA + " is worth " + ChatColor.GREEN + brushWorth);
+       } else {
+           sender.sendMessage("I'm not sure what that's worth, sorry!");
+       }
+    }
 }

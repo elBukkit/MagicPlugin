@@ -215,6 +215,14 @@ permissions:
     description: Player may give themselves special wand items
     type: boolean
     default: op
+  Magic.commands.magic.sell:
+    description: Player may give themselves items and their value
+    type: boolean
+    default: op
+  Magic.commands.magic.worth:
+    description: Player may check the value of an item
+    type: boolean
+    default: op
   Magic.wand.use:
     description: The player may use a wand
     default: true

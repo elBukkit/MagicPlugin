@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -88,7 +89,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			}
 			return true;
 		}
-		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell") || subCommand.equalsIgnoreCase("worth"))
+		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
 		{
 			Player player = null;
 			int argStart = 1;
@@ -107,9 +108,28 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 					return true;
 				}
 			}
+            boolean showWorth = subCommand.equalsIgnoreCase("sell");
 			String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
 			return onMagicGive(sender, player, subCommand, args2);
 		}
+        if (subCommand.equalsIgnoreCase("worth"))
+        {
+            if (!(sender instanceof Player))
+            {
+                sender.sendMessage("This command may only be used in-game");
+                return true;
+            }
+
+            Player player = (Player)sender;
+            ItemStack item = player.getItemInHand();
+            if (item == null || item.getType() == Material.AIR)
+            {
+                player.sendMessage("You must be holding an item");
+                return true;
+            }
+            showWorth(player, item);
+            return true;
+        }
 		if (subCommand.equalsIgnoreCase("list"))
 		{
 			String usage = "Usage: magic list <wands [player]|maps [keyword]>";
@@ -337,7 +357,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
         boolean giveValue = command.equals("sell");
 
 		if (isWand) {
-			onGiveWand(sender, player, key, false, giveItem, giveValue, showWorth);
+			giveWand(sender, player, key, false, giveItem, giveValue, showWorth);
 		} else if (isMaterial) {
 			onGiveBrush(sender, player, key, false, giveItem, giveValue, showWorth);
 		} else if (isUpgrade) {
@@ -354,7 +374,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		if (!onGiveSpell(sender, player, key, true, giveItem, giveValue, showWorth)) {
 			if (!onGiveBrush(sender, player, key, true, giveItem, giveValue, showWorth))
 			{
-				if (!onGiveWand(sender, player, key, true, giveItem, giveValue, showWorth))
+				if (!giveWand(sender, player, key, true, giveItem, giveValue, showWorth))
 				{
 					sender.sendMessage("Failed to create a spell, brush or wand item for " + key);
 				}
@@ -372,6 +392,12 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 
         if (giveItem) {
             api.giveItemToPlayer(player, itemStack);
+            if (sender != player && !quiet) {
+                sender.sendMessage("Gave spell " + spellKey + " to " + player.getName());
+            }
+        }
+        if (showWorth) {
+            showWorth(sender, itemStack);
         }
 		return true;
 	}
@@ -386,6 +412,12 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 
         if (giveItem) {
             api.giveItemToPlayer(player, itemStack);
+            if (sender != player && !quiet) {
+                sender.sendMessage("Gave brush " + materialKey + " to " + player.getName());
+            }
+        }
+        if (showWorth) {
+            showWorth(sender, itemStack);
         }
 		return true;
 	}
@@ -401,10 +433,15 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		Wand wand = api.createWand(wandKey);
 		if (wand != null) {
 			wand.makeUpgrade();
-			api.giveItemToPlayer(player, wand.getItem());
-			if (sender != player && !quiet) {
-				sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
-			}
+            if (giveItem) {
+                api.giveItemToPlayer(player, wand.getItem());
+                if (sender != player && !quiet) {
+                    sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
+                }
+            }
+            if (showWorth) {
+                showWorth(sender, wand.getItem());
+            }
 		} else  {
 			if (!quiet) sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
 			return false;
@@ -453,7 +490,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				options.addAll(api.getBrushes());
 			}
 		} else if (args.length == 3) {
-			if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
+			if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("sell")) {
 				if (args[1].equalsIgnoreCase("upgrade") || args[1].equalsIgnoreCase("wand")) {
 					Collection<String> allWands = api.getWandKeys();
 					for (String wandKey : allWands) {
