@@ -284,6 +284,49 @@ public interface MagicAPI {
     public boolean isWand(ItemStack item);
 
     /**
+     * Check to see if an existing item is a wand upgrade. This will inspect
+     * the item's NBT data.
+     *
+     * @param item The ItemStack to inspect.
+     * @return true if the item is a wand upgrade, in which case getWand can be used.
+     */
+    public boolean isUpgrade(ItemStack item);
+
+    /**
+     * Check to see if an existing item is a spell item. This will inspect
+     * the item's NBT data.
+     *
+     * @param item The ItemStack to inspect.
+     * @return true if the item is a spell, in which case getSpell can be used.
+     */
+    public boolean isSpell(ItemStack item);
+
+    /**
+     * Check to see if an existing item is a material brush item. This will inspect
+     * the item's NBT data.
+     *
+     * @param item The ItemStack to inspect.
+     * @return true if the item is a wand upgrade, in which case getBrush can be used.
+     */
+    public boolean isBrush(ItemStack item);
+
+    /**
+     * Get the key of the Spell or SpellTemplate represented by an item.
+     *
+     * @param item The item to inspect
+     * @return The key of the Spell represented by this item.
+     */
+    public String getSpell(ItemStack item);
+
+    /**
+     * Get the key of the material brush represented by an item.
+     *
+     * @param item The item to inspect
+     * @return The key of the material brush represented by this item.
+     */
+    public String getBrush(ItemStack item);
+
+    /**
      * Create an ItemStack that represents a Spell.
      *
      * This item will be absorbed by a Wand on activate, adding that Spell
