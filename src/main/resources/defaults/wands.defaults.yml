@@ -557,7 +557,7 @@ wolf:
 #
 
 guest:
-    path: apprentice
+    path: student
     effect_color: '00FF00'
     xp_regeneration: 5
     xp_max: 50
@@ -568,7 +568,7 @@ guest:
         - tag
         - camera
 villager:
-    path: apprentice
+    path: student
     effect_color: '00FF00'
     xp_regeneration: 10
     protection_falling: 0.1
@@ -582,7 +582,7 @@ villager:
         - leap
         - perk
 knight:
-    path: student
+    path: battle
     effect_color: '11FF11'
     xp_regeneration: 15
     xp_max: 80
@@ -599,7 +599,7 @@ knight:
         - pull
         - perk
 baron:
-    path: student
+    path: battle
     effect_color: '11FF11'
     xp_regeneration: 18
     xp_max: 100
@@ -619,7 +619,7 @@ baron:
         - shrink
         - perk
 lord:
-    path: student
+    path: battle
     effect_color: '11FF11'
     xp_regeneration: 20
     xp_max: 130
@@ -642,7 +642,7 @@ lord:
         - boom
         - perk
 hero:
-    path: student
+    path: battle
     effect_color: '11FF11'
     xp_regeneration: 25
     xp_max: 150
@@ -669,7 +669,7 @@ hero:
         - blast
         - perk
 king:
-    path: student
+    path: battle
     effect_color: '22FF22'
     xp_regeneration: 30
     xp_max: 175
@@ -699,7 +699,7 @@ king:
         - grenade
         - perk
 legend:
-    path: student
+    path: apprentice
     effect_color: '22FF22'
     xp_regeneration: 40
     xp_max: 200
@@ -734,7 +734,7 @@ legend:
         - frost
         - perk
 overseer:
-    path: student
+    path: apprentice
     effect_color: '22FF22'
     xp_regeneration: 50
     xp_max: 250
