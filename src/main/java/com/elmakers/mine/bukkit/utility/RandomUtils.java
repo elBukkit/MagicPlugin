@@ -27,7 +27,7 @@ public class RandomUtils {
     }
 
     public static <T extends Object> T weightedRandom(LinkedList<WeightedPair<T>> weightList) {
-        if (weightList.size() == 0) return null;
+        if (weightList == null || weightList.size() == 0) return null;
 
         Float maxWeight = weightList.getLast().getThreshold();
         Float selectedWeight = random.nextFloat() * maxWeight;
