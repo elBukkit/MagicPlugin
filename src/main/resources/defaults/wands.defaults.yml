@@ -124,6 +124,7 @@ apprentice:
     path: apprentice
     mode: inventory
     icon: blaze_rod
+    indestructible: false
     xp_regeneration: 10
     xp_max: 100
     protection_falling: 0.8
@@ -137,6 +138,7 @@ student:
     path: student
     mode: chest
     icon: stick
+    indestructible: false
     xp_regeneration: 5
     xp_max: 50
 
