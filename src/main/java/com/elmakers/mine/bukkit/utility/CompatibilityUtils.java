@@ -99,9 +99,10 @@ public class CompatibilityUtils {
         if (bukkitRoot == null) return false;
         Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return false;
-        Object dataRoot = NMSUtils.getNode(pluginsRoot, key);
+        String pluginName = plugin.getName();
+        Object pluginRoot = NMSUtils.getNode(pluginsRoot, pluginName);
 
-        return dataRoot != null && NMSUtils.containsNode(dataRoot, plugin.getName());
+        return pluginRoot != null && NMSUtils.containsNode(pluginRoot, key);
     }
 
     public static String getMetadata(ItemStack itemStack, Plugin plugin, String key) {
@@ -114,9 +115,10 @@ public class CompatibilityUtils {
         if (bukkitRoot == null) return null;
         Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return null;
-        Object dataRoot = NMSUtils.getNode(pluginsRoot, key);
-        if (dataRoot == null) return null;
-        return NMSUtils.getMeta(dataRoot, plugin.getName());
+        String pluginName = plugin.getName();
+        Object pluginRoot = NMSUtils.getNode(pluginsRoot, pluginName);
+        if (pluginRoot == null) return null;
+        return NMSUtils.getMeta(pluginRoot, key);
     }
 
     public static boolean setMetadata(ItemStack itemStack, Plugin plugin, String key, String value) {
@@ -129,9 +131,10 @@ public class CompatibilityUtils {
         if (bukkitRoot == null) return false;
         Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return false;
-        Object dataRoot = NMSUtils.createNode(pluginsRoot, key);
-        if (dataRoot == null) return false;
-        NMSUtils.setMeta(dataRoot, plugin.getName(), value);
+        String pluginName = plugin.getName();
+        Object pluginRoot = NMSUtils.createNode(pluginsRoot, pluginName);
+        if (pluginRoot == null) return false;
+        NMSUtils.setMeta(pluginRoot, key, value);
         return true;
     }
 
@@ -145,9 +148,10 @@ public class CompatibilityUtils {
         if (bukkitRoot == null) return false;
         Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return false;
-        Object dataRoot = NMSUtils.createNode(pluginsRoot, key);
-        if (dataRoot == null) return false;
-        NMSUtils.removeMeta(dataRoot, plugin.getName());
+        String pluginName = plugin.getName();
+        Object pluginRoot = NMSUtils.createNode(pluginsRoot, pluginName);
+        if (pluginRoot == null) return false;
+        NMSUtils.removeMeta(pluginRoot, key);
         return true;
     }
 
@@ -161,10 +165,9 @@ public class CompatibilityUtils {
         if (bukkitRoot == null) return null;
         Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return null;
-        Object dataRoot = NMSUtils.getNode(pluginsRoot, key);
-        if (dataRoot == null) return null;
-
-        return NMSUtils.getNode(dataRoot, plugin.getName());
+        String pluginName = plugin.getName();
+        Object pluginRoot = NMSUtils.getNode(pluginsRoot, pluginName);
+        return NMSUtils.getNode(pluginRoot, key);
     }
 
     public static Object createMetadataNode(ItemStack itemStack, Plugin plugin, String key) {
@@ -177,9 +180,8 @@ public class CompatibilityUtils {
         if (bukkitRoot == null) return null;
         Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return null;
-        Object dataRoot = NMSUtils.createNode(pluginsRoot, key);
-        if (dataRoot == null) return null;
-
-        return NMSUtils.createNode(dataRoot, plugin.getName());
+        String pluginName = plugin.getName();
+        Object pluginRoot = NMSUtils.createNode(pluginsRoot, pluginName);
+        return NMSUtils.createNode(pluginRoot, key);
     }
 }
