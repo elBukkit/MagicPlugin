@@ -82,6 +82,7 @@
                    if (char == '&' && charIndex != lineLength - 1) {
                        if (currentText.length > 0) {
                            currentSpan.append(currentText);
+                           currentText = "";
                        }
                        var styleChar = line[++charIndex];
                        if (styleChar == 'r') {
@@ -99,6 +100,7 @@
                }
                if (currentText.length > 0) {
                    currentSpan.append(currentText);
+                   currentText = "";
                }
                outputDiv.append(lineContainer);
            }
@@ -106,6 +108,8 @@
    </script>
 </head>
 <body>
+Enter text- use <span style="font-weight: bold">§</span> or &</span> as escape characters.
+See <a href="http://minecraft.gamepedia.com/Formatting_codes">The Minecraft Wiki</a> for more information.<br/>
 <textarea id="text" cols="80" rows="10"></textarea><br/>
 <input type="button" value="Translate" onClick="onTranslateClick();"/>
 <br/>
