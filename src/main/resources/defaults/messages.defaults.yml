@@ -118,6 +118,7 @@ wand:
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
     self_destruct: Your wands did not survive the dimensional shift!
+    single_spell: Wand of $spell
 spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback
@@ -936,16 +937,16 @@ spells:
         cast: You transmute your structure to $material
 wands:
     master:
-        name: Wand of {Spell}
+        name: Master Wand
         description: The ultimate wand
     student:
-        name: Wand of {Spell}
+        name: Student Wand
         description: Low-powered magic for beginners
     apprentice:
-        name: Wand of {Spell}
+        name: Apprentice Wand
         description: Moderately Powerful
     battle:
-        name: Sword of {Spell}
+        name: Magic Sword
         description: Attack and Slice
     engineer:
         name: Engineering Wand
