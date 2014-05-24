@@ -40,9 +40,10 @@ public class MagicRecipe {
         if (wand == null) {
             return false;
         }
-        ItemStack wandType = wand.getItem();
-        outputType = wandType.getType();
-        ShapedRecipe shaped = new ShapedRecipe(wandType);
+        ItemStack wandItem = wand.getItem();
+        // CompatibilityUtils.removeCustomData(wandItem);
+        outputType = wandItem.getType();
+        ShapedRecipe shaped = new ShapedRecipe(wandItem);
         String recipeRow1 = configuration.getString("row_1", "");
         String recipeRow2 = configuration.getString("row_2", "");
         String recipeRow3 = configuration.getString("row_3", "");
@@ -92,8 +93,8 @@ public class MagicRecipe {
 
     public ItemStack craft() {
         ItemStack item = controller.createWand(outputKey).getItem();
-        CompatibilityUtils.removeCustomData(item);
-        CompatibilityUtils.addGlow(item);
+        // CompatibilityUtils.removeCustomData(item);
+        // CompatibilityUtils.addGlow(item);
         return item;
     }
 }
