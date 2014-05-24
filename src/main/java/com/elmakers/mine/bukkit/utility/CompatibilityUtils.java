@@ -102,7 +102,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean hasMetadata(ItemStack itemStack, Plugin plugin, String key) {
-        Object handle = InventoryUtils.getHandle(itemStack);
+        Object handle = getHandle(itemStack);
         if (handle == null) return false;
         Object tag = getTag(handle);
         if (tag == null) return false;
@@ -118,7 +118,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static String getMetadata(ItemStack itemStack, Plugin plugin, String key) {
-        Object handle = InventoryUtils.getHandle(itemStack);
+        Object handle = getHandle(itemStack);
         if (handle == null) return null;
         Object tag = getTag(handle);
         if (tag == null) return null;
@@ -134,7 +134,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean setMetadata(ItemStack itemStack, Plugin plugin, String key, String value) {
-        Object handle = InventoryUtils.getHandle(itemStack);
+        Object handle = getHandle(itemStack);
         if (handle == null) return false;
         Object tag = getTag(handle);
         if (tag == null) return false;
@@ -151,7 +151,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean removeMetadata(ItemStack itemStack, Plugin plugin, String key) {
-        Object handle = InventoryUtils.getHandle(itemStack);
+        Object handle = getHandle(itemStack);
         if (handle == null) return false;
         Object tag = getTag(handle);
         if (tag == null) return false;
@@ -168,7 +168,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static Object getMetadataNode(ItemStack itemStack, Plugin plugin, String key) {
-        Object handle = InventoryUtils.getHandle(itemStack);
+        Object handle = getHandle(itemStack);
         if (handle == null) return null;
         Object tag = getTag(handle);
         if (tag == null) return null;
@@ -183,7 +183,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static Object createMetadataNode(ItemStack itemStack, Plugin plugin, String key) {
-        Object handle = InventoryUtils.getHandle(itemStack);
+        Object handle = getHandle(itemStack);
         if (handle == null) return null;
         Object tag = getTag(handle);
         if (tag == null) return null;
@@ -198,7 +198,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void removeCustomData(ItemStack itemStack) {
-        Object handle = InventoryUtils.getHandle(itemStack);
+        Object handle = getHandle(itemStack);
         if (handle == null) return;
         Object tag = getTag(handle);
         if (tag == null) return;
