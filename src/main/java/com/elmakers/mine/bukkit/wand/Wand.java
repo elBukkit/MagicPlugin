@@ -176,7 +176,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public Wand(MagicController controller, ItemStack itemStack) {
 		this.controller = controller;
-		hotbar = InventoryUtils.createInventory(null, 9, "Wand");
+		hotbar = CompatibilityUtils.createInventory(null, 9, "Wand");
 		this.icon = new MaterialAndData(itemStack.getType(), (byte)itemStack.getDurability());
 		inventories = new ArrayList<Inventory>();
 		item = itemStack;
@@ -265,7 +265,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		wandName = Messages.get("wand.default_name");
 		updateName();
 		if (EnableGlow) {
-			InventoryUtils.addGlow(item);
+            CompatibilityUtils.addGlow(item);
 		}
 		saveState();
 	}
@@ -611,7 +611,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 		if (!added) {
-			Inventory newInventory = InventoryUtils.createInventory(null, INVENTORY_SIZE, "Wand");
+			Inventory newInventory = CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand");
 			newInventory.addItem(itemStack);
 			inventories.add(newInventory);
 		}
@@ -624,7 +624,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected Inventory getDisplayInventory() {
 		if (displayInventory == null) {
-			displayInventory = InventoryUtils.createInventory(null, INVENTORY_SIZE + HOTBAR_SIZE, "Wand");
+			displayInventory = CompatibilityUtils.createInventory(null, INVENTORY_SIZE + HOTBAR_SIZE, "Wand");
 		}
 		
 		return displayInventory;
@@ -632,7 +632,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected Inventory getInventoryByIndex(int inventoryIndex) {
 		while (inventoryIndex >= inventories.size()) {
-			inventories.add(InventoryUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
+			inventories.add(CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
 		}
 		return inventories.get(inventoryIndex);
 	}
@@ -1200,7 +1200,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Reset Enchantment glow
 		if (EnableGlow) {
-			InventoryUtils.addGlow(item);
+            CompatibilityUtils.addGlow(item);
 		}
 
 		// The all-important last step of restoring the meta state, something
@@ -1372,7 +1372,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		item.setItemMeta(meta);
 		if (EnableGlow) {
-			InventoryUtils.addGlow(item);
+			CompatibilityUtils.addGlow(item);
 		}
 		
 		// Setting lore will reset wand data
@@ -1529,7 +1529,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
-		InventoryUtils.addGlow(itemStack);
+        CompatibilityUtils.addGlow(itemStack);
 		CompatibilityUtils.setMetadata(itemStack, metadataProvider, "spell", spell.getKey());
 	}
 	
@@ -1666,7 +1666,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected Inventory getOpenInventory() {
 		while (openInventoryPage >= inventories.size()) {
-			inventories.add(InventoryUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
+			inventories.add(CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand"));
 		}
 		return inventories.get(openInventoryPage);
 	}
@@ -2138,7 +2138,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Update Bubble effects effects
 		if (effectBubbles) {
-			InventoryUtils.addPotionEffect(player, effectColor.getColor());
+			CompatibilityUtils.addPotionEffect(player, effectColor.getColor());
 		}
 		
 		Location location = mage.getLocation();
@@ -2192,7 +2192,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         Player player = mage.getPlayer();
 		if (effectBubbles && player != null) {
-			InventoryUtils.removePotionEffect(player);
+			CompatibilityUtils.removePotionEffect(player);
 		}
 		
 		// This is a tying wands together with other spells, potentially

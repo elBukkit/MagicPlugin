@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -18,7 +19,6 @@ import org.bukkit.potion.PotionEffectType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class GotoSpell extends UndoableSpell
@@ -181,13 +181,13 @@ public class GotoSpell extends UndoableSpell
 		getCurrentTarget().setEntity(entity);
 
 		if (effectColor != null) {
-			InventoryUtils.addPotionEffect(targetEntity, effectColor);
+			CompatibilityUtils.addPotionEffect(targetEntity, effectColor);
 		}
 	}
 	
 	protected void releaseTarget() {
 		if (targetEntity != null && effectColor != null) {
-			InventoryUtils.clearPotionEffect(targetEntity);
+			CompatibilityUtils.clearPotionEffect(targetEntity);
 		}
 		targetEntity = null;
 	}

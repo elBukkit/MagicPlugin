@@ -1,18 +1,17 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class ForceSpell extends TargetingSpell
@@ -110,13 +109,13 @@ public class ForceSpell extends TargetingSpell
 		getCurrentTarget().setEntity(entity);
 
 		if (effectColor != null) {
-			InventoryUtils.addPotionEffect(targetEntity, effectColor);
+			CompatibilityUtils.addPotionEffect(targetEntity, effectColor);
 		}
 	}
 	
 	protected void releaseTarget() {
 		if (targetEntity != null && effectColor != null) {
-			InventoryUtils.clearPotionEffect(targetEntity);
+			CompatibilityUtils.clearPotionEffect(targetEntity);
 		}
 		targetEntity = null;
 	}

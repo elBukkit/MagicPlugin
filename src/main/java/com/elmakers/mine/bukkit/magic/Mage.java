@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -46,7 +47,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.block.batch.UndoBatch;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage
@@ -171,7 +171,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			return false;
 		}
 		Inventory inventory = player.getInventory();
-		storedInventory = InventoryUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
+		storedInventory = CompatibilityUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
 		
 		// Make sure we don't store any spells or magical materials, just in case
 		ItemStack[] contents = inventory.getContents();

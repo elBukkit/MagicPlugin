@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -121,11 +122,6 @@ import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.CompleteDragTask;
 import com.elmakers.mine.bukkit.utilities.DataStore;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.Messages;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.elmakers.mine.bukkit.utility.URLMap;
 import com.elmakers.mine.bukkit.warp.WarpController;
 
 public class MagicController implements Listener, MageController
@@ -2006,7 +2002,7 @@ public class MagicController implements Listener, MageController
 		{
 			Wand wand = new Wand(this, event.getEntity().getItemStack());
 			if (wand.isIndestructible()) {
-				InventoryUtils.setInvulnerable(event.getEntity());
+				CompatibilityUtils.setInvulnerable(event.getEntity());
 
 				// Don't show non-indestructible wands on dynmap
 				addLostWand(wand, event.getEntity().getLocation());		

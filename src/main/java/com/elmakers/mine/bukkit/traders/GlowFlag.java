@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.traders;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import net.dandielo.citizens.traders_v3.core.exceptions.InvalidItemException;
 import net.dandielo.citizens.traders_v3.core.exceptions.attributes.AttributeValueNotFoundException;
 import net.dandielo.citizens.traders_v3.utils.items.Attribute;
@@ -22,7 +23,7 @@ public class GlowFlag extends ItemFlag {
 	{
 		// Don't overwrite any existing enchantments!
 		if (!InventoryUtils.hasMeta(item, "ench")) {
-			InventoryUtils.addGlow(item);
+			CompatibilityUtils.addGlow(item);
 		}
 	}
 

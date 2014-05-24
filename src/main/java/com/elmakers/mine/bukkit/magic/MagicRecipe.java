@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -89,6 +91,9 @@ public class MagicRecipe {
     }
 
     public ItemStack craft() {
-        return controller.createWand(outputKey).getItem();
+        ItemStack item = controller.createWand(outputKey).getItem();
+        CompatibilityUtils.removeCustomData(item);
+        CompatibilityUtils.addGlow(item);
+        return item;
     }
 }
