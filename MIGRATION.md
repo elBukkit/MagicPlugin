@@ -1,5 +1,18 @@
 # Migration Notes
 
+## 3.3
+
+ * Enchanting is now customizable via multiple enchanting paths. If you had previously modified the "random"
+   template in wands.yml, you will need to transfer your work to enchanting.yml.
+   There are also now multiple different enchanting paths, review wands.defaults.yml,
+   you will need to override "path" for wands if you want them to continue to all use
+   the same enchanting path (now called "master").
+
+ * Crafting is now customizable, there are several new recipes apart from the old
+   blaze rod + nether star default. Please review crafting.defaults.yml and adjust
+   accordingly, especially if you have a customized crafting configuration.
+
+
 ## 3.2
 
  * FamiliarSpell has been modified, you will need to update any customized

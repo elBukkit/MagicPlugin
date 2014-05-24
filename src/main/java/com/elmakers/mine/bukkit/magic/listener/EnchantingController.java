@@ -28,8 +28,7 @@ public class EnchantingController implements Listener {
 	}
 	
 	public void load(ConfigurationSection properties) {
-		enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
-		Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);		
+        WandUpgradePath.loadPaths(properties);
 	}
 
 	@EventHandler
@@ -136,4 +135,13 @@ public class EnchantingController implements Listener {
 	{
 		return enchantingEnabled;
 	}
+
+    public void setEnabled(boolean enabled)
+    {
+        this.enchantingEnabled = enabled;
+    }
+
+    public int getCount() {
+        return WandUpgradePath.getPathKeys().size();
+    }
 }

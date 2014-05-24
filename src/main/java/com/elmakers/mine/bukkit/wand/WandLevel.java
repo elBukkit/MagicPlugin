@@ -129,12 +129,12 @@ public class WandLevel {
 		boolean addedSpells = false;
 		Set<String> wandSpells = wand.getSpells();
 		LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();
-		for (WeightedPair<String> spell : spellProbability) {
-			if (!wandSpells.contains(spell.getValue())) {
-				remainingSpells.add(spell);
-			}
-		}
-		
+        for (WeightedPair<String> spell : spellProbability) {
+            if (!wandSpells.contains(spell.getValue())) {
+                remainingSpells.add(spell);
+            }
+        }
+
 		SpellTemplate firstSpell = null;		
 		if (remainingSpells.size() > 0) {
 			Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
@@ -176,14 +176,16 @@ public class WandLevel {
 		boolean addedMaterials = false;
 		Set<String> wandMaterials = wand.getBrushes();
 		LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<WeightedPair<String>>();
-		for (WeightedPair<String> material : materialProbability) {
-			String materialKey = material.getValue();
-			// Fixup @'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
-			materialKey = materialKey.replace("|", ":");
-			if (!wandMaterials.contains(material.getValue()) && MaterialBrush.isValidMaterial(materialKey, false)) {
-				remainingMaterials.add(material);
-			}
-		}
+        for (WeightedPair<String> material : materialProbability) {
+            String materialKey = material.getValue();
+            // Fixup |'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
+            // TODO: escape the keys as strings with '', which is probably the right way to do it.
+            materialKey = materialKey.replace("|", ":");
+            if (!wandMaterials.contains(material.getValue()) && MaterialBrush.isValidMaterial(materialKey, false)) {
+                remainingMaterials.add(material);
+            }
+        }
+
 		if (needsMaterials && remainingMaterials.size() > 0) {
 			int currentMaterialCount = wand.getBrushes().size();
 			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
@@ -207,7 +209,7 @@ public class WandLevel {
 		
 		// Add random wand properties
 		boolean addedProperties = false;
-		Integer propertyCount = RandomUtils.weightedRandom(propertyCountProbability);
+		Integer propertyCount = propertyCountProbability.size() == 0 ? 0 : RandomUtils.weightedRandom(propertyCountProbability);
 		ConfigurationSection wandProperties = new MemoryConfiguration();
 		double costReduction = wand.getCostReduction();
 		
@@ -215,7 +217,7 @@ public class WandLevel {
 			int randomProperty = (int)(Math.random() * 10);
 			switch (randomProperty) {
 			case 0: 
-				if (costReduction < maxValue) {
+				if (costReductionProbability.size() > 0 && costReduction < maxValue) {
 					addedProperties = true;
 					costReduction = Math.min(maxValue, costReduction + RandomUtils.weightedRandom(costReductionProbability));
 					wandProperties.set("cost_reduction", costReduction);
@@ -223,63 +225,63 @@ public class WandLevel {
 				break;
 			case 1:
 				float power = wand.getPower();
-				if (power < maxValue) {
+				if (powerProbability.size() > 0 && power < maxValue) {
 					addedProperties = true;
 					wandProperties.set("power", (Double)(double)(Math.min(maxValue, power + RandomUtils.weightedRandom(powerProbability))));
 				}
 				break;
 			case 2:
 				float damageReduction = wand.getDamageReduction();
-				if (damageReduction < maxValue) {
+				if (damageReductionProbability.size() > 0 && damageReduction < maxValue) {
 					addedProperties = true;
 					wandProperties.set("protection", (Double)(double)(Math.min(maxValue, damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
 				}
 				break;
 			case 3:
 				float damageReductionPhysical = wand.getDamageReductionPhysical();
-				if (damageReductionPhysical < maxValue) {
+				if (damageReductionPhysicalProbability.size() > 0 && damageReductionPhysical < maxValue) {
 					addedProperties = true;
 					wandProperties.set("protection_physical", (Double)(double)(Math.min(maxValue, damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
 				}
 				break;
 			case 4:
 				float damageReductionProjectiles = wand.getDamageReductionProjectiles();
-				if (damageReductionProjectiles < maxValue) {
+				if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < maxValue) {
 					addedProperties = true;
 					wandProperties.set("protection_projectiles", (Double)(double)(Math.min(maxValue, damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
 				}
 				break;
 			case 5:
 				float damageReductionFalling = wand.getDamageReductionFalling();
-				if (damageReductionFalling < maxValue) {
+				if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < maxValue) {
 					addedProperties = true;
 					wandProperties.set("protection_falling", (Double)(double)(Math.min(maxValue, damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
 				}
 				break;
 			case 6:
 				float damageReductionFire = wand.getDamageReductionFire();
-				if (damageReductionFire < maxValue) {
+				if (damageReductionFireProbability.size() > 0 && damageReductionFire < maxValue) {
 					addedProperties = true;
 					wandProperties.set("protection_fire", (Double)(double)(Math.min(maxValue, damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
 				}
 				break;
 			case 7:
 				float damageReductionExplosions = wand.getDamageReductionExplosions();
-				if (damageReductionExplosions < maxValue) {
+				if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < maxValue) {
 					addedProperties = true;
 					wandProperties.set("protection_explosions", (Double)(double)(Math.min(maxValue, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
 				}
 				break;
 			case 10:
 				float healthRegeneration = wand.getHealthRegeneration();
-				if (healthRegeneration < maxValue) {
+				if (healthRegenerationProbability.size() > 0 && healthRegeneration < maxValue) {
 					addedProperties = true;
 					wandProperties.set("health_regeneration", (Integer)(int)(Math.min(maxValue, healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability))));
 				}
 				break;
 			case 11:
 				float hungerRegeneration = wand.getHungerRegeneration();
-				if (hungerRegeneration < maxValue) {
+				if (hungerRegenerationProbability.size() > 0 && hungerRegeneration < maxValue) {
 					addedProperties = true;
 					wandProperties.set("hunger_regeneration", (Integer)(int)(Math.min(maxValue, hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability))));
 				}
@@ -296,12 +298,12 @@ public class WandLevel {
 			wandProperties.set("xp", 0);
 		} else {
 			int xpRegeneration = wand.getXpRegeneration();
-			if (xpRegeneration < maxXpRegeneration) {
+			if (xpRegenerationProbability.size() > 0 && xpRegeneration < maxXpRegeneration) {
 				addedProperties = true;
 				wandProperties.set("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
 			}
 			int xpMax = wand.getXpMax();
-			if (xpMax < maxMaxXp) {
+			if (xpMaxProbability.size() > 0 && xpMax < maxMaxXp) {
 				// Make sure the wand has at least enough xp to cast the highest costing spell it has.
 				xpMax = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
 				xpMax = Math.max(maxXpCost, xpMax);
@@ -317,21 +319,12 @@ public class WandLevel {
 		if (additive) {
 			// Only add uses to a wand if it already has some.
 			int wandUses = wand.getUses();
-			if (wandUses > 0 && wandUses < maxUses) {
+			if (wandUses > 0 && wandUses < maxUses && addUseProbability.size() > 0) {
 				wandProperties.set("uses", Math.min(maxUses, wandUses + RandomUtils.weightedRandom(addUseProbability)));
 				addedProperties = true;
 			}
-		} else {
+		} else if (useProbability.size() > 0) {
 			wandProperties.set("uses", Math.min(maxUses, RandomUtils.weightedRandom(useProbability)));
-			
-			// If we are creating a new wand, make a templatized name
-			// based on the first spell that was added to it.
-			String spellName = "Nothing";
-			if (firstSpell != null) {
-				spellName = firstSpell.getName();
-			} 
-			String updatedName = wand.getName();
-			wand.setName(updatedName.replace("{Spell}", spellName));
 		}
 
 		// Set properties. This also updates name and lore.

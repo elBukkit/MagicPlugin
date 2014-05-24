@@ -18,13 +18,14 @@ master:
   # This defines the recipe output- a template wand will be created, and
   # then upgraded based on its enchanting path and the # of levels in parenthesis
   output: master(30)
+  output_type: wand
 
   # Used as a substitute item when the wand item is naturally crafted
   # This is mainly for the resource pack, so players don't craft a wood hoe
   # and get some weird non-wand but wand-looking item.
   # This means that, by default, crafting a wood hoe will get you an iron hoe.
   # If you don't want this behavior, just empty out this field.
-  substitute_item: iron_hoe
+  substitute: iron_hoe
 
   # This defines the materials that will be required to craft this wand
   materials:
@@ -39,6 +40,7 @@ master:
 
 apprentice:
   output: apprentice(20)
+  output_type: wand
   materials:
     o: diamond
     i: blaze_rod
@@ -48,6 +50,7 @@ apprentice:
 
 student:
   output: student(10)
+  output_type: wand
   materials:
     o: diamond
     i: stick
@@ -57,6 +60,7 @@ student:
 
 battle:
   output: battle(10)
+  output_type: wand
   materials:
     o: nether_star
     i: diamond_sword
@@ -66,6 +70,7 @@ battle:
 
 engineer:
   output: engineer(40)
+  output_type: wand
   materials:
     o: nether_star
     i: wood_axe

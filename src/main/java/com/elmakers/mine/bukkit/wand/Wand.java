@@ -202,22 +202,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// See if there is a template with this key
 		if (templateName != null && templateName.length() > 0) {
-			if ((templateName.equals("random") || templateName.startsWith("random(")) && wandTemplates.containsKey("random")) {
-				int level = 1;
-				if (!templateName.equals("random")) {
-					String randomLevel = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
-					level = Integer.parseInt(randomLevel);
-				}
-				ConfigurationSection randomTemplate = wandTemplates.get("random");
-				randomize(level, false);
-				// Random wands take a few properties from the "random" template
-				locked = (boolean)randomTemplate.getBoolean("locked", false);
-				setEffectColor(randomTemplate.getString("effect_color"));
-				suspendSave = false;
-				saveState();
-				return;
-			}
-			
+            // Check for randomized/pre-enchanted wands
+            int level = 0;
+            if (templateName.contains("(")) {
+                String levelString = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
+                try {
+                    level = Integer.parseInt(levelString);
+                } catch (Exception ex) {
+                    throw new IllegalArgumentException(ex);
+                }
+                templateName = templateName.substring(0, templateName.indexOf('('));
+            }
+
 			if (!wandTemplates.containsKey(templateName)) {
 				throw new IllegalArgumentException("No template named " + templateName);
 			}
@@ -231,6 +227,29 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			
 			// Load all properties
 			loadProperties(wandConfig);
+
+            // Enchant, if an enchanting level was provided
+            if (level > 0) {
+                // Account for randomized locked wands
+                boolean wasLocked = locked;
+                locked = false;
+                randomize(level, false);
+                locked = wasLocked;
+            }
+
+            // Check for single-spell wands
+            Set<String> spells = getSpells();
+            if (spells.size() == 1) {
+                String spellName = spells.iterator().next();
+                SpellTemplate spell = controller.getSpellTemplate(spellName);
+                String singleSpellName = Messages.get("wand.single_spell");
+                if (spell != null) {
+                    spellName = spell.getName();
+                }
+
+                singleSpellName.replace("$spell", spellName);
+                wandName = singleSpellName;
+            }
 		}
 
 		setDescription(wandDescription);
@@ -718,7 +737,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	private String getActiveWandName(String materialKey) {
-		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
+        Set<String> spells = getSpells();
+
+        // Special case for single-use wands, don't show
+        // active spell.
+        SpellTemplate spell = null;
+        if (spells.size() != 1) {
+            spell = controller.getSpellTemplate(activeSpell);
+        }
+
 		return getActiveWandName(spell, materialKey);
 	}
 	
@@ -1140,11 +1167,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Build wand name
 		ChatColor wandColor = isModifiable() ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.RED;
 		String name = wandColor + wandName;
-		
-		// Add active spell to description
-		if (spell != null) {
-			name = getSpellDisplayName(spell, materialKey) + " (" + name + ChatColor.WHITE + ")";
-		}
+
+        // Add active spell to description
+        if (spell != null) {
+            name = getSpellDisplayName(spell, materialKey) + " (" + name + ChatColor.WHITE + ")";
+        }
+
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
 			String message = (remaining == 1) ? Messages.get("wand.uses_remaining_singular") : Messages.get("wand.uses_remaining_brief");

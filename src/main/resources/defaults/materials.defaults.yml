@@ -546,3 +546,20 @@ enchantable:
 - gold_pickaxe
 - diamond_pickaxe
 - bow
+
+interactable:
+- chest
+- wooden_door
+- iron_door_block
+- ender_chest
+- anvil
+- brewing_stand
+- enchantment_table
+- workbench
+- furnace
+- stone_button
+- lever
+- bed
+- sign_post
+- command
+- wall-signrial.WORKBENCH);

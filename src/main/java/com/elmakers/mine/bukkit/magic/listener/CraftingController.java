@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import com.elmakers.mine.bukkit.magic.MagicRecipe;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -10,10 +11,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -21,87 +21,79 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class CraftingController implements Listener {
 	private final MagicController controller;
 	private boolean craftingEnabled = false;
-	private Material wantItemSubstitute = null;
-
-	private Recipe wandRecipe = null;
-	private Material wandRecipeUpperMaterial = Material.NETHER_STAR;
-	private Material wandRecipeLowerMaterial = Material.BLAZE_ROD;
-	private String recipeOutputTemplate = "random(1)";
+    private Map<Material, List<MagicRecipe>> recipes = new HashMap<Material, List<MagicRecipe>>();
+    int recipeCount = 0;
 
 	public CraftingController(MagicController controller) {
 		this.controller = controller;
 	}
 	
-	public void load(ConfigurationSection properties) {
-		Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
-		wantItemSubstitute = ConfigurationUtils.getMaterial(properties, "wand_item_substitute", null);
-		
-		// Parse crafting recipe settings
-		craftingEnabled = properties.getBoolean("enable_crafting", craftingEnabled);
-		if (craftingEnabled) {
-			recipeOutputTemplate = properties.getString("crafting_output", recipeOutputTemplate);
-			wandRecipeUpperMaterial = ConfigurationUtils.getMaterial(properties, "crafting_material_upper", wandRecipeUpperMaterial);
-			wandRecipeLowerMaterial = ConfigurationUtils.getMaterial(properties, "crafting_material_lower", wandRecipeLowerMaterial);
-		}
-
-		if (craftingEnabled) {
-			Wand wand = new Wand(controller);
-			ShapedRecipe recipe = new ShapedRecipe(wand.getItem());
-			recipe.shape("o", "i").
-					setIngredient('o', wandRecipeUpperMaterial).
-					setIngredient('i', wandRecipeLowerMaterial);
-			wandRecipe = recipe;
-			
-			controller.getLogger().info("Wand crafting is enabled");
-		}
+	public void load(ConfigurationSection configuration) {
+        recipes.clear();
+        Set<String> recipeKeys = configuration.getKeys(false);
+        for (String key : recipeKeys)
+        {
+            MagicRecipe recipe = new MagicRecipe(controller);
+            if (!recipe.load(configuration.getConfigurationSection(key))) {
+                controller.getLogger().warning("Failed to create crafting recipe: " + key);
+                continue;
+            }
+            Material outputType = recipe.getOutputType();
+            List<MagicRecipe> similar = recipes.get(outputType);
+            if (similar == null) {
+                similar = new ArrayList<MagicRecipe>();
+                recipes.put(outputType, similar);
+            }
+            similar.add(recipe);
+            recipeCount++;
+        }
 	}
 	
-	public void enable(Plugin plugin) {
-		// Add our custom recipe if crafting is enabled
-		if (wandRecipe != null) {
-			plugin.getServer().addRecipe(wandRecipe);
-		}
-	}
-	
-	@EventHandler
-	public void onCraftItem(CraftItemEvent event) {
-		if (!(event.getWhoClicked() instanceof Player)) return;
-		
-		Player player = (Player)event.getWhoClicked();
-		Mage mage = controller.getMage(player);
-		
-		// Don't allow crafting in the wand inventory.
-		if (mage.hasStoredInventory()) {
-			event.setCancelled(true); 
-			return;
-		}
+	public void register(Plugin plugin) {
+        for (List<MagicRecipe> list : recipes.values()) {
+            for (MagicRecipe recipe : list) {
+                recipe.register(plugin);
+            }
+        }
 	}
 	
 	@EventHandler
 	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
-		// TODO: Configurable crafting recipes
-		Recipe recipe = event.getRecipe();
-		if (craftingEnabled && wandRecipe != null && recipe.getResult().getType() == Wand.DefaultWandMaterial) {
-			// Verify that this was our recipe
-			// Just in case something else can craft our base material (e.g. stick)
-			Inventory inventory = event.getInventory();
-			if (inventory.contains(wandRecipeLowerMaterial) && inventory.contains(wandRecipeUpperMaterial)) {
-				Wand defaultWand = Wand.createWand(controller, null);
-				Wand wand = defaultWand;
-				if (recipeOutputTemplate != null && recipeOutputTemplate.length() > 0) {
-					Wand templateWand = Wand.createWand(controller, recipeOutputTemplate);
-					templateWand.add(defaultWand);
-					wand = templateWand;
-				}
-				event.getInventory().setResult(wand.getItem());
-			} else if (wantItemSubstitute != null) {
-				event.getInventory().setResult(new ItemStack(wantItemSubstitute, 1));
-			}
-		}
+        Recipe recipe = event.getRecipe();
+        Material resultType = recipe.getResult().getType();
+        List<MagicRecipe> candidates = recipes.get(resultType);
+        if (candidates == null || candidates.size() == 0) return;
+
+        CraftingInventory inventory = event.getInventory();
+        for (MagicRecipe candidate : candidates) {
+            Set<Material> ingredients = candidate.getIngredients();
+            boolean ingredientsMatch = true;
+            for (Material ingredient : ingredients) {
+                if (!inventory.contains(ingredient)) {
+                    ingredientsMatch = false;
+                    break;
+                }
+            }
+
+            Material substitute = candidate.getSubstitute();
+            if (ingredientsMatch) {
+                ItemStack crafted = candidate.craft();
+                inventory.setResult(crafted);
+                break;
+            } else if (substitute != null) {
+                inventory.setResult(new ItemStack(substitute, 1));
+            }
+        }
 	}
 	
 	@EventHandler
@@ -121,9 +113,32 @@ public class CraftingController implements Listener {
 			}
 		}
 	}
+
+    @EventHandler
+    public void onCraftItem(CraftItemEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) return;
+
+        Player player = (Player)event.getWhoClicked();
+        Mage mage = controller.getMage(player);
+
+        // Don't allow crafting in the wand inventory.
+        if (mage.hasStoredInventory()) {
+            event.setCancelled(true);
+            return;
+        }
+    }
 	
 	public boolean isEnabled()
 	{
 		return craftingEnabled;
 	}
+
+    public void setEnabled(boolean enabled)
+    {
+        this.craftingEnabled = enabled;
+    }
+
+    public int getCount() {
+        return recipeCount;
+    }
 }

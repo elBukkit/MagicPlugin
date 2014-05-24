@@ -1014,12 +1014,12 @@ public class MagicController implements Listener, MageController
 
         // Load enchanting paths
         try {
-            WandUpgradePath.loadPaths(loadConfigFile(ENCHANTING_FILE, loadDefaultEnchanting));
+            enchanting.load(loadConfigFile(ENCHANTING_FILE, loadDefaultEnchanting));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        getLogger().info("Loaded " +  WandUpgradePath.getPathKeys().size() + " enchanting paths");
+        getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
 
 		// Load wand templates
 		try {
@@ -1029,6 +1029,15 @@ public class MagicController implements Listener, MageController
 		}
 
         getLogger().info("Loaded " +  Wand.getWandTemplates().size() + " wands");
+
+        // Load crafting recipes
+        try {
+            crafting.load(loadConfigFile(CRAFTING_FILE, loadDefaultCrafting));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
 	}
 	
 	protected void loadSpellData()
@@ -1439,6 +1448,9 @@ public class MagicController implements Listener, MageController
 		if (materialSets.containsKey("destructible")) {
 			destructibleMaterials = materialSets.get("destructible");
 		}
+        if (materialSets.containsKey("interactible")) {
+            interactibleMaterials = materialSets.get("interactible");
+        }
 	}
 	
 	protected void loadProperties(ConfigurationSection properties)
@@ -1545,11 +1557,27 @@ public class MagicController implements Listener, MageController
 		
 		// Set up WandLevel limits
 		WandLevel.load(properties);
-		
+
+        // Semi-deprecated Wand defaults
+        Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
+        Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
+
 		// Load sub-controllers
-		crafting.load(properties);
-		enchanting.load(properties);
+        enchanting.setEnabled(properties.getBoolean("enable_enchanting", enchanting.isEnabled()));
+        if (enchanting.isEnabled()) {
+            getLogger().info("Wand enchanting is enabled");
+        }
+        crafting.setEnabled(properties.getBoolean("enable_crafting", crafting.isEnabled()));
+        if (crafting.isEnabled()) {
+            getLogger().info("Wand crafting is enabled");
+        }
 		anvil.load(properties);
+        if (anvil.isCombiningEnabled()) {
+            getLogger().info("Wand anvil combining is enabled");
+        }
+        if (anvil.isOrganizingEnabled()) {
+            getLogger().info("Wand anvil organizing is enabled");
+        }
 	}
 
 	protected void clear()
@@ -2164,11 +2192,7 @@ public class MagicController implements Listener, MageController
 		boolean toggleInventory = (event.getAction() == Action.RIGHT_CLICK_AIR);
 		if (!toggleInventory && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Material material = event.getClickedBlock().getType();
-			toggleInventory = !(material == Material.CHEST || material == Material.WOODEN_DOOR 
-					|| material == Material.IRON_DOOR_BLOCK || material == Material.ENDER_CHEST
-					|| material == Material.ANVIL || material == Material.BREWING_STAND || material == Material.ENCHANTMENT_TABLE
-					|| material == Material.STONE_BUTTON || material == Material.LEVER || material == Material.FURNACE
-					|| material == Material.BED || material == Material.SIGN_POST || material == Material.COMMAND || material == Material.WALL_SIGN);
+			toggleInventory = !interactibleMaterials.contains(material);
 			
 			// This is to prevent Essentials signs from giving you an item in your wand inventory.
 			if (material== Material.SIGN_POST || material == Material.WALL_SIGN) {
@@ -2355,7 +2379,6 @@ public class MagicController implements Listener, MageController
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPluginEnable(PluginEnableEvent event)
 	{
@@ -2368,7 +2391,7 @@ public class MagicController implements Listener, MageController
 				player.updateInventory();
 			}
 		}
-		crafting.enable(plugin);
+		crafting.register(plugin);
 	}
 
 	@EventHandler
@@ -3227,7 +3250,8 @@ public class MagicController implements Listener, MageController
 	 private Set<Material>                      indestructibleMaterials        = new HashSet<Material>();
 	 private Set<Material>                      restrictedMaterials	 	       = new HashSet<Material>();
 	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
-	 private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
+     private Set<Material>                      interactibleMaterials          = new HashSet<Material>();
+     private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
 	 
 	 private int								 undoTimeWindow					= 6000;
 	 private int								 undoBlockBorderSize			= 2;

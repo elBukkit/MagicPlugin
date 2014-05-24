@@ -2,9 +2,10 @@
 
 ## 3.3
 
+ - Wands can now have multiple distinct enchanting paths, which are configurable
+ - Crafting recipes are now configurable, and several new default recipes have been added
  - Add CommandSpell. WIP.
  - Add Respawn spell and Respawn Token items.
- - Add configurable wand enchanting paths
 
 ## 3.2
 

@@ -4,3 +4,8 @@
 #
 # See crafting.defaults.yml for more information, and to see the default recipes.
 #
+# If you want to disable any of the default recipes, simply add two lines as follows:
+#
+# master:
+#   enabled: false
+#
