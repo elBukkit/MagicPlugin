@@ -1,10 +1,22 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Map;
 
+import org.bukkit.Art;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Painting;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -23,7 +35,7 @@ import org.bukkit.util.Vector;
  * switch everything over once the new Bukkit method is in an
  * official release.
  */
-public class CompatibilityUtils {
+public class CompatibilityUtils extends NMSUtils {
 
     /**
      * This is shamelessly copied from org.bukkit.Location.setDirection.
@@ -92,96 +104,207 @@ public class CompatibilityUtils {
     public static boolean hasMetadata(ItemStack itemStack, Plugin plugin, String key) {
         Object handle = InventoryUtils.getHandle(itemStack);
         if (handle == null) return false;
-        Object tag = NMSUtils.getTag(handle);
+        Object tag = getTag(handle);
         if (tag == null) return false;
 
-        Object bukkitRoot = NMSUtils.getNode(tag, "bukkit");
+        Object bukkitRoot = getNode(tag, "bukkit");
         if (bukkitRoot == null) return false;
-        Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
+        Object pluginsRoot = getNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return false;
         String pluginName = plugin.getName();
-        Object pluginRoot = NMSUtils.getNode(pluginsRoot, pluginName);
+        Object pluginRoot = getNode(pluginsRoot, pluginName);
 
-        return pluginRoot != null && NMSUtils.containsNode(pluginRoot, key);
+        return pluginRoot != null && containsNode(pluginRoot, key);
     }
 
     public static String getMetadata(ItemStack itemStack, Plugin plugin, String key) {
         Object handle = InventoryUtils.getHandle(itemStack);
         if (handle == null) return null;
-        Object tag = NMSUtils.getTag(handle);
+        Object tag = getTag(handle);
         if (tag == null) return null;
 
-        Object bukkitRoot = NMSUtils.getNode(tag, "bukkit");
+        Object bukkitRoot = getNode(tag, "bukkit");
         if (bukkitRoot == null) return null;
-        Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
+        Object pluginsRoot = getNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return null;
         String pluginName = plugin.getName();
-        Object pluginRoot = NMSUtils.getNode(pluginsRoot, pluginName);
+        Object pluginRoot = getNode(pluginsRoot, pluginName);
         if (pluginRoot == null) return null;
-        return NMSUtils.getMeta(pluginRoot, key);
+        return getMeta(pluginRoot, key);
     }
 
     public static boolean setMetadata(ItemStack itemStack, Plugin plugin, String key, String value) {
         Object handle = InventoryUtils.getHandle(itemStack);
         if (handle == null) return false;
-        Object tag = NMSUtils.getTag(handle);
+        Object tag = getTag(handle);
         if (tag == null) return false;
 
-        Object bukkitRoot = NMSUtils.createNode(tag, "bukkit");
+        Object bukkitRoot = createNode(tag, "bukkit");
         if (bukkitRoot == null) return false;
-        Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
+        Object pluginsRoot = createNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return false;
         String pluginName = plugin.getName();
-        Object pluginRoot = NMSUtils.createNode(pluginsRoot, pluginName);
+        Object pluginRoot = createNode(pluginsRoot, pluginName);
         if (pluginRoot == null) return false;
-        NMSUtils.setMeta(pluginRoot, key, value);
+        setMeta(pluginRoot, key, value);
         return true;
     }
 
     public static boolean removeMetadata(ItemStack itemStack, Plugin plugin, String key) {
         Object handle = InventoryUtils.getHandle(itemStack);
         if (handle == null) return false;
-        Object tag = NMSUtils.getTag(handle);
+        Object tag = getTag(handle);
         if (tag == null) return false;
 
-        Object bukkitRoot = NMSUtils.createNode(tag, "bukkit");
+        Object bukkitRoot = createNode(tag, "bukkit");
         if (bukkitRoot == null) return false;
-        Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
+        Object pluginsRoot = createNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return false;
         String pluginName = plugin.getName();
-        Object pluginRoot = NMSUtils.createNode(pluginsRoot, pluginName);
+        Object pluginRoot = createNode(pluginsRoot, pluginName);
         if (pluginRoot == null) return false;
-        NMSUtils.removeMeta(pluginRoot, key);
+        removeMeta(pluginRoot, key);
         return true;
     }
 
     public static Object getMetadataNode(ItemStack itemStack, Plugin plugin, String key) {
         Object handle = InventoryUtils.getHandle(itemStack);
         if (handle == null) return null;
-        Object tag = NMSUtils.getTag(handle);
+        Object tag = getTag(handle);
         if (tag == null) return null;
 
-        Object bukkitRoot = NMSUtils.getNode(tag, "bukkit");
+        Object bukkitRoot = getNode(tag, "bukkit");
         if (bukkitRoot == null) return null;
-        Object pluginsRoot = NMSUtils.getNode(bukkitRoot, "plugins");
+        Object pluginsRoot = getNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return null;
         String pluginName = plugin.getName();
-        Object pluginRoot = NMSUtils.getNode(pluginsRoot, pluginName);
-        return NMSUtils.getNode(pluginRoot, key);
+        Object pluginRoot = getNode(pluginsRoot, pluginName);
+        return getNode(pluginRoot, key);
     }
 
     public static Object createMetadataNode(ItemStack itemStack, Plugin plugin, String key) {
         Object handle = InventoryUtils.getHandle(itemStack);
         if (handle == null) return null;
-        Object tag = NMSUtils.getTag(handle);
+        Object tag = getTag(handle);
         if (tag == null) return null;
 
-        Object bukkitRoot = NMSUtils.createNode(tag, "bukkit");
+        Object bukkitRoot = createNode(tag, "bukkit");
         if (bukkitRoot == null) return null;
-        Object pluginsRoot = NMSUtils.createNode(bukkitRoot, "plugins");
+        Object pluginsRoot = createNode(bukkitRoot, "plugins");
         if (pluginsRoot == null) return null;
         String pluginName = plugin.getName();
-        Object pluginRoot = NMSUtils.createNode(pluginsRoot, pluginName);
-        return NMSUtils.createNode(pluginRoot, key);
+        Object pluginRoot = createNode(pluginsRoot, pluginName);
+        return createNode(pluginRoot, key);
+    }
+
+    public static void removeCustomData(ItemStack itemStack) {
+        Object handle = InventoryUtils.getHandle(itemStack);
+        if (handle == null) return;
+        Object tag = getTag(handle);
+        if (tag == null) return;
+
+        removeMeta(tag, "bukkit");
+
+        // Magic-specific legacy tags
+        removeMeta(tag, "wand");
+        removeMeta(tag, "spell");
+        removeMeta(tag, "brush");
+    }
+
+    public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
+        Inventory inventory = null;
+        try {
+            Constructor<?> inventoryConstructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
+            inventory = (Inventory)inventoryConstructor.newInstance(holder, size, ChatColor.translateAlternateColorCodes('&', name));
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return inventory;
+    }
+
+    public static void addPotionEffect(LivingEntity entity, Color color) {
+        addPotionEffect(entity, color.asRGB());
+    }
+
+    public static void clearPotionEffect(LivingEntity entity) {
+        addPotionEffect(entity, 0);
+    }
+
+    public static void setInvulnerable(Entity entity) {
+        try {
+            Object handle = getHandle(entity);
+            Field invulnerableField = class_Entity.getDeclaredField("invulnerable");
+            invulnerableField.setAccessible(true);
+            invulnerableField.set(handle, true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void removePotionEffect(LivingEntity entity) {
+        addPotionEffect(entity, 0); // ?
+    }
+
+    public static Painting spawnPainting(Location location, BlockFace facing, Art art)
+    {
+        Painting newPainting = null;
+        try {
+            //                entity = new EntityPainting(world, (int) x, (int) y, (int) z, dir);
+            Constructor<?> paintingConstructor = class_EntityPainting.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+            Method addEntity = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
+
+            Object worldHandle = getHandle(location.getWorld());
+            Object newEntity = paintingConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+            if (newEntity != null) {
+                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                Entity bukkitEntity = getBukkitEntity(newEntity);
+                if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
+
+                newPainting = (Painting)bukkitEntity;
+                newPainting.setArt(art, true);
+                newPainting.setFacingDirection(facing, true);
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return newPainting;
+    }
+
+    public static ItemFrame spawnItemFrame(Location location, BlockFace facing, ItemStack item)
+    {
+        ItemFrame newItemFrame = null;
+        try {
+            // entity = new EntityItemFrame(world, (int) x, (int) y, (int) z, dir);
+            Constructor<?> itemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+            Method addEntity = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
+
+            Object worldHandle = getHandle(location.getWorld());
+            Object newEntity = itemFrameConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+            if (newEntity != null) {
+                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                Entity bukkitEntity = getBukkitEntity(newEntity);
+                if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
+
+                newItemFrame = (ItemFrame)bukkitEntity;
+                newItemFrame.setItem(getCopy(item));
+                newItemFrame.setFacingDirection(facing, true);
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return newItemFrame;
+    }
+
+    public static void addPotionEffect(LivingEntity entity, int color) {
+        try {
+            Method geHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
+            Object entityLiving = geHandleMethod.invoke(entity);
+            Method getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
+            Object dataWatcher = getDataWatcherMethod.invoke(entityLiving);
+            Method watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
+            watchMethod.invoke(dataWatcher, (int)7, Integer.valueOf(color));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

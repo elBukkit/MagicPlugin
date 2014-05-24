@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.entity;
 
 import java.util.Collection;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Art;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -23,8 +24,6 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
-
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 /**
  * This class stores information about an Entity.
@@ -151,10 +150,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 // Nope!
             break;
             case PAINTING:
-                spawned = InventoryUtils.spawnPainting(location, facing, art);
+                spawned = CompatibilityUtils.spawnPainting(location, facing, art);
             break;
             case ITEM_FRAME:
-                spawned = InventoryUtils.spawnItemFrame(location, facing, item);
+                spawned = CompatibilityUtils.spawnItemFrame(location, facing, item);
                 break;
             case DROPPED_ITEM:
                 // TODO: Handle this, would need to store item data.
