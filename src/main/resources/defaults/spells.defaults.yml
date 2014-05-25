@@ -3231,6 +3231,8 @@ respawn:
              class: WarpEntityEffect
     parameters:
         command: spawn
+        op: true
+        target: none
     costs:
         xp: 20
 levitate:

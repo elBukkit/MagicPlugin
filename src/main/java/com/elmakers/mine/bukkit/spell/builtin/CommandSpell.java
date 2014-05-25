@@ -1,15 +1,20 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public class CommandSpell extends BaseSpell {
+public class CommandSpell extends TargetingSpell {
     public final static String[] PARAMETERS = {
             "command", "console", "op"
     };
@@ -34,6 +39,41 @@ public class CommandSpell extends BaseSpell {
             sender.setOp(true);
         }
 
+        Location location = getLocation();
+
+        command = command
+                .replace("@_", " ")
+                .replace("@spell", getName())
+                .replace("@p", mage.getName())
+                .replace("@uuid", mage.getId())
+                .replace("@world", location.getWorld().getName())
+                .replace("@x", Double.toString(location.getX()))
+                .replace("@y", Double.toString(location.getY()))
+                .replace("@z", Double.toString(location.getZ()));
+
+        if (getTargetType() != TargetType.NONE) {
+            Target target = getTarget();
+            Location targetLocation = target.getLocation();
+            command = command
+                    .replace("@tworld", targetLocation.getWorld().getName())
+                    .replace("@tx", Double.toString(targetLocation.getX()))
+                    .replace("@ty", Double.toString(targetLocation.getY()))
+                    .replace("@tz", Double.toString(targetLocation.getZ()));
+
+            if (target.hasEntity()) {
+                Entity targetEntity = target.getEntity();
+                if (controller.isMage(targetEntity)) {
+                    Mage targetMage = controller.getMage(targetEntity);
+                    command = command
+                            .replace("@t", targetMage.getName())
+                            .replace("@tuuid", targetMage.getId());
+                } else {
+                    command = command
+                            .replace("@t", controller.getEntityName(targetEntity))
+                            .replace("@tuuid", targetEntity.getUniqueId().toString());
+                }
+            }
+        }
         controller.getPlugin().getServer().dispatchCommand(sender, command);
 
         if (opPlayer && !isOp) {
