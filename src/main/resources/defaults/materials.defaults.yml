@@ -547,7 +547,7 @@ enchantable:
 - diamond_pickaxe
 - bow
 
-interactable:
+interactible:
 - chest
 - wooden_door
 - iron_door_block
