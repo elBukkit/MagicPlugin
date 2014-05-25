@@ -4,7 +4,8 @@
 
  - Wands can now have multiple distinct enchanting paths, which are configurable
  - Crafting recipes are now configurable, and several new default recipes have been added
- - Add CommandSpell. WIP.
+ - Add CommandSpell, can run any command as a spell. See:
+   http://jenkins.elmakers.com/job/MagicPlugin/doxygen/classcom_1_1elmakers_1_1mine_1_1bukkit_1_1spell_1_1builtin_1_1_command_spell.html
  - Add Respawn spell and Respawn Token items.
 
 ## 3.2

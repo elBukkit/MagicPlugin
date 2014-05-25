@@ -14,6 +14,29 @@ import org.bukkit.entity.Entity;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Can run any Bukkit command as a Spell.
+ *
+ * This includes running as Console, or opping/deopping the player if needed.
+ *
+ * This spell can also act as a targeting spell, running commands using the
+ * target location or entity.
+ *
+ * The following parameters will all be substituted in the "command" string
+ * if found:
+ *
+ * @_ - A spell, useful for command-line casting
+ * @spell - name of spell being cast
+ * @p - mage name
+ * @uuid - mage uuid
+ * @world, @x, @y, @z - mage location
+ *
+ * If targeting is used ("target: none" to disable), the following will also be escaped:
+ *
+ * @t - target mage name
+ * @tuuid - target entity uuid
+ * @tworld, @tx, @ty, @tz - target location
+ */
 public class CommandSpell extends TargetingSpell {
     public final static String[] PARAMETERS = {
             "command", "console", "op"
