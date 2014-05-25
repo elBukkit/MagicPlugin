@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class EnchantingController implements Listener {
 			int level = event.getExpLevelCost();
 			Wand wand = new Wand(controller, event.getItem());
 			if (!wand.enchant(level)) {
-				event.getEnchanter().sendMessage("This wand is fully enchanted (for now)");
+				event.getEnchanter().sendMessage(Messages.get("wand.fully_enchanted"));
 			}
 			wand.makeEnchantable(true);
 			event.setCancelled(false);

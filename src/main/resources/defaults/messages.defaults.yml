@@ -119,6 +119,7 @@ wand:
     player_renamed: $name's wand renamed
     self_destruct: Your wands did not survive the dimensional shift!
     single_spell: Wand of $spell
+    fully_enchanted: This wand is fully enchanted (for now)
 spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback
