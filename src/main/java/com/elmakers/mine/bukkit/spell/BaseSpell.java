@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.event.CastEvent;
+import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -808,6 +810,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         this.reset();
 
+        // Allow other plugins to cancel this cast
+        PreCastEvent preCast = new PreCastEvent(mage, this);
+        Bukkit.getPluginManager().callEvent(preCast);
+
+        if (preCast.isCancelled()) {
+            processResult(SpellResult.EVENT_CANCELLED);
+            return false;
+        }
+
         // Don't allow casting if the player is confused
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !mage.isSuperPowered() && !mage.isSuperProtected() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
@@ -959,6 +970,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected void processResult(SpellResult result) {
+        // Notify other plugins of this spell cast
+        CastEvent castEvent = new CastEvent(mage, this, result);
+        Bukkit.getPluginManager().callEvent(castEvent);
+
         if (mage != null) {
             mage.onCast(this, result);
         }
