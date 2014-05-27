@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.3.3
+
+ - Add helper methods for dealing with Magic items
+ - Add custom PreCastEvent and CastEvent events
+
 ## 1.3.2
 
  - Add getEntityName, helper method for making a nice name for any entity
