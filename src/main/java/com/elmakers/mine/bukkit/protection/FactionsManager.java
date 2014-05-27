@@ -18,7 +18,7 @@ public class FactionsManager {
 	}
 	
 	public boolean isEnabled() {
-		return enabled;
+		return enabled && factionsManager != null;
 	}
 	
 	public void initialize(Plugin plugin) {

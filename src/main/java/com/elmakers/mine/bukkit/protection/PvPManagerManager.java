@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.protection;
 
 import me.NoChance.PvPManager.PvPManager;
 import me.NoChance.PvPManager.PvPlayer;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -21,7 +20,7 @@ public class PvPManagerManager {
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return enabled && manager != null;
     }
 
     public void initialize(Plugin plugin) {

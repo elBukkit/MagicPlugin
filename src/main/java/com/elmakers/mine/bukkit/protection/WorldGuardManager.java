@@ -19,7 +19,7 @@ public class WorldGuardManager {
 	}
 	
 	public boolean isEnabled() {
-		return enabled;
+		return enabled && worldGuard != null;
 	}
 	
 	public void initialize(Plugin plugin) {
