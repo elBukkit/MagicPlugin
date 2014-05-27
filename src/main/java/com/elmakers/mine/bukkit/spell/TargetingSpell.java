@@ -308,10 +308,10 @@ public abstract class TargetingSpell extends BaseSpell {
         Target targetEntity = getEntityTarget();
 
         // Don't allow targeting entities in no-PVP areas.
-        boolean noPvp = targetEntity != null && (targetEntity instanceof Player) && pvpRestricted && !bypassPvpRestriction && !controller.isPVPAllowed(targetEntity.getLocation());
+        boolean noPvp = targetEntity != null && (targetEntity instanceof Player) && pvpRestricted && !bypassPvpRestriction && !mage.isPVPAllowed(targetEntity.getLocation());
         if (noPvp) {
             targetEntity = null;
-            // Don't let the target the block, either.
+            // Don't let them target the block, either.
             targetBlock = null;
         }
 
@@ -627,7 +627,7 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     protected boolean canCast() {
         if (!super.canCast()) return false;
-        return !pvpRestricted || bypassPvpRestriction || controller.isPVPAllowed(mage.getLocation()) || mage.isSuperPowered();
+        return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(mage.getLocation()) || mage.isSuperPowered();
     }
 
     @Override
