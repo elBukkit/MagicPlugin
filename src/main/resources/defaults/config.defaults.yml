@@ -420,3 +420,5 @@ bypass_build: false
 # Disable all pvp-related checks
 bypass_pvp: false
 
+# Will consider all spells as pvp spells
+pvp_restricted: false

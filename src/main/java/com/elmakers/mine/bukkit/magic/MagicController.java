@@ -1362,7 +1362,12 @@ public class MagicController implements Listener, MageController
 			if (!spellNode.getBoolean("enabled", true)) {
 				continue;
 			}
-			
+
+            // Kind of a hacky way to do this, and only works with BaseSpell spells.
+            if (allPvpRestricted) {
+                spellNode.set("pvp_restricted", true);
+            }
+
 			Spell newSpell = loadSpell(key, spellNode, this);
 			if (newSpell == null)
 			{
@@ -1511,6 +1516,7 @@ public class MagicController implements Listener, MageController
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
+        allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
 
@@ -3067,7 +3073,7 @@ public class MagicController implements Listener, MageController
     {
         if (bypassPvpPermissions) return true;
         return worldGuardManager.isPVPAllowed(player.getLocation())
-            && worldGuardManager.isPVPAllowed(location)
+            && (location == null || worldGuardManager.isPVPAllowed(location))
             && pvpManager.isPVPAllowed(player);
     }
 	
@@ -3075,7 +3081,7 @@ public class MagicController implements Listener, MageController
 	public boolean isPVPAllowed(Location location)
 	{
 		if (bypassPvpPermissions) return true;
-		return worldGuardManager.isPVPAllowed(location);
+		return location == null || worldGuardManager.isPVPAllowed(location);
 	}
 	
 	@Override
@@ -3332,7 +3338,8 @@ public class MagicController implements Listener, MageController
 	 
 	 private boolean							 bypassBuildPermissions         = false;
 	 private boolean							 bypassPvpPermissions           = false;
-	 private FactionsManager					 factionsManager				= new FactionsManager();
+     private boolean							 allPvpRestricted               = false;
+     private FactionsManager					 factionsManager				= new FactionsManager();
 	 private WorldGuardManager					 worldGuardManager				= new WorldGuardManager();
      private PvPManagerManager                   pvpManager                     = new PvPManagerManager();
 	 
