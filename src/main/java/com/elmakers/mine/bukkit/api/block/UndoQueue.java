@@ -18,6 +18,7 @@ public interface UndoQueue {
      * It will skip undoing if the UndoList is older than
      * the specified timeout.
      *
+     * @param timeout The maximum age of the change
      * @return The UndoList that was undone, or null if none.
      */
     public UndoList undoRecent(int timeout);
@@ -34,6 +35,7 @@ public interface UndoQueue {
      * the specified timeout.
      *
      * @param block The block to check for modifications.
+     * @param timeout The maximum age of the change
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
     public UndoList undoRecent(Block block, int timeout);

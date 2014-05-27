@@ -301,6 +301,7 @@ public interface Mage extends CostReducer {
      * This should be called by a Spell upon
      * completion, to notify the Mage that it cast a spell.
      *
+     * @param spell The Spell that was cast
      * @param result The result of the cast.
      */
     public void onCast(Spell spell, SpellResult result);
