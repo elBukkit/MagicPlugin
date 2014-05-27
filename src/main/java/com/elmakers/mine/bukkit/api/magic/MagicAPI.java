@@ -244,6 +244,15 @@ public interface MagicAPI {
     public Collection<String> getWandKeys();
 
     /**
+     * Create a new Magic item. This could be a wand, spell, upgrade
+     * or brush.
+     *
+     * @param magicItemKey The template key, may be a wand, spell, etc.
+     * @return An ItemStack representing the magic item.
+     */
+    public ItemStack createItem(String magicItemKey);
+
+    /**
      * Create a new Wand from a template.
      *
      * Once created, a Wand is a unique item. It "remembers" which template
