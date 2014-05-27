@@ -138,6 +138,12 @@
             <version>2.1.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.onarandombox.multiversecore</groupId>
+            <artifactId>Multiverse-Core</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	<repositories>
       <repository>
@@ -161,8 +167,12 @@
       		<url>http://www.wbs-wireless.com:9090/plugin/repository/everything/</url>
       </repository>
       <repository>
-        <id>Plugin Metrics</id>
-        <url>http://repo.mcstats.org/content/repositories/public</url>
+            <id>Plugin Metrics</id>
+            <url>http://repo.mcstats.org/content/repositories/public</url>
+      </repository>
+      <repository>
+            <id>MultiverseCore</id>
+            <url>http://repo.onarandombox.com/content/groups/public/</url>
       </repository>
       <repository>
       		<id>Essentials</id>

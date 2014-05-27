@@ -414,6 +414,9 @@ factions_enabled: true
 # Enable PvPManager integration for PVP spells
 pvp_manager_enabled: true
 
+# Enable MVCore integration for PVP checks
+multiverse_enabled: true
+
 # Disable all build-related checks
 bypass_build: false
 

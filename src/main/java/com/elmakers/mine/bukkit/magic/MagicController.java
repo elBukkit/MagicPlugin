@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
@@ -721,6 +722,9 @@ public class MagicController implements Listener, MageController
 
         // Link to PvpManager
         pvpManager.initialize(plugin);
+
+        // Link to Multiverse
+        multiverseManager.initialize(plugin);
 		
 		// Try to link to dynmap:
 		try {
@@ -834,6 +838,9 @@ public class MagicController implements Listener, MageController
 					});
                     integrationGraph.addPlotter(new Metrics.Plotter("PvpManager") {
                         @Override public int getValue() { return controller.pvpManager.isEnabled() ? 1 : 0; }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Multiverse-Core") {
+                        @Override public int getValue() { return controller.multiverseManager.isEnabled() ? 1 : 0; }
                     });
 			    	
 			    	Graph featuresGraph = metrics.createGraph("Features Enabled");
@@ -1529,6 +1536,7 @@ public class MagicController implements Listener, MageController
 		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", worldGuardManager.isEnabled()));
 		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
         pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
+        multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 		
@@ -3074,7 +3082,8 @@ public class MagicController implements Listener, MageController
         if (bypassPvpPermissions) return true;
         return worldGuardManager.isPVPAllowed(player.getLocation())
             && (location == null || worldGuardManager.isPVPAllowed(location))
-            && pvpManager.isPVPAllowed(player);
+            && pvpManager.isPVPAllowed(player)
+            && multiverseManager.isPVPAllowed(player.getLocation().getWorld());
     }
 	
 	@Override
@@ -3342,6 +3351,7 @@ public class MagicController implements Listener, MageController
      private FactionsManager					 factionsManager				= new FactionsManager();
 	 private WorldGuardManager					 worldGuardManager				= new WorldGuardManager();
      private PvPManagerManager                   pvpManager                     = new PvPManagerManager();
+     private MultiverseManager                   multiverseManager              = new MultiverseManager();
 	 
 	 private TradersController					 tradersController				= null;
 	 private String								 extraSchematicFilePath			= null;
