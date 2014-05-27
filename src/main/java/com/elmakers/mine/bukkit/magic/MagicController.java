@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
 import org.bukkit.Bukkit;
@@ -717,6 +718,9 @@ public class MagicController implements Listener, MageController
 		
 		// Try to (dynamically) link to WorldGuard:
 		worldGuardManager.initialize(plugin);
+
+        // Link to PvpManager
+        pvpManager.initialize(plugin);
 		
 		// Try to link to dynmap:
 		try {
@@ -828,6 +832,9 @@ public class MagicController implements Listener, MageController
 			    	integrationGraph.addPlotter(new Metrics.Plotter("CommandBook") {						
 						@Override public int getValue() { return controller.hasCommandBook ? 1 : 0; }
 					});
+                    integrationGraph.addPlotter(new Metrics.Plotter("PvpManager") {
+                        @Override public int getValue() { return controller.pvpManager.isEnabled() ? 1 : 0; }
+                    });
 			    	
 			    	Graph featuresGraph = metrics.createGraph("Features Enabled");
 			    	featuresGraph.addPlotter(new Metrics.Plotter("Crafting") {						
@@ -1513,10 +1520,11 @@ public class MagicController implements Listener, MageController
 		messagePrefix = ChatColor.translateAlternateColorCodes('&', messagePrefix);
 		castMessagePrefix = ChatColor.translateAlternateColorCodes('&', castMessagePrefix);
 		
-		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", factionsManager.isEnabled()));
+		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", worldGuardManager.isEnabled()));
 		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
-		
-		metricsLevel = properties.getInt("metrics_level", metricsLevel);
+        pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
+
+        metricsLevel = properties.getInt("metrics_level", metricsLevel);
 		
 		if (properties.contains("mana_display")) {
 			Wand.retainLevelDisplay = properties.getString("mana_display").equals("hybrid");
@@ -3054,6 +3062,14 @@ public class MagicController implements Listener, MageController
 		}
 		return undid;
 	}
+
+    public boolean isPVPAllowed(Player player, Location location)
+    {
+        if (bypassPvpPermissions) return true;
+        return worldGuardManager.isPVPAllowed(player.getLocation())
+            && worldGuardManager.isPVPAllowed(location)
+            && pvpManager.isPVPAllowed(player);
+    }
 	
 	@Override
 	public boolean isPVPAllowed(Location location)
@@ -3318,6 +3334,7 @@ public class MagicController implements Listener, MageController
 	 private boolean							 bypassPvpPermissions           = false;
 	 private FactionsManager					 factionsManager				= new FactionsManager();
 	 private WorldGuardManager					 worldGuardManager				= new WorldGuardManager();
+     private PvPManagerManager                   pvpManager                     = new PvPManagerManager();
 	 
 	 private TradersController					 tradersController				= null;
 	 private String								 extraSchematicFilePath			= null;
