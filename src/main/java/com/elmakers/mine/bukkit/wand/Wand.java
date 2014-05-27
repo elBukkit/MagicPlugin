@@ -1727,6 +1727,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         return modified;
 	}
+
+    public static ItemStack createItem(MagicController controller, String templateName) {
+        ItemStack item = createSpellItem(templateName, controller, null, true);
+        if (item == null) {
+            item = createBrushItem(templateName, controller, null, true);
+            if (item == null) {
+                Wand wand = createWand(controller, templateName);
+                if (wand != null) {
+                    item = wand.getItem();
+                }
+            }
+        }
+
+        return item;
+    }
 	
 	public static Wand createWand(MagicController controller, String templateName) {
 		if (controller == null) return null;
