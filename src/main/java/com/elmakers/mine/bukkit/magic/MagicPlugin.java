@@ -287,6 +287,15 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return Wand.createWand(controller, wandKey);
 	}
 
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand createUpgrade(String wandKey) {
+        Wand wand = Wand.createWand(controller, wandKey);
+        if (!wand.isUpgrade()) {
+            wand.makeUpgrade();
+        }
+        return wand;
+    }
+
 	@Override
 	public ItemStack createSpellItem(String spellKey) {
 		return Wand.createSpellItem(spellKey, controller, null, true);
