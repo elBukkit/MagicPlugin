@@ -128,6 +128,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
 
+    private boolean pvpRestricted           	= false;
+    private boolean bypassPvpRestriction    	= false;
+
     protected ConfigurationSection parameters = null;
 
     /*
@@ -694,6 +697,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         parameters = node.getConfigurationSection("parameters");
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
+        pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
 
         // Load effects ... Config API is kind of ugly here, and I'm not actually
         // sure this is valid YML... :\
@@ -804,11 +808,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         this.reset();
 
-        if (!canCast()) {
-            processResult(SpellResult.INSUFFICIENT_PERMISSION);
-            return false;
-        }
-
         // Don't allow casting if the player is confused
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !mage.isSuperPowered() && !mage.isSuperProtected() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
@@ -827,7 +826,17 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         ConfigurationUtils.addParameters(extraParameters, parameters);
         processParameters(parameters);
 
+        // Don't perform permission check until after processing parameters, in case of overrides
+        if (!canCast(defaultLocation)) {
+            processResult(SpellResult.INSUFFICIENT_PERMISSION);
+            return false;
+        }
+
         this.preCast();
+
+        // PVP override settings
+        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
 
         // Check cooldowns
         cooldown = parameters.getInt("cooldown", cooldown);
@@ -879,8 +888,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return finalizeCast(parameters);
     }
 
-    protected boolean canCast() {
-        return hasCastPermission(mage.getCommandSender());
+    protected boolean canCast(Location location) {
+        if (!hasCastPermission(mage.getCommandSender())) return false;
+        return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location) || mage.isSuperPowered();
     }
 
     protected void onBackfire() {

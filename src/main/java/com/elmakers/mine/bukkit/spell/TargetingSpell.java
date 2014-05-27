@@ -60,9 +60,6 @@ public abstract class TargetingSpell extends BaseSpell {
     private	Block								previousBlock = null;
     private	Block								previousPreviousBlock = null;
 
-    private boolean     						pvpRestricted           	= false;
-    private boolean								bypassPvpRestriction    	= false;
-
     @Override
     protected void preCast()
     {
@@ -307,11 +304,11 @@ public abstract class TargetingSpell extends BaseSpell {
         Target targetBlock = block == null ? null : new Target(getLocation(), block);
         Target targetEntity = getEntityTarget();
 
-        // Don't allow targeting entities in no-PVP areas.
-        boolean noPvp = targetEntity != null && (targetEntity instanceof Player) && pvpRestricted && !bypassPvpRestriction && !mage.isPVPAllowed(targetEntity.getLocation());
-        if (noPvp) {
+        // Don't allow targeting entities in an area you couldn't cast the spell in
+        if (targetEntity != null && !canCast(targetEntity.getLocation())) {
             targetEntity = null;
-            // Don't let them target the block, either.
+        }
+        if (targetBlock != null && !canCast(targetBlock.getLocation())) {
             targetBlock = null;
         }
 
@@ -528,8 +525,6 @@ public abstract class TargetingSpell extends BaseSpell {
         range = parameters.getInt("range", range);
         allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 
-        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
-        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
 
@@ -606,13 +601,6 @@ public abstract class TargetingSpell extends BaseSpell {
         }
     }
 
-    @Override
-    protected void loadTemplate(ConfigurationSection node)
-    {
-        super.loadTemplate(node);
-        pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     protected String getDisplayMaterialName()
@@ -622,12 +610,6 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         return super.getDisplayMaterialName();
-    }
-
-    @Override
-    protected boolean canCast() {
-        if (!super.canCast()) return false;
-        return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(mage.getLocation()) || mage.isSuperPowered();
     }
 
     @Override
