@@ -311,6 +311,7 @@ public interface Mage extends CostReducer {
     public MageController getController();
     public boolean hasCastPermission(Spell spell);
     public boolean hasBuildPermission(Block block);
+    public boolean isPVPAllowed(Location location);
     public boolean isIndestructible(Block block);
     public boolean isDestructible(Block block);
 
