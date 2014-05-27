@@ -264,6 +264,17 @@ public interface MagicAPI {
     public Wand createWand(String wandKey);
 
     /**
+     * Create an upgrade Wand item from a template.
+     *
+     * This can be used to create upgrade items from wand
+     * templates that are not originally meant to be upgrades.
+     *
+     * @param wandKey The template key
+     * @return A new Wand instance, converted to an upgrade if necessary.
+     */
+    public Wand createUpgrade(String wandKey);
+
+    /**
      * Load a Wand instance of an ItemStack. Will return null if the
      * given ItemStack does not have Wand NMS data.
      *
