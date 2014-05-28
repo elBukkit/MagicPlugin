@@ -1831,7 +1831,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		// Don't need mana if cost-free
-		if (costReduction >= 1) {
+		if (isCostFree()) {
 			xpRegeneration = 0;
 			xpMax = 0;
 			xp = 0;
