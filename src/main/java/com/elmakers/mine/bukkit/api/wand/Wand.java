@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Collection;
 import java.util.Map;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,6 +51,9 @@ public interface Wand extends CostReducer {
     public boolean addSpell(String key);
     public boolean removeBrush(String key);
     public boolean removeSpell(String key);
+    public String getActiveBrushKey();
+    public String getActiveSpellKey();
+    public Spell getActiveSpell();
     public void setActiveBrush(String key);
     public void setActiveSpell(String key);
     public void setName(String name);
