@@ -2817,6 +2817,28 @@ superalter:
         transparent: transparent_to_construction
     costs:
         xp: 40
+sphere:
+    icon: snow_ball
+    category: master
+    class: ShapeSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: slime_walk
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 4
+        oty: 5
+        cooldown: 30000
+        type: sphere
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
 blob:
     icon: clay_ball
     category: earthbending

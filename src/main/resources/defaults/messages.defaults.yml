@@ -736,6 +736,10 @@ spells:
         usage: Use on wool, stairs, etc
         cast: Altered $count blocks
         fail: Can't adjust that
+    sphere:
+        name: Sphere
+        description: Create a real sphere
+        cast_finish: Created a $material sphere
     blob:
         name: Blob
         description: Create a solid blob
