@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -361,9 +362,20 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected List<Target> getAllTargetEntities() {
         List<Target> scored = new ArrayList<Target>();
-        World world = getWorld();
-        if (world == null) return scored;
-        List<Entity> entities = world.getEntities();
+
+        List<Entity> entities = null;
+        Entity mageEntity = mage.getEntity();
+        int maxRange = getMaxRange();
+        if (location == null && mageEntity != null) {
+            entities = mageEntity.getNearbyEntities(maxRange, maxRange, maxRange);
+        } else {
+            Location location = getLocation();
+            if (location != null) {
+                entities = CompatibilityUtils.getNearbyEntities(location, maxRange, maxRange, maxRange);
+            }
+        }
+
+        if (entities == null) return scored;
         for (Entity entity : entities)
         {
             if (entity == mage.getEntity()) continue;
@@ -381,7 +393,7 @@ public abstract class TargetingSpell extends BaseSpell {
             // Ignore invisible entities
             if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
-            Target newScore = new Target(getLocation(), entity, getMaxRange());
+            Target newScore = new Target(getLocation(), entity, maxRange);
             if (newScore.getScore() > 0)
             {
                 scored.add(newScore);

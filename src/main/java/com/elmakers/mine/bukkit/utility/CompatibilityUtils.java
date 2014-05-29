@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
@@ -306,5 +307,31 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
+        Object worldHandle = getHandle(location.getWorld());
+        try {
+            Method getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
+            Method getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
+
+            // :( No way to create an AABB with unobfuscated non-protected methods.
+            Method createBBMethod = class_AxisAlignedBB.getMethod("a", Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
+
+            Object bb = createBBMethod.invoke(null, location.getX() - x, location.getY() - y, location.getZ() - z,
+                    location.getX() + x, location.getY() + y, location.getZ() + z);
+
+            // The input entity is only used for equivalency testing, so this "null" should be ok.
+            List<? extends Object> entityList = (List<? extends Object>)getEntitiesMethod.invoke(worldHandle, null, bb);
+            List<Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(entityList.size());
+
+            for (Object entity : entityList) {
+                bukkitEntityList.add((Entity)getBukkitEntityMethod.invoke(entity));
+            }
+            return bukkitEntityList;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
