@@ -303,6 +303,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void add(Entity entity)
     {
+        if (entity == null) return;
         if (entities == null) entities = new HashSet<UUID>();
         if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
 
@@ -314,6 +315,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void add(Runnable runnable)
     {
+        if (runnable == null) return;
         if (runnables == null) runnables = new LinkedList<Runnable>();
         runnables.add(runnable);
         modifiedTime = System.currentTimeMillis();
@@ -326,6 +328,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected void modify(Entity entity, boolean hasMoved, boolean hasPotionEffects)
     {
+        if (entity == null) return;
         if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
         if (worldName == null) worldName = entity.getWorld().getName();
 
