@@ -644,7 +644,7 @@ public class SimulateBatch extends UndoableBatch {
 			reverseTargetDistanceScore = true;
 			if (targetType == TargetType.ANY || targetType == TargetType.MOB)
 			{
-				List<Entity> entities = center.getWorld().getEntities();
+				List<Entity> entities = CompatibilityUtils.getNearbyEntities(center, huntMaxRange, huntMaxRange, huntMaxRange);
 				for (Entity entity : entities)
 				{
 					// We'll get the players from the Mages list
