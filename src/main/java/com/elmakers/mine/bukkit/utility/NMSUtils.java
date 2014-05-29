@@ -44,6 +44,7 @@ public class NMSUtils {
     protected static Class<?> class_PacketPlayOutWorldParticles;
     protected static Class<?> class_EntityPainting;
     protected static Class<?> class_EntityItemFrame;
+    protected static Class<?> class_EntityMinecartRideable;
     protected static Class<?> class_AxisAlignedBB;
 
     static
@@ -70,6 +71,7 @@ public class NMSUtils {
             class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");
             class_EntityPainting = fixBukkitClass("net.minecraft.server.EntityPainting");
             class_EntityItemFrame = fixBukkitClass("net.minecraft.server.EntityItemFrame");
+            class_EntityMinecartRideable = fixBukkitClass("net.minecraft.server.EntityMinecartRideable");
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
         }
         catch (Throwable ex) {

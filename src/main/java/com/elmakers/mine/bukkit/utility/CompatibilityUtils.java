@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -14,6 +15,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Painting;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
@@ -296,17 +298,28 @@ public class CompatibilityUtils extends NMSUtils {
         return newItemFrame;
     }
 
-    public static void addPotionEffect(LivingEntity entity, int color) {
+    public static void watch(Object entityHandle, int key, Object data) {
         try {
-            Method geHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
-            Object entityLiving = geHandleMethod.invoke(entity);
             Method getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
-            Object dataWatcher = getDataWatcherMethod.invoke(entityLiving);
+            Object dataWatcher = getDataWatcherMethod.invoke(entityHandle);
             Method watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
-            watchMethod.invoke(dataWatcher, (int)7, Integer.valueOf(color));
+            watchMethod.invoke(dataWatcher, key, data);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void watch(Entity entity, int key, Object data) {
+        try {
+            Method geHandleMethod = entity.getClass().getMethod("getHandle");
+            watch(geHandleMethod.invoke(entity), key, data);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void addPotionEffect(LivingEntity entity, int color) {
+        watch(entity, 7, color);
     }
 
     public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
@@ -333,5 +346,41 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static Minecart spawnCustomMinecart(Location location, MaterialAndData display, int offset)
+    {
+        Minecart newMinecart = null;
+        try {
+            Constructor<?> minecartConstructor = class_EntityMinecartRideable.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE);
+            Method addEntity = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
+            Method setPositionRotationMethod = class_Entity.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+
+            Object worldHandle = getHandle(location.getWorld());
+            Object newEntity = minecartConstructor.newInstance(worldHandle, location.getX(), location.getY(), location.getZ());
+            if (newEntity != null) {
+                // Set tile material id, pack into NMS 3-byte format
+                int materialId = (display.getMaterial().getId() & 0xFFFF) | (display.getData() << 16);
+                watch(newEntity, 20, materialId);
+
+                // Set the tile offset
+                watch(newEntity, 21, offset);
+
+                // Finalize custom display tile
+                watch(newEntity, 22, (byte)1);
+
+                // Set initialize rotation
+                setPositionRotationMethod.invoke(newEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+
+                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                Entity bukkitEntity = getBukkitEntity(newEntity);
+                if (bukkitEntity == null || !(bukkitEntity instanceof Minecart)) return null;
+
+                newMinecart = (Minecart)bukkitEntity;
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return newMinecart;
     }
 }
