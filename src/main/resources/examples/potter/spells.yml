@@ -1,0 +1,271 @@
+#
+# Harry Potter Canon Spells
+#
+# With help from: http://harrypotterspells.net
+#    and http://harrypotter.wikia.com/wiki/List_of_spells
+#
+
+accio:
+    icon: fishing_rod
+    category: utility
+    class: PushSpell
+    pvp_restricted: true
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: spell
+           reverse: true
+           length: 16
+           particle_count: 6
+        area:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectRing
+           effectlib:
+             class: VortexLocationEffect
+           particle: spell
+           reverse: true
+           particle_count: 6
+    parameters:
+        target_type: Entity
+        range: 32
+        allow_area: false
+        item_force: 2
+        area_range: 20
+        entity_force: 1
+        type: pull
+        count: 1
+    costs:
+        xp: 25
+
+aguamenti:
+    icon: ink_sack:6
+    category: utility
+    class: IterateSpell
+    pvp_restricted: false
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: water
+    parameters:
+        target_type: LivingEntity
+        transparent: transparent_to_construction
+        allow_max_range: true
+        range: 8
+        size: 4
+        brush: water
+        increment_data: true
+        undo: 2000
+    costs:
+        xp: 30
+
+apparate:
+    icon: eye_of_ender
+    category: movement
+    class: BlinkSpell
+    worth: 120
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_teleport
+           location: both
+        -  class: EffectRing
+           particle: portal
+           location: both
+    parameters:
+        allow_max_range: false
+        allow_ascend: true
+        allow_passthrough: true
+        prevent_passthrough: indestructible
+        range: 64
+        passthrough_range: 4
+        allow_decend: true
+    costs:
+        xp: 75
+
+ascendio:
+    icon: feather
+    category: movement
+    class: FlingSpell
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+        -  class: EffectTrail
+           particle: spell
+           particle_count: 4
+           min_speed: 2.5
+           max_speed: 4
+           cruising_altitude: 40
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 30
+    parameters:
+    costs:
+        xp: 45
+
+avadakedavra:
+    icon: poisonous_potato
+    category: unforgiveable
+    class: ProjectileSpell
+    pvp_restricted: true
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+           effectlib:
+             class: AtomLocationEffect
+             iterations: 32
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+             iterations: 120
+    parameters:
+        projectile: Snowball
+        effect_harm: 50,5
+        radius: 3
+    costs:
+        xp: 800
+
+avis:
+    icon: monster_egg
+    category: elemental
+    class: FamiliarSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: villager_yes
+        -  class: EffectTrail
+           particle: bubble
+           particle_count: 4
+           effectlib:
+             class: DnaLocationEffect
+             particleHelix: lava_dripping
+             iterations: 24
+        -  class: EffectRing
+           location: target
+           particle: bubble
+           effectlib:
+             class: AtomLocationEffect
+             iterations: 32
+    parameters:
+        allow_max_range: true
+        range: 2
+        cooldown: 5000
+        type: chicken
+        baby: true
+        count: 3
+    costs:
+        xp: 20
+
+bombarda:
+    icon: melon_seeds
+    category: combat
+    class: BoomSpell
+    pvp_restricted: true
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+           location: target
+        -  class: EffectSingle
+           location: target
+           firework: burst
+           color: 'FF0000'
+           color2: 'FF0088'
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 16
+        break_blocks: false
+        size: 2
+        cooldown: 2000
+    costs:
+        xp: 20
+
+bombardamaxima:
+    icon: fireball
+    category: combat
+    class: BoomSpell
+    pvp_restricted: true
+    worth: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectRing
+           location: target
+           effectlib:
+             class: HelixLocationEffect
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 24
+        cooldown: 7000
+        size: 3
+        break_blocks: true
+    costs:
+        xp: 100
+
+confringo:
+    icon: flint_and_steel
+    category: combat
+    class: BoomSpell
+    pvp_restricted: true
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+        -  class: EffectRing
+           location: target
+           particle: flame
+           effectlib:
+             class: HelixLocationEffect
+    parameters:
+        target_type: Item
+        target: entity
+        range: 16
+        cooldown: 3000
+        size: 1
+        fire: true
+        break_blocks: false
+    costs:
+        xp: 50
+
+confundus:
+    icon: rotten_flesh
+    category: combat
+    class: PotionEffectSpell
+    pvp_restricted: true
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+        -  class: EffectTrail
+           particle: town_aura
+           particle_count: 3
+        -  class: EffectRing
+           particle: town_aura
+           location: target
+           effectlib:
+             class: BleedEntityEffect
+    costs:
+        xp: 50
+    parameters:
+        range: 32
+        deactivate_target_mage: true
+        target_type: LivingEntity
+        target: other
+        effect_confusion: 200,5

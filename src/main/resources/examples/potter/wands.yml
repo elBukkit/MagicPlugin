@@ -1,0 +1,160 @@
+#
+# Add some Harry Potter themed wand templates
+#
+
+master:
+    path: master
+    xp_regeneration: 5
+    xp_max: 50
+    effect_bubbles: true
+    keep: true
+    bound: true
+
+gryffindor:
+    path: master
+    icon: diamond_sword
+    bound: true
+    keep: true
+    protection: 0.8
+    xp_max: 500
+    xp_regeneration: 50
+    health_regeneration: 1
+    hunger_regeneration: 1
+    power: 0.5
+    haste: 0.1
+    effect_color: '880000'
+    effect_particle: red_dust
+    effect_particle_count: 1
+    effect_particle_data: 1
+    effect_bubbles: false
+    active_spell: ascendio
+    spells:
+      - accio
+      - ascendio
+      - confundus
+
+elder:
+    path: master
+    bound: true
+    keep: true
+    protection: 1
+    xp_max: 1000
+    xp_regeneration: 200
+    health_regeneration: 1
+    hunger_regeneration: 1
+    power: 1
+    haste: 0.5
+    effect_color: '00AACC'
+    effect_particle: magic_runes
+    effect_particle_count: 1
+    effect_particle_data: 1
+    effect_sound: ambience_cave
+    effect_sound_volume: 0.6
+    effect_sound_pitch: 0.3
+    effect_sound_interval: 30
+    effect_bubbles: false
+    active_spell: ascendio
+    spells:
+      - accio
+      - aguamenti
+      - apparate
+      - ascendio
+      - avadakedavra
+      - avis
+      - bombarda
+      - bombardamaxima
+      - confringo
+      - confundus
+
+# Upgrade items copied from default config
+
+redeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:14
+    effect_color: 'FF0000'
+    effect_bubbles: true
+greeneffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:5
+    effect_color: '00FF00'
+    effect_bubbles: true
+blueeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:11
+    effect_color: '0000FF'
+    effect_bubbles: true
+whiteeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:0
+    effect_color: 'FFFFFF'
+    effect_bubbles: true
+blackeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:15
+    effect_color: '010101'
+    effect_bubbles: true
+purpleeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:10
+    effect_color: 'FF00FF'
+    effect_bubbles: true
+yelloweffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:4
+    effect_color: 'FFFF00'
+    effect_bubbles: true
+aquaeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:3
+    effect_color: '00FFFF'
+    effect_bubbles: true
+rainboweffects:
+    upgrade: true
+    indestructible: false
+    icon: magma_cream
+    effect_color: random
+    effect_bubbles: false
+    effect_particle: mob_spell
+    effect_parcticle_data: 2
+    effect_particle_count: 3
+mana1:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 200
+    xp_regeneration: 20
+mana2:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 400
+    xp_regeneration: 40
+mana3:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 1000
+    xp_regeneration: 100
+mana4:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 1500
+    xp_regeneration: 150
+manaboost:
+    upgrade: true
+    indestructible: false
+    icon: glass_bottle
+    xp: 1000
+antihunger:
+    upgrade: true
+    hunger_regeneration: 0.5
+    icon: nether_star

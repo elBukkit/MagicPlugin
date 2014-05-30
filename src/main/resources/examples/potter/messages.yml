@@ -1,0 +1,87 @@
+#
+# Harry Potter themed in-game text
+#
+
+wand:
+    mana_amount: "Energy: $amount"
+    mana_regeneration: "Energy Regeneration: $amount/s"
+
+costs:
+    xp_amount: $amount XP
+    mana_amount: $amount Energy
+    mana: Energy
+    xp: XP
+    insufficient_resources: Not enough $cost
+
+categories:
+    utility:
+        name: Utility Spells
+        description: Useful stuff
+    combat:
+        name: Combat Spells
+        description: Battle magic
+    unforgiveable:
+        name: Unforgiveable Hexes
+        description: Don't cast them!
+    movement:
+        name: Movement Spells
+        descriptions: Spells that help you get around
+    performance:
+        name: Performance Spells
+        description: Just for show
+
+spells:
+    accio:
+        name: Accio
+        description: Brings an object to you
+        cast: Accio $target!
+    aguamenti:
+        name: Aguamenti
+        description: Creates a gush of water
+        cast: Aguamenti!
+    apparate:
+        name: Apparate
+        description: Teleport to your target
+        usage: Can pass through solid objects
+        no_target: Can't apparate there
+    ascendio:
+        name: Ascendio
+        description: Lifts the caster high into the air
+        cast: Ascendio!
+    avadakedavra:
+        name: Avada Kedavra
+        description: Kill your target. Unforgiveable!
+        cast: Avada Kedavra!
+    avis:
+        name: Avis
+        description: Makes birds fly out of the end of your wand
+        cast: Avis!
+    bombarda:
+        name: Bombarda
+        description: Create a small explosion
+        cast: Bombarda!
+    bombardamaxima:
+        name: Bombarda Maxima
+        description: Create a large destructive explosion
+        cast: Bombarda Maxima!
+    confringo:
+        name: Confringo
+        description: Explode the target item
+        cast: Confringo $target
+    confundus:
+        name: Confundus
+        description: Confound your target
+        cast: Confundus $target!
+
+wands:
+    master:
+        name: Wand
+        description: Has a core of unicorn hair
+
+    elder:
+        name: Elder Wand
+        description: Has a core of Thestral hair
+
+    gryffindor:
+        name: Sword of Gryffindor
+        description: The sword of Heroes

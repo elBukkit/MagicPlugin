@@ -1,0 +1,26 @@
+#
+# Set up for a Harry Potter server.
+#
+# Crafting is not allowed, it is assumed each player has one wand
+# they will keep throughout their play experience.
+#
+
+# This is a complete wand/spell overhaul
+load_default_spells: false
+load_default_wands: false
+load_default_enchanting: false
+load_default_crafting: false
+
+# Don't allow crafting
+enable_crafting: false
+
+# Don't allow combining
+enable_combining: false
+
+# Whether wands can be upgraded on an enchanting table
+enable_enchanting: true
+
+# Whether or not using a wand on an anvil will organize its inventory
+enable_organizing: true
+
+
