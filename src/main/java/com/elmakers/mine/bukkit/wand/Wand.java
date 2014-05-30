@@ -558,8 +558,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			ItemStack[] items = inventory.getContents();
 			for (int i = 0; i < items.length; i++) {
                 if (items[i] != null && isBrush(items[i])) {
-                    String materialKey = getMaterialKey(items[i], includePositions ? index : null);
+                    String materialKey = getBrush(items[i]);
                     if (materialKey != null) {
+                        if (includePositions) {
+                            materialKey += "@" + index;
+                        }
                         materialNames.add(materialKey);
                     }
                 }
@@ -590,15 +593,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected void addToInventory(ItemStack itemStack) {
 		// Set the wand item
-		WandMode wandMode = getMode();
 		Integer selectedItem = null;
-		if (wandMode == WandMode.INVENTORY)  {
-			if (mage != null && mage.getPlayer() != null) {
-				selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
-				hotbar.setItem(selectedItem, item);
-			}
-		}
-		
+        if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null) {
+            selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
+            hotbar.setItem(selectedItem, item);
+        }
+
 		List<Inventory> checkInventories = getAllInventories();
 		boolean added = false;
 		
@@ -1490,17 +1490,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         return CompatibilityUtils.getMetadata(item, metadataProvider, "brush");
     }
-	
-	protected static String getMaterialKey(ItemStack itemStack, Integer index) {
-		String materialKey = getBrush(itemStack);
-		if (materialKey == null) return null;
-		
-		if (index != null) {
-			materialKey += "@" + index;
-		}
-		
-		return materialKey;
-	}
 
 	protected void updateInventoryName(ItemStack item, boolean activeName) {
 		if (isSpell(item)) {
