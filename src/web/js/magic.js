@@ -439,4 +439,6 @@ $(document).ready(function() {
 			$('#upgradeDetails').append(getWandUpgradeDetails(key));
 		}
     });
+
+    $("#tabs").show();
 });

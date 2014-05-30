@@ -4,24 +4,32 @@ require_once('config.inc.php');
 
 require_once('spyc.php');
 
-function parseConfigFile($name) {
+function parseConfigFile($name, $loadDefaults) {
+	global $magicDefaultsFolder;
 	global $magicRootFolder;
 
-	$config = spyc_load_file("$magicRootFolder/defaults/$name.defaults.yml");
-	$configFile = "$magicRootFolder/$name.yml";
-	if (file_exists($configFile)) {
-		$override = spyc_load_file($configFile);
-		$config = array_merge_recursive($config, $override);
-	}
+    $baseFile = "$magicDefaultsFolder/$name.defaults.yml";
+	$overrideFile = "$magicRootFolder/$name.yml";
+
+    if ($loadDefaults) {
+	    $config = spyc_load_file($baseFile);
+	    if (file_exists($overrideFile)) {
+            $override = spyc_load_file($overrideFile);
+            $config = array_replace_recursive($config, $override);
+        }
+    } else {
+        $config = spyc_load_file($overrideFile);
+    }
+
 	return $config;
 }
 
 // Load and parse Magic configuration files
 try {
-	$spells = parseConfigFile('spells');
-	$general = parseConfigFile('config');
-	$wands = parseConfigFile('wands');
-	$messages = parseConfigFile('messages');
+	$general = parseConfigFile('config', true);
+	$spells = parseConfigFile('spells', $general['load_default_spells']);
+	$wands = parseConfigFile('wands', $general['load_default_wands']);
+	$messages = parseConfigFile('messages', true);
 } catch (Exception $ex) {
 	die($ex->getMessage());
 }
@@ -236,7 +244,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 	</head>
 	<body>
 		<div id="heading"><?= $pageOverview ?></div>
-		<div id="tabs">
+		<div id="tabs" style="display:none">
 			<ul>
 				<li><a href="#overview">Overview</a></li>
 				<li><a href="#spells">Spells</a></li>

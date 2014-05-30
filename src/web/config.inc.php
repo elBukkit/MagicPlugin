@@ -4,6 +4,9 @@
 // You can set up a symlink for this, or handle it however you like
 $magicRootFolder = dirname(__FILE__) . '/../main/resources';
 
+// This is mainly used in testing, normally doesn't need to be changed
+$magicDefaultsFolder = $magicRootFolder . '/defaults';
+
 // Configure InfoBook integration (external plugin)
 $infoBookRootConfig = dirname(__FILE__) . '/../main/resources/examples/InfoBook/config.yml';
 
