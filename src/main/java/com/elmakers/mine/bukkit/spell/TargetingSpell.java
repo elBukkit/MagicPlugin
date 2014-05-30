@@ -327,7 +327,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         if (targetBlock != null && targetEntity != null) {
-            if (targetBlock.getDistance() < targetEntity.getDistance()) {
+            if (targetBlock.getDistanceSquared() < targetEntity.getDistanceSquared()) {
                 targetEntity = null;
             } else {
                 targetBlock = null;

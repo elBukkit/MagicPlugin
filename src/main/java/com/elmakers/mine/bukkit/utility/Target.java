@@ -14,9 +14,9 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class Target implements Comparable<Target>
 {
-    protected int    maxDistance = 512;
-    protected int    minDistance = 0;
-    protected double maxAngle    = 0.3;
+    protected int    maxDistanceSquared = 128 * 128;
+    protected int    minDistanceSquared = 0;
+    protected double maxAngle           = 0.3;
 
     private Location source;
     private Location location;
@@ -24,9 +24,9 @@ public class Target implements Comparable<Target>
     private Mage	 mage;
     private boolean  reverseDistance = false;
 
-    private double   distance    = 100000;
-    private double   angle       = 10000;
-    private int      score       = 0;
+    private double   distanceSquared    = 100000;
+    private double   angle              = 10000;
+    private int      score              = 0;
 
     private Object	 extraData	 = null;
 
@@ -54,7 +54,7 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Block block, int range, double angle, boolean reverseDistance)
     {
-        this.maxDistance = range;
+        this.maxDistanceSquared = range * range;
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
@@ -64,8 +64,8 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Block block, int minRange, int maxRange, double angle, boolean reverseDistance)
     {
-        this.maxDistance = maxRange;
-        this.minDistance = minRange;
+        this.maxDistanceSquared = maxRange * maxRange;
+        this.minDistanceSquared = minRange * minRange;
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
@@ -75,7 +75,7 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity, int range)
     {
-        this.maxDistance = range;
+        this.maxDistanceSquared = range * range;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
         if (entity != null) this.location = entity.getLocation();
@@ -84,7 +84,7 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity, int range, double angle)
     {
-        this.maxDistance = range;
+        this.maxDistanceSquared = range * range;
         this.maxAngle = angle;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
@@ -94,7 +94,7 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity, int range, double angle, boolean reverseDistance)
     {
-        this.maxDistance = range;
+        this.maxDistanceSquared = range * range;
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
@@ -105,8 +105,8 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity, int minRange, int maxRange, double angle, boolean reverseDistance)
     {
-        this.maxDistance = maxRange;
-        this.minDistance = minRange;
+        this.maxDistanceSquared = maxRange * maxRange;
+        this.minDistanceSquared = minRange * minRange;
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
@@ -117,8 +117,8 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Mage mage, int minRange, int maxRange, double angle, boolean reverseDistance)
     {
-        this.maxDistance = maxRange;
-        this.minDistance = minRange;
+        this.maxDistanceSquared = maxRange * maxRange;
+        this.minDistanceSquared = minRange * minRange;
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
@@ -132,7 +132,7 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity)
     {
-        this.maxDistance = 0;
+        this.maxDistanceSquared = 0;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
         if (entity != null) this.location = entity.getLocation();
@@ -140,7 +140,7 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity, Block block)
     {
-        this.maxDistance = 0;
+        this.maxDistanceSquared = 0;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
         if (block != null) {
@@ -168,20 +168,20 @@ public class Target implements Comparable<Target>
         Vector targetLoc = new Vector(targetLocation.getBlockX(), targetLocation.getBlockY(), targetLocation.getBlockZ());
         Vector targetDirection = new Vector(targetLoc.getBlockX() - playerLoc.getBlockX(), targetLoc.getBlockY() - playerLoc.getBlockY(), targetLoc.getBlockZ() - playerLoc.getBlockZ());
         angle = targetDirection.angle(playerFacing);
-        distance = targetDirection.length();
+        distanceSquared = targetDirection.lengthSquared();
 
         score = 0;
         if (maxAngle > 0 && angle > maxAngle) return;
-        if (maxDistance > 0 && distance > maxDistance) return;
-        if (distance < minDistance) return;
+        if (maxDistanceSquared > 0 && distanceSquared > maxDistanceSquared) return;
+        if (distanceSquared < minDistanceSquared) return;
 
         if (reverseDistance) {
-            distance = maxDistance - distance;
+            distanceSquared = maxDistanceSquared - distanceSquared;
         }
 
         score = 0;
 
-        if (maxDistance > 0) score += (maxDistance - distance);
+        if (maxDistanceSquared > 0) score += (maxDistanceSquared - distanceSquared);
         if (angle > 0) score += (3 - angle) * 4;
 
         // Favor targeting players, a bit
@@ -246,9 +246,9 @@ public class Target implements Comparable<Target>
         return location.getBlock();
     }
 
-    public double getDistance()
+    public double getDistanceSquared()
     {
-        return distance;
+        return distanceSquared;
     }
 
     public Location getLocation()
