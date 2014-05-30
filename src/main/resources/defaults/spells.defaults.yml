@@ -1134,6 +1134,7 @@ cure:
         -  class: EffectRing
            effectlib:
              class: LoveEntityEffect
+             iterations: 20
            particle: heart
            location: target
     parameters:
@@ -1165,6 +1166,7 @@ heal:
            location: target
            effectlib:
              class: LoveEntityEffect
+             iterations: 30
     parameters:
         target_type: LivingEntity
         target: any
