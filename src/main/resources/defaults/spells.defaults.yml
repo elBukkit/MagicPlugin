@@ -2835,6 +2835,7 @@ sphere:
         radius: 4
         oty: 5
         cooldown: 30000
+        undo: 20000
         type: sphere
         transparent: transparent_to_construction
     costs:
