@@ -800,7 +800,7 @@ tag:
            target_offset: 0,3,0
            effectlib:
              class: TextLocationEffect
-             text: TAG
+             text: $name
     parameters:
         target_type: Player
         allow_max_range: false
