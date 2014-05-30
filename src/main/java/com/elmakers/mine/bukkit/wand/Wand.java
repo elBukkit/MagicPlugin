@@ -238,6 +238,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 
             // Check for single-spell wands
+            /*
             Set<String> spells = getSpells();
             if (spells.size() == 1) {
                 String spellName = spells.iterator().next();
@@ -247,9 +248,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     spellName = spell.getName();
                 }
 
-                singleSpellName.replace("$spell", spellName);
+                singleSpellName = singleSpellName.replace("$spell", spellName);
                 wandName = singleSpellName;
             }
+            */
 		}
 
 		setDescription(wandDescription);
