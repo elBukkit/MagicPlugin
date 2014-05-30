@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,6 +72,11 @@ public class DisintegrateSpell extends BlockSpell
 		}
 
 		registerForUndo(targetBlock);
+
+        // This makes $target messaging work properly, otherwise
+        // it always displays air or water
+        MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
+        setTargetName(targetMaterial.getName());
 		
 		if (isUnderwater())
 		{
