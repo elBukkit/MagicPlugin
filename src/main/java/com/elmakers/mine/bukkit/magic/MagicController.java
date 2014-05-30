@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.utility.*;
@@ -87,6 +88,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -3239,6 +3241,18 @@ public class MagicController implements Listener, MageController
             if (customName != null && customName.length() > 0) {
                 return customName;
             }
+        } else if (target instanceof Item) {
+            Item item = (Item)target;
+            ItemStack itemStack = item.getItemStack();
+            if (itemStack.hasItemMeta()) {
+                ItemMeta meta = itemStack.getItemMeta();
+                if (meta.hasDisplayName()) {
+                    return meta.getDisplayName();
+                }
+            }
+
+            MaterialAndData material = new MaterialAndData(itemStack);
+            return material.getName();
         }
 
         return target.getType().name().toLowerCase().replace('_', ' ');
