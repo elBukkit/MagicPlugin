@@ -90,8 +90,13 @@ public abstract class TargetingSpell extends BaseSpell {
         // Escape targeting parameters
         String useTargetName = targetName;
         if (useTargetName == null) {
-            if (target != null && target.hasEntity()) {
-                useTargetName = controller.getEntityName(target.getEntity());
+            if (target != null) {
+                if (target.hasEntity()) {
+                    useTargetName = controller.getEntityName(target.getEntity());
+                } else if (target.isValid()) {
+                    MaterialAndData material = new MaterialAndData(target.getBlock());
+                    useTargetName = material.getName();
+                }
             }
             else {
                 useTargetName = "Unknown";
