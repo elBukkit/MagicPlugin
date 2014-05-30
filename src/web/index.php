@@ -26,6 +26,13 @@ function parseConfigFile($name, $loadDefaults) {
 
 // Load and parse Magic configuration files
 try {
+    global $magicRootFolder;
+    // Look for path override
+    if (isset($_REQUEST['example'])) {
+        $path = $_REQUEST['example'];
+        $magicRootFolder = "$magicRootFolder/examples/$path";
+    }
+
 	$general = parseConfigFile('config', true);
 	$spells = parseConfigFile('spells', $general['load_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
