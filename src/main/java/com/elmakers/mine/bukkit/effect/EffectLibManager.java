@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Constructor;
@@ -159,7 +160,7 @@ public class EffectLibManager {
             for (String key : keys) {
                 if (key.equals("class")) continue;
 
-                if (!setField(effect, key, configuration)) {
+                if (!setField(effect, key, configuration, player)) {
                     plugin.getLogger().warning("Unable to assign EffectLib property " + key + " of class " + className);
                 }
             }
@@ -173,7 +174,7 @@ public class EffectLibManager {
         }
     }
 
-    protected boolean setField(Object effect, String key, ConfigurationSection section) {
+    protected boolean setField(Object effect, String key, ConfigurationSection section, EffectPlayer player) {
         try {
             Field field = effect.getClass().getField(key);
             if (field.getType().equals(Integer.TYPE)) {
@@ -187,7 +188,12 @@ public class EffectLibManager {
             } else if (field.getType().equals(Long.TYPE)) {
                 field.set(effect, section.getLong(key));
             } else if (field.getType().isAssignableFrom(String.class)) {
-                field.set(effect, section.getString(key));
+                String value = section.getString(key);
+                Entity sourceEntity = player.getOriginEntity();
+                if (sourceEntity instanceof Player) {
+                    value = value.replace("$name", ((Player)sourceEntity).getName());
+                }
+                field.set(effect, value);
             } else if (field.getType().isAssignableFrom(particleEffectClass)) {
                 field.set(effect, convertParticleEffect(ParticleType.valueOf(section.getString(key).toUpperCase())));
             } else {

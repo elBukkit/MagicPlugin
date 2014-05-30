@@ -439,4 +439,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public abstract void play();
+
+    public Entity getOriginEntity() {
+        return originEntity == null ? null : originEntity.get();
+    }
 }
