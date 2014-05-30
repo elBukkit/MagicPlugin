@@ -3224,6 +3224,10 @@ public class MagicController implements Listener, MageController
     @Override
     public String getEntityName(Entity target)
     {
+        if (target == null)
+        {
+            return "Unknown";
+        }
         if (target instanceof Player)
         {
             return ((Player)target).getName();
