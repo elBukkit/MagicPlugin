@@ -267,6 +267,10 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(getLocation(), targetEntity);
         }
 
+        if (targetType == TargetType.ENTITY && targetEntity == null) {
+            return new Target(getLocation());
+        }
+
         Entity player = mage.getPlayer();
         if (targetType == TargetType.SELF && player != null) {
             return new Target(getLocation(), player);
