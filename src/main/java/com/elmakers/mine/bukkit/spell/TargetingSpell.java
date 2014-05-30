@@ -308,34 +308,34 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         Target targetBlock = block == null ? null : new Target(getLocation(), block);
-        Target targetEntity = getEntityTarget();
+        Target entityTarget = getEntityTarget();
 
         // Don't allow targeting entities in an area you couldn't cast the spell in
-        if (targetEntity != null && !canCast(targetEntity.getLocation())) {
-            targetEntity = null;
+        if (entityTarget != null && !canCast(entityTarget.getLocation())) {
+            entityTarget = null;
         }
         if (targetBlock != null && !canCast(targetBlock.getLocation())) {
             targetBlock = null;
         }
 
-        if (targetType == TargetType.ENTITY && targetEntity == null) {
+        if (targetType == TargetType.ENTITY && entityTarget == null) {
             return new Target(getLocation());
         }
 
-        if (targetEntity == null && targetType == TargetType.ANY && player != null) {
+        if (entityTarget == null && targetType == TargetType.ANY && player != null) {
             return new Target(getLocation(), player, targetBlock == null ? null : targetBlock.getBlock());
         }
 
-        if (targetBlock != null && targetEntity != null) {
-            if (targetBlock.getDistanceSquared() < targetEntity.getDistanceSquared()) {
-                targetEntity = null;
+        if (targetBlock != null && entityTarget != null) {
+            if (targetBlock.getDistanceSquared() < entityTarget.getDistanceSquared()) {
+                entityTarget = null;
             } else {
                 targetBlock = null;
             }
         }
 
-        if (targetEntity != null) {
-            return targetEntity;
+        if (entityTarget != null) {
+            return entityTarget;
         } else if (targetBlock != null) {
             return targetBlock;
         }
