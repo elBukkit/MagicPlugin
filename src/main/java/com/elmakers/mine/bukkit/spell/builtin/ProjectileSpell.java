@@ -192,7 +192,10 @@ public class ProjectileSpell extends UndoableSpell
 						ex.printStackTrace();
 					}
 				}
-				
+
+                // This is a trick to make effects applied to the projectile work
+                getCurrentTarget().setEntity(projectile);
+
 				registerForUndo(projectile);
 			} catch(Exception ex) {
 				ex.printStackTrace();
