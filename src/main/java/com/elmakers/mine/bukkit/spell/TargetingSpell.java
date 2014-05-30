@@ -98,9 +98,9 @@ public abstract class TargetingSpell extends BaseSpell {
                     useTargetName = material.getName();
                 }
             }
-            else {
-                useTargetName = "Unknown";
-            }
+        }
+        if (useTargetName == null) {
+            useTargetName = "Unknown";
         }
         message = message.replace("$target", useTargetName);
 
