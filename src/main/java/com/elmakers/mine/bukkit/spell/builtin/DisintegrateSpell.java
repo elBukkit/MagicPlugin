@@ -34,24 +34,24 @@ public class DisintegrateSpell extends BlockSpell
 				controller.damageElemental(targetEntity, elementalDamage, 0, mage.getCommandSender());
 				return SpellResult.CAST;
 			}
-			else if (targetEntity instanceof LivingEntity)
+			else
 			{
-				// Register for undo in advance to catch entity death.
 				registerForUndo();
-				
-				LivingEntity li = (LivingEntity)targetEntity;
-				if (li instanceof Player)
+                registerModified(targetEntity);
+				if (targetEntity instanceof Player)
 				{
-					li.damage(mage.getDamageMultiplier() * playerDamage, mage.getEntity());
+                    Player player = (Player)targetEntity;
+                    player.damage(mage.getDamageMultiplier() * playerDamage, mage.getEntity());
 				}
-				else
+				else  if (targetEntity instanceof LivingEntity)
 				{
-					li.damage(mage.getDamageMultiplier() * entityDamage, mage.getEntity());
-					if (li.isDead()) {
-						registerModified(li);
-						registerForUndo();
-					}
+                    LivingEntity li = (LivingEntity)targetEntity;
+                    li.damage(mage.getDamageMultiplier() * entityDamage, mage.getEntity());
 				}
+                else
+                {
+                    targetEntity.remove();
+                }
 				return SpellResult.CAST;
 			}
 		}
