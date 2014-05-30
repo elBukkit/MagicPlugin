@@ -78,6 +78,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
     }
 
+    public MaterialAndData(ItemStack item) {
+        this.material = item.getType();
+        this.data = (byte)item.getDurability();
+    }
+
     public MaterialAndData(Block block) {
         updateFrom(block);
     }
