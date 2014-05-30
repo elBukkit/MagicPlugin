@@ -359,6 +359,9 @@ public class CompatibilityUtils extends NMSUtils {
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = minecartConstructor.newInstance(worldHandle, location.getX(), location.getY(), location.getZ());
             if (newEntity != null) {
+                // Set initial rotation
+                setPositionRotationMethod.invoke(newEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+
                 // Set tile material id, pack into NMS 3-byte format
                 int materialId = (display.getMaterial().getId() & 0xFFFF) | (display.getData() << 16);
                 watch(newEntity, 20, materialId);
@@ -368,9 +371,6 @@ public class CompatibilityUtils extends NMSUtils {
 
                 // Finalize custom display tile
                 watch(newEntity, 22, (byte)1);
-
-                // Set initialize rotation
-                setPositionRotationMethod.invoke(newEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
                 addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
                 Entity bukkitEntity = getBukkitEntity(newEntity);
