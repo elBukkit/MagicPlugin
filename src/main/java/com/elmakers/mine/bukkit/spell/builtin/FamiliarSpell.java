@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -157,6 +158,8 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			famType = EntityType.SQUID;
 		}
 
+        boolean spawnBaby = parameters.getBoolean("baby", false);
+
 		List<LivingEntity> newFamiliars = new ArrayList<LivingEntity>();
 		Location centerLoc = targetBlock.getLocation();
 		for (int i = 0; i < famCount; i++)
@@ -183,6 +186,10 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetEntity);
 				if (entity != null)
 				{
+                    if (spawnBaby && entity instanceof Ageable) {
+                        Ageable ageable = (Ageable)entity;
+                        ageable.setBaby();
+                    }
 					newFamiliars.add(entity);
 					spawnCount++;
 					registerForUndo(entity);
