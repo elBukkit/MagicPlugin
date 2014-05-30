@@ -23,8 +23,11 @@ public class InventoryUtils extends NMSUtils
         {
             String value = tags.getString(tagName);
             // This is kinda hacky, but makes for generally cleaner data.
-            if (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false")) continue;
-            setMeta(node, tagName, value);
+            if (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false")) {
+                removeMeta(node, tagName);
+            } else {
+                setMeta(node, tagName, value);
+            }
         }
 
         return true;
