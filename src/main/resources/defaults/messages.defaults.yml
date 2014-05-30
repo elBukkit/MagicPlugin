@@ -946,21 +946,27 @@ wands:
         description: The ultimate wand
     student:
         name: Student Wand
-        description: Low-powered magic for beginners
+        description: Has low-powered magic
     apprentice:
         name: Apprentice Wand
-        description: Moderately Powerful
+        description: Has moderate power
     battle:
         name: Magic Sword
-        description: Attack and Slice
+        description: Has battle magic
     engineer:
         name: Engineering Wand
-        description: Has powerful building spells
+        description: Has engineering magic
     architect:
         name: The Architect
         description: Master Engineering Wand
+    elder:
+        name: Elder Wand
+        description: The Uber Wand
+    admin:
+        name: Admin Wand
+        description: For admins only
     random:
-        name: Wand of {Spell}
+        name: Randomized Wand
         description: This will randomly generate a wand
     demo:
         name: Demo Wand
@@ -989,12 +995,6 @@ wands:
     necromancer:
         name: Necromancer Wand
         description: Evil, evil stuff
-    elder:
-        name: Elder Wand
-        description: The Uber Wand
-    admin:
-        name: Admin Wand
-        description: Has admin-level spells
     air_student:
         name: Airbending Student
     water_student:

@@ -23,9 +23,6 @@ enable_enchanting: false
 # Whether or not using a wand on an anvil will organize its inventory
 enable_organizing: false
 
-# Whether or not to add random wands to naturally spawned chests
-enable_block_populator: false
-
 # Allow wands to be purchased on Essentials' signs, if present.
 enable_essentials_signs: false
 

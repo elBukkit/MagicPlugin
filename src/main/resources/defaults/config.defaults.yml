@@ -127,6 +127,11 @@ enable_crafting: true
 # Whether wands can be combined on an anvil
 enable_combining: true
 
+# Whether renaming on an anvil will also clear the description
+# In the future, it may be possible to change the description on
+# an anvil.
+anvil_rename_clears_description: false
+
 # Whether wands can be upgraded on an enchanting table
 enable_enchanting: true
 

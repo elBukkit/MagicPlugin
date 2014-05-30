@@ -21,6 +21,7 @@ public class AnvilController implements Listener {
 	private final MagicController controller;
 	private boolean combiningEnabled = false;
 	private boolean organizingEnabled = false;
+    private boolean clearDescriptionOnRename = false;
 
 	public AnvilController(MagicController controller) {
 		this.controller = controller;
@@ -28,8 +29,9 @@ public class AnvilController implements Listener {
 	
 	public void load(ConfigurationSection properties) {
 		combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
-		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);		
-	}
+		organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
+        clearDescriptionOnRename = properties.getBoolean("anvil_rename_clears_description", clearDescriptionOnRename);
+    }
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
@@ -57,7 +59,9 @@ public class AnvilController implements Listener {
 				// Taking a wand out of the anvil's crafting slot
 				if (Wand.isWand(current)) {
 					Wand wand = new Wand(controller, current);
-					wand.setDescription("");
+                    if (clearDescriptionOnRename) {
+                        wand.setDescription("");
+                    }
 					wand.updateName(true);
 					if (event.getWhoClicked() instanceof Player) {
 						wand.tryToOwn((Player)event.getWhoClicked());
