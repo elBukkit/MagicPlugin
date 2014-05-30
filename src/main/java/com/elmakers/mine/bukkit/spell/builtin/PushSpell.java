@@ -40,6 +40,7 @@ public class PushSpell extends TargetingSpell
 
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 			forceEntity(target, mutliplier, from, to, magnitude);
+            getCurrentTarget().setEntity(target);
 		}
 	}
 
@@ -77,10 +78,9 @@ public class PushSpell extends TargetingSpell
 			return SpellResult.AREA;
 		}
 
-		// Don't deduct costs for not doing anything.
 		if (targets.size() == 0)
 		{
-			return SpellResult.COST_FREE;
+			return SpellResult.NO_TARGET;
 		}
 		
 		int pushed = 0;
@@ -90,6 +90,7 @@ public class PushSpell extends TargetingSpell
 			Location from = pull ? getLocation() : target.getLocation();
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 
+            getCurrentTarget().setEntity(targetEntity);
 			forceEntity(targetEntity, multiplier, from, to, magnitude);
 			pushed++;
 			if (count > 0 && pushed >= count) break;
