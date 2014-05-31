@@ -36,6 +36,8 @@ try {
 	$general = parseConfigFile('config', true);
 	$spells = parseConfigFile('spells', $general['load_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
+	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
+	$enchanting = parseConfigFile('enchanting', $general['load_default_enchanting']);
 	$messages = parseConfigFile('messages', true);
 } catch (Exception $ex) {
 	die($ex->getMessage());
@@ -95,67 +97,50 @@ $maxXpRegeneration = isset($general['max_mana_regeneration']) ? $general['max_ma
 $maxXp = isset($general['max_mana']) ? $general['max_mana'] : 0;
 
 // Process wands
-// look up localizations
+// Look up localizations
 // Calculate worth
-// Special-case for randomized wand
+// Hide hidden wands, organize upgrades
 foreach ($wands as $key => $wand) {
 	if (isset($wand['hidden']) && $wand['hidden']) {
 		unset($wands[$key]);
 		continue;
 	}
 
-	if ($key == 'random') {
-		$wand['name'] = 'Randomized Wand';
-		$wand['description'] = 'This is a randomized wand template, used for crafting, enchanting, and random wands in chests';
-		
-		$convertedRandomSpells = array();
-		if (isset($wand['spells'])) {
-			$wand['spell_probabilities'] = $wand['spells'];
-			$randomSpells = $wand['spells'];
-			$wand['spells'] = $convertedRandomSpells;
-			
-			foreach ($randomSpells as $spellKey => $probability) {
-				$convertedRandomSpells[] = $spellKey;
-			}
-		}
-		$wand['spells'] = $convertedRandomSpells;
-	} else {
-		$wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
-		$wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
-		$wandsSpells = isset($wand['spells']) ? $wand['spells'] : array();
-		$worth = 0;
-		foreach ($wandsSpells as $wandSpell) {
-            if (isset($spells[$wandSpell]) && isset($spells[$wandSpell]['worth'])) {
-               $worth += $spells[$wandSpell]['worth'];
-            }
-		}
+    $wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
+    $wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
+    $wandsSpells = isset($wand['spells']) ? $wand['spells'] : array();
+    $worth = 0;
+    foreach ($wandsSpells as $wandSpell) {
+        if (isset($spells[$wandSpell]) && isset($spells[$wandSpell]['worth'])) {
+           $worth += $spells[$wandSpell]['worth'];
+        }
+    }
 
-		$wandBrushes = isset($wand['materials']) ? $wand['materials'] : array();
-        $worth += (count($wandBrushes) * $worthBrush);
-        $worth += (isset($wand['xp']) ? $wand['xp'] : 0) * $worthMana;
-        $worth += (isset($wand['xp_max']) ? $wand['xp_max'] : 0) * $worthManaMax;
-        $worth += (isset($wand['xp_regeneration']) ? $wand['xp_regeneration'] : 0) * $worthManaRegeneration;
-        $worth += (isset($wand['hunger_regeneration']) ? $wand['hunger_regeneration'] : 0) * $worthHungerRegeneration;
-        $worth += (isset($wand['health_regeneration']) ? $wand['health_regeneration'] : 0) * $worthHealthRegeneration;
-        $worth += (isset($wand['damage_reduction']) ? $wand['damage_reduction'] : 0) * $worthDamageReduction;
-        $worth += (isset($wand['damage_reduction_physical']) ? $wand['damage_reduction_physical'] : 0) * $worthDamageReductionPhysical;
-        $worth += (isset($wand['damage_reduction_falling']) ? $wand['damage_reduction_falling'] : 0) * $worthDamageReductionFalling;
-        $worth += (isset($wand['damage_reduction_fire']) ? $wand['damage_reduction_fire'] : 0) * $worthDamageReductionFire;
-        $worth += (isset($wand['damage_reduction_projectiles']) ? $wand['damage_reduction_projectiles'] : 0) * $worthDamageReductionProjectiles;
-        $worth += (isset($wand['damage_reduction_explosions']) ? $wand['damage_reduction_explosions'] : 0) * $worthDamageReductionExplosions;
-        $worth += (isset($wand['cost_reduction']) ? $wand['cost_reduction'] : 0) * $worthCostReduction;
-        $worth += (isset($wand['cooldown_reduction']) ? $wand['cooldown_reduction'] : 0) * $worthCooldownReduction;
-        $worth += (isset($wand['effect_particle']) && strlen($wand['effect_particle']) > 0 ? $worthEffectParticle : 0);
-        $worth += (isset($wand['effect_color']) && strlen($wand['effect_color']) > 0 ? $worthEffectColor : 0);
-        $worth += (isset($wand['effect_sound']) && strlen($wand['effect_sound']) > 0 ? $worthEffectSound : 0);
+    $wandBrushes = isset($wand['materials']) ? $wand['materials'] : array();
+    $worth += (count($wandBrushes) * $worthBrush);
+    $worth += (isset($wand['xp']) ? $wand['xp'] : 0) * $worthMana;
+    $worth += (isset($wand['xp_max']) ? $wand['xp_max'] : 0) * $worthManaMax;
+    $worth += (isset($wand['xp_regeneration']) ? $wand['xp_regeneration'] : 0) * $worthManaRegeneration;
+    $worth += (isset($wand['hunger_regeneration']) ? $wand['hunger_regeneration'] : 0) * $worthHungerRegeneration;
+    $worth += (isset($wand['health_regeneration']) ? $wand['health_regeneration'] : 0) * $worthHealthRegeneration;
+    $worth += (isset($wand['damage_reduction']) ? $wand['damage_reduction'] : 0) * $worthDamageReduction;
+    $worth += (isset($wand['damage_reduction_physical']) ? $wand['damage_reduction_physical'] : 0) * $worthDamageReductionPhysical;
+    $worth += (isset($wand['damage_reduction_falling']) ? $wand['damage_reduction_falling'] : 0) * $worthDamageReductionFalling;
+    $worth += (isset($wand['damage_reduction_fire']) ? $wand['damage_reduction_fire'] : 0) * $worthDamageReductionFire;
+    $worth += (isset($wand['damage_reduction_projectiles']) ? $wand['damage_reduction_projectiles'] : 0) * $worthDamageReductionProjectiles;
+    $worth += (isset($wand['damage_reduction_explosions']) ? $wand['damage_reduction_explosions'] : 0) * $worthDamageReductionExplosions;
+    $worth += (isset($wand['cost_reduction']) ? $wand['cost_reduction'] : 0) * $worthCostReduction;
+    $worth += (isset($wand['cooldown_reduction']) ? $wand['cooldown_reduction'] : 0) * $worthCooldownReduction;
+    $worth += (isset($wand['effect_particle']) && strlen($wand['effect_particle']) > 0 ? $worthEffectParticle : 0);
+    $worth += (isset($wand['effect_color']) && strlen($wand['effect_color']) > 0 ? $worthEffectColor : 0);
+    $worth += (isset($wand['effect_sound']) && strlen($wand['effect_sound']) > 0 ? $worthEffectSound : 0);
 
-		if (isset($wand['uses']) && $wand['uses'] > 0) {
-		    $worth *= $useModifier;
-		}
+    if (isset($wand['uses']) && $wand['uses'] > 0) {
+        $worth *= $useModifier;
+    }
 
-		$wand['worth'] = $worth;
-		$wand['spells'] = $wandsSpells;
-	}
+    $wand['worth'] = $worth;
+    $wand['spells'] = $wandsSpells;
 
 	if (isset($wand['upgrade']) && $wand['upgrade']) {
         unset($wands[$key]);
@@ -167,16 +152,27 @@ foreach ($wands as $key => $wand) {
 ksort($wands);
 ksort($upgrades);
 
-// Move randomized wand to top
-if (isset($wands['random'])) {
-	$randomArray = array('random' => $wands['random']);
-	unset($wands['random']);
-	$wands = $randomArray + $wands;
+// Process enchanting paths
+foreach ($enchanting as $key => $path) {
+    $path['name'] = 'Randomized Wand';
+
+    $convertedRandomSpells = array();
+    if (isset($path['spells'])) {
+        $path['spell_probabilities'] = $path['spells'];
+        $randomSpells = $path['spells'];
+        $path['spells'] = $convertedRandomSpells;
+
+        foreach ($randomSpells as $spellKey => $probability) {
+            $convertedRandomSpells[] = $spellKey;
+        }
+    }
+    $path['spells'] = $convertedRandomSpells;
+    $enchanting[$key] = $path;
 }
+ksort($enchanting);
 
 $enchantingEnabled = isset($general['enable_enchanting']) ? $general['enable_enchanting'] : false;
 $combiningEnabled = isset($general['enable_combining']) ? $general['enable_combining'] : false;
-$blockPopulatorEnabled = isset($general['enable_block_populator']) ? $general['enable_block_populator'] : false;
 
 $wandItem = isset($general['wand_item']) ? $general['wand_item'] : '';
 $craftingMaterialUpper = isset($general['crafting_material_upper']) ? $general['crafting_material_upper'] : '';
@@ -234,6 +230,8 @@ function printMaterial($materialKey, $iconOnly = null) {
 		<script src="js/jquery-ui-1.10.3.custom.min.js"></script>
 		<script>
 			var spells = <?= json_encode($spells); ?>;
+			var paths = <?= json_encode($enchanting); ?>;
+			var recipes = <?= json_encode($crafting); ?>;
 			var wands = <?= json_encode($wands); ?>;
 			var upgrades = <?= json_encode($upgrades); ?>;
 			var eraseMaterial = '<?= $eraseMaterial ?>';
@@ -255,6 +253,8 @@ function printMaterial($materialKey, $iconOnly = null) {
 			<ul>
 				<li><a href="#overview">Overview</a></li>
 				<li><a href="#spells">Spells</a></li>
+				<li><a href="#crafting">Crafting</a></li>
+				<li><a href="#enchanting">Enchanting</a></li>
 				<li><a href="#wands">Wands</a></li>
 				<li><a href="#upgrades">Upgrades</a></li>
 				<li id="booksTab"><a href="#books">Books</a></li>
@@ -363,6 +363,38 @@ function printMaterial($materialKey, $iconOnly = null) {
 			  </div>
 			  <div class="details" id="spellDetails">
 			  	Select a spell for details.
+			  </div>
+			</div>
+			<div id="crafting">
+			  <div class="scrollingTab">
+			  	<div class="navigation">
+				<ol id="craftingList">
+				<?php
+					foreach ($crafting as $key => $recipe) {
+						echo '<li class="ui-widget-content" id="recipe-' . $key . '"><span class="recipeTitle">' . $key . '</span></li>';
+					}
+				?>
+				</ol>
+			  </div>
+			  </div>
+			  <div class="details" id="craftingDetails">
+			  	Select a recipe for details.
+			  </div>
+			</div>
+			<div id="enchanting">
+			  <div class="scrollingTab">
+			  	<div class="navigation">
+				<ol id="enchantingList">
+				<?php
+					foreach ($enchanting as $key => $path) {
+						echo '<li class="ui-widget-content" id="path-' . $key . '"><span class="pathTitle">' . $key . '</span></li>';
+					}
+				?>
+				</ol>
+			  </div>
+			  </div>
+			  <div class="details" id="enchantingDetails">
+			  	Select an enchanting path for details.
 			  </div>
 			</div>
 			<div id="wands">

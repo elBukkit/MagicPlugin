@@ -274,6 +274,24 @@ function chatColorToHex(chatChar)
 	return '';
 }
 
+function getPathDetails(key)
+{
+    if (!(key in paths)) {
+        return $('<span/>').text("Sorry, something went wrong!");
+    }
+    var wand = paths[key];
+    return getWandItemDetails(key, wand);
+}
+
+function getRecipeDetails(key)
+{
+    if (!(key in recipes)) {
+        return $('<span/>').text("Sorry, something went wrong!");
+    }
+    var recipe = recipes[key];
+    return $('<span/>').text("WIP: " + recipe['output']);
+}
+
 function getWandDetails(key)
 {
     if (!(key in wands)) {
@@ -422,6 +440,22 @@ $(document).ready(function() {
 			$('#spellDetails').empty();
 			$('#spellDetails').append(getSpellDetails(key));
 		}
+    });
+    $("#craftingList").selectable({
+        selected: function(event, ui) {
+            var selected = jQuery(".ui-selected", this);
+            var key = selected.prop('id').substr(7);
+            $('#craftingDetails').empty();
+            $('#craftingDetails').append(getRecipeDetails(key));
+        }
+    });
+    $("#enchantingList").selectable({
+        selected: function(event, ui) {
+            var selected = jQuery(".ui-selected", this);
+            var key = selected.prop('id').substr(5);
+            $('#enchantingDetails').empty();
+            $('#enchantingDetails').append(getPathDetails(key));
+        }
     });
     $("#wandList").selectable({
 		selected: function(event, ui) {

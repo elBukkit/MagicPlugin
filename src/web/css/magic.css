@@ -85,6 +85,15 @@
 	top: 60px;
 }
 
+.titleBanner
+{
+    width: 600px;
+    padding: 5px;
+    font-size: 1.2em;
+    color: white;
+    background-color: #222288;
+}
+
 .spellTitleBanner
 {
 	width: 600px;
