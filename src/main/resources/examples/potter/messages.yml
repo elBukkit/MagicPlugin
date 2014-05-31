@@ -17,18 +17,27 @@ categories:
     utility:
         name: Utility Spells
         description: Useful stuff
+        color: '00FF00'
     combat:
         name: Combat Spells
         description: Battle magic
+        color: 'FF0000'
     unforgiveable:
         name: Unforgiveable Hexes
         description: Don't cast them!
+        color: '010101'
+    hex:
+        name: Hexes
+        description: Cripple your target
+        color: 'FFFF00'
     movement:
         name: Movement Spells
         descriptions: Spells that help you get around
+        color: 'DDDDDD'
     performance:
         name: Performance Spells
         description: Just for show
+        color: '00FFFF'
 
 spells:
     accio:
@@ -44,13 +53,17 @@ spells:
         description: Teleport to your target
         usage: Can pass through solid objects
         no_target: Can't apparate there
+    arrow:
+        name: Arrow
+        description: Fire a magic arrow
     ascendio:
         name: Ascendio
         description: Lifts the caster high into the air
         cast: Ascendio!
     avadakedavra:
         name: Avada Kedavra
-        description: Kill your target. Unforgiveable!
+        description: Kill your target.
+        usage: Unforgiveable!
         cast: Avada Kedavra!
     avis:
         name: Avis
@@ -72,16 +85,173 @@ spells:
         name: Confundus
         description: Confound your target
         cast: Confundus $target!
+    conjunctivitis:
+        name: Conjunctivitis
+        description: Blind your opponent
+        cast: Conjunctivitis $target!
+    crucio:
+        name: Crucio
+        description: Torture your opponent
+        usage: Unforgiveable!
+        cast: Crucio $target!
+    deletrius:
+        name: Deletrius
+        description: Erase a wand's cast history
+        cast: Deletrius!
+    diffindo:
+        name: Diffindo
+        description: Split an object at the seams
+        cast: Diffindo!
+    duro:
+        name: Duro
+        description: Turn the target to stone
+        cast: Duro!
+    episkey:
+        name: Episkey
+        description: Heals relatively minor wounds
+        cast_self: Ferula!
+        cast: Episkey $target!
+    evanesco:
+        name: Evanesco
+        description: Disintegrate the target
+        cast: Evanesco $target!
+    expelliarmus:
+        name: Expelliarmus
+        description: Disarm your opponent
+        cast: Expelliarmus!
+    ferula:
+        name: Ferula
+        description: Binds broken limbs
+        cast_self: Ferula!
+        cast: Ferula $target!
+    finiteincantatem:
+        name: Finite Incantatem
+        description: Counter target player's spell
+        usage: Only works on recently cast spells
+        cast: "Finite Incantatem &d&o$target &r&6$spell!"
+        cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"
+    flagrate:
+        name: Flagrate
+        description: Write in the air with fire
+        cast: Flagrate!
+    flipendo:
+        name: Flipendo
+        description: Push your target backwards
+        cast: Flipendo $target!
+    fly:
+        name: Unsupported Flight
+        description: Flight, a gift from the Dark Lord
+        cast: You feel lighter
+        cancel: You feel heavier
+    immobulus:
+        name: Immobulus
+        description: Immobilize your target
+        cast: Immobulus $target!
+    imperio:
+        name: Imperio
+        description: Control your target
+        usage: Unforgiveable!
+        cast: Imperio $target!
+    impervius:
+        name: Impervius
+        description: Remove all water in the area
+        cast: Impervius!
+    incendio:
+        name: Incendio
+        description: Light a fire at your target
+        cast: Incendio!
+    lumos:
+        name: Lumos
+        description: Light up the night time
+        cast: Lumos!
+    morsmordre:
+        name: Morsmordre
+        description: Summon the Dark Mark
+        cast: Morsmordre!
+    petrificustotalus:
+        name: Petrificus Totalus
+        description: Paralyze your target
+        cast: Petrificus Totalus!
+    reducio:
+        name: Reducio
+        description: Shrink your target
+        cast: Reducio $target!
+    reducto:
+        name: Reducto
+        description: Blast your target to pieces
+        cast: Reducto!
+    salviohexia:
+        name: Salivo Hexia
+        description: Preserve an area for Reparo
+        usage: Cast twice to preserve an area
+        cancel: Salvio Hexia cancelled
+        fail: Too large!
+        cast_finish: Preserved up $count blocks
+        target_selected: Cast again to preserve area
+    reparifarge:
+        name: Reparifarge
+        description: Reverse your last spell
+        cast: "&5Your reverse your &6$spell cast"
+        cast_self: "&5You reverse your &6$spell &5cast"
+        cost_free: "&5You cancel your &6$spell &5cast"
+        fail: Nothing to reverse
+    reparo:
+        name: Reparo
+        description: Repairs an area preserved with Salvio Hexia
+        cast: Reparo!
+    reparomaxima:
+        name: Reparo Maxima
+        description: Repairs a large area preserved with Salvio Hexia
+        usage: Cast twice to repair
+        cancel: Repair cancelled
+        target_selected: Cast again to repair
+        fail: Too large!
+        cast_finish: Reparo Maxima!
+    sectumsempra:
+        name: Sectumsempra
+        description: Lascerate your target
+        cast: Sectumsempra!
+    stupefy:
+        name: Stupefy
+        description: Stun and damage your target.
+        cast: Stupefy!
 
 wands:
-    master:
-        name: Wand
-        description: Has a core of unicorn hair
 
-    elder:
-        name: Elder Wand
-        description: Has a core of Thestral hair
+    pheonix:
+        name: Wand
+        description: Pheonix feather core
+
+    unicorn:
+        name: Wand
+        description: Unicorn tail hair core
+
+    troll:
+        name: Wand
+        description: Troll whisker core
+
+    dragon:
+        name: Wand
+        description: Dragon heartstring core
 
     gryffindor:
         name: Sword of Gryffindor
-        description: The sword of Heroes
+        description: The Sword of Bravery
+
+    slytherin:
+        name: Wand of Slytherin
+        description: Cunning and Power
+
+    hufflepuff:
+        name: Wand of Hufflepuff
+        description: Loyalty and Fairness
+
+    ravenclaw:
+        name: Wand of Ravenclaw
+        description: Intelligence and Wit
+
+    elder:
+        name: Elder Wand
+        description: Thestral hair core
+
+

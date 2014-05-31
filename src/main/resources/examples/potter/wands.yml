@@ -2,26 +2,53 @@
 # Add some Harry Potter themed wand templates
 #
 
-master:
-    path: master
-    xp_regeneration: 5
-    xp_max: 50
-    effect_bubbles: true
-    keep: true
+pheonix:
+    path: pheonix
+    icon: wood_hoe
     bound: true
+    keep: true
+    xp_max: 50
+    xp_regeneration: 5
+    effect_color: '880000'
+    effect_bubbles: false
+
+unicorn:
+    path: unicorn
+    icon: iron_hoe
+    bound: true
+    keep: true
+    xp_max: 50
+    xp_regeneration: 5
+    effect_color: '008800'
+    effect_bubbles: false
+
+troll:
+    path: troll
+    icon: gold_hoe
+    bound: true
+    keep: true
+    xp_max: 50
+    xp_regeneration: 5
+    effect_color: '888800'
+    effect_bubbles: false
+
+dragon:
+    path: dragon
+    icon: diamond_hoe
+    bound: true
+    keep: true
+    xp_max: 50
+    xp_regeneration: 5
+    effect_color: '000088'
+    effect_bubbles: false
 
 gryffindor:
-    path: master
+    path: pheonix
     icon: diamond_sword
     bound: true
     keep: true
-    protection: 0.8
-    xp_max: 500
-    xp_regeneration: 50
-    health_regeneration: 1
-    hunger_regeneration: 1
-    power: 0.5
-    haste: 0.1
+    xp_max: 100
+    xp_regeneration: 10
     effect_color: '880000'
     effect_particle: red_dust
     effect_particle_count: 1
@@ -31,10 +58,100 @@ gryffindor:
     spells:
       - accio
       - ascendio
+      - arrow
       - confundus
+      - bombarda
+      - confringo
+      - episkey
+      - expelliarmus
+      - flagrate
+      - lumos
+      - reducio
+      - reparifarge
+      - stupefy
+
+slytherin:
+    icon: iron_hoe
+    path: unicorn
+    bound: true
+    keep: true
+    xp_max: 100
+    xp_regeneration: 10
+    effect_color: '008800'
+    effect_bubbles: true
+    active_spell: ascendio
+    spells:
+      - accio
+      - aguamenti
+      - arrow
+      - ascendio
+      - avadakedavra
+      - bombarda
+      - bombardamaxima
+      - crucio
+      - evanesco
+      - petrificustotalus
+      - morsmordre
+      - reducto
+      - reparifarge
+      - sectumsempra
+
+hufflepuff:
+    path: troll
+    bound: true
+    icon: gold_hoe
+    keep: true
+    xp_max: 100
+    xp_regeneration: 10
+    effect_color: '888800'
+    effect_bubbles: true
+    active_spell: ascendio
+    spells:
+      - accio
+      - aguamenti
+      - arrow
+      - ascendio
+      - avis
+      - confundus
+      - conjunctivitis
+      - duro
+      - episkey
+      - ferula
+      - lumos
+      - reparifarge
+      - reparo
+      - stupefy
+      - diffindo
+
+ravenclaw:
+    path: dragon
+    icon: diamond_hoe
+    bound: true
+    keep: true
+    xp_max: 100
+    xp_regeneration: 10
+    effect_color: '000088'
+    effect_bubbles: true
+    active_spell: ascendio
+    spells:
+      - accio
+      - aguamenti
+      - arrow
+      - ascendio
+      - bombarda
+      - deletrius
+      - episkey
+      - finiteincantatem
+      - flipendo
+      - immobulus
+      - impervius
+      - lumos
+      - reparifarge
+      - stupefy
 
 elder:
     path: master
+    icon: diamond_hoe
     bound: true
     keep: true
     protection: 1
@@ -58,6 +175,7 @@ elder:
       - accio
       - aguamenti
       - apparate
+      - arrow
       - ascendio
       - avadakedavra
       - avis
@@ -65,6 +183,34 @@ elder:
       - bombardamaxima
       - confringo
       - confundus
+      - conjunctivitis
+      - crucio
+      - deletrius
+      - diffindo
+      - duro
+      - episkey
+      - evanesco
+      - expelliarmus
+      - ferula
+      - finiteincantatem
+      - flagrate
+      - flipendo
+      - fly
+      - immobulus
+      - imperio
+      - impervius
+      - incendio
+      - lumos
+      - morsmordre
+      - petrificustotalus
+      - reducio
+      - reducto
+      - reparifarge
+      - reparo
+      - reparomaxima
+      - salviohexia
+      - sectumsempra
+      - stupefy
 
 # Upgrade items copied from default config
 

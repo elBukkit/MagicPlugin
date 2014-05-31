@@ -87,6 +87,25 @@ apparate:
     costs:
         xp: 75
 
+arrow:
+    icon: arrow
+    category: combat
+    class: ProjectileSpell
+    pvp_restricted: true
+    worth: 2
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           location: origin
+    parameters:
+      projectile: Arrow
+      speed: 2
+      spread: 6
+      fire: false
+    costs:
+        xp: 25
+
 ascendio:
     icon: feather
     category: movement
@@ -131,7 +150,7 @@ avadakedavra:
     parameters:
         projectile: Snowball
         effect_harm: 50,5
-        radius: 3
+        radius: 4
     costs:
         xp: 800
 
@@ -203,10 +222,10 @@ bombardamaxima:
         cast:
         -  class: EffectSingle
            sound: explode
-        -  class: EffectRing
-           location: target
-           effectlib:
-             class: HelixLocationEffect
+        -  class: EffectTrail
+           firework: burst
+           color: 'FF0000'
+           color2: 'FF0088'
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -245,7 +264,7 @@ confringo:
 
 confundus:
     icon: rotten_flesh
-    category: combat
+    category: hex
     class: PotionEffectSpell
     pvp_restricted: true
     worth: 10
@@ -256,11 +275,14 @@ confundus:
         -  class: EffectTrail
            particle: town_aura
            particle_count: 3
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
         -  class: EffectRing
            particle: town_aura
            location: target
            effectlib:
-             class: BleedEntityEffect
+             class: SmokeEntityEffect
     costs:
         xp: 50
     parameters:
@@ -269,3 +291,723 @@ confundus:
         target_type: LivingEntity
         target: other
         effect_confusion: 200,5
+
+conjunctivitis:
+    icon: ender_pearl
+    category: hex
+    class: PotionEffectSpell
+    pvp_restricted: true
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+        -  class: EffectTrail
+           particle: town_aura
+           particle_count: 3
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+        -  class: EffectRing
+           particle: town_aura
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+    costs:
+        xp: 40
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target: other
+        effect_blindness: 200,5
+
+crucio:
+    icon: nether_stalk
+    category: unforgiveable
+    class: PotionEffectSpell
+    pvp_restricted: true
+    worth: 300
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+        -  class: EffectTrail
+           particle: red_dust
+           particle_count: 3
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+        -  class: EffectRing
+           particle: town_aura
+           location: target
+           effectlib:
+             class: BleedEntityEffect
+             duration: 600
+    costs:
+        xp: 200
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target: other
+        effect_wither: 200,5
+
+deletrius:
+    icon: enchanted_book
+    category: utility
+    class: CommitSpell
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_use
+    parameters:
+        target: self
+    costs:
+        xp: 200
+
+diffindo:
+    icon: iron_plate
+    category: combat
+    class: ConstructSpell
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: large_explosion
+    parameters:
+        allow_max_range: false
+        range: 16
+        brush: air
+        falling: true
+        check_destructible: false
+        indestructible: air
+        radius: 2
+        transparent: transparent_to_construction
+    costs:
+        xp: 50
+
+duro:
+    icon: stone
+    category: engineering
+    class: RecurseSpell
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 8
+        check_destructible: false
+        brush: stone
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
+
+episkey:
+    icon: cookie
+    category: utility
+    class: HealSpell
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_purr
+        -  class: EffectTrail
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+           particle: heart
+        -  class: EffectRing
+           effectlib:
+             class: LoveEntityEffect
+             iterations: 20
+           particle: heart
+           location: target
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        feed: false
+        cure: false
+        percentage: 0.1
+    costs:
+        xp: 20
+
+evanesco:
+    icon: bone
+    category: combat
+    pvp_restricted: true
+    class: DisintegrateSpell
+    worth: 25
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magmacube_jump
+        -  class: EffectTrail
+           particle: lava_dripping
+           particle_data: 1
+    parameters:
+        target: other
+        target_type: Item
+        allow_max_range: false
+        range: 8
+        entity_damage: 50
+        check_destructible: true
+    costs:
+        xp: 50
+
+expelliarmus:
+    icon: tripwire_hook
+    category: combat
+    class: DisarmSpell
+    pvp_restricted: true
+    worth: 110
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_hiss
+        -  class: EffectTrail
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+           particle: mob_spell
+           particle_data: 2
+           particle_count: 8
+        backfire:
+        -  class: EffectSingle
+           sound: hurt_flesh
+        -  class: EffectRing
+           particle: red_dust
+           location: self
+        fizzle:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectRing
+           particle: red_dust
+           location: self
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+        fizzle_chance: 0.2
+        backfire_chance: 0.05
+        cooldown: 5000
+    costs:
+        xp: 200
+
+ferula:
+    icon: bread
+    category: utility
+    class: HealSpell
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_purr
+        -  class: EffectTrail
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 30
+           particle: heart
+        -  class: EffectRing
+           effectlib:
+             class: ShieldEntityEffect
+             iterations: 30
+           particle: heart
+           location: target
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        feed: false
+        cure: false
+        percentage: 0.7
+    costs:
+        xp: 20
+
+finiteincantatem:
+    icon: diamond
+    category: master
+    class: UndoSpell
+    worth: 250
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_break
+        -  class: EffectTrail
+           particle: smoke
+    parameters:
+        allow_max_range: false
+        target: other
+        target_type: LivingEntity
+        target_blocks: false
+        target_timeout: 30000
+        range: 32
+    costs:
+        xp: 150
+
+flagrate:
+    icon: sign
+    category: performance
+    class: GenericSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: flame
+        -  class: EffectSingle
+           location: target
+           particle: flame
+           target_offset: 0,3,0
+           effectlib:
+             class: TextLocationEffect
+             text: $name
+             iterations: 2
+    parameters:
+        allow_max_range: true
+        range: 3
+        cooldown: 10000
+        transparent: transparent_to_construction
+    costs:
+        xp: 20
+
+flipendo:
+    icon: rails
+    category: combat
+    class: PushSpell
+    pvp_restricted: true
+    worth: 15
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+           particle: spell
+           length: 16
+           particle_count: 6
+        area:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectRing
+           effectlib:
+             class: VortexLocationEffect
+           particle: spell
+           particle_count: 6
+    parameters:
+        target_type: Entity
+        range: 32
+        allow_area: false
+        item_force: 2
+        area_range: 20
+        entity_force: 1
+        type: push
+        count: 1
+    costs:
+        xp: 10
+
+fly:
+    icon: diamond_boots
+    category: master
+    class: LevitateSpell
+    worth: 600
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+        -  class: EffectRing
+           particle: spell
+           particle_count: 20
+    parameters:
+        speed: 2
+    costs:
+        xp: 100
+    active_costs:
+        xp: 50
+
+immobulus:
+    icon: web
+    category: hex
+    class: PotionEffectSpell
+    pvp_restricted: true
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+        -  class: EffectTrail
+           particle: town_aura
+           particle_count: 3
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+        -  class: EffectRing
+           particle: town_aura
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+    costs:
+        xp: 40
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target: other
+        effect_slow: 300,20
+
+imperio:
+    icon: leash
+    category: unforgiveable
+    class: ForceSpell
+    pvp_restricted: true
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: spell
+           length: 16
+    parameters:
+        target_type: LivingEntity
+        range: 32
+        item_force: 1
+        entity_force: 3
+    costs:
+        xp: 50
+
+impervius:
+    icon: gold_spade
+    category: earthbending
+    class: ConstructSpell
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        check_destructible: false
+        indestructible: air
+        radius: 3
+        replace: true
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
+
+incendio:
+    icon: fire
+    category: combat
+    class: FireSpell
+    pvp_restricted: true
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire
+           location: both
+        -  class: EffectTrail
+           particle: flame
+           particle_count: 2
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 32
+        radius: 1
+        vertical_search_distance: 8
+    costs:
+        xp: 35
+
+lumos:
+    icon: double_plant
+    category: utility
+    worth: 10
+    class: PotionEffectSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+        -  class: EffectTrail
+           particle: red_dust
+           particle_data: 2
+           particle_count: 3
+        -  class: EffectRing
+           particle: red_dust
+           location: target
+           particle_data: 2
+           effectLib:
+             class: TraceEntityEffect
+    costs:
+        xp: 65
+    parameters:
+        target: any
+        range: 32
+        target_type: LivingEntity
+        effect_night_vision: 600,5
+
+morsmordre:
+    icon: skull_item:4
+    category: performance
+    class: GenericSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: flame
+        -  class: EffectSingle
+           location: target
+           firework: creeper
+           color: '00FF00'
+           color2: '88FF88'
+    parameters:
+        allow_max_range: true
+        range: 16
+        cooldown: 10000
+        transparent: transparent_to_construction
+    costs:
+        xp: 80
+
+petrificustotalus:
+    icon: skull_item
+    category: hex
+    class: PotionEffectSpell
+    pvp_restricted: true
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+        -  class: EffectTrail
+           particle: town_aura
+           particle_count: 3
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+        -  class: EffectRing
+           particle: town_aura
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+    costs:
+        xp: 80
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target: other
+        effect_slow: 300,20
+        effect_confusion: 300,20
+
+reducio:
+    icon: red_mushroom
+    category: utility
+    class: ShrinkSpell
+    pvp_restricted: true
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magmacube_jump
+        -  class: EffectTrail
+           particle: angry_villager
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+        player_damage: 1
+        entity_damage: 10
+    costs:
+        xp: 20
+
+reducto:
+    icon: iron_spade
+    category: mining
+    class: ConstructSpell
+    worth: 12
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: large_explosion
+    parameters:
+        allow_max_range: false
+        range: 16
+        speed: 1.0
+        falling: true
+        brush: air
+        radius: 2
+        type: sphere
+        destructible: destructible_mining
+    costs:
+        xp: 45
+
+salviohexia:
+    icon: diamond_pickaxe
+    category: engineering
+    class: ConstructSpell
+    worth: 2000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_retract
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        allow_max_range: false
+        range: 32
+        max_dimension: 32
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+        brush: clone
+        check_destructible: false
+        brushmod: erase
+        otworld: ~_backup
+        obworld: ~-_backup
+        brushtarget: true
+        bypass_undo: true
+    costs:
+        xp: 900
+
+reparifarge:
+    icon: book_and_quill
+    category: engineering
+    class: UndoSpell
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_break
+    parameters:
+        target: self
+    costs:
+        xp: 100
+
+reparo:
+    icon: iron_pickaxe
+    category: engineering
+    class: ConstructSpell
+    worth: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_extend
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 32
+        radius: 4
+        type: sphere
+        check_destructible: false
+        transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_backup
+        obworld: ~_backup
+        brushtarget: true
+    costs:
+        xp: 200
+
+reparomaxima:
+    icon: iron_pickaxe
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_extend
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: select
+        allow_max_range: false
+        max_dimension: 32
+        range: 32
+        type: sphere
+        check_destructible: false
+        transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_backup
+        obworld: ~_backup
+        brushtarget: true
+    costs:
+        xp: 500
+
+sectumsempra:
+    icon: iron_sword
+    category: combat
+    pvp_restricted: true
+    class: DisintegrateSpell
+    worth: 25
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magmacube_jump
+        -  class: EffectTrail
+           particle: lava_dripping
+           particle_data: 1
+        -  class: EffectSingle
+           location: target
+           particle: lava_dripping
+           particle_data: 1
+           effectlib:
+             class: BleedEntityEffect
+             duration: 600
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 4
+        target: entity
+        player_damage: 5
+        entity_damage: 50
+        check_destructible: false
+    costs:
+        xp: 50
+
+stupefy:
+    icon: redstone
+    category: unforgiveable
+    class: ProjectileSpell
+    pvp_restricted: true
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: arrow_hit
+           effectlib:
+             class: DnaLocationEffect
+             iterations: 32
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 120
+             particle: red_dust
+    parameters:
+        projectile: Snowball
+        effect_harm: 1,1
+        effect_confusion: 10,1
+        radius: 4
+    costs:
+        xp: 30
