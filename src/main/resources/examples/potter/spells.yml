@@ -390,7 +390,7 @@ diffindo:
 
 duro:
     icon: stone
-    category: engineering
+    category: utility
     class: RecurseSpell
     worth: 150
     effects:
@@ -687,7 +687,7 @@ imperio:
 
 impervius:
     icon: gold_spade
-    category: earthbending
+    category: utility
     class: ConstructSpell
     worth: 30
     effects:
@@ -699,10 +699,10 @@ impervius:
     parameters:
         allow_max_range: false
         range: 32
-        check_destructible: false
-        indestructible: air
+        check_destructible: true
+        destructible: water
+        brush: erase
         radius: 3
-        replace: true
         transparent: transparent_to_construction
     costs:
         xp: 100
@@ -721,6 +721,10 @@ incendio:
         -  class: EffectTrail
            particle: flame
            particle_count: 2
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: flame
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -771,11 +775,12 @@ morsmordre:
         -  class: EffectSingle
            location: target
            firework: creeper
+           target_offset: 0,8,0
            color: '00FF00'
            color2: '88FF88'
     parameters:
         allow_max_range: true
-        range: 16
+        range: 8
         cooldown: 10000
         transparent: transparent_to_construction
     costs:
@@ -973,7 +978,7 @@ sectumsempra:
            particle_data: 1
            effectlib:
              class: BleedEntityEffect
-             duration: 600
+             duration: 300
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -996,8 +1001,9 @@ stupefy:
         -  class: EffectSingle
            sound: arrow_hit
            effectlib:
-             class: DnaLocationEffect
-             iterations: 32
+             class: ConeLocationEffect
+             iterations: 20
+             particle: red_dust
         -  class: EffectSingle
            location: target
            effectlib:
@@ -1005,9 +1011,12 @@ stupefy:
              iterations: 120
              particle: red_dust
     parameters:
-        projectile: Snowball
+        projectile: Arrow
         effect_harm: 1,1
-        effect_confusion: 10,1
+        effect_confusion: 50,1
         radius: 4
+        size: 0
+        fire: false
+        damage: 0
     costs:
         xp: 30
