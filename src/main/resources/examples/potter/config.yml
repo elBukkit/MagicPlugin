@@ -23,4 +23,7 @@ enable_enchanting: false
 # Whether or not using a wand on an anvil will organize its inventory
 enable_organizing: true
 
+# Wands don't need to glow, because Dr00bles is awesome
+wand_glow: false
+
 
