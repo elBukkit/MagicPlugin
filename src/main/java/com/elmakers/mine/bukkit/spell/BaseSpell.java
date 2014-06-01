@@ -562,6 +562,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters)
     {
+        return getPotionEffects(parameters, null);
+    }
+
+    protected static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters, Integer duration)
+    {
         List<PotionEffect> effects = new ArrayList<PotionEffect>();
         PotionEffectType[] effectTypes = PotionEffectType.values();
         for (PotionEffectType effectType : effectTypes) {
@@ -571,18 +576,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String parameterName = "effect_" + effectType.getName().toLowerCase();
             if (parameters.contains(parameterName)) {
                 String value = parameters.getString(parameterName);
-                String[] pieces = value.split(",");
+                int ticks = 10;
+                int power = 1;
                 try {
-                    Integer ticks = Integer.parseInt(pieces[0]);
-                    Integer power = 1;
-                    if (pieces.length > 0) {
+                    if (value.contains(",")) {
+                        String[] pieces = value.split(",");
+                        ticks = Integer.parseInt(pieces[0]);
                         power = Integer.parseInt(pieces[1]);
+                    } else {
+                        power = Integer.parseInt(value);
                     }
-                    PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
-                    effects.add(effect);
+
                 } catch (Exception ex) {
                     Bukkit.getLogger().warning("Error parsing potion effect for " + effectType + ": " + value);
                 }
+                if (duration != null) {
+                    ticks = duration / 50;
+                }
+                PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
+                effects.add(effect);
             }
         }
         return effects;
