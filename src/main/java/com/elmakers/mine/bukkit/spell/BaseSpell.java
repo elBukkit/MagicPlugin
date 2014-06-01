@@ -586,13 +586,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                         power = Integer.parseInt(pieces[1]);
                     } else {
                         power = Integer.parseInt(value);
+                        if (duration != null) {
+                            ticks = duration / 50;
+                        }
                     }
 
                 } catch (Exception ex) {
                     Bukkit.getLogger().warning("Error parsing potion effect for " + effectType + ": " + value);
-                }
-                if (duration != null) {
-                    ticks = duration / 50;
                 }
                 PotionEffect effect = new PotionEffect(effectType, ticks, power, true);
                 effects.add(effect);
