@@ -18,7 +18,7 @@ enable_crafting: false
 enable_combining: false
 
 # Whether wands can be upgraded on an enchanting table
-enable_enchanting: true
+enable_enchanting: false
 
 # Whether or not using a wand on an anvil will organize its inventory
 enable_organizing: true

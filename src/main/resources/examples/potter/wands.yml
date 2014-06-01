@@ -2,9 +2,9 @@
 # Add some Harry Potter themed wand templates
 #
 
-pheonix:
-    path: pheonix
-    icon: wood_hoe
+default:
+    path: master
+    icon: wood_hoe,
     bound: true
     keep: true
     xp_max: 50
@@ -13,7 +13,7 @@ pheonix:
     effect_bubbles: false
 
 unicorn:
-    path: unicorn
+    path: master
     icon: iron_hoe
     bound: true
     keep: true
@@ -23,7 +23,7 @@ unicorn:
     effect_bubbles: false
 
 troll:
-    path: troll
+    path: master
     icon: gold_hoe
     bound: true
     keep: true
@@ -33,7 +33,7 @@ troll:
     effect_bubbles: false
 
 dragon:
-    path: dragon
+    path: master
     icon: diamond_hoe
     bound: true
     keep: true
@@ -43,7 +43,7 @@ dragon:
     effect_bubbles: false
 
 gryffindor:
-    path: pheonix
+    path: master
     icon: diamond_sword
     bound: true
     keep: true
@@ -72,7 +72,7 @@ gryffindor:
 
 slytherin:
     icon: iron_hoe
-    path: unicorn
+    path: master
     bound: true
     keep: true
     xp_max: 100
@@ -97,7 +97,7 @@ slytherin:
       - sectumsempra
 
 hufflepuff:
-    path: troll
+    path: master
     bound: true
     icon: gold_hoe
     keep: true
@@ -124,7 +124,7 @@ hufflepuff:
       - diffindo
 
 ravenclaw:
-    path: dragon
+    path: master
     icon: diamond_hoe
     bound: true
     keep: true
