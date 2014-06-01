@@ -36,6 +36,7 @@ accio:
         item_force: 2
         area_range: 20
         entity_force: 1
+        cast_on_no_target: true
         type: pull
         count: 1
     costs:
@@ -232,7 +233,7 @@ bombardamaxima:
         range: 24
         cooldown: 7000
         size: 3
-        break_blocks: true
+        break_blocks: false
     costs:
         xp: 100
 
@@ -289,6 +290,7 @@ confundus:
         range: 32
         deactivate_target_mage: true
         target_type: LivingEntity
+        cast_on_no_target: true
         target: other
         duration: 8000
         effect_confusion: 5
@@ -322,6 +324,7 @@ conjunctivitis:
         target: other
         duration: 4000
         effect_blindness: 5
+        cast_on_no_target: true
 
 crucio:
     icon: nether_stalk
@@ -388,6 +391,7 @@ diffindo:
         indestructible: air
         radius: 2
         transparent: transparent_to_construction
+        undo: 5000
     costs:
         xp: 50
 
@@ -407,6 +411,7 @@ duro:
         check_destructible: false
         brush: stone
         transparent: transparent_to_construction
+        undo: 5000
     costs:
         xp: 100
 
@@ -461,6 +466,7 @@ evanesco:
         range: 8
         entity_damage: 50
         check_destructible: true
+        cast_on_no_target: true
     costs:
         xp: 50
 
@@ -499,6 +505,7 @@ expelliarmus:
         range: 16
         fizzle_chance: 0.2
         backfire_chance: 0.05
+        cast_on_no_target: true
         cooldown: 5000
     costs:
         xp: 200
@@ -614,6 +621,7 @@ flipendo:
         item_force: 2
         area_range: 20
         entity_force: 1
+        cast_on_no_target: true
         type: push
         count: 1
     costs:
@@ -665,6 +673,7 @@ immobulus:
         range: 32
         target_type: LivingEntity
         target: other
+        cast_on_no_target: true
         duration: 3000
         effect_slow: 20
 
@@ -818,6 +827,7 @@ petrificustotalus:
         range: 32
         target_type: LivingEntity
         target: other
+        cast_on_no_target: true
         duration: 6000
         effect_slow: 20
         effect_confusion: 20
@@ -1016,20 +1026,13 @@ stupefy:
            target_offset: 0,2,0
            location: target
            firework: ball
-        no_target:
-        -  class: EffectSingle
-           sound: arrow_hit
-           effectlib:
-             class: ConeLocationEffect
-             iterations: 20
-             particle: red_dust
-             lenghtGrow: 0.5
     parameters:
         range: 32
         target_type: LivingEntity
-        target: other
+        target: entity
+        cast_on_no_target: true
         duration: 3000
-        effect_harm: 2
+        effect_harm: 1
         effect_confusion: 2
         cooldown: 5000
     costs:
