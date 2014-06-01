@@ -39,8 +39,12 @@ public class PotionEffectSpell extends UndoableSpell
 				}
 			}
 		}
-		
-		Collection<PotionEffect> effects = getPotionEffects(parameters);
+
+        Integer duration = null;
+        if (parameters.contains("duration")) {
+            duration = parameters.getInt("duration");
+        }
+		Collection<PotionEffect> effects = getPotionEffects(parameters, duration);
 		registerPotionEffects(targetEntity);
 		CompatibilityUtils.applyPotionEffects(targetEntity, effects);
 		registerForUndo();

@@ -290,7 +290,8 @@ confundus:
         deactivate_target_mage: true
         target_type: LivingEntity
         target: other
-        effect_confusion: 200,5
+        duration: 8000
+        effect_confusion: 5
 
 conjunctivitis:
     icon: ender_pearl
@@ -319,7 +320,8 @@ conjunctivitis:
         range: 32
         target_type: LivingEntity
         target: other
-        effect_blindness: 200,5
+        duration: 4000
+        effect_blindness: 5
 
 crucio:
     icon: nether_stalk
@@ -349,7 +351,8 @@ crucio:
         range: 32
         target_type: LivingEntity
         target: other
-        effect_wither: 200,5
+        duration: 8000
+        effect_wither: 8
 
 deletrius:
     icon: enchanted_book
@@ -662,7 +665,8 @@ immobulus:
         range: 32
         target_type: LivingEntity
         target: other
-        effect_slow: 300,20
+        duration: 3000
+        effect_slow: 20
 
 imperio:
     icon: leash
@@ -759,7 +763,8 @@ lumos:
         target: any
         range: 32
         target_type: LivingEntity
-        effect_night_vision: 600,5
+        duration: 30000
+        effect_night_vision: 5
 
 morsmordre:
     icon: skull_item:4
@@ -813,8 +818,9 @@ petrificustotalus:
         range: 32
         target_type: LivingEntity
         target: other
-        effect_slow: 300,20
-        effect_confusion: 300,20
+        duration: 6000
+        effect_slow: 20
+        effect_confusion: 20
 
 reducio:
     icon: red_mushroom
@@ -1022,8 +1028,9 @@ stupefy:
         range: 32
         target_type: LivingEntity
         target: other
-        effect_harm: 1,2
-        effect_confusion: 50,1
+        duration: 3000
+        effect_harm: 2
+        effect_confusion: 2
         cooldown: 5000
     costs:
         xp: 30
