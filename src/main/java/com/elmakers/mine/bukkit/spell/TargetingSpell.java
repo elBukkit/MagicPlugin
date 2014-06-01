@@ -91,18 +91,19 @@ public abstract class TargetingSpell extends BaseSpell {
         String useTargetName = targetName;
         if (useTargetName == null) {
             if (target != null) {
-                if (target.hasEntity()) {
+                if (target.hasEntity() && getTargetType() != TargetType.BLOCK) {
                     useTargetName = controller.getEntityName(target.getEntity());
-                } else if (target.isValid()) {
+                } else if (target.isValid() && getTargetType() != TargetType.ENTITY) {
                     MaterialAndData material = new MaterialAndData(target.getBlock());
                     useTargetName = material.getName();
                 }
             }
         }
         if (useTargetName == null) {
-            useTargetName = "Unknown";
+            message = message.replace(" $target", "");
+        } else {
+            message = message.replace("$target", useTargetName);
         }
-        message = message.replace("$target", useTargetName);
 
         return message;
     }
