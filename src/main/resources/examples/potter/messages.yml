@@ -214,7 +214,8 @@ spells:
     stupefy:
         name: Stupefy
         description: Stun and damage your target.
-        cast: Stupefy!
+        cast: Stupefy $target!
+        no_target: Stupefy!
 
 wands:
 

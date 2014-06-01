@@ -992,31 +992,38 @@ sectumsempra:
 
 stupefy:
     icon: redstone
-    category: unforgiveable
-    class: ProjectileSpell
+    category: combat
+    class: PotionEffectSpell
     pvp_restricted: true
     worth: 40
     effects:
         cast:
         -  class: EffectSingle
            sound: arrow_hit
+           location: source
            effectlib:
              class: ConeLocationEffect
              iterations: 20
              particle: red_dust
+             lenghtGrow: 0.5
         -  class: EffectSingle
+           target_offset: 0,2,0
            location: target
+           firework: ball
+        no_target:
+        -  class: EffectSingle
+           sound: arrow_hit
            effectlib:
-             class: TraceEntityEffect
-             iterations: 120
+             class: ConeLocationEffect
+             iterations: 20
              particle: red_dust
+             lenghtGrow: 0.5
     parameters:
-        projectile: Arrow
-        effect_harm: 1,1
+        range: 32
+        target_type: LivingEntity
+        target: other
+        effect_harm: 1,2
         effect_confusion: 50,1
-        radius: 4
-        size: 0
-        fire: false
-        damage: 0
+        cooldown: 5000
     costs:
         xp: 30
