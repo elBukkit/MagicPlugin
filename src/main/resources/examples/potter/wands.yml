@@ -3,8 +3,8 @@
 #
 
 default:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
-    icon: gold_hoe,gold_axe,gold_pickaxe,gold_spade
     bound: true
     keep: true
     xp_max: 50
@@ -15,8 +15,8 @@ default:
      - flagrate
 
 gryffindor:
-    path: master
     icon: diamond_sword
+    path: master
     bound: true
     keep: true
     xp_max: 100
@@ -69,9 +69,9 @@ slytherin:
       - sectumsempra
 
 hufflepuff:
+    icon: wood_hoe
     path: master
     bound: true
-    icon: gold_hoe
     keep: true
     xp_max: 100
     xp_regeneration: 10
@@ -96,8 +96,8 @@ hufflepuff:
       - diffindo
 
 ravenclaw:
-    path: master
     icon: gold_pickaxe
+    path: master
     bound: true
     keep: true
     xp_max: 100
@@ -122,8 +122,8 @@ ravenclaw:
       - stupefy
 
 elder:
-    path: master
     icon: iron_hoe
+    path: master
     bound: true
     keep: true
     protection: 1
@@ -183,8 +183,8 @@ elder:
       - stupefy
 
 wolf:
+    icon: gold_hoe
     path: master
-    icon: wood_hoe
     keep: true
     bound: true
     cost_reduction: 2
