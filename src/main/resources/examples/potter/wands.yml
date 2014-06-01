@@ -8,6 +8,7 @@ default:
     bound: true
     keep: true
     xp_max: 50
+    xp: 50
     xp_regeneration: 5
     effect_color: '888888'
     effect_bubbles: false

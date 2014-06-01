@@ -216,11 +216,24 @@ spells:
         description: Stun and damage your target.
         cast: Stupefy $target!
 
+randomized:
+   wood:
+     - Yew
+     - Oak
+     - Alder
+     - Willow
+     - Cherry
+   core:
+     - Unicorn Tail Hair
+     - Dragon Heartstring
+     - Troll Hair
+     - Pheonix Feather
+
 wands:
 
     default:
         name: Wand
-        description: Pheonix feather core
+        description: $wood with $core core
 
     gryffindor:
         name: Sword of Gryffindor

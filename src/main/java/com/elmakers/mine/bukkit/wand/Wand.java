@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.*;
+import java.util.regex.Matcher;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -217,6 +218,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			wandName = Messages.get("wands." + templateName + ".name", wandName);
             wandDescription = wandConfig.getString("description", wandDescription);
 			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
+
+            if (wandDescription.contains("$")) {
+                Matcher matcher = Messages.PARAMETER_PATTERN.matcher(wandDescription);
+                while(matcher.find()) {
+                    String key = matcher.group(1);
+                    if (key != null) {
+                        wandDescription = wandDescription.replace("$" + key, Messages.getRandomized(key));
+                    }
+                }
+            }
 			
 			// Load all properties
 			loadProperties(wandConfig);
@@ -229,22 +240,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 randomize(level, false);
                 locked = wasLocked;
             }
-
-            // Check for single-spell wands
-            /*
-            Set<String> spells = getSpells();
-            if (spells.size() == 1) {
-                String spellName = spells.iterator().next();
-                SpellTemplate spell = controller.getSpellTemplate(spellName);
-                String singleSpellName = Messages.get("wand.single_spell");
-                if (spell != null) {
-                    spellName = spell.getName();
-                }
-
-                singleSpellName = singleSpellName.replace("$spell", spellName);
-                wandName = singleSpellName;
-            }
-            */
 		}
 
 		setDescription(wandDescription);
@@ -466,6 +461,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             pathKey = controller.getDefaultWandPath();
         }
         return WandUpgradePath.getPath(pathKey);
+    }
+
+    public boolean hasPath() {
+        return path != null && path.length() > 0;
     }
 	
 	public void setDescription(String description) {
@@ -732,12 +731,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	private String getActiveWandName(String materialKey) {
-        Set<String> spells = getSpells();
-
-        // Special case for single-use wands, don't show
-        // active spell.
         SpellTemplate spell = null;
-        if (spells.size() != 1) {
+        if (activeSpell != null && activeSpell.length() > 0) {
             spell = controller.getSpellTemplate(activeSpell);
         }
 
@@ -1164,13 +1159,28 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	private String getActiveWandName(SpellTemplate spell, String materialKey) {
-
 		// Build wand name
 		ChatColor wandColor = isModifiable() ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.RED;
 		String name = wandColor + wandName;
 
+        // TODO: More options for single-use wands
+        Set<String> spells = getSpells();
+        /*
+        if (spells.size() == 1) {
+            String spellName = spells.iterator().next();
+            SpellTemplate spell = controller.getSpellTemplate(spellName);
+            String singleSpellName = Messages.get("wand.single_spell");
+            if (spell != null) {
+                spellName = spell.getName();
+            }
+
+            singleSpellName = singleSpellName.replace("$spell", spellName);
+            wandName = singleSpellName;
+        }
+        */
+
         // Add active spell to description
-        if (spell != null) {
+        if (spell != null && (spells.size() > 1 || hasPath())) {
             name = getSpellDisplayName(spell, materialKey) + " (" + name + ChatColor.WHITE + ")";
         }
 
@@ -1188,7 +1198,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	private String getActiveWandName() {
 		SpellTemplate spell = null;
-		if (hasInventory && activeSpell != null && activeSpell.length() > 0) {
+		if (activeSpell != null && activeSpell.length() > 0) {
 			spell = controller.getSpellTemplate(activeSpell);
 		}
 		return getActiveWandName(spell);
@@ -1316,7 +1326,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		List<String> lore = new ArrayList<String>();
 		
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
-		if (spell != null && spellCount == 1 && materialCount <= 1 && !isUpgrade) {
+		if (spell != null && spellCount == 1 && materialCount <= 1 && !isUpgrade && !hasPath()) {
 			addSpellLore(spell, lore, this);
 		} else {
 			if (description.length() > 0) {
