@@ -386,6 +386,7 @@ admin:
 
 wolf:
     path: master
+    icon: gold_hoe
     keep: true
     bound: true
     cost_reduction: 2
