@@ -139,8 +139,8 @@ spells:
         description: Push your target backwards
         cast: Flipendo $target!
     fly:
-        name: Unsupported Flight
-        description: Flight, a gift from the Dark Lord
+        name: Flight
+        description: A gift from the Dark Lord
         cast: You feel lighter
         cancel: You feel heavier
     immobulus:
