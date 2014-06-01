@@ -218,21 +218,9 @@ spells:
 
 wands:
 
-    pheonix:
+    default:
         name: Wand
         description: Pheonix feather core
-
-    unicorn:
-        name: Wand
-        description: Unicorn tail hair core
-
-    troll:
-        name: Wand
-        description: Troll whisker core
-
-    dragon:
-        name: Wand
-        description: Dragon heartstring core
 
     gryffindor:
         name: Sword of Gryffindor
@@ -253,5 +241,9 @@ wands:
     elder:
         name: Elder Wand
         description: Thestral hair core
+
+    wolf:
+        name: The Wolf
+        description: Werewolf hair core
 
 

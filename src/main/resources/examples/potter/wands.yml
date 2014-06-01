@@ -4,13 +4,15 @@
 
 default:
     path: master
-    icon: wood_hoe,gold_hoe,gold_axe,gold_pickaxe,gold_spade
+    icon: gold_hoe,gold_axe,gold_pickaxe,gold_spade
     bound: true
     keep: true
     xp_max: 50
     xp_regeneration: 5
-    effect_color: '880000'
+    effect_color: '888888'
     effect_bubbles: false
+    spells:
+     - flagrate
 
 gryffindor:
     path: master
@@ -41,7 +43,7 @@ gryffindor:
       - stupefy
 
 slytherin:
-    icon: wood_hoe
+    icon: gold_axe
     path: master
     bound: true
     keep: true
@@ -69,7 +71,7 @@ slytherin:
 hufflepuff:
     path: master
     bound: true
-    icon: gold_spade
+    icon: gold_hoe
     keep: true
     xp_max: 100
     xp_regeneration: 10
@@ -127,8 +129,6 @@ elder:
     protection: 1
     xp_max: 1000
     xp_regeneration: 200
-    health_regeneration: 1
-    hunger_regeneration: 1
     power: 1
     haste: 0.5
     effect_color: '00AACC'
@@ -181,6 +181,43 @@ elder:
       - salviohexia
       - sectumsempra
       - stupefy
+
+wolf:
+    path: master
+    icon: wood_hoe
+    keep: true
+    bound: true
+    cost_reduction: 2
+    cooldown_reduction: 2
+    protection: 1
+    power: 1
+    haste: 0.1
+    quiet: 1
+    effect_color: '00AACC'
+    effect_bubbles: false
+    organize: true
+    mode: inventory
+    active_spell: fly
+    spells:
+      - fly
+      - ascendio
+      - lumos
+      - flagrate
+      - apparate
+      - arrow
+      - stupefy
+      - petrificustotalus
+      - reparo
+      - reparomaxima
+      - salviohexia
+      - reparifarge
+      - impervious
+      - imperio
+      - flipendo
+      - finiteincantatem
+      - expelliaramus
+      - ferula
+      - crucio
 
 # Upgrade items copied from default config
 
