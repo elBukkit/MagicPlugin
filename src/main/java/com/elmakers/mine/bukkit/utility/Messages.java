@@ -1,24 +1,34 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 
 public class Messages {
-    public static Map<String, String> messageMap = new HashMap<String, String>();
-    public static ConfigurationSection configuration = null;
+    public static String PARAMETER_PATTERN_STRING = "\\$([^ :]+)";
+    public static Pattern PARAMETER_PATTERN = Pattern.compile(PARAMETER_PATTERN_STRING);
+
+    private static Map<String, String> messageMap = new HashMap<String, String>();
+    private static Map<String, List<String>> randomized = new HashMap<String, List<String>>();
+    private static ConfigurationSection configuration = null;
+    private static Random random = new Random();
 
     public static void load(ConfigurationSection messages) {
         configuration = messages;
         Collection<String> keys = messages.getKeys(true);
         for (String key : keys) {
-            messageMap.put(key, messages.getString(key));
+            if (key.equals("randomized")) {
+                ConfigurationSection randomSection = messages.getConfigurationSection(key);
+                Set<String> randomKeys = randomSection.getKeys(false);
+                for (String randomKey : randomKeys) {
+                    randomized.put(randomKey, randomSection.getStringList(randomKey));
+                }
+            } else if (messages.isString(key)) {
+                messageMap.put(key, messages.getString(key));
+            }
         }
     }
 
@@ -45,5 +55,12 @@ public class Messages {
 
     public static String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2) {
         return get(key, key).replace(paramName1, paramValue1).replace(paramName2, paramValue2);
+    }
+
+    public static String getRandomized(String key) {
+        if (!randomized.containsKey(key)) return "";
+        List<String> options = randomized.get(key);
+        if (options.size() == 0) return "";
+        return options.get(random.nextInt(options.size()));
     }
 }
