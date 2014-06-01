@@ -4,42 +4,12 @@
 
 default:
     path: master
-    icon: wood_hoe,
+    icon: wood_hoe,gold_hoe,gold_axe,gold_pickaxe,gold_spade
     bound: true
     keep: true
     xp_max: 50
     xp_regeneration: 5
     effect_color: '880000'
-    effect_bubbles: false
-
-unicorn:
-    path: master
-    icon: iron_hoe
-    bound: true
-    keep: true
-    xp_max: 50
-    xp_regeneration: 5
-    effect_color: '008800'
-    effect_bubbles: false
-
-troll:
-    path: master
-    icon: gold_hoe
-    bound: true
-    keep: true
-    xp_max: 50
-    xp_regeneration: 5
-    effect_color: '888800'
-    effect_bubbles: false
-
-dragon:
-    path: master
-    icon: diamond_hoe
-    bound: true
-    keep: true
-    xp_max: 50
-    xp_regeneration: 5
-    effect_color: '000088'
     effect_bubbles: false
 
 gryffindor:
@@ -71,7 +41,7 @@ gryffindor:
       - stupefy
 
 slytherin:
-    icon: iron_hoe
+    icon: wood_hoe
     path: master
     bound: true
     keep: true
@@ -99,7 +69,7 @@ slytherin:
 hufflepuff:
     path: master
     bound: true
-    icon: gold_hoe
+    icon: gold_spade
     keep: true
     xp_max: 100
     xp_regeneration: 10
@@ -125,7 +95,7 @@ hufflepuff:
 
 ravenclaw:
     path: master
-    icon: diamond_hoe
+    icon: gold_pickaxe
     bound: true
     keep: true
     xp_max: 100
@@ -151,7 +121,7 @@ ravenclaw:
 
 elder:
     path: master
-    icon: diamond_hoe
+    icon: iron_hoe
     bound: true
     keep: true
     protection: 1

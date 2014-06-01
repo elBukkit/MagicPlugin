@@ -1,13 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -1046,7 +1039,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 			
 			if (wandConfig.contains("icon")) {
-				setIcon(ConfigurationUtils.getMaterialAndData(wandConfig, "icon"));
+                String iconKey = wandConfig.getString("icon");
+                if (iconKey.contains(",")) {
+                    Random r = new Random();
+                    String[] keys = StringUtils.split(iconKey, ',');
+                    iconKey = keys[r.nextInt(keys.length)];
+                }
+				setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
 			}
 		}
 		
