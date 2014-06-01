@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -19,34 +22,55 @@ public class PotionEffectSpell extends UndoableSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
+		if (target.hasTarget())
 		{
 			return SpellResult.NO_TARGET;
 		}
-		LivingEntity targetEntity = (LivingEntity)target.getEntity();
-		if (targetEntity != mage.getEntity()) {
-			// Check for superprotected mages
-			if (controller.isMage(targetEntity)) {
-				Mage targetMage = controller.getMage(targetEntity);
-				
-				// Check for protected players
-				if (targetMage.isSuperProtected()) {
-					return SpellResult.NO_TARGET;
-				}
-				
-				if (parameters.getBoolean("deactivate_target_mage")) {
-					targetMage.deactivateAllSpells();
-				}
-			}
-		}
+
+        List<LivingEntity> targetEntities = new ArrayList<LivingEntity>();
+
+        if (target.hasEntity() && !(target.getEntity() instanceof LivingEntity)) {
+            targetEntities.add((LivingEntity)target.getEntity());
+        }
+
+
+        int radius = parameters.getInt("radius", 0);
+        radius = (int)(mage.getRadiusMultiplier() * radius);
+
+        if (radius > 0) {
+            List<Entity> entities = CompatibilityUtils.getNearbyEntities(location, radius, radius, radius);
+            for (Entity entity : entities) {
+                if (entity instanceof LivingEntity) {
+                    targetEntities.add((LivingEntity)entity);
+                }
+            }
+        }
 
         Integer duration = null;
         if (parameters.contains("duration")) {
             duration = parameters.getInt("duration");
         }
 		Collection<PotionEffect> effects = getPotionEffects(parameters, duration);
-		registerPotionEffects(targetEntity);
-		CompatibilityUtils.applyPotionEffects(targetEntity, effects);
+        for (LivingEntity targetEntity : targetEntities) {
+            if (targetEntity != mage.getEntity()) {
+                // Check for superprotected mages
+                if (controller.isMage(targetEntity)) {
+                    Mage targetMage = controller.getMage(targetEntity);
+
+                    // Check for protected players
+                    if (targetMage.isSuperProtected()) {
+                        continue;
+                    }
+
+                    if (parameters.getBoolean("deactivate_target_mage")) {
+                        targetMage.deactivateAllSpells();
+                    }
+                }
+            }
+
+            registerPotionEffects(targetEntity);
+            CompatibilityUtils.applyPotionEffects(targetEntity, effects);
+        }
 		registerForUndo();
 		return SpellResult.CAST;
 	}
