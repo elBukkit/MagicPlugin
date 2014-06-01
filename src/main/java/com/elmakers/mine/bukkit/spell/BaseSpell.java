@@ -132,6 +132,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private boolean pvpRestricted           	= false;
     private boolean bypassPvpRestriction    	= false;
+    private boolean castOnNoTarget              = false;
 
     protected ConfigurationSection parameters = null;
 
@@ -861,6 +862,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
 
+        // Spell result overrides
+        castOnNoTarget = parameters.getBoolean("cast_on_no_target", false);
+
         // Check cooldowns
         cooldown = parameters.getInt("cooldown", cooldown);
         cooldown = parameters.getInt("cool", cooldown);
@@ -934,6 +938,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         if (result == null) {
             result = onCast(parameters);
+        }
+        if (castOnNoTarget && result == SpellResult.NO_TARGET) {
+            result = SpellResult.CAST;
         }
         processResult(result);
 
