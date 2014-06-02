@@ -128,7 +128,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
 
         int radiusSquared = radius * 2;
-        List<Entity> entities = location.getWorld().getEntities();
+        List<Entity> entities = CompatibilityUtils.getNearbyEntities(location, radius, radius, radius);
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity) {
                 Mage targetMage = null;
