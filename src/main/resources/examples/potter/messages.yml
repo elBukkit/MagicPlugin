@@ -19,8 +19,8 @@ categories:
         description: Useful stuff
         color: '00FF00'
     combat:
-        name: Combat Spells
-        description: Battle magic
+        name: Deuling Spells
+        description: Attack!
         color: 'FF0000'
     unforgiveable:
         name: Unforgiveable Hexes

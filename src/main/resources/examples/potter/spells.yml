@@ -543,7 +543,7 @@ ferula:
 
 finiteincantatem:
     icon: diamond
-    category: master
+    category: dueling
     class: UndoSpell
     worth: 250
     effects:
@@ -629,7 +629,7 @@ flipendo:
 
 fly:
     icon: diamond_boots
-    category: master
+    category: utility
     class: LevitateSpell
     worth: 600
     effects:
@@ -881,7 +881,7 @@ reducto:
 
 salviohexia:
     icon: diamond_pickaxe
-    category: engineering
+    category: utility
     class: ConstructSpell
     worth: 2000
     effects:
@@ -909,7 +909,7 @@ salviohexia:
 
 reparifarge:
     icon: book_and_quill
-    category: engineering
+    category: utility
     class: UndoSpell
     worth: 80
     effects:
@@ -923,7 +923,7 @@ reparifarge:
 
 reparo:
     icon: iron_pickaxe
-    category: engineering
+    category: utility
     class: ConstructSpell
     worth: 100
     effects:
@@ -950,7 +950,7 @@ reparo:
 
 reparomaxima:
     icon: iron_pickaxe
-    category: engineering
+    category: utility
     class: ConstructSpell
     worth: 500
     effects:
