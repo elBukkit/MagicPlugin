@@ -53,14 +53,14 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected boolean playAtOrigin = true;
     protected boolean playAtTarget = false;
 
-    protected Color color;
+    protected Color color = null;
     protected MaterialAndData material;
 
     protected int delayTicks = 0;
 
     protected MaterialAndData material1;
-    protected Color color1 = Color.PURPLE;
-    protected Color color2 = Color.TEAL;
+    protected Color color1 = null;
+    protected Color color2 = null;
 
     protected EntityEffect entityEffect = null;
 
@@ -123,8 +123,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
         delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
         material1 = ConfigurationUtils.getMaterialAndData(configuration, "material");
-        color1 = ConfigurationUtils.getColor(configuration, "color", Color.PURPLE);
-        color2 = ConfigurationUtils.getColor(configuration, "color2", Color.TEAL);
+        color1 = ConfigurationUtils.getColor(configuration, "color", null);
+        color2 = ConfigurationUtils.getColor(configuration, "color2", null);
 
         if (configuration.contains("effect")) {
             String effectName = configuration.getString("effect");
@@ -426,11 +426,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public Color getColor1() {
-        return color != null ? color : color1;
+        return color1 != null ? color1 : color;
     }
 
     public Color getColor2() {
-        return color != null ? color1 : color2;
+        return color2 != null ? color2 : color;
     }
 
     public void setOffset(float x, float y, float z) {
