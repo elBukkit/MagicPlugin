@@ -7,6 +7,7 @@ default:
     path: master
     bound: true
     keep: true
+    quiet: 1
     xp_max: 50
     xp: 50
     xp_regeneration: 5
@@ -20,6 +21,7 @@ gryffindor:
     path: master
     bound: true
     keep: true
+    quiet: 1
     xp_max: 100
     xp_regeneration: 10
     effect_color: '880000'
@@ -48,6 +50,7 @@ slytherin:
     path: master
     bound: true
     keep: true
+    quiet: 1
     xp_max: 100
     xp_regeneration: 10
     effect_color: '008800'
@@ -74,6 +77,7 @@ hufflepuff:
     path: master
     bound: true
     keep: true
+    quiet: 1
     xp_max: 100
     xp_regeneration: 10
     effect_color: '888800'
@@ -101,6 +105,7 @@ ravenclaw:
     path: master
     bound: true
     keep: true
+    quiet: 1
     xp_max: 100
     xp_regeneration: 10
     effect_color: '000088'
@@ -127,6 +132,7 @@ elder:
     path: master
     bound: true
     keep: true
+    quiet: 1
     protection: 1
     xp_max: 1000
     xp_regeneration: 200
@@ -191,9 +197,9 @@ wolf:
     cost_reduction: 2
     cooldown_reduction: 2
     protection: 1
+    quiet: 1
     power: 1
     haste: 0.1
-    quiet: 1
     effect_color: '00AACC'
     effect_bubbles: false
     organize: true

@@ -1021,7 +1021,10 @@ stupefy:
     effects:
         cast:
         -  class: EffectSingle
-           sound: arrow_hit
+           sound: shoot_arrow
+           sound_volume: 2.0
+           location: source
+        -  class: EffectSingle
            location: source
            effectlib:
              class: ConeLocationEffect
