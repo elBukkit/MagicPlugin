@@ -2,25 +2,24 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.List;
 
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class PushSpell extends TargetingSpell
+public class PushSpell extends UndoableSpell
 {
 	private int DEFAULT_ITEM_MAGNITUDE = 1;
 	private int DEFAULT_ENTITY_MAGNITUDE = 3;
 	private int DEFAULT_MAX_ALL_DISTANCE = 20;
 
-	public void forceAll(Entity sourceEntity, double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance)
+	public void forceAll(Entity sourceEntity, double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance, double damage)
 	{
 		float maxDistance = (float)maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
@@ -39,7 +38,7 @@ public class PushSpell extends TargetingSpell
 			Location from = pull ? playerLocation : targetLocation;
 
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
-			forceEntity(target, mutliplier, from, to, magnitude);
+			forceEntity(target, mutliplier, from, to, magnitude, damage);
             getCurrentTarget().setEntity(target);
 		}
 	}
@@ -66,6 +65,7 @@ public class PushSpell extends TargetingSpell
 		int itemMagnitude = parameters.getInt("item_force", DEFAULT_ITEM_MAGNITUDE);
 		int entityMagnitude = parameters.getInt("entity_force", DEFAULT_ENTITY_MAGNITUDE);
 		int maxAllDistance = parameters.getInt("area_range", DEFAULT_MAX_ALL_DISTANCE);
+        double damage = parameters.getDouble("damage", 0);
 
 		List<Target> targets = getAllTargetEntities();
 		if 
@@ -74,7 +74,7 @@ public class PushSpell extends TargetingSpell
 			&&  (forceArea || isLookingDown() || isLookingUp())
 		)
 		{
-			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance);
+			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance, damage);
 			return SpellResult.AREA;
 		}
 
@@ -91,14 +91,14 @@ public class PushSpell extends TargetingSpell
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 
             getCurrentTarget().setEntity(targetEntity);
-			forceEntity(targetEntity, multiplier, from, to, magnitude);
+			forceEntity(targetEntity, multiplier, from, to, magnitude, damage);
 			pushed++;
 			if (count > 0 && pushed >= count) break;
 		}
 		return SpellResult.CAST;
 	}
 
-	protected void forceEntity(Entity target, double multiplier, Location from, Location to, int magnitude)
+	protected void forceEntity(Entity target, double multiplier, Location from, Location to, int magnitude, double damage)
 	{
 		// Check for protected Mages
 		if (controller.isMage(target)) {
@@ -117,5 +117,11 @@ public class PushSpell extends TargetingSpell
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
 		target.setVelocity(forceVector);
+
+        if (damage > 0 && target instanceof LivingEntity) {
+            LivingEntity li = (LivingEntity)target;
+            registerModified(li);
+            li.damage(damage);
+        }
 	}
 }

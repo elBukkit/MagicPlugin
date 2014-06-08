@@ -502,6 +502,7 @@ expelliarmus:
         target_type: LivingEntity
         allow_max_range: false
         range: 16
+        fov: 0.05
         fizzle_chance: 0.2
         backfire_chance: 0.05
         cast_on_no_target: true
@@ -623,11 +624,12 @@ flipendo:
         cast_on_no_target: true
         type: push
         count: 1
+        damage: 0.5
     costs:
         xp: 10
 
 fly:
-    icon: diamond_boots
+    icon: feather
     category: utility
     class: LevitateSpell
     worth: 600
