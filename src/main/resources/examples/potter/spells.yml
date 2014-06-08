@@ -1029,15 +1029,16 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-             particle: red_dust
+             particle: water_dripping
              lenghtGrow: 0.5
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: FF0000
+           color: 0000FF
            firework: ball
     parameters:
         range: 32
+        fov: 0.15
         target_type: LivingEntity
         cast_on_no_target: true
         duration: 3000

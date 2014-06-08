@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.Collection;
 
-import org.bukkit.Effect;
+import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -99,8 +99,8 @@ public class FlingSpell extends TargetingSpell implements Listener
 			
 			EffectRing effect = new EffectRing(controller.getPlugin());
 			effect.setRadius(effectRange);
-			effect.setEffect(Effect.STEP_SOUND);
-			effect.setEffectData(block.getTypeId());
+			effect.setParticleType(ParticleType.BLOCK_BREAKING);
+			effect.setMaterial(block);
 			effect.setPeriod(effectPeriod);
 			effect.start(effectLocation, null);
 		}
