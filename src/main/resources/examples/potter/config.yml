@@ -26,4 +26,6 @@ enable_organizing: true
 # Wands don't need to glow, because Dr00bles is awesome
 wand_glow: false
 
+# Wands will auto-bind to their owner
+enable_binding: true
 

@@ -2086,7 +2086,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (bound && (ownerId == null || ownerId.length() == 0)) {
             // Backwards-compatibility, don't overrwrite unless the
             // name matches
-            if (owner == null || owner.equals(player.getName())) {
+            if (owner == null || owner.length() == 0 || owner.equals(player.getName())) {
                 takeOwnership(mage.getPlayer());
             }
 		}
