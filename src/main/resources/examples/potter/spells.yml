@@ -639,7 +639,12 @@ fly:
         -  class: EffectRing
            particle: smoke
            particle_count: 20
+           effectlib:
+             class: ShieldEntityEffect
         cost_free:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_pitch: 0.2
     parameters:
         speed: 2
     costs:
