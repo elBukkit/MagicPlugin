@@ -398,9 +398,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     protected void startPlay() {
+        // Generate a target location for compatibility if none exists.
+        checkLocations();
+
         if (effectLib != null && effectLibConfig != null) {
-            // Generate a target location for compatibility if none exists.
-            checkLocations();
             effectLib.play(plugin, effectLibConfig, this);
         } else {
             play();
