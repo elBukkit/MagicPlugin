@@ -6,7 +6,7 @@
 #
 
 accio:
-    icon: fishing_rod
+    icon: ink_sack:6
     category: utility
     class: PushSpell
     pvp_restricted: true
@@ -43,7 +43,7 @@ accio:
         xp: 25
 
 aguamenti:
-    icon: ink_sack:6
+    icon: stationary_water
     category: utility
     class: IterateSpell
     pvp_restricted: false
@@ -108,7 +108,7 @@ arrow:
         xp: 25
 
 ascendio:
-    icon: feather
+    icon: ink_sack:8
     category: movement
     class: FlingSpell
     worth: 80
@@ -471,7 +471,7 @@ evanesco:
         xp: 50
 
 expelliarmus:
-    icon: tripwire_hook
+    icon: ink_sack:1
     category: combat
     class: DisarmSpell
     pvp_restricted: true
@@ -484,8 +484,7 @@ expelliarmus:
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-           particle: mob_spell
-           particle_data: 2
+           particle: red_dust
            particle_count: 8
         backfire:
         -  class: EffectSingle
@@ -563,7 +562,7 @@ finiteincantatem:
         xp: 150
 
 flagrate:
-    icon: sign
+    icon: ink_sack:14
     category: performance
     class: GenericSpell
     worth: 20
@@ -590,7 +589,7 @@ flagrate:
         xp: 20
 
 flipendo:
-    icon: rails
+    icon: ink_sack:5
     category: combat
     class: PushSpell
     pvp_restricted: true
@@ -1013,7 +1012,7 @@ sectumsempra:
         xp: 50
 
 stupefy:
-    icon: redstone
+    icon: ink_sack:4
     category: combat
     class: PotionEffectSpell
     pvp_restricted: true

@@ -1022,7 +1022,7 @@ public class MagicController implements Listener, MageController
 			ex.printStackTrace();
 		}
 
-        getLogger().info("Loaded " + spells.size());
+        getLogger().info("Loaded " + spells.size() + " spells");
 
         // Load enchanting paths
         try {
