@@ -52,6 +52,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             allowMaxRange           = false;
 
     private int                                 range                   = 32;
+    private double                              fov                     = 0.3;
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private boolean                             reverseTargeting        = false;
@@ -403,7 +404,7 @@ public abstract class TargetingSpell extends BaseSpell {
             // Ignore invisible entities
             if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
-            Target newScore = new Target(getLocation(), entity, maxRange);
+            Target newScore = new Target(getLocation(), entity, maxRange, fov);
             if (newScore.getScore() > 0)
             {
                 scored.add(newScore);
@@ -545,6 +546,7 @@ public abstract class TargetingSpell extends BaseSpell {
     protected void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
         range = parameters.getInt("range", range);
+        fov = parameters.getDouble("fov", fov);
         allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
 
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
