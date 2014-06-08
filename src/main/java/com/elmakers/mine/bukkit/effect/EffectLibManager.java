@@ -101,7 +101,7 @@ public class EffectLibManager {
         return player;
     }
 
-    public void play(Plugin plugin, ConfigurationSection configuration, EffectPlayer player) {
+    public Object play(Plugin plugin, ConfigurationSection configuration, EffectPlayer player) {
         Class<?> effectLibClass = null;
         String className = configuration.getString("class");
         try {
@@ -109,7 +109,7 @@ public class EffectLibManager {
         } catch (Throwable ex) {
             plugin.getLogger().info("Error loading EffectLib class: " + className);
             ex.printStackTrace();
-            return;
+            return null;
         }
 
         Object[] effects = tryPointConstructor(effectLibClass, player);
@@ -126,7 +126,7 @@ public class EffectLibManager {
 
         if (effects == null) {
             plugin.getLogger().info("Failed to construct EffectLib class: " + effectLibClass.getName());
-            return;
+            return null;
         }
 
         ParticleType particleType = player.particleType;
@@ -170,6 +170,20 @@ public class EffectLibManager {
                 startMethod.invoke(effect);
             } catch (Throwable ex) {
 
+            }
+        }
+
+        return effects;
+    }
+
+    public void cancel(Object token) {
+        Object[] effects = (Object[])token;
+        for (Object effect : effects) {
+            try {
+                Method cancelMethod = effect.getClass().getMethod("cancel", Boolean.TYPE);
+                cancelMethod.invoke(effect, true);
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
         }
     }

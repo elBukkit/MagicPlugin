@@ -157,6 +157,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private long 								lastMessageSent 			= 0;
     private Set<Material>						preventPassThroughMaterials = null;
+    private List<EffectPlayer>                  currentEffects              = null;
 
     public boolean allowPassThrough(Material mat)
     {
@@ -1028,8 +1029,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (effects.containsKey(result) && mageLocation != null) {
             Location targetLocation = getTargetLocation();
             Entity targetEntity = getTargetEntity();
-            List<EffectPlayer> resultEffects = effects.get(result);
-            for (EffectPlayer player : resultEffects) {
+            currentEffects = effects.get(result);
+            for (EffectPlayer player : currentEffects) {
                 // Set material and color
                 player.setMaterial(getEffectMaterial());
                 player.setColor(mage.getEffectColor());
@@ -1369,6 +1370,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
             mage.deactivateSpell(this);
             sendMessage(getMessage("deactivate"));
+        }
+
+        if (currentEffects != null) {
+            for (EffectPlayer player : currentEffects) {
+                player.cancel();
+            }
+            currentEffects = null;
         }
     }
 

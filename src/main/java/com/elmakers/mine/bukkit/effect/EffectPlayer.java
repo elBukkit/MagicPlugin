@@ -37,6 +37,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;
+    private Object currentEffect = null;
 
     public static boolean SOUNDS_ENABLED = true;
 
@@ -402,7 +403,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         checkLocations();
 
         if (effectLib != null && effectLibConfig != null) {
-            effectLib.play(plugin, effectLibConfig, this);
+            currentEffect = effectLib.play(plugin, effectLibConfig, this);
         } else {
             play();
         }
@@ -443,5 +444,14 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     public Entity getOriginEntity() {
         return originEntity == null ? null : originEntity.get();
+    }
+
+    public void cancel() {
+        if (currentEffect != null) {
+            if (effectLib != null) {
+                effectLib.cancel(currentEffect);
+            }
+            currentEffect = null;
+        }
     }
 }
