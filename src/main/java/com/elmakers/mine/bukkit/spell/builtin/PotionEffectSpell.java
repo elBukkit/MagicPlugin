@@ -7,7 +7,6 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -22,17 +21,17 @@ public class PotionEffectSpell extends UndoableSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		if (target.hasTarget())
+		if (!target.hasTarget())
 		{
 			return SpellResult.NO_TARGET;
 		}
 
         List<LivingEntity> targetEntities = new ArrayList<LivingEntity>();
 
-        if (target.hasEntity() && !(target.getEntity() instanceof LivingEntity)) {
-            targetEntities.add((LivingEntity)target.getEntity());
+        Entity targetedEntity = target.getEntity();
+        if (target.hasEntity() && targetedEntity instanceof LivingEntity) {
+            targetEntities.add((LivingEntity)targetedEntity);
         }
-
 
         int radius = parameters.getInt("radius", 0);
         radius = (int)(mage.getRadiusMultiplier() * radius);
@@ -40,7 +39,7 @@ public class PotionEffectSpell extends UndoableSpell
         if (radius > 0) {
             List<Entity> entities = CompatibilityUtils.getNearbyEntities(location, radius, radius, radius);
             for (Entity entity : entities) {
-                if (entity instanceof LivingEntity) {
+                if (entity instanceof LivingEntity && entity != targetedEntity) {
                     targetEntities.add((LivingEntity)entity);
                 }
             }
@@ -68,7 +67,13 @@ public class PotionEffectSpell extends UndoableSpell
                 }
             }
 
-            registerPotionEffects(targetEntity);
+            if (parameters.contains("damage")) {
+                registerModified(targetEntity);
+                targetEntity.damage(parameters.getDouble("damage"));
+            } else {
+                registerPotionEffects(targetEntity);
+            }
+
             CompatibilityUtils.applyPotionEffects(targetEntity, effects);
         }
 		registerForUndo();
