@@ -637,8 +637,9 @@ fly:
         -  class: EffectSingle
            sound: enderdragon_wings
         -  class: EffectRing
-           particle: spell
+           particle: smoke
            particle_count: 20
+        cost_free:
     parameters:
         speed: 2
     costs:
@@ -1025,11 +1026,11 @@ stupefy:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
+           color: FF0000
            firework: ball
     parameters:
         range: 32
         target_type: LivingEntity
-        target: entity
         cast_on_no_target: true
         duration: 3000
         damage: 4
