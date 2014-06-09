@@ -130,6 +130,29 @@ ascendio:
     costs:
         xp: 45
 
+broom:
+    icon: blaze_rod
+    category: movement
+    class: FlingSpell
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+        -  class: EffectTrail
+           particle: spell
+           particle_count: 4
+           min_speed: 2.5
+           max_speed: 3.5
+           cruising_altitude: 30
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 30
+    parameters:
+    costs:
+        xp: 10
+
 avadakedavra:
     icon: poisonous_potato
     category: unforgiveable
@@ -186,6 +209,39 @@ avis:
         count: 3
     costs:
         xp: 20
+
+beat:
+    icon: stick
+    category: hex
+    class: PotionEffectSpell
+    pvp_restricted: true
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+        -  class: EffectTrail
+           particle: town_aura
+           particle_count: 3
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+        -  class: EffectRing
+           particle: town_aura
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+    costs:
+        xp: 10
+    parameters:
+        range: 4
+        deactivate_target_mage: true
+        target_type: LivingEntity
+        cast_on_no_target: true
+        target: other
+        duration: 5000
+        damage: 1
+        effect_confusion: 5
 
 bombarda:
     icon: melon_seeds

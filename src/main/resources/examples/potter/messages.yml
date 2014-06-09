@@ -69,6 +69,9 @@ spells:
         name: Avis
         description: Makes birds fly out of the end of your wand
         cast: Avis!
+    beat:
+        name: Beat
+        description: Knock your opponent senseless
     bombarda:
         name: Bombarda
         description: Create a small explosion
@@ -77,6 +80,9 @@ spells:
         name: Bombarda Maxima
         description: Create a large destructive explosion
         cast: Bombarda Maxima!
+    broom:
+        name: Broom
+        description: Powers magic brooms
     confringo:
         name: Confringo
         description: Explode the target item
@@ -259,4 +265,14 @@ wands:
         name: The Wolf
         description: Werewolf hair core
 
+    portkey:
+        name: Portkey
+        description: Where will it take you?
 
+    nimbus:
+        name: Nimbus 2000
+        description: So shiny!
+
+    beater:
+        name: Beater Bat
+        description: Whack!

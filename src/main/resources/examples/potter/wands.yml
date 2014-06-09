@@ -206,25 +206,89 @@ wolf:
     mode: inventory
     active_spell: fly
     spells:
-      - fly
-      - ascendio
-      - lumos
-      - flagrate
+      - accio
+      - aguamenti
       - apparate
       - arrow
-      - stupefy
+      - ascendio
+      - avadakedavra
+      - avis
+      - beat
+      - bombarda
+      - bombardamaxima
+      - broom
+      - confringo
+      - confundus
+      - conjunctivitis
+      - crucio
+      - deletrius
+      - diffindo
+      - duro
+      - episkey
+      - evanesco
+      - expelliarmus
+      - ferula
+      - finiteincantatem
+      - flagrate
+      - flipendo
+      - fly
+      - gather
+      - immobulus
+      - imperio
+      - impervius
+      - incendio
+      - lumos
+      - morsmordre
       - petrificustotalus
+      - phase
+      - recall
+      - reducio
+      - reducto
+      - reparifarge
       - reparo
       - reparomaxima
       - salviohexia
-      - reparifarge
-      - impervious
-      - imperio
-      - flipendo
-      - finiteincantatem
-      - expelliaramus
-      - ferula
-      - crucio
+      - sectumsempra
+      - stupefy
+      - superblob
+
+ #
+ # ITEMS
+ #
+
+portkey:
+    active_spell: recall
+    icon: bucket,leather_boots
+    indestructible: false
+    cost_reduction: 2
+    locked: true
+    uses: 5
+    keep: true
+    effect_color: 'FFFF00'
+    spells:
+        - recall
+
+nimbus:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: false
+    locked: true
+    xp_max: 30
+    xp_regeneration: 10
+    effect_color: '0000FF'
+    spells:
+        - broom
+
+beater:
+    active_spell: beat
+    icon: stick
+    indestructible: false
+    locked: true
+    xp_max: 20
+    xp_regeneration: 10
+    effect_color: 'FF0000'
+    spells:
+        - beat
 
 # Upgrade items copied from default config
 
