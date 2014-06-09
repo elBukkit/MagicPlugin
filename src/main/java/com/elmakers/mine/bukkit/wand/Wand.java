@@ -2083,7 +2083,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		// Check for auto-bind
-		if (bound && (ownerId == null || ownerId.length() == 0)) {
+        // Don't do this for op'd players, effectively, so
+        // they can create and give unbound wands.
+		if (bound && (ownerId == null || ownerId.length() == 0) && !controller.hasPermission(player, "Magic.wand.override_bind", false)) {
             // Backwards-compatibility, don't overrwrite unless the
             // name matches
             if (owner == null || owner.length() == 0 || owner.equals(player.getName())) {
