@@ -101,7 +101,7 @@ arrow:
            location: origin
     parameters:
       projectile: Arrow
-      speed: 2
+      speed: 5
       spread: 6
       fire: false
     costs:
@@ -121,7 +121,7 @@ ascendio:
            particle: spell
            particle_count: 4
            min_speed: 2.5
-           max_speed: 4
+           max_speed: 3
            cruising_altitude: 40
            effectlib:
              class: TraceEntityEffect
@@ -180,7 +180,7 @@ avis:
     parameters:
         allow_max_range: true
         range: 2
-        cooldown: 5000
+        cooldown: 9000
         type: chicken
         baby: true
         count: 3
@@ -192,7 +192,7 @@ bombarda:
     category: combat
     class: BoomSpell
     pvp_restricted: true
-    worth: 30
+    worth: 40
     effects:
         cast:
         -  class: EffectSingle
@@ -208,8 +208,8 @@ bombarda:
         allow_max_range: true
         range: 16
         break_blocks: false
-        size: 2
-        cooldown: 2000
+        size: 1
+        cooldown: 5000
     costs:
         xp: 20
 
@@ -256,7 +256,7 @@ confringo:
         target_type: Item
         target: entity
         range: 16
-        cooldown: 3000
+        cooldown: 5000
         size: 1
         fire: true
         break_blocks: false
@@ -322,9 +322,10 @@ conjunctivitis:
         range: 32
         target_type: LivingEntity
         target: other
-        duration: 4000
+        duration: 3000
         effect_blindness: 5
         cast_on_no_target: true
+        cooldown: 5000
 
 crucio:
     icon: nether_stalk
@@ -341,21 +342,22 @@ crucio:
            particle_count: 3
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 18
         -  class: EffectRing
            particle: town_aura
            location: target
            effectlib:
              class: BleedEntityEffect
-             duration: 600
+             duration: 500
     costs:
         xp: 200
     parameters:
         range: 32
         target_type: LivingEntity
         target: other
-        duration: 8000
+        duration: 5000
         effect_wither: 8
+        cooldown: 9000
 
 deletrius:
     icon: enchanted_book
@@ -411,7 +413,7 @@ duro:
         check_destructible: false
         brush: stone
         transparent: transparent_to_construction
-        undo: 5000
+        undo: 3000
     costs:
         xp: 100
 
@@ -501,12 +503,12 @@ expelliarmus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 16
-        fov: 0.05
-        fizzle_chance: 0.2
-        backfire_chance: 0.05
+        range: 23
+        fov: 0.1
+        fizzle_chance: 0.1
+        backfire_chance: 0.025
         cast_on_no_target: true
-        cooldown: 5000
+        cooldown: 3000
     costs:
         xp: 200
 
@@ -625,6 +627,7 @@ flipendo:
         type: push
         count: 1
         damage: 0.5
+        cooldown: 1500
     costs:
         xp: 10
 
@@ -681,7 +684,7 @@ immobulus:
         target_type: LivingEntity
         target: other
         cast_on_no_target: true
-        duration: 3000
+        duration: 5000
         effect_slow: 20
 
 imperio:
@@ -732,7 +735,7 @@ incendio:
     category: combat
     class: FireSpell
     pvp_restricted: true
-    worth: 10
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -751,6 +754,8 @@ incendio:
         range: 32
         radius: 1
         vertical_search_distance: 8
+        undo: 1500
+        cooldown: 3000
     costs:
         xp: 35
 
@@ -835,9 +840,10 @@ petrificustotalus:
         target_type: LivingEntity
         target: other
         cast_on_no_target: true
-        duration: 6000
+        duration: 4000
         effect_slow: 20
         effect_confusion: 20
+        cooldown: 5000
 
 reducio:
     icon: red_mushroom
@@ -1001,7 +1007,7 @@ sectumsempra:
            particle_data: 1
            effectlib:
              class: BleedEntityEffect
-             duration: 300
+             duration: 150
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1010,6 +1016,7 @@ sectumsempra:
         player_damage: 5
         entity_damage: 50
         check_destructible: false
+        cooldown: 3500
     costs:
         xp: 50
 
@@ -1023,7 +1030,7 @@ stupefy:
         cast:
         -  class: EffectSingle
            sound: shoot_arrow
-           sound_volume: 2.0
+           sound_volume: 5.0
            location: source
         -  class: EffectSingle
            location: source
@@ -1038,13 +1045,13 @@ stupefy:
            color: 0000FF
            firework: ball
     parameters:
-        range: 32
-        fov: 0.15
+        range: 35
+        fov: 0.09
         target_type: LivingEntity
         cast_on_no_target: true
         duration: 3000
-        damage: 4
-        effect_confusion: 3
+        damage: 7
+        effect_confusion: 2
         cooldown: 2000
     costs:
         xp: 30
