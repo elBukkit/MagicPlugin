@@ -184,6 +184,9 @@ enable_keeping: true
 # Players keep their wands when they die
 keep_wands_on_death: false
 
+# Players can remove spells from their wands
+allow_spell_dropping: true
+
 # Wands are indestructible
 indestructible_wands: true
 

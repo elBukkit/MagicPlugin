@@ -29,3 +29,8 @@ wand_glow: false
 # Wands will auto-bind to their owner
 enable_binding: true
 
+# Spells cannot be dropped out of wands
+allow_spell_dropping: false
+
+# We're going to asssume you're running a patched CB...
+enable_custom_item_hacks: false

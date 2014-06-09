@@ -1517,6 +1517,7 @@ public class MagicController implements Listener, MageController
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
 		autoUndo = properties.getInt("auto_undo", autoUndo);
+        spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
 		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
 		keepingEnabled = properties.getBoolean("enable_keeping", keepingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
@@ -1896,6 +1897,19 @@ public class MagicController implements Listener, MageController
 					player.setItemInHand(new ItemStack(Material.AIR, 1));
 				}
 			} else if (activeWand.isInventoryOpen()) {
+                if (!spellDroppingEnabled) {
+                    // This is needed a a work-around for glitches that happen when this
+                    // event is cancelled!
+                    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                        public void run() {
+                            activeWand.closeInventory();
+                        }
+                    }, 1);
+
+
+                    event.setCancelled(true);
+                    return;
+                }
 				// The item is already removed from the wand's inventory, but that should be ok
 				removeItemFromWand(activeWand, droppedItem);
 				
@@ -2493,6 +2507,10 @@ public class MagicController implements Listener, MageController
 		// Check for dropping items out of a wand's inventory
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
 		{
+            if (!spellDroppingEnabled) {
+                event.setCancelled(true);
+                return;
+            }
 			ItemStack droppedItem = clickedItem;
 			ItemStack newDrop = removeItemFromWand(activeWand, droppedItem);
 			
@@ -3318,7 +3336,8 @@ public class MagicController implements Listener, MageController
 	 private String								 welcomeWand					= "";
 	 private int								 messageThrottle				= 0;
 	 private int								 clickCooldown					= 150;
-	 private boolean							 bindingEnabled					= false;
+     private boolean							 bindingEnabled					= false;
+     private boolean							 spellDroppingEnabled			= false;
 	 private boolean							 keepingEnabled					= false;
 	 private boolean                             fillingEnabled                 = false;
 	 private boolean							 essentialsSignsEnabled			= false;
