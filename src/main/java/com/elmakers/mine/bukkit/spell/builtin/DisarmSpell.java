@@ -7,7 +7,9 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -49,14 +51,34 @@ public class DisarmSpell extends TargetingSpell
 				targetMage.getActiveWand().deactivate();
 			}
 		}
-		
+
+        Integer targetSlot = null;
+        PlayerInventory targetInventory = null;
+        if (entity instanceof Player && parameters.getBoolean("keep_in_inventory", false)) {
+            Player targetPlayer = (Player)entity;
+            targetInventory = targetPlayer.getInventory();
+            int currentSlot = targetInventory.getHeldItemSlot();
+            ItemStack[] contents = targetInventory.getContents();
+            for (int i = contents.length - 1; i >= 0; i++) {
+                if (i == currentSlot) continue;
+                if (contents[i] == null || contents[i].getType() == Material.AIR) {
+                    targetSlot = i;
+                    break;
+                }
+            }
+        }
+
 		equipment.setItemInHand(null);
-		Location location = entity.getLocation();
-		location.setY(location.getY() + 1);
-		Item item = entity.getWorld().dropItemNaturally(location, stack);
-		Vector velocity = item.getVelocity();
-		velocity.setY(velocity.getY() * 5);
-		item.setVelocity(velocity);
+        if (targetSlot != null && targetInventory != null) {
+            targetInventory.setItem(targetSlot, stack);
+        } else {
+            Location location = entity.getLocation();
+            location.setY(location.getY() + 1);
+            Item item = entity.getWorld().dropItemNaturally(location, stack);
+            Vector velocity = item.getVelocity();
+            velocity.setY(velocity.getY() * 5);
+            item.setVelocity(velocity);
+        }
 		
 		return SpellResult.CAST;
 		

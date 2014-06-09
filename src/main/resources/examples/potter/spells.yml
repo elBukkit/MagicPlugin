@@ -509,6 +509,7 @@ expelliarmus:
         backfire_chance: 0.025
         cast_on_no_target: true
         cooldown: 3000
+        keep_in_inventory: true
     costs:
         xp: 200
 
