@@ -1131,6 +1131,13 @@ phase:
              class: WarpEntityEffect
     parameters:
         cooldown: 2000
+        worlds:
+            Hogwarts:
+               target: MuggleWorld
+               scale: 1
+            MuggleWorld:
+               target: Hogwarts
+               scale: 1
     costs:
         xp: 50
 
