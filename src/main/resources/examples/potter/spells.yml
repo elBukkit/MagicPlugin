@@ -1056,3 +1056,154 @@ stupefy:
         cooldown: 2000
     costs:
         xp: 30
+
+# These are currently what I would classify as admin-only utility spells
+# But could be added in some form as canon spells eventually.
+
+day:
+    icon: emerald
+    category: master
+    class: TorchSpell
+    worth: 120
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectRing
+           particle: magic_runes
+           location: origin
+           particle_count: 2
+           effectlib:
+             class: HelixLocationEffect
+             iterations: 24
+    parameters:
+        allow_max_range: false
+        allow_night: false
+        allow_day: true
+        allow_glowstone: false
+        cooldown: 60000
+        time: day
+        weather: clear
+    costs:
+        xp: 40
+
+night:
+    icon: coal
+    category: master
+    class: TorchSpell
+    worth: 130
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectRing
+           particle: large_smoke
+           location: origin
+           particle_count: 2
+           effectlib:
+             class: HelixLocationEffect
+             iterations: 24
+    parameters:
+        allow_max_range: false
+        allow_night: false
+        allow_day: true
+        allow_glowstone: false
+        cooldown: 60000
+        time: night
+    costs:
+        xp: 40
+
+phase:
+    icon: ender_portal
+    category: master
+    class: PhaseSpell
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           location: both
+        -  class: EffectRing
+           particle: portal
+           particle_count: 4
+           location: both
+           effectlib:
+             class: WarpEntityEffect
+    parameters:
+        cooldown: 2000
+    costs:
+        xp: 50
+
+superblob:
+    icon: slime_ball
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        check_destructible: false
+        range: 32
+        max_dimension: 16
+        target: select
+        type: sphere
+        transparent: transparent_to_construction
+    costs:
+        xp: 500
+
+recall:
+    icon: redstone
+    category: master
+    class: RecallSpell
+    worth: 25
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           location: both
+        -  class: EffectRing
+           particle: portal
+           particle_count: 6
+           location: both
+           effectlib:
+             class: WarpEntityEffect
+    parameters:
+        allow_spawn: true
+        allow_marker: true
+        allow_death: true
+        allow_wand: true
+        allow_home: true
+        allow_cross_world: true
+        allow_warps: dueling,quiddich
+    costs:
+        xp: 50
+
+gather:
+    icon: glowstone_dust
+    category: master
+    class: GotoSpell
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_idle
+        -  class: EffectTrail
+           particle: portal
+           particle_count: 4
+        -  class: EffectRing
+           particle: portal
+           location: both
+           particle_count: 2
+           effectlib:
+             class: WarpEntityEffect
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 64
+    costs:
+        xp: 150
