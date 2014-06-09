@@ -37,6 +37,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 	private final Random rand = new Random();
 	private PlayerFamiliar familiars = new PlayerFamiliar();
 	private int spawnCount = 0;
+    private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
 
 	public class PlayerFamiliar
 	{
@@ -174,7 +175,17 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                     mage.sendMessage("Unknown entity type: " + randomType);
                     return SpellResult.FAIL;
                 }
-			}      
+			}
+
+            if (parameters.contains("reason")) {
+                String reasonText = parameters.getString("reason").toUpperCase();
+                try {
+                    spawnReason = CreatureSpawnEvent.SpawnReason.valueOf(reasonText);
+                } catch (Exception ex) {
+                    mage.sendMessage("Unknown spawn reason: " + reasonText);
+                    return SpellResult.FAIL;
+                }
+            }
 
 			Location targetLoc = centerLoc.clone();
 			if (famCount > 1)
@@ -213,7 +224,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             Entity famEntity;
             try {
                 Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
-                famEntity = (Entity)spawnMethod.invoke(world, target, famType.getEntityClass(), CreatureSpawnEvent.SpawnReason.EGG);
+                famEntity = (Entity)spawnMethod.invoke(world, target, famType.getEntityClass(), spawnReason);
             } catch (Exception ex) {
                 famEntity = getWorld().spawnEntity(target, famType);
             }

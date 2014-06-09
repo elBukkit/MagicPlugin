@@ -207,6 +207,7 @@ avis:
         type: chicken
         baby: true
         count: 3
+        reason: custom
     costs:
         xp: 20
 

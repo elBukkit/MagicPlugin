@@ -72,6 +72,7 @@ spells:
     beat:
         name: Beat
         description: Knock your opponent senseless
+        cast_player_message: "&d&o$player &r&5beat you down!"
     bombarda:
         name: Bombarda
         description: Create a small explosion
