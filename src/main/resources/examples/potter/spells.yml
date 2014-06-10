@@ -294,6 +294,26 @@ bombardamaxima:
     costs:
         xp: 100
 
+camera:
+    icon: tripwire_hook
+    category: light
+    class: CameraSpell
+    worth: 8
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: smoke
+           sound: fuse
+           location: origin
+    parameters:
+        target_type: LivingEntity
+        target_npc: true
+        cooldown: 5000
+        allow_max_range: false
+        range: 32
+    costs:
+        xp: 5
+
 confringo:
     icon: flint_and_steel
     category: combat
@@ -1119,7 +1139,7 @@ stupefy:
 
 day:
     icon: emerald
-    category: master
+    category: utility
     class: TorchSpell
     worth: 120
     effects:
@@ -1146,7 +1166,7 @@ day:
 
 night:
     icon: coal
-    category: master
+    category: utility
     class: TorchSpell
     worth: 130
     effects:
@@ -1172,7 +1192,7 @@ night:
 
 phase:
     icon: ender_portal
-    category: master
+    category: utility
     class: PhaseSpell
     worth: 10
     effects:
@@ -1190,9 +1210,9 @@ phase:
         cooldown: 2000
         worlds:
             Hogwarts:
-               target: MuggleWorld
+               target: Hogwarts_muggle
                scale: 1
-            MuggleWorld:
+            Hogwarts_muggle:
                target: Hogwarts
                scale: 1
     costs:
@@ -1213,16 +1233,40 @@ superblob:
         allow_max_range: false
         check_destructible: false
         range: 32
-        max_dimension: 16
+        max_dimension: 32
         target: select
         type: sphere
         transparent: transparent_to_construction
     costs:
         xp: 500
 
+superconvert:
+    icon: magma_cream
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        check_destructible: false
+        max_dimension: 32
+        indestructible: air
+        target: select
+        type: sphere
+        replace: true
+        transparent: transparent_to_construction
+    costs:
+        xp: 300
+
 recall:
     icon: redstone
-    category: master
+    category: utility
     class: RecallSpell
     worth: 25
     effects:
@@ -1249,7 +1293,7 @@ recall:
 
 gather:
     icon: glowstone_dust
-    category: master
+    category: utility
     class: GotoSpell
     worth: 150
     effects:
@@ -1271,3 +1315,20 @@ gather:
         range: 64
     costs:
         xp: 150
+
+stash:
+    icon: ender_chest
+    category: utility
+    class: StashSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_hit
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: Player
+        target: self
+    costs:
+        xp: 50

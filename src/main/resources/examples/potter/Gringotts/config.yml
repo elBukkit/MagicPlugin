@@ -1,0 +1,45 @@
+# supported languages: "custom" (default, english) and "de" (german)
+language: custom
+
+# currency name and value config
+currency:
+  # currency name to use in messages
+  name:
+    singular: Galleon
+    plural: Galleons
+
+  # number of decimal digits supported by currency value (0 for whole numbers only)
+  digits: 2
+
+  # value of individual denominations. default: emerald: 1, emerald block: 9
+  denominations:
+    388: 1
+    264:
+      inverse_value: 17
+      singular: Sickle
+      plural: Sickles
+    371:
+      inverse_value: 493
+      singular: Knut
+      plural: Knuts
+    133:
+      value: 9
+      singular: Block
+      plural: Blocks
+
+# tax on /money pay transactions
+transactiontax:
+  flat: 0.0
+  rate: 0.0
+
+# balance to start an account with (purely virtual)
+startingbalance:
+  player: 0
+  faction: 0
+  town: 0
+  nation: 0
+
+# globally (dis)allow use of vault types
+usevault:
+  container: true
+  enderchest: true
