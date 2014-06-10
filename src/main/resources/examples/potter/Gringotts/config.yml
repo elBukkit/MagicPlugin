@@ -5,27 +5,24 @@ language: custom
 currency:
   # currency name to use in messages
   name:
-    singular: Galleon
-    plural: Galleons
+    singular: Knut
+    plural: Knuts
 
   # number of decimal digits supported by currency value (0 for whole numbers only)
-  digits: 2
+  digits: 0
 
   # value of individual denominations. default: emerald: 1, emerald block: 9
   denominations:
-    388: 1
+    371: 1
     264:
-      inverse_value: 17
+      value: 29
       singular: Sickle
       plural: Sickles
-    371:
-      inverse_value: 493
-      singular: Knut
-      plural: Knuts
-    133:
-      value: 9
-      singular: Block
-      plural: Blocks
+    388:
+      value: 493
+      singular: Galleon
+      plural: Galleons
+    133: 4437
 
 # tax on /money pay transactions
 transactiontax:
