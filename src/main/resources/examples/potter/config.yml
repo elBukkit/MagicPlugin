@@ -34,3 +34,6 @@ allow_spell_dropping: false
 
 # We're going to asssume you're running a patched CB...
 enable_custom_item_hacks: false
+
+# Change the upgrade item
+wand_upgrade_item: arrow
