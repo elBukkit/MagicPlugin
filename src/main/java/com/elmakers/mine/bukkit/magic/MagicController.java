@@ -585,27 +585,11 @@ public class MagicController implements Listener, MageController
 		enchanting = new EnchantingController(this);
 		anvil = new AnvilController(this);
 
-        // Check for EffectLib.
-        Object effectLib = plugin.getServer().getPluginManager().getPlugin("EffectLib");
-        hasEffectLib = false;
-        if (effectLib != null) {
-            // Unfortunately, EffectLib is not Mavenized so I can't
-            // use its API without breaking my build.
-            try {
-                Class<?> effectManagerClass = Class.forName("de.slikey.effectlib.EffectManager");
-                Constructor managerConstructor = effectManagerClass.getConstructor(effectLib.getClass());
-                Object effectManager = managerConstructor.newInstance(effectLib);
-                hasEffectLib = EffectPlayer.setEffectManager(effectManager);
-            } catch (Exception ex) {
-                getLogger().warning("Found EffectLib, but encountered an error integrating: " + ex.getMessage());
-                hasEffectLib = false;
-            }
-        }
-
-        if (hasEffectLib) {
-            getLogger().info("EffectLib found, will be used for effects");
+        // Initialize EffectLib.
+        if (EffectPlayer.initialize(plugin)) {
+            getLogger().info("EffectLib initialized");
         } else {
-            getLogger().info("EffectLib not found, install it for better effects");
+            getLogger().warning("Failed to initialize EffectLib");
         }
 
         load();
@@ -811,9 +795,6 @@ public class MagicController implements Listener, MageController
 			   
 			    if (metricsLevel > 1) {
 			    	Graph integrationGraph = metrics.createGraph("Plugin Integration");
-                    integrationGraph.addPlotter(new Metrics.Plotter("EffectLib") {
-                        @Override public int getValue() { return controller.hasEffectLib ? 1 : 0; }
-                    });
 			    	integrationGraph.addPlotter(new Metrics.Plotter("Essentials") {						
 						@Override public int getValue() { return controller.hasEssentials ? 1 : 0; }
 					});
@@ -3408,7 +3389,6 @@ public class MagicController implements Listener, MageController
 	 private Metrics							 metrics						= null;
 	 private boolean							 hasDynmap						= false;
 	 private boolean							 hasEssentials					= false;
-     private boolean							 hasEffectLib					= false;
      private boolean							 hasCommandBook					= false;
 	 private boolean							 hasWorldEdit					= false;
 	 
