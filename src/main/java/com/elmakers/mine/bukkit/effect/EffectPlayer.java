@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.effect;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
 import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.Random;
@@ -26,13 +27,9 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
 
-    public static boolean setEffectManager(Object manager) {
-        effectLib = new EffectLibManager(manager);
-        if (!effectLib.initialize()) {
-            effectLib = null;
-            return false;
-        }
-        return true;
+    public static boolean initialize(Plugin plugin) {
+        effectLib = EffectLibManager.initialize(plugin);
+        return effectLib != null;
     }
 
     private static EffectLibManager effectLib = null;

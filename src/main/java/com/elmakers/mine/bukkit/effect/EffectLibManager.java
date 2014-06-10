@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
+import de.slikey.effectlib.EffectLib;
+import de.slikey.effectlib.EffectManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -16,26 +18,39 @@ import java.util.Collection;
  * Manages EffectLib integration
  */
 public class EffectLibManager {
-    private final Object manager;
-    private Class<?> particleEffectClass;
-    private Method particleEffectLookupMethod;
+    private static EffectManager effectManager;
+    private static Class<?> particleEffectClass;
+    private static Method particleEffectLookupMethod;
 
-    public EffectLibManager(Object manager) {
-        this.manager = manager;
+    public EffectLibManager() {
     }
 
-    public boolean initialize() {
-        if (manager == null) {
-            return false;
+    public static EffectLibManager initialize(Plugin plugin) {
+        if (effectManager == null) {
+            effectManager = new EffectManager(plugin);
         }
 
+        // TODO: Remove the reflection here, kind of unnecessary now
+        // that EffectLib is Mavenized
+        // use its API without breaking my build.
         try {
-            particleEffectClass = Class.forName("de.slikey.effectlib.util.ParticleEffect");
-            particleEffectLookupMethod = particleEffectClass.getMethod("fromName", String.class);
-        } catch(Exception ex) {
+            if (particleEffectClass == null) {
+                particleEffectClass = Class.forName("com.elmakers.mine.bukkit.slikey.effectlib.util.ParticleEffect");
+            }
+
+            if (particleEffectLookupMethod == null) {
+                particleEffectLookupMethod = particleEffectClass.getMethod("fromName", String.class);
+            }
+
+            if (particleEffectClass == null || particleEffectLookupMethod == null) {
+                return null;
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
+            return null;
         }
-        return particleEffectClass != null && particleEffectLookupMethod != null;
+
+        return new EffectLibManager();
     }
 
     protected Object[] tryPointConstructor(Class<?> effectLibClass, EffectPlayer effectPlayer) {
@@ -45,17 +60,17 @@ public class EffectLibManager {
 
         Object[] players = null;
         try {
-            Constructor constructor = effectLibClass.getConstructor(manager.getClass(), Location.class);
+            Constructor constructor = effectLibClass.getConstructor(effectManager.getClass(), Location.class);
             if (target != null && origin != null) {
                 players = new Object[2];
-                players[0] = constructor.newInstance(manager, target);
-                players[1] = constructor.newInstance(manager, origin);
+                players[0] = constructor.newInstance(effectManager, target);
+                players[1] = constructor.newInstance(effectManager, origin);
             } else if (target != null) {
                 players = new Object[1];
-                players[0] = constructor.newInstance(manager, target);
+                players[0] = constructor.newInstance(effectManager, target);
             } else if (origin != null) {
                 players = new Object[1];
-                players[0] = constructor.newInstance(manager, origin);
+                players[0] = constructor.newInstance(effectManager, origin);
             }
         } catch (Exception ex) {
             players = null;
@@ -70,17 +85,17 @@ public class EffectLibManager {
 
         Object[] players = null;
         try {
-            Constructor constructor = effectLibClass.getConstructor(manager.getClass(), Entity.class);
+            Constructor constructor = effectLibClass.getConstructor(effectManager.getClass(), Entity.class);
             if (target != null && origin != null) {
                 players = new Object[2];
-                players[0] = constructor.newInstance(manager, target);
-                players[1] = constructor.newInstance(manager, origin);
+                players[0] = constructor.newInstance(effectManager, target);
+                players[1] = constructor.newInstance(effectManager, origin);
             } else if (target != null) {
                 players = new Object[1];
-                players[0] = constructor.newInstance(manager, target);
+                players[0] = constructor.newInstance(effectManager, target);
             } else if (origin != null) {
                 players = new Object[1];
-                players[0] = constructor.newInstance(manager, origin);
+                players[0] = constructor.newInstance(effectManager, origin);
             }
         } catch (Exception ex) {
             players = null;
@@ -93,8 +108,8 @@ public class EffectLibManager {
 
         Object player = null;
         try {
-            Constructor constructor = effectLibClass.getConstructor(manager.getClass(), Location.class, Location.class);
-            player = constructor.newInstance(manager, effectPlayer.origin, effectPlayer.target);
+            Constructor constructor = effectLibClass.getConstructor(effectManager.getClass(), Location.class, Location.class);
+            player = constructor.newInstance(effectManager, effectPlayer.origin, effectPlayer.target);
         } catch (Exception ex) {
             player = null;
         }
@@ -105,7 +120,7 @@ public class EffectLibManager {
         Class<?> effectLibClass = null;
         String className = configuration.getString("class");
         try {
-            effectLibClass = Class.forName("de.slikey.effectlib.effect." + className);
+            effectLibClass = Class.forName("com.elmakers.mine.bukkit.slikey.effectlib.effect." + className);
         } catch (Throwable ex) {
             plugin.getLogger().info("Error loading EffectLib class: " + className);
             ex.printStackTrace();

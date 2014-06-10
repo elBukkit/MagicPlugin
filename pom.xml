@@ -67,6 +67,12 @@
 			<version>1.6.4-R2.0</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>de.slikey</groupId>
+            <artifactId>EffectLib</artifactId>
+            <version>1.5-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicAPI</artifactId>
@@ -110,8 +116,14 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-						<configuration>
-						</configuration>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>de.slikey</pattern>
+                                    <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
 					</execution>
 				</executions>
 			</plugin>
