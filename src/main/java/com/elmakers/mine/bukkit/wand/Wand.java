@@ -590,9 +590,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Integer selectedItem = null;
         if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null) {
             selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
+
+            // Toss the item back into the wand inventory, it'll find a home somewhere.
+            // We hope this doesn't recurse too badly! :\
+            ItemStack existingHotbar = hotbar.getItem(selectedItem);
+            if (!isWand(existingHotbar)) {
+                hotbar.setItem(selectedItem, item);
+                addToInventory(existingHotbar);          }
+
             hotbar.setItem(selectedItem, item);
         }
-
 		List<Inventory> checkInventories = getAllInventories();
 		boolean added = false;
 		
@@ -856,7 +863,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void saveProperties(ConfigurationSection node) {
         node.set("id", id);
         node.set("materials", getMaterialString());
-		
+
 		node.set("spells", getSpellString());
 		
 		node.set("active_spell", activeSpell);
@@ -1575,14 +1582,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// we are about to replace with the wand.
 		int currentSlot = playerInventory.getHeldItemSlot();
 		ItemStack existingHotbar = hotbar.getItem(currentSlot);
+
 		if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
 			// Toss the item back into the wand inventory, it'll find a home somewhere.
+            hotbar.setItem(currentSlot, item);
 			addToInventory(existingHotbar);
-			hotbar.setItem(currentSlot, null);
+            hotbar.setItem(currentSlot, null);
 		}
+
 		// Put the wand in the player's active slot.
 		playerInventory.setItem(currentSlot, item);
-		
+
 		// Set hotbar items from remaining list
 		for (int hotbarSlot = 0; hotbarSlot < HOTBAR_SIZE; hotbarSlot++) {
 			if (hotbarSlot != currentSlot) {
@@ -2547,7 +2557,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		ItemStack spellItem = createSpellIcon(spellName);
 		if (spellItem == null) {
-			controller.getPlugin().getLogger().info("Unknown spell: " + spellName);
+			controller.getPlugin().getLogger().warning("Unknown spell: " + spellName);
 			return false;
 		}
 		addToInventory(spellItem);
