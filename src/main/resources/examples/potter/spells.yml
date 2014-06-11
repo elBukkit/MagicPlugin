@@ -682,10 +682,10 @@ flipendo:
         -  class: EffectTrail
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 16
            particle: spell
            length: 16
-           particle_count: 6
+           particle_count: 3
         area:
         -  class: EffectSingle
            sound: fizz

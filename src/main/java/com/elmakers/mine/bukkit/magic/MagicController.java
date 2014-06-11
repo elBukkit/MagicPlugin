@@ -3035,6 +3035,7 @@ public class MagicController implements Listener, MageController
 
     @Override
     public boolean isMage(Entity entity) {
+        if (entity == null) return false;
         return mages.containsKey(entity.getUniqueId().toString());
     }
 
