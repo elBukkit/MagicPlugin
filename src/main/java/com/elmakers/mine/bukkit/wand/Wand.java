@@ -586,6 +586,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected void addToInventory(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
+            return;
+        }
+
 		// Set the wand item
 		Integer selectedItem = null;
         if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null) {
@@ -594,7 +598,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             // Toss the item back into the wand inventory, it'll find a home somewhere.
             // We hope this doesn't recurse too badly! :\
             ItemStack existingHotbar = hotbar.getItem(selectedItem);
-            if (!isWand(existingHotbar)) {
+            if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
                 hotbar.setItem(selectedItem, item);
                 addToInventory(existingHotbar);          }
 
