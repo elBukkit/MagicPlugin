@@ -59,6 +59,10 @@ spells:
         description: Teleport to your target
         usage: Can pass through solid objects
         no_target: Can't apparate there
+    araniaexumai:
+        name: Arania Exumai
+        description: Blast away arachnids
+        cast: Arania Exumai!
     arrow:
         name: Arrow
         description: Fire a magic arrow

@@ -88,6 +88,46 @@ apparate:
     costs:
         xp: 75
 
+araniaexumai:
+    icon: web
+    category: combat
+    class: PushSpell
+    pvp_restricted: true
+    worth: 15
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 16
+           particle: spell
+           length: 16
+           particle_count: 3
+        area:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectRing
+           effectlib:
+             class: VortexLocationEffect
+           particle: witch_magic
+           particle_count: 6
+    parameters:
+        target_type: Spider
+        range: 32
+        allow_area: false
+        item_force: 2
+        area_range: 20
+        entity_force: 2
+        cast_on_no_target: true
+        type: push
+        count: 8
+        damage: 3
+        cooldown: 1000
+    costs:
+        xp: 15
+
 arrow:
     icon: arrow
     category: combat
