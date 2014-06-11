@@ -864,6 +864,7 @@ lumos:
         target_type: LivingEntity
         duration: 30000
         effect_night_vision: 5
+        effect_blindness: 1
 
 morsmordre:
     icon: skull_item:4
