@@ -65,7 +65,7 @@ public class PushSpell extends UndoableSpell
 		int itemMagnitude = parameters.getInt("item_force", DEFAULT_ITEM_MAGNITUDE);
 		int entityMagnitude = parameters.getInt("entity_force", DEFAULT_ENTITY_MAGNITUDE);
 		int maxAllDistance = parameters.getInt("area_range", DEFAULT_MAX_ALL_DISTANCE);
-        double damage = parameters.getDouble("damage", 0);
+        double damage = parameters.getDouble("damage", 0) * mage.getDamageMultiplier();
 
 		List<Target> targets = getAllTargetEntities();
 		if 

@@ -69,7 +69,7 @@ public class PotionEffectSpell extends UndoableSpell
 
             if (parameters.contains("damage")) {
                 registerModified(targetEntity);
-                targetEntity.damage(parameters.getDouble("damage"));
+                targetEntity.damage(parameters.getDouble("damage") * mage.getDamageMultiplier());
             } else {
                 registerPotionEffects(targetEntity);
             }
