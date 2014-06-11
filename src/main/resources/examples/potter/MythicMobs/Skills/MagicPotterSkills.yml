@@ -1,0 +1,119 @@
+SummonTarantulas:
+  Cooldown: 15
+  Conditions:
+  - TargetInLineOfSight
+  - TargetWithin 15
+  Skills:
+  - msg 40:'$boss; &4Come to me, children!' >0 1
+  - delay 20
+  - summon $Tarantula:2:5 >0 1
+  - delay 20
+  - summon $Tarantula:2:5 >0 1
+SludgePoison:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - potion 30:POISON:100:2 >0
+  - effect boss particles happyVillager:30:1:1000:1:0.5 >0
+FlipendoArea:
+  Cooldown: 80
+  Conditions:
+  - TargetWithin 4
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo area true' >0 1
+AccioArea:
+  Cooldown: 100
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio area true' >0 1
+Flipendo:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 5
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo' >0 1
+Accio:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio' >0 1
+Stupefy:
+  Cooldown: 120
+  Conditions:
+  - TargetWithin 8
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid stupefy' >0 1
+Arrow:
+  Cooldown: 50
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid arrow' >0 1
+Ascendio:
+  Cooldown: 4
+  Conditions:
+  - TargetInLineOfSight
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid ascendio pdy 1' >0 1
+Incendio:
+  Cooldown: 8
+  Conditions:
+  - TargetInLineOfSight
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid incendio' >0 1
+Aguamenti:
+  Cooldown: 30
+  Conditions:
+  - TargetWithin 12
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid aguamenti' >0 1
+
+Firebending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - randomskill Incendio >0 1
+Airbending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - randomskill Ascendio,Accio,AccioArea,Flipendo,FlipendoArea >0 1
+Waterbending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - randomskill Aguamenti >0 1
+Earthbending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - randomskill Arrow >0 1
+MinorSpellAttack:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - randomskill Arrow,Stupefy,Ascendio,Accio,Flipendo >0 1

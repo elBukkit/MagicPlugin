@@ -563,8 +563,8 @@ expelliarmus:
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-           particle: red_dust
-           particle_count: 8
+             particle: lava_dripping
+             lenghtGrow: 0.5
         backfire:
         -  class: EffectSingle
            sound: hurt_flesh

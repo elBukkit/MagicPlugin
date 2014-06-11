@@ -1,0 +1,17 @@
+MinorBoss:
+  Drops:
+  - gold_nugget 4
+  - exp 30
+MidBoss:
+  Drops:
+  - gold_nugget 8
+  - exp 50
+Boss:
+  Drops:
+  - diamond 1
+  - exp 100
+MegaBoss:
+  Drops:
+  - diamond 8
+  - exp 300
+
