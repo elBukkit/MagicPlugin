@@ -85,7 +85,6 @@ apparate:
         range: 64
         passthrough_range: 4
         allow_decend: true
-        transparent: passthrough
     costs:
         xp: 75
 
@@ -581,10 +580,10 @@ expelliarmus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 23
+        range: 25
         fov: 0.1
-        fizzle_chance: 0.1
-        backfire_chance: 0.025
+        fizzle_chance: 0
+        backfire_chance: 0
         cast_on_no_target: true
         cooldown: 3000
         keep_in_inventory: true
@@ -969,6 +968,7 @@ reducto:
         radius: 2
         type: sphere
         destructible: destructible_mining
+        undo: 4000
     costs:
         xp: 45
 

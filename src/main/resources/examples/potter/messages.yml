@@ -242,15 +242,51 @@ spells:
 
 randomized:
    wood:
-     - Yew
-     - Oak
+     - Acacia
      - Alder
-     - Willow
+     - Apple
+     - Ash
+     - Aspen
+     - Beech
+     - Blackthorn
+     - Black Walnut
+     - Cedar
      - Cherry
+     - Chestnut
+     - Cypress
+     - Dogwood
+     - Ebony
+     - English Oak
+     - Elder
+     - Elm
+     - Fir
+     - Hawthorn
+     - Hazel
+     - Holly
+     - Hornbeam
+     - Larch
+     - Laurel
+     - Mahogany
+     - Maple
+     - Oak
+     - Olive
+     - Pear
+     - Pine
+     - Poplar
+     - Red Oak
+     - Redwood
+     - Rosewood
+     - Rowan
+     - Silver Lime
+     - Spruce
+     - Sycamore
+     - Vine
+     - Walnut
+     - Willow
+     - Yew
    core:
      - Unicorn Tail Hair
      - Dragon Heartstring
-     - Troll Hair
      - Pheonix Feather
 
 wands:
@@ -265,11 +301,11 @@ wands:
 
     slytherin:
         name: Wand of Slytherin
-        description: Cunning and Power
+        description: Hawthorn and Phoenix Feather
 
-    hufflepuff:
-        name: Wand of Hufflepuff
-        description: Loyalty and Fairness
+    allis0n:
+        name: Moon Scepter
+        description: Rosewood and Phoenix Feather
 
     ravenclaw:
         name: Wand of Ravenclaw
@@ -277,7 +313,7 @@ wands:
 
     elder:
         name: Elder Wand
-        description: Thestral hair core
+        description: Elder Wood and Thestral Hair Core
 
     wolf:
         name: The Wolf

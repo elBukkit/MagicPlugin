@@ -45,23 +45,21 @@ gryffindor:
       - stupefy
 
 slytherin:
-    icon: gold_axe
+    icon: gold_shovel
     path: master
     keep: true
     quiet: 1
-    xp_max: 100
-    xp_regeneration: 10
+    xp_max: 500
+    xp_regeneration: 100
     effect_color: '008800'
-    effect_bubbles: true
+    effect_bubbles: false
     active_spell: ascendio
     spells:
       - accio
       - aguamenti
       - arrow
       - ascendio
-      - avadakedavra
       - bombarda
-      - bombardamaxima
       - crucio
       - evanesco
       - petrificustotalus
@@ -70,31 +68,37 @@ slytherin:
       - reparifarge
       - sectumsempra
 
-hufflepuff:
+allis0n:
     icon: wood_hoe
     path: master
     keep: true
     quiet: 1
-    xp_max: 100
-    xp_regeneration: 10
-    effect_color: '888800'
-    effect_bubbles: true
+    xp_max: 1000
+    xp_regeneration: 200
+    effect_color: '00AACC'
+    effect_bubbles: false
     active_spell: ascendio
     spells:
-      - accio
-      - aguamenti
-      - arrow
-      - ascendio
-      - avis
-      - confundus
-      - conjunctivitis
-      - duro
-      - episkey
-      - ferula
+      - flagrate
+      - flipendo
       - lumos
-      - reparifarge
-      - reparo
       - stupefy
+      - apparate
+      - ascendio
+      - bombarda
+      - avis
+      - incendio
+      - expelliarmus
+      - immobulus
+      - conjunctivitis
+      - episkey
+      - finiteincantatem
+      - ferula
+      - fly
+      - reparifarge
+      - petrificustotalus
+      - accio
+      - sectumsempra
       - diffindo
 
 ravenclaw:
@@ -132,8 +136,7 @@ elder:
     protection: 1
     xp_max: 1000
     xp_regeneration: 200
-    power: 1
-    haste: 0.5
+    haste: 0.1
     effect_color: '00AACC'
     effect_particle: magic_runes
     effect_particle_count: 1
@@ -183,6 +186,10 @@ elder:
       - salviohexia
       - sectumsempra
       - stupefy
+      - phase
+      - stash
+      - recall
+      - gather
 
 wolf:
     icon: gold_hoe
@@ -194,7 +201,7 @@ wolf:
     protection: 1
     quiet: 0
     power: 1
-    haste: 0.2
+    haste: 0.1
     effect_color: '00AACC'
     effect_bubbles: false
     organize: true
@@ -299,8 +306,8 @@ nimbus:
     icon: blaze_rod
     indestructible: false
     locked: true
-    xp_max: 30
-    xp_regeneration: 10
+    xp_max: 1000
+    xp_regeneration: 500
     effect_color: '0000FF'
     spells:
         - broom
