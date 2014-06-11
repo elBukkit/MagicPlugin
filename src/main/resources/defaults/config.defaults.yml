@@ -250,7 +250,7 @@ schematic_item: paper
 schematic_files: WorldEdit/schematics/
 
 # How many casts to track in the undo queue
-undo_depth: 64
+undo_depth: 128
 
 # How many pending constructions a player may have at one time
 pending_depth: 8
