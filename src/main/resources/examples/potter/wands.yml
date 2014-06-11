@@ -19,7 +19,6 @@ default:
 gryffindor:
     icon: diamond_sword
     path: master
-    bound: true
     keep: true
     quiet: 1
     xp_max: 100
@@ -48,7 +47,6 @@ gryffindor:
 slytherin:
     icon: gold_axe
     path: master
-    bound: true
     keep: true
     quiet: 1
     xp_max: 100
@@ -75,7 +73,6 @@ slytherin:
 hufflepuff:
     icon: wood_hoe
     path: master
-    bound: true
     keep: true
     quiet: 1
     xp_max: 100
@@ -103,7 +100,6 @@ hufflepuff:
 ravenclaw:
     icon: gold_pickaxe
     path: master
-    bound: true
     keep: true
     quiet: 1
     xp_max: 100
@@ -154,10 +150,12 @@ elder:
       - avis
       - bombarda
       - bombardamaxima
+      - colorvaria
       - confringo
       - confundus
       - conjunctivitis
       - crucio
+      - day
       - deletrius
       - diffindo
       - duro
@@ -175,6 +173,7 @@ elder:
       - incendio
       - lumos
       - morsmordre
+      - nox
       - petrificustotalus
       - reducio
       - reducto
@@ -193,9 +192,9 @@ wolf:
     cost_reduction: 2
     cooldown_reduction: 2
     protection: 1
-    quiet: 1
+    quiet: 0
     power: 1
-    haste: 0.1
+    haste: 0.2
     effect_color: '00AACC'
     effect_bubbles: false
     organize: true
@@ -209,10 +208,9 @@ wolf:
       - ascendio
       - avadakedavra
       - avis
-      - beat
       - bombarda
       - bombardamaxima
-      - broom
+      - colorvaria
       - confringo
       - confundus
       - conjunctivitis
@@ -236,7 +234,7 @@ wolf:
       - incendio
       - lumos
       - morsmordre
-      - night
+      - nox
       - petrificustotalus
       - phase
       - recall
@@ -251,6 +249,16 @@ wolf:
       - superblob
       - superconvert
       - stash
+      - absorb
+      - fill
+      - supershell
+      - superring
+      - superdome
+      - superdisc
+      - pillar
+      - stalactite
+      - place
+      - bridge
     materials:
       - clone
       - replicate

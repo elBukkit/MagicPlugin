@@ -90,6 +90,9 @@ spells:
     broom:
         name: Broom
         description: Powers magic brooms
+    colorvaria:
+        name: Colorvaria
+        description: Changes the color of certain objects
     confringo:
         name: Confringo
         description: Explode the target item
@@ -107,6 +110,10 @@ spells:
         description: Torture your opponent
         usage: Unforgiveable!
         cast: Crucio $target!
+    day:
+        name: Meteolojinx Recanto
+        description: Clear weather incantations
+        area: Meteolojinx Recanto!
     deletrius:
         name: Deletrius
         description: Erase a wand's cast history
@@ -181,6 +188,10 @@ spells:
         name: Morsmordre
         description: Summon the Dark Mark
         cast: Morsmordre!
+    nox:
+        name: Nox
+        description: The anti-Lumos
+        area: Nox!
     petrificustotalus:
         name: Petrificus Totalus
         description: Paralyze your target
@@ -201,7 +212,6 @@ spells:
         fail: Too large!
         cast_finish: Preserved up $count blocks
         target_selected: Cast again to preserve area
-
     reparifarge:
         name: Reparifarge
         description: Reverse your last spell

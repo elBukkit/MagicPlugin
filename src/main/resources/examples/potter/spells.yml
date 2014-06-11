@@ -85,6 +85,7 @@ apparate:
         range: 64
         passthrough_range: 4
         allow_decend: true
+        transparent: passthrough
     costs:
         xp: 75
 
@@ -622,7 +623,7 @@ ferula:
         xp: 20
 
 finiteincantatem:
-    icon: diamond
+    icon: ghast_tear
     category: dueling
     class: UndoSpell
     worth: 250
@@ -1135,11 +1136,29 @@ stupefy:
     costs:
         xp: 30
 
-# These are currently what I would classify as admin-only utility spells
-# But could be added in some form as canon spells eventually.
+colorvaria:
+    icon: ink_sack
+    category: engineering
+    class: AlterSpell
+    worth: 8
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: dig_wool
+        -  class: EffectTrail
+           particle: block_breaking
+    parameters:
+        target_type: Entity
+        allow_max_range: false
+        range: 16
+        depth: 8
+        transparent: transparent_to_construction
+        undo: 5000
+    costs:
+        xp: 5
 
 day:
-    icon: emerald
+    icon: golden_apple
     category: utility
     class: TorchSpell
     worth: 120
@@ -1165,7 +1184,7 @@ day:
     costs:
         xp: 40
 
-night:
+nox:
     icon: coal
     category: utility
     class: TorchSpell
@@ -1190,6 +1209,9 @@ night:
         time: night
     costs:
         xp: 40
+
+# These are currently what I would classify as admin-only utility spells
+# But could be added in some form as canon spells eventually.
 
 phase:
     icon: ender_portal
@@ -1333,3 +1355,196 @@ stash:
         target: self
     costs:
         xp: 50
+
+absorb:
+    icon: bucket
+    category: engineering
+    class: AbsorbSpell
+    worth: 1500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: drink
+        -  class: EffectTrail
+           effect: step_sound
+           reverse: true
+    parameters:
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+    costs:
+        xp: 30
+
+fill:
+    icon: iron_hoe
+    category: engineering
+    class: FillSpell
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        target: select
+        range: 64
+        max_dimension: 64
+        check_destructible: false
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
+
+
+superdisc:
+    icon: ink_sack:13
+    category: engineering
+    class: ConstructSpell
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        target: select
+        type: sphere
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        transparent: transparent_to_construction
+    costs:
+        xp: 150
+superring:
+    icon: ink_sack:9
+    category: engineering
+    class: ConstructSpell
+    worth: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        target: select
+        type: sphere
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        thickness: 1
+        transparent: transparent_to_construction
+    costs:
+        xp: 100
+supershell:
+    icon: magma_cream
+    category: engineering
+    class: ConstructSpell
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        thickness: 1
+        target: select
+        type: sphere
+        transparent: transparent_to_construction
+    costs:
+        xp: 200
+superdome:
+    icon: mushroom_soup
+    category: engineering
+    class: ConstructSpell
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        thickness: 1
+        target: select
+        type: sphere
+        orient_dimension_min: 0
+        transparent: transparent_to_construction
+    costs:
+        xp: 150
+
+
+bridge:
+    icon: stone_hoe
+    category: engineering
+    class: BridgeSpell
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        transparent: transparent_to_construction
+    costs:
+        xp: 5
+pillar:
+    icon: gold_axe
+    category: engineering
+    class: PillarSpell
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+    costs:
+        xp: 5
+place:
+    icon: diamond_axe
+    category: engineering
+    class: PlaceSpell
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
+    costs:
+        xp: 10
+stalactite:
+    icon: iron_axe
+    category: engineering
+    class: PillarSpell
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        allow_max_range: false
+        range: 64
+        type: down
+        transparent: transparent_to_construction
+    costs:
+        xp: 5
