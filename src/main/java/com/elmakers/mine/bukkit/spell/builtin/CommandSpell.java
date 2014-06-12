@@ -114,8 +114,14 @@ public class CommandSpell extends TargetingSpell {
             }
 
             if (command.contains("@a")) {
+                Player exclude = mage.getPlayer();
+                if (parameters.getBoolean("excludePlayer", true)) {
+                    exclude = null;
+                }
                 Player[] players = Bukkit.getOnlinePlayers();
                 for (Player player : players) {
+                    if (exclude != null && exclude.equals(player)) continue;
+
                     String playerCommand = command;
                     playerCommand = playerCommand.replace("@a", player.getName());
                     controller.getPlugin().getServer().dispatchCommand(sender, playerCommand);

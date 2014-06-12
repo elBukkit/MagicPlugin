@@ -283,6 +283,7 @@ wolf:
       - erase
       - stone
       - stained_glass
+      - glass
 
  #
  # ITEMS

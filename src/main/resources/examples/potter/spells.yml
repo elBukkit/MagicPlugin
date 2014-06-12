@@ -1019,6 +1019,8 @@ protego:
            effectlib:
              class: ShieldEntityEffect
              particle: magic_runes
+             iterations: 20
+             period: 2
            location: target
     parameters:
         target_type: LivingEntity
@@ -1235,30 +1237,30 @@ sectumsempra:
 
 silencio:
     icon: raw_beef
-    category: utility
-    class: CommandSpell
-    worth: 100
+    category: combat
+    class: PotionEffectSpell
+    worth: 70
     effects:
         cast:
         -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 0.4
-           sound_pitch: 0.1
-           location: source
-        -  class: EffectSingle
-           location: source
+           sound: cat_purr
+        -  class: EffectRing
            effectlib:
-             class: ConeLocationEffect
-             iterations: 20
-             particle: lava_dripping
-             lenghtGrow: 0.5
+             class: ShieldEntityEffect
+             particle: smoke
+             iterations: 80
+           location: target
     parameters:
-        command: mute @t 20
+        target_type: LivingEntity
         target: other
-        target_type: Player
-        range: 32
+        deactivate_target_mage: true
+        allow_max_range: false
+        range: 16
+        duration: 10000
+        effect_confusion: 100
+        cooldown: 30000
     costs:
-        xp: 100
+        xp: 50
 
 silenciomaxima:
     icon: cooked_beef
@@ -1279,6 +1281,7 @@ silenciomaxima:
     parameters:
         commands:
         - mute @a 10
+        - castp @p silencio player @a
         - say §dSILENCIO MAXIMA!
         target: none
     costs:
