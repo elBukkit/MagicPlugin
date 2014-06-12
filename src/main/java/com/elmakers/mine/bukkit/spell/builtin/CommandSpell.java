@@ -10,9 +10,12 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Can run any Bukkit command as a Spell.
@@ -45,8 +48,17 @@ public class CommandSpell extends TargetingSpell {
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
-        String command = parameters.getString("command");
-        if (command == null || command.length() == 0) {
+        List<String> commands = null;
+        if (parameters.contains("command")) {
+            String command = parameters.getString("command");
+            if (command != null && command.length() > 0) {
+                commands = new ArrayList<String>();
+                commands.add(command);
+            }
+        } else {
+            commands = parameters.getStringList("commands");
+        }
+        if (commands == null || commands.size() == 0) {
             return SpellResult.FAIL;
         }
 
@@ -64,40 +76,54 @@ public class CommandSpell extends TargetingSpell {
 
         Location location = getLocation();
 
-        command = command
-                .replace("@_", " ")
-                .replace("@spell", getName())
-                .replace("@p", mage.getName())
-                .replace("@uuid", mage.getId())
-                .replace("@world", location.getWorld().getName())
-                .replace("@x", Double.toString(location.getX()))
-                .replace("@y", Double.toString(location.getY()))
-                .replace("@z", Double.toString(location.getZ()));
-
-        if (getTargetType() != TargetType.NONE) {
-            Target target = getTarget();
-            Location targetLocation = target.getLocation();
+        for (String command : commands) {
             command = command
-                    .replace("@tworld", targetLocation.getWorld().getName())
-                    .replace("@tx", Double.toString(targetLocation.getX()))
-                    .replace("@ty", Double.toString(targetLocation.getY()))
-                    .replace("@tz", Double.toString(targetLocation.getZ()));
+                    .replace("@_", " ")
+                    .replace("@spell", getName())
+                    .replace("@p", mage.getName())
+                    .replace("@uuid", mage.getId())
+                    .replace("@world", location.getWorld().getName())
+                    .replace("@x", Double.toString(location.getX()))
+                    .replace("@y", Double.toString(location.getY()))
+                    .replace("@z", Double.toString(location.getZ()));
 
-            if (target.hasEntity()) {
-                Entity targetEntity = target.getEntity();
-                if (controller.isMage(targetEntity)) {
-                    Mage targetMage = controller.getMage(targetEntity);
-                    command = command
-                            .replace("@t", targetMage.getName())
-                            .replace("@tuuid", targetMage.getId());
+            if (getTargetType() != TargetType.NONE) {
+                Target target = getTarget();
+                Location targetLocation = target.getLocation();
+                command = command
+                        .replace("@tworld", targetLocation.getWorld().getName())
+                        .replace("@tx", Double.toString(targetLocation.getX()))
+                        .replace("@ty", Double.toString(targetLocation.getY()))
+                        .replace("@tz", Double.toString(targetLocation.getZ()));
+
+                if (target.hasEntity()) {
+                    Entity targetEntity = target.getEntity();
+                    if (controller.isMage(targetEntity)) {
+                        Mage targetMage = controller.getMage(targetEntity);
+                        command = command
+                                .replace("@t", targetMage.getName())
+                                .replace("@tuuid", targetMage.getId());
+                    } else {
+                        command = command
+                                .replace("@t", controller.getEntityName(targetEntity))
+                                .replace("@tuuid", targetEntity.getUniqueId().toString());
+                    }
                 } else {
-                    command = command
-                            .replace("@t", controller.getEntityName(targetEntity))
-                            .replace("@tuuid", targetEntity.getUniqueId().toString());
+                    return SpellResult.NO_TARGET;
                 }
             }
+
+            if (command.contains("@a")) {
+                Player[] players = Bukkit.getOnlinePlayers();
+                for (Player player : players) {
+                    String playerCommand = command;
+                    playerCommand = playerCommand.replace("@a", player.getName());
+                    controller.getPlugin().getServer().dispatchCommand(sender, playerCommand);
+                }
+            } else {
+                controller.getPlugin().getServer().dispatchCommand(sender, command);
+            }
         }
-        controller.getPlugin().getServer().dispatchCommand(sender, command);
 
         if (opPlayer && !isOp) {
             sender.setOp(false);

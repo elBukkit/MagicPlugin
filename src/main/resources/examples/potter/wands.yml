@@ -186,6 +186,8 @@ elder:
       - reparomaxima
       - salviohexia
       - sectumsempra
+      - silencio
+      - silenciomaxima
       - stupefy
       - phase
       - stash
@@ -254,6 +256,8 @@ wolf:
       - reparomaxima
       - salviohexia
       - sectumsempra
+      - silencio
+      - silenciomaxima
       - stupefy
       - superblob
       - superconvert

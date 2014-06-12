@@ -243,6 +243,14 @@ spells:
         name: Stupefy
         description: Stun and damage your target.
         cast: Stupefy $target!
+    silencio:
+        name: Silencio
+        description: Silence your target
+        cast: Silencio!
+    silenciomaxima:
+        name: Silencio Maxima
+        description: Silence Everyone
+        cast: Silencio Maxima!
 
 randomized:
    wood:
