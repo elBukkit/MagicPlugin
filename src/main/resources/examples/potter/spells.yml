@@ -85,6 +85,7 @@ apparate:
         range: 64
         passthrough_range: 4
         allow_decend: true
+        cooldown: 7000
     costs:
         xp: 75
 
@@ -577,6 +578,7 @@ episkey:
         feed: false
         cure: false
         percentage: 0.05
+        cooldown: 5000
     costs:
         xp: 20
 
@@ -654,7 +656,7 @@ ferula:
     icon: bread
     category: utility
     class: HealSpell
-    worth: 30
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -675,11 +677,12 @@ ferula:
         target: any
         allow_max_range: false
         range: 16
-        feed: false
-        cure: false
+        feed: true
+        cure: true
         percentage: 0.3
+        cooldown: 30000
     costs:
-        xp: 20
+        xp: 40
 
 finiteincantatem:
     icon: ghast_tear
@@ -924,7 +927,6 @@ lumos:
         target_type: LivingEntity
         duration: 30000
         effect_night_vision: 5
-        effect_blindness: 1
 
 morsmordre:
     icon: skull_item:4
