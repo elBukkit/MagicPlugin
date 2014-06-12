@@ -142,7 +142,7 @@ public abstract class UndoableSpell extends TargetingSpell {
                 }
 
                 // Check for protected players
-                if (targetMage != null && targetMage.isSuperProtected() && !isSourcePlayer) {
+                if (targetMage != null && isSuperProtected(targetMage) && !isSourcePlayer) {
                     continue;
                 }
 

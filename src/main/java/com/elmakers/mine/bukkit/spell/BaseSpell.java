@@ -835,7 +835,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Don't allow casting if the player is confused
         LivingEntity livingEntity = mage.getLivingEntity();
-        if (livingEntity != null && !mage.isSuperPowered() && !mage.isSuperProtected() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
+        if (livingEntity != null && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
             processResult(SpellResult.CURSED);
             return false;
         }

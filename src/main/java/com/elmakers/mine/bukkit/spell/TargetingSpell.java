@@ -48,6 +48,7 @@ public abstract class TargetingSpell extends BaseSpell {
     protected Location                          targetLocation2;
     private Entity								targetEntity = null;
     private boolean								bypassBuildRestriction  = false;
+    private boolean                             bypassProtection        = false;
 
     private boolean                             allowMaxRange           = false;
 
@@ -396,10 +397,7 @@ public abstract class TargetingSpell extends BaseSpell {
             if (!controller.isElemental(entity) && targetEntityType != null && !targetEntityType.isAssignableFrom(entity.getClass())) continue;
 
             // check for Superprotected Mages
-            if (controller.isMage(entity)) {
-                Mage targetMage = controller.getMage(entity);
-                if (targetMage.isSuperProtected()) continue;
-            }
+            if (isSuperProtected(entity)) continue;
 
             // Ignore invisible entities
             if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
@@ -413,6 +411,19 @@ public abstract class TargetingSpell extends BaseSpell {
 
         Collections.sort(scored);
         return scored;
+    }
+
+    protected boolean isSuperProtected(Mage mage) {
+        return !bypassProtection && mage.isSuperProtected();
+    }
+
+    protected boolean isSuperProtected(Entity entity) {
+        if (bypassProtection || !controller.isMage(entity)) {
+            return false;
+        }
+
+        Mage targetMage = controller.getMage(entity);
+        return isSuperProtected(targetMage);
     }
 
     protected int getMaxRange()
@@ -548,6 +559,8 @@ public abstract class TargetingSpell extends BaseSpell {
         range = parameters.getInt("range", range);
         fov = parameters.getDouble("fov", fov);
         allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
+        bypassProtection = parameters.getBoolean(("bypass_protection"));
+        bypassProtection = parameters.getBoolean("bp", bypassProtection);
 
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);

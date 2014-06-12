@@ -93,7 +93,11 @@ public class CompatibilityUtils extends NMSUtils {
         Collection<PotionEffect> currentEffects = entity.getActivePotionEffects();
         for (PotionEffect currentEffect : currentEffects) {
             if (currentEffect.getType().equals(effect.getType())) {
-                if (currentEffect.getAmplifier() > effect.getAmplifier()) {
+                if (effect.getAmplifier() < 0) {
+                    applyEffect = false;
+                    entity.removePotionEffect(effect.getType());
+                    break;
+                } else if (currentEffect.getAmplifier() > effect.getAmplifier()) {
                     applyEffect = false;
                     break;
                 }
