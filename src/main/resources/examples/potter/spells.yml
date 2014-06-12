@@ -196,25 +196,39 @@ broom:
 avadakedavra:
     icon: poisonous_potato
     category: unforgiveable
-    class: ProjectileSpell
+    class: PotionEffectSpell
     pvp_restricted: true
     worth: 1000
     effects:
         cast:
         -  class: EffectSingle
            sound: creeper_hiss
+           location: target
            effectlib:
              class: AtomLocationEffect
              iterations: 32
+             particleNucleus: slime
+        -  class: EffectSingle
+           location: source
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: slime
+             lenghtGrow: 0.4
         -  class: EffectSingle
            location: target
            effectlib:
              class: SmokeEntityEffect
              iterations: 120
     parameters:
-        projectile: Snowball
-        effect_harm: 50,5
-        radius: 4
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+        target: entity
+        player_damage: 100
+        entity_damage: 500
+        check_destructible: false
+        cooldown: 30000
     costs:
         xp: 800
 
@@ -454,12 +468,13 @@ crucio:
         cast:
         -  class: EffectSingle
            sound: burp
-        -  class: EffectTrail
-           particle: red_dust
-           particle_count: 3
+        -  class: EffectSingle
+           location: source
            effectlib:
              class: ConeLocationEffect
-             iterations: 18
+             iterations: 20
+             particle: mob_spell
+             lenghtGrow: 0.3
         -  class: EffectRing
            particle: town_aura
            location: target
@@ -551,7 +566,8 @@ episkey:
         -  class: EffectRing
            effectlib:
              class: LoveEntityEffect
-             iterations: 20
+             iterations: 10
+             period: 2
            particle: heart
            location: target
     parameters:
@@ -561,7 +577,7 @@ episkey:
         range: 16
         feed: false
         cure: false
-        percentage: 0.1
+        percentage: 0.05
     costs:
         xp: 20
 
@@ -651,9 +667,9 @@ ferula:
            particle: heart
         -  class: EffectRing
            effectlib:
-             class: ShieldEntityEffect
-             iterations: 30
-           particle: heart
+             class: LoveEntityEffect
+             iterations: 20
+             period: 2
            location: target
     parameters:
         target_type: LivingEntity
@@ -662,7 +678,7 @@ ferula:
         range: 16
         feed: false
         cure: false
-        percentage: 0.7
+        percentage: 0.3
     costs:
         xp: 20
 
@@ -936,6 +952,22 @@ morsmordre:
     costs:
         xp: 80
 
+periculum:
+    icon: firework
+    category: light
+    class: FireworkSpell
+    worth: 2
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: firework_launch
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 16
+    costs:
+        xp: 10
+
 petrificustotalus:
     icon: skull_item
     category: hex
@@ -946,12 +978,13 @@ petrificustotalus:
         cast:
         -  class: EffectSingle
            sound: burp
-        -  class: EffectTrail
-           particle: town_aura
-           particle_count: 3
+        -  class: EffectSingle
+           location: source
            effectlib:
              class: ConeLocationEffect
              iterations: 20
+             particle: witch_magic
+             lenghtGrow: 0.4
         -  class: EffectRing
            particle: town_aura
            location: target
@@ -968,6 +1001,59 @@ petrificustotalus:
         effect_slow: 20
         effect_confusion: 20
         cooldown: 5000
+
+protego:
+    icon: magma_cream
+    category: utility
+    class: PotionEffectSpell
+    worth: 60
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_purr
+        -  class: EffectTrail
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 30
+           particle: spell
+        -  class: EffectRing
+           effectlib:
+             class: ShieldEntityEffect
+             particle: spell
+             iterations: 20
+             period: 2
+           location: target
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 8
+        duration: 10000
+        effect_damage_resistance: 100
+    costs:
+        xp: 40
+
+protegomaxima:
+    icon: magma_cream
+    category: engineering
+    class: ConstructSpell
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        thickness: 1
+        target: select
+        type: sphere
+        transparent: transparent_to_construction
+    costs:
+        xp: 200
 
 reducio:
     icon: red_mushroom
@@ -1129,10 +1215,15 @@ sectumsempra:
         -  class: EffectSingle
            location: target
            particle: lava_dripping
-           particle_data: 1
            effectlib:
              class: BleedEntityEffect
              duration: 150
+        -  class: EffectSingle
+           location: source
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: lava_dripping
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1191,7 +1282,7 @@ silenciomaxima:
     parameters:
         commands:
         - mute @a 10
-        - broadcast SILENCIO MAXIMA!
+        - say §dSILENCIO MAXIMA!
         target: none
     costs:
         xp: 500
@@ -1213,8 +1304,8 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-             particle: water_dripping
-             lenghtGrow: 0.5
+             particle: instant_spell
+             lenghtGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1535,27 +1626,7 @@ superring:
         transparent: transparent_to_construction
     costs:
         xp: 100
-supershell:
-    icon: magma_cream
-    category: engineering
-    class: ConstructSpell
-    worth: 200
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 64
-        max_dimension: 16
-        thickness: 1
-        target: select
-        type: sphere
-        transparent: transparent_to_construction
-    costs:
-        xp: 200
+
 superdome:
     icon: mushroom_soup
     category: engineering

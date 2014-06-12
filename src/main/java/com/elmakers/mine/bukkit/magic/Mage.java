@@ -31,6 +31,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
@@ -785,14 +787,29 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public boolean isSuperProtected()
 	{
-		// if (controller.hasPermission(getPlayer(), "Magic.protected")) return true;
+		if (controller.hasPermission(getPlayer(), "Magic.protected")) return true;
+
+        // Don't allow casting if the player is confused
+        LivingEntity livingEntity = getLivingEntity();
+        if (livingEntity != null && livingEntity.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+            Collection<PotionEffect> effects = livingEntity.getActivePotionEffects();
+            for (PotionEffect effect : effects) {
+                if (effect.getType() == PotionEffectType.DAMAGE_RESISTANCE) {
+                    if (effect.getAmplifier() >= 100) {
+                        return true;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
 		return activeWand != null && activeWand.isSuperProtected();
 	}
 	
 	@Override
 	public boolean isSuperPowered()
 	{
-		// if (controller.hasPermission(getPlayer(), "Magic.powered")) return true;		
+		if (controller.hasPermission(getPlayer(), "Magic.powered")) return true;
 		return activeWand != null && activeWand.isSuperPowered();
 	}
 	

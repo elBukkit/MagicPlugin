@@ -69,7 +69,6 @@ spells:
     ascendio:
         name: Ascendio
         description: Lifts the caster high into the air
-        cast: Ascendio!
     avadakedavra:
         name: Avada Kedavra
         description: Kill your target.
@@ -196,10 +195,26 @@ spells:
         name: Nox
         description: The anti-Lumos
         area: Nox!
+    periculum:
+        name: Periculum
+        description: Shoot fireworks from your wand
+        cast: Periculum!
     petrificustotalus:
         name: Petrificus Totalus
         description: Paralyze your target
         cast: Petrificus Totalus!
+    protego:
+        name: Protego
+        description: Protego
+        cast: Protego $target!
+    protegomaxima:
+        name: Protego Maximima
+        description: Create a large hollow sphere
+        usage: Cast twice to construct
+        cancel: Protego cancelled
+        target_selected: Cast again to build shell
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     reducio:
         name: Reducio
         description: Shrink your target
@@ -246,11 +261,10 @@ spells:
     silencio:
         name: Silencio
         description: Silence your target
-        cast: Silencio!
+        cast: Silencio $target!
     silenciomaxima:
         name: Silencio Maxima
         description: Silence Everyone
-        cast: Silencio Maxima!
 
 randomized:
    wood:
