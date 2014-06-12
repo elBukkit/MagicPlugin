@@ -52,7 +52,7 @@ public class GotoSpell extends UndoableSpell
 			if (targetEntity != null && controller.isMage(targetEntity)) {
 				Mage targetMage = controller.getMage(targetEntity);
 				// Check for protected players (admins, generally...)
-				if (targetMage.isSuperProtected()) {
+				if (isSuperProtected(targetMage)) {
 					releaseTarget();
 				}
 			}
@@ -101,7 +101,7 @@ public class GotoSpell extends UndoableSpell
 			if (controller.isMage(targetEntity)) {
 				Mage targetMage = controller.getMage(targetEntity);
 				// Check for protected players (admins, generally...)
-				if (targetMage.isSuperProtected()) {
+				if (isSuperProtected(targetMage)) {
 					return SpellResult.NO_TARGET;
 				}
 			}

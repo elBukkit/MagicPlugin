@@ -57,7 +57,7 @@ public class PotionEffectSpell extends UndoableSpell
                     Mage targetMage = controller.getMage(targetEntity);
 
                     // Check for protected players
-                    if (targetMage.isSuperProtected()) {
+                    if (isSuperProtected(targetMage)) {
                         continue;
                     }
 

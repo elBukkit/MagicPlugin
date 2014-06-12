@@ -104,7 +104,7 @@ public class PushSpell extends UndoableSpell
 		if (controller.isMage(target)) {
 			Mage targetMage = controller.getMage(target);
 			// Check for protected players (admins, generally...)
-			if (targetMage.isSuperProtected()) {
+			if (isSuperProtected(targetMage)) {
 				return;
 			}
 		}
