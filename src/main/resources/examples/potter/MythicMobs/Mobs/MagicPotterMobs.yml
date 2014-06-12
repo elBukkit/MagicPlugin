@@ -50,13 +50,16 @@ Sludge:
   Skills:
   - skill SludgePoison >0 0.2
 Deatheater:
-  Mobtype: witch
+  Mobtype: angrypigzombie
   Display: Deatheater
-  Health: 120
+  Health: 40
   Damage: 4
   Equipment:
   - Wand:0
-  - DeatheaterCloak:3
+  - Deatheater_Helmet:4
+  - Deatheater_Chestplate:3
+  - Deatheater_Leggings:2
+  - Deatheater_Boots:1
   Drops:
   - MidBoss
   Options:

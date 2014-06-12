@@ -225,8 +225,7 @@ avadakedavra:
         allow_max_range: false
         range: 16
         target: entity
-        player_damage: 100
-        entity_damage: 500
+        damage: 100
         check_destructible: false
         cooldown: 30000
     costs:
@@ -1015,13 +1014,11 @@ protego:
            effectlib:
              class: ConeLocationEffect
              iterations: 30
-           particle: spell
+           particle: magic_runes
         -  class: EffectRing
            effectlib:
              class: ShieldEntityEffect
-             particle: spell
-             iterations: 20
-             period: 2
+             particle: magic_runes
            location: target
     parameters:
         target_type: LivingEntity

@@ -1,11 +1,23 @@
 DeatereaterCloak:
-  Id: 299
+  Id: 315
   Display: '&Deatheater Cloak'
   Lore:
   - '&6A dirty cloak taken from'
   - '&6the corpse of a Deatheater.'
   Options:
     Color: 255,40,40
+Deatheater_Helmet:
+  Id: 314
+  Data: 0
+Deatheater_Chestplate:
+  Id: 315
+  Data: 0
+Deatheater_Leggings:
+  Id: 316
+  Data: 0
+Deatheater_Boots:
+  Id: 317
+  Data: 0
 Firebender_Helmet:
   Id: 298
   Data: 0
