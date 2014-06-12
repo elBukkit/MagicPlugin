@@ -787,14 +787,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public boolean isSuperProtected()
 	{
-		if (controller.hasPermission(getPlayer(), "Magic.protected")) return true;
+		if (isPlayer() && controller.hasPermission(getPlayer(), "Magic.protected")) return true;
 
-        // Don't allow casting if the player is confused
+        // High damage resistance is treated as "protected"
         LivingEntity livingEntity = getLivingEntity();
         if (livingEntity != null && livingEntity.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
             Collection<PotionEffect> effects = livingEntity.getActivePotionEffects();
             for (PotionEffect effect : effects) {
-                if (effect.getType() == PotionEffectType.DAMAGE_RESISTANCE) {
+                if (effect.getType().equals(PotionEffectType.DAMAGE_RESISTANCE)) {
                     if (effect.getAmplifier() >= 100) {
                         return true;
                     } else {
@@ -809,7 +809,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public boolean isSuperPowered()
 	{
-		if (controller.hasPermission(getPlayer(), "Magic.powered")) return true;
+		if (isPlayer() && controller.hasPermission(getPlayer(), "Magic.powered")) return true;
 		return activeWand != null && activeWand.isSuperPowered();
 	}
 	
