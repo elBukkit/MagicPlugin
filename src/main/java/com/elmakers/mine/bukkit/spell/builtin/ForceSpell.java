@@ -77,7 +77,7 @@ public class ForceSpell extends TargetingSpell
 					return SpellResult.NO_TARGET;
 				}
 				// Check for protected players
-				if (!isSuperProtected(targetMage)) {
+				if (isSuperProtected(targetMage)) {
 					return SpellResult.NO_TARGET;
 				}
 			}
