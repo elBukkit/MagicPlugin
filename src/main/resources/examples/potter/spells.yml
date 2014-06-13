@@ -140,11 +140,18 @@ arrow:
         -  class: EffectSingle
            sound: shoot_arrow
            location: origin
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+             iterations: 4
     parameters:
       projectile: Arrow
-      speed: 5
+      speed: 2
       spread: 6
       fire: false
+      tick_increase: 5000
+      cooldown: 3000
     costs:
         xp: 25
 
@@ -195,7 +202,7 @@ broom:
         xp: 10
 
 avadakedavra:
-    icon: poisonous_potato
+    icon: ink_sack:10
     category: unforgiveable
     class: PotionEffectSpell
     pvp_restricted: true
@@ -299,7 +306,7 @@ beat:
         effect_confusion: 5
 
 bombarda:
-    icon: melon_seeds
+    icon: ink_sack:7
     category: combat
     class: BoomSpell
     pvp_restricted: true
@@ -325,7 +332,7 @@ bombarda:
         xp: 20
 
 bombardamaxima:
-    icon: fireball
+    icon: ink_sack:7
     category: combat
     class: BoomSpell
     pvp_restricted: true
@@ -550,7 +557,7 @@ duro:
         xp: 100
 
 episkey:
-    icon: cookie
+    icon: ink_sack:9
     category: utility
     class: HealSpell
     worth: 30
@@ -653,7 +660,7 @@ expelliarmus:
         xp: 200
 
 ferula:
-    icon: bread
+    icon: ink_sack:9
     category: utility
     class: HealSpell
     worth: 50
@@ -685,7 +692,7 @@ ferula:
         xp: 40
 
 finiteincantatem:
-    icon: ghast_tear
+    icon: ink_sack:13
     category: dueling
     class: UndoSpell
     worth: 250
@@ -702,6 +709,7 @@ finiteincantatem:
         target_blocks: false
         target_timeout: 30000
         range: 32
+        bypass_protection: true
     costs:
         xp: 150
 
@@ -872,7 +880,7 @@ impervius:
         xp: 100
 
 incendio:
-    icon: fire
+    icon: fireball
     category: combat
     class: FireSpell
     pvp_restricted: true
@@ -901,7 +909,7 @@ incendio:
         xp: 35
 
 lumos:
-    icon: double_plant
+    icon: ink_sack:11
     category: utility
     worth: 10
     class: PotionEffectSpell
@@ -1004,7 +1012,7 @@ petrificustotalus:
         cooldown: 5000
 
 protego:
-    icon: magma_cream
+    icon: ink_sack:12
     category: utility
     class: PotionEffectSpell
     worth: 60
@@ -1035,7 +1043,7 @@ protego:
         xp: 40
 
 protegomaxima:
-    icon: magma_cream
+    icon: ink_sack:12
     category: engineering
     class: ConstructSpell
     worth: 200
@@ -1238,7 +1246,7 @@ sectumsempra:
         xp: 50
 
 silencio:
-    icon: raw_beef
+    icon: ink_sack:3
     category: combat
     class: PotionEffectSpell
     worth: 70
@@ -1265,7 +1273,7 @@ silencio:
         xp: 50
 
 silenciomaxima:
-    icon: cooked_beef
+    icon: ink_sack:3
     category: utility
     class: CommandSpell
     worth: 500
@@ -1374,7 +1382,7 @@ day:
         xp: 40
 
 nox:
-    icon: coal
+    icon: ink_sack:0
     category: utility
     class: TorchSpell
     worth: 130
