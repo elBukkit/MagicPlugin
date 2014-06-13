@@ -152,6 +152,7 @@ spells:
         description: Counter target player's spell
         usage: Only works on recently cast spells
         cast: "Finite Incantatem &d&o$target &r&6$spell!"
+        fail:
         cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"
     flagrate:
         name: Flagrate
@@ -319,7 +320,7 @@ wands:
 
     default:
         name: Wand
-        description: $wood with $core core
+        description: $wood and $core
 
     gryffindor:
         name: Sword of Gryffindor
@@ -337,13 +338,17 @@ wands:
         name: Wand of Ravenclaw
         description: Intelligence and Wit
 
+    staff:
+        name: House Wand
+        description: A powerful Head of House Wand
+
     elder:
         name: Elder Wand
-        description: Elder Wood and Thestral Hair Core
+        description: Elder Wood and Thestral Hair
 
     wolf:
         name: The Wolf
-        description: Werewolf hair core
+        description: Redwood and Werewolf Hair
 
     portkey:
         name: Portkey
@@ -353,6 +358,22 @@ wands:
         name: Nimbus 2000
         description: So shiny!
 
+    bluebottle:
+        name: Bluebottle
+        description: The Family Broom
+
+    cleansweep1:
+        name: Cleansweep One
+        description: Like no other!
+
+    crackedbroom:
+        name: Cracked Broomstick
+        description: May have some life left in it.
+
+    firebolt:
+        name: Firebolt
+        description: Trusty.
+
     beater:
         name: Beater Bat
         description: Whack!
@@ -360,3 +381,19 @@ wands:
     camera:
         name: Camera
         description: Take a picture of your target
+
+    energy1:
+        name: Energy Upgrade Level 1
+        description: Upgrade to 75 Energy
+    energy2:
+        name: Energy Upgrade Level 2
+        description: Upgrade to 100 Energy
+    energy3:
+        name: Energy Upgrade Level 3
+        description: Upgrade to 150 Energy
+    energy4:
+        name: Energy Upgrade Level 4
+        description: Upgrade to 200 Energy
+    energy5:
+        name: Energy Upgrade Level 5
+        description: Upgrade to 250 Energy

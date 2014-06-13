@@ -16,13 +16,32 @@ default:
     spells:
      - flagrate
 
+staff:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: master
+    bound: true
+    keep: true
+    quiet: 1
+    xp_max: 50
+    xp: 400
+    xp_regeneration: 30
+    effect_color: 'DDDDDD'
+    effect_bubbles: false
+    spells:
+     - flagrate
+     - ascendio
+     - stupefy
+     - flipendo
+     - accio
+     - lumos
+
 gryffindor:
     icon: diamond_sword
     path: master
     keep: true
     quiet: 1
-    xp_max: 100
-    xp_regeneration: 10
+    xp_max: 350
+    xp_regeneration: 25
     effect_color: '880000'
     effect_particle: red_dust
     effect_particle_count: 1
@@ -49,8 +68,8 @@ slytherin:
     path: master
     keep: true
     quiet: 1
-    xp_max: 500
-    xp_regeneration: 100
+    xp_max: 350
+    xp_regeneration: 25
     effect_color: '008800'
     effect_bubbles: false
     active_spell: ascendio
@@ -68,13 +87,39 @@ slytherin:
       - reparifarge
       - sectumsempra
 
+ravenclaw:
+    icon: gold_pickaxe
+    path: master
+    keep: true
+    quiet: 1
+    xp_max: 350
+    xp_regeneration: 25
+    effect_color: '000088'
+    effect_bubbles: true
+    active_spell: ascendio
+    spells:
+      - accio
+      - aguamenti
+      - arrow
+      - ascendio
+      - bombarda
+      - deletrius
+      - episkey
+      - finiteincantatem
+      - flipendo
+      - immobulus
+      - impervius
+      - lumos
+      - reparifarge
+      - stupefy
+
 allis0n:
     icon: wood_hoe
     path: master
     keep: true
     quiet: 1
-    xp_max: 1000
-    xp_regeneration: 200
+    xp_max: 500
+    xp_regeneration: 50
     effect_color: '00AACC'
     effect_bubbles: false
     active_spell: ascendio
@@ -101,32 +146,6 @@ allis0n:
       - sectumsempra
       - diffindo
 
-ravenclaw:
-    icon: gold_pickaxe
-    path: master
-    keep: true
-    quiet: 1
-    xp_max: 100
-    xp_regeneration: 10
-    effect_color: '000088'
-    effect_bubbles: true
-    active_spell: ascendio
-    spells:
-      - accio
-      - aguamenti
-      - arrow
-      - ascendio
-      - bombarda
-      - deletrius
-      - episkey
-      - finiteincantatem
-      - flipendo
-      - immobulus
-      - impervius
-      - lumos
-      - reparifarge
-      - stupefy
-
 elder:
     icon: iron_hoe
     path: master
@@ -134,10 +153,10 @@ elder:
     keep: true
     quiet: 1
     protection: 1
-    xp_max: 1000
-    xp_regeneration: 200
+    xp_max: 500
+    xp_regeneration: 50
     haste: 0.1
-    effect_color: '00AACC'
+    effect_color: 'FF00FF'
     effect_particle: magic_runes
     effect_particle_count: 1
     effect_particle_data: 1
@@ -312,6 +331,10 @@ camera:
     spells:
         - camera
 
+#
+# Brooms
+#
+
 nimbus:
     active_spell: broom
     icon: blaze_rod
@@ -319,7 +342,52 @@ nimbus:
     locked: true
     xp_max: 1000
     xp_regeneration: 500
+    effect_color: '880088'
+    spells:
+        - broom
+
+crackedbroom:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: false
+    locked: true
+    xp_max: 20
+    xp_regeneration: 5
+    uses: 10
+    effect_color: '000088'
+    spells:
+        - broom
+
+bluebottle:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: false
+    locked: true
+    xp_max: 20
+    xp_regeneration: 5
     effect_color: '0000FF'
+    spells:
+        - broom
+
+firebolt:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: false
+    locked: true
+    xp_max: 200
+    xp_regeneration: 20
+    effect_color: 'FF0000'
+    spells:
+        - broom
+
+cleansweep1:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: false
+    locked: true
+    xp_max: 700
+    xp_regeneration: 100
+    effect_color: 'FFFF00'
     spells:
         - broom
 
@@ -393,30 +461,36 @@ rainboweffects:
     effect_particle: mob_spell
     effect_parcticle_data: 2
     effect_particle_count: 3
-mana1:
+energy1:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    xp_max: 75
+    xp_regeneration: 7
+energy2:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    xp_max: 100
+    xp_regeneration: 10
+energy3:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    xp_max: 150
+    xp_regeneration: 12
+energy4:
     upgrade: true
     indestructible: false
     icon: arrow
     xp_max: 200
+    xp_regeneration: 15
+energy5:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    xp_max: 250
     xp_regeneration: 20
-mana2:
-    upgrade: true
-    indestructible: false
-    icon: arrow
-    xp_max: 400
-    xp_regeneration: 40
-mana3:
-    upgrade: true
-    indestructible: false
-    icon: arrow
-    xp_max: 1000
-    xp_regeneration: 100
-mana4:
-    upgrade: true
-    indestructible: false
-    icon: arrow
-    xp_max: 1500
-    xp_regeneration: 150
 manaboost:
     upgrade: true
     indestructible: false
