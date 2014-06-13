@@ -32,7 +32,7 @@ public class UndoSpell extends TargetingSpell
 			if (undoList != null) {
 				undoListName = undoList.getName();
 			}
-			return undoList != null ? SpellResult.CAST : SpellResult.FAIL;
+			return undoList != null ? SpellResult.CAST : SpellResult.NO_TARGET;
 		}
 
         if (!parameters.getBoolean("target_blocks", true)) {
