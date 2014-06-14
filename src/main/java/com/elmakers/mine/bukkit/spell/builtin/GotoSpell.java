@@ -120,11 +120,6 @@ public class GotoSpell extends UndoableSpell
 			registerForUndo();
 			return SpellResult.CAST;
 		}
-		
-		if (targetEntity != null) {
-			releaseTarget();
-			return SpellResult.CANCEL;
-		}
 
 		List<String> playerNames = new ArrayList<String>(controller.getPlayerNames());
 		if (playerNames.size() == 1) return SpellResult.NO_TARGET;
