@@ -398,7 +398,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
             // check for Superprotected Mages
             if (isSuperProtected(entity)) continue;
-
             // Ignore invisible entities
             if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 

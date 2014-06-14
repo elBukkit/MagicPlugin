@@ -759,12 +759,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         initializeDefaultSound(SpellResult.INSUFFICIENT_RESOURCES, Sound.NOTE_BASS, 1.0f, 1.2f);
         initializeDefaultSound(SpellResult.INSUFFICIENT_PERMISSION, Sound.NOTE_BASS, 1.1f, 1.5f);
         initializeDefaultSound(SpellResult.COOLDOWN, Sound.NOTE_SNARE_DRUM, 1.1f, 0.9f);
-        initializeDefaultSound(SpellResult.NO_TARGET, Sound.NOTE_STICKS, 1.1f, 0.9f);
+        initializeDefaultSound(SpellResult.NO_TARGET, Sound.NOTE_BASS_DRUM, 1.1f, 0.9f);
 
         if (!effects.containsKey(SpellResult.TARGET_SELECTED)) {
             List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
             EffectPlayer targetHighlight = new EffectSingle(controller.getPlugin());
-            targetHighlight.setSound(Sound.ANVIL_USE);
             targetHighlight.setParticleType(ParticleType.HAPPY_VILLAGER);
             targetHighlight.setLocationType("target");
             targetHighlight.setOffset(0.5f, 0.5f, 0.5f);
@@ -772,6 +771,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             EffectPlayer trail = new EffectTrail(controller.getPlugin());
             trail.setParticleType(ParticleType.WATER_DRIPPING);
             effectList.add(trail);
+            EffectPlayer sound = new EffectSingle(controller.getPlugin());
+            sound.setSound(Sound.ANVIL_USE);
+            sound.setLocationType("source");
+            effectList.add(sound);
             effects.put(SpellResult.TARGET_SELECTED, effectList);
         }
 
@@ -905,7 +908,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     {
                         String baseMessage = Messages.get("costs.insufficient_resources");
                         String costDescription = cost.getDescription(mage);
-                        sendMessage(baseMessage.replace("$cost", costDescription));
+                        castMessage(baseMessage.replace("$cost", costDescription));
                         processResult(SpellResult.INSUFFICIENT_RESOURCES);
                         return false;
                     }
