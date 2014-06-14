@@ -265,7 +265,14 @@ spells:
         cast: Silencio $target!
     silenciomaxima:
         name: Silencio Maxima
+        description: REALLY silence your target
+        cast: Silencio Maxima $target!
+    silenciototalus:
+        name: Silencio Totalus
         description: Silence Everyone
+    jail:
+        name: Jail
+        description: Do not pass Go...
 
 randomized:
    wood:

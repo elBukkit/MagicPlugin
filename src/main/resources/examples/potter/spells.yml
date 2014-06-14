@@ -1280,12 +1280,62 @@ silenciomaxima:
              class: DnaLocationEffect
     parameters:
         commands:
+        - mute @t 30
+        target_type: Player
+        target: other
+        range: 16
+    costs:
+        xp: 400
+
+jail:
+    icon: iron_fence
+    category: utility
+    class: CommandSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: source
+        -  class: EffectSingle
+           location: source
+           effectlib:
+             class: DnaLocationEffect
+    parameters:
+        commands:
+        - warp prison @t
+        target_type: Player
+        target: other
+        range: 16
+    costs:
+        xp: 800
+
+silenciototalus:
+    icon: ink_sack:3
+    category: utility
+    class: CommandSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: source
+        -  class: EffectSingle
+           location: source
+           effectlib:
+             class: DnaLocationEffect
+    parameters:
+        commands:
         - mute @a 10
         - castp @p silencio player @a
-        - say §dSILENCIO MAXIMA!
+        - say §dSILENCIO TOTALUS!
         target: none
     costs:
-        xp: 1000
+        xp: 500
 
 stupefy:
     icon: ink_sack:4

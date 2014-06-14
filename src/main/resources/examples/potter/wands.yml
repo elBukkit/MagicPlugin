@@ -34,6 +34,9 @@ staff:
      - flipendo
      - accio
      - lumos
+     - silencio
+     - silenciomaxima
+     - jail
 
 gryffindor:
     icon: diamond_sword
@@ -194,6 +197,7 @@ elder:
       - imperio
       - impervius
       - incendio
+      - jail
       - lumos
       - morsmordre
       - nox
@@ -209,6 +213,7 @@ elder:
       - sectumsempra
       - silencio
       - silenciomaxima
+      - silenciototalus
       - stupefy
       - phase
       - stash
@@ -264,6 +269,7 @@ wolf:
       - imperio
       - impervius
       - incendio
+      - jail
       - lumos
       - morsmordre
       - nox
@@ -282,6 +288,7 @@ wolf:
       - sectumsempra
       - silencio
       - silenciomaxima
+      - silenciototalus
       - stupefy
       - superblob
       - superconvert
