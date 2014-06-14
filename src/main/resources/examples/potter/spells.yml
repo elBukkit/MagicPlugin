@@ -147,12 +147,13 @@ arrow:
              iterations: 8
     parameters:
       projectile: Arrow
+      damage: 3
       speed: 2
       spread: 6
       fire: false
       tick_increase: 5000
     costs:
-        xp: 30
+        xp: 10
 
 ascendio:
     icon: ink_sack:8
@@ -1226,12 +1227,11 @@ sectumsempra:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 4
+        range: 5
         target: entity
-        player_damage: 5
-        entity_damage: 50
-        check_destructible: false
-        cooldown: 3500
+        player_damage: 6
+        entity_damage: 10
+        check_destructible: true
     costs:
         xp: 35
 
@@ -1363,13 +1363,12 @@ stupefy:
            firework: ball
     parameters:
         range: 35
-        fov: 0.1
+        fov: 0.12
         target_type: LivingEntity
         cast_on_no_target: true
         duration: 3000
         damage: 7
-        effect_confusion: 2
-        cooldown: 2000
+        effect_confusion: 22
     costs:
         xp: 50
 

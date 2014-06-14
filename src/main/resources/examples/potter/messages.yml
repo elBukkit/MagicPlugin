@@ -2,6 +2,13 @@
 # Harry Potter themed in-game text
 #
 
+
+cooldown:
+    wait_seconds: You must wait another $seconds seconds.
+    wait_minutes: You must wait another $minutes minutes.
+    wait_hours: You must wait another $hours hours.
+    wait_moment: You must wait a moment.
+
 worlds:
     Hogwarts:
         name: The Magical World
