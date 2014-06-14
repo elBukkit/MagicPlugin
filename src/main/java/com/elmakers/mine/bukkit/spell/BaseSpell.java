@@ -393,7 +393,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      */
     public void sendMessage(String message)
     {
-        if (canSendMessage() && message != null && message.length() > 0)
+        if (message != null && message.length() > 0)
         {
             mage.sendMessage(message);
             lastMessageSent = System.currentTimeMillis();
