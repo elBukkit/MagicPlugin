@@ -6,14 +6,14 @@ author: NathanWolf
 description : Mmmmmmaaaaagic!
 softdepend: [WorldGuard,WorldEdit,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core]
 commands:
-  cast:
+  mcast:
     description: Cast a spell directly
     usage: cast <spellname> [parameters]
-    permission: Magic.commands.cast
-  castp:
+    permission: Magic.commands.mcast
+  mcastp:
     description: Cast a spell directly on another player
     usage: castp <player> <spellname> [parameters]
-    permission: Magic.commands.cast
+    permission: Magic.commands.mcastp
   spells:
     description: List all the spells you know
     usage: spells [category]
@@ -35,11 +35,11 @@ permissions:
     description: Player may list spells
     type: boolean
     default: op
-  Magic.commands.cast:
+  Magic.commands.mcast:
     description: Player may cast command-line spells
     type: boolean
     default: op
-  Magic.commands.castp:
+  Magic.commands.mcastp:
     description: Player may cast command-line spells on behalf of another player
     type: boolean
     default: op

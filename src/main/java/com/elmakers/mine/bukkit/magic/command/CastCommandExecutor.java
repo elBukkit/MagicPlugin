@@ -32,14 +32,14 @@ public class CastCommandExecutor extends MagicTabExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		if (commandLabel.equalsIgnoreCase("castp"))
+		if (commandLabel.equalsIgnoreCase("mcastp"))
 		{
-			if (!api.hasPermission(sender, "Magic.commands.castp")) {
+			if (!api.hasPermission(sender, "Magic.commands.mcastp")) {
 				sendNoPermission(sender);
 				return true;
 			}
 			if (args.length < 1) {
-                if (sender != null) sender.sendMessage("Usage: /castp [player] [spell] <parameters>");
+                if (sender != null) sender.sendMessage("Usage: /mcastp [player] [spell] <parameters>");
 				return true;
 			}
             String playerName = args[0];
@@ -142,9 +142,9 @@ public class CastCommandExecutor extends MagicTabExecutor {
 			return processCastCommand(sender, player, args2);
 		}
 
-		if (commandLabel.equalsIgnoreCase("cast"))
+		if (commandLabel.equalsIgnoreCase("mcast"))
 		{
-			if (!api.hasPermission(sender, "Magic.commands.cast")) {
+			if (!api.hasPermission(sender, "Magic.commands.mcast")) {
 				sendNoPermission(sender);
 				return true;
 			}
@@ -176,7 +176,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 	public List<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
 		
-		if (commandName.equalsIgnoreCase("castp")) 
+		if (commandName.equalsIgnoreCase("mcastp"))
 		{
 			if (args.length == 1) {
 				options.addAll(api.getPlayerNames());
