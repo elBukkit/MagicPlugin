@@ -315,7 +315,7 @@ wolf:
 portkey:
     active_spell: recall
     icon: bucket,leather_boots
-    indestructible: false
+    indestructible: true
     cost_reduction: 2
     locked: true
     uses: 5
