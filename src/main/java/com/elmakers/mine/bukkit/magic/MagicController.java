@@ -417,6 +417,7 @@ public class MagicController implements Listener, MageController
 		// Check the region manager, or Factions
 		boolean allowed = true;		
 		if (bypassBuildPermissions) return true;
+        if (player != null && player.isPermissionSet("Magic.bypass_build")) return true;
 		
 		allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
 		allowed = allowed && factionsManager.hasBuildPermission(player, block);
@@ -3082,6 +3083,7 @@ public class MagicController implements Listener, MageController
     public boolean isPVPAllowed(Player player, Location location)
     {
         if (bypassPvpPermissions) return true;
+        if (player != null && player.isPermissionSet("Magic.bypass_pvp")) return true;
         return worldGuardManager.isPVPAllowed(player.getLocation())
             && (location == null || worldGuardManager.isPVPAllowed(location))
             && pvpManager.isPVPAllowed(player)

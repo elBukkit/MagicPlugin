@@ -239,8 +239,12 @@ permissions:
     description: A player is always superpowered
     default: false
     type: boolean
-  Magic.protected:
-    description: A player is always superprotected
+  Magic.bypass_pvp:
+    description: A player always bypasses PVP checks
+    default: false
+    type: boolean
+  Magic.bypass_build:
+    description: A player always bypsses build checks
     default: false
     type: boolean
   Magic.cast:
