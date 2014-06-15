@@ -308,6 +308,16 @@ wolf:
       - stained_glass
       - glass
 
+crudwand:
+    active_spell: broom
+    icon: stick
+    indestructible: false
+    locked: true
+    xp_max: 50
+    xp_regeneration: 5
+    uses: 20
+    effect_color: '440044'
+
  #
  # ITEMS
  #
@@ -350,7 +360,7 @@ nimbus:
     spells:
         - broom
 
-crackedbroom:
+crudbroom:
     active_spell: broom
     icon: blaze_rod
     indestructible: false

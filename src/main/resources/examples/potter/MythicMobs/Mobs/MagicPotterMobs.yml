@@ -1,12 +1,12 @@
 Acromantula:
-  Mobtype: spider
+  Mobtype: cavespider
   Display: '&6Acromantula'
-  Health: 500
-  Damage: 10
+  Health: 50
+  Damage: 5
   Skills:
   - skill SummonTarantulas >0 0.3
   Drops:
-  - MidBoss
+  - MinorBoss
   Options:
     AlwaysShowName: true
     MovementSpeed: 0.2
@@ -22,7 +22,7 @@ Tarantula:
 DreadKnight:
   Mobtype: witherskeleton
   Display: '&2DreadKnight'
-  Health: 50
+  Health: 70
   Damage: 8
   Drops:
   - MinorBoss
@@ -33,6 +33,7 @@ DreadKnight:
   - damage 0.5
   Options:
     MovementSpeed: 0.1
+    PreventOtherDrops: true
 Sludge:
   Mobtype: slime
   Display: Sludge
@@ -52,7 +53,7 @@ Sludge:
 Deatheater:
   Mobtype: angrypigzombie
   Display: Deatheater
-  Health: 40
+  Health: 100
   Damage: 4
   Equipment:
   - Wand:0
@@ -65,8 +66,9 @@ Deatheater:
   Options:
     MaxCombatDistance: 32
     KnockbackResistance: 1
+    PreventOtherDrops: true
   Skills:
-  - skill MinorSpellAttack ~onTimer:20 >0 0.9
+  - skill MinorSpellAttack ~onTimer:5 >0 0.90
 Firebender:
   Mobtype: angrypigzombie
   Display: Firebender
@@ -86,6 +88,7 @@ Firebender:
   - Boss
   Options:
     MaxCombatDistance: 40
+    PreventOtherDrops: true
     KnockbackResistance: 1
   Skills:
   - skill Firebending ~onTimer:40 >0 0.9
@@ -105,6 +108,7 @@ Airbender:
   Options:
     MaxCombatDistance: 40
     KnockbackResistance: 1
+    PreventOtherDrops: true
   Skills:
   - skill Airbending ~onTimer:20 >0 0.8
 Waterbender:
@@ -140,6 +144,7 @@ Earthbender:
   - MidBoss
   Options:
     MaxCombatDistance: 40
+    PreventOtherDrops: true
     KnockbackResistance: 1
   Skills:
   - skill Earthbending ~onTimer:50 >0 0.8
