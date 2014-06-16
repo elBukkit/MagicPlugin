@@ -1,0 +1,423 @@
+# These groups only contain permission nodes.
+#
+# **** You can NOT add anything other than permission nodes ****
+# **** This is NOT where you set up the groups which you give to users! ****
+# **** goto groupmanager/worlds/worldname/groups.yml if you want to set the actual groups! ****
+#
+# These collections are to be inherited in your different worlds groups.yml's
+# They can also be added as one of a users subgroups, but NOT as a primary group.
+# These collections are available to ALL group and user yml's.
+#
+# Add to and customize these groups to fit your needs.
+
+groups:
+
+# Permission nodes for GroupManager
+# by ElgarL, snowleo, continued from gabrielcouto's original
+# http://wiki.ess3.net
+
+  g:groupmanager_default:
+    permissions:
+    - groupmanager.notify.self
+
+  g:groupmanager_moderator:
+    permissions:
+    - groupmanager.listgroups
+    - groupmanager.mandemote
+    - groupmanager.manpromote
+    - groupmanager.manselect
+    - groupmanager.manuadd
+    - groupmanager.manudel
+    - groupmanager.manwhois
+    - groupmanager.notify.other
+
+  g:groupmanager_admin:
+    permissions:
+    - groupmanager.mantogglevalidate
+    - groupmanager.mansave
+    - groupmanager.mangcheckp
+    - groupmanager.manglistp
+    - groupmanager.manucheckp
+    - groupmanager.manulistp
+
+# Permission nodes for CraftBukkit
+# by many devs and contributors
+# http://dl.bukkit.org/
+
+  g:bukkit_default:
+    permissions:
+    - -bukkit.command.help
+    - -bukkit.command.kill
+    - -bukkit.command.me
+    - -bukkit.command.plugins
+    - -bukkit.command.tell
+    - -bukkit.command.version
+
+  g:bukkit_moderator:
+    permissions:
+    - bukkit.command.ban
+    - bukkit.command.ban.ip
+    - bukkit.command.ban.player
+    - bukkit.command.gamemode
+    - bukkit.command.kick
+    - bukkit.command.unban
+    - bukkit.command.unban.ip
+    - bukkit.command.unban.player
+
+  g:bukkit_admin:
+    permissions:
+    - bukkit.broadcast
+    - bukkit.broadcast.admin
+    - bukkit.command.give
+    - bukkit.command.help
+    - bukkit.command.kill
+    - bukkit.command.list
+    - bukkit.command.me
+    - -bukkit.command.op
+    - -bukkit.command.op.give
+    - -bukkit.command.op.take
+    - bukkit.command.plugins
+    - bukkit.command.reload
+    - bukkit.command.save
+    - bukkit.command.save.disable
+    - bukkit.command.save.enable
+    - bukkit.command.save.perform
+    - bukkit.command.say
+    - bukkit.command.stop
+    - bukkit.command.teleport
+    - bukkit.command.tell
+    - bukkit.command.time
+    - bukkit.command.time.add
+    - bukkit.command.time.set
+    - bukkit.command.version
+    - bukkit.command.whitelist
+    - bukkit.command.whitelist.add
+    - bukkit.command.whitelist.disable
+    - bukkit.command.whitelist.enable
+    - bukkit.command.whitelist.list
+    - bukkit.command.whitelist.reload
+    - bukkit.command.whitelist.remove
+
+# Permission nodes for Essentials
+# by ementalo, snowleo, and KHobbits
+# http://dev.bukkit.org/server-mods/essentials/
+
+  g:essentials_default:
+    permissions:
+    - -essentials.build.interact.389
+    - essentials.back.ondeath
+    - essentials.ban.notify
+    - essentials.build.drop.*
+    - essentials.build.interact.*
+    - essentials.build.pickup.*
+    - essentials.kick.notify
+    - essentials.signs.use.buy
+    - essentials.signs.use.warp
+    - essentials.spawn
+
+  g:essentials_builder:
+    permissions:
+    - essentials.*
+    - essentials.gamemode
+
+  g:essentials_moderator:
+    permissions:
+    - essentials.tempban
+    - essentials.tphere
+    - essentials.back.ondeath
+    - essentials.book
+    - essentials.book.author
+    - essentials.book.others
+    - essentials.book.title
+    - essentials.clearinventory
+    - essentials.delhome
+    - essentials.enderchest
+    - essentials.getpos
+    - essentials.home
+    - essentials.itemdb
+    - essentials.kick
+    - essentials.kit
+    - essentials.kit.others
+    - essentials.kits.*
+    - essentials.list
+    - essentials.msg
+    - essentials.mute
+    - essentials.mute.notify
+    - essentials.mute.offline
+    - essentials.seen.banreason
+    - essentials.sethome
+    - essentials.sethome.bed
+    - essentials.spawn
+    - essentials.spawner
+    - essentials.spawner.*
+    - essentials.spawnmob
+    - essentials.spawnmob.*
+    - essentials.spawnmob.stack
+    - essentials.speed
+    - essentials.time
+    - essentials.time.set
+    - essentials.top
+    - essentials.tp
+    - essentials.tp.others
+    - essentials.tpa
+    - essentials.tpaall
+    - essentials.tphere
+    - essentials.warp
+    - essentials.warp.list
+    - essentials.warp.otherplayers
+    - essentials.warps.*
+    - essentials.weather
+    - essentials.world
+    - essentials.invsee
+    - essentials.invsee.modify
+
+  g:essentials_admin:
+    permissions:
+    - -essentials.backup
+    - -essentials.essentials
+    - -essentials.setspawn
+    - -essentials.reloadall
+    - -essentials.plugin
+    - essentials.*
+
+# Permission nodes for Towny by ElgarL
+# http://dev.bukkit.org/server-mods/towny-advanced/
+
+  g:towny_default:
+    permissions:
+    - towny.chat.local
+
+  g:towny_builder:
+    permissions:
+    - towny.wild.build.6
+    - towny.wild.destroy.6
+    - towny.wild.destroy.14
+    - towny.wild.destroy.15
+    - towny.wild.destroy.16
+    - towny.wild.build.17
+    - towny.wild.destroy.17
+    - towny.wild.destroy.18
+    - towny.wild.destroy.21
+    - towny.wild.destroy.31
+    - towny.wild.destroy.37
+    - towny.wild.destroy.38
+    - towny.wild.destroy.39
+    - towny.wild.destroy.40
+    - towny.wild.destroy.50
+    - towny.wild.destroy.56
+    - towny.wild.destroy.73
+    - towny.wild.destroy.74
+    - towny.wild.destroy.78
+    - towny.wild.destroy.81
+    - towny.wild.destroy.82
+    - towny.wild.destroy.83
+    - towny.wild.destroy.86
+    - towny.wild.destroy.103
+    - towny.wild.destroy.106
+    - towny.wild.destroy.111
+    - towny.wild.destroy.115
+
+  g:towny_moderator:
+    permissions:
+    - towny.chat.mod
+    - towny.wild.switch.64
+    - towny.wild.build.83
+    - towny.wild.build.86
+    - towny.wild.build.103
+    - towny.wild.build.111
+    - towny.wild.build.115
+
+  g:towny_admin:
+    permissions:
+    - towny.admin
+    - -towny.wild.destroy.119
+    - -towny.wild.destroy.120
+    - towny.chat.admin
+
+# Permission nodes for VanishNoPacket by mbaxter
+# http://dev.bukkit.org/server-mods/vanish/
+
+  g:vanish_moderator:
+    permissions:
+    - -vanish.*
+    - vanish.vanish
+    - vanish.smokin
+    - vanish.nofollow
+    - vanish.nopickup
+    - vanish.preventincomingdamage
+    - vanish.hooks.dynmap.alwayshidden
+    - vanish.hooks.essentials.hide
+
+  g:vanish_admin:
+    permissions:
+    - vanish.silentjoin
+    - vanish.silentquit
+    - vanish.silentchests
+
+  g:magic_moderator:
+    permissions:
+    - Magic.commands.wand
+    - Magic.commands.wand.*
+    - Magic.commands.spells
+    - Magic.cast.*
+    - Magic.commands.magic
+    - Magic.commands.magic.list
+    - Magic.commands.magic.list.wands
+    - Magic.commands.magic.list.maps
+    - Magic.commands.magic.list.automata
+    - Magic.commands.magic.give
+    - Magic.commands.magic.commit
+    - Magic.wand.override_bind
+
+  g:magic_admin:
+    permissions:
+    - Magic.commands.wandp
+    - Magic.commands.wandp.*
+    - Magic.commands.castp
+    - Magic.commands.castp.*
+    - Magic.commands.magic.load
+    - Magic.commands.magic.save
+    - Magic.commands.magic.populate
+    - Magic.commands.magic.search
+    - Magic.commands.magic.cancel
+    - Magic.commands.magic.clean
+    - Magic.commands.magic.clearcache
+    - Magic.commands.cast
+
+  g:group_admin:
+    permissions:
+    - groupmanager.manuadd
+    - groupmanager.manudel
+    - groupmanager.manuaddp
+    - groupmanager.manudelp
+    - groupmanager.mangaddp
+    - groupmanager.mangdelp
+    - groupmanager.manpromote
+    - groupmanager.mandemote
+    - groupmanager.manmanwhois
+    - groupmanager.mansave
+    - groupmanager.manload
+
+  g:potter_default:
+    permissions:
+    - -ontime.welcome_msg
+    - -ontime.rewards.purchase
+    - antibuild.anvil
+    - antibuild.chest
+    - antibuild.dropitems
+    - antibuild.enderchest
+    - antibuild.interact
+    - antibuild.pickupitems
+    - chestrep.use
+    - herochat.focus.global
+    - herochat.force.join.global
+    - herochat.force.join.universal
+    - herochat.speak.*
+    - multiverse.access.*
+    - ontime.afk.collect
+    - ontime.me
+    - ontime.referredby.enable
+    - ontime.top
+    - ontime.top.extra
+
+  g:potter_moderator:
+    permissions:
+    - -herochat.leave.staff
+    - afkTerminator.excluded
+    - afkTerminator.notify
+    - antibuild.chest
+    - antibuild.enderchest
+    - antibuild.workbench
+    - avalonpets.pet.*
+    - avalonpets.petadmin.*
+    - Core.twerks.canrotateitems
+    - herochat.mute.global
+    - ontime.top.exclude
+    - herochat.admin.stealth
+    - herochat.admin.unignore
+    - herochat.focus.*
+    - herochat.force.join.global
+    - herochat.force.join.staff
+    - herochat.join.global
+    - herochat.join.staff
+    - herochat.leave.*
+    - housepoints.admin
+    - housepoints.querypoints
+    - housepoints.resetpoints
+    - multiverse.core.coord
+    - multiverse.core.list.who
+    - multiverse.core.list.worlds
+    - multiverse.help
+    - multiverse.teleport.self.w
+    - SafeCommandBlock.access
+    - SafeCommandBlock.color
+    - SecretSwitch.create
+
+  g:potter_admin:
+    permissions:
+    - bukkit.command.op
+    - bukkit.command.op.give
+    - bukkit.command.op.take
+
+  g:potter_builder:
+    permissions:
+    - antibuild.bypass
+    - antibuild.lock.bypass
+    - Core.twerks.canrotateitems
+    - frame.*
+    - mv.bypass.gamemode.*
+    - neopaintingswitch.use
+    - onsign.admin
+    - SecretSwitch.create
+    - worldedit.*
+    - worldguard.region.bypass
+    - worldguard.region.bypass.*
+
+  g:mythicmobs_admin:
+    permissions:
+    - mythicmobs.admin
+
+  g:citizens_admin:
+    permissions:
+    - citizens.admin
+    - citizens.admin.*
+    - citizens.help
+    - citizens.script.*
+    - citizens.npc.*
+
+  g:quests_admin:
+    permissions:
+    - quests.quest
+    - quests.questinfo
+    - quests.quests
+    - quests.list
+    - quests.take
+    - quests.quit
+    - quests.editor.editor
+    - quests.editor.create
+    - quests.editor.edit
+    - quests.editor.delete
+    - quests.editor.events.editor
+    - quests.editor.events.create
+    - quests.editor.events.delete
+    - quests.stats
+    - quests.top
+    - quests.admin
+    - quests.admin.give
+    - quests.admin.quit
+    - quests.admin.points
+    - quests.admin.takepoints
+    - quests.admin.givepoints
+    - quests.admin.pointsall
+    - quests.admin.finish
+    - quests.admin.nextstage
+    - quests.admin.reload
+
+  g:shopkeepers_admin:
+    permissions:
+    - shopkeepers.admin
+    - shopkeepers.reload
+    - shopkeepers.sign
+    - shopkeepers.witch
+    - shopkeepers.creeper
+    - shopkeepers.villager

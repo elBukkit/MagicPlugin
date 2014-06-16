@@ -1,0 +1,274 @@
+# Group inheritance
+#
+# Any inherited groups prefixed with a g: are global groups
+# and are inherited from the GlobalGroups.yml.
+#
+# Groups without the g: prefix are groups local to this world
+# and are defined in the this groups.yml file.
+#
+# Local group inheritances define your promotion tree when using 'manpromote/mandemote'
+
+groups:
+  headofhouse:
+    default: false
+    permissions:
+    - essentials.tp
+    - essentials.tp.others
+    - essentials.tpa
+    - essentials.tpaall
+    - essentials.tphere
+    inheritance:
+    - professor
+    info:
+      prefix: Head of House
+      build: false
+      suffix: ''
+  yearfive:
+    default: false
+    permissions: []
+    inheritance:
+    - yearfour
+    info:
+      prefix: 5th Year
+      build: false
+      suffix: ''
+  mod:
+    default: false
+    permissions: []
+    inheritance:
+    - yearseven
+    - g:essentials_moderator
+    info:
+      prefix: ''
+      build: false
+      suffix: ''
+  builder:
+    default: false
+    permissions:
+    - Core.explore.housepoints
+    inheritance:
+    - architect
+    info:
+      prefix: Builder
+      build: false
+      suffix: ''
+  minister:
+    default: false
+    permissions: []
+    inheritance:
+    - headstaff
+    info:
+      prefix: '&3Minister'
+      build: false
+      suffix: ''
+  yearseven:
+    default: false
+    permissions: []
+    inheritance:
+    - yearsix
+    info:
+      prefix: 7th Year
+      build: false
+      suffix: ''
+  muggle:
+    default: true
+    permissions: []
+    inheritance:
+    - g:bukkit_default
+    - g:essentials_default
+    - g:potter_default
+    info:
+      prefix: '&7(Muggle)&f'
+      build: false
+      suffix: ''
+  yearone:
+    default: false
+    permissions:
+    - essentials.home
+    - essentials.sethome
+    - essentials.tpaccept
+    - essentials.tpdeny
+    - herochat.focus.global
+    inheritance:
+    - muggle
+    info:
+      prefix: 1st Year
+      build: false
+      suffix: ''
+  headstaff:
+    default: false
+    permissions:
+    - Essentials.give
+    - essentials.socialspy
+    - essentials.socialspy.others
+    - Magic.bypass_pvp
+    inheritance:
+    - staff
+    - g:quests_admin
+    - g:magic_admin
+    - g:potter_admin
+    - g:citizens_admin
+    - g:mythicmobs_admin
+    - g:shopkeepers_admin
+    - g:group_admin
+    info:
+      prefix: '&cHead Staff'
+      build: false
+      suffix: ''
+  yearfour:
+    default: false
+    permissions: []
+    inheritance:
+    - yearthree
+    info:
+      prefix: 4th Year
+      build: false
+      suffix: ''
+  prisoner:
+    default: false
+    permissions: []
+    inheritance: []
+    info:
+      prefix: Prisoner
+      build: false
+      suffix: ''
+  headmaster:
+    default: false
+    permissions: []
+    inheritance:
+    - headstaff
+    info:
+      prefix: '&cHeadmaster'
+      build: false
+      suffix: ''
+  architect:
+    default: false
+    permissions: []
+    inheritance:
+    - muggle
+    - g:potter_builder
+    - g:essentials_builder
+    - g:potter_moderator
+    info:
+      prefix: Architect
+      build: false
+      suffix: ''
+  staff:
+    default: false
+    permissions:
+    - Core.explore.housepoints
+    inheritance:
+    - g:potter_moderator
+    - g:bukkit_moderator
+    - g:essentials_moderator
+    - g:potter_builder
+    - g:essentials_builder
+    - professor
+    info:
+      prefix: ''
+      build: false
+      suffix: ''
+  yearthree:
+    default: false
+    permissions:
+    - essentials.tpahere
+    inheritance:
+    - yeartwo
+    info:
+      prefix: 3rd Year
+      build: false
+      suffix: ''
+  yearsix:
+    default: false
+    permissions: []
+    inheritance:
+    - yearfive
+    info:
+      prefix: 6th Year
+      build: false
+      suffix: ''
+  headboy:
+    default: false
+    permissions:
+    - essentials.kick
+    inheritance:
+    - prefect
+    info:
+      prefix: Head Boy
+      build: false
+      suffix: ''
+  developer:
+    default: false
+    permissions: []
+    inheritance:
+    - professor
+    - g:potter_builder
+    - g:essentials_builder
+    info:
+      prefix: Developer
+      build: false
+      suffix: ''
+  professor:
+    default: false
+    permissions:
+    - essentials.invsee
+    - essentials.tp
+    - essentials.tp.others
+    - essentials.tpa
+    - essentials.tpaall
+    - essentials.tphere
+    inheritance:
+    - headgirl
+    info:
+      prefix: Professor
+      build: false
+      suffix: ''
+  yeartwo:
+    default: false
+    permissions:
+    - essentials.exp
+    - essentials.tpahere
+    - ontime.online
+    - ontime.other
+    inheritance:
+    - yearone
+    info:
+      prefix: 2nd Year
+      build: false
+      suffix: ''
+  headgirl:
+    default: false
+    permissions: []
+    inheritance:
+    - headboy
+    info:
+      prefix: Head Girl
+      build: false
+      suffix: ''
+  questmaker:
+    default: false
+    permissions: []
+    inheritance:
+    - professor
+    - g:quests_admin
+    - g:citizens_admin
+    info:
+      prefix: Questmaker
+      build: false
+      suffix: ''
+  prefect:
+    default: false
+    permissions:
+    - essentials.mute
+    - essentials.mute.notify
+    - essentials.mute.offline
+    - essentials.warp
+    - essentials.warp.list
+    - essentials.warp.otherplayers
+    - essentials.warps.*
+    inheritance:
+    - yearseven
+    info:
+      prefix: Prefect
+      build: false
+      suffix: ''
