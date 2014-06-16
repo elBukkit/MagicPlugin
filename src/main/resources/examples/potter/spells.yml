@@ -1099,6 +1099,7 @@ reducto:
         radius: 2
         type: sphere
         destructible: destructible_mining
+        check_destructible: false
         undo: 4000
     costs:
         xp: 85
@@ -1763,3 +1764,19 @@ stalactite:
         transparent: transparent_to_construction
     costs:
         xp: 5
+
+superfly:
+    icon: feather
+    category: utility
+    class: LevitateSpell
+    worth: 10000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+        cost_free:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_pitch: 0.2
+    parameters:
+        speed: 1
