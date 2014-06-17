@@ -110,7 +110,8 @@ groups:
     - g:citizens_admin
     - g:mythicmobs_admin
     - g:shopkeepers_admin
-    - g:group_admin
+    - g:groupmanager_moderator
+    - g:groupmanager_admin
     info:
       prefix: '&cHead Staff'
       build: false
@@ -149,6 +150,7 @@ groups:
     - g:potter_builder
     - g:essentials_builder
     - g:potter_moderator
+    - g:architect
     info:
       prefix: Architect
       build: false
@@ -187,42 +189,6 @@ groups:
       prefix: 6th Year
       build: false
       suffix: ''
-  headboy:
-    default: false
-    permissions:
-    - essentials.kick
-    inheritance:
-    - prefect
-    info:
-      prefix: Head Boy
-      build: false
-      suffix: ''
-  developer:
-    default: false
-    permissions: []
-    inheritance:
-    - professor
-    - g:potter_builder
-    - g:essentials_builder
-    info:
-      prefix: Developer
-      build: false
-      suffix: ''
-  professor:
-    default: false
-    permissions:
-    - essentials.invsee
-    - essentials.tp
-    - essentials.tp.others
-    - essentials.tpa
-    - essentials.tpaall
-    - essentials.tphere
-    inheritance:
-    - headgirl
-    info:
-      prefix: Professor
-      build: false
-      suffix: ''
   yeartwo:
     default: false
     permissions:
@@ -236,6 +202,27 @@ groups:
       prefix: 2nd Year
       build: false
       suffix: ''
+  prefect:
+    default: false
+    permissions: []
+    inheritance:
+    - yearseven
+    - g:prefect
+    info:
+      prefix: Prefect
+      build: false
+      suffix: ''
+  headboy:
+    default: false
+    permissions:
+    - essentials.kick
+    inheritance:
+    - prefect
+    - g:head_boy
+    info:
+      prefix: Head Boy
+      build: false
+      suffix: ''
   headgirl:
     default: false
     permissions: []
@@ -243,6 +230,28 @@ groups:
     - headboy
     info:
       prefix: Head Girl
+      build: false
+      suffix: ''
+  professor:
+    default: false
+    permissions: []
+    inheritance:
+    - headgirl
+    - g:professor
+    info:
+      prefix: Professor
+      build: false
+      suffix: ''
+  developer:
+    default: false
+    permissions: []
+    inheritance:
+    - professor
+    - g:potter_builder
+    - g:essentials_builder
+    - g:developer
+    info:
+      prefix: Developer
       build: false
       suffix: ''
   questmaker:
@@ -254,21 +263,5 @@ groups:
     - g:citizens_admin
     info:
       prefix: Questmaker
-      build: false
-      suffix: ''
-  prefect:
-    default: false
-    permissions:
-    - essentials.mute
-    - essentials.mute.notify
-    - essentials.mute.offline
-    - essentials.warp
-    - essentials.warp.list
-    - essentials.warp.otherplayers
-    - essentials.warps.*
-    inheritance:
-    - yearseven
-    info:
-      prefix: Prefect
       build: false
       suffix: ''
