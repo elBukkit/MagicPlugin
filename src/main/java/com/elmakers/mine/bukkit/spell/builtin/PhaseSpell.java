@@ -1,9 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -34,7 +31,7 @@ public class PhaseSpell extends TargetingSpell
 		
 		if (parameters.contains("target_world"))
 		{
-			World targetWorld = Bukkit.getWorld(parameters.getString("target_world"));
+			World targetWorld = getWorld(parameters.getString("target_world"), parameters.getBoolean("load", true));
 			if (targetWorld == null) {
 				return SpellResult.INVALID_WORLD;
 			}
@@ -52,7 +49,7 @@ public class PhaseSpell extends TargetingSpell
 			}
 			
 			ConfigurationSection worldNode = worldMap.getConfigurationSection(worldName);
-			World targetWorld = Bukkit.getWorld(worldNode.getString("target"));
+			World targetWorld = getWorld(worldNode.getString("target"), worldNode.getBoolean("load", true));
 			float scale = (float)worldNode.getDouble("scale", 1.0f);
 			if (targetWorld != null) {
 				targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
@@ -92,6 +89,26 @@ public class PhaseSpell extends TargetingSpell
 		
 		return SpellResult.CAST;
 	}
+
+    protected World getWorld(String worldName, boolean loadWorld) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            if (loadWorld) {
+                Bukkit.getLogger().info("Loading world: " + worldName);
+                world = Bukkit.createWorld(new WorldCreator(worldName));
+                if (world == null) {
+                    Bukkit.getLogger().warning("Failed to load world: " + worldName);
+                    return null;
+                }
+            }
+        }
+
+        if (world == null) {
+            Bukkit.getLogger().warning("Could not load world: " + worldName);
+        }
+
+        return world;
+    }
 	
 	protected void tryPhase(final LivingEntity entity, final Location targetLocation) {
 		Chunk chunk = targetLocation.getBlock().getChunk();
