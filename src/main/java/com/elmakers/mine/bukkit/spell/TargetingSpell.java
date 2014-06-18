@@ -95,7 +95,7 @@ public abstract class TargetingSpell extends BaseSpell {
             if (target != null) {
                 if (target.hasEntity() && getTargetType() != TargetType.BLOCK) {
                     useTargetName = controller.getEntityName(target.getEntity());
-                } else if (target.isValid() && getTargetType() != TargetType.ENTITY) {
+                } else if (target.isValid() && getTargetType() != TargetType.OTHER_ENTITY && getTargetType() != TargetType.ANY_ENTITY) {
                     MaterialAndData material = new MaterialAndData(target.getBlock());
                     useTargetName = material.getName();
                 }
@@ -321,8 +321,12 @@ public abstract class TargetingSpell extends BaseSpell {
             targetBlock = null;
         }
 
-        if (targetType == TargetType.ENTITY && entityTarget == null) {
+        if (targetType == TargetType.OTHER_ENTITY && entityTarget == null) {
             return new Target(getLocation());
+        }
+
+        if (targetType == TargetType.ANY_ENTITY && entityTarget == null) {
+            return new Target(location, player);
         }
 
         if (entityTarget == null && targetType == TargetType.ANY && player != null) {

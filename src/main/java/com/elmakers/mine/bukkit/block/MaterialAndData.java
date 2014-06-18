@@ -383,6 +383,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         signLines = lines.clone();
     }
 
+    public String[] getSignLines() {
+        return signLines.clone();
+    }
+
     public void setCustomName(String customName) {
         this.customName = customName;
     }
