@@ -10,9 +10,10 @@ package com.elmakers.mine.bukkit.api.spell;
 public enum TargetType {
     NONE,
     BLOCK,
-    ENTITY,
     ANY,
     OTHER,
+    ANY_ENTITY,
+    OTHER_ENTITY,
     SELF,
     SELECT
 }

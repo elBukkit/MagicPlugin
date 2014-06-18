@@ -54,4 +54,6 @@ public interface MaterialAndData {
     public boolean isValid();
     public String getCommandLine();
     public void setCommandLine(String commandLine);
+    public void setSignLines(String[] lines);
+    public String[] getSignLines();
 }

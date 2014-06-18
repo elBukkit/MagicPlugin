@@ -31,6 +31,15 @@ public interface MageController {
     public Logger getLogger();
 
     /**
+     * Retrieve the Plugin that owns this controller.
+     *
+     * This will generally be the MagicPlugin, but.. maybe not always?
+     *
+     * @return The owning plugin instance
+     */
+    public Plugin getPlugin();
+
+    /**
      * Check to see if the given block is part of an Automata.
      *
      * This currently only works if you specify the redstone block associated
@@ -83,7 +92,6 @@ public interface MageController {
     public void sendToMages(String message, Location location);
     public Collection<Mage> getMages();
 
-    public Plugin getPlugin();
     public String getMessagePrefix();
 
     public Set<Material> getDestructibleMaterials();

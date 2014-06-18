@@ -4,6 +4,7 @@
 
  - Add helper methods for dealing with Magic items
  - Add custom PreCastEvent and CastEvent events
+ - Add additional targeting types for finer grained targeting control
 
 ## 1.3.2
 
