@@ -22,9 +22,9 @@ staff:
     bound: true
     keep: true
     quiet: 1
-    xp_max: 50
-    xp: 400
-    xp_regeneration: 30
+    xp_max: 200
+    xp: 200
+    xp_regeneration: 10
     effect_color: 'DDDDDD'
     effect_bubbles: true
     spells:

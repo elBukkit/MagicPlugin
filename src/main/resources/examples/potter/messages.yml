@@ -100,6 +100,8 @@ spells:
     broom:
         name: Broom
         description: Powers magic brooms
+        cast: Your broom springs to life!
+        cancel: Your broom quiets down.
     colorvaria:
         name: Colorvaria
         description: Changes the color of certain objects
@@ -280,6 +282,9 @@ spells:
     jail:
         name: Jail
         description: Do not pass Go...
+    vault:
+        name: Vault
+        description: You're rich!
 
 randomized:
    wood:

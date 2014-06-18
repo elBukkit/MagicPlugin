@@ -182,7 +182,7 @@ ascendio:
 broom:
     icon: blaze_rod
     category: movement
-    class: FlingSpell
+    class: ThrustSpell
     pvp_restricted: true
     worth: 50
     effects:
@@ -193,13 +193,11 @@ broom:
         -  class: EffectTrail
            particle: spell
            particle_count: 4
-           min_speed: 2.5
-           max_speed: 3.5
-           cruising_altitude: 30
            effectlib:
              class: TraceEntityEffect
              iterations: 30
     parameters:
+        scale: 2
     costs:
         xp: 10
 
@@ -234,7 +232,7 @@ avadakedavra:
         target_type: LivingEntity
         allow_max_range: false
         range: 16
-        target: entity
+        target: other_entity
         damage: 100
         check_destructible: false
         cooldown: 30000
@@ -392,7 +390,7 @@ confringo:
              class: HelixLocationEffect
     parameters:
         target_type: Item
-        target: entity
+        target: other_entity
         range: 16
         size: 1
         fire: true
@@ -848,7 +846,7 @@ imperio:
            length: 16
     parameters:
         target_type: LivingEntity
-        target: entity
+        target: other_entity
         range: 32
         item_force: 1
         entity_force: 1
@@ -931,7 +929,7 @@ lumos:
         target: any
         range: 32
         target_type: LivingEntity
-        duration: 30000
+        duration: 2400000
         effect_night_vision: 5
 
 morsmordre:
@@ -1071,7 +1069,7 @@ reducio:
              iterations: 20
     parameters:
         target_type: LivingEntity
-        target: entity
+        target: other_entity
         allow_max_range: false
         range: 16
         player_damage: 1
@@ -1229,7 +1227,7 @@ sectumsempra:
         target_type: LivingEntity
         allow_max_range: false
         range: 5
-        target: entity
+        target: other_entity
         player_damage: 6
         entity_damage: 10
         check_destructible: true
@@ -1780,3 +1778,33 @@ superfly:
            sound_pitch: 0.2
     parameters:
         speed: 1
+
+vault:
+    icon: sapling:4
+    category: master
+    class: ConstructSpell
+    worth: 350
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_use
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: Player
+        target: any_entity
+        allow_max_range: false
+        check_destructibe: true
+        range: 16
+        radius: 16
+        max_dimension: 32
+        obz: -10
+        oby: -6
+        type: sphere
+        cooldown: 1200000
+        brush: schematic|vault
+        transparent: transparent_to_construction
+        signs:
+          $name: $target
+          $vault: [Vault]
+          $lock: [Lock]

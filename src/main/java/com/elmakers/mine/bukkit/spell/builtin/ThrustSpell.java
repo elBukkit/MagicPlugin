@@ -2,15 +2,15 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Server;
-import org.bukkit.World;
+import com.elmakers.mine.bukkit.api.spell.SpellEventType;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -21,6 +21,8 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class ThrustSpell extends TargetingSpell
 {
+    protected Integer taskId;
+
 	public static int tickSpan = 2; // How often velocity is applied, in scheduler ticks
 
 	protected int targetHeight = 0;
@@ -40,51 +42,21 @@ public class ThrustSpell extends TargetingSpell
 
 	protected float gravity = 0.98f; // anti-gravity force, in velocity/s (?)
 
+    protected double overallScale = 1.0;
+
 	public class LevitateAction implements Runnable
 	{
-		protected HashMap<String, ThrustSpell> players = new HashMap<String, ThrustSpell>();
-		protected BukkitScheduler scheduler;
-		protected Plugin plugin;
-		protected Server server;
+        private final ThrustSpell spell;
 
-		public LevitateAction(Plugin plugin)
-		{
-			this.plugin = plugin;
-			this.server = plugin.getServer();
-			this.scheduler = server.getScheduler();
-		}
-
-		public boolean isActive(Player player)
-		{
-			return players.containsKey(player.getName());
-		}
-
-		protected void scheduleForce()
-		{
-			scheduler.scheduleSyncDelayedTask(plugin, this, tickSpan);
-		}
+        public LevitateAction(ThrustSpell spell)
+        {
+            this.spell = spell;
+        }
 
 		public void run()
 		{
-			List<String> levitatingPlayers = new ArrayList<String>();
-			levitatingPlayers.addAll(players.keySet());
-			for (String playerName : levitatingPlayers)
-			{
-				ThrustSpell spell = players.get(playerName);
-				if (spell.isActive())
-				{
-					spell.applyForce();
-				}
-				else
-				{
-					players.remove(playerName);
-				}
-			}
-
-			if (players.size() > 0)
-			{
-				scheduleForce();
-			}
+            spell.applyForce();
+            spell.scheduleForce(this);
 		}
 	}
 
@@ -136,9 +108,19 @@ public class ThrustSpell extends TargetingSpell
 	}
 
 	public boolean isActive()
-	{
-		return (!mage.isDead() && mage.isOnline());
-	}
+    {
+        return (taskId != null && !mage.isDead() && mage.isOnline());
+    }
+
+    public void scheduleForce(Runnable runnable)
+    {
+        taskId = null;
+        if (!mage.isDead() && mage.isOnline())
+        {
+            Plugin plugin = controller.getPlugin();
+            taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new LevitateAction(this), tickSpan);
+        }
+    }
 
 	protected void applyForce()
 	{
@@ -146,6 +128,12 @@ public class ThrustSpell extends TargetingSpell
 		{
 			return;
 		}
+
+        Entity entity = mage.getEntity();
+        if (entity == null) {
+            deactivate();
+            return;
+        }
 
 		// testing out a perf hack- don't send chunks while flinging!
 		/*
@@ -190,11 +178,11 @@ public class ThrustSpell extends TargetingSpell
 
 		// Adjust target height based on aim
 		Vector aim = new Vector
-				(
-						(0 - Math.sin(Math.toRadians(yaw))), 
-						(0 - Math.sin(Math.toRadians(pitch))), 
-						Math.cos(Math.toRadians(yaw))
-						);
+        (
+            (0 - Math.sin(Math.toRadians(yaw))),
+            (0 - Math.sin(Math.toRadians(pitch))),
+            Math.cos(Math.toRadians(yaw))
+        );
 		aim.normalize();
 
 		// only ascend if aiming mostly up, and if near the target
@@ -227,21 +215,51 @@ public class ThrustSpell extends TargetingSpell
 		aim.setY(0);
 		scaledForce.add(aim);
 
-		mage.getEntity().setVelocity(scaledForce);
+        scaledForce.multiply(overallScale);
+
+        if (scaledForce.lengthSquared() > 0.001) {
+            entity.setVelocity(scaledForce);
+        }
 
 		this.lastTick = System.currentTimeMillis();
 	}
 
+    @Override
+    public void onDeactivate() {
+        if (taskId != null) {
+            BukkitScheduler scheduler = Bukkit.getScheduler();
+            scheduler.cancelTask(taskId);
+        }
+        taskId = null;
+    }
+
+    @Override
+    public void onActivate() {
+        Entity entity = mage.getEntity();
+        if (entity == null) return;
+        onDeactivate();
+        scheduleForce(new LevitateAction(this));
+    }
+
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
+        overallScale = parameters.getDouble("scale", 1.0f);
 		lastTick = System.currentTimeMillis();
 		hoverHeight = defaultHoverHeight;
 
-		if (action == null)
-		{
-			action = new LevitateAction(controller.getPlugin());
-		}
+        Entity entity = mage.getEntity();
+        if (entity == null)
+        {
+            return SpellResult.ENTITY_REQUIRED;
+        }
+
+        if (isActive())
+        {
+            deactivate();
+            return SpellResult.COST_FREE;
+        }
+        activate();
 		return SpellResult.CAST;
 	}
 }
