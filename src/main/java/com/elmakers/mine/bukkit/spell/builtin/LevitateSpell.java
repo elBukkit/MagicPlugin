@@ -6,11 +6,14 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
@@ -32,6 +35,57 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private final static int maxDamageAmount = 150;
     
     private float flySpeed = 0;
+    private int flyDelay = 2;
+
+    private double yBoost = 2;
+    private float thrustSpeed = 0;
+    private int thrustFrequency = 1;
+    protected ThrustAction thrust;
+
+    public class ThrustAction implements Runnable
+    {
+        private final Entity entity;
+        private final float thrust;
+        private final int taskId;
+        private boolean cancelled = false;
+
+        public ThrustAction(Plugin plugin, Entity entity, float thrust, int delay, int interval)
+        {
+            this.entity = entity;
+            this.thrust = thrust;
+            BukkitScheduler scheduler = Bukkit.getScheduler();
+            taskId = scheduler.scheduleSyncRepeatingTask(plugin, this, delay, interval);
+        }
+
+        public void cancel()
+        {
+            cancelled = true;
+            Bukkit.getScheduler().cancelTask(taskId);
+        }
+
+        public void run()
+        {
+            if (cancelled)
+            {
+                cancel();
+                return;
+            }
+            if (entity == null || entity.isDead())
+            {
+                cancel();
+                return;
+            }
+            if (entity instanceof Player && !((Player)entity).isOnline()) {
+                cancel();
+                return;
+            }
+
+            Vector thrustVector = entity.getLocation().getDirection();
+            thrustVector.normalize();
+            thrustVector.multiply(thrust);
+            entity.setVelocity(thrustVector);
+        }
+    }
 	
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
@@ -40,7 +94,13 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
+        yBoost = (float)parameters.getDouble("y_boost", 2);
 		flySpeed = (float)parameters.getDouble("speed", 0);
+        thrustSpeed = (float)parameters.getDouble("thrust", 0);
+        thrustFrequency = parameters.getInt("thrust_interval", thrustFrequency);
+
+        thrustSpeed *= mage.getRadiusMultiplier();
+
 		if (player.getAllowFlight()) {
 			deactivate();
 			return SpellResult.COST_FREE;
@@ -52,6 +112,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	
 	@Override
 	public void onDeactivate() {
+        if (thrust != null) {
+            thrust.cancel();
+            thrust = null;
+        }
 		final Player player = mage.getPlayer();
 		if (player == null) return;
 		
@@ -75,16 +139,23 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		if (flySpeed > 0) {
 			player.setFlySpeed(flySpeed * defaultFlySpeed);
 		}
+
+        if (thrustSpeed > 0) {
+            if (thrust != null) {
+                thrust.cancel();
+            }
+            thrust = new ThrustAction(controller.getPlugin(), player, thrustSpeed, thrustFrequency + flyDelay * 2 + 1, thrustFrequency);
+        }
 		
 		Vector velocity = player.getVelocity();
-		velocity.setY(velocity.getY() + 2);
+		velocity.setY(velocity.getY() + yBoost);
         player.setVelocity(velocity);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			public void run() {
 				player.setAllowFlight(true);
 				player.setFlying(true);
 			}
-		}, 2);
+		}, flyDelay);
 	}
 
 	@SuppressWarnings("deprecation")

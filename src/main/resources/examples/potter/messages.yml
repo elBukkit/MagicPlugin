@@ -101,7 +101,7 @@ spells:
         name: Broom
         description: Powers magic brooms
         cast: Your broom springs to life!
-        cancel: Your broom quiets down.
+        cost_free: Your broom quiets down.
     colorvaria:
         name: Colorvaria
         description: Changes the color of certain objects
@@ -175,7 +175,7 @@ spells:
         name: Flight
         description: A gift from the Dark Lord
         cast: You feel lighter
-        cancel: You feel heavier
+        cost_free: You feel heavier
     immobulus:
         name: Immobulus
         description: Immobilize your target

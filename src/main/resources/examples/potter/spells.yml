@@ -182,7 +182,7 @@ ascendio:
 broom:
     icon: blaze_rod
     category: movement
-    class: ThrustSpell
+    class: LevitateSpell
     pvp_restricted: true
     worth: 50
     effects:
@@ -197,7 +197,7 @@ broom:
              class: TraceEntityEffect
              iterations: 30
     parameters:
-        scale: 2
+        thrust: 0.5
     costs:
         xp: 10
 
