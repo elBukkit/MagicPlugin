@@ -47,7 +47,6 @@ groups:
   g:bukkit_default:
     permissions:
     - bukkit.broadcast.user
-    - -bukkit.command.plugins
     - -bukkit.command.help
     - -bukkit.command.kill
     - -bukkit.command.me
@@ -577,3 +576,6 @@ groups:
     - essentials.gamemode
     - essentials.invsee.modify
 
+  g:developer:
+    permissions:
+    - bukkit.command.plugins

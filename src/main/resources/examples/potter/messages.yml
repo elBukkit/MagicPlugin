@@ -101,7 +101,7 @@ spells:
         name: Broom
         description: Powers magic brooms
         cast: Your broom springs to life!
-        cost_free: Your broom quiets down.
+        cancel: Your broom quiets down.
     colorvaria:
         name: Colorvaria
         description: Changes the color of certain objects

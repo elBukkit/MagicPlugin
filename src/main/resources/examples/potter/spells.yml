@@ -196,8 +196,28 @@ broom:
            effectlib:
              class: TraceEntityEffect
              iterations: 30
+        area:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+        -  class: EffectTrail
+           particle: spell
+           particle_count: 4
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 30
+        -  class: EffectSingle
+           particle: spell
+           particle_count: 4
+           effectlib:
+             class: ShieldEntityEffect
+             iterations: 30
     parameters:
         thrust: 0.5
+        boost: 1
+        boost_ticks: 10
+        auto_deactivate: 3
+        start_delay: 20
     costs:
         xp: 10
 
@@ -929,7 +949,7 @@ lumos:
         target: any
         range: 32
         target_type: LivingEntity
-        duration: 2400000
+        duration: 90000
         effect_night_vision: 5
 
 morsmordre:

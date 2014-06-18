@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -36,43 +37,48 @@ public class LevitateSpell extends TargetingSpell implements Listener
     
     private float flySpeed = 0;
     private int flyDelay = 2;
+    private int startDelay = 0;
 
+    private int autoDeactivateHeight = 0;
+    private int boostTicksRemaining = 0;
+
+    private double castBoost = 0;
+    private int boostTicks = 0;
     private double yBoost = 2;
     private float thrustSpeed = 0;
     private int thrustFrequency = 1;
     protected ThrustAction thrust;
 
+    private boolean cancelled = false;
+
     public class ThrustAction implements Runnable
     {
-        private final Entity entity;
-        private final float thrust;
+        private final LevitateSpell spell;
         private final int taskId;
-        private boolean cancelled = false;
 
-        public ThrustAction(Plugin plugin, Entity entity, float thrust, int delay, int interval)
+        public ThrustAction(LevitateSpell spell, int delay, int interval)
         {
-            this.entity = entity;
-            this.thrust = thrust;
+            Plugin plugin = spell.getMage().getController().getPlugin();
+            this.spell = spell;
             BukkitScheduler scheduler = Bukkit.getScheduler();
             taskId = scheduler.scheduleSyncRepeatingTask(plugin, this, delay, interval);
         }
 
-        public void cancel()
+        public void stop()
         {
-            cancelled = true;
             Bukkit.getScheduler().cancelTask(taskId);
         }
 
         public void run()
         {
-            if (cancelled)
+            if (!spell.checkActive())
             {
-                cancel();
                 return;
             }
+            Entity entity = spell.getMage().getEntity();
             if (entity == null || entity.isDead())
             {
-                cancel();
+                spell.cancel();
                 return;
             }
             if (entity instanceof Player && !((Player)entity).isOnline()) {
@@ -80,13 +86,54 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return;
             }
 
-            Vector thrustVector = entity.getLocation().getDirection();
-            thrustVector.normalize();
-            thrustVector.multiply(thrust);
-            entity.setVelocity(thrustVector);
+            spell.thrust();
         }
     }
-	
+
+    protected void thrust()
+    {
+        if (thrustSpeed == 0) return;
+        Entity entity = mage.getEntity();
+        if (entity == null) return;
+
+        if (autoDeactivateHeight > 0) {
+            int height = 0;
+            Block block = entity.getLocation().getBlock();
+            while (height < autoDeactivateHeight && block.getType() == Material.AIR)
+            {
+                block = block.getRelative(BlockFace.DOWN);
+                height++;
+            }
+
+            if (height < autoDeactivateHeight)
+            {
+                cancel();
+                return;
+            }
+        }
+
+        Vector thrustVector = entity.getLocation().getDirection();
+        thrustVector.normalize();
+        double boost = thrustSpeed;
+        if (boostTicksRemaining > 0) {
+            boost += castBoost;
+            --boostTicksRemaining;
+        }
+        thrustVector.multiply(boost);
+        entity.setVelocity(thrustVector);
+    }
+
+    protected boolean checkActive()
+    {
+        if (cancelled) return false;
+
+        Entity entity = mage.getEntity();
+        if (entity == null || entity.isDead()) return false;
+        if (entity instanceof Player && !((Player)entity).isOnline()) return false;
+
+        return true;
+    }
+
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -94,14 +141,24 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        yBoost = (float)parameters.getDouble("y_boost", 2);
+
+        startDelay = parameters.getInt("start_delay", 0);
+        castBoost = parameters.getDouble("boost", 0);
+        yBoost = parameters.getDouble("y_boost", 2);
 		flySpeed = (float)parameters.getDouble("speed", 0);
         thrustSpeed = (float)parameters.getDouble("thrust", 0);
         thrustFrequency = parameters.getInt("thrust_interval", thrustFrequency);
+        autoDeactivateHeight = parameters.getInt("auto_deactivate", 0);
+        boostTicks = parameters.getInt("boost_ticks", 1);
 
         thrustSpeed *= mage.getRadiusMultiplier();
+        castBoost *= mage.getRadiusMultiplier();
 
-		if (player.getAllowFlight()) {
+		if (isActive()) {
+            if (castBoost != 0) {
+                boostTicksRemaining += boostTicks;
+                return SpellResult.AREA;
+            }
 			deactivate();
 			return SpellResult.COST_FREE;
 		}
@@ -109,11 +166,21 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public boolean onCancel() {
+        boolean active = !cancelled && isActive();
+        if (active) {
+            cancelled = true;
+            deactivate();
+        }
+        return active;
+    }
 	
 	@Override
 	public void onDeactivate() {
         if (thrust != null) {
-            thrust.cancel();
+            thrust.stop();
             thrust = null;
         }
 		final Player player = mage.getPlayer();
@@ -135,6 +202,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	public void onActivate() {
 		final Player player = mage.getPlayer();
 		if (player == null) return;
+
+        cancelled = false;
 		
 		if (flySpeed > 0) {
 			player.setFlySpeed(flySpeed * defaultFlySpeed);
@@ -142,9 +211,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
         if (thrustSpeed > 0) {
             if (thrust != null) {
-                thrust.cancel();
+                thrust.stop();
             }
-            thrust = new ThrustAction(controller.getPlugin(), player, thrustSpeed, thrustFrequency + flyDelay * 2 + 1, thrustFrequency);
+            thrust = new ThrustAction(this, thrustFrequency + flyDelay + startDelay, thrustFrequency);
         }
 		
 		Vector velocity = player.getVelocity();
