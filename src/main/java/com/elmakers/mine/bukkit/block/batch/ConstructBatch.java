@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -46,6 +47,7 @@ public class ConstructBatch extends BrushBatch {
 	private final Set<Material> delayed;
 	private Set<Material> replace;
 	private Map<String, String> commandMap;
+    private Map<String, String> signMap;
 	
 	private boolean finishedNonAttached = false;
 	private boolean finishedAttached = false;
@@ -139,9 +141,8 @@ public class ConstructBatch extends BrushBatch {
 					block.getChunk().load();
 					return processedBlocks;
 				}
-				
-				registerForUndo(block);
-				delayed.modify(block);
+
+                modifyWith(block, delayed);
 				
 				delayedBlockIndex++;
 			}
@@ -191,8 +192,7 @@ public class ConstructBatch extends BrushBatch {
 				}
 				
 				if (ok) {
-					registerForUndo(block);
-					attach.modify(block);
+                    modifyWith(block, attach);
 				}
 				
 				attachedBlockIndex++;
@@ -277,7 +277,6 @@ public class ConstructBatch extends BrushBatch {
 					int outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 					fillBlock = maxDistanceSquared >= distanceSquared - thickness && maxDistanceSquared <= outerDistanceSquared;
 				}	
-				//spells.getLog().info("(" + x + "," + y + "," + z + ") : " + fillBlock + " = " + distanceSquared + " : " + maxDistanceSquared);
 				break;
 			case PYRAMID:
 				int elevation = radius - y;
@@ -434,34 +433,55 @@ public class ConstructBatch extends BrushBatch {
 		{
 			return true;
 		}
-		
-		Material previousMaterial = block.getType();
-		byte previousData = block.getData();
-		
-		if (brush.isDifferent(block)) {			
-			registerForUndo(block);
-			
-			// Check for command overrides
-			if (commandMap != null && brush.getMaterial() == Material.COMMAND) {
-				String commandKey = brush.getCommandLine();
-				if (commandKey != null && commandKey.length() > 0 && commandMap.containsKey(commandKey)) {
-					brush.setCommandLine(commandMap.get(commandKey));
-				}
-			}
-			
-			brush.modify(block);
-			if (spawnFallingBlocks) {
-				FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
-				falling.setDropItem(false);
-				if (fallingBlockSpeed != 0) {
-					Vector direction = falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
-					falling.setVelocity(direction);
-				}
-				registerForUndo(falling);
-			}
-		}
+
+        modifyWith(block, brush);
 		return true;
 	}
+
+    protected void modifyWith(Block block, MaterialAndData brush) {
+        Material previousMaterial = block.getType();
+        byte previousData = block.getData();
+
+        if (brush.isDifferent(block)) {
+            registerForUndo(block);
+
+            // Check for command overrides
+            if (commandMap != null && brush.getMaterial() == Material.COMMAND) {
+                String commandKey = brush.getCommandLine();
+                if (commandKey != null && commandKey.length() > 0 && commandMap.containsKey(commandKey)) {
+                    brush.setCommandLine(commandMap.get(commandKey));
+                }
+            }
+
+            // Check for sign overrides
+            if (signMap != null && (brush.getMaterial() == Material.SIGN_POST || brush.getMaterial() == Material.WALL_SIGN)) {
+                String[] lines = brush.getSignLines();
+                if (lines != null && lines.length > 0 && !signMap.isEmpty())
+                {
+                    for (int i = 0; i < lines.length; i++)
+                    {
+                        String line = lines[i];
+                        if (line != null && line.length() > 0 && signMap.containsKey(line)) {
+                            lines[i] = signMap.get(line);
+                        }
+                    }
+
+                    brush.setSignLines(lines);
+                }
+            }
+
+            brush.modify(block);
+            if (spawnFallingBlocks) {
+                FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+                falling.setDropItem(false);
+                if (fallingBlockSpeed != 0) {
+                    Vector direction = falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
+                    falling.setVelocity(direction);
+                }
+                registerForUndo(falling);
+            }
+        }
+    }
 	
 	public void addCommandMapping(String key, String command) {
 		if (commandMap == null) {
@@ -470,8 +490,16 @@ public class ConstructBatch extends BrushBatch {
 		
 		commandMap.put(key,  command);
 	}
-	
-	public void setReplace(Collection<Material> replace) {
+
+    public void addSignMapping(String key, String text) {
+        if (signMap == null) {
+            signMap = new HashMap<String, String>();
+        }
+
+        signMap.put(key,  text);
+    }
+
+    public void setReplace(Collection<Material> replace) {
 		this.replace = new HashSet<Material>();
 		this.replace.addAll(replace);
 	}

@@ -19,6 +19,8 @@ import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.block.batch.ConstructBatch;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 public class ConstructSpell extends BrushSpell
 {
@@ -141,9 +143,32 @@ public class ConstructSpell extends BrushSpell
 			for (String key : keys) {
 				batch.addCommandMapping(key, commandMap.getString(key));
 			}
-		} 
-		
-		if (falling) {
+		}
+
+        // Check for sign overrides
+        if (parameters.contains("signs"))
+        {
+            ConfigurationSection signMap = parameters.getConfigurationSection("signs");
+            Set<String> keys = signMap.getKeys(false);
+            for (String key : keys) {
+                String text = signMap.getString(key);
+                Player targetPlayer = null;
+                if (text.equals("$target")) {
+                    Entity targetEntity = t.getEntity();
+                    if (targetEntity != null && targetEntity instanceof Player) {
+                        targetPlayer = (Player)targetEntity;
+                    }
+                } else if (text.equals("$name")) {
+                    targetPlayer = mage.getPlayer();
+                }
+                if (targetPlayer != null) {
+                    text = targetPlayer.getName();
+                }
+                batch.addSignMapping(key, text);
+            }
+        }
+
+        if (falling) {
 			batch.setFallingBlockSpeed(force);
 		}
 		if (parameters.contains("orient_dimension_max")) {
