@@ -1171,31 +1171,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	private String getActiveWandName(SpellTemplate spell, String materialKey) {
 		// Build wand name
-		ChatColor wandColor = isModifiable() ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.RED;
+        int remaining = getRemainingUses();
+		ChatColor wandColor = remaining > 0 ? ChatColor.DARK_RED : isModifiable()
+                ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.GOLD;
 		String name = wandColor + wandName;
 
-        // TODO: More options for single-use wands
         Set<String> spells = getSpells();
-        /*
-        if (spells.size() == 1) {
-            String spellName = spells.iterator().next();
-            SpellTemplate spell = controller.getSpellTemplate(spellName);
-            String singleSpellName = Messages.get("wand.single_spell");
-            if (spell != null) {
-                spellName = spell.getName();
-            }
-
-            singleSpellName = singleSpellName.replace("$spell", spellName);
-            wandName = singleSpellName;
-        }
-        */
 
         // Add active spell to description
         if (spell != null && (spells.size() > 1 || hasPath())) {
             name = getSpellDisplayName(spell, materialKey) + " (" + name + ChatColor.WHITE + ")";
         }
 
-		int remaining = getRemainingUses();
 		if (remaining > 0) {
 			String message = (remaining == 1) ? Messages.get("wand.uses_remaining_singular") : Messages.get("wand.uses_remaining_brief");
 			name = name + " (" + ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()) + ")";
@@ -1337,39 +1324,42 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		List<String> lore = new ArrayList<String>();
 		
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
+        if (activeSpell != null) {
+            lore.add(getSpellDisplayName(spell, null));
+        }
 		if (spell != null && spellCount == 1 && materialCount <= 1 && !isUpgrade && !hasPath()) {
 			addSpellLore(spell, lore, this);
-		} else {
-			if (description.length() > 0) {
-				lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
-			}
-			if (!isUpgrade) {
-				if (owner.length() > 0) {
-					if (bound) {
-						String ownerDescription = Messages.get("wand.bound_description", "$name").replace("$name", owner);
-						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
-					} else {
-						String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
-						lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
-					}
-				}
-			}
-			
-			if (spellCount > 0) {
-				if (isUpgrade) {
-					lore.add(Messages.get("wand.upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
-				} else {
-					lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
-				}
-			}
-			if (materialCount > 0) {
-				if (isUpgrade) {
-					lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
-				} else {
-					lore.add(Messages.get("wand.upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
-				}
-			}
 		}
+        if (description.length() > 0) {
+            lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+        }
+        if (!isUpgrade) {
+            if (owner.length() > 0) {
+                if (bound) {
+                    String ownerDescription = Messages.get("wand.bound_description", "$name").replace("$name", owner);
+                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
+                } else {
+                    String ownerDescription = Messages.get("wand.owner_description", "$name").replace("$name", owner);
+                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
+                }
+            }
+        }
+
+        if (spellCount > 0) {
+            if (isUpgrade) {
+                lore.add(Messages.get("wand.upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
+            } else {
+                lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
+            }
+        }
+        if (materialCount > 0) {
+            if (isUpgrade) {
+                lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
+            } else {
+                lore.add(Messages.get("wand.upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
+            }
+        }
+
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
 			if (isUpgrade) {
