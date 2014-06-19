@@ -111,10 +111,6 @@ public class LightSource extends NMSUtils {
 			if (class_PacketPlayOutMapChunkBulk != null) {
 				Constructor<?> packetConstructor = class_PacketPlayOutMapChunkBulk.getConstructor(List.class);
 				packet = packetConstructor.newInstance(chunks);			
-			} else {
-				// Fall back to previous versions
-				Constructor<?> packetConstructor = class_Packet56MapChunkBulk.getConstructor(List.class);
-				packet = packetConstructor.newInstance(chunks);						
 			}
 			int t = l.clone().add(0, 1, 0).getBlock().getTypeId();
 			l.clone().add(0, 1, 0).getBlock().setTypeId(t == 1 ? 2 : 1);
