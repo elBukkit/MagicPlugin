@@ -263,8 +263,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void unenchant() {
 		item = new ItemStack(item.getType(), 1, (short)item.getDurability());
 	}
-	
-	public void setIcon(Material material, byte data) {
+
+    @Override
+    public void unlock() {
+        locked = false;
+    }
+
+    public void setIcon(Material material, byte data) {
 		setIcon(material == null ? null : new MaterialAndData(material, data));
 	}
 	
