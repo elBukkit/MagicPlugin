@@ -117,6 +117,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "enchant");
             addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "unenchant");
             addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "duplicate");
+            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "unlock");
 
             Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
@@ -275,6 +276,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			onWandDuplicate(sender, player);
 			return true;
 		}
+        if (subCommand.equalsIgnoreCase("unlock"))
+        {
+            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+            onWandUnlock(sender, player);
+            return true;
+        }
 		if (subCommand.equalsIgnoreCase("organize"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -475,6 +483,22 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		return true;
 	}
+
+    public boolean onWandUnlock(CommandSender sender, Player player)
+    {
+        if (!checkWand(sender, player, true, true, false)) {
+            return true;
+        }
+        Mage mage = api.getMage(player);
+        Wand wand = mage.getActiveWand();
+
+        wand.unlock();
+        mage.sendMessage(Messages.get("wand.unlocked"));
+        if (sender != player) {
+            sender.sendMessage(Messages.getParameterized("wand.player_unlocked", "$name", player.getName()));
+        }
+        return true;
+    }
 	
 	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{

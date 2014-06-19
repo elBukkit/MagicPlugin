@@ -2529,6 +2529,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return this.locked;
 	}
 
+    @Override
+    public void unlock() {
+        locked = false;
+    }
+
 	@Override
 	public boolean canUse(Player player) {
 		if (!bound || owner == null || owner.length() == 0) return true;

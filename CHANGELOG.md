@@ -7,6 +7,9 @@
  - Add CommandSpell, can run any command as a spell. See:
    http://jenkins.elmakers.com/job/MagicPlugin/doxygen/classcom_1_1elmakers_1_1mine_1_1bukkit_1_1spell_1_1builtin_1_1_command_spell.html
  - Add Respawn spell and Respawn Token items.
+ - Add /wand unlock command
+ - Integrate EffectLib directly (no dependency needed)
+ - Tons of spell tweaks for new custom Harry Potter configuration
 
 ## 3.2
 
