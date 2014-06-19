@@ -34,13 +34,12 @@ public class NMSUtils {
     protected static Class<?> class_CraftItemStack;
     protected static Class<?> class_CraftLivingEntity;
     protected static Class<?> class_Entity;
+    protected static Class<?> class_EntityLiving;
     protected static Class<?> class_DataWatcher;
     protected static Class<?> class_World;
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
     protected static Class<?> class_PacketPlayOutMapChunkBulk;
-    protected static Class<?> class_Packet56MapChunkBulk;
-    protected static Class<?> class_Packet63WorldParticles;
     protected static Class<?> class_PacketPlayOutWorldParticles;
     protected static Class<?> class_EntityPainting;
     protected static Class<?> class_EntityItemFrame;
@@ -57,6 +56,7 @@ public class NMSUtils {
             versionPrefix = packages[3] + ".";
         }
         try {
+            class_EntityLiving = fixBukkitClass("net.minecraft.server.EntityLiving");
             class_Entity = fixBukkitClass("net.minecraft.server.Entity");
             class_ItemStack = fixBukkitClass("net.minecraft.server.ItemStack");
             class_DataWatcher = fixBukkitClass("net.minecraft.server.DataWatcher");
@@ -78,20 +78,19 @@ public class NMSUtils {
             ex.printStackTrace();
         }
 
-        // These is version-dependent, so try both.
-        class_PacketPlayOutMapChunkBulk = getBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk");
-        class_Packet56MapChunkBulk = getBukkitClass("net.minecraft.server.Packet56MapChunkBulk");
-        if (class_PacketPlayOutMapChunkBulk == null && class_Packet56MapChunkBulk == null) {
-            // This should probably use a logger, but.. this is a pretty bad issue.
-            System.err.println("Could not bind to either PlayOutMapChunk packet version");
-        }
+        class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
+        class_PacketPlayOutWorldParticles = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutWorldParticles", "net.minecraft.server.Packet63WorldParticles");
+    }
 
-        class_PacketPlayOutWorldParticles = getBukkitClass("net.minecraft.server.PacketPlayOutWorldParticles");
-        class_Packet63WorldParticles = getBukkitClass("net.minecraft.server.Packet63WorldParticles");
-        if (class_PacketPlayOutWorldParticles == null && class_Packet63WorldParticles == null) {
-            // This should probably use a logger, but.. this is a pretty bad issue.
-            System.err.println("Could not bind to either PlayOutWorldParticles packet version");
+    public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
+        Class<?> c = getBukkitClass(newVersion);
+        if (c == null) {
+            c = getBukkitClass(oldVersion);
+            if (c == null) {
+                System.err.println("Could not bind to " + newVersion + " or " + oldVersion);
+            }
         }
+        return c;
     }
 
     public static Class<?> getBukkitClass(String className) {

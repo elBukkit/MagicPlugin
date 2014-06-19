@@ -55,10 +55,6 @@ public class EffectUtils extends NMSUtils {
             if (class_PacketPlayOutWorldParticles != null) {
                 Constructor<?> packetConstructor = class_PacketPlayOutWorldParticles.getConstructor();
                 packet = packetConstructor.newInstance();
-            } else {
-                // Fall back to previous versions
-                Constructor<?> packetConstructor = class_Packet63WorldParticles.getConstructor();
-                packet = packetConstructor.newInstance();
             }
             for (Field field : packet.getClass().getDeclaredFields())
             {
