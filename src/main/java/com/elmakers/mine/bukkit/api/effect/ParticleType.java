@@ -37,8 +37,9 @@ public enum ParticleType {
     HAPPY_VILLAGER("happyVillager"),
     SNOW_SHOVEL("snowshovel"),
 
-    BLOCK_BREAKING("iconcrack_{subtype}"),
-    TOOL_BREAKING("tilecrack_{subtype}"),
+    TOOL_BREAKING("iconcrack_{subtype}"),
+    BLOCK_BREAKING("blockcrack_{subtype}"),
+    TILE_BREAKING("tilecrack_{subtype}"),
 
     UNKNOWN("nil");
 
