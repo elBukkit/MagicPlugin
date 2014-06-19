@@ -295,7 +295,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (particleType != null) {
             String subType = particleSubType;
-            if ((particleType == ParticleType.BLOCK_BREAKING || particleType == ParticleType.TOOL_BREAKING) && particleSubType.length() == 0) {
+            if ((particleType == ParticleType.BLOCK_BREAKING || particleType == ParticleType.TOOL_BREAKING || particleType == ParticleType.TILE_BREAKING) && particleSubType.length() == 0) {
                 Material material = getWorkingMaterial().getMaterial();
 
                 // Check for potential bad materials, this can get really hairy (client crashes)
@@ -304,10 +304,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 }
 
                 // TODO: Check for tools... ?
-                if (particleType == ParticleType.TOOL_BREAKING) {
+                if (particleType == ParticleType.TOOL_BREAKING || particleType == ParticleType.TILE_BREAKING) {
                     material = Material.DIAMOND_AXE;
                 }
-                subType = "" + material.getId();
+                subType = "" + material.getId() + "_" + getWorkingMaterial().getData();
             }
 
             EffectUtils.playEffect(location, particleType, subType, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);

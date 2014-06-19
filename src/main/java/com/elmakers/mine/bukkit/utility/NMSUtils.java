@@ -196,8 +196,9 @@ public class NMSUtils {
     protected static void sendPacket(Location source, Collection<Player> players, Object packet) throws Exception  {
         players = ((players != null && players.size() > 0) ? players : source.getWorld().getPlayers());
 
+        int viewDistanceSquared = Bukkit.getServer().getViewDistance() * Bukkit.getServer().getViewDistance();
         for(Player p1 : players) {
-            if(p1.getLocation().distanceSquared(source) <= Bukkit.getServer().getViewDistance() * Bukkit.getServer().getViewDistance()) {
+            if(p1.getLocation().distanceSquared(source) <= viewDistanceSquared) {
                 sendPacket(p1, packet);
             }
         }
