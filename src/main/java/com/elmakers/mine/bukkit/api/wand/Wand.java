@@ -38,6 +38,7 @@ public interface Wand extends CostReducer {
     public Collection<String> getBrushes();
     public void describe(CommandSender sender);
     public void unenchant();
+    public void unlock();
     public Wand duplicate();
     public boolean hasSpell(String key);
     public boolean hasBrush(String key);
