@@ -77,11 +77,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
             Entity entity = spell.getMage().getEntity();
             if (entity == null || entity.isDead())
             {
-                spell.cancel();
+                spell.deactivate();
                 return;
             }
             if (entity instanceof Player && !((Player)entity).isOnline()) {
-                cancel();
+                spell.deactivate();
                 return;
             }
 
@@ -95,7 +95,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
         Entity entity = mage.getEntity();
         if (entity == null) return;
 
-        if (autoDeactivateHeight > 0) {
+        boolean checkHeight = autoDeactivateHeight > 0;
+        if (checkHeight && mage.isPlayer()) {
+            checkHeight = mage.getPlayer().isSneaking();
+        }
+        if (checkHeight) {
             int height = 0;
             Block block = entity.getLocation().getBlock();
             while (height < autoDeactivateHeight && block.getType() == Material.AIR)
@@ -106,7 +110,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
             if (height < autoDeactivateHeight)
             {
-                cancel();
+                deactivate();
                 return;
             }
         }
@@ -185,6 +189,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		// Prevent the player from death by fall
 		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		levitateEnded = System.currentTimeMillis();
+
+        mage.castMessage(getMessage("cancel"));
 	}
 	
 	@Override
