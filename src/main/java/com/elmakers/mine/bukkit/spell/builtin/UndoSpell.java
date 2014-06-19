@@ -27,6 +27,13 @@ public class UndoSpell extends TargetingSpell
 		if (target.hasEntity() && controller.isMage(target.getEntity()))
 		{
 			Mage mage = controller.getMage(target.getEntity());
+
+            BlockBatch batch = mage.cancelPending();
+            if (batch != null) {
+                undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
+                return SpellResult.CAST;
+            }
+
             UndoQueue queue = mage.getUndoQueue();
 			UndoList undoList = queue.undoRecent(timeout);
 			if (undoList != null) {
@@ -57,11 +64,6 @@ public class UndoSpell extends TargetingSpell
 			else
 			{
 				setTargetName(mage.getName());
-				BlockBatch batch = mage.cancelPending();
-				if (batch != null) {
-					undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
-					return SpellResult.COST_FREE;
-				}
 				UndoList undoList = mage.undo(targetBlock);
                 if (undoList != null) {
                     undoListName = undoList.getName();
