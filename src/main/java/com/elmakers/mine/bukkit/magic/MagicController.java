@@ -1461,7 +1461,12 @@ public class MagicController implements Listener, MageController
 			Bukkit.getScheduler().cancelTask(autoSaveTaskId);
 			autoSaveTaskId = 0;
 		}
-		
+
+        showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
+        showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
+        castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
+        activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
+
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
@@ -3264,6 +3269,22 @@ public class MagicController implements Listener, MageController
         return target.getType().name().toLowerCase().replace('_', ' ');
     }
 
+    public boolean getShowCastHoloText() {
+        return showCastHoloText;
+    }
+
+    public boolean getShowActivateHoloText() {
+        return showActivateHoloText;
+    }
+
+    public int getCastHoloTextRange() {
+        return castHoloTextRange;
+    }
+
+    public int getActiveHoloTextRange() {
+        return activateHoloTextRange;
+    }
+
 	/*
 	 * Private data
 	 */
@@ -3353,7 +3374,7 @@ public class MagicController implements Listener, MageController
 	 private final Map<String, Long>			forgetMages					= new HashMap<String, Long>();
 	 private final Map<String, Mage>		 	pendingConstruction			= new HashMap<String, Mage>();
 	 private final Set<String>  	 			pendingUndo					= new HashSet<String>();
-	 private final Map<String, WeakReference<WorldEditSchematic>>	 schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
+	 private final Map<String, WeakReference<WorldEditSchematic>> schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
  
 	 private MagicPlugin                         plugin                         = null;
 	 private final File							 configFolder;
@@ -3365,6 +3386,11 @@ public class MagicController implements Listener, MageController
 
 	 private int								 toggleCooldown					= 1000;
 	 private int								 toggleMessageRange				= 1024;
+
+     private boolean                             showCastHoloText               = false;
+     private boolean                             showActivateHoloText           = false;
+     private int                                 castHoloTextRange              = 0;
+     private int                                 activateHoloTextRange          = 0;
 	 
 	 private boolean							 bypassBuildPermissions         = false;
 	 private boolean							 bypassPvpPermissions           = false;

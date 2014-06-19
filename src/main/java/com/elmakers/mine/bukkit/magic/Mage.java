@@ -10,11 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.effect.HoloUtils;
+import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -33,6 +32,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
@@ -86,6 +86,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	private final MaterialBrush		brush;
 	
 	private boolean 				isNewPlayer = true;
+
+    private Hologram                hologram;
+    private Integer                 hologramTaskId = null;
+    private boolean                 hologramIsVisible = false;
 	
 	public Mage(String id, MagicController controller) {
 		this.id = id;
@@ -841,6 +845,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			// Notify controller of successful casts,
 			// this if for dynmap display or other global-level processing.
 			controller.onCast(this, spell, result);
+
+            //TODO: Move this to BaseSpell?
+            if (controller.getShowCastHoloText()) {
+                showHoloText(getEyeLocation(), spell.getName(), 10000);
+            }
 		}
 	}
 
@@ -1146,4 +1155,43 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	{
 		return lastDeathLocation;
 	}
+
+    public void showHoloText(Location location, String text, int duration)
+    {
+        // TODO: Broadcast
+        if (!isPlayer()) return;
+        final Player player = getPlayer();
+
+        if (hologram == null)
+        {
+            hologram = HoloUtils.createHoloText(location, text);
+        }
+        else
+        {
+            if (hologramIsVisible)
+            {
+                hologram.hide(player);
+            }
+            hologram.teleport(location);
+            hologram.setLabel(text);
+        }
+
+        hologram.show(player);
+
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+        if (hologramTaskId != null)
+        {
+            scheduler.cancelTask(hologramTaskId);
+        }
+        if (duration > 0)
+        {
+            scheduler.scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+                    hologram.hide(player);
+                    hologramIsVisible = false;
+                }
+            }, duration);
+        }
+    }
 }
