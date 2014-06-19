@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,8 +49,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private float thrustSpeed = 0;
     private int thrustFrequency = 1;
     protected ThrustAction thrust;
-
-    private boolean cancelled = false;
 
     public class ThrustAction implements Runnable
     {
@@ -125,7 +124,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
     protected boolean checkActive()
     {
-        if (cancelled) return false;
+        if (!isActive()) return false;
 
         Entity entity = mage.getEntity();
         if (entity == null || entity.isDead()) return false;
@@ -166,16 +165,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
 		return SpellResult.CAST;
 	}
-
-    @Override
-    public boolean onCancel() {
-        boolean active = !cancelled && isActive();
-        if (active) {
-            cancelled = true;
-            deactivate();
-        }
-        return active;
-    }
 	
 	@Override
 	public void onDeactivate() {
@@ -203,8 +192,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		final Player player = mage.getPlayer();
 		if (player == null) return;
 
-        cancelled = false;
-		
 		if (flySpeed > 0) {
 			player.setFlySpeed(flySpeed * defaultFlySpeed);
 		}
@@ -254,7 +241,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
 			
 			EffectRing effect = new EffectRing(controller.getPlugin());
 			effect.setRadius(effectRange);
-            effect.setParticleType(ParticleType.BLOCK_BREAKING);
+            //effect.setParticleType(ParticleType.BLOCK_BREAKING);
+            effect.setEffect(Effect.STEP_SOUND);
             effect.setMaterial(block);
 			effect.setPeriod(effectPeriod);
 			effect.start(effectLocation, null);
