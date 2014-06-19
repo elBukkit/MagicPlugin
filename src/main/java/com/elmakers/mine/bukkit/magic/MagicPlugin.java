@@ -135,10 +135,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		getCommand("magic").setExecutor(magicCommand);
 		getCommand("magic").setTabCompleter(magicCommand);
 		TabExecutor castCommand = new CastCommandExecutor(this);
-		getCommand("cast").setExecutor(castCommand);
-		getCommand("cast").setTabCompleter(castCommand);
-		getCommand("castp").setExecutor(castCommand);
-		getCommand("castp").setTabCompleter(castCommand);
+		getCommand("mcast").setExecutor(castCommand);
+		getCommand("mcast").setTabCompleter(castCommand);
+		getCommand("mcastp").setExecutor(castCommand);
+		getCommand("mcastp").setTabCompleter(castCommand);
 		TabExecutor wandCommand = new WandCommandExecutor(this);
 		getCommand("wand").setExecutor(wandCommand);
 		getCommand("wand").setTabCompleter(wandCommand);
