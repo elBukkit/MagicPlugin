@@ -176,6 +176,11 @@ spells:
         description: A gift from the Dark Lord
         cast: You feel lighter
         cost_free: You feel heavier
+    superfly:
+        name: SuperFly
+        description: For videographers
+        cast: You feel lighter
+        cost_free: You feel heavier
     immobulus:
         name: Immobulus
         description: Immobilize your target
@@ -340,6 +345,10 @@ wands:
     default:
         name: Wand
         description: $wood and $core
+
+    video:
+        name: Videographer Wand
+        description: Fly like the wind!
 
     gryffindor:
         name: Sword of Gryffindor

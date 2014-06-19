@@ -148,7 +148,7 @@ arrow:
     parameters:
       projectile: Arrow
       damage: 3
-      speed: 2
+      speed: 3
       spread: 6
       fire: false
       tick_increase: 5000
@@ -213,7 +213,7 @@ broom:
              class: ShieldEntityEffect
              iterations: 30
     parameters:
-        thrust: 0.5
+        thrust: 0.8
         boost: 1
         boost_ticks: 10
         auto_deactivate: 3
@@ -1433,7 +1433,7 @@ day:
         allow_night: false
         allow_day: true
         allow_glowstone: false
-        cooldown: 60000
+        cooldown: 5000
         time: day
         weather: clear
     costs:
@@ -1460,7 +1460,7 @@ nox:
         allow_night: false
         allow_day: true
         allow_glowstone: false
-        cooldown: 60000
+        cooldown: 5000
         time: night
     costs:
         xp: 200

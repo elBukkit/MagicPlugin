@@ -309,7 +309,6 @@ wolf:
       - glass
 
 crudwand:
-    active_spell: broom
     icon: stick
     indestructible: false
     locked: true
@@ -317,6 +316,18 @@ crudwand:
     xp_regeneration: 5
     uses: 20
     effect_color: '440044'
+
+video:
+    active_spell: superfly
+    icon: gold_pickaxe
+    indestructible: true
+    bound: true
+    locked: true
+    xp_max: 50
+    xp_regeneration: 5
+    effect_color: '440044'
+    spells:
+      - superfly
 
  #
  # ITEMS
@@ -349,48 +360,30 @@ camera:
 # Brooms
 #
 
-nimbus:
-    active_spell: broom
-    icon: blaze_rod
-    indestructible: false
-    locked: true
-    xp_max: 1000
-    xp_regeneration: 500
-    effect_color: '880088'
-    spells:
-        - broom
-
-crudbroom:
-    active_spell: broom
-    icon: blaze_rod
-    indestructible: false
-    locked: true
-    xp_max: 20
-    xp_regeneration: 5
-    uses: 10
-    effect_color: '000088'
-    spells:
-        - broom
-
-bluebottle:
-    active_spell: broom
-    icon: blaze_rod
-    indestructible: false
-    locked: true
-    xp_max: 20
-    xp_regeneration: 5
-    effect_color: '0000FF'
-    spells:
-        - broom
 
 firebolt:
     active_spell: broom
     icon: blaze_rod
-    indestructible: false
+    indestructible: true
     locked: true
-    xp_max: 200
-    xp_regeneration: 20
-    effect_color: 'FF0000'
+    xp_max: 20
+    power: 1
+    xp: 10
+    xp_regeneration: 10
+    effect_color: 'FF00FF'
+    spells:
+        - broom
+
+nimbus:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: true
+    locked: true
+    xp_max: 10
+    xp: 10
+    xp_regeneration: 5
+    power: 0.8
+    effect_color: '880088'
     spells:
         - broom
 
@@ -399,9 +392,33 @@ cleansweep1:
     icon: blaze_rod
     indestructible: false
     locked: true
-    xp_max: 700
-    xp_regeneration: 100
+    xp_max: 20
+    xp_regeneration: 1
+    power: 0.3
     effect_color: 'FFFF00'
+    spells:
+        - broom
+
+bluebottle:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: false
+    locked: true
+    xp_max: 10
+    xp_regeneration: 1
+    effect_color: '0000FF'
+    spells:
+        - broom
+
+crudbroom:
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: false
+    locked: true
+    xp_max: 10
+    xp_regeneration: 1
+    uses: 10
+    effect_color: '000088'
     spells:
         - broom
 
