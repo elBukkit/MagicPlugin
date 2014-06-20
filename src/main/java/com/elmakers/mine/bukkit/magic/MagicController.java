@@ -1345,14 +1345,22 @@ public class MagicController implements Listener, MageController
 		
 		// Reset existing spells.
 		spells.clear();
-		
+
+        ConfigurationSection defaults = config.getConfigurationSection("default");
+
 		Set<String> spellKeys = config.getKeys(false);
 		for (String key : spellKeys)
 		{
+            if (key.equals("default")) continue;
+
 			ConfigurationSection spellNode = config.getConfigurationSection(key);
 			if (!spellNode.getBoolean("enabled", true)) {
 				continue;
 			}
+
+            if (defaults != null) {
+                ConfigurationUtils.addConfigurations(spellNode, defaults);
+            }
 
             // Kind of a hacky way to do this, and only works with BaseSpell spells.
             if (allPvpRestricted) {

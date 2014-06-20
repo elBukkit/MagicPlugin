@@ -123,6 +123,7 @@ allis0n:
     effect_color: '00AACC'
     effect_bubbles: true
     active_spell: ascendio
+    hidden: true
     spells:
       - flagrate
       - flipendo
@@ -162,6 +163,7 @@ elder:
     effect_particle_data: 1
     effect_bubbles: true
     active_spell: ascendio
+    hidden: true
     spells:
       - accio
       - aguamenti
@@ -233,6 +235,7 @@ wolf:
     organize: true
     mode: inventory
     active_spell: fly
+    hidden: true
     spells:
       - accio
       - aguamenti

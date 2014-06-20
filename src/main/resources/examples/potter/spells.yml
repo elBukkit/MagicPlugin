@@ -5,6 +5,55 @@
 #    and http://harrypotter.wikia.com/wiki/List_of_spells
 #
 
+default:
+    effects:
+       target_selected:
+       - class: EffectSingle
+         location: origin
+         sound: anvil_use
+       - class: EffectSingle
+         location: target
+         particle: happy_villager
+         particle_offset_x: 0.5
+         particle_offset_y: 0.5
+         particle_offset_z: 0.5
+       - class: EffectTrail
+         particle: water_dripping
+       fail:
+       - class: EffectSingle
+         location: origin
+         sound: note_bass_drum
+         sound_volume: 0.8
+         sound_pitch: 1.2
+       insufficient_resources:
+       - class: EffectSingle
+         location: origin
+         sound: note_bass
+         sound_volume: 0.7
+         sound_pitch: 1.2
+       insufficient_permission:
+       - class: EffectSingle
+         location: origin
+         sound: note_bass
+         sound_volume: 0.9
+         sound_pitch: 1.5
+       cooldown:
+       - class: EffectSingle
+         location: origin
+         sound: note_bass_drum
+         sound_volume: 0.6
+         sound_pitch: 0.8
+       no_target:
+       - class: EffectSingle
+         location: origin
+         sound: note_bass_drum
+         sound_volume: 0.4
+         sound_pitch: 0.8
+       cursed:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
+
 accio:
     icon: ink_sack:6
     category: utility
@@ -151,7 +200,7 @@ arrow:
       speed: 3
       spread: 6
       fire: false
-      tick_increase: 5000
+      tick_increase: 1180
     costs:
         xp: 10
 
