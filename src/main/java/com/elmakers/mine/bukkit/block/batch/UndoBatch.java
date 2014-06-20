@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.block.batch;
 
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -37,6 +38,7 @@ public class UndoBatch implements BlockBatch {
         trackUndoBlocks.setBypass(true);
 
         this.undoBlocks = blockList.toArray(template);
+        ArrayUtils.reverse(this.undoBlocks);
         this.attachables = controller.getMaterialSet("attachable");
         this.attachablesWall = controller.getMaterialSet("attachable_wall");
         this.attachablesDouble = controller.getMaterialSet("attachable_double");
