@@ -124,21 +124,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
         if (crashDistance > 0)
         {
-            Location mageLocation = mage.getEyeLocation();
-            Block facingBlock = mageLocation.getBlock();
             Vector threshold = direction.clone().multiply(crashDistance);
-            Block targetBlock = mageLocation.add(threshold).getBlock();
-
-            if (!targetBlock.equals(facingBlock) && targetBlock.getType() != Material.AIR) {
-                deactivate(true);
-                sendMessage(getMessage("crash"));
-                mage.deactivateAllSpells();
-                playEffects("crash");
-                if (crashEffects != null && crashEffects.size() > 0 && entity instanceof LivingEntity) {
-                    CompatibilityUtils.applyPotionEffects((LivingEntity)entity, crashEffects);
-                }
-                return;
-            }
+            if (checkForCrash(mage.getEyeLocation(), threshold)) return;
+            if (checkForCrash(mage.getLocation(), threshold)) return;
         }
 
         double boost = thrustSpeed;
@@ -151,6 +139,25 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         direction.multiply(boost);
         entity.setVelocity(direction);
+    }
+
+    protected boolean checkForCrash(Location source, Vector threshold)
+    {
+        Block facingBlock = source.getBlock();
+        Block targetBlock = source.add(threshold).getBlock();
+        if (!targetBlock.equals(facingBlock) && targetBlock.getType() != Material.AIR) {
+            deactivate(true);
+            sendMessage(getMessage("crash"));
+            mage.deactivateAllSpells();
+            playEffects("crash");
+            LivingEntity livingEntity = mage.getLivingEntity();
+            if (crashEffects != null && livingEntity != null && crashEffects.size() > 0) {
+                CompatibilityUtils.applyPotionEffects(livingEntity, crashEffects);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     protected boolean checkActive()
