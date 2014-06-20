@@ -89,7 +89,7 @@ accio:
         type: pull
         count: 1
     costs:
-        xp: 10
+        xp: 15
 
 aguamenti:
     icon: stationary_water
@@ -137,7 +137,7 @@ apparate:
         allow_decend: true
         transparent: passthrough
     costs:
-        xp: 100
+        xp: 60
 
 araniaexumai:
     icon: web
@@ -176,7 +176,7 @@ araniaexumai:
         count: 8
         damage: 3
     costs:
-        xp: 15
+        xp: 10
 
 arrow:
     icon: arrow
@@ -314,7 +314,7 @@ avadakedavra:
         check_destructible: false
         cooldown: 30000
     costs:
-        xp: 200
+        xp: 100
 
 avis:
     icon: monster_egg
@@ -660,7 +660,7 @@ episkey:
         cure: false
         percentage: 0.05
     costs:
-        xp: 20
+        xp: 15
 
 evanesco:
     icon: bone
@@ -809,7 +809,7 @@ flagrate:
         cooldown: 10000
         transparent: transparent_to_construction
     costs:
-        xp: 5
+        xp: 20
 
 flipendo:
     icon: ink_sack:5
@@ -849,7 +849,7 @@ flipendo:
         damage: 0.5
         cooldown: 1500
     costs:
-        xp: 25
+        xp: 15
 
 fly:
     icon: feather
@@ -932,7 +932,7 @@ imperio:
         item_force: 1
         entity_force: 1
     costs:
-        xp: 95
+        xp: 85
 
 impervius:
     icon: gold_spade
@@ -1005,7 +1005,7 @@ lumos:
            effectLib:
              class: TraceEntityEffect
     costs:
-        xp: 20
+        xp: 15
     parameters:
         target: any
         range: 32
@@ -1181,7 +1181,7 @@ reducto:
         check_destructible: false
         undo: 4000
     costs:
-        xp: 85
+        xp: 80
 
 salviohexia:
     icon: diamond_pickaxe
@@ -1250,7 +1250,7 @@ reparo:
         obworld: ~_backup
         brushtarget: true
     costs:
-        xp: 85
+        xp: 80
 
 reparomaxima:
     icon: iron_pickaxe
