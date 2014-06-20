@@ -955,19 +955,50 @@ public class MagicController implements Listener, MageController
 			plugin.saveResource(configFileName, false);
 		}
 
+        boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
+
+        String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
 		String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
+
 		plugin.saveResource(defaultsFileName, true);
 
 		getLogger().info("Loading " + configFile.getName());
-		Configuration config = YamlConfiguration.loadConfiguration(configFile);
-		
-		if (!loadDefaults) {
-			return config;
-		}
-		
-		Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
-		ConfigurationUtils.addConfigurations(defaultConfig, config);
-		return defaultConfig;
+		ConfigurationSection config = YamlConfiguration.loadConfiguration(configFile);
+
+        if (loadDefaults) {
+            Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
+            ConfigurationUtils.addConfigurations(defaultConfig, config);
+            config = defaultConfig;
+        }
+
+        if (usingExample) {
+            /// Kinda fugly, but can't check for this in advance?
+            try {
+                Configuration exampleConfig = YamlConfiguration.loadConfiguration(plugin.getResource(examplesFileName));
+                ConfigurationUtils.addConfigurations(exampleConfig, config);
+                config = exampleConfig;
+                getLogger().info(" Using " + examplesFileName);
+            } catch (Exception ex) {
+                getLogger().info(ex.getMessage());
+            }
+        }
+
+        if (addExamples != null && addExamples.size() > 0) {
+            for (String example : addExamples) {
+                try {
+                    examplesFileName = "examples/" + example + "/" + fileName + ".yml";
+                    plugin.saveResource(examplesFileName, true);
+
+                    Configuration exampleConfig = YamlConfiguration.loadConfiguration(plugin.getResource(examplesFileName));
+                    config = ConfigurationUtils.addConfigurations(config, exampleConfig);
+                    getLogger().info(" Added " + examplesFileName);
+                } catch (Exception ex) {
+                    getLogger().info(ex.getMessage());
+                }
+            }
+        }
+
+		return config;
 	}
 	
 	public void loadConfiguration()
@@ -978,6 +1009,11 @@ public class MagicController implements Listener, MageController
 		// Load main configuration
 		try {
 			loadProperties(loadConfigFile(CONFIG_FILE, true));
+            if (exampleDefaults != null && exampleDefaults.length() > 0) {
+                // Reload config, example will be used this time.
+                getLogger().info("Overriding configuration with defaults: " + exampleDefaults);
+                loadProperties(loadConfigFile(CONFIG_FILE, false));
+            }
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1464,11 +1500,14 @@ public class MagicController implements Listener, MageController
 	{
 		if (properties == null) return;
 
-		// Cancel any pending configurable tasks
+		// Cancel any pending save tasks
 		if (autoSaveTaskId > 0) {
 			Bukkit.getScheduler().cancelTask(autoSaveTaskId);
 			autoSaveTaskId = 0;
 		}
+
+        exampleDefaults = properties.getString("example", exampleDefaults);
+        addExamples = properties.getStringList("add_examples");
 
         showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
         showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
@@ -3428,6 +3467,9 @@ public class MagicController implements Listener, MageController
 	 private boolean							 hasEssentials					= false;
      private boolean							 hasCommandBook					= false;
 	 private boolean							 hasWorldEdit					= false;
+
+     private String                              exampleDefaults                = null;
+     private Collection<String>                  addExamples                    = null;
 	 
 	 // Sub-Controllers
 	 private CraftingController					 crafting						= null;

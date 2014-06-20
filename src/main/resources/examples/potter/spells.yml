@@ -232,7 +232,7 @@ ascendio:
     costs:
         xp: 45
 
-arrestomomentum:
+arresto:
     icon: ink_sack:8
     category: movement
     class: FlingSpell
@@ -243,6 +243,12 @@ arrestomomentum:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_volume: 1.1
+        -  class: EffectSingle
+           particle: spell
+           particle_count: 4
+           effectlib:
+             class: ShieldEntityEffect
+             iterations: 10
         land:
         -  class: EffectRing
            effect: step_sound
@@ -1925,3 +1931,37 @@ vault:
           $name: $target
           $vault: [Vault]
           $lock: [Lock]
+
+revelio:
+    icon: ender_portal
+    category: master
+    class: PhaseSpell
+    worth: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_travel
+           location: both
+        -  class: EffectRing
+           particle: portal
+           particle_count: 4
+           location: both
+           effectlib:
+             class: WarpEntityEffect
+    parameters:
+        cooldown: 2000
+    costs:
+        xp: 500
+    parameters:
+      worlds:
+          world:
+             target: Hogwarts
+             scale: 1
+          world_other:
+             target: Hogwarts
+             scale: 1
+          Hogwarts:
+             target: MuggleWorld
+             scale: 1
+          MuggleWorld:
+            target: Hogwarts

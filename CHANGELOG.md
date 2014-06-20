@@ -10,6 +10,8 @@
  - Add /wand unlock command
  - Integrate EffectLib directly (no dependency needed)
  - Tons of spell tweaks for new custom Harry Potter configuration
+ - Add "overrides" wand property, great for custom items
+ - Add "example" and "add_examples" configuration options, for easy example config testing
 
 ## 3.2
 

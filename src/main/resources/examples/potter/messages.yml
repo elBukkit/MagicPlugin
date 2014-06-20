@@ -11,8 +11,10 @@ cooldown:
 
 worlds:
     Hogwarts:
-        name: The Magical World
+        name: The Wizarding World
     Hogwarts_muggle:
+        name: The Muggle World
+    MuggleWorld:
         name: The Muggle World
 
 wand:
@@ -70,7 +72,7 @@ spells:
         name: Arania Exumai
         description: Blast away arachnids
         cast: Arania Exumai!
-    arrestomomentum:
+    arresto:
         name: Arresto Momentum
         description: Keep you safe from a fall
     arrow:
@@ -242,6 +244,10 @@ spells:
         name: Reducto
         description: Blast your target to pieces
         cast: Reducto!
+    revelio:
+        name: Revelio
+        description: Reveal the unseen
+        cast: You reveal $world_name
     salviohexia:
         name: Salivo Hexia
         description: Preserve an area for Reparo
