@@ -1668,7 +1668,7 @@ recall:
         allow_wand: true
         allow_home: true
         allow_cross_world: true
-        allow_warps: dueling,quiddich
+        allow_warps: dueling,quiddichtraining,greathall,diagonalley,4privet,trainstation
     costs:
         xp: 50
 
@@ -1733,7 +1733,7 @@ absorb:
         xp: 30
 
 fill:
-    icon: iron_hoe
+    icon: diamond_spade
     category: engineering
     class: FillSpell
     worth: 200
@@ -1753,7 +1753,7 @@ fill:
 
 
 superdisc:
-    icon: ink_sack:13
+    icon: egg
     category: engineering
     class: ConstructSpell
     worth: 150
@@ -1775,7 +1775,7 @@ superdisc:
     costs:
         xp: 150
 superring:
-    icon: ink_sack:9
+    icon: clay_ball
     category: engineering
     class: ConstructSpell
     worth: 100
@@ -1823,7 +1823,7 @@ superdome:
 
 
 bridge:
-    icon: stone_hoe
+    icon: stone_axe
     category: engineering
     class: BridgeSpell
     worth: 30
@@ -1837,7 +1837,7 @@ bridge:
     costs:
         xp: 5
 pillar:
-    icon: gold_axe
+    icon: iron_axe
     category: engineering
     class: PillarSpell
     worth: 30
@@ -1868,23 +1868,6 @@ place:
         transparent: transparent_to_construction
     costs:
         xp: 10
-stalactite:
-    icon: iron_axe
-    category: engineering
-    class: PillarSpell
-    worth: 30
-    effects:
-        cast:
-        -  class: EffectSingle
-           effect: step_sound
-           location: target
-    parameters:
-        allow_max_range: false
-        range: 64
-        type: down
-        transparent: transparent_to_construction
-    costs:
-        xp: 5
 
 superfly:
     icon: feather
