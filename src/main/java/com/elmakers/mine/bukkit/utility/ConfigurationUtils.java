@@ -279,6 +279,11 @@ public class ConfigurationUtils {
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
+        return addConfigurations(first, second, true);
+    }
+
+    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override)
+    {
         Set<String> keys = second.getKeys(false);
         for (String key : keys) {
             Object value = second.get(key);
@@ -289,11 +294,11 @@ public class ConfigurationUtils {
                 ConfigurationSection addChild = (ConfigurationSection)value;
                 if (existingValue == null) {
                     ConfigurationSection newChild = first.createSection(key);
-                    addConfigurations(newChild, addChild);
+                    addConfigurations(newChild, addChild, override);
                 } else {
-                    addConfigurations((ConfigurationSection)existingValue, addChild);
+                    addConfigurations((ConfigurationSection)existingValue, addChild, override);
                 }
-            } else {
+            } else if (override || existingValue == null) {
                 first.set(key, value);
             }
         }

@@ -12,15 +12,12 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
-import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.EntityEffect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
@@ -39,18 +36,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
-import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.effect.builtin.EffectSingle;
-import com.elmakers.mine.bukkit.effect.builtin.EffectTrail;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
