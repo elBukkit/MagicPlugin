@@ -224,6 +224,10 @@ ascendio:
            effectlib:
              class: TraceEntityEffect
              iterations: 30
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
     parameters:
     costs:
         xp: 45
@@ -261,6 +265,10 @@ broom:
            effectlib:
              class: ShieldEntityEffect
              iterations: 30
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
     parameters:
         thrust: 0.8
         boost: 1
@@ -861,6 +869,10 @@ fly:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_pitch: 0.2
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
     parameters:
         speed: 2
         pvp_restricted: true

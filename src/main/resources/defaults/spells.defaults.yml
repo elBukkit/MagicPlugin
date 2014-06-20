@@ -1485,6 +1485,10 @@ fling:
            effectlib:
              class: TraceEntityEffect
              iterations: 30
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
     parameters:
     costs:
         xp: 45
@@ -1503,6 +1507,10 @@ leap:
            effectlib:
              class: TraceEntityEffect
              iterations: 20
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
     parameters:
         cooldown: 5000
         cruising_altitude: 0
@@ -3324,6 +3332,10 @@ levitate:
         -  class: EffectRing
            particle: spell
            particle_count: 10
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
     parameters:
     costs:
         xp: 45
@@ -3347,6 +3359,10 @@ fly:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_pitch: 0.2
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
     parameters:
         speed: 2
     costs:

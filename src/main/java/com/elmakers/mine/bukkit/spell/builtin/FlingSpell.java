@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.util.Collection;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -88,23 +89,11 @@ public class FlingSpell extends TargetingSpell implements Listener
 		{
 			event.setCancelled(true);
 			lastFling = 0;
-			
-			// Visual effect
-			// TODO: Data-drive?
-			Location effectLocation = event.getEntity().getLocation();
-			Block block = event.getEntity().getLocation().getBlock();
-			block = block.getRelative(BlockFace.DOWN);
-			int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
-			int effectRange = Math.min(maxRingEffectRange, ringEffectRange);
-			effectRange = Math.min(getMaxRange(), effectRange / effectSpeed);
-			
-			EffectRing effect = new EffectRing(controller.getPlugin());
-			effect.setRadius(effectRange);
-            effect.setEffect(Effect.STEP_SOUND);
-			//effect.setParticleType(ParticleType.BLOCK_BREAKING);
-			effect.setMaterial(block);
-			effect.setPeriod(effectPeriod);
-			effect.start(effectLocation, null);
+
+            // Visual effect
+            int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
+            ringEffectRange = Math.min(maxRingEffectRange, ringEffectRange);
+            playEffects("land", ringEffectRange);
 		}
 	}
 
@@ -116,4 +105,12 @@ public class FlingSpell extends TargetingSpell implements Listener
 		parameters.add("min_speed");
 		parameters.add("max_speed");
 	}
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
+    {
+        Block block = mage.getEntity().getLocation().getBlock();
+        block = block.getRelative(BlockFace.DOWN);
+        return new MaterialAndData(block);
+    }
 }

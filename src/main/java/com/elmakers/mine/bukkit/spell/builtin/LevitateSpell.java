@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -30,8 +31,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	private long levitateEnded;
 	private final long safetyLength = 10000;
 
-    private final static int effectSpeed = 2;
-    private final static int effectPeriod = 2;
     private final static int minRingEffectRange = 1;
     private final static int maxRingEffectRange = 8;
     private final static int maxDamageAmount = 150;
@@ -234,24 +233,20 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		if (levitateEnded + safetyLength > System.currentTimeMillis())
 		{
 			event.setCancelled(true);
-			levitateEnded = 0;;
+			levitateEnded = 0;
 			
 			// Visual effect
-			// TODO: Data-drive?
-			Location effectLocation = event.getEntity().getLocation();
-			Block block = event.getEntity().getLocation().getBlock();
-			block = block.getRelative(BlockFace.DOWN);
-			int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
-			int effectRange = Math.min(maxRingEffectRange, ringEffectRange);
-			effectRange = Math.min(getMaxRange(), effectRange / effectSpeed);
-			
-			EffectRing effect = new EffectRing(controller.getPlugin());
-			effect.setRadius(effectRange);
-            //effect.setParticleType(ParticleType.BLOCK_BREAKING);
-            effect.setEffect(Effect.STEP_SOUND);
-            effect.setMaterial(block);
-			effect.setPeriod(effectPeriod);
-			effect.start(effectLocation, null);
+            int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
+            ringEffectRange = Math.min(maxRingEffectRange, ringEffectRange);
+            playEffects("land", ringEffectRange);
 		}
 	}
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
+    {
+        Block block = mage.getEntity().getLocation().getBlock();
+        block = block.getRelative(BlockFace.DOWN);
+        return new MaterialAndData(block);
+    }
 }
