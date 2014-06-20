@@ -150,7 +150,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private boolean								isActive				= false;
 
-    private Map<SpellResult, List<EffectPlayer>> effects				= new HashMap<SpellResult, List<EffectPlayer>>();
+    private Map<String, List<EffectPlayer>>     effects				= new HashMap<String, List<EffectPlayer>>();
 
     private float								fizzleChance			= 0.0f;
     private float								backfireChance			= 0.0f;
@@ -720,85 +720,42 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         effects.clear();
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
-            for (SpellResult resultType : SpellResult.values()) {
-                String typeName = resultType.name().toLowerCase();
-                if (effectsNode.contains(typeName)) {
-                    Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(effectsNode, typeName);
-                    if (effectNodes != null)
+            Collection<String> effectKeys = effectsNode.getKeys(false);
+            for (String effectKey : effectKeys) {
+                Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(effectsNode, effectKey);
+                if (effectNodes != null)
+                {
+                    List<EffectPlayer> players = new ArrayList<EffectPlayer>();
+                    for (ConfigurationSection effectValues : effectNodes)
                     {
-                        List<EffectPlayer> players = new ArrayList<EffectPlayer>();
-                        for (ConfigurationSection effectValues : effectNodes)
-                        {
-                            if (effectValues.contains("class")) {
-                                String effectClass = effectValues.getString("class");
-                                try {
-                                    Class<?> genericClass = Class.forName(EFFECT_BUILTIN_CLASSPATH + "." + effectClass);
-                                    if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
-                                        throw new Exception("Must extend EffectPlayer");
-                                    }
-
-                                    Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
-                                    EffectPlayer player = playerClass.newInstance();
-                                    player.load(controller.getPlugin(), effectValues);
-                                    players.add(player);
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                    controller.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
+                        if (effectValues.contains("class")) {
+                            String effectClass = effectValues.getString("class");
+                            try {
+                                Class<?> genericClass = Class.forName(EFFECT_BUILTIN_CLASSPATH + "." + effectClass);
+                                if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
+                                    throw new Exception("Must extend EffectPlayer");
                                 }
+
+                                Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
+                                EffectPlayer player = playerClass.newInstance();
+                                player.load(controller.getPlugin(), effectValues);
+                                players.add(player);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                controller.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
                             }
                         }
-
-                        effects.put(resultType, players);
                     }
+
+                    effects.put(effectKey, players);
                 }
             }
         }
 
-        // Populate default effects
-        initializeDefaultSound(SpellResult.FAIL, Sound.NOTE_BASS_DRUM, 0.9f, 1.2f);
-        initializeDefaultSound(SpellResult.INSUFFICIENT_RESOURCES, Sound.NOTE_BASS, 1.0f, 1.2f);
-        initializeDefaultSound(SpellResult.INSUFFICIENT_PERMISSION, Sound.NOTE_BASS, 1.1f, 1.5f);
-        initializeDefaultSound(SpellResult.COOLDOWN, Sound.NOTE_SNARE_DRUM, 1.1f, 0.9f);
-        initializeDefaultSound(SpellResult.NO_TARGET, Sound.NOTE_BASS_DRUM, 1.1f, 0.9f);
-
-        if (!effects.containsKey(SpellResult.TARGET_SELECTED)) {
-            List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
-            EffectPlayer targetHighlight = new EffectSingle(controller.getPlugin());
-            targetHighlight.setParticleType(ParticleType.HAPPY_VILLAGER);
-            targetHighlight.setLocationType("target");
-            targetHighlight.setOffset(0.5f, 0.5f, 0.5f);
-            effectList.add(targetHighlight);
-            EffectPlayer trail = new EffectTrail(controller.getPlugin());
-            trail.setParticleType(ParticleType.WATER_DRIPPING);
-            effectList.add(trail);
-            EffectPlayer sound = new EffectSingle(controller.getPlugin());
-            sound.setSound(Sound.ANVIL_USE);
-            sound.setLocationType("source");
-            effectList.add(sound);
-            effects.put(SpellResult.TARGET_SELECTED, effectList);
+        // TODO: Is this still necessary?
+        if (!effects.containsKey("cost_free") && effects.containsKey("cast")) {
+            effects.put("cost_free", effects.get("cast"));
         }
-
-        if (!effects.containsKey(SpellResult.COST_FREE) && effects.containsKey(SpellResult.CAST)) {
-            effects.put(SpellResult.COST_FREE, effects.get(SpellResult.CAST));
-        }
-
-        if (!effects.containsKey(SpellResult.CURSED)) {
-            List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
-            EffectPlayer hurtEffect = new EffectSingle(controller.getPlugin());
-            hurtEffect.setEntityEffect(EntityEffect.HURT);
-            effectList.add(hurtEffect);
-            effects.put(SpellResult.CURSED, effectList);
-        }
-    }
-
-    protected void initializeDefaultSound(SpellResult result, Sound sound, float volume, float pitch) {
-        if (effects.containsKey(result)) return;
-
-        EffectPlayer defaultEffect = new EffectSingle(controller.getPlugin());
-        defaultEffect.setSound(sound, volume, pitch);
-        List<EffectPlayer> effectList = new ArrayList<EffectPlayer>();
-        effectList.add(defaultEffect);
-        effects.put(result, effectList);
     }
 
     public boolean isMatch(String spell, String[] params)
@@ -1002,8 +959,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Show messaging
+        String resultName = result.name().toLowerCase();
         if (result == SpellResult.CAST) {
-            String message = getMessage(result.name().toLowerCase());
+            String message = getMessage(resultName);
             LivingEntity sourceEntity = mage.getLivingEntity();
             Entity targetEntity = getTargetEntity();
             if (targetEntity == sourceEntity) {
@@ -1024,15 +982,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             castMessage(message);
         } else {
-            sendMessage(getMessage(result.name().toLowerCase()));
+            sendMessage(getMessage(resultName));
         }
 
         // Play effects
         Location mageLocation = getEffectLocation();
-        if (effects.containsKey(result) && mageLocation != null) {
+        if (effects.containsKey(resultName) && mageLocation != null) {
             Location targetLocation = getTargetLocation();
             Entity targetEntity = getTargetEntity();
-            currentEffects = effects.get(result);
+            currentEffects = effects.get(resultName);
             for (EffectPlayer player : currentEffects) {
                 // Set material and color
                 player.setMaterial(getEffectMaterial());
@@ -1258,7 +1216,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
-        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effects.get(result));
+        String key = result.name().toLowerCase();
+        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effects.get(key));
+        return effectList;
+    }
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
+        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effects.get(key));
         return effectList;
     }
 
