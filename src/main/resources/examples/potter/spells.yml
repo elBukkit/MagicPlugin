@@ -232,6 +232,27 @@ ascendio:
     costs:
         xp: 45
 
+arrestomomentum:
+    icon: ink_sack:8
+    category: movement
+    class: FlingSpell
+    worth: 20
+    pvp_restricted: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
+    parameters:
+        min_speed: 0
+        max_speed: 0
+    costs:
+        xp: 20
+
 broom:
     icon: blaze_rod
     category: movement
@@ -249,6 +270,17 @@ broom:
            effectlib:
              class: TraceEntityEffect
              iterations: 30
+        crash:
+        -  class: EffectSingle
+           location: source
+           sound: hurt_flesh
+           particle: large_explosion
+        -  class: EffectRing
+           particle: smoke
+           location: source
+           effectlib:
+             class: SmokeEntityEffect
+             iterations: 12
         area:
         -  class: EffectSingle
            sound: enderdragon_wings
@@ -275,6 +307,8 @@ broom:
         boost_ticks: 10
         auto_deactivate: 3
         start_delay: 20
+        crash_distance: 0.5
+        effect_confusion: 120,2
     costs:
         xp: 10
 

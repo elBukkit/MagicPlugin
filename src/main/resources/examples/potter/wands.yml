@@ -146,6 +146,7 @@ allis0n:
       - accio
       - sectumsempra
       - diffindo
+      - arrestomomentum
 
 elder:
     icon: iron_hoe
@@ -169,6 +170,7 @@ elder:
       - aguamenti
       - apparate
       - araniaexumai
+      - arrestomomentum
       - arrow
       - ascendio
       - avadakedavra
@@ -241,6 +243,7 @@ wolf:
       - aguamenti
       - apparate
       - araniaexumai
+      - arrestomomentum
       - arrow
       - ascendio
       - avadakedavra

@@ -109,7 +109,6 @@ public class PushSpell extends UndoableSpell
 			}
 		}
 
-
         if (target instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)target;
             registerModified(li);

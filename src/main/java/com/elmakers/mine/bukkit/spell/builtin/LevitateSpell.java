@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -10,12 +11,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
@@ -23,6 +26,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+
+import java.util.Collection;
 
 public class LevitateSpell extends TargetingSpell implements Listener
 {
@@ -47,7 +52,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double yBoost = 2;
     private float thrustSpeed = 0;
     private int thrustFrequency = 1;
-    protected ThrustAction thrust;
+    private ThrustAction thrust;
+    private double crashDistance = 0;
+
+    private Collection<PotionEffect> crashEffects;
 
     public class ThrustAction implements Runnable
     {
@@ -113,16 +121,35 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return;
             }
         }
+        Vector direction = entity.getLocation().getDirection();
+        direction.normalize();
 
-        Vector thrustVector = entity.getLocation().getDirection();
-        thrustVector.normalize();
+        if (crashDistance > 0)
+        {
+            Location mageLocation = mage.getEyeLocation();
+            Block facingBlock = mageLocation.getBlock();
+            Vector threshold = direction.clone().multiply(crashDistance);
+            Block targetBlock = mageLocation.add(threshold).getBlock();
+
+            if (!targetBlock.equals(facingBlock) && targetBlock.getType() != Material.AIR) {
+                deactivate(true);
+                sendMessage(getMessage("crash"));
+                mage.deactivateAllSpells();
+                playEffects("crash");
+                if (crashEffects != null && crashEffects.size() > 0 && entity instanceof LivingEntity) {
+                    CompatibilityUtils.applyPotionEffects((LivingEntity)entity, crashEffects);
+                }
+                return;
+            }
+        }
+
         double boost = thrustSpeed;
         if (boostTicksRemaining > 0) {
             boost += castBoost;
             --boostTicksRemaining;
         }
-        thrustVector.multiply(boost);
-        entity.setVelocity(thrustVector);
+        direction.multiply(boost);
+        entity.setVelocity(direction);
     }
 
     protected boolean checkActive()
@@ -152,6 +179,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         thrustFrequency = parameters.getInt("thrust_interval", thrustFrequency);
         autoDeactivateHeight = parameters.getInt("auto_deactivate", 0);
         boostTicks = parameters.getInt("boost_ticks", 1);
+        crashDistance = parameters.getDouble("crash_distance", 0);
+
+        crashEffects = getPotionEffects(parameters);
 
         thrustSpeed *= mage.getRadiusMultiplier();
         castBoost *= mage.getRadiusMultiplier();
@@ -188,8 +218,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		// Prevent the player from death by fall
 		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		levitateEnded = System.currentTimeMillis();
-
-        mage.castMessage(getMessage("cancel"));
 	}
 	
 	@Override

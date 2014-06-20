@@ -70,6 +70,9 @@ spells:
         name: Arania Exumai
         description: Blast away arachnids
         cast: Arania Exumai!
+    arrestomomentum:
+        name: Arresto Momentum
+        description: Keep you safe from a fall
     arrow:
         name: Arrow
         description: Fire a magic arrow
@@ -101,7 +104,8 @@ spells:
         name: Broom
         description: Powers magic brooms
         cast: Your broom springs to life!
-        cancel: Your broom quiets down.
+        deactivate: Your broom quiets down.
+        crash: CRASH!
     colorvaria:
         name: Colorvaria
         description: Changes the color of certain objects
