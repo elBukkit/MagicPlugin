@@ -273,7 +273,7 @@ broom:
         crash:
         -  class: EffectSingle
            location: source
-           sound: hurt_flesh
+           entity_effect: hurt
            particle: large_explosion
         -  class: EffectRing
            particle: smoke
