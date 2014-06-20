@@ -26,6 +26,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public Collection<CastingCost> getCosts();
     public Collection<CastingCost> getActiveCosts();
     public Collection<EffectPlayer> getEffects(SpellResult result);
+    public Collection<EffectPlayer> getEffects(String effectsKey);
     public void getParameters(Collection<String> parameters);
     public void getParameterOptions(Collection<String> examples, String parameterKey);
     public long getDuration();
