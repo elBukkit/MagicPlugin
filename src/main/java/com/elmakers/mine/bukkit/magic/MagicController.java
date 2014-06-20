@@ -1359,7 +1359,7 @@ public class MagicController implements Listener, MageController
 			}
 
             if (defaults != null) {
-                spellNode = ConfigurationUtils.addConfigurations(defaults, spellNode);
+                spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
             }
 
             // Kind of a hacky way to do this, and only works with BaseSpell spells.
