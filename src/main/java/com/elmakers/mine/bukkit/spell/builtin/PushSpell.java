@@ -108,7 +108,16 @@ public class PushSpell extends UndoableSpell
 				return;
 			}
 		}
-		
+
+
+        if (target instanceof LivingEntity) {
+            LivingEntity li = (LivingEntity)target;
+            registerModified(li);
+            if (damage > 0) {
+                li.damage(damage);
+            }
+        }
+
 		magnitude = (int)((double)magnitude * multiplier);
 		Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
 		Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
@@ -117,11 +126,5 @@ public class PushSpell extends UndoableSpell
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
 		target.setVelocity(forceVector);
-
-        if (damage > 0 && target instanceof LivingEntity) {
-            LivingEntity li = (LivingEntity)target;
-            registerModified(li);
-            li.damage(damage);
-        }
 	}
 }
