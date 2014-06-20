@@ -63,8 +63,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"haste", 
 		"health_regeneration", "hunger_regeneration", 
-		"icon", "mode", "keep", "locked", "quiet", 
-		"power", 
+		"icon", "mode", "keep", "locked", "quiet",
+		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
 		"materials", "spells"
@@ -141,12 +141,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	private float speedIncrease = 0;
 	private PotionEffect hasteEffect = null;
+
+    private int quietLevel = 0;
+    private String[] castParameters = null;
 	
 	private int storedXpLevel = 0;
 	private int storedXp = 0;
 	private float storedXpProgress = 0;
-	
-	private int quietLevel = 0;
 	
 	// Inventory functionality
 	
@@ -909,6 +910,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("fill", autoFill);
 		node.set("upgrade", isUpgrade);
 		node.set("organize", autoOrganize);
+        if (castParameters != null && castParameters.length > 0) {
+            node.set("overrides", StringUtils.join(castParameters, ' '));
+        } else {
+            node.set("overrides", null);
+        }
 		if (effectSound != null) {
 			node.set("effect_sound", effectSound.name());
 		} else {
@@ -1053,6 +1059,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
 				setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
 			}
+
+            castParameters = null;
+            String overrides = wandConfig.getString("overrides", null);
+            if (overrides != null && !overrides.isEmpty()) {
+                castParameters = StringUtils.split(overrides, ' ');
+            }
 		}
 		
 		// Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
@@ -2255,7 +2267,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean cast() {
 		Spell spell = getActiveSpell();
 		if (spell != null) {
-			if (spell.cast()) {
+			if (spell.cast(castParameters)) {
 				Color spellColor = spell.getColor();
 				if (spellColor != null && this.effectColor != null) {
 					this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
