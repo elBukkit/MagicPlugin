@@ -1170,7 +1170,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cast()
     {
-        return cast(new String[0], null);
+        return cast(null, null);
     }
 
     @Override
