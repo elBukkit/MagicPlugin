@@ -1163,16 +1163,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 	}
-	
-	private static String getSpellDisplayName(SpellTemplate spell, String materialKey) {
+
+    private static String getBrushDisplayName(String materialKey) {
+        String materialName = MaterialBrush.getMaterialName(materialKey);
+        if (materialName == null) {
+            materialName = "none";
+        }
+        return ChatColor.GRAY + materialName;
+    }
+
+    private static String getSpellDisplayName(SpellTemplate spell, String materialKey) {
 		String name = "";
 		if (spell != null) {
 			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
-				String materialName = MaterialBrush.getMaterialName(materialKey);
-				if (materialName == null) {
-					materialName = "none";
-				}
-				name = ChatColor.GOLD + spell.getName() + ChatColor.GRAY + " " + materialName + ChatColor.WHITE;
+				name = ChatColor.GOLD + spell.getName() + " " + getBrushDisplayName(materialKey) + ChatColor.WHITE;
 			} else {
 				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE;
 			}
@@ -1336,12 +1340,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		List<String> lore = new ArrayList<String>();
 		
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
-        if (activeSpell != null) {
+		if (spell != null && spellCount == 1) {
             lore.add(getSpellDisplayName(spell, null));
-        }
-		if (spell != null && spellCount == 1 && materialCount <= 1 && !isUpgrade && !hasPath()) {
-			addSpellLore(spell, lore, this);
+
+            // This is here specifically for a wand that only has
+            // one spell now, but may get more later. Since you
+            // can't open the inventory in this state, you can not
+            // otherwise see the spell lore.
+            if (!hasInventory && !isUpgrade && hasPath()) {
+                addSpellLore(spell, lore, this);
+            }
 		}
+        if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
+        {
+            lore.add(getBrushDisplayName(activeMaterial));
+        }
         if (description.length() > 0) {
             lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
         }
@@ -1360,15 +1373,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (spellCount > 0) {
             if (isUpgrade) {
                 lore.add(Messages.get("wand.upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
-            } else {
+            } else if (spellCount > 1) {
                 lore.add(Messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
             }
         }
         if (materialCount > 0) {
             if (isUpgrade) {
-                lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
-            } else {
                 lore.add(Messages.get("wand.upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
+            } else if (materialCount > 1) {
+                lore.add(Messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
             }
         }
 
