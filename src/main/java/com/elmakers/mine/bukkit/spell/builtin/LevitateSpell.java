@@ -1,10 +1,8 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,7 +22,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 import java.util.Collection;
@@ -54,6 +51,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private int thrustFrequency = 1;
     private ThrustAction thrust;
     private double crashDistance = 0;
+    private double slowMultiplier = 1;
 
     private Collection<PotionEffect> crashEffects;
 
@@ -144,7 +142,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
 
         double boost = thrustSpeed;
-        if (boostTicksRemaining > 0) {
+        if (mage.getPlayer().isSneaking()) {
+            boost *= slowMultiplier;
+        }
+        else if (boostTicksRemaining > 0) {
             boost += castBoost;
             --boostTicksRemaining;
         }
@@ -172,6 +173,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
 
         startDelay = parameters.getInt("start_delay", 0);
+        slowMultiplier = parameters.getDouble("slow", 1);
         castBoost = parameters.getDouble("boost", 0);
         yBoost = parameters.getDouble("y_boost", 2);
 		flySpeed = (float)parameters.getDouble("speed", 0);

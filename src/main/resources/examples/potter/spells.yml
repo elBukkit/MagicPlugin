@@ -306,6 +306,8 @@ broom:
         boost: 1
         boost_ticks: 10
         auto_deactivate: 3
+        auto_deactivate_ticks: 10
+        slow: 0.5
         start_delay: 20
         crash_distance: 0.5
         effect_confusion: 120,2
