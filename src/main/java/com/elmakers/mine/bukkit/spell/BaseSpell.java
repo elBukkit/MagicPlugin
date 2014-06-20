@@ -1345,12 +1345,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void deactivate() {
+        deactivate(false);
+    }
+
+    public void deactivate(boolean quiet) {
         if (isActive) {
             isActive = false;
             onDeactivate();
 
             mage.deactivateSpell(this);
-            sendMessage(getMessage("deactivate"));
+            if (!quiet) {
+                sendMessage(getMessage("deactivate"));
+            }
         }
 
         if (currentEffects != null) {
