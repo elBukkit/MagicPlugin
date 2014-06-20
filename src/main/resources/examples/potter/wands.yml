@@ -317,6 +317,7 @@ crudwand:
     icon: stick
     indestructible: false
     locked: true
+    xp: 50
     xp_max: 50
     xp_regeneration: 5
     uses: 20
@@ -328,6 +329,7 @@ video:
     indestructible: true
     bound: true
     locked: true
+    xp: 50
     xp_max: 50
     xp_regeneration: 5
     effect_color: '440044'
@@ -359,6 +361,7 @@ camera:
     icon: tripwire_hook
     indestructible: false
     locked: true
+    xp: 5
     xp_max: 5
     xp_regeneration: 2
     effect_color: '888888'
@@ -403,6 +406,7 @@ cleansweep1:
     locked: true
     xp_max: 20
     xp_regeneration: 1
+    xp: 10
     power: 0.3
     effect_color: 'FFFF00'
     spells:
@@ -414,6 +418,7 @@ bluebottle:
     indestructible: false
     locked: true
     xp_max: 10
+    xp: 10
     xp_regeneration: 1
     effect_color: '0000FF'
     spells:
@@ -425,6 +430,7 @@ crudbroom:
     indestructible: false
     locked: true
     xp_max: 10
+    xp: 10
     xp_regeneration: 1
     uses: 10
     effect_color: '000088'
@@ -437,6 +443,7 @@ beater:
     indestructible: false
     locked: true
     xp_max: 20
+    xp: 10
     xp_regeneration: 10
     effect_color: 'FF0000'
     spells:
