@@ -37,7 +37,7 @@ public class EffectRing extends EffectRepeating {
     }
 
     public void iterate() {
-        float currentRadius = scale(radius) + 1;
+        float currentRadius = scale(radius * scale) + 1;
 
         // Randomization
         double startRadians = Math.random() * Math.PI * 2;

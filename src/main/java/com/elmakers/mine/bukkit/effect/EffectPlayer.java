@@ -84,6 +84,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected float particleZOffset = 0.3f;
     protected int particleCount = 1;
 
+    protected float scale = 1.0f;
+
     protected Vector offset = new Vector(0, 0, 0);
 
     public EffectPlayer() {
@@ -326,6 +328,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.particleXOffset = xOffset;
         this.particleYOffset = yOffset;
         this.particleZOffset = zOffset;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
     }
 
     public void setSound(Sound sound) {

@@ -12,6 +12,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -986,12 +987,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Play effects
+        playEffects(resultName);
+    }
+
+    public void playEffects(String effectName, float scale)
+    {
         Location mageLocation = getEffectLocation();
-        if (effects.containsKey(resultName) && mageLocation != null) {
+        if (effects.containsKey(effectName) && mageLocation != null) {
             Location targetLocation = getTargetLocation();
             Entity targetEntity = getTargetEntity();
-            currentEffects = effects.get(resultName);
+            currentEffects = effects.get(effectName);
             for (EffectPlayer player : currentEffects) {
+                // Set scale
+                player.setScale(scale);
+
                 // Set material and color
                 player.setMaterial(getEffectMaterial());
                 player.setColor(mage.getEffectColor());
@@ -999,6 +1008,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 player.start(mageLocation, entity, targetLocation, targetEntity);
             }
         }
+    }
+
+    public void playEffects(String effectName)
+    {
+        playEffects(effectName, 1);
     }
 
     public Location getTargetLocation() {
