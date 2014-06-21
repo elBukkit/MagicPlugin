@@ -111,7 +111,18 @@ public class RecallSpell extends UndoableSpell
 		}
 
 		boolean reverseDirection = false;
-		if (parameters.contains("type")) {
+        if (parameters.contains("warp")) {
+            selectedType = RecallType.WARP;
+            String warpName = parameters.getString("warp");
+            castMessage = getMessage("cast_warp").replace("$name", warpName);
+            Location location = controller.getWarp(warpName);
+            if (tryTeleport(player, location)) {
+                registerForUndo();
+                return SpellResult.CAST;
+            }
+            return SpellResult.FAIL;
+        }
+        else if (parameters.contains("type")) {
 			cycleRetries = 0;
 			String typeString = parameters.getString("type", "");
 			if (location != null && typeString.equalsIgnoreCase("remove")) {
