@@ -22,9 +22,9 @@ staff:
     bound: true
     keep: true
     quiet: 1
-    xp_max: 200
-    xp: 200
-    xp_regeneration: 10
+    xp_max: 150
+    xp: 150
+    xp_regeneration: 25
     effect_color: 'DDDDDD'
     effect_bubbles: true
     spells:
@@ -37,55 +37,130 @@ staff:
      - silencio
      - silenciomaxima
      - jail
+     - bombarda
+     - protego
+     - expelliarmus
+     - day
+     - nox
+     - immobulus
+     - sectumsempra
+
+headstaff:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: master
+    bound: true
+    keep: true
+    quiet: 1
+    xp_max: 100
+    xp: 100
+    xp_regeneration: 10
+    effect_color: 'DDDDDD'
+    effect_bubbles: true
+    spells:
+     - flagrate
+     - ascendio
+     - stupefy
+     - flipendo
+     - accio
+     - lumos
+     - silencio
+     - silenciomaxima
+     - silencototalus
+     - jail
+     - bombarda
+     - protego
+     - expelliarmus
+     - day
+     - nox
+     - apparate
+     - immobulus
+     - sectumsempra
 
 gryffindor:
     icon: diamond_sword
     path: master
     keep: true
     quiet: 1
-    xp_max: 350
-    xp_regeneration: 25
+    xp_max: 100
+    xp_regeneration: 50
     effect_color: '880000'
     effect_bubbles: true
     active_spell: ascendio
     spells:
       - accio
       - ascendio
-      - arrow
-      - confundus
-      - bombarda
-      - confringo
-      - episkey
-      - expelliarmus
-      - flagrate
-      - lumos
-      - reducio
-      - reparifarge
-      - stupefy
+      - ferula
 
-slytherin:
-    icon: gold_shovel
+lignumvitae:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
+    bound: true
     keep: true
     quiet: 1
-    xp_max: 350
-    xp_regeneration: 25
-    effect_color: '008800'
-    effect_bubbles: true
+    xp_max: 100
+    xp_regeneration: 20
+    effect_color: 'FF00FF'
+    effect_particle: magic_runes
+    effect_particle_count: 1
+    effect_particle_data: 1
+    effect_bubbles: false
     active_spell: ascendio
+    hidden: true
     spells:
       - accio
       - aguamenti
+      - apparate
+      - araniaexumai
+      - arresto
       - arrow
       - ascendio
+      - avadakedavra
+      - avis
       - bombarda
+      - bombardamaxima
+      - colorvaria
+      - confringo
+      - confundus
+      - conjunctivitis
       - crucio
+      - day
+      - deletrius
+      - diffindo
+      - duro
+      - episkey
       - evanesco
-      - petrificustotalus
+      - expelliarmus
+      - ferula
+      - finiteincantatem
+      - flagrate
+      - flipendo
+      - fly
+      - immobulus
+      - imperio
+      - impervius
+      - incendio
+      - jail
+      - lumos
       - morsmordre
+      - nox
+      - petrificustotalus
+      - periculum
+      - protego
+      - reducio
       - reducto
       - reparifarge
+      - reparo
+      - reparomaxima
+      - salviohexia
       - sectumsempra
+      - silencio
+      - silenciomaxima
+      - silenciototalus
+      - stupefy
+      - phase
+      - stash
+      - recall
+      - gather
 
 ravenclaw:
     icon: gold_pickaxe
@@ -116,10 +191,11 @@ ravenclaw:
 allis0n:
     icon: wood_hoe
     path: master
+    bound: true
     keep: true
     quiet: 1
-    xp_max: 500
-    xp_regeneration: 50
+    xp_max: 100
+    xp_regeneration: 20
     effect_color: '00AACC'
     effect_bubbles: true
     active_spell: ascendio
@@ -147,22 +223,26 @@ allis0n:
       - sectumsempra
       - diffindo
       - arresto
+      - protego
+      - day
+      - nox
 
 elder:
     icon: iron_hoe
     path: master
     bound: true
     keep: true
-    quiet: 1
+    cost_reduction: 2
+    cooldown_reduction: 2
     protection: 1
-    xp_max: 500
-    xp_regeneration: 50
+    quiet: 0
+    power: 1
     haste: 0.1
     effect_color: 'FF00FF'
     effect_particle: magic_runes
     effect_particle_count: 1
     effect_particle_data: 1
-    effect_bubbles: true
+    effect_bubbles: false
     active_spell: ascendio
     hidden: true
     spells:

@@ -11,6 +11,9 @@ load_default_wands: false
 load_default_enchanting: false
 load_default_crafting: false
 
+# Quickly expiring items for performance
+age_dropped_items: 240000
+
 # Don't allow crafting
 enable_crafting: false
 

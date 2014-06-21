@@ -128,9 +128,9 @@ apparate:
            location: both
            effectlib:
              class: AtomLocationEffect
-             particleNucleus: large_smoke
-             particleOrbital: smoke
-             iterations: 40
+             particleNucleus: smoke
+             particleOrbital: large_smoke
+             iterations: 20
         -  class: EffectTrail
            effectlib:
              class: LineLocationEffect
@@ -422,9 +422,10 @@ beat:
            effectlib:
              class: SmokeEntityEffect
     costs:
-        xp: 10
+        xp: 2
     parameters:
-        range: 4
+        fov: 2
+        range: 8
         deactivate_target_mage: true
         target_type: LivingEntity
         cast_on_no_target: true
@@ -710,6 +711,7 @@ episkey:
         feed: false
         cure: false
         percentage: 0.05
+        cooldown: 2000
     costs:
         xp: 15
 
@@ -774,7 +776,7 @@ expelliarmus:
         target_type: LivingEntity
         allow_max_range: false
         range: 25
-        fov: 0.1
+        fov: 0.12
         fizzle_chance: 0
         backfire_chance: 0
         cast_on_no_target: true
@@ -810,6 +812,7 @@ ferula:
         feed: true
         cure: true
         percentage: 0.3
+        cooldown: 5000
     costs:
         xp: 50
 
@@ -832,6 +835,7 @@ finiteincantatem:
         target_timeout: 30000
         range: 32
         bypass_protection: true
+        cooldown: 4000
     costs:
         xp: 45
 
@@ -1157,8 +1161,9 @@ protego:
            location: target
     parameters:
         target: self
-        duration: 10000
+        duration: 3000
         effect_damage_resistance: 100
+        cooldown: 7000
     costs:
         xp: 50
 
@@ -1389,7 +1394,7 @@ silencio:
         range: 16
         duration: 10000
         effect_confusion: 100
-        cooldown: 30000
+        cooldown: 20000
     costs:
         xp: 40
 
@@ -1416,7 +1421,7 @@ silenciomaxima:
         target: other
         range: 16
     costs:
-        xp: 400
+        xp: 100
 
 jail:
     icon: iron_fence
@@ -1466,7 +1471,7 @@ silenciototalus:
         - say §dSILENCIO TOTALUS!
         target: none
     costs:
-        xp: 500
+        xp: 100
 
 stupefy:
     icon: ink_sack:4
@@ -1494,12 +1499,13 @@ stupefy:
            firework: ball
     parameters:
         range: 35
-        fov: 0.12
+        fov: 0.11
         target_type: LivingEntity
         cast_on_no_target: true
-        duration: 3000
-        damage: 7
+        duration: 2000
+        damage: 6
         effect_confusion: 22
+        cooldown: 750
     costs:
         xp: 50
 
@@ -1549,7 +1555,7 @@ day:
         time: day
         weather: clear
     costs:
-        xp: 200
+        xp: 100
 
 nox:
     icon: ink_sack:0
@@ -1575,7 +1581,7 @@ nox:
         cooldown: 5000
         time: night
     costs:
-        xp: 200
+        xp: 100
 
 # These are currently what I would classify as admin-only utility spells
 # But could be added in some form as canon spells eventually.

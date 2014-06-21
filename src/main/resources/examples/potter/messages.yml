@@ -368,6 +368,10 @@ wands:
         name: Wand of Slytherin
         description: Hawthorn and Phoenix Feather
 
+    lignumvitae:
+        name: Dr00bles Wand
+        description: Lignum Vitae and Phoenix Feather
+
     allis0n:
         name: Moon Scepter
         description: Rosewood and Phoenix Feather
