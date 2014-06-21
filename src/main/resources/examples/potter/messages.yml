@@ -364,10 +364,6 @@ wands:
         name: Sword of Gryffindor
         description: The Sword of Bravery
 
-    slytherin:
-        name: Wand of Slytherin
-        description: Hawthorn and Phoenix Feather
-
     lignumvitae:
         name: Dr00bles Wand
         description: Lignum Vitae and Phoenix Feather
@@ -375,10 +371,6 @@ wands:
     allis0n:
         name: Moon Scepter
         description: Rosewood and Phoenix Feather
-
-    ravenclaw:
-        name: Wand of Ravenclaw
-        description: Intelligence and Wit
 
     staff:
         name: House Wand

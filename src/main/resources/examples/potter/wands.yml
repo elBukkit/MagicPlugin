@@ -19,6 +19,7 @@ default:
 staff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
+    force: true
     bound: true
     keep: true
     quiet: 1
@@ -48,6 +49,7 @@ staff:
 headstaff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
+    force: true
     bound: true
     keep: true
     quiet: 1
@@ -161,32 +163,6 @@ lignumvitae:
       - stash
       - recall
       - gather
-
-ravenclaw:
-    icon: gold_pickaxe
-    path: master
-    keep: true
-    quiet: 1
-    xp_max: 350
-    xp_regeneration: 25
-    effect_color: '000088'
-    effect_bubbles: true
-    active_spell: ascendio
-    spells:
-      - accio
-      - aguamenti
-      - arrow
-      - ascendio
-      - bombarda
-      - deletrius
-      - episkey
-      - finiteincantatem
-      - flipendo
-      - immobulus
-      - impervius
-      - lumos
-      - reparifarge
-      - stupefy
 
 allis0n:
     icon: wood_hoe
