@@ -39,7 +39,7 @@ public class DisarmSpell extends TargetingSpell
 		
 		// Special case for wands
 		if (Wand.isWand(stack) && controller.isMage(entity)) {
-			Mage targetMage = controller.getMage(entity);
+            Mage targetMage = controller.getMage(entity);
 			
 			// Check for protected players (admins, generally...)
 			// This gets overridden by superpower...
@@ -59,7 +59,7 @@ public class DisarmSpell extends TargetingSpell
             targetInventory = targetPlayer.getInventory();
             int currentSlot = targetInventory.getHeldItemSlot();
             ItemStack[] contents = targetInventory.getContents();
-            for (int i = contents.length - 1; i >= 0; i++) {
+            for (int i = contents.length - 1; i >= 0; i--) {
                 if (i == currentSlot) continue;
                 if (contents[i] == null || contents[i].getType() == Material.AIR) {
                     targetSlot = i;
@@ -68,7 +68,7 @@ public class DisarmSpell extends TargetingSpell
             }
         }
 
-		equipment.setItemInHand(null);
+        equipment.setItemInHand(null);
         if (targetSlot != null && targetInventory != null) {
             targetInventory.setItem(targetSlot, stack);
         } else {
