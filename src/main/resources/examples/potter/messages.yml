@@ -81,6 +81,11 @@ spells:
     ascendio:
         name: Ascendio
         description: Lifts the caster high into the air
+    atmos:
+        name: Atmospheric Charm
+        description: Change the weather
+        cast: You calm the storm
+        area: You stir up a storm
     avadakedavra:
         name: Avada Kedavra
         description: Kill your target.

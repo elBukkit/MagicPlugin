@@ -268,6 +268,37 @@ arresto:
     costs:
         xp: 20
 
+atmos:
+    icon: water
+    category: elemental
+    class: WeatherSpell
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_rain
+        -  class: EffectRing
+           particle: water_dripping
+           location: origin
+           particle_count: 1
+           effectlib:
+             class: HelixLocationEffect
+             iterations: 24
+        area:
+        -  class: EffectSingle
+           sound: ambience_thunder
+        -  class: EffectRing
+           particle: water_dripping
+           location: origin
+           particle_count: 4
+           effectlib:
+             class: HelixLocationEffect
+             iterations: 24
+    parameters:
+        cooldown: 30000
+    costs:
+        xp: 80
+
 broom:
     icon: blaze_rod
     category: movement
@@ -287,12 +318,12 @@ broom:
              iterations: 30
         crash:
         -  class: EffectSingle
-           location: source
+           location: origin
            entity_effect: hurt
            particle: large_explosion
         -  class: EffectRing
            particle: smoke
-           location: source
+           location: origin
            effectlib:
              class: SmokeEntityEffect
              iterations: 12
@@ -345,7 +376,7 @@ avadakedavra:
              iterations: 32
              particleNucleus: slime
         -  class: EffectSingle
-           location: source
+           location: origin
            effectlib:
              class: ConeLocationEffect
              iterations: 20
@@ -602,7 +633,7 @@ crucio:
         -  class: EffectSingle
            sound: burp
         -  class: EffectSingle
-           location: source
+           location: origin
            effectlib:
              class: ConeLocationEffect
              iterations: 20
@@ -1120,7 +1151,7 @@ petrificustotalus:
         -  class: EffectSingle
            sound: burp
         -  class: EffectSingle
-           location: source
+           location: origin
            effectlib:
              class: ConeLocationEffect
              iterations: 20
@@ -1339,7 +1370,7 @@ sectumsempra:
     icon: iron_sword
     category: combat
     pvp_restricted: true
-    class: DisintegrateSpell
+    class: PotionEffectSpell
     worth: 25
     effects:
         cast:
@@ -1355,7 +1386,7 @@ sectumsempra:
              class: BleedEntityEffect
              duration: 150
         -  class: EffectSingle
-           location: source
+           location: origin
            effectlib:
              class: ConeLocationEffect
              iterations: 20
@@ -1363,11 +1394,16 @@ sectumsempra:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 5
+        range: 6
         target: other_entity
         player_damage: 6
         entity_damage: 10
         check_destructible: true
+
+        duration: 1000
+        effect_wither: 1
+        damage: 6
+        cooldown: 8000
     costs:
         xp: 35
 
@@ -1409,9 +1445,9 @@ silenciomaxima:
            sound: shoot_arrow
            sound_volume: 0.4
            sound_pitch: 0.1
-           location: source
+           location: origin
         -  class: EffectSingle
-           location: source
+           location: origin
            effectlib:
              class: DnaLocationEffect
     parameters:
@@ -1434,9 +1470,9 @@ jail:
            sound: shoot_arrow
            sound_volume: 0.4
            sound_pitch: 0.1
-           location: source
+           location: origin
         -  class: EffectSingle
-           location: source
+           location: origin
            effectlib:
              class: DnaLocationEffect
     parameters:
@@ -1459,15 +1495,18 @@ silenciototalus:
            sound: shoot_arrow
            sound_volume: 0.4
            sound_pitch: 0.1
-           location: source
-        -  class: EffectSingle
-           location: source
+           location: origin
+        -  class: EffectRing
+           particle: magic_critical
+           location: origin
            effectlib:
-             class: DnaLocationEffect
+             class: AtomLocationEffect
+             particleNucleus: witch_magic
+             particleOrbital: magic_critical
+             iterations: 20
     parameters:
         commands:
         - mute @a 10
-        - castp @p silencio player @a
         - say §dSILENCIO TOTALUS!
         target: none
     costs:
@@ -1484,9 +1523,9 @@ stupefy:
         -  class: EffectSingle
            sound: shoot_arrow
            sound_volume: 5.0
-           location: source
+           location: origin
         -  class: EffectSingle
-           location: source
+           location: origin
            effectlib:
              class: ConeLocationEffect
              iterations: 20

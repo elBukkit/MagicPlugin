@@ -23,8 +23,8 @@ staff:
     bound: true
     keep: true
     quiet: 1
-    xp_max: 150
-    xp: 150
+    xp_max: 100
+    xp: 100
     xp_regeneration: 25
     effect_color: 'DDDDDD'
     effect_bubbles: true
@@ -37,12 +37,9 @@ staff:
      - lumos
      - silencio
      - silenciomaxima
-     - jail
      - bombarda
      - protego
      - expelliarmus
-     - day
-     - nox
      - immobulus
      - sectumsempra
 
@@ -53,8 +50,8 @@ headstaff:
     bound: true
     keep: true
     quiet: 1
-    xp_max: 100
-    xp: 100
+    xp_max: 150
+    xp: 150
     xp_regeneration: 10
     effect_color: 'DDDDDD'
     effect_bubbles: true
@@ -77,6 +74,7 @@ headstaff:
      - apparate
      - immobulus
      - sectumsempra
+     - atmos
 
 gryffindor:
     icon: diamond_sword
@@ -163,6 +161,7 @@ lignumvitae:
       - stash
       - recall
       - gather
+      - atmos
 
 allis0n:
     icon: wood_hoe
@@ -202,6 +201,7 @@ allis0n:
       - protego
       - day
       - nox
+      - atmos
 
 elder:
     icon: iron_hoe
@@ -276,6 +276,7 @@ elder:
       - stash
       - recall
       - gather
+      - atmos
 
 wolf:
     icon: gold_hoe
@@ -302,6 +303,7 @@ wolf:
       - arresto
       - arrow
       - ascendio
+      - atmos
       - avadakedavra
       - avis
       - bombarda
