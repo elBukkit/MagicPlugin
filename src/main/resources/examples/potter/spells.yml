@@ -124,8 +124,17 @@ apparate:
            sound: enderman_teleport
            location: both
         -  class: EffectRing
-           particle: portal
+           particle: large_smoke
            location: both
+           effectlib:
+             class: AtomLocationEffect
+             particleNucleus: large_smoke
+             particleOrbital: smoke
+             iterations: 40
+        -  class: EffectTrail
+           effectlib:
+             class: LineLocationEffect
+           particle: large_smoke
     parameters:
         pvp_restricted: true
         allow_max_range: false

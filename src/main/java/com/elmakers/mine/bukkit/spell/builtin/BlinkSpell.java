@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -29,7 +30,7 @@ public class BlinkSpell extends TargetingSpell
 		if (location != null) 
 		{
 			setTarget(location);
-            entity.teleport(location);
+            delayTeleport(entity, location);
 			return SpellResult.CAST;
 		}
 		return SpellResult.NO_TARGET;
@@ -46,7 +47,7 @@ public class BlinkSpell extends TargetingSpell
 		if (location != null) 
 		{
 			setTarget(location);
-            entity.teleport(location);
+            delayTeleport(entity, location);
 			return SpellResult.CAST;
 		}
 		return SpellResult.NO_TARGET;
@@ -186,7 +187,22 @@ public class BlinkSpell extends TargetingSpell
             entity.getLocation().getPitch()
 		);
 		setTarget(targetLocation);
-        entity.teleport(targetLocation);
+        delayTeleport(entity, targetLocation);
 		return SpellResult.CAST;
 	}
+
+    /**
+     * Delay tp by one tick, mainly for effects.
+     *
+     * @param entity
+     * @param location
+     */
+    protected void delayTeleport(final Entity entity, final Location location) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                entity.teleport(location);
+            }
+        }, 1);
+    }
 }
