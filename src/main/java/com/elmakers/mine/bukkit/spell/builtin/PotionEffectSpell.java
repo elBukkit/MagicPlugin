@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.potion.PotionEffectType;
 
 public class PotionEffectSpell extends UndoableSpell
 {
@@ -75,6 +76,14 @@ public class PotionEffectSpell extends UndoableSpell
             }
 
             CompatibilityUtils.applyPotionEffects(targetEntity, effects);
+
+            if (parameters.contains("remove_effects")) {
+                List<String> removeKeys = parameters.getStringList("remove_effects");
+                for (String removeKey : removeKeys) {
+                    PotionEffectType removeType = PotionEffectType.getByName(removeKey);
+                    targetEntity.removePotionEffect(removeType);
+                }
+            }
         }
 		registerForUndo();
 		return SpellResult.CAST;
