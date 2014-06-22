@@ -149,6 +149,15 @@ spells:
         name: Duro
         description: Turn the target to stone
         cast: Duro!
+    rennervate:
+        name: Rennervate
+        description: Wake a stunned person
+        cast_self: Rennervate!
+        cast: Rennervate $target!
+        cast: Duro!
+    floo:
+        name: Fire Protection
+        description: Use to avoid fire damage
     episkey:
         name: Episkey
         description: Heals relatively minor wounds
@@ -396,6 +405,10 @@ wands:
     portkey:
         name: Portkey
         description: Where will it take you?
+
+    floopowder:
+        name: Floo Powder
+        description: Use for 20 seconds of protection
 
     nimbus:
         name: Nimbus 2000

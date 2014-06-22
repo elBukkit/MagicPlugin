@@ -148,6 +148,7 @@ lignumvitae:
       - protego
       - reducio
       - reducto
+      - rennervate
       - reparifarge
       - reparo
       - reparomaxima
@@ -202,6 +203,7 @@ allis0n:
       - day
       - nox
       - atmos
+      - rennervate
 
 elder:
     icon: iron_hoe
@@ -263,6 +265,7 @@ elder:
       - protego
       - reducio
       - reducto
+      - rennervate
       - reparifarge
       - reparo
       - reparomaxima
@@ -342,6 +345,7 @@ wolf:
       - recall
       - reducio
       - reducto
+      - rennervate
       - reparifarge
       - reparo
       - reparomaxima
@@ -425,6 +429,16 @@ camera:
     effect_color: '888888'
     spells:
         - camera
+
+floopowder:
+    active_spell: floo
+    icon: sulphur
+    indestructible: false
+    locked: true
+    effect_color: 'FF0000'
+    uses: 8
+    spells:
+    - floo
 
 #
 # Brooms
