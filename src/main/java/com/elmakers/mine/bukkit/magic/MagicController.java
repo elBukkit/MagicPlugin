@@ -41,6 +41,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -963,26 +964,24 @@ public class MagicController implements Listener, MageController
 		plugin.saveResource(defaultsFileName, true);
 
 		getLogger().info("Loading " + configFile.getName());
-		ConfigurationSection config = YamlConfiguration.loadConfiguration(configFile);
+		ConfigurationSection overrides = YamlConfiguration.loadConfiguration(configFile);
+        ConfigurationSection config = new MemoryConfiguration();
 
         if (loadDefaults) {
             Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
-            ConfigurationUtils.addConfigurations(defaultConfig, config);
-            config = defaultConfig;
+            config = ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
 
         if (usingExample) {
             /// Kinda fugly, but can't check for this in advance?
             try {
                 Configuration exampleConfig = YamlConfiguration.loadConfiguration(plugin.getResource(examplesFileName));
-                ConfigurationUtils.addConfigurations(exampleConfig, config);
-                config = exampleConfig;
+                config = ConfigurationUtils.addConfigurations(config, exampleConfig);
                 getLogger().info(" Using " + examplesFileName);
             } catch (Exception ex) {
                 getLogger().info(ex.getMessage());
             }
         }
-
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 try {
@@ -997,6 +996,8 @@ public class MagicController implements Listener, MageController
                 }
             }
         }
+
+        config = ConfigurationUtils.addConfigurations(config, overrides);
 
 		return config;
 	}
