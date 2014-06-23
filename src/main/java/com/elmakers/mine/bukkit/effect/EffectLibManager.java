@@ -53,9 +53,9 @@ public class EffectLibManager {
         return new EffectLibManager();
     }
 
-    protected Object[] tryPointConstructor(Class<?> effectLibClass, EffectPlayer effectPlayer) {
-        Location target = effectPlayer.playAtTarget ? effectPlayer.target : null;
-        Location origin = effectPlayer.playAtOrigin ? effectPlayer.origin : null;
+    protected Object[] tryPointConstructor(Class<?> effectLibClass, EffectPlayer effectPlayer, Location origin, Location target) {
+        target = effectPlayer.playAtTarget ? target : null;
+        origin = effectPlayer.playAtOrigin ? origin : null;
         if (origin == null && target == null) return null;
 
         Object[] players = null;
@@ -103,20 +103,20 @@ public class EffectLibManager {
         return players;
     }
 
-    protected Object tryLineConstructor(Class<?> effectLibClass, EffectPlayer effectPlayer) {
-        if (effectPlayer.origin == null || effectPlayer.target == null) return null;
+    protected Object tryLineConstructor(Class<?> effectLibClass, EffectPlayer effectPlayer, Location origin, Location target) {
+        if (origin == null || target == null) return null;
 
         Object player = null;
         try {
             Constructor constructor = effectLibClass.getConstructor(effectManager.getClass(), Location.class, Location.class);
-            player = constructor.newInstance(effectManager, effectPlayer.origin, effectPlayer.target);
+            player = constructor.newInstance(effectManager, origin, target);
         } catch (Exception ex) {
             player = null;
         }
         return player;
     }
 
-    public Object play(Plugin plugin, ConfigurationSection configuration, EffectPlayer player) {
+    public Object play(Plugin plugin, ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
         Class<?> effectLibClass = null;
         String className = configuration.getString("class");
         try {
@@ -127,11 +127,11 @@ public class EffectLibManager {
             return null;
         }
 
-        Object[] effects = tryPointConstructor(effectLibClass, player);
+        Object[] effects = tryPointConstructor(effectLibClass, player, origin, target);
         if (effects == null) {
             effects = tryEntityConstructor(effectLibClass, player);
             if (effects == null) {
-                Object lineEffect = tryLineConstructor(effectLibClass, player);
+                Object lineEffect = tryLineConstructor(effectLibClass, player, origin, target);
                 if (lineEffect != null) {
                     effects = new Object[1];
                     effects[0] = lineEffect;
