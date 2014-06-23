@@ -30,9 +30,17 @@ commands:
     description: Administer the Magic plugin
     usage: /magic [load|save|cancel|clearcache|commit|list|give]
     permission: Magic.commands.magic
+  mgive:
+    description: Player players items
+    usage: /magic <Player> [itemname]
+    permission: Magic.commands.mgive
 permissions:
   Magic.commands.spells:
     description: Player may list spells
+    type: boolean
+    default: op
+  Magic.commands.mgive:
+    description: Player may give out magic items
     type: boolean
     default: op
   Magic.commands.cast:

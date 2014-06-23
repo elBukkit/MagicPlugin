@@ -386,7 +386,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 	{
 		ItemStack itemStack = api.createSpellItem(spellKey);
 		if (itemStack == null) {
-			if (!quiet) sender.sendMessage("Failed to spell spell item for " + spellKey);
+			if (!quiet) sender.sendMessage("Failed to create spell item for " + spellKey);
 			return false;
 		}
 
@@ -406,7 +406,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 	{
 		ItemStack itemStack = api.createBrushItem(materialKey);
 		if (itemStack == null) {
-			if (!quiet) sender.sendMessage("Failed to material spell item for " + materialKey);
+			if (!quiet) sender.sendMessage("Failed to create material item for " + materialKey);
 			return false;
 		}
 

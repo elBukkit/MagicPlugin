@@ -18,6 +18,7 @@
     - Magic.commands.magic.list.maps
     - Magic.commands.magic.list.automata
     - Magic.commands.magic.give
+    - Magic.commands.mgive
     - Magic.commands.magic.commit
     - Magic.wand.override_bind
 

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.elmakers.mine.bukkit.magic.command.*;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -17,10 +18,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
-import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
-import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
-import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.utility.URLMap;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -134,6 +131,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		TabExecutor magicCommand = new MagicCommandExecutor(this);
 		getCommand("magic").setExecutor(magicCommand);
 		getCommand("magic").setTabCompleter(magicCommand);
+        TabExecutor magicGiveCommand = new MagicGiveCommandExecutor(this);
+        getCommand("mgive").setExecutor(magicGiveCommand);
+        getCommand("mgive").setTabCompleter(magicGiveCommand);
 		TabExecutor castCommand = new CastCommandExecutor(this);
 		getCommand("cast").setExecutor(castCommand);
 		getCommand("cast").setTabCompleter(castCommand);
