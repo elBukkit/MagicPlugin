@@ -227,6 +227,17 @@ public interface MagicAPI {
     public void giveItemToPlayer(Player player, ItemStack itemStack);
 
     /**
+     * Give experience to a player, in a way that is safe for wands.
+     *
+     * This method may get removed in the future if Wands can be smarter
+     * about XP being added externally.
+     *
+     * @param player The Player to give XP
+     * @param xp The amount of XP to give
+     */
+    public void giveExperienceToPlayer(Player player, int xp);
+
+    /**
      * A utility method to get the names of all currently logged-in Players.
      *
      * Useful for tab-completion.
