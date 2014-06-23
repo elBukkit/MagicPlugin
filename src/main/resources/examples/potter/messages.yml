@@ -91,6 +91,11 @@ spells:
         description: Kill your target.
         usage: Unforgiveable!
         cast: Avada Kedavra!
+    avadamaxima:
+        name: Avada Kedavra
+        description: Kill your target PERMANENTLY.
+        usage: Unforgiveable!
+        cast: Avada Kedavra $target!
     avis:
         name: Avis
         description: Makes birds fly out of the end of your wand

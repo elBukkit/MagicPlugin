@@ -400,6 +400,46 @@ avadakedavra:
     costs:
         xp: 100
 
+avadamaxima:
+    icon: ink_sack:10
+    category: unforgiveable
+    class: CommandSpell
+    pvp_restricted: true
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_thunder
+           location: target
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomLocationEffect
+             iterations: 32
+             particleNucleus: slime
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: slime
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+             iterations: 50
+    parameters:
+        commands:
+        - ban @t Avada Kadavra
+        - say §aAvada Kadavra §c@t!
+        target_type: Player
+        target: other
+        range: 16
+        cooldown: 30000
+    costs:
+        xp: 300
+
 avis:
     icon: monster_egg
     category: elemental
@@ -1781,7 +1821,7 @@ recall:
         allow_wand: true
         allow_home: true
         allow_cross_world: true
-        allow_warps: dueling,quiddichtraining,greathall,diagonalley,4privet,trainstation
+        allow_warps: dueling,quiddichtraining,greathall,diagonalley,4privet,trainstation,arachnids,deatheaters
     costs:
         xp: 50
 
