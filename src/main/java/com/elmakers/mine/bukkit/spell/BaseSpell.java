@@ -126,6 +126,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private boolean pvpRestricted           	= false;
     private boolean bypassPvpRestriction    	= false;
+    private boolean bypassConfusion             = false;
     private boolean castOnNoTarget              = false;
 
     protected ConfigurationSection parameters = null;
@@ -789,7 +790,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Don't allow casting if the player is confused
         LivingEntity livingEntity = mage.getLivingEntity();
-        if (livingEntity != null && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
+        if (livingEntity != null && !bypassConfusion && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
             processResult(SpellResult.CURSED);
             return false;
         }
@@ -816,6 +817,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // PVP override settings
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
+
+        bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
 
         // Spell result overrides
         castOnNoTarget = parameters.getBoolean("cast_on_no_target", false);
