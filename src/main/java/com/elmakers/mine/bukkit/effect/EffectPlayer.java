@@ -264,6 +264,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected void playEffect(Location targetLocation) {
         Location location = targetLocation.clone();
         location.add(offset);
+
+        if (effectLib != null && effectLibConfig != null) {
+            currentEffect = effectLib.play(plugin, effectLibConfig, this);
+        }
         if (effect != null) {
             int data = effectData == null ? 0 : effectData;
             if ((effect == Effect.STEP_SOUND) && effectData == null) {
@@ -404,12 +408,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected void startPlay() {
         // Generate a target location for compatibility if none exists.
         checkLocations();
-
-        if (effectLib != null && effectLibConfig != null) {
-            currentEffect = effectLib.play(plugin, effectLibConfig, this);
-        } else {
-            play();
-        }
+        play();
     }
 
     protected Vector getDirection() {
