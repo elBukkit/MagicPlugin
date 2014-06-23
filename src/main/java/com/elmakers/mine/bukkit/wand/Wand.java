@@ -2330,11 +2330,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void onPlayerExpChange(PlayerExpChangeEvent event) {
 		if (mage == null) return;
 		
-		if (usesMana()) {
-			storedXp += event.getAmount();
+		if (addExperience(event.getAmount())) {
 			event.setAmount(0);
 		}
 	}
+
+    public boolean addExperience(int xp) {
+        if (usesMana()) {
+            storedXp += xp;
+            return true;
+        }
+
+        return false;
+    }
 	
 	public void tick() {
 		if (mage == null) return;

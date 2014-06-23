@@ -81,7 +81,10 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             player = (Player)sender;
         }
 
-        if (itemName.contains("spell:")) {
+        if (itemName.equals("xp")) {
+            api.giveExperienceToPlayer(player, count);
+            sender.sendMessage("Gave " + count + " experience to " + player.getName());
+        } else if (itemName.contains("spell:")) {
             String spellKey = itemName.substring(6);
             ItemStack itemStack = api.createSpellItem(spellKey);
             if (itemStack == null) {
@@ -91,12 +94,12 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 
             itemStack.setAmount(count);
             api.giveItemToPlayer(player, itemStack);
-            if (sender != player) {
-                sender.sendMessage("Gave spell " + spellKey + " to " + player.getName());
-            }
+            sender.sendMessage("Gave spell " + spellKey + " to " + player.getName());
+            return true;
         } else if (itemName.contains("wand:")) {
             String wandKey = itemName.substring(5);
             giveWand(sender, player, wandKey, false, true, false, false);
+            return true;
         } else if (itemName.contains("upgrade:")) {
             String wandKey = itemName.substring(6);
             Wand wand = api.createWand(wandKey);
@@ -120,6 +123,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             itemStack.setAmount(count);
             api.giveItemToPlayer(player, itemStack);
             sender.sendMessage("Gave brush " + brushKey + " to " + player.getName());
+            return true;
         } else {
             Wand wand = api.createWand(itemName);
             if (wand != null) {
@@ -150,6 +154,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
                 itemStack.setAmount(count);
                 api.giveItemToPlayer(player, itemStack);
                 sender.sendMessage("Gave brush " + itemName + " to " + player.getName());
+                return true;
             }
         }
 
