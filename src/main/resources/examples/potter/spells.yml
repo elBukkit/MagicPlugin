@@ -72,12 +72,9 @@ accio:
         area:
         -  class: EffectSingle
            sound: fizz
-        -  class: EffectRing
            effectlib:
              class: VortexLocationEffect
-           particle: spell
-           reverse: true
-           particle_count: 6
+             particle: spell
     parameters:
         target_type: Entity
         range: 32
@@ -100,7 +97,7 @@ aguamenti:
     effects:
         cast:
         -  class: EffectSingle
-           sound: lava
+           sound: water
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -123,18 +120,15 @@ apparate:
         -  class: EffectSingle
            sound: enderman_teleport
            location: both
-        -  class: EffectRing
-           particle: large_smoke
-           location: both
            effectlib:
              class: AtomLocationEffect
              particleNucleus: smoke
              particleOrbital: large_smoke
              iterations: 20
-        -  class: EffectTrail
+        -  class: EffectSingle
            effectlib:
              class: LineLocationEffect
-           particle: large_smoke
+             particle: large_smoke
     parameters:
         pvp_restricted: true
         allow_max_range: false
@@ -158,21 +152,16 @@ araniaexumai:
         cast:
         -  class: EffectSingle
            sound: fizz
-        -  class: EffectTrail
            effectlib:
              class: ConeLocationEffect
              iterations: 16
-           particle: spell
-           length: 16
-           particle_count: 3
+             particle: spell
         area:
         -  class: EffectSingle
            sound: fizz
-        -  class: EffectRing
            effectlib:
              class: VortexLocationEffect
-           particle: witch_magic
-           particle_count: 6
+             particle: witch_magic
     parameters:
         target_type: Spider
         range: 32
@@ -224,15 +213,10 @@ ascendio:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_volume: 1.1
-        -  class: EffectTrail
-           particle: spell
-           particle_count: 4
-           min_speed: 2.5
-           max_speed: 3
-           cruising_altitude: 40
            effectlib:
              class: TraceEntityEffect
              iterations: 30
+             particle: spell
         land:
         -  class: EffectRing
            particle: spell
@@ -252,12 +236,10 @@ arresto:
         -  class: EffectSingle
            sound: horse_saddle
            sound_volume: 1.1
-        -  class: EffectSingle
-           particle: spell
-           particle_count: 4
            effectlib:
              class: ShieldEntityEffect
              iterations: 10
+             particle: spell
         land:
         -  class: EffectRing
            effect: step_sound
@@ -277,23 +259,17 @@ atmos:
         cast:
         -  class: EffectSingle
            sound: ambience_rain
-        -  class: EffectRing
-           particle: water_dripping
-           location: origin
-           particle_count: 1
            effectlib:
              class: HelixLocationEffect
              iterations: 24
+             particle: water_dripping
         area:
         -  class: EffectSingle
            sound: ambience_thunder
-        -  class: EffectRing
-           particle: water_dripping
-           location: origin
-           particle_count: 4
            effectlib:
              class: HelixLocationEffect
              iterations: 24
+             particle: water_dripping
     parameters:
         cooldown: 30000
     costs:
@@ -310,39 +286,36 @@ broom:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_volume: 1.1
-        -  class: EffectTrail
-           particle: spell
-           particle_count: 4
+        -  class: EffectSingle
            effectlib:
              class: TraceEntityEffect
              iterations: 30
+             particle: spell
         crash:
         -  class: EffectSingle
            location: origin
            entity_effect: hurt
            particle: large_explosion
-        -  class: EffectRing
-           particle: smoke
+        -  class: EffectSingle
            location: origin
            effectlib:
              class: SmokeEntityEffect
              iterations: 12
+             particle: smoke
         area:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_volume: 1.1
-        -  class: EffectTrail
-           particle: spell
-           particle_count: 4
            effectlib:
              class: TraceEntityEffect
              iterations: 30
+             particle: spell
         -  class: EffectSingle
            particle: spell
-           particle_count: 4
            effectlib:
              class: ShieldEntityEffect
              iterations: 30
+             particle: spell
         land:
         -  class: EffectRing
            effect: step_sound
@@ -382,7 +355,7 @@ avadakedavra:
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-             particle: slime
+             particle: happy_villager
              lenghtGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -396,6 +369,7 @@ avadakedavra:
         target: other_entity
         damage: 100
         check_destructible: false
+        cast_on_no_target: true
         cooldown: 30000
     costs:
         xp: 100
@@ -410,8 +384,6 @@ avadamaxima:
         cast:
         -  class: EffectSingle
            sound: ambience_thunder
-           location: target
-        -  class: EffectSingle
            location: target
            effectlib:
              class: AtomLocationEffect
@@ -449,19 +421,17 @@ avis:
         cast:
         -  class: EffectSingle
            sound: chicken_egg_pop
-        -  class: EffectTrail
-           particle: bubble
-           particle_count: 4
            effectlib:
              class: DnaLocationEffect
              particleHelix: lava_dripping
              iterations: 24
-        -  class: EffectRing
+             particle: bubble
+        -  class: EffectSingle
            location: target
-           particle: bubble
            effectlib:
              class: AtomLocationEffect
              iterations: 32
+             particle: bubble
     parameters:
         allow_max_range: true
         range: 2
@@ -483,17 +453,15 @@ beat:
         cast:
         -  class: EffectSingle
            sound: burp
-        -  class: EffectTrail
-           particle: town_aura
-           particle_count: 3
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-        -  class: EffectRing
-           particle: town_aura
+             particle: town_aura
+        -  class: EffectSingle
            location: target
            effectlib:
              class: SmokeEntityEffect
+             particle: town_aura
     costs:
         xp: 2
     parameters:
@@ -585,11 +553,11 @@ confringo:
         cast:
         -  class: EffectSingle
            sound: ghast_fireball
-        -  class: EffectRing
+        -  class: EffectSingle
            location: target
-           particle: flame
            effectlib:
              class: HelixLocationEffect
+             particle: flame
     parameters:
         target_type: Item
         target: other_entity
@@ -611,16 +579,14 @@ confundus:
         cast:
         -  class: EffectSingle
            sound: burp
-        -  class: EffectTrail
-           particle: town_aura
-           particle_count: 3
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-        -  class: EffectRing
-           particle: town_aura
+             particle: town_aura
+        -  class: EffectSingle
            location: target
            effectlib:
+             particle: town_aura
              class: SmokeEntityEffect
     costs:
         xp: 30
@@ -643,17 +609,15 @@ conjunctivitis:
         cast:
         -  class: EffectSingle
            sound: burp
-        -  class: EffectTrail
-           particle: town_aura
-           particle_count: 3
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-        -  class: EffectRing
-           particle: town_aura
+             particle: town_aura
+        -  class: EffectSingle
            location: target
            effectlib:
              class: SmokeEntityEffect
+             particle: town_aura
     costs:
         xp: 25
     parameters:
@@ -674,14 +638,12 @@ crucio:
         cast:
         -  class: EffectSingle
            sound: wither_idle
-        -  class: EffectSingle
-           location: origin
            effectlib:
              class: ConeLocationEffect
              iterations: 20
              particle: mob_spell
              lenghtGrow: 0.3
-        -  class: EffectRing
+        -  class: EffectSingle
            particle: town_aura
            location: target
            effectlib:
@@ -789,7 +751,6 @@ expelliarmus:
         cast:
         -  class: EffectSingle
            sound: wither_shoot
-        -  class: EffectTrail
            effectlib:
              class: ConeLocationEffect
              iterations: 20
@@ -833,11 +794,10 @@ rennervate:
         cast:
         -  class: EffectSingle
            sound: orb_pickup
-        -  class: EffectTrail
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-           particle: happy_villager
+             particle: happy_villager
     parameters:
         target_type: LivingEntity
         target: any
@@ -858,30 +818,30 @@ rennervate:
 episkey:
     icon: ink_sack:9
     category: utility
-    class: PotionEffectSpell
+    class: HealSpell
     worth: 30
     effects:
         cast:
         -  class: EffectSingle
            sound: orb_pickup
-        -  class: EffectTrail
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-           particle: heart
-        -  class: EffectRing
+             particle: heart
+        -  class: EffectSingle
+           location: target
            effectlib:
              class: LoveEntityEffect
              iterations: 10
              period: 2
-           particle: heart
-           location: target
     parameters:
         target_type: LivingEntity
         target: any
         allow_max_range: false
         range: 16
-        effect_heal: 1,1
+        feed: true
+        cure: false
+        percentage: 0.05
         cooldown: 2000
     costs:
         xp: 15
@@ -895,27 +855,25 @@ ferula:
         cast:
         -  class: EffectSingle
            sound: level_up
-        -  class: EffectTrail
            effectlib:
              class: ConeLocationEffect
-             iterations: 30
-           particle: heart
+             iterations: 10
+             particle: heart
         -  class: EffectRing
+           location: target
            effectlib:
              class: LoveEntityEffect
-             iterations: 40
-             period: 2
-           location: target
+             iterations: 10
+             period: 8
     parameters:
         target_type: LivingEntity
         target: any
         allow_max_range: false
         range: 16
         cooldown: 5000
-        duration: 4
+        duration: 4000
         effect_regeneration: 1
         effect_absorption: 1
-        effect_saturation: 1
         effect_slow: 2
 
     costs:
@@ -930,14 +888,13 @@ floo:
         cast:
         -  class: EffectSingle
            sound: fire_ignite
-        -  class: EffectRing
+           location: target
            effectlib:
              class: ShieldEntityEffect
              iterations: 200
              period: 2
              particles: 8
-           particle: flame
-           location: target
+             particle: flame
     parameters:
         target: self
         duration: 20000
@@ -963,6 +920,7 @@ finiteincantatem:
         target_timeout: 30000
         range: 32
         bypass_protection: true
+        cast_on_no_target: true
         cooldown: 4000
     costs:
         xp: 45
@@ -980,12 +938,12 @@ flagrate:
            particle: flame
         -  class: EffectSingle
            location: target
-           particle: flame
            target_offset: 0,3,0
            effectlib:
              class: TextLocationEffect
              text: $name
              iterations: 2
+             particle: flame
     parameters:
         allow_max_range: true
         range: 3
@@ -1004,21 +962,16 @@ flipendo:
         cast:
         -  class: EffectSingle
            sound: irongolem_hit
-        -  class: EffectTrail
            effectlib:
              class: ConeLocationEffect
              iterations: 16
-           particle: spell
-           length: 16
-           particle_count: 3
+             particle: spell
         area:
         -  class: EffectSingle
            sound: fizz
-        -  class: EffectRing
            effectlib:
              class: VortexLocationEffect
-           particle: spell
-           particle_count: 6
+             particle: spell
     parameters:
         target_type: Entity
         range: 32
@@ -1043,11 +996,9 @@ fly:
         cast:
         -  class: EffectSingle
            sound: enderdragon_wings
-        -  class: EffectRing
-           particle: smoke
-           particle_count: 20
            effectlib:
              class: ShieldEntityEffect
+             particle: smoke
         cost_free:
         -  class: EffectSingle
            sound: enderdragon_wings
@@ -1074,13 +1025,11 @@ immobulus:
         cast:
         -  class: EffectSingle
            sound: burp
-        -  class: EffectTrail
-           particle: town_aura
-           particle_count: 3
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-        -  class: EffectRing
+             particle: town_aura
+        -  class: EffectSingle
            particle: town_aura
            location: target
            effectlib:
@@ -1114,6 +1063,7 @@ imperio:
         range: 32
         item_force: 1
         entity_force: 1
+        cast_on_no_target: true
     costs:
         xp: 85
 
@@ -1136,6 +1086,7 @@ impervius:
         brush: erase
         radius: 3
         transparent: transparent_to_construction
+        cast_on_no_target: true
     costs:
         xp: 65
 
@@ -1150,9 +1101,7 @@ incendio:
         -  class: EffectSingle
            sound: ghast_fireball
            location: both
-        -  class: EffectTrail
-           particle: flame
-           particle_count: 2
+        -  class: EffectSingle
            effectlib:
              class: ConeLocationEffect
              iterations: 20
@@ -1165,6 +1114,7 @@ incendio:
         vertical_search_distance: 8
         undo: 1500
         cooldown: 3000
+        cast_on_no_target: true
     costs:
         xp: 40
 
@@ -1181,12 +1131,11 @@ lumos:
            particle: red_dust
            particle_data: 2
            particle_count: 3
-        -  class: EffectRing
-           particle: red_dust
+        -  class: EffectSingle
            location: target
-           particle_data: 2
            effectLib:
              class: TraceEntityEffect
+             particle: red_dust
     costs:
         xp: 15
     parameters:
@@ -1247,19 +1196,18 @@ petrificustotalus:
         cast:
         -  class: EffectSingle
            sound: burp
-        -  class: EffectSingle
            location: origin
            effectlib:
              class: ConeLocationEffect
              iterations: 20
              particle: witch_magic
              lenghtGrow: 0.4
-        -  class: EffectRing
-           particle: town_aura
+        -  class: EffectSingle
            location: target
            effectlib:
              class: SmokeEntityEffect
              iterations: 80
+             particle: town_aura
     costs:
         xp: 80
     parameters:
@@ -1280,13 +1228,13 @@ protego:
         cast:
         -  class: EffectSingle
            sound: irongolem_death
-        -  class: EffectRing
+        -  class: EffectSingle
+           location: target
            effectlib:
              class: ShieldEntityEffect
              particle: magic_runes
              iterations: 20
              period: 2
-           location: target
     parameters:
         target: self
         duration: 3000
@@ -1328,7 +1276,6 @@ reducio:
         cast:
         -  class: EffectSingle
            sound: magmacube_jump
-        -  class: EffectTrail
            particle: angry_villager
            effectlib:
              class: ConeLocationEffect
@@ -1340,6 +1287,7 @@ reducio:
         range: 16
         player_damage: 1
         entity_damage: 10
+        cast_on_no_target: true
     costs:
         xp: 60
 
@@ -1365,6 +1313,7 @@ reducto:
         destructible: destructible_mining
         check_destructible: false
         undo: 4000
+        cast_on_no_target: true
     costs:
         xp: 80
 
@@ -1474,6 +1423,10 @@ sectumsempra:
         cast:
         -  class: EffectSingle
            sound: wither_hurt
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: lava_dripping
         -  class: EffectTrail
            particle: lava_dripping
            particle_data: 1
@@ -1483,21 +1436,12 @@ sectumsempra:
            effectlib:
              class: BleedEntityEffect
              duration: 150
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: ConeLocationEffect
-             iterations: 20
-             particle: lava_dripping
     parameters:
         target_type: LivingEntity
         allow_max_range: false
         range: 6
         target: other_entity
-        player_damage: 6
-        entity_damage: 10
-        check_destructible: true
-
+        cast_on_no_target: true
         duration: 1000
         effect_wither: 1
         damage: 6
@@ -1514,13 +1458,13 @@ silencio:
         cast:
         -  class: EffectSingle
            sound: cat_purr
-        -  class: EffectRing
+        -  class: EffectSingle
+           location: target
            effectlib:
              class: ShieldEntityEffect
              particle: angry_villager
              iterations: 200
              particles: 1
-           location: target
     parameters:
         target_type: LivingEntity
         target: other
@@ -1545,8 +1489,6 @@ silenciomaxima:
            sound_volume: 0.4
            sound_pitch: 0.1
            location: origin
-        -  class: EffectSingle
-           location: origin
            effectlib:
              class: DnaLocationEffect
     parameters:
@@ -1570,8 +1512,6 @@ jail:
            sound_volume: 0.4
            sound_pitch: 0.1
            location: origin
-        -  class: EffectSingle
-           location: origin
            effectlib:
              class: DnaLocationEffect
     parameters:
@@ -1594,9 +1534,6 @@ silenciototalus:
            sound: shoot_arrow
            sound_volume: 0.4
            sound_pitch: 0.1
-           location: origin
-        -  class: EffectRing
-           particle: magic_critical
            location: origin
            effectlib:
              class: AtomLocationEffect
@@ -1622,8 +1559,6 @@ stupefy:
         -  class: EffectSingle
            sound: shoot_arrow
            sound_volume: 5.0
-           location: origin
-        -  class: EffectSingle
            location: origin
            effectlib:
              class: ConeLocationEffect
@@ -1677,13 +1612,10 @@ day:
         cast:
         -  class: EffectSingle
            sound: wither_spawn
-        -  class: EffectRing
-           particle: magic_runes
-           location: origin
-           particle_count: 2
            effectlib:
              class: HelixLocationEffect
              iterations: 24
+             particle: magic_runes
     parameters:
         allow_max_range: false
         allow_night: false
@@ -1704,13 +1636,10 @@ nox:
         cast:
         -  class: EffectSingle
            sound: level_up
-        -  class: EffectRing
-           particle: large_smoke
-           location: origin
-           particle_count: 2
            effectlib:
              class: HelixLocationEffect
              iterations: 24
+             particle: large_smoke
     parameters:
         allow_max_range: false
         allow_night: false
@@ -1734,12 +1663,9 @@ phase:
         -  class: EffectSingle
            sound: portal_travel
            location: both
-        -  class: EffectRing
-           particle: portal
-           particle_count: 4
-           location: both
            effectlib:
              class: WarpEntityEffect
+             particle: portal
     parameters:
         cooldown: 2000
         worlds:
@@ -1808,12 +1734,9 @@ recall:
         -  class: EffectSingle
            sound: portal_travel
            location: both
-        -  class: EffectRing
-           particle: portal
-           particle_count: 6
-           location: both
            effectlib:
              class: WarpEntityEffect
+             particle: portal
     parameters:
         allow_spawn: true
         allow_marker: true
@@ -1838,11 +1761,10 @@ gather:
            particle: portal
            particle_count: 4
         -  class: EffectRing
-           particle: portal
            location: both
-           particle_count: 2
            effectlib:
              class: WarpEntityEffect
+             particle: portal
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2079,11 +2001,10 @@ revelio:
            sound: level_up
            location: both
         -  class: EffectRing
-           particle: portal
-           particle_count: 4
            location: both
            effectlib:
              class: WarpEntityEffect
+             particle: portal
     parameters:
         cooldown: 2000
     costs:

@@ -159,7 +159,7 @@ spells:
         description: Wake a stunned person
         cast_self: Rennervate!
         cast: Rennervate $target!
-        cast: Duro!
+        cast: Rennervate!
     floo:
         name: Fire Protection
         description: Use to avoid fire damage
