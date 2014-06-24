@@ -2030,7 +2030,7 @@ revelio:
     parameters:
         cooldown: 2000
     costs:
-        xp: 500
+        xp: 100
     parameters:
       worlds:
           world:

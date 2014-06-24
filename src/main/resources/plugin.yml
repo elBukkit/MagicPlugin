@@ -223,6 +223,10 @@ permissions:
     description: Player may list stored automata
     type: boolean
     default: op
+  Magic.commands.magic.list.tasks:
+    description: Player may list running tasks
+    type: boolean
+    default: op
   Magic.commands.magic.clean:
     description: Player may remove lost wands from the world
     type: boolean
