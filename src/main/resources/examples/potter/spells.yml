@@ -262,14 +262,14 @@ atmos:
            effectlib:
              class: HelixLocationEffect
              iterations: 12
-             particle: water_dripping
+             particle: drip_water
         area:
         -  class: EffectSingle
            sound: ambience_thunder
            effectlib:
              class: HelixLocationEffect
              iterations: 24
-             particle: water_dripping
+             particle: drip_water
     parameters:
         cooldown: 30000
     costs:
@@ -423,7 +423,7 @@ avis:
            sound: chicken_egg_pop
            effectlib:
              class: DnaLocationEffect
-             particleHelix: lava_dripping
+             particleHelix: drip_lava
              iterations: 24
              particle: bubble
         -  class: EffectSingle
@@ -1448,13 +1448,12 @@ sectumsempra:
            effectlib:
              class: ConeLocationEffect
              iterations: 20
-             particle: lava_dripping
+             particle: drip_lava
         -  class: EffectTrail
            particle: lava_dripping
            particle_data: 1
         -  class: EffectSingle
            location: target
-           particle: lava_dripping
            effectlib:
              class: BleedEntityEffect
              duration: 150
