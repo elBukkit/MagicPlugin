@@ -1335,11 +1335,8 @@ public class MagicController implements Listener, MageController
                 // Automata theoretically handle themselves by sticking around for a while
                 // but maybe some extra safety here would be good?
                 if (isOfflinePlayer || isDeadEntity) {
-					UndoQueue undoQueue = (mage instanceof com.elmakers.mine.bukkit.magic.Mage) ? ((com.elmakers.mine.bukkit.magic.Mage)mage).getUndoQueue() : null;
-					if (undoQueue == null || undoQueue.isEmpty()) {
-						getLogger().info("Offline mage " + mage.getName() + " has no pending undo actions, forgetting");
-						forgetMages.put(mageEntry.getKey(), 0l);
-					}
+                    getLogger().info("Forgetting Offline mage " + mage.getName());
+                    forgetMages.put(mageEntry.getKey(), 0l);
 				}
 			}
 		} catch (Exception ex) {
