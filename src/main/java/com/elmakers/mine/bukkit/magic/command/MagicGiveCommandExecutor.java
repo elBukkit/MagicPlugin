@@ -120,7 +120,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             giveWand(sender, player, wandKey, false, true, false, false);
             return true;
         } else if (itemName.contains("upgrade:")) {
-            String wandKey = itemName.substring(6);
+            String wandKey = itemName.substring(8);
             Wand wand = api.createWand(wandKey);
             if (wand == null) {
                 sender.sendMessage("Failed to create upgrade item for " + wandKey);
