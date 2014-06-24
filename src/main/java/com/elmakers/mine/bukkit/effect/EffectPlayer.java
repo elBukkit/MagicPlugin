@@ -34,7 +34,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;
-    private Object currentEffect = null;
+    private de.slikey.effectlib.Effect[] currentEffects = null;
 
     public static boolean SOUNDS_ENABLED = true;
 
@@ -266,7 +266,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         location.add(offset);
 
         if (effectLib != null && effectLibConfig != null) {
-            currentEffect = effectLib.play(plugin, effectLibConfig, this, targetLocation, target);
+            currentEffects = effectLib.play(plugin, effectLibConfig, this, targetLocation, target);
         }
         if (effect != null) {
             int data = effectData == null ? 0 : effectData;
@@ -448,12 +448,16 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return originEntity == null ? null : originEntity.get();
     }
 
+    public Entity getTargetEntity() {
+        return targetEntity == null ? null : targetEntity.get();
+    }
+
     public void cancel() {
-        if (currentEffect != null) {
+        if (currentEffects != null) {
             if (effectLib != null) {
-                effectLib.cancel(currentEffect);
+                effectLib.cancel(currentEffects);
             }
-            currentEffect = null;
+            currentEffects = null;
         }
     }
 }
