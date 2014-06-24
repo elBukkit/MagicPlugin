@@ -1064,6 +1064,29 @@ imperio:
     costs:
         xp: 85
 
+imperiomaxima:
+    icon: leash
+    category: unforgiveable
+    class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell
+    pvp_restricted: true
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: portal_trigger
+        -  class: EffectTrail
+           particle: spell
+           length: 16
+    parameters:
+        target_type: Player
+        target: other_entity
+        range: 32
+        item_force: 1
+        entity_force: 1
+        cast_on_no_target: true
+    costs:
+        xp: 100
+
 impervius:
     icon: gold_spade
     category: year7

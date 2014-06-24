@@ -116,7 +116,7 @@ spells:
         usage: Unforgiveable!
         cast: Avada Kedavra!
     avadamaxima:
-        name: Avada Kedavra
+        name: Avada Kedavra Maxima
         description: Kill your target PERMANENTLY.
         usage: Unforgiveable!
         cast: Avada Kedavra $target!
@@ -234,11 +234,16 @@ spells:
         name: Immobulus
         description: Immobilize your target
         cast: Immobulus $target!
-    imperio:
-        name: Imperio
+    imperiomaxima:
+        name: Imperio Maxima
         description: Control your target
         usage: Unforgiveable!
         cast: Imperio $target!
+    imperio:
+        name: Imperio
+        description: Fling your target like a ragdoll
+        usage: Unforgiveable!
+        cast: Imperio Maxima $target!
     impervius:
         name: Impervius
         description: Remove all water in the area
