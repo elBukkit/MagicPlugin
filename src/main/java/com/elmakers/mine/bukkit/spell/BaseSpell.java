@@ -115,6 +115,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String key;
     private String name;
     private String description;
+    private String extendedDescription;
     private String usage;
     private long worth;
     private Color color;
@@ -698,6 +699,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         name = Messages.get("spells." + key + ".name", name);
         description = node.getString("description", "");
         description = Messages.get("spells." + key + ".description", description);
+        extendedDescription = node.getString("extended_description", "");
         usage = Messages.get("spells." + key + ".usage", usage);
 
         // Load basic properties
@@ -1204,6 +1206,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public final String getDescription()
     {
         return description;
+    }
+
+    @Override
+    public final String getExtendedDescription()
+    {
+        return extendedDescription;
     }
 
     @Override
