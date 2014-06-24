@@ -261,7 +261,7 @@ atmos:
            sound: ambience_rain
            effectlib:
              class: HelixLocationEffect
-             iterations: 24
+             iterations: 12
              particle: water_dripping
         area:
         -  class: EffectSingle
@@ -301,7 +301,6 @@ broom:
            effectlib:
              class: SmokeEntityEffect
              iterations: 12
-             particle: smoke
         area:
         -  class: EffectSingle
            sound: enderdragon_wings
@@ -461,7 +460,6 @@ beat:
            location: target
            effectlib:
              class: SmokeEntityEffect
-             particle: town_aura
     costs:
         xp: 2
     parameters:
@@ -586,7 +584,6 @@ confundus:
         -  class: EffectSingle
            location: target
            effectlib:
-             particle: town_aura
              class: SmokeEntityEffect
     costs:
         xp: 30
@@ -617,7 +614,6 @@ conjunctivitis:
            location: target
            effectlib:
              class: SmokeEntityEffect
-             particle: town_aura
     costs:
         xp: 25
     parameters:
@@ -841,7 +837,7 @@ episkey:
         range: 16
         feed: true
         cure: false
-        percentage: 0.05
+        percentage: 0.2
         cooldown: 2000
     costs:
         xp: 15
@@ -859,7 +855,7 @@ ferula:
              class: ConeLocationEffect
              iterations: 10
              particle: heart
-        -  class: EffectRing
+        -  class: EffectSingle
            location: target
            effectlib:
              class: LoveEntityEffect
@@ -871,9 +867,10 @@ ferula:
         allow_max_range: false
         range: 16
         cooldown: 5000
-        duration: 4000
+        duration: 5000
         effect_regeneration: 1
         effect_absorption: 1
+        effect_saturation: 1
         effect_slow: 2
 
     costs:
@@ -1110,7 +1107,7 @@ incendio:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
-        radius: 1
+        radius: 2
         vertical_search_distance: 8
         undo: 1500
         cooldown: 3000
@@ -1187,7 +1184,7 @@ periculum:
         xp: 30
 
 petrificustotalus:
-    icon: skull_item
+    icon: nether_brick_item
     category: hex
     class: PotionEffectSpell
     pvp_restricted: true
@@ -1207,7 +1204,6 @@ petrificustotalus:
            effectlib:
              class: SmokeEntityEffect
              iterations: 80
-             particle: town_aura
     costs:
         xp: 80
     parameters:
@@ -1313,7 +1309,6 @@ reducto:
         destructible: destructible_mining
         check_destructible: false
         undo: 4000
-        cast_on_no_target: true
     costs:
         xp: 80
 
@@ -1414,7 +1409,7 @@ reparomaxima:
         xp: 500
 
 sectumsempra:
-    icon: iron_sword
+    icon: slime_ball
     category: combat
     pvp_restricted: true
     class: PotionEffectSpell
@@ -1439,7 +1434,8 @@ sectumsempra:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 6
+        range: 8
+        fov: 0.8
         target: other_entity
         cast_on_no_target: true
         duration: 1000
@@ -1575,8 +1571,8 @@ stupefy:
         fov: 0.11
         target_type: LivingEntity
         cast_on_no_target: true
-        duration: 2000
-        damage: 6
+        duration: 3000
+        damage: 4.5
         effect_confusion: 22
         cooldown: 750
     costs:
@@ -1679,7 +1675,7 @@ phase:
         xp: 50
 
 superblob:
-    icon: slime_ball
+    icon: snow_ball
     category: engineering
     class: ConstructSpell
     worth: 500
@@ -1759,12 +1755,12 @@ gather:
            sound: enderman_idle
         -  class: EffectTrail
            particle: portal
-           particle_count: 4
-        -  class: EffectRing
+        -  class: EffectSingle
            location: both
            effectlib:
              class: WarpEntityEffect
              particle: portal
+             iterations: 20
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2000,7 +1996,7 @@ revelio:
         -  class: EffectSingle
            sound: level_up
            location: both
-        -  class: EffectRing
+        -  class: EffectSingle
            location: both
            effectlib:
              class: WarpEntityEffect
@@ -2022,3 +2018,75 @@ revelio:
              scale: 1
           MuggleWorld:
             target: Hogwarts
+
+
+wolfhouse:
+    icon: sapling:5
+    category: master
+    class: ConstructSpell
+    worth: 2000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        check_destructible: false
+        range: 16
+        radius: 4
+        type: sphere
+        cooldown: 600000
+        brush: schematic|wolfhouse
+        obx: -3
+        oby: -22 
+        obz: 10
+        otx: 1
+        oty: 1
+        mm: erase 
+        transparent: transparent_to_construction
+        commands:
+          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
+          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water
+          wolf_dome: castp @p[r=7] shell type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35
+          wolf_shields: castp @p[r=7] shell brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37
+          wolf_undo: castp @p[r=6] undo
+          wolf_commit: castp @p[r=6] commit
+          wolf_nothing: msg @p[r=6] Nothing here!
+          wolf_clear: castp @p[r=7] blob type sphere brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
+          wolf_destruct: castp @p[r=7] blob brush erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60
+          wolf_convert: castp @p convert radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy
+          wolf_phase: castp @p[r=2] phase
+          wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
+          wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0
+          wolf_tp_hub: tp @p[r=4] ~-3 ~-2 ~24
+          wolf_tp_booth: tp @p[r=4] ~8.5 ~2 ~-28.5
+          wolf_tp_enchanting: tp @p[r=3] ~-5 ~35 ~-17
+          wolf_recall_wand: castp @p[r=2] recall type wand
+          wolf_recall_death: castp @p[r=2] recall type death
+          wolf_recall_spawn: castp @p[r=2] recall type spawn
+    costs:
+        xp: 1000
+mount:
+    icon: saddle
+    category: master
+    class: MountSpell
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_hit
+        -  class: EffectSingle
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: slime
+    parameters:
+        target_type: Entity
+        allow_max_range: false
+        range: 16
+    costs:
+        xp: 60
