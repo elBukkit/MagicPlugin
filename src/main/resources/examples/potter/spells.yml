@@ -1168,7 +1168,7 @@ lumos:
 morsmordre:
     icon: skull_item:4
     category: deatheater
-    class: GenericSpell
+    class: CommandSpell
     worth: 20
     effects:
         cast:
@@ -1183,10 +1183,13 @@ morsmordre:
            color: '00FF00'
            color2: '88FF88'
     parameters:
+        target: block
         allow_max_range: true
         range: 8
         cooldown: 10000
         transparent: transparent_to_construction
+        commands:
+        - say §aMorsmordre!
     costs:
         xp: 55
 
