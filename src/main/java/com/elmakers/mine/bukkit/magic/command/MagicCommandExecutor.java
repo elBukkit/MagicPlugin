@@ -1,14 +1,11 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.elmakers.mine.bukkit.block.batch.SpellBatch;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -132,7 +129,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
         }
 		if (subCommand.equalsIgnoreCase("list"))
 		{
-			String usage = "Usage: magic list <wands [player]|maps [keyword]>";
+			String usage = "Usage: magic list <wands [player]|maps [keyword]|automata|tasks>";
 			String listCommand = "";
 			if (args.length > 1)
 			{
@@ -144,16 +141,9 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			}
 			else
 			{				
-				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'wands', 'maps' or 'automata' parameter.");
-				
+				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps' or 'automata' parameter.");
+
 				Collection<Mage> mages = api.getMages();
-				List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
-				int magicTasks = 0;
-				for (BukkitTask task : tasks)  {
-					if (task.getOwner() == this) magicTasks++;
-				}
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + magicTasks + "/" + tasks.size());
-				
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active players: " + mages.size());
 				Collection<Mage> pending = api.getMagesWithPendingBatches();
 				sender.sendMessage(ChatColor.AQUA + "Pending construction batches (" + pending.size() + "): ");
@@ -180,6 +170,44 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				}
 				return true;
 			}
+
+            if (listCommand.equalsIgnoreCase("tasks")) {
+                List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
+                HashMap<String, Integer> pluginCounts = new HashMap<String, Integer>();
+                HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<String, HashMap<String, Integer>>();
+                for (BukkitTask task : tasks)  {
+                    String pluginName = task.getOwner().getName();
+                    HashMap<String, Integer> pluginTaskCounts = taskCounts.get(pluginName);
+                    if (pluginTaskCounts == null) {
+                        pluginTaskCounts = new HashMap<String, Integer>();
+                        taskCounts.put(pluginName, pluginTaskCounts);
+                    }
+                    String className = "(Unknown)";
+                    Class<? extends Runnable> taskClass = CompatibilityUtils.getTaskClass(task);
+                    if (taskClass != null) {
+                        className = taskClass.getName();
+                    }
+                    Integer count = pluginTaskCounts.get(className);
+                    if (count == null) count = 0;
+                    count++;
+                    pluginTaskCounts.put(className, count);
+
+                    Integer totalCount = pluginCounts.get(pluginName);
+                    if (count == null) count = 0;
+                    count++;
+                    pluginCounts.put(pluginName, count);
+                }
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + tasks.size());
+                for (Entry<String, HashMap<String, Integer>> pluginEntry : taskCounts.entrySet()) {
+                    String pluginName = pluginEntry.getKey();
+                    sender.sendMessage(" " + ChatColor.DARK_PURPLE + pluginName + ": " + ChatColor.LIGHT_PURPLE + pluginCounts.get(pluginName));
+                    for (Entry<String, Integer> taskEntry : pluginEntry.getValue().entrySet()) {
+                        sender.sendMessage("  " + ChatColor.DARK_PURPLE + taskEntry.getKey() + ": " + ChatColor.LIGHT_PURPLE + taskEntry.getValue());
+                    }
+                }
+
+                return true;
+            }
 			
 			if (listCommand.equalsIgnoreCase("wands")) {
 				String owner = "";

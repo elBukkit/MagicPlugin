@@ -17,6 +17,7 @@
     - Magic.commands.magic.list.wands
     - Magic.commands.magic.list.maps
     - Magic.commands.magic.list.automata
+    - Magic.commands.magic.list.tasks
     - Magic.commands.magic.give
     - Magic.commands.mgive
     - Magic.commands.magic.commit
