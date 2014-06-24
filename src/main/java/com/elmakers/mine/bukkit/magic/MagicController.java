@@ -3352,7 +3352,7 @@ public class MagicController implements Listener, MageController
         List<String> pages = new ArrayList<String>();
         String description = "" + ChatColor.BLUE + ChatColor.BOLD + title + "\n\n";
         description += category.getDescription();
-        pages.add(description);
+        pages.add("" + ChatColor.RESET + ChatColor.DARK_BLUE + description);
 
         Collections.sort(categorySpells);
         for (SpellTemplate spell : categorySpells)

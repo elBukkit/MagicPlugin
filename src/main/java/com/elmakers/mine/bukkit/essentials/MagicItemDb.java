@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.essentials;
 
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import net.ess3.api.IEssentials;
 
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +32,18 @@ public class MagicItemDb extends ItemDb {
 			Wand wand = Wand.createWand(controller, wandId.trim());
 			if (wand != null) {
 				return wand.getItem();
-			} 
-		} else if (id.startsWith("spell:")) {
+			}
+
+		} else if (id.startsWith("book:")) {
+            String bookCategory = id.replace("book:", "");
+            SpellCategory category = controller.getCategory(bookCategory);
+            if (category != null) {
+                ItemStack bookItem = controller.getSpellBook(category, 1);
+                if (bookItem != null) {
+                    return bookItem;
+                }
+            }
+        } else if (id.startsWith("spell:")) {
 			String spellKey = id.replace("spell:", "");
 			ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
 			if (itemStack != null) {
