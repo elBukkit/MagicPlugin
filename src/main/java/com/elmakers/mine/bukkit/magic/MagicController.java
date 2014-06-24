@@ -3392,6 +3392,12 @@ public class MagicController implements Listener, MageController
                     lines.add("");
                 }
 
+                String spellExtendedDescription = spell.getExtendedDescription();
+                if (spellExtendedDescription != null && spellExtendedDescription.length() > 0) {
+                    lines.add("" + ChatColor.BLACK + spellExtendedDescription);
+                    lines.add("");
+                }
+
                 Collection<CastingCost> costs = spell.getCosts();
                 if (costs != null) {
                     for (CastingCost cost : costs) {
