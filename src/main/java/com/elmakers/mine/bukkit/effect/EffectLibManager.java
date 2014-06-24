@@ -36,8 +36,10 @@ public class EffectLibManager {
     }
 
     public Effect[] play(Plugin plugin, ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
-        Entity sourceEntity = player.getOriginEntity();
-        Entity targetEntity = player.getTargetEntity();
+        Entity sourceEntity = player.playAtOrigin ? player.getOriginEntity() : null;
+        Entity targetEntity = player.playAtTarget ? player.getTargetEntity() : null;
+        origin = player.playAtOrigin ? origin : null;
+        target = player.playAtTarget ? target : null;
         if (sourceEntity != null && sourceEntity instanceof Player) {
             nameMap.put("$name", ((Player)sourceEntity).getName());
         } else {
