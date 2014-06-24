@@ -36,12 +36,13 @@ public class MagicItemDb extends ItemDb {
 
 		} else if (id.startsWith("book:")) {
             String bookCategory = id.replace("book:", "");
-            SpellCategory category = controller.getCategory(bookCategory);
-            if (category != null) {
-                ItemStack bookItem = controller.getSpellBook(category, 1);
-                if (bookItem != null) {
-                    return bookItem;
-                }
+            SpellCategory category = null;
+            if (bookCategory.length() > 0 && !bookCategory.equalsIgnoreCase("all")) {
+                category = controller.getCategory(bookCategory);
+            }
+            ItemStack bookItem = controller.getSpellBook(category, 1);
+            if (bookItem != null) {
+                return bookItem;
             }
         } else if (id.startsWith("spell:")) {
 			String spellKey = id.replace("spell:", "");

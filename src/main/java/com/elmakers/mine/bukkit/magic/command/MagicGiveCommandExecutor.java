@@ -87,14 +87,18 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
         } else if (itemName.contains("book:")) {
             String bookCategory = itemName.substring(5);
-            SpellCategory category = api.getController().getCategory(bookCategory);
-            if (category == null) {
-                sender.sendMessage("Unknown spell category " + bookCategory);
-                return true;
+            SpellCategory category = null;
+
+            if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
+                category = api.getController().getCategory(bookCategory);
+                if (category == null) {
+                    sender.sendMessage("Unknown spell category " + bookCategory);
+                    return true;
+                }
             }
             ItemStack bookItem = api.getSpellBook(category, count);
             if (bookItem == null) {
-                sender.sendMessage("Failed to create book item for " + category.getName());
+                sender.sendMessage("Failed to create book item for " + bookCategory);
                 return true;
             }
             api.giveItemToPlayer(player, bookItem);

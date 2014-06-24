@@ -45,6 +45,8 @@ books:
     default:
         author: NathanWolf
         title: $category Spell Book
+    all:
+        title: The Master Spell Book
 wand:
     default_name: Wand
     upgrade_name: Wand Upgrade

@@ -3329,88 +3329,108 @@ public class MagicController implements Listener, MageController
     }
 
     public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category, int count) {
-        List<SpellTemplate> categorySpells = new ArrayList<SpellTemplate>();
+        Map<String, List<SpellTemplate>> categories = new HashMap<String, List<SpellTemplate>>();
         Collection<SpellTemplate> spellVariants = spells.values();
-        String categoryKey = category.getKey();
+        String categoryKey = category == null ? null : category.getKey();
         for (SpellTemplate spell : spellVariants)
         {
             com.elmakers.mine.bukkit.api.spell.SpellCategory spellCategory = spell.getCategory();
-            if (spellCategory != null && spellCategory.getKey().equalsIgnoreCase(categoryKey))
+            if (spellCategory == null) continue;
+
+            String spellCategoryKey = spellCategory.getKey();
+            if (categoryKey == null || spellCategoryKey.equalsIgnoreCase(categoryKey))
             {
+                List<SpellTemplate> categorySpells = categories.get(spellCategoryKey);
+                if (categorySpells == null) {
+                    categorySpells = new ArrayList<SpellTemplate>();
+                    categories.put(spellCategoryKey, categorySpells);
+                }
                 categorySpells.add(spell);
             }
         }
+
+        List<String> categoryKeys = new ArrayList<String>(categories.keySet());
+        Collections.sort(categoryKeys);
 
         // Hrm? So much Copy+paste! :(
         CostReducer reducer = null;
         ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
         BookMeta book = (BookMeta)bookItem.getItemMeta();
         book.setAuthor(Messages.get("books.default.author"));
-        String title = Messages.get("books.default.title");
-        title = title.replace("$category", category.getName());
+        String title = null;
+        if (category != null) {
+            title = Messages.get("books.default.title").replace("$category", category.getName());
+        } else {
+            title = Messages.get("books.all.title");
+        }
         book.setTitle(title);
         List<String> pages = new ArrayList<String>();
-        String description = "" + ChatColor.BLUE + ChatColor.BOLD + title + "\n\n";
-        description += category.getDescription();
-        pages.add("" + ChatColor.RESET + ChatColor.DARK_BLUE + description);
 
-        Collections.sort(categorySpells);
-        for (SpellTemplate spell : categorySpells)
-        {
-            List<String> lines = new ArrayList<String>();
-            lines.add("" + ChatColor.GOLD + ChatColor.BOLD + spell.getName());
-            lines.add("" + ChatColor.RESET);
+        for (String key : categoryKeys) {
+            category = getCategory(key);
+            title = Messages.get("books.default.title").replace("$category", category.getName());
+            String description = "" + ChatColor.BLUE + ChatColor.BOLD + title + "\n\n";
+            description += category.getDescription();
+            pages.add("" + ChatColor.RESET + ChatColor.DARK_BLUE + description);
 
-            String spellDescription = spell.getDescription();
-            if (spellDescription != null && spellDescription.length() > 0) {
-                lines.add("" + ChatColor.BLACK + spellDescription);
-                lines.add("");
-            }
+            List<SpellTemplate> categorySpells = categories.get(key);
+            Collections.sort(categorySpells);
+            for (SpellTemplate spell : categorySpells) {
+                List<String> lines = new ArrayList<String>();
+                lines.add("" + ChatColor.GOLD + ChatColor.BOLD + spell.getName());
+                lines.add("" + ChatColor.RESET);
 
-            String usage = spell.getUsage();
-            if (usage != null && usage.length() > 0) {
-                lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
-                lines.add("");
-            }
+                String spellDescription = spell.getDescription();
+                if (spellDescription != null && spellDescription.length() > 0) {
+                    lines.add("" + ChatColor.BLACK + spellDescription);
+                    lines.add("");
+                }
 
-            Collection<CastingCost> costs = spell.getCosts();
-            if (costs != null) {
-                for (CastingCost cost : costs) {
-                    if (cost.hasCosts(reducer)) {
-                        lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.costs_description").replace("$description", cost.getFullDescription(reducer)));
+                String usage = spell.getUsage();
+                if (usage != null && usage.length() > 0) {
+                    lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
+                    lines.add("");
+                }
+
+                Collection<CastingCost> costs = spell.getCosts();
+                if (costs != null) {
+                    for (CastingCost cost : costs) {
+                        if (cost.hasCosts(reducer)) {
+                            lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.costs_description").replace("$description", cost.getFullDescription(reducer)));
+                        }
                     }
                 }
-            }
-            Collection<CastingCost> activeCosts = spell.getActiveCosts();
-            if (activeCosts != null) {
-                for (CastingCost cost : activeCosts) {
-                    if (cost.hasCosts(reducer)) {
-                        lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(reducer)));
+                Collection<CastingCost> activeCosts = spell.getActiveCosts();
+                if (activeCosts != null) {
+                    for (CastingCost cost : activeCosts) {
+                        if (cost.hasCosts(reducer)) {
+                            lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(reducer)));
+                        }
                     }
                 }
-            }
 
-            long duration = spell.getDuration();
-            if (duration > 0) {
-                long seconds = duration / 1000;
-                if (seconds > 60 * 60 ) {
-                    long hours = seconds / (60 * 60);
-                    lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
-                } else if (seconds > 60) {
-                    long minutes = seconds / 60;
-                    lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
-                } else {
-                    lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
+                long duration = spell.getDuration();
+                if (duration > 0) {
+                    long seconds = duration / 1000;
+                    if (seconds > 60 * 60) {
+                        long hours = seconds / (60 * 60);
+                        lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_hours").replace("$hours", ((Long) hours).toString()));
+                    } else if (seconds > 60) {
+                        long minutes = seconds / 60;
+                        lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_minutes").replace("$minutes", ((Long) minutes).toString()));
+                    } else {
+                        lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_seconds").replace("$seconds", ((Long) seconds).toString()));
+                    }
                 }
-            }
 
-            if ((spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
-                lines.add(ChatColor.DARK_GRAY + Messages.get("spell.brush"));
+                if ((spell instanceof BrushSpell) && !((BrushSpell) spell).hasBrushOverride()) {
+                    lines.add(ChatColor.DARK_GRAY + Messages.get("spell.brush"));
+                }
+                if (spell instanceof UndoableSpell && ((UndoableSpell) spell).isUndoable()) {
+                    lines.add(ChatColor.GRAY + Messages.get("spell.undoable"));
+                }
+                pages.add(StringUtils.join(lines, "\n"));
             }
-            if (spell instanceof UndoableSpell && ((UndoableSpell)spell).isUndoable()) {
-                lines.add(ChatColor.GRAY + Messages.get("spell.undoable"));
-            }
-            pages.add(StringUtils.join(lines, "\n"));
         }
 
         book.setPages(pages);
