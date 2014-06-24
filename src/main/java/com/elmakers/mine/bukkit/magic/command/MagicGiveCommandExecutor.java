@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -84,7 +85,21 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
         if (itemName.equals("xp")) {
             api.giveExperienceToPlayer(player, count);
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
-        } else if (itemName.contains("spell:")) {
+        } else if (itemName.contains("book:")) {
+            String bookCategory = itemName.substring(5);
+            SpellCategory category = api.getController().getCategory(bookCategory);
+            if (category == null) {
+                sender.sendMessage("Unknown spell category " + bookCategory);
+                return true;
+            }
+            ItemStack bookItem = api.getSpellBook(category, count);
+            if (bookItem == null) {
+                sender.sendMessage("Failed to create book item for " + category.getName());
+                return true;
+            }
+            api.giveItemToPlayer(player, bookItem);
+            return true;
+        }else if (itemName.contains("spell:")) {
             String spellKey = itemName.substring(6);
             ItemStack itemStack = api.createSpellItem(spellKey);
             if (itemStack == null) {

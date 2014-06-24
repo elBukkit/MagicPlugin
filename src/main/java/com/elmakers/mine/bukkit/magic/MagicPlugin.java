@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.magic.command.*;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -364,4 +365,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	public MageController getController() {
 		return controller;
 	}
+
+    @Override
+    public ItemStack getSpellBook(SpellCategory category, int count) {
+        return controller.getSpellBook(category, count);
+    }
 }

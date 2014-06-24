@@ -9,24 +9,22 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.CodeSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
+import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -89,6 +87,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -100,10 +99,6 @@ import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.MageSpell;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -3331,6 +3326,96 @@ public class MagicController implements Listener, MageController
 
     public int getActiveHoloTextRange() {
         return activateHoloTextRange;
+    }
+
+    public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category, int count) {
+        List<SpellTemplate> categorySpells = new ArrayList<SpellTemplate>();
+        Collection<SpellTemplate> spellVariants = spells.values();
+        String categoryKey = category.getKey();
+        for (SpellTemplate spell : spellVariants)
+        {
+            com.elmakers.mine.bukkit.api.spell.SpellCategory spellCategory = spell.getCategory();
+            if (spellCategory != null && spellCategory.getKey().equalsIgnoreCase(categoryKey))
+            {
+                categorySpells.add(spell);
+            }
+        }
+
+        // Hrm? So much Copy+paste! :(
+        CostReducer reducer = null;
+        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
+        BookMeta book = (BookMeta)bookItem.getItemMeta();
+        book.setAuthor(Messages.get("books.default.author"));
+        String title = Messages.get("books.default.title");
+        title = title.replace("$category", category.getName());
+        book.setTitle(title);
+        List<String> pages = new ArrayList<String>();
+        String description = "" + ChatColor.BLUE + ChatColor.BOLD + title + "\n\n";
+        description += category.getDescription();
+        pages.add(description);
+
+        Collections.sort(categorySpells);
+        for (SpellTemplate spell : categorySpells)
+        {
+            List<String> lines = new ArrayList<String>();
+            lines.add("" + ChatColor.GOLD + ChatColor.BOLD + spell.getName());
+            lines.add("" + ChatColor.RESET);
+
+            String spellDescription = spell.getDescription();
+            if (spellDescription != null && spellDescription.length() > 0) {
+                lines.add("" + ChatColor.BLACK + spellDescription);
+                lines.add("");
+            }
+
+            String usage = spell.getUsage();
+            if (usage != null && usage.length() > 0) {
+                lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
+                lines.add("");
+            }
+
+            Collection<CastingCost> costs = spell.getCosts();
+            if (costs != null) {
+                for (CastingCost cost : costs) {
+                    if (cost.hasCosts(reducer)) {
+                        lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.costs_description").replace("$description", cost.getFullDescription(reducer)));
+                    }
+                }
+            }
+            Collection<CastingCost> activeCosts = spell.getActiveCosts();
+            if (activeCosts != null) {
+                for (CastingCost cost : activeCosts) {
+                    if (cost.hasCosts(reducer)) {
+                        lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(reducer)));
+                    }
+                }
+            }
+
+            long duration = spell.getDuration();
+            if (duration > 0) {
+                long seconds = duration / 1000;
+                if (seconds > 60 * 60 ) {
+                    long hours = seconds / (60 * 60);
+                    lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
+                } else if (seconds > 60) {
+                    long minutes = seconds / 60;
+                    lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
+                } else {
+                    lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
+                }
+            }
+
+            if ((spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
+                lines.add(ChatColor.DARK_GRAY + Messages.get("spell.brush"));
+            }
+            if (spell instanceof UndoableSpell && ((UndoableSpell)spell).isUndoable()) {
+                lines.add(ChatColor.GRAY + Messages.get("spell.undoable"));
+            }
+            pages.add(StringUtils.join(lines, "\n"));
+        }
+
+        book.setPages(pages);
+        bookItem.setItemMeta(book);
+        return bookItem;
     }
 
 	/*
