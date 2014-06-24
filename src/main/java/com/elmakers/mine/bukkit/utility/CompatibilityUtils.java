@@ -23,6 +23,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -386,5 +387,18 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return newMinecart;
+    }
+
+    public static Class<? extends Runnable> getTaskClass(BukkitTask task) {
+        Class<? extends Runnable> taskClass = null;
+        try {
+            Method getTaskClassMethod = class_CraftTask.getDeclaredMethod("getTaskClass");
+            getTaskClassMethod.setAccessible(true);
+            taskClass = (Class<? extends Runnable>)getTaskClassMethod.invoke(task);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return taskClass;
     }
 }

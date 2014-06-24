@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.utility;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,6 +29,7 @@ public class NMSUtils {
     protected static Class<?> class_NBTBase;
     protected static Class<?> class_NBTTagCompound;
     protected static Class<?> class_NBTTagList;
+    protected static Class<?> class_CraftTask;
     protected static Class<?> class_CraftInventoryCustom;
     protected static Class<?> class_CraftItemStack;
     protected static Class<?> class_CraftLivingEntity;
@@ -65,6 +65,7 @@ public class NMSUtils {
             class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
             class_CraftInventoryCustom = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftInventoryCustom");
             class_CraftItemStack = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftItemStack");
+            class_CraftTask = fixBukkitClass("org.bukkit.craftbukkit.scheduler.CraftTask");
             class_CraftLivingEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftLivingEntity");
             class_Packet = fixBukkitClass("net.minecraft.server.Packet");
             class_World = fixBukkitClass("net.minecraft.server.World");
