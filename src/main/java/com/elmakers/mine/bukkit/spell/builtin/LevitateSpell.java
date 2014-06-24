@@ -225,13 +225,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	
 	@Override
 	public void onDeactivate() {
-        try {
-            throw new Exception("DEACTIVATING FLY FOR " + mage.getName());
-        } catch (Exception ex) {
-            ex.printStackTrace();;
-        }
-
-
         if (thrust != null) {
             thrust.stop();
             thrust = null;
