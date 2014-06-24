@@ -329,6 +329,7 @@ broom:
         start_delay: 20
         crash_distance: 0.5
         effect_confusion: 120,2
+        bypass_deactivate: true
     costs:
         xp: 10
 

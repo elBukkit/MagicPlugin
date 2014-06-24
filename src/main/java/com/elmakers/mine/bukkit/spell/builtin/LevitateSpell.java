@@ -53,6 +53,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double crashDistance = 0;
     private double slowMultiplier = 1;
 
+    private boolean bypassDeactivate = false;
+
     private Collection<PotionEffect> crashEffects;
 
     public class ThrustAction implements Runnable
@@ -82,11 +84,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
             Entity entity = spell.getMage().getEntity();
             if (entity == null || entity.isDead())
             {
-                spell.deactivate();
+                spell.land();
                 return;
             }
             if (entity instanceof Player && !((Player)entity).isOnline()) {
-                spell.deactivate();
+                spell.land();
                 return;
             }
 
@@ -115,7 +117,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
             if (height < autoDeactivateHeight)
             {
-                deactivate();
+                land();
                 return;
             }
         }
@@ -189,6 +191,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         autoDeactivateHeight = parameters.getInt("auto_deactivate", 0);
         boostTicks = parameters.getInt("boost_ticks", 1);
         crashDistance = parameters.getDouble("crash_distance", 0);
+        bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
 
         crashEffects = getPotionEffects(parameters);
 
@@ -200,16 +203,35 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 boostTicksRemaining += boostTicks;
                 return SpellResult.AREA;
             }
-			deactivate();
+            land();
 			return SpellResult.COST_FREE;
 		}
 		activate();
 
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public void deactivate() {
+        if (!bypassDeactivate || thrust == null) {
+            deactivate(false);
+        }
+    }
+
+    public void land() {
+        super.deactivate();
+    }
+
 	
 	@Override
 	public void onDeactivate() {
+        try {
+            throw new Exception("DEACTIVATING FLY FOR " + mage.getName());
+        } catch (Exception ex) {
+            ex.printStackTrace();;
+        }
+
+
         if (thrust != null) {
             thrust.stop();
             thrust = null;
