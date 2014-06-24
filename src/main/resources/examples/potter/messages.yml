@@ -30,7 +30,7 @@ costs:
 
 spell:
     brush: Uses Material Brushes
-    undoable: Undoable with Repifarage
+    undoable: Counterable
     reactivate: Reactivating $name
 
 categories:
