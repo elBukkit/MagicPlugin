@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.magic;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -486,4 +487,14 @@ public interface MagicAPI {
      * @return The current MageController, there is only one.
      */
     public MageController getController();
+
+    /**
+     * Returns a written book item describing all of the spells in
+     * a given category.
+     *
+     * @param category The category to look up
+     * @param count How many to give (max 1 stack)
+     * @return An ItemStack spell book
+     */
+    public ItemStack getSpellBook(SpellCategory category, int count);
 }
