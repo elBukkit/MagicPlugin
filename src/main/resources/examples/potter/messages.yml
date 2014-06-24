@@ -28,31 +28,55 @@ costs:
     xp: XP
     insufficient_resources: Not enough $cost
 
+spell:
+    brush: Uses Material Brushes
+    undoable: Undoable with Repifarage
+    reactivate: Reactivating $name
+
 categories:
-    utility:
-        name: Utility Spells
-        description: Useful stuff
-        color: '00FF00'
-    combat:
-        name: Deuling Spells
-        description: Attack!
-        color: 'FF0000'
+    specialty:
+        name: Speciality
+        description: Generally not for casting, these often power magic items.
     unforgiveable:
         name: Unforgiveable Hexes
-        description: Don't cast them!
+        description: Casting these spells is a terrible crime.
         color: '010101'
-    hex:
-        name: Hexes
-        description: Cripple your target
-        color: 'FFFF00'
-    movement:
-        name: Movement Spells
-        descriptions: Spells that help you get around
-        color: 'DDDDDD'
-    performance:
-        name: Performance Spells
-        description: Just for show
-        color: '00FFFF'
+    staff:
+        name: Staff Only
+        description: These are generally only for staff
+        color: 'FF00FF'
+    deatheater:
+        name: Dark Magic
+        description: For Deatheater eyes only!
+        color: '00FF00'
+    year1:
+        name: First Years
+        description: First years learn a variety of beginning spells, as well as the basics of wand use.
+        color: '111111'
+    year2:
+        name: Second Years
+        description: Spells for second year students.
+        color: '222222'
+    year3:
+        name: Third Years
+        description: Spells for third year students.
+        color: '442244'
+    year4:
+        name: Fourth Years
+        description: Spells for fourth year students.
+        color: '882288'
+    year5:
+        name: Fifth Years
+        description: Spells for fifth year students.
+        color: '880088'
+    year6:
+        name: Sixth Years
+        description: Spells for sixth year students.
+        color: 'AA00AA'
+    year7:
+        name: Seventh Years
+        description: Spells for seventh year students.
+        color: 'EE00EE'
 
 spells:
     accio:

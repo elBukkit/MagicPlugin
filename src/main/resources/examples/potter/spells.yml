@@ -56,7 +56,7 @@ default:
 
 accio:
     icon: ink_sack:6
-    category: utility
+    category: year1
     class: PushSpell
     pvp_restricted: true
     worth: 10
@@ -90,7 +90,7 @@ accio:
 
 aguamenti:
     icon: stationary_water
-    category: utility
+    category: year2
     class: IterateSpell
     pvp_restricted: false
     worth: 30
@@ -112,7 +112,7 @@ aguamenti:
 
 apparate:
     icon: eye_of_ender
-    category: movement
+    category: year7
     class: BlinkSpell
     worth: 120
     effects:
@@ -144,7 +144,7 @@ apparate:
 
 araniaexumai:
     icon: web
-    category: combat
+    category: year1
     class: PushSpell
     pvp_restricted: true
     worth: 15
@@ -178,7 +178,7 @@ araniaexumai:
 
 arrow:
     icon: arrow
-    category: combat
+    category: year1
     class: ProjectileSpell
     pvp_restricted: true
     worth: 2
@@ -204,7 +204,7 @@ arrow:
 
 ascendio:
     icon: ink_sack:8
-    category: movement
+    category: year6
     class: FlingSpell
     worth: 80
     pvp_restricted: true
@@ -227,7 +227,7 @@ ascendio:
 
 arresto:
     icon: ink_sack:8
-    category: movement
+    category: year1
     class: FlingSpell
     worth: 20
     pvp_restricted: false
@@ -252,7 +252,7 @@ arresto:
 
 atmos:
     icon: water
-    category: elemental
+    category: year5
     class: WeatherSpell
     worth: 80
     effects:
@@ -277,7 +277,7 @@ atmos:
 
 broom:
     icon: blaze_rod
-    category: movement
+    category: specialty
     class: LevitateSpell
     pvp_restricted: true
     worth: 50
@@ -413,7 +413,7 @@ avadamaxima:
 
 avis:
     icon: monster_egg
-    category: elemental
+    category: year3
     class: FamiliarSpell
     worth: 20
     effects:
@@ -444,7 +444,7 @@ avis:
 
 beat:
     icon: stick
-    category: hex
+    category: specialty
     class: PotionEffectSpell
     pvp_restricted: true
     worth: 10
@@ -475,7 +475,7 @@ beat:
 
 bombarda:
     icon: ink_sack:7
-    category: combat
+    category: year2
     class: BoomSpell
     pvp_restricted: true
     worth: 40
@@ -500,7 +500,7 @@ bombarda:
 
 bombardamaxima:
     icon: ink_sack:7
-    category: combat
+    category: year4
     class: BoomSpell
     pvp_restricted: true
     worth: 100
@@ -523,7 +523,7 @@ bombardamaxima:
 
 camera:
     icon: tripwire_hook
-    category: light
+    category: specialty
     class: CameraSpell
     worth: 8
     effects:
@@ -543,7 +543,7 @@ camera:
 
 confringo:
     icon: flint_and_steel
-    category: combat
+    category: year5
     class: BoomSpell
     pvp_restricted: true
     worth: 50
@@ -569,7 +569,7 @@ confringo:
 
 confundus:
     icon: rotten_flesh
-    category: hex
+    category: year2
     class: PotionEffectSpell
     pvp_restricted: true
     worth: 10
@@ -598,7 +598,7 @@ confundus:
 
 conjunctivitis:
     icon: ender_pearl
-    category: hex
+    category: year2
     class: PotionEffectSpell
     pvp_restricted: true
     worth: 10
@@ -657,7 +657,7 @@ crucio:
 
 deletrius:
     icon: enchanted_book
-    category: utility
+    category: year7
     class: CommitSpell
     worth: 150
     effects:
@@ -671,7 +671,7 @@ deletrius:
 
 diffindo:
     icon: iron_plate
-    category: combat
+    category: year6
     class: ConstructSpell
     worth: 80
     effects:
@@ -695,7 +695,7 @@ diffindo:
 
 duro:
     icon: stone
-    category: utility
+    category: year4
     class: RecurseSpell
     worth: 150
     effects:
@@ -715,7 +715,7 @@ duro:
 
 evanesco:
     icon: bone
-    category: combat
+    category: year4
     pvp_restricted: true
     class: DisintegrateSpell
     worth: 25
@@ -739,7 +739,7 @@ evanesco:
 
 expelliarmus:
     icon: ink_sack:1
-    category: combat
+    category: year2
     class: DisarmSpell
     pvp_restricted: true
     worth: 110
@@ -783,7 +783,7 @@ expelliarmus:
 
 rennervate:
     icon: ink_sack:9
-    category: utility
+    category: year2
     class: PotionEffectSpell
     worth: 20
     effects:
@@ -813,7 +813,7 @@ rennervate:
 
 episkey:
     icon: ink_sack:9
-    category: utility
+    category: year2
     class: HealSpell
     worth: 30
     effects:
@@ -844,7 +844,7 @@ episkey:
 
 ferula:
     icon: ink_sack:9
-    category: utility
+    category: year3
     class: PotionEffectSpell
     worth: 50
     effects:
@@ -878,7 +878,7 @@ ferula:
 
 floo:
     icon: sulphur
-    category: utility
+    category: specialty
     class: PotionEffectSpell
     worth: 30
     effects:
@@ -900,7 +900,7 @@ floo:
 
 finiteincantatem:
     icon: ink_sack:13
-    category: dueling
+    category: year3
     class: UndoSpell
     worth: 250
     effects:
@@ -924,7 +924,7 @@ finiteincantatem:
 
 flagrate:
     icon: ink_sack:14
-    category: performance
+    category: year1
     class: GenericSpell
     worth: 20
     effects:
@@ -951,7 +951,7 @@ flagrate:
 
 flipendo:
     icon: ink_sack:5
-    category: combat
+    category: year1
     class: PushSpell
     pvp_restricted: true
     worth: 15
@@ -986,7 +986,7 @@ flipendo:
 
 fly:
     icon: feather
-    category: utility
+    category: staff
     class: LevitateSpell
     worth: 600
     effects:
@@ -1014,7 +1014,7 @@ fly:
 
 immobulus:
     icon: web
-    category: hex
+    category: year3
     class: PotionEffectSpell
     pvp_restricted: true
     worth: 30
@@ -1066,7 +1066,7 @@ imperio:
 
 impervius:
     icon: gold_spade
-    category: utility
+    category: year7
     class: ConstructSpell
     worth: 30
     effects:
@@ -1089,7 +1089,7 @@ impervius:
 
 incendio:
     icon: fireball
-    category: combat
+    category: year5
     class: FireSpell
     pvp_restricted: true
     worth: 50
@@ -1117,7 +1117,7 @@ incendio:
 
 lumos:
     icon: ink_sack:11
-    category: utility
+    category: year1
     worth: 10
     class: PotionEffectSpell
     effects:
@@ -1144,7 +1144,7 @@ lumos:
 
 morsmordre:
     icon: skull_item:4
-    category: performance
+    category: deatheater
     class: GenericSpell
     worth: 20
     effects:
@@ -1169,7 +1169,7 @@ morsmordre:
 
 periculum:
     icon: firework
-    category: light
+    category: year2
     class: FireworkSpell
     worth: 2
     effects:
@@ -1185,7 +1185,7 @@ periculum:
 
 petrificustotalus:
     icon: nether_brick_item
-    category: hex
+    category: year4
     class: PotionEffectSpell
     pvp_restricted: true
     worth: 50
@@ -1217,7 +1217,7 @@ petrificustotalus:
 
 protego:
     icon: ink_sack:12
-    category: utility
+    category: year2
     class: PotionEffectSpell
     worth: 60
     effects:
@@ -1242,7 +1242,7 @@ protego:
 
 protegomaxima:
     icon: ink_sack:12
-    category: engineering
+    category: year7
     class: ConstructSpell
     worth: 200
     effects:
@@ -1264,7 +1264,7 @@ protegomaxima:
 
 reducio:
     icon: red_mushroom
-    category: utility
+    category: year4
     class: ShrinkSpell
     pvp_restricted: true
     worth: 40
@@ -1289,7 +1289,7 @@ reducio:
 
 reducto:
     icon: iron_spade
-    category: mining
+    category: year6
     class: ConstructSpell
     worth: 12
     effects:
@@ -1314,7 +1314,7 @@ reducto:
 
 salviohexia:
     icon: diamond_pickaxe
-    category: utility
+    category: staff
     class: ConstructSpell
     worth: 2000
     effects:
@@ -1342,7 +1342,7 @@ salviohexia:
 
 reparifarge:
     icon: book_and_quill
-    category: utility
+    category: year4
     class: UndoSpell
     worth: 80
     effects:
@@ -1356,7 +1356,7 @@ reparifarge:
 
 reparo:
     icon: iron_pickaxe
-    category: utility
+    category: year7
     class: ConstructSpell
     worth: 100
     effects:
@@ -1383,7 +1383,7 @@ reparo:
 
 reparomaxima:
     icon: iron_pickaxe
-    category: utility
+    category: staff
     class: ConstructSpell
     worth: 500
     effects:
@@ -1410,7 +1410,7 @@ reparomaxima:
 
 sectumsempra:
     icon: slime_ball
-    category: combat
+    category: year2
     pvp_restricted: true
     class: PotionEffectSpell
     worth: 25
@@ -1447,7 +1447,7 @@ sectumsempra:
 
 silencio:
     icon: ink_sack:3
-    category: combat
+    category: year3
     class: PotionEffectSpell
     worth: 70
     effects:
@@ -1475,7 +1475,7 @@ silencio:
 
 silenciomaxima:
     icon: ink_sack:3
-    category: utility
+    category: staff
     class: CommandSpell
     worth: 500
     effects:
@@ -1498,7 +1498,7 @@ silenciomaxima:
 
 jail:
     icon: iron_fence
-    category: utility
+    category: staff
     class: CommandSpell
     worth: 500
     effects:
@@ -1521,7 +1521,7 @@ jail:
 
 silenciototalus:
     icon: ink_sack:3
-    category: utility
+    category: staff
     class: CommandSpell
     worth: 500
     effects:
@@ -1546,7 +1546,7 @@ silenciototalus:
 
 stupefy:
     icon: ink_sack:4
-    category: combat
+    category: year1
     class: PotionEffectSpell
     pvp_restricted: true
     worth: 40
@@ -1580,7 +1580,7 @@ stupefy:
 
 colorvaria:
     icon: ink_sack
-    category: engineering
+    category: year5
     class: AlterSpell
     worth: 8
     effects:
@@ -1601,7 +1601,7 @@ colorvaria:
 
 day:
     icon: golden_apple
-    category: utility
+    category: year7
     class: TorchSpell
     worth: 120
     effects:
@@ -1625,7 +1625,7 @@ day:
 
 nox:
     icon: ink_sack:0
-    category: utility
+    category: year7
     class: TorchSpell
     worth: 130
     effects:
@@ -1651,7 +1651,7 @@ nox:
 
 phase:
     icon: ender_portal
-    category: utility
+    category: staff
     class: PhaseSpell
     worth: 10
     effects:
@@ -1676,7 +1676,7 @@ phase:
 
 superblob:
     icon: snow_ball
-    category: engineering
+    category: staff
     class: ConstructSpell
     worth: 500
     effects:
@@ -1698,7 +1698,7 @@ superblob:
 
 superconvert:
     icon: magma_cream
-    category: engineering
+    category: staff
     class: ConstructSpell
     worth: 500
     effects:
@@ -1722,7 +1722,7 @@ superconvert:
 
 recall:
     icon: redstone
-    category: utility
+    category: specialty
     class: RecallSpell
     worth: 25
     effects:
@@ -1746,7 +1746,7 @@ recall:
 
 gather:
     icon: glowstone_dust
-    category: utility
+    category: staff
     class: GotoSpell
     worth: 150
     effects:
@@ -1770,7 +1770,7 @@ gather:
 
 stash:
     icon: ender_chest
-    category: utility
+    category: staff
     class: StashSpell
     worth: 20
     effects:
@@ -1786,7 +1786,7 @@ stash:
 
 absorb:
     icon: bucket
-    category: engineering
+    category: staff
     class: AbsorbSpell
     worth: 1500
     effects:
@@ -1805,7 +1805,7 @@ absorb:
 
 fill:
     icon: diamond_spade
-    category: engineering
+    category: staff
     class: FillSpell
     worth: 200
     effects:
@@ -1822,10 +1822,9 @@ fill:
     costs:
         xp: 100
 
-
 superdisc:
     icon: egg
-    category: engineering
+    category: staff
     class: ConstructSpell
     worth: 150
     effects:
@@ -1845,9 +1844,10 @@ superdisc:
         transparent: transparent_to_construction
     costs:
         xp: 150
+
 superring:
     icon: clay_ball
-    category: engineering
+    category: staff
     class: ConstructSpell
     worth: 100
     effects:
@@ -1871,7 +1871,7 @@ superring:
 
 superdome:
     icon: mushroom_soup
-    category: engineering
+    category: staff
     class: ConstructSpell
     worth: 150
     effects:
@@ -1892,10 +1892,9 @@ superdome:
     costs:
         xp: 150
 
-
 bridge:
     icon: stone_axe
-    category: engineering
+    category: staff
     class: BridgeSpell
     worth: 30
     effects:
@@ -1909,7 +1908,7 @@ bridge:
         xp: 5
 pillar:
     icon: iron_axe
-    category: engineering
+    category: staff
     class: PillarSpell
     worth: 30
     effects:
@@ -1925,7 +1924,7 @@ pillar:
         xp: 5
 place:
     icon: diamond_axe
-    category: engineering
+    category: staff
     class: PlaceSpell
     worth: 40
     effects:
@@ -1942,7 +1941,7 @@ place:
 
 superfly:
     icon: feather
-    category: utility
+    category: specialty
     class: LevitateSpell
     worth: 10000
     effects:
@@ -1958,7 +1957,7 @@ superfly:
 
 vault:
     icon: sapling:4
-    category: master
+    category: staff
     class: ConstructSpell
     worth: 350
     effects:
@@ -1988,7 +1987,7 @@ vault:
 
 revelio:
     icon: ender_portal
-    category: master
+    category: staff
     class: PhaseSpell
     worth: 100
     effects:
@@ -2019,10 +2018,9 @@ revelio:
           MuggleWorld:
             target: Hogwarts
 
-
 wolfhouse:
     icon: sapling:5
-    category: master
+    category: staff
     class: ConstructSpell
     worth: 2000
     effects:
@@ -2070,9 +2068,10 @@ wolfhouse:
           wolf_recall_spawn: castp @p[r=2] recall type spawn
     costs:
         xp: 1000
+
 mount:
     icon: saddle
-    category: master
+    category: staff
     class: MountSpell
     worth: 40
     effects:
