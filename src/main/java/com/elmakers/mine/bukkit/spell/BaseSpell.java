@@ -744,9 +744,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                             }
                         } else if (effectValues.contains("reference")) {
                             String referenceKey = effectValues.getString("reference");
-
-                            Bukkit.getLogger().info("Referencing " + referenceKey + " from " + effectKey);
-
                             if (effects.containsKey(referenceKey)) {
                                 players.addAll(effects.get(referenceKey));
                             }
