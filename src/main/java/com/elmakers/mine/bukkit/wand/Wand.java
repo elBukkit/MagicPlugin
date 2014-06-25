@@ -1343,16 +1343,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		List<String> lore = new ArrayList<String>();
 		
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
-		if (spell != null && spellCount == 1) {
-            lore.add(getSpellDisplayName(spell, null));
 
-            // This is here specifically for a wand that only has
-            // one spell now, but may get more later. Since you
-            // can't open the inventory in this state, you can not
-            // otherwise see the spell lore.
-            if (!hasInventory && !isUpgrade && hasPath()) {
-                addSpellLore(spell, lore, this);
-            }
+        // This is here specifically for a wand that only has
+        // one spell now, but may get more later. Since you
+        // can't open the inventory in this state, you can not
+        // otherwise see the spell lore.
+		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade && hasPath()) {
+            lore.add(getSpellDisplayName(spell, null));
+            addSpellLore(spell, lore, this);
 		}
         if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
         {
