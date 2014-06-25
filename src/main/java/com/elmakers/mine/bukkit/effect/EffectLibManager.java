@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.effect;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import de.slikey.effectlib.Effect;
-import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,10 +8,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,12 +30,13 @@ public class EffectLibManager {
     }
 
     public Effect[] play(Plugin plugin, ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
+        Entity sourcePlayer = player.getOriginEntity();
         Entity sourceEntity = player.playAtOrigin ? player.getOriginEntity() : null;
         Entity targetEntity = player.playAtTarget ? player.getTargetEntity() : null;
         origin = player.playAtOrigin ? origin : null;
         target = player.playAtTarget ? target : null;
-        if (sourceEntity != null && sourceEntity instanceof Player) {
-            nameMap.put("$name", ((Player)sourceEntity).getName());
+        if (sourcePlayer != null && sourcePlayer instanceof Player) {
+            nameMap.put("$name", ((Player)sourcePlayer).getName());
         } else {
             nameMap.put("$name", "Unknown");
         }
