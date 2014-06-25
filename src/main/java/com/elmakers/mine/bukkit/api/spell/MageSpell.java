@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 public interface MageSpell extends Spell, CostReducer {
     public void activate();
     public void deactivate();
+    public void deactivate(boolean force, boolean quiet);
     public void reactivate();
     public boolean cancel();
 

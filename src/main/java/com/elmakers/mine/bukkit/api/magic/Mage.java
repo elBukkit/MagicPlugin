@@ -273,6 +273,7 @@ public interface Mage extends CostReducer {
      * Deactivate all active spells for this Mage.
      */
     public void deactivateAllSpells();
+    public void deactivateAllSpells(boolean force, boolean quiet);
 
     public boolean isCooldownFree();
     public float getCooldownReduction();
