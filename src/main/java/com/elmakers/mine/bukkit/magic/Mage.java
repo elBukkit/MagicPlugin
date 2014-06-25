@@ -773,13 +773,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	
 	@Override
 	public void deactivateAllSpells() {
-		// Copy this set since spells will get removed while iterating!
-		List<MageSpell> active = new ArrayList<MageSpell>(activeSpells);
-		for (MageSpell spell : active) {
-			spell.deactivate();
-		}
-		activeSpells.clear();
+        deactivateAllSpells(false, false);
 	}
+
+    @Override
+    public void deactivateAllSpells(boolean force, boolean quiet) {
+        // Copy this set since spells will get removed while iterating!
+        List<MageSpell> active = new ArrayList<MageSpell>(activeSpells);
+        for (MageSpell spell : active) {
+            spell.deactivate(force, quiet);
+        }
+        activeSpells.clear();
+    }
 	
 	@Override
 	public boolean isCostFree() {

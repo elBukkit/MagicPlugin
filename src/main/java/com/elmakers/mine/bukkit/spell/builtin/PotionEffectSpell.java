@@ -22,7 +22,7 @@ public class PotionEffectSpell extends UndoableSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		if (!target.hasTarget())
+		if (!target.hasTarget() || !target.hasEntity())
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -46,6 +46,10 @@ public class PotionEffectSpell extends UndoableSpell
             }
         }
 
+        if (targetEntities.size() == 0) {
+            return SpellResult.NO_TARGET;
+        }
+
         Integer duration = null;
         if (parameters.contains("duration")) {
             duration = parameters.getInt("duration");
@@ -63,7 +67,7 @@ public class PotionEffectSpell extends UndoableSpell
                     }
 
                     if (parameters.getBoolean("deactivate_target_mage")) {
-                        targetMage.deactivateAllSpells();
+                        targetMage.deactivateAllSpells(true, false);
                     }
                 }
             }
