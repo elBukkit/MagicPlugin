@@ -53,8 +53,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double crashDistance = 0;
     private double slowMultiplier = 1;
 
-    private boolean bypassDeactivate = false;
-
     private Collection<PotionEffect> crashEffects;
 
     public class ThrustAction implements Runnable
@@ -148,7 +146,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         Block facingBlock = source.getBlock();
         Block targetBlock = source.add(threshold).getBlock();
         if (!targetBlock.equals(facingBlock) && targetBlock.getType() != Material.AIR) {
-            deactivate(true);
+            deactivate(true, false);
             sendMessage(getMessage("crash"));
             mage.deactivateAllSpells();
             playEffects("crash");
@@ -191,7 +189,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
         autoDeactivateHeight = parameters.getInt("auto_deactivate", 0);
         boostTicks = parameters.getInt("boost_ticks", 1);
         crashDistance = parameters.getDouble("crash_distance", 0);
-        bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
 
         crashEffects = getPotionEffects(parameters);
 
@@ -211,15 +208,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		return SpellResult.CAST;
 	}
 
-    @Override
-    public void deactivate() {
-        if (!bypassDeactivate || thrust == null) {
-            deactivate(false);
-        }
-    }
-
     public void land() {
-        super.deactivate();
+        deactivate(true, false);
     }
 
 	
