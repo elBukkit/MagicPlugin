@@ -486,14 +486,14 @@ bogies:
            sound: burp
            effectlib:
              class: HelixLocationEffect
-             iterations: 20
+             iterations: 10
              particle: slime
         -  class: EffectSingle
            location: target
            effectlib:
              class: WarpEntityEffect
              particle: slime
-             iterations: 20
+             iterations: 10
     costs:
         xp: 30
     parameters:
