@@ -26,15 +26,15 @@ public class UndoSpell extends TargetingSpell
         int timeout = parameters.getInt("target_timeout", 0);
 		if (target.hasEntity() && controller.isMage(target.getEntity()))
 		{
-			Mage mage = controller.getMage(target.getEntity());
+			Mage targetMage = controller.getMage(target.getEntity());
 
-            BlockBatch batch = mage.cancelPending();
+            BlockBatch batch = targetMage.cancelPending();
             if (batch != null) {
                 undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
                 return SpellResult.CAST;
             }
 
-            UndoQueue queue = mage.getUndoQueue();
+            UndoQueue queue = targetMage.getUndoQueue();
 			UndoList undoList = queue.undoRecent(timeout);
 			if (undoList != null) {
 				undoListName = undoList.getName();
