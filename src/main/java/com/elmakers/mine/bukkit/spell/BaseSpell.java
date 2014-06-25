@@ -129,6 +129,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean bypassPvpRestriction    	= false;
     private boolean bypassConfusion             = false;
     private boolean castOnNoTarget              = false;
+    private boolean bypassDeactivate            = false;
 
     protected ConfigurationSection parameters = null;
 
@@ -700,6 +701,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         description = node.getString("description", "");
         description = Messages.get("spells." + key + ".description", description);
         extendedDescription = node.getString("extended_description", "");
+        extendedDescription = Messages.get("spells." + key + ".extended_description", extendedDescription);
         usage = Messages.get("spells." + key + ".usage", usage);
 
         // Load basic properties
@@ -711,6 +713,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
+        castOnNoTarget = node.getBoolean("cast_on_no_target", false);
 
         // Load effects ... Config API is kind of ugly here, and I'm not actually
         // sure this is valid YML... :\
@@ -752,6 +755,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // TODO: Is this still necessary?
         if (!effects.containsKey("cost_free") && effects.containsKey("cast")) {
             effects.put("cost_free", effects.get("cast"));
+        }
+        if (!effects.containsKey("no_target") && effects.containsKey("cast") && castOnNoTarget) {
+            effects.put("no_target", effects.get("cast"));
         }
     }
 
@@ -821,9 +827,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
 
         bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
-
-        // Spell result overrides
-        castOnNoTarget = parameters.getBoolean("cast_on_no_target", false);
 
         // Check cooldowns
         cooldown = parameters.getInt("cooldown", cooldown);
@@ -899,12 +902,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (result == null) {
             result = onCast(parameters);
         }
-        if (castOnNoTarget && result == SpellResult.NO_TARGET) {
-            result = SpellResult.CAST;
-        }
         processResult(result);
 
-        if (result.isSuccess()) {
+        boolean success = (castOnNoTarget && result == SpellResult.NO_TARGET) || result.isSuccess();
+        if (success) {
             lastCast = System.currentTimeMillis();
             if (costs != null && !mage.isCostFree()) {
                 for (CastingCost cost : costs)
@@ -918,7 +919,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        return result.isSuccess();
+        return success;
     }
 
     public String getMessage(String messageKey) {
@@ -1045,6 +1046,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         } else {
             preventPassThroughMaterials = controller.getMaterialSet("indestructible");
         }
+
+        bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
     }
 
 
@@ -1349,10 +1352,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void deactivate() {
-        deactivate(false);
+        deactivate(false, false);
     }
 
-    public void deactivate(boolean quiet) {
+    public void deactivate(boolean force, boolean quiet) {
+        if (!force && bypassDeactivate) {
+            return;
+        }
         if (isActive) {
             isActive = false;
             onDeactivate();
