@@ -2266,7 +2266,8 @@ public class MagicController implements Listener, MageController
 			if (!mage.cancel()) {
 				
 				// Check for wand cycling
-				if (wand.getMode() == WandMode.CYCLE) {
+                WandMode wandMode = wand.getMode();
+				if (wandMode == WandMode.CYCLE) {
 					if (player.isSneaking()) {
 						com.elmakers.mine.bukkit.api.spell.Spell activeSpell = wand.getActiveSpell();
 						boolean cycleMaterials = false;
@@ -2281,9 +2282,11 @@ public class MagicController implements Listener, MageController
 					} else { 
 						wand.cycleSpells(player.getItemInHand());
 					}
+				} else if (wandMode == WandMode.CAST) {
+                    wand.cast();
 				} else {
-					wand.toggleInventory();
-				}
+                    wand.toggleInventory();
+                }
 				event.setCancelled(true);
 			} else {
 				mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
