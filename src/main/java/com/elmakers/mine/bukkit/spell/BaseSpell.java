@@ -715,8 +715,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
         castOnNoTarget = node.getBoolean("cast_on_no_target", false);
 
-        // Load effects ... Config API is kind of ugly here, and I'm not actually
-        // sure this is valid YML... :\
         effects.clear();
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
@@ -744,20 +742,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                                 ex.printStackTrace();
                                 controller.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
                             }
+                        } else if (effectValues.contains("reference")) {
+                            String referenceKey = effectValues.getString("reference");
+
+                            Bukkit.getLogger().info("Referencing " + referenceKey + " from " + effectKey);
+
+                            if (effects.containsKey(referenceKey)) {
+                                players.addAll(effects.get(referenceKey));
+                            }
                         }
                     }
 
                     effects.put(effectKey, players);
                 }
             }
-        }
-
-        // TODO: Is this still necessary?
-        if (!effects.containsKey("cost_free") && effects.containsKey("cast")) {
-            effects.put("cost_free", effects.get("cast"));
-        }
-        if (!effects.containsKey("no_target") && effects.containsKey("cast") && castOnNoTarget) {
-            effects.put("no_target", effects.get("cast"));
         }
     }
 
