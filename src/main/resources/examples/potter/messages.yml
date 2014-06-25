@@ -209,6 +209,7 @@ spells:
         name: Finite Incantatem
         description: Counter target player's spell
         usage: Only works on recently cast spells
+        extended_description: "The Minister of Magic's Favourite Spell.\n\nThis can be used to reverse the effects of your target's last spell cast, within the past 10 seconds."
         cast: "Finite Incantatem &d&o$target &r&6$spell!"
         fail:
         cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"

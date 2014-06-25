@@ -915,7 +915,7 @@ finiteincantatem:
         target: other
         target_type: LivingEntity
         target_blocks: false
-        target_timeout: 30000
+        target_timeout: 10000
         range: 32
         bypass_protection: true
         cast_on_no_target: true
