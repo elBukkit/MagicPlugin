@@ -473,6 +473,38 @@ beat:
         damage: 1
         effect_confusion: 5
 
+bogies:
+    icon: fermented_spider_eye
+    category: year1
+    class: PotionEffectSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: HelixLocationEffect
+             iterations: 20
+             particle: slime
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: WarpEntityEffect
+             particle: slime
+             iterations: 20
+    costs:
+        xp: 30
+    parameters:
+        fov: 2
+        range: 8
+        deactivate_target_mage: true
+        target_type: LivingEntity
+        target: other
+        duration: 10000
+        effect_poison: 1
+
 bombarda:
     icon: ink_sack:7
     category: year2
@@ -670,7 +702,7 @@ deletrius:
     costs:
         xp: 100
 
-diffindo:
+deprimo:
     icon: iron_plate
     category: year6
     class: ConstructSpell
@@ -695,6 +727,28 @@ diffindo:
     costs:
         xp: 70
 
+disillusion:
+    icon: flint
+    category: year4
+    class: PotionEffectSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: villager_idle
+        -  class: EffectTrail
+           particle: smoke
+        -  class: EffectRing
+           particle: smoke
+           location: target
+    costs:
+        xp: 50
+    parameters:
+        target: any
+        particle: red_dust
+        duration: 30000
+        effect_invisibility: 5
+
 duro:
     icon: stone
     category: year4
@@ -714,6 +768,31 @@ duro:
         undo: 30000
     costs:
         xp: 65
+
+erecto:
+    icon: sapling:4
+    category: staff
+    class: ConstructSpell
+    worth: 350
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_use
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        check_destructibe: false
+        range: 16
+        radius: 8
+        type: sphere
+        cooldown: 3600000
+        brush: schematic|tent
+        transparent: transparent_to_construction
+    costs:
+        xp: 150
 
 evanesco:
     icon: bone
@@ -742,7 +821,7 @@ evanesco:
 
 expelliarmus:
     icon: ink_sack:1
-    category: year2
+    category: year3
     class: DisarmSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -875,7 +954,6 @@ ferula:
         effect_absorption: 1
         effect_saturation: 1
         effect_slow: 2
-
     costs:
         xp: 50
 
@@ -967,15 +1045,9 @@ flipendo:
              class: ConeLocationEffect
              iterations: 16
              particle: spell
-        area:
-        -  class: EffectSingle
-           sound: fizz
-           effectlib:
-             class: VortexLocationEffect
-             particle: spell
     parameters:
         target_type: Entity
-        range: 32
+        range: 16
         allow_area: false
         item_force: 2
         area_range: 20
@@ -986,6 +1058,74 @@ flipendo:
         cooldown: 1500
     costs:
         xp: 15
+
+flipendoduo:
+    icon: ink_sack:5
+    category: year1
+    class: PushSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_hit
+           effectlib:
+             class: VortexLocationEffect
+             iterations: 16
+             particle: spell
+             helixes: 6
+             circles: 4
+             grow: 0.07
+    parameters:
+        target_type: Entity
+        range: 32
+        allow_area: false
+        item_force: 3
+        area_range: 20
+        entity_force: 2.5
+        type: push
+        count: 8
+        damage: 2
+        cooldown: 1500
+    costs:
+        xp: 45
+
+flipendotria:
+    icon: ink_sack:5
+    category: year1
+    class: PushSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_hit
+           effectlib:
+             class: FountainLocationEffect
+             particle: spell
+             iterations: 20
+        area:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: FountainLocationEffect
+             particle: spell
+             iterations: 20
+    parameters:
+        target_type: Entity
+        range: 32
+        allow_area: true
+        area_range: 20
+        item_force: 5
+        entity_force: 4
+        type: push
+        count: 16
+        damage: 6
+        cooldown: 3000
+    costs:
+        xp: 75
 
 fly:
     icon: feather
@@ -1014,6 +1154,57 @@ fly:
         xp: 100
     active_costs:
         xp: 10
+
+flagrate:
+    icon: ink_sack:14
+    category: year1
+    class: GenericSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: flame
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,3,0
+           effectlib:
+             class: TextLocationEffect
+             text: $name
+             iterations: 2
+             particle: flame
+    parameters:
+        allow_max_range: true
+        range: 3
+        cooldown: 10000
+        transparent: transparent_to_construction
+    costs:
+        xp: 20
+
+fumos:
+    icon: sulphur
+    category: year2
+    class: GenericSpell
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ambience_cave
+        -  class: EffectSingle
+           location: target
+           target_offset: -4,0,0
+           effectlib:
+             class: HillLocationEffect
+             particle: explode
+             particles: 10
+             iterations: 10
+    parameters:
+        target: self
+        cooldown: 20000
+        transparent: transparent_to_construction
+    costs:
+        xp: 35
 
 immobulus:
     icon: web
@@ -1575,7 +1766,7 @@ silenciototalus:
 
 stupefy:
     icon: ink_sack:4
-    category: year1
+    category: year2
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1810,8 +2001,6 @@ stash:
            effect: step_sound
     parameters:
         target: self
-    costs:
-        xp: 50
 
 absorb:
     icon: bucket
@@ -1967,6 +2156,36 @@ place:
         transparent: transparent_to_construction
     costs:
         xp: 10
+
+superiterate:
+    icon: golden_carrot
+    category: engineering
+    class: IterateSpell
+    worth: 300
+    parameters:
+        transparent: transparent_to_construction
+        allow_max_range: true
+        range: 64
+        size: 32
+        radius: 3
+        reverse: true
+        increment_data: false
+    costs:
+        xp: 100
+
+iterate:
+    icon: carrot_item
+    category: engineering
+    class: IterateSpell
+    worth: 150
+    parameters:
+        transparent: transparent_to_construction
+        allow_max_range: true
+        range: 64
+        size: 32
+        increment_data: false
+    costs:
+        xp: 50
 
 superfly:
     icon: feather

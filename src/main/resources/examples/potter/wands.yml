@@ -33,7 +33,9 @@ staff:
      - ascendio
      - stupefy
      - flipendo
+     - flipendoduo
      - accio
+     - disillusion
      - lumos
      - silencio
      - silenciomaxima
@@ -116,6 +118,7 @@ lignumvitae:
       - ascendio
       - avadakedavra
       - avis
+      - bogies
       - bombarda
       - bombardamaxima
       - colorvaria
@@ -125,7 +128,8 @@ lignumvitae:
       - crucio
       - day
       - deletrius
-      - diffindo
+      - deprimo
+      - disillusion
       - duro
       - episkey
       - evanesco
@@ -185,6 +189,8 @@ allis0n:
       - ascendio
       - bombarda
       - avis
+      - bogies
+      - disillusion
       - incendio
       - expelliarmus
       - immobulus
@@ -197,7 +203,7 @@ allis0n:
       - petrificustotalus
       - accio
       - sectumsempra
-      - diffindo
+      - deprimo
       - arresto
       - protego
       - day
@@ -234,6 +240,7 @@ elder:
       - avadakedavra
       - avadamaxima
       - avis
+      - bogies
       - bombarda
       - bombardamaxima
       - colorvaria
@@ -243,7 +250,8 @@ elder:
       - crucio
       - day
       - deletrius
-      - diffindo
+      - deprimo
+      - disillusion
       - duro
       - episkey
       - evanesco
@@ -311,6 +319,7 @@ wolf:
       - avadakedavra
       - avadamaxima
       - avis
+      - bogies
       - bombarda
       - bombardamaxima
       - colorvaria
@@ -320,7 +329,8 @@ wolf:
       - crucio
       - day
       - deletrius
-      - diffindo
+      - deprimo
+      - disillusion
       - duro
       - episkey
       - evanesco
@@ -421,6 +431,7 @@ portkey:
         - recall
 
 camera:
+    mode: cast
     active_spell: camera
     icon: tripwire_hook
     indestructible: false
@@ -433,6 +444,7 @@ camera:
         - camera
 
 floopowder:
+    mode: cast
     active_spell: floo
     icon: sulphur
     indestructible: false
@@ -442,12 +454,22 @@ floopowder:
     spells:
     - floo
 
+handbag:
+    mode: cast
+    active_spell: stash
+    icon: glass_bottle
+    indestructible: false
+    locked: true
+    effect_color: 'FFFF00'
+    spells:
+        - stash
+
 #
 # Brooms
 #
 
-
 firebolt:
+    mode: cast
     active_spell: broom
     icon: blaze_rod
     indestructible: true
@@ -461,6 +483,7 @@ firebolt:
         - broom
 
 nimbus:
+    mode: cast
     active_spell: broom
     icon: blaze_rod
     indestructible: true
@@ -474,6 +497,7 @@ nimbus:
         - broom
 
 cleansweep1:
+    mode: cast
     active_spell: broom
     icon: blaze_rod
     indestructible: false
@@ -487,6 +511,7 @@ cleansweep1:
         - broom
 
 bluebottle:
+    mode: cast
     active_spell: broom
     icon: blaze_rod
     indestructible: false
@@ -499,6 +524,7 @@ bluebottle:
         - broom
 
 crudbroom:
+    mode: cast
     active_spell: broom
     icon: blaze_rod
     indestructible: false

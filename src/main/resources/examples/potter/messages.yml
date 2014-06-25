@@ -128,6 +128,9 @@ spells:
         name: Beat
         description: Knock your opponent senseless
         cast_player_message: "&d&o$player &r&5beat you down!"
+    bogies:
+        name: Curse of the Bogies
+        description: Make your target feel unwell
     bombarda:
         name: Bombarda
         description: Create a small explosion
@@ -170,10 +173,13 @@ spells:
         name: Deletrius
         description: Erase a wand's cast history
         cast: Deletrius!
-    diffindo:
-        name: Diffindo
-        description: Split an object at the seams
-        cast: Diffindo!
+    deprimo:
+        name: Deprimo
+        description: Collapse the target with immense pressure
+        cast: Deprimo!
+    disillusion:
+        name: Disillusionment Chart
+        description: Cause the target to become nearly invisible
     duro:
         name: Duro
         description: Turn the target to stone
@@ -187,6 +193,10 @@ spells:
     floo:
         name: Fire Protection
         description: Use to avoid fire damage
+    erecto:
+        name: Erecto
+        description: Put up an instant tent
+        cast: Erecto Tent!
     episkey:
         name: Episkey
         description: Heals relatively minor wounds
@@ -221,6 +231,18 @@ spells:
         name: Flipendo
         description: Push your target backwards
         cast: Flipendo $target!
+    flipendoduo:
+        name: Flipendo Duo
+        description: A powerful push
+        cast: Flipendo Duo!
+    flipendotria:
+        name: Flipendo Tria
+        description: Summon a tornado
+        cast: Flipendo Tria!
+    fumos:
+        name: Fumos
+        description: Produce a defensive cloud of dark grey smoke
+        cast: Fumos!
     fly:
         name: Flight
         description: A gift from the Dark Lord
@@ -240,6 +262,7 @@ spells:
         description: Control your target
         usage: Unforgiveable!
         cast: Imperio Maxima $target!
+        cast_player_message: "&d&o$player: &r&5Imperio!"
     imperio:
         name: Imperio
         description: Fling your target like a ragdoll
@@ -472,6 +495,10 @@ wands:
     camera:
         name: Camera
         description: Take a picture of your target
+
+    handbag:
+        name: Beaded Handbag
+        description: It's quite large on the inside
 
     energy1:
         name: Energy Upgrade Level 1

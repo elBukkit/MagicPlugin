@@ -3382,6 +3382,8 @@ tent:
         cooldown: 3600000
         brush: schematic|tent
         transparent: transparent_to_construction
+    costs:
+        xp: 150
 cage:
     icon: iron_fence
     category: master
