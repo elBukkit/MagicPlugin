@@ -117,16 +117,14 @@ default:
          sound: note_bass_drum
          sound_volume: 0.6
          sound_pitch: 0.8
-       no_target:
-       - class: EffectSingle
-         location: origin
-         sound: note_bass_drum
-         sound_volume: 0.4
-         sound_pitch: 0.8
        cursed:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
+       cost_free:
+       - reference: cast
+       no_target:
+       - reference: cast
 
 curse:
     icon: rotten_flesh

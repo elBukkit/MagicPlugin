@@ -43,22 +43,21 @@ default:
          sound: note_bass_drum
          sound_volume: 0.6
          sound_pitch: 0.8
-       no_target:
-       - class: EffectSingle
-         location: origin
-         sound: note_bass_drum
-         sound_volume: 0.4
-         sound_pitch: 0.8
        cursed:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
+       cost_free:
+       - reference: cast
+       no_target:
+       - reference: cast
 
 accio:
     icon: ink_sack:6
     category: year1
     class: PushSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 10
     effects:
         cast:
@@ -82,7 +81,6 @@ accio:
         item_force: 2
         area_range: 20
         entity_force: 1
-        cast_on_no_target: true
         type: pull
         count: 1
     costs:
@@ -147,6 +145,7 @@ araniaexumai:
     category: year1
     class: PushSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 15
     effects:
         cast:
@@ -169,7 +168,6 @@ araniaexumai:
         item_force: 2
         area_range: 20
         entity_force: 2
-        cast_on_no_target: true
         type: push
         count: 8
         damage: 3
@@ -338,6 +336,7 @@ avadakedavra:
     category: unforgiveable
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 1000
     effects:
         cast:
@@ -369,7 +368,6 @@ avadakedavra:
         target: other_entity
         damage: 100
         check_destructible: false
-        cast_on_no_target: true
         cooldown: 30000
     costs:
         xp: 100
@@ -380,6 +378,7 @@ avadamaxima:
     class: CommandSpell
     pvp_restricted: true
     worth: 1000
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -431,7 +430,7 @@ avis:
            effectlib:
              class: AtomLocationEffect
              iterations: 32
-             particle: bubble
+             particleOrbital: bubble
     parameters:
         allow_max_range: true
         range: 2
@@ -448,6 +447,7 @@ beat:
     category: specialty
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 10
     effects:
         cast:
@@ -468,7 +468,6 @@ beat:
         range: 8
         deactivate_target_mage: true
         target_type: LivingEntity
-        cast_on_no_target: true
         target: other
         duration: 5000
         damage: 1
@@ -573,6 +572,7 @@ confundus:
     category: year2
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 10
     effects:
         cast:
@@ -592,7 +592,6 @@ confundus:
         range: 32
         deactivate_target_mage: true
         target_type: LivingEntity
-        cast_on_no_target: true
         target: other
         duration: 8000
         effect_confusion: 5
@@ -602,6 +601,7 @@ conjunctivitis:
     category: year2
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 10
     effects:
         cast:
@@ -623,13 +623,13 @@ conjunctivitis:
         target: other
         duration: 3000
         effect_blindness: 5
-        cast_on_no_target: true
 
 crucio:
     icon: nether_stalk
     category: unforgiveable
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 300
     effects:
         cast:
@@ -674,6 +674,7 @@ diffindo:
     icon: iron_plate
     category: year6
     class: ConstructSpell
+    cast_on_no_target: true
     worth: 80
     effects:
         cast:
@@ -690,7 +691,7 @@ diffindo:
         indestructible: air
         radius: 2
         transparent: transparent_to_construction
-        undo: 5000
+        undo: 30000
     costs:
         xp: 70
 
@@ -710,7 +711,7 @@ duro:
         check_destructible: false
         brush: stone
         transparent: transparent_to_construction
-        undo: 3000
+        undo: 30000
     costs:
         xp: 65
 
@@ -718,6 +719,7 @@ evanesco:
     icon: bone
     category: year4
     pvp_restricted: true
+    cast_on_no_target: true
     class: DisintegrateSpell
     worth: 25
     effects:
@@ -734,7 +736,7 @@ evanesco:
         range: 8
         entity_damage: 50
         check_destructible: true
-        cast_on_no_target: true
+        undo: 30000
     costs:
         xp: 60
 
@@ -743,6 +745,7 @@ expelliarmus:
     category: year2
     class: DisarmSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 110
     effects:
         cast:
@@ -777,7 +780,6 @@ expelliarmus:
         fov: 0.12
         fizzle_chance: 0
         backfire_chance: 0
-        cast_on_no_target: true
         keep_in_inventory: true
     costs:
         xp: 80
@@ -904,6 +906,7 @@ finiteincantatem:
     category: year3
     class: UndoSpell
     worth: 250
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -918,7 +921,6 @@ finiteincantatem:
         target_timeout: 10000
         range: 32
         bypass_protection: true
-        cast_on_no_target: true
         cooldown: 4000
     costs:
         xp: 45
@@ -955,6 +957,7 @@ flipendo:
     category: year1
     class: PushSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 15
     effects:
         cast:
@@ -977,7 +980,6 @@ flipendo:
         item_force: 2
         area_range: 20
         entity_force: 1
-        cast_on_no_target: true
         type: push
         count: 1
         damage: 0.5
@@ -1018,6 +1020,7 @@ immobulus:
     category: year3
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 30
     effects:
         cast:
@@ -1038,7 +1041,6 @@ immobulus:
         range: 32
         target_type: LivingEntity
         target: other
-        cast_on_no_target: true
         duration: 5000
         effect_slow: 20
 
@@ -1047,6 +1049,7 @@ imperio:
     category: unforgiveable
     class: ForceSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 200
     effects:
         cast:
@@ -1061,7 +1064,6 @@ imperio:
         range: 32
         item_force: 1
         entity_force: 1
-        cast_on_no_target: true
     costs:
         xp: 85
 
@@ -1070,6 +1072,7 @@ imperiomaxima:
     category: unforgiveable
     class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 500
     effects:
         cast:
@@ -1084,7 +1087,6 @@ imperiomaxima:
         range: 32
         item_force: 1
         entity_force: 1
-        cast_on_no_target: true
     costs:
         xp: 100
 
@@ -1093,6 +1095,7 @@ impervius:
     category: year7
     class: ConstructSpell
     worth: 30
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -1107,7 +1110,6 @@ impervius:
         brush: erase
         radius: 3
         transparent: transparent_to_construction
-        cast_on_no_target: true
     costs:
         xp: 65
 
@@ -1116,6 +1118,7 @@ incendio:
     category: year5
     class: FireSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 50
     effects:
         cast:
@@ -1133,9 +1136,8 @@ incendio:
         range: 32
         radius: 2
         vertical_search_distance: 8
-        undo: 1500
+        undo: 3000
         cooldown: 3000
-        cast_on_no_target: true
     costs:
         xp: 40
 
@@ -1215,6 +1217,7 @@ petrificustotalus:
     category: year4
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 50
     effects:
         cast:
@@ -1237,7 +1240,6 @@ petrificustotalus:
         range: 32
         target_type: LivingEntity
         target: other
-        cast_on_no_target: true
         duration: 8000
         effect_slow: 20
         cooldown: 5000
@@ -1255,7 +1257,7 @@ protego:
            location: target
            effectlib:
              class: ShieldEntityEffect
-             particle: magic_runes
+             particle: enchantment_table
              iterations: 20
              period: 2
     parameters:
@@ -1287,13 +1289,14 @@ protegomaxima:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 1000
+        xp: 100
 
 reducio:
     icon: red_mushroom
     category: year4
     class: ShrinkSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 40
     effects:
         cast:
@@ -1310,7 +1313,6 @@ reducio:
         range: 16
         player_damage: 1
         entity_damage: 10
-        cast_on_no_target: true
     costs:
         xp: 60
 
@@ -1335,7 +1337,7 @@ reducto:
         type: sphere
         destructible: destructible_mining
         check_destructible: false
-        undo: 4000
+        undo: 30000
     costs:
         xp: 80
 
@@ -1377,7 +1379,8 @@ reparifarge:
         -  class: EffectSingle
            sound: anvil_break
     parameters:
-        target: self
+        target: any
+        target_blocks: true
     costs:
         xp: 45
 
@@ -1440,6 +1443,7 @@ sectumsempra:
     category: year2
     pvp_restricted: true
     class: PotionEffectSpell
+    cast_on_no_target: true
     worth: 25
     effects:
         cast:
@@ -1463,7 +1467,6 @@ sectumsempra:
         range: 8
         fov: 0.8
         target: other_entity
-        cast_on_no_target: true
         duration: 1000
         effect_wither: 1
         damage: 6
@@ -1575,6 +1578,7 @@ stupefy:
     category: year1
     class: PotionEffectSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 40
     effects:
         cast:
@@ -1596,7 +1600,6 @@ stupefy:
         range: 35
         fov: 0.11
         target_type: LivingEntity
-        cast_on_no_target: true
         duration: 3000
         damage: 4.5
         effect_confusion: 22
@@ -1720,7 +1723,7 @@ superblob:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 500
+        xp: 100
 
 superconvert:
     icon: magma_cream
@@ -1744,7 +1747,7 @@ superconvert:
         replace: true
         transparent: transparent_to_construction
     costs:
-        xp: 300
+        xp: 100
 
 recall:
     icon: redstone
@@ -1869,7 +1872,7 @@ superdisc:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 150
+        xp: 100
 
 superring:
     icon: clay_ball
@@ -1916,7 +1919,7 @@ superdome:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 150
+        xp: 100
 
 bridge:
     icon: stone_axe

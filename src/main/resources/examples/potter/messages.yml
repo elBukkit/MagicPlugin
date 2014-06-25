@@ -239,12 +239,12 @@ spells:
         name: Imperio Maxima
         description: Control your target
         usage: Unforgiveable!
-        cast: Imperio $target!
+        cast: Imperio Maxima $target!
     imperio:
         name: Imperio
         description: Fling your target like a ragdoll
         usage: Unforgiveable!
-        cast: Imperio Maxima $target!
+        cast: Imperio $target!
     impervius:
         name: Impervius
         description: Remove all water in the area
