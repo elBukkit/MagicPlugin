@@ -29,6 +29,7 @@ public class NMSUtils {
     protected static Class<?> class_NBTBase;
     protected static Class<?> class_NBTTagCompound;
     protected static Class<?> class_NBTTagList;
+    protected static Class<?> class_NBTTagString;
     protected static Class<?> class_CraftTask;
     protected static Class<?> class_CraftInventoryCustom;
     protected static Class<?> class_CraftItemStack;
@@ -63,6 +64,7 @@ public class NMSUtils {
             class_NBTBase = fixBukkitClass("net.minecraft.server.NBTBase");
             class_NBTTagCompound = fixBukkitClass("net.minecraft.server.NBTTagCompound");
             class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
+            class_NBTTagString = fixBukkitClass("net.minecraft.server.NBTTagString");
             class_CraftInventoryCustom = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftInventoryCustom");
             class_CraftItemStack = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftItemStack");
             class_CraftTask = fixBukkitClass("org.bukkit.craftbukkit.scheduler.CraftTask");

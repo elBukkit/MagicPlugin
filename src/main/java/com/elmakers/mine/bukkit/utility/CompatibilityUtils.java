@@ -219,6 +219,47 @@ public class CompatibilityUtils extends NMSUtils {
         removeMeta(tag, "brush");
     }
 
+    public static boolean setDisplayName(ItemStack itemStack, String displayName) {
+        Object handle = getHandle(itemStack);
+        if (handle == null) return false;
+        Object tag = getTag(handle);
+        if (tag == null) return false;
+
+        Object displayNode = createNode(tag, "display");
+        if (displayNode == null) return false;
+        setMeta(displayNode, "display-name", displayName);
+        return true;
+    }
+
+    public static boolean setLore(ItemStack itemStack, Collection<String> lore) {
+        Object handle = getHandle(itemStack);
+        if (handle == null) return false;
+        Object tag = getTag(handle);
+        if (tag == null) return false;
+
+        Object displayNode = createNode(tag, "display");
+        if (displayNode == null) return false;
+
+        try {
+            final Object loreList = class_NBTTagList.newInstance();
+
+            Method addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
+            Constructor stringContructor = class_NBTTagString.getConstructor(String.class);
+            for (String value : lore) {
+                Object nbtString = stringContructor.newInstance(value);
+                addMethod.invoke(loreList, nbtString);
+            }
+
+            Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
+            setMethod.invoke(displayNode, "lore", loreList);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
     public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
         Inventory inventory = null;
         try {
