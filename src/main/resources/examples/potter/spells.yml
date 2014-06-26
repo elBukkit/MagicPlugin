@@ -124,6 +124,7 @@ apparate:
              particleOrbital: large_smoke
              iterations: 20
         -  class: EffectSingle
+           location: both
            effectlib:
              class: LineLocationEffect
              particle: large_smoke
@@ -134,7 +135,7 @@ apparate:
         allow_passthrough: true
         prevent_passthrough: indestructible
         range: 64
-        passthrough_range: 4
+        passthrough_range: 8
         allow_decend: true
         transparent: passthrough
     costs:

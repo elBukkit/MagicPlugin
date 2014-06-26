@@ -8,7 +8,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -67,6 +66,8 @@ public class BlinkSpell extends TargetingSpell
 		boolean autoDescend = parameters.getBoolean("allow_descend", true);
 		boolean autoPassthrough = parameters.getBoolean("allow_passthrough", true);
 
+        boolean isPassthrough = false;
+
 		if (elevateType.equals("descend") || (isLookingDown() && autoDescend))
 		{
 			return descend(entity);
@@ -90,10 +91,9 @@ public class BlinkSpell extends TargetingSpell
 				int passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
 				setMaxRange(passthroughRange);
 				offsetTarget(0, -1, 0);
-				setReverseTargeting(true);
 				setTargetSpaceRequired();
-				clearTargetThrough();
-				targetThrough(Material.AIR);
+                setTargetMinOffset(1);
+                isPassthrough = true;
 			}
 		}
 
@@ -106,12 +106,11 @@ public class BlinkSpell extends TargetingSpell
 		}
 
 		World world = getWorld();
-
 		Block destination = face;
 		int distanceUp = 0;
 		int distanceDown = 0;
 
-		if (isReverseTargeting())
+		if (isPassthrough)
 		{
 			destination = target;
 		}
@@ -129,7 +128,7 @@ public class BlinkSpell extends TargetingSpell
 
 		// Also check for a ledge above the target
 		Block ledge = null;
-		if (!isReverseTargeting() && (!face.equals(target.getRelative(BlockFace.DOWN)) || autoAscend))
+		if (!isPassthrough && (!face.equals(target.getRelative(BlockFace.DOWN)) || autoAscend))
 		{
 			ledge = target;
 			Block inFront = face;
