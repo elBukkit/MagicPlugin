@@ -78,7 +78,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
 
     public final static String[] BOOLEAN_PARAMETERS = {
-        "allow_max_range", "prevent_passthrough", "bypass_build", "bypass_pvp", "target_npc"
+        "allow_max_range", "prevent_passthrough", "passthrough", "bypass_build", "bypass_pvp", "target_npc"
     };
 
     protected final static Set<String> booleanParameterMap = new HashSet<String>(Arrays.asList(BOOLEAN_PARAMETERS));
@@ -155,6 +155,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private long 								lastMessageSent 			= 0;
     private Set<Material>						preventPassThroughMaterials = null;
+    private Set<Material>                       passthroughMaterials = null;
     private List<EffectPlayer>                  currentEffects              = null;
 
     public boolean allowPassThrough(Material mat)
@@ -162,31 +163,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (mage != null && mage.isSuperPowered()) {
             return true;
         }
+        if (passthroughMaterials != null && passthroughMaterials.contains(mat)) {
+            return true;
+        }
         return preventPassThroughMaterials == null || !preventPassThroughMaterials.contains(mat);
     }
 
     /*
-     * Ground / location search and test function functions
-     * TODO: Config-drive this.
+     * Ground / location search and test functions
      */
     public boolean isOkToStandIn(Material mat)
     {
-        return
-        (
-            mat == Material.AIR
-            ||    mat == Material.WATER
-            ||    mat == Material.STATIONARY_WATER
-            ||    mat == Material.SNOW
-            ||    mat == Material.TORCH
-            ||    mat == Material.SIGN_POST
-            ||    mat == Material.REDSTONE_TORCH_ON
-            ||    mat == Material.REDSTONE_TORCH_OFF
-            ||    mat == Material.YELLOW_FLOWER
-            ||    mat == Material.RED_ROSE
-            ||    mat == Material.RED_MUSHROOM
-            ||    mat == Material.BROWN_MUSHROOM
-            ||    mat == Material.LONG_GRASS
-        );
+        return passthroughMaterials.contains(mat);
     }
 
     public boolean isWater(Material mat)
@@ -1041,6 +1029,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
         } else {
             preventPassThroughMaterials = controller.getMaterialSet("indestructible");
+        }
+
+        if (parameters.contains("passthrough")) {
+            passthroughMaterials = controller.getMaterialSet(parameters.getString("passthrough"));
+        } else {
+            passthroughMaterials = controller.getMaterialSet("passthrough");
         }
 
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
