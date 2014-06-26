@@ -253,7 +253,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public Wand(MagicController controller, Material icon, short iconData) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
-		this(controller, InventoryUtils.getCopy(new ItemStack(icon, 1, iconData)));
+		this(controller, InventoryUtils.makeReal(new ItemStack(icon, 1, iconData)));
 		wandName = Messages.get("wand.default_name");
 		updateName();
 		if (EnableGlow) {
@@ -727,7 +727,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ItemStack originalItemStack = null;
 		try {
 			originalItemStack = new ItemStack(icon.getMaterial(), 1, (short)0, (byte)icon.getData());
-			itemStack = InventoryUtils.getCopy(originalItemStack);
+			itemStack = InventoryUtils.makeReal(originalItemStack);
 		} catch (Exception ex) {
 			itemStack = null;
 		}
@@ -768,7 +768,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		byte dataId = brushData.getData();
 		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);
-		ItemStack itemStack = InventoryUtils.getCopy(originalItemStack);
+		ItemStack itemStack = InventoryUtils.makeReal(originalItemStack);
 		if (itemStack == null) {
 			controller.getPlugin().getLogger().warning("Unable to create material icon for " + material.name() + ": " + materialKey);	
 			return null;
@@ -1222,18 +1222,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void updateName(boolean isActive) {
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(isActive ? getActiveWandName() : wandName);
-		item.setItemMeta(meta);
+        CompatibilityUtils.setDisplayName(item, isActive ? getActiveWandName() : wandName);
 
 		// Reset Enchantment glow
 		if (EnableGlow) {
             CompatibilityUtils.addGlow(item);
 		}
-
-		// The all-important last step of restoring the meta state, something
-		// the Anvil will blow away.
-		saveState();
 	}
 	
 	private void updateName() {
@@ -1404,17 +1398,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected void updateLore() {
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = getLore();
-		meta.setLore(lore);
+        CompatibilityUtils.setLore(item, getLore());
 
-		item.setItemMeta(meta);
 		if (EnableGlow) {
 			CompatibilityUtils.addGlow(item);
 		}
-
-		// Setting lore will reset wand data
-		saveState();
 	}
 	
 	public int getRemainingUses() {
