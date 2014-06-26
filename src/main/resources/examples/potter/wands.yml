@@ -72,7 +72,7 @@ headstaff:
      - protego
      - expelliarmus
      - meteo
-     - nox
+     - noxmaxima
      - apparate
      - immobulus
      - sectumsempra
@@ -465,6 +465,20 @@ handbag:
     effect_color: 'FFFF00'
     spells:
         - stash
+
+deluminator:
+    mode: cast
+    quiet: 2
+    active_spell: deluminate
+    icon: bone
+    indestructible: false
+    locked: true
+    effect_color: '111111'
+    xp: 100
+    xp_max: 100
+    xp_regeneration: 5
+    spells:
+        - deluminate
 
 #
 # Brooms

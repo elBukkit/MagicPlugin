@@ -165,6 +165,10 @@ spells:
         description: Torture your opponent
         usage: Unforgiveable!
         cast: Crucio $target!
+    deluminate:
+        name: Deluminate
+        description: Snuffs out all light in the area
+        cast: Deluminate!
     meteo:
         name: Meteolojinx Recanto
         description: Clear weather incantations
@@ -287,7 +291,11 @@ spells:
     nox:
         name: Nox
         description: The anti-Lumos
-        area: Nox!
+        area: Nox $target!
+    noxmaxima:
+        name: Nox Maxima
+        description: Make it dark everywhere
+        area: Nox Maxima!
     periculum:
         name: Periculum
         description: Shoot fireworks from your wand
@@ -499,6 +507,10 @@ wands:
     handbag:
         name: Beaded Handbag
         description: It's quite large on the inside
+
+    deluminator:
+        name: Deluminator
+        description: Snuff out all light in the area
 
     energy1:
         name: Energy Upgrade Level 1

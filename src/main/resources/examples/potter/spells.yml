@@ -1082,12 +1082,12 @@ flipendoduo:
         target_type: Entity
         range: 32
         allow_area: false
-        item_force: 3
+        item_force: 2
         area_range: 20
-        entity_force: 2.5
+        entity_force: 1.5
         type: push
         count: 8
-        damage: 2
+        damage: 1
         cooldown: 1500
     costs:
         xp: 45
@@ -1103,6 +1103,7 @@ flipendotria:
         cast:
         -  class: EffectSingle
            sound: irongolem_hit
+           location: target
            effectlib:
              class: FountainLocationEffect
              particle: spell
@@ -1113,17 +1114,17 @@ flipendotria:
            effectlib:
              class: FountainLocationEffect
              particle: spell
-             iterations: 20
+             iterations: 10
     parameters:
         target_type: Entity
         range: 32
         allow_area: true
         area_range: 20
-        item_force: 5
-        entity_force: 4
+        item_force: 3
+        entity_force: 2
         type: push
         count: 16
-        damage: 6
+        damage: 2
         cooldown: 3000
     costs:
         xp: 75
@@ -1378,13 +1379,14 @@ morsmordre:
            color: '00FF00'
            color2: '88FF88'
     parameters:
-        target: block
+        target: any
         allow_max_range: true
         range: 8
         cooldown: 10000
-        transparent: transparent_to_construction
+        transparent: apparate
+        console: true
         commands:
-        - say §aMorsmordre!
+        - broadcast @p cast §aMorsmordre!
     costs:
         xp: 55
 
@@ -1397,6 +1399,10 @@ periculum:
         cast:
         -  class: EffectSingle
            sound: firework_launch
+        cast:
+        -  class: EffectRing
+           firework: ball
+           location: target
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -1846,7 +1852,31 @@ meteo:
 
 nox:
     icon: ink_sack:0
-    category: year7
+    category: year5
+    class: PotionEffectSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: smoke
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        bypass_confusion: true
+        remove_effects:
+        - night_vision
+    costs:
+        xp: 20
+
+noxmaxima:
+    icon: ink_sack:0
+    category: staff
     class: TorchSpell
     worth: 130
     effects:
@@ -2266,6 +2296,31 @@ revelio:
              scale: 1
           MuggleWorld:
             target: Hogwarts
+
+deluminate:
+    icon: flint
+    category: specialty
+    class: ConstructSpell
+    worth: 100
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+        -  class: EffectTrail
+           effect: step_sound
+           material: glowstone
+    parameters:
+        allow_max_range: false
+        range: 32
+        check_destructible: true
+        destructible: torch,fire
+        brush: erase
+        radius: 8
+        transparent: transparent_to_construction
+        undo: 20000
+    costs:
+        xp: 100
 
 wolfhouse:
     icon: sapling:5
