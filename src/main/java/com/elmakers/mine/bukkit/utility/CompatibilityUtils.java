@@ -227,7 +227,7 @@ public class CompatibilityUtils extends NMSUtils {
 
         Object displayNode = createNode(tag, "display");
         if (displayNode == null) return false;
-        setMeta(displayNode, "display-name", displayName);
+        setMeta(displayNode, "Name", displayName);
         return true;
     }
 
@@ -251,7 +251,7 @@ public class CompatibilityUtils extends NMSUtils {
             }
 
             Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
-            setMethod.invoke(displayNode, "lore", loreList);
+            setMethod.invoke(displayNode, "Lore", loreList);
         } catch (Throwable ex) {
             ex.printStackTrace();
             return false;
