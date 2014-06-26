@@ -1128,7 +1128,7 @@ flipendotria:
     costs:
         xp: 75
 
-fly:
+flight:
     icon: feather
     category: staff
     class: LevitateSpell

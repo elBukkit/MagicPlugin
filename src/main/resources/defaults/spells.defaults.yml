@@ -3293,6 +3293,15 @@ fly:
            period: 2
     parameters:
         speed: 2
+        thrust: 0.8
+        boost: 1
+        boost_ticks: 10
+        auto_deactivate: 3
+        auto_deactivate_ticks: 10
+        slow: 0.2
+        start_delay: 10
+        crash_distance: 0.5
+        effect_confusion: 120,2
     costs:
         xp: 100
     active_costs:

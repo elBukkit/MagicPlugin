@@ -138,7 +138,7 @@ lignumvitae:
       - finiteincantatem
       - flagrate
       - flipendo
-      - fly
+      - flight
       - immobulus
       - imperio
       - impervius
@@ -198,7 +198,7 @@ allis0n:
       - episkey
       - finiteincantatem
       - ferula
-      - fly
+      - flight
       - reparifarge
       - petrificustotalus
       - accio
@@ -260,7 +260,7 @@ elder:
       - finiteincantatem
       - flagrate
       - flipendo
-      - fly
+      - flight
       - immobulus
       - imperio
       - impervius
@@ -305,7 +305,7 @@ wolf:
     effect_bubbles: false
     organize: true
     mode: inventory
-    active_spell: fly
+    active_spell: apparate
     hidden: true
     spells:
       - accio
@@ -339,7 +339,7 @@ wolf:
       - finiteincantatem
       - flagrate
       - flipendo
-      - fly
+      - flight
       - gather
       - immobulus
       - imperio
