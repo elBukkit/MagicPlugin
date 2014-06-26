@@ -130,6 +130,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean bypassConfusion             = false;
     private boolean castOnNoTarget              = false;
     private boolean bypassDeactivate            = false;
+    private boolean quiet                       = false;
 
     protected ConfigurationSection parameters = null;
 
@@ -374,7 +375,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      */
     public void castMessage(String message)
     {
-        if (canSendMessage() && message != null && message.length() > 0)
+        if (!quiet && canSendMessage() && message != null && message.length() > 0)
         {
             mage.castMessage(message);
             lastMessageSent = System.currentTimeMillis();
@@ -390,7 +391,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      */
     public void sendMessage(String message)
     {
-        if (message != null && message.length() > 0)
+        if (!quiet && message != null && message.length() > 0)
         {
             mage.sendMessage(message);
             lastMessageSent = System.currentTimeMillis();
@@ -1043,6 +1044,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
+        quiet = parameters.getBoolean("quiet", false);
     }
 
 
