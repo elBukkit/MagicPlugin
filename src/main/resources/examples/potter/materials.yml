@@ -55,7 +55,7 @@ transparent:
 - carpet
 
 # A more extended list for spells like Apparate
-passthrough:
+apparate:
 - water
 - stationary_water
 - air

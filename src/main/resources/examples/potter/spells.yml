@@ -137,7 +137,7 @@ apparate:
         range: 64
         passthrough_range: 8
         allow_decend: true
-        transparent: passthrough
+        transparent: apparate
     costs:
         xp: 60
 
