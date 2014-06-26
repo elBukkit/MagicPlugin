@@ -1819,7 +1819,7 @@ colorvaria:
     costs:
         xp: 55
 
-day:
+meteo:
     icon: golden_apple
     category: year7
     class: TorchSpell

@@ -71,7 +71,7 @@ headstaff:
      - bombarda
      - protego
      - expelliarmus
-     - day
+     - meteo
      - nox
      - apparate
      - immobulus
@@ -126,7 +126,7 @@ lignumvitae:
       - confundus
       - conjunctivitis
       - crucio
-      - day
+      - meteo
       - deletrius
       - deprimo
       - disillusion
@@ -206,7 +206,7 @@ allis0n:
       - deprimo
       - arresto
       - protego
-      - day
+      - meteo
       - nox
       - atmos
       - rennervate
@@ -248,7 +248,7 @@ elder:
       - confundus
       - conjunctivitis
       - crucio
-      - day
+      - meteo
       - deletrius
       - deprimo
       - disillusion
@@ -327,7 +327,7 @@ wolf:
       - confundus
       - conjunctivitis
       - crucio
-      - day
+      - meteo
       - deletrius
       - deprimo
       - disillusion

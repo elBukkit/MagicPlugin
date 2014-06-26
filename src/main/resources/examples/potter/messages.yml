@@ -165,7 +165,7 @@ spells:
         description: Torture your opponent
         usage: Unforgiveable!
         cast: Crucio $target!
-    day:
+    meteo:
         name: Meteolojinx Recanto
         description: Clear weather incantations
         area: Meteolojinx Recanto!
