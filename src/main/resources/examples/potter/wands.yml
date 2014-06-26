@@ -219,7 +219,7 @@ elder:
     cost_reduction: 2
     cooldown_reduction: 2
     protection: 1
-    quiet: 0
+    quiet: 1
     power: 1
     haste: 0.1
     effect_color: 'FF00FF'
@@ -445,6 +445,7 @@ camera:
 
 floopowder:
     mode: cast
+    quiet: 2
     active_spell: floo
     icon: sulphur
     indestructible: false
@@ -456,6 +457,7 @@ floopowder:
 
 handbag:
     mode: cast
+    quiet: 2
     active_spell: stash
     icon: glass_bottle
     indestructible: false
