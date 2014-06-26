@@ -252,17 +252,6 @@ public class NMSUtils {
         return null;
     }
 
-    protected static Object getNMSCopy(ItemStack stack) {
-        Object nms = null;
-        try {
-            Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
-            nms = copyMethod.invoke(null, stack);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return nms;
-    }
-
     public static Object getTag(Object mcItemStack) {
         Object tag = null;
         try {
@@ -272,6 +261,17 @@ public class NMSUtils {
             ex.printStackTrace();
         }
         return tag;
+    }
+
+    protected static Object getNMSCopy(ItemStack stack) {
+        Object nms = null;
+        try {
+            Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
+            nms = copyMethod.invoke(null, stack);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return nms;
     }
 
     public static ItemStack getCopy(ItemStack stack) {
@@ -290,9 +290,26 @@ public class NMSUtils {
 
     public static ItemStack makeReal(ItemStack stack) {
         if (stack == null) return null;
-        if (getHandle(stack) != null) return stack;
+        Object nmsStack = getHandle(stack);
+        if (nmsStack == null) {
+            stack = getCopy(stack);
+            nmsStack = getHandle(stack);
+        }
+        if (nmsStack == null) {
+            return null;
+        }
+        try {
+            Field tagField = class_ItemStack.getField("tag");
+            Object tag = tagField.get(nmsStack);
+            if (tag == null) {
+                tagField.set(nmsStack, class_NBTTagCompound.newInstance());
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return null;
+        }
 
-        return getCopy(stack);
+        return stack;
     }
 
     public static String getMeta(ItemStack stack, String tag, String defaultValue) {
