@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -41,6 +42,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private int                                 verticalSearchDistance  = 8;
     private boolean                             targetingComplete		= false;
     private boolean                             targetSpaceRequired     = false;
+    private int                                 targetMinOffset         = 0;
     protected Class<? extends Entity>           targetEntityType        = null;
     private Location                            targetLocation;
     private Vector								targetLocationOffset;
@@ -76,6 +78,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targetSpaceRequired = false;
         reverseTargeting = false;
         targetingComplete = false;
+        targetMinOffset = 0;
     }
 
     public void setTargetType(TargetType t) {
@@ -161,6 +164,10 @@ public abstract class TargetingSpell extends BaseSpell {
     public void setTargetSpaceRequired()
     {
         targetSpaceRequired = true;
+    }
+
+    public void setTargetMinOffset(int offset) {
+        targetMinOffset = offset;
     }
 
     public void setTarget(Location location) {
@@ -460,14 +467,16 @@ public abstract class TargetingSpell extends BaseSpell {
     protected void findTargetBlock()
     {
         Location location = getLocation();
-        if (location == null) {
+        if (location == null)
+        {
             return;
         }
         if (targetingComplete)
         {
             return;
         }
-        if (!initializeBlockIterator(location)) {
+        if (!initializeBlockIterator(location))
+        {
             return;
         }
         currentBlock = null;
@@ -477,14 +486,18 @@ public abstract class TargetingSpell extends BaseSpell {
         Block block = getNextBlock();
         while (block != null)
         {
-            if (targetSpaceRequired) {
-                if (isOkToStandIn(block.getType()) && isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
-                    break;
+            if (targetMinOffset <= 0) {
+                if (targetSpaceRequired) {
+                    if (isOkToStandIn(block.getType()) && isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
+                        break;
+                    }
+                } else {
+                    if (isTargetable(block.getType())) {
+                        break;
+                    }
                 }
             } else {
-                if (isTargetable(block.getType())) {
-                    break;
-                }
+                targetMinOffset--;
             }
             block = getNextBlock();
         }
@@ -575,6 +588,9 @@ public abstract class TargetingSpell extends BaseSpell {
             targetThroughMaterials.clear();
             targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));
         }
+
+        targetMinOffset = parameters.getInt("target_min_offset", targetMinOffset);
+        targetMinOffset = parameters.getInt("tmo", targetMinOffset);
 
         if (parameters.contains("target")) {
             String targetTypeName = parameters.getString("target");
