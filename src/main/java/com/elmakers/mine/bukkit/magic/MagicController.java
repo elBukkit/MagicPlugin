@@ -2611,6 +2611,7 @@ public class MagicController implements Listener, MageController
 		if (previousWand != null && previousWand.isInventoryOpen()) {
 			if (previousWand.getMode() == WandMode.INVENTORY) {
 				previousWand.saveInventory();
+                // Update hotbar names
                 previousWand.updateHotbar();
 			} else if (previousWand.getMode() == WandMode.CHEST) {
 				// First check for chest inventory mode, we may just be closing a display inventory.

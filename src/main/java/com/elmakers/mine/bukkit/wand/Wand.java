@@ -1097,7 +1097,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		checkActiveMaterial();
 
-		saveState();
 		updateName();
 		updateLore();
 	}
@@ -2060,7 +2059,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				mage.getPlayer().closeInventory();
 			}
 		}
-		saveState();
 	}
 	
 	public boolean fill(Player player) {
@@ -2077,7 +2075,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		autoFill = false;
 		saveState();
 		
-		// TODO: Detect changes
 		return true;
 	}
 
@@ -2128,12 +2125,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             // name matches
             if (owner == null || owner.length() == 0 || owner.equals(player.getName())) {
                 takeOwnership(mage.getPlayer());
+                saveState();
             }
 		}
 		
 		checkActiveMaterial();
-		
-		saveState();
 
 		mage.setActiveWand(this);
 		if (usesMana()) {
@@ -2243,7 +2239,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void deactivate() {
 		if (mage == null) return;
-		saveState();
 
         Player player = mage.getPlayer();
 		if (effectBubbles && player != null) {
@@ -2271,6 +2266,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		mage.setActiveWand(null);
 		mage = null;
+        saveState();
 	}
 	
 	public Spell getActiveSpell() {
@@ -2553,8 +2549,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), false);
-		
-		// TODO: Detect changes
 		return true;
 	}
 
@@ -2562,7 +2556,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), true);
-		// TODO: Detect changes
 		return true;
 	}
 
