@@ -65,9 +65,9 @@ public class SimulateSpell extends BlockSpell {
 		birthMaterial = ConfigurationUtils.getMaterialAndData(parameters, "material", birthMaterial);
 		birthMaterial = ConfigurationUtils.getMaterialAndData(parameters, "m", birthMaterial);
 		
-		Double dmxValue = ConfigurationUtils.getDouble(parameters, "omx", null);
-		Double dmyValue = ConfigurationUtils.getDouble(parameters, "omy", null);
-		Double dmzValue = ConfigurationUtils.getDouble(parameters, "omz", null);
+		Double dmxValue = ConfigurationUtils.getDouble(parameters, "obx", null);
+		Double dmyValue = ConfigurationUtils.getDouble(parameters, "oby", null);
+		Double dmzValue = ConfigurationUtils.getDouble(parameters, "obz", null);
 		if (dmxValue != null || dmyValue != null || dmzValue != null) {
 			Vector offset = new Vector( 
 					dmxValue == null ? 0 : dmxValue, 
