@@ -2811,15 +2811,22 @@ public class MagicController implements Listener, MageController
 		Location targetLocation = null;
 		if (mage == null) {
 			CommandSender mageController = (entity != null && entity instanceof Player) ? (Player)entity : sender;
-			if (sender != null && entity != null && sender != entity) {
+			if (sender != null) {
                 if (sender instanceof BlockCommandSender) {
                     targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
-                } else if (entity != null) {
+                } else if (entity != null && sender != entity) {
                     targetLocation = entity.getLocation();
                 }
             }
 			mage = getMage(mageController);
 		}
+
+        // This is a bit of a hack to make automata maintain direction
+        if (mage != null && targetLocation != null) {
+            Location mageLocation = mage.getLocation();
+            targetLocation.setPitch(mageLocation.getPitch());
+            targetLocation.setYaw(mageLocation.getYaw());
+        }
 		
 		SpellTemplate template = getSpellTemplate(spellName);
 		if (template == null || !template.hasCastPermission(usePermissions))
