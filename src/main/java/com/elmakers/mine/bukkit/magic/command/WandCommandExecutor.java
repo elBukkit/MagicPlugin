@@ -507,9 +507,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			sender.sendMessage("Properties: " + StringUtils.join(com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS, ", "));
 			return false;
 		}
-		
-		// TODO: A way to make wands modifiable again... ?
-		// Probably need to handle that separately, or maybe lock/unlock commands?
+
 		if (!checkWand(sender, player)) {
 			return true;
 		}
