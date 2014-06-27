@@ -51,7 +51,7 @@ Sludge:
   Skills:
   - skill SludgePoison >0 0.2
 Deatheater:
-  Mobtype: angrypigzombie
+  Mobtype: pigzombie
   Display: Deatheater
   Health: 100
   Damage: 4

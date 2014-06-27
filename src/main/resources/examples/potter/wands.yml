@@ -232,6 +232,7 @@ elder:
     spells:
       - accio
       - aguamenti
+      - alohomora
       - apparate
       - araniaexumai
       - arresto
@@ -310,6 +311,7 @@ wolf:
     spells:
       - accio
       - aguamenti
+      - alohomora
       - apparate
       - araniaexumai
       - arresto

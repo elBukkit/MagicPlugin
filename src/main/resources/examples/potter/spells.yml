@@ -108,6 +108,33 @@ aguamenti:
     costs:
         xp: 50
 
+alohomora:
+    icon: daylight_detector
+    category: automata
+    class: ConstructSpell
+    worth: 15
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectTrail
+           particle: red_dust
+           particle_count: 5
+        -  class: EffectRing
+           particle: red_dust
+           particle_count: 3
+           location: target
+    parameters:
+        allow_max_range: true
+        range: 8
+        radius: 3
+        type: sphere
+        power: true
+        cooldown: 1000
+        undo: 5000
+    costs:
+        xp: 75
+
 apparate:
     icon: eye_of_ender
     category: year7
@@ -199,7 +226,7 @@ arrow:
       fire: false
       tick_increase: 1180
     costs:
-        xp: 10
+        xp: 30
 
 ascendio:
     icon: ink_sack:8
@@ -1382,11 +1409,13 @@ morsmordre:
         target: any
         allow_max_range: true
         range: 8
-        cooldown: 10000
+        cooldown: 60000
         transparent: apparate
-        console: true
+        op: true
         commands:
         - broadcast @p cast §aMorsmordre!
+        - mm mobs spawn Deatheater
+        - mm mobs spawn Deatheater
     costs:
         xp: 55
 
@@ -1716,7 +1745,7 @@ silenciomaxima:
              class: DnaLocationEffect
     parameters:
         commands:
-        - mute @t 30
+        - mute @t 120
         target_type: Player
         target: other
         range: 16
@@ -1744,7 +1773,7 @@ jail:
         target: other
         range: 16
     costs:
-        xp: 800
+        xp: 100
 
 silenciototalus:
     icon: ink_sack:3
@@ -2309,8 +2338,9 @@ deluminate:
            sound: creeper_hiss
         -  class: EffectTrail
            effect: step_sound
-           material: glowstone
+           material: obsidian
     parameters:
+        bypass_build: true
         allow_max_range: false
         range: 32
         check_destructible: true

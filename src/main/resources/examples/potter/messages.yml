@@ -87,6 +87,10 @@ spells:
         name: Aguamenti
         description: Creates a gush of water
         cast: Aguamenti!
+    alohomora:
+        name: Alohomora
+        description: Unlock certain locks
+        cast_finish: ""
     apparate:
         name: Apparate
         description: Teleport to your target
