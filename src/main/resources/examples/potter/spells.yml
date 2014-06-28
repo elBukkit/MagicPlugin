@@ -220,7 +220,7 @@ arrow:
              iterations: 8
     parameters:
       projectile: Arrow
-      damage: 3
+      damage: 1.5
       speed: 3
       spread: 6
       fire: false
@@ -1114,7 +1114,7 @@ flipendoduo:
         entity_force: 1.5
         type: push
         count: 8
-        damage: 1
+        damage: 3
         cooldown: 1500
     costs:
         xp: 45
@@ -1151,7 +1151,7 @@ flipendotria:
         entity_force: 2
         type: push
         count: 16
-        damage: 2
+        damage: 6
         cooldown: 3000
     costs:
         xp: 75
@@ -1414,8 +1414,8 @@ morsmordre:
         op: true
         commands:
         - broadcast @p cast §aMorsmordre!
-        - mm mobs spawn Deatheater
-        - mm mobs spawn Deatheater
+#        - mm mobs spawn Deatheater
+#        - mm mobs spawn Deatheater
     costs:
         xp: 55
 
