@@ -129,6 +129,7 @@ wand:
     single_spell: Wand of $spell
     fully_enchanted: This wand is fully enchanted (for now)
     randomized_lore: What kind of wand will you get?
+    randomized_name: Wand Box
 spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback

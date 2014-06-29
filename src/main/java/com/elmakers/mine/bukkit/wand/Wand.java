@@ -251,9 +251,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		this(controller, InventoryUtils.makeReal(new ItemStack(icon, 1, iconData)));
 		wandName = Messages.get("wand.default_name");
 		updateName();
-		if (EnableGlow) {
-            CompatibilityUtils.addGlow(item);
-		}
 		saveState();
 	}
 	
@@ -1192,7 +1189,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         int remaining = getRemainingUses();
 		ChatColor wandColor = remaining > 0 ? ChatColor.DARK_RED : isModifiable()
                 ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.GOLD;
-		String name = wandColor + wandName;
+		String name = wandColor + getDisplayName();
+        if (randomize) return name;
 
         Set<String> spells = getSpells();
 
@@ -1219,14 +1217,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		return getActiveWandName(spell);
 	}
-	
+
+    protected String getDisplayName() {
+        return randomize ? Messages.get("wand.randomized_name") : wandName;
+    }
+
 	public void updateName(boolean isActive) {
-        CompatibilityUtils.setDisplayName(item, isActive ? getActiveWandName() : wandName);
+        CompatibilityUtils.setDisplayName(item, isActive ? getActiveWandName() : getDisplayName());
 
 		// Reset Enchantment glow
 		if (EnableGlow) {
             CompatibilityUtils.addGlow(item);
 		}
+
+        // Make indestructible
+        CompatibilityUtils.makeUnbreakable(item);
 	}
 	
 	private void updateName() {
@@ -1344,6 +1349,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             } else {
                 lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
             }
+        }
+
+        if (randomize) {
+            return lore;
         }
 
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
@@ -2159,7 +2168,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected void randomize() {
-        boolean modified = false;
+        boolean modified = randomize;
         if (description.contains("$")) {
             Matcher matcher = Messages.PARAMETER_PATTERN.matcher(description);
             while(matcher.find()) {
@@ -2186,11 +2195,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 
+        randomize = false;
+
         if (modified) {
             saveState();
         }
-
-        randomize = false;
     }
 	
 	protected void checkActiveMaterial() {
