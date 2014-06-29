@@ -17,6 +17,61 @@ default:
     spells:
      - flagrate
 
+auror:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: master
+    randomize: true
+    bound: true
+    keep: true
+    quiet: 1
+    xp_max: 75
+    xp: 75
+    xp_regeneration: 10
+    effect_color: 'FFFFFF'
+    effect_bubbles: true
+    active_spell: aurorate
+    spells:
+     - aurorate
+     - expelliarmus
+     - flagrate
+     - stupefy
+     - flipendo
+     - accio
+     - disillusion
+     - lumos
+     - silencio
+     - bombarda
+     - protego
+     - immobulus
+     - sectumsempra
+
+deatheater:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: master
+    randomize: true
+    bound: true
+    keep: true
+    quiet: 1
+    xp_max: 75
+    xp: 75
+    xp_regeneration: 10
+    effect_color: '010101'
+    effect_bubbles: true
+    active_spell: apparate
+    spells:
+     - apparate
+     - sectumsempra
+     - flagrate
+     - stupefy
+     - flipendo
+     - accio
+     - disillusion
+     - lumos
+     - silencio
+     - bombarda
+     - protego
+     - immobulus
+
 staff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master

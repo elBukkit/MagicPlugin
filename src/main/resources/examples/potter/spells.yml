@@ -168,6 +168,39 @@ apparate:
     costs:
         xp: 60
 
+aurorate:
+    icon: eye_of_ender
+    category: year7
+    class: BlinkSpell
+    worth: 120
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_teleport
+           location: both
+           effectlib:
+             class: AtomLocationEffect
+             particleNucleus: instant_spell
+             particleOrbital: spell
+             iterations: 20
+        -  class: EffectSingle
+           location: both
+           effectlib:
+             class: LineLocationEffect
+             particle: spell
+    parameters:
+        pvp_restricted: true
+        allow_max_range: false
+        allow_ascend: true
+        allow_passthrough: true
+        prevent_passthrough: indestructible
+        range: 64
+        passthrough_range: 8
+        allow_decend: true
+        transparent: apparate
+    costs:
+        xp: 60
+
 araniaexumai:
     icon: web
     category: year1
