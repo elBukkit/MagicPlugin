@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -29,6 +30,7 @@ public class NMSUtils {
     protected static Class<?> class_NBTBase;
     protected static Class<?> class_NBTTagCompound;
     protected static Class<?> class_NBTTagList;
+    protected static Class<?> class_NBTTagByte;
     protected static Class<?> class_NBTTagString;
     protected static Class<?> class_CraftTask;
     protected static Class<?> class_CraftInventoryCustom;
@@ -65,6 +67,7 @@ public class NMSUtils {
             class_NBTTagCompound = fixBukkitClass("net.minecraft.server.NBTTagCompound");
             class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
             class_NBTTagString = fixBukkitClass("net.minecraft.server.NBTTagString");
+            class_NBTTagByte = fixBukkitClass("net.minecraft.server.NBTTagByte");
             class_CraftInventoryCustom = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftInventoryCustom");
             class_CraftItemStack = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftItemStack");
             class_CraftTask = fixBukkitClass("org.bukkit.craftbukkit.scheduler.CraftTask");
@@ -484,6 +487,24 @@ public class NMSUtils {
             setBooleanMethod.invoke(bukkitData, "glow", true);
         } catch (Throwable ex) {
 
+        }
+    }
+
+    public static void makeUnbreakable(ItemStack stack) {
+        if (stack == null) return;
+
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return;
+
+            Constructor byteConstructor = class_NBTTagByte.getConstructor(Byte.TYPE);
+            final Object unbreakableFlag = byteConstructor.newInstance((byte)1);
+            Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
+            setMethod.invoke(tagObject, "Unbreakable", unbreakableFlag);
+        } catch (Throwable ex) {
+            
         }
     }
 
