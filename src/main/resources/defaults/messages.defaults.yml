@@ -128,6 +128,7 @@ wand:
     self_destruct: Your wands did not survive the dimensional shift!
     single_spell: Wand of $spell
     fully_enchanted: This wand is fully enchanted (for now)
+    randomized_lore: What kind of wand will you get?
 spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback

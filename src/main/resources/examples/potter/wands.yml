@@ -4,6 +4,7 @@
 
 default:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    randomize_icon: wood_step:4
     path: master
     bound: true
     keep: true

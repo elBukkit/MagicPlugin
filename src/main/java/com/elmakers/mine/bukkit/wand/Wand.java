@@ -63,7 +63,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"haste", 
 		"health_regeneration", "hunger_regeneration", 
-		"icon", "mode", "keep", "locked", "quiet", "force",
+		"icon", "mode", "keep", "locked", "quiet", "force", "randomize",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
@@ -98,6 +98,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean autoOrganize = false;
 	private boolean autoFill = false;
 	private boolean isUpgrade = false;
+    private boolean randomize = false;
 	
 	private MaterialAndData icon = null;
 	
@@ -221,16 +222,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             wandDescription = wandConfig.getString("description", wandDescription);
 			wandDescription = Messages.get("wands." + templateName + ".description", wandDescription);
 
-            if (wandDescription.contains("$")) {
-                Matcher matcher = Messages.PARAMETER_PATTERN.matcher(wandDescription);
-                while(matcher.find()) {
-                    String key = matcher.group(1);
-                    if (key != null) {
-                        wandDescription = wandDescription.replace("$" + key, Messages.getRandomized(key));
-                    }
-                }
-            }
-			
 			// Load all properties
 			loadProperties(wandConfig);
 
@@ -244,6 +235,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 		}
 
+        // Don't randomize now if set to randomize later
+        if (!randomize) {
+            randomize();
+        }
 		setDescription(wandDescription);
 		setName(wandName);
 		setTemplate(templateName);
@@ -906,6 +901,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("effect_sound_pitch", Float.toString(effectSoundPitch));
 		node.set("quiet", quietLevel);
 		node.set("keep", keep);
+        node.set("randomize", randomize);
 		node.set("bound", bound);
         node.set("force", forceUpgrade);
 		node.set("indestructible", indestructible);
@@ -1017,8 +1013,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
             autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
 			autoFill = wandConfig.getBoolean("fill", autoFill);
+            randomize = wandConfig.getBoolean("randomize", randomize);
 
-			if (wandConfig.contains("effect_particle")) {
+            if (wandConfig.contains("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));
 				effectParticleData = 0;
 			}
@@ -1052,8 +1049,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
 				parseInventoryStrings(wandSpells, wandMaterials);
 			}
-			
-			if (wandConfig.contains("icon")) {
+
+            if (wandConfig.contains("randomize_icon")) {
+                setIcon(ConfigurationUtils.toMaterialAndData(wandConfig.getString("randomize_icon")));
+                randomize = true;
+            } else if (!randomize && wandConfig.contains("icon")) {
                 String iconKey = wandConfig.getString("icon");
                 if (iconKey.contains(",")) {
                     Random r = new Random();
@@ -1334,7 +1334,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected List<String> getLore(int spellCount, int materialCount) 
 	{
 		List<String> lore = new ArrayList<String>();
-		
+
+        if (description.length() > 0) {
+            if (description.contains("$")) {
+                String randomDescription = Messages.get("wand.randomized_lore");
+                if (randomDescription.length() > 0) {
+                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + randomDescription);
+                }
+            } else {
+                lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+            }
+        }
+
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
 
         // This is here specifically for a wand that only has
@@ -1348,9 +1359,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
         {
             lore.add(getBrushDisplayName(activeMaterial));
-        }
-        if (description.length() > 0) {
-            lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
         }
         if (!isUpgrade) {
             if (owner.length() > 0) {
@@ -2128,6 +2136,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 saveState();
             }
 		}
+
+        // Check for randomized wands
+        if (randomize) {
+            randomize();
+        }
 		
 		checkActiveMaterial();
 
@@ -2144,6 +2157,41 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		updateEffects();
 	}
+
+    protected void randomize() {
+        boolean modified = false;
+        if (description.contains("$")) {
+            Matcher matcher = Messages.PARAMETER_PATTERN.matcher(description);
+            while(matcher.find()) {
+                String key = matcher.group(1);
+                if (key != null) {
+                    modified = true;
+                    description = description.replace("$" + key, Messages.getRandomized(key));
+                    updateLore();
+                }
+            }
+        }
+
+        if (template != null && template.length() > 0) {
+            ConfigurationSection wandConfig = wandTemplates.get(template);
+            if (wandConfig != null && wandConfig.contains("icon")) {
+                String iconKey = wandConfig.getString("icon");
+                if (iconKey.contains(",")) {
+                    Random r = new Random();
+                    String[] keys = StringUtils.split(iconKey, ',');
+                    iconKey = keys[r.nextInt(keys.length)];
+                }
+                setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
+                modified = true;
+            }
+        }
+
+        if (modified) {
+            saveState();
+        }
+
+        randomize = false;
+    }
 	
 	protected void checkActiveMaterial() {
 		if (activeMaterial == null || activeMaterial.length() == 0) {
