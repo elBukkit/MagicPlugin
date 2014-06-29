@@ -234,14 +234,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 locked = wasLocked;
             }
 		}
+		setDescription(wandDescription);
+		setName(wandName);
 
         // Don't randomize now if set to randomize later
+        // Otherwise, do this here so the description updates
         if (!randomize) {
             randomize();
         }
-		setDescription(wandDescription);
-		setName(wandName);
-		setTemplate(templateName);
+
+        setTemplate(templateName);
 		suspendSave = false;
 		saveState();
 	}
