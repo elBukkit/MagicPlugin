@@ -1,0 +1,3 @@
+
+# Set to false to skip loading defaults/crafting.defaults.yml entirely.
+load_default_crafting: true

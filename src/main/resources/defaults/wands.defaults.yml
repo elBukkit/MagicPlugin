@@ -1577,6 +1577,7 @@ golemheart:
 # rely on the "random(20)" wand syntax.
 random:
     path: master
+
 # This wand is for demo'ing the plugin
 demo:
     active_spell: fling
