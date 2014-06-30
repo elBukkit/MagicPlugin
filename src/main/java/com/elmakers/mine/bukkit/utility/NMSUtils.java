@@ -504,7 +504,7 @@ public class NMSUtils {
             Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             setMethod.invoke(tagObject, "Unbreakable", unbreakableFlag);
         } catch (Throwable ex) {
-            
+
         }
     }
 

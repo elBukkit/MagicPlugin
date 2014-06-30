@@ -10,11 +10,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -30,11 +27,13 @@ import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
 public class URLMap extends MapRenderer  {
     private static File configurationFile = null;
     private static File cacheFolder = null;
     private static boolean disabled = false;
+    private static BukkitTask saveTask = null;
 
     // Public API
 
@@ -138,34 +137,42 @@ public class URLMap extends MapRenderer  {
      * This is called automatically as changes are made, but you can call it in onDisable to be safe.
      */
     public static void save() {
-        if (configurationFile == null || disabled) return;
+        if (configurationFile == null || disabled || saveTask != null || plugin == null) return;
 
-        YamlConfiguration configuration = new YamlConfiguration();
-        for (URLMap map : idMap.values()) {
-            ConfigurationSection mapConfig = configuration.createSection(Short.toString(map.id));
-            mapConfig.set("world", map.world);
-            mapConfig.set("url", map.url);
-            mapConfig.set("x", map.x);
-            mapConfig.set("y", map.y);
-            mapConfig.set("width", map.width);
-            mapConfig.set("height", map.height);
-            mapConfig.set("enabled", map.isEnabled());
-            mapConfig.set("name", map.name);
-            if (map.priority != null) {
-                mapConfig.set("priority", map.priority);
+        final List<URLMap> saveMaps = new ArrayList<URLMap>(idMap.values());
+        saveTask = Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    YamlConfiguration configuration = new YamlConfiguration();
+                    for (URLMap map : saveMaps) {
+                        ConfigurationSection mapConfig = configuration.createSection(Short.toString(map.id));
+                        mapConfig.set("world", map.world);
+                        mapConfig.set("url", map.url);
+                        mapConfig.set("x", map.x);
+                        mapConfig.set("y", map.y);
+                        mapConfig.set("width", map.width);
+                        mapConfig.set("height", map.height);
+                        mapConfig.set("enabled", map.isEnabled());
+                        mapConfig.set("name", map.name);
+                        if (map.priority != null) {
+                            mapConfig.set("priority", map.priority);
+                        }
+                        if (map.xOverlay != null) {
+                            mapConfig.set("x_overlay", map.xOverlay);
+                        }
+                        if (map.yOverlay != null) {
+                            mapConfig.set("y_overlay", map.yOverlay);
+                        }
+                    }
+                    configuration.save(configurationFile);
+                } catch (Exception ex) {
+                    warning("Failed to save file " + configurationFile.getAbsolutePath());
+                }
+                saveTask = null;
             }
-            if (map.xOverlay != null) {
-                mapConfig.set("x_overlay", map.xOverlay);
-            }
-            if (map.yOverlay != null) {
-                mapConfig.set("y_overlay", map.yOverlay);
-            }
-        }
-        try {
-            configuration.save(configurationFile);
-        } catch (Exception ex) {
-            warning("Failed to save file " + configurationFile.getAbsolutePath());
-        }
+        });
     }
 
     private static void info(String message)
