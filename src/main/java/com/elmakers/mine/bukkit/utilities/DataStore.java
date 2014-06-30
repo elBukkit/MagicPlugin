@@ -36,4 +36,8 @@ public class DataStore extends YamlConfiguration {
 			logger.warning("Error saving data file " + file.getName());
 		}
 	}
+
+    public File getFile() {
+        return file;
+    }
 }

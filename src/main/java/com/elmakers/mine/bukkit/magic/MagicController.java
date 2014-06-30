@@ -123,106 +123,99 @@ import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.CompleteDragTask;
 import com.elmakers.mine.bukkit.utilities.DataStore;
 import com.elmakers.mine.bukkit.warp.WarpController;
+import org.yaml.snakeyaml.Yaml;
 
-public class MagicController implements Listener, MageController
-{
-	public MagicController(final MagicPlugin plugin)
-	{
-		this.plugin = plugin;
+public class MagicController implements Listener, MageController {
+    public MagicController(final MagicPlugin plugin) {
+        this.plugin = plugin;
 
         // This is a bit hacky, but lets us continue to call
         // Wand.isWand() statically, which now requires a Plugin
         // reference due to the Metadata system ownership.
         Wand.metadataProvider = plugin;
-		
-		configFolder = plugin.getDataFolder();
-		configFolder.mkdirs();
 
-		dataFolder = new File(configFolder, "data");
-		dataFolder.mkdirs();
+        configFolder = plugin.getDataFolder();
+        configFolder.mkdirs();
 
-		schematicFolder = new File(configFolder, "schematics");
-		schematicFolder.mkdirs();
-		
-		playerDataFolder = new File(dataFolder, "players");
-		playerDataFolder.mkdirs();
+        dataFolder = new File(configFolder, "data");
+        dataFolder.mkdirs();
 
-		defaultsFolder = new File(configFolder, "defaults");
-		defaultsFolder.mkdirs();
-	}
+        schematicFolder = new File(configFolder, "schematics");
+        schematicFolder.mkdirs();
+
+        playerDataFolder = new File(dataFolder, "players");
+        playerDataFolder.mkdirs();
+
+        defaultsFolder = new File(configFolder, "defaults");
+        defaultsFolder.mkdirs();
+    }
 
     @Override
-    public Mage getMage(String mageId, String mageName)
-    {
+    public Mage getMage(String mageId, String mageName) {
         return getMage(mageId, mageName, null, null);
     }
 
-    public Mage getMage(String mageId, CommandSender commandSender, Entity entity)
-    {
+    public Mage getMage(String mageId, CommandSender commandSender, Entity entity) {
         return getMage(mageId, null, commandSender, entity);
     }
 
-    protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity)
-	{
+    protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
         Mage apiMage = null;
-		if (!mages.containsKey(mageId))
-		{
+        if (!mages.containsKey(mageId)) {
             com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
             mage.setName(mageName);
-			mage.setCommandSender(commandSender);
+            mage.setCommandSender(commandSender);
             mage.setEntity(entity);
-			if (commandSender instanceof Player) {
-				mage.setPlayer((Player)commandSender);
-			}
-			
-			// Check for existing data file
-			File playerFile = new File(playerDataFolder, mageId + ".dat");
-			if (playerFile.exists()) 
-			{
-				getLogger().info("Loading mage data from file " + playerFile.getName());
-				try {
-					Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
-					mage.load(playerData);
-				} catch (Exception ex) {
-					getLogger().warning("Failed to load mage data from file " + playerFile.getName());
-					ex.printStackTrace();
-				}
-			}
-			
-			mages.put(mageId, mage);
+            if (commandSender instanceof Player) {
+                mage.setPlayer((Player) commandSender);
+            }
+
+            // Check for existing data file
+            synchronized (saveLock) {
+                File playerFile = new File(playerDataFolder, mageId + ".dat");
+                if (playerFile.exists()) {
+                    getLogger().info("Loading mage data from file " + playerFile.getName());
+                    try {
+                        Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+                        mage.load(playerData);
+                    } catch (Exception ex) {
+                        getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                        ex.printStackTrace();
+                    }
+                }
+            }
+
+            mages.put(mageId, mage);
             apiMage = mage;
-		} else {
+        } else {
             apiMage = mages.get(mageId);
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
 
                 // Re-set mage properties
                 mage.setName(mageName);
                 mage.setCommandSender(commandSender);
                 mage.setEntity(entity);
                 if (commandSender instanceof Player) {
-                    mage.setPlayer((Player)commandSender);
+                    mage.setPlayer((Player) commandSender);
                 }
             }
-		}
-		return apiMage;
-	}
-
-    @Override
-    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Player player)
-    {
-        return getMage((Entity)player, player);
+        }
+        return apiMage;
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity)
-    {
-        CommandSender commandSender = (entity instanceof Player) ? (Player)entity : null;
+    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Player player) {
+        return getMage((Entity) player, player);
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity) {
+        CommandSender commandSender = (entity instanceof Player) ? (Player) entity : null;
         return getMage(entity, commandSender);
     }
 
-    protected com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender commandSender)
-    {
+    protected com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender commandSender) {
         if (entity == null) return getMage(commandSender);
         String id = entity.getUniqueId().toString();
 
@@ -234,15 +227,14 @@ public class MagicController implements Listener, MageController
     }
 
     @Override
-    public Mage getMage(CommandSender commandSender)
-    {
+    public Mage getMage(CommandSender commandSender) {
         String mageId = "COMMAND";
         if (commandSender instanceof ConsoleCommandSender) {
             mageId = "CONSOLE";
         } else if (commandSender instanceof Player) {
-            return getMage((Player)commandSender);
+            return getMage((Player) commandSender);
         } else if (commandSender instanceof BlockCommandSender) {
-            BlockCommandSender commandBlock = (BlockCommandSender)commandSender;
+            BlockCommandSender commandBlock = (BlockCommandSender) commandSender;
             String commandName = commandBlock.getName();
             if (commandName != null && commandName.length() > 0) {
                 mageId = "COMMAND-" + commandBlock.getName();
@@ -251,336 +243,305 @@ public class MagicController implements Listener, MageController
 
         return getMage(mageId, commandSender, null);
     }
-	
-	protected void loadMage(String playerId, ConfigurationSection node)
-	{
-		Mage mage = getMage(playerId, null, null);
-		try {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).load(node);
-            }
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
 
-	public void addSpell(Spell variant)
-	{
-		SpellTemplate conflict = spells.get(variant.getKey());
-		if (conflict != null)
-		{
-			getLogger().log(Level.WARNING, "Duplicate spell key: '" + conflict.getKey() + "'");
-		}
-		else
-		{
-			spells.put(variant.getKey(), variant);
-		}
-	}
-	
-	public float getMaxDamagePowerMultiplier() 
-	{
-		return maxDamagePowerMultiplier;
-	}
-	
-	public float getMaxConstructionPowerMultiplier() 
-	{
-		return maxConstructionPowerMultiplier;
-	}
-	
-	public float getMaxRadiusPowerMultiplier() 
-	{
-		return maxRadiusPowerMultiplier;
-	}
-	
-	public float getMaxRadiusPowerMultiplierMax() 
-	{
-		return maxRadiusPowerMultiplierMax;
-	}
-	
-	public float getMaxRangePowerMultiplier() 
-	{
-		return maxRangePowerMultiplier;
-	}
-	
-	public float getMaxRangePowerMultiplierMax() 
-	{
-		return maxRangePowerMultiplierMax;
-	}
-	
-	public int getAutoUndoInterval() 
-	{
-		return autoUndo;
-	}
-	
-	public float getMaxPower() 
-	{
-		return maxPower;
-	}
+    protected void loadMage(String playerId, ConfigurationSection node) {
+        Mage mage = getMage(playerId, null, null);
+        try {
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage) mage).load(node);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void addSpell(Spell variant) {
+        SpellTemplate conflict = spells.get(variant.getKey());
+        if (conflict != null) {
+            getLogger().log(Level.WARNING, "Duplicate spell key: '" + conflict.getKey() + "'");
+        } else {
+            spells.put(variant.getKey(), variant);
+        }
+    }
+
+    public float getMaxDamagePowerMultiplier() {
+        return maxDamagePowerMultiplier;
+    }
+
+    public float getMaxConstructionPowerMultiplier() {
+        return maxConstructionPowerMultiplier;
+    }
+
+    public float getMaxRadiusPowerMultiplier() {
+        return maxRadiusPowerMultiplier;
+    }
+
+    public float getMaxRadiusPowerMultiplierMax() {
+        return maxRadiusPowerMultiplierMax;
+    }
+
+    public float getMaxRangePowerMultiplier() {
+        return maxRangePowerMultiplier;
+    }
+
+    public float getMaxRangePowerMultiplierMax() {
+        return maxRangePowerMultiplierMax;
+    }
+
+    public int getAutoUndoInterval() {
+        return autoUndo;
+    }
+
+    public float getMaxPower() {
+        return maxPower;
+    }
 	
 	/*
 	 * Undo system
 	 */
 
-	public int getUndoQueueDepth() 
-	{
-		return undoQueueDepth;
-	}
-	
-	public int getPendingQueueDepth() 
-	{
-		return pendingQueueDepth;
-	}
+    public int getUndoQueueDepth() {
+        return undoQueueDepth;
+    }
+
+    public int getPendingQueueDepth() {
+        return pendingQueueDepth;
+    }
 
 	/*
 	 * Random utility functions
 	 */
 
-	public String getMessagePrefix()
-	{
-		return messagePrefix;
-	}
+    public String getMessagePrefix() {
+        return messagePrefix;
+    }
 
-	public String getCastMessagePrefix()
-	{
-		return castMessagePrefix;
-	}
-	
-	public boolean showCastMessages()
-	{
-		return showCastMessages;
-	}
+    public String getCastMessagePrefix() {
+        return castMessagePrefix;
+    }
 
-	public boolean showMessages()
-	{
-		return showMessages;
-	}
+    public boolean showCastMessages() {
+        return showCastMessages;
+    }
 
-	public boolean soundsEnabled()
-	{
-		return soundsEnabled;
-	}
+    public boolean showMessages() {
+        return showMessages;
+    }
 
-	public boolean fillWands()
-	{
-		return fillingEnabled;
-	}
+    public boolean soundsEnabled() {
+        return soundsEnabled;
+    }
 
-	public boolean bindWands()
-	{
-		return bindingEnabled;
-	}
+    public boolean fillWands() {
+        return fillingEnabled;
+    }
 
-	public boolean keepWands()
-	{
-		return keepingEnabled;
-	}
+    public boolean bindWands() {
+        return bindingEnabled;
+    }
 
-	/*
+    public boolean keepWands() {
+        return keepingEnabled;
+    }
+
+    /*
 	 * Get the log, if you need to debug or log errors.
 	 */
-	public Logger getLogger()
-	{
-		return plugin.getLogger();
-	}
+    public Logger getLogger() {
+        return plugin.getLogger();
+    }
 
-	public boolean isIndestructible(Location location) 
-	{
-		return isIndestructible(location.getBlock());
-	}
+    public boolean isIndestructible(Location location) {
+        return isIndestructible(location.getBlock());
+    }
 
-	public boolean isIndestructible(Block block) 
-	{
-		return indestructibleMaterials.contains(block.getType());
-	}
+    public boolean isIndestructible(Block block) {
+        return indestructibleMaterials.contains(block.getType());
+    }
 
-	public boolean isDestructible(Block block) 
-	{
-		return destructibleMaterials.contains(block.getType());		
-	}
+    public boolean isDestructible(Block block) {
+        return destructibleMaterials.contains(block.getType());
+    }
 
-	protected boolean isRestricted(Material material) 
-	{
-		return restrictedMaterials.contains(material);		
-	}
-	
-	public boolean hasBuildPermission(Player player, Location location) 
-	{
-		return hasBuildPermission(player, location.getBlock());
-	}
+    protected boolean isRestricted(Material material) {
+        return restrictedMaterials.contains(material);
+    }
 
-	public boolean hasBuildPermission(Player player, Block block) 
-	{
-		// Check the region manager, or Factions
-		boolean allowed = true;		
-		if (bypassBuildPermissions) return true;
+    public boolean hasBuildPermission(Player player, Location location) {
+        return hasBuildPermission(player, location.getBlock());
+    }
+
+    public boolean hasBuildPermission(Player player, Block block) {
+        // Check the region manager, or Factions
+        boolean allowed = true;
+        if (bypassBuildPermissions) return true;
         if (player != null && player.isPermissionSet("Magic.bypass_build")) return true;
-		
-		allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
-		allowed = allowed && factionsManager.hasBuildPermission(player, block);
-		
-		return allowed;
-	}
-	
-	public boolean schematicsEnabled() {
-		return cuboidClipboardClass != null;
-	}
-	
-	public void clearCache() {
-		// Only delete schematics that we have builtins for.
-		String[] schematicFiles = schematicFolder.list();
-		for (String schematicFilename : schematicFiles) {
-			if (!schematicFilename.endsWith(".schematic")) continue;
-			InputStream builtin = plugin.getResource("schematics/" + schematicFilename);
-			if (builtin == null) continue;
-			File schematicFile = new File(schematicFolder, schematicFilename);
-			schematicFile.delete();
-			plugin.getLogger().info("Deleted file " + schematicFile.getAbsolutePath());
-		}
-		
-		schematics.clear();
-		for (Mage mage : mages.values()) {
+
+        allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
+        allowed = allowed && factionsManager.hasBuildPermission(player, block);
+
+        return allowed;
+    }
+
+    public boolean schematicsEnabled() {
+        return cuboidClipboardClass != null;
+    }
+
+    public void clearCache() {
+        // Only delete schematics that we have builtins for.
+        String[] schematicFiles = schematicFolder.list();
+        for (String schematicFilename : schematicFiles) {
+            if (!schematicFilename.endsWith(".schematic")) continue;
+            InputStream builtin = plugin.getResource("schematics/" + schematicFilename);
+            if (builtin == null) continue;
+            File schematicFile = new File(schematicFolder, schematicFilename);
+            schematicFile.delete();
+            plugin.getLogger().info("Deleted file " + schematicFile.getAbsolutePath());
+        }
+
+        schematics.clear();
+        for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).clearCache();
+                ((com.elmakers.mine.bukkit.magic.Mage) mage).clearCache();
             }
-		}
-	}
-	
-	public WorldEditSchematic loadSchematic(String schematicName) {
-		if (schematicName == null || schematicName.length() == 0 || !schematicsEnabled()) return null;
-		
-		if (schematics.containsKey(schematicName)) {
-			WeakReference<WorldEditSchematic> schematic = schematics.get(schematicName);
-			if (schematic != null) {
-				WorldEditSchematic cached = schematic.get();
-				if (cached != null) {
-					return cached;
-				}
-			}
-		}
+        }
+    }
 
-		String fileName = schematicName + ".schematic";
-		File schematicFile = new File(schematicFolder, fileName);
-		if (!schematicFile.exists()) {
-			try {
-				// Check extra path first
-				File extraSchematicFile = null;
-				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-					File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-					extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
-					getLogger().info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath());
-				}
-				
-				if (extraSchematicFile != null && extraSchematicFile.exists()) {
-					schematicFile = extraSchematicFile;
-					getLogger().info("Loading file: " + extraSchematicFile.getAbsolutePath());
-				}  else {
-					plugin.saveResource("schematics/" + fileName, true);
-					getLogger().info("Adding builtin schematic: schematics/" + fileName);
-				}
-			} catch (Exception ex) {
-				
-			}
-		}
+    public WorldEditSchematic loadSchematic(String schematicName) {
+        if (schematicName == null || schematicName.length() == 0 || !schematicsEnabled()) return null;
 
-		if (!schematicFile.exists()) {
-			getLogger().warning("Could not load file: " + schematicFile.getAbsolutePath());
-			return null;
-		}
-				
-		try {
-			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
-			getLogger().info("Loading schematic file: " + schematicFile.getAbsolutePath());
-			WorldEditSchematic schematic = new WorldEditSchematic(loadSchematicMethod.invoke(null, schematicFile));
-			schematics.put(schematicName, new WeakReference<WorldEditSchematic>(schematic));
-			return schematic;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		return null;
-	}
+        if (schematics.containsKey(schematicName)) {
+            WeakReference<WorldEditSchematic> schematic = schematics.get(schematicName);
+            if (schematic != null) {
+                WorldEditSchematic cached = schematic.get();
+                if (cached != null) {
+                    return cached;
+                }
+            }
+        }
 
-	@Override
-	public Collection<String> getBrushKeys() {
-		List<String> names = new ArrayList<String>();
-		Material[] materials = Material.values();
-		for (Material material : materials) {
-			// Only show blocks
-			if (material.isBlock()) {
-				names.add(material.name().toLowerCase());
-			}
-		}
-		
-		// Add special materials
-		for (String brushName : MaterialBrush.SPECIAL_MATERIAL_KEYS) {
-			names.add(brushName.toLowerCase());
-		}
-		
-		// Add schematics
-		Collection<String> schematics = getSchematicNames();
-		for (String schematic : schematics) {
-			names.add("schematic:" + schematic);
-		}
-		
-		return names;
-	}
+        String fileName = schematicName + ".schematic";
+        File schematicFile = new File(schematicFolder, fileName);
+        if (!schematicFile.exists()) {
+            try {
+                // Check extra path first
+                File extraSchematicFile = null;
+                if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+                    File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+                    extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
+                    getLogger().info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath());
+                }
 
-	public Collection<String> getSchematicNames() {
-		Collection<String> schematicNames = new ArrayList<String>();
-		if (!MaterialBrush.SchematicsEnabled) return schematicNames;
-		
-		// Load internal schematics.. this may be a bit expensive.
-		try {
-			CodeSource codeSource = MagicTabExecutor.class.getProtectionDomain().getCodeSource();
-			if (codeSource != null) {
-				URL jar = codeSource.getLocation();
-				ZipInputStream zip = new ZipInputStream(jar.openStream());
-				ZipEntry entry = zip.getNextEntry();
-				while (entry != null) {
-					String name = entry.getName();
-					if (name.startsWith("schematics/") && name.endsWith(".schematic")) {
-				    	String schematicName = name.replace(".schematic", "").replace("schematics/", "");
-				    	schematicNames.add(schematicName);
-					}
-					entry = zip.getNextEntry();
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		// Load external schematics
-		try {
-			// Check extra path first
-			if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-				File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-				for (File schematicFile : schematicFolder.listFiles()) {
-					if (schematicFile.getName().endsWith(".schematic")) {
-						String schematicName = schematicFile.getName().replace(".schematic", "");
-				    	schematicNames.add(schematicName);
-					}
-				}
-			}
-		} catch (Exception ex) {
-			
-		}
-		
-		return schematicNames;
-	}
+                if (extraSchematicFile != null && extraSchematicFile.exists()) {
+                    schematicFile = extraSchematicFile;
+                    getLogger().info("Loading file: " + extraSchematicFile.getAbsolutePath());
+                } else {
+                    plugin.saveResource("schematics/" + fileName, true);
+                    getLogger().info("Adding builtin schematic: schematics/" + fileName);
+                }
+            } catch (Exception ex) {
+
+            }
+        }
+
+        if (!schematicFile.exists()) {
+            getLogger().warning("Could not load file: " + schematicFile.getAbsolutePath());
+            return null;
+        }
+
+        try {
+            Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
+            getLogger().info("Loading schematic file: " + schematicFile.getAbsolutePath());
+            WorldEditSchematic schematic = new WorldEditSchematic(loadSchematicMethod.invoke(null, schematicFile));
+            schematics.put(schematicName, new WeakReference<WorldEditSchematic>(schematic));
+            return schematic;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Collection<String> getBrushKeys() {
+        List<String> names = new ArrayList<String>();
+        Material[] materials = Material.values();
+        for (Material material : materials) {
+            // Only show blocks
+            if (material.isBlock()) {
+                names.add(material.name().toLowerCase());
+            }
+        }
+
+        // Add special materials
+        for (String brushName : MaterialBrush.SPECIAL_MATERIAL_KEYS) {
+            names.add(brushName.toLowerCase());
+        }
+
+        // Add schematics
+        Collection<String> schematics = getSchematicNames();
+        for (String schematic : schematics) {
+            names.add("schematic:" + schematic);
+        }
+
+        return names;
+    }
+
+    public Collection<String> getSchematicNames() {
+        Collection<String> schematicNames = new ArrayList<String>();
+        if (!MaterialBrush.SchematicsEnabled) return schematicNames;
+
+        // Load internal schematics.. this may be a bit expensive.
+        try {
+            CodeSource codeSource = MagicTabExecutor.class.getProtectionDomain().getCodeSource();
+            if (codeSource != null) {
+                URL jar = codeSource.getLocation();
+                ZipInputStream zip = new ZipInputStream(jar.openStream());
+                ZipEntry entry = zip.getNextEntry();
+                while (entry != null) {
+                    String name = entry.getName();
+                    if (name.startsWith("schematics/") && name.endsWith(".schematic")) {
+                        String schematicName = name.replace(".schematic", "").replace("schematics/", "");
+                        schematicNames.add(schematicName);
+                    }
+                    entry = zip.getNextEntry();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Load external schematics
+        try {
+            // Check extra path first
+            if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+                File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+                for (File schematicFile : schematicFolder.listFiles()) {
+                    if (schematicFile.getName().endsWith(".schematic")) {
+                        String schematicName = schematicFile.getName().replace(".schematic", "");
+                        schematicNames.add(schematicName);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+
+        return schematicNames;
+    }
 	
 	/*
 	 * Internal functions - don't call these, or really anything below here.
 	 */
-	
-	/*
+
+    /*
 	 * Saving and loading
 	 */
-	public void initialize()
-	{
+    public void initialize() {
         warpController = new WarpController();
         crafting = new CraftingController(this);
-		enchanting = new EnchantingController(this);
-		anvil = new AnvilController(this);
+        enchanting = new EnchantingController(this);
+        anvil = new AnvilController(this);
 
         // Initialize EffectLib.
         if (EffectPlayer.initialize(plugin)) {
@@ -591,375 +552,414 @@ public class MagicController implements Listener, MageController
 
         load();
 
-		// Try to link to Essentials:
-		Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
-		hasEssentials = essentials != null;
-		if (hasEssentials) {
+        // Try to link to Essentials:
+        Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
+        hasEssentials = essentials != null;
+        if (hasEssentials) {
             if (warpController.setEssentials(plugin)) {
                 getLogger().info("Integrating with Essentials for Recall warps");
             }
-			try {
-				mailer = new Mailer(essentials);
-			} catch (Exception ex) {
-				getLogger().warning("Essentials found, but failed to hook up to Mailer");
-				mailer = null;
-			}
-		}
-		
-		if (essentialsSignsEnabled) {
-			final MagicController me = this;
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				public void run() {
-					try {
-						Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
-						if (essentials != null) {
-							Class<?> essentialsClass = essentials.getClass();
-							Field itemDbField = essentialsClass.getDeclaredField("itemDb");
-							itemDbField.setAccessible(true);
-							Object oldEntry = itemDbField.get(essentials);
-							if (oldEntry instanceof MagicItemDb) {
-								getLogger().info("Essentials integration already set up, skipping");
-								return;
-							}
-							if (!oldEntry.getClass().getName().equals("com.earth2me.essentials.ItemDb")){
-								getLogger().info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
-								return;
-							}
-							Object newEntry = new MagicItemDb(me, essentials);
-							itemDbField.set(essentials, newEntry);
-							Field confListField = essentialsClass.getDeclaredField("confList");
-							confListField.setAccessible(true);
-							@SuppressWarnings("unchecked")
-							List<Object> confList = (List<Object>)confListField.get(essentials);
-							confList.remove(oldEntry);
-							confList.add(newEntry);
-							getLogger().info("Essentials found, hooked up custom item handler");
-						}
-					} catch (Throwable ex) {
-						ex.printStackTrace();
-					}
-				}
-			}, 5);
-		}
+            try {
+                mailer = new Mailer(essentials);
+            } catch (Exception ex) {
+                getLogger().warning("Essentials found, but failed to hook up to Mailer");
+                mailer = null;
+            }
+        }
 
-		// Check for dtlTraders
-		tradersController = null;
-		try {
-			Plugin tradersPlugin = plugin.getServer().getPluginManager().getPlugin("dtlTraders");
-			if (tradersPlugin != null) {
-				tradersController = new TradersController();
-				tradersController.initialize(this, tradersPlugin);
-				getLogger().info("dtlTraders found, integrating for selling Wands, Spells, Brushes and Upgrades");
-			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-			tradersController = null;
-		}
-		
-		if (tradersController == null) {
-			getLogger().info("dtlTraders not found, will not integrate.");
-		}
-		
-		// Try to link to WorldEdit
-		// TODO: Make wrapper class to avoid this reflection.
-		try {
-			cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
-			Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
-			if (loadSchematicMethod != null) {
-				getLogger().info("WorldEdit found, schematic brushes enabled.");
-				MaterialBrush.SchematicsEnabled = true;
-				hasWorldEdit = true;
-			} else {
-				cuboidClipboardClass = null;
-			}
-		} catch (Throwable ex) {
-		}
-		
-		// Try to link to CommandBook
-		hasCommandBook = false;
-		try {
-			Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
-			if (commandBookPlugin != null) {
-				if (warpController.setCommandBook(commandBookPlugin)) {
-					getLogger().info("CommandBook found, integrating for Recall warps");
-					hasCommandBook = true;
-				} else {
-					getLogger().warning("CommandBook integration failed");
-				}
-			}
-		} catch (Throwable ex) {
-			
-		}
-		
-		if (cuboidClipboardClass == null) {
-			getLogger().info("WorldEdit not found, schematic brushes will not work.");
-			MaterialBrush.SchematicsEnabled = false;
-			hasWorldEdit = false;
-		}
-		
-		// Link to factions
-		factionsManager.initialize(plugin);
-		
-		// Try to (dynamically) link to WorldGuard:
-		worldGuardManager.initialize(plugin);
+        if (essentialsSignsEnabled) {
+            final MagicController me = this;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
+                    try {
+                        Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
+                        if (essentials != null) {
+                            Class<?> essentialsClass = essentials.getClass();
+                            Field itemDbField = essentialsClass.getDeclaredField("itemDb");
+                            itemDbField.setAccessible(true);
+                            Object oldEntry = itemDbField.get(essentials);
+                            if (oldEntry instanceof MagicItemDb) {
+                                getLogger().info("Essentials integration already set up, skipping");
+                                return;
+                            }
+                            if (!oldEntry.getClass().getName().equals("com.earth2me.essentials.ItemDb")) {
+                                getLogger().info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
+                                return;
+                            }
+                            Object newEntry = new MagicItemDb(me, essentials);
+                            itemDbField.set(essentials, newEntry);
+                            Field confListField = essentialsClass.getDeclaredField("confList");
+                            confListField.setAccessible(true);
+                            @SuppressWarnings("unchecked")
+                            List<Object> confList = (List<Object>) confListField.get(essentials);
+                            confList.remove(oldEntry);
+                            confList.add(newEntry);
+                            getLogger().info("Essentials found, hooked up custom item handler");
+                        }
+                    } catch (Throwable ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }, 5);
+        }
+
+        // Check for dtlTraders
+        tradersController = null;
+        try {
+            Plugin tradersPlugin = plugin.getServer().getPluginManager().getPlugin("dtlTraders");
+            if (tradersPlugin != null) {
+                tradersController = new TradersController();
+                tradersController.initialize(this, tradersPlugin);
+                getLogger().info("dtlTraders found, integrating for selling Wands, Spells, Brushes and Upgrades");
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            tradersController = null;
+        }
+
+        if (tradersController == null) {
+            getLogger().info("dtlTraders not found, will not integrate.");
+        }
+
+        // Try to link to WorldEdit
+        // TODO: Make wrapper class to avoid this reflection.
+        try {
+            cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
+            Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
+            if (loadSchematicMethod != null) {
+                getLogger().info("WorldEdit found, schematic brushes enabled.");
+                MaterialBrush.SchematicsEnabled = true;
+                hasWorldEdit = true;
+            } else {
+                cuboidClipboardClass = null;
+            }
+        } catch (Throwable ex) {
+        }
+
+        // Try to link to CommandBook
+        hasCommandBook = false;
+        try {
+            Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
+            if (commandBookPlugin != null) {
+                if (warpController.setCommandBook(commandBookPlugin)) {
+                    getLogger().info("CommandBook found, integrating for Recall warps");
+                    hasCommandBook = true;
+                } else {
+                    getLogger().warning("CommandBook integration failed");
+                }
+            }
+        } catch (Throwable ex) {
+
+        }
+
+        if (cuboidClipboardClass == null) {
+            getLogger().info("WorldEdit not found, schematic brushes will not work.");
+            MaterialBrush.SchematicsEnabled = false;
+            hasWorldEdit = false;
+        }
+
+        // Link to factions
+        factionsManager.initialize(plugin);
+
+        // Try to (dynamically) link to WorldGuard:
+        worldGuardManager.initialize(plugin);
 
         // Link to PvpManager
         pvpManager.initialize(plugin);
 
         // Link to Multiverse
         multiverseManager.initialize(plugin);
-		
-		// Try to link to dynmap:
-		try {
-			Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
-			if (dynmapPlugin != null) {
-				dynmap = new DynmapController(plugin, dynmapPlugin);
-			} else {
-				dynmap = null;
-			}
-		} catch (Throwable ex) {
-			plugin.getLogger().warning(ex.getMessage());
-		}
-		
-		if (dynmap == null) {
-			getLogger().info("dynmap not found, not integrating.");
-		} else {
-			getLogger().info("dynmap found, integrating.");
-		}
-		
-		// Try to link to Elementals:
-		try {
-			Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
-			if (elementalsPlugin != null) {
-				elementals = new ElementalsController(elementalsPlugin);
-			} else {
-				elementals = null;
-			}
-		} catch (Throwable ex) {
-			plugin.getLogger().warning(ex.getMessage());
-		}
-		
-		if (elementals != null) {
-			getLogger().info("Elementals found, integrating.");
-		}
-		
-		// Activate Metrics
-		activateMetrics();
-		
-		// Set up the PlayerSpells timer
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-			public void run() {
-				long threshold = System.currentTimeMillis() - MAGE_FORGET_THRESHOLD;
-				for (Entry<String, Long> mageEntry : forgetMages.entrySet()) {
-					if (mageEntry.getValue() < threshold)
-					mages.remove(mageEntry.getKey());
-				}
-				forgetMages.clear();
-				
-				
-				for (Mage mage : mages.values()) {
-                    if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                        ((com.elmakers.mine.bukkit.magic.Mage)mage).tick();
-                    }
-				}
-			}
-		}, 0, 20);
 
-		// Set up the Block update timer
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-			public void run() {
-				List<Mage> pending = new ArrayList<Mage>();
-				pending.addAll(pendingConstruction.values());
-				for (Mage mage : pending) {
+        // Try to link to dynmap:
+        try {
+            Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
+            if (dynmapPlugin != null) {
+                dynmap = new DynmapController(plugin, dynmapPlugin);
+            } else {
+                dynmap = null;
+            }
+        } catch (Throwable ex) {
+            plugin.getLogger().warning(ex.getMessage());
+        }
+
+        if (dynmap == null) {
+            getLogger().info("dynmap not found, not integrating.");
+        } else {
+            getLogger().info("dynmap found, integrating.");
+        }
+
+        // Try to link to Elementals:
+        try {
+            Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
+            if (elementalsPlugin != null) {
+                elementals = new ElementalsController(elementalsPlugin);
+            } else {
+                elementals = null;
+            }
+        } catch (Throwable ex) {
+            plugin.getLogger().warning(ex.getMessage());
+        }
+
+        if (elementals != null) {
+            getLogger().info("Elementals found, integrating.");
+        }
+
+        // Activate Metrics
+        activateMetrics();
+
+        // Set up the PlayerSpells timer
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+                long threshold = System.currentTimeMillis() - MAGE_FORGET_THRESHOLD;
+                for (Entry<String, Long> mageEntry : forgetMages.entrySet()) {
+                    if (mageEntry.getValue() < threshold)
+                        mages.remove(mageEntry.getKey());
+                }
+                forgetMages.clear();
+
+
+                for (Mage mage : mages.values()) {
+                    if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                        ((com.elmakers.mine.bukkit.magic.Mage) mage).tick();
+                    }
+                }
+            }
+        }, 0, 20);
+
+        // Set up the Block update timer
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+                List<Mage> pending = new ArrayList<Mage>();
+                pending.addAll(pendingConstruction.values());
+                for (Mage mage : pending) {
                     if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                         ((com.elmakers.mine.bukkit.magic.Mage) mage).processPendingBatches(maxBlockUpdates);
                     }
-				}
-			}
-		}, 0, 1);
-		
-		registerListeners();
-	}
-	
-	protected void activateMetrics()
-	{
-		// Activate Metrics
-		final MagicController controller = this;
-		metrics = null;
-		if (metricsLevel > 0) {
-			try {
-			    metrics = new Metrics(plugin);
-			   
-			    if (metricsLevel > 1) {
-			    	Graph integrationGraph = metrics.createGraph("Plugin Integration");
-			    	integrationGraph.addPlotter(new Metrics.Plotter("Essentials") {						
-						@Override public int getValue() { return controller.hasEssentials ? 1 : 0; }
-					});
-			    	integrationGraph.addPlotter(new Metrics.Plotter("WorldEdit") {						
-						@Override public int getValue() { return controller.hasWorldEdit ? 1 : 0; }
-					});
-			    	integrationGraph.addPlotter(new Metrics.Plotter("Dynmap") {						
-						@Override public int getValue() { return controller.hasDynmap ? 1 : 0; }
-					});
-			    	integrationGraph.addPlotter(new Metrics.Plotter("Factions") {						
-						@Override public int getValue() { return controller.factionsManager.isEnabled() ? 1 : 0; }
-					});
-			    	integrationGraph.addPlotter(new Metrics.Plotter("WorldGuard") {						
-						@Override public int getValue() { return controller.worldGuardManager.isEnabled() ? 1 : 0; }
-					});
-			    	integrationGraph.addPlotter(new Metrics.Plotter("Elementals") {						
-						@Override public int getValue() { return controller.elementalsEnabled() ? 1 : 0; }
-					});
-			    	integrationGraph.addPlotter(new Metrics.Plotter("Traders") {						
-						@Override public int getValue() { return controller.tradersController != null ? 1 : 0; }
-					});
-			    	integrationGraph.addPlotter(new Metrics.Plotter("CommandBook") {						
-						@Override public int getValue() { return controller.hasCommandBook ? 1 : 0; }
-					});
+                }
+            }
+        }, 0, 1);
+
+        registerListeners();
+    }
+
+    protected void activateMetrics() {
+        // Activate Metrics
+        final MagicController controller = this;
+        metrics = null;
+        if (metricsLevel > 0) {
+            try {
+                metrics = new Metrics(plugin);
+
+                if (metricsLevel > 1) {
+                    Graph integrationGraph = metrics.createGraph("Plugin Integration");
+                    integrationGraph.addPlotter(new Metrics.Plotter("Essentials") {
+                        @Override
+                        public int getValue() {
+                            return controller.hasEssentials ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("WorldEdit") {
+                        @Override
+                        public int getValue() {
+                            return controller.hasWorldEdit ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Dynmap") {
+                        @Override
+                        public int getValue() {
+                            return controller.hasDynmap ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Factions") {
+                        @Override
+                        public int getValue() {
+                            return controller.factionsManager.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("WorldGuard") {
+                        @Override
+                        public int getValue() {
+                            return controller.worldGuardManager.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Elementals") {
+                        @Override
+                        public int getValue() {
+                            return controller.elementalsEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Traders") {
+                        @Override
+                        public int getValue() {
+                            return controller.tradersController != null ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("CommandBook") {
+                        @Override
+                        public int getValue() {
+                            return controller.hasCommandBook ? 1 : 0;
+                        }
+                    });
                     integrationGraph.addPlotter(new Metrics.Plotter("PvpManager") {
-                        @Override public int getValue() { return controller.pvpManager.isEnabled() ? 1 : 0; }
+                        @Override
+                        public int getValue() {
+                            return controller.pvpManager.isEnabled() ? 1 : 0;
+                        }
                     });
                     integrationGraph.addPlotter(new Metrics.Plotter("Multiverse-Core") {
-                        @Override public int getValue() { return controller.multiverseManager.isEnabled() ? 1 : 0; }
+                        @Override
+                        public int getValue() {
+                            return controller.multiverseManager.isEnabled() ? 1 : 0;
+                        }
                     });
-			    	
-			    	Graph featuresGraph = metrics.createGraph("Features Enabled");
-			    	featuresGraph.addPlotter(new Metrics.Plotter("Crafting") {						
-						@Override public int getValue() { return controller.crafting.isEnabled() ? 1 : 0; }
-					});
-			    	featuresGraph.addPlotter(new Metrics.Plotter("Enchanting") {						
-						@Override public int getValue() { return controller.enchanting.isEnabled() ? 1 : 0; }
-					});
-			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Combining") {						
-						@Override public int getValue() { return controller.anvil.isCombiningEnabled() ? 1 : 0; }
-					});
-			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Organizing") {						
-						@Override public int getValue() { return controller.anvil.isOrganizingEnabled() ? 1 : 0; }
-					});
-			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Binding") {						
-						@Override public int getValue() { return controller.bindingEnabled ? 1 : 0; }
-					});
-			    	featuresGraph.addPlotter(new Metrics.Plotter("Anvil Keeping") {						
-						@Override public int getValue() { return controller.keepingEnabled ? 1 : 0; }
-					});
-			    }
-			    
-			    if (metricsLevel > 2) {
-			    	Graph categoryGraph = metrics.createGraph("Casts by Category");
-			    	for (final SpellCategory category : categories.values()) {
-			    		categoryGraph.addPlotter(new DeltaPlotter(new CategoryCastPlotter(category)));
-			    	}
-			    	
-			    	Graph totalCategoryGraph = metrics.createGraph("Total Casts by Category");
-			    	for (final SpellCategory category : categories.values()) {
-			    		totalCategoryGraph.addPlotter(new CategoryCastPlotter(category));
-			    	}
-			    }
 
-			    if (metricsLevel > 3) {
-			    	Graph spellGraph = metrics.createGraph("Casts");
-			    	for (final SpellTemplate spell : spells.values()) {
-			    		if (!(spell instanceof Spell)) continue;
-			    		spellGraph.addPlotter(new DeltaPlotter(new SpellCastPlotter((Spell)spell)));
-			    	}
-			    	
-			    	Graph totalCastGraph = metrics.createGraph("Total Casts");
-			    	for (final SpellTemplate spell : spells.values()) {
-			    		if (!(spell instanceof Spell)) continue;
-			    		totalCastGraph.addPlotter(new SpellCastPlotter((Spell)spell));
-			    	}
-			    }
-			    
-			    metrics.start();
-			    plugin.getLogger().info("Activated MCStats");
-			} catch (Exception ex) {
-			    plugin.getLogger().warning("Failed to load MCStats: " + ex.getMessage());
-			}
-		}
-	}
-	
-	protected void registerListeners() {
-		PluginManager pm = plugin.getServer().getPluginManager();
-		pm.registerEvents(this, plugin);
-		pm.registerEvents(crafting, plugin);
-		pm.registerEvents(enchanting, plugin);
-		pm.registerEvents(anvil, plugin);
-	}
-	
-	public Collection<Mage> getPending() {
-		return pendingConstruction.values();
-	}
-	
-	protected void addPending(Mage mage) {
-		pendingConstruction.put(mage.getName(), mage);
-	}
-	
-	protected void removePending(Mage mage) {
-		pendingConstruction.remove(mage.getName());
-	}
-	
-	public boolean removeMarker(String id, String group)
-	{
-		boolean removed = false;
-		if (dynmap != null && dynmapShowWands) 
-		{
-			return dynmap.removeMarker(id, group);
-		}
-		
-		return removed;
-	}
-	
-	public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description)
-	{
-		boolean created = false;
-		if (dynmap != null && dynmapShowWands)
-		{
-			created = dynmap.addMarker(id, group, title, world, x, y, z, description);
-		}
-		
-		return created;
-	}
-	
-	protected File getDataFile(String fileName)
-	{
-		return new File(dataFolder, fileName + ".yml");
-	}
-	
-	protected ConfigurationSection loadDataFile(String fileName)
-	{
-		File dataFile = getDataFile(fileName);
-		if (!dataFile.exists()) {
-			return null;
-		}
-		Configuration configuration = YamlConfiguration.loadConfiguration(dataFile);
-		return configuration;
-	}
-	
-	protected DataStore createDataFile(String fileName)
-	{
-		File dataFile = new File(dataFolder, fileName + ".yml");
-		DataStore configuration = new DataStore(getLogger(), dataFile);
-		return configuration;
-	}
+                    Graph featuresGraph = metrics.createGraph("Features Enabled");
+                    featuresGraph.addPlotter(new Metrics.Plotter("Crafting") {
+                        @Override
+                        public int getValue() {
+                            return controller.crafting.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    featuresGraph.addPlotter(new Metrics.Plotter("Enchanting") {
+                        @Override
+                        public int getValue() {
+                            return controller.enchanting.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Combining") {
+                        @Override
+                        public int getValue() {
+                            return controller.anvil.isCombiningEnabled() ? 1 : 0;
+                        }
+                    });
+                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Organizing") {
+                        @Override
+                        public int getValue() {
+                            return controller.anvil.isOrganizingEnabled() ? 1 : 0;
+                        }
+                    });
+                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Binding") {
+                        @Override
+                        public int getValue() {
+                            return controller.bindingEnabled ? 1 : 0;
+                        }
+                    });
+                    featuresGraph.addPlotter(new Metrics.Plotter("Anvil Keeping") {
+                        @Override
+                        public int getValue() {
+                            return controller.keepingEnabled ? 1 : 0;
+                        }
+                    });
+                }
 
-	protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults)
-	{
-		String configFileName = fileName + ".yml";
-		File configFile = new File(configFolder, configFileName);
-		if (!configFile.exists()) {
-			getLogger().info("Saving template " + configFileName + ", edit to customize configuration.");
-			plugin.saveResource(configFileName, false);
-		}
+                if (metricsLevel > 2) {
+                    Graph categoryGraph = metrics.createGraph("Casts by Category");
+                    for (final SpellCategory category : categories.values()) {
+                        categoryGraph.addPlotter(new DeltaPlotter(new CategoryCastPlotter(category)));
+                    }
+
+                    Graph totalCategoryGraph = metrics.createGraph("Total Casts by Category");
+                    for (final SpellCategory category : categories.values()) {
+                        totalCategoryGraph.addPlotter(new CategoryCastPlotter(category));
+                    }
+                }
+
+                if (metricsLevel > 3) {
+                    Graph spellGraph = metrics.createGraph("Casts");
+                    for (final SpellTemplate spell : spells.values()) {
+                        if (!(spell instanceof Spell)) continue;
+                        spellGraph.addPlotter(new DeltaPlotter(new SpellCastPlotter((Spell) spell)));
+                    }
+
+                    Graph totalCastGraph = metrics.createGraph("Total Casts");
+                    for (final SpellTemplate spell : spells.values()) {
+                        if (!(spell instanceof Spell)) continue;
+                        totalCastGraph.addPlotter(new SpellCastPlotter((Spell) spell));
+                    }
+                }
+
+                metrics.start();
+                plugin.getLogger().info("Activated MCStats");
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Failed to load MCStats: " + ex.getMessage());
+            }
+        }
+    }
+
+    protected void registerListeners() {
+        PluginManager pm = plugin.getServer().getPluginManager();
+        pm.registerEvents(this, plugin);
+        pm.registerEvents(crafting, plugin);
+        pm.registerEvents(enchanting, plugin);
+        pm.registerEvents(anvil, plugin);
+    }
+
+    public Collection<Mage> getPending() {
+        return pendingConstruction.values();
+    }
+
+    protected void addPending(Mage mage) {
+        pendingConstruction.put(mage.getName(), mage);
+    }
+
+    protected void removePending(Mage mage) {
+        pendingConstruction.remove(mage.getName());
+    }
+
+    public boolean removeMarker(String id, String group) {
+        boolean removed = false;
+        if (dynmap != null && dynmapShowWands) {
+            return dynmap.removeMarker(id, group);
+        }
+
+        return removed;
+    }
+
+    public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
+        boolean created = false;
+        if (dynmap != null && dynmapShowWands) {
+            created = dynmap.addMarker(id, group, title, world, x, y, z, description);
+        }
+
+        return created;
+    }
+
+    protected File getDataFile(String fileName) {
+        return new File(dataFolder, fileName + ".yml");
+    }
+
+    protected ConfigurationSection loadDataFile(String fileName) {
+        File dataFile = getDataFile(fileName);
+        if (!dataFile.exists()) {
+            return null;
+        }
+        Configuration configuration = YamlConfiguration.loadConfiguration(dataFile);
+        return configuration;
+    }
+
+    protected DataStore createDataFile(String fileName) {
+        File dataFile = new File(dataFolder, fileName + ".yml");
+        DataStore configuration = new DataStore(getLogger(), dataFile);
+        return configuration;
+    }
+
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults) {
+        String configFileName = fileName + ".yml";
+        File configFile = new File(configFolder, configFileName);
+        if (!configFile.exists()) {
+            getLogger().info("Saving template " + configFileName + ", edit to customize configuration.");
+            plugin.saveResource(configFileName, false);
+        }
 
         boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
 
         String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
-		String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
+        String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 
-		plugin.saveResource(defaultsFileName, true);
+        plugin.saveResource(defaultsFileName, true);
 
-		getLogger().info("Loading " + configFile.getName());
-		ConfigurationSection overrides = YamlConfiguration.loadConfiguration(configFile);
+        getLogger().info("Loading " + configFile.getName());
+        ConfigurationSection overrides = YamlConfiguration.loadConfiguration(configFile);
         ConfigurationSection config = new MemoryConfiguration();
 
         if (loadDefaults) {
@@ -994,47 +994,46 @@ public class MagicController implements Listener, MageController
 
         config = ConfigurationUtils.addConfigurations(config, overrides);
 
-		return config;
-	}
-	
-	public void loadConfiguration()
-	{
-		// Clear some cache stuff... mainly this is for debuggin/testing.
-		schematics.clear();
-		
-		// Load main configuration
-		try {
-			loadProperties(loadConfigFile(CONFIG_FILE, true));
+        return config;
+    }
+
+    public void loadConfiguration() {
+        // Clear some cache stuff... mainly this is for debuggin/testing.
+        schematics.clear();
+
+        // Load main configuration
+        try {
+            loadProperties(loadConfigFile(CONFIG_FILE, true));
             if (exampleDefaults != null && exampleDefaults.length() > 0) {
                 // Reload config, example will be used this time.
                 getLogger().info("Overriding configuration with defaults: " + exampleDefaults);
                 loadProperties(loadConfigFile(CONFIG_FILE, false));
             }
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		// Load localizations
-		try {
-			Messages.reset();
-			Messages.load(loadConfigFile(MESSAGES_FILE, true));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-		// Load materials configuration
-		try {
-			loadMaterials(loadConfigFile(MATERIALS_FILE, true));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		// Load spells
-		try {
-			loadSpells(loadConfigFile(SPELLS_FILE, loadDefaultSpells));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+        // Load localizations
+        try {
+            Messages.reset();
+            Messages.load(loadConfigFile(MESSAGES_FILE, true));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Load materials configuration
+        try {
+            loadMaterials(loadConfigFile(MATERIALS_FILE, true));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Load spells
+        try {
+            loadSpells(loadConfigFile(SPELLS_FILE, loadDefaultSpells));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         getLogger().info("Loaded " + spells.size() + " spells");
 
@@ -1047,14 +1046,14 @@ public class MagicController implements Listener, MageController
 
         getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
 
-		// Load wand templates
-		try {
-			Wand.loadTemplates(loadConfigFile(WANDS_FILE, loadDefaultWands));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+        // Load wand templates
+        try {
+            Wand.loadTemplates(loadConfigFile(WANDS_FILE, loadDefaultWands));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-        getLogger().info("Loaded " +  Wand.getWandTemplates().size() + " wands");
+        getLogger().info("Loaded " + Wand.getWandTemplates().size() + " wands");
 
         // Load crafting recipes
         try {
@@ -1064,271 +1063,263 @@ public class MagicController implements Listener, MageController
         }
 
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
-	}
-	
-	protected void loadSpellData()
-	{
-		try {
-			ConfigurationSection configNode = loadDataFile(SPELLS_DATA_FILE);
-			if (configNode == null) return;
+    }
 
-			Set<String> keys = configNode.getKeys(false);
-			for (String key : keys) {					
-				SpellTemplate spell = getSpellTemplate(key);
-				
-				// Bit hacky to use the Spell load method on a SpellTemplate, but... meh!
-				if (spell != null && spell instanceof MageSpell) {
-					ConfigurationSection spellSection = configNode.getConfigurationSection(key);
-					((MageSpell)spell).load(spellSection);
-				}
-			}
-		} catch (Exception ex) {
-			getLogger().warning("Failed to load spell metrics");
-		}
-	}
-	
-	public void load()
-	{
-		loadConfiguration();
-		loadSpellData();
-		
-		File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
-		    public boolean accept(File dir, String name) {
-		        return name.toLowerCase().endsWith(".dat");
-		    }
-		});
+    protected void loadSpellData() {
+        try {
+            ConfigurationSection configNode = loadDataFile(SPELLS_DATA_FILE);
+            if (configNode == null) return;
+
+            Set<String> keys = configNode.getKeys(false);
+            for (String key : keys) {
+                SpellTemplate spell = getSpellTemplate(key);
+
+                // Bit hacky to use the Spell load method on a SpellTemplate, but... meh!
+                if (spell != null && spell instanceof MageSpell) {
+                    ConfigurationSection spellSection = configNode.getConfigurationSection(key);
+                    ((MageSpell) spell).load(spellSection);
+                }
+            }
+        } catch (Exception ex) {
+            getLogger().warning("Failed to load spell metrics");
+        }
+    }
+
+    public void load() {
+        loadConfiguration();
+        loadSpellData();
+
+        File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".dat");
+            }
+        });
 
         getLogger().info("Scanning " + playerFiles.length + " save files for pending undo info. Adjust player_data_expire_threshold if this is taking a long time.");
 
-		for (File playerFile : playerFiles)
-		{
-			// Skip if older than 2 days
-			if (playerDataThreshold > 0 && playerFile.lastModified() < System.currentTimeMillis() - playerDataThreshold) continue;
-			
-			Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
-			if (playerData.contains("scheduled") && playerData.getList("scheduled").size() > 0) {
-				String playerId = playerFile.getName().replaceFirst("[.][^.]+$", "");
-				loadMage(playerId, playerData);
-			}
-		}
-		
-		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-			public void run() {
-				// Load lost wands
-				getLogger().info("Loading lost wand data");
-				loadLostWands();
-				
-				// Load toggle-on-load blocks
-				getLogger().info("Loading automata data");
-				loadAutomata();
-				
-				// Load URL Map Data
-				try {
-					URLMap.resetAll();
-					File urlMapFile = getDataFile(URL_MAPS_FILE);
-					File imageCache = new File(dataFolder, "imagemapcache");
-					imageCache.mkdirs();
-					URLMap.load(plugin, urlMapFile, imageCache);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				
-				getLogger().info("Finished loading data.");
-			}
-		}, 10);
-	}
+        for (File playerFile : playerFiles) {
+            // Skip if older than 2 days
+            if (playerDataThreshold > 0 && playerFile.lastModified() < System.currentTimeMillis() - playerDataThreshold)
+                continue;
 
-	protected void loadLostWands()
-	{
-		try {
-			ConfigurationSection lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
-			if (lostWandConfiguration != null)
-			{
-				Set<String> wandIds = lostWandConfiguration.getKeys(false);
-				for (String wandId : wandIds) {
+            Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+            if (playerData.contains("scheduled") && playerData.getList("scheduled").size() > 0) {
+                String playerId = playerFile.getName().replaceFirst("[.][^.]+$", "");
+                loadMage(playerId, playerData);
+            }
+        }
+
+        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+            public void run() {
+                // Load lost wands
+                getLogger().info("Loading lost wand data");
+                loadLostWands();
+
+                // Load toggle-on-load blocks
+                getLogger().info("Loading automata data");
+                loadAutomata();
+
+                // Load URL Map Data
+                try {
+                    URLMap.resetAll();
+                    File urlMapFile = getDataFile(URL_MAPS_FILE);
+                    File imageCache = new File(dataFolder, "imagemapcache");
+                    imageCache.mkdirs();
+                    URLMap.load(plugin, urlMapFile, imageCache);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                getLogger().info("Finished loading data.");
+            }
+        }, 10);
+    }
+
+    protected void loadLostWands() {
+        try {
+            ConfigurationSection lostWandConfiguration = loadDataFile(LOST_WANDS_FILE);
+            if (lostWandConfiguration != null) {
+                Set<String> wandIds = lostWandConfiguration.getKeys(false);
+                for (String wandId : wandIds) {
                     if (wandId == null || wandId.length() == 0) continue;
-					LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getConfigurationSection(wandId));
-					if (!lostWand.isValid()) {
-						getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
-						continue;
-					}
-					addLostWand(lostWand);
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		getLogger().info("Loaded " + lostWands.size() + " lost wands");
-	}
-	
-	protected void saveSpellData()
-	{
-		String lastKey = "";
-		try {
-			DataStore spellsDataFile = createDataFile(SPELLS_DATA_FILE);
-			for (SpellTemplate spell : spells.values()) {
-				lastKey = spell.getKey();
-				ConfigurationSection spellNode = spellsDataFile.createSection(lastKey);
-				if (spellNode == null) {
-					getLogger().warning("Error saving spell data for " + lastKey);
-					continue;
-				}
-				// Hackily re-using save
-				if (spell != null && spell instanceof MageSpell) {
-					((MageSpell)spell).save(spellNode);
-				}
-			}
-			spellsDataFile.save();
-		} catch (Throwable ex) {
-			getLogger().warning("Error saving spell data for " + lastKey);
-			ex.printStackTrace();
-		}
-	}
-	
-	protected void saveLostWands() {
-		String lastKey = "";
-		try {
-			DataStore lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
-			for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
-				lastKey = wandEntry.getKey();
+                    LostWand lostWand = new LostWand(wandId, lostWandConfiguration.getConfigurationSection(wandId));
+                    if (!lostWand.isValid()) {
+                        getLogger().info("Skipped invalid entry in lostwands.yml file, entry will be deleted. The wand is really lost now!");
+                        continue;
+                    }
+                    addLostWand(lostWand);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        getLogger().info("Loaded " + lostWands.size() + " lost wands");
+    }
+
+    protected void saveSpellData(Collection<DataStore> stores) {
+        String lastKey = "";
+        try {
+            DataStore spellsDataFile = createDataFile(SPELLS_DATA_FILE);
+            for (SpellTemplate spell : spells.values()) {
+                lastKey = spell.getKey();
+                ConfigurationSection spellNode = spellsDataFile.createSection(lastKey);
+                if (spellNode == null) {
+                    getLogger().warning("Error saving spell data for " + lastKey);
+                    continue;
+                }
+                // Hackily re-using save
+                if (spell != null && spell instanceof MageSpell) {
+                    ((MageSpell) spell).save(spellNode);
+                }
+            }
+            stores.add(spellsDataFile);
+        } catch (Throwable ex) {
+            getLogger().warning("Error saving spell data for " + lastKey);
+            ex.printStackTrace();
+        }
+    }
+
+    protected void saveLostWands(Collection<DataStore> stores) {
+        String lastKey = "";
+        try {
+            DataStore lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
+            for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
+                lastKey = wandEntry.getKey();
                 if (lastKey == null || lastKey.length() == 0) continue;
-				ConfigurationSection wandNode = lostWandsConfiguration.createSection(lastKey);
-				if (wandNode == null) {
-					getLogger().warning("Error saving lost wand data for " + lastKey);
-					continue;
-				}
-				if (!wandEntry.getValue().isValid()) {
-					getLogger().warning("Invalid lost and data for " + lastKey);
-					continue;
-				}
-				wandEntry.getValue().save(wandNode);
-			}
-			lostWandsConfiguration.save();
-		} catch (Throwable ex) {
-			getLogger().warning("Error saving lost wand data for " + lastKey);
-			ex.printStackTrace();
-		}
-	}
+                ConfigurationSection wandNode = lostWandsConfiguration.createSection(lastKey);
+                if (wandNode == null) {
+                    getLogger().warning("Error saving lost wand data for " + lastKey);
+                    continue;
+                }
+                if (!wandEntry.getValue().isValid()) {
+                    getLogger().warning("Invalid lost and data for " + lastKey);
+                    continue;
+                }
+                wandEntry.getValue().save(wandNode);
+            }
+            stores.add(lostWandsConfiguration);
+        } catch (Throwable ex) {
+            getLogger().warning("Error saving lost wand data for " + lastKey);
+            ex.printStackTrace();
+        }
+    }
 
-	protected void loadAutomata()
-	{
-		int automataCount = 0;
-		try {
-			ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_FILE);
-			if (toggleBlockData != null)
-			{
-				Set<String> chunkIds = toggleBlockData.getKeys(false);
-				for (String chunkId : chunkIds) {
-					ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
-					Map<Long, Automaton> restoreChunk = new HashMap<Long, Automaton>();
-					automata.put(chunkId, restoreChunk);
-					Set<String> blockIds = chunkNode.getKeys(false);
-					for (String blockId : blockIds) {
-						ConfigurationSection toggleConfig = chunkNode.getConfigurationSection(blockId);
-						Automaton toggle = new Automaton(toggleConfig);
-						restoreChunk.put(toggle.getId(), toggle);
-						automataCount++;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		getLogger().info("Loaded " + automataCount + " automata");
-	}
-	
-	protected void saveAutomata()
-	{
-		try {
-			DataStore automataData = createDataFile(AUTOMATA_FILE);
-			for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
-				Collection<Automaton> blocks = toggleEntry.getValue().values();
-				if (blocks.size() > 0) {
-					ConfigurationSection chunkNode = automataData.createSection(toggleEntry.getKey());
-					for (Automaton block : blocks) {
-						ConfigurationSection node = chunkNode.createSection(Long.toString(block.getId()));
-						block.save(node);
-					}
-				}
-			}
-			automataData.save();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	protected String getChunkKey(Chunk chunk) {
-		return chunk.getWorld().getName() + "|" + chunk.getX() + "," + chunk.getZ();
-	}
-	
-	public boolean addLostWand(LostWand lostWand) {
-		lostWands.put(lostWand.getId(), lostWand);
-		String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
-		Set<String> chunkWands = lostWandChunks.get(chunkKey);
-		if (chunkWands == null) {
-			chunkWands = new HashSet<String>();
-			lostWandChunks.put(chunkKey, chunkWands);
-		}
-		chunkWands.add(lostWand.getId());
-		
-		if (dynmapShowWands) {
-			addLostWandMarker(lostWand);
-		}
-		
-		return true;
-	}
-	
-	public boolean addLostWand(Wand wand, Location dropLocation) {
-		addLostWand(wand.makeLost(dropLocation));
-		return true;
-	}
+    protected void loadAutomata() {
+        int automataCount = 0;
+        try {
+            ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_FILE);
+            if (toggleBlockData != null) {
+                Set<String> chunkIds = toggleBlockData.getKeys(false);
+                for (String chunkId : chunkIds) {
+                    ConfigurationSection chunkNode = toggleBlockData.getConfigurationSection(chunkId);
+                    Map<Long, Automaton> restoreChunk = new HashMap<Long, Automaton>();
+                    automata.put(chunkId, restoreChunk);
+                    Set<String> blockIds = chunkNode.getKeys(false);
+                    for (String blockId : blockIds) {
+                        ConfigurationSection toggleConfig = chunkNode.getConfigurationSection(blockId);
+                        Automaton toggle = new Automaton(toggleConfig);
+                        restoreChunk.put(toggle.getId(), toggle);
+                        automataCount++;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-	public boolean removeLostWand(String wandId) {
-		if (wandId == null || wandId.length() == 0 || !lostWands.containsKey(wandId)) return false;
-		
-		LostWand lostWand = lostWands.get(wandId);
-		lostWands.remove(wandId);
-		String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
-		Set<String> chunkWands = lostWandChunks.get(chunkKey);
-		if (chunkWands != null) {
-			chunkWands.remove(wandId);
-			if (chunkWands.size() == 0) {
-				lostWandChunks.remove(chunkKey);
-			}
-		}
-		
-		if (dynmapShowWands) {
-			if (removeMarker("wand-" + wandId, "Wands")) {
-				getLogger().info("Wand removed from map");
-			}
-		}
-		
-		return true;
-	}
+        getLogger().info("Loaded " + automataCount + " automata");
+    }
 
-	public WandMode getDefaultWandMode() {
-		return defaultWandMode;
-	}
+    protected void saveAutomata(Collection<DataStore> stores) {
+        try {
+            DataStore automataData = createDataFile(AUTOMATA_FILE);
+            for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
+                Collection<Automaton> blocks = toggleEntry.getValue().values();
+                if (blocks.size() > 0) {
+                    ConfigurationSection chunkNode = automataData.createSection(toggleEntry.getKey());
+                    for (Automaton block : blocks) {
+                        ConfigurationSection node = chunkNode.createSection(Long.toString(block.getId()));
+                        block.save(node);
+                    }
+                }
+            }
+            stores.add(automataData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    protected String getChunkKey(Chunk chunk) {
+        return chunk.getWorld().getName() + "|" + chunk.getX() + "," + chunk.getZ();
+    }
+
+    public boolean addLostWand(LostWand lostWand) {
+        lostWands.put(lostWand.getId(), lostWand);
+        String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
+        Set<String> chunkWands = lostWandChunks.get(chunkKey);
+        if (chunkWands == null) {
+            chunkWands = new HashSet<String>();
+            lostWandChunks.put(chunkKey, chunkWands);
+        }
+        chunkWands.add(lostWand.getId());
+
+        if (dynmapShowWands) {
+            addLostWandMarker(lostWand);
+        }
+
+        return true;
+    }
+
+    public boolean addLostWand(Wand wand, Location dropLocation) {
+        addLostWand(wand.makeLost(dropLocation));
+        return true;
+    }
+
+    public boolean removeLostWand(String wandId) {
+        if (wandId == null || wandId.length() == 0 || !lostWands.containsKey(wandId)) return false;
+
+        LostWand lostWand = lostWands.get(wandId);
+        lostWands.remove(wandId);
+        String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
+        Set<String> chunkWands = lostWandChunks.get(chunkKey);
+        if (chunkWands != null) {
+            chunkWands.remove(wandId);
+            if (chunkWands.size() == 0) {
+                lostWandChunks.remove(chunkKey);
+            }
+        }
+
+        if (dynmapShowWands) {
+            if (removeMarker("wand-" + wandId, "Wands")) {
+                getLogger().info("Wand removed from map");
+            }
+        }
+
+        return true;
+    }
+
+    public WandMode getDefaultWandMode() {
+        return defaultWandMode;
+    }
 
     public String getDefaultWandPath() {
         return defaultWandPath;
     }
-	
-	protected void savePlayerData() {
-		try {
-			for (Entry<String, Mage> mageEntry : mages.entrySet()) {
-				File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
-				DataStore playerConfig = new DataStore(getLogger(), playerData);
-				Mage mage = mageEntry.getValue();
+
+    protected void savePlayerData(Collection<DataStore> stores) {
+        try {
+            for (Entry<String, Mage> mageEntry : mages.entrySet()) {
+                File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
+                DataStore playerConfig = new DataStore(getLogger(), playerData);
+                Mage mage = mageEntry.getValue();
                 if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                    ((com.elmakers.mine.bukkit.magic.Mage)mage).save(playerConfig);
+                    ((com.elmakers.mine.bukkit.magic.Mage) mage).save(playerConfig);
                 }
-				playerConfig.save();
-				
-				// Check for players we can forget
-				Player player = mage.getPlayer();
+                stores.add(playerConfig);
+
+                // Check for players we can forget
+                Player player = mage.getPlayer();
                 LivingEntity livingEntity = mage.getLivingEntity();
                 boolean isOfflinePlayer = player != null && !player.isOnline() && !isNPC(player);
                 boolean isDeadEntity = livingEntity != null && livingEntity.isDead() && player == null;
@@ -1337,35 +1328,58 @@ public class MagicController implements Listener, MageController
                 if (isOfflinePlayer || isDeadEntity) {
                     getLogger().info("Forgetting Offline mage " + mage.getName());
                     forgetMages.put(mageEntry.getKey(), 0l);
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		// Forget players we don't need to keep in memory
-		for (String forgetId : forgetMages.keySet()) {
-			mages.remove(forgetId);
-		}
-		forgetMages.clear();
-	}
-	
-	public void save()
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Forget players we don't need to keep in memory
+        for (String forgetId : forgetMages.keySet()) {
+            mages.remove(forgetId);
+        }
+        forgetMages.clear();
+    }
+
+    public void save()
+    {
+        save(false);
+    }
+
+	public void save(boolean asynchronous)
 	{
+        getLogger().info("Saving image map data");
+        URLMap.save();
+
+        final List<DataStore> saveData = new ArrayList<DataStore>();
 		getLogger().info("Saving player data");
-		savePlayerData();
+		savePlayerData(saveData);
 		
 		getLogger().info("Saving spell data");
-		saveSpellData();
+		saveSpellData(saveData);
 
 		getLogger().info("Saving lost wands data");
-		saveLostWands();
-
-		getLogger().info("Saving image map data");
-		URLMap.save();
+		saveLostWands(saveData);
 
 		getLogger().info("Saving automata data");
-		saveAutomata();
+		saveAutomata(saveData);
+
+        if (asynchronous) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (saveLock) {
+                        for (DataStore config : saveData) {
+                            config.save();
+                        }
+                    }
+                }
+            });
+        } else {
+            for (DataStore config : saveData) {
+                config.save();
+            }
+        }
 	}
 	
 	protected void loadSpells(ConfigurationSection config)
@@ -1596,7 +1610,7 @@ public class MagicController implements Listener, MageController
 					new Runnable() {
 						public void run() {
 							saveController.getLogger().info("Auto-saving Magic data");
-							saveController.save();
+							saveController.save(true);
 							saveController.getLogger().info("... Done auto-saving.");
 						}
 					}, 
@@ -2385,7 +2399,7 @@ public class MagicController implements Listener, MageController
         Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         mage.onPlayerQuit(event);
 		UndoQueue undoQueue = mage.getUndoQueue();
@@ -2395,16 +2409,24 @@ public class MagicController implements Listener, MageController
 			undoQueue.commit();
 			undoQueue.undoScheduled();
 		}
-		
-		try {
-			File playerData = new File(playerDataFolder, player.getUniqueId().toString() + ".dat");
-			getLogger().info("Player logged out, saving data to " + playerData.getName());
-			DataStore playerConfig = new DataStore(getLogger(), playerData);
-			mage.save(playerConfig);
-			playerConfig.save();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+
+        final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
+        getLogger().info("Player logged out, saving data to " + playerData.getName());
+        final DataStore playerConfig = new DataStore(getLogger(), playerData);
+        mage.save(playerConfig);
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+                synchronized (saveLock) {
+                    try {
+                        playerConfig.save();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
 		
 		// Close the wand inventory to make sure the player's normal inventory gets saved
 		Wand wand = mage.getActiveWand();
@@ -3591,7 +3613,10 @@ public class MagicController implements Listener, MageController
 
      private String                              exampleDefaults                = null;
      private Collection<String>                  addExamples                    = null;
-	 
+
+     // Synchronization
+     private Object                              saveLock                       = new Object();
+
 	 // Sub-Controllers
 	 private CraftingController					 crafting						= null;
 	 private EnchantingController				 enchanting						= null;
