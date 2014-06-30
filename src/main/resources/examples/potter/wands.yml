@@ -20,7 +20,7 @@ default:
 auror:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
-    randomize: true
+    rename: true
     bound: true
     keep: true
     quiet: 1
@@ -33,22 +33,11 @@ auror:
     spells:
      - aurorate
      - expelliarmus
-     - flagrate
-     - stupefy
-     - flipendo
-     - accio
-     - disillusion
-     - lumos
-     - silencio
-     - bombarda
-     - protego
-     - immobulus
-     - sectumsempra
 
 deatheater:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
-    randomize: true
+    rename: true
     bound: true
     keep: true
     quiet: 1
@@ -61,16 +50,6 @@ deatheater:
     spells:
      - apparate
      - sectumsempra
-     - flagrate
-     - stupefy
-     - flipendo
-     - accio
-     - disillusion
-     - lumos
-     - silencio
-     - bombarda
-     - protego
-     - immobulus
 
 staff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade

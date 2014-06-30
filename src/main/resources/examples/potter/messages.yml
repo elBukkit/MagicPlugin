@@ -448,10 +448,12 @@ wands:
     auror:
         name: Auror Wand
         description: $wood and $core
+        upgrade_description: Become an Auror!
 
     deatheater:
         name: Deatheater Wand
         description: $wood and $core
+        upgrade_description: Become a Deatheater!
 
     video:
         name: Videographer Wand
@@ -472,6 +474,7 @@ wands:
     staff:
         name: House Wand
         description: A powerful Head of House Wand
+        upgrade_description: Welcome to the Staff!
 
     elder:
         name: Elder Wand

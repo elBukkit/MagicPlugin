@@ -63,7 +63,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"haste", 
 		"health_regeneration", "hunger_regeneration", 
-		"icon", "mode", "keep", "locked", "quiet", "force", "randomize",
+		"icon", "mode", "keep", "locked", "quiet", "force", "randomize", "rename",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
@@ -99,6 +99,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean autoFill = false;
 	private boolean isUpgrade = false;
     private boolean randomize = false;
+    private boolean rename = false;
 	
 	private MaterialAndData icon = null;
 	
@@ -275,8 +276,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void makeUpgrade() {
         if (!isUpgrade) {
             isUpgrade = true;
+            String oldName = wandName;
             wandName = Messages.get("wand.upgrade_name");
+            wandName = wandName.replace("$name", oldName);
             description = Messages.get("wand.upgrade_default_description");
+            if (template != null && template.length() > 0) {
+                description = Messages.get("wands." + template + ".upgrade_description", description);
+            }
             setIcon(DefaultUpgradeMaterial, (byte) 0);
             saveState();
             updateName(true);
@@ -901,6 +907,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("quiet", quietLevel);
 		node.set("keep", keep);
         node.set("randomize", randomize);
+        node.set("rename", rename);
 		node.set("bound", bound);
         node.set("force", forceUpgrade);
 		node.set("indestructible", indestructible);
@@ -1013,6 +1020,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
 			autoFill = wandConfig.getBoolean("fill", autoFill);
             randomize = wandConfig.getBoolean("randomize", randomize);
+            rename = wandConfig.getBoolean("rename", rename);
 
             if (wandConfig.contains("effect_particle")) {
 				parseParticleEffect(wandConfig.getString("effect_particle"));
@@ -1225,7 +1233,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public void updateName(boolean isActive) {
-        CompatibilityUtils.setDisplayName(item, isActive ? getActiveWandName() : getDisplayName());
+        CompatibilityUtils.setDisplayName(item, isActive && !isUpgrade ? getActiveWandName() : ChatColor.GOLD + getDisplayName());
 
 		// Reset Enchantment glow
 		if (EnableGlow) {
@@ -1841,6 +1849,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 			modified = true;
 		}
+
+        if (other.rename && other.template != null && other.template.length() > 0) {
+            ConfigurationSection template = wandTemplates.get(other.template);
+
+            wandName = template.getString("name", wandName);
+            wandName = Messages.get("wands." + other.template + ".name", wandName);
+            updateName();
+        }
 		
 		modified = modified | (!keep && other.keep);
 		modified = modified | (!bound && other.bound);
