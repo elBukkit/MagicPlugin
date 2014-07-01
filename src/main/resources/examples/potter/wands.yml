@@ -33,6 +33,7 @@ auror:
     spells:
      - aurorate
      - expelliarmus
+     - mayday
 
 deatheater:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
@@ -50,6 +51,7 @@ deatheater:
     spells:
      - apparate
      - sectumsempra
+     - morsmordre
 
 staff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
@@ -202,6 +204,7 @@ lignumvitae:
       - recall
       - gather
       - atmos
+      - snowball
 
 allis0n:
     icon: wood_hoe
@@ -245,6 +248,7 @@ allis0n:
       - nox
       - atmos
       - rennervate
+      - snowball
 
 elder:
     icon: iron_hoe
@@ -267,7 +271,7 @@ elder:
     spells:
       - accio
       - aguamenti
-      - alohomora
+      - aparecium
       - apparate
       - araniaexumai
       - arresto
@@ -319,6 +323,7 @@ elder:
       - silencio
       - silenciomaxima
       - silenciototalus
+      - snowball
       - stupefy
       - phase
       - stash
@@ -346,7 +351,7 @@ wolf:
     spells:
       - accio
       - aguamenti
-      - alohomora
+      - aparecium
       - apparate
       - araniaexumai
       - arresto
@@ -404,6 +409,7 @@ wolf:
       - silenciomaxima
       - silenciototalus
       - stupefy
+      - snowball
       - stash
       - absorb
       - fill

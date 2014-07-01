@@ -108,7 +108,7 @@ aguamenti:
     costs:
         xp: 50
 
-alohomora:
+aparecium:
     icon: daylight_detector
     category: automata
     class: ConstructSpell
@@ -127,7 +127,7 @@ alohomora:
     parameters:
         allow_max_range: true
         range: 8
-        radius: 3
+        radius: 5
         type: sphere
         power: true
         cooldown: 1000
@@ -259,7 +259,32 @@ arrow:
       fire: false
       tick_increase: 1180
     costs:
-        xp: 30
+        xp: 40
+
+snowball:
+    icon: snow_ball
+    category: year1
+    class: ProjectileSpell
+    pvp_restricted: true
+    worth: 5
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: step_snow
+           location: origin
+    parameters:
+      projectile: Snowball
+      origin_at_target: true
+      oty: 6
+      otdx: 0
+      otdy: -1
+      otdz: 0
+      count: 4
+      range: 16
+      allow_max_range: true
+      spread: 30
+    costs:
+        xp: 50
 
 ascendio:
     icon: ink_sack:8
@@ -547,14 +572,14 @@ bogies:
            sound: burp
            effectlib:
              class: HelixLocationEffect
-             iterations: 10
+             iterations: 2
              particle: slime
         -  class: EffectSingle
            location: target
            effectlib:
              class: WarpEntityEffect
              particle: slime
-             iterations: 10
+             iterations: 2
     costs:
         xp: 30
     parameters:
@@ -589,7 +614,7 @@ bombarda:
         break_blocks: false
         size: 1
     costs:
-        xp: 35
+        xp: 50
 
 bombardamaxima:
     icon: ink_sack:7
@@ -612,7 +637,7 @@ bombardamaxima:
         size: 3
         break_blocks: false
     costs:
-        xp: 50
+        xp: 75
 
 camera:
     icon: tripwire_hook
@@ -1432,16 +1457,17 @@ morsmordre:
            sound: wither_hurt
         -  class: EffectTrail
            particle: flame
-        -  class: EffectSingle
+        -  class: EffectRing
            location: target
            firework: creeper
-           target_offset: 0,8,0
+           radius: 12
+           target_offset: 0,16,0
            color: '00FF00'
            color2: '88FF88'
     parameters:
         target: any
         allow_max_range: true
-        range: 8
+        range: 16
         cooldown: 60000
         transparent: apparate
         op: true
@@ -1449,6 +1475,36 @@ morsmordre:
         - broadcast @p cast §aMorsmordre!
 #        - mm mobs spawn Deatheater
 #        - mm mobs spawn Deatheater
+    costs:
+        xp: 55
+
+mayday:
+    icon: firework
+    category: auror
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_growl
+        -  class: EffectTrail
+           particle: spell
+        -  class: EffectRing
+           location: target
+           firework: ball_large
+           radius: 12
+           target_offset: 0,16,0
+    parameters:
+        target: any
+        allow_max_range: true
+        range: 16
+        cooldown: 60000
+        transparent: apparate
+        op: true
+        commands:
+        - broadcast @p cast §aMayday!
+#        - mm mobs spawn Auror
+#        - mm mobs spawn Auror
     costs:
         xp: 55
 
@@ -1465,8 +1521,8 @@ periculum:
         -  class: EffectRing
            firework: ball
            location: target
+           radius: 8
     parameters:
-        target_type: LivingEntity
         allow_max_range: true
         range: 16
     costs:
@@ -2379,7 +2435,7 @@ deluminate:
         check_destructible: true
         destructible: torch,fire
         brush: erase
-        radius: 8
+        radius: 16
         transparent: transparent_to_construction
         undo: 20000
     costs:

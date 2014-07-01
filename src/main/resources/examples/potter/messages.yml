@@ -91,6 +91,10 @@ spells:
         name: Alohomora
         description: Unlock certain locks
         cast_finish: ""
+    aparecium:
+        name: Aparecium
+        description: Reveals concealed objects
+        cast_finish: ""
     apparate:
         name: Apparate
         description: Teleport to your target
@@ -293,6 +297,10 @@ spells:
         name: Lumos
         description: Light up the night time
         cast: Lumos!
+    mayday:
+        name: Mayday
+        description: Call for Help
+        cast: Mayday!
     morsmordre:
         name: Morsmordre
         description: Summon the Dark Mark
@@ -383,6 +391,9 @@ spells:
     silenciototalus:
         name: Silencio Totalus
         description: Silence Everyone
+    snowball:
+        name: Bewitched Snowball
+        description: Animate snow to attach your target
     jail:
         name: Jail
         description: Do not pass Go...

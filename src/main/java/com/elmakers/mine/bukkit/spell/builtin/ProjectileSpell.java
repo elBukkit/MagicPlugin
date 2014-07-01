@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,7 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
-public class ProjectileSpell extends UndoableSpell 
+public class ProjectileSpell extends UndoableSpell
 {
 	private int defaultSize = 1;
 	private Random random = new Random();
@@ -27,6 +28,9 @@ public class ProjectileSpell extends UndoableSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
+        if (isOriginAtTarget()) {
+            getTarget();
+        }
 		int count = parameters.getInt("count", 1);
 		int size = parameters.getInt("size", defaultSize);
 		int radius = parameters.getInt("radius", 0);
