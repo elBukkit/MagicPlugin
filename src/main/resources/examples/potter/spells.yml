@@ -1065,6 +1065,33 @@ floo:
         effect_fire_resistance: 100
         cooldown: 30000
 
+fiendfyre:
+    icon: fire
+    category: year4
+    class: IterateSpell
+    worth: 90
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+           effectlib:
+             class: DragonLocationEffect
+             iterations: 80
+    parameters:
+        target_type: LivingEntity
+        transparent: transparent_to_construction
+        allow_max_range: true
+        range: 16
+        size: 8
+        radius: 2
+        reverse: false
+        increment_data: false
+        brush: fire
+        cooldown: 10000
+        undo: 5000
+    costs:
+        xp: 100
+
 finiteincantatem:
     icon: ink_sack:13
     category: year3
@@ -1074,9 +1101,18 @@ finiteincantatem:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_hit
-        -  class: EffectTrail
-           particle: smoke
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: enchantment_table
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           firework: star
     parameters:
         allow_max_range: false
         target: other

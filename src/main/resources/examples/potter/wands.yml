@@ -176,6 +176,7 @@ lignumvitae:
       - flagrate
       - flipendo
       - flight
+      - fiendfyre
       - immobulus
       - imperio
       - impervius
@@ -301,6 +302,7 @@ elder:
       - flagrate
       - flipendo
       - flight
+      - fiendfyre
       - immobulus
       - imperio
       - impervius
@@ -378,6 +380,7 @@ wolf:
       - evanesco
       - expelliarmus
       - ferula
+      - fiendfyre
       - finiteincantatem
       - flagrate
       - flipendo

@@ -232,6 +232,9 @@ spells:
         description: Binds broken limbs
         cast_self: Ferula!
         cast: Ferula $target!
+    fiendfyre:
+        name: Fieldfyre
+        description: Summon a stream of fire
     finiteincantatem:
         name: Finite Incantatem
         description: Counter target player's spell
