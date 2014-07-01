@@ -1349,7 +1349,7 @@ public class MagicController implements Listener, MageController {
 	public void save(boolean asynchronous)
 	{
         getLogger().info("Saving image map data");
-        URLMap.save();
+        URLMap.save(asynchronous);
 
         final List<DataStore> saveData = new ArrayList<DataStore>();
 		getLogger().info("Saving player data");
