@@ -61,7 +61,7 @@ public class FlingSpell extends TargetingSpell implements Listener
 		double heightModifier = maxSpeedAtElevation > 0 ? ((double)height / maxSpeedAtElevation) : 1;
 		double magnitude = (minMagnitude + (((double)maxMagnitude - minMagnitude) * heightModifier));
 
-		Vector velocity = mage.getLocation().getDirection();
+		Vector velocity = getDirection();
 		if (mage.getLocation().getBlockY() >= 256)
 		{
 			velocity.setY(0);
