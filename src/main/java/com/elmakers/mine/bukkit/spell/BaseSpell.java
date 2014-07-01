@@ -72,7 +72,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected final static Set<String> worldParameterMap = new HashSet<String>(Arrays.asList(WORLD_PARAMETERS));
 
     public final static String[] VECTOR_PARAMETERS = {
-        "px", "py", "pz", "pdx", "pdy", "pdz", "tx", "ty", "tz", "otx", "oty", "otz", "t2x", "t2y", "t2z"
+        "px", "py", "pz", "pdx", "pdy", "pdz", "tx", "ty", "tz", "otx", "oty", "otz", "t2x", "t2y", "t2z",
+        "otdx", "otdy", "otdz"
     };
 
     protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));

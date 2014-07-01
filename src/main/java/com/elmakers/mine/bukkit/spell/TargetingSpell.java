@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -45,6 +46,7 @@ public abstract class TargetingSpell extends BaseSpell {
     protected Class<? extends Entity>           targetEntityType        = null;
     private Location                            targetLocation;
     private Vector								targetLocationOffset;
+    private Vector								targetDirectionOverride;
     private String								targetLocationWorldName;
     protected Location                          targetLocation2;
     private Entity								targetEntity = null;
@@ -58,6 +60,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private boolean                             reverseTargeting        = false;
+    private boolean                             originAtTarget          = false;
 
     private BlockIterator						blockIterator = null;
     private	Block								currentBlock = null;
@@ -159,6 +162,8 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         return reverseTargeting;
     }
+
+    public boolean isOriginAtTarget() { return originAtTarget; }
 
     public void setTargetSpaceRequired()
     {
@@ -267,6 +272,20 @@ public abstract class TargetingSpell extends BaseSpell {
                 target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, controller.canCreateWorlds()));
             }
         }
+        if (originAtTarget && target.isValid()) {
+            Location previous = this.location;
+            if (previous == null && mage != null) {
+                previous = mage.getLocation();
+            }
+            location = target.getLocation().clone();
+            if (targetDirectionOverride != null) {
+                location = CompatibilityUtils.setDirection(location, targetDirectionOverride);
+            } else if (previous != null) {
+                location.setPitch(previous.getPitch());
+                location.setYaw(previous.getYaw());
+            }
+        }
+
         return target;
     }
 
@@ -620,9 +639,12 @@ public abstract class TargetingSpell extends BaseSpell {
             }
         }
 
+        originAtTarget = parameters.getBoolean("origin_at_target", false);
+
         Location defaultLocation = getLocation();
         targetLocation = ConfigurationUtils.overrideLocation(parameters, "t", defaultLocation, controller.canCreateWorlds());
         targetLocationOffset = null;
+        targetDirectionOverride = null;
 
         Double otxValue = ConfigurationUtils.getDouble(parameters, "otx", null);
         Double otyValue = ConfigurationUtils.getDouble(parameters, "oty", null);
@@ -634,6 +656,16 @@ public abstract class TargetingSpell extends BaseSpell {
                     (otzValue == null ? 0 : otzValue));
         }
         targetLocationWorldName = parameters.getString("otworld");
+
+        Double tdxValue = ConfigurationUtils.getDouble(parameters, "otdx", null);
+        Double tdyValue = ConfigurationUtils.getDouble(parameters, "otdy", null);
+        Double tdzValue = ConfigurationUtils.getDouble(parameters, "otdz", null);
+        if (tdxValue != null || tdzValue != null || tdyValue != null) {
+            targetDirectionOverride = new Vector(
+                    (tdxValue == null ? 0 : tdxValue),
+                    (tdyValue == null ? 0 : tdyValue),
+                    (tdzValue == null ? 0 : tdzValue));
+        }
 
         // For two-click construction spells
         defaultLocation = targetLocation == null ? defaultLocation : targetLocation;
