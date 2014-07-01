@@ -90,6 +90,9 @@ public class CommandSpell extends TargetingSpell {
             if (getTargetType() != TargetType.NONE) {
                 Target target = getTarget();
                 Location targetLocation = target.getLocation();
+                if (targetLocation == null) {
+                    return SpellResult.NO_TARGET;
+                }
                 command = command
                         .replace("@tworld", targetLocation.getWorld().getName())
                         .replace("@tx", Double.toString(targetLocation.getX()))
