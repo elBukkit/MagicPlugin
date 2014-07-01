@@ -131,48 +131,67 @@ public class URLMap extends MapRenderer  {
         loadConfiguration();
     }
 
+    public static void save() {
+        save(true);
+    }
+
+    private static class SaveRunnable implements Runnable {
+        final List<URLMap> saveMaps;
+
+        public SaveRunnable(Collection<URLMap> maps) {
+            saveMaps = new ArrayList<URLMap>(maps);
+        }
+
+        @Override
+        public void run() {
+
+            try {
+                YamlConfiguration configuration = new YamlConfiguration();
+                for (URLMap map : saveMaps) {
+                    ConfigurationSection mapConfig = configuration.createSection(Short.toString(map.id));
+                    mapConfig.set("world", map.world);
+                    mapConfig.set("url", map.url);
+                    mapConfig.set("x", map.x);
+                    mapConfig.set("y", map.y);
+                    mapConfig.set("width", map.width);
+                    mapConfig.set("height", map.height);
+                    mapConfig.set("enabled", map.isEnabled());
+                    mapConfig.set("name", map.name);
+                    if (map.priority != null) {
+                        mapConfig.set("priority", map.priority);
+                    }
+                    if (map.xOverlay != null) {
+                        mapConfig.set("x_overlay", map.xOverlay);
+                    }
+                    if (map.yOverlay != null) {
+                        mapConfig.set("y_overlay", map.yOverlay);
+                    }
+                }
+                configuration.save(configurationFile);
+            } catch (Exception ex) {
+                warning("Failed to save file " + configurationFile.getAbsolutePath());
+            }
+            saveTask = null;
+        };
+    }
+
     /**
      * Saves the configuration file.
      *
      * This is called automatically as changes are made, but you can call it in onDisable to be safe.
      */
-    public static void save() {
-        if (configurationFile == null || disabled || saveTask != null || plugin == null) return;
+    public static void save(boolean asynchronous) {
+        if (configurationFile == null || disabled) return;
+        if (asynchronous && (saveTask != null || plugin == null)) return;
 
         final List<URLMap> saveMaps = new ArrayList<URLMap>(idMap.values());
-        saveTask = Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
+        Runnable runnable = new SaveRunnable(idMap.values());
 
-                try {
-                    YamlConfiguration configuration = new YamlConfiguration();
-                    for (URLMap map : saveMaps) {
-                        ConfigurationSection mapConfig = configuration.createSection(Short.toString(map.id));
-                        mapConfig.set("world", map.world);
-                        mapConfig.set("url", map.url);
-                        mapConfig.set("x", map.x);
-                        mapConfig.set("y", map.y);
-                        mapConfig.set("width", map.width);
-                        mapConfig.set("height", map.height);
-                        mapConfig.set("enabled", map.isEnabled());
-                        mapConfig.set("name", map.name);
-                        if (map.priority != null) {
-                            mapConfig.set("priority", map.priority);
-                        }
-                        if (map.xOverlay != null) {
-                            mapConfig.set("x_overlay", map.xOverlay);
-                        }
-                        if (map.yOverlay != null) {
-                            mapConfig.set("y_overlay", map.yOverlay);
-                        }
-                    }
-                    configuration.save(configurationFile);
-                } catch (Exception ex) {
-                    warning("Failed to save file " + configurationFile.getAbsolutePath());
-                }
-                saveTask = null;
-            }
-        });
+        if (asynchronous) {
+            saveTask = Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+        } else {
+            runnable.run();
+        }
     }
 
     private static void info(String message)
