@@ -13,6 +13,7 @@ import java.util.Set;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.Messages;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
@@ -74,7 +75,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	private final Set<MageSpell>					activeSpells				= new HashSet<MageSpell>();
 	private UndoQueue          					undoQueue               	   	= null;
 	private LinkedList<BlockBatch>				pendingBatches					= new LinkedList<BlockBatch>();
-	
+	private boolean                 loading = false;
+
 	private Location				location;
 	private float 					costReduction = 0;
 	private float 					cooldownReduction = 0;
@@ -493,11 +495,45 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			setLocation(null);
 		}
 	}
-	
+
+    protected void onLoad() {
+        loading = false;
+        Player player = getPlayer();
+        if (player != null) {
+            String welcomeWand = controller.getWelcomeWand();
+            Wand wand = Wand.getActiveWand(controller, player);
+            if (wand != null) {
+                wand.activate(this);
+            } else if (isNewPlayer && welcomeWand.length() > 0) {
+                isNewPlayer = false;
+                wand = Wand.createWand(controller, welcomeWand);
+                if (wand != null) {
+                    wand.takeOwnership(player, false, false);
+                    controller.giveItemToPlayer(player, wand.getItem());
+                    controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
+                } else {
+                    controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+                }
+            }
+        }
+
+        Collection<Spell> spells = getSpells();
+        for (Spell spell : spells) {
+            // Reactivate spells that were active on logout.
+            if (spell.isActive()) {
+                sendMessage(Messages.get("spell.reactivate").replace("$name", spell.getName()));
+                activateSpell(spell);
+            }
+        }
+    }
+
 	protected void load(ConfigurationSection configNode)
 	{
 		try {
-			if (configNode == null) return;
+			if (configNode == null) {
+                onLoad();
+                return;
+            }
 
 			isNewPlayer = false;
 			playerName = configNode.getString("name", playerName);
@@ -523,7 +559,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 			}
 		} catch (Exception ex) {
 			controller.getPlugin().getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
-		}		
+		}
+
+        onLoad();
 	}
 	
 	protected void save(ConfigurationSection configNode)
@@ -727,6 +765,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public Spell getSpell(String key)
 	{
+        if (loading) return null;
+
 		MageSpell playerSpell = spells.get(key);
 		if (playerSpell == null)
 		{
@@ -1198,5 +1238,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }, duration);
         }
+    }
+
+    public void setLoading(boolean loading) {
+        this.loading = loading;
     }
 }

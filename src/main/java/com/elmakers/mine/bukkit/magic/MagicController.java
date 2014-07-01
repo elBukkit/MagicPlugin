@@ -162,7 +162,7 @@ public class MagicController implements Listener, MageController {
     protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
         Mage apiMage = null;
         if (!mages.containsKey(mageId)) {
-            com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
+            final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
             mage.setName(mageName);
             mage.setCommandSender(commandSender);
             mage.setEntity(entity);
@@ -171,18 +171,27 @@ public class MagicController implements Listener, MageController {
             }
 
             // Check for existing data file
-            synchronized (saveLock) {
-                File playerFile = new File(playerDataFolder, mageId + ".dat");
-                if (playerFile.exists()) {
-                    getLogger().info("Loading mage data from file " + playerFile.getName());
-                    try {
-                        Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
-                        mage.load(playerData);
-                    } catch (Exception ex) {
-                        getLogger().warning("Failed to load mage data from file " + playerFile.getName());
-                        ex.printStackTrace();
-                    }
-                }
+            final File playerFile = new File(playerDataFolder, mageId + ".dat");
+            if (playerFile.exists()) {
+                mage.setLoading(true);
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                       synchronized (saveLock) {
+                           getLogger().info("Loading mage data from file " + playerFile.getName());
+                           try {
+                               Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+                               mage.load(playerData);
+                           } catch (Exception ex) {
+                               getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                               ex.printStackTrace();
+                           }
+                           mage.setLoading(false);
+                       }
+                   }
+                });
+            } else {
+                mage.load(null);
             }
 
             mages.put(mageId, mage);
@@ -2311,35 +2320,8 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		// Check for wand re-activation.
-		Player player = event.getPlayer();
-        Mage apiMage = getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        Wand wand = Wand.getActiveWand(this, player);
-		if (wand != null) {
-			wand.activate(mage);
-		} else if (mage.isNewPlayer() && welcomeWand.length() > 0) {
-            mage.clearNewPlayer();
-			wand = Wand.createWand(this, welcomeWand);
-			if (wand != null) {
-                wand.takeOwnership(player, false, false);
-				giveItemToPlayer(player, wand.getItem());
-				getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
-			} else {
-				getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
-			}
-		}
-		
-		Collection<Spell> spells = mage.getSpells();
-		for (Spell spell : spells) {
-			// Reactivate spells that were active on logout.
-			if (spell.isActive()) {
-				mage.sendMessage(Messages.get("spell.reactivate").replace("$name", spell.getName()));
-				mage.activateSpell(spell);
-			}
-		}
+		// Automatically re-activate mages.
+        getMage(event.getPlayer());
 	}
 	
 	@Override
@@ -2888,6 +2870,10 @@ public class MagicController implements Listener, MageController {
 			dynmap.showCastMarker(mage, spell, result);
 		}
 	}
+
+    public String getWelcomeWand() {
+        return welcomeWand;
+    }
 	
 	protected void triggerBlockToggle(final Chunk chunk) {
 		String chunkKey = getChunkKey(chunk);
@@ -3615,7 +3601,7 @@ public class MagicController implements Listener, MageController {
      private Collection<String>                  addExamples                    = null;
 
      // Synchronization
-     private Object                              saveLock                       = new Object();
+     private final Object                        saveLock                       = new Object();
 
 	 // Sub-Controllers
 	 private CraftingController					 crafting						= null;
