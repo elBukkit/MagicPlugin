@@ -346,17 +346,7 @@ public class ConstructBatch extends BrushBatch {
 				registerForUndo(block);
 				powerData.setPowered(!powerData.isPowered());
 				powerBlock = true;
-			} else if (data instanceof PistonBaseMaterial) {
-				PistonBaseMaterial powerData = (PistonBaseMaterial)data;
-				registerForUndo(block);
-				powerData.setPowered(!powerData.isPowered());
-				powerBlock = true;
-			} else if (data instanceof PoweredRail) {
-				PoweredRail powerData = (PoweredRail)data;
-				registerForUndo(block);
-				powerData.setPowered(!powerData.isPowered());
-				powerBlock = true;
-			} else if (material == Material.REDSTONE_BLOCK) {
+			}  else if (material == Material.REDSTONE_BLOCK) {
 				
 				// A work-around for double-powering Automata.
 				// It'd be really cool to maybe find the associated command
@@ -366,7 +356,7 @@ public class ConstructBatch extends BrushBatch {
 					block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
 					block.setType(Material.AIR);
 				}
-			} else if (material == Material.REDSTONE_TORCH_OFF) {
+			}/* else if (material == Material.REDSTONE_TORCH_OFF) {
 				registerForUndo(block);
 				block.setType(Material.REDSTONE_TORCH_ON);
 			} else if (material == Material.REDSTONE_TORCH_ON) {
@@ -378,7 +368,18 @@ public class ConstructBatch extends BrushBatch {
 				
 				// Kaboomy time!
 				registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
-			}
+			} else if (data instanceof PistonBaseMaterial) {
+                PistonBaseMaterial powerData = (PistonBaseMaterial)data;
+                registerForUndo(block);
+                powerData.setPowered(!powerData.isPowered());
+                powerBlock = true;
+            } else if (data instanceof PoweredRail) {
+                PoweredRail powerData = (PoweredRail)data;
+                registerForUndo(block);
+                powerData.setPowered(!powerData.isPowered());
+                powerBlock = true;
+            }
+            */
 			
 			if (powerBlock) {
 				blockState.update();
