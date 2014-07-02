@@ -131,7 +131,8 @@ aparecium:
         type: sphere
         power: true
         cooldown: 1000
-        undo: 5000
+        undo: 6000
+        bypass_build: true
     costs:
         xp: 75
 
@@ -275,14 +276,16 @@ snowball:
     parameters:
       projectile: Snowball
       origin_at_target: true
-      oty: 6
+      oty: 8
       otdx: 0
       otdy: -1
       otdz: 0
-      count: 4
+      count: 8
+      radius: 3
       range: 16
       allow_max_range: true
-      spread: 30
+      spread: 20
+      effect_slow: 120,1
     costs:
         xp: 50
 
@@ -352,7 +355,7 @@ atmos:
            sound: ambience_thunder
            effectlib:
              class: HelixLocationEffect
-             iterations: 24
+             iterations: 12
              particle: drip_water
     parameters:
         cooldown: 30000
@@ -947,7 +950,7 @@ expelliarmus:
         backfire_chance: 0
         keep_in_inventory: true
     costs:
-        xp: 80
+        xp: 70
 
 rennervate:
     icon: ink_sack:9
@@ -1076,7 +1079,9 @@ fiendfyre:
            sound: fire_ignite
            effectlib:
              class: DragonLocationEffect
-             iterations: 80
+             iterations: 20
+             length: 16
+             stepsPerIteration: 1
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -1099,6 +1104,16 @@ finiteincantatem:
     worth: 250
     cast_on_no_target: true
     effects:
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: enchantment_table
+             lenghtGrow: 0.4
         cast:
         -  class: EffectSingle
            sound: shoot_arrow
@@ -1121,9 +1136,10 @@ finiteincantatem:
         target_timeout: 10000
         range: 32
         bypass_protection: true
+        bypass_confusion: true
         cooldown: 4000
     costs:
-        xp: 45
+        xp: 20
 
 flagrate:
     icon: ink_sack:14
@@ -1954,7 +1970,7 @@ stupefy:
         target_type: LivingEntity
         duration: 3000
         damage: 4.5
-        effect_confusion: 22
+        effect_confusion: 40
         cooldown: 750
     costs:
         xp: 50
@@ -1988,11 +2004,18 @@ meteo:
     effects:
         cast:
         -  class: EffectSingle
-           sound: wither_spawn
+           sound: blaze_breath
            effectlib:
              class: HelixLocationEffect
-             iterations: 24
-             particle: magic_runes
+             iterations: 12
+             particle: drip_lava
+        area:
+        -  class: EffectSingle
+           sound: blaze_breath
+           effectlib:
+             class: HelixLocationEffect
+             iterations: 12
+             particle: drip_lava
     parameters:
         allow_max_range: false
         allow_night: false
@@ -2624,3 +2647,45 @@ simulate:
         death_material: air
         commands: false
         check_destructible: true
+
+tree:
+    icon: sapling
+    category: elemental
+    class: TreeSpell
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: splash
+        -  class: EffectTrail
+           effect: step_sound
+           material: log
+    parameters:
+        allow_max_range: false
+        range: 64
+        require_sapling: false
+    costs:
+        xp: 20
+
+music:
+    icon: gold_record
+    category: light
+    class: MusicSpell
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectTrail
+           particle: note
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: HelixLocationEffect
+             particle: note
+    parameters:
+        target_type: Player
+        target: any
+        allow_max_range: true
+        range: 16
+        cooldown: 120000
+    costs:
+        xp: 20
