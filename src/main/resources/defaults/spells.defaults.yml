@@ -1149,6 +1149,7 @@ disarm:
         range: 16
         fizzle_chance: 0.2
         backfire_chance: 0.05
+        keep_in_inventory: true
     costs:
         xp: 75
 cure:
