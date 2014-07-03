@@ -689,6 +689,7 @@ confundus:
            location: target
            effectlib:
              class: SmokeEntityEffect
+             iterations: 10
     costs:
         xp: 30
     parameters:
