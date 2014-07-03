@@ -17,6 +17,42 @@ default:
     spells:
      - flagrate
 
+auror:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: master
+    rename: true
+    bound: true
+    keep: true
+    quiet: 1
+    xp_max: 75
+    xp: 75
+    xp_regeneration: 10
+    effect_color: 'FFFFFF'
+    effect_bubbles: true
+    active_spell: aurorate
+    spells:
+     - aurorate
+     - expelliarmus
+     - mayday
+
+deatheater:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: master
+    rename: true
+    bound: true
+    keep: true
+    quiet: 1
+    xp_max: 75
+    xp: 75
+    xp_regeneration: 10
+    effect_color: '010101'
+    effect_bubbles: true
+    active_spell: apparate
+    spells:
+     - apparate
+     - sectumsempra
+     - morsmordre
+
 staff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
@@ -574,28 +610,6 @@ beater:
     effect_color: 'FF0000'
     spells:
         - beat
-
-# Wand Upgrades
-
-auror:
-    icon: feather
-    upgrade: true
-    rename: true
-    effect_color: 'FFFFFF'
-    effect_bubbles: true
-    active_spell: mayday
-    spells:
-    - mayday
-
-deatheater:
-    icon: skull_item:4
-    upgrade: true
-    rename: true
-    effect_color: '010101'
-    effect_bubbles: true
-    active_spell: morsmordre
-    spells:
-     - morsmordre
 
 # Upgrade items copied from default config
 

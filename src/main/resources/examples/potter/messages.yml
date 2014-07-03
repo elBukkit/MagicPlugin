@@ -100,11 +100,6 @@ spells:
         description: Teleport to your target
         usage: Can pass through solid objects
         no_target: Can't apparate there
-    aurorate:
-        name: Apparate
-        description: Teleport to your target
-        usage: Can pass through solid objects
-        no_target: Can't apparate there
     araniaexumai:
         name: Arania Exumai
         description: Blast away arachnids

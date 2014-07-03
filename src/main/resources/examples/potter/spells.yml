@@ -47,10 +47,8 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
-       cost_free:
-       - reference: cast
-       no_target:
-       - reference: cast
+       cost_free: cast
+       no_target: cast
 
 accio:
     icon: ink_sack:6
@@ -143,52 +141,36 @@ apparate:
     worth: 120
     effects:
         cast:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           location: both
-           effectlib:
-             class: AtomLocationEffect
-             particleNucleus: smoke
-             particleOrbital: large_smoke
-             iterations: 20
-        -  class: EffectSingle
-           location: both
-           effectlib:
-             class: LineLocationEffect
-             particle: large_smoke
-    parameters:
-        pvp_restricted: true
-        allow_max_range: false
-        allow_ascend: true
-        allow_passthrough: true
-        prevent_passthrough: indestructible
-        range: 64
-        passthrough_range: 8
-        allow_decend: true
-        transparent: apparate
-    costs:
-        xp: 60
-
-aurorate:
-    icon: eye_of_ender
-    category: year7
-    class: BlinkSpell
-    worth: 120
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           location: both
-           effectlib:
-             class: AtomLocationEffect
-             particleNucleus: instant_spell
-             particleOrbital: spell
-             iterations: 20
-        -  class: EffectSingle
-           location: both
-           effectlib:
-             class: LineLocationEffect
-             particle: spell
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: smoke
+                   particleOrbital: large_smoke
+                   iterations: 20
+             - class: EffectSingle
+               location: both
+               effectlib:
+                   class: LineLocationEffect
+                   particle: large_smoke
+             '5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: instant_spell
+                   particleOrbital: spell
+                   iterations: 20
+             - class: EffectSingle
+               location: both
+               effectlib:
+                   class: LineLocationEffect
+                   particle: spell
     parameters:
         pvp_restricted: true
         allow_max_range: false
