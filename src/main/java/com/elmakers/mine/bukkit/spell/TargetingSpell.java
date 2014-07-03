@@ -506,6 +506,9 @@ public abstract class TargetingSpell extends BaseSpell {
         {
             if (targetMinOffset <= 0) {
                 if (targetSpaceRequired) {
+                    if (!allowPassThrough(block.getType())) {
+                        break;
+                    }
                     if (isOkToStandIn(block.getType()) && isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
                         break;
                     }
