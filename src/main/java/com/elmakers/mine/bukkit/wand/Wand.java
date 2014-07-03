@@ -963,8 +963,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             hexColor = hexColor.substring(0, hexColor.indexOf('.'));
         }
 
-        Bukkit.getLogger().info("Setting color to: " + hexColor + ", " + hexColor.length());
-
 		if (hexColor == null || hexColor.length() == 0 || hexColor.equals("none")) {
 			effectColor = null;
 			return;
