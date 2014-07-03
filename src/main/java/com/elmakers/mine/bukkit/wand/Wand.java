@@ -22,11 +22,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -961,6 +957,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void setEffectColor(String hexColor) {
+
+        // Annoying config conversion issue :\
+        if (hexColor.contains(".")) {
+            hexColor = hexColor.substring(0, hexColor.indexOf('.'));
+        }
+
+        Bukkit.getLogger().info("Setting color to: " + hexColor + ", " + hexColor.length());
+
 		if (hexColor == null || hexColor.length() == 0 || hexColor.equals("none")) {
 			effectColor = null;
 			return;
