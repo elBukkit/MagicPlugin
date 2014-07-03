@@ -50,7 +50,6 @@ import com.elmakers.mine.bukkit.utility.Messages;
 public abstract class BaseSpell implements MageSpell, Cloneable {
     protected static final double VIEW_HEIGHT = 1.65;
     protected static final double LOOK_THRESHOLD_RADIANS = 0.8;
-    private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
 
     // TODO: Configurable default? this does look cool, though.
     protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
@@ -149,7 +148,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private boolean								isActive				= false;
 
-    private Map<String, List<EffectPlayer>>     effects				= new HashMap<String, List<EffectPlayer>>();
+    private Map<String, Collection<EffectPlayer>>     effects				= new HashMap<String, Collection<EffectPlayer>>();
 
     private float								fizzleChance			= 0.0f;
     private float								backfireChance			= 0.0f;
@@ -157,7 +156,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private long 								lastMessageSent 			= 0;
     private Set<Material>						preventPassThroughMaterials = null;
     private Set<Material>                       passthroughMaterials = null;
-    private List<EffectPlayer>                  currentEffects              = null;
+    private Collection<EffectPlayer>            currentEffects              = null;
 
     public boolean allowPassThrough(Material mat)
     {
@@ -710,37 +709,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
             Collection<String> effectKeys = effectsNode.getKeys(false);
             for (String effectKey : effectKeys) {
-                Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(effectsNode, effectKey);
-                if (effectNodes != null)
-                {
-                    List<EffectPlayer> players = new ArrayList<EffectPlayer>();
-                    for (ConfigurationSection effectValues : effectNodes)
-                    {
-                        if (effectValues.contains("class")) {
-                            String effectClass = effectValues.getString("class");
-                            try {
-                                Class<?> genericClass = Class.forName(EFFECT_BUILTIN_CLASSPATH + "." + effectClass);
-                                if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
-                                    throw new Exception("Must extend EffectPlayer");
-                                }
-
-                                Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
-                                EffectPlayer player = playerClass.newInstance();
-                                player.load(controller.getPlugin(), effectValues);
-                                players.add(player);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                                controller.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
-                            }
-                        } else if (effectValues.contains("reference")) {
-                            String referenceKey = effectValues.getString("reference");
-                            if (effects.containsKey(referenceKey)) {
-                                players.addAll(effects.get(referenceKey));
-                            }
-                        }
+                if (effectsNode.isString(effectKey)) {
+                    String referenceKey = effectsNode.getString(effectKey);
+                    if (effects.containsKey(referenceKey)) {
+                        effects.put(effectKey, new ArrayList(effects.get(referenceKey)));
                     }
-
-                    effects.put(effectKey, players);
+                } else {
+                    effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
                 }
             }
         }

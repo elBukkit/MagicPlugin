@@ -7,11 +7,6 @@ import com.elmakers.mine.bukkit.effect.EffectPlayer;
 public class EffectSingle extends EffectPlayer {
 
     public EffectSingle() {
-
-    }
-
-    public EffectSingle(Plugin plugin) {
-        super(plugin);
     }
 
     public void play() {
