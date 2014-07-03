@@ -743,13 +743,13 @@ public class MagicController implements Listener, MageController {
         // Set up the Block update timer
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             public void run() {
-                List<Mage> pending = new ArrayList<Mage>();
-                pending.addAll(pendingConstruction.values());
-                for (Mage mage : pending) {
+                for (Mage mage : pendingConstruction) {
                     if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                         ((com.elmakers.mine.bukkit.magic.Mage) mage).processPendingBatches(maxBlockUpdates);
                     }
                 }
+                pendingConstruction.removeAll(pendingConstructionRemoval);
+                pendingConstructionRemoval.clear();
             }
         }, 0, 1);
 
@@ -909,15 +909,15 @@ public class MagicController implements Listener, MageController {
     }
 
     public Collection<Mage> getPending() {
-        return pendingConstruction.values();
+        return pendingConstruction;
     }
 
     protected void addPending(Mage mage) {
-        pendingConstruction.put(mage.getName(), mage);
+        pendingConstruction.add(mage);
     }
 
     protected void removePending(Mage mage) {
-        pendingConstruction.remove(mage.getName());
+        pendingConstructionRemoval.add(mage);
     }
 
     public boolean removeMarker(String id, String group) {
@@ -1660,6 +1660,7 @@ public class MagicController implements Listener, MageController {
 	{
 		mages.clear();
 		pendingConstruction.clear();
+        pendingConstructionRemoval.clear();
 		spells.clear();
 	}
 	
@@ -3553,7 +3554,8 @@ public class MagicController implements Listener, MageController {
 	 private final Map<String, SpellCategory>   categories              	= new HashMap<String, SpellCategory>();
 	 private final Map<String, Mage> 		 	mages                  		= new HashMap<String, Mage>();
 	 private final Map<String, Long>			forgetMages					= new HashMap<String, Long>();
-	 private final Map<String, Mage>		 	pendingConstruction			= new HashMap<String, Mage>();
+	 private final Set<Mage>		 	        pendingConstruction			= new HashSet<Mage>();
+     private final Set<Mage>                    pendingConstructionRemoval  = new HashSet<Mage>();
 	 private final Set<String>  	 			pendingUndo					= new HashSet<String>();
 	 private final Map<String, WeakReference<WorldEditSchematic>> schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
  
