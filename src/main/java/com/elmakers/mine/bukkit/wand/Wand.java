@@ -1842,7 +1842,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Mix colors
 		if (other.effectColor != null) {
-			if (this.effectColor == null || other.isForcedUpgrade()) {
+			if (this.effectColor == null) {
 				this.effectColor = other.effectColor;
 			} else {
 				this.effectColor = this.effectColor.mixColor(other.effectColor, other.effectColorMixWeight);

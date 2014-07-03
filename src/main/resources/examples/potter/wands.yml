@@ -601,63 +601,54 @@ deatheater:
 
 redeffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:14
     effect_color: 'FF0000'
     effect_bubbles: true
 greeneffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:5
     effect_color: '00FF00'
     effect_bubbles: true
 blueeffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:11
     effect_color: '0000FF'
     effect_bubbles: true
 whiteeffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:0
     effect_color: 'FFFFFF'
     effect_bubbles: true
 blackeffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:15
     effect_color: '010101'
     effect_bubbles: true
 purpleeffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:10
     effect_color: 'FF00FF'
     effect_bubbles: true
 yelloweffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:4
     effect_color: 'FFFF00'
     effect_bubbles: true
 aquaeffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: carpet:3
     effect_color: '00FFFF'
     effect_bubbles: true
 rainboweffects:
     upgrade: true
-    force: true
     indestructible: false
     icon: magma_cream
     effect_color: random
