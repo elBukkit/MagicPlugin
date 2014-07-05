@@ -33,7 +33,6 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -509,6 +508,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public Set<String> getSpells() {
+        // TODO: Cache spell count, or list!
 		return getSpells(false);
 	}
 	
@@ -769,7 +769,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getPlugin().getLogger().warning("Unable to create material icon for " + material.name() + ": " + materialKey);	
 			return null;
 		}
-		ItemMeta meta = itemStack.getItemMeta();
 		List<String> lore = new ArrayList<String>();
 		if (material != null) {
 			lore.add(ChatColor.GRAY + Messages.get("wand.building_material_info").replace("$material", MaterialBrush.getMaterialName(materialKey)));
@@ -793,8 +792,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isItem) {
 			lore.add(ChatColor.YELLOW + Messages.get("wand.brush_item_description"));
 		}
-		meta.setLore(lore);
-		itemStack.setItemMeta(meta);
+        CompatibilityUtils.setLore(itemStack, lore);
 		updateBrushItem(itemStack, materialKey, wand);
 		return itemStack;
 	}
@@ -1049,7 +1047,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
 			activeMaterial = wandConfig.getString("active_material", activeMaterial);
-			
+
 			String wandMaterials = wandConfig.getString("materials", "");
 			String wandSpells = wandConfig.getString("spells", "");
 
@@ -1557,35 +1555,31 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public static void updateSpellItem(ItemStack itemStack, SpellTemplate spell, Wand wand, String activeMaterial, boolean isItem) {
-		ItemMeta meta = itemStack.getItemMeta();
 		String displayName;
 		if (wand != null) {
 			displayName = wand.getActiveWandName(spell);
 		} else {
 			displayName = getSpellDisplayName(spell, activeMaterial);
 		}
-		meta.setDisplayName(displayName);
+        CompatibilityUtils.setDisplayName(itemStack, displayName);
 		List<String> lore = new ArrayList<String>();
 		addSpellLore(spell, lore, wand);
 		if (isItem) {
 			lore.add(ChatColor.YELLOW + Messages.get("wand.spell_item_description"));
 		}
-		meta.setLore(lore);
-		itemStack.setItemMeta(meta);
+        CompatibilityUtils.setLore(itemStack, lore);
         CompatibilityUtils.addGlow(itemStack);
 		CompatibilityUtils.setMetadata(itemStack, metadataProvider, "spell", spell.getKey());
 	}
 	
 	public static void updateBrushItem(ItemStack itemStack, String materialKey, Wand wand) {
-		ItemMeta meta = itemStack.getItemMeta();
 		String displayName = null;
 		if (wand != null) {
 			displayName = wand.getActiveWandName(materialKey);
 		} else {
 			displayName = MaterialBrush.getMaterialName(materialKey);
 		}
-		meta.setDisplayName(displayName);
-		itemStack.setItemMeta(meta);
+        CompatibilityUtils.setDisplayName(itemStack, displayName);
         CompatibilityUtils.setMetadata(itemStack, metadataProvider, "brush", materialKey);
 	}
 
@@ -2739,7 +2733,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void setActiveSpell(String activeSpell) {
 		this.activeSpell = activeSpell;
 		updateName();
-		updateHotbar();
 		saveState();
 	}
 
