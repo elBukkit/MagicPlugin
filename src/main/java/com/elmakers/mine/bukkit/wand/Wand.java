@@ -78,6 +78,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private String id = "";
 	private Inventory hotbar;
 	private List<Inventory> inventories;
+    private Set<String> spells = new HashSet<String>();
+    private Set<String> brushes = new HashSet<String>();
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -508,11 +510,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public Set<String> getSpells() {
-        // TODO: Cache spell count, or list!
-		return getSpells(false);
+		return spells;
 	}
-	
-	protected Set<String> getSpells(boolean includePositions) {
+
+    protected String getSpellString() {
 		Set<String> spellNames = new TreeSet<String>();
 		List<Inventory> allInventories = getAllInventories();
         int index = 0;
@@ -520,27 +521,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			ItemStack[] items = inventory.getContents();
 			for (int i = 0; i < items.length; i++) {
 				if (items[i] != null && isSpell(items[i])) {
-                    String spellName = getSpell(items[i]);
-                    if (includePositions) {
-                        spellName += "@" + index;
-                    }
+                    String spellName = getSpell(items[i]) + "@" + index;
                     spellNames.add(spellName);
 				}
                 index++;
 			}
 		}
-		return spellNames;
-	}
-	
-	protected String getSpellString() {
-		return StringUtils.join(getSpells(true), ",");
+		return StringUtils.join(spellNames, ",");
 	}
 
 	public Set<String> getBrushes() {
-		return getMaterialKeys(false);
+		return brushes;
 	}
-	
-	protected Set<String> getMaterialKeys(boolean includePositions) {
+
+    protected String getMaterialString() {
 		Set<String> materialNames = new TreeSet<String>();
 		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
 		allInventories.add(hotbar);
@@ -552,20 +546,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (items[i] != null && isBrush(items[i])) {
                     String materialKey = getBrush(items[i]);
                     if (materialKey != null) {
-                        if (includePositions) {
-                            materialKey += "@" + index;
-                        }
+                        materialKey += "@" + index;
                         materialNames.add(materialKey);
                     }
                 }
                 index++;
 			}
 		}
-		return materialNames;	
-	}
-	
-	protected String getMaterialString() {
-		return StringUtils.join(getMaterialKeys(true), ",");		
+		return StringUtils.join(materialNames, ",");
 	}
 	
 	protected Integer parseSlot(String[] pieces) {
@@ -678,6 +666,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void parseInventoryStrings(String spellString, String materialString) {
 		hotbar.clear();
 		inventories.clear();
+        spells.clear();
+        brushes.clear();
+
 		// Support YML-List-As-String format and |-delimited format
 		spellString = spellString.replaceAll("[\\]\\[]", "");
 		String[] spellNames = StringUtils.split(spellString, "|,");
@@ -685,6 +676,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
 			String spellKey = pieces[0].trim();
+            spells.add(spellKey);
 			ItemStack itemStack = createSpellIcon(spellKey);
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
@@ -699,6 +691,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
+            brushes.add(materialKey);
 			ItemStack itemStack = createBrushIcon(materialKey);
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
@@ -2667,6 +2660,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getPlugin().getLogger().warning("Unknown spell: " + spellName);
 			return false;
 		}
+        spells.add(spellName);
 		addToInventory(spellItem);
 		updateInventory();
 		hasInventory = getSpells().size() + getBrushes().size() > 1;
@@ -2706,7 +2700,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		ItemStack itemStack = createBrushIcon(materialKey);
 		if (itemStack == null) return false;
-		
+
+        brushes.add(materialKey);
 		addToInventory(itemStack);
 		if (activeMaterial == null || activeMaterial.length() == 0) {
 			setActiveBrush(materialKey);
@@ -2746,6 +2741,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (materialKey.equals(activeMaterial)) {
 			activeMaterial = null;
 		}
+        brushes.remove(materialKey);
 		List<Inventory> allInventories = getAllInventories();
 		boolean found = false;
 		for (Inventory inventory : allInventories) {
@@ -2787,6 +2783,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (spellName.equals(activeSpell)) {
 			activeSpell = null;
 		}
+        spells.remove(spellName);
 		
 		List<Inventory> allInventories = getAllInventories();
 		boolean found = false;
