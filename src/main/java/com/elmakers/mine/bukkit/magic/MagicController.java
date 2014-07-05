@@ -1872,13 +1872,11 @@ public class MagicController implements Listener, MageController {
 		if (icon != null && icon.getType() != Material.AIR) {
 			com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(Wand.getSpell(icon));
 			if (spell != null) {
-				activeWand.saveInventory();
 				activeWand.setActiveSpell(spell.getKey());
-				
-				// Reset the held item, Bukkit may have replaced it (?)
+
+                // Reset the held item, Bukkit may have replaced it (?)
 				mage.getPlayer().setItemInHand(activeWand.getItem());
-			} else if (Wand.isBrush(icon)){
-				activeWand.saveInventory();
+            } else if (Wand.isBrush(icon)){
 				activeWand.activateBrush(icon);
 				
 				// Reset the held item, Bukkit may have replaced it (?)
@@ -2508,7 +2506,7 @@ public class MagicController implements Listener, MageController {
 			String brushKey = Wand.getBrush(droppedItem);
 			wand.removeBrush(brushKey);
 			wand.saveInventory();
-			
+
 			// Update the item for proper naming and lore
 			Wand.updateBrushItem(droppedItem, brushKey, null);
 		}
