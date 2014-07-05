@@ -1885,6 +1885,7 @@ public class MagicController implements Listener, MageController {
 		} else {
 			activeWand.setActiveSpell("");
 		}
+        mage.getPlayer().updateInventory();
 	}
 	
 	@EventHandler
