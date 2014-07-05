@@ -173,16 +173,64 @@ apparate:
                    particle: spell
     parameters:
         pvp_restricted: true
+        allow_max_range: true
+        allow_ascend: false
+        allow_passthrough: false
+        allow_decend: false
+        range: 16
+        transparent: apparate
+    costs:
+        xp: 40
+
+apparatemaxima:
+    icon: eye_of_ender
+    category: year7
+    class: BlinkSpell
+    worth: 120
+    effects:
+        cast:
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: smoke
+                   particleOrbital: large_smoke
+                   iterations: 20
+             - class: EffectSingle
+               location: both
+               effectlib:
+                   class: LineLocationEffect
+                   particle: large_smoke
+             '5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: instant_spell
+                   particleOrbital: spell
+                   iterations: 20
+             - class: EffectSingle
+               location: both
+               effectlib:
+                   class: LineLocationEffect
+                   particle: spell
+    parameters:
+        pvp_restricted: true
         allow_max_range: false
         allow_ascend: true
         allow_passthrough: true
-        prevent_passthrough: indestructible
-        range: 64
         passthrough_range: 8
         allow_decend: true
+        prevent_passthrough: prevent_passthrough
+        range: 64
         transparent: apparate
     costs:
-        xp: 60
+        xp: 80
 
 araniaexumai:
     icon: web
@@ -794,6 +842,7 @@ deprimo:
         check_destructible: false
         indestructible: air
         radius: 2
+        bypass_build: true
         transparent: transparent_to_construction
         undo: 30000
     costs:
@@ -1422,6 +1471,7 @@ impervius:
         destructible: water
         brush: erase
         radius: 3
+        bypass_build: true
         transparent: transparent_to_construction
     costs:
         xp: 65
@@ -1451,6 +1501,7 @@ incendio:
         vertical_search_distance: 8
         undo: 3000
         cooldown: 3000
+        bypass_build: true
     costs:
         xp: 40
 
@@ -1639,6 +1690,7 @@ protegomaxima:
         target: select
         type: sphere
         transparent: transparent_to_construction
+        bypass_build: true
     costs:
         xp: 100
 
@@ -1664,6 +1716,8 @@ reducio:
         range: 16
         player_damage: 1
         entity_damage: 10
+        bypass_build: true
+        undo: 10000
     costs:
         xp: 60
 
@@ -1689,6 +1743,7 @@ reducto:
         destructible: destructible_mining
         check_destructible: false
         undo: 30000
+        bypass_build: true
     costs:
         xp: 80
 
@@ -1976,6 +2031,7 @@ colorvaria:
         depth: 8
         transparent: transparent_to_construction
         undo: 5000
+        bypass_build: true
     costs:
         xp: 55
 

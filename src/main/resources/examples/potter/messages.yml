@@ -98,6 +98,10 @@ spells:
     apparate:
         name: Apparate
         description: Teleport to your target
+        no_target: Can't apparate there
+    apparatemaxima:
+        name: Apparate Maxima
+        description: Teleport to your target
         usage: Can pass through solid objects
         no_target: Can't apparate there
     araniaexumai:

@@ -17,42 +17,6 @@ default:
     spells:
      - flagrate
 
-auror:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
-    path: master
-    rename: true
-    bound: true
-    keep: true
-    quiet: 1
-    xp_max: 75
-    xp: 75
-    xp_regeneration: 10
-    effect_color: 'FFFFFF'
-    effect_bubbles: true
-    active_spell: aurorate
-    spells:
-     - aurorate
-     - expelliarmus
-     - mayday
-
-deatheater:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
-    path: master
-    rename: true
-    bound: true
-    keep: true
-    quiet: 1
-    xp_max: 75
-    xp: 75
-    xp_regeneration: 10
-    effect_color: '010101'
-    effect_bubbles: true
-    active_spell: apparate
-    spells:
-     - apparate
-     - sectumsempra
-     - morsmordre
-
 staff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: master
@@ -81,6 +45,7 @@ staff:
      - expelliarmus
      - immobulus
      - sectumsempra
+     - apparate
 
 headstaff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
@@ -110,7 +75,7 @@ headstaff:
      - expelliarmus
      - meteo
      - noxmaxima
-     - apparate
+     - apparatemaxima
      - immobulus
      - sectumsempra
      - atmos
@@ -148,7 +113,7 @@ lignumvitae:
     spells:
       - accio
       - aguamenti
-      - apparate
+      - apparatemaxima
       - araniaexumai
       - arresto
       - arrow
@@ -224,7 +189,7 @@ allis0n:
       - flipendo
       - lumos
       - stupefy
-      - apparate
+      - apparatemaxima
       - ascendio
       - bombarda
       - avis
@@ -273,7 +238,7 @@ elder:
       - accio
       - aguamenti
       - aparecium
-      - apparate
+      - apparatemaxima
       - araniaexumai
       - arresto
       - arrow
@@ -354,7 +319,7 @@ wolf:
       - accio
       - aguamenti
       - aparecium
-      - apparate
+      - apparatemaxima
       - araniaexumai
       - arresto
       - arrow
@@ -610,6 +575,26 @@ beater:
     effect_color: 'FF0000'
     spells:
         - beat
+
+# Upgrades
+
+auror:
+    icon: arrow
+    rename: true
+    effect_color: 'FFFFFF'
+    effect_bubbles: true
+    active_spell: mayday
+    spells:
+     - mayday
+
+deatheater:
+    icon: skull_item:4
+    rename: true
+    effect_color: '010101'
+    effect_bubbles: true
+    active_spell: morsmordre
+    spells:
+     - morsmordre
 
 # Upgrade items copied from default config
 

@@ -115,6 +115,9 @@ apparate:
 # removal of attached block)
 indestructible: []
 
+prevent_passthrough:
+- bedrock
+
 # Which materials are always completely off-limits.
 # Any spells not on this list can not be copied, cloned, replicated
 # or otherwise built with using a Wand brush.
