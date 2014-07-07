@@ -178,7 +178,6 @@ apparate:
         allow_passthrough: false
         allow_decend: false
         range: 16
-        transparent: apparate
     costs:
         xp: 40
 
@@ -393,6 +392,7 @@ atmos:
         xp: 80
 
 broom:
+    hidden: true
     icon: blaze_rod
     category: specialty
     class: LevitateSpell
@@ -562,6 +562,7 @@ avis:
         xp: 50
 
 beat:
+    hidden: true
     icon: stick
     category: specialty
     class: PotionEffectSpell
@@ -2117,6 +2118,7 @@ noxmaxima:
 # But could be added in some form as canon spells eventually.
 
 phase:
+    hidden: true
     icon: ender_portal
     category: staff
     class: PhaseSpell
@@ -2142,6 +2144,7 @@ phase:
         xp: 50
 
 superblob:
+    hidden: true
     icon: snow_ball
     category: staff
     class: ConstructSpell
@@ -2164,6 +2167,7 @@ superblob:
         xp: 100
 
 superconvert:
+    hidden: true
     icon: magma_cream
     category: staff
     class: ConstructSpell
@@ -2188,6 +2192,7 @@ superconvert:
         xp: 100
 
 recall:
+    hidden: true
     icon: redstone
     category: specialty
     class: RecallSpell
@@ -2212,6 +2217,7 @@ recall:
         xp: 50
 
 gather:
+    hidden: true
     icon: glowstone_dust
     category: staff
     class: GotoSpell
@@ -2236,6 +2242,7 @@ gather:
         xp: 150
 
 stash:
+    hidden: true
     icon: ender_chest
     category: staff
     class: StashSpell
@@ -2250,6 +2257,7 @@ stash:
         target: self
 
 absorb:
+    hidden: true
     icon: bucket
     category: staff
     class: AbsorbSpell
@@ -2269,6 +2277,7 @@ absorb:
         xp: 30
 
 fill:
+    hidden: true
     icon: diamond_spade
     category: staff
     class: FillSpell
@@ -2288,6 +2297,7 @@ fill:
         xp: 100
 
 superdisc:
+    hidden: true
     icon: egg
     category: staff
     class: ConstructSpell
@@ -2307,10 +2317,12 @@ superdisc:
         orient_dimension_max: 0
         orient_dimension_min: 0
         transparent: transparent_to_construction
+        check_destructible: false
     costs:
         xp: 100
 
 superring:
+    hidden: true
     icon: clay_ball
     category: staff
     class: ConstructSpell
@@ -2335,6 +2347,7 @@ superring:
         xp: 100
 
 superdome:
+    hidden: true
     icon: mushroom_soup
     category: staff
     class: ConstructSpell
@@ -2358,6 +2371,7 @@ superdome:
         xp: 100
 
 bridge:
+    hidden: true
     icon: stone_axe
     category: staff
     class: BridgeSpell
@@ -2371,7 +2385,9 @@ bridge:
         transparent: transparent_to_construction
     costs:
         xp: 5
+
 pillar:
+    hidden: true
     icon: iron_axe
     category: staff
     class: PillarSpell
@@ -2387,7 +2403,9 @@ pillar:
         transparent: transparent_to_construction
     costs:
         xp: 5
+
 place:
+    hidden: true
     icon: diamond_axe
     category: staff
     class: PlaceSpell
@@ -2405,6 +2423,7 @@ place:
         xp: 10
 
 superiterate:
+    hidden: true
     icon: golden_carrot
     category: engineering
     class: IterateSpell
@@ -2421,6 +2440,7 @@ superiterate:
         xp: 100
 
 iterate:
+    hidden: true
     icon: carrot_item
     category: engineering
     class: IterateSpell
@@ -2435,6 +2455,7 @@ iterate:
         xp: 50
 
 superfly:
+    hidden: true
     icon: feather
     category: specialty
     class: LevitateSpell
@@ -2451,6 +2472,7 @@ superfly:
         speed: 1
 
 vault:
+    hidden: true
     icon: sapling:4
     category: staff
     class: ConstructSpell
@@ -2514,6 +2536,7 @@ revelio:
             target: Hogwarts
 
 deluminate:
+    hidden: true
     icon: flint
     category: specialty
     class: ConstructSpell
@@ -2540,6 +2563,7 @@ deluminate:
         xp: 100
 
 wolfhouse:
+    hidden: true
     icon: sapling:5
     category: staff
     class: ConstructSpell
@@ -2591,6 +2615,7 @@ wolfhouse:
         xp: 1000
 
 mount:
+    hidden: true
     icon: saddle
     category: staff
     class: MountSpell
@@ -2612,6 +2637,7 @@ mount:
         xp: 60
 
 life:
+    hidden: true
     icon: sapling:1
     category: automata
     class: ConstructSpell
@@ -2644,6 +2670,7 @@ life:
         xp: 1500
 
 box:
+    hidden: true
     icon: gold_helmet
     category: earthbending
     class: ConstructSpell
@@ -2667,6 +2694,7 @@ box:
         xp: 60
 
 simulate:
+    hidden: true
     icon: double_plant:3
     category: automata
     class: SimulateSpell
@@ -2688,6 +2716,7 @@ simulate:
         check_destructible: true
 
 tree:
+    hidden: true
     icon: sapling
     category: elemental
     class: TreeSpell
@@ -2707,6 +2736,7 @@ tree:
         xp: 20
 
 music:
+    hidden: true
     icon: gold_record
     category: light
     class: MusicSpell

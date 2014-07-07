@@ -464,7 +464,7 @@ floopowder:
     effect_color: 'FF0000'
     uses: 8
     spells:
-    - floo
+        - floo
 
 handbag:
     mode: cast
