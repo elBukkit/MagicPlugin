@@ -356,6 +356,11 @@ public class ConstructBatch extends BrushBatch {
 				registerForUndo(block);
 				powerData.setPowered(!powerData.isPowered());
 				powerBlock = true;
+			} else if (data instanceof RedstoneWire) {
+				RedstoneWire wireData = (RedstoneWire)data;
+				registerForUndo(block);
+				wireData.setData((byte)(15 - wireData.getData()));
+				powerBlock = true;
 			} else if (material == Material.REDSTONE_BLOCK) {
 				
 				// A work-around for double-powering Automata.
