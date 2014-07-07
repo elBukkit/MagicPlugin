@@ -45,6 +45,19 @@ try {
 
 $upgrades = array();
 
+// Look up localizations
+foreach ($spells as $key => $spell) {
+    if ($key == 'default' || (isset($spell['hidden']) && $spell['hidden'])) {
+        unset($spells[$key]);
+        continue;
+    }
+    $spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : '';
+    $spell['description'] = isset($messages['spells'][$key]['description']) ? $messages['spells'][$key]['description'] : '';
+    $spell['extended_description'] = isset($messages['spells'][$key]['extended_description']) ? $messages['spells'][$key]['extended_description'] : '';
+    $spell['usage'] = isset($messages['spells'][$key]['usage']) ? $messages['spells'][$key]['usage'] : '';
+    $spells[$key] = $spell;
+}
+
 ksort($spells);
 
 // Process economy data
@@ -62,14 +75,6 @@ if (isset($general['worth_items'])) {
 }
 
 $worthBase = isset($general['worth_base']) ? $general['worth_base'] : 1;
-
-// Look up localizations
-foreach ($spells as $key => $spell) {
-	$spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : '';
-	$spell['description'] = isset($messages['spells'][$key]['description']) ? $messages['spells'][$key]['description'] : '';
-	$spell['usage'] = isset($messages['spells'][$key]['usage']) ? $messages['spells'][$key]['usage'] : '';
-	$spells[$key] = $spell;
-}
 
 // Parse wand properties needed for cost validation
 $useModifier = isset($general['worth_use_multiplier']) ? $general['worth_use_multiplier'] : 1;
@@ -101,7 +106,7 @@ $maxXp = isset($general['max_mana']) ? $general['max_mana'] : 0;
 // Calculate worth
 // Hide hidden wands, organize upgrades
 foreach ($wands as $key => $wand) {
-	if (isset($wand['hidden']) && $wand['hidden']) {
+	if ($key == 'default' || (isset($wand['hidden']) && $wand['hidden'])) {
 		unset($wands[$key]);
 		continue;
 	}
@@ -109,6 +114,7 @@ foreach ($wands as $key => $wand) {
     $wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
     $wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
     $wandsSpells = isset($wand['spells']) ? $wand['spells'] : array();
+
     $worth = 0;
     foreach ($wandsSpells as $wandSpell) {
         if (isset($spells[$wandSpell]) && isset($spells[$wandSpell]['worth'])) {

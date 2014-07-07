@@ -80,9 +80,9 @@
 {
 	position:absolute;
 	left: 320px;
-	right: 0px;
 	bottom: 30px;
 	top: 60px;
+    width: 600px;
 }
 
 .titleBanner
@@ -132,6 +132,20 @@
 	color: #222222;
 	font-style: italic;
 	margin-bottom: 2px;
+}
+
+.spellUsage
+{
+    color: #444444;
+    font-style: italic;
+    margin-bottom: 2px;
+}
+
+.spellExtendedDescription
+{
+    color: #880088;
+    font-style: italic;
+    margin-bottom: 2px;
 }
 
 .spellProbability

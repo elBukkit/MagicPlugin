@@ -81,6 +81,17 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
 	icon.append(getMaterial(spell.icon));
 
 	detailsDiv.append(description);
+
+    if ('usage' in spell) {
+        var usage = $('<div class="spellUsage"/>').text(spell.usage);
+        detailsDiv.append(usage);
+    }
+
+    if ('extended_description' in spell) {
+        var extended = $('<div class="spellExtendedDescription"/>').text(spell.extended_description);
+        detailsDiv.append(extended);
+    }
+
 	detailsDiv.append(icon);
 	
 	// Check for rarity
