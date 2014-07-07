@@ -126,3 +126,6 @@ prevent_passthrough:
 # Copying command blocks can be dangerous and cause unintended effects
 # It's a good idea to put any indestructibles in here, since they can't be removed.
 restricted: []
+
+powerable:
+- lever

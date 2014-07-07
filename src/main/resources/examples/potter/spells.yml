@@ -125,12 +125,14 @@ aparecium:
     parameters:
         allow_max_range: true
         range: 8
-        radius: 5
+        radius: 4
         type: sphere
         power: true
-        cooldown: 1000
-        undo: 6000
+        cooldown: 6000
+        undo: 5000
         bypass_build: true
+        check_destructible: true
+        destructible: powerable
     costs:
         xp: 75
 
