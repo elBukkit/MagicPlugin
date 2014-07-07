@@ -328,6 +328,22 @@ public class ConstructBatch extends BrushBatch {
 			block.getChunk().load();
 			return false;
 		}
+
+        // Destructibility and permission checks
+        if (!spell.isDestructible(block))
+        {
+            return true;
+        }
+
+        if (replace != null && replace.size() > 0 && !replace.contains(block.getType()))
+        {
+            return true;
+        }
+
+        if (!spell.hasBuildPermission(block))
+        {
+            return true;
+        }
 		
 		// Check for power mode.
 		if (power)
@@ -416,21 +432,6 @@ public class ConstructBatch extends BrushBatch {
 			BlockData delayBlock = new BlockData(block);
 			delayBlock.updateFrom(brush);
 			delayedBlocks.add(delayBlock);
-			return true;
-		}
-		
-		if (!spell.isDestructible(block))
-		{
-			return true;
-		}
-		
-		if (replace != null && replace.size() > 0 && !replace.contains(block.getType())) 
-		{
-			return true;
-		}
-		
-		if (!spell.hasBuildPermission(block)) 
-		{
 			return true;
 		}
 

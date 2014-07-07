@@ -92,7 +92,7 @@ public class FillBatch extends BrushBatch {
 			}
 			processedBlocks++;
 
-			if (mage.hasBuildPermission(block) && !mage.isIndestructible(block)) {
+			if (spell.hasBuildPermission(block) && !spell.isIndestructible(block)) {
 				Material previousMaterial = block.getType();
 				byte previousData = block.getData();
 				
