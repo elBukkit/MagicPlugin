@@ -20,7 +20,7 @@ public abstract class BlockSpell extends UndoableSpell {
         "indestructible", "destructible", "check_destructible", "bypass_undo", "undo"
     };
 
-    private boolean isIndestructible(Block block)
+    public boolean isIndestructible(Block block)
     {
         if (indestructible == null) {
             return mage.isIndestructible(block);
