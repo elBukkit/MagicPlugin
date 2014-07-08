@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 3.4
+
+ - Fix EMP and Fill permissions and destructibility checks
+ - Add WGCustomFlags integration (allowed-spells and blocked-spells set flags)
+
 ## 3.3
 
  - Wands can now have multiple distinct enchanting paths, which are configurable

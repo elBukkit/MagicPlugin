@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 public class WorldGuardManager {
 	private boolean enabled = false;
 	private WorldGuardPlugin worldGuard = null;
+    private WGCustomFlagsManager customFlags = null;
 	
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
@@ -35,8 +37,19 @@ public class WorldGuardManager {
 			if (worldGuard == null) {
 				plugin.getLogger().info("WorldGuard not found, region protection and pvp checks will not be used.");
 			}  else {
+                try {
+                    Plugin customFlagsPlugin = plugin.getServer().getPluginManager().getPlugin("WGCustomFlags");
+                    if (customFlagsPlugin != null) {
+                        customFlags = new WGCustomFlagsManager(customFlagsPlugin);
+                    }
+                } catch (Throwable ex) {
+                }
+
 				plugin.getLogger().info("WorldGuard found, will respect build permissions for construction spells");
-			}
+			    if (customFlags != null) {
+                    plugin.getLogger().info("WGCustomFlags found, adding allowed-spells and blocked-spells flags");
+                }
+            }
 		} else {
 			plugin.getLogger().info("Region manager disabled, region protection and pvp checks will not be used.");
 			worldGuard = null;
@@ -51,6 +64,7 @@ public class WorldGuardManager {
 
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
 		if (checkSet == null || checkSet.size() == 0) return true;
+
 		return checkSet.allows(DefaultFlag.PVP);
 	}
 	
@@ -78,4 +92,18 @@ public class WorldGuardManager {
 		
 		return true;
 	}
+
+    public boolean hasCastPermission(Player player, SpellTemplate spell) {
+        if (player != null && worldGuard != null && customFlags != null) {
+            Location location = player.getLocation();
+            RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+            if (regionManager == null) return true;
+
+            ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+            if (checkSet == null || checkSet.size() == 0) return true;
+
+           return customFlags.canCast(checkSet, spell.getKey());
+        }
+        return true;
+    }
 }

@@ -144,6 +144,12 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.mewin</groupId>
+            <artifactId>WGCustomFlags</artifactId>
+            <version>1.6.1</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	<repositories>
       <repository>

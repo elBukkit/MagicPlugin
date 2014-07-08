@@ -1459,7 +1459,6 @@ public class MagicController implements Listener, MageController {
 		catch (Throwable ex)
 		{
 			controller.getLogger().warning("Error loading spell: " + className);
-			ex.printStackTrace();
 			return null;
 		}
 
@@ -1472,7 +1471,6 @@ public class MagicController implements Listener, MageController {
 		{
 
 			controller.getLogger().warning("Error loading spell: " + className);
-			ex.printStackTrace();
 			return null;
 		}
 
@@ -1679,6 +1677,14 @@ public class MagicController implements Listener, MageController {
 	{
 		return hasPermission(player, "Magic.wand.use", true);
 	}
+
+    public boolean hasCastPermission(CommandSender sender, SpellTemplate spell)
+    {
+        if (sender == null) return true;
+
+        if (sender instanceof Player && !worldGuardManager.hasCastPermission((Player)sender, spell)) return false;
+        return hasPermission(sender, spell.getPermissionNode(), true);
+    }
 
 	public boolean hasPermission(Player player, String pNode, boolean defaultValue)
 	{
