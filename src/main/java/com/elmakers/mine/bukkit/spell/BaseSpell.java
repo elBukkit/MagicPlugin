@@ -1408,7 +1408,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         if (sender == null) return true;
 
-        return controller.hasPermission(sender, getPermissionNode(), true);
+        return controller.hasCastPermission(sender, this);
     }
 
     @Override
