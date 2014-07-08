@@ -722,8 +722,8 @@ public class MagicController implements Listener, MageController {
         activateMetrics();
 
         // Set up the PlayerSpells timer
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            public void run() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Mage Tick") {
+            public void onRun() {
                 long threshold = System.currentTimeMillis() - MAGE_FORGET_THRESHOLD;
                 for (Entry<String, Long> mageEntry : forgetMages.entrySet()) {
                     if (mageEntry.getValue() < threshold)
@@ -741,8 +741,8 @@ public class MagicController implements Listener, MageController {
         }, 0, 20);
 
         // Set up the Block update timer
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            public void run() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Block Updates") {
+            public void onRun() {
                 for (Mage mage : pendingConstruction) {
                     if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                         ((com.elmakers.mine.bukkit.magic.Mage) mage).processPendingBatches(maxBlockUpdates);
@@ -1619,8 +1619,8 @@ public class MagicController implements Listener, MageController {
 		int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;;
 		if (autoSaveIntervalTicks > 1) {
 			autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, 
-					new Runnable() {
-						public void run() {
+					new TimedRunnable("Auto Save") {
+						public void onRun() {
 							saveController.getLogger().info("Auto-saving Magic data");
 							saveController.save(true);
 							saveController.getLogger().info("... Done auto-saving.");

@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.elmakers.mine.bukkit.block.batch.SpellBatch;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -26,9 +26,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.utility.Messages;
-import com.elmakers.mine.bukkit.utility.RunnableJob;
-import com.elmakers.mine.bukkit.utility.URLMap;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
 public class MagicCommandExecutor extends MagicTabExecutor {
@@ -144,7 +141,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps' or 'automata' parameter.");
 
 				Collection<Mage> mages = api.getMages();
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active players: " + mages.size());
+				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + mages.size());
 				Collection<Mage> pending = api.getMagesWithPendingBatches();
 				sender.sendMessage(ChatColor.AQUA + "Pending construction batches (" + pending.size() + "): ");
 				for (Mage mage : pending) {
@@ -183,9 +180,20 @@ public class MagicCommandExecutor extends MagicTabExecutor {
                         taskCounts.put(pluginName, pluginTaskCounts);
                     }
                     String className = "(Unknown)";
-                    Class<? extends Runnable> taskClass = CompatibilityUtils.getTaskClass(task);
-                    if (taskClass != null) {
-                        className = taskClass.getName();
+                    Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
+                    if (taskRunnable != null) {
+                        if (taskRunnable instanceof TimedRunnable) {
+                            TimedRunnable timed = (TimedRunnable)taskRunnable;
+                            long count = timed.getCount();
+                            long totalTime = timed.getTotalTime();
+                            long avg = count == 0 ? 0 : totalTime / count;
+                            className = timed.getName() + "(" + totalTime + ", " + count + ", " + avg + ")";
+                        } else {
+                            Class<? extends Runnable> taskClass = taskRunnable.getClass();
+                            if (taskClass != null) {
+                                className = taskClass.getName();
+                            }
+                        }
                     }
                     Integer count = pluginTaskCounts.get(className);
                     if (count == null) count = 0;
