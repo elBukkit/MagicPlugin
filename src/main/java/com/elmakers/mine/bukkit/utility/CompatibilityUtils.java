@@ -442,4 +442,17 @@ public class CompatibilityUtils extends NMSUtils {
 
         return taskClass;
     }
+
+    public static Runnable getTaskRunnable(BukkitTask task) {
+        Runnable runnable = null;
+        try {
+            Field taskField = class_CraftTask.getDeclaredField("task");
+            taskField.setAccessible(true);
+            runnable = (Runnable)taskField.get(task);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return runnable;
+    }
 }
