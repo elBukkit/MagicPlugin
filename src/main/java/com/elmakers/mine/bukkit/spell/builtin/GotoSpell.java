@@ -40,7 +40,9 @@ public class GotoSpell extends UndoableSpell
 		{
 			effectColor = Color.fromRGB(Integer.parseInt(parameters.getString("effect_color", "FF0000"), 16));
 		}
-		
+
+        boolean allowSelection = parameters.getBoolean("allow_selection", false) || mage.isSuperPowered();
+
 		if (targetEntity != null && targetEntity instanceof LivingEntity)
 		{
 			if (!mage.isSuperPowered() || !targetEntity.isValid() || targetEntity.isDead())
@@ -58,8 +60,8 @@ public class GotoSpell extends UndoableSpell
 			}
 		}
 		
-		// Totally different behavior for superpowered mages...
-		if (!mage.isSuperPowered())
+		// Totally different behavior for selection
+		if (!allowSelection)
 		{
 			Location location = getLocation();
 			List<Target> allTargets = new LinkedList<Target>();

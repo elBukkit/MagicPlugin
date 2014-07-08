@@ -849,7 +849,7 @@ deprimo:
         radius: 2
         bypass_build: true
         transparent: transparent_to_construction
-        undo: 30000
+        undo: 15000
     costs:
         xp: 70
 
@@ -1801,15 +1801,15 @@ reducto:
            particle: large_explosion
     parameters:
         allow_max_range: false
-        range: 16
+        range: 32
         speed: 1.0
         falling: true
         brush: air
-        radius: 2
+        radius: 1
         type: sphere
         destructible: destructible_mining
         check_destructible: false
-        undo: 30000
+        undo: 15000
         bypass_build: true
     costs:
         xp: 80
@@ -2303,6 +2303,7 @@ gather:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
+        allow_selection: true
         range: 64
     costs:
         xp: 150

@@ -441,7 +441,7 @@ flappy:
     spells:
       - ascendio
 
-reducto:
+spleef:
     icon: stick
     indestructible: false
     locked: true
