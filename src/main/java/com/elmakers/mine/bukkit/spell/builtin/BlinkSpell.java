@@ -65,6 +65,7 @@ public class BlinkSpell extends TargetingSpell
 		boolean autoAscend = parameters.getBoolean("allow_ascend", true);
 		boolean autoDescend = parameters.getBoolean("allow_descend", true);
 		boolean autoPassthrough = parameters.getBoolean("allow_passthrough", true);
+        verticalSearchDistance = parameters.getInt("vertical_range", 8);
 
         boolean isPassthrough = false;
 
