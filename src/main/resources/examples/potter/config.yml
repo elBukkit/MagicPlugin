@@ -43,3 +43,15 @@ wand_upgrade_item: arrow
 
 # Magic items don't work quite right if they have an enchanting path
 default_wand_path:
+
+max_health_regeneration: 5
+max_hunger_regeneration: 5
+max_damage_reduction: 0.8
+max_damage_reduction_explosions: 0.9
+max_damage_reduction_falling: 0.9
+max_damage_reduction_fire: 0.9
+max_damage_reduction_physical: 0.9
+max_damage_reduction_projectiles: 0.9
+max_cost_reduction: 0.5
+max_cooldown_reduction: 0.75
+max_haste: 15
