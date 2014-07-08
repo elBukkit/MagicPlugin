@@ -29,7 +29,7 @@ public class ConstructSpell extends BrushSpell
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
 		"power"
 	};
-	
+
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
 	private static final int DEFAULT_RADIUS						= 2;
 	private static final int DEFAULT_MAX_DIMENSION 				= 16;
@@ -71,17 +71,19 @@ public class ConstructSpell extends BrushSpell
 				orientTo = target.getLocation();
 				target = targetBlock;
 			}
-		} 
-
-		int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
-		maxDimension = parameters.getInt("md", maxDimension);
-		maxDimension = (int)(mage.getConstructionMultiplier() * (float)maxDimension);
-
-		int diameter = radius * 2;
-		if (diameter > maxDimension)
-		{
-			return SpellResult.FAIL;
 		}
+
+        if (!parameters.contains("radius")) {
+            int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
+            maxDimension = parameters.getInt("md", maxDimension);
+            maxDimension = (int)(mage.getConstructionMultiplier() * (float)maxDimension);
+
+            int diameter = radius * 2;
+            if (diameter > maxDimension)
+            {
+                return SpellResult.FAIL;
+            }
+        }
 		
 		if (!hasBuildPermission(target)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
