@@ -325,7 +325,7 @@ ascendio:
     category: year6
     class: FlingSpell
     worth: 80
-    pvp_restricted: true
+    pvp_restricted: false
     effects:
         cast:
         -  class: EffectSingle
@@ -398,7 +398,7 @@ broom:
     icon: blaze_rod
     category: specialty
     class: LevitateSpell
-    pvp_restricted: true
+    pvp_restricted: false
     worth: 50
     effects:
         cast:
@@ -1797,8 +1797,17 @@ reducto:
         cast:
         -  class: EffectSingle
            sound: explode
-        -  class: EffectTrail
-           particle: large_explosion
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 10
+             particle: explode
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
     parameters:
         allow_max_range: false
         range: 32
@@ -2061,7 +2070,7 @@ stupefy:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: instant_spell
              lenghtGrow: 0.4
         -  class: EffectSingle
@@ -2412,6 +2421,74 @@ superring:
         transparent: transparent_to_construction
     costs:
         xp: 100
+
+
+superbox:
+    icon: diamond_helmet
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    hidden: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        thickness: 1
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+    costs:
+        xp: 400
+
+superpyramid:
+    icon: speckled_melon
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        max_dimension: 16
+        target: select
+        thickness: 1
+        type: pyramid
+        transparent: transparent_to_construction
+    costs:
+        xp: 500
+
+supercube:
+    icon: nether_brick_item
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    hidden: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+    costs:
+        xp: 500
 
 superdome:
     hidden: true
@@ -2825,3 +2902,105 @@ music:
         cooldown: 120000
     costs:
         xp: 20
+
+paint:
+    icon: painting
+    hidden: true
+    category: engineering
+    class: FillSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 64
+        check_destructible: false
+        transparent: transparent_to_construction
+    costs:
+        xp: 5
+
+torch:
+    icon: torch
+    category: engineering
+    class: TorchSpell
+    worth: 80
+    hidden: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+        -  class: EffectTrail
+           particle: block_breaking
+           material: glowstone
+    parameters:
+        allow_max_range: false
+        allow_night: false
+        range: 32
+        allow_day: false
+        allow_glowstone: true
+    costs:
+        xp: 15
+
+recurse:
+    icon: wood_spade
+    hidden: true
+    category: engineering
+    class: RecurseSpell
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        max_volume: 512
+        max_dimension: 128
+        check_destructible: false
+        transparent: transparent_to_construction
+    costs:
+        xp: 30
+
+alter:
+    icon: ink_sack
+    hidden: true
+    category: engineering
+    class: AlterSpell
+    worth: 8
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: dig_wool
+        -  class: EffectTrail
+           particle: block_breaking
+    parameters:
+        target_type: Entity
+        allow_max_range: false
+        range: 32
+        depth: 0
+        transparent: transparent_to_construction
+    costs:
+        xp: 3
+
+superalter:
+    icon: ink_sack:1
+    hidden: true
+    category: engineering
+    class: AlterSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: dig_wool
+        -  class: EffectTrail
+           particle: block_breaking
+    parameters:
+        allow_max_range: false
+        range: 64
+        depth: 32
+        transparent: transparent_to_construction
+    costs:
+        xp: 40

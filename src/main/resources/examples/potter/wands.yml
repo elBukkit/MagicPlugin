@@ -401,6 +401,93 @@ wolf:
       - stained_glass
       - glass
 
+
+architect:
+    path: engineer
+    keep: true
+    bound: true
+    icon: wood_axe
+    effect_color: '00FF00'
+    hunger_regeneration: 1
+    health_regeneration: 1
+    protection_falling: 1
+    protection: 0.2
+    xp_max: 1000
+    xp_regeneration: 100
+    power: 1
+    effect_color: '8B008B'
+    effect_bubbles: true
+    organize: true
+    active_spell: fly
+    spells:
+        - flight
+        - paint
+        - alter
+        - torch
+        - fill
+        - absorb
+        - bridge
+        - pillar
+        - place
+        - recurse
+        - reparifarge
+        - deletrius
+        - iterate
+        - superblob
+        - superbox
+        - supershell
+        - superconvert
+        - superpyramid
+        - superdome
+        - superdisc
+        - superring
+        - superiterate
+        - superalter
+        - reparo
+        - salviohexia
+        - reparomaxima
+    materials:
+        - stone
+        - wood
+        - glass
+        - dirt
+        - erase
+        - copy
+        - clone
+        - replicate
+        - map
+        - glowstone
+        - sand
+        - cobblestone
+        - stained_glass
+        - thin_glass
+        - stained_glass_pane
+        - stained_clay
+        - quartz_block
+        - quartz_block:1
+        - quartz_block:2
+        - lapis_block
+        - iron_block
+        - diamond_block
+        - gold_block
+        - emerald_block
+        - redstone_block
+        - obsidian
+        - schematic:rainbow
+        - schematic:creeper_rug
+        - schematic:church
+        - schematic:blacksmith
+        - schematic:compact_house
+        - schematic:small_house
+        - schematic:elder_tree
+        - schematic:garden_house
+        - schematic:beacon
+        - schematic:cage
+        - schematic:tent
+        - schematic:stash_chest
+        - schematic:lantern
+        - schematic:tech_tower
+
 crudwand:
     icon: stick
     indestructible: false
