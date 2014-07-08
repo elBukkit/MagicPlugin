@@ -264,7 +264,11 @@ permissions:
     default: false
     type: boolean
   Magic.bypass_build:
-    description: A player always bypsses build checks
+    description: A player always bypasses build checks
+    default: false
+    type: boolean
+  Magic.bypass:
+    description: A player always bypasses other permission checks
     default: false
     type: boolean
   Magic.cast:

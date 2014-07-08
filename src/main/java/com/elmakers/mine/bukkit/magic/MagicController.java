@@ -1682,7 +1682,12 @@ public class MagicController implements Listener, MageController {
     {
         if (sender == null) return true;
 
-        if (sender instanceof Player && !worldGuardManager.hasCastPermission((Player)sender, spell)) return false;
+        if (sender instanceof Player) {
+            Player player = (Player)sender;
+            if (!player.isPermissionSet("Magic.bypass") && !worldGuardManager.hasCastPermission((Player)sender, spell)) {
+                return false;
+            }
+        }
         return hasPermission(sender, spell.getPermissionNode(), true);
     }
 
