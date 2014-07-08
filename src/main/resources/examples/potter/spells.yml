@@ -1400,6 +1400,7 @@ immobulus:
            location: target
            effectlib:
              class: SmokeEntityEffect
+             iterations: 40
     costs:
         xp: 25
     parameters:
