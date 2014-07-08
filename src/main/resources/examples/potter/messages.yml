@@ -242,6 +242,9 @@ spells:
         cast: "Finite Incantatem &d&o$target &r&6$spell!"
         fail:
         cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"
+    firestorm:
+        name: Firestorm
+        description: Surround yourself with a ring of fire
     flagrate:
         name: Flagrate
         description: Write in the air with fire
@@ -276,6 +279,10 @@ spells:
         name: Immobulus
         description: Immobilize your target
         cast: Immobulus $target!
+    locomotomortus:
+        name: Locomoto Mortus
+        description: The leg-locker curse
+        cast: Locomotomortus $target!
     imperiomaxima:
         name: Imperio Maxima
         description: Control your target
@@ -467,6 +474,14 @@ wands:
         name: Deatheater Wand
         description: $wood and $core
         upgrade_description: Become a Deatheater!
+
+    flappy:
+        name: Flappy Feather
+        description: Fly, little bird, fly!
+
+    spleef:
+        name: Spleef Wand
+        description: Kersplode Things
 
     video:
         name: Videographer Wand

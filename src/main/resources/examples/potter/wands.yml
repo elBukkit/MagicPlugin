@@ -171,6 +171,7 @@ lignumvitae:
       - gather
       - atmos
       - snowball
+      - locomotomortus
 
 allis0n:
     icon: wood_hoe
@@ -297,6 +298,7 @@ elder:
       - recall
       - gather
       - atmos
+      - locomotomortus
 
 wolf:
     icon: gold_hoe
@@ -336,6 +338,7 @@ wolf:
       - confundus
       - conjunctivitis
       - crucio
+      - locomotomortus
       - meteo
       - deletrius
       - deprimo
@@ -421,9 +424,39 @@ video:
     spells:
       - superfly
 
- #
- # ITEMS
- #
+#
+# MINIGAME ITEMS
+#
+
+flappy:
+    icon: feather
+    indestructible: false
+    locked: true
+    xp: 45
+    xp_max: 45
+    xp_regeneration: 20
+    uses: 50
+    effect_color: '000088'
+    active_spell: ascendio
+    spells:
+      - ascendio
+
+reducto:
+    icon: stick
+    indestructible: false
+    locked: true
+    xp: 80
+    xp_max: 80
+    xp_regeneration: 20
+    uses: 50
+    effect_color: 'FF0000'
+    active_spell: reducto
+    spells:
+      - reducto
+
+#
+# ITEMS
+#
 
 portkey:
     active_spell: recall

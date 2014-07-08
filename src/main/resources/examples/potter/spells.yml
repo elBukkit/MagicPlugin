@@ -624,7 +624,7 @@ bogies:
         deactivate_target_mage: true
         target_type: LivingEntity
         target: other
-        duration: 10000
+        duration: 5000
         effect_poison: 1
 
 bombarda:
@@ -646,9 +646,10 @@ bombarda:
     parameters:
         target_type: LivingEntity
         allow_max_range: true
-        range: 16
+        range: 8
         break_blocks: false
         size: 1
+        cooldown: 10000
     costs:
         xp: 50
 
@@ -672,6 +673,7 @@ bombardamaxima:
         range: 24
         size: 3
         break_blocks: false
+        cooldown: 20000
     costs:
         xp: 75
 
@@ -1081,6 +1083,34 @@ ferula:
     costs:
         xp: 50
 
+firestorm:
+    icon: fire
+    category: year4
+    class: ConstructSpell
+    worth: 45
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+           location: origin
+           effectlib:
+             class: ShieldEntityEffect
+             iterations: 10
+             period: 2
+             particles: 8
+             particle: flame
+    parameters:
+        target: self
+        radius: 3
+        thickness: 1
+        type: sphere
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        brush: fire
+        undo: 6000
+    costs:
+        xp: 50
+
 floo:
     icon: sulphur
     category: specialty
@@ -1409,6 +1439,39 @@ immobulus:
         target: other
         duration: 5000
         effect_slow: 20
+        cooldown: 6000
+
+locomotomortus:
+    icon: web
+    category: year2
+    class: PotionEffectSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 30
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: witch_magic
+        -  class: EffectSingle
+           particle: witch_magic
+           location: target
+           effectlib:
+             class: ParticleEntityEffect
+             iterations: 80
+             particle: witch_magic
+    costs:
+        xp: 15
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target: other
+        duration: 10000
+        effect_slow: 3
+        cooldown: 6000
 
 imperio:
     icon: leash
