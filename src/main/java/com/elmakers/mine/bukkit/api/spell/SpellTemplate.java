@@ -34,4 +34,5 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public long getCooldown();
     public Spell createSpell();
     public void loadTemplate(String key, ConfigurationSection node);
+    public String getPermissionNode();
 }
