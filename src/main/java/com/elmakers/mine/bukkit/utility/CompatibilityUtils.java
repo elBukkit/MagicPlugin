@@ -231,6 +231,18 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
+    protected static Object getTagString(String value) {
+        try {
+            if (class_NBTTagList_legacy_consructor != null) {
+                return class_NBTTagList_legacy_consructor.newInstance("", value);
+            }
+            return class_NBTTagList_consructor.newInstance(value);
+        } catch (Exception ex) {
+            ex.printStackTrace();;
+        }
+        return null;
+    }
+
     public static boolean setLore(ItemStack itemStack, Collection<String> lore) {
         Object handle = getHandle(itemStack);
         if (handle == null) return false;
@@ -243,15 +255,12 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             final Object loreList = class_NBTTagList.newInstance();
 
-            Method addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
-            Constructor stringContructor = class_NBTTagString.getConstructor(String.class);
             for (String value : lore) {
-                Object nbtString = stringContructor.newInstance(value);
-                addMethod.invoke(loreList, nbtString);
+                Object nbtString = getTagString(value);
+                class_NBTTagList_addMethod.invoke(loreList, nbtString);
             }
 
-            Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
-            setMethod.invoke(displayNode, "Lore", loreList);
+            class_NBTTagCompound_setMethod.invoke(displayNode, "Lore", loreList);
         } catch (Throwable ex) {
             ex.printStackTrace();
             return false;
@@ -263,8 +272,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
         Inventory inventory = null;
         try {
-            Constructor<?> inventoryConstructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
-            inventory = (Inventory)inventoryConstructor.newInstance(holder, size, ChatColor.translateAlternateColorCodes('&', name));
+            inventory = (Inventory)class_CraftInventoryCustom_constructor.newInstance(holder, size, ChatColor.translateAlternateColorCodes('&', name));
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -282,9 +290,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static void setInvulnerable(Entity entity) {
         try {
             Object handle = getHandle(entity);
-            Field invulnerableField = class_Entity.getDeclaredField("invulnerable");
-            invulnerableField.setAccessible(true);
-            invulnerableField.set(handle, true);
+            class_Entity_invulnerableField.set(handle, true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -348,8 +354,7 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Method getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             Object dataWatcher = getDataWatcherMethod.invoke(entityHandle);
-            Method watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
-            watchMethod.invoke(dataWatcher, key, data);
+            class_DataWatcher_watchMethod.invoke(dataWatcher, key, data);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -371,21 +376,15 @@ public class CompatibilityUtils extends NMSUtils {
     public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
         Object worldHandle = getHandle(location.getWorld());
         try {
-            Method getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
-            Method getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
-
-            // :( No way to create an AABB with unobfuscated non-protected methods.
-            Method createBBMethod = class_AxisAlignedBB.getMethod("a", Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
-
-            Object bb = createBBMethod.invoke(null, location.getX() - x, location.getY() - y, location.getZ() - z,
+            Object bb = class_AxisAlignedBB_createBBMethod.invoke(null, location.getX() - x, location.getY() - y, location.getZ() - z,
                     location.getX() + x, location.getY() + y, location.getZ() + z);
 
             // The input entity is only used for equivalency testing, so this "null" should be ok.
-            List<? extends Object> entityList = (List<? extends Object>)getEntitiesMethod.invoke(worldHandle, null, bb);
+            List<? extends Object> entityList = (List<? extends Object>)class_World_getEntitiesMethod.invoke(worldHandle, null, bb);
             List<Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(entityList.size());
 
             for (Object entity : entityList) {
-                bukkitEntityList.add((Entity)getBukkitEntityMethod.invoke(entity));
+                bukkitEntityList.add((Entity)class_Entity_getBukkitEntityMethod.invoke(entity));
             }
             return bukkitEntityList;
         } catch (Exception ex) {

@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -24,6 +25,8 @@ import org.bukkit.inventory.ItemStack;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class NMSUtils {
+    protected static boolean failed = false;
+
     protected static String versionPrefix = "";
 
     protected static Class<?> class_ItemStack;
@@ -48,6 +51,33 @@ public class NMSUtils {
     protected static Class<?> class_EntityItemFrame;
     protected static Class<?> class_EntityMinecartRideable;
     protected static Class<?> class_AxisAlignedBB;
+
+    protected static Method class_NBTTagList_addMethod;
+    protected static Method class_NBTTagCompound_setMethod;
+    protected static Method class_DataWatcher_watchMethod;
+    protected static Method class_World_getEntitiesMethod;
+    protected static Method class_Entity_getBukkitEntityMethod;
+    protected static Method class_AxisAlignedBB_createBBMethod;
+    protected static Method class_World_explodeMethod;
+    protected static Method class_NBTTagCompound_setBooleanMethod;
+    protected static Method class_NBTTagCompound_setStringMethod;
+    protected static Method class_NBTTagCompound_removeMethod;
+    protected static Method class_NBTTagCompound_getStringMethod;
+    protected static Method class_NBTTagCompound_getMethod;
+    protected static Method class_NBTTagCompound_getCompoundMethod;
+
+    protected static Method class_CraftItemStack_copyMethod;
+    protected static Method class_CraftItemStack_mirrorMethod;
+    protected static Method class_NBTTagCompound_hasKeyMethod;
+
+    protected static Constructor class_NBTTagList_consructor;
+    protected static Constructor class_NBTTagList_legacy_consructor;
+    protected static Constructor class_CraftInventoryCustom_constructor;
+    protected static Constructor class_NBTTagByte_constructor;
+    protected static Constructor class_NBTTagByte_legacy_constructor;
+
+    protected static Field class_Entity_invulnerableField;
+    protected static Field class_ItemStack_tagField;
 
     static
     {
@@ -79,13 +109,56 @@ public class NMSUtils {
             class_EntityItemFrame = fixBukkitClass("net.minecraft.server.EntityItemFrame");
             class_EntityMinecartRideable = fixBukkitClass("net.minecraft.server.EntityMinecartRideable");
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
+
+            class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
+            class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
+            class_DataWatcher_watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
+            class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
+            class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
+            class_AxisAlignedBB_createBBMethod = class_AxisAlignedBB.getMethod("a", Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
+            class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
+            class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
+            class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
+            class_NBTTagCompound_removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
+            class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
+            class_CraftItemStack_copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
+            class_CraftItemStack_mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", class_ItemStack);
+            class_NBTTagCompound_hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
+            class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
+            class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
+
+            class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
+
+            class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
+            class_Entity_invulnerableField.setAccessible(true);
+            class_ItemStack_tagField = class_ItemStack.getField("tag");
         }
         catch (Throwable ex) {
+            failed = true;
             ex.printStackTrace();
+        }
+
+        try {
+            class_NBTTagList_legacy_consructor = class_NBTTagString.getConstructor(String.class, String.class);
+            class_NBTTagByte_legacy_constructor = class_NBTTagByte.getConstructor(String.class, Byte.TYPE);
+        }
+        catch (Throwable legacy) {
+            try {
+                class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
+                class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
+            }
+            catch (Throwable ex) {
+                failed = true;
+                ex.printStackTrace();
+            }
         }
 
         class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
         class_PacketPlayOutWorldParticles = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutWorldParticles", "net.minecraft.server.Packet63WorldParticles");
+    }
+
+    public static boolean getFailed() {
+        return failed;
     }
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
@@ -258,8 +331,7 @@ public class NMSUtils {
     public static Object getTag(Object mcItemStack) {
         Object tag = null;
         try {
-            Field tagField = class_ItemStack.getField("tag");
-            tag = tagField.get(mcItemStack);
+            tag = class_ItemStack_tagField.get(mcItemStack);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -269,8 +341,7 @@ public class NMSUtils {
     protected static Object getNMSCopy(ItemStack stack) {
         Object nms = null;
         try {
-            Method copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
-            nms = copyMethod.invoke(null, stack);
+            nms = class_CraftItemStack_copyMethod.invoke(null, stack);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -282,8 +353,7 @@ public class NMSUtils {
 
         try {
             Object craft = getNMSCopy(stack);
-            Method mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", craft.getClass());
-            stack = (ItemStack)mirrorMethod.invoke(null, craft);
+            stack = (ItemStack)class_CraftItemStack_mirrorMethod.invoke(null, craft);
         } catch (Throwable ex) {
             stack = null;
         }
@@ -302,10 +372,9 @@ public class NMSUtils {
             return null;
         }
         try {
-            Field tagField = class_ItemStack.getField("tag");
-            Object tag = tagField.get(nmsStack);
+            Object tag = class_ItemStack_tagField.get(nmsStack);
             if (tag == null) {
-                tagField.set(nmsStack, class_NBTTagCompound.newInstance());
+                class_ItemStack_tagField.set(nmsStack, class_NBTTagCompound.newInstance());
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -332,8 +401,7 @@ public class NMSUtils {
             if (craft == null) return null;
             Object tagObject = getTag(craft);
             if (tagObject == null) return null;
-            Method getMethod = class_NBTTagCompound.getMethod("get", String.class);
-            meta = getMethod.invoke(tagObject, tag);
+            meta = class_NBTTagCompound_getMethod.invoke(tagObject, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -344,8 +412,7 @@ public class NMSUtils {
         if (nbtBase == null) return false;
         Boolean result = false;
         try {
-            Method hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
-            result = (Boolean)hasKeyMethod.invoke(nbtBase, tag);
+            result = (Boolean)class_NBTTagCompound_hasKeyMethod.invoke(nbtBase, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -356,8 +423,7 @@ public class NMSUtils {
         if (nbtBase == null) return null;
         Object meta = null;
         try {
-            Method getMethod = class_NBTTagCompound.getMethod("get", String.class);
-            meta = getMethod.invoke(nbtBase, tag);
+            meta = class_NBTTagCompound_getMethod.invoke(nbtBase, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -368,10 +434,8 @@ public class NMSUtils {
         if (nbtBase == null) return null;
         Object meta = null;
         try {
-            Method getMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
-            meta = getMethod.invoke(nbtBase, tag);
-            Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
-            setMethod.invoke(nbtBase, tag, meta);
+            meta = class_NBTTagCompound_getCompoundMethod.invoke(nbtBase, tag);
+            class_NBTTagCompound_setMethod.invoke(nbtBase, tag, meta);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -388,8 +452,7 @@ public class NMSUtils {
                 Object tagObject = getTag(craft);
                 if (tagObject == null) return null;
                 outputObject = class_NBTTagCompound.newInstance();
-                Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
-                setMethod.invoke(tagObject, tag, outputObject);
+                class_NBTTagCompound_setMethod.invoke(tagObject, tag, outputObject);
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
@@ -406,8 +469,7 @@ public class NMSUtils {
         if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
         String meta = null;
         try {
-            Method getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
-            meta = (String)getStringMethod.invoke(node, tag);
+            meta = (String)class_NBTTagCompound_getStringMethod.invoke(node, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -418,11 +480,9 @@ public class NMSUtils {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {
             if (value == null || value.length() == 0) {
-                Method removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
-                removeMethod.invoke(node, tag);
+                class_NBTTagCompound_removeMethod.invoke(node, tag);
             } else {
-                Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
-                setStringMethod.invoke(node, tag, value);
+                class_NBTTagCompound_setStringMethod.invoke(node, tag, value);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -432,8 +492,7 @@ public class NMSUtils {
     public static void removeMeta(Object node, String tag) {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {
-            Method removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
-            removeMethod.invoke(node, tag);
+            class_NBTTagCompound_removeMethod.invoke(node, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -447,8 +506,7 @@ public class NMSUtils {
             if (craft == null) return null;
             Object tagObject = getTag(craft);
             if (tagObject == null) return null;
-            Method getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
-            meta = (String)getStringMethod.invoke(tagObject, tag);
+            meta = (String)class_NBTTagCompound_getStringMethod.invoke(tagObject, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -462,8 +520,7 @@ public class NMSUtils {
             if (craft == null) return;
             Object tagObject = getTag(craft);
             if (tagObject == null) return;
-            Method setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
-            setStringMethod.invoke(tagObject, tag, value);
+            class_NBTTagCompound_setStringMethod.invoke(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -478,13 +535,11 @@ public class NMSUtils {
             Object tagObject = getTag(craft);
             if (tagObject == null) return;
             final Object enchList = class_NBTTagList.newInstance();
-            Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
-            setMethod.invoke(tagObject, "ench", enchList);
+            class_NBTTagCompound_setMethod.invoke(tagObject, "ench", enchList);
 
             // Testing Glow API based on ItemMetadata storage
             Object bukkitData = createNode(stack, "bukkit");
-            Method setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
-            setBooleanMethod.invoke(bukkitData, "glow", true);
+            class_NBTTagCompound_setBooleanMethod.invoke(bukkitData, "glow", true);
         } catch (Throwable ex) {
 
         }
@@ -499,10 +554,13 @@ public class NMSUtils {
             Object tagObject = getTag(craft);
             if (tagObject == null) return;
 
-            Constructor byteConstructor = class_NBTTagByte.getConstructor(Byte.TYPE);
-            final Object unbreakableFlag = byteConstructor.newInstance((byte)1);
-            Method setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
-            setMethod.invoke(tagObject, "Unbreakable", unbreakableFlag);
+            Object unbreakableFlag = null;
+            if (class_NBTTagByte_constructor != null) {
+                unbreakableFlag = class_NBTTagByte_constructor.newInstance((byte) 1);
+            } else {
+                unbreakableFlag = class_NBTTagByte_legacy_constructor.newInstance("", (byte) 1);
+            }
+            class_NBTTagCompound_setMethod.invoke(tagObject, "Unbreakable", unbreakableFlag);
         } catch (Throwable ex) {
 
         }
@@ -516,8 +574,7 @@ public class NMSUtils {
             if (worldHandle == null) return false;
             Object entityHandle = entity == null ? null : getHandle(entity);
 
-            Method explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
-            Object explosion = explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
+            Object explosion = class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
             Field cancelledField = explosion.getClass().getDeclaredField("wasCanceled");
             result = (Boolean)cancelledField.get(explosion);
         } catch (Throwable ex) {
@@ -535,7 +592,6 @@ public class NMSUtils {
     public static boolean isTemporary(ItemStack itemStack) {
         return hasMeta(itemStack, "temporary");
     }
-
 
     public static String getTemporaryMessage(ItemStack itemStack) {
         return getMeta(itemStack, "temporary");
