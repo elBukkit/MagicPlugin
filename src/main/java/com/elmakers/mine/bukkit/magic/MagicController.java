@@ -1424,7 +1424,13 @@ public class MagicController implements Listener, MageController {
                 spellNode.set("pvp_restricted", true);
             }
 
-			Spell newSpell = loadSpell(key, spellNode, this);
+			Spell newSpell = null;
+            try {
+                newSpell = loadSpell(key, spellNode, this);
+            } catch (Exception ex) {
+                newSpell = null;
+                ex.printStackTrace();
+            }
 			if (newSpell == null)
 			{
 				getLogger().warning("Magic: Error loading spell " + key);
