@@ -270,6 +270,7 @@ master:
       meteor: 0,0,0,1,100
       cluster: 0,0,0,1,100
       bomb: 0,0,0,1,100
+      missile: 5,10,30,50,100
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0
@@ -492,6 +493,8 @@ engineer:
       stalactite: 0,5,10,15,100
       tree: 5,20,35,45,100
       day: 0,5,10,30,100
+      silence: 1,5,10,20,100
+      blind: 5,10,15,40,100
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0
@@ -768,6 +771,9 @@ apprentice:
       weather: 0,0,0,1,100
       cage: 0,0,2,10,100
       tent: 0,0,5,15,100
+      missile: 1,5,20,30,100
+      silence: 0,1,5,10,100
+      blind: 1,5,10,20,100
 
 student:
     levels: 1,25,35,40,45
@@ -907,6 +913,8 @@ student:
       mine: 1,20,30,40,100
       chop: 1,20,30,40,100
       tree: 5,20,35,45,100
+      missile: 0,5,10,20,100
+      blind: 0,1,5,10,100
 
 battle:
     levels: 1,25,35,40,45
@@ -1056,3 +1064,6 @@ battle:
       wither: 5,10,20,30,100
       disarm: 0,0,0,1,100
       cage: 0,0,2,10,100
+      missile: 5,10,30,50,100
+      silence: 0,1,5,10,100
+      blind: 1,5,10,20,100

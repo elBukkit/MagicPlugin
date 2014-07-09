@@ -3466,4 +3466,93 @@ wolfhouse:
           wolf_recall_spawn: castp @p[r=2] recall type spawn
     costs:
         xp: 1000
-        
+
+missile:
+    icon: ink_sack:4
+    category: combat
+    class: PotionEffectSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 15
+             particle: instant_spell
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 0000FF
+           firework: ball
+    parameters:
+        range: 35
+        fov: 0.11
+        target_type: LivingEntity
+        duration: 3000
+        damage: 4.5
+        effect_confusion: 40
+        cooldown: 750
+    costs:
+        xp: 50
+
+silence:
+    icon: ink_sack
+    category: combat
+    class: PotionEffectSpell
+    worth: 70
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: cat_purr
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: ShieldEntityEffect
+             particle: angry_villager
+             iterations: 200
+             particles: 1
+    parameters:
+        target_type: LivingEntity
+        target: other
+        deactivate_target_mage: true
+        allow_max_range: false
+        range: 16
+        duration: 10000
+        effect_confusion: 100
+        cooldown: 20000
+    costs:
+        xp: 40
+
+blind:
+    icon: ender_pearl
+    category: combat
+    class: PotionEffectSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: town_aura
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEntityEffect
+    costs:
+        xp: 25
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target: other
+        duration: 3000
+        effect_blindness: 5
