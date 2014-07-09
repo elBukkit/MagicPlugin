@@ -1835,7 +1835,6 @@ reducto:
            location: target
            color: FFFF00
            firework: burst
-           particle:
     parameters:
         allow_max_range: false
         range: 32
