@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.magic.command.*;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -119,6 +120,12 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	public void onEnable() 
 	{
+        if (NMSUtils.getFailed()) {
+            getLogger().warning("Something went wrong with some Deep Magic, disabling plugin.");
+            getLogger().warning("Please make sure you are running a compatibile version of CraftBukkit.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 		if (controller == null) {
 			controller = new MagicController(this);
 		}
@@ -155,8 +162,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	public void onDisable() 
 	{
-		controller.save();
-		controller.clear();
+        if (controller != null) {
+            controller.save();
+            controller.clear();
+        }
 	}
 
 	/*
