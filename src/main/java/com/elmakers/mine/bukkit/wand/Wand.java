@@ -183,7 +183,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		this(controller, DefaultWandMaterial, (short)0);
 	}
 	
-	protected Wand(MagicController controller, String templateName) throws IllegalArgumentException {
+	protected Wand(MagicController controller, String templateName) throws UnknownWandException {
 		this(controller);
 		suspendSave = true;
 		String wandName = Messages.get("wand.default_name");
@@ -210,7 +210,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 
 			if (!wandTemplates.containsKey(templateName)) {
-				throw new IllegalArgumentException("No template named " + templateName);
+				throw new UnknownWandException(templateName);
 			}
 			ConfigurationSection wandConfig = wandTemplates.get(templateName);
 
@@ -1797,8 +1797,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Wand wand = null;
 		try {
             wand = new Wand(controller, templateName);
-        } catch (IllegalArgumentException ignore) {
-            // the Wand constructor throws an exception on an unknown tempalte
+        } catch (UnknownWandException ignore) {
+            // the Wand constructor throws an exception on an unknown template
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -2657,7 +2657,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		ItemStack spellItem = createSpellIcon(spellName);
 		if (spellItem == null) {
-			controller.getPlugin().getLogger().warning("Unknown spell: " + spellName);
 			return false;
 		}
         spells.add(spellName);
