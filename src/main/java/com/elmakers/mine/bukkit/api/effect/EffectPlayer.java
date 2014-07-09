@@ -13,12 +13,6 @@ public interface EffectPlayer {
     public void setEffect(Effect effect);
     public void setEffectData(int data);
 
-    public void setParticleType(ParticleType particleType);
-    public void setParticleSubType(String particleSubType);
-    public void setParticleData(float effectData); /// AKA "speed"
-    public void setParticleCount(int particleCount);
-    public void setParticleOffset(float xOffset, float yOffset, float zOffset);
-
     public void setSound(Sound sound);
     public void setSound(Sound sound, float volume, float pitch);
 
