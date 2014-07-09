@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 3.4
+
 ## 3.3.1
 
  - Fix 1.6.4 support
