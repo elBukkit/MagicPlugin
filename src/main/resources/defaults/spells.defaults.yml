@@ -2668,9 +2668,12 @@ counterspell:
     parameters:
         allow_max_range: false
         target: other
+        target_type: LivingEntity
         target_blocks: false
         target_timeout: 10000
         range: 32
+        bypass_protection: true
+        bypass_confusion: true
     costs:
         xp: 150
 breach:
@@ -3135,9 +3138,10 @@ flamethrower:
         -  class: EffectSingle
            sound: fire_ignite
            effectlib:
-             class: ConeLocationEffect
+             class: DragonLocationEffect
              iterations: 20
-             particle: flame
+             length: 16
+             stepsPerIteration: 1
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
