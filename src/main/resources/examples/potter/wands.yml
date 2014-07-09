@@ -342,6 +342,7 @@ wolf:
       - meteo
       - deletrius
       - deprimo
+      - deprimomaxima
       - disillusion
       - duro
       - episkey
@@ -370,6 +371,7 @@ wolf:
       - recall
       - reducio
       - reducto
+      - reductomaxima
       - rennervate
       - reparifarge
       - reparo
@@ -400,7 +402,6 @@ wolf:
       - stone
       - stained_glass
       - glass
-
 
 architect:
     path: engineer

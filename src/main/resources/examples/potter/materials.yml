@@ -129,3 +129,6 @@ restricted: []
 
 powerable:
 - lever
+
+spleefable:
+- quartz_block

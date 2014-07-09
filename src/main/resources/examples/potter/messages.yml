@@ -191,8 +191,12 @@ spells:
         cast: Deletrius!
     deprimo:
         name: Deprimo
-        description: Collapse the target with immense pressure
+        description: Collapse certain blocks
         cast: Deprimo!
+    deprimomaxima:
+        name: Deprimo Maxima
+        description: Collapse the target with immense pressure
+        cast: Deprimo Maxima!
     disillusion:
         name: Disillusionment Chart
         description: Cause the target to become nearly invisible
@@ -348,8 +352,12 @@ spells:
         cast: Reducio $target!
     reducto:
         name: Reducto
-        description: Blast your target to pieces
+        description: Blast certain blocks to pieces
         cast: Reducto!
+    reductomaxima:
+        name: Reducto Maxima
+        description: Blast your target to pieces
+        cast: Reducto Maxima!
     revelio:
         name: Revelio
         description: Reveal the unseen

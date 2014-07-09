@@ -117,6 +117,7 @@ aparecium:
            sound: fuse
         -  class: EffectTrail
            particle: red_dust
+           particle_data: 2
            particle_count: 5
         -  class: EffectRing
            particle: red_dust
@@ -134,7 +135,7 @@ aparecium:
         check_destructible: true
         destructible: powerable
     costs:
-        xp: 75
+        xp: 50
 
 apparate:
     icon: eye_of_ender
@@ -829,6 +830,32 @@ deletrius:
 
 deprimo:
     icon: iron_plate
+    category: year4
+    class: ConstructSpell
+    cast_on_no_target: true
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: large_explosion
+    parameters:
+        allow_max_range: false
+        range: 16
+        brush: air
+        falling: true
+        check_destructible: true
+        destructible: spleefable
+        radius: 2
+        bypass_build: true
+        transparent: transparent_to_construction
+        undo: 15000
+    costs:
+        xp: 70
+
+deprimomaxima:
+    icon: iron_plate
     category: year6
     class: ConstructSpell
     cast_on_no_target: true
@@ -846,7 +873,7 @@ deprimo:
         falling: true
         check_destructible: false
         indestructible: air
-        radius: 2
+        radius: 3
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
@@ -1460,7 +1487,7 @@ locomotomortus:
            particle: witch_magic
            location: target
            effectlib:
-             class: ParticleEntityEffect
+             class: SmokeEntityEffect
              iterations: 80
              particle: witch_magic
     costs:
@@ -1808,6 +1835,7 @@ reducto:
            location: target
            color: FFFF00
            firework: burst
+           particle:
     parameters:
         allow_max_range: false
         range: 32
@@ -1816,12 +1844,46 @@ reducto:
         brush: air
         radius: 1
         type: sphere
-        destructible: destructible_mining
-        check_destructible: false
+        destructible: spleefable
+        check_destructible: true
         undo: 15000
         bypass_build: true
     costs:
         xp: 80
+
+reductomaxima:
+    icon: iron_spade
+    category: year6
+    class: ConstructSpell
+    worth: 12
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 10
+             particle: explode
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
+    parameters:
+        allow_max_range: false
+        range: 32
+        speed: 1.0
+        falling: true
+        brush: air
+        radius: 3
+        type: sphere
+        check_destructible: false
+        undo: 15000
+        bypass_build: true
+    costs:
+        xp: 150
 
 salviohexia:
     icon: diamond_pickaxe
