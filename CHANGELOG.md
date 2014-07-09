@@ -1,7 +1,9 @@
 # CHANGELOG
 
-## 3.4
+## 3.3.1
 
+ - Fix 1.6.4 support
+ - Add Magic Missile, Silence and Blind spells
  - Fix EMP and Fill permissions and destructibility checks
  - Add WGCustomFlags integration (allowed-spells and blocked-spells set flags)
 
