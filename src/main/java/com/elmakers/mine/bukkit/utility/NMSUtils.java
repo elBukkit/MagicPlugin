@@ -46,7 +46,6 @@ public class NMSUtils {
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
     protected static Class<?> class_PacketPlayOutMapChunkBulk;
-    protected static Class<?> class_PacketPlayOutWorldParticles;
     protected static Class<?> class_EntityPainting;
     protected static Class<?> class_EntityItemFrame;
     protected static Class<?> class_EntityMinecartRideable;
@@ -154,7 +153,6 @@ public class NMSUtils {
         }
 
         class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
-        class_PacketPlayOutWorldParticles = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutWorldParticles", "net.minecraft.server.Packet63WorldParticles");
     }
 
     public static boolean getFailed() {

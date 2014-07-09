@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.effect;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.bukkit.FireworkEffect;
@@ -10,7 +8,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class EffectUtils extends NMSUtils {
@@ -38,54 +35,6 @@ public class EffectUtils extends NMSUtils {
             firework.remove();
         } catch (Exception ex) {
 
-        }
-    }
-
-    @Deprecated
-    public static void playEffect(Location location, ParticleType particleType, float xOffset, float yOffset, float zOffset, float effectSpeed, int particleCount) {
-        playEffect(location, particleType, "", xOffset, yOffset, zOffset, effectSpeed, particleCount);
-    }
-
-    @Deprecated
-    public static void playEffect(Location location, ParticleType particleType, float effectSpeed, int particleCount) {
-        playEffect(location, particleType, "", 0, 0, 0, effectSpeed, particleCount);
-    }
-
-    @Deprecated
-    public static void playEffect(Location location, ParticleType particleType, String subtype, float xOffset, float yOffset, float zOffset, float effectSpeed, int particleCount) {
-        try {
-            Object packet = null;
-            if (class_PacketPlayOutWorldParticles != null) {
-                Constructor<?> packetConstructor = class_PacketPlayOutWorldParticles.getConstructor();
-                packet = packetConstructor.newInstance();
-            }
-            for (Field field : packet.getClass().getDeclaredFields())
-            {
-                field.setAccessible(true);
-                String fieldName = field.getName();
-                if (fieldName.equals("a")) {
-                    field.set(packet, particleType.getParticleName(subtype));
-                } else if (fieldName.equals("b")) {
-                    field.setFloat(packet, (float)location.getX());
-                } else if (fieldName.equals("c")) {
-                    field.setFloat(packet, (float)location.getY());
-                } else if (fieldName.equals("d")) {
-                    field.setFloat(packet, (float)location.getZ());
-                } else if (fieldName.equals("e")) {
-                    field.setFloat(packet, xOffset);
-                } else if (fieldName.equals("f")) {
-                    field.setFloat(packet, yOffset);
-                } else if (fieldName.equals("g")) {
-                    field.setFloat(packet, zOffset);
-                } else if (fieldName.equals("h")) {
-                    field.setFloat(packet, effectSpeed);
-                } else if (fieldName.equals("i")) {
-                    field.setInt(packet, particleCount);
-                }
-            }
-            sendPacket(location, null, packet);
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 }
