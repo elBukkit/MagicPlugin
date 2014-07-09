@@ -187,6 +187,10 @@ permissions:
     description: Player may unlock an existing wand held by another player
     type: boolean
     default: op
+  Magic.commands.magic:
+    description: Player may reload the configuration
+    type: boolean
+    default: op
   Magic.commands.magic.load:
     description: Player may reload the configuration
     type: boolean
