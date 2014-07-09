@@ -41,14 +41,17 @@ public class EffectUtils extends NMSUtils {
         }
     }
 
+    @Deprecated
     public static void playEffect(Location location, ParticleType particleType, float xOffset, float yOffset, float zOffset, float effectSpeed, int particleCount) {
         playEffect(location, particleType, "", xOffset, yOffset, zOffset, effectSpeed, particleCount);
     }
 
+    @Deprecated
     public static void playEffect(Location location, ParticleType particleType, float effectSpeed, int particleCount) {
         playEffect(location, particleType, "", 0, 0, 0, effectSpeed, particleCount);
     }
 
+    @Deprecated
     public static void playEffect(Location location, ParticleType particleType, String subtype, float xOffset, float yOffset, float zOffset, float effectSpeed, int particleCount) {
         try {
             Object packet = null;

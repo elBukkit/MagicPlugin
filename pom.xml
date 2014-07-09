@@ -6,10 +6,40 @@
 	<version>1.4-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic Lib</name>
 	<url>http://mine.elmakers.com</url>
-	<dependencyManagement>
-		<dependencies>
-		</dependencies>
-	</dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>lib</id>
+        </profile>
+        <profile>
+            <id>plugin</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <relocations>
+                                        <relocation>
+                                            <pattern>de.slikey</pattern>
+                                            <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
+                                        </relocation>
+                                    </relocations>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 	<licenses>
 		<license>
@@ -70,7 +100,7 @@
         <dependency>
             <groupId>de.slikey</groupId>
             <artifactId>EffectLib</artifactId>
-            <version>1.6</version>
+            <version>1.7-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 		<dependency>
@@ -116,14 +146,6 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-                        <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>de.slikey</pattern>
-                                    <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
 					</execution>
 				</executions>
 			</plugin>

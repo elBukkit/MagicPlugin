@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.effect;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
 import java.security.InvalidParameterException;
 import java.util.*;
 
+import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -20,12 +20,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
+
+    private static final int PARTICLE_RANGE = 32;
 
     public static boolean initialize(Plugin plugin) {
         effectLib = EffectLibManager.initialize(plugin);
@@ -76,7 +77,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected FireworkEffect fireworkEffect;
 
-    protected ParticleType particleType = null;
+    protected ParticleEffect particleType = null;
     protected String particleSubType = "";
     protected float particleData = 0f;
     protected float particleXOffset = 0.3f;
@@ -128,7 +129,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
         if (configuration.contains("effect")) {
             String effectName = configuration.getString("effect");
-            effect = Effect.valueOf(effectName.toUpperCase());
+            try {
+                effect = Effect.valueOf(effectName.toUpperCase());
+            } catch(Exception ex) {
+            }
             if (effect == null) {
                 plugin.getLogger().warning("Unknown effect type " + effectName);
             } else {
@@ -138,7 +142,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
         if (configuration.contains("entity_effect")) {
             String effectName = configuration.getString("entity_effect");
-            entityEffect = EntityEffect.valueOf(effectName.toUpperCase());
+            try {
+                entityEffect = EntityEffect.valueOf(effectName.toUpperCase());
+            } catch(Exception ex) {
+            }
             if (entityEffect == null) {
                 plugin.getLogger().warning("Unknown entity effect type " + effectName);
             }
@@ -146,7 +153,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
         if (configuration.contains("sound")) {
             String soundName = configuration.getString("sound");
-            sound = Sound.valueOf(soundName.toUpperCase());
+            try {
+                sound = Sound.valueOf(soundName.toUpperCase());
+            } catch(Exception ex) {
+            }
             if (sound == null) {
                 plugin.getLogger().warning("Unknown sound type " + soundName);
             } else {
@@ -160,7 +170,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             fireworkType = null;
             if (configuration.contains("firework")) {
                 String typeName = configuration.getString("firework");
-                fireworkType = FireworkEffect.Type.valueOf(typeName.toUpperCase());
+                try {
+                    fireworkType = FireworkEffect.Type.valueOf(typeName.toUpperCase());
+                } catch(Exception ex) {
+                }
                 if (fireworkType == null) {
                     plugin.getLogger().warning("Unknown firework type " + typeName);
                 }
@@ -171,7 +184,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (configuration.contains("particle")) {
             String typeName = configuration.getString("particle");
-            particleType = ParticleType.valueOf(typeName.toUpperCase());
+            try {
+                particleType = ParticleEffect.valueOf(typeName.toUpperCase());
+            } catch(Exception ex) {
+            }
             if (particleType == null) {
                 plugin.getLogger().warning("Unknown particle type " + typeName);
             } else {
@@ -233,7 +249,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.entityEffect = entityEffect;
     }
 
-    public void setParticleType(ParticleType particleType) {
+    public void setParticleType(ParticleEffect particleType) {
         this.particleType = particleType;
     }
 
@@ -303,22 +319,22 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (particleType != null) {
             String subType = particleSubType;
-            if ((particleType == ParticleType.BLOCK_BREAKING || particleType == ParticleType.TOOL_BREAKING || particleType == ParticleType.TILE_BREAKING) && particleSubType.length() == 0) {
+            if ((particleType == ParticleEffect.BLOCK_CRACK || particleType == ParticleEffect.ICON_CRACK || particleType == ParticleEffect.TILE_CRACK) && particleSubType.length() == 0) {
                 Material material = getWorkingMaterial().getMaterial();
 
                 // Check for potential bad materials, this can get really hairy (client crashes)
-                if (particleType == ParticleType.BLOCK_BREAKING && !material.isSolid()) {
+                if (particleType == ParticleEffect.BLOCK_CRACK && !material.isSolid()) {
                     return;
                 }
 
                 // TODO: Check for tools... ?
-                if (particleType == ParticleType.TOOL_BREAKING || particleType == ParticleType.TILE_BREAKING) {
+                if (particleType == ParticleEffect.TILE_CRACK || particleType == ParticleEffect.ICON_CRACK) {
                     material = Material.DIAMOND_AXE;
                 }
                 subType = "" + material.getId() + "_" + getWorkingMaterial().getData();
             }
 
-            EffectUtils.playEffect(location, particleType, subType, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+            particleType.display(subType, location, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
         }
     }
 
