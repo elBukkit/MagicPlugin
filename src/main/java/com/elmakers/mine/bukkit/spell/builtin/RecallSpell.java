@@ -13,10 +13,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.effect.EffectUtils;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -410,8 +408,6 @@ public class RecallSpell extends UndoableSpell
 		location.setX(target.getX());
 		location.setY(target.getY());
 		location.setZ(target.getZ());
-
-		EffectUtils.playEffect(target.getLocation(), ParticleType.INSTANT_SPELL, 1, 8);
 		
 		return true;
 	}

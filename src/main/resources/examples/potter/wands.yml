@@ -104,7 +104,7 @@ lignumvitae:
     xp_max: 100
     xp_regeneration: 20
     effect_color: 'FF00FF'
-    effect_particle: magic_runes
+    effect_particle: enchantment_table
     effect_particle_count: 1
     effect_particle_data: 1
     effect_bubbles: false
@@ -229,7 +229,7 @@ elder:
     power: 1
     haste: 0.1
     effect_color: 'FF00FF'
-    effect_particle: magic_runes
+    effect_particle: enchantment_table
     effect_particle_count: 1
     effect_particle_data: 1
     effect_bubbles: false
@@ -317,6 +317,9 @@ wolf:
     mode: inventory
     active_spell: apparate
     hidden: true
+    effect_particle: enchantment_table
+    effect_particle_count: 1
+    effect_particle_data: 2
     spells:
       - accio
       - aguamenti
@@ -524,6 +527,7 @@ flappy:
     xp_max: 45
     xp_regeneration: 20
     uses: 50
+    quiet: 2
     effect_color: '000088'
     active_spell: ascendio
     spells:
@@ -537,6 +541,7 @@ spleef:
     xp_max: 80
     xp_regeneration: 20
     uses: 50
+    quiet: 2
     effect_color: 'FF0000'
     active_spell: reducto
     spells:

@@ -18,7 +18,7 @@ default:
          particle_offset_y: 0.5
          particle_offset_z: 0.5
        - class: EffectTrail
-         particle: water_dripping
+         particle: drip_water
        fail:
        - class: EffectSingle
          location: origin
@@ -415,7 +415,7 @@ broom:
         -  class: EffectSingle
            location: origin
            entity_effect: hurt
-           particle: large_explosion
+           particle: large_explode
         -  class: EffectSingle
            location: origin
            effectlib:
@@ -839,7 +839,7 @@ deprimo:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: large_explosion
+           particle: large_explode
     parameters:
         allow_max_range: false
         range: 16
@@ -865,7 +865,7 @@ deprimomaxima:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: large_explosion
+           particle: large_explode
     parameters:
         allow_max_range: false
         range: 16
@@ -959,7 +959,7 @@ evanesco:
         -  class: EffectSingle
            sound: magmacube_jump
         -  class: EffectTrail
-           particle: lava_dripping
+           particle: drip_lava
            particle_data: 1
     parameters:
         target: other
@@ -1997,7 +1997,7 @@ sectumsempra:
              iterations: 20
              particle: drip_lava
         -  class: EffectTrail
-           particle: lava_dripping
+           particle: drip_lava
            particle_data: 1
         -  class: EffectSingle
            location: target
@@ -2160,7 +2160,7 @@ colorvaria:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           particle: block_breaking
+           particle: block_crack
     parameters:
         target_type: Entity
         allow_max_range: false
@@ -2994,7 +2994,7 @@ torch:
         -  class: EffectSingle
            sound: fire_ignite
         -  class: EffectTrail
-           particle: block_breaking
+           particle: block_crack
            material: glowstone
     parameters:
         allow_max_range: false
@@ -3036,7 +3036,7 @@ alter:
         -  class: EffectSingle
            sound: dig_wool
         -  class: EffectTrail
-           particle: block_breaking
+           particle: block_crack
     parameters:
         target_type: Entity
         allow_max_range: false
@@ -3057,7 +3057,7 @@ superalter:
         -  class: EffectSingle
            sound: dig_wool
         -  class: EffectTrail
-           particle: block_breaking
+           particle: block_crack
     parameters:
         allow_max_range: false
         range: 64

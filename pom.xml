@@ -228,6 +228,10 @@
                                     <pattern>org.mcstats</pattern>
                                     <shadedPattern>com.elmakers.mine.bukkit.plugins.magic.mcstats</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>de.slikey</pattern>
+                                    <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
+                                </relocation>
 							</relocations>
 						</configuration>
 					</execution>

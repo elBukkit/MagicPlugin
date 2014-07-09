@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,7 +24,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -209,8 +209,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 						options.add(sound.name().toLowerCase());
 					}
 				} else if (subCommand2.equals("effect_particle")) {
-					ParticleType[] particleTypes = ParticleType.values();
-					for (ParticleType particleType : particleTypes) {
+					ParticleEffect[] particleTypes = ParticleEffect.values();
+					for (ParticleEffect particleType : particleTypes) {
 						options.add(particleType.name().toLowerCase());
 					}
 				} 

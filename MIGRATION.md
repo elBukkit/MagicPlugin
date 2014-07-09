@@ -1,5 +1,11 @@
 # Migration Notes
 
+## 3.4
+
+ * The particle effect names have changed to the EffectLib versions is all places:
+ 
+ https://github.com/Slikey/EffectLib/blob/master/src/main/java/de/slikey/effectlib/util/ParticleEffect.java
+
 ## 3.3
 
  * Enchanting is now customizable via multiple enchanting paths. If you had previously modified the "random"

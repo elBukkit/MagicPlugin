@@ -2,10 +2,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.Collection;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import org.bukkit.Effect;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -19,7 +16,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class FlingSpell extends TargetingSpell implements Listener

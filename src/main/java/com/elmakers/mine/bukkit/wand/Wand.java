@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.wand;
 import java.util.*;
 import java.util.regex.Matcher;
 
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -20,9 +19,14 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
+import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -125,7 +129,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private ColorHD effectColor = null;
 	private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
 	private float effectColorMixWeight = DEFAULT_WAND_COLOR_MIX_WEIGHT;	
-	private ParticleType effectParticle = null;
+	private ParticleEffect effectParticle = null;
 	private float effectParticleData = 0;
 	private int effectParticleCount = 0;
 	private int effectParticleInterval = 0;
@@ -1121,16 +1125,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	protected void parseParticleEffect(String effectParticleName) {
+
 		if (effectParticleName.length() > 0) {
-			String testName = effectParticleName.toUpperCase().replace("_", "");
 			try {
-				for (ParticleType testType : ParticleType.values()) {
-					String testTypeName = testType.name().replace("_", "");
-					if (testTypeName.equals(testName)) {
-						effectParticle = testType;
-						break;
-					}
-				}
+                effectParticle = ParticleEffect.valueOf(effectParticleName);
 			} catch (Exception ex) {
 				effectParticle = null;
 			}

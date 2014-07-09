@@ -8,9 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.effect.ParticleType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.effect.EffectUtils;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class IterateSpell extends BrushSpell
@@ -141,7 +139,7 @@ public class IterateSpell extends BrushSpell
 							// Kinda hacky.
 							// TODO: Customize with effects system
 							if (material == Material.AIR) {
-								EffectUtils.playEffect(effectLocation, ParticleType.LARGE_EXPLOSION, 0.3f, 0.3f, 0.3f, 1, 1);
+                                effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, Material.OBSIDIAN.getId());
 							} else {
 								effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
 							}
