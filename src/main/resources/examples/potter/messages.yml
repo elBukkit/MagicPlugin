@@ -350,6 +350,7 @@ spells:
         name: Reducio
         description: Shrink your target
         cast: Reducio $target!
+        insufficient_permission:
     reducto:
         name: Reducto
         description: Blast certain blocks to pieces
@@ -368,7 +369,7 @@ spells:
         usage: Cast twice to preserve an area
         cancel: Salvio Hexia cancelled
         fail: Too large!
-        cast_finish: Preserved up $count blocks
+        cast_finish: Preserved $count blocks
         target_selected: Cast again to preserve area
     reparifarge:
         name: Reparifarge

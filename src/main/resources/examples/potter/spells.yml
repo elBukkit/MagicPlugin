@@ -974,6 +974,7 @@ evanesco:
         xp: 60
 
 expelliarmus:
+    alias: expel
     icon: ink_sack:1
     category: year3
     class: DisarmSpell
@@ -1191,6 +1192,7 @@ fiendfyre:
         xp: 100
 
 finiteincantatem:
+    alias: finite
     icon: ink_sack:13
     category: year3
     class: UndoSpell
@@ -1711,6 +1713,7 @@ periculum:
         xp: 30
 
 petrificustotalus:
+    alias: petrificus
     icon: nether_brick_item
     category: year4
     class: PotionEffectSpell
@@ -1812,8 +1815,6 @@ reducio:
         range: 16
         player_damage: 1
         entity_damage: 10
-        bypass_build: true
-        undo: 10000
     costs:
         xp: 60
 
