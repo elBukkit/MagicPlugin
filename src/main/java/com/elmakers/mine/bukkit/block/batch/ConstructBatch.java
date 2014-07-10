@@ -260,9 +260,9 @@ public class ConstructBatch extends BrushBatch {
 		switch(type) {
 			case SPHERE:
 				int maxDistanceSquared = radius * radius;
-				float mx = (float)x - 0.5f;
-				float my = (float)y - 0.5f;
-				float mz = (float)z - 0.5f;
+				float mx = (float)x - 0.1f;
+				float my = (float)y - 0.1f;
+				float mz = (float)z - 0.1f;
 				
 				int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 				if (thickness == 0)
