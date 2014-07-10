@@ -16,7 +16,8 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {
-	protected Mage mage;
+	protected BrushSpell spell;
+    protected Mage mage;
 	protected MaterialBrush brush;
 	protected Set<MaterialAndData> replaceable = new HashSet<MaterialAndData>();
 	
@@ -26,7 +27,8 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 	public ReplaceMaterialAction(BrushSpell spell, Block targetBlock)
 	{
 		super(spell.getMage().getController(), spell.getUndoList());
-		this.mage = spell.getMage();
+		this.spell = spell;
+        this.mage = spell.getMage();
 		this.brush = spell.getBrush();
 		if (targetBlock != null) {
 			replaceable.add(new MaterialAndData(targetBlock));
@@ -56,12 +58,12 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 			return SpellResult.FAIL;
 		}
 		
-		if (!mage.hasBuildPermission(block))
+		if (!spell.hasBuildPermission(block))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		if (mage.isIndestructible(block))
+		if (spell.isIndestructible(block))
 		{
 			return SpellResult.FAIL;
 		}
