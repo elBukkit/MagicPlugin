@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -123,7 +122,6 @@ import com.elmakers.mine.bukkit.traders.TradersController;
 import com.elmakers.mine.bukkit.utilities.CompleteDragTask;
 import com.elmakers.mine.bukkit.utilities.DataStore;
 import com.elmakers.mine.bukkit.warp.WarpController;
-import org.yaml.snakeyaml.Yaml;
 
 public class MagicController implements Listener, MageController {
     public MagicController(final MagicPlugin plugin) {
@@ -275,6 +273,10 @@ public class MagicController implements Listener, MageController {
             getLogger().log(Level.WARNING, "Duplicate spell key: '" + conflict.getKey() + "'");
         } else {
             spells.put(variant.getKey(), variant);
+            String alias = variant.getAlias();
+            if (alias != null && alias.length() > 0) {
+                spellAliases.put(alias, variant);
+            }
         }
     }
 
@@ -1402,6 +1404,7 @@ public class MagicController implements Listener, MageController {
 		
 		// Reset existing spells.
 		spells.clear();
+        spellAliases.clear();
 
         ConfigurationSection defaults = config.getConfigurationSection("default");
 
@@ -3309,7 +3312,11 @@ public class MagicController implements Listener, MageController {
 	public SpellTemplate getSpellTemplate(String name) 
 	{
 		if (name == null || name.length() == 0) return null;
-		return spells.get(name);
+        SpellTemplate spell = spells.get(name);
+        if (spell == null) {
+            spell = spellAliases.get(name);
+        }
+		return spell;
 	}
 
     @Override
@@ -3569,7 +3576,8 @@ public class MagicController implements Listener, MageController {
 	 private WarpController						 warpController					= null;
 	 
 	 private final Map<String, SpellTemplate>   spells              		= new HashMap<String, SpellTemplate>();
-	 private final Map<String, SpellCategory>   categories              	= new HashMap<String, SpellCategory>();
+     private final Map<String, SpellTemplate>   spellAliases                = new HashMap<String, SpellTemplate>();
+     private final Map<String, SpellCategory>   categories              	= new HashMap<String, SpellCategory>();
 	 private final Map<String, Mage> 		 	mages                  		= new HashMap<String, Mage>();
 	 private final Map<String, Long>			forgetMages					= new HashMap<String, Long>();
 	 private final Set<Mage>		 	        pendingConstruction			= new HashSet<Mage>();

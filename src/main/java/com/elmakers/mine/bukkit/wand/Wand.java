@@ -707,9 +707,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		hasInventory = spellNames.length + materialNames.length > 1;
 	}
 
-	@SuppressWarnings("deprecation")
-	public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
-		SpellTemplate spell = controller.getSpellTemplate(spellKey);
+    protected ItemStack createSpellIcon(SpellTemplate spell) {
+        return createSpellItem(spell, controller, this, false);
+    }
+
+    public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
+        return createSpellItem(controller.getSpellTemplate(spellKey), controller, wand, isItem);
+    }
+
+    @SuppressWarnings("deprecation")
+	public static ItemStack createSpellItem(SpellTemplate spell, MagicController controller, Wand wand, boolean isItem) {
 		if (spell == null) return null;
 		com.elmakers.mine.bukkit.api.block.MaterialAndData icon = spell.getIcon();
 		if (icon == null) {
@@ -725,13 +732,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			itemStack = null;
 		}
 		if (itemStack == null) {
-			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spellKey + " with material " + icon.getMaterial().name());	
+			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + icon.getMaterial().name());
 			return originalItemStack;
 		}
 		updateSpellItem(itemStack, spell, wand, wand == null ? null : wand.activeMaterial, isItem);
 		return itemStack;
 	}
-	
+
 	protected ItemStack createSpellIcon(String spellKey) {
 		return createSpellItem(spellKey, controller, this, false);
 	}
@@ -2653,11 +2660,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isInventoryOpen()) {
 			saveInventory();
 		}
-		ItemStack spellItem = createSpellIcon(spellName);
+        SpellTemplate template = controller.getSpellTemplate(spellName);
+        if (hasSpell(template.getKey())) return false;
+
+		ItemStack spellItem = createSpellIcon(template);
 		if (spellItem == null) {
 			return false;
 		}
-        spells.add(spellName);
+        spells.add(template.getKey());
 		addToInventory(spellItem);
 		updateInventory();
 		hasInventory = getSpells().size() + getBrushes().size() > 1;

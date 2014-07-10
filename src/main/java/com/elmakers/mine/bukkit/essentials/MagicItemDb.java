@@ -34,7 +34,14 @@ public class MagicItemDb extends ItemDb {
 				return wand.getItem();
 			}
 
-		} else if (id.startsWith("book:")) {
+		} else if (id.startsWith("w:")) {
+            String wandId = id.replace("w:", "");
+            Wand wand = Wand.createWand(controller, wandId.trim());
+            if (wand != null) {
+                return wand.getItem();
+            }
+
+        } else if (id.startsWith("book:")) {
             String bookCategory = id.replace("book:", "");
             SpellCategory category = null;
             if (bookCategory.length() > 0 && !bookCategory.equalsIgnoreCase("all")) {
@@ -50,7 +57,13 @@ public class MagicItemDb extends ItemDb {
 			if (itemStack != null) {
 				return itemStack;
 			}
-		} else if (id.startsWith("brush:")) {
+		} else if (id.startsWith("s:")) {
+            String spellKey = id.replace("s:", "");
+            ItemStack itemStack = Wand.createSpellItem(spellKey, controller, null, true);
+            if (itemStack != null) {
+                return itemStack;
+            }
+        } else if (id.startsWith("brush:")) {
 			String brushKey = id.replace("brush:", "");
 			ItemStack itemStack = Wand.createBrushItem(brushKey, controller, null, true);
 			if (itemStack != null) {
