@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
  */
 public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public String getName();
+    public String getAlias();
     public String getDescription();
     public String getExtendedDescription();
     public String getKey();
