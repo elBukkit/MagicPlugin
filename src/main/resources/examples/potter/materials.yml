@@ -130,5 +130,6 @@ restricted: []
 powerable:
 - lever
 
-spleefable:
+destructible:
+- air
 - quartz_block

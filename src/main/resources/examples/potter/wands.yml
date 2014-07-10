@@ -820,3 +820,23 @@ antihunger:
     upgrade: true
     hunger_regeneration: 0.5
     icon: arrow
+chestmode:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    mode: chest
+inventorymode:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    mode: inventory
+cyclemode:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    mode: cycle
+organizer:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    organize: true

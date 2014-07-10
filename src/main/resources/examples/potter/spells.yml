@@ -755,6 +755,7 @@ confundus:
         effect_confusion: 5
 
 conjunctivitis:
+    alias: blind
     icon: ender_pearl
     category: year2
     class: PotionEffectSpell
@@ -846,13 +847,13 @@ deprimo:
         brush: air
         falling: true
         check_destructible: true
-        destructible: spleefable
+        destructible: destructible
         radius: 2
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
     costs:
-        xp: 70
+        xp: 45
 
 deprimomaxima:
     icon: iron_plate
@@ -1469,6 +1470,7 @@ immobulus:
         cooldown: 6000
 
 locomotomortus:
+    alias: locomoto
     icon: web
     category: year2
     class: PotionEffectSpell
@@ -1843,12 +1845,12 @@ reducto:
         brush: air
         radius: 1
         type: sphere
-        destructible: spleefable
+        destructible: destructible
         check_destructible: true
         undo: 15000
         bypass_build: true
     costs:
-        xp: 80
+        xp: 50
 
 reductomaxima:
     icon: iron_spade
@@ -1982,6 +1984,7 @@ reparomaxima:
         xp: 500
 
 sectumsempra:
+    alias: sectum
     icon: slime_ball
     category: year2
     pvp_restricted: true
