@@ -28,7 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -219,7 +219,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return result;
 	}
 
-	public void onPlayerQuit(PlayerQuitEvent event)
+	public void onPlayerQuit(PlayerEvent event)
 	{
 		Player player = getPlayer();
 		if (player == null || player != event.getPlayer()) {

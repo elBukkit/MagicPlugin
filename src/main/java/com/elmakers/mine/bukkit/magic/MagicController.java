@@ -70,15 +70,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerExpChangeEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -1105,26 +1097,6 @@ public class MagicController implements Listener, MageController {
         loadConfiguration();
         loadSpellData();
 
-        File[] playerFiles = playerDataFolder.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".dat");
-            }
-        });
-
-        getLogger().info("Scanning " + playerFiles.length + " save files for pending undo info. Adjust player_data_expire_threshold if this is taking a long time.");
-
-        for (File playerFile : playerFiles) {
-            // Skip if older than 2 days
-            if (playerDataThreshold > 0 && playerFile.lastModified() < System.currentTimeMillis() - playerDataThreshold)
-                continue;
-
-            Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
-            if (playerData.contains("scheduled") && playerData.getList("scheduled").size() > 0) {
-                String playerId = playerFile.getName().replaceFirst("[.][^.]+$", "");
-                loadMage(playerId, playerData);
-            }
-        }
-
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
             public void run() {
                 // Load lost wands
@@ -1551,7 +1523,6 @@ public class MagicController implements Listener, MageController {
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
-		playerDataThreshold = (long)(properties.getDouble("player_data_expire_threshold", 0) * 1000 * 24 * 3600);
         defaultWandPath = properties.getString("default_wand_path", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
@@ -2396,12 +2367,20 @@ public class MagicController implements Listener, MageController {
 			wand.onPlayerExpChange(event);
 		}
 	}
+
+    @EventHandler
+    public void onPlayerKick(PlayerKickEvent event)
+    {
+        playerQuit(event);
+    }
 	
 	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event)
-	{
-		Player player = event.getPlayer();
-		
+	public void onPlayerQuit(PlayerQuitEvent event) {
+        playerQuit(event);
+    }
+
+    protected void playerQuit(PlayerEvent event) {
+        Player player = event.getPlayer();
 		// Make sure they get their portraits re-rendered on relogin.
 		URLMap.resend(player.getName());
 
@@ -2412,11 +2391,11 @@ public class MagicController implements Listener, MageController {
 
         mage.onPlayerQuit(event);
 		UndoQueue undoQueue = mage.getUndoQueue();
+        undoQueue.undoScheduled();
 		
 		if (commitOnQuit && undoQueue != null && !undoQueue.isEmpty()) {
 			getLogger().info("Player logged out, committing constructions: " + mage.getName());
 			undoQueue.commit();
-			undoQueue.undoScheduled();
 		}
 
         final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
