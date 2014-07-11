@@ -26,13 +26,18 @@ public class RecurseSpell extends BrushSpell
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+
+        if (!isDestructible(targetBlock))
+        {
+            return SpellResult.NO_TARGET;
+        }
 		
 		int size = parameters.getInt("size", 8);
 		size = (int)(mage.getRadiusMultiplier() * size);
 		blockRecurse.setMaxRecursion(size);
 
-		Material targetMaterial = targetBlock.getType();
 		ReplaceMaterialAction action = new ReplaceMaterialAction(this, targetBlock);
+        Material targetMaterial = targetBlock.getType();
 
 		// A bit hacky, but is very handy!
 		if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
