@@ -533,19 +533,21 @@ flappy:
     spells:
       - ascendio
 
-spleef:
+squib:
     icon: stick
     indestructible: false
     locked: true
-    xp: 80
-    xp_max: 80
-    xp_regeneration: 20
+    xp: 50
+    xp_max: 50
+    xp_regeneration: 10
     uses: 50
     quiet: 2
     effect_color: 'FF0000'
     active_spell: reducto
     spells:
       - reducto
+      - deprimo
+      - duro
 
 #
 # ITEMS
@@ -785,32 +787,32 @@ energy1:
     upgrade: true
     indestructible: false
     icon: arrow
-    xp_max: 75
-    xp_regeneration: 7
+    xp_max: 60
+    xp_regeneration: 10
 energy2:
     upgrade: true
     indestructible: false
     icon: arrow
-    xp_max: 100
-    xp_regeneration: 10
+    xp_max: 70
+    xp_regeneration: 15
 energy3:
     upgrade: true
     indestructible: false
     icon: arrow
-    xp_max: 150
-    xp_regeneration: 12
+    xp_max: 80
+    xp_regeneration: 20
 energy4:
     upgrade: true
     indestructible: false
     icon: arrow
-    xp_max: 200
-    xp_regeneration: 15
+    xp_max: 90
+    xp_regeneration: 22
 energy5:
     upgrade: true
     indestructible: false
     icon: arrow
-    xp_max: 250
-    xp_regeneration: 20
+    xp_max: 100
+    xp_regeneration: 25
 manaboost:
     upgrade: true
     indestructible: false
@@ -823,20 +825,20 @@ antihunger:
 chestmode:
     upgrade: true
     indestructible: false
-    icon: nether_star
+    icon: arrow
     mode: chest
 inventorymode:
     upgrade: true
     indestructible: false
-    icon: nether_star
+    icon: arrow
     mode: inventory
 cyclemode:
     upgrade: true
     indestructible: false
-    icon: nether_star
+    icon: arrow
     mode: cycle
 organizer:
     upgrade: true
     indestructible: false
-    icon: nether_star
+    icon: arrow
     organize: true

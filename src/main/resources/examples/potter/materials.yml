@@ -132,4 +132,4 @@ powerable:
 
 destructible:
 - air
-- quartz_block
+- monster_eggs

@@ -83,6 +83,7 @@ spells:
         name: Accio
         description: Brings an object to you
         cast: Accio $target!
+        cast_player_message: ""
     aguamenti:
         name: Aguamenti
         description: Creates a gush of water
@@ -198,7 +199,7 @@ spells:
         description: Collapse the target with immense pressure
         cast: Deprimo Maxima!
     disillusion:
-        name: Disillusionment Chart
+        name: Disillusionment Charm
         description: Cause the target to become nearly invisible
     duro:
         name: Duro
@@ -257,6 +258,7 @@ spells:
         name: Flipendo
         description: Push your target backwards
         cast: Flipendo $target!
+        cast_player_message: ""
     flipendoduo:
         name: Flipendo Duo
         description: A powerful push
@@ -306,6 +308,9 @@ spells:
         name: Incendio
         description: Light a fire at your target
         cast: Incendio!
+    lacarnum:
+        name: Lacarnum Inflamari
+        description: Launch a fireball
     lumos:
         name: Lumos
         description: Light up the night time
@@ -382,6 +387,9 @@ spells:
         name: Reparo
         description: Repairs an area preserved with Salvio Hexia
         cast: Reparo!
+    recall:
+        fail: ""
+        no_target: ""
     reparomaxima:
         name: Reparo Maxima
         description: Repairs a large area preserved with Salvio Hexia
@@ -488,8 +496,8 @@ wands:
         name: Flappy Feather
         description: Fly, little bird, fly!
 
-    spleef:
-        name: Spleef Wand
+    squib:
+        name: Squib Wand
         description: Kersplode Things
 
     video:

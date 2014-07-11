@@ -830,7 +830,7 @@ deletrius:
         xp: 100
 
 deprimo:
-    icon: iron_plate
+    icon: ink_sack:13
     category: year4
     class: ConstructSpell
     cast_on_no_target: true
@@ -853,7 +853,7 @@ deprimo:
         transparent: transparent_to_construction
         undo: 15000
     costs:
-        xp: 45
+        xp: 50
 
 deprimomaxima:
     icon: iron_plate
@@ -882,7 +882,7 @@ deprimomaxima:
         xp: 70
 
 disillusion:
-    icon: flint
+    icon: iron_ingot
     category: year4
     class: PotionEffectSpell
     worth: 20
@@ -904,7 +904,7 @@ disillusion:
         effect_invisibility: 5
 
 duro:
-    icon: stone
+    icon: flint
     category: year4
     class: RecurseSpell
     worth: 150
@@ -915,13 +915,15 @@ duro:
     parameters:
         allow_max_range: false
         range: 16
-        size: 8
-        check_destructible: false
-        brush: stone
+        size: 2
+        check_destructible: true
+        brush: obsidian
         transparent: transparent_to_construction
-        undo: 30000
+        undo: 5000
+        cooldown: 10000
+        bypass_build: true
     costs:
-        xp: 65
+        xp: 50
 
 erecto:
     icon: sapling:4
@@ -1166,6 +1168,7 @@ fiendfyre:
     icon: fire
     category: year4
     class: IterateSpell
+    pvp_restricted: true
     worth: 90
     effects:
         cast:
@@ -1603,6 +1606,23 @@ incendio:
     costs:
         xp: 40
 
+lacarnum:
+    icon: ghast_tear
+    category: year4
+    class: ProjectileSpell
+    pvp_restricted: true
+    worth: 35
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+    parameters:
+        projectile: SmallFireball
+        fire: false
+        size: 2
+    costs:
+        xp: 15
+
 lumos:
     icon: ink_sack:11
     category: year1
@@ -1819,7 +1839,7 @@ reducio:
         xp: 60
 
 reducto:
-    icon: iron_spade
+    icon: ink_sack:7
     category: year6
     class: ConstructSpell
     worth: 12
@@ -1851,7 +1871,7 @@ reducto:
         undo: 15000
         bypass_build: true
     costs:
-        xp: 50
+        xp: 40
 
 reductomaxima:
     icon: iron_spade
