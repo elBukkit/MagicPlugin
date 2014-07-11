@@ -14,7 +14,7 @@ public abstract class BlockSpell extends UndoableSpell {
 
     private Set<Material>	indestructible;
     private Set<Material>	destructible;
-    private boolean 		checkDestructible 		= true;
+    protected boolean 		checkDestructible 		= true;
 
     public final static String[] BLOCK_PARAMETERS = {
         "indestructible", "destructible", "check_destructible", "bypass_undo", "undo"
