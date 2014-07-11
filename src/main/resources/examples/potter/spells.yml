@@ -1053,8 +1053,9 @@ rennervate:
 episkey:
     icon: ink_sack:9
     category: year2
-    class: HealSpell
+    class: PotionEffectSpell
     worth: 30
+    pvp_restricted: false
     effects:
         cast:
         -  class: EffectSingle
@@ -1074,10 +1075,11 @@ episkey:
         target: any
         allow_max_range: false
         range: 16
-        feed: true
-        cure: false
-        percentage: 0.2
         cooldown: 2000
+        duration: 5000
+        effect_regeneration: 1
+        effect_saturation: 1
+        effect_absorption: 1
     costs:
         xp: 15
 
@@ -1086,6 +1088,7 @@ ferula:
     category: year3
     class: PotionEffectSpell
     worth: 50
+    pvp_restricted: false
     effects:
         cast:
         -  class: EffectSingle
@@ -1105,12 +1108,11 @@ ferula:
         target: any
         allow_max_range: false
         range: 16
-        cooldown: 5000
         duration: 5000
-        effect_regeneration: 1
+        cooldown: 5000
         effect_absorption: 1
-        effect_saturation: 1
-        effect_slow: 2
+        effect_slow: 4
+        effect_heal: 1,1
     costs:
         xp: 50
 
