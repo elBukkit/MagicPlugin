@@ -81,6 +81,13 @@ Aguamenti:
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid aguamenti' >0 1
+Petrificus:
+  Cooldown: 20
+  Conditions:
+  - TargetWithin 24
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid petrificustotalus' >0 1
 
 Firebending:
   Cooldown: 5
@@ -117,3 +124,10 @@ MinorSpellAttack:
   - TargetInLineOfSight true
   Skills:
   - randomskill Arrow,Stupefy,Ascendio,Accio,Flipendo >0 1
+DementorAttack:
+  Cooldown: 4
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - randomskill Petrificus,Stupefy >0 1

@@ -14,4 +14,8 @@ MegaBoss:
   Drops:
   - diamond 8
   - exp 300
+Deatheater:
+  Drops:
+  - DeatheaterCloak 1
+  - exp 10
 

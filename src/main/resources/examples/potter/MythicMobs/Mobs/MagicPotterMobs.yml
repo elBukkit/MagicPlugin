@@ -10,8 +10,7 @@ Acromantula:
   Options:
     AlwaysShowName: true
     MovementSpeed: 0.2
-    MaxCombatDistance: 25'
-    PreventOtherDrops: true
+    MaxCombatDistance: 25
 Tarantula:
   Mobtype: spider
   Display: '&2Tarantula'
@@ -63,12 +62,26 @@ Deatheater:
   - Deatheater_Boots:1
   Drops:
   - MidBoss
+  - Deatheater
   Options:
     MaxCombatDistance: 32
     KnockbackResistance: 1
     PreventOtherDrops: true
   Skills:
   - skill MinorSpellAttack ~onTimer:5 >0 0.90
+Dementor:
+  Mobtype: blaze
+  Display: Dementor
+  Health: 500
+  Damage: 10
+  Drops:
+  - Boss
+  Options:
+    MaxCombatDistance: 32
+    KnockbackResistance: 2
+    PreventOtherDrops: true
+  Skills:
+  - skill DementorAttack ~onTimer:5 >0 0.90
 Firebender:
   Mobtype: angrypigzombie
   Display: Firebender
