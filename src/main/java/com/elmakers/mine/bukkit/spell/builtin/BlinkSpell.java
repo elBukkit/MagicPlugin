@@ -111,7 +111,7 @@ public class BlinkSpell extends TargetingSpell
 		int distanceUp = 0;
 		int distanceDown = 0;
 
-		if (isPassthrough)
+		if (isPassthrough || destination == null)
 		{
 			destination = target;
 		}
