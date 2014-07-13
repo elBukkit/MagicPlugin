@@ -93,7 +93,7 @@ gryffindor:
     spells:
       - accio
       - ascendio
-      - ferula
+      - vulnera
 
 lignumvitae:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
@@ -136,7 +136,7 @@ lignumvitae:
       - episkey
       - evanesco
       - expelliarmus
-      - ferula
+      - vulnera
       - finiteincantatem
       - flagrate
       - flipendo
@@ -202,7 +202,7 @@ allis0n:
       - conjunctivitis
       - episkey
       - finiteincantatem
-      - ferula
+      - vulnera
       - flight
       - reparifarge
       - petrificustotalus
@@ -263,7 +263,7 @@ elder:
       - episkey
       - evanesco
       - expelliarmus
-      - ferula
+      - vulnera
       - finiteincantatem
       - flagrate
       - flipendo
@@ -351,7 +351,7 @@ wolf:
       - episkey
       - evanesco
       - expelliarmus
-      - ferula
+      - vulnera
       - fiendfyre
       - finiteincantatem
       - flagrate

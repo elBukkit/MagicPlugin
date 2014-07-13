@@ -231,11 +231,6 @@ spells:
         name: Expelliarmus
         description: Disarm your opponent
         cast: Expelliarmus!
-    ferula:
-        name: Ferula
-        description: Binds broken limbs
-        cast_self: Ferula!
-        cast: Ferula $target!
     fiendfyre:
         name: Fiendfyre
         description: Summon a dragon of fire
@@ -311,6 +306,10 @@ spells:
     lacarnum:
         name: Lacarnum Inflamari
         description: Launch a fireball
+    levicorpus:
+        name: Levicorpus
+        description: Throw your opponent into the air
+        cast: Levicorpus $target!
     lumos:
         name: Lumos
         description: Light up the night time
@@ -426,6 +425,11 @@ spells:
     vault:
         name: Vault
         description: You're rich!
+    vulnera:
+        name: Vulnera Sanentur
+        description: Mends and cleans wounds
+        cast_self: Vulnera Sanentur!
+        cast: Vulnera Sanentur $target!
 
 randomized:
    wood:

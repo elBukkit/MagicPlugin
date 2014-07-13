@@ -546,7 +546,6 @@ avis:
              class: DnaLocationEffect
              particleHelix: drip_lava
              iterations: 24
-             particle: bubble
         -  class: EffectSingle
            location: target
            effectlib:
@@ -556,11 +555,12 @@ avis:
     parameters:
         allow_max_range: true
         range: 2
-        cooldown: 5000
+        cooldown: 10000
         type: chicken
         baby: true
         count: 3
         reason: custom
+        undo: 5000
     costs:
         xp: 50
 
@@ -1083,44 +1083,12 @@ episkey:
     costs:
         xp: 15
 
-ferula:
-    icon: ink_sack:9
-    category: year3
-    class: PotionEffectSpell
-    worth: 50
-    pvp_restricted: false
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-           effectlib:
-             class: ConeLocationEffect
-             iterations: 10
-             particle: heart
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: LoveEntityEffect
-             iterations: 10
-             period: 8
-    parameters:
-        target_type: LivingEntity
-        target: any
-        allow_max_range: false
-        range: 16
-        duration: 5000
-        cooldown: 5000
-        effect_absorption: 1
-        effect_slow: 4
-        effect_heal: 1,1
-    costs:
-        xp: 50
-
 firestorm:
     icon: fire
     category: year4
     class: ConstructSpell
     worth: 45
+    pvp_restricted: true
     effects:
         cast:
         -  class: EffectSingle
@@ -1141,6 +1109,7 @@ firestorm:
         orient_dimension_min: 0
         brush: fire
         undo: 6000
+        bypass_build: true
     costs:
         xp: 50
 
@@ -1625,6 +1594,34 @@ lacarnum:
     costs:
         xp: 15
 
+levicorpus:
+    icon: ink_sack:5
+    category: year2
+    class: GenericSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: witch_magic
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SkyRocketEntityEffect
+             power: 1.2
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+        cooldown: 5000
+    costs:
+        xp: 40
+
 lumos:
     icon: ink_sack:11
     category: year1
@@ -2008,7 +2005,7 @@ reparomaxima:
 
 sectumsempra:
     alias: sectum
-    icon: slime_ball
+    icon: nether_stalk
     category: year2
     pvp_restricted: true
     class: PotionEffectSpell
@@ -2029,16 +2026,15 @@ sectumsempra:
            location: target
            effectlib:
              class: BleedEntityEffect
-             duration: 150
+             duration: 10
+             hurt: false
     parameters:
         target_type: LivingEntity
         allow_max_range: false
         range: 8
         fov: 0.8
         target: other_entity
-        duration: 1000
-        effect_wither: 1
-        damage: 6
+        damage: 8
         cooldown: 8000
     costs:
         xp: 35
@@ -2055,9 +2051,10 @@ silencio:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: ShieldEntityEffect
+             class: IconEntityEffect
              particle: angry_villager
-             iterations: 200
+             iterations: 20
+             period: 10
              particles: 1
     parameters:
         target_type: LivingEntity
@@ -2167,12 +2164,12 @@ stupefy:
            firework: ball
     parameters:
         range: 35
-        fov: 0.11
+        fov: 0.10
         target_type: LivingEntity
-        duration: 3000
+        duration: 1000
         damage: 4.5
         effect_confusion: 40
-        cooldown: 750
+        cooldown: 1000
     costs:
         xp: 50
 
@@ -2275,6 +2272,39 @@ noxmaxima:
         time: night
     costs:
         xp: 100
+
+vulnera:
+    icon: ink_sack:9
+    category: year3
+    class: PotionEffectSpell
+    worth: 50
+    pvp_restricted: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 10
+             particle: heart
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: LoveEntityEffect
+             iterations: 10
+             period: 8
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        duration: 5000
+        cooldown: 5000
+        effect_absorption: 1
+        effect_slow: 4
+        effect_heal: 1,1
+    costs:
+        xp: 50
 
 # These are currently what I would classify as admin-only utility spells
 # But could be added in some form as canon spells eventually.
