@@ -2858,7 +2858,11 @@ public class MagicController implements Listener, MageController {
 
 		// Make it free and skip cooldowns, if configured to do so.
 		toggleCastCommandOverrides(mage, true);
-		spell.cast(parameters, targetLocation);
+        try {
+            spell.cast(parameters, targetLocation);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 		toggleCastCommandOverrides(mage, false);
 		if (sender != entity && sender != null) {
 			String castMessage = "Cast " + spellName;
