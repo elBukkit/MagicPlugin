@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.effect;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -41,7 +42,15 @@ public class EffectLibManager {
             nameMap.put("$name", "Unknown");
         }
 
-        return effectManager.start(configuration.getString("class"), configuration, origin, target, sourceEntity, targetEntity, nameMap);
+        Effect[] effects = null;
+        String effectClass = configuration.getString("class");
+        try {
+            effectManager.start(effectClass, configuration, origin, target, sourceEntity, targetEntity, nameMap);
+        } catch (Throwable ex) {
+            Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
+            ex.printStackTrace();
+        }
+        return effects;
     }
 
     public void cancel(Effect[] effects) {
@@ -49,6 +58,7 @@ public class EffectLibManager {
             try {
                 effect.cancel();
             } catch (Throwable ex) {
+                Bukkit.getLogger().warning("Error cancelling effects");
                 ex.printStackTrace();
             }
         }
