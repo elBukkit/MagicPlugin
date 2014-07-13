@@ -106,6 +106,11 @@ public class BlinkSpell extends TargetingSpell
 			return SpellResult.NO_TARGET;
 		}
 
+        if (face == null)
+        {
+            face = target;
+        }
+
 		World world = getWorld();
 		Block destination = face;
 		int distanceUp = 0;
