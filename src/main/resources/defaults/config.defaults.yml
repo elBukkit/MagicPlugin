@@ -249,7 +249,7 @@ erase_item: sulphur
 # Represents copy (fill with the target material)
 copy_item: sugar
 # Clone will copy the area you are standing in when the clone material is activated
-clone_item: nether_stalk
+clone_item: melon_seeds
 # Replicate works like clone, but will sample a moving area, allowing you to "paint"
 # in a section of the world across multiple spell casts.
 replicate_item: pumpkin_seeds
