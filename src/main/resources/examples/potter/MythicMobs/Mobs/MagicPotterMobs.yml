@@ -55,7 +55,7 @@ Deatheater:
   Health: 100
   Damage: 4
   Equipment:
-  - Wand:0
+  - DeatheaterWand:0
   - Deatheater_Helmet:4
   - Deatheater_Chestplate:3
   - Deatheater_Leggings:2

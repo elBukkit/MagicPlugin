@@ -99,6 +99,12 @@ Earthbender_Boots:
 Wand:
   Id: 290
   Data: 0
+DeatheaterWand:
+  Id: 290
+  Data: 0
+  Display: '&3Deatheater Wand'
+  Lore:
+  - '&6It has lost its power'
 Nothing:
   Id: 0
   Data: 0
