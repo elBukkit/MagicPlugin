@@ -1,13 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -24,6 +18,8 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class ConfigurationUtils {
+
+    public static Random random = new Random();
 
     public static Location getLocation(ConfigurationSection node, String path) {
         String stringData = node.getString(path);
@@ -306,6 +302,32 @@ public class ConfigurationUtils {
         return first;
     }
 
+    protected static double parseDouble(String s)
+    {
+        char firstChar = s.charAt(0);
+        if (firstChar == 'r' || firstChar == 'R')
+        {
+            String[] pieces = StringUtils.split(s, "(,)");
+            try {
+                double min = Double.parseDouble(pieces[1]);
+                double max = Double.parseDouble(pieces[2]);
+                return random.nextDouble() * (max - min) + min;
+            } catch (Exception ex) {
+                Bukkit.getLogger().warning("Failed to parse: " + s);
+                ex.printStackTrace();
+            }
+        }
+
+        try {
+            return Double.parseDouble(s);
+        } catch (Exception ex) {
+            Bukkit.getLogger().warning("Failed to parse as double: " + s);
+            ex.printStackTrace();
+        }
+
+        return 0;
+    }
+
     protected static double overrideDouble(ConfigurationSection node, double value, String nodeName)
     {
         String override = node.getString(nodeName);
@@ -313,14 +335,12 @@ public class ConfigurationUtils {
         try {
             if (override.startsWith("~")) {
                 override = override.substring(1);
-                value = value + Double.parseDouble(override);
+                value = value + parseDouble(override);
             } else if (override.startsWith("*")) {
-
-
                 override = override.substring(1);
-                value = value * Double.parseDouble(override);
+                value = value * parseDouble(override);
             } else {
-                value = Double.parseDouble(override);
+                value = parseDouble(override);
             }
         } catch (Exception ex) {
             // ex.printStackTrace();
