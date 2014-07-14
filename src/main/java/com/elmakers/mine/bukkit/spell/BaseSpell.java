@@ -1322,7 +1322,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void activate() {
         if (!isActive) {
-            reactivate();
             mage.activateSpell(this);
         }
     }
