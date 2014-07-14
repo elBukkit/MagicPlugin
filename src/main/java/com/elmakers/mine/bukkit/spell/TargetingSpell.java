@@ -421,6 +421,7 @@ public abstract class TargetingSpell extends BaseSpell {
         {
             if (entity == mage.getEntity()) continue;
             if (!targetNPCs && controller.isNPC(entity)) continue;
+            if (entity.hasMetadata("notarget")) continue;
 
             // Special check for Elementals
             if (!controller.isElemental(entity) && targetEntityType != null && !targetEntityType.isAssignableFrom(entity.getClass())) continue;
