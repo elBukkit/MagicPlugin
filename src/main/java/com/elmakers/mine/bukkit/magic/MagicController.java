@@ -737,6 +737,9 @@ public class MagicController implements Listener, MageController {
         // Set up the Block update timer
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Block Updates") {
             public void onRun() {
+                if (pendingConstruction.size() > 0) {
+                    disablePhysics(2);
+                }
                 for (Mage mage : pendingConstruction) {
                     if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                         ((com.elmakers.mine.bukkit.magic.Mage) mage).processPendingBatches(maxBlockUpdates);
