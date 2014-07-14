@@ -114,8 +114,9 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		LivingEntity targetEntity = null;
 
 		boolean hasFamiliar = familiars.hasFamiliar();
+        boolean track = parameters.getBoolean("track", true);
 
-		if (hasFamiliar)
+		if (hasFamiliar && track)
 		{   // Dispel familiars if you target them and cast
 			boolean isFamiliar = target.hasEntity() && familiars.isFamiliar(target.getEntity());
 			if (isFamiliar)
@@ -210,8 +211,10 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			}
 		}
 
-		familiars.setFamiliars(newFamiliars);
-		checkListener();
+        if (track) {
+            familiars.setFamiliars(newFamiliars);
+            checkListener();
+        }
 		return SpellResult.CAST;
 
 	}
