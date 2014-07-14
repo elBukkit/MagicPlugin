@@ -115,7 +115,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 		return storedInventory != null;
 	}
 
-	public Inventory getStoredInventory() {
+    @Override
+    public Set<Spell> getActiveSpells() {
+        return new HashSet<Spell>(activeSpells);
+    }
+
+    public Inventory getStoredInventory() {
 		return storedInventory;
 	}
 	

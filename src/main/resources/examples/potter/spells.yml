@@ -235,7 +235,7 @@ apparatemaxima:
         xp: 80
 
 araniaexumai:
-    icon: web
+    icon: ink_sack:2
     category: year1
     class: PushSpell
     pvp_restricted: true
@@ -435,14 +435,26 @@ broom:
              class: ShieldEntityEffect
              iterations: 30
              particle: spell
+        boost:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 30
+             particle: spell
+        -  class: EffectSingle
+           particle: spell
+           effectlib:
+             class: ShieldEntityEffect
+             iterations: 30
+             particle: spell
         land:
         -  class: EffectRing
            effect: step_sound
            period: 2
     parameters:
-        thrust: 0.8
-        boost: 1
-        boost_ticks: 10
+        thrust: 1
         auto_deactivate: 3
         auto_deactivate_ticks: 10
         slow: 0.2
@@ -450,8 +462,8 @@ broom:
         crash_distance: 0.5
         effect_confusion: 120,2
         bypass_deactivate: true
-    costs:
-        xp: 10
+        mount_item: iron_barding
+        mount_invisible: true
 
 avadakedavra:
     icon: ink_sack:10
@@ -830,7 +842,7 @@ deletrius:
         xp: 100
 
 deprimo:
-    icon: ink_sack:13
+    icon: flint
     category: year4
     class: ConstructSpell
     cast_on_no_target: true
@@ -856,7 +868,7 @@ deprimo:
         xp: 50
 
 deprimomaxima:
-    icon: iron_plate
+    icon: flint
     category: year6
     class: ConstructSpell
     cast_on_no_target: true
@@ -882,7 +894,7 @@ deprimomaxima:
         xp: 70
 
 disillusion:
-    icon: iron_ingot
+    icon: blaze_powder
     category: year4
     class: PotionEffectSpell
     worth: 20
@@ -904,7 +916,7 @@ disillusion:
         effect_invisibility: 5
 
 duro:
-    icon: flint
+    icon: iron_ingot
     category: year4
     class: RecurseSpell
     worth: 150
@@ -1415,7 +1427,7 @@ fumos:
         xp: 35
 
 immobulus:
-    icon: web
+    icon: gold_ingot
     category: year3
     class: PotionEffectSpell
     pvp_restricted: true
@@ -1838,7 +1850,7 @@ reducio:
         xp: 60
 
 reducto:
-    icon: ink_sack:7
+    icon: clay_brick
     category: year6
     class: ConstructSpell
     worth: 12
@@ -1873,7 +1885,7 @@ reducto:
         xp: 40
 
 reductomaxima:
-    icon: iron_spade
+    icon: brick
     category: year6
     class: ConstructSpell
     worth: 12
