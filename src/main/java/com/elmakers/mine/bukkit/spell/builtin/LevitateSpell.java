@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -215,7 +216,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             forceSneak--;
         }
         else if (mountBoostTicksRemaining > 0 && mountBoostTicks > 0) {
-            boost += (maxMountBoost * (mountBoostTicksRemaining / mountBoostTicks));
+            boost += (maxMountBoost * ((double)mountBoostTicksRemaining / mountBoostTicks));
             --mountBoostTicksRemaining;
             updateMountHealth();
         }
@@ -389,7 +390,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		}
 
         if (heldItem != null) {
-            PlayerInventory inventory = player.getInventory();
+            Inventory inventory = mage.getInventory();
             ItemStack current = inventory.getItem(heldItemSlot);
             inventory.setItem(heldItemSlot, heldItem);
             if (current != null && current.getType() != Material.AIR) {
@@ -412,6 +413,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         // Prevent the player from death by fall
         levitateEnded = 0;
         mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+        mountBoostTicksRemaining = 0;
+        boostTicksRemaining = 0;
 
         if (stashItem) {
             PlayerInventory inventory = player.getInventory();
