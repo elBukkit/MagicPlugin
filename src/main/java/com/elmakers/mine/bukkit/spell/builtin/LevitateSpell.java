@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -74,8 +75,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double mountHealth = 8;
     private int mountBoostTicks = 80;
     private boolean mountInvisible = true;
+    private int forceSneak = 0;
     private CreatureSpawnEvent.SpawnReason mountSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
 
+    private boolean stashItem = false;
+    private ItemStack heldItem = null;
+    private int heldItemSlot = 0;
 
     private int mountBoostTicksRemaining = 0;
 
@@ -156,6 +161,15 @@ public class LevitateSpell extends TargetingSpell implements Listener
             if (vehicle.hasMetadata("broom"))
             {
                 event.setCancelled(true);
+                Entity passenger = vehicle.getPassenger();
+                Mage mage = controller.getMage(passenger);
+                Set<Spell> active = mage.getActiveSpells();
+                for (Spell spell : active) {
+                    if (spell instanceof LevitateSpell) {
+                        LevitateSpell levitate = (LevitateSpell)spell;
+                        levitate.forceSneak(10);
+                    }
+                }
             }
         }
     }
@@ -196,8 +210,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
 
         double boost = thrustSpeed;
-        if (mage.getPlayer().isSneaking()) {
+        if (mage.getPlayer().isSneaking() || forceSneak > 0) {
             boost *= slowMultiplier;
+            forceSneak--;
         }
         else if (mountBoostTicksRemaining > 0 && mountBoostTicks > 0) {
             boost += (maxMountBoost * (mountBoostTicksRemaining / mountBoostTicks));
@@ -274,6 +289,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         mountBoostTicks = parameters.getInt("mount_boost_ticks", 40);
         mountHealth = parameters.getDouble("mount_health", 2);
         mountInvisible = parameters.getBoolean("mount_invisible", true);
+        stashItem = parameters.getBoolean("stash_item", false);
 
         if (parameters.contains("mount_reason")) {
             String reasonText = parameters.getString("mount_reason").toUpperCase();
@@ -339,6 +355,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
     public void land() {
         deactivate(true, false);
+
+        // Visual effect
+        playEffects("land", minRingEffectRange);
     }
 
 	@Override
@@ -368,12 +387,20 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		if (flySpeed > 0) {
 			player.setFlySpeed(defaultFlySpeed);
 		}
+
+        if (heldItem != null) {
+            PlayerInventory inventory = player.getInventory();
+            ItemStack current = inventory.getItem(heldItemSlot);
+            inventory.setItem(heldItemSlot, heldItem);
+            if (current != null && current.getType() != Material.AIR) {
+                controller.giveItemToPlayer(player, current);
+            }
+            heldItem = null;
+        }
 		
 		player.setFlying(false);
 		player.setAllowFlight(false);
-		
-		// Prevent the player from death by fall
-		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+
 		levitateEnded = System.currentTimeMillis();
 	}
 	
@@ -381,6 +408,19 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	public void onActivate() {
 		final Player player = mage.getPlayer();
 		if (player == null) return;
+
+        // Prevent the player from death by fall
+        levitateEnded = 0;
+        mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+
+        if (stashItem) {
+            PlayerInventory inventory = player.getInventory();
+            heldItemSlot = inventory.getHeldItemSlot();
+            heldItem = inventory.getItemInHand();
+            inventory.setItemInHand(null);
+        } else {
+            heldItem = null;
+        }
 
 		if (flySpeed > 0) {
 			player.setFlySpeed(flySpeed * defaultFlySpeed);
@@ -476,21 +516,24 @@ public class LevitateSpell extends TargetingSpell implements Listener
 	{
 		if (event.getCause() != DamageCause.FALL) return;
 
-		mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
-
-		if (levitateEnded == 0) return;
-
-		if (levitateEnded + safetyLength > System.currentTimeMillis())
+		if (levitateEnded == 0 || levitateEnded + safetyLength > System.currentTimeMillis())
 		{
 			event.setCancelled(true);
-			levitateEnded = 0;
-			
+
 			// Visual effect
             int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
             ringEffectRange = Math.min(maxRingEffectRange, ringEffectRange);
             playEffects("land", ringEffectRange);
 		}
-	}
+
+        if (levitateEnded != 0 && System.currentTimeMillis() > levitateEnded + safetyLength) {
+            mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
+        }
+    }
+
+    public void forceSneak(int ticks) {
+        forceSneak = ticks;
+    }
 
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
