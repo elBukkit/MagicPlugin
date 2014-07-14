@@ -80,7 +80,9 @@ public class WandUpgradePath {
         Set<String> pathKeys = configuration.getKeys(false);
         for (String key : pathKeys)
         {
-            WandUpgradePath path = new WandUpgradePath(key, configuration.getConfigurationSection(key));
+            ConfigurationSection parameters = configuration.getConfigurationSection(key);
+            if (!parameters.getBoolean("enabled", true)) continue;
+            WandUpgradePath path = new WandUpgradePath(key, parameters);
             paths.put(key, path);
         }
     }

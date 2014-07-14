@@ -42,8 +42,11 @@ public class CraftingController implements Listener {
         Set<String> recipeKeys = configuration.getKeys(false);
         for (String key : recipeKeys)
         {
+            ConfigurationSection parameters = configuration.getConfigurationSection(key);
+            if (!parameters.getBoolean("enabled", true)) continue;
+
             MagicRecipe recipe = new MagicRecipe(controller);
-            if (!recipe.load(configuration.getConfigurationSection(key))) {
+            if (!recipe.load(parameters)) {
                 controller.getLogger().warning("Failed to create crafting recipe: " + key);
                 continue;
             }
