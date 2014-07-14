@@ -1236,13 +1236,14 @@ fiendfyre:
         target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
-        range: 32
-        size: 16
+        range: 24
+        size: 12
         radius: 1
         reverse: false
-        increment_data: false
+        increment_data: true
+        require_block: true
         brush: lava
-        cooldown: 10000
+        cooldown: 20000
         undo: 5000
     costs:
         xp: 100

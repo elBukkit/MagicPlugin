@@ -3151,6 +3151,7 @@ flamethrower:
         radius: 1
         reverse: false
         increment_data: false
+        require_blocks: true
         brush: fire
     costs:
         xp: 100

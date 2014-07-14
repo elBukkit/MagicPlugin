@@ -4,6 +4,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
@@ -24,6 +25,7 @@ public class IterateSpell extends BrushSpell
 		// radius = (int)(radius * mage.getRadiusMultiplier());
 		int size = parameters.getInt("size", DEFAULT_SIZE);
 		boolean reverse = parameters.getBoolean("reverse", false);
+        boolean requireBlock = parameters.getBoolean("require_block", false);
 		size = (int)(mage.getConstructionMultiplier() * (float)size);
 		
 		boolean reverseTargeting = parameters.getBoolean("transparent_reverse", false);
@@ -126,7 +128,14 @@ public class IterateSpell extends BrushSpell
 							data = i > 15 ? 15 : (byte)i;
 							buildWith.setData(data);
 						}
-						
+
+                        if (requireBlock) {
+                            Block lowerBlock = currentTarget.getRelative(BlockFace.DOWN);
+                            if (lowerBlock.getType() == Material.AIR || lowerBlock.getType() == buildWith.getMaterial()) {
+                                currentLoc.add(aim);
+                                continue;
+                            }
+                        }
 						buildWith.modify(currentTarget);
 						
 						controller.updateBlock(currentTarget);
