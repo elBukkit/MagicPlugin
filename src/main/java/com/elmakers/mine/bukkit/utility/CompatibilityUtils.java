@@ -288,9 +288,13 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setInvulnerable(Entity entity) {
+        setInvulnerable(entity, true);
+    }
+
+    public static void setInvulnerable(Entity entity, boolean flag) {
         try {
             Object handle = getHandle(entity);
-            class_Entity_invulnerableField.set(handle, true);
+            class_Entity_invulnerableField.set(handle, flag);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
