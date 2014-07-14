@@ -12,11 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Minecart;
-import org.bukkit.entity.Painting;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -457,5 +453,18 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return runnable;
+    }
+
+    public static void ageItem(Item item, int ticksToAge)
+    {
+        try {
+            Class<?> itemClass = getBukkitClass("net.minecraft.server.EntityItem");
+            Object handle = getHandle(item);
+            Field ageField = itemClass.getDeclaredField("age");
+            ageField.setAccessible(true);
+            ageField.set(handle, ticksToAge);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

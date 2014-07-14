@@ -586,7 +586,6 @@ public class NMSUtils {
         setMeta(itemStack, "temporary", message);
     }
 
-
     public static boolean isTemporary(ItemStack itemStack) {
         return hasMeta(itemStack, "temporary");
     }
