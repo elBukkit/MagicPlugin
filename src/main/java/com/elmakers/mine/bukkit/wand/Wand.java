@@ -2661,6 +2661,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			saveInventory();
 		}
         SpellTemplate template = controller.getSpellTemplate(spellName);
+        if (template == null) {
+            controller.getLogger().warning("Tried to add unknown spell to wand: " + spellName);
+            return false;
+        }
         if (hasSpell(template.getKey())) return false;
 
 		ItemStack spellItem = createSpellIcon(template);
