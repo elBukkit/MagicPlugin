@@ -2107,7 +2107,7 @@ public class MagicController implements Listener, MageController {
 			if (ageDroppedItems > 0) {
 				int ticks = ageDroppedItems * 20 / 1000;
 				Item item = event.getEntity();
-				ageItem(item, ticks);
+				CompatibilityUtils.ageItem(item, ticks);
 			}
 		}
 	}
@@ -2132,19 +2132,6 @@ public class MagicController implements Listener, MageController {
 			} else {
 				pendingUndo.remove(key);
 			}
-		}
-	}
-	
-	protected void ageItem(Item item, int ticksToAge)
-	{
-		try {
-			Class<?> itemClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityItem");
-			Object handle = NMSUtils.getHandle(item);
-			Field ageField = itemClass.getDeclaredField("age");
-			ageField.setAccessible(true);
-			ageField.set(handle, ticksToAge);
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 	}
 	
@@ -2709,7 +2696,15 @@ public class MagicController implements Listener, MageController {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-        ItemStack pickup = event.getItem().getItemStack();
+        Item item = event.getItem();
+        ItemStack pickup = item.getItemStack();
+        if (NMSUtils.isTemporary(pickup) || item.hasMetadata("temporary"))
+        {
+            item.remove();
+            event.setCancelled(true);
+            return;
+        }
+
 		boolean isWand = Wand.isWand(pickup);
 
 		// Creative mode inventory hacky work-around :\

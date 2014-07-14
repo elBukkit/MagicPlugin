@@ -3561,3 +3561,40 @@ blind:
         target: other
         duration: 3000
         effect_blindness: 5
+
+pollinate:
+    icon: yellow_flower
+    category: earthbending
+    class: FlowerSpell
+    worth: 50
+    flowers:
+    - yellow_flower
+    - red_rose
+    - red_rose:1
+    - red_rose:2
+    - red_rose:3
+    - red_rose:4
+    - red_rose:5
+    - red_rose:6
+    - red_rose:7
+    - red_rose:8
+    tall_flowers:
+    - double_plant
+    - double_plant:1
+    - double_plant:3
+    - double_plant:4
+    - double_plant:5
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: breath
+           location: both
+    parameters:
+        allow_max_range: false
+        range: 32
+        radius: 3
+        vertical_search_distance: 8
+        cooldown: 5000
+        item_speed: 0
+    costs:
+        xp: 40

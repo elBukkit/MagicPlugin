@@ -337,6 +337,10 @@ spells:
         name: Obscuro
         description: Obscure your target's vision
         cast: Obscuro $target!
+    orchideous:
+        name: Orchideous
+        description: Conjure flowers from the tip of your wand
+        removed: Your magical flower turns to dust
     periculum:
         name: Periculum
         description: Shoot fireworks from your wand

@@ -962,6 +962,10 @@ spells:
         name: Blind
         description: Blind your target
         cast: You blind $target
+    pollinate:
+        name: Pollinate
+        description: Plant some flowers!
+        cast: Pollinate!
 
 wands:
     master:
