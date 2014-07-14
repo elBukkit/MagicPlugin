@@ -336,4 +336,6 @@ public interface Mage extends CostReducer {
     public Location getLastDeathLocation();
 
     public boolean hasStoredInventory();
+
+    public Set<Spell> getActiveSpells();
 }
