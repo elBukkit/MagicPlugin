@@ -8,6 +8,7 @@ default:
     path: master
     bound: true
     keep: true
+    undroppable: true
     quiet: 1
     xp_max: 50
     xp: 50
@@ -814,6 +815,11 @@ chestmode:
     indestructible: false
     icon: arrow
     mode: chest
+undroppable:
+    upgrade: true
+    indestructible: false
+    undroppable: true
+    icon: arrow
 inventorymode:
     upgrade: true
     indestructible: false

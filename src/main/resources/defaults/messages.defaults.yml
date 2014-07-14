@@ -1162,6 +1162,9 @@ wands:
     antihunger:
         name: Anti-Hunger Upgrade
         description: Never go hungry again!
+    undroppable:
+        name: Undroppable Upgrade
+        description: Makes your wand undroppable
     chestmode:
         name: Chest Mode
         description: A simpler wand mechanic

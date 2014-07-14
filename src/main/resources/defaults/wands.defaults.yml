@@ -118,6 +118,7 @@ master:
     effect_particle_count: 2
     keep: true
     bound: true
+    undroppable: true
 
 apprentice:
     effect_color: '22FF22'
@@ -132,6 +133,7 @@ apprentice:
     protection_fire: 0.5
     protection_explosions: 0.5
     effect_bubbles: true
+    undroppable: true
 
 student:
     effect_color: '00FF00'
@@ -1290,6 +1292,11 @@ chestmode:
     indestructible: false
     icon: nether_star
     mode: chest
+undroppable:
+    upgrade: true
+    indestructible: false
+    undroppable: true
+    icon: nether_star
 inventorymode:
     upgrade: true
     indestructible: false

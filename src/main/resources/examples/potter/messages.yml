@@ -603,3 +603,7 @@ wands:
     energy5:
         name: Energy Upgrade Level 5
         description: Upgrade to 250 Energy
+
+    undroppable:
+        name: Undroppable Upgrade
+        description: Makes your wand undroppable

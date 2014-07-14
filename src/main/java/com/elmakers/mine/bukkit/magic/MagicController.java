@@ -1934,8 +1934,15 @@ public class MagicController implements Listener, MageController {
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         final Wand activeWand = mage.getActiveWand();
+        ItemStack droppedItem = event.getItemDrop().getItemStack();
+        if (Wand.isWand(droppedItem)) {
+            Wand wand = new Wand(this, droppedItem);
+            if (wand.isUndroppable()) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 		if (activeWand != null) {
-			ItemStack droppedItem = event.getItemDrop().getItemStack();
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
 			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
 			if (Wand.isWand(droppedItem) && (inHand == null || inHand.getType() == Material.AIR)) {
@@ -1968,7 +1975,7 @@ public class MagicController implements Listener, MageController {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
 	{
@@ -2517,7 +2524,7 @@ public class MagicController implements Listener, MageController {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot() + " . " + event.getCancelled());
+		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
@@ -2543,6 +2550,14 @@ public class MagicController implements Listener, MageController {
 		Wand activeWand = mage.getActiveWand();
 	
 		InventoryType inventoryType = event.getInventory().getType();
+        if (event.getAction() == InventoryAction.DROP_ONE_SLOT && Wand.isWand(clickedItem))
+        {
+            Wand wand = new Wand(this, clickedItem);
+            if (wand.isUndroppable()) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 		
 		// Check for dropping items out of a wand's inventory
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())

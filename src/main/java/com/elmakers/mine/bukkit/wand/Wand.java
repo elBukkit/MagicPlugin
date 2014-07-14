@@ -56,7 +56,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"active_spell", "active_material",
         "path",
 		"xp", "xp_regeneration", "xp_max",
-		"bound", "uses", "upgrade", "indestructible",
+		"bound", "uses", "upgrade", "indestructible", "undroppable",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
@@ -95,6 +95,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private String path = "";
 	private boolean bound = false;
 	private boolean indestructible = false;
+    private boolean undroppable = false;
 	private boolean keep = false;
 	private boolean autoOrganize = false;
 	private boolean autoFill = false;
@@ -346,6 +347,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean isIndestructible() {
 		return indestructible;
 	}
+
+    public boolean isUndroppable() {
+        return undroppable;
+    }
 	
 	public boolean isUpgrade() {
 		return isUpgrade;
@@ -909,6 +914,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("bound", bound);
         node.set("force", forceUpgrade);
 		node.set("indestructible", indestructible);
+        node.set("undroppable", undroppable);
 		node.set("fill", autoFill);
 		node.set("upgrade", isUpgrade);
 		node.set("organize", autoOrganize);
@@ -1018,7 +1024,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             quietLevel = wandConfig.getInt("quiet", quietLevel);
 			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			keep = wandConfig.getBoolean("keep", keep);
-			indestructible = wandConfig.getBoolean("indestructible", indestructible);
+            indestructible = wandConfig.getBoolean("indestructible", indestructible);
+            undroppable = wandConfig.getBoolean("undroppable", undroppable);
 			bound = wandConfig.getBoolean("bound", bound);
             forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
             autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
@@ -1851,14 +1858,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             wandName = Messages.get("wands." + other.template + ".name", wandName);
             updateName();
         }
-		
+
 		modified = modified | (!keep && other.keep);
 		modified = modified | (!bound && other.bound);
 		modified = modified | (!effectBubbles && other.effectBubbles);
+        modified = modified | (!undroppable && other.undroppable);
+        modified = modified | (!indestructible && other.indestructible);
 
 		keep = keep || other.keep;
 		bound = bound || other.bound;
-		effectBubbles = effectBubbles || other.effectBubbles;
+        indestructible = indestructible || other.indestructible;
+        undroppable = undroppable || other.undroppable;
+        effectBubbles = effectBubbles || other.effectBubbles;
 		if (other.effectParticle != null && (other.isUpgrade || effectParticle == null)) {
 			modified = modified | (effectParticle != other.effectParticle);
 			effectParticle = other.effectParticle;
