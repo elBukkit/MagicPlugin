@@ -455,15 +455,15 @@ broom:
            period: 2
     parameters:
         thrust: 1
-        auto_deactivate: 3
+        auto_deactivate: 4
         auto_deactivate_ticks: 10
         slow: 0.2
         start_delay: 20
-        crash_distance: 0.5
+        crash_distance: 0.9
         effect_confusion: 120,2
         bypass_deactivate: true
-        mount_item: iron_barding
-        mount_invisible: true
+        mount_invisible: false
+        stash_item: true
 
 avadakedavra:
     icon: ink_sack:10
@@ -690,6 +690,39 @@ bombardamaxima:
     costs:
         xp: 75
 
+bubble:
+    icon: ender_pearl
+    category: year2
+    class: PotionEffectSpell
+    worth: 30
+    pvp_restricted: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: bubble
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEntityEffect
+             iterations: 10
+             period: 2
+             particle: bubble
+             radius: 0.5
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        cooldown: 5000
+        duration: 30000
+        effect_water_breathing: 1
+    costs:
+        xp: 15
+
 camera:
     icon: tripwire_hook
     category: specialty
@@ -786,14 +819,50 @@ conjunctivitis:
            location: target
            effectlib:
              class: SmokeEntityEffect
+             iterations: 10
     costs:
         xp: 25
     parameters:
         range: 32
         target_type: LivingEntity
         target: other
-        duration: 3000
+        duration: 5000
         effect_blindness: 5
+
+obscuro:
+    alias: blind
+    icon: ender_pearl
+    category: year2
+    class: PotionEffectSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: town_aura
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEntityEffect
+             iterations: 100
+             period: 4
+             particle: smoke
+             radius: 0.5
+             particles: 20
+
+    costs:
+        xp: 25
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target: other
+        duration: 2000
+        effect_blindness: 1
 
 crucio:
     icon: nether_stalk
@@ -1455,6 +1524,7 @@ immobulus:
         target: other
         duration: 5000
         effect_slow: 20
+        effect_jump: -1
         cooldown: 6000
 
 locomotomortus:
@@ -1488,6 +1558,7 @@ locomotomortus:
         target: other
         duration: 10000
         effect_slow: 3
+        effect_jump: -2
         cooldown: 6000
 
 imperio:
@@ -1774,6 +1845,7 @@ petrificustotalus:
         target: other
         duration: 8000
         effect_slow: 20
+        effect_jump: -20
         cooldown: 5000
 
 protego:

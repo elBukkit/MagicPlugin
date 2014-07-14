@@ -158,6 +158,9 @@ spells:
         cast: Your broom springs to life!
         deactivate: Your broom quiets down.
         crash: CRASH!
+    bubble:
+        name: Bubble-Head Charm
+        description: Create a bubble of air around your head
     colorvaria:
         name: Colorvaria
         description: Changes the color of certain objects
@@ -330,6 +333,10 @@ spells:
         name: Nox Maxima
         description: Make it dark everywhere
         area: Nox Maxima!
+    obscuro:
+        name: Obscuro
+        description: Obscure your target's vision
+        cast: Obscuro $target!
     periculum:
         name: Periculum
         description: Shoot fireworks from your wand
