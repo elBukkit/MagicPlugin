@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -73,11 +72,16 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private EntityType mountType = null;
     private LivingEntity mountEntity = null;
     private double maxMountBoost = 1;
+    private double mountBoostPerJump = 0.5;
     private double mountHealth = 8;
+    private int slowReduceBoostTicks = 4;
     private int mountBoostTicks = 80;
     private boolean mountInvisible = true;
     private int forceSneak = 0;
+    private double moveDistance = 0;
     private CreatureSpawnEvent.SpawnReason mountSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
+
+    private Vector direction = null;
 
     private boolean stashItem = false;
     private ItemStack heldItem = null;
@@ -200,7 +204,19 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return;
             }
         }
-        Vector direction = entity.getLocation().getDirection();
+        Vector mageDirection = entity.getLocation().getDirection();
+        if (direction == null || moveDistance <= 0) {
+            direction = mageDirection;
+        } else {
+            double moveDistanceSquared = moveDistance * moveDistance;
+            double distanceSquared = direction.distanceSquared(mageDirection);
+            if (distanceSquared <= moveDistanceSquared) {
+                direction = mageDirection;
+            } else {
+                Vector targetDirection = mageDirection.subtract(direction).normalize().multiply(moveDistance);
+                direction.add(targetDirection);
+            }
+        }
         direction.normalize();
 
         if (crashDistance > 0)
@@ -214,6 +230,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (mage.getPlayer().isSneaking() || forceSneak > 0) {
             boost *= slowMultiplier;
             forceSneak--;
+            if (slowReduceBoostTicks > 0) {
+                mountBoostTicksRemaining = Math.max(0, mountBoostTicksRemaining - slowReduceBoostTicks);
+            }
         }
         else if (mountBoostTicksRemaining > 0 && mountBoostTicks > 0) {
             boost += (maxMountBoost * ((double)mountBoostTicksRemaining / mountBoostTicks));
@@ -280,6 +299,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         autoDeactivateHeight = parameters.getInt("auto_deactivate", 0);
         boostTicks = parameters.getInt("boost_ticks", 1);
         crashDistance = parameters.getDouble("crash_distance", 0);
+        slowReduceBoostTicks = parameters.getInt("slow_ticks", 4);
+        moveDistance = parameters.getDouble("steer_speed", 0);
         if (parameters.contains("mount_item")) {
             mountItem = ConfigurationUtils.getMaterial(parameters, "mount_item");
         } else {
@@ -287,6 +308,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
 
         maxMountBoost = parameters.getDouble("mount_boost", 1);
+        mountBoostPerJump = parameters.getDouble("mount_boost_per_jump", 0.5);
         mountBoostTicks = parameters.getInt("mount_boost_ticks", 40);
         mountHealth = parameters.getDouble("mount_health", 2);
         mountInvisible = parameters.getBoolean("mount_invisible", true);
@@ -341,7 +363,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             if (mountBoostTicksRemaining == 0) {
                 playEffects("boost");
             }
-            mountBoostTicksRemaining = (int)Math.min((double)mountBoostTicksRemaining + (double)mountBoostTicks * amount, mountBoostTicks);
+            mountBoostTicksRemaining = (int)Math.min((double)mountBoostTicksRemaining + mountBoostPerJump * mountBoostTicks * amount, mountBoostTicks);
             updateMountHealth();
         }
     }
@@ -412,6 +434,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
         // Prevent the player from death by fall
         levitateEnded = 0;
+        direction = null;
         mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
         mountBoostTicksRemaining = 0;
         boostTicksRemaining = 0;

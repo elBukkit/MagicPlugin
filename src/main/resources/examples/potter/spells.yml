@@ -596,11 +596,12 @@ beat:
            location: target
            effectlib:
              class: SmokeEntityEffect
+             iterations: 20
     costs:
         xp: 2
     parameters:
-        fov: 2
-        range: 8
+        fov: 3
+        range: 12
         deactivate_target_mage: true
         target_type: LivingEntity
         target: other
@@ -1235,12 +1236,12 @@ fiendfyre:
         target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
-        range: 16
-        size: 8
-        radius: 2
+        range: 32
+        size: 16
+        radius: 1
         reverse: false
         increment_data: false
-        brush: fire
+        brush: lava
         cooldown: 10000
         undo: 5000
     costs:
@@ -2651,6 +2652,7 @@ superpyramid:
     icon: speckled_melon
     category: engineering
     class: ConstructSpell
+    hidden: true
     worth: 500
     effects:
         cast:
