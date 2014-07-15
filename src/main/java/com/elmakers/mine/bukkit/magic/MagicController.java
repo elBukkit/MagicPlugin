@@ -2540,15 +2540,7 @@ public class MagicController implements Listener, MageController {
 		Wand activeWand = mage.getActiveWand();
 	
 		InventoryType inventoryType = event.getInventory().getType();
-        if (event.getAction() == InventoryAction.DROP_ONE_SLOT && Wand.isWand(clickedItem))
-        {
-            Wand wand = new Wand(this, clickedItem);
-            if (wand.isUndroppable()) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-		
+
 		// Check for dropping items out of a wand's inventory
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
 		{

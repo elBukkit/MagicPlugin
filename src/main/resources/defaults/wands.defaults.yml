@@ -156,6 +156,7 @@ battle:
 engineer:
     effect_color: '00FF00'
     path: engineer
+    undroppable: true
     mode: chest
     icon: wood_axe
     xp_regeneration: 5
@@ -169,6 +170,7 @@ architect:
     path: engineer
     keep: true
     bound: true
+    undroppable: true
     icon: wood_axe
     effect_color: '00FF00'
     hunger_regeneration: 1
@@ -268,6 +270,7 @@ elder:
     bound: true
     protection: 1
     xp_max: 1000
+    undroppable: true
     xp_regeneration: 200
     health_regeneration: 1
     hunger_regeneration: 1
@@ -351,6 +354,7 @@ admin:
     path: master
     keep: true
     bound: true
+    undroppable: true
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2
@@ -391,6 +395,7 @@ wolf:
     icon: gold_hoe
     keep: true
     bound: true
+    undroppable: true
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2
