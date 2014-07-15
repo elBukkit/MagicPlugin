@@ -466,6 +466,7 @@ broom:
         mount_invisible: false
         stash_item: true
         mount_type: Horse
+        mount_horse_variant: horse
         mount_boost_ticks: 80
         mount_health: 8
         mount_boost: 0.5

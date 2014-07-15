@@ -1205,14 +1205,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Build wand name
         int remaining = getRemainingUses();
 		ChatColor wandColor = remaining > 0 ? ChatColor.DARK_RED : isModifiable()
-                ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) : ChatColor.GOLD;
+                ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) :
+                  (path != null && path.length() > 0 ? ChatColor.LIGHT_PURPLE : ChatColor.GOLD);
 		String name = wandColor + getDisplayName();
         if (randomize) return name;
 
         Set<String> spells = getSpells();
 
         // Add active spell to description
-        if (spell != null && (spells.size() > 1 || hasPath())) {
+        boolean showSpell = isModifiable() && hasPath();
+        if (spell != null && (spells.size() > 1 || showSpell)) {
             name = getSpellDisplayName(spell, materialKey) + " (" + name + ChatColor.WHITE + ")";
         }
 
@@ -1828,12 +1830,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public boolean add(Wand other) {
 		if (!isModifiable()) {
-            if (other.template == null || template == null || !other.template.equals(template)) {
+            if (other.path == null || path == null || !other.path.equals(path)) {
                 return false;
             }
         }
 
-        if (other.template != null && (this.template == null || !this.template.equals(other.template))) {
+        if (other.path != null && (this.path == null || !this.path.equals(other.path))) {
             return false;
         }
 		
@@ -1960,6 +1962,50 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				if (mage != null) mage.sendMessage(Messages.get("wand.brush_added").replace("$name", MaterialBrush.getMaterialName(materialKey)));
 			}
 		}
+
+        // Add cast overrides
+        if (other.castParameters != null && other.castParameters.length > 0) {
+            Map<String, String> parameters = new HashMap<String, String>();
+            if (castParameters != null) {
+                for (int i = 0; i < castParameters.length; i+=2) {
+                    if (i < castParameters.length - 1) {
+                        parameters.put(castParameters[i], castParameters[i + 1]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < other.castParameters.length; i+=2) {
+                String value = i < other.castParameters.length - 1 ? other.castParameters[i + 1] : "";
+                String key = other.castParameters[i];
+                // Hacky special-case "-" for removing a value
+                if (value.isEmpty() || value.equals("-")) {
+                    modified = modified || parameters.containsKey(key);
+                    parameters.remove(key);
+                    continue;
+                }
+                String currentValue = parameters.get(key);
+                if (currentValue != null && !other.isForcedUpgrade()) {
+                    try {
+                        double currentDouble = Double.parseDouble(currentValue);
+                        double newDouble = Double.parseDouble(value);
+                        if (newDouble < currentDouble) {
+                            value = currentValue;
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+
+                modified = modified || currentValue == null || !value.equals(currentValue);
+                parameters.put(key, value);
+            }
+
+            castParameters = new String[parameters.size() * 2];
+            int index = 0;
+            for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                castParameters[index++] = entry.getKey();
+                castParameters[index++] = entry.getValue();
+            }
+        }
 		
 		Player player = (mage == null) ? null : mage.getPlayer();
 		if (other.autoFill && player != null) {

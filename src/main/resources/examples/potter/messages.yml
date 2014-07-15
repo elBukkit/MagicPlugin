@@ -593,6 +593,10 @@ wands:
         name: Knockoff Firebolt
         description: Trusty?
 
+    stabilizer:
+        name: Broom Stabilizer
+        description: Your broom will turn on a dime!
+
     beater:
         name: Beater Bat
         description: Whack!
