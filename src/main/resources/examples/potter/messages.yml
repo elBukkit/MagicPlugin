@@ -274,6 +274,11 @@ spells:
         description: A gift from the Dark Lord
         cast: You feel lighter
         cost_free: You feel heavier
+    fourpoint:
+        name: The Four Point Spell
+        description: Points you North
+        extended_description: Believed to be invented by Hermionie Granger
+        cast: Point Me!
     superfly:
         name: SuperFly
         description: For videographers
@@ -377,7 +382,7 @@ spells:
     revelio:
         name: Revelio
         description: Reveal the unseen
-        cast: You reveal $world_name
+        cast: You reveal $world_name to $target
     salviohexia:
         name: Salivo Hexia
         description: Preserve an area for Reparo

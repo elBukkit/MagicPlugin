@@ -1481,6 +1481,22 @@ flagrate:
     costs:
         xp: 20
 
+fourpoint:
+    icon: compass
+    category: year1
+    class: OrientSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+    parameters:
+        target: self
+        yaw: 180
+        pitch: 0
+    costs:
+        xp: 20
+
 fumos:
     icon: sulphur
     category: year2
@@ -2457,6 +2473,7 @@ phase:
              class: WarpEntityEffect
              particle: portal
     parameters:
+        target: self
         cooldown: 2000
         worlds:
             Hogwarts:
@@ -2912,11 +2929,13 @@ revelio:
            effectlib:
              class: WarpEntityEffect
              particle: portal
-    parameters:
-        cooldown: 2000
     costs:
         xp: 100
     parameters:
+      target_type: LivingEntity
+      range: 12
+      target: any
+      cooldown: 1000
       worlds:
           world:
              target: Hogwarts
