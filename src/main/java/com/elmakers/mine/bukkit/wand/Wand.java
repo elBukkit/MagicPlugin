@@ -2365,6 +2365,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean cast() {
 		Spell spell = getActiveSpell();
 		if (spell != null) {
+            use();
 			if (spell.cast(castParameters)) {
 				Color spellColor = spell.getColor();
 				if (spellColor != null && this.effectColor != null) {
@@ -2375,8 +2376,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					// And the effect color morphing isn't all that important if a few
 					// casts get lost.
 				}
-				
-				use();
+
 				return true;
 			}
 		}
