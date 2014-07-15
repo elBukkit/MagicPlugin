@@ -655,6 +655,18 @@ firebolt:
     spells:
         - broom
 
+crudfirebolt:
+    mode: cast
+    active_spell: broom
+    icon: diamond_barding
+    indestructible: true
+    locked: true
+    effect_color: 'FF00FF'
+    uses: 20
+    overrides: mount_horse_variant horse mount_boost 3 mount_boost_ticks 1200 mount_health 20 slow_ticks 30 steer_speed 0 slow_steer_speed 0.8 mount_item diamond_barding
+    spells:
+        - broom
+
 nimbus:
     mode: cast
     active_spell: broom
@@ -662,6 +674,18 @@ nimbus:
     indestructible: true
     locked: true
     effect_color: '880088'
+    overrides: mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 20 steer_speed 0.6 mount_item iron_barding
+    spells:
+        - broom
+
+crudnimbus:
+    mode: cast
+    active_spell: broom
+    icon: iron_barding
+    indestructible: true
+    locked: true
+    effect_color: '880088'
+    uses: 20
     overrides: mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 20 steer_speed 0.6 mount_item iron_barding
     spells:
         - broom
