@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -21,13 +23,22 @@ public class PhaseSpell extends TargetingSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		Location playerLocation = getLocation();
-		String worldName = playerLocation.getWorld().getName();
 		Location targetLocation = null;
-        LivingEntity entity = mage.getLivingEntity();
+        Target target = getTarget();
+        Entity e = target.getEntity();
+        LivingEntity entity = e != null && e instanceof LivingEntity ? (LivingEntity)e : null;
         if (entity == null) {
-            return SpellResult.LIVING_ENTITY_REQUIRED;
+            return SpellResult.NO_TARGET;
         }
+
+        if (entity != mage.getEntity() && controller.isMage(entity)) {
+            Mage mage = controller.getMage(entity);
+            if (mage.isSuperProtected()) {
+                return SpellResult.NO_TARGET;
+            }
+        }
+        Location playerLocation = entity.getLocation();
+        String worldName = playerLocation.getWorld().getName();
 		
 		if (parameters.contains("target_world"))
 		{

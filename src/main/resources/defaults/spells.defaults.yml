@@ -1751,6 +1751,7 @@ phase:
              particle: portal
     parameters:
         cooldown: 2000
+        target: self
     costs:
         xp: 50
 invincible:
