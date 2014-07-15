@@ -84,6 +84,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private boolean mountInvisible = true;
     private int forceSneak = 0;
     private double moveDistance = 0;
+    private double sneakMoveDistance = -1;
     private CreatureSpawnEvent.SpawnReason mountSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
 
     private Vector direction = null;
@@ -187,8 +188,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
     protected void thrust()
     {
         if (thrustSpeed == 0) return;
-        Entity entity = mage.getEntity();
-        if (entity == null) return;
+        Player player = mage.getPlayer();
+        if (player == null) return;
 
         boolean checkHeight = autoDeactivateHeight > 0;
         if (checkHeight && mage.isPlayer()) {
@@ -196,7 +197,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         if (checkHeight) {
             int height = 0;
-            Block block = entity.getLocation().getBlock();
+            Block block = player.getLocation().getBlock();
             while (height < autoDeactivateHeight && block.getType() == Material.AIR)
             {
                 block = block.getRelative(BlockFace.DOWN);
@@ -209,16 +210,18 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return;
             }
         }
-        Vector mageDirection = entity.getLocation().getDirection();
-        if (direction == null || moveDistance <= 0) {
+        Vector mageDirection = player.getLocation().getDirection();
+        boolean sneaking = player.isSneaking();
+        double move = sneakMoveDistance >= 0 && sneaking ? sneakMoveDistance : moveDistance;
+        if (direction == null || move <= 0) {
             direction = mageDirection;
         } else {
-            double moveDistanceSquared = moveDistance * moveDistance;
+            double moveDistanceSquared = move * move;
             double distanceSquared = direction.distanceSquared(mageDirection);
             if (distanceSquared <= moveDistanceSquared) {
                 direction = mageDirection;
             } else {
-                Vector targetDirection = mageDirection.subtract(direction).normalize().multiply(moveDistance);
+                Vector targetDirection = mageDirection.subtract(direction).normalize().multiply(move);
                 direction.add(targetDirection);
             }
         }
@@ -232,15 +235,18 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
 
         double boost = thrustSpeed;
+
         if (mage.getPlayer().isSneaking() || forceSneak > 0) {
-            boost *= slowMultiplier;
             forceSneak--;
             if (slowReduceBoostTicks > 0) {
                 mountBoostTicksRemaining = Math.max(0, mountBoostTicksRemaining - slowReduceBoostTicks);
                 updateMountHealth();
             }
+            if (mountBoostTicksRemaining == 0) {
+                boost *= slowMultiplier;
+            }
         }
-        else if (mountBoostTicksRemaining > 0 && mountBoostTicks > 0) {
+        if (mountBoostTicksRemaining > 0 && mountBoostTicks > 0) {
             boost += (maxMountBoost * ((double)mountBoostTicksRemaining / mountBoostTicks));
             --mountBoostTicksRemaining;
             updateMountHealth();
@@ -253,7 +259,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (mountEntity != null) {
             mountEntity.setVelocity(direction);
         } else {
-            entity.setVelocity(direction);
+            player.setVelocity(direction);
         }
     }
 
@@ -307,6 +313,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         crashDistance = parameters.getDouble("crash_distance", 0);
         slowReduceBoostTicks = parameters.getInt("slow_ticks", 4);
         moveDistance = parameters.getDouble("steer_speed", 0);
+        sneakMoveDistance = parameters.getDouble("slow_steer_speed", -1);
         if (parameters.contains("mount_item")) {
             mountItem = ConfigurationUtils.getMaterial(parameters, "mount_item");
         } else {

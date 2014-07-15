@@ -464,6 +464,13 @@ broom:
         bypass_deactivate: true
         mount_invisible: false
         stash_item: true
+        mount_type: Horse
+        mount_boost_ticks: 80
+        mount_health: 8
+        mount_boost: 0.5
+        slow_ticks: 1
+        steer_speed: 0.6
+        slow_steer_speed: 0.1
 
 avadakedavra:
     icon: ink_sack:10

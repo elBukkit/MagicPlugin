@@ -640,40 +640,40 @@ thestral:
     effect_color: '880088'
     uses: 1
     quiet: 2
-    overrides: mount_type Horse mount_variant skeleton_horse stash_item false mount_boost_ticks 600 mount_health 12 mount_boost 2 slow_ticks 120 steer_speed 0.6
+    overrides: mount_variant skeleton_horse stash_item false
     spells:
         - broom
 
 firebolt:
     mode: cast
     active_spell: broom
-    icon: blaze_rod
+    icon: diamond_barding
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: mount_type Horse mount_boost 3 mount_boost_ticks 1200 mount_health 16 slow_ticks 240
+    overrides: mount_horse_variant horse mount_boost 3 mount_boost_ticks 1200 mount_health 20 slow_ticks 30 steer_speed 0 slow_steer_speed 0.8 mount_item diamond_barding
     spells:
         - broom
 
 nimbus:
     mode: cast
     active_spell: broom
-    icon: blaze_rod
+    icon: iron_barding
     indestructible: true
     locked: true
     effect_color: '880088'
-    overrides: mount_type Horse mount_boost_ticks 600 mount_health 12 mount_boost 2 slow_ticks 120 steer_speed 0.6
+    overrides: mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 20 steer_speed 0.6 mount_item iron_barding
     spells:
         - broom
 
 cleansweep1:
     mode: cast
     active_spell: broom
-    icon: blaze_rod
+    icon: gold_barding
     indestructible: false
     locked: true
     effect_color: 'FFFF00'
-    overrides: mount_type Horse mount_boost 1 mount_boost_ticks 300 mount_health 8 steer_speed 0.4
+    overrides: mount_boost 1 mount_boost_ticks 300 mount_health 12 steer_speed 0.4 mount_item gold_barding
     spells:
         - broom
 
@@ -684,7 +684,7 @@ bluebottle:
     indestructible: false
     locked: true
     effect_color: '0000FF'
-    overrides: mount_type Horse mount_boost 0.5 mount_boost_ticks 120 mount_health 4 steer_speed 0.05
+    overrides: mount_boost 0.5 mount_boost_ticks 120 mount_health 8 steer_speed 0.05
     spells:
         - broom
 
@@ -696,7 +696,7 @@ crudbroom:
     locked: true
     uses: 10
     effect_color: '000088'
-    overrides: mount_type Horse mount_boost 0.5 mount_boost_ticks 120 mount_health 4 steer_speed 0.05
+    overrides: mount_type Horse mount_boost 0.5 mount_boost_ticks 60 mount_health 4 steer_speed 0.05
     spells:
         - broom
 
