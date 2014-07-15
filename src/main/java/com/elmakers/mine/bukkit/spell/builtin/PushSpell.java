@@ -19,7 +19,7 @@ public class PushSpell extends UndoableSpell
 	private int DEFAULT_ENTITY_MAGNITUDE = 3;
 	private int DEFAULT_MAX_ALL_DISTANCE = 20;
 
-	public void forceAll(Entity sourceEntity, double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance, double damage)
+	public void forceAll(Entity sourceEntity, double mutliplier, boolean pull, int entityMagnitude, int itemMagnitude, int maxAllDistance, double damage, int fallProtection)
 	{
 		float maxDistance = (float)maxAllDistance * mage.getRangeMultiplier();
 		float maxDistanceSquared = maxDistance * maxDistance;
@@ -29,6 +29,15 @@ public class PushSpell extends UndoableSpell
 		{
 			if (target == sourceEntity) continue;
 			if (controller.isNPC(target)) continue;
+            Mage mage = controller.isMage(target) ? controller.getMage(target) : null;
+            if (mage != null && mage.isSuperProtected()) {
+                continue;
+            }
+
+            if (mage != null && fallProtection > 0) {
+                mage.enableFallProtection(fallProtection);
+            }
+
 			Location playerLocation = getLocation();
 			Location targetLocation = target.getLocation();
 
@@ -60,11 +69,12 @@ public class PushSpell extends UndoableSpell
 		}
 		int count = parameters.getInt("count", 0);
 		
-		boolean allowAll = parameters.getBoolean("allow_area", true);
+		boolean allowAll = mage.isSuperPowered() || parameters.getBoolean("allow_area", true);
         boolean forceArea = parameters.getBoolean("area", false);
 		int itemMagnitude = parameters.getInt("item_force", DEFAULT_ITEM_MAGNITUDE);
 		int entityMagnitude = parameters.getInt("entity_force", DEFAULT_ENTITY_MAGNITUDE);
 		int maxAllDistance = parameters.getInt("area_range", DEFAULT_MAX_ALL_DISTANCE);
+        int fallProtection = parameters.getInt("fall_protection", 0);
         double damage = parameters.getDouble("damage", 0) * mage.getDamageMultiplier();
 
 		List<Target> targets = getAllTargetEntities();
@@ -74,7 +84,7 @@ public class PushSpell extends UndoableSpell
 			&&  (forceArea || isLookingDown() || isLookingUp())
 		)
 		{
-			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance, damage);
+			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance, damage, fallProtection);
 			return SpellResult.AREA;
 		}
 
@@ -86,6 +96,13 @@ public class PushSpell extends UndoableSpell
 		int pushed = 0;
 		for (Target target : targets) {
 			Entity targetEntity = target.getEntity();
+            Mage mage = controller.isMage(targetEntity) ? controller.getMage(targetEntity) : null;
+            if (mage != null && mage.isSuperProtected()) {
+                continue;
+            }
+            if (mage != null && fallProtection > 0) {
+                mage.enableFallProtection(fallProtection);
+            }
 			Location to = pull ? target.getLocation() : getLocation();
 			Location from = pull ? getLocation() : target.getLocation();
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;

@@ -50,17 +50,22 @@ public class PotionEffectSpell extends UndoableSpell
             return SpellResult.NO_TARGET;
         }
 
+        int fallProtection = parameters.getInt("fall_protection", 0);
+
         Integer duration = null;
         if (parameters.contains("duration")) {
             duration = parameters.getInt("duration");
         }
 		Collection<PotionEffect> effects = getPotionEffects(parameters, duration);
         for (LivingEntity targetEntity : targetEntities) {
+            Mage targetMage = controller.isMage(targetEntity) ? controller.getMage(targetEntity) : null;
+
+            if (targetMage != null && fallProtection > 0) {
+                targetMage.enableFallProtection(fallProtection);
+            }
             if (targetEntity != mage.getEntity()) {
                 // Check for superprotected mages
-                if (controller.isMage(targetEntity)) {
-                    Mage targetMage = controller.getMage(targetEntity);
-
+                if (targetMage != null) {
                     // Check for protected players
                     if (isSuperProtected(targetMage)) {
                         continue;

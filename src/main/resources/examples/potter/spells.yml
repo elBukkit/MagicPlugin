@@ -81,6 +81,7 @@ accio:
         entity_force: 1
         type: pull
         count: 1
+        fall_protection: 10000
     costs:
         xp: 15
 
@@ -1535,6 +1536,7 @@ immobulus:
         effect_slow: 20
         effect_jump: -1
         cooldown: 6000
+        fall_protection: 5000
 
 locomotomortus:
     alias: locomoto
@@ -1569,6 +1571,7 @@ locomotomortus:
         effect_slow: 3
         effect_jump: -2
         cooldown: 6000
+        fall_protection: 5000
 
 imperio:
     icon: leash
@@ -1886,11 +1889,12 @@ petrificustotalus:
     parameters:
         range: 32
         target_type: LivingEntity
-        target: other
+        target: self
         duration: 8000
         effect_slow: 20
         effect_jump: -20
         cooldown: 5000
+        fall_protection: 8000
 
 protego:
     icon: ink_sack:12
@@ -2001,7 +2005,7 @@ reducto:
         xp: 40
 
 reductomaxima:
-    icon: brick
+    icon: clay_brick
     category: year6
     class: ConstructSpell
     worth: 12

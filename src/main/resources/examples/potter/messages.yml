@@ -564,6 +564,10 @@ wands:
         name: Nimbus 2000
         description: So shiny!
 
+    crudnimbus:
+        name: Knockoff Nimbus 2000
+        description: It's kinda dingy
+
     bluebottle:
         name: Bluebottle
         description: The Family Broom
@@ -579,6 +583,10 @@ wands:
     firebolt:
         name: Firebolt
         description: Trusty.
+
+    crudfirebolt:
+        name: Knockoff Firebolt
+        description: Trusty?
 
     beater:
         name: Beater Bat
