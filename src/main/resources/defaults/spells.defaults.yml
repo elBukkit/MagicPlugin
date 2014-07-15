@@ -3670,9 +3670,10 @@ broom:
         bypass_deactivate: true
         stash_item: true
         mount_type: Horse
+        mount_variant: undead_horse
         mount_boost_ticks: 600
         mount_health: 12
         mount_boost: 2
-        mount_invisible: true
+        mount_invisible: false
         slow_ticks: 120
         steer_speed: 0.6
