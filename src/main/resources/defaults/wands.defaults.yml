@@ -1900,3 +1900,13 @@ green:
         - wool:13
         - huge_mushroom_1
         - huge_mushroom_2
+
+broomstick:
+    mode: cast
+    active_spell: broom
+    icon: blaze_rod
+    indestructible: true
+    locked: true
+    effect_color: '880088'
+    spells:
+        - broom

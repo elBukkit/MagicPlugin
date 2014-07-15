@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -232,6 +234,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             forceSneak--;
             if (slowReduceBoostTicks > 0) {
                 mountBoostTicksRemaining = Math.max(0, mountBoostTicksRemaining - slowReduceBoostTicks);
+                updateMountHealth();
             }
         }
         else if (mountBoostTicksRemaining > 0 && mountBoostTicks > 0) {
@@ -415,6 +418,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
             Inventory inventory = mage.getInventory();
             ItemStack current = inventory.getItem(heldItemSlot);
             inventory.setItem(heldItemSlot, heldItem);
+            if (player.getInventory().getHeldItemSlot() == heldItemSlot && Wand.isWand(heldItem)) {
+                Wand wand = new Wand((MagicController)controller, heldItem);
+                wand.activate(mage);
+            }
             if (current != null && current.getType() != Material.AIR) {
                 controller.giveItemToPlayer(player, current);
             }
@@ -440,6 +447,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
         boostTicksRemaining = 0;
 
         if (stashItem) {
+            com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+            if (wand != null) {
+                wand.deactivate();
+            }
             PlayerInventory inventory = player.getInventory();
             heldItemSlot = inventory.getHeldItemSlot();
             heldItem = inventory.getItemInHand();

@@ -212,6 +212,12 @@ spells:
         name: Curse
         description: Slows down and weakens the target
         cast: You curse $target
+    broom:
+        name: Broom
+        description: Powers magic brooms
+        cast: Your broom springs to life!
+        deactivate: Your broom quiets down.
+        crash: CRASH!
     boon:
         name: Boon
         description: Makes you temporarily superpowered
@@ -1205,6 +1211,9 @@ wands:
     wormheart:
         name: Heart of Worm
         description: It will consume the world
+    broomstick:
+        name: Broomstick
+        description: You can fly!
 automata:
     awaken: "&c&o$name &r&5has awakened"
     default_name: Automaton

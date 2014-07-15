@@ -1813,12 +1813,7 @@ orchideous:
     - red_rose:6
     - red_rose:7
     - red_rose:8
-    tall_flowers:
-    - double_plant
-    - double_plant:1
-    - double_plant:3
-    - double_plant:4
-    - double_plant:5
+    tall_flowers: []
     effects:
         cast:
         -  class: EffectSingle

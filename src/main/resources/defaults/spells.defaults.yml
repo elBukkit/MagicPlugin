@@ -3598,3 +3598,80 @@ pollinate:
         item_speed: 0
     costs:
         xp: 40
+
+broom:
+    hidden: true
+    icon: blaze_rod
+    category: specialty
+    class: LevitateSpell
+    pvp_restricted: false
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+        -  class: EffectSingle
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 30
+             particle: spell
+        crash:
+        -  class: EffectSingle
+           location: origin
+           entity_effect: hurt
+           particle: large_explode
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEntityEffect
+             iterations: 12
+        area:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 30
+             particle: spell
+        -  class: EffectSingle
+           particle: spell
+           effectlib:
+             class: ShieldEntityEffect
+             iterations: 30
+             particle: spell
+        boost:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+           effectlib:
+             class: TraceEntityEffect
+             iterations: 30
+             particle: spell
+        -  class: EffectSingle
+           particle: spell
+           effectlib:
+             class: ShieldEntityEffect
+             iterations: 30
+             particle: spell
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
+    parameters:
+        thrust: 1
+        auto_deactivate: 4
+        auto_deactivate_ticks: 10
+        slow: 0.2
+        start_delay: 20
+        crash_distance: 0.9
+        effect_confusion: 120,2
+        bypass_deactivate: true
+        stash_item: true
+        mount_type: Horse
+        mount_boost_ticks: 600
+        mount_health: 12
+        mount_boost: 2
+        mount_invisible: true
+        slow_ticks: 120
+        steer_speed: 0.6
