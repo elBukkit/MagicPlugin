@@ -1923,9 +1923,10 @@ green:
         - huge_mushroom_2
 
 broomstick:
+    path: broom
     mode: cast
     active_spell: broom
-    icon: blaze_rod
+    icon: gold_spade
     indestructible: true
     locked: true
     effect_color: '880088'

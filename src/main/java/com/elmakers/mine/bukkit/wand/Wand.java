@@ -1827,7 +1827,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public boolean add(Wand other) {
-		if (!isModifiable() || !other.isModifiable()) return false;
+		if (!isModifiable()) {
+            if (other.template == null || template == null || !other.template.equals(template)) {
+                return false;
+            }
+        }
+
+        if (other.template != null && (this.template == null || !this.template.equals(other.template))) {
+            return false;
+        }
 		
 		boolean modified = false;
 		

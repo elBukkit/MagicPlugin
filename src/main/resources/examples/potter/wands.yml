@@ -229,6 +229,7 @@ elder:
     path: master
     bound: true
     keep: true
+    fill: true
     cost_reduction: 2
     cooldown_reduction: 2
     protection: 1
@@ -242,70 +243,6 @@ elder:
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
-    spells:
-      - accio
-      - aguamenti
-      - aparecium
-      - apparatemaxima
-      - araniaexumai
-      - arresto
-      - arrow
-      - ascendio
-      - avadakedavra
-      - avadamaxima
-      - avis
-      - bogies
-      - bombarda
-      - bombardamaxima
-      - colorvaria
-      - confringo
-      - confundus
-      - conjunctivitis
-      - crucio
-      - meteo
-      - deletrius
-      - deprimo
-      - disillusion
-      - duro
-      - episkey
-      - evanesco
-      - expelliarmus
-      - vulnera
-      - finiteincantatem
-      - flagrate
-      - flipendo
-      - flight
-      - fiendfyre
-      - immobulus
-      - imperio
-      - impervius
-      - incendio
-      - jail
-      - lumos
-      - morsmordre
-      - nox
-      - petrificustotalus
-      - periculum
-      - protego
-      - reducio
-      - reducto
-      - rennervate
-      - reparifarge
-      - reparo
-      - reparomaxima
-      - salviohexia
-      - sectumsempra
-      - silencio
-      - silenciomaxima
-      - silenciototalus
-      - snowball
-      - stupefy
-      - phase
-      - stash
-      - recall
-      - gather
-      - atmos
-      - locomotomortus
 
 wolf:
     icon: gold_hoe
@@ -313,6 +250,7 @@ wolf:
     path: master
     keep: true
     bound: true
+    fill: true
     cost_reduction: 2
     cooldown_reduction: 2
     protection: 1
@@ -328,83 +266,6 @@ wolf:
     effect_particle: enchantment_table
     effect_particle_count: 1
     effect_particle_data: 2
-    spells:
-      - accio
-      - aguamenti
-      - aparecium
-      - apparatemaxima
-      - araniaexumai
-      - arresto
-      - arrow
-      - ascendio
-      - atmos
-      - avadakedavra
-      - avadamaxima
-      - avis
-      - bogies
-      - bombarda
-      - bombardamaxima
-      - colorvaria
-      - confringo
-      - confundus
-      - conjunctivitis
-      - crucio
-      - locomotomortus
-      - meteo
-      - deletrius
-      - deprimo
-      - deprimomaxima
-      - disillusion
-      - duro
-      - episkey
-      - evanesco
-      - expelliarmus
-      - vulnera
-      - fiendfyre
-      - finiteincantatem
-      - flagrate
-      - flipendo
-      - flight
-      - gather
-      - immobulus
-      - imperio
-      - impervius
-      - incendio
-      - jail
-      - lumos
-      - morsmordre
-      - nox
-      - periculum
-      - petrificustotalus
-      - phase
-      - protego
-      - protegomaxima
-      - recall
-      - reducio
-      - reducto
-      - reductomaxima
-      - rennervate
-      - reparifarge
-      - reparo
-      - reparomaxima
-      - salviohexia
-      - sectumsempra
-      - silencio
-      - silenciomaxima
-      - silenciototalus
-      - stupefy
-      - snowball
-      - stash
-      - absorb
-      - fill
-      - superblob
-      - superconvert
-      - superring
-      - superdome
-      - superdisc
-      - pillar
-      - place
-      - bridge
     materials:
       - clone
       - replicate
@@ -646,6 +507,7 @@ thestral:
 
 firebolt:
     mode: cast
+    path: broom
     active_spell: broom
     icon: diamond_barding
     indestructible: true
@@ -669,6 +531,7 @@ crudfirebolt:
 
 nimbus:
     mode: cast
+    path: broom
     active_spell: broom
     icon: iron_barding
     indestructible: true
@@ -692,6 +555,7 @@ crudnimbus:
 
 cleansweep1:
     mode: cast
+    path: broom
     active_spell: broom
     icon: gold_barding
     indestructible: false
@@ -703,6 +567,7 @@ cleansweep1:
 
 bluebottle:
     mode: cast
+    path: broom
     active_spell: broom
     icon: blaze_rod
     indestructible: false
@@ -714,6 +579,7 @@ bluebottle:
 
 crudbroom:
     mode: cast
+    path: broom
     active_spell: broom
     icon: blaze_rod
     indestructible: false
@@ -725,6 +591,7 @@ crudbroom:
         - broom
 
 beater:
+    path: beater
     active_spell: beat
     icon: stick
     indestructible: false

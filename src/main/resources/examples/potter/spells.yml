@@ -397,7 +397,7 @@ atmos:
 
 broom:
     hidden: true
-    icon: blaze_rod
+    icon: gold_spade
     category: specialty
     class: LevitateSpell
     pvp_restricted: false
