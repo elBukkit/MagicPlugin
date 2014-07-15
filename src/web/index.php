@@ -298,6 +298,19 @@ function printMaterial($materialKey, $iconOnly = null) {
 					<div>You may combine two wands on an anvil. (Click the empty result slot, it's WIP!)</div>
 				<?php 
 				} ?>
+                <div>There are also <?= count($wands); ?> wand templates, which may be purchasable or given my admins.</div>
+
+                <h2>Wand Spells</h2>
+                <div>
+                    Wands contain one or more spells in their inventory. Wands may generally know any spell, though some wands
+                    may only naturally obtain certain spells via enchanting.
+                </div>
+                <br/>
+                <div>
+                    There are currently <?= count($spells) ?> spells available.
+                </div>
+
+
 				<h2>Using a Wand</h2>
 				<div>
 					A wand is considered "active" when you are holding it. Any special effects a wand gives are only applied while the wand is active.<br.>
