@@ -17,6 +17,8 @@ public class PlaceSpell extends BrushSpell
 		if (!attachToBlock.isValid()) return SpellResult.NO_TARGET;
 		Block placeBlock = getPreviousBlock();
 
+        if (placeBlock == null) return SpellResult.NO_TARGET;
+
 		if (!hasBuildPermission(placeBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
