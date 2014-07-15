@@ -73,6 +73,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private Material mountItem = null;
     private EntityType mountType = null;
     private LivingEntity mountEntity = null;
+    private Horse.Variant mountHorseVariant = null;
+    private Horse.Color mountHorseColor = null;
+    private Horse.Style mountHorseStyle = null;
     private double maxMountBoost = 1;
     private double mountBoostPerJump = 0.5;
     private double mountHealth = 8;
@@ -339,6 +342,42 @@ public class LevitateSpell extends TargetingSpell implements Listener
             mountType = null;
         }
 
+        if (parameters.contains("mount_variant")) {
+            try {
+                String variantString = parameters.getString("mount_variant");
+                mountHorseVariant = Horse.Variant.valueOf(variantString.toUpperCase());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return SpellResult.FAIL;
+            }
+        } else {
+            mountHorseVariant = Horse.Variant.HORSE;
+        }
+
+        if (parameters.contains("mount_color")) {
+            try {
+                String colorString = parameters.getString("mount_color");
+                mountHorseColor = Horse.Color.valueOf(colorString.toUpperCase());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return SpellResult.FAIL;
+            }
+        } else {
+            mountHorseColor = Horse.Color.WHITE;
+        }
+
+        if (parameters.contains("mount_style")) {
+            try {
+                String styleString = parameters.getString("mount_style");
+                mountHorseStyle = Horse.Style.valueOf(styleString.toUpperCase());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return SpellResult.FAIL;
+            }
+        } else {
+            mountHorseStyle = Horse.Style.NONE;
+        }
+
         crashEffects = getPotionEffects(parameters);
 
         thrustSpeed *= mage.getRadiusMultiplier();
@@ -505,8 +544,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     horse.setTamed(true);
                     horse.setOwner(player);
                     horse.setAdult();
-                    horse.setStyle(Horse.Style.NONE);
-                    horse.setVariant(Horse.Variant.HORSE);
+                    horse.setStyle(mountHorseStyle);
+                    horse.setVariant(mountHorseVariant);
+                    horse.setColor(mountHorseColor);
                     horse.getInventory().setSaddle(new ItemStack(Material.SADDLE, 1));
                     if (mountItem != null) {
                         horse.getInventory().setArmor(new ItemStack(mountItem, 1));

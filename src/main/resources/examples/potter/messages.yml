@@ -556,6 +556,10 @@ wands:
         name: Floo Powder
         description: Use for 20 seconds of protection
 
+    thestral:
+        name: Thestral Bone
+        description: Summon a Thestral!
+
     nimbus:
         name: Nimbus 2000
         description: So shiny!

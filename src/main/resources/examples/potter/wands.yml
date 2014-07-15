@@ -631,6 +631,19 @@ deluminator:
 # Brooms
 #
 
+thestral:
+    mode: cast
+    active_spell: broom
+    icon: bone
+    indestructible: false
+    locked: true
+    effect_color: '880088'
+    uses: 1
+    quiet: 2
+    overrides: mount_type Horse mount_variant skeleton_horse stash_item false mount_boost_ticks 600 mount_health 12 mount_boost 2 slow_ticks 120 steer_speed 0.6
+    spells:
+        - broom
+
 firebolt:
     mode: cast
     active_spell: broom
