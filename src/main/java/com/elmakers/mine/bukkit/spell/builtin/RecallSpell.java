@@ -416,10 +416,6 @@ public class RecallSpell extends UndoableSpell
 	public void onLoad(ConfigurationSection node)
 	{
 		location = ConfigurationUtils.getLocation(node, "location");
-		
-		// This is a work-around hack for some bad Recall data that got stored
-		// when the hasMarker value was being saved as "active".
-		deactivate();
 	}
 
 	@Override

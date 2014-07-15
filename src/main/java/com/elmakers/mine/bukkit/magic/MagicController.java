@@ -2683,7 +2683,6 @@ public class MagicController implements Listener, MageController {
 			}
 			if (ejected) {
 				mage.sendMessage("Ejecting wands, creative mode will destroy them!");
-				
 			}
 		}
 	}

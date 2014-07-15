@@ -808,7 +808,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	@Override
 	public void deactivateSpell(Spell spell) {
 		activeSpells.remove(spell);
-		
+
 		// If this was called by the Spell itself, the following
 		// should do nothing as the spell is already marked as inactive.
 		if (spell instanceof MageSpell) {
@@ -826,9 +826,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // Copy this set since spells will get removed while iterating!
         List<MageSpell> active = new ArrayList<MageSpell>(activeSpells);
         for (MageSpell spell : active) {
-            spell.deactivate(force, quiet);
+            if (spell.deactivate(force, quiet)) {
+                activeSpells.remove(spell);
+            }
         }
-        activeSpells.clear();
     }
 	
 	@Override
