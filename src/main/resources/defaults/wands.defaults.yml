@@ -1321,6 +1321,22 @@ antihunger:
     upgrade: true
     hunger_regeneration: 0.5
     icon: nether_star
+loud:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    organize: true
+    quiet: -1
+quiet:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    quiet: -2
+silent:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    quiet: -3
 
  #
  # ITEMS

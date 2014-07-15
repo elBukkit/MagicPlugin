@@ -879,3 +879,19 @@ organizer:
     indestructible: false
     icon: arrow
     organize: true
+loud:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    organize: true
+    quiet: -1
+quiet:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    quiet: -2
+silent:
+    upgrade: true
+    indestructible: false
+    icon: arrow
+    quiet: -3

@@ -1861,6 +1861,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             updateName();
         }
 
+        // Kind of a hacky way to allow for quiet level overries
+        if (other.quietLevel < 0) {
+            int quiet = -other.quietLevel - 1;
+            modified = quietLevel != quiet;
+            quietLevel = quiet;
+        }
+
 		modified = modified | (!keep && other.keep);
 		modified = modified | (!bound && other.bound);
 		modified = modified | (!effectBubbles && other.effectBubbles);

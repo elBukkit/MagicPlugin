@@ -1184,6 +1184,15 @@ wands:
     inventorymode:
         name: Inventory Mode
         description: For expert wizards
+    loud:
+        name: Loud Wand
+        description: Turn on all wand chat messages
+    quiet:
+        name: Quiet Wand
+        description: Turn off spell cast messages
+    silent:
+        name: Wand Silencer
+        description: Turn off all wand chat messages
     organizer:
         name: The Organizer
         description: Re-organizes your wand inventory
