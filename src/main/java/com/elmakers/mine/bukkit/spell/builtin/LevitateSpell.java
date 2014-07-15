@@ -23,6 +23,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.HorseJumpEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -162,6 +163,16 @@ public class LevitateSpell extends TargetingSpell implements Listener
                         levitate.boost(event.getPower());
                     }
                 }
+            }
+        }
+
+        @EventHandler
+        public void onInventoryOpen(InventoryOpenEvent event)
+        {
+            HumanEntity player = event.getPlayer();
+            Entity mount = player.getVehicle();
+            if (mount != null && mount.hasMetadata("broom")) {
+                event.setCancelled(true);
             }
         }
 
@@ -442,6 +453,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (mountEntity != null) {
             if (mageEntity != null) {
                 mageEntity.eject();
+            }
+            if (mountEntity instanceof Horse) {
+                Horse horse = (Horse)mountEntity;
+                horse.getInventory().clear();
+            }
+            if (mountEntity instanceof Pig) {
+                Pig pig = (Pig)mountEntity;
+                pig.setSaddle(false);
             }
             mountEntity.eject();
             mountEntity.setPassenger(null);
