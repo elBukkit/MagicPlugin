@@ -1081,10 +1081,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
 			}
 
-            castParameters = null;
-            String overrides = wandConfig.getString("overrides", null);
-            if (overrides != null && !overrides.isEmpty()) {
-                castParameters = StringUtils.split(overrides, ' ');
+            if (wandConfig.contains("overrides")) {
+                castParameters = null;
+                String overrides = wandConfig.getString("overrides", null);
+                if (overrides != null && !overrides.isEmpty()) {
+                    castParameters = StringUtils.split(overrides, ' ');
+                }
             }
 		}
 		
