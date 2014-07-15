@@ -338,4 +338,5 @@ public interface Mage extends CostReducer {
     public boolean hasStoredInventory();
 
     public Set<Spell> getActiveSpells();
+    public void enableFallProtection(int ms);
 }
