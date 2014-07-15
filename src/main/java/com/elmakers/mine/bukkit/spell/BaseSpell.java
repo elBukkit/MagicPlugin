@@ -1327,13 +1327,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void deactivate() {
-        deactivate(false, false);
+    public boolean deactivate() {
+        return deactivate(false, false);
     }
 
-    public void deactivate(boolean force, boolean quiet) {
+    @Override
+    public boolean deactivate(boolean force, boolean quiet) {
         if (!force && bypassDeactivate) {
-            return;
+            return false;
         }
         if (isActive) {
             isActive = false;
@@ -1351,6 +1352,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             currentEffects = null;
         }
+
+        return true;
     }
 
     @Override
