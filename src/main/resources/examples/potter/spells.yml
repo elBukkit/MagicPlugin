@@ -2031,7 +2031,7 @@ protegomaxima:
     icon: ink_sack:12
     category: year7
     class: ConstructSpell
-    worth: 200
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -2045,8 +2045,12 @@ protegomaxima:
         thickness: 1
         target: select
         type: sphere
+        check_destructible: true
+        destructible: air
         transparent: transparent_to_construction
         bypass_build: true
+        brush: stained_glass
+        undo: 60000
     costs:
         xp: 100
 
@@ -2064,7 +2068,7 @@ protegoduo:
         range: 4
         radius: 5
         type: sphere
-        brush: stained_glass_pane
+        brush: stained_glass
         orient_dimension_max: 0
         orient_dimension_min: 0
         orient: true
@@ -3455,3 +3459,25 @@ superalter:
         transparent: transparent_to_construction
     costs:
         xp: 40
+
+supershell:
+    icon: ink_sack:12
+    category: staff
+    class: ConstructSpell
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 16
+        thickness: 1
+        target: select
+        type: sphere
+        transparent: transparent_to_construction
+    costs:
+        xp: 200
