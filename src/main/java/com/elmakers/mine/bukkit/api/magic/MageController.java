@@ -128,6 +128,7 @@ public interface MageController {
     public UndoList undoAny(Block target);
     public UndoList undoRecent(Block target, int timeout);
     public void forgetMage(Mage mage);
+    public void scheduleUndo(UndoList undoList);
 
     public String getEntityName(Entity entity);
 

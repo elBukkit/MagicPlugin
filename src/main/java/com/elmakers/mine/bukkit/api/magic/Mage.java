@@ -18,8 +18,10 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.UndoBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.block.UndoQueue;
+
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
@@ -327,6 +329,7 @@ public interface Mage extends CostReducer {
     public int getExperience();
 
     public boolean addPendingBlockBatch(BlockBatch batch);
+    public void addUndoBatch(UndoBatch batch);
 
     public void registerEvent(SpellEventType type, Listener spell);
     public void unregisterEvent(SpellEventType type, Listener spell);
