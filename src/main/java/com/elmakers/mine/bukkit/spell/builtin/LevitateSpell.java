@@ -393,6 +393,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         effectSoundInterval =  parameters.getInt("effect_sound_interval", effectSoundInterval);
         effectSoundVolume = (float)parameters.getDouble("effect_sound_volume", effectSoundVolume);
         effectSoundPitch = (float)parameters.getDouble("effect_sound_pitch", effectSoundPitch);
+        effectSoundCounter = 0;
+        effectParticleCounter = 0;
 
         if (parameters.contains("mount_reason")) {
             String reasonText = parameters.getString("mount_reason").toUpperCase();
