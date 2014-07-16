@@ -236,7 +236,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         Location location = player.getLocation();
         Vector mageDirection = location.getDirection();
-        boolean sneaking = player.isSneaking();
+        boolean sneaking = player.isSneaking() || forceSneak > 0;
         double move = sneakMoveDistance >= 0 && sneaking ? sneakMoveDistance : moveDistance;
         if (direction == null || move <= 0) {
             direction = mageDirection;
