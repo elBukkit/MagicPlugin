@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.UndoList;
 
-public class UndoBatch implements BlockBatch {
+public class UndoBatch implements com.elmakers.mine.bukkit.api.block.UndoBatch {
     protected final MageController controller;
     private UndoList trackUndoBlocks;
     private static final BlockData[] template = new BlockData[0];
@@ -34,7 +34,7 @@ public class UndoBatch implements BlockBatch {
         // But this doens't get put back in the undo queue, or
         // it will just flip-flop forever between these two actions.
         // Maybe eventually we'll have a "redo" queue.
-        trackUndoBlocks = new UndoList(mage, "Undo");
+        trackUndoBlocks = new UndoList(mage, blockList.getSpell(), "Undo");
         trackUndoBlocks.setBypass(true);
 
         this.undoBlocks = blockList.toArray(template);

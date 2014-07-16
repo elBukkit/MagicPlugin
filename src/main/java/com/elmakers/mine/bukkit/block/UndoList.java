@@ -10,20 +10,18 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.block.batch.CleanupBlocksTask;
 import com.elmakers.mine.bukkit.block.batch.UndoBatch;
 import com.elmakers.mine.bukkit.entity.EntityData;
 
@@ -50,25 +48,30 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected int                  	passesRemaining  = 1;
     protected int                  	timeToLive       = 0;
 
-    protected int				   	taskId           = 0;
-
     protected boolean				bypass		 	= false;
     protected final long			createdTime;
     protected long					modifiedTime;
+    protected long                  scheduledTime;
+
+    // Doubly-linked list
+    protected final UndoableSpell   spell;
+    protected UndoQueue             undoQueue;
+    protected UndoList              next;
+    protected UndoList              previous;
 
     protected String				name;
 
-    public UndoList(Mage mage, String name)
+    public UndoList(Mage mage, UndoableSpell spell, String name)
     {
-        this(mage);
+        this(mage, spell);
         this.name = name;
     }
 
-    public UndoList(Mage mage)
+    public UndoList(Mage mage, UndoableSpell spell)
     {
-        this.plugin = mage.getController().getPlugin();
         this.owner = mage;
-        Location location = mage.getLocation();
+        this.spell = spell;
+        this.plugin = owner.getController().getPlugin();
         createdTime = System.currentTimeMillis();
         modifiedTime = createdTime;
     }
@@ -80,10 +83,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.owner = other.owner;
         this.name = other.name;
         this.plugin = other.plugin;
+        this.undoQueue = other.undoQueue;
+        this.spell = other.spell;
         timeToLive = other.timeToLive;
         passesRemaining = other.passesRemaining;
         createdTime = other.createdTime;
         modifiedTime = other.modifiedTime;
+        scheduledTime = other.scheduledTime;
     }
 
     @Override
@@ -117,6 +123,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void setScheduleUndo(int ttl)
     {
         timeToLive = ttl;
+        scheduledTime = System.currentTimeMillis() + timeToLive;
     }
 
     public int getScheduledUndo()
@@ -144,6 +151,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void commit()
     {
+        unlink();
         if (blockList == null) return;
 
         for (BlockData block : blockList)
@@ -197,8 +205,22 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return false;
     }
 
-    public boolean undo()
+
+    public void undo()
     {
+        undo(true);
+    }
+
+    public void undo(boolean undoEntityEffects)
+    {
+        unlink();
+        if (isComplete()) return;
+
+        if (spell != null)
+        {
+            spell.cancelEffects();
+        }
+
         // This part doesn't happen in a batch, and may lag on large lists
         if (entities != null || modifiedEntities != null) {
             Map<UUID, Entity> currentEntities = new HashMap<UUID, Entity>();
@@ -218,7 +240,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 }
                 entities = null;
             }
-            if (modifiedEntities != null) {
+            if (undoEntityEffects && modifiedEntities != null) {
                 for (Entry<UUID, EntityData> entry : modifiedEntities.entrySet()) {
                     Entity entity = currentEntities.get(entry.getKey());
                     if (entity == null) {
@@ -238,16 +260,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             runnables = null;
         }
 
-        if (blockList == null) return true;
+        if (blockList == null) return;
 
         // Block changes will be performed in a batch
         UndoBatch batch = new UndoBatch(this);
-        if (!owner.addPendingBlockBatch(batch)) {
-            return false;
-        }
+        owner.addUndoBatch(batch);
         passesRemaining--;
-
-        return true;
+        if (isComplete()) {
+            blockList = null;
+        }
     }
 
     @Override
@@ -266,29 +287,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         node.set("time_to_live", (Integer)timeToLive);
         node.set("passes_remaining", (Integer)passesRemaining);
         node.set("name", name);
-    }
-
-    public void scheduleCleanup()
-    {
-        Server server = plugin.getServer();
-        BukkitScheduler scheduler = server.getScheduler();
-
-        // scheduler works in ticks- 20 ticks per second.
-        long ticksToLive = timeToLive * 20 / 1000;
-        taskId = scheduler.scheduleSyncDelayedTask(plugin, new CleanupBlocksTask(owner, this), ticksToLive);
-    }
-
-    public boolean undoScheduled()
-    {
-        if (taskId > 0)
-        {
-            Server server = plugin.getServer();
-            BukkitScheduler scheduler = server.getScheduler();
-            scheduler.cancelTask(taskId);
-            taskId = 0;
-        }
-
-        return this.undo();
     }
 
     public void watch(Entity entity)
@@ -459,9 +457,66 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return name;
     }
 
+    public UndoableSpell getSpell()
+    {
+        return spell;
+    }
+
     @Override
     public Mage getOwner()
     {
         return owner;
+    }
+
+    @Override
+    public long getScheduledTime() {
+        return scheduledTime;
+    }
+
+    @Override
+    public boolean isScheduled() {
+        return timeToLive > 0;
+    }
+
+    @Override
+    public int compareTo(com.elmakers.mine.bukkit.api.block.UndoList o) {
+        return (int)(scheduledTime - o.getScheduledTime());
+    }
+
+    public void setNext(UndoList next) {
+        this.next = next;
+    }
+
+    public void setPrevious(UndoList previous) {
+        this.previous = previous;
+    }
+
+    public void setUndoQueue(UndoQueue undoQueue) {
+        this.undoQueue = undoQueue;
+    }
+
+    public void unlink() {
+        if (undoQueue != null) {
+            undoQueue.removed(this);
+        }
+        if (this.next != null) {
+            this.next.previous = previous;
+        }
+        if (this.previous != null) {
+            this.previous.next = next;
+        }
+
+        this.previous = null;
+        this.next = null;
+    }
+
+    public UndoList getNext()
+    {
+        return next;
+    }
+
+    public UndoList getPrevious()
+    {
+        return previous;
     }
 }

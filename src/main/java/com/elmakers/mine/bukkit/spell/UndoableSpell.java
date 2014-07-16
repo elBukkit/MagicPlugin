@@ -102,7 +102,7 @@ public abstract class UndoableSpell extends TargetingSpell {
     public UndoList getUndoList()
     {
         if (modifiedBlocks == null) {
-            modifiedBlocks = new UndoList(mage, this.getName());
+            modifiedBlocks = new UndoList(mage, this, this.getName());
             modifiedBlocks.setBypass(bypassUndo);
             modifiedBlocks.setScheduleUndo(autoUndo);
         }
@@ -121,7 +121,7 @@ public abstract class UndoableSpell extends TargetingSpell {
 
     public boolean isUndoable()
     {
-        return !bypassUndo && autoUndo == 0;
+        return !bypassUndo;
     }
 
     protected void applyPotionEffects(Location location, int radius, Collection<PotionEffect> potionEffects) {

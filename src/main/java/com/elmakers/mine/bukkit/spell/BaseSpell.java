@@ -1344,6 +1344,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
+        cancelEffects();
+    }
+
+    public void cancelEffects() {
         if (currentEffects != null) {
             for (EffectPlayer player : currentEffects) {
                 player.cancel();
