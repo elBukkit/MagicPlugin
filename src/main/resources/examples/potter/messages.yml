@@ -316,6 +316,10 @@ spells:
         name: Incendio
         description: Light a fire at your target
         cast: Incendio!
+    incarcerous:
+        name: Incarcerous
+        description: Bind your target with ropes
+        cast: Incarcerous!
     lacarnum:
         name: Lacarnum Inflamari
         description: Launch a fireball
@@ -367,6 +371,10 @@ spells:
         name: Protego
         description: Create a magical shield
         cast: Protego!
+    protegoduo:
+        name: Protego Duo
+        description: Create a magical sphere of protection
+        cast: Protego Duo!
     protegomaxima:
         name: Protego Maximima
         description: Create a large hollow sphere

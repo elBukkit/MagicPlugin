@@ -1607,6 +1607,37 @@ locomotomortus:
         cooldown: 6000
         fall_protection: 5000
 
+incarcerous:
+    icon: web
+    category: year2
+    class: ConstructSpell
+    worth: 45
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: true
+        range: 4
+        radius: 2
+        type: sphere
+        brush: fence
+        thickness: 1
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        orient: false
+        transparent: transparent_to_construction
+        check_destructible: true
+        destructible: air
+        undo: 4000
+        breakable: 1
+        bypass_build: true
+        cooldown: 6000
+    costs:
+        xp: 50
+
 imperio:
     icon: leash
     category: unforgiveable
@@ -1985,11 +2016,13 @@ protego:
         transparent: transparent_to_construction
         check_destructible: true
         destructible: air
-        undo: 10000
+        undo: 2000
         breakable: 2
-        brushcolor: true
+        brushcolor: false
+        bypass_build: true
+        cooldown: 500
     costs:
-        xp: 45
+        xp: 20
 
 protegomaxima:
     icon: ink_sack:12
@@ -2014,11 +2047,11 @@ protegomaxima:
     costs:
         xp: 100
 
-shields:
+protegoduo:
     icon: ink_sack:12
     category: year3
     class: ConstructSpell
-    worth: 20
+    worth: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -2026,16 +2059,16 @@ shields:
     parameters:
         target: self
         thickness: 1
-        radius: 4
+        radius: 3
         type: sphere
         brush: stained_glass:15
-        undo: 15000
-        cooldown: 20000
+        undo: 5000
+        cooldown: 8000
         transparent: transparent_to_construction
         check_destructible: true
         breakable: 3
     costs:
-        xp: 20
+        xp: 50
 
 reducio:
     icon: red_mushroom
