@@ -117,4 +117,15 @@ public class ColorHD implements Cloneable {
                 color.getBlue() << COMPONENT_SHIFT,
                 weight);
     }
+
+    public static double getDistance(Color c1, Color c2) {
+        double rmean = (c1.getRed() + c2.getRed()) / 2.0;
+        double r = c1.getRed() - c2.getRed();
+        double g = c1.getGreen() - c2.getGreen();
+        int b = c1.getBlue() - c2.getBlue();
+        double weightR = 2 + rmean / 256.0;
+        double weightG = 4.0;
+        double weightB = 2 + (255 - rmean) / 256.0;
+        return weightR * r * r + weightG * g * g + weightB * b * b;
+    }
 }

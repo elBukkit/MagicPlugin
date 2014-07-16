@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
@@ -18,7 +21,7 @@ public abstract class BrushSpell extends BlockSpell {
     private boolean hasBrush = false;
 
     public final static String[] BRUSH_PARAMETERS = {
-        "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget"
+        "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor"
     };
 
     @Override
@@ -52,6 +55,27 @@ public abstract class BrushSpell extends BlockSpell {
 
             if (parameters.getBoolean("brushtarget", false)) {
                 brush.clearCloneLocation();
+            }
+
+            if (parameters.getBoolean("brushcolor", false)) {
+                Color color = mage.getEffectColor();
+                if (color != null) {
+                    DyeColor bestDyeColor = null;
+                    Double bestDistance = null;
+                    for (DyeColor testDyeColor : DyeColor.values()) {
+                        Color testColor = testDyeColor.getColor();
+                        double testDistance = ColorHD.getDistance(testColor, color);
+                        if (bestDistance == null || testDistance < bestDistance) {
+                            bestDistance = testDistance;
+                            bestDyeColor = testDyeColor;
+                            if (testDistance == 0) break;
+                        }
+                    }
+
+                    if (bestDyeColor != null) {
+                        brush.setData(bestDyeColor.getData());
+                    }
+                }
             }
         } else {
             brush = null;
