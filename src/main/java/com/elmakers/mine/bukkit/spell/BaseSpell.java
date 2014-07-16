@@ -1347,6 +1347,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         cancelEffects();
+
+        return true;
     }
 
     public void cancelEffects() {
@@ -1356,8 +1358,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             currentEffects = null;
         }
-
-        return true;
     }
 
     @Override
