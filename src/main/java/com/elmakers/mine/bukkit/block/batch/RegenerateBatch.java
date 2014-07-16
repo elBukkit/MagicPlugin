@@ -48,8 +48,8 @@ public class RegenerateBatch extends SpellBatch {
 	public RegenerateBatch(BlockSpell spell, Location p1, Location p2) {
 		super(spell);
 		this.spell = spell;
-		this.restoredBlocks = new UndoList(spell.getMage(), spell.getName());
 		this.mage = spell.getMage();
+        this.restoredBlocks = new UndoList(mage, spell, spell.getName());
 		this.world = this.mage.getLocation().getWorld();
 		this.state = RegenerateState.SAVING;
 		
