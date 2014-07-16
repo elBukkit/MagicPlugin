@@ -110,6 +110,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "name");
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "fill");
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "configure");
+            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "override");
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "organize");
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "combine");
 			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "upgrade");
@@ -255,6 +256,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			onWandConfigure(sender, player, args2, false);
 			return true;
 		}
+        if (subCommand.equalsIgnoreCase("override"))
+        {
+            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+            onWandOverride(sender, player, args2);
+            return true;
+        }
 		if (subCommand.equalsIgnoreCase("enchant"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -499,13 +507,59 @@ public class WandCommandExecutor extends MagicTabExecutor {
         }
         return true;
     }
+
+    public boolean onWandOverride(CommandSender sender, Player player, String[] parameters)
+    {
+        if (!checkWand(sender, player, true, true, false))
+        {
+            return true;
+        }
+
+        Mage mage = api.getMage(player);
+        Wand wand = mage.getActiveWand();
+        if (parameters.length == 0)
+        {
+            Map<String, String> overrides = wand.getOverrides();
+            if (overrides.size() == 0)
+            {
+                sender.sendMessage(ChatColor.DARK_AQUA + "This wand has no overrides");
+            }
+            else
+            {
+                for (Map.Entry<String, String> override : overrides.entrySet())
+                {
+                    sender.sendMessage(ChatColor.AQUA + override.getKey()
+                            + ChatColor.WHITE + " = " + ChatColor.DARK_AQUA + override.getValue());
+                }
+            }
+            return true;
+        }
+
+        if (!checkWand(sender, player))
+        {
+            return true;
+        }
+
+        if (parameters.length == 1)
+        {
+            wand.removeOverride(parameters[0]);
+            sender.sendMessage(ChatColor.DARK_AQUA  + "Removed override " + parameters[0]);
+            return true;
+        }
+
+        wand.setOverride(parameters[0], parameters[1]);
+        sender.sendMessage(ChatColor.DARK_AQUA  + "Added override " + ChatColor.AQUA + parameters[0]
+                + ChatColor.WHITE + " = " + ChatColor.DARK_AQUA + parameters[1]);
+
+        return true;
+    }
 	
 	public boolean onWandConfigure(CommandSender sender, Player player, String[] parameters, boolean safe)
 	{
 		if (parameters.length < 1) {
 			sender.sendMessage("Use: /wand configure <property> <value>");
 			sender.sendMessage("Properties: " + StringUtils.join(com.elmakers.mine.bukkit.wand.Wand.PROPERTY_KEYS, ", "));
-			return false;
+			return true;
 		}
 
 		if (!checkWand(sender, player)) {

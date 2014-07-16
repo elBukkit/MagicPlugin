@@ -513,7 +513,7 @@ firebolt:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: mount_color dark_brown mount_boost 3 mount_boost_ticks 1200 mount_health 20 slow_ticks 5 steer_speed 0 slow_steer_speed 0.8
+    overrides: mount_color dark_brown mount_boost 3 mount_boost_ticks 1200 mount_health 20 slow_ticks 5 steer_speed 0 slow_steer_speed 0.8 mount_boost 0.25
     spells:
         - broom
 
@@ -525,7 +525,7 @@ crudfirebolt:
     locked: true
     effect_color: 'FF00FF'
     uses: 20
-    overrides: mount_color dark_brown mount_boost 3 mount_boost_ticks 1200 mount_health 20 slow_ticks 5 steer_speed 0 slow_steer_speed 0.2
+    overrides: mount_color dark_brown mount_boost 2.5 mount_boost_ticks 1200 mount_health 20 slow_ticks 5 steer_speed 0 slow_steer_speed 0.2 mount_boost 0.25
     spells:
         - broom
 
@@ -537,7 +537,7 @@ nimbus:
     indestructible: true
     locked: true
     effect_color: '880088'
-    overrides: mount_color gray mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 3 steer_speed 0.6 slow_steer_speed 0.2
+    overrides: mount_color gray mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 3 steer_speed 0.6 slow_steer_speed 0.2 mount_boost 0.4
     spells:
         - broom
 
@@ -549,7 +549,7 @@ crudnimbus:
     locked: true
     effect_color: '880088'
     uses: 20
-    overrides: mount_color gray mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 3 steer_speed 0.6 slow_steer_speed 0.1
+    overrides: mount_color gray mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 3 steer_speed 0.6 slow_steer_speed 0.1 mount_boost 0.4
     spells:
         - broom
 

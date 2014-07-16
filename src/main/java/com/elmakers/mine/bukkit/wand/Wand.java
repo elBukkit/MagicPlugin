@@ -688,10 +688,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             spells.add(spellKey);
 			ItemStack itemStack = createSpellIcon(spellKey);
 			if (itemStack == null) {
-				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
-				continue;
-			}
-			if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey;
+				// controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
+				itemStack = new ItemStack(item.getType(), 1);
+                CompatibilityUtils.setMetadata(itemStack, metadataProvider, "spell", spellKey);
+            }
+			else if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey;
 			addToInventory(itemStack, slot);
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
@@ -1965,14 +1966,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         // Add cast overrides
         if (other.castParameters != null && other.castParameters.length > 0) {
-            Map<String, String> parameters = new HashMap<String, String>();
-            if (castParameters != null) {
-                for (int i = 0; i < castParameters.length; i+=2) {
-                    if (i < castParameters.length - 1) {
-                        parameters.put(castParameters[i], castParameters[i + 1]);
-                    }
-                }
-            }
+            Map<String, String> parameters = getOverrides();
 
             for (int i = 0; i < other.castParameters.length; i+=2) {
                 String value = i < other.castParameters.length - 1 ? other.castParameters[i + 1] : "";
@@ -1999,12 +1993,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 parameters.put(key, value);
             }
 
-            castParameters = new String[parameters.size() * 2];
-            int index = 0;
-            for (Map.Entry<String, String> entry : parameters.entrySet()) {
-                castParameters[index++] = entry.getKey();
-                castParameters[index++] = entry.getValue();
-            }
+            setOverrides(parameters);
         }
 		
 		Player player = (mage == null) ? null : mage.getPlayer();
@@ -2896,4 +2885,56 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		return found;
 	}
+
+    @Override
+    public Map<String, String> getOverrides()
+    {
+        Map<String, String> overrides = new HashMap<String, String>();
+        if (castParameters != null) {
+            for (int i = 0; i < castParameters.length; i+=2) {
+                if (i < castParameters.length - 1) {
+                    overrides.put(castParameters[i], castParameters[i + 1]);
+                }
+            }
+        }
+
+        return overrides;
+    }
+
+    @Override
+    public void setOverrides(Map<String, String> overrides)
+    {
+        if (overrides.size() == 0) {
+            castParameters = null;
+            return;
+        }
+        castParameters = new String[overrides.size() * 2];
+        int index = 0;
+        for (Map.Entry<String, String> entry : overrides.entrySet()) {
+            castParameters[index++] = entry.getKey();
+            castParameters[index++] = entry.getValue();
+        }
+    }
+
+    @Override
+    public void removeOverride(String key)
+    {
+        Map<String, String> overrides = getOverrides();
+        if (overrides.containsKey(key)) {
+            overrides.remove(key);
+            setOverrides(overrides);
+        }
+    }
+
+    @Override
+    public void setOverride(String key, String value)
+    {
+        Map<String, String> overrides = getOverrides();
+        String existing = overrides.get(key);
+        if (existing == null || !existing.equals(value))
+        {
+            overrides.put(key, value);
+            setOverrides(overrides);
+        }
+    }
 }
