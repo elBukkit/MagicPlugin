@@ -71,6 +71,11 @@ public class FireSpell extends BlockSpell
 					parameters.getInt("fire_ticks", DEFAULT_ELEMENTAL_FIRE_TICKS), mage.getCommandSender());
 		}
 
+        if (entity != null)
+        {
+            registerModified(entity);
+        }
+
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = (int)(mage.getRadiusMultiplier() * radius);
 		
