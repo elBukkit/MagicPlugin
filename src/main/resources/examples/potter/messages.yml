@@ -373,8 +373,12 @@ spells:
         cast: Protego!
     protegoduo:
         name: Protego Duo
-        description: Create a magical sphere of protection
+        description: Create a large shield
         cast: Protego Duo!
+    protegotria:
+        name: Protego Tria
+        description: Create a magical sphere of protection
+        cast: Protego Tria!
     protegomaxima:
         name: Protego Maximima
         description: Create a large hollow sphere

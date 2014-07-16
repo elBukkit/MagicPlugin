@@ -87,23 +87,25 @@ accio:
 
 aguamenti:
     icon: stationary_water
-    category: year2
-    class: IterateSpell
-    pvp_restricted: false
-    worth: 30
+    category: year6
+    class: CushionSpell
+    worth: 10
     effects:
         cast:
         -  class: EffectSingle
-           sound: water
+           sound: splash
+           location: both
+        -  class: EffectTrail
+           particle: drip_water
+           particle_count: 8
     parameters:
-        target_type: LivingEntity
-        transparent: transparent_to_construction
-        allow_max_range: true
-        range: 8
-        size: 4
-        brush: water
-        increment_data: true
-        undo: 2000
+        allow_max_range: false
+        height: 3
+        range: 16
+        width: 3
+        cooldown: 500
+        undo: 7000
+        disable_physics: 8000
     costs:
         xp: 50
 
@@ -1180,12 +1182,11 @@ episkey:
         target: any
         allow_max_range: false
         range: 16
-        cooldown: 2000
-        duration: 5000
-        effect_regeneration: 1
-        effect_saturation: 1
+        duration: 1000
+        effect_heal: 1,1
+        effect_saturation: 4
     costs:
-        xp: 15
+        xp: 50
 
 firestorm:
     icon: fire
@@ -1619,11 +1620,13 @@ incarcerous:
         -  class: EffectTrail
            effect: step_sound
     parameters:
+        target: other
+        target_type: LivingEntity
         allow_max_range: true
-        range: 4
-        radius: 2
+        range: 16
+        radius: 1
         type: sphere
-        brush: fence
+        brush: nether_fence
         thickness: 1
         orient_dimension_max: 0
         orient_dimension_min: 0
@@ -2057,18 +2060,47 @@ protegoduo:
         -  class: EffectSingle
            sound: level_up
     parameters:
+        allow_max_range: true
+        range: 4
+        radius: 5
+        type: sphere
+        brush: stained_glass_pane
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        orient: true
+        transparent: transparent_to_construction
+        check_destructible: true
+        destructible: air
+        undo: 5000
+        breakable: 2
+        brushcolor: false
+        bypass_build: true
+        cooldown: 1000
+    costs:
+        xp: 75
+
+protegotria:
+    icon: ink_sack:12
+    category: year3
+    class: ConstructSpell
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+    parameters:
         target: self
         thickness: 1
         radius: 3
         type: sphere
-        brush: stained_glass:15
+        brush: stained_glass_pane
         undo: 5000
         cooldown: 8000
         transparent: transparent_to_construction
         check_destructible: true
         breakable: 3
     costs:
-        xp: 50
+        xp: 100
 
 reducio:
     icon: red_mushroom
@@ -2564,8 +2596,9 @@ vulnera:
         allow_max_range: false
         range: 16
         duration: 5000
-        cooldown: 5000
-        effect_absorption: 1
+        cooldown: 10000
+        effect_regeneration: 1
+        effect_saturation: 1
         effect_slow: 4
         effect_heal: 1,1
     costs:
@@ -2598,9 +2631,8 @@ ferula:
         range: 16
         duration: 5000
         cooldown: 5000
-        effect_absorption: 1
-        effect_slow: 4
-        effect_heal: 1,1
+        effect_absorption: 2
+        effect_saturation: 1
     costs:
         xp: 50
 

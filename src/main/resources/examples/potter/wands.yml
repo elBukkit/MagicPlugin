@@ -521,7 +521,7 @@ crudfirebolt:
     mode: cast
     active_spell: broom
     icon: diamond_barding
-    indestructible: true
+    indestructible: false
     locked: true
     effect_color: 'FF00FF'
     uses: 20
@@ -545,7 +545,7 @@ crudnimbus:
     mode: cast
     active_spell: broom
     icon: iron_barding
-    indestructible: true
+    indestructible: false
     locked: true
     effect_color: '880088'
     uses: 20
