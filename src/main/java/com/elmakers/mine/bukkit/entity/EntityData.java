@@ -39,6 +39,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected ItemStack item;
     protected double health = 1;
     protected boolean isBaby;
+    protected int fireTicks;
     protected DyeColor dyeColor;
     protected Horse.Color horseColor;
     protected Horse.Variant horseVariant;
@@ -56,6 +57,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public EntityData(Location location, Entity entity) {
         this.type = entity.getType();
         this.location = location;
+        this.fireTicks = entity.getFireTicks();
 
         if (entity instanceof Hanging) {
             Hanging hanging = (Hanging)entity;
@@ -181,6 +183,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public boolean modify(Entity entity) {
         if (entity == null || entity.getType() != type) return false;
+
+        entity.setFireTicks(fireTicks);
 
         // Re-spawn if dead
         if (!entity.isValid() && !(entity instanceof Player)) {
