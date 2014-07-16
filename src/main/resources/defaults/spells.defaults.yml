@@ -691,14 +691,20 @@ shields:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        target: self
-        thickness: 1
+        allow_max_range: true
+        range: 4
         radius: 2
         type: sphere
-        brush: stained_glass:15
-        breakable: true
-        undo: 5000
+        brush: stained_glass_pane
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        orient: true
         transparent: transparent_to_construction
+        destructible: air
+        check_destructible: true
+        brushcolor: true
+        undo: 10000
+        breakable: 2
     costs:
         xp: 20
 dome:
@@ -3505,7 +3511,8 @@ missile:
         damage: 4.5
         effect_confusion: 40
         cooldown: 750
-        target_breakables: true
+        target_breakables: 2
+        transparent: transparent_to_construction
     costs:
         xp: 50
 

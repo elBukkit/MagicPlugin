@@ -226,7 +226,7 @@ spells:
         description: Heals relatively minor wounds
         cast_self: Episkey!
         cast: Episkey $target!
-    Ferula:
+    ferula:
         name: Ferula
         description: Heals major wounds
         cast_self: Ferula!
@@ -359,10 +359,14 @@ spells:
         name: Petrificus Totalus
         description: Paralyze your target
         cast: Petrificus Totalus!
+    patronus:
+        name: Expecto Patronum
+        description: Summon a Patronus to protect you
+        cast: Expecto Patronum!
     protego:
         name: Protego
-        description: Protego
-        cast: Protego $target!
+        description: Create a magical shield
+        cast: Protego!
     protegomaxima:
         name: Protego Maximima
         description: Create a large hollow sphere

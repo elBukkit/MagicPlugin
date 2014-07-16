@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +22,7 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class ConstructSpell extends BrushSpell
 {
@@ -51,13 +53,12 @@ public class ConstructSpell extends BrushSpell
 		radius = parameters.getInt("r", radius);
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
-        boolean breakable = parameters.getBoolean("breakable", false);
+        int breakable = parameters.getInt("breakable", 0);
 		float force = 0;
 		force = (float)parameters.getDouble("speed", force);
-		Location orientTo = null;
+		Vector orientTo = null;
 		
 		if (getTargetType() == TargetType.SELECT) {
-
 			if (targetLocation2 != null) {
 				this.targetBlock = targetLocation2.getBlock();
 			}
@@ -65,14 +66,37 @@ public class ConstructSpell extends BrushSpell
 			if (targetBlock == null) {
 				targetBlock = target;
 				activate();
-				
 				return SpellResult.TARGET_SELECTED;
 			} else {
 				radius = (int)targetBlock.getLocation().distance(target.getLocation());
-				orientTo = target.getLocation();
+
+                orientTo = target.getLocation().toVector().subtract(targetBlock.getLocation().toVector());
+                orientTo.setX(Math.abs(orientTo.getX()));
+                orientTo.setY(Math.abs(orientTo.getY()));
+                orientTo.setZ(Math.abs(orientTo.getZ()));
+                if (orientTo.getX() < orientTo.getZ() && orientTo.getX() < orientTo.getY()) {
+                    orientTo = new Vector(1, 0, 0);
+                } else if (orientTo.getZ() < orientTo.getX() && orientTo.getZ() < orientTo.getY()) {
+                    orientTo = new Vector(0, 0, 1);
+                } else {
+                    orientTo = new Vector(0, 1, 0);
+                }
 				target = targetBlock;
 			}
-		}
+		} else if (parameters.getBoolean("orient")) {
+            // orientTo = mage.getLocation().toVector().crossProduct(target.getLocation().toVector());
+            orientTo = mage.getLocation().toVector().subtract(target.getLocation().toVector());
+            orientTo.setX(Math.abs(orientTo.getX()));
+            orientTo.setY(Math.abs(orientTo.getY()));
+            orientTo.setZ(Math.abs(orientTo.getZ()));
+            if (orientTo.getX() > orientTo.getZ() && orientTo.getX() > orientTo.getY()) {
+                orientTo = new Vector(1, 0, 0);
+            } else if (orientTo.getZ() > orientTo.getX() && orientTo.getZ() > orientTo.getY()) {
+                orientTo = new Vector(0, 0, 1);
+            } else {
+                orientTo = new Vector(0, 1, 0);
+            }
+        }
 
         if (!parameters.contains("radius")) {
             int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);
@@ -101,7 +125,6 @@ public class ConstructSpell extends BrushSpell
 		ConstructionType conType = DEFAULT_CONSTRUCTION_TYPE;
 
 		int thickness = parameters.getInt("thickness", 0);
-		
 		String typeString = parameters.getString("type", "");
 
 		ConstructionType testType = ConstructionType.parseString(typeString, ConstructionType.UNKNOWN);
@@ -174,7 +197,7 @@ public class ConstructSpell extends BrushSpell
         if (falling) {
 			batch.setFallingBlockSpeed(force);
 		}
-        if (breakable) {
+        if (breakable > 0) {
             batch.setBreakable(breakable);
         }
 		if (parameters.contains("orient_dimension_max")) {

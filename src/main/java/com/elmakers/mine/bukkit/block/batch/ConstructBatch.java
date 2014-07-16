@@ -57,7 +57,7 @@ public class ConstructBatch extends BrushBatch {
 	private Integer maxOrientDimension = null;
 	private Integer minOrientDimension = null;
 	private boolean power = false;
-    private boolean breakable = false;
+    private int breakable = 0;
 	
 	private int x = 0;
 	private int y = 0;
@@ -67,7 +67,7 @@ public class ConstructBatch extends BrushBatch {
 	private boolean limitYAxis = false;
 	// TODO.. min X, Z, etc
 	
-	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, int thickness, boolean spawnFallingBlocks, Location orientToLocation) {
+	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, int thickness, boolean spawnFallingBlocks, Vector orientVector) {
 		super(spell);
 		this.center = center;
 		this.radius = radius;
@@ -78,28 +78,14 @@ public class ConstructBatch extends BrushBatch {
 		this.attachablesWall = mage.getController().getMaterialSet("attachable_wall");
 		this.attachablesDouble = mage.getController().getMaterialSet("attachable_double");
 		this.delayed = mage.getController().getMaterialSet("delayed");
-		if (orientToLocation != null) {
-			Vector orientTo = orientToLocation.toVector().subtract(center.toVector());
-			orientTo.setX(Math.abs(orientTo.getX()));
-			orientTo.setY(Math.abs(orientTo.getY()));
-			orientTo.setZ(Math.abs(orientTo.getZ()));
-			if (orientTo.getX() < orientTo.getZ() && orientTo.getX() < orientTo.getY()) {
-				orient = new Vector(1, 0, 0);
-			} else if (orientTo.getZ() < orientTo.getX() && orientTo.getZ() < orientTo.getY()) {
-				orient = new Vector(0, 0, 1);
-			} else {
-				orient = new Vector(0, 1, 0);
-			}
-		} else {
-			orient = new Vector(0, 1, 0);
-		}
+        this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
 	}
 	
 	public void setPower(boolean power) {
 		this.power = power;
 	}
 
-    public void setBreakable(boolean breakable) {
+    public void setBreakable(int breakable) {
         this.breakable = breakable;
     }
 	
@@ -478,8 +464,8 @@ public class ConstructBatch extends BrushBatch {
             }
 
             brush.modify(block);
-            if (breakable) {
-                block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), true));
+            if (breakable > 0) {
+                block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
             }
             if (spawnFallingBlocks) {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
