@@ -616,7 +616,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			}
 			return false;
 		}
-		if (!skipModifiable && wand.isLocked()) {
+        boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");
+		if (!skipModifiable && wand.isLocked() && !bypassLocked) {
 			if (!quiet) mage.sendMessage(Messages.get("wand.unmodifiable"));
 			if (sender != player) {
 				sender.sendMessage(Messages.getParameterized("wand.player_unmodifiable", "$name", player.getName()));

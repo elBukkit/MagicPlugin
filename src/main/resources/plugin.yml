@@ -267,6 +267,10 @@ permissions:
     description: A player may use a wand even if it is bound to another player.
     default: op
     type: boolean
+  Magic.wand.override_locked:
+    description: A player may modify locked wands with wand commands.
+    default: op
+    type: boolean
   Magic.powered:
     description: A player is always superpowered
     default: false
