@@ -8,18 +8,18 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
-public interface UndoList extends BlockList {
+public interface UndoList extends BlockList, Comparable<UndoList> {
     public void commit();
-
-    public void scheduleCleanup();
-    public boolean undoScheduled();
-    public boolean undo();
+    public void undo();
+    public void undo(boolean undoEntityChanges);
 
     public void setScheduleUndo(int ttl);
     public int getScheduledUndo();
     public boolean bypass();
     public long getCreatedTime();
     public long getModifiedTime();
+    public long getScheduledTime();
+    public boolean isScheduled();
 
     public void prune();
 
