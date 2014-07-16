@@ -732,7 +732,7 @@ public class MagicController implements Listener, MageController {
                     }
                 }
             }
-        }, 0, 20);
+        }, 0, mageUpdateFrequency);
 
         // Set up the Block update timer
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Block Updates") {
@@ -745,8 +745,22 @@ public class MagicController implements Listener, MageController {
                 pendingConstruction.removeAll(pendingConstructionRemoval);
                 pendingConstructionRemoval.clear();
             }
-        }, 0, 1);
+        }, 0, blockUpdateFrequency);
 
+        // Set up the Update check timer
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Undo Scheduler") {
+            public void onRun() {
+                long now = System.currentTimeMillis();
+                while (scheduledUndo.size() > 0) {
+                    UndoList undo = scheduledUndo.peek();
+                    if (now < undo.getScheduledTime()) {
+                        break;
+                    }
+                    scheduledUndo.poll();
+                    undo.undo(false);
+                }
+            }
+        }, 0, undoFrequency);
         registerListeners();
     }
 
@@ -1520,6 +1534,9 @@ public class MagicController implements Listener, MageController {
         loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
         maxTNTPerChunk = properties.getInt("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
+        blockUpdateFrequency = properties.getInt("block_update_frequency", blockUpdateFrequency);
+        mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
+        undoFrequency = properties.getInt("undo_frequency", undoFrequency);
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
@@ -1652,6 +1669,12 @@ public class MagicController implements Listener, MageController {
 	{
 		pendingUndo.add(mage.getId());
 	}
+
+    @Override
+    public void scheduleUndo(UndoList undoList)
+    {
+        scheduledUndo.add(undoList);
+    }
 
 	public boolean hasWandPermission(Player player)
 	{
@@ -3566,6 +3589,7 @@ public class MagicController implements Listener, MageController {
 	 private final Map<String, Long>			forgetMages					= new HashMap<String, Long>();
 	 private final Set<Mage>		 	        pendingConstruction			= new HashSet<Mage>();
      private final Set<Mage>                    pendingConstructionRemoval  = new HashSet<Mage>();
+     private final PriorityQueue<UndoList>      scheduledUndo               = new PriorityQueue<UndoList>();
 	 private final Set<String>  	 			pendingUndo					= new HashSet<String>();
 	 private final Map<String, WeakReference<WorldEditSchematic>> schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
  
@@ -3579,6 +3603,10 @@ public class MagicController implements Listener, MageController {
 
 	 private int								 toggleCooldown					= 1000;
 	 private int								 toggleMessageRange				= 1024;
+
+     private int                                 mageUpdateFrequency            = 20;
+     private int                                 blockUpdateFrequency           = 1;
+     private int                                 undoFrequency                  = 10;
 
      private boolean                             showCastHoloText               = false;
      private boolean                             showActivateHoloText           = false;
