@@ -195,4 +195,11 @@ public interface MageController {
      * @return The scale of the elemental, or 0 on error.
      */
     public double getElementalScale(Entity entity);
+
+    /**
+     * Check to see if Magic sounds are enabled.
+     *
+     * @return true if sounds are enabled.
+     */
+    public boolean soundsEnabled();
 }
