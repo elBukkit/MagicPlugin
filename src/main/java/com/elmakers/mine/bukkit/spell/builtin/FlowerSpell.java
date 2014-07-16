@@ -39,8 +39,9 @@ public class FlowerSpell extends BlockSpell
         private final Random random;
         private final Location effectsLocation;
         private final double effectsSpeed;
+        private final int ageItems;
 
-		public FlowerAction(MageController controller, double itemSpeed, Location effectsLocation, UndoList undoList, ArrayList<MaterialAndData> flowers, ArrayList<MaterialAndData> tallFlowers)
+		public FlowerAction(MageController controller, double itemSpeed, Location effectsLocation, UndoList undoList, ArrayList<MaterialAndData> flowers, ArrayList<MaterialAndData> tallFlowers, int ageItems)
 		{
 			super(controller, undoList);
 
@@ -48,6 +49,7 @@ public class FlowerSpell extends BlockSpell
             this.tallFlowers = tallFlowers;
             this.effectsLocation = effectsLocation;
             this.effectsSpeed = itemSpeed;
+            this.ageItems = ageItems;
             random = new Random();
 		}
 		
@@ -92,7 +94,7 @@ public class FlowerSpell extends BlockSpell
                 NMSUtils.makeTemporary(itemStack, getMessage("removed").replace("$material", material.getName()));
                 Item droppedItem = block.getWorld().dropItem(effectsLocation, itemStack);
                 droppedItem.setMetadata("temporary", new FixedMetadataValue(controller.getPlugin(), true));
-                CompatibilityUtils.ageItem(droppedItem, 4000);
+                CompatibilityUtils.ageItem(droppedItem, ageItems);
                 droppedItem.setVelocity(velocity);
             }
 			return SpellResult.CAST;
@@ -117,10 +119,11 @@ public class FlowerSpell extends BlockSpell
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = (int)(mage.getRadiusMultiplier() * radius);
         double itemSpeed = parameters.getDouble("item_speed");
+        int ageItems = parameters.getInt("age_items", 5500);
         Block faceBlock = getInteractBlock();
         Location effectLocation = faceBlock == null ? mage.getEyeLocation() : faceBlock.getLocation();
 
-        FlowerAction action = new FlowerAction(controller, itemSpeed, effectLocation, getUndoList(), flowers, tallFlowers);
+        FlowerAction action = new FlowerAction(controller, itemSpeed, effectLocation, getUndoList(), flowers, tallFlowers, ageItems);
 
 		if (radius <= 1)
 		{

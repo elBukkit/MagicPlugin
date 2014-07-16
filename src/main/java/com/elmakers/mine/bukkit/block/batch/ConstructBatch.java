@@ -23,6 +23,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
@@ -56,6 +57,7 @@ public class ConstructBatch extends BrushBatch {
 	private Integer maxOrientDimension = null;
 	private Integer minOrientDimension = null;
 	private boolean power = false;
+    private boolean breakable = false;
 	
 	private int x = 0;
 	private int y = 0;
@@ -96,6 +98,10 @@ public class ConstructBatch extends BrushBatch {
 	public void setPower(boolean power) {
 		this.power = power;
 	}
+
+    public void setBreakable(boolean breakable) {
+        this.breakable = breakable;
+    }
 	
 	public void setFallingBlockSpeed(float speed) {
 		fallingBlockSpeed = speed;
@@ -472,6 +478,9 @@ public class ConstructBatch extends BrushBatch {
             }
 
             brush.modify(block);
+            if (breakable) {
+                block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), true));
+            }
             if (spawnFallingBlocks) {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                 falling.setDropItem(false);

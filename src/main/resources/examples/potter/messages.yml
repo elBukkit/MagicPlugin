@@ -302,7 +302,7 @@ spells:
         name: Imperio
         description: Fling your target like a ragdoll
         usage: Unforgiveable!
-        cast: Imperio $target!
+        cast_player_message: ""
     impervius:
         name: Impervius
         description: Remove all water in the area

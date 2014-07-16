@@ -27,7 +27,7 @@ public class ConstructSpell extends BrushSpell
 	public final static String[] CONSTRUCT_PARAMETERS = {
 		"radius", "falling", "speed", "max_dimension", "replace",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
-		"power"
+		"power", "breakable"
 	};
 
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
@@ -51,6 +51,7 @@ public class ConstructSpell extends BrushSpell
 		radius = parameters.getInt("r", radius);
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
+        boolean breakable = parameters.getBoolean("breakable", false);
 		float force = 0;
 		force = (float)parameters.getDouble("speed", force);
 		Location orientTo = null;
@@ -173,6 +174,9 @@ public class ConstructSpell extends BrushSpell
         if (falling) {
 			batch.setFallingBlockSpeed(force);
 		}
+        if (breakable) {
+            batch.setBreakable(breakable);
+        }
 		if (parameters.contains("orient_dimension_max")) {
 			batch.setOrientDimensionMax(parameters.getInt("orient_dimension_max"));
 		} else if (parameters.contains("odmax")) {

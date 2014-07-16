@@ -512,6 +512,7 @@ avadakedavra:
         damage: 100
         check_destructible: false
         cooldown: 30000
+        target_breakables: true
     costs:
         xp: 100
 
@@ -549,6 +550,7 @@ avadamaxima:
         - say §aAvada Kadavra §c@t!
         target_type: Player
         target: other
+        target_breakables: true
         range: 16
         cooldown: 30000
     costs:
@@ -647,6 +649,7 @@ bogies:
         deactivate_target_mage: true
         target_type: LivingEntity
         target: other
+        target_breakables: true
         duration: 5000
         effect_poison: 1
 
@@ -670,6 +673,7 @@ bombarda:
         target_type: LivingEntity
         allow_max_range: true
         range: 8
+        target_breakables: true
         break_blocks: false
         size: 1
         cooldown: 10000
@@ -695,6 +699,7 @@ bombardamaxima:
         allow_max_range: true
         range: 24
         size: 3
+        target_breakables: true
         break_blocks: false
         cooldown: 20000
     costs:
@@ -774,6 +779,7 @@ confringo:
         range: 16
         size: 1
         fire: true
+        target_breakables: true
         break_blocks: false
         undo: 10000
     costs:
@@ -805,6 +811,7 @@ confundus:
         range: 32
         deactivate_target_mage: true
         target_type: LivingEntity
+        target_breakables: true
         target: other
         duration: 8000
         effect_confusion: 5
@@ -835,6 +842,7 @@ conjunctivitis:
     parameters:
         range: 32
         target_type: LivingEntity
+        target_breakables: true
         target: other
         duration: 5000
         effect_blindness: 5
@@ -870,6 +878,7 @@ obscuro:
     parameters:
         range: 32
         target_type: LivingEntity
+        target_breakables: true
         target: other
         duration: 2000
         effect_blindness: 1
@@ -901,6 +910,7 @@ crucio:
     parameters:
         range: 32
         target_type: LivingEntity
+        target_breakables: true
         target: other
         duration: 5000
         effect_wither: 8
@@ -1062,6 +1072,7 @@ evanesco:
         range: 8
         entity_damage: 50
         check_destructible: true
+        target_breakables: true
         undo: 30000
     costs:
         xp: 60
@@ -1108,6 +1119,7 @@ expelliarmus:
         fizzle_chance: 0
         backfire_chance: 0
         keep_in_inventory: true
+        target_breakables: true
     costs:
         xp: 70
 
@@ -1254,6 +1266,7 @@ fiendfyre:
         brush: lava
         cooldown: 20000
         undo: 5000
+        target_breakables: true
     costs:
         xp: 100
 
@@ -1295,6 +1308,7 @@ finiteincantatem:
         target_type: LivingEntity
         target_blocks: false
         target_timeout: 10000
+        target_breakables: true
         range: 32
         bypass_protection: true
         bypass_confusion: true
@@ -1548,6 +1562,7 @@ immobulus:
     parameters:
         range: 32
         target_type: LivingEntity
+        target_breakables: true
         target: other
         duration: 5000
         effect_slow: 20
@@ -1583,6 +1598,7 @@ locomotomortus:
     parameters:
         range: 32
         target_type: LivingEntity
+        target_breakables: true
         target: other
         duration: 10000
         effect_slow: 3
@@ -1606,6 +1622,7 @@ imperio:
            length: 16
     parameters:
         target_type: LivingEntity
+        target_breakables: true
         target: other_entity
         range: 32
         item_force: 1
@@ -1633,6 +1650,7 @@ imperiomaxima:
         range: 32
         item_force: 1
         entity_force: 1
+        target_breakables: true
     costs:
         xp: 100
 
@@ -1686,6 +1704,7 @@ incendio:
         undo: 3000
         cooldown: 3000
         bypass_build: true
+        target_breakables: true
     costs:
         xp: 40
 
@@ -1731,6 +1750,7 @@ levicorpus:
         allow_max_range: false
         range: 16
         cooldown: 5000
+        target_breakables: true
     costs:
         xp: 40
 
@@ -1855,6 +1875,7 @@ orchideous:
         cooldown: 2000
         bypass_build: true
         item_speed: 1.5
+        age_items: 5500
     costs:
         xp: 40
 
@@ -1913,6 +1934,7 @@ petrificustotalus:
         cooldown: 10000
         fall_protection: 8000
         deactivate_target_mage: true
+        target_breakables: true
 
 protego:
     icon: ink_sack:12
@@ -1962,6 +1984,29 @@ protegomaxima:
     costs:
         xp: 100
 
+shields:
+    icon: ink_sack:12
+    category: year3
+    class: ConstructSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+    parameters:
+        target: self
+        thickness: 1
+        radius: 4
+        type: sphere
+        brush: stained_glass:15
+        breakable: true
+        undo: 15000
+        cooldown: 20000
+        transparent: transparent_to_construction
+        check_destructible: true
+    costs:
+        xp: 20
+
 reducio:
     icon: red_mushroom
     category: year4
@@ -1984,6 +2029,7 @@ reducio:
         range: 16
         player_damage: 1
         entity_damage: 10
+        target_breakables: true
     costs:
         xp: 60
 
@@ -2186,6 +2232,7 @@ sectumsempra:
         target: other_entity
         damage: 8
         cooldown: 8000
+        target_breakables: true
     costs:
         xp: 35
 
@@ -2215,6 +2262,7 @@ silencio:
         duration: 10000
         effect_confusion: 100
         cooldown: 20000
+        target_breakables: true
     costs:
         xp: 40
 
@@ -2238,6 +2286,7 @@ silenciomaxima:
         target_type: Player
         target: other
         range: 16
+        target_breakables: true
     costs:
         xp: 100
 
@@ -2261,6 +2310,7 @@ jail:
         target_type: Player
         target: other
         range: 16
+        target_breakables: true
     costs:
         xp: 100
 
@@ -2320,6 +2370,7 @@ stupefy:
         damage: 4.5
         effect_confusion: 40
         cooldown: 1000
+        target_breakables: true
     costs:
         xp: 50
 
@@ -2395,6 +2446,7 @@ nox:
         allow_max_range: false
         range: 16
         bypass_confusion: true
+        target_breakables: true
         remove_effects:
         - night_vision
     costs:

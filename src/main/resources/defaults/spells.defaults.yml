@@ -696,6 +696,7 @@ shields:
         radius: 2
         type: sphere
         brush: stained_glass:15
+        breakable: true
         undo: 5000
         transparent: transparent_to_construction
     costs:
@@ -3504,6 +3505,7 @@ missile:
         damage: 4.5
         effect_confusion: 40
         cooldown: 750
+        target_breakables: true
     costs:
         xp: 50
 
