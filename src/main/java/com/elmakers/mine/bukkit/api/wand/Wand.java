@@ -64,4 +64,9 @@ public interface Wand extends CostReducer {
     public boolean isLost();
     public boolean isLost(LostWand wand);
     public boolean enchant(int levels);
+
+    public Map<String, String> getOverrides();
+    public void setOverrides(Map<String, String> overrides);
+    public void removeOverride(String key);
+    public void setOverride(String key, String value);
 }
