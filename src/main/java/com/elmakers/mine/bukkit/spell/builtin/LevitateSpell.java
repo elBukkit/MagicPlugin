@@ -3,16 +3,15 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import de.slikey.effectlib.util.ParticleEffect;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -99,6 +98,20 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private static LevitateListener listener = null;
 
     private Collection<PotionEffect> crashEffects;
+
+    private Sound effectSound = null;
+    private int effectSoundInterval = 20;
+    private int effectSoundCounter = 0;
+    private float effectSoundVolume = 1;
+    private float effectSoundPitch = 1;
+
+    private ParticleEffect effectParticle = null;
+    private float effectParticleData = 0;
+    private int effectParticleCount = 0;
+    private int effectParticleInterval = 20;
+    private int effectParticleCounter = 0;
+
+    private EffectRing effectPlayer = null;
 
     private class ThrustAction implements Runnable
     {
@@ -221,7 +234,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return;
             }
         }
-        Vector mageDirection = player.getLocation().getDirection();
+        Location location = player.getLocation();
+        Vector mageDirection = location.getDirection();
         boolean sneaking = player.isSneaking();
         double move = sneakMoveDistance >= 0 && sneaking ? sneakMoveDistance : moveDistance;
         if (direction == null || move <= 0) {
@@ -271,6 +285,29 @@ public class LevitateSpell extends TargetingSpell implements Listener
             mountEntity.setVelocity(direction);
         } else {
             player.setVelocity(direction);
+        }
+
+        if (effectParticle != null) {
+            if ((effectParticleCounter++ % effectParticleInterval) == 0) {
+                if (effectPlayer == null) {
+                    effectPlayer = new EffectRing(controller.getPlugin());
+                    effectPlayer.setParticleCount(2);
+                    effectPlayer.setIterations(2);
+                    effectPlayer.setRadius(2);
+                    effectPlayer.setSize(5);
+                    effectPlayer.setMaterial(location.getBlock().getRelative(BlockFace.DOWN));
+                }
+                effectPlayer.setParticleType(effectParticle);
+                effectPlayer.setParticleData(effectParticleData);
+                effectPlayer.setParticleCount(effectParticleCount);
+                effectPlayer.start(player.getEyeLocation(), null);
+            }
+        }
+
+        if (effectSound != null && controller.soundsEnabled()) {
+            if ((effectSoundCounter++ % effectSoundInterval) == 0) {
+                mage.getLocation().getWorld().playSound(location, effectSound, effectSoundVolume, effectSoundPitch);
+            }
         }
     }
 
@@ -337,6 +374,25 @@ public class LevitateSpell extends TargetingSpell implements Listener
         mountHealth = parameters.getDouble("mount_health", 2);
         mountInvisible = parameters.getBoolean("mount_invisible", true);
         stashItem = parameters.getBoolean("stash_item", false);
+
+        // FX
+        if (parameters.contains("effect_particle")) {
+            parseParticleEffect(parameters.getString("effect_particle"));
+            effectParticleData = 0;
+        } else {
+            effectParticle = null;
+        }
+        if (parameters.contains("effect_sound")) {
+            parseSoundEffect(parameters.getString("effect_sound"));
+        } else {
+            effectSound = null;
+        }
+        effectParticleData = (float)parameters.getDouble("effect_particle_data", effectParticleData);
+        effectParticleCount = parameters.getInt("effect_particle_count", effectParticleCount);
+        effectParticleInterval = parameters.getInt("effect_particle_interval", effectParticleInterval);
+        effectSoundInterval =  parameters.getInt("effect_sound_interval", effectSoundInterval);
+        effectSoundVolume = (float)parameters.getDouble("effect_sound_volume", effectSoundVolume);
+        effectSoundPitch = (float)parameters.getDouble("effect_sound_pitch", effectSoundPitch);
 
         if (parameters.contains("mount_reason")) {
             String reasonText = parameters.getString("mount_reason").toUpperCase();
@@ -416,6 +472,32 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
 		return SpellResult.CAST;
 	}
+
+    protected void parseSoundEffect(String effectSoundName) {
+        if (effectSoundName.length() > 0) {
+            String soundName = effectSoundName.toUpperCase();
+            try {
+                effectSound = Sound.valueOf(soundName);
+            } catch (Exception ex) {
+                effectSound = null;
+            }
+        } else {
+            effectSound = null;
+        }
+    }
+
+    protected void parseParticleEffect(String effectParticleName) {
+        if (effectParticleName.length() > 0) {
+            String particleName = effectParticleName.toUpperCase();
+            try {
+                effectParticle = ParticleEffect.valueOf(particleName);
+            } catch (Exception ex) {
+                effectParticle = null;
+            }
+        } else {
+            effectParticle = null;
+        }
+    }
 
     public void boost(double amount)
     {

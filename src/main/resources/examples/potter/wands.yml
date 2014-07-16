@@ -610,6 +610,24 @@ stabilizer:
     upgrade: true
     overrides: steer_speed 3 mount_item iron_barding
 
+booster:
+    icon: arrow
+    path: broom
+    upgrade: true
+    overrides: boost 1 mount_item gold_barding
+
+brakes:
+    icon: arrow
+    path: broom
+    upgrade: true
+    overrides: slow_ticks 10 mount_item diamond_barding
+
+cleanbroom:
+    icon: arrow
+    path: broom
+    upgrade: true
+    overrides: mount_item
+
 # Upgrades
 
 auror:

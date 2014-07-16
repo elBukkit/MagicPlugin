@@ -224,8 +224,13 @@ spells:
     episkey:
         name: Episkey
         description: Heals relatively minor wounds
-        cast_self: Ferula!
+        cast_self: Episkey!
         cast: Episkey $target!
+    Ferula:
+        name: Ferula
+        description: Heals major wounds
+        cast_self: Ferula!
+        cast: Ferula $target!
     evanesco:
         name: Evanesco
         description: Disintegrate the target
@@ -593,9 +598,21 @@ wands:
         name: Knockoff Firebolt
         description: Trusty?
 
+    cleanbroom:
+        name: Streamline Broom
+        description: Remove all broom attachments
+
     stabilizer:
         name: Broom Stabilizer
         description: Your broom will turn on a dime!
+
+    brakes:
+        name: Broom Brakes
+        description: Your broom will stop on a dime!
+
+    booster:
+        name: Broom Booster
+        description: Increase your top speed!
 
     beater:
         name: Beater Bat

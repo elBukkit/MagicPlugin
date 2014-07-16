@@ -473,6 +473,7 @@ broom:
         slow_ticks: 1
         steer_speed: 0.6
         slow_steer_speed: 0.1
+        effect_sound: portal_travel
 
 avadakedavra:
     icon: ink_sack:10
@@ -1182,7 +1183,6 @@ episkey:
         duration: 5000
         effect_regeneration: 1
         effect_saturation: 1
-        effect_absorption: 1
     costs:
         xp: 15
 
@@ -2476,6 +2476,39 @@ noxmaxima:
         xp: 100
 
 vulnera:
+    icon: ink_sack:9
+    category: year3
+    class: PotionEffectSpell
+    worth: 50
+    pvp_restricted: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 10
+             particle: heart
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: LoveEntityEffect
+             iterations: 10
+             period: 8
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        duration: 5000
+        cooldown: 5000
+        effect_absorption: 1
+        effect_slow: 4
+        effect_heal: 1,1
+    costs:
+        xp: 50
+
+ferula:
     icon: ink_sack:9
     category: year3
     class: PotionEffectSpell

@@ -1122,37 +1122,31 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateLore();
 	}
 
-	protected void parseSoundEffect(String effectSoundName) {
-		if (effectSoundName.length() > 0) {
-			String testName = effectSoundName.toUpperCase().replace("_", "");
-			try {
-				for (Sound testType : Sound.values()) {
-					String testTypeName = testType.name().replace("_", "");
-					if (testTypeName.equals(testName)) {
-						effectSound = testType;
-						break;
-					}
-				}
-			} catch (Exception ex) {
-				effectSound = null;
-			}
-		} else {
-			effectSound = null;
-		}
-	}
+    protected void parseSoundEffect(String effectSoundName) {
+        if (effectSoundName.length() > 0) {
+            String soundName = effectSoundName.toUpperCase();
+            try {
+                effectSound = Sound.valueOf(soundName);
+            } catch (Exception ex) {
+                effectSound = null;
+            }
+        } else {
+            effectSound = null;
+        }
+    }
 
-	protected void parseParticleEffect(String effectParticleName) {
-
-		if (effectParticleName.length() > 0) {
-			try {
-                effectParticle = ParticleEffect.valueOf(effectParticleName);
-			} catch (Exception ex) {
-				effectParticle = null;
-			}
-		} else {
-			effectParticle = null;
-		}
-	}
+    protected void parseParticleEffect(String effectParticleName) {
+        if (effectParticleName.length() > 0) {
+            String particleName = effectParticleName.toUpperCase();
+            try {
+                effectParticle = ParticleEffect.valueOf(particleName);
+            } catch (Exception ex) {
+                effectParticle = null;
+            }
+        } else {
+            effectParticle = null;
+        }
+    }
 
 	public void describe(CommandSender sender) {
 		Object wandNode = InventoryUtils.getNode(item, "wand");
