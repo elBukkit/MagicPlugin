@@ -1830,7 +1830,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 
-        if (other.path != null && (this.path == null || !this.path.equals(other.path))) {
+        if (other.path != null && !other.path.isEmpty() && (this.path == null || !this.path.equals(other.path))) {
             return false;
         }
 		
