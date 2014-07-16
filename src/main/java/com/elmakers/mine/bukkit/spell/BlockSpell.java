@@ -33,6 +33,7 @@ public abstract class BlockSpell extends UndoableSpell {
         if (isIndestructible(block)) return false;
 
         if (!checkDestructible) return true;
+        if (block.hasMetadata("breakable")) return true;
         if (destructible == null) {
             return mage.isDestructible(block);
         }

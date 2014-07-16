@@ -3,7 +3,10 @@ package com.elmakers.mine.bukkit.spell;
 import java.util.Collection;
 import java.util.List;
 
+import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -19,6 +22,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 public abstract class UndoableSpell extends TargetingSpell {
     private UndoList 		modifiedBlocks 			= null;
     private boolean 		bypassUndo				= false;
+    private boolean 		targetBreakables	    = false;
     private int	 			autoUndo				= 0;
 
     @Override
@@ -29,6 +33,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         bypassUndo = parameters.getBoolean("bu", bypassUndo);
         autoUndo = parameters.getInt("undo", 0);
         autoUndo = parameters.getInt("u", autoUndo);
+        targetBreakables = parameters.getBoolean("target_breakables", false);
     }
 
     @Override
@@ -164,4 +169,19 @@ public abstract class UndoableSpell extends TargetingSpell {
         }
     }
 
+    @Override
+    public Target findTarget()
+    {
+        Target target = super.findTarget();
+        if (targetBreakables && target.isValid()) {
+            Block block = target.getBlock();
+            if (block.hasMetadata("breakable")) {
+                Location effectLocation = block.getLocation().add(0.5,  0.5, 0.5);
+                effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
+                block.removeMetadata("breakable", mage.getController().getPlugin());
+                block.setType(Material.AIR);
+            }
+        }
+        return target;
+    }
 }
