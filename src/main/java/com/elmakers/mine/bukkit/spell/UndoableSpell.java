@@ -8,10 +8,12 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -22,7 +24,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 public abstract class UndoableSpell extends TargetingSpell {
     private UndoList 		modifiedBlocks 			= null;
     private boolean 		bypassUndo				= false;
-    private boolean 		targetBreakables	    = false;
+    private int 		    targetBreakables	    = 0;
     private int	 			autoUndo				= 0;
 
     @Override
@@ -33,7 +35,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         bypassUndo = parameters.getBoolean("bu", bypassUndo);
         autoUndo = parameters.getInt("undo", 0);
         autoUndo = parameters.getInt("u", autoUndo);
-        targetBreakables = parameters.getBoolean("target_breakables", false);
+        targetBreakables = parameters.getInt("target_breakables", 0);
     }
 
     @Override
@@ -169,17 +171,38 @@ public abstract class UndoableSpell extends TargetingSpell {
         }
     }
 
+    protected void breakBlock(Block block, int recursion) {
+        if (!block.hasMetadata("breakable")) return;
+
+        Location effectLocation = block.getLocation().add(0.5,  0.5, 0.5);
+        effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
+        block.removeMetadata("breakable", mage.getController().getPlugin());
+        block.setType(Material.AIR);
+
+        if (--recursion > 0) {
+            breakBlock(block.getRelative(BlockFace.UP), recursion);
+            breakBlock(block.getRelative(BlockFace.DOWN), recursion);
+            breakBlock(block.getRelative(BlockFace.EAST), recursion);
+            breakBlock(block.getRelative(BlockFace.WEST), recursion);
+            breakBlock(block.getRelative(BlockFace.NORTH), recursion);
+            breakBlock(block.getRelative(BlockFace.SOUTH), recursion);
+        }
+    }
+
     @Override
     public Target findTarget()
     {
         Target target = super.findTarget();
-        if (targetBreakables && target.isValid()) {
+        if (targetBreakables > 0 && target.isValid()) {
             Block block = target.getBlock();
             if (block.hasMetadata("breakable")) {
-                Location effectLocation = block.getLocation().add(0.5,  0.5, 0.5);
-                effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
-                block.removeMetadata("breakable", mage.getController().getPlugin());
-                block.setType(Material.AIR);
+                List<MetadataValue> metadata = block.getMetadata("breakable");
+                for (MetadataValue value : metadata) {
+                    if (value.getOwningPlugin().equals(controller.getPlugin())) {
+                        breakBlock(block, value.asInt() + targetBreakables - 1);
+                        break;
+                    }
+                }
             }
         }
         return target;
