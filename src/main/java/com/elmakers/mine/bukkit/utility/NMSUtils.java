@@ -564,6 +564,27 @@ public class NMSUtils {
         }
     }
 
+    public static void hideFlags(ItemStack stack) {
+        if (stack == null) return;
+
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return;
+
+            Object hideFlag = null;
+            if (class_NBTTagByte_constructor != null) {
+                hideFlag = class_NBTTagByte_constructor.newInstance((byte) 63);
+            } else {
+                hideFlag = class_NBTTagByte_legacy_constructor.newInstance("", (byte) 63);
+            }
+            class_NBTTagCompound_setMethod.invoke(tagObject, "HideFlags", hideFlag);
+        } catch (Throwable ex) {
+
+        }
+    }
+
     public static boolean createExplosion(Entity entity, World world, double x, double y, double z, float power, boolean setFire, boolean breakBlocks) {
         boolean result = false;
         if (world == null) return false;
