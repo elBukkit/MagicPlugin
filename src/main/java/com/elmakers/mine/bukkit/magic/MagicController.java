@@ -24,14 +24,7 @@ import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -1607,7 +1600,9 @@ public class MagicController implements Listener, MageController {
 		MaterialBrush.ReplicateMaterial = ConfigurationUtils.getMaterial(properties, "replicate_item", MaterialBrush.ReplicateMaterial);
 		MaterialBrush.SchematicMaterial = ConfigurationUtils.getMaterial(properties, "schematic_item", MaterialBrush.SchematicMaterial);
 		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterial(properties, "map_item", MaterialBrush.MapMaterial);
-		
+
+        wandAbuseDamage = properties.getDouble("wand_abuse_damage", 0);
+
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
 		
@@ -1822,6 +1817,18 @@ public class MagicController implements Listener, MageController {
 		if (undoList != null) {
 			undoList.modify(entity);
 		}
+
+        if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
+        {
+            Player player = (Player)damager;
+            Mage mage = getMage(player);
+            if (mage.getActiveWand() != null)
+            {
+                event.setCancelled(true);
+                player.playEffect(EntityEffect.HURT);
+                player.damage(wandAbuseDamage);
+            }
+        }
 	}
 	
 	protected UndoList getEntityUndo(Entity entity) {
@@ -3580,6 +3587,7 @@ public class MagicController implements Listener, MageController {
 	 private int								 ageDroppedItems				= 0;
 	 private int								 autoUndo						= 0;
 	 private int								 autoSaveTaskId					= 0;
+     private double                              wandAbuseDamage                = 0;
 	 private WarpController						 warpController					= null;
 	 
 	 private final Map<String, SpellTemplate>   spells              		= new HashMap<String, SpellTemplate>();

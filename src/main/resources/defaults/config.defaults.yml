@@ -187,6 +187,7 @@ enable_custom_item_hacks: true
 wand_item: wood_hoe
 wand_upgrade_item: nether_star
 wand_glow: true
+wand_abuse_damage: 2
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
 wand_item_enchantable: wood_sword
