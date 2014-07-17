@@ -1797,6 +1797,8 @@ levicorpus:
         range: 16
         cooldown: 5000
         target_breakables: 1
+        undo_velocity: true
+        undo_damage: true
     costs:
         xp: 40
 
