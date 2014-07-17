@@ -28,9 +28,7 @@ public class ProjectileSpell extends UndoableSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-        if (isOriginAtTarget()) {
-            getTarget();
-        }
+        getTarget();
 		int count = parameters.getInt("count", 1);
 		int size = parameters.getInt("size", defaultSize);
 		int radius = parameters.getInt("radius", 0);

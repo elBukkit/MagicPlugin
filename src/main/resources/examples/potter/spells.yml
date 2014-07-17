@@ -299,6 +299,7 @@ arrow:
       spread: 6
       fire: false
       tick_increase: 1180
+      range: 24
     costs:
         xp: 40
 
@@ -1766,9 +1767,10 @@ lacarnum:
         -  class: EffectSingle
            sound: ghast_fireball
     parameters:
-        projectile: SmallFireball
+        projectile: LargeFireball
         fire: false
         size: 2
+        range: 16
     costs:
         xp: 15
 
