@@ -680,9 +680,9 @@ bombarda:
            color: 'FF0000'
            color2: 'FF0088'
     parameters:
-        target_type: LivingEntity
+        target: block
         allow_max_range: true
-        range: 8
+        range: 12
         target_breakables: 1
         break_blocks: false
         size: 1
@@ -705,7 +705,7 @@ bombardamaxima:
            color: 'FF0000'
            color2: 'FF0088'
     parameters:
-        target_type: LivingEntity
+        target: block
         allow_max_range: true
         range: 24
         size: 3
