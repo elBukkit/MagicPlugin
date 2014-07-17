@@ -733,7 +733,7 @@ reflect:
         brushcolor: true
         undo: 5000
         breakable: 2
-        reflect: 1
+        reflect_chance: 1
     costs:
         xp: 40
 dome:

@@ -78,6 +78,7 @@ accio:
              particle: spell
     parameters:
         target_type: Entity
+        allow_max_range: true
         range: 32
         allow_area: false
         item_force: 2
@@ -822,6 +823,7 @@ confundus:
         target_breakables: 1
         target: other
         duration: 8000
+        cooldown: 9000
         effect_confusion: 5
 
 conjunctivitis:
@@ -1368,6 +1370,7 @@ flipendo:
         target_type: Entity
         range: 16
         allow_area: false
+        allow_max_range: true
         item_force: 2
         area_range: 20
         entity_force: 1
@@ -1400,6 +1403,7 @@ flipendoduo:
         target_type: Entity
         range: 32
         allow_area: false
+        allow_max_range: true
         item_force: 2
         area_range: 20
         entity_force: 1.5
@@ -1433,10 +1437,13 @@ flipendotria:
              class: FountainLocationEffect
              particle: spell
              iterations: 10
+             particlesStrand: 10
+             particlesSpout: 30
     parameters:
         target_type: Entity
         range: 32
         allow_area: true
+        allow_max_range: true
         area_range: 20
         item_force: 3
         entity_force: 2

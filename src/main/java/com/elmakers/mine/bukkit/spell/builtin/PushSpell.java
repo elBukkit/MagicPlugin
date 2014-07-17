@@ -88,11 +88,14 @@ public class PushSpell extends UndoableSpell
 			return SpellResult.AREA;
 		}
 
-        findTargetBlock();
-        Block targetBlock = getCurBlock();
+        Target directTarget = findTarget();
+        Block targetBlock = directTarget.getBlock();
         Location sourceLocation = getLocation();
-        double blockDistanceSquared = targetBlock.getLocation().distanceSquared(sourceLocation);
-        List<Target> targets = getAllTargetEntities(blockDistanceSquared - 0.5);
+        double blockDistanceSquared = 0;
+        if (targetBlock != null && sourceLocation != null) {
+            blockDistanceSquared = targetBlock.getLocation().distanceSquared(sourceLocation) - 0.5;
+        }
+        List<Target> targets = getAllTargetEntities(blockDistanceSquared);
 
 		if (targets.size() == 0)
 		{
