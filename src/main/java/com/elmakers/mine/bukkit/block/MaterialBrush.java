@@ -677,14 +677,4 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             updateFrom(block, mage.getRestrictedMaterials());
         }
     }
-
-    @Override
-    public void modify(Block block) {
-        if (!isValid) return;
-
-        if (mage != null && block.hasMetadata("breakable")) {
-            block.removeMetadata("breakable", mage.getController().getPlugin());
-        }
-        super.modify(block);
-    }
 }

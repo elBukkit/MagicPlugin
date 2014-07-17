@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import org.bukkit.metadata.MetadataValue;
 
 /**
  * A utility class for presenting a Material in its entirety, including Material variants.
@@ -254,11 +256,24 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         isValid = true;
     }
 
+    public static void removeMetadata(Block block, String key) {
+        if (block.hasMetadata("breakable")) {
+            Collection<MetadataValue> metadata = block.getMetadata("breakable");
+            for (MetadataValue value : metadata) {
+                block.removeMetadata(value.getOwningPlugin(), "breakable");
+            }
+            block.removeMetadata("breakable", mage.getController().getPlugin());
+        }
+    }
+
     @SuppressWarnings("deprecation")
     public void modify(Block block) {
         if (!isValid) return;
 
         try {
+            removeMetadata(block, "breakable");
+            removeMetadata(block, "backfire");
+
             // Clear chests so they don't dump their contents.
             BlockState oldState = block.getState();
             if (oldState instanceof InventoryHolder) {
