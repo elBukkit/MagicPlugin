@@ -24,6 +24,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.util.Vector;
 
 /**
  * This class stores information about an Entity.
@@ -49,6 +50,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Villager.Profession villagerProfession;
     protected Collection<PotionEffect> potionEffects = null;
     protected boolean hasPotionEffects = false;
+    protected Vector velocity = null;
+    protected boolean hasVelocity = false;
 
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
@@ -58,6 +61,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = entity.getType();
         this.location = location;
         this.fireTicks = entity.getFireTicks();
+        this.velocity = entity.getVelocity();
 
         if (entity instanceof Hanging) {
             Hanging hanging = (Hanging)entity;
@@ -264,6 +268,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             entity.teleport(location);
         }
 
+        if (hasVelocity) {
+            entity.setVelocity(velocity);
+        }
+
         return true;
     }
 
@@ -273,5 +281,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setHasPotionEffects(boolean changed) {
         this.hasPotionEffects = changed;
+    }
+
+    public void setHasVelocity(boolean hasVelocity) {
+        this.hasVelocity = hasVelocity;
     }
 }

@@ -319,15 +319,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
     }
 
-    public void modify(Entity entity)
+    public EntityData modify(Entity entity)
     {
-        modify(entity, false, false);
-    }
-
-    protected void modify(Entity entity, boolean hasMoved, boolean hasPotionEffects)
-    {
-        if (entity == null) return;
-        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
+        EntityData entityData = null;
+        if (entity == null) return entityData;
+        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return entityData;
         if (worldName == null) worldName = entity.getWorld().getName();
 
         // Check to see if this is something we spawned, and has now been destroyed
@@ -335,25 +331,39 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             entities.remove(entity);
         } else {
             if (modifiedEntities == null) modifiedEntities = new HashMap<UUID, EntityData>();
-            EntityData entityData = modifiedEntities.get(entity);
+            entityData = modifiedEntities.get(entity);
             if (entityData == null) {
                 entityData = new EntityData(entity);
                 modifiedEntities.put(entity.getUniqueId(), entityData);
             }
-            entityData.setHasMoved(hasMoved);
-            entityData.setHasPotionEffects(hasPotionEffects);
         }
         modifiedTime = System.currentTimeMillis();
+
+        return entityData;
     }
 
     public void move(Entity entity)
     {
-        modify(entity, true, false);
+        EntityData entityData = modify(entity);
+        if (entityData != null) {
+            entityData.setHasMoved(true);
+        }
+    }
+
+    public void modifyVelocity(Entity entity)
+    {
+        EntityData entityData = modify(entity);
+        if (entityData != null) {
+            entityData.setHasVelocity(true);
+        }
     }
 
     public void addPotionEffects(Entity entity)
     {
-        modify(entity, false, true);
+        EntityData entityData = modify(entity);
+        if (entityData != null) {
+            entityData.setHasPotionEffects(true);
+        }
     }
 
     public void remove(Entity entity)

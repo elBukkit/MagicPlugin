@@ -100,6 +100,11 @@ public abstract class UndoableSpell extends TargetingSpell {
         getUndoList().move(entity);
     }
 
+    public void registerVelocity(Entity entity)
+    {
+        getUndoList().modifyVelocity(entity);
+    }
+
     public void watch(Entity entity)
     {
         if (entity == null) return;
