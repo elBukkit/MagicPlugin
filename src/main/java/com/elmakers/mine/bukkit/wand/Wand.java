@@ -1246,6 +1246,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         // Make indestructible
         CompatibilityUtils.makeUnbreakable(item);
+        CompatibilityUtils.hideFlags(item);
 	}
 	
 	private void updateName() {
