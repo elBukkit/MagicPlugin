@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -77,8 +78,7 @@ public class PushSpell extends UndoableSpell
         int fallProtection = parameters.getInt("fall_protection", 0);
         double damage = parameters.getDouble("damage", 0) * mage.getDamageMultiplier();
 
-		List<Target> targets = getAllTargetEntities();
-		if 
+		if
 		(
 			allowAll
 			&&  (forceArea || isLookingDown() || isLookingUp())
@@ -87,6 +87,12 @@ public class PushSpell extends UndoableSpell
 			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance, damage, fallProtection);
 			return SpellResult.AREA;
 		}
+
+        findTargetBlock();
+        Block targetBlock = getCurBlock();
+        Location sourceLocation = getLocation();
+        double blockDistanceSquared = targetBlock.getLocation().distanceSquared(sourceLocation);
+        List<Target> targets = getAllTargetEntities(blockDistanceSquared - 0.5);
 
 		if (targets.size() == 0)
 		{
@@ -134,6 +140,7 @@ public class PushSpell extends UndoableSpell
             }
         }
 
+        registerVelocity(target);
 		magnitude = (int)((double)magnitude * multiplier);
 		Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
 		Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
