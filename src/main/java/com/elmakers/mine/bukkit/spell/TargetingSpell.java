@@ -50,7 +50,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             bypassProtection        = false;
 
     private boolean                             allowMaxRange           = false;
-    private boolean                             allowBackfire           = true;
+    private boolean                             bypassBackfire          = false;
 
     private int                                 range                   = 32;
     private double                              fov                     = 0.3;
@@ -63,8 +63,6 @@ public abstract class TargetingSpell extends BaseSpell {
     private	Block								currentBlock = null;
     private	Block								previousBlock = null;
     private	Block								previousPreviousBlock = null;
-
-    private Random                              random = new Random();
 
     @Override
     protected void preCast()
@@ -261,6 +259,39 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         target = findTarget();
 
+        final Block block = target.getBlock();
+        if (block != null && !bypassBackfire && block.hasMetadata("backfire")) {
+            List<MetadataValue> metadata = block.getMetadata("backfire");
+            for (MetadataValue value : metadata) {
+                if (value.getOwningPlugin().equals(controller.getPlugin())) {
+                    if (random.nextDouble() < value.asDouble()) {
+                        final Entity mageEntity = mage.getEntity();
+                        final Location location = getLocation();
+                        final Location originLocation = block.getLocation();
+                        Vector direction = location.getDirection();
+                        CompatibilityUtils.setDirection(originLocation, direction.multiply(-1));
+                        this.location = originLocation;
+                        backfire();
+                        final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
+                        if (effects.size() > 0) {
+                            Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
+                                                player.setMaterial(getEffectMaterial());
+                                                player.setColor(mage.getEffectColor());
+                                                player.start(originLocation, null, location, mageEntity);
+                                            }
+                                        }
+                                    }, 5l);
+                        }
+                        target = new Target(getLocation(), mageEntity);
+                    }
+                }
+            }
+        }
+
         if (targetLocationOffset != null) {
             target.add(targetLocationOffset);
         }
@@ -329,37 +360,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
         findTargetBlock();
         final Block block = getCurBlock();
-
-        if (mageEntity != null && block != null && allowBackfire && block.hasMetadata("backfire")) {
-            List<MetadataValue> metadata = block.getMetadata("backfire");
-            for (MetadataValue value : metadata) {
-                if (value.getOwningPlugin().equals(controller.getPlugin())) {
-                    if (random.nextDouble() < value.asDouble()) {
-                        backfire();
-
-                        final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
-
-                        if (effects.size() > 0) {
-                            Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
-                                        player.setMaterial(getEffectMaterial());
-                                        player.setColor(mage.getEffectColor());
-                                        Location originLocation = block.getLocation();
-                                        Vector direction = location.getDirection();
-                                        CompatibilityUtils.setDirection(originLocation, direction.multiply(-1));
-                                        player.start(originLocation, null, location, mageEntity);
-                                    }
-                                }
-                            }, 5l);
-                        }
-                        return new Target(block.getLocation(), mageEntity);
-                    }
-                }
-            }
-        }
 
         if (targetType == TargetType.BLOCK) {
             return new Target(getLocation(), block);
@@ -635,7 +635,7 @@ public abstract class TargetingSpell extends BaseSpell {
         range = parameters.getInt("range", range);
         fov = parameters.getDouble("fov", fov);
         allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
-        allowBackfire = parameters.getBoolean("allow_backfire", allowBackfire);
+        bypassBackfire = parameters.getBoolean("bypass_backfire", bypassBackfire);
         bypassProtection = parameters.getBoolean(("bypass_protection"));
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
 

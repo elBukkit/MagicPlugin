@@ -138,6 +138,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected ConfigurationSection parameters = null;
 
+    protected static Random random            = new Random();
+
     /*
      * private data
      */
@@ -462,7 +464,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             skinName = "MHF_Melon";
             break;
         case TNT:
-            if (Math.random() > 0.5) {
+            if (random.nextDouble() > 0.5) {
                 skinName = "MHF_TNT";
             } else {
                 skinName = "MHF_TNT2";
@@ -620,26 +622,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public FireworkEffect getFireworkEffect(Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {
         Color wandColor = mage == null ? null : mage.getEffectColor();
-        Random rand = new Random();
         if (wandColor != null) {
             color1 = wandColor;
             color2 = wandColor.mixColors(color1, Color.WHITE);
         } else {
             if (color1 == null) {
-                color1 = Color.fromRGB(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+                color1 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
             }
             if (color2 == null) {
-                color2 = Color.fromRGB(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+                color2 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
             }
         }
         if (fireworkType == null) {
-            fireworkType = org.bukkit.FireworkEffect.Type.values()[rand.nextInt(org.bukkit.FireworkEffect.Type.values().length)];
+            fireworkType = org.bukkit.FireworkEffect.Type.values()[random.nextInt(org.bukkit.FireworkEffect.Type.values().length)];
         }
         if (flicker == null) {
-            flicker = rand.nextBoolean();
+            flicker = random.nextBoolean();
         }
         if (trail == null) {
-            trail = rand.nextBoolean();
+            trail = random.nextBoolean();
         }
 
         return FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
@@ -866,9 +867,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean finalizeCast(ConfigurationSection parameters) {
         SpellResult result = null;
         if (!mage.isSuperPowered()) {
-            if (backfireChance > 0 && Math.random() < backfireChance) {
+            if (backfireChance > 0 && random.nextDouble() < backfireChance) {
                 backfire();
-            } else if (fizzleChance > 0 && Math.random() < fizzleChance) {
+            } else if (fizzleChance > 0 && random.nextDouble() < fizzleChance) {
                 result = SpellResult.FIZZLE;
             }
         }

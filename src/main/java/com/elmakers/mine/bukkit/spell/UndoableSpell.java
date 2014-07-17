@@ -25,7 +25,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 public abstract class UndoableSpell extends TargetingSpell {
     private UndoList 		modifiedBlocks 			= null;
     private boolean 		bypassUndo				= false;
-    private int 		    targetBreakables	    = 0;
+    private double 		    targetBreakables	    = 0;
     private int	 			autoUndo				= 0;
 
     @Override
@@ -36,7 +36,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         bypassUndo = parameters.getBoolean("bu", bypassUndo);
         autoUndo = parameters.getInt("undo", 0);
         autoUndo = parameters.getInt("u", autoUndo);
-        targetBreakables = parameters.getInt("target_breakables", 0);
+        targetBreakables = parameters.getDouble("target_breakables", 0);
     }
 
     @Override
@@ -208,14 +208,21 @@ public abstract class UndoableSpell extends TargetingSpell {
     protected Target getTarget()
     {
         Target target = super.getTarget();
-        if (targetBreakables > 0 && target.isValid()) {
-            Block block = target.getBlock();
+        if (targetBreakables > 0 && target.isValid() && !target.hasEntity()) {
+            // The Target has already been re-routed to the Player's location
+            // if this has been reflected- but we want the original block
+            // that was targeted.
+            Block block = getCurBlock();
             if (block.hasMetadata("breakable")) {
-                List<MetadataValue> metadata = block.getMetadata("breakable");
-                for (MetadataValue value : metadata) {
-                    if (value.getOwningPlugin().equals(controller.getPlugin())) {
-                        breakBlock(block, value.asInt() + targetBreakables - 1);
-                        break;
+                int breakable = (int)(targetBreakables > 1 ? targetBreakables :
+                        (random.nextDouble() < targetBreakables ? 1 : 0));
+                if (breakable > 0) {
+                    List<MetadataValue> metadata = block.getMetadata("breakable");
+                    for (MetadataValue value : metadata) {
+                        if (value.getOwningPlugin().equals(controller.getPlugin())) {
+                            breakBlock(block, value.asInt() + breakable - 1);
+                            break;
+                        }
                     }
                 }
             }
