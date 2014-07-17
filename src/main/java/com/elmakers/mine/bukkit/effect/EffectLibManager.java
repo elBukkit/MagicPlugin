@@ -30,7 +30,7 @@ public class EffectLibManager {
         return new EffectLibManager();
     }
 
-    public Effect[] play(Plugin plugin, ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
+    public Effect[] play(ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
         Entity sourcePlayer = player.getOriginEntity();
         Entity sourceEntity = player.playAtOrigin ? player.getOriginEntity() : null;
         Entity targetEntity = player.playAtTarget ? player.getTargetEntity() : null;
@@ -45,7 +45,7 @@ public class EffectLibManager {
         Effect[] effects = null;
         String effectClass = configuration.getString("class");
         try {
-            effectManager.start(effectClass, configuration, origin, target, sourceEntity, targetEntity, nameMap);
+            effects = effectManager.start(effectClass, configuration, origin, target, sourceEntity, targetEntity, nameMap);
         } catch (Throwable ex) {
             Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();
