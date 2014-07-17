@@ -134,6 +134,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean bypassDeactivate            = false;
     private boolean quiet                       = false;
 
+    private boolean backfired                 = false;
+
     protected ConfigurationSection parameters = null;
 
     /*
@@ -744,6 +746,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             this.location.setPitch(mageLocation.getPitch());
             this.location.setYaw(mageLocation.getYaw());
         }
+
+        backfired = false;
+        currentEffects = null;
     }
 
     public boolean cast(String[] extraParameters, Location defaultLocation)
@@ -851,13 +856,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     }
 
+    protected void backfire() {
+        if (!backfired) {
+            onBackfire();
+        }
+        backfired = true;
+    }
+
     protected boolean finalizeCast(ConfigurationSection parameters) {
         SpellResult result = null;
         if (!mage.isSuperPowered()) {
             if (backfireChance > 0 && Math.random() < backfireChance) {
-                onBackfire();
-                onCast(parameters);
-                result = SpellResult.BACKFIRE;
+                backfire();
             } else if (fizzleChance > 0 && Math.random() < fizzleChance) {
                 result = SpellResult.FIZZLE;
             }
@@ -865,6 +875,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         if (result == null) {
             result = onCast(parameters);
+        }
+        if (backfired) {
+            result = SpellResult.BACKFIRE;
         }
         processResult(result);
 

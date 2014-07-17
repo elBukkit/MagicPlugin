@@ -1,10 +1,6 @@
 package com.elmakers.mine.bukkit.spell;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
@@ -17,9 +13,8 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
@@ -66,6 +61,8 @@ public abstract class TargetingSpell extends BaseSpell {
     private	Block								currentBlock = null;
     private	Block								previousBlock = null;
     private	Block								previousPreviousBlock = null;
+
+    private Random                              random = new Random();
 
     @Override
     protected void preCast()
@@ -331,6 +328,25 @@ public abstract class TargetingSpell extends BaseSpell {
         findTargetBlock();
         Block block = getCurBlock();
 
+        if (player != null && block != null && block.hasMetadata("backfire")) {
+            List<MetadataValue> metadata = block.getMetadata("backfire");
+            for (MetadataValue value : metadata) {
+                if (value.getOwningPlugin().equals(controller.getPlugin())) {
+                    if (random.nextDouble() < value.asDouble()) {
+                        backfire();
+                        Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                playEffects("backfire");
+                            }
+                        }, 20l);
+                        return new Target(block.getLocation(), player);
+                    }
+                }
+            }
+        }
+
         if (targetType == TargetType.BLOCK) {
             return new Target(getLocation(), block);
         }
@@ -402,16 +418,23 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     protected List<Target> getAllTargetEntities() {
+        return getAllTargetEntities(null);
+    }
+
+    protected List<Target> getAllTargetEntities(Double range) {
         List<Target> scored = new ArrayList<Target>();
 
+        Double rangeSquared = range == null ? null : range * range;
         List<Entity> entities = null;
         Entity mageEntity = mage.getEntity();
         int maxRange = getMaxRange();
+        Location sourceLocation = null;
         if (location == null && mageEntity != null) {
+            sourceLocation = mageEntity.getLocation();
             entities = mageEntity.getNearbyEntities(maxRange, maxRange, maxRange);
         } else {
-            Location location = getLocation();
-            if (location != null) {
+            sourceLocation = getLocation();
+            if (sourceLocation != null) {
                 entities = CompatibilityUtils.getNearbyEntities(location, maxRange, maxRange, maxRange);
             }
         }
@@ -422,6 +445,7 @@ public abstract class TargetingSpell extends BaseSpell {
             if (entity == mage.getEntity()) continue;
             if (!targetNPCs && controller.isNPC(entity)) continue;
             if (entity.hasMetadata("notarget")) continue;
+            if (rangeSquared != null && entity.getLocation().distanceSquared(sourceLocation) > rangeSquared) continue;
 
             // Special check for Elementals
             if (!controller.isElemental(entity) && targetEntityType != null && !targetEntityType.isAssignableFrom(entity.getClass())) continue;
@@ -431,7 +455,7 @@ public abstract class TargetingSpell extends BaseSpell {
             // Ignore invisible entities
             // if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
-            Target newScore = new Target(getLocation(), entity, maxRange, fov);
+            Target newScore = new Target(sourceLocation, entity, maxRange, fov);
             if (newScore.getScore() > 0)
             {
                 scored.add(newScore);

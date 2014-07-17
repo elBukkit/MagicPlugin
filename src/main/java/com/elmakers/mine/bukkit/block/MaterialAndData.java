@@ -257,12 +257,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     public static void removeMetadata(Block block, String key) {
-        if (block.hasMetadata("breakable")) {
-            Collection<MetadataValue> metadata = block.getMetadata("breakable");
-            for (MetadataValue value : metadata) {
-                block.removeMetadata(value.getOwningPlugin(), "breakable");
-            }
-            block.removeMetadata("breakable", mage.getController().getPlugin());
+        Collection<MetadataValue> metadata = block.getMetadata(key);
+        for (MetadataValue value : metadata) {
+            block.removeMetadata(key, value.getOwningPlugin());
         }
     }
 
