@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.util.Collection;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,7 +19,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
-public class FlingSpell extends TargetingSpell implements Listener
+public class FlingSpell extends UndoableSpell implements Listener
 {
 	private final long safetyLength = 20000;
 	private long lastFling = 0;
@@ -63,11 +64,15 @@ public class FlingSpell extends TargetingSpell implements Listener
 			velocity.setY(0);
 		}
 
+
 		velocity.multiply(magnitude);
+
+        registerVelocity(entity);
 		entity.setVelocity(velocity);
 
 		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
 		lastFling = System.currentTimeMillis();
+        registerForUndo();
 		return SpellResult.CAST;
 	}
 
