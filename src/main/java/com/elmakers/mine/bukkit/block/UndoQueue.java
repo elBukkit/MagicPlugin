@@ -145,8 +145,9 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             return null;
         }
 
-        head.undo();
-        return head;
+        UndoList undid = head;
+        undid.undo();
+        return undid;
     }
 
     /**
