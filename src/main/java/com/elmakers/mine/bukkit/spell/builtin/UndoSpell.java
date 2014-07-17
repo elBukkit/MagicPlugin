@@ -22,7 +22,6 @@ public class UndoSpell extends TargetingSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		Entity caster = mage.getEntity();
         int timeout = parameters.getInt("target_timeout", 0);
 		if (target.hasEntity() && controller.isMage(target.getEntity()))
 		{

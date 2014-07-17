@@ -2075,6 +2075,7 @@ protegoduo:
         transparent: transparent_to_construction
         check_destructible: true
         destructible: air
+        destructible: air
         undo: 5000
         breakable: 2
         brushcolor: false
@@ -2097,11 +2098,12 @@ protegotria:
         thickness: 1
         radius: 3
         type: sphere
-        brush: stained_glass_pane
+        brush: stained_glass
         undo: 5000
         cooldown: 8000
         transparent: transparent_to_construction
         check_destructible: true
+        destructible: air
         breakable: 3
     costs:
         xp: 100
