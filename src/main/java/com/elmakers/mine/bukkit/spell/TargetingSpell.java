@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.*;
 
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -49,6 +50,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             bypassProtection        = false;
 
     private boolean                             allowMaxRange           = false;
+    private boolean                             allowBackfire           = true;
 
     private int                                 range                   = 32;
     private double                              fov                     = 0.3;
@@ -297,18 +299,18 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(getLocation(), targetEntity);
         }
 
-        Entity player = mage.getPlayer();
-        if (targetType == TargetType.SELF && player != null) {
-            return new Target(getLocation(), player);
+        final Entity mageEntity = mage.getEntity();
+        if (targetType == TargetType.SELF && mageEntity != null) {
+            return new Target(getLocation(), mageEntity);
         }
 
         CommandSender sender = mage.getCommandSender();
-        if (targetType == TargetType.SELF && player == null && sender != null && (sender instanceof BlockCommandSender)) {
+        if (targetType == TargetType.SELF && mageEntity == null && sender != null && (sender instanceof BlockCommandSender)) {
             BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
             return new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
         }
 
-        Location location = getLocation();
+        final Location location = getLocation();
         if (targetType == TargetType.SELF && location != null) {
             return new Target(location, location.getBlock());
         }
@@ -326,22 +328,34 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         findTargetBlock();
-        Block block = getCurBlock();
+        final Block block = getCurBlock();
 
-        if (player != null && block != null && block.hasMetadata("backfire")) {
+        if (mageEntity != null && block != null && allowBackfire && block.hasMetadata("backfire")) {
             List<MetadataValue> metadata = block.getMetadata("backfire");
             for (MetadataValue value : metadata) {
                 if (value.getOwningPlugin().equals(controller.getPlugin())) {
                     if (random.nextDouble() < value.asDouble()) {
                         backfire();
-                        Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                playEffects("backfire");
-                            }
-                        }, 20l);
-                        return new Target(block.getLocation(), player);
+
+                        final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
+
+                        if (effects.size() > 0) {
+                            Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
+                                        player.setMaterial(getEffectMaterial());
+                                        player.setColor(mage.getEffectColor());
+                                        Location originLocation = block.getLocation();
+                                        Vector direction = location.getDirection();
+                                        CompatibilityUtils.setDirection(originLocation, direction.multiply(-1));
+                                        player.start(originLocation, null, location, mageEntity);
+                                    }
+                                }
+                            }, 5l);
+                        }
+                        return new Target(block.getLocation(), mageEntity);
                     }
                 }
             }
@@ -367,11 +381,11 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         if (targetType == TargetType.ANY_ENTITY && entityTarget == null) {
-            return new Target(location, player);
+            return new Target(location, mageEntity);
         }
 
-        if (entityTarget == null && targetType == TargetType.ANY && player != null) {
-            return new Target(getLocation(), player, targetBlock == null ? null : targetBlock.getBlock());
+        if (entityTarget == null && targetType == TargetType.ANY && mageEntity != null) {
+            return new Target(getLocation(), mageEntity, targetBlock == null ? null : targetBlock.getBlock());
         }
 
         if (targetBlock != null && entityTarget != null) {
@@ -621,6 +635,7 @@ public abstract class TargetingSpell extends BaseSpell {
         range = parameters.getInt("range", range);
         fov = parameters.getDouble("fov", fov);
         allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
+        allowBackfire = parameters.getBoolean("allow_backfire", allowBackfire);
         bypassProtection = parameters.getBoolean(("bypass_protection"));
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
 
