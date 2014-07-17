@@ -253,6 +253,9 @@ spells:
         name: Shields
         description: Create a temporary shell
         cast_finish: Shields Up!
+    reflect:
+        name: Reflect
+        description: Reflect spells cast against you
     shell:
         name: Shell
         description: Create a large spherical shell

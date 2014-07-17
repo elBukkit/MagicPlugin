@@ -49,7 +49,7 @@ public class ConstructBatch extends BrushBatch {
 	private Set<Material> replace;
 	private Map<String, String> commandMap;
     private Map<String, String> signMap;
-	
+
 	private boolean finishedNonAttached = false;
 	private boolean finishedAttached = false;
 	private int attachedBlockIndex = 0;
@@ -58,7 +58,8 @@ public class ConstructBatch extends BrushBatch {
 	private Integer minOrientDimension = null;
 	private boolean power = false;
     private int breakable = 0;
-	
+    private double backfireChance = 0;
+
 	private int x = 0;
 	private int y = 0;
 	private int z = 0;
@@ -66,7 +67,7 @@ public class ConstructBatch extends BrushBatch {
 
 	private boolean limitYAxis = false;
 	// TODO.. min X, Z, etc
-	
+
 	public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, int thickness, boolean spawnFallingBlocks, Vector orientVector) {
 		super(spell);
 		this.center = center;
@@ -80,47 +81,51 @@ public class ConstructBatch extends BrushBatch {
 		this.delayed = mage.getController().getMaterialSet("delayed");
         this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
 	}
-	
+
 	public void setPower(boolean power) {
 		this.power = power;
 	}
 
+    public void setBackfireChance(double backfireChance) {
+        this.backfireChance = backfireChance;
+    }
+
     public void setBreakable(int breakable) {
         this.breakable = breakable;
     }
-	
+
 	public void setFallingBlockSpeed(float speed) {
 		fallingBlockSpeed = speed;
 	}
-	
+
 	public void setOrientDimensionMax(int maxDim) {
 		this.maxOrientDimension = maxDim;
 	}
-	
+
 	public void setOrientDimensionMin(int minDim) {
 		this.minOrientDimension = minDim;
 	}
-	
+
 	protected boolean canAttachTo(Material attachMaterial, Material material, boolean vertical) {
 		// For double-high blocks, a material can always attach to itself.
 		if (vertical && attachMaterial == material) return true;
 
 			// Should I use my own list for this? This one seems good and efficient.
 		if (material.isTransparent()) return false;
-		
+
 		// Can't attach to any attachables either- some of these (like signs) aren't transparent.
 		return !attachables.contains(material) && !attachablesWall.contains(material) && !attachablesDouble.contains(material);
 	}
-	
+
 	public int size() {
 		return radius * radius * radius * 8;
 	}
-	
+
 	public int remaining() {
 		if (r >= radius) return 0;
 		return (radius - r) * (radius - r) * (radius - r) * 8;
 	}
-	
+
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
 		if (finishedAttached) {
@@ -135,7 +140,7 @@ public class ConstructBatch extends BrushBatch {
 				}
 
                 modifyWith(block, delayed);
-				
+
 				delayedBlockIndex++;
 			}
 		} else if (finishedNonAttached) {
@@ -148,7 +153,7 @@ public class ConstructBatch extends BrushBatch {
 				}
 
 				// TODO: Port all this to fill... or move to BlockSpell?
-				
+
 				// Always check the the block underneath the target
 				Block underneath = block.getRelative(BlockFace.DOWN);
 
@@ -158,16 +163,16 @@ public class ConstructBatch extends BrushBatch {
 				if (!ok && attachablesDouble.contains(material)) {
 					BlockData attachedUnder = attachedBlockMap.get(BlockData.getBlockId(underneath));
 					ok = (attachedUnder != null && attachedUnder.getMaterial() == material);
-					
+
 					if (!ok) {
 						Block above = block.getRelative(BlockFace.UP);
 						BlockData attachedAbove = attachedBlockMap.get(BlockData.getBlockId(above));
 						ok = (attachedAbove != null && attachedAbove.getMaterial() == material);
 					}
 				}
-				
+
 				// TODO : More specific checks: crops, potato, carrot, melon/pumpkin, cactus, etc.
-				
+
 				if (!ok) {
 					// Check for a wall attachable. These are assumed to also be ok
 					// on the ground.
@@ -182,11 +187,11 @@ public class ConstructBatch extends BrushBatch {
 						}
 					}
 				}
-				
+
 				if (ok) {
                     modifyWith(block, attach);
 				}
-				
+
 				attachedBlockIndex++;
 			}
 			if (attachedBlockIndex >= attachedBlockList.size()) {
@@ -199,22 +204,22 @@ public class ConstructBatch extends BrushBatch {
 				yBounds = Math.max(minOrientDimension == null ? radius : minOrientDimension, maxOrientDimension == null ? radius : maxOrientDimension);
 			}
 			yBounds = Math.min(yBounds, 255);
-			
+
 			while (processedBlocks <= maxBlocks && !finishedNonAttached) {
 				if (!fillBlock(x, y, z)) {
 					return processedBlocks;
 				}
-				
+
 				int xBounds = r;
 				int zBounds = r;
 				if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockX() > 0) {
 					xBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
 				}
-				
+
 				if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockZ() > 0) {
 					zBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
 				}
-				
+
 				y++;
 				if (y > yBounds) {
 					y = 0;
@@ -233,8 +238,8 @@ public class ConstructBatch extends BrushBatch {
 						}
 					}
 				}
-				
-				if (r > radius) 
+
+				if (r > radius)
 				{
 					finishedNonAttached = true;
 					break;
@@ -242,7 +247,7 @@ public class ConstructBatch extends BrushBatch {
 				processedBlocks++;
 			}
 		}
-		
+
 		return processedBlocks;
 	}
 
@@ -255,31 +260,31 @@ public class ConstructBatch extends BrushBatch {
 				float mx = (float)x - 0.1f;
 				float my = (float)y - 0.1f;
 				float mz = (float)z - 0.1f;
-				
+
 				int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 				if (thickness == 0)
 				{
 					fillBlock = distanceSquared <= maxDistanceSquared;
-				} 
-				else 
+				}
+				else
 				{
 					mx++;
 					my++;
 					mz++;
 					int outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 					fillBlock = maxDistanceSquared >= distanceSquared - thickness && maxDistanceSquared <= outerDistanceSquared;
-				}	
+				}
 				break;
 			case PYRAMID:
 				int elevation = radius - y;
 				if (thickness == 0) {
 					fillBlock = (x <= elevation) && (z <= elevation);
 				} else {
-					fillBlock = (x <= elevation && x >= elevation - thickness && z <= elevation) 
+					fillBlock = (x <= elevation && x >= elevation - thickness && z <= elevation)
 							 || (z <= elevation && z >= elevation - thickness && x <= elevation);
 				}
 				break;
-			default: 
+			default:
 				fillBlock = thickness == 0 ? true : (x >= radius - thickness || y >= radius - thickness || z >= radius - thickness);
 				break;
 		}
@@ -306,14 +311,14 @@ public class ConstructBatch extends BrushBatch {
 		// Special-case hackiness..
 		if (limitYAxis && minOrientDimension != null && dy < -minOrientDimension) return true;
 		if (limitYAxis && maxOrientDimension != null && dy > maxOrientDimension) return true;
-		
+
 		// Initial range checks, we skip everything if this is not sane.
 		int x = center.getBlockX() + dx;
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
-		
+
 		if (y < 0 || y > controller.getMaxY()) return true;
-		
+
 		// Make sure the block is loaded.
 		Block block = center.getWorld().getBlockAt(x, y, z);
 		if (!block.getChunk().isLoaded()) {
@@ -336,7 +341,7 @@ public class ConstructBatch extends BrushBatch {
         {
             return true;
         }
-		
+
 		// Check for power mode.
 		if (power)
 		{
@@ -370,7 +375,7 @@ public class ConstructBatch extends BrushBatch {
 				wireData.setData((byte)(15 - wireData.getData()));
 				powerBlock = true;
 			} else if (material == Material.REDSTONE_BLOCK) {
-				
+
 				// A work-around for double-powering Automata.
 				// It'd be really cool to maybe find the associated command
 				// block and temporarily disable it, or something.
@@ -388,15 +393,15 @@ public class ConstructBatch extends BrushBatch {
 			} else if (material == Material.TNT) {
 				registerForUndo(block);
 				block.setType(Material.AIR);
-				
+
 				// Kaboomy time!
 				registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
 			}
-			
+
 			if (powerBlock) {
 				blockState.update();
 			}
-			
+
 			return true;
 		}
 
@@ -404,13 +409,13 @@ public class ConstructBatch extends BrushBatch {
 		// given the current target (clone, replicate)
 		MaterialBrush brush = spell.getBrush();
 		brush.update(mage, block.getLocation());
-		
+
 		// Make sure the brush is ready, it may need to load chunks.
 		if (!brush.isReady()) {
 			brush.prepare();
 			return false;
 		}
-		
+
 		// Postpone attachable blocks to a second batch
 		if (attachables.contains(brush.getMaterial()) || attachablesWall.contains(brush.getMaterial()) || attachablesDouble.contains(brush.getMaterial())) {
 			BlockData attachBlock = new BlockData(block);
@@ -419,7 +424,7 @@ public class ConstructBatch extends BrushBatch {
 			attachedBlockList.add(attachBlock);
 			return true;
 		}
-		
+
 		if (delayed.contains(brush.getMaterial())) {
 			BlockData delayBlock = new BlockData(block);
 			delayBlock.updateFrom(brush);
@@ -467,6 +472,9 @@ public class ConstructBatch extends BrushBatch {
             if (breakable > 0) {
                 block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
             }
+            if (backfireChance > 0) {
+                block.setMetadata("backfire", new FixedMetadataValue(controller.getPlugin(), backfireChance));
+            }
             if (spawnFallingBlocks) {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                 falling.setDropItem(false);
@@ -478,12 +486,12 @@ public class ConstructBatch extends BrushBatch {
             }
         }
     }
-	
+
 	public void addCommandMapping(String key, String command) {
 		if (commandMap == null) {
 			commandMap = new HashMap<String, String>();
 		}
-		
+
 		commandMap.put(key,  command);
 	}
 
@@ -499,12 +507,12 @@ public class ConstructBatch extends BrushBatch {
 		this.replace = new HashSet<Material>();
 		this.replace.addAll(replace);
 	}
-	
+
 	@Override
 	protected boolean contains(Location location) {
 		if (thickness != 0) return false;
 		if (!location.getWorld().equals(center.getWorld())) return false;
-		
+
 		// TODO: Handle PYRAMID better, thickness, max dimensions, etc.
 		switch (type) {
 		case SPHERE:

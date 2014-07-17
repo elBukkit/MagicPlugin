@@ -29,7 +29,7 @@ public class ConstructSpell extends BrushSpell
 	public final static String[] CONSTRUCT_PARAMETERS = {
 		"radius", "falling", "speed", "max_dimension", "replace",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
-		"power", "breakable"
+		"power", "breakable", "backfire"
 	};
 
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
@@ -54,10 +54,11 @@ public class ConstructSpell extends BrushSpell
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
         int breakable = parameters.getInt("breakable", 0);
+        double backfireChance = parameters.getDouble("reflect_chance", 0);
 		float force = 0;
 		force = (float)parameters.getDouble("speed", force);
 		Vector orientTo = null;
-		
+
 		if (getTargetType() == TargetType.SELECT) {
 			if (targetLocation2 != null) {
 				this.targetBlock = targetLocation2.getBlock();
@@ -82,6 +83,7 @@ public class ConstructSpell extends BrushSpell
                     orientTo = new Vector(0, 1, 0);
                 }
 				target = targetBlock;
+                targetBlock = null;
 			}
 		} else if (parameters.getBoolean("orient")) {
             // orientTo = mage.getLocation().toVector().crossProduct(target.getLocation().toVector());
@@ -137,7 +139,7 @@ public class ConstructSpell extends BrushSpell
 		
 		if (parameters.getBoolean("replace", false)) {
 			List<Material> replaceMaterials = new ArrayList<Material>();
-			Material targetMaterial = targetBlock != null ? targetBlock.getType() : target.getType();
+			Material targetMaterial = target.getType();
 			replaceMaterials.add(targetMaterial);
 			
 			// A bit hacky, but is very handy!
@@ -199,6 +201,9 @@ public class ConstructSpell extends BrushSpell
 		}
         if (breakable > 0) {
             batch.setBreakable(breakable);
+        }
+        if (backfireChance > 0) {
+            batch.setBackfireChance(backfireChance);
         }
 		if (parameters.contains("orient_dimension_max")) {
 			batch.setOrientDimensionMax(parameters.getInt("orient_dimension_max"));

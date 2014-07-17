@@ -49,6 +49,7 @@ default:
          entity_effect: hurt
        cost_free: cast
        no_target: cast
+       backfire: cast
 
 accio:
     icon: ink_sack:6
@@ -2019,7 +2020,7 @@ protego:
         check_destructible: true
         destructible: air
         undo: 2000
-        breakable: 2
+        breakable: 1
         brushcolor: false
         bypass_build: true
         cooldown: 500
@@ -2050,6 +2051,7 @@ protegomaxima:
         bypass_build: true
         brush: stained_glass
         undo: 60000
+        reflect_chance: 1
     costs:
         xp: 100
 
@@ -2065,7 +2067,7 @@ protegoduo:
     parameters:
         allow_max_range: true
         range: 4
-        radius: 5
+        radius: 3
         type: sphere
         brush: stained_glass
         orient_dimension_max: 0
@@ -2080,6 +2082,7 @@ protegoduo:
         brushcolor: false
         bypass_build: true
         cooldown: 1000
+        reflect_chance: 0.3
     costs:
         xp: 75
 
@@ -2104,6 +2107,7 @@ protegotria:
         check_destructible: true
         destructible: air
         breakable: 3
+        reflect_chance: 0.5
     costs:
         xp: 100
 

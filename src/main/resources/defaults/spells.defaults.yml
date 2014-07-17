@@ -123,6 +123,7 @@ default:
          entity_effect: hurt
        cost_free: cast
        no_target: cast
+       backfire: cast
 
 curse:
     icon: rotten_flesh
@@ -691,6 +692,30 @@ shields:
         -  class: EffectTrail
            effect: step_sound
     parameters:
+        radius: 3
+        target: self
+        type: sphere
+        brush: stained_glass
+        transparent: transparent_to_construction
+        destructible: air
+        check_destructible: true
+        brushcolor: true
+        undo: 10000
+        breakable: 2
+    costs:
+        xp: 20
+reflect:
+    icon: iron_helmet
+    category: white
+    class: ConstructSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
         allow_max_range: true
         range: 4
         radius: 2
@@ -703,10 +728,11 @@ shields:
         destructible: air
         check_destructible: true
         brushcolor: true
-        undo: 10000
+        undo: 5000
         breakable: 2
+        reflect: 1
     costs:
-        xp: 20
+        xp: 40
 dome:
     icon: bowl
     category: earthbending
