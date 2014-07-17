@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.block;
 
 import java.util.List;
 
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -25,7 +26,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     public void add(Entity entity);
     public void remove(Entity entity);
-    public void modify(Entity entity);
+    public EntityData modify(Entity entity);
     public void add(Runnable runnable);
 
     public void convert(Entity entity, Block block);
