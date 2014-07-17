@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,10 +46,13 @@ public abstract class UndoableSpell extends TargetingSpell {
 
         // Also load this here so it is available from templates, prior to casting
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
-        bypassUndo = parameters.getBoolean("bypass_undo", false);
-        bypassUndo = parameters.getBoolean("bu", bypassUndo);
-        autoUndo = parameters.getInt("undo", 0);
-        autoUndo = parameters.getInt("u", autoUndo);
+        if (parameters != null)
+        {
+            bypassUndo = parameters.getBoolean("bypass_undo", false);
+            bypassUndo = parameters.getBoolean("bu", bypassUndo);
+            autoUndo = parameters.getInt("undo", 0);
+            autoUndo = parameters.getInt("u", autoUndo);
+        }
     }
 
     @Override
@@ -180,9 +184,14 @@ public abstract class UndoableSpell extends TargetingSpell {
     protected void breakBlock(Block block, int recursion) {
         if (!block.hasMetadata("breakable")) return;
 
-        Location effectLocation = block.getLocation().add(0.5,  0.5, 0.5);
+        Location effectLocation = block.getLocation().add(0.5, 0.5, 0.5);
         effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
+        UndoList undoList = getUndoList();
+        if (undoList != null) {
+            undoList.add(block);
+        }
         block.removeMetadata("breakable", mage.getController().getPlugin());
+        block.removeMetadata("backfire", mage.getController().getPlugin());
         block.setType(Material.AIR);
 
         if (--recursion > 0) {
@@ -196,9 +205,9 @@ public abstract class UndoableSpell extends TargetingSpell {
     }
 
     @Override
-    public Target findTarget()
+    protected Target getTarget()
     {
-        Target target = super.findTarget();
+        Target target = super.getTarget();
         if (targetBreakables > 0 && target.isValid()) {
             Block block = target.getBlock();
             if (block.hasMetadata("breakable")) {
