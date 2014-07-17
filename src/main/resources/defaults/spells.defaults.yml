@@ -121,9 +121,12 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
+       backfire:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
        cost_free: cast
        no_target: cast
-       backfire: cast
 
 curse:
     icon: rotten_flesh

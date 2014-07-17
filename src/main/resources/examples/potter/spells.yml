@@ -47,9 +47,12 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
+       backfire:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
        cost_free: cast
        no_target: cast
-       backfire: cast
 
 accio:
     icon: ink_sack:6
@@ -1315,6 +1318,7 @@ finiteincantatem:
         range: 32
         bypass_protection: true
         bypass_confusion: true
+        allow_backfire: false
     costs:
         xp: 40
 
@@ -2024,6 +2028,7 @@ protego:
         brushcolor: false
         bypass_build: true
         cooldown: 500
+        reflect_chance: 0.2
     costs:
         xp: 20
 
@@ -2466,6 +2471,17 @@ stupefy:
            location: target
            color: 0000FF
            firework: ball
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
+           effect: hurt
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 15
+             particle: instant_spell
+             lenghtGrow: 0.4
     parameters:
         range: 35
         fov: 0.10
