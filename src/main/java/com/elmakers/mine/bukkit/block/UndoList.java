@@ -69,6 +69,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public UndoList(Mage mage, UndoableSpell spell)
     {
+        setUndoQueue(mage.getUndoQueue());
         this.owner = mage;
         this.spell = spell;
         this.plugin = owner.getController().getPlugin();
@@ -285,7 +286,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         super.save(node);
         node.set("time_to_live", (Integer)timeToLive);
-        node.set("passes_remaining", (Integer)passesRemaining);
+        node.set("passes_remaining", (Integer) passesRemaining);
         node.set("name", name);
     }
 
@@ -501,13 +502,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.previous = previous;
     }
 
-    public void setUndoQueue(UndoQueue undoQueue) {
-        this.undoQueue = undoQueue;
+    public void setUndoQueue(com.elmakers.mine.bukkit.api.block.UndoQueue undoQueue) {
+        if (undoQueue != null && undoQueue instanceof UndoQueue) {
+            this.undoQueue = (UndoQueue)undoQueue;
+        }
     }
 
     public void unlink() {
         if (undoQueue != null) {
             undoQueue.removed(this);
+            undoQueue = null;
         }
         if (this.next != null) {
             this.next.previous = previous;

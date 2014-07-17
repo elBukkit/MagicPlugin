@@ -35,10 +35,17 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         if (maxSize > 0 && size > maxSize)
         {
             UndoList expired = tail;
-            if (expired != null) {
-                expired.commit();
+            if (expired != null)
+            {
+                if (expired.isScheduled())
+                {
+                    expired.undo();
+                }
+                else
+                {
+                    expired.commit();
+                }
             }
-            size--;
         }
 
         addList.setUndoQueue(this);
@@ -66,15 +73,15 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         if (list == tail) {
             tail = list.getNext();
         }
+        size--;
     }
-
 
     public void undoScheduled()
     {
-        UndoList nextList = head;
+        UndoList nextList = tail;
         while (nextList != null) {
             UndoList checkList = nextList;
-            nextList = nextList.getPrevious();
+            nextList = nextList.getNext();
             if (checkList.isScheduled()) {
                 checkList.undo();
             }
@@ -94,7 +101,8 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
     public UndoList getLast(Block target)
     {
         UndoList checkList = head;
-        while (checkList != null) {
+        while (checkList != null)
+        {
             if (checkList.contains(target))
             {
                 return checkList;
