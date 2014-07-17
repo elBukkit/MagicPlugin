@@ -2660,6 +2660,7 @@ undo:
            sound: anvil_break
     parameters:
         target: self
+        bypass_backfire: true
     costs:
         xp: 100
 commit:
@@ -2673,6 +2674,7 @@ commit:
            sound: anvil_use
     parameters:
         target: self
+        bypass_backfire: true
     costs:
         xp: 200
 rewind:
@@ -2688,6 +2690,7 @@ rewind:
         allow_max_range: false
         range: 128
         transparent: transparent_to_construction
+        bypass_backfire: true
     costs:
         xp: 250
 
@@ -2711,6 +2714,7 @@ counterspell:
         range: 32
         bypass_protection: true
         bypass_confusion: true
+        bypass_backfire: true
     costs:
         xp: 150
 breach:

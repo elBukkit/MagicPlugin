@@ -937,6 +937,7 @@ deletrius:
            sound: anvil_use
     parameters:
         target: self
+        bypass_backfire: true
     costs:
         xp: 100
 
@@ -1316,11 +1317,11 @@ finiteincantatem:
         target_type: LivingEntity
         target_blocks: false
         target_timeout: 10000
-        target_breakables: 1
+        target_breakables: 3
         range: 32
         bypass_protection: true
         bypass_confusion: true
-        allow_backfire: false
+        bypass_backfire: true
     costs:
         xp: 40
 
@@ -2036,7 +2037,7 @@ protego:
         breakable: 1
         brushcolor: false
         bypass_build: true
-        cooldown: 500
+        cooldown: 2000
         reflect_chance: 0.2
     costs:
         xp: 20
@@ -2066,6 +2067,7 @@ protegomaxima:
         brush: stained_glass
         undo: 60000
         reflect_chance: 1
+        bypass_backfire: true
     costs:
         xp: 100
 
@@ -2095,7 +2097,7 @@ protegoduo:
         breakable: 2
         brushcolor: false
         bypass_build: true
-        cooldown: 1000
+        cooldown: 4000
         reflect_chance: 0.3
     costs:
         xp: 75
@@ -2116,7 +2118,7 @@ protegotria:
         type: sphere
         brush: stained_glass
         undo: 5000
-        cooldown: 8000
+        cooldown: 6000
         transparent: transparent_to_construction
         check_destructible: true
         destructible: air
@@ -2260,6 +2262,7 @@ reparifarge:
     parameters:
         target: any
         target_blocks: true
+        bypass_backfire: true
     costs:
         xp: 45
 
@@ -2480,7 +2483,7 @@ stupefy:
            location: target
            color: 0000FF
            firework: ball
-        cast:
+        backfire:
         -  class: EffectSingle
            sound: shoot_arrow
            sound_volume: 5.0
@@ -2499,7 +2502,7 @@ stupefy:
         damage: 2.5
         effect_confusion: 40
         cooldown: 1000
-        target_breakables: 1
+        target_breakables: 0.3
     costs:
         xp: 50
 
