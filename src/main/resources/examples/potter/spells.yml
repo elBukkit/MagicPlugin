@@ -1314,9 +1314,8 @@ finiteincantatem:
         range: 32
         bypass_protection: true
         bypass_confusion: true
-        cooldown: 4000
     costs:
-        xp: 20
+        xp: 40
 
 flagrate:
     icon: ink_sack:14
@@ -2468,7 +2467,7 @@ stupefy:
         fov: 0.10
         target_type: LivingEntity
         duration: 1000
-        damage: 4.5
+        damage: 2.5
         effect_confusion: 40
         cooldown: 1000
         target_breakables: 1

@@ -1716,10 +1716,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		if ((spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
-			lore.add(ChatColor.GOLD + Messages.get("spell.brush"));
+			String brushText = Messages.get("spell.brush");
+            if (!brushText.isEmpty()) {
+                lore.add(ChatColor.GOLD + brushText);
+            }
 		}
 		if (spell instanceof UndoableSpell && ((UndoableSpell)spell).isUndoable()) {
-			lore.add(ChatColor.GRAY + Messages.get("spell.undoable"));
+            String undoableText = Messages.get("spell.undoable");
+            if (!undoableText.isEmpty()) {
+                lore.add(ChatColor.GRAY + undoableText);
+            }
 		}
 	}
 	
