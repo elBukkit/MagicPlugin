@@ -45,7 +45,7 @@ public class GotoSpell extends UndoableSpell
 
 		if (targetEntity != null && targetEntity instanceof LivingEntity)
 		{
-			if (!mage.isSuperPowered() || !targetEntity.isValid() || targetEntity.isDead())
+			if (allowSelection || !targetEntity.isValid() || targetEntity.isDead())
 			{
 				releaseTarget();
 			} 
