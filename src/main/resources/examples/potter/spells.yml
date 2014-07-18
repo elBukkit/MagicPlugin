@@ -197,6 +197,7 @@ apparatemaxima:
     category: year7
     class: BlinkSpell
     worth: 120
+    hidden: true
     effects:
         cast:
         -  class: EffectVariable
@@ -533,6 +534,7 @@ avadamaxima:
     pvp_restricted: true
     worth: 1000
     cast_on_no_target: true
+    hidden: true
     effects:
         cast:
         -  class: EffectSingle
@@ -973,6 +975,7 @@ deprimomaxima:
     category: year6
     class: ConstructSpell
     cast_on_no_target: true
+    hidden: true
     worth: 80
     effects:
         cast:
@@ -1042,6 +1045,7 @@ duro:
 erecto:
     icon: sapling:4
     category: staff
+    hidden: true
     class: ConstructSpell
     worth: 350
     effects:
@@ -1069,6 +1073,7 @@ evanesco:
     category: year4
     pvp_restricted: true
     cast_on_no_target: true
+    hidden: true
     class: DisintegrateSpell
     worth: 25
     effects:
@@ -1080,7 +1085,7 @@ evanesco:
            particle_data: 1
     parameters:
         target: other
-        target_type: Item
+        target_type: Entity
         allow_max_range: false
         range: 8
         entity_damage: 50
@@ -1460,6 +1465,7 @@ flipendotria:
 flight:
     icon: feather
     category: staff
+    hidden: true
     class: LevitateSpell
     worth: 600
     effects:
@@ -1681,6 +1687,7 @@ imperio:
 
 imperiomaxima:
     icon: leash
+    hidden: true
     category: unforgiveable
     class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell
     pvp_restricted: true
@@ -2204,6 +2211,7 @@ reductomaxima:
     icon: clay_brick
     category: year6
     class: ConstructSpell
+    hidden: true
     worth: 12
     effects:
         cast:
@@ -2237,6 +2245,7 @@ reductomaxima:
 salviohexia:
     icon: diamond_pickaxe
     category: staff
+    hidden: true
     class: ConstructSpell
     worth: 2000
     effects:
@@ -2281,6 +2290,7 @@ reparifarge:
 reparo:
     icon: iron_pickaxe
     category: year7
+    hidden: true
     class: ConstructSpell
     worth: 100
     effects:
@@ -2309,6 +2319,7 @@ reparomaxima:
     icon: iron_pickaxe
     category: staff
     class: ConstructSpell
+    hidden: true
     worth: 500
     effects:
         cast:
@@ -2403,6 +2414,7 @@ silenciomaxima:
     icon: ink_sack:3
     category: staff
     class: CommandSpell
+    hidden: true
     worth: 500
     effects:
         cast:
@@ -2427,6 +2439,7 @@ jail:
     icon: iron_fence
     category: staff
     class: CommandSpell
+    hidden: true
     worth: 500
     effects:
         cast:
@@ -2451,6 +2464,7 @@ silenciototalus:
     icon: ink_sack:3
     category: staff
     class: CommandSpell
+    hidden: true
     worth: 500
     effects:
         cast:
@@ -2545,6 +2559,7 @@ meteo:
     icon: golden_apple
     category: year7
     class: TorchSpell
+    hidden: true
     worth: 120
     effects:
         cast:
@@ -2601,6 +2616,7 @@ noxmaxima:
     icon: ink_sack:0
     category: staff
     class: TorchSpell
+    hidden: true
     worth: 130
     effects:
         cast:

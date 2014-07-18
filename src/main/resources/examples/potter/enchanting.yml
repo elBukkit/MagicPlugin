@@ -4,9 +4,11 @@
 
 # To convert old wands
 master:
+    hidden: true
     upgrade: year1
 
 default:
+  hidden: true
   min_enchant_level: 10
   max_enchant_level: 50
   max_mana: 50
@@ -39,7 +41,7 @@ year1:
       flagrate: 100,100,100
       periculum: 50,60,70
       avis: 20,30,40
-      arania: 40,60,80
+      araniaexumai: 40,60,80
       accio: 40,50,60
       flipendo: 10,20,30
       conjunctivitis: 20,30,40
@@ -50,99 +52,69 @@ year2:
     inherit: year1
     max_mana: 90
     spells:
-      flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      arania: 40,60,80
-      accio: 40,50,60
-      flipendo: 10,20,30
-      conjunctivitis: 20,30,40
-      bombarda: 5,10,20
+      lumos: 100,100,100
+      arrow: 50,60,70
+      episkey: 20,30,40
+      protego: 40,60,80
 
 year3:
     upgrade: year4
     inherit: year2
     max_mana: 110
     spells:
-      flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      arania: 40,60,80
-      accio: 40,50,60
-      flipendo: 10,20,30
-      conjunctivitis: 20,30,40
-      bombarda: 5,10,20
+      stupefy: 100,100,100
+      reducto: 50,60,70
+      colorvaria: 20,30,40
+      confundus: 40,60,80
+      immobulus: 40,50,60
+      duro: 10,20,30
 
 year4:
     upgrade: year5
     inherit: year3
     max_mana: 130
     spells:
-      flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      arania: 40,60,80
-      accio: 40,50,60
-      flipendo: 10,20,30
-      conjunctivitis: 20,30,40
-      bombarda: 5,10,20
+      reducio: 100,100,100
+      aguamenti: 50,60,70
+      incendio: 20,30,40
+      petrificustotalus: 40,60,80
 
 year5:
     upgrade: year6
     inherit: year4
     max_mana: 150
     spells:
-      flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      arania: 40,60,80
-      accio: 40,50,60
-      flipendo: 10,20,30
-      conjunctivitis: 20,30,40
-      bombarda: 5,10,20
+      expelliarmus: 100,100,100
+      finiteincantatem: 50,60,70
+      sectumsempra: 20,30,40
+      silencio: 40,60,80
+      ascendio: 40,50,60
 
 year6:
     upgrade: year7
     inherit: year5
     max_mana: 170
     spells:
-      flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      arania: 40,60,80
-      accio: 40,50,60
-      flipendo: 10,20,30
-      conjunctivitis: 20,30,40
-      bombarda: 5,10,20
+      crucio: 100,100,100
+      ferula: 50,60,70
+      bombardamaxima: 20,30,40
 
 year7:
     upgrade: graduate
     inherit: year6
     max_mana: 190
     spells:
-      flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      arania: 40,60,80
-      accio: 40,50,60
-      flipendo: 10,20,30
-      conjunctivitis: 20,30,40
-      bombarda: 5,10,20
+      avadakedavra: 100,100,100
+      reparifarge: 50,60,70
+      imperio: 20,30,40
+      apparate: 40,60,80
 
 graduate:
     inherit: year7
     max_mana: 200
-    spells:
-      flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      arania: 40,60,80
-      accio: 40,50,60
-      flipendo: 10,20,30
-      conjunctivitis: 20,30,40
-      bombarda: 5,10,20
 
 broom:
+    hidden: true
     levels: 1,25,35,40,45
     max_power: 0.9
     power:

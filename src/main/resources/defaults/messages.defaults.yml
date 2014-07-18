@@ -47,6 +47,25 @@ books:
         title: $category Spell Book
     all:
         title: The Master Spell Book
+paths:
+    master:
+        name: Master
+        description: Has all the spells
+    engineer:
+        name: Engineering
+        description: Has all the engineering spells
+    apprentice:
+        name: Apprentice
+        description: A good variety of spells
+    student:
+        name: Student
+        description: Ha a few starter spells
+    battle:
+        name: Battle
+        description: Has a combat and PvP spells
+    broom:
+        name: Broom
+        description: Flying broom upgrades
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.

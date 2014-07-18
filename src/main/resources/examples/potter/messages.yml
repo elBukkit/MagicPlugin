@@ -33,6 +33,35 @@ spell:
     undoable: ""
     reactivate: Reactivating $name
 
+paths:
+    year1:
+        name: First Years
+        description: First years learn a variety of beginning spells, as well as the basics of wand use.
+    year2:
+        name: Second Years
+        description: Spells for second year students.
+    year3:
+        name: Third Years
+        description: Spells for third year students.
+    year4:
+        name: Fourth Years
+        description: Spells for fourth year students.
+    year5:
+        name: Fifth Years
+        description: Spells for fifth year students.
+    year6:
+        name: Sixth Years
+        description: Spells for sixth year students.
+    year7:
+        name: Seventh Years
+        description: Spells for seventh year students.
+    graduate:
+        name: Graduates
+        description: What comes next?
+    broom:
+        name: Broom
+        description: Flying broom upgrades!
+
 categories:
     specialty:
         name: Speciality

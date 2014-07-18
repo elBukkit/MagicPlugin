@@ -21,6 +21,10 @@ function parseConfigFile($name, $loadDefaults) {
         $config = spyc_load_file($overrideFile);
     }
 
+    if (count($config) == 1 && $config[0] == 0) {
+        $config = array();
+    }
+
 	return $config;
 }
 
@@ -37,7 +41,7 @@ try {
 	$spells = parseConfigFile('spells', $general['load_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
 	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
-	$enchanting = parseConfigFile('enchanting', $general['load_default_enchanting']);
+	$enchantingConfig = parseConfigFile('enchanting', $general['load_default_enchanting']);
 	$messages = parseConfigFile('messages', true);
 } catch (Exception $ex) {
 	die($ex->getMessage());
@@ -59,6 +63,54 @@ foreach ($spells as $key => $spell) {
 }
 
 ksort($spells);
+
+// Filter and link enchanting paths
+$enchanting = array();
+function getPath($key) {
+    global $enchanting;
+    global $enchantingConfig;
+
+    if (!isset($enchanting[$key])) {
+        $config = $enchantingConfig[$key];
+        if (isset($config['inherit'])) {
+            $baseConfig = getPath($config[inherit]);
+            unset($baseConfig['hidden']);
+            $config = array_replace_recursive($baseConfig, $config);
+        }
+        $enchanting[$key] = $config;
+    }
+
+    return $enchanting[$key];
+}
+foreach ($enchantingConfig as $key => $path) {
+    getPath($key);
+}
+
+// Two-passes for inheritance
+foreach ($enchanting as $key => $path) {
+    if ($key == 'default' || (isset($path['hidden']) && $path['hidden'])) {
+        unset($enchanting[$key]);
+        continue;
+    }
+    $path['name'] = isset($messages['paths'][$key]['name']) ? $messages['paths'][$key]['name'] : '';
+    $path['description'] = isset($messages['paths'][$key]['description']) ? $messages['paths'][$key]['description'] : '';
+
+    $convertedRandomSpells = array();
+    if (isset($path['spells'])) {
+        $path['spell_probabilities'] = $path['spells'];
+        $randomSpells = $path['spells'];
+        $path['spells'] = $convertedRandomSpells;
+
+        foreach ($randomSpells as $spellKey => $probability) {
+            $convertedRandomSpells[] = $spellKey;
+        }
+    }
+
+    $path['spells'] = $convertedRandomSpells;
+    $enchanting[$key] = $path;
+}
+
+ksort($enchanting);
 
 // Process economy data
 $worthItems = array();
@@ -157,25 +209,6 @@ foreach ($wands as $key => $wand) {
 }
 ksort($wands);
 ksort($upgrades);
-
-// Process enchanting paths
-foreach ($enchanting as $key => $path) {
-    $path['name'] = 'Randomized Wand';
-
-    $convertedRandomSpells = array();
-    if (isset($path['spells'])) {
-        $path['spell_probabilities'] = $path['spells'];
-        $randomSpells = $path['spells'];
-        $path['spells'] = $convertedRandomSpells;
-
-        foreach ($randomSpells as $spellKey => $probability) {
-            $convertedRandomSpells[] = $spellKey;
-        }
-    }
-    $path['spells'] = $convertedRandomSpells;
-    $enchanting[$key] = $path;
-}
-ksort($enchanting);
 
 $enchantingEnabled = isset($general['enable_enchanting']) ? $general['enable_enchanting'] : false;
 $combiningEnabled = isset($general['enable_combining']) ? $general['enable_combining'] : false;
@@ -331,13 +364,13 @@ function printMaterial($materialKey, $iconOnly = null) {
 						Right-click with your wand to toggle the wand inventory. When the wand's inventory is active, your survival items are stored
 						and your player's inventory will change to show the spells and materials bound to your active wand:
 						<br/><br/>
-						<img src="image/WandHotbar.png" alt="Wand hotbar image"></img>
+						<img src="image/WandHotbar.png" alt="Wand hotbar image"/>
 						<br/><br/>
 						With the wand inventory active, each spell is represented by an icon. You can quickly change spells using the hotbar buttons (1-9).
 						<br/><br/>
 						You can also open your inventory ('E' by default) to see all of the spells and materials your wand has, with detailed descriptions:
 						<br/><br/>
-						<img src="image/WandInventory.png" alt="Wand inventory image"></img>
+						<img src="image/WandInventory.png" alt="Wand inventory image"/>
 						<br/><br/>
 						While in this view, you can re-arrange your spells and materials, deciding which ones to put in the hotbar.
 						<br/><br/>
@@ -406,7 +439,8 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<ol id="enchantingList">
 				<?php
 					foreach ($enchanting as $key => $path) {
-						echo '<li class="ui-widget-content" id="path-' . $key . '"><span class="pathTitle">' . $key . '</span></li>';
+                        $name = isset($path['name']) ? $path['name'] : "($key)";
+						echo '<li class="ui-widget-content" id="path-' . $key . '"><span class="pathTitle">' . $name . '</span></li>';
 					}
 				?>
 				</ol>
