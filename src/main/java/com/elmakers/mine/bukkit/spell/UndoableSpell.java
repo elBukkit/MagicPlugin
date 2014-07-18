@@ -13,7 +13,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 
@@ -24,6 +23,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public abstract class UndoableSpell extends TargetingSpell {
     private UndoList 		modifiedBlocks 			= null;
+    private boolean 		undoEntityEffects		= true;
     private boolean 		bypassUndo				= false;
     private double 		    targetBreakables	    = 0;
     private int	 			autoUndo				= 0;
@@ -32,11 +32,13 @@ public abstract class UndoableSpell extends TargetingSpell {
     protected void processParameters(ConfigurationSection parameters)
     {
         super.processParameters(parameters);
+        undoEntityEffects = parameters.getBoolean("entity_undo", true);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
         bypassUndo = parameters.getBoolean("bu", bypassUndo);
         autoUndo = parameters.getInt("undo", 0);
         autoUndo = parameters.getInt("u", autoUndo);
         targetBreakables = parameters.getDouble("target_breakables", 0);
+        bypassUndo = parameters.getBoolean("bypass_undo", false);
     }
 
     @Override
@@ -120,6 +122,7 @@ public abstract class UndoableSpell extends TargetingSpell {
     {
         if (modifiedBlocks == null) {
             modifiedBlocks = new UndoList(mage, this, this.getName());
+            modifiedBlocks.setEntityUndo(undoEntityEffects);
             modifiedBlocks.setBypass(bypassUndo);
             modifiedBlocks.setScheduleUndo(autoUndo);
         }

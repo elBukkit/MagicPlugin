@@ -61,6 +61,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected String				name;
 
+    private boolean                 undoEntityEffects = true;
+
     public UndoList(Mage mage, UndoableSpell spell, String name)
     {
         this(mage, spell);
@@ -206,13 +208,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return false;
     }
 
-
     public void undo()
-    {
-        undo(true);
-    }
-
-    public void undo(boolean undoEntityEffects)
     {
         unlink();
         if (isComplete()) return;
@@ -492,6 +488,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public int compareTo(com.elmakers.mine.bukkit.api.block.UndoList o) {
         return (int)(scheduledTime - o.getScheduledTime());
+    }
+
+    public void setEntityUndo(boolean undoEntityEffects) {
+        this.undoEntityEffects = undoEntityEffects;
     }
 
     public void setNext(UndoList next) {
