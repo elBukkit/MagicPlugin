@@ -12,7 +12,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 public interface UndoList extends BlockList, Comparable<UndoList> {
     public void commit();
     public void undo();
-    public void undo(boolean undoEntityChanges);
+
+    public void setEntityUndo(boolean undoEntityEffects);
 
     public void setScheduleUndo(int ttl);
     public int getScheduledUndo();
