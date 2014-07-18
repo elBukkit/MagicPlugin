@@ -208,12 +208,12 @@ public abstract class UndoableSpell extends TargetingSpell {
     protected Target getTarget()
     {
         Target target = super.getTarget();
-        if (targetBreakables > 0 && target.isValid() && !target.hasEntity()) {
+        if (targetBreakables > 0 && target.isValid()) {
             // The Target has already been re-routed to the Player's location
             // if this has been reflected- but we want the original block
             // that was targeted.
             Block block = getCurBlock();
-            if (block.hasMetadata("breakable")) {
+            if (block != null && block.hasMetadata("breakable")) {
                 int breakable = (int)(targetBreakables > 1 ? targetBreakables :
                         (random.nextDouble() < targetBreakables ? 1 : 0));
                 if (breakable > 0) {
