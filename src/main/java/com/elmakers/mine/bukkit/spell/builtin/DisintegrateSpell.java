@@ -66,10 +66,10 @@ public class DisintegrateSpell extends BlockSpell
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		if (mage.isIndestructible(targetBlock)) 
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (!isDestructible(targetBlock))
+        {
+            return SpellResult.NO_TARGET;
+        }
 
 		registerForUndo(targetBlock);
 
