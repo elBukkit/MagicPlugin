@@ -76,11 +76,13 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
 		detailsDiv.append(title);
 	}
 	var description = $('<div class="spellDescription"/>').text(spell.description);
-	var icon = $('<div class="spellIcon"/>');
-	icon.append($('<span/>').text('Icon: '));
-	icon.append(getMaterial(spell.icon));
+    detailsDiv.append(description);
 
-	detailsDiv.append(description);
+    if ('category' in spell) {
+        var category = categories[spell.category];
+        var categoryDiv = $('<div class="spellCategory"/>').text(category.name);
+        detailsDiv.append(categoryDiv);
+    }
 
     if ('usage' in spell) {
         var usage = $('<div class="spellUsage"/>').text(spell.usage);
@@ -92,6 +94,9 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
         detailsDiv.append(extended);
     }
 
+    var icon = $('<div class="spellIcon"/>');
+    icon.append($('<span/>').text('Icon: '));
+    icon.append(getMaterial(spell.icon));
 	detailsDiv.append(icon);
 	
 	// Check for rarity

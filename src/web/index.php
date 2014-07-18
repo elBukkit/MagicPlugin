@@ -126,6 +126,9 @@ if (isset($general['worth_items'])) {
     }
 }
 
+// Look up category naming info
+$categories = $messages['categories'];
+
 $worthBase = isset($general['worth_base']) ? $general['worth_base'] : 1;
 
 // Parse wand properties needed for cost validation
@@ -282,6 +285,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 			var worthBase = <?= $worthBase ?>;
 			var maxXpRegeneration = <?= $maxXpRegeneration ?>;
 			var maxXp = <?= $maxXp ?>;
+            var categories = <?= json_encode($categories) ?>;
 		</script>
 		<script src="js/magic.js"></script>
 		<?php if ($analytics) echo $analytics; ?>

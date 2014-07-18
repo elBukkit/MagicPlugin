@@ -73,39 +73,33 @@ categories:
     staff:
         name: Staff Only
         description: These are generally only for staff
-        color: 'FF00FF'
-    deatheater:
-        name: Dark Magic
-        description: For Deatheater eyes only!
-        color: '00FF00'
-    year1:
-        name: First Years
-        description: First years learn a variety of beginning spells, as well as the basics of wand use.
-        color: '111111'
-    year2:
-        name: Second Years
-        description: Spells for second year students.
+    elective:
+        name: Electives
+        description: Various subjects you can choose to take on your own.
+    dada:
+        name: DADA
+        description: Defense Against the Dark Arts
+        color: '00AAFF'
+    charms:
+        name: Charms
+        description: Buffs, Boons and Boosts
+        color: '888800'
+    herbology:
+        name: Herbology
+        description: Give your wand a green thumb
+        color: '11FF11'
+    dark:
+        name: Dark Arts
+        description: Exploring the darker side of magic
         color: '222222'
-    year3:
-        name: Third Years
-        description: Spells for third year students.
-        color: '442244'
-    year4:
-        name: Fourth Years
-        description: Spells for fourth year students.
-        color: '882288'
-    year5:
-        name: Fifth Years
-        description: Spells for fifth year students.
-        color: '880088'
-    year6:
-        name: Sixth Years
-        description: Spells for sixth year students.
+    transfiguration:
+        name: Transfiguration
+        description: Alchemy, polymorphing
         color: 'AA00AA'
-    year7:
-        name: Seventh Years
-        description: Spells for seventh year students.
-        color: 'EE00EE'
+    creatures:
+        name: Care of Magical Creatures
+        description: Keep them under control!
+        color: 'AAAA00'
 
 spells:
     accio:

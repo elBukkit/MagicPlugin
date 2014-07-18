@@ -56,7 +56,7 @@ default:
 
 accio:
     icon: ink_sack:6
-    category: year1
+    category: charms
     class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -92,7 +92,7 @@ accio:
 
 aguamenti:
     icon: stationary_water
-    category: year6
+    category: transfiguration
     class: CushionSpell
     worth: 10
     effects:
@@ -116,7 +116,7 @@ aguamenti:
 
 aparecium:
     icon: daylight_detector
-    category: automata
+    category: charms
     class: ConstructSpell
     worth: 15
     effects:
@@ -147,7 +147,7 @@ aparecium:
 
 apparate:
     icon: eye_of_ender
-    category: year7
+    category: elective
     class: BlinkSpell
     worth: 120
     effects:
@@ -194,7 +194,7 @@ apparate:
 
 apparatemaxima:
     icon: eye_of_ender
-    category: year7
+    category: staff
     class: BlinkSpell
     worth: 120
     hidden: true
@@ -245,7 +245,7 @@ apparatemaxima:
 
 araniaexumai:
     icon: ink_sack:2
-    category: year1
+    category: creatures
     class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -279,7 +279,7 @@ araniaexumai:
 
 arrow:
     icon: arrow
-    category: year1
+    category: dada
     class: ProjectileSpell
     pvp_restricted: true
     worth: 2
@@ -306,7 +306,7 @@ arrow:
 
 snowball:
     icon: snow_ball
-    category: year1
+    category: charms
     class: ProjectileSpell
     pvp_restricted: true
     worth: 5
@@ -333,7 +333,7 @@ snowball:
 
 ascendio:
     icon: ink_sack:8
-    category: year6
+    category: charms
     class: FlingSpell
     worth: 80
     pvp_restricted: false
@@ -356,7 +356,7 @@ ascendio:
 
 arresto:
     icon: ink_sack:8
-    category: year1
+    category: charms
     class: FlingSpell
     worth: 20
     pvp_restricted: false
@@ -381,7 +381,7 @@ arresto:
 
 atmos:
     icon: water
-    category: year5
+    category: herbology
     class: WeatherSpell
     worth: 80
     effects:
@@ -529,7 +529,7 @@ avadakedavra:
 
 avadamaxima:
     icon: ink_sack:10
-    category: unforgiveable
+    category: staff
     class: CommandSpell
     pvp_restricted: true
     worth: 1000
@@ -570,7 +570,7 @@ avadamaxima:
 
 avis:
     icon: monster_egg
-    category: year3
+    category: creatures
     class: FamiliarSpell
     worth: 20
     effects:
@@ -633,8 +633,8 @@ beat:
         effect_confusion: 5
 
 bogies:
-    icon: fermented_spider_eye
-    category: year1
+    icon: skull_item:2
+    category: creatures
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -667,7 +667,7 @@ bogies:
 
 bombarda:
     icon: ink_sack:7
-    category: year2
+    category: dada
     class: BoomSpell
     pvp_restricted: true
     worth: 40
@@ -694,7 +694,7 @@ bombarda:
 
 bombardamaxima:
     icon: ink_sack:7
-    category: year4
+    category: dada
     class: BoomSpell
     pvp_restricted: true
     worth: 100
@@ -719,7 +719,7 @@ bombardamaxima:
 
 bubble:
     icon: ender_pearl
-    category: year2
+    category: transfiguration
     class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
@@ -772,7 +772,7 @@ camera:
 
 confringo:
     icon: flint_and_steel
-    category: year5
+    category: charms
     class: BoomSpell
     pvp_restricted: true
     worth: 50
@@ -799,7 +799,7 @@ confringo:
 
 confundus:
     icon: rotten_flesh
-    category: year2
+    category: dada
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -832,7 +832,7 @@ confundus:
 conjunctivitis:
     alias: blind
     icon: ender_pearl
-    category: year2
+    category: dada
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -863,7 +863,7 @@ conjunctivitis:
 obscuro:
     alias: blind
     icon: ender_pearl
-    category: year2
+    category: dada
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -931,7 +931,7 @@ crucio:
 
 deletrius:
     icon: enchanted_book
-    category: year7
+    category: staff
     class: CommitSpell
     worth: 150
     effects:
@@ -946,7 +946,7 @@ deletrius:
 
 deprimo:
     icon: flint
-    category: year4
+    category: transfiguration
     class: ConstructSpell
     cast_on_no_target: true
     worth: 80
@@ -972,7 +972,7 @@ deprimo:
 
 deprimomaxima:
     icon: flint
-    category: year6
+    category: staff
     class: ConstructSpell
     cast_on_no_target: true
     hidden: true
@@ -998,8 +998,8 @@ deprimomaxima:
         xp: 70
 
 disillusion:
-    icon: blaze_powder
-    category: year4
+    icon: coal:1
+    category: charms
     class: PotionEffectSpell
     worth: 20
     effects:
@@ -1021,7 +1021,7 @@ disillusion:
 
 duro:
     icon: iron_ingot
-    category: year4
+    category: transfiguration
     class: RecurseSpell
     worth: 150
     effects:
@@ -1070,10 +1070,9 @@ erecto:
 
 evanesco:
     icon: bone
-    category: year4
+    category: charms
     pvp_restricted: true
     cast_on_no_target: true
-    hidden: true
     class: DisintegrateSpell
     worth: 25
     effects:
@@ -1085,20 +1084,23 @@ evanesco:
            particle_data: 1
     parameters:
         target: other
-        target_type: Entity
+        target_type: LivingEntity
         allow_max_range: false
         range: 8
-        entity_damage: 50
+        entity_damage: 8
         check_destructible: true
-        target_breakables: 1
-        undo: 30000
+        target_breakables: 2
+        undo: 10000
+        cooldown: 5000
+        bypass_build: true
+        entity_undo: false
     costs:
-        xp: 60
+        xp: 80
 
 expelliarmus:
     alias: expel
     icon: ink_sack:1
-    category: year3
+    category: dada
     class: DisarmSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1143,7 +1145,7 @@ expelliarmus:
 
 rennervate:
     icon: ink_sack:9
-    category: year2
+    category: charms
     class: PotionEffectSpell
     worth: 20
     effects:
@@ -1173,7 +1175,7 @@ rennervate:
 
 episkey:
     icon: ink_sack:9
-    category: year2
+    category: charms
     class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
@@ -1204,7 +1206,7 @@ episkey:
 
 firestorm:
     icon: fire
-    category: year4
+    category: dark
     class: ConstructSpell
     worth: 45
     pvp_restricted: true
@@ -1256,7 +1258,7 @@ floo:
 
 fiendfyre:
     icon: fire
-    category: year4
+    category: dark
     class: IterateSpell
     pvp_restricted: true
     worth: 90
@@ -1289,7 +1291,7 @@ fiendfyre:
 finiteincantatem:
     alias: finite
     icon: ink_sack:13
-    category: year3
+    category: dada
     class: UndoSpell
     worth: 250
     cast_on_no_target: true
@@ -1334,7 +1336,7 @@ finiteincantatem:
 
 flagrate:
     icon: ink_sack:14
-    category: year1
+    category: charms
     class: GenericSpell
     worth: 20
     effects:
@@ -1361,7 +1363,7 @@ flagrate:
 
 flipendo:
     icon: ink_sack:5
-    category: year1
+    category: dada
     class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1391,7 +1393,7 @@ flipendo:
 
 flipendoduo:
     icon: ink_sack:5
-    category: year1
+    category: dada
     class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1424,7 +1426,7 @@ flipendoduo:
 
 flipendotria:
     icon: ink_sack:5
-    category: year1
+    category: dada
     class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1493,7 +1495,7 @@ flight:
 
 flagrate:
     icon: ink_sack:14
-    category: year1
+    category: charms
     class: GenericSpell
     worth: 20
     effects:
@@ -1520,7 +1522,7 @@ flagrate:
 
 fourpoint:
     icon: compass
-    category: year1
+    category: elective
     class: OrientSpell
     worth: 20
     effects:
@@ -1536,7 +1538,7 @@ fourpoint:
 
 fumos:
     icon: sulphur
-    category: year2
+    category: dada
     class: GenericSpell
     worth: 10
     effects:
@@ -1560,7 +1562,7 @@ fumos:
 
 immobulus:
     icon: gold_ingot
-    category: year3
+    category: dada
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1595,7 +1597,7 @@ immobulus:
 locomotomortus:
     alias: locomoto
     icon: web
-    category: year2
+    category: dada
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1630,7 +1632,7 @@ locomotomortus:
 
 incarcerous:
     icon: web
-    category: year2
+    category: dark
     class: ConstructSpell
     worth: 45
     effects:
@@ -1688,7 +1690,7 @@ imperio:
 imperiomaxima:
     icon: leash
     hidden: true
-    category: unforgiveable
+    category: staff
     class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1712,7 +1714,7 @@ imperiomaxima:
 
 impervius:
     icon: gold_spade
-    category: year7
+    category: transfiguration
     class: ConstructSpell
     worth: 30
     cast_on_no_target: true
@@ -1736,7 +1738,7 @@ impervius:
 
 incendio:
     icon: fireball
-    category: year5
+    category: dark
     class: FireSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1766,7 +1768,7 @@ incendio:
 
 lacarnum:
     icon: ghast_tear
-    category: year4
+    category: dark
     class: ProjectileSpell
     pvp_restricted: true
     worth: 35
@@ -1785,7 +1787,7 @@ lacarnum:
 
 levicorpus:
     icon: ink_sack:5
-    category: year2
+    category: charms
     class: GenericSpell
     worth: 20
     effects:
@@ -1816,7 +1818,7 @@ levicorpus:
 
 lumos:
     icon: ink_sack:11
-    category: year1
+    category: charms
     worth: 10
     class: PotionEffectSpell
     effects:
@@ -1843,7 +1845,7 @@ lumos:
 
 morsmordre:
     icon: skull_item:4
-    category: deatheater
+    category: dark
     class: CommandSpell
     worth: 20
     effects:
@@ -1875,7 +1877,7 @@ morsmordre:
 
 mayday:
     icon: firework
-    category: auror
+    category: charms
     class: CommandSpell
     worth: 20
     effects:
@@ -1905,7 +1907,7 @@ mayday:
 
 orchideous:
     icon: yellow_flower
-    category: year4
+    category: herbology
     class: FlowerSpell
     cast_on_no_target: true
     worth: 50
@@ -1941,7 +1943,7 @@ orchideous:
 
 periculum:
     icon: firework
-    category: year2
+    category: charms
     class: FireworkSpell
     worth: 2
     effects:
@@ -1962,7 +1964,7 @@ periculum:
 petrificustotalus:
     alias: petrificus
     icon: nether_brick_item
-    category: year4
+    category: dada
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1998,7 +2000,7 @@ petrificustotalus:
 
 patronus:
     icon: ink_sack:12
-    category: year2
+    category: elective
     class: PotionEffectSpell
     worth: 60
     effects:
@@ -2023,7 +2025,7 @@ patronus:
 
 protego:
     icon: ink_sack:12
-    category: year2
+    category: dada
     class: ConstructSpell
     worth: 45
     effects:
@@ -2057,7 +2059,7 @@ protego:
 
 protegomaxima:
     icon: ink_sack:12
-    category: year7
+    category: dada
     class: ConstructSpell
     worth: 100
     effects:
@@ -2088,7 +2090,7 @@ protegomaxima:
 
 protegoduo:
     icon: ink_sack:12
-    category: year3
+    category: dada
     class: ConstructSpell
     worth: 50
     effects:
@@ -2121,7 +2123,7 @@ protegoduo:
 
 protegotria:
     icon: ink_sack:12
-    category: year3
+    category: dada
     class: ConstructSpell
     worth: 50
     effects:
@@ -2148,7 +2150,7 @@ protegotria:
 
 reducio:
     icon: red_mushroom
-    category: year4
+    category: dark
     class: ShrinkSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -2174,7 +2176,7 @@ reducio:
 
 reducto:
     icon: clay_brick
-    category: year6
+    category: charms
     class: ConstructSpell
     worth: 12
     effects:
@@ -2209,7 +2211,7 @@ reducto:
 
 reductomaxima:
     icon: clay_brick
-    category: year6
+    category: staff
     class: ConstructSpell
     hidden: true
     worth: 12
@@ -2273,7 +2275,7 @@ salviohexia:
 
 reparifarge:
     icon: book_and_quill
-    category: year4
+    category: staff
     class: UndoSpell
     worth: 80
     effects:
@@ -2289,7 +2291,7 @@ reparifarge:
 
 reparo:
     icon: iron_pickaxe
-    category: year7
+    category: staff
     hidden: true
     class: ConstructSpell
     worth: 100
@@ -2345,8 +2347,8 @@ reparomaxima:
 
 sectumsempra:
     alias: sectum
-    icon: nether_stalk
-    category: year2
+    icon: gold_ingot
+    category: dark
     pvp_restricted: true
     class: PotionEffectSpell
     cast_on_no_target: true
@@ -2382,7 +2384,7 @@ sectumsempra:
 
 silencio:
     icon: ink_sack:3
-    category: year3
+    category: dada
     class: PotionEffectSpell
     worth: 70
     effects:
@@ -2488,7 +2490,7 @@ silenciototalus:
 
 stupefy:
     icon: ink_sack:4
-    category: year2
+    category: dada
     class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -2535,7 +2537,7 @@ stupefy:
 
 colorvaria:
     icon: ink_sack
-    category: year5
+    category: transfiguration
     class: AlterSpell
     worth: 8
     effects:
@@ -2557,7 +2559,7 @@ colorvaria:
 
 meteo:
     icon: golden_apple
-    category: year7
+    category: staff
     class: TorchSpell
     hidden: true
     worth: 120
@@ -2589,7 +2591,7 @@ meteo:
 
 nox:
     icon: ink_sack:0
-    category: year5
+    category: charms
     class: PotionEffectSpell
     worth: 20
     effects:
@@ -2638,7 +2640,7 @@ noxmaxima:
 
 vulnera:
     icon: ink_sack:9
-    category: year3
+    category: charms
     class: PotionEffectSpell
     worth: 50
     pvp_restricted: false
@@ -2672,7 +2674,7 @@ vulnera:
 
 ferula:
     icon: ink_sack:9
-    category: year3
+    category: charms
     class: PotionEffectSpell
     worth: 50
     pvp_restricted: false
@@ -2735,7 +2737,7 @@ phase:
 superblob:
     hidden: true
     icon: snow_ball
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 500
     effects:
@@ -2758,7 +2760,7 @@ superblob:
 superconvert:
     hidden: true
     icon: magma_cream
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 500
     effects:
@@ -2834,7 +2836,7 @@ gather:
 stash:
     hidden: true
     icon: ender_chest
-    category: staff
+    category: specialty
     class: StashSpell
     worth: 20
     effects:
@@ -2849,7 +2851,7 @@ stash:
 absorb:
     hidden: true
     icon: bucket
-    category: staff
+    category: engineering
     class: AbsorbSpell
     worth: 1500
     effects:
@@ -2869,7 +2871,7 @@ absorb:
 fill:
     hidden: true
     icon: diamond_spade
-    category: staff
+    category: engineering
     class: FillSpell
     worth: 200
     effects:
@@ -2889,7 +2891,7 @@ fill:
 superdisc:
     hidden: true
     icon: egg
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 150
     effects:
@@ -2914,7 +2916,7 @@ superdisc:
 superring:
     hidden: true
     icon: clay_ball
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 100
     effects:
@@ -3008,7 +3010,7 @@ supercube:
 superdome:
     hidden: true
     icon: mushroom_soup
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 150
     effects:
@@ -3032,7 +3034,7 @@ superdome:
 bridge:
     hidden: true
     icon: stone_axe
-    category: staff
+    category: engineering
     class: BridgeSpell
     worth: 30
     effects:
@@ -3048,7 +3050,7 @@ bridge:
 pillar:
     hidden: true
     icon: iron_axe
-    category: staff
+    category: engineering
     class: PillarSpell
     worth: 30
     effects:
@@ -3066,7 +3068,7 @@ pillar:
 place:
     hidden: true
     icon: diamond_axe
-    category: staff
+    category: engineering
     class: PlaceSpell
     worth: 40
     effects:
@@ -3133,7 +3135,7 @@ superfly:
 vault:
     hidden: true
     icon: sapling:4
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 350
     effects:
@@ -3226,7 +3228,7 @@ deluminate:
 wolfhouse:
     hidden: true
     icon: sapling:5
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 2000
     effects:
@@ -3333,7 +3335,7 @@ life:
 box:
     hidden: true
     icon: gold_helmet
-    category: earthbending
+    category: engineering
     class: ConstructSpell
     worth: 100
     effects:
@@ -3379,7 +3381,7 @@ simulate:
 tree:
     hidden: true
     icon: sapling
-    category: elemental
+    category: engineering
     class: TreeSpell
     worth: 80
     effects:
@@ -3399,7 +3401,7 @@ tree:
 music:
     hidden: true
     icon: gold_record
-    category: light
+    category: elective
     class: MusicSpell
     worth: 10
     effects:
@@ -3524,7 +3526,7 @@ superalter:
 
 supershell:
     icon: ink_sack:12
-    category: staff
+    category: engineering
     class: ConstructSpell
     worth: 200
     effects:
