@@ -3509,155 +3509,151 @@ public class MagicController implements Listener, MageController {
 	/*
 	 * Private data
 	 */
-	
-	 private final static int MAX_Y = 255;	
-	 private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
-	 private static int VOLUME_UPDATE_THRESHOLD = 32;	
-	 private static int MAGE_FORGET_THRESHOLD = 30000;
 
-	 private final String                        SPELLS_FILE                 	= "spells";
-	 private final String                        CONFIG_FILE             		= "config";
-	 private final String                        WANDS_FILE             		= "wands";
-     private final String                        ENCHANTING_FILE             	= "enchanting";
-     private final String                        CRAFTING_FILE             		= "crafting";
-     private final String                        MESSAGES_FILE             		= "messages";
-	 private final String                        MATERIALS_FILE             	= "materials";
-	 private final String						 LOST_WANDS_FILE				= "lostwands";
-	 private final String						 SPELLS_DATA_FILE				= "spells";
-	 private final String						 AUTOMATA_FILE					= "automata";
-	 private final String						 URL_MAPS_FILE					= "imagemaps";
-	 
-	 private boolean 							loadDefaultSpells				= true;
-	 private boolean 							loadDefaultWands				= true;
-     private boolean 							loadDefaultEnchanting			= true;
-     private boolean 							loadDefaultCrafting				= true;
+    private final static int                    MAX_Y = 255;
+    private static final String                 BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
+    private static int                          VOLUME_UPDATE_THRESHOLD = 32;
+    private static int                          MAGE_FORGET_THRESHOLD = 30000;
 
-	 static final String                         STICKY_MATERIALS               = "37,38,39,50,51,55,59,63,64,65,66,68,70,71,72,75,76,77,78,83";
-	 static final String                         STICKY_MATERIALS_DOUBLE_HEIGHT = "64,71,";
+    private final String                        SPELLS_FILE                 = "spells";
+    private final String                        CONFIG_FILE             	= "config";
+    private final String                        WANDS_FILE             		= "wands";
+    private final String                        ENCHANTING_FILE             = "enchanting";
+    private final String                        CRAFTING_FILE             	= "crafting";
+    private final String                        MESSAGES_FILE             	= "messages";
+    private final String                        MATERIALS_FILE             	= "materials";
+    private final String						LOST_WANDS_FILE				= "lostwands";
+    private final String						SPELLS_DATA_FILE			= "spells";
+    private final String						AUTOMATA_FILE				= "automata";
+    private final String						URL_MAPS_FILE				= "imagemaps";
 
-	 private Set<Material>                      buildingMaterials              = new HashSet<Material>();
-	 private Set<Material>                      indestructibleMaterials        = new HashSet<Material>();
-	 private Set<Material>                      restrictedMaterials	 	       = new HashSet<Material>();
-	 private Set<Material>                      destructibleMaterials          = new HashSet<Material>();
-     private Set<Material>                      interactibleMaterials          = new HashSet<Material>();
-     private Map<String, Set<Material>>			materialSets				   = new HashMap<String, Set<Material>>();
-	 
-	 private int								 undoTimeWindow					= 6000;
-	 private int								 undoBlockBorderSize			= 2;
-	 private int								 maxTNTPerChunk					= 0;
-	 private int                                 undoQueueDepth                 = 256;
-	 private int								 pendingQueueDepth				= 16;
-	 private int                                 undoMaxPersistSize             = 0;
-	 private boolean                             commitOnQuit             		= false;
-	 private long                                playerDataThreshold            = 0;
-     private String                              defaultWandPath                = "master";
-	 private WandMode							 defaultWandMode				= WandMode.INVENTORY;
-	 private boolean                             showMessages                   = true;
-	 private boolean                             showCastMessages               = false;
-	 private String								 messagePrefix					= "";
-	 private String								 castMessagePrefix				= "";
-	 private boolean                             soundsEnabled                  = true;
-	 private boolean                             indestructibleWands            = true;
-	 private boolean                             keepWandsOnDeath	            = true;
-	 private String								 welcomeWand					= "";
-	 private int								 messageThrottle				= 0;
-	 private int								 clickCooldown					= 150;
-     private boolean							 bindingEnabled					= false;
-     private boolean							 spellDroppingEnabled			= false;
-	 private boolean							 keepingEnabled					= false;
-	 private boolean                             fillingEnabled                 = false;
-	 private boolean							 essentialsSignsEnabled			= false;
-	 private boolean							 dynmapUpdate					= true;
-	 private boolean							 dynmapShowWands				= true;
-	 private boolean							 dynmapShowSpells				= true;
-	 private boolean							 createWorldsEnabled			= true;
-	 private float							 	 maxDamagePowerMultiplier	    = 2.0f;
-	 private float								 maxConstructionPowerMultiplier = 5.0f;
-	 private float								 maxRadiusPowerMultiplier 		= 2.5f;
-	 private float								 maxRadiusPowerMultiplierMax    = 4.0f;
-	 private float								 maxRangePowerMultiplier 		= 3.0f;
-	 private float								 maxRangePowerMultiplierMax 	= 5.0f;
-	 private float								 maxPower						= 1.0f;
-	 private float							 	 castCommandCostReduction	    = 1.0f;
-	 private float							 	 castCommandCooldownReduction	= 1.0f;
-	 private float								 castCommandPowerMultiplier     = 0.0f;
-	 private float							 	 costReduction	    			= 0.0f;
-	 private float							 	 cooldownReduction				= 0.0f;
-	 private int								 maxBlockUpdates				= 100;
-	 private int								 ageDroppedItems				= 0;
-	 private int								 autoUndo						= 0;
-	 private int								 autoSaveTaskId					= 0;
-     private double                              wandAbuseDamage                = 0;
-	 private WarpController						 warpController					= null;
-	 
-	 private final Map<String, SpellTemplate>   spells              		= new HashMap<String, SpellTemplate>();
-     private final Map<String, SpellTemplate>   spellAliases                = new HashMap<String, SpellTemplate>();
-     private final Map<String, SpellCategory>   categories              	= new HashMap<String, SpellCategory>();
-	 private final Map<String, Mage> 		 	mages                  		= new HashMap<String, Mage>();
-	 private final Map<String, Long>			forgetMages					= new HashMap<String, Long>();
-	 private final Set<Mage>		 	        pendingConstruction			= new HashSet<Mage>();
-     private final Set<Mage>                    pendingConstructionRemoval  = new HashSet<Mage>();
-     private final PriorityQueue<UndoList>      scheduledUndo               = new PriorityQueue<UndoList>();
-	 private final Set<String>  	 			pendingUndo					= new HashSet<String>();
-	 private final Map<String, WeakReference<WorldEditSchematic>> schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
- 
-	 private MagicPlugin                         plugin                         = null;
-	 private final File							 configFolder;
-	 private final File							 dataFolder;
-	 private final File							 schematicFolder;
-	 private final File							 defaultsFolder;
-	 private final File							 playerDataFolder;
-	 private boolean							 enableItemHacks			 	= true;
+    private boolean 							loadDefaultSpells			= true;
+    private boolean 							loadDefaultWands			= true;
+    private boolean 							loadDefaultEnchanting		= true;
+    private boolean 							loadDefaultCrafting			= true;
 
-	 private int								 toggleCooldown					= 1000;
-	 private int								 toggleMessageRange				= 1024;
+    private Set<Material>                       buildingMaterials               = new HashSet<Material>();
+    private Set<Material>                       indestructibleMaterials         = new HashSet<Material>();
+    private Set<Material>                       restrictedMaterials	 	        = new HashSet<Material>();
+    private Set<Material>                       destructibleMaterials           = new HashSet<Material>();
+    private Set<Material>                       interactibleMaterials           = new HashSet<Material>();
+    private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
-     private int                                 mageUpdateFrequency            = 20;
-     private int                                 blockUpdateFrequency           = 1;
-     private int                                 undoFrequency                  = 10;
+    private int								    undoTimeWindow				    = 6000;
+    private int								    undoBlockBorderSize			    = 2;
+    private int								    maxTNTPerChunk					= 0;
+    private int                                 undoQueueDepth                  = 256;
+    private int								    pendingQueueDepth				= 16;
+    private int                                 undoMaxPersistSize              = 0;
+    private boolean                             commitOnQuit             		= false;
+    private String                              defaultWandPath                 = "master";
+    private WandMode							defaultWandMode				    = WandMode.INVENTORY;
+    private boolean                             showMessages                    = true;
+    private boolean                             showCastMessages                = false;
+    private String								messagePrefix					= "";
+    private String								castMessagePrefix				= "";
+    private boolean                             soundsEnabled                   = true;
+    private boolean                             indestructibleWands             = true;
+    private boolean                             keepWandsOnDeath	            = true;
+    private String								welcomeWand					    = "";
+    private int								    messageThrottle				    = 0;
+    private int								    clickCooldown					= 150;
+    private boolean							    bindingEnabled					= false;
+    private boolean							    spellDroppingEnabled			= false;
+    private boolean							    keepingEnabled					= false;
+    private boolean                             fillingEnabled                  = false;
+    private boolean							    essentialsSignsEnabled			= false;
+    private boolean							    dynmapUpdate					= true;
+    private boolean							    dynmapShowWands				    = true;
+    private boolean							    dynmapShowSpells				= true;
+    private boolean							    createWorldsEnabled			    = true;
+    private float							    maxDamagePowerMultiplier	    = 2.0f;
+    private float								maxConstructionPowerMultiplier  = 5.0f;
+    private float								maxRadiusPowerMultiplier 		= 2.5f;
+    private float								maxRadiusPowerMultiplierMax     = 4.0f;
+    private float								maxRangePowerMultiplier 		= 3.0f;
+    private float								maxRangePowerMultiplierMax 	    = 5.0f;
+    private float								maxPower						= 1.0f;
+    private float							 	castCommandCostReduction	    = 1.0f;
+    private float							 	castCommandCooldownReduction	= 1.0f;
+    private float								castCommandPowerMultiplier      = 0.0f;
+    private float							 	costReduction	    			= 0.0f;
+    private float							 	cooldownReduction				= 0.0f;
+    private int								    maxBlockUpdates				    = 100;
+    private int								    ageDroppedItems				    = 0;
+    private int								    autoUndo						= 0;
+    private int								    autoSaveTaskId					= 0;
+    private double                              wandAbuseDamage                 = 0;
+    private WarpController						warpController					= null;
 
-     private boolean                             showCastHoloText               = false;
-     private boolean                             showActivateHoloText           = false;
-     private int                                 castHoloTextRange              = 0;
-     private int                                 activateHoloTextRange          = 0;
-	 
-	 private boolean							 bypassBuildPermissions         = false;
-	 private boolean							 bypassPvpPermissions           = false;
-     private boolean							 allPvpRestricted               = false;
-     private FactionsManager					 factionsManager				= new FactionsManager();
-	 private WorldGuardManager					 worldGuardManager				= new WorldGuardManager();
-     private PvPManagerManager                   pvpManager                     = new PvPManagerManager();
-     private MultiverseManager                   multiverseManager              = new MultiverseManager();
-	 
-	 private TradersController					 tradersController				= null;
-	 private String								 extraSchematicFilePath			= null;
-	 private Class<?>							 cuboidClipboardClass           = null;
-	 private DynmapController					 dynmap							= null;
-	 private ElementalsController				 elementals						= null;
-	 private Mailer								 mailer							= null;
-	 private Material							 defaultMaterial				= Material.DIRT;
-	 
-	 private PhysicsHandler						 physicsHandler					= null;
+    private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
+    private final Map<String, SpellTemplate>    spellAliases                = new HashMap<String, SpellTemplate>();
+    private final Map<String, SpellCategory>    categories              	= new HashMap<String, SpellCategory>();
+    private final Map<String, Mage> 		    mages                  		= new HashMap<String, Mage>();
+    private final Map<String, Long>			    forgetMages					= new HashMap<String, Long>();
+    private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
+    private final Set<Mage>                     pendingConstructionRemoval  = new HashSet<Mage>();
+    private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
+    private final Set<String>  	 			    pendingUndo					= new HashSet<String>();
+    private final Map<String, WeakReference<WorldEditSchematic>> schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
 
-	 private Map<String, Map<Long, Automaton>> 	 automata			    		= new HashMap<String, Map<Long, Automaton>>();
-	 private Map<String, LostWand>				 lostWands						= new HashMap<String, LostWand>();
-	 private Map<String, Set<String>>		 	 lostWandChunks					= new HashMap<String, Set<String>>();
-	 
-	 private int								 metricsLevel					= 5;
-	 private Metrics							 metrics						= null;
-	 private boolean							 hasDynmap						= false;
-	 private boolean							 hasEssentials					= false;
-     private boolean							 hasCommandBook					= false;
-	 private boolean							 hasWorldEdit					= false;
+    private MagicPlugin                         plugin                      = null;
+    private final File							configFolder;
+    private final File							dataFolder;
+    private final File							schematicFolder;
+    private final File							defaultsFolder;
+    private final File							playerDataFolder;
+    private boolean							    enableItemHacks			 	= true;
 
-     private String                              exampleDefaults                = null;
-     private Collection<String>                  addExamples                    = null;
+    private int								    toggleCooldown				= 1000;
+    private int								    toggleMessageRange			= 1024;
 
-     // Synchronization
-     private final Object                        saveLock                       = new Object();
+    private int                                 mageUpdateFrequency         = 20;
+    private int                                 blockUpdateFrequency        = 1;
+    private int                                 undoFrequency               = 10;
 
-	 // Sub-Controllers
-	 private CraftingController					 crafting						= null;
-	 private EnchantingController				 enchanting						= null;
-	 private AnvilController					 anvil							= null;
+    private boolean                             showCastHoloText            = false;
+    private boolean                             showActivateHoloText        = false;
+    private int                                 castHoloTextRange           = 0;
+    private int                                 activateHoloTextRange       = 0;
+
+    private boolean							    bypassBuildPermissions      = false;
+    private boolean							    bypassPvpPermissions        = false;
+    private boolean							    allPvpRestricted            = false;
+    private FactionsManager					    factionsManager				= new FactionsManager();
+    private WorldGuardManager					worldGuardManager			= new WorldGuardManager();
+    private PvPManagerManager                   pvpManager                  = new PvPManagerManager();
+    private MultiverseManager                   multiverseManager           = new MultiverseManager();
+
+    private TradersController					tradersController			= null;
+    private String								extraSchematicFilePath		= null;
+    private Class<?>							cuboidClipboardClass        = null;
+    private DynmapController					dynmap						= null;
+    private ElementalsController				elementals					= null;
+    private Mailer								mailer						= null;
+    private Material							defaultMaterial				= Material.DIRT;
+
+    private PhysicsHandler						physicsHandler				= null;
+
+    private Map<String, Map<Long, Automaton>> 	automata			    	= new HashMap<String, Map<Long, Automaton>>();
+    private Map<String, LostWand>				lostWands					= new HashMap<String, LostWand>();
+    private Map<String, Set<String>>		 	lostWandChunks				= new HashMap<String, Set<String>>();
+
+    private int								    metricsLevel				= 5;
+    private Metrics							    metrics						= null;
+    private boolean							    hasDynmap					= false;
+    private boolean							    hasEssentials				= false;
+    private boolean							    hasCommandBook				= false;
+    private boolean							    hasWorldEdit				= false;
+
+    private String                              exampleDefaults             = null;
+    private Collection<String>                  addExamples                 = null;
+
+    // Synchronization
+    private final Object                        saveLock                    = new Object();
+
+    // Sub-Controllers
+    private CraftingController					 crafting					= null;
+    private EnchantingController				 enchanting					= null;
+    private AnvilController					    anvil						= null;
 }
