@@ -2,122 +2,145 @@
 # Add several Harry Potter themed wand enchanting paths.
 #
 
+# To convert old wands
 master:
-    levels: 1,25,35,40,45
-#   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
-    property_count:
-      0: 100,100, 50,   0,  0
-      1: 5,  10,  100,  20, 0
-      2: 0,   5,   60,  80, 0
-      3: 0,   0,    0,  50, 100
-    power:
-      0:   100,100,80, 30, 0
-      0^1: 1,   5, 80, 60, 0
-      0^2: 0 ,  1, 60, 40, 0
-      0^3: 0 ,  0, 20, 30, 100
-    cost_reduction:
-      0:   100,100,80, 30, 0
-      0^1: 2,  30, 40, 50, 0
-      0^2: 0 , 10, 20, 30, 0
-      0^3: 0 ,  0, 10, 20, 100
-    protection:
-      0:   100,100,90, 80, 0
-      0^1: 0,   5, 10, 20, 0
-      0^2: 0 ,  1, 5,  15, 0
-      0^3: 0 ,  0, 1,  10, 100
-    protection_physical:
-      0:   100,100,90, 80, 0
-      0^1: 1,  10, 20, 30, 0
-      0^2: 0 , 15, 15, 40, 0
-      0^3: 0 ,  0, 10, 50, 100
-    protection_projectiles:
-      0:   100,100,90, 80, 0
-      0^1: 1,  10, 20, 30, 0
-      0^2: 0 , 15, 15, 40, 0
-      0^3: 0 ,  0, 10, 50, 100
-    protection_falling:
-      0:   100,100,90, 80, 0
-      0^1: 1,  10, 20, 30, 0
-      0^2: 0 , 15, 15, 40, 0
-      0^3: 0 ,  0, 10, 50, 100
-    protection_fire:
-      0:   100,100,90, 80, 0
-      0^1: 1,  10, 20, 30, 0
-      0^2: 0 , 15, 15, 40, 0
-      0^3: 0 ,  0, 10, 50, 100
-    protection_explosions:
-      0:   100,100,90, 80, 0
-      0^1: 1,  10, 20, 30, 0
-      0^2: 0 , 15, 15, 40, 0
-      0^3: 0 ,  0, 10, 50, 100
-    xp_regeneration:
-      1: 100,30, 5,  0,   0
-      10: 20, 30, 40, 10, 0
-      20: 0 , 10, 10, 30, 0
-      25: 0 ,  0, 1,  5,  100
+    upgrade: year1
+
+default:
+  min_enchant_level: 10
+  max_enchant_level: 50
+  max_mana: 50
+  max_mana_regeneration: 5
+  max_health_regeneration: 1.0
+  max_hunger_regeneration: 1.0
+  max_damage_reduction: 1.0
+  max_damage_reduction_explosions: 1.0
+  max_damage_reduction_falling: 1.0
+  max_damage_reduction_fire: 1.0
+  max_damage_reduction_physical: 1.0
+  max_damage_reduction_projectiles: 1.0
+  max_cost_reduction: 1.0
+  max_cooldown_reduction: 1.0
+  max_haste: 1.0
+  max_power: 1.0
+
+year1:
+    inherit: default
+    upgrade: year2
+    levels: 1,30,50
+    max_mana: 60
     xp_max:
-      5:   100,10,  0, 0,  0
-      20:  20, 30, 50, 10, 0
-      30:  5 , 20, 30, 50, 0
-      50: 0 , 0,  5,  20, 100
-    health_regeneration:
-      0: 100,100,90, 80, 0
-      1: 1,   5, 10, 15, 0
-      2: 0 , 10, 15, 30, 0
-      4: 0 , 15, 20, 40, 100
-    hunger_regeneration:
-      0: 100,100,80,  0, 0
-      1: 80, 80, 80, 10, 0
-      2: 0 , 20, 25, 30, 0
-      4: 0 , 15, 20, 40, 100
-    haste:
-      0:    100,100,80, 60, 0
-      0^1:  0 ,  0, 20, 30, 0
-      0^2:  0 ,  0, 10, 20, 0
-      0^3:  0 ,  0,  0, 10, 100
+      2: 100, 10,  0
+      3:  20, 30, 50
     spell_count:
-      1: 100, 40,  10,  0,  0
-      2: 5,   10,  60,  10, 0
-      3: 0,   5,   20,  20, 0
-      5: 0,   1,   10,  50, 100
+      1: 100, 100,  100
+      2:   0,   0,    5
     spells:
-      accio: 50,40,30,20,100
-      aguamenti: 0,5,30,10,100
-      apparate: 0,0,1,5,100
-      arrow: 5,20,50,40,100
-      ascendio: 0,1,10,20,100
-      avadakedavra: 0,0,0,1,1
-      avis: 5,20,30,10,100
-      bombarda: 0,5,20,30,100
-      bombardamaxima: 0,0,0,2,100
-      confringo: 0,5,10,20,100
-      confundus: 15,20,50,10,100
-      conjunctivitis: 5,10,50,10,100
-      crucio: 0,0,0,1,10
-      deletrius: 5,10,50,80,100
-      diffindo: 0,5,10,20,100
-      duro: 0,0,0,1,50
-      episkey: 30,70,90,70,100
-      evanesco: 5,10,30,80,100
-      expelliarmus: 0,1,5,10,100
-      ferula: 0,5,30,50,100
-      finiteincantatem: 1,20,30,80,100
-      flagrate: 50,600,70,10,100
-      flipendo: 5,20,30,80,100
-      fly: 0,0,0,5,90
-      immobulus: 5,10,30,50,100
-      imperio: 0,0,0,1,60
-      impervius: 0,0,5,15,60
-      incendio: 0,0,10,20,100
-      lumos: 30,30,50,40,100
-      morsmordre: 0,0,0,5,100
-      petrificustotalus: 0,1,20,30,100
-      reducio: 0,10,20,30,100
-      reducto: 0,0,0,30,100
-      reparifarge: 5,10,50,80,100
-      reparo: 1,20,40,80,100
-      sectumsempra: 0,10,30,50,100
-      stupefy: 10,30,40,60,100
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
+
+year2:
+    upgrade: year3
+    inherit: year1
+    max_mana: 90
+    spells:
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
+
+year3:
+    upgrade: year4
+    inherit: year2
+    max_mana: 110
+    spells:
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
+
+year4:
+    upgrade: year5
+    inherit: year3
+    max_mana: 130
+    spells:
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
+
+year5:
+    upgrade: year6
+    inherit: year4
+    max_mana: 150
+    spells:
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
+
+year6:
+    upgrade: year7
+    inherit: year5
+    max_mana: 170
+    spells:
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
+
+year7:
+    upgrade: graduate
+    inherit: year6
+    max_mana: 190
+    spells:
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
+
+graduate:
+    inherit: year7
+    max_mana: 200
+    spells:
+      flagrate: 100,100,100
+      periculum: 50,60,70
+      avis: 20,30,40
+      arania: 40,60,80
+      accio: 40,50,60
+      flipendo: 10,20,30
+      conjunctivitis: 20,30,40
+      bombarda: 5,10,20
 
 broom:
     levels: 1,25,35,40,45

@@ -60,7 +60,28 @@
 # Note that the actual values need not add up to 100- and generally do not. This is much easier to tweak, but also generally
 # harder to comprehend when looking at the numbers- I'm thinking about ways to clean that up.
 #
+
+default:
+  min_enchant_level: 10
+  max_enchant_level: 50
+  max_uses: 500
+  max_mana: 1500
+  max_mana_regeneration: 150
+  max_health_regeneration: 0.1
+  max_hunger_regeneration: 0.1
+  max_damage_reduction: 0.1
+  max_damage_reduction_explosions: 0.1
+  max_damage_reduction_falling: 0.1
+  max_damage_reduction_fire: 0.1
+  max_damage_reduction_physical: 0.1
+  max_damage_reduction_projectiles: 0.1
+  max_cost_reduction: 0.5
+  max_cooldown_reduction: 0.5
+  max_haste: 0.5
+  max_power: 0.5
+
 master:
+    inherit: apprentice
     levels: 1,25,35,40,45
 #   The property_count affects how many of the power, reduction or protection properties will get chosen at one time
     property_count:
@@ -380,6 +401,7 @@ master:
       schematic|flare_beacon: 0,0,1,10,100
 
 engineer:
+    inherit: default
     levels: 1,25,35,40,45
     property_count:
       0: 100,100, 50,   0,  0
@@ -604,6 +626,7 @@ engineer:
       schematic|flare_beacon: 0,0,1,10,100
 
 apprentice:
+    inherit: student
     levels: 1,25,35,40,45
     property_count:
       0: 100, 100, 50,   0, 0
@@ -776,6 +799,7 @@ apprentice:
       blind: 1,5,10,20,100
 
 student:
+    inherit: default
     levels: 1,25,35,40,45
     property_count:
       0: 100, 100, 50,   0, 0
@@ -917,6 +941,7 @@ student:
       blind: 0,1,5,10,100
 
 battle:
+    inherit: default
     levels: 1,25,35,40,45
     property_count:
       0: 100,100, 50,   0,  0
@@ -1069,15 +1094,6 @@ battle:
       blind: 1,5,10,20,100
 
 broom:
-    levels: 1,25,35,40,45
-    max_power: 0.9
-    power:
-      0:   100,100,80, 30, 0
-      0^1: 0,   0, 40, 50, 0
-      0^2: 0 ,  0, 20, 30, 0
-      0^3: 0 ,  0, 10, 20, 100
-
-beater:
     levels: 1,25,35,40,45
     max_power: 0.9
     power:

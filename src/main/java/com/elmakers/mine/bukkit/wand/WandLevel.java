@@ -1,12 +1,9 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.TreeMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
@@ -18,6 +15,8 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class WandLevel {
+    private final WandUpgradePath path;
+
 	private final LinkedList<WeightedPair<Integer>> spellCountProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<Integer>> materialCountProbability = new LinkedList<WeightedPair<Integer>>();
 	private final LinkedList<WeightedPair<String>> spellProbability = new LinkedList<WeightedPair<String>>();
@@ -41,48 +40,10 @@ public class WandLevel {
 	private final LinkedList<WeightedPair<Integer>> hungerRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
 	
 	private final LinkedList<WeightedPair<Float>> hasteProbability = new LinkedList<WeightedPair<Float>>();
-	
-	public static float maxValue = 1.0f;
-	public static int maxUses = 500;
-	public static int maxMaxXp = 1500;
-	public static int maxXpRegeneration = 150;
-	public static float maxHungerRegeneration = 2;
-	public static float maxHealthRegeneration = 2;
-	public static float maxDamageReduction = 0.4f;
-	public static float maxDamageReductionExplosions = 0.3f;
-	public static float maxDamageReductionFalling = 0.9f;
-	public static float maxDamageReductionFire = 0.5f;
-	public static float maxDamageReductionPhysical = 0.1f;
-	public static float maxDamageReductionProjectiles = 0.2f;
-	public static float maxCostReduction = 0.5f;
-	public static float maxCooldownReduction = 0.5f;
-	public static float maxHasteLevel = 20;
-	public static int minLevel = 10;
-	public static int maxLevel = 40;
-	
-	public static void load(ConfigurationSection properties) {
-		maxValue = (float)properties.getDouble("max_property_value", maxValue);
-		maxUses = properties.getInt("max_uses", maxUses);
-		maxMaxXp = properties.getInt("max_mana", maxMaxXp);
-		maxXpRegeneration = properties.getInt("max_mana_regeneration", maxXpRegeneration);
-		maxHealthRegeneration = (float)properties.getDouble("max_health_regeneration", maxHealthRegeneration);
-		maxHungerRegeneration = (float)properties.getDouble("max_hunger_regeneration", maxHungerRegeneration);
 
-		minLevel = properties.getInt("min_enchant_level", minLevel);
-		maxLevel = properties.getInt("max_enchant_level", maxLevel);
+	protected WandLevel(WandUpgradePath path, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
+        this.path = path;
 
-		maxDamageReduction = (float)properties.getDouble("max_damage_reduction", maxDamageReduction);
-		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_explosions", maxDamageReductionExplosions);
-		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_falling", maxDamageReductionFalling);
-		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_fire", maxDamageReductionFire);
-		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_physical", maxDamageReductionPhysical);
-		maxDamageReduction = (float)properties.getDouble("max_damage_reduction_projectiles", maxDamageReductionProjectiles);
-		maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
-		maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
-		maxHasteLevel = (float)properties.getDouble("max_haste", maxHasteLevel);
-	}
-	
-	protected WandLevel(ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
 		// Fetch spell probabilities
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spellProbability, template.getConfigurationSection("spells"), levelIndex, nextLevelIndex, distance);
 		
@@ -214,78 +175,85 @@ public class WandLevel {
 		double costReduction = wand.getCostReduction();
 		
 		while (propertyCount-- > 0) {
-			int randomProperty = (int)(Math.random() * 10);
+			int randomProperty = (int)(Math.random() * 11);
 			switch (randomProperty) {
 			case 0: 
-				if (costReductionProbability.size() > 0 && costReduction < maxValue) {
+				if (costReductionProbability.size() > 0 && costReduction < path.getMaxCostReduction()) {
 					addedProperties = true;
-					costReduction = Math.min(maxValue, costReduction + RandomUtils.weightedRandom(costReductionProbability));
+					costReduction = Math.min(path.getMaxCostReduction(), costReduction + RandomUtils.weightedRandom(costReductionProbability));
 					wandProperties.set("cost_reduction", costReduction);
 				}
 				break;
 			case 1:
 				float power = wand.getPower();
-				if (powerProbability.size() > 0 && power < maxValue) {
+				if (powerProbability.size() > 0 && power < path.getMaxPower()) {
 					addedProperties = true;
-					wandProperties.set("power", (Double)(double)(Math.min(maxValue, power + RandomUtils.weightedRandom(powerProbability))));
+					wandProperties.set("power", (Double)(double)(Math.min(path.getMaxPower(), power + RandomUtils.weightedRandom(powerProbability))));
 				}
 				break;
 			case 2:
 				float damageReduction = wand.getDamageReduction();
-				if (damageReductionProbability.size() > 0 && damageReduction < maxValue) {
+				if (damageReductionProbability.size() > 0 && damageReduction < path.getMaxDamageReduction()) {
 					addedProperties = true;
-					wandProperties.set("protection", (Double)(double)(Math.min(maxValue, damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
+					wandProperties.set("protection", (Double)(double)(Math.min(path.getMaxDamageReduction(), damageReduction + RandomUtils.weightedRandom(damageReductionProbability))));
 				}
 				break;
 			case 3:
 				float damageReductionPhysical = wand.getDamageReductionPhysical();
-				if (damageReductionPhysicalProbability.size() > 0 && damageReductionPhysical < maxValue) {
+				if (damageReductionPhysicalProbability.size() > 0 && damageReductionPhysical < path.getMaxDamageReductionPhysical()) {
 					addedProperties = true;
-					wandProperties.set("protection_physical", (Double)(double)(Math.min(maxValue, damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
+					wandProperties.set("protection_physical", (Double)(double)(Math.min(path.getMaxDamageReductionPhysical(), damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability))));
 				}
 				break;
 			case 4:
 				float damageReductionProjectiles = wand.getDamageReductionProjectiles();
-				if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < maxValue) {
+				if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < path.getMaxDamageReductionProjectiles()) {
 					addedProperties = true;
-					wandProperties.set("protection_projectiles", (Double)(double)(Math.min(maxValue, damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
+					wandProperties.set("protection_projectiles", (Double)(double)(Math.min(path.getMaxDamageReductionProjectiles(), damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability))));
 				}
 				break;
 			case 5:
 				float damageReductionFalling = wand.getDamageReductionFalling();
-				if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < maxValue) {
+				if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < path.getMaxDamageReductionFalling()) {
 					addedProperties = true;
-					wandProperties.set("protection_falling", (Double)(double)(Math.min(maxValue, damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
+					wandProperties.set("protection_falling", (Double)(double)(Math.min(path.getMaxDamageReductionFalling(), damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability))));
 				}
 				break;
 			case 6:
 				float damageReductionFire = wand.getDamageReductionFire();
-				if (damageReductionFireProbability.size() > 0 && damageReductionFire < maxValue) {
+				if (damageReductionFireProbability.size() > 0 && damageReductionFire < path.getMaxDamageReductionFire()) {
 					addedProperties = true;
-					wandProperties.set("protection_fire", (Double)(double)(Math.min(maxValue, damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
+					wandProperties.set("protection_fire", (Double)(double)(Math.min(path.getMaxDamageReductionFire(), damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability))));
 				}
 				break;
 			case 7:
 				float damageReductionExplosions = wand.getDamageReductionExplosions();
-				if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < maxValue) {
+				if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < path.getMaxDamageReductionExplosions()) {
 					addedProperties = true;
-					wandProperties.set("protection_explosions", (Double)(double)(Math.min(maxValue, damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
+					wandProperties.set("protection_explosions", (Double)(double)(Math.min(path.getMaxDamageReductionExplosions(), damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability))));
 				}
 				break;
-			case 10:
+			case 8:
 				float healthRegeneration = wand.getHealthRegeneration();
-				if (healthRegenerationProbability.size() > 0 && healthRegeneration < maxValue) {
+				if (healthRegenerationProbability.size() > 0 && healthRegeneration < path.getMaxHealthRegeneration()) {
 					addedProperties = true;
-					wandProperties.set("health_regeneration", (Integer)(int)(Math.min(maxValue, healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability))));
+					wandProperties.set("health_regeneration", (Integer)(int)(Math.min(path.getMaxHealthRegeneration(), healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability))));
 				}
 				break;
-			case 11:
+			case 9:
 				float hungerRegeneration = wand.getHungerRegeneration();
-				if (hungerRegenerationProbability.size() > 0 && hungerRegeneration < maxValue) {
+				if (hungerRegenerationProbability.size() > 0 && hungerRegeneration < path.getMaxHungerRegeneration()) {
 					addedProperties = true;
-					wandProperties.set("hunger_regeneration", (Integer)(int)(Math.min(maxValue, hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability))));
+					wandProperties.set("hunger_regeneration", (Integer)(int)(Math.min(path.getMaxHungerRegeneration(), hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability))));
 				}
 				break;
+            case 10:
+                float haste = wand.getHaste();
+                if (hasteProbability.size() > 0 && haste < path.getMaxHaste()) {
+                    addedProperties = true;
+                    wandProperties.set("haste", (Double)(double)(Math.min(path.getMaxHaste(), haste + RandomUtils.weightedRandom(hasteProbability))));
+                }
+                break;
 			}
 		}
 		
@@ -298,14 +266,14 @@ public class WandLevel {
 			wandProperties.set("xp", 0);
 		} else {
 			int xpRegeneration = wand.getXpRegeneration();
-			if (xpRegenerationProbability.size() > 0 && xpRegeneration < maxXpRegeneration) {
+			if (xpRegenerationProbability.size() > 0 && xpRegeneration < path.getMaxXpRegeneration()) {
 				addedProperties = true;
-				wandProperties.set("xp_regeneration", (Integer)(int)(Math.min(maxXpRegeneration, xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
+				wandProperties.set("xp_regeneration", (Integer)(int)(Math.min(path.getMaxXpRegeneration(), xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability))));
 			}
 			int xpMax = wand.getXpMax();
-			if (xpMaxProbability.size() > 0 && xpMax < maxMaxXp) {
+			if (xpMaxProbability.size() > 0 && xpMax < path.getMaxMaxXp()) {
 				// Make sure the wand has at least enough xp to cast the highest costing spell it has.
-				xpMax = (Integer)(int)(Math.min(maxMaxXp, xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
+				xpMax = (Integer)(int)(Math.min(path.getMaxMaxXp(), xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
 				xpMax = Math.max(maxXpCost, xpMax);
 				wandProperties.set("xp_max", xpMax);
 				addedProperties = true;
@@ -319,12 +287,12 @@ public class WandLevel {
 		if (additive) {
 			// Only add uses to a wand if it already has some.
 			int wandUses = wand.getUses();
-			if (wandUses > 0 && wandUses < maxUses && addUseProbability.size() > 0) {
-				wandProperties.set("uses", Math.min(maxUses, wandUses + RandomUtils.weightedRandom(addUseProbability)));
+			if (wandUses > 0 && wandUses < path.getMaxUses() && addUseProbability.size() > 0) {
+				wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(addUseProbability)));
 				addedProperties = true;
 			}
 		} else if (useProbability.size() > 0) {
-			wandProperties.set("uses", Math.min(maxUses, RandomUtils.weightedRandom(useProbability)));
+			wandProperties.set("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
 		}
 
 		// Set properties. This also updates name and lore.

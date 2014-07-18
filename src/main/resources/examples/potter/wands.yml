@@ -5,7 +5,7 @@
 default:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     randomize_icon: wood_step:4
-    path: master
+    path: year1
     bound: true
     keep: true
     undroppable: true
@@ -20,7 +20,7 @@ default:
 
 staff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
-    path: master
+    path: graduate
     force: true
     bound: true
     keep: true
@@ -51,7 +51,7 @@ staff:
 
 headstaff:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
-    path: master
+    path: graduate
     force: true
     bound: true
     keep: true
@@ -86,7 +86,7 @@ headstaff:
 gryffindor:
     icon: diamond_sword
     undroppable: true
-    path: master
+    path: graduate
     keep: true
     quiet: 1
     xp_max: 100
@@ -102,7 +102,7 @@ gryffindor:
 lignumvitae:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     undroppable: true
-    path: master
+    path: graduate
     bound: true
     keep: true
     quiet: 1
@@ -181,7 +181,7 @@ lignumvitae:
 allis0n:
     icon: wood_hoe
     undroppable: true
-    path: master
+    path: graduate
     bound: true
     keep: true
     quiet: 1
@@ -247,7 +247,7 @@ elder:
 wolf:
     icon: gold_hoe
     undroppable: true
-    path: master
+    path: graduate
     keep: true
     bound: true
     fill: true
@@ -285,8 +285,8 @@ architect:
     health_regeneration: 1
     protection_falling: 1
     protection: 0.2
-    xp_max: 1000
-    xp_regeneration: 100
+    cost_reduction: 2
+    cooldown_reduction: 2
     power: 1
     effect_color: '8B008B'
     effect_bubbles: true
@@ -709,36 +709,76 @@ rainboweffects:
     effect_particle: mob_spell
     effect_parcticle_data: 2
     effect_particle_count: 3
-energy1:
+
+# Graduation upgrades
+
+year1:
     upgrade: true
+    path: master
+    upgrade_path: year1
+    indestructible: false
+    icon: arrow
+    xp_max: 50
+    xp_regeneration: 5
+year2:
+    upgrade: true
+    path: year1
+    upgrade_path: year2
     indestructible: false
     icon: arrow
     xp_max: 60
     xp_regeneration: 10
-energy2:
+year3:
     upgrade: true
+    path: year2
+    upgrade_path: year3
     indestructible: false
     icon: arrow
     xp_max: 70
     xp_regeneration: 15
-energy3:
+year4:
     upgrade: true
+    path: year3
+    upgrade_path: year4
     indestructible: false
     icon: arrow
     xp_max: 80
     xp_regeneration: 20
-energy4:
+year5:
     upgrade: true
+    path: year4
+    upgrade_path: year5
     indestructible: false
     icon: arrow
     xp_max: 90
     xp_regeneration: 22
-energy5:
+year6:
     upgrade: true
+    path: year5
+    upgrade_path: year6
     indestructible: false
     icon: arrow
     xp_max: 100
     xp_regeneration: 25
+year7:
+    upgrade: true
+    path: year6
+    upgrade_path: year7
+    indestructible: false
+    icon: arrow
+    xp_max: 100
+    xp_regeneration: 25
+graduate:
+    upgrade: true
+    path: year7
+    upgrade_path: graduate
+    indestructible: false
+    icon: arrow
+    xp_max: 100
+    xp_regeneration: 25
+
+# Other upgrades
+
 manaboost:
     upgrade: true
     indestructible: false

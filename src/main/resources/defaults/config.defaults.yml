@@ -310,31 +310,6 @@ auto_undo: 0
 max_tnt_per_chunk: 16
 
 #
-# Control wand randomization
-# This only controls the maximum limits for everything
-# for details wand randomization customization, see the "random"
-# template in wands.defaults.yml.
-#
-
-min_enchant_level: 10
-max_enchant_level: 40
-max_property_value: 1.0
-max_uses: 500
-max_mana: 1500
-max_mana_regeneration: 150
-max_health_regeneration: 5
-max_hunger_regeneration: 5
-max_damage_reduction: 0.3
-max_damage_reduction_explosions: 0.2
-max_damage_reduction_falling: 0.9
-max_damage_reduction_fire: 0.5
-max_damage_reduction_physical: 0.1
-max_damage_reduction_projectiles: 0.2
-max_cost_reduction: 0.5
-max_cooldown_reduction: 0.75
-max_haste: 15
-
-#
 # Control wands' "Power" settings
 #
 # Wands have a power (from 0-1) that will change the effects of many spells:
@@ -357,6 +332,21 @@ max_power_radius_multiplier_max: 4.0
 max_power_range_multiplier: 2.0
 max_power_range_multiplier_max: 5.0
 max_power: 100.0
+max_haste: 15
+max_health_regeneration: 5
+max_hunger_regeneration: 5
+max_damage_reduction: 0.3
+max_damage_reduction_explosions: 0.2
+max_damage_reduction_falling: 0.9
+max_damage_reduction_fire: 0.5
+max_damage_reduction_physical: 0.1
+max_damage_reduction_projectiles: 0.2
+max_cost_reduction: 0.5
+max_cooldown_reduction: 0.75
+
+# These are used only for "Roman" display mode for mana on wand lore
+max_mana: 1000
+max_mana_regeneration: 100
 
 ### Economy Helpers
 # These values are used to help create a balanced economy if you plan on selling wands, spells, or upgrades.

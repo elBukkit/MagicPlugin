@@ -685,7 +685,7 @@ bombarda:
         range: 12
         target_breakables: 1
         break_blocks: false
-        size: 1
+        size: 7
         cooldown: 10000
     costs:
         xp: 50
@@ -708,7 +708,7 @@ bombardamaxima:
         target: block
         allow_max_range: true
         range: 24
-        size: 3
+        size: 10
         target_breakables: 1
         break_blocks: false
         cooldown: 20000
@@ -1035,6 +1035,7 @@ duro:
         undo: 5000
         cooldown: 10000
         bypass_build: true
+        bypass_backfire: true
     costs:
         xp: 50
 
@@ -1317,7 +1318,7 @@ finiteincantatem:
         target: other
         target_type: LivingEntity
         target_blocks: false
-        target_timeout: 10000
+        target_timeout: 4000
         target_breakables: 3
         range: 32
         bypass_protection: true
@@ -1664,7 +1665,7 @@ imperio:
     effects:
         cast:
         -  class: EffectSingle
-           sound: portal_trigger
+           sound: arrow_hit
         -  class: EffectTrail
            particle: spell
            length: 16
@@ -1674,7 +1675,7 @@ imperio:
         target: other_entity
         range: 32
         item_force: 1
-        entity_force: 1
+        entity_force: 3
     costs:
         xp: 85
 
@@ -1771,8 +1772,9 @@ lacarnum:
         fire: false
         size: 2
         range: 16
+        cooldown: 5000
     costs:
-        xp: 15
+        xp: 50
 
 levicorpus:
     icon: ink_sack:5
@@ -2036,11 +2038,13 @@ protego:
         check_destructible: true
         destructible: air
         undo: 2000
-        breakable: 1
+        breakable: 2
         brushcolor: false
         bypass_build: true
         cooldown: 2000
         reflect_chance: 0.2
+        bypass_confusion: true
+        bypass_backfire: true
     costs:
         xp: 20
 
@@ -2070,6 +2074,8 @@ protegomaxima:
         undo: 60000
         reflect_chance: 1
         bypass_backfire: true
+        bypass_confusion: true
+        bypass_backfire: true
     costs:
         xp: 100
 
@@ -2085,9 +2091,9 @@ protegoduo:
     parameters:
         allow_max_range: true
         range: 4
-        radius: 3
+        radius: 1
         type: sphere
-        brush: stained_glass
+        brush: stained_glass_pane
         orient_dimension_max: 0
         orient_dimension_min: 0
         orient: true
@@ -2095,12 +2101,14 @@ protegoduo:
         check_destructible: true
         destructible: air
         destructible: air
-        undo: 5000
-        breakable: 2
+        undo: 3000
+        breakable: 1
         brushcolor: false
         bypass_build: true
-        cooldown: 4000
-        reflect_chance: 0.3
+        cooldown: 3000
+        reflect_chance: 0.75
+        bypass_confusion: true
+        bypass_backfire: true
     costs:
         xp: 75
 
@@ -2126,6 +2134,8 @@ protegotria:
         destructible: air
         breakable: 3
         reflect_chance: 0.5
+        bypass_confusion: true
+        bypass_backfire: true
     costs:
         xp: 100
 
@@ -2504,7 +2514,8 @@ stupefy:
         damage: 2.5
         effect_confusion: 40
         cooldown: 1000
-        target_breakables: 0.3
+        target_breakables: 1
+        bypass_backfire: false
     costs:
         xp: 50
 

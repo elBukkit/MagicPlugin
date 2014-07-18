@@ -296,6 +296,58 @@ public class MagicController implements Listener, MageController {
     public float getMaxPower() {
         return maxPower;
     }
+
+    public float getMaxHaste() {
+        return maxHaste;
+    }
+
+    public float getMaxHealthRegeneration() {
+        return maxHealthRegeneration;
+    }
+
+    public float getMaxHungerRegeneration() {
+        return maxHungerRegeneration;
+    }
+
+    public float getMaxDamageReduction() {
+        return maxDamageReduction;
+    }
+
+    public float getMaxDamageReductionExplosions() {
+        return maxDamageReductionExplosions;
+    }
+
+    public float getMaxDamageReductionFalling() {
+        return maxDamageReductionFalling;
+    }
+
+    public float getMaxDamageReductionFire() {
+        return maxDamageReductionFire;
+    }
+
+    public float getMaxDamageReductionPhysical() {
+        return maxDamageReductionPhysical;
+    }
+
+    public float getMaxDamageReductionProjectiles() {
+        return maxDamageReductionProjectiles;
+    }
+
+    public float getMaxCostReduction() {
+        return maxCostReduction;
+    }
+
+    public float getMaxCooldownReduction() {
+        return maxCooldownReduction;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public int getMaxManaRegeneration() {
+        return maxManaRegeneration;
+    }
 	
 	/*
 	 * Undo system
@@ -1553,8 +1605,23 @@ public class MagicController implements Listener, MageController {
 		maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
 		maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
 		maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
-		maxPower = (float)properties.getDouble("max_power", maxPower);
-		costReduction = (float)properties.getDouble("cost_reduction", costReduction);
+
+        maxPower = (float)properties.getDouble("max_power", maxPower);
+        maxHaste = (float)properties.getDouble("max_haste", maxHaste);
+        maxHealthRegeneration = (float)properties.getDouble("max_health_regeneration", maxHealthRegeneration);
+        maxHungerRegeneration = (float)properties.getDouble("max_hunger_regeneration", maxHungerRegeneration);
+        maxDamageReduction = (float)properties.getDouble("max_damage_reduction", maxDamageReduction);
+        maxDamageReductionExplosions = (float)properties.getDouble("max_damage_reduction_explosions", maxDamageReductionExplosions);
+        maxDamageReductionFalling = (float)properties.getDouble("max_damage_reduction_falling", maxDamageReductionFalling);
+        maxDamageReductionFire = (float)properties.getDouble("max_damage_reduction_fire", maxDamageReductionFire);
+        maxDamageReductionPhysical = (float)properties.getDouble("max_damage_reduction_physical", maxDamageReductionPhysical);
+        maxDamageReductionProjectiles = (float)properties.getDouble("max_damage_reduction_projectiles", maxDamageReductionProjectiles);
+        maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
+        maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
+        maxMana = properties.getInt("max_mana", maxMana);
+        maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
+
+        costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
@@ -1620,9 +1687,6 @@ public class MagicController implements Listener, MageController {
 					}, 
 					autoSaveIntervalTicks, autoSaveIntervalTicks);
 		}
-		
-		// Set up WandLevel limits
-		WandLevel.load(properties);
 
         // Semi-deprecated Wand defaults
         Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
@@ -3573,7 +3637,22 @@ public class MagicController implements Listener, MageController {
     private float								maxRadiusPowerMultiplierMax     = 4.0f;
     private float								maxRangePowerMultiplier 		= 3.0f;
     private float								maxRangePowerMultiplierMax 	    = 5.0f;
-    private float								maxPower						= 1.0f;
+
+    private float								maxPower						= 100.0f;
+    private float								maxHaste						= 5.0f;
+    private float								maxHealthRegeneration			= 1.0f;
+    private float								maxHungerRegeneration			= 1.0f;
+    private float								maxDamageReduction 			    = 0.2f;
+    private float								maxDamageReductionExplosions 	= 0.2f;
+    private float								maxDamageReductionFalling   	= 0.2f;
+    private float								maxDamageReductionFire 	        = 0.2f;
+    private float								maxDamageReductionPhysical 	    = 0.2f;
+    private float								maxDamageReductionProjectiles 	= 0.2f;
+    private float								maxCostReduction 	            = 0.5f;
+    private float								maxCooldownReduction        	= 0.5f;
+    private int								    maxMana        	                = 1000;
+    private int								    maxManaRegeneration        	    = 100;
+
     private float							 	castCommandCostReduction	    = 1.0f;
     private float							 	castCommandCooldownReduction	= 1.0f;
     private float								castCommandPowerMultiplier      = 0.0f;
@@ -3653,7 +3732,7 @@ public class MagicController implements Listener, MageController {
     private final Object                        saveLock                    = new Object();
 
     // Sub-Controllers
-    private CraftingController					 crafting					= null;
-    private EnchantingController				 enchanting					= null;
+    private CraftingController					crafting					= null;
+    private EnchantingController				enchanting					= null;
     private AnvilController					    anvil						= null;
 }
