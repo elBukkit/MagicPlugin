@@ -73,6 +73,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -1656,6 +1657,8 @@ public class MagicController implements Listener, MageController {
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
 		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
 
+        redstoneReplacement = ConfigurationUtils.getMaterialAndData(properties, "redstone_replacement", redstoneReplacement);
+
 		messagePrefix = ChatColor.translateAlternateColorCodes('&', messagePrefix);
 		castMessagePrefix = ChatColor.translateAlternateColorCodes('&', castMessagePrefix);
 		
@@ -3008,7 +3011,9 @@ public class MagicController implements Listener, MageController {
 					Block current = toggleBlock.getBlock();
 					// Don't toggle the block if it has changed to something else.
 					if (current.getType() == toggleBlock.getMaterial()) {
-						current.setType(Material.AIR);
+                        getLogger().info("Resuming block at " + toggleBlock.getPosition() + ": " + toggleBlock.getName() + " with " + toggleBlock.getMaterial());
+
+                        redstoneReplacement.modify(current);
 						restored.add(toggleBlock);
 					}
 					
@@ -3016,16 +3021,39 @@ public class MagicController implements Listener, MageController {
 				}
 			}
 			if (restored.size() > 0) {
+                // Hacky double-hit ...
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, 
 					new Runnable() {
 						public void run() {
 							for (Automaton restoreBlock : restored) {
-								getLogger().info("Resuming block at " + restoreBlock.getPosition() + ": " + restoreBlock.getName());
 								restoreBlock.restore();
 								sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));	
 							}
 						}
-				}, 5);
+				}, 120);
+/*
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+                        new Runnable() {
+                            public void run() {
+                                for (Automaton restoreBlock : restored) {
+                                    getLogger().info("Resuming block at " + restoreBlock.getPosition() + ": " + restoreBlock.getName() + " with " + restoreBlock.getMaterial());
+                                    restoreBlock.restore();
+                                    sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));
+                                }
+                            }
+                        }, 5);
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+                        new Runnable() {
+                            public void run() {
+                                for (Automaton restoreBlock : restored) {
+                                    getLogger().info("Resuming block at " + restoreBlock.getPosition() + ": " + restoreBlock.getName() + " with " + restoreBlock.getMaterial());
+                                    restoreBlock.restore();
+                                    sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));
+                                }
+                            }
+                        }, 5);
+                        */
 			}
 			if (chunkData.size() == 0) {
 				automata.remove(chunkKey);
@@ -3583,6 +3611,10 @@ public class MagicController implements Listener, MageController {
         return bookItem;
     }
 
+    public MaterialAndData getRedstoneReplacement() {
+        return redstoneReplacement;
+    }
+
 	/*
 	 * Private data
 	 */
@@ -3609,6 +3641,7 @@ public class MagicController implements Listener, MageController {
     private boolean 							loadDefaultEnchanting		= true;
     private boolean 							loadDefaultCrafting			= true;
 
+    private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
     private Set<Material>                       buildingMaterials               = new HashSet<Material>();
     private Set<Material>                       indestructibleMaterials         = new HashSet<Material>();
     private Set<Material>                       restrictedMaterials	 	        = new HashSet<Material>();

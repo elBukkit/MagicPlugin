@@ -309,6 +309,9 @@ auto_undo: 0
 # this is important if you allow building with tnt, especially with griefers.
 max_tnt_per_chunk: 16
 
+# When redstone is toggled, what block should replace? Note that air is glitchy
+redstone_replacement: obsidian
+
 #
 # Control wands' "Power" settings
 #
