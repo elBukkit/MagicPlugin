@@ -44,7 +44,7 @@ public class CushionSpell extends BlockSpell
 					int y = targetFace.getY() + dy;
 					int z = targetFace.getZ() + dz;
 					Block block = world.getBlockAt(x, y, z);
-					if (block.getType() == Material.AIR)
+					if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
 					{
 						registerForUndo(block);
 						block.setType(Material.STATIONARY_WATER);
