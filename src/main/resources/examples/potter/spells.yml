@@ -1665,7 +1665,7 @@ incarcerous:
         xp: 50
 
 imperio:
-    icon: charcoal
+    icon: coal:1
     category: unforgiveable
     class: ForceSpell
     pvp_restricted: true
@@ -1689,7 +1689,7 @@ imperio:
         xp: 85
 
 imperiomaxima:
-    icon: charcoal
+    icon: coal:1
     hidden: true
     category: staff
     class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell

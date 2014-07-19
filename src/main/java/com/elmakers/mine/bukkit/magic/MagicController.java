@@ -1466,11 +1466,23 @@ public class MagicController implements Listener, MageController {
                 newSpell = null;
                 ex.printStackTrace();
             }
+
 			if (newSpell == null)
 			{
 				getLogger().warning("Magic: Error loading spell " + key);
 				continue;
 			}
+
+
+            if (!newSpell.hasIcon())
+            {
+                String icon = spellNode.getString("icon");
+                if (icon != null && !icon.isEmpty())
+                {
+                    getLogger().info("Couldn't load spell icon '" + icon + "' for spell: " + newSpell.getKey());
+                }
+            }
+
 			addSpell(newSpell);
 		}
 		
