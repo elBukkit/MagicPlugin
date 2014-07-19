@@ -3027,33 +3027,29 @@ public class MagicController implements Listener, MageController {
 						public void run() {
 							for (Automaton restoreBlock : restored) {
 								restoreBlock.restore();
-								sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));	
 							}
 						}
-				}, 120);
-/*
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-                        new Runnable() {
-                            public void run() {
-                                for (Automaton restoreBlock : restored) {
-                                    getLogger().info("Resuming block at " + restoreBlock.getPosition() + ": " + restoreBlock.getName() + " with " + restoreBlock.getMaterial());
-                                    restoreBlock.restore();
-                                    sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));
-                                }
-                            }
-                        }, 5);
+				}, 5);
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
                         new Runnable() {
                             public void run() {
                                 for (Automaton restoreBlock : restored) {
-                                    getLogger().info("Resuming block at " + restoreBlock.getPosition() + ": " + restoreBlock.getName() + " with " + restoreBlock.getMaterial());
+                                    Block current = restoreBlock.getBlock();
+                                    current.setType(Material.AIR);
+                                }
+                            }
+                        }, 10);
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+                        new Runnable() {
+                            public void run() {
+                                for (Automaton restoreBlock : restored) {
                                     restoreBlock.restore();
                                     sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));
                                 }
                             }
-                        }, 5);
-                        */
+                        }, 15);
 			}
 			if (chunkData.size() == 0) {
 				automata.remove(chunkKey);

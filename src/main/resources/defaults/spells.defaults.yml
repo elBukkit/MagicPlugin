@@ -2948,6 +2948,7 @@ emp:
         type: sphere
         power: true
         cooldown: 1000
+        check_destructible: false
         undo: 200
     costs:
         xp: 45
