@@ -2791,22 +2791,35 @@ recall:
     worth: 25
     effects:
         cast:
-        -  class: EffectSingle
-           sound: portal_travel
-           location: both
-           effectlib:
-             class: WarpEntityEffect
-             particle: portal
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: smoke
+                   particleOrbital: large_smoke
+                   iterations: 20
+             '5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: instant_spell
+                   particleOrbital: spell
+                   iterations: 20
     parameters:
+        cooldown: 1000
         allow_spawn: true
         allow_marker: true
         allow_death: true
         allow_wand: true
         allow_home: true
         allow_cross_world: true
-        allow_warps: dueling,quiddichtraining,greathall,diagonalley,4privet,trainstation,arachnids,deatheaters
-    costs:
-        xp: 50
+        allow_warps: dueling,flyinglessons,greathall,diagonalley,4privet,trainstation,arachnids,deatheaters,hub,arenahub
 
 gather:
     hidden: true
@@ -2816,16 +2829,26 @@ gather:
     worth: 150
     effects:
         cast:
-        -  class: EffectSingle
-           sound: enderman_idle
-        -  class: EffectTrail
-           particle: portal
-        -  class: EffectSingle
-           location: both
-           effectlib:
-             class: WarpEntityEffect
-             particle: portal
-             iterations: 20
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: smoke
+                   particleOrbital: large_smoke
+                   iterations: 20
+             '5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               location: both
+               effectlib:
+                   class: AtomLocationEffect
+                   particleNucleus: instant_spell
+                   particleOrbital: spell
+                   iterations: 20
     parameters:
         target_type: LivingEntity
         allow_max_range: false

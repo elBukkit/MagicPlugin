@@ -447,8 +447,24 @@ spells:
         description: Repairs an area preserved with Salvio Hexia
         cast: Reparo!
     recall:
+        name: Recall
+        description: Apparate you to previous locations
         fail: ""
         no_target: ""
+        cast_marker: You apparate to your marker
+        cast_death: You apparate to your last death location
+        cast_spawn: You apparate to spawn
+        cast_home: You apparate home
+        cast_wand: You apparate to your lost wand
+        cast_warp: Apparating to $name
+    gather:
+        name: Gather
+        description: Apparates you to other players
+        cast_to_player: You apparate to $target
+        cast_entity: Apparating $target to your target
+        cast_player_message: "&d&o$player &r&5apparated"
+        target_selected: You captured $target
+        cancel: Released target
     reparomaxima:
         name: Reparo Maxima
         description: Repairs a large area preserved with Salvio Hexia
@@ -600,6 +616,10 @@ wands:
     portkey:
         name: Portkey
         description: Where will it take you?
+
+    sorting:
+        name: Letter from Hogwarts
+        description: Use this to get sorted into a house!
 
     floopowder:
         name: Floo Powder
