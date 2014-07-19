@@ -76,7 +76,7 @@ public class WorldGuardManager {
 
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
 		if (checkSet == null) return true;
-		return checkSet.allows(DefaultFlag.PASSTHROUGH);
+		return checkSet.size() == 0 || checkSet.allows(DefaultFlag.PASSTHROUGH);
 	}
 	
 	public boolean hasBuildPermission(Player player, Block block) {
