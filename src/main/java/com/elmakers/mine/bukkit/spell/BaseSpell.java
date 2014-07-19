@@ -1197,6 +1197,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public boolean hasIcon() {
+        return icon != null && icon.getMaterial() != Material.AIR;
+    }
+
+    @Override
     public final String getDescription()
     {
         return description;
