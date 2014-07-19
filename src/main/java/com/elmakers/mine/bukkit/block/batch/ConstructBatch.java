@@ -379,11 +379,11 @@ public class ConstructBatch extends BrushBatch {
 				// A work-around for double-powering Automata.
 				// It'd be really cool to maybe find the associated command
 				// block and temporarily disable it, or something.
-				if (!controller.isAutomata(block)) {
+				//if (!controller.isAutomata(block)) {
 					registerForUndo(block);
 					block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
 					block.setType(Material.AIR);
-				}
+				//}
 			} else if (material == Material.REDSTONE_TORCH_OFF) {
 				registerForUndo(block);
 				block.setType(Material.REDSTONE_TORCH_ON);
