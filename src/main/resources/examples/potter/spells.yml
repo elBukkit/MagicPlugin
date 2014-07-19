@@ -633,7 +633,7 @@ beat:
         effect_confusion: 5
 
 bogies:
-    icon: dye_powder_white
+    icon: ink_sack:15
     category: creatures
     class: PotionEffectSpell
     pvp_restricted: true
@@ -799,7 +799,7 @@ confringo:
         xp: 75
 
 confundus:
-    icon: charcoal
+    icon: coal:1
     category: dada
     class: PotionEffectSpell
     pvp_restricted: true
