@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -203,4 +204,6 @@ public interface MageController {
      * @return true if sounds are enabled.
      */
     public boolean soundsEnabled();
+
+    public MaterialAndData getRedstoneReplacement();
 }
