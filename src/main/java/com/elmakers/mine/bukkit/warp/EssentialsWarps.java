@@ -27,9 +27,9 @@ public class EssentialsWarps {
 
     public Location getWarp(String warpName) {
         try {
-            warps.getWarp(warpName);
+            return warps.getWarp(warpName);
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
         return null;
     }

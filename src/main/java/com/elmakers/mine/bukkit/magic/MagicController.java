@@ -607,10 +607,10 @@ public class MagicController implements Listener, MageController {
         load();
 
         // Try to link to Essentials:
-        Object essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
+        Plugin essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
         hasEssentials = essentials != null;
         if (hasEssentials) {
-            if (warpController.setEssentials(plugin)) {
+            if (warpController.setEssentials(essentials)) {
                 getLogger().info("Integrating with Essentials for Recall warps");
             }
             try {
