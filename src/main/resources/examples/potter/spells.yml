@@ -633,7 +633,7 @@ beat:
         effect_confusion: 5
 
 bogies:
-    icon: skull_item:2
+    icon: dye_powder_white
     category: creatures
     class: PotionEffectSpell
     pvp_restricted: true
@@ -794,11 +794,12 @@ confringo:
         target_breakables: 1
         break_blocks: false
         undo: 10000
+        entity_undo: false
     costs:
         xp: 75
 
 confundus:
-    icon: rotten_flesh
+    icon: charcoal
     category: dada
     class: PotionEffectSpell
     pvp_restricted: true
@@ -897,7 +898,7 @@ obscuro:
         effect_blindness: 1
 
 crucio:
-    icon: nether_stalk
+    icon: quartz
     category: unforgiveable
     class: PotionEffectSpell
     pvp_restricted: true
@@ -1596,7 +1597,7 @@ immobulus:
 
 locomotomortus:
     alias: locomoto
-    icon: web
+    icon: gold_ingot
     category: dada
     class: PotionEffectSpell
     pvp_restricted: true
@@ -1631,7 +1632,7 @@ locomotomortus:
         fall_protection: 5000
 
 incarcerous:
-    icon: web
+    icon: gold_ingot
     category: dark
     class: ConstructSpell
     worth: 45
@@ -1664,7 +1665,7 @@ incarcerous:
         xp: 50
 
 imperio:
-    icon: leash
+    icon: charcoal
     category: unforgiveable
     class: ForceSpell
     pvp_restricted: true
@@ -1688,7 +1689,7 @@ imperio:
         xp: 85
 
 imperiomaxima:
-    icon: leash
+    icon: charcoal
     hidden: true
     category: staff
     class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell
@@ -2347,7 +2348,7 @@ reparomaxima:
 
 sectumsempra:
     alias: sectum
-    icon: gold_ingot
+    icon: quartz
     category: dark
     pvp_restricted: true
     class: PotionEffectSpell
