@@ -449,7 +449,7 @@ public abstract class TargetingSpell extends BaseSpell {
         } else {
             sourceLocation = getLocation();
             if (sourceLocation != null) {
-                entities = CompatibilityUtils.getNearbyEntities(location, maxRange, maxRange, maxRange);
+                entities = CompatibilityUtils.getNearbyEntities(sourceLocation, maxRange, maxRange, maxRange);
             }
         }
 
