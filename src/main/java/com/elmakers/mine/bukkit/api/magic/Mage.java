@@ -328,6 +328,9 @@ public interface Mage extends CostReducer {
     public void removeExperience(int xp);
     public int getExperience();
 
+    public int getLevel();
+    public void setLevel(int level);
+
     public boolean addPendingBlockBatch(BlockBatch batch);
     public void addUndoBatch(UndoBatch batch);
 
