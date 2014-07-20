@@ -466,6 +466,10 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			}
 			return false;
 		}
+        if (api.isWand(heldItem) || api.isSpell(heldItem) || api.isBrush(heldItem)) {
+            sender.sendMessage(Messages.getParameterized("wand.already_enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
+            return false;
+        }
 		
 		Wand wand = api.createWand(heldItem.getType(), heldItem.getDurability());
 		player.setItemInHand(wand.getItem());
