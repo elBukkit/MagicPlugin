@@ -22,11 +22,7 @@ import com.elmakers.mine.bukkit.utility.Messages;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -1322,12 +1318,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString("wand.hunger_regeneration", hungerRegeneration));
 	}
 	
-	private String getLevelString(String templateName, float amount)
+	public static String getLevelString(String templateName, float amount)
 	{
 		return getLevelString(templateName, amount, 1);
 	}
 	
-	private static String getLevelString(String templateName, float amount, float max)
+	public static String getLevelString(String templateName, float amount, float max)
 	{
 		String templateString = Messages.get(templateName);
 		if (templateString.contains("$roman")) {
@@ -1772,30 +1768,43 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return isWand(activeItem);
 	}
 
-    public boolean enchant(int totalLevels) {
+    public int enchant(int totalLevels) {
         return randomize(totalLevels, true);
     }
 
-	protected boolean randomize(int totalLevels, boolean additive) {
+	protected int randomize(int totalLevels, boolean additive) {
         WandUpgradePath path = getPath();
-		if (path == null) return false;
+		if (path == null) return 0;
 
-		int maxLevel = path.getMaxLevel();
+        int minLevel = path.getMinLevel();
+        if (totalLevels < minLevel) {
+            if (mage != null) {
+                String levelMessage = Messages.get("wand.need_more_levels");
+                levelMessage = levelMessage.replace("$levels", Integer.toString(minLevel));
+                mage.sendMessage(levelMessage);
+            }
+            return 0;
+        }
 
         // Just a hard-coded sanity check
+        int maxLevel = path.getMaxLevel();
         totalLevels = Math.min(totalLevels, maxLevel * 50);
 
 		int addLevels = Math.min(totalLevels, maxLevel);
+        int levels = 0;
         boolean modified = true;
-		while (addLevels > 0 && modified) {
+		while (addLevels > minLevel && modified) {
             WandLevel level = path.getLevel(addLevels);
             modified = level.randomizeWand(this, additive);
 			totalLevels -= maxLevel;
+            if (modified) {
+                levels += addLevels;
+            }
 			addLevels = Math.min(totalLevels, maxLevel);
 			additive = true;
 		}
 
-        return modified;
+        return levels;
 	}
 
     public static ItemStack createItem(MagicController controller, String templateName) {
@@ -1852,9 +1861,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.isForcedUpgrade() || other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection", damageReduction)); }
 		if (other.isForcedUpgrade() || other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_physical", damageReductionPhysical)); }
 		if (other.isForcedUpgrade() || other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_projectile", damageReductionProjectiles)); }
-		if (other.isForcedUpgrade() || other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_falling", damageReductionFalling)); }
+		if (other.isForcedUpgrade() || other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_fall", damageReductionFalling)); }
 		if (other.isForcedUpgrade() || other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_fire", damageReductionFire)); }
-		if (other.isForcedUpgrade() || other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_explosions", damageReductionExplosions)); }
+		if (other.isForcedUpgrade() || other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.protection_blast", damageReductionExplosions)); }
 		if (other.isForcedUpgrade() || other.healthRegeneration > healthRegeneration) { healthRegeneration = other.healthRegeneration; modified = true; if (healthRegeneration > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.health_regeneration", healthRegeneration)); }
 		if (other.isForcedUpgrade() || other.hungerRegeneration > hungerRegeneration) { hungerRegeneration = other.hungerRegeneration; modified = true; if (hungerRegeneration > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.hunger_regeneration", hungerRegeneration)); }
 		if (other.isForcedUpgrade() || other.speedIncrease > speedIncrease) { speedIncrease = other.speedIncrease; modified = true; if (speedIncrease > 0) sendAddMessage("wand.upgraded_property", getLevelString("wand.haste", speedIncrease)); }
@@ -2941,5 +2950,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             overrides.put(key, value);
             setOverrides(overrides);
         }
+    }
+
+    public void setStoredXpLevel(int level) {
+        this.storedXpLevel = level;
+    }
+
+    public int getStoredXpLevel() {
+        return storedXpLevel;
     }
 }

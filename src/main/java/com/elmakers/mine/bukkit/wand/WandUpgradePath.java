@@ -60,6 +60,7 @@ public class WandUpgradePath {
         this.maxPower = inherit.maxPower;
         this.minLevel = inherit.minLevel;
         this.maxLevel = inherit.maxLevel;
+        this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         load(template);
     }
 
@@ -90,7 +91,9 @@ public class WandUpgradePath {
         maxHaste = (float)template.getDouble("max_haste", maxHaste);
 
         // Parse defined levels
-        levelMap = new TreeMap<Integer, WandLevel>();
+        if (levelMap == null) {
+            levelMap = new TreeMap<Integer, WandLevel>();
+        }
         if (template.contains("levels")) {
             String[] levelStrings = StringUtils.split(template.getString("levels"), ",");
             levels = new int[levelStrings.length];
@@ -123,7 +126,15 @@ public class WandUpgradePath {
                 }
             }
 
-            levelMap.put(level, new WandLevel(this, template, levelIndex, nextLevelIndex, distance));
+            WandLevel wandLevel = levelMap.get(level);
+            WandLevel newLevel = new WandLevel(this, template, levelIndex, nextLevelIndex, distance);
+            if (wandLevel == null) {
+                wandLevel = newLevel;
+            } else {
+                newLevel.add(wandLevel);
+                wandLevel = newLevel;
+            }
+            levelMap.put(level, wandLevel);
         }
     }
 

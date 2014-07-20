@@ -38,21 +38,22 @@ public class EnchantingController implements Listener {
 			event.getEnchantsToAdd().clear();
 			int level = event.getExpLevelCost();
 			Wand wand = new Wand(controller, event.getItem());
-			if (!wand.enchant(level)) {
-				event.getEnchanter().sendMessage(Messages.get("wand.fully_enchanted"));
-			}
+			if (wand.enchant(level) <= 0) {
+                event.setCancelled(true);
+			} else {
+                event.setCancelled(false);
+
+                // This is necessary due to a special-case check Bukkit added in
+                // https://github.com/Bukkit/CraftBukkit/commit/ac1a2d0233eff169efcc7c807cbf799b57bf2306
+                // This will skip deducting XP costs (!!) if you don't return something to add to the item
+                // Unfortunately, adding an enchant to the item is going to blow away its data, soooo...
+                //
+                // This is kind of an "FU" to this particular commit, in that it will trigger an NPE
+                // in NMS code that will get silently eaten, but avoid modifying the resultant ItemStack.
+                // :P
+                event.getEnchantsToAdd().put(null, 0);
+            }
 			wand.makeEnchantable(true);
-			event.setCancelled(false);
-			
-			// This is necessary due to a special-case check Bukkit added in 
-			// https://github.com/Bukkit/CraftBukkit/commit/ac1a2d0233eff169efcc7c807cbf799b57bf2306
-			// This will skip deducting XP costs (!!) if you don't return something to add to the item
-			// Unfortunately, adding an enchant to the item is going to blow away its data, soooo...
-			// 
-			// This is kind of an "FU" to this particular commit, in that it will trigger an NPE
-			// in NMS code that will get silently eaten, but avoid modifying the resultant ItemStack.
-			// :P
-			event.getEnchantsToAdd().put(null, 0);
 		}
 	}
 	

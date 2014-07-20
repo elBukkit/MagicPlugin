@@ -1068,6 +1068,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public int getLevel() {
+        if (activeWand != null && activeWand.hasExperience()) {
+            return activeWand.getStoredXpLevel();
+        }
+
+        Player player = getPlayer();
+        if (player != null) {
+            return player.getLevel();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public void setLevel(int level) {
+        Player player = getPlayer();
+        if (player != null) {
+            player.setLevel(level);
+        }
+        if (activeWand != null && activeWand.hasExperience()) {
+            activeWand.setStoredXpLevel(level);
+        }
+    }
+
+    @Override
     public int getExperience() {
         if (activeWand != null && activeWand.hasExperience()) {
             return activeWand.getExperience();

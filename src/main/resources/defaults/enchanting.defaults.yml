@@ -457,27 +457,14 @@ engineer:
       pyramid: 0,10,40,10,100
       emp: 0,0,10,20,100
       box: 0,5,40,50,100
-      breach: 5,20,30,40,100
       bridge: 0,5,10,15,100
-      camera: 0,10,30,40,100
       collapse: 0,5,30,50,100
       convert: 0,5,40,50,100
-      cushion: 10,40,20,10,100
       disintegrate: 0,10,40,50,100
       dome: 0,5,40,50,100
-      shields: 1,15,50,70,100
-      earth: 5,20,50,20,100
-      familiar: 10,30,40,20,100
-      farm: 0,0,10,20,100
       fill: 0,0,1,5,100
-      flare: 110,80,60,20,100
-      fling: 0,5,70,80,100
-      frost: 80,70,50,10,100
-      gills: 10,11,20,25,100
-      tesseract: 80,50,40,20,100
       torch: 80,60,50,10,100
       workbench: 80,60,50,10,100
-      leap: 70,80,60,40,100
       recurse: 0,5,20,40,100
       paint: 1,20,45,15,100
       phase: 0,0,0,1,100
@@ -506,18 +493,12 @@ engineer:
       superiterate: 0,0,1,10,100
       superdome: 0,0,1,10,100
       tunnel: 5,10,20,30,100
-      undo: 1,5,10,50,100
       commit: 0,0,0,1,100
       rewind: 0,0,0,5,100
-      counterspell: 0,1,5,15,100
       pillar: 0,5,10,15,100
       place: 0,1,5,10,100
-      stash: 0,1,5,10,100
       stalactite: 0,5,10,15,100
-      tree: 5,20,35,45,100
       day: 0,5,10,30,100
-      silence: 1,5,10,20,100
-      blind: 5,10,15,40,100
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0
@@ -781,12 +762,8 @@ apprentice:
       gather: 0,1,5,10,100
       mount: 0,1,5,10,100
       counterspell: 0,1,5,15,100
-      stash: 0,1,5,10,100
       kaboom: 0,0,1,5,100
       neutron: 0,0,10,15,100
-      wither: 5,10,20,30,100
-      mine: 1,20,30,40,100
-      chop: 1,20,30,40,100
       tree: 5,20,35,45,100
       day: 0,5,10,30,100
       night: 0,0,1,5,100
@@ -795,9 +772,7 @@ apprentice:
       weather: 0,0,0,1,100
       cage: 0,0,2,10,100
       tent: 0,0,5,15,100
-      missile: 1,5,20,30,100
       silence: 0,1,5,10,100
-      blind: 1,5,10,20,100
 
 student:
     inherit: default
