@@ -155,6 +155,7 @@ spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback
     reactivate: Reactivating $name
+    available_path: Available on the $path path
 worlds:
     world:
         name: The Overworld

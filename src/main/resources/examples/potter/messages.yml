@@ -35,10 +35,11 @@ spell:
     brush: Uses Material Brushes
     undoable: ""
     reactivate: Reactivating $name
+    available_path: Available to $path
 
 paths:
     year1:
-        name: First Years
+        name: First Year
         description: First years learn a variety of beginning spells, as well as the basics of wand use.
     year2:
         name: Second Years
@@ -272,7 +273,7 @@ spells:
         name: Finite Incantatem
         description: Counter target player's spell
         usage: Only works on recently cast spells
-        extended_description: "The Minister of Magic's Favourite Spell.\n\nThis can be used to reverse the effects of your target's last spell cast."
+        extended_description: "The Minister of Magic's Favourite Spell."
         cast: "Finite Incantatem &d&o$target &r&6$spell!"
         fail:
         cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"

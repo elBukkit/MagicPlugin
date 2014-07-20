@@ -3529,12 +3529,14 @@ public class MagicController implements Listener, MageController {
         book.setTitle(title);
         List<String> pages = new ArrayList<String>();
 
+        Set<String> paths = WandUpgradePath.getPathKeys();
+
         for (String key : categoryKeys) {
             category = getCategory(key);
             title = Messages.get("books.default.title").replace("$category", category.getName());
-            String description = "" + ChatColor.BLUE + ChatColor.BOLD + title + "\n\n";
-            description += category.getDescription();
-            pages.add("" + ChatColor.RESET + ChatColor.DARK_BLUE + description);
+            String description = "" + ChatColor.BOLD + ChatColor.BLUE + title + "\n\n";
+            description += "" + ChatColor.RESET + ChatColor.DARK_BLUE + category.getDescription();
+            pages.add(description);
 
             List<SpellTemplate> categorySpells = categories.get(key);
             Collections.sort(categorySpells);
@@ -3546,18 +3548,6 @@ public class MagicController implements Listener, MageController {
                 String spellDescription = spell.getDescription();
                 if (spellDescription != null && spellDescription.length() > 0) {
                     lines.add("" + ChatColor.BLACK + spellDescription);
-                    lines.add("");
-                }
-
-                String usage = spell.getUsage();
-                if (usage != null && usage.length() > 0) {
-                    lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
-                    lines.add("");
-                }
-
-                String spellExtendedDescription = spell.getExtendedDescription();
-                if (spellExtendedDescription != null && spellExtendedDescription.length() > 0) {
-                    lines.add("" + ChatColor.BLACK + spellExtendedDescription);
                     lines.add("");
                 }
 
@@ -3575,6 +3565,14 @@ public class MagicController implements Listener, MageController {
                         if (cost.hasCosts(reducer)) {
                             lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(reducer)));
                         }
+                    }
+                }
+
+                for (String pathKey : paths) {
+                    WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
+                    if (checkPath.hasSpell(spell.getKey())) {
+                        lines.add(ChatColor.DARK_BLUE + Messages.get("spell.available_path").replace("$path", checkPath.getName()));
+                        break;
                     }
                 }
 
@@ -3598,6 +3596,19 @@ public class MagicController implements Listener, MageController {
                 if (spell instanceof UndoableSpell && ((UndoableSpell) spell).isUndoable()) {
                     lines.add(ChatColor.GRAY + Messages.get("spell.undoable"));
                 }
+
+                String usage = spell.getUsage();
+                if (usage != null && usage.length() > 0) {
+                    lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
+                    lines.add("");
+                }
+
+                String spellExtendedDescription = spell.getExtendedDescription();
+                if (spellExtendedDescription != null && spellExtendedDescription.length() > 0) {
+                    lines.add("" + ChatColor.BLACK + spellExtendedDescription);
+                    lines.add("");
+                }
+
                 pages.add(StringUtils.join(lines, "\n"));
             }
         }

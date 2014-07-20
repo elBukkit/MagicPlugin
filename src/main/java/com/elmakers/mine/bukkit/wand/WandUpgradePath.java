@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.utility.Messages;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,6 +23,10 @@ public class WandUpgradePath {
     private TreeMap<Integer, WandLevel> levelMap = null;
     private int[] levels = null;
     private final String key;
+    private final WandUpgradePath parent;
+    private final Set<String> spells = new HashSet<String>();
+    private String name;
+    private String description;
 
     private int maxUses = 500;
     private int maxMaxXp = 1500;
@@ -43,6 +48,7 @@ public class WandUpgradePath {
 
     public WandUpgradePath(String key, WandUpgradePath inherit, ConfigurationSection template)
     {
+        this.parent = inherit;
         this.key = key;
         this.levels = inherit.levels;
         this.maxMaxXp = inherit.maxMaxXp;
@@ -61,15 +67,25 @@ public class WandUpgradePath {
         this.minLevel = inherit.minLevel;
         this.maxLevel = inherit.maxLevel;
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
-        load(template);
+        load(key, template);
     }
 
     public WandUpgradePath(String key, ConfigurationSection template) {
         this.key = key;
-        load(template);
+        this.parent = null;
+        load(key, template);
     }
 
-    protected void load(ConfigurationSection template) {
+    protected void load(String key, ConfigurationSection template) {
+        ConfigurationSection spellSection = template.getConfigurationSection("spells");
+        if (spellSection != null) {
+            spells.addAll(spellSection.getKeys(false));
+        }
+        name = template.getString("name", name);
+        name = Messages.get("paths." + key + ".name", name);
+        description = template.getString("description", description);
+        description = Messages.get("paths." + key + ".description", description);
+
         // Fetch overall limits
         maxUses = template.getInt("max_uses", maxUses);
         maxMaxXp = template.getInt("max_mana", maxMaxXp);
@@ -278,5 +294,17 @@ public class WandUpgradePath {
 
     public int getMinLevel() {
         return minLevel;
+    }
+
+    public boolean hasSpell(String spellKey) {
+        return spells.contains(spellKey);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
