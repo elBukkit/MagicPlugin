@@ -1182,6 +1182,7 @@ episkey:
     class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -1794,6 +1795,7 @@ levicorpus:
     icon: ink_sack:5
     category: charms
     class: GenericSpell
+    cast_on_no_target: true
     worth: 20
     effects:
         cast:
@@ -2603,6 +2605,7 @@ nox:
     icon: ink_sack:0
     category: charms
     class: PotionEffectSpell
+    cast_on_no_target: true
     worth: 20
     effects:
         cast:
@@ -2652,6 +2655,7 @@ vulnera:
     icon: ink_sack:9
     category: charms
     class: PotionEffectSpell
+    cast_on_no_target: true
     worth: 50
     pvp_restricted: false
     effects:
@@ -2686,6 +2690,7 @@ ferula:
     icon: ink_sack:9
     category: charms
     class: PotionEffectSpell
+    cast_on_no_target: true
     worth: 50
     pvp_restricted: false
     effects:
