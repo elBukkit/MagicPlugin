@@ -20,6 +20,9 @@ worlds:
 wand:
     mana_amount: "Energy: $amount"
     mana_regeneration: "Energy Regeneration: $amount/s"
+    leveled_up: You have graduated to $path!
+    fully_enchanted: You have nothing more to learn here.
+    need_more_levels: You need at least $levels to take an exam.
 
 costs:
     xp_amount: $amount XP
