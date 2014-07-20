@@ -327,6 +327,7 @@ public interface Mage extends CostReducer {
 
     public void removeExperience(int xp);
     public int getExperience();
+    public void giveExperience(int xp);
 
     public int getLevel();
     public void setLevel(int level);
