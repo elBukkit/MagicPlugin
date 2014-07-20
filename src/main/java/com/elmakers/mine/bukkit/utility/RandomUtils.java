@@ -85,6 +85,26 @@ public class RandomUtils {
         }
     }
 
+    public static <T extends Object> LinkedList<WeightedPair<T>> merge(LinkedList<WeightedPair<T>> base, LinkedList<WeightedPair<T>> inherit) {
+        if (inherit == null || inherit.size() == 0) {
+            return base;
+        }
+        if (base == null) {
+            base = new LinkedList<WeightedPair<T>>();
+        }
+        if (base.size() == 0) {
+            base.addAll(inherit);
+        } else {
+            WeightedPair<T> lastPair = base.getLast();
+            float threshold = lastPair.getThreshold();
+            for (WeightedPair<T> inheritPair : inherit) {
+                threshold += inheritPair.getThreshold();
+                base.add(new WeightedPair<T>(threshold, inheritPair.getValue()));
+            }
+        }
+        return base;
+    }
+
     public static String getEntry(String csvList, int index)
     {
         if (csvList == null) return null;
