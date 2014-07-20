@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.utility.Messages;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -23,6 +24,7 @@ public class WandUpgradePath {
 
     private TreeMap<Integer, WandLevel> levelMap = null;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<String, Collection<EffectPlayer>>();
+    private List<String> upgradeCommands;
     private int[] levels = null;
     private final String key;
     private final WandUpgradePath parent;
@@ -94,6 +96,9 @@ public class WandUpgradePath {
         name = Messages.get("paths." + key + ".name", name);
         description = template.getString("description", description);
         description = Messages.get("paths." + key + ".description", description);
+
+        // Upgrade commands
+        upgradeCommands = template.getStringList("upgrade_commands");
 
         // Effects
         if (template.contains("effects")) {
@@ -353,6 +358,38 @@ public class WandUpgradePath {
 
     public void upgraded(Mage mage) {
         playEffects(mage, "upgrade");
+        CommandSender sender = Bukkit.getConsoleSender();
+        Location location = null;
+        if (mage != null) {
+            location = mage.getLocation();
+        }
+        if (upgradeCommands != null) {
+            for (String command : upgradeCommands) {
+                if (command.contains("@p")) {
+                    if (mage == null || !mage.isPlayer()) {
+                        Bukkit.getLogger().warning("Tried to upgrade a non-player mage with commands");
+                        continue;
+                    }
+                    command = command.replace("@p", mage.getName());
+                }
+                if (command.contains("@uuid")) {
+                    if (mage == null ) {
+                        Bukkit.getLogger().warning("Tried to upgrade with commands but no mage");
+                        continue;
+                    }
+                    command = command.replace("@uuid", mage.getId());
+                }
+                if (location != null) {
+                    command = command
+                        .replace("@world", location.getWorld().getName())
+                        .replace("@x", Double.toString(location.getX()))
+                        .replace("@y", Double.toString(location.getY()))
+                        .replace("@z", Double.toString(location.getZ()));
+                }
+                command = command.replace("$path", name);
+                mage.getController().getPlugin().getServer().dispatchCommand(sender, command);
+            }
+        }
     }
 
     public boolean hasUpgrade() {

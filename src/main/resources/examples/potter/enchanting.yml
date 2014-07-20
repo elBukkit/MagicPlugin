@@ -7,7 +7,7 @@ master:
     hidden: true
     upgrade: year1
     upgrade_commands:
-    - manuadd @p yearone
+    - wandp upgrade year1
 
 default:
   hidden: true
@@ -31,7 +31,6 @@ default:
       enchant:
       -  class: EffectSingle
          sound: level_up
-         location: target
          effectlib:
            class: SphereEntityEffect
            iterations: 10
@@ -43,12 +42,10 @@ default:
          sound: level_up
       -  class: EffectRing
          firework: star
-         location: target
          radius: 4
          size: 3
       -  class: EffectRing
          firework: ball_large
-         location: target
          radius: 6
          size: 5
 
@@ -56,7 +53,9 @@ year1:
     inherit: default
     upgrade: year2
     upgrade_commands:
-    - manuadd @p yeartwo
+    - manpromote @p yeartwo
+    - wandp upgrade year2
+    - broadcast &6@p §3has graduated to §b$path§3!
     levels: 1,30,50
     max_mana: 60
     xp_max:
@@ -80,7 +79,9 @@ year2:
     inherit: year1
     max_mana: 90
     upgrade_commands:
-    - manuadd @p yearthree
+    - manpromote @p yearthree
+    - wandp upgrade year3
+    - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       3: 100, 10,  0
       4:  20, 30, 50
@@ -102,7 +103,9 @@ year3:
       4: 100, 10,  0
       5:  20, 30, 50
     upgrade_commands:
-    - manuadd @p yearfour
+    - manpromote @p yearfour
+    - wandp upgrade year4
+    - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       stupefy: 100,100,100
       reducto: 50,60,70
@@ -122,7 +125,9 @@ year4:
       4: 100, 10,  0
       5:  20, 30, 50
     upgrade_commands:
-    - manuadd @p yearfive
+    - manpromote @p yearfive
+    - wandp upgrade year5
+    - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       reducio: 100,100,100
       aguamenti: 50,60,70
@@ -137,7 +142,9 @@ year5:
     inherit: year4
     max_mana: 150
     upgrade_commands:
-    - manuadd @p yearsix
+    - manpromote @p yearsix
+    - wandp upgrade year6
+    - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       4: 100, 10,  0
       6:  20, 30, 50
@@ -157,7 +164,9 @@ year6:
       5: 100, 10,  0
       8:  20, 30, 50
     upgrade_commands:
-    - manuadd @p yearseven
+    - manpromote @p yearseven
+    - wandp upgrade year7
+    - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       crucio: 100,100,100
       ferula: 50,60,70
@@ -175,7 +184,9 @@ year7:
       5: 100, 10,  0
       10:  20, 30, 50
     upgrade_commands:
-    - manuadd @p graduate
+    - manpromote @p graduate
+    - wandp upgrade graduate
+    - broadcast &6@p §3has graduated from Hogwarts!
     spells:
       avadakedavra: 100,100,100
       reparifarge: 50,60,70

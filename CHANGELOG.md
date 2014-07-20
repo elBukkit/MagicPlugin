@@ -2,6 +2,12 @@
 
 ## 3.4
 
+ - Add Reflect spell, tweak Shields Spell
+ - Spells can now construct blocks that non-engineering spells break (Sheilds spell)
+ - Magic blocks can reflect spells on target (Reflect spell)
+ - Wand levelling system
+ - Re-worked undo system, auto-undo spells are also counterable/Rollback'able
+
 ## 3.3.1
 
  - Fix 1.6.4 support
