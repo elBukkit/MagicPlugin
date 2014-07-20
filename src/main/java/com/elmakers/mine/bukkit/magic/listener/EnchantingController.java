@@ -29,7 +29,7 @@ public class EnchantingController implements Listener {
 	}
 	
 	public void load(ConfigurationSection properties) {
-        WandUpgradePath.loadPaths(properties);
+        WandUpgradePath.loadPaths(controller, properties);
 	}
 
 	@EventHandler

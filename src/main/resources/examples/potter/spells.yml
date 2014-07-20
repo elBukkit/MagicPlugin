@@ -524,6 +524,7 @@ avadakedavra:
         check_destructible: false
         cooldown: 30000
         target_breakables: 1
+        bypass_backfire: true
     costs:
         xp: 100
 
@@ -565,6 +566,7 @@ avadamaxima:
         target_breakables: 1
         range: 16
         cooldown: 30000
+        bypass_backfire: true
     costs:
         xp: 300
 
@@ -1685,6 +1687,7 @@ imperio:
         range: 32
         item_force: 1
         entity_force: 3
+        bypass_backfire: true
     costs:
         xp: 85
 
@@ -1710,6 +1713,7 @@ imperiomaxima:
         item_force: 1
         entity_force: 1
         target_breakables: 1
+        bypass_backfire: true
     costs:
         xp: 100
 
@@ -2028,6 +2032,7 @@ protego:
     icon: ink_sack:12
     category: dada
     class: ConstructSpell
+    pvp_restricted: true
     worth: 45
     effects:
         cast:
@@ -2093,6 +2098,7 @@ protegoduo:
     icon: ink_sack:12
     category: dada
     class: ConstructSpell
+    pvp_restricted: true
     worth: 50
     effects:
         cast:
@@ -2126,6 +2132,7 @@ protegotria:
     icon: ink_sack:12
     category: dada
     class: ConstructSpell
+    pvp_restricted: true
     worth: 50
     effects:
         cast:
@@ -2435,6 +2442,7 @@ silenciomaxima:
         target: other
         range: 16
         target_breakables: 1
+        bypass_backfire: true
     costs:
         xp: 100
 
@@ -2486,6 +2494,7 @@ silenciototalus:
         - mute @a 10
         - say §dSILENCIO TOTALUS!
         target: none
+        bypass_backfire: true
     costs:
         xp: 100
 

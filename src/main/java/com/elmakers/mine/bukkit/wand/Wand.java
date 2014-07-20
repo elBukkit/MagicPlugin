@@ -1798,7 +1798,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             modified = level.randomizeWand(this, additive);
 			totalLevels -= maxLevel;
             if (modified) {
+                if (mage != null) {
+                    path.enchanted(mage);
+                }
                 levels += addLevels;
+            } else if (path.hasUpgrade()) {
+                WandUpgradePath newPath = path.getUpgrade();
+                if (newPath == null) {
+                    mage.sendMessage("Configuration issue, please check logs");
+                    controller.getLogger().warning("Invalid upgrade path: " + path.getUpgrade());
+                } else {
+                    mage.sendMessage(Messages.get("wand.level_up").replace("$path", newPath.getName()));
+                    this.path = newPath.getKey();
+                    path.upgraded(mage);
+                }
+            } else if (mage != null) {
+                mage.sendMessage(Messages.get("wand.fully_enchanted"));
             }
 			addLevels = Math.min(totalLevels, maxLevel);
 			additive = true;

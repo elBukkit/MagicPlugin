@@ -1,15 +1,16 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.Messages;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * A represents a randomized upgrade path that a wand may use
@@ -21,10 +22,12 @@ public class WandUpgradePath {
     private static Map<String, WandUpgradePath> paths = new HashMap<String, WandUpgradePath>();
 
     private TreeMap<Integer, WandLevel> levelMap = null;
+    private Map<String, Collection<EffectPlayer>> effects = new HashMap<String, Collection<EffectPlayer>>();
     private int[] levels = null;
     private final String key;
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<String>();
+    private String upgradeKey;
     private String name;
     private String description;
 
@@ -46,7 +49,7 @@ public class WandUpgradePath {
     private int minLevel = 10;
     private int maxLevel = 50;
 
-    public WandUpgradePath(String key, WandUpgradePath inherit, ConfigurationSection template)
+    public WandUpgradePath(MagicController controller, String key, WandUpgradePath inherit, ConfigurationSection template)
     {
         this.parent = inherit;
         this.key = key;
@@ -67,24 +70,47 @@ public class WandUpgradePath {
         this.minLevel = inherit.minLevel;
         this.maxLevel = inherit.maxLevel;
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
-        load(key, template);
+        effects.putAll(inherit.effects);
+        load(controller, key, template);
     }
 
-    public WandUpgradePath(String key, ConfigurationSection template) {
+    public WandUpgradePath(MagicController controller, String key, ConfigurationSection template) {
         this.key = key;
         this.parent = null;
-        load(key, template);
+        load(controller, key, template);
     }
 
-    protected void load(String key, ConfigurationSection template) {
+    protected void load(MagicController controller, String key, ConfigurationSection template) {
+        // Cache spells, mainly used for spellbooks
         ConfigurationSection spellSection = template.getConfigurationSection("spells");
         if (spellSection != null) {
             spells.addAll(spellSection.getKeys(false));
         }
+
+        upgradeKey = template.getString("upgrade");
+
+        // Description information
         name = template.getString("name", name);
         name = Messages.get("paths." + key + ".name", name);
         description = template.getString("description", description);
         description = Messages.get("paths." + key + ".description", description);
+
+        // Effects
+        if (template.contains("effects")) {
+            effects.clear();
+            ConfigurationSection effectsNode = template.getConfigurationSection("effects");
+            Collection<String> effectKeys = effectsNode.getKeys(false);
+            for (String effectKey : effectKeys) {
+                if (effectsNode.isString(effectKey)) {
+                    String referenceKey = effectsNode.getString(effectKey);
+                    if (effects.containsKey(referenceKey)) {
+                        effects.put(effectKey, new ArrayList(effects.get(referenceKey)));
+                    }
+                } else {
+                    effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
+                }
+            }
+        }
 
         // Fetch overall limits
         maxUses = template.getInt("max_uses", maxUses);
@@ -172,7 +198,7 @@ public class WandUpgradePath {
         return levelMap.get(level);
     }
 
-    protected static WandUpgradePath getPath(String key, ConfigurationSection configuration)
+    protected static WandUpgradePath getPath(MagicController controller, String key, ConfigurationSection configuration)
     {
         WandUpgradePath path = paths.get(key);
         if (path == null) {
@@ -182,14 +208,14 @@ public class WandUpgradePath {
             }
             String inheritKey = parameters.getString("inherit");
             if (inheritKey != null && !inheritKey.isEmpty()) {
-                WandUpgradePath inherit = getPath(inheritKey, configuration);
+                WandUpgradePath inherit = getPath(controller, inheritKey, configuration);
                 if (inherit == null) {
                     Bukkit.getLogger().warning("Failed to load inherited enchanting path '" + inheritKey + "' for path: " + key);
                     return null;
                 }
-                path = new WandUpgradePath(key, inherit, parameters);
+                path = new WandUpgradePath(controller, key, inherit, parameters);
             } else {
-                path = new WandUpgradePath(key, parameters);
+                path = new WandUpgradePath(controller, key, parameters);
             }
 
             paths.put(key, path);
@@ -198,12 +224,12 @@ public class WandUpgradePath {
         return path;
     }
 
-    public static void loadPaths(ConfigurationSection configuration) {
+    public static void loadPaths(MagicController controller, ConfigurationSection configuration) {
         paths.clear();
         Set<String> pathKeys = configuration.getKeys(false);
         for (String key : pathKeys)
         {
-            getPath(key, configuration);
+            getPath(controller, key, configuration);
         }
     }
 
@@ -306,5 +332,34 @@ public class WandUpgradePath {
 
     public String getDescription() {
         return description;
+    }
+
+    protected void playEffects(Mage mage, String effectType) {
+        Collection<EffectPlayer> players = effects.get(effectType);
+        if (players == null || mage == null) return;
+
+        Entity sourceEntity = mage.getEntity();
+        Location mageLocation = mage.getEyeLocation();
+
+        for (EffectPlayer player : players) {
+            player.setColor(mage.getEffectColor());
+            player.start(mageLocation, sourceEntity, null, null);
+        }
+    }
+
+    public void enchanted(Mage mage) {
+        playEffects(mage, "enchant");
+    }
+
+    public void upgraded(Mage mage) {
+        playEffects(mage, "upgrade");
+    }
+
+    public boolean hasUpgrade() {
+        return upgradeKey != null && !upgradeKey.isEmpty();
+    }
+
+    public WandUpgradePath getUpgrade() {
+        return getPath(upgradeKey);
     }
 }

@@ -6,6 +6,8 @@
 master:
     hidden: true
     upgrade: year1
+    upgrade_commands:
+    - manuadd @p yearone
 
 default:
   hidden: true
@@ -25,10 +27,36 @@ default:
   max_cooldown_reduction: 1.0
   max_haste: 1.0
   max_power: 1.0
+  effects:
+      enchant:
+      -  class: EffectSingle
+         sound: level_up
+         location: target
+         effectlib:
+           class: SphereEntityEffect
+           iterations: 10
+           period: 2
+           particle: enchantment_table
+           radius: 3
+      upgrade:
+      -  class: EffectSingle
+         sound: level_up
+      -  class: EffectRing
+         firework: star
+         location: target
+         radius: 4
+         size: 3
+      -  class: EffectRing
+         firework: ball_large
+         location: target
+         radius: 6
+         size: 5
 
 year1:
     inherit: default
     upgrade: year2
+    upgrade_commands:
+    - manuadd @p yeartwo
     levels: 1,30,50
     max_mana: 60
     xp_max:
@@ -51,16 +79,30 @@ year2:
     upgrade: year3
     inherit: year1
     max_mana: 90
+    upgrade_commands:
+    - manuadd @p yearthree
+    xp_max:
+      3: 100, 10,  0
+      4:  20, 30, 50
     spells:
       lumos: 100,100,100
+      fumos: 80,90,100
       arrow: 50,60,70
       episkey: 20,30,40
       protego: 40,60,80
+      flipendoduo: 5,10,20
+      locomotomortus: 1,5,10
+      arresto: 90,100,100
 
 year3:
     upgrade: year4
     inherit: year2
     max_mana: 110
+    xp_max:
+      4: 100, 10,  0
+      5:  20, 30, 50
+    upgrade_commands:
+    - manuadd @p yearfour
     spells:
       stupefy: 100,100,100
       reducto: 50,60,70
@@ -68,42 +110,72 @@ year3:
       confundus: 40,60,80
       immobulus: 40,50,60
       duro: 10,20,30
+      obscuro: 20,40,50
+      levicorpus: 20,40,50
+      rennervate: 90,100,100
 
 year4:
     upgrade: year5
     inherit: year3
     max_mana: 130
+    xp_max:
+      4: 100, 10,  0
+      5:  20, 30, 50
+    upgrade_commands:
+    - manuadd @p yearfive
     spells:
       reducio: 100,100,100
       aguamenti: 50,60,70
       incendio: 20,30,40
       petrificustotalus: 40,60,80
+      protegoduo: 5,20,30
+      snowball: 15,50,80
+      nox: 20,30,50
 
 year5:
     upgrade: year6
     inherit: year4
     max_mana: 150
+    upgrade_commands:
+    - manuadd @p yearsix
+    xp_max:
+      4: 100, 10,  0
+      6:  20, 30, 50
     spells:
       expelliarmus: 100,100,100
       finiteincantatem: 50,60,70
       sectumsempra: 20,30,40
       silencio: 40,60,80
       ascendio: 40,50,60
+      aparecium: 20,40,50
 
 year6:
     upgrade: year7
     inherit: year5
     max_mana: 170
+    xp_max:
+      5: 100, 10,  0
+      8:  20, 30, 50
+    upgrade_commands:
+    - manuadd @p yearseven
     spells:
       crucio: 100,100,100
       ferula: 50,60,70
       bombardamaxima: 20,30,40
       apparate: 40,60,80
+      flipendotria: 5,10,20
+      protegotria: 1,10,20
+      vulnera: 5,10,20
 
 year7:
     upgrade: graduate
     inherit: year6
     max_mana: 190
+    xp_max:
+      5: 100, 10,  0
+      10:  20, 30, 50
+    upgrade_commands:
+    - manuadd @p graduate
     spells:
       avadakedavra: 100,100,100
       reparifarge: 50,60,70
@@ -112,6 +184,9 @@ year7:
 graduate:
     inherit: year7
     max_mana: 200
+    xp_max:
+      8: 100, 10,  0
+      10:  20, 30, 50
 
 broom:
     hidden: true

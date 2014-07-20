@@ -128,11 +128,12 @@ wand:
     player_no_item: $name is not holding an item
     reorganized: Wand reorganized
     player_reorganized: $name's wand reorganized
+    already_enchanted: That $item is already enchanted
     enchanted: Your $item has been enchanted
     player_enchanted: $name's $item has been enchanted
     unenchanted: Your wand has been unenchanted
     player_unenchanted: $name's wand has been unenchanted
-    leveled_up: Your wand has been upgraded to $path!
+    level_up: Your wand has been upgraded to $path!
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
     unlocked: Your wand has been unlocked

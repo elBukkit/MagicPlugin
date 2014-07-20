@@ -20,7 +20,7 @@ worlds:
 wand:
     mana_amount: "Energy: $amount"
     mana_regeneration: "Energy Regeneration: $amount/s"
-    leveled_up: You have graduated to $path!
+    level_up: You have graduated to $path!
     fully_enchanted: You have nothing more to learn here.
     need_more_levels: You need at least $levels to take an exam.
 
@@ -35,29 +35,29 @@ spell:
     brush: Uses Material Brushes
     undoable: ""
     reactivate: Reactivating $name
-    available_path: Available to $path
+    available_path: Available to $paths
 
 paths:
     year1:
         name: First Year
         description: First years learn a variety of beginning spells, as well as the basics of wand use.
     year2:
-        name: Second Years
+        name: Second Year
         description: Spells for second year students.
     year3:
-        name: Third Years
+        name: Third Year
         description: Spells for third year students.
     year4:
-        name: Fourth Years
+        name: Fourth Year
         description: Spells for fourth year students.
     year5:
-        name: Fifth Years
+        name: Fifth Year
         description: Spells for fifth year students.
     year6:
-        name: Sixth Years
+        name: Sixth Year
         description: Spells for sixth year students.
     year7:
-        name: Seventh Years
+        name: Seventh Year
         description: Spells for seventh year students.
     graduate:
         name: Graduates

@@ -371,14 +371,6 @@ public class WandLevel {
 
 		// Set properties. This also updates name and lore.
 		wand.loadProperties(wandProperties);
-
-        boolean modified = addedMaterials || addedSpells || addedProperties;
-        if (!modified) {
-            if (mage != null) {
-                mage.sendMessage(Messages.get("wand.fully_enchanted"));
-            }
-        }
-
-		return modified;
+		return addedMaterials || addedSpells || addedProperties;
 	}
 }
