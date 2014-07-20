@@ -1111,6 +1111,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void giveExperience(int xp) {
+        if (activeWand != null && activeWand.hasExperience()) {
+            activeWand.addExperience(xp);
+        }
+
+        Player player = getPlayer();
+        if (player != null) {
+            player.giveExp(xp);
+        }
+    }
+
+    @Override
     public boolean addPendingBlockBatch(com.elmakers.mine.bukkit.api.block.BlockBatch batch) {
         if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
             controller.getLogger().info("Rejected construction for " + getName() + ", already has " + pendingBatches.size()

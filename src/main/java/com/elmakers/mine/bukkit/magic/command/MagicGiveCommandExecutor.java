@@ -82,9 +82,10 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             player = (Player)sender;
         }
 
-        if (itemName.equals("xp")) {
+        if (itemName.equalsIgnoreCase("xp")) {
             api.giveExperienceToPlayer(player, count);
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
+            return true;
         } else if (itemName.contains("book:")) {
             String bookCategory = itemName.substring(5);
             SpellCategory category = null;
@@ -103,7 +104,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
             api.giveItemToPlayer(player, bookItem);
             return true;
-        }else if (itemName.contains("spell:")) {
+        } else if (itemName.contains("spell:")) {
             String spellKey = itemName.substring(6);
             ItemStack itemStack = api.createSpellItem(spellKey);
             if (itemStack == null) {

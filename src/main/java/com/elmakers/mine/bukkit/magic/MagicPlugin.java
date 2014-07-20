@@ -284,9 +284,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public void giveExperienceToPlayer(Player player, int xp) {
-        com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getMage(player);
-        com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-        if (wand == null || !(wand instanceof Wand) || !((Wand)wand).addExperience(xp)) {
+        if (controller.isMage(player)) {
+            com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getMage(player);
+            mage.giveExperience(xp);
+        } else {
             player.giveExp(xp);
         }
     }
