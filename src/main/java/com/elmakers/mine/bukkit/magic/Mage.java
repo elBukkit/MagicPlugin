@@ -1032,7 +1032,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void removeExperience(int xp) {
 
-        if (activeWand != null && activeWand.hasExperience()) {
+        if (activeWand != null && activeWand.usesMana()) {
             activeWand.removeExperience(xp);
             return;
         }
@@ -1069,7 +1069,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public int getLevel() {
-        if (activeWand != null && activeWand.hasExperience()) {
+        if (activeWand != null && activeWand.usesMana()) {
             return activeWand.getStoredXpLevel();
         }
 
@@ -1087,14 +1087,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null) {
             player.setLevel(level);
         }
-        if (activeWand != null && activeWand.hasExperience()) {
+        if (activeWand != null && activeWand.usesMana()) {
             activeWand.setStoredXpLevel(level);
         }
     }
 
     @Override
     public int getExperience() {
-        if (activeWand != null && activeWand.hasExperience()) {
+        if (activeWand != null && activeWand.usesMana()) {
             return activeWand.getExperience();
         }
 
@@ -1112,7 +1112,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void giveExperience(int xp) {
-        if (activeWand != null && activeWand.hasExperience()) {
+        if (activeWand != null && activeWand.usesMana()) {
             activeWand.addExperience(xp);
         }
 

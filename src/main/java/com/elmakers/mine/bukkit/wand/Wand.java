@@ -147,7 +147,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private String[] castParameters = null;
 	
 	private int storedXpLevel = 0;
-	private int storedXp = 0;
 	private float storedXpProgress = 0;
 	
 	// Inventory functionality
@@ -2262,7 +2261,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (usesMana()) {
 			storedXpLevel = player.getLevel();
 			storedXpProgress = player.getExp();
-			storedXp = 0;
 			updateMana();
 		}
 		updateActiveMaterial();
@@ -2420,9 +2418,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		if (usesMana() && player != null) {
             player.setExp(storedXpProgress);
-            player.setLevel(storedXpLevel);
-            player.giveExp(storedXp);
-			storedXp = 0;
+            if (!retainLevelDisplay) {
+                player.setLevel(storedXpLevel);
+            }
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
@@ -2488,7 +2486,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void onPlayerExpChange(PlayerExpChangeEvent event) {
 		if (mage == null) return;
-		
+
 		if (addExperience(event.getAmount())) {
 			event.setAmount(0);
 		}
@@ -2496,7 +2494,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public boolean addExperience(int xp) {
         if (usesMana()) {
-            storedXp += xp;
+            Player player = mage == null ? null : mage.getPlayer();
+            if (player != null) {
+                player.setExp(storedXpProgress);
+                if (!retainLevelDisplay) {
+                    player.setLevel(storedXpLevel);
+                }
+                player.giveExp(xp);
+                storedXpProgress = player.getExp();
+                storedXpLevel = player.getLevel();
+                updateMana();
+            }
             return true;
         }
 
@@ -2593,11 +2601,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		materialIndex = (materialIndex + 1) % materials.size();
 		activateBrush(materials.get(materialIndex).split("@")[0]);
 	}
-	
-	public boolean hasExperience() {
-		return xpRegeneration > 0;
-	}
-	
+
 	public Mage getActivePlayer() {
 		return mage;
 	}
