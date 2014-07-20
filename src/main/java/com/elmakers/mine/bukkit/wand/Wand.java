@@ -1819,6 +1819,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			additive = true;
 		}
 
+        saveState();
         return levels;
 	}
 
