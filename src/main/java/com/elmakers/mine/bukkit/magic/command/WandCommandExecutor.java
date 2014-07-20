@@ -267,7 +267,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandEnchant(sender, player);
+            if (args2.length > 0) {
+                onWandEnchant(sender, player, args2[0]);
+            } else {
+                onWandEnchant(sender, player);
+            }
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("unenchant"))
@@ -415,6 +419,40 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		return true;
 	}
+
+    public boolean onWandEnchant(CommandSender sender, Player player, String levelString)
+    {
+        if (!checkWand(sender, player)) {
+            return false;
+        }
+        Mage mage = api.getMage(player);
+        Wand wand = mage.getActiveWand();
+
+        int xpLevels = 0;
+        boolean useXp = levelString.equalsIgnoreCase("xp");
+        if (useXp) {
+            xpLevels = player.getLevel();
+        } else {
+            try {
+                xpLevels = Integer.parseInt(levelString);
+            } catch (Exception ex) {
+                sender.sendMessage("Invalid parameter: " + levelString);
+            }
+        }
+        int levels = wand.enchant(xpLevels);
+        if (levels > 0 && useXp) {
+            mage.setLevel(Math.max(0, mage.getLevel() - levels));
+        }
+
+        if (sender != player) {
+            if (levels > 0) {
+                sender.sendMessage(Messages.getParameterized("wand.player_upgraded", "$name", player.getName()));
+            } else {
+                sender.sendMessage(Messages.getParameterized("wand.player_not_upgraded", "$name", player.getName()));
+            }
+        }
+        return true;
+    }
 	
 	public boolean onWandEnchant(CommandSender sender, Player player)
 	{
