@@ -273,7 +273,8 @@ araniaexumai:
         entity_force: 2
         type: push
         count: 8
-        damage: 3
+        damage: 6
+        cooldown: 500
     costs:
         xp: 25
 
@@ -689,7 +690,7 @@ bombarda:
         range: 12
         target_breakables: 1
         break_blocks: false
-        size: 1
+        size: 3
         cooldown: 10000
     costs:
         xp: 50

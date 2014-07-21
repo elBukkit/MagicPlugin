@@ -8,8 +8,8 @@ master:
     hidden: true
     upgrade: year1
     upgrade_item: year1
-    min_enchant_level: 10
-    max_enchant_level: 20
+    min_enchant_level: 4
+    max_enchant_level: 5
     levels: 1,30,50
 
 default:

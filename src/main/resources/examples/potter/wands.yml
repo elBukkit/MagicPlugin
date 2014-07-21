@@ -12,7 +12,7 @@ default:
     quiet: 1
     xp_max: 50
     xp: 50
-    xp_regeneration: 5
+    xp_regeneration: 6
     effect_color: '888888'
     effect_bubbles: false
     spells:
@@ -408,7 +408,7 @@ squib:
     locked: true
     xp: 100
     xp_max: 100
-    xp_regeneration: 20
+    xp_regeneration: 12
     uses: 40
     quiet: 2
     effect_color: 'FF0000'
