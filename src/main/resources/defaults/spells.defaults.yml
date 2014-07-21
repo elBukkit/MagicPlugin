@@ -1560,13 +1560,13 @@ familiar:
              class: DnaLocationEffect
              particleHelix: drip_lava
              iterations: 24
-             particle: bubble
+             particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomLocationEffect
              iterations: 32
-             particle: bubble
+             particleNucleus: bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1604,13 +1604,13 @@ monster:
              class: DnaLocationEffect
              particleHelix: drip_lava
              iterations: 24
-             particle: bubble
+             particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomLocationEffect
              iterations: 32
-             particle: bubble
+             particleNucleus: bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1647,13 +1647,13 @@ mob:
              class: DnaLocationEffect
              particleHelix: drip_lava
              iterations: 24
-             particle: bubble
+             particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomLocationEffect
              iterations: 32
-             particle: bubble
+             particleNucleus: bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1681,13 +1681,13 @@ farm:
              class: DnaLocationEffect
              particleHelix: drip_lava
              iterations: 24
-             particle: bubble
+             particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomLocationEffect
              iterations: 32
-             particle: bubble
+             particleNucleus: bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1710,13 +1710,13 @@ wolf:
              class: DnaLocationEffect
              particleHelix: drip_lava
              iterations: 24
-             particle: bubble
+             particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomLocationEffect
              iterations: 32
-             particle: bubble
+             particleNucleus: bubble
     parameters:
         target_type: LivingEntity
         max_wolves: 5
@@ -1738,13 +1738,13 @@ cat:
              class: DnaLocationEffect
              particleHelix: drip_lava
              iterations: 24
-             particle: bubble
+             particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomLocationEffect
              iterations: 32
-             particle: bubble
+             particleNucleus: bubble
     parameters:
         target_type: LivingEntity
         max_ocelots: 5
