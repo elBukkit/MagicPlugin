@@ -2539,6 +2539,7 @@ colorvaria:
         transparent: transparent_to_construction
         undo: 5000
         bypass_build: true
+        bypass_backfire: true
     costs:
         xp: 90
 

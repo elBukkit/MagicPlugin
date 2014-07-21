@@ -9,7 +9,7 @@ MinorBoss:
 MidBoss:
   Drops:
   - gold_nugget 8
-  - exp 40
+  - exp 30
 Boss:
   Drops:
   - diamond 1
@@ -21,5 +21,4 @@ MegaBoss:
 Deatheater:
   Drops:
   - DeatheaterCloak 1
-  - exp 5
 

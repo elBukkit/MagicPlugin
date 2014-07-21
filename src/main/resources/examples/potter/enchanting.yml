@@ -15,7 +15,7 @@ master:
 default:
   match_spell_mana: false
   hidden: true
-  min_enchant_level: 10
+  min_enchant_level: 20
   max_enchant_level: 50
   max_mana: 50
   max_mana_regeneration: 5

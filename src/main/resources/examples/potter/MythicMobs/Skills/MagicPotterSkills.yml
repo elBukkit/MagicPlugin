@@ -6,9 +6,9 @@ SummonTarantulas:
   Skills:
   - msg 40:'$boss; &4Come to me, children!' >0 1
   - delay 20
-  - summon $Tarantula:2:5 >0 1
+  - summon $Tarantula:1:3 >0 1
   - delay 20
-  - summon $Tarantula:2:5 >0 1
+  - summon $Tarantula:1:3 >0 1
 Necromancy:
   Cooldown: 60
   Conditions:
@@ -16,8 +16,7 @@ Necromancy:
   - TargetWithin 15
   Skills:
   - msg 40:'$boss &4performs Necromancy' >0 1
-  - delay 20
-  - summon $Inferius >0 1
+  - summon $Inferius:1:2 >0 1
 SludgePoison:
   Cooldown: 10
   Conditions:
