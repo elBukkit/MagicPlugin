@@ -190,7 +190,8 @@ wand_glow: true
 wand_abuse_damage: 2
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
-wand_item_enchantable: wood_sword
+#wand_item_enchantable: wood_sword
+wand_item_enchantable:
 
 # If true, fill wands with all known spells on creation
 fill_wands: false
