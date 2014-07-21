@@ -843,7 +843,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     {
                         String baseMessage = Messages.get("costs.insufficient_resources");
                         String costDescription = cost.getDescription(mage);
-                        castMessage(baseMessage.replace("$cost", costDescription));
+                        sendMessage(baseMessage.replace("$cost", costDescription));
                         processResult(SpellResult.INSUFFICIENT_RESOURCES);
                         return false;
                     }
