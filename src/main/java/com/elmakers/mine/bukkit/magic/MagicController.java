@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -73,7 +72,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -2799,6 +2797,16 @@ public class MagicController implements Listener, MageController {
         // Remove lost wands from records
         if (isWand) {
             Wand wand = new Wand(this, pickup);
+            if (!wand.canUse(player)) {
+                mage.sendMessage(Messages.get("wand.bound").replace("$name", wand.getOwner()));
+                event.setCancelled(true);
+                Item droppedItem = event.getItem();
+                org.bukkit.util.Vector velocity = droppedItem.getVelocity();
+                velocity.setY(velocity.getY() * 2 + 1);
+                droppedItem.setVelocity(velocity);
+                return;
+            }
+
             if (removeLostWand(wand.getLostId())) {
                 plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
             }
