@@ -386,7 +386,8 @@ public class WandUpgradePath {
                         .replace("@y", Double.toString(location.getY()))
                         .replace("@z", Double.toString(location.getZ()));
                 }
-                command = command.replace("$path", name);
+                WandUpgradePath upgrade = getPath(upgradeKey);
+                command = command.replace("$path", upgrade.getName());
                 mage.getController().getPlugin().getServer().dispatchCommand(sender, command);
             }
         }

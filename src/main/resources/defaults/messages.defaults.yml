@@ -132,6 +132,7 @@ wand:
     enchanted: Your $item has been enchanted
     player_enchanted: $name's $item has been enchanted
     unenchanted: Your wand has been unenchanted
+    no_path: That item can not be enchanted
     player_unenchanted: $name's wand has been unenchanted
     level_up: Your wand has been upgraded to $path!
     duplicated: Your wand has been duplicated

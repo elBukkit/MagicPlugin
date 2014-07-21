@@ -24,6 +24,7 @@ wand:
     fully_enchanted: "§cYou have nothing more to learn here."
     need_more_levels: "§cYou need at least §a$levels §clevels to take an exam."
     spell_added: "You have learned the &r&6$name &d&ospell!"
+    no_path: You must be holding your wand
 
 costs:
     xp_amount: $amount XP

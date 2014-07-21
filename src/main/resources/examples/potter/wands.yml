@@ -731,63 +731,63 @@ year1:
     indestructible: false
     icon: arrow
     xp_max: 50
-    xp_regeneration: 5
+    xp_regeneration: 6
 year2:
     upgrade: true
     path: year1
     upgrade_path: year2
     indestructible: false
     icon: arrow
-    xp_max: 60
-    xp_regeneration: 10
+    xp_max: 75
+    xp_regeneration: 7
 year3:
     upgrade: true
     path: year2
     upgrade_path: year3
     indestructible: false
     icon: arrow
-    xp_max: 70
-    xp_regeneration: 15
+    xp_max: 100
+    xp_regeneration: 9
 year4:
     upgrade: true
     path: year3
     upgrade_path: year4
     indestructible: false
     icon: arrow
-    xp_max: 80
-    xp_regeneration: 20
+    xp_max: 120
+    xp_regeneration: 10
 year5:
     upgrade: true
     path: year4
     upgrade_path: year5
     indestructible: false
     icon: arrow
-    xp_max: 90
-    xp_regeneration: 22
+    xp_max: 140
+    xp_regeneration: 11
 year6:
     upgrade: true
     path: year5
     upgrade_path: year6
     indestructible: false
     icon: arrow
-    xp_max: 100
-    xp_regeneration: 25
+    xp_max: 160
+    xp_regeneration: 12
 year7:
     upgrade: true
     path: year6
     upgrade_path: year7
     indestructible: false
     icon: arrow
-    xp_max: 100
-    xp_regeneration: 25
+    xp_max: 180
+    xp_regeneration: 13
 graduate:
     upgrade: true
     path: year7
     upgrade_path: graduate
     indestructible: false
     icon: arrow
-    xp_max: 100
-    xp_regeneration: 25
+    xp_max: 200
+    xp_regeneration: 15
 
 # Other upgrades
 
