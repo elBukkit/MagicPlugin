@@ -2204,7 +2204,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void closeInventory() {
 		if (!isInventoryOpen()) return;
 		saveInventory();
@@ -2213,9 +2212,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			mage.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
 			if (getMode() == WandMode.INVENTORY) {
 				restoreInventory();
-				Player player = mage.getPlayer();
-				player.setItemInHand(item);
-				player.updateInventory();
 			} else {
 				mage.getPlayer().closeInventory();
 			}
@@ -3063,6 +3059,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean restoreInventory() {
         if (storedInventory == null) {
             return false;
@@ -3075,6 +3072,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         inventory.setContents(storedInventory.getContents());
         storedInventory = null;
         saveState();
+
+        player.setItemInHand(item);
+        player.updateInventory();
 
         return true;
     }
