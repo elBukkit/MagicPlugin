@@ -2330,25 +2330,13 @@ public class MagicController implements Listener, MageController {
 		// Hacky check for immediately activating a wand if for some reason it was
 		// not active
 		if (wand == null && Wand.hasActiveWand(player)) {
-			if (mage.hasStoredInventory()) {
-				mage.restoreInventory();
-			}
 			wand = Wand.getActiveWand(this, player);
 			wand.activate(mage);
-			getLogger().warning("Player was holding an inactive wand on interact- activating.");			
+			getLogger().warning("Player was holding an inactive wand on interact- activating.");
 		}
-		
-		// Safety check, we don't want to lose the player's inventory.
-		// In theory, this should never happen though!
-		if (wand == null && mage.hasStoredInventory())
-		{
-			getLogger().warning("Player had no active wand, but a stored inventory- restoring.");
-			mage.restoreInventory();
-			return;
-		}
-		
+
 		if (wand == null) return;
-		
+
 		if (!hasWandPermission(player))
 		{
 			// Check for self-destruct
@@ -2367,19 +2355,19 @@ public class MagicController implements Listener, MageController {
 			}
 			return;
 		}
-		
+
 		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
 		{
 			wand.cast();
 			event.setCancelled(true);
 			return;
 		}
-		
+
 		boolean toggleInventory = (event.getAction() == Action.RIGHT_CLICK_AIR);
 		if (!toggleInventory && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Material material = event.getClickedBlock().getType();
 			toggleInventory = !interactibleMaterials.contains(material);
-			
+
 			// This is to prevent Essentials signs from giving you an item in your wand inventory.
 			if (material== Material.SIGN_POST || material == Material.WALL_SIGN) {
 				wand.closeInventory();
@@ -2389,7 +2377,7 @@ public class MagicController implements Listener, MageController {
 		{
 			// Check for spell cancel first, e.g. fill or force
 			if (!mage.cancel()) {
-				
+
 				// Check for wand cycling
                 WandMode wandMode = wand.getMode();
 				if (wandMode == WandMode.CYCLE) {
@@ -2404,7 +2392,7 @@ public class MagicController implements Listener, MageController {
 						} else {
 							wand.cycleSpells(player.getItemInHand());
 						}
-					} else { 
+					} else {
 						wand.cycleSpells(player.getItemInHand());
 					}
 				} else if (wandMode == WandMode.CAST) {
@@ -2425,7 +2413,7 @@ public class MagicController implements Listener, MageController {
 		// Automatically re-activate mages.
         getMage(event.getPlayer());
 	}
-	
+
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {
         // Check for wand inventory
@@ -2453,13 +2441,13 @@ public class MagicController implements Listener, MageController {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerExpChange(PlayerExpChangeEvent event)
 	{
 		// We don't care about exp loss events
 		if (event.getAmount() <= 0) return;
-		
+
 		Player player = event.getPlayer();
         Mage apiMage = getMage(player);
 
@@ -2477,7 +2465,7 @@ public class MagicController implements Listener, MageController {
     {
         playerQuit(event);
     }
-	
+
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
         playerQuit(event);
@@ -2496,7 +2484,7 @@ public class MagicController implements Listener, MageController {
         mage.onPlayerQuit(event);
 		UndoQueue undoQueue = mage.getUndoQueue();
         undoQueue.undoScheduled();
-		
+
 		if (commitOnQuit && undoQueue != null && !undoQueue.isEmpty()) {
 			getLogger().info("Player logged out, committing constructions: " + mage.getName());
 			undoQueue.commit();
@@ -2519,16 +2507,13 @@ public class MagicController implements Listener, MageController {
                 }
             }
         });
-		
+
 		// Close the wand inventory to make sure the player's normal inventory gets saved
 		Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			wand.closeInventory();
 		}
-		
-		// Just in case...
-		mage.restoreInventory();
-		
+
 		// Let the GC collect the mage, unless they have some pending undo batches
 		// or an undo queue (for rewind)
 		if (undoQueue == null || undoQueue.isEmpty()) {
@@ -2547,12 +2532,11 @@ public class MagicController implements Listener, MageController {
 
             Player player = mage.getPlayer();
 			if (player == null) continue;
-			
+
 			Wand wand = mage.getActiveWand();
 			if (wand != null) {
 				wand.deactivate();
 			}
-			mage.restoreInventory();
 			player.updateInventory();
 		}
 	}
@@ -2592,17 +2576,16 @@ public class MagicController implements Listener, MageController {
 			}
 		}
 	}
-	
+
 	protected ItemStack removeItemFromWand(Wand wand, ItemStack droppedItem) {
 		if (wand == null || droppedItem == null || Wand.isWand(droppedItem)) {
 			return null;
 		}
-		
+
 		if (Wand.isSpell(droppedItem)) {
 			String spellKey = Wand.getSpell(droppedItem);
 			wand.removeSpell(spellKey);
-			wand.saveInventory();
-			
+
 			// Update the item for proper naming and lore
 			SpellTemplate spell = getSpellTemplate(spellKey);
 			if (spell != null) {
@@ -2611,7 +2594,6 @@ public class MagicController implements Listener, MageController {
 		} else if (Wand.isBrush(droppedItem)) {
 			String brushKey = Wand.getBrush(droppedItem);
 			wand.removeBrush(brushKey);
-			wand.saveInventory();
 
 			// Update the item for proper naming and lore
 			Wand.updateBrushItem(droppedItem, brushKey, null);

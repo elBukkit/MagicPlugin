@@ -66,7 +66,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected String playerName;
     protected final MagicController controller;
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
-    private Inventory storedInventory = null;
     private Wand activeWand = null;
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
@@ -112,7 +111,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public boolean hasStoredInventory() {
-        return storedInventory != null;
+        return activeWand != null && activeWand.hasStoredInventory();
     }
 
     @Override
@@ -121,7 +120,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public Inventory getStoredInventory() {
-        return storedInventory;
+        return activeWand != null ? activeWand.getStoredInventory() : null;
     }
 
     public void setLocation(Location location) {
@@ -166,52 +165,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public boolean addToStoredInventory(ItemStack item) {
-        if (storedInventory == null) {
-            return false;
-        }
-
-        HashMap<Integer, ItemStack> remainder = storedInventory.addItem(item);
-        return remainder.size() == 0;
-    }
-
-    public boolean storeInventory() {
-        if (storedInventory != null) {
-            return false;
-        }
-
-        Player player = getPlayer();
-        if (player == null) {
-            return false;
-        }
-        Inventory inventory = player.getInventory();
-        storedInventory = CompatibilityUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
-
-        // Make sure we don't store any spells or magical materials, just in case
-        ItemStack[] contents = inventory.getContents();
-        for (int i = 0; i < contents.length; i++) {
-            if (Wand.isSpell(contents[i])) {
-                contents[i] = null;
-            }
-        }
-        storedInventory.setContents(contents);
-        inventory.clear();
-
-        return true;
-    }
-
-    public boolean restoreInventory() {
-        if (storedInventory == null) {
-            return false;
-        }
-        Player player = getPlayer();
-        if (player == null) {
-            return false;
-        }
-        Inventory inventory = player.getInventory();
-        inventory.setContents(storedInventory.getContents());
-        storedInventory = null;
-
-        return true;
+        return (activeWand == null ? false : activeWand.addToStoredInventory(item));
     }
 
     public boolean cancel() {

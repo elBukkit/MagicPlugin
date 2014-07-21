@@ -2,8 +2,9 @@
 
 ## 3.4
 
+ - Put safety backups in place for server crashes with a wand inventory open
  - Add Reflect spell, tweak Shields Spell
- - Spells can now construct blocks that non-engineering spells break (Sheilds spell)
+ - Spells can now construct blocks that non-engineering spells break (Shields spell)
  - Magic blocks can reflect spells on target (Reflect spell)
  - Wand levelling system (not currently used in the default config- see HP enchanting.yml)
  - Re-worked undo system, auto-undo spells are also counterable/Rollback'able
