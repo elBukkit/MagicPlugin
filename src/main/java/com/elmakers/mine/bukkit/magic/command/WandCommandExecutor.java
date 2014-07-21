@@ -431,7 +431,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
         int xpLevels = 0;
         boolean useXp = levelString.equalsIgnoreCase("xp");
         if (useXp) {
-            xpLevels = player.getLevel();
+            xpLevels = mage.getLevel();
         } else {
             try {
                 xpLevels = Integer.parseInt(levelString);
