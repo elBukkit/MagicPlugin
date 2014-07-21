@@ -2501,7 +2501,7 @@ stupefy:
            sound: shoot_arrow
            sound_volume: 5.0
            location: origin
-           effect: hurt
+           entity_effect: hurt
            effectlib:
              class: ConeLocationEffect
              iterations: 15
