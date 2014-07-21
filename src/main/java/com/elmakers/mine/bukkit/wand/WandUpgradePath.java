@@ -30,6 +30,7 @@ public class WandUpgradePath {
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<String>();
     private String upgradeKey;
+    private String upgradeItemKey;
     private String name;
     private String description;
 
@@ -90,6 +91,7 @@ public class WandUpgradePath {
         }
 
         upgradeKey = template.getString("upgrade");
+        upgradeItemKey = template.getString("upgrade_item");
 
         // Description information
         name = template.getString("name", name);
@@ -356,7 +358,7 @@ public class WandUpgradePath {
         playEffects(mage, "enchant");
     }
 
-    public void upgraded(Mage mage) {
+    public void upgraded(Wand wand, Mage mage) {
         playEffects(mage, "upgrade");
         CommandSender sender = Bukkit.getConsoleSender();
         Location location = null;
@@ -389,6 +391,12 @@ public class WandUpgradePath {
                 WandUpgradePath upgrade = getPath(upgradeKey);
                 command = command.replace("$path", upgrade.getName());
                 mage.getController().getPlugin().getServer().dispatchCommand(sender, command);
+            }
+        }
+        if (upgradeItemKey != null && !upgradeItemKey.isEmpty()) {
+            com.elmakers.mine.bukkit.api.wand.Wand upgradeWand = mage.getController().createWand(upgradeItemKey);
+            if (upgradeWand != null) {
+                wand.add(upgradeWand);
             }
         }
     }

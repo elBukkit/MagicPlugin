@@ -6,8 +6,10 @@
 master:
     hidden: true
     upgrade: year1
-    upgrade_commands:
-    - wandp upgrade year1
+    upgrade_item: year1
+    min_enchant_level: 10
+    max_enchant_level: 20
+    levels: 1,30,50
 
 default:
   hidden: true
@@ -52,9 +54,9 @@ default:
 year1:
     inherit: default
     upgrade: year2
+    upgrade_item: year2
     upgrade_commands:
     - manpromote @p yeartwo
-    - wandp upgrade year2
     - broadcast &6@p §3has graduated to §b$path§3!
     levels: 1,30,50
     max_mana: 60
@@ -76,11 +78,11 @@ year1:
 
 year2:
     upgrade: year3
+    upgrade_item: year3
     inherit: year1
     max_mana: 90
     upgrade_commands:
     - manpromote @p yearthree
-    - wandp upgrade year3
     - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       3: 100, 10,  0
@@ -97,6 +99,7 @@ year2:
 
 year3:
     upgrade: year4
+    upgrade_item: year4
     inherit: year2
     max_mana: 110
     xp_max:
@@ -104,7 +107,6 @@ year3:
       5:  20, 30, 50
     upgrade_commands:
     - manpromote @p yearfour
-    - wandp upgrade year4
     - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       stupefy: 100,100,100
@@ -119,6 +121,7 @@ year3:
 
 year4:
     upgrade: year5
+    upgrade_item: year5
     inherit: year3
     max_mana: 130
     xp_max:
@@ -126,7 +129,6 @@ year4:
       5:  20, 30, 50
     upgrade_commands:
     - manpromote @p yearfive
-    - wandp upgrade year5
     - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       reducio: 100,100,100
@@ -139,11 +141,11 @@ year4:
 
 year5:
     upgrade: year6
+    upgrade_item: year6
     inherit: year4
     max_mana: 150
     upgrade_commands:
     - manpromote @p yearsix
-    - wandp upgrade year6
     - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       4: 100, 10,  0
@@ -158,6 +160,7 @@ year5:
 
 year6:
     upgrade: year7
+    upgrade_item: year7
     inherit: year5
     max_mana: 170
     xp_max:
@@ -165,7 +168,6 @@ year6:
       8:  20, 30, 50
     upgrade_commands:
     - manpromote @p yearseven
-    - wandp upgrade year7
     - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       crucio: 100,100,100
@@ -178,6 +180,7 @@ year6:
 
 year7:
     upgrade: graduate
+    upgrade_item: graduate
     inherit: year6
     max_mana: 190
     xp_max:
@@ -185,7 +188,6 @@ year7:
       10:  20, 30, 50
     upgrade_commands:
     - manpromote @p graduate
-    - wandp upgrade graduate
     - broadcast &6@p §3has graduated from Hogwarts!
     spells:
       avadakedavra: 100,100,100

@@ -88,7 +88,7 @@ accio:
         count: 1
         fall_protection: 10000
     costs:
-        xp: 15
+        xp: 35
 
 aguamenti:
     icon: stationary_water
@@ -112,7 +112,7 @@ aguamenti:
         undo: 7000
         disable_physics: 8000
     costs:
-        xp: 50
+        xp: 110
 
 aparecium:
     icon: daylight_detector
@@ -143,7 +143,7 @@ aparecium:
         check_destructible: true
         destructible: powerable
     costs:
-        xp: 50
+        xp: 80
 
 apparate:
     icon: eye_of_ender
@@ -190,7 +190,7 @@ apparate:
         allow_decend: false
         range: 16
     costs:
-        xp: 40
+        xp: 170
 
 apparatemaxima:
     icon: eye_of_ender
@@ -241,7 +241,7 @@ apparatemaxima:
         range: 64
         transparent: apparate
     costs:
-        xp: 80
+        xp: 200
 
 araniaexumai:
     icon: ink_sack:2
@@ -275,7 +275,7 @@ araniaexumai:
         count: 8
         damage: 3
     costs:
-        xp: 10
+        xp: 25
 
 arrow:
     icon: arrow
@@ -302,7 +302,7 @@ arrow:
       tick_increase: 1180
       range: 24
     costs:
-        xp: 40
+        xp: 60
 
 snowball:
     icon: snow_ball
@@ -329,7 +329,7 @@ snowball:
       spread: 20
       effect_slow: 120,1
     costs:
-        xp: 50
+        xp: 80
 
 ascendio:
     icon: ink_sack:8
@@ -352,7 +352,7 @@ ascendio:
            period: 2
     parameters:
     costs:
-        xp: 45
+        xp: 140
 
 arresto:
     icon: ink_sack:8
@@ -402,7 +402,7 @@ atmos:
     parameters:
         cooldown: 30000
     costs:
-        xp: 80
+        xp: 150
 
 broom:
     hidden: true
@@ -526,7 +526,7 @@ avadakedavra:
         target_breakables: 1
         bypass_backfire: true
     costs:
-        xp: 100
+        xp: 180
 
 avadamaxima:
     icon: ink_sack:10
@@ -599,7 +599,7 @@ avis:
         reason: custom
         undo: 5000
     costs:
-        xp: 50
+        xp: 15
 
 beat:
     hidden: true
@@ -656,7 +656,7 @@ bogies:
              particle: slime
              iterations: 2
     costs:
-        xp: 30
+        xp: 50
     parameters:
         fov: 2
         range: 8
@@ -821,7 +821,7 @@ confundus:
              class: SmokeEntityEffect
              iterations: 10
     costs:
-        xp: 30
+        xp: 50
     parameters:
         range: 32
         deactivate_target_mage: true
@@ -854,7 +854,7 @@ conjunctivitis:
              class: SmokeEntityEffect
              iterations: 10
     costs:
-        xp: 25
+        xp: 45
     parameters:
         range: 32
         target_type: LivingEntity
@@ -922,7 +922,7 @@ crucio:
              class: BleedEntityEffect
              duration: 500
     costs:
-        xp: 90
+        xp: 150
     parameters:
         range: 32
         target_type: LivingEntity
@@ -971,7 +971,7 @@ deprimo:
         transparent: transparent_to_construction
         undo: 15000
     costs:
-        xp: 50
+        xp: 120
 
 deprimomaxima:
     icon: flint
@@ -998,7 +998,7 @@ deprimomaxima:
         transparent: transparent_to_construction
         undo: 15000
     costs:
-        xp: 70
+        xp: 200
 
 disillusion:
     icon: coal:1
@@ -1043,7 +1043,7 @@ duro:
         bypass_build: true
         bypass_backfire: true
     costs:
-        xp: 50
+        xp: 100
 
 erecto:
     icon: sapling:4
@@ -1069,7 +1069,7 @@ erecto:
         brush: schematic|tent
         transparent: transparent_to_construction
     costs:
-        xp: 150
+        xp: 200
 
 evanesco:
     icon: bone
@@ -1090,7 +1090,7 @@ evanesco:
         target_type: LivingEntity
         allow_max_range: false
         range: 8
-        entity_damage: 8
+        entity_damage: 10
         check_destructible: true
         target_breakables: 2
         undo: 10000
@@ -1098,7 +1098,7 @@ evanesco:
         bypass_build: true
         entity_undo: false
     costs:
-        xp: 80
+        xp: 120
 
 expelliarmus:
     alias: expel
@@ -1144,7 +1144,7 @@ expelliarmus:
         keep_in_inventory: true
         target_breakables: 1
     costs:
-        xp: 70
+        xp: 130
 
 rennervate:
     icon: ink_sack:9
@@ -1174,7 +1174,7 @@ rennervate:
         - wither
         cooldown: 2000
     costs:
-        xp: 10
+        xp: 30
 
 episkey:
     icon: ink_sack:9
@@ -1236,7 +1236,7 @@ firestorm:
         undo: 6000
         bypass_build: true
     costs:
-        xp: 50
+        xp: 80
 
 floo:
     icon: sulphur
@@ -1290,7 +1290,7 @@ fiendfyre:
         undo: 5000
         target_breakables: 1
     costs:
-        xp: 100
+        xp: 180
 
 finiteincantatem:
     alias: finite
@@ -1336,7 +1336,7 @@ finiteincantatem:
         bypass_confusion: true
         bypass_backfire: true
     costs:
-        xp: 40
+        xp: 130
 
 flagrate:
     icon: ink_sack:14
@@ -1363,7 +1363,7 @@ flagrate:
         cooldown: 10000
         transparent: transparent_to_construction
     costs:
-        xp: 20
+        xp: 5
 
 flipendo:
     icon: ink_sack:5
@@ -1393,7 +1393,7 @@ flipendo:
         damage: 0.5
         cooldown: 1500
     costs:
-        xp: 15
+        xp: 40
 
 flipendoduo:
     icon: ink_sack:5
@@ -1426,7 +1426,7 @@ flipendoduo:
         damage: 3
         cooldown: 1500
     costs:
-        xp: 45
+        xp: 70
 
 flipendotria:
     icon: ink_sack:5
@@ -1466,7 +1466,7 @@ flipendotria:
         damage: 6
         cooldown: 3000
     costs:
-        xp: 75
+        xp: 120
 
 flight:
     icon: feather
@@ -1495,33 +1495,6 @@ flight:
     costs:
         xp: 100
     active_costs:
-        xp: 10
-
-flagrate:
-    icon: ink_sack:14
-    category: charms
-    class: GenericSpell
-    worth: 20
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fizz
-        -  class: EffectTrail
-           particle: flame
-        -  class: EffectSingle
-           location: target
-           target_offset: 0,3,0
-           effectlib:
-             class: TextLocationEffect
-             text: $name
-             iterations: 2
-             particle: flame
-    parameters:
-        allow_max_range: true
-        range: 3
-        cooldown: 10000
-        transparent: transparent_to_construction
-    costs:
         xp: 20
 
 fourpoint:
@@ -1586,7 +1559,7 @@ immobulus:
              class: SmokeEntityEffect
              iterations: 40
     costs:
-        xp: 25
+        xp: 50
     parameters:
         range: 32
         target_type: LivingEntity
@@ -1622,7 +1595,7 @@ locomotomortus:
              iterations: 80
              particle: witch_magic
     costs:
-        xp: 15
+        xp: 40
     parameters:
         range: 32
         target_type: LivingEntity
@@ -1665,7 +1638,7 @@ incarcerous:
         bypass_build: true
         cooldown: 6000
     costs:
-        xp: 50
+        xp: 70
 
 imperio:
     icon: coal:1
@@ -1690,7 +1663,7 @@ imperio:
         entity_force: 3
         bypass_backfire: true
     costs:
-        xp: 85
+        xp: 170
 
 imperiomaxima:
     icon: coal:1
@@ -1716,7 +1689,7 @@ imperiomaxima:
         target_breakables: 1
         bypass_backfire: true
     costs:
-        xp: 100
+        xp: 200
 
 impervius:
     icon: gold_spade
@@ -1770,7 +1743,7 @@ incendio:
         bypass_build: true
         target_breakables: 1
     costs:
-        xp: 40
+        xp: 120
 
 lacarnum:
     icon: ghast_tear
@@ -1789,7 +1762,7 @@ lacarnum:
         range: 16
         cooldown: 5000
     costs:
-        xp: 50
+        xp: 180
 
 levicorpus:
     icon: ink_sack:5
@@ -1842,7 +1815,7 @@ lumos:
              class: TraceEntityEffect
              particle: red_dust
     costs:
-        xp: 15
+        xp: 55
     parameters:
         target: any
         range: 32
@@ -1992,7 +1965,7 @@ petrificustotalus:
              class: SmokeEntityEffect
              iterations: 80
     costs:
-        xp: 80
+        xp: 120
     parameters:
         range: 32
         target_type: LivingEntity
@@ -2128,7 +2101,7 @@ protegoduo:
         bypass_confusion: true
         bypass_backfire: true
     costs:
-        xp: 75
+        xp: 50
 
 protegotria:
     icon: ink_sack:12
@@ -2182,7 +2155,7 @@ reducio:
         entity_damage: 10
         target_breakables: 1
     costs:
-        xp: 60
+        xp: 110
 
 reducto:
     icon: clay_brick
@@ -2217,7 +2190,7 @@ reducto:
         undo: 15000
         bypass_build: true
     costs:
-        xp: 40
+        xp: 60
 
 reductomaxima:
     icon: clay_brick
@@ -2297,7 +2270,7 @@ reparifarge:
         target_blocks: true
         bypass_backfire: true
     costs:
-        xp: 45
+        xp: 180
 
 reparo:
     icon: iron_pickaxe
@@ -2325,7 +2298,7 @@ reparo:
         obworld: ~_backup
         brushtarget: true
     costs:
-        xp: 80
+        xp: 200
 
 reparomaxima:
     icon: iron_pickaxe
@@ -2390,7 +2363,7 @@ sectumsempra:
         cooldown: 8000
         target_breakables: 1
     costs:
-        xp: 35
+        xp: 130
 
 silencio:
     icon: ink_sack:3
@@ -2420,7 +2393,7 @@ silencio:
         cooldown: 20000
         target_breakables: 1
     costs:
-        xp: 40
+        xp: 140
 
 silenciomaxima:
     icon: ink_sack:3
@@ -2446,7 +2419,7 @@ silenciomaxima:
         target_breakables: 1
         bypass_backfire: true
     costs:
-        xp: 100
+        xp: 200
 
 jail:
     icon: iron_fence
@@ -2471,7 +2444,7 @@ jail:
         range: 16
         target_breakables: 1
     costs:
-        xp: 100
+        xp: 200
 
 silenciototalus:
     icon: ink_sack:3
@@ -2498,7 +2471,7 @@ silenciototalus:
         target: none
         bypass_backfire: true
     costs:
-        xp: 100
+        xp: 500
 
 stupefy:
     icon: ink_sack:4
@@ -2545,7 +2518,7 @@ stupefy:
         target_breakables: 1
         bypass_backfire: false
     costs:
-        xp: 50
+        xp: 80
 
 colorvaria:
     icon: ink_sack
@@ -2567,7 +2540,7 @@ colorvaria:
         undo: 5000
         bypass_build: true
     costs:
-        xp: 55
+        xp: 90
 
 meteo:
     icon: golden_apple
@@ -2599,7 +2572,7 @@ meteo:
         time: day
         weather: clear
     costs:
-        xp: 100
+        xp: 200
 
 nox:
     icon: ink_sack:0
@@ -2625,7 +2598,7 @@ nox:
         remove_effects:
         - night_vision
     costs:
-        xp: 20
+        xp: 55
 
 noxmaxima:
     icon: ink_sack:0
@@ -2649,7 +2622,7 @@ noxmaxima:
         cooldown: 5000
         time: night
     costs:
-        xp: 100
+        xp: 200
 
 vulnera:
     icon: ink_sack:9
@@ -2684,7 +2657,7 @@ vulnera:
         effect_slow: 4
         effect_heal: 1,1
     costs:
-        xp: 50
+        xp: 80
 
 ferula:
     icon: ink_sack:9
@@ -2717,7 +2690,7 @@ ferula:
         effect_absorption: 2
         effect_saturation: 1
     costs:
-        xp: 50
+        xp: 160
 
 # These are currently what I would classify as admin-only utility spells
 # But could be added in some form as canon spells eventually.

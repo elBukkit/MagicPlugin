@@ -1813,7 +1813,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     controller.getLogger().warning("Invalid upgrade path: " + path.getUpgrade());
                 } else {
                     mage.sendMessage(Messages.get("wand.level_up").replace("$path", newPath.getName()));
-                    path.upgraded(mage);
+                    path.upgraded(this, mage);
                     this.path = newPath.getKey();
                 }
             } else if (mage != null) {
@@ -1824,6 +1824,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 
         saveState();
+        updateLore();
         return levels;
 	}
 
