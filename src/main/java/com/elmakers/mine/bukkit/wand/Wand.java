@@ -593,8 +593,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             // We hope this doesn't recurse too badly! :\
             ItemStack existingHotbar = hotbar.getItem(selectedItem);
             if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
+                if (item == null || !isWand(item))
+                {
+                    Bukkit.getLogger().warning("Wand item isn't a wand");
+                    return;
+                }
+
                 hotbar.setItem(selectedItem, item);
-                addToInventory(existingHotbar);          }
+                addToInventory(existingHotbar);
+            }
 
             hotbar.setItem(selectedItem, item);
         }
