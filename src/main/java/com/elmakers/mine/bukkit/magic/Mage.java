@@ -1023,7 +1023,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public int getLevel() {
-        if (activeWand != null && activeWand.usesMana()) {
+        if (activeWand != null && activeWand.usesMana() && !Wand.retainLevelDisplay) {
             return activeWand.getStoredXpLevel();
         }
 
