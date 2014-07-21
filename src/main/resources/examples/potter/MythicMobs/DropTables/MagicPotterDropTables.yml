@@ -1,21 +1,25 @@
+Minion:
+  Drops:
+  - gold_nugget 2
+  - exp 5
 MinorBoss:
   Drops:
   - gold_nugget 4
-  - exp 30
+  - exp 20
 MidBoss:
   Drops:
   - gold_nugget 8
-  - exp 50
+  - exp 40
 Boss:
   Drops:
   - diamond 1
-  - exp 100
+  - exp 50
 MegaBoss:
   Drops:
   - diamond 8
-  - exp 300
+  - exp 100
 Deatheater:
   Drops:
   - DeatheaterCloak 1
-  - exp 10
+  - exp 5
 

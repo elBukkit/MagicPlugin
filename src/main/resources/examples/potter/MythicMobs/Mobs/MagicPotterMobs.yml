@@ -18,6 +18,20 @@ Tarantula:
   Damage: 3
   Options:
     MovementSpeed: 0.1
+  Drops:
+  - Minion
+Inferius:
+  Mobtype: zombie
+  Display: '&2Inferius'
+  Health: 20
+  Damage: 3
+  Drops:
+  - Minion
+  Equipment:
+  - Deatheater_Helmet:4
+  - Deatheater_Chestplate:3
+  - Deatheater_Leggings:2
+  - Deatheater_Boots:1
 DreadKnight:
   Mobtype: witherskeleton
   Display: '&2DreadKnight'
@@ -27,6 +41,8 @@ DreadKnight:
   - MinorBoss
   DropsPerLevel:
   - goldnugget 1 0.5
+  Drops:
+  - Minion
   LevelModifiers:
   - health 5
   - damage 0.5
@@ -69,6 +85,7 @@ Deatheater:
     PreventOtherDrops: true
   Skills:
   - skill MinorSpellAttack ~onTimer:5 >0 0.90
+  - skill Necromancy >0 0.1
 Dementor:
   Mobtype: blaze
   Display: Dementor
