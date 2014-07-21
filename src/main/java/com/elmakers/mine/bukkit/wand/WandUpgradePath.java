@@ -259,9 +259,9 @@ public class WandUpgradePath {
     }
 
     public Set<Integer> getLevels() {
-        if (levels == null) return null;
+        if (levelMap == null) return null;
         Set<Integer> filteredLevels = new HashSet<Integer>();
-        for (Integer level : levels) {
+        for (Integer level :  levelMap.keySet()) {
             if (level >= minLevel && level <= maxLevel) {
                 filteredLevels.add(level);
             }
