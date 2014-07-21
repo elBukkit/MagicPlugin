@@ -3040,6 +3040,7 @@ tesseract:
         allow_ascend: false
         allow_descend: false
         allow_passthrough: false
+        transparent: transparent_to_construction
         range: 14
     costs:
         xp: 25

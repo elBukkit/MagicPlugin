@@ -971,7 +971,7 @@ deprimo:
         transparent: transparent_to_construction
         undo: 15000
     costs:
-        xp: 120
+        xp: 100
 
 deprimomaxima:
     icon: flint
@@ -1043,7 +1043,7 @@ duro:
         bypass_build: true
         bypass_backfire: true
     costs:
-        xp: 100
+        xp: 80
 
 erecto:
     icon: sapling:4
@@ -2190,7 +2190,7 @@ reducto:
         undo: 15000
         bypass_build: true
     costs:
-        xp: 60
+        xp: 50
 
 reductomaxima:
     icon: clay_brick

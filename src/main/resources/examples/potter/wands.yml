@@ -406,9 +406,9 @@ squib:
     icon: stick
     indestructible: false
     locked: true
-    xp: 120
-    xp_max: 120
-    xp_regeneration: 10
+    xp: 100
+    xp_max: 100
+    xp_regeneration: 20
     uses: 40
     quiet: 2
     effect_color: 'FF0000'

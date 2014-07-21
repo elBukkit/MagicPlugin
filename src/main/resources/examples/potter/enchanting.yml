@@ -4,6 +4,7 @@
 
 # To convert old wands
 master:
+    inherit: default
     hidden: true
     upgrade: year1
     upgrade_item: year1
