@@ -34,6 +34,8 @@ public class WandUpgradePath {
     private String name;
     private String description;
 
+    private boolean matchSpellMana = true;
+
     private int maxUses = 500;
     private int maxMaxXp = 1500;
     private int maxXpRegeneration = 150;
@@ -72,6 +74,7 @@ public class WandUpgradePath {
         this.maxPower = inherit.maxPower;
         this.minLevel = inherit.minLevel;
         this.maxLevel = inherit.maxLevel;
+        this.matchSpellMana = inherit.matchSpellMana;
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         effects.putAll(inherit.effects);
         load(controller, key, template);
@@ -92,6 +95,7 @@ public class WandUpgradePath {
 
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
+        matchSpellMana = template.getBoolean("match_spell_mana", matchSpellMana);
 
         // Description information
         name = template.getString("name", name);
@@ -407,5 +411,9 @@ public class WandUpgradePath {
 
     public WandUpgradePath getUpgrade() {
         return getPath(upgradeKey);
+    }
+
+    public boolean getMatchSpellMana() {
+        return matchSpellMana;
     }
 }

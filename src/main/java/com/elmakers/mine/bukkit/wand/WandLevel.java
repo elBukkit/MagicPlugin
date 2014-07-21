@@ -342,9 +342,11 @@ public class WandLevel {
 			}
 			int xpMax = wand.getXpMax();
 			if (xpMaxProbability.size() > 0 && xpMax < path.getMaxMaxXp()) {
-				// Make sure the wand has at least enough xp to cast the highest costing spell it has.
 				xpMax = (Integer)(int)(Math.min(path.getMaxMaxXp(), xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
-				xpMax = Math.max(maxXpCost, xpMax);
+                if (path.getMatchSpellMana()) {
+                    // Make sure the wand has at least enough xp to cast the highest costing spell it has.
+                    xpMax = Math.max(maxXpCost, xpMax);
+                }
 				wandProperties.set("xp_max", xpMax);
                 addedProperties = true;
 
