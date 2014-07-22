@@ -474,7 +474,9 @@ public class ConfigurationUtils {
 
     public static Double getDouble(ConfigurationSection node, String path, Double def)
     {
-        if (node.contains(path)) return node.getDouble(path);
+        if (node.contains(path)) {
+            return parseDouble(node.getString(path));
+        }
         return def;
     }
 
