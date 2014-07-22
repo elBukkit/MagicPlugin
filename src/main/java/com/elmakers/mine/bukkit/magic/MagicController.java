@@ -2043,9 +2043,9 @@ public class MagicController implements Listener, MageController {
 
         final Wand activeWand = mage.getActiveWand();
         ItemStack droppedItem = event.getItemDrop().getItemStack();
-        if (Wand.isWand(droppedItem)) {
-            Wand wand = new Wand(this, droppedItem);
-            if (wand.isUndroppable()) {
+        // TODO: Improve this
+        if (Wand.isWand(droppedItem) && activeWand != null) {
+            if (activeWand.isUndroppable()) {
                 event.setCancelled(true);
                 return;
             }
