@@ -98,6 +98,21 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
     icon.append($('<span/>').text('Icon: '));
     icon.append(getMaterial(spell.icon));
 	detailsDiv.append(icon);
+
+    // Check for path availability
+    for (var pathIndex in paths) {
+        var path = paths[pathIndex];
+        if ('path_spells' in path && path.path_spells != null && path.path_spells.indexOf(key) >= 0) {
+            var availability = $('<div class="spellPathAvailability"/>').text("Available to: " + path.name);
+            detailsDiv.append(availability);
+            break;
+        }
+        if ('required_spells' in path && path.required_spells != null && path.required_spells.indexOf(key) >= 0) {
+            var requirement = $('<div class="spellPathRequirement"/>').text("Required for: " + path.name);
+            detailsDiv.append(requirement);
+            break;
+        }
+    }
 	
 	// Check for rarity
 	if (probabilityString != null && probabilityString.length > 0) {
@@ -415,6 +430,26 @@ function getWandItemDetails(key, wand)
 	spellListContainer.append(spellList);
 	scrollingContainer.append(spellHeader);
 	scrollingContainer.append(spellListContainer);
+
+    if ('required_spells' in wand && wand.required_spells != null && wand.required_spells.length > 0) {
+        var requiredSpells = wand.required_spells;
+        requiredSpells.sort();
+        var spellHeader = $('<div class="wandHeading">Required Spells (' + requiredSpells.length + ')</div>');
+        var spellListContainer = $('<div id="wandRequiredSpellList"/>');
+        var spellList = $('<div/>');
+        var usesMana = xpRegeneration > 0 || key == 'random';
+        for (var spellIndex in requiredSpells)
+        {
+            var key = wand.required_spells[spellIndex];
+            var spell = spells[key];
+            spellList.append($('<h3/>').text(spell.name));
+            spellList.append($('<div/>').append(getSpellDetails(key, false, usesMana, costReduction, "")));
+        }
+        spellList.accordion({ heightStyle: 'content'} );
+        spellListContainer.append(spellList);
+        scrollingContainer.append(spellHeader);
+        scrollingContainer.append(spellListContainer);
+    }
 	
 	if ('materials' in wand && wand.materials.length > 0) {
 		var materialHeader = $('<div class="wandHeading">Materials</div>');

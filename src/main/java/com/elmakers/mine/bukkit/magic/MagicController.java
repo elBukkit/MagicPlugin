@@ -3569,7 +3569,7 @@ public class MagicController implements Listener, MageController {
                 for (String pathKey : paths) {
                     WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
                     if (checkPath.requiresSpell(spell.getKey())) {
-                        lines.add(ChatColor.DARK_BLUE + Messages.get("spell.available_path").replace("$path", checkPath.getName()));
+                        lines.add(ChatColor.DARK_RED + Messages.get("spell.required_path").replace("$path", checkPath.getName()));
                         break;
                     }
                 }

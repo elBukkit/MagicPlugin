@@ -72,11 +72,21 @@ function getPath($key) {
 
     if (!isset($enchanting[$key])) {
         $config = $enchantingConfig[$key];
+        $spellKeys = $config['spells'];
+        $pathSpells = array();
+        if ($spellKeys) {
+            foreach ($spellKeys as $spellKey => $spellData) {
+                $pathSpells[] = $spellKey;
+            }
+        }
+        $requiredSpells = $config['required_spells'];
         if (isset($config['inherit'])) {
             $baseConfig = getPath($config[inherit]);
             unset($baseConfig['hidden']);
             $config = array_replace_recursive($baseConfig, $config);
         }
+        $config['required_spells'] = $requiredSpells;
+        $config['path_spells'] = $pathSpells;
         $enchanting[$key] = $config;
     }
 

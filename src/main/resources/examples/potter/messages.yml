@@ -27,9 +27,6 @@ wand:
     no_path: You must be holding your wand
     required_spell: "You must learn the &r&6$spell &d&ospell to advance!"
 
-
-required_spell: "You must learn the &r&6$spell &d&ospell to advance!"
-
 costs:
     xp_amount: $amount XP
     mana_amount: $amount Energy
@@ -42,7 +39,7 @@ spell:
     undoable: ""
     reactivate: Reactivating $name
     available_path: Available to $paths
-    required_path: Required for $path to graduate
+    required_path: Required for $path graduation
 
 paths:
     year1:

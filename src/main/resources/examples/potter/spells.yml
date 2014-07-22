@@ -1097,7 +1097,7 @@ evanesco:
         target_type: LivingEntity
         allow_max_range: false
         range: 8
-        entity_damage: 10
+        entity_damage: 16
         check_destructible: true
         target_breakables: 2
         undo: 10000
@@ -1792,7 +1792,7 @@ levicorpus:
            location: target
            effectlib:
              class: SkyRocketEntityEffect
-             power: 1.2
+             power: 1.1
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2555,7 +2555,6 @@ meteo:
     icon: golden_apple
     category: staff
     class: TorchSpell
-    hidden: true
     worth: 120
     effects:
         cast:
@@ -3546,6 +3545,7 @@ superalter:
 
 supershell:
     icon: ink_sack:12
+    hidden: true
     category: engineering
     class: ConstructSpell
     worth: 200

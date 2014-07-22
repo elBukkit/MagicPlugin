@@ -59,8 +59,8 @@ year1:
     upgrade_item: year2
     min_enchant_level: 10
     upgrade_commands:
-    - manpromote @p yeartwo
-    - broadcast &6@p §3has graduated to §b$path§3!
+      - manpromote @p yeartwo
+      - broadcast &6@p §3has graduated to §b$path§3!
     levels: 1,30,50
     max_mana: 60
     xp_max:
@@ -76,10 +76,10 @@ year1:
       accio: 40,50,60
       flipendo: 10,20,30
       conjunctivitis: 20,30,40
-      bombarda: 5,10,20
       arrow: 50,60,70
+      fourpoint: 50,60,70
     required_spells:
-    - araniaexumai
+      - araniaexumai
 
 year2:
     upgrade: year3
@@ -88,8 +88,8 @@ year2:
     min_enchant_level: 15
     max_mana: 90
     upgrade_commands:
-    - manpromote @p yearthree
-    - broadcast &6@p §3has graduated to §b$path§3!
+      - manpromote @p yearthree
+      - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       3: 100, 10,  0
       4:  20, 30, 50
@@ -101,8 +101,9 @@ year2:
       flipendoduo: 5,10,20
       locomotomortus: 1,5,10
       arresto: 90,100,100
+      bombarda: 5,10,20
     required_spells:
-    - reducto
+      - reducto
 
 year3:
     upgrade: year4
@@ -114,8 +115,8 @@ year3:
       4: 100, 10,  0
       5:  20, 30, 50
     upgrade_commands:
-    - manpromote @p yearfour
-    - broadcast &6@p §3has graduated to §b$path§3!
+      - manpromote @p yearfour
+      - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       stupefy: 100,100,100
       confundus: 40,60,80
@@ -124,8 +125,9 @@ year3:
       obscuro: 20,40,50
       levicorpus: 20,40,50
       rennervate: 90,100,100
+      incarcerous: 20,30,40
     required_spells:
-    - colorvaria
+      - colorvaria
 
 year4:
     upgrade: year5
@@ -137,8 +139,8 @@ year4:
       4: 100, 10,  0
       5:  20, 30, 50
     upgrade_commands:
-    - manpromote @p yearfive
-    - broadcast &6@p §3has graduated to §b$path§3!
+      - manpromote @p yearfive
+      - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       aguamenti: 50,60,70
       incendio: 20,30,40
@@ -146,8 +148,9 @@ year4:
       protegoduo: 5,20,30
       snowball: 15,50,80
       nox: 20,30,50
+      bogies: 10,20,30
     required_spells:
-    - reducio
+      - reducio
 
 year5:
     upgrade: year6
@@ -156,8 +159,8 @@ year5:
     min_enchant_level: 30
     max_mana: 150
     upgrade_commands:
-    - manpromote @p yearsix
-    - broadcast &6@p §3has graduated to §b$path§3!
+      - manpromote @p yearsix
+      - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       4: 100, 10,  0
       6:  20, 30, 50
@@ -167,9 +170,11 @@ year5:
       ascendio: 40,50,60
       aparecium: 20,40,50
       deprimo: 5,10,20
+      bubble: 20,30,40
+      lacarnum: 5,10,20
     required_spells:
-    - finiteincantatem
-    - sectumsempra
+      - finiteincantatem
+      - sectumsempra
 
 year6:
     upgrade: year7
@@ -190,8 +195,8 @@ year6:
       protegotria: 1,10,20
       vulnera: 5,10,20
     required_spells:
-    - apparate
-    - crucio
+      - apparate
+      - crucio
 
 year7:
     upgrade: graduate
@@ -203,13 +208,19 @@ year7:
       5: 100, 10,  0
       10:  20, 30, 50
     upgrade_commands:
-    - manpromote @p graduate
-    - broadcast &6@p §3has graduated from Hogwarts!
+      - manpromote @p graduate
+      - broadcast &6@p §3has graduated from Hogwarts!
     spells:
       reparifarge: 50,60,70
+      atmos: 10,20,30
+      meteo: 5,10,20
+      disillusion: 5,10,20
+      evanesco: 5,10,20
+      firestorm: 5,10,15
+      orchideous: 1,5,10
     required_spells:
-    - avadakedavra
-    - imperio
+      - avadakedavra
+      - imperio
 
 graduate:
     inherit: year7

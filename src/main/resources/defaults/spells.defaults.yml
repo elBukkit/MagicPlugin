@@ -685,7 +685,7 @@ shell:
         xp: 50
 shields:
     icon: iron_helmet
-    category: white
+    category: light
     class: ConstructSpell
     worth: 20
     effects:
@@ -709,7 +709,7 @@ shields:
         xp: 20
 reflect:
     icon: iron_helmet
-    category: white
+    category: light
     class: ConstructSpell
     worth: 20
     effects:
