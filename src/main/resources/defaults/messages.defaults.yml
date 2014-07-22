@@ -158,6 +158,8 @@ spell:
     undoable: Undoable with Rollback
     reactivate: Reactivating $name
     available_path: Available on the $path path
+    required_path: Required to complete the $path path
+    required_spell: You must learn $spell to advance
 worlds:
     world:
         name: The Overworld

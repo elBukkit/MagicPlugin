@@ -1841,15 +1841,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
                 levels += addLevels;
             } else if (path.hasUpgrade()) {
-                WandUpgradePath newPath = path.getUpgrade();
-                if (newPath == null) {
-                    mage.sendMessage("Configuration issue, please check logs");
-                    controller.getLogger().warning("Invalid upgrade path: " + path.getUpgrade());
-                } else {
-                    mage.sendMessage(Messages.get("wand.level_up").replace("$path", newPath.getName()));
-                    path.upgraded(this, mage);
-                    this.path = newPath.getKey();
-                    levels += addLevels;
+                if (path.checkUpgrade(mage, this)) {
+                    WandUpgradePath newPath = path.getUpgrade();
+                    if (newPath == null) {
+                        mage.sendMessage("Configuration issue, please check logs");
+                        controller.getLogger().warning("Invalid upgrade path: " + path.getUpgrade());
+                    } else {
+                        mage.sendMessage(Messages.get("wand.level_up").replace("$path", newPath.getName()));
+                        path.upgraded(this, mage);
+                        this.path = newPath.getKey();
+                        levels += addLevels;
+                    }
                 }
             } else if (mage != null) {
                 mage.sendMessage(Messages.get("wand.fully_enchanted"));

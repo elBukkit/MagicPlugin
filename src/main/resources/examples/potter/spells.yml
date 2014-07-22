@@ -690,7 +690,7 @@ bombarda:
         range: 12
         target_breakables: 1
         break_blocks: false
-        size: 3
+        size: 4
         cooldown: 10000
     costs:
         xp: 50
@@ -713,7 +713,7 @@ bombardamaxima:
         target: block
         allow_max_range: true
         range: 24
-        size: 5
+        size: 6
         target_breakables: 1
         break_blocks: false
         cooldown: 20000

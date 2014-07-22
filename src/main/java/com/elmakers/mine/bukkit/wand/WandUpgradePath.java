@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -29,6 +30,7 @@ public class WandUpgradePath {
     private final String key;
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<String>();
+    private final Set<String> requiredSpells = new HashSet<String>();
     private String upgradeKey;
     private String upgradeItemKey;
     private String name;
@@ -93,8 +95,11 @@ public class WandUpgradePath {
             spells.addAll(spellSection.getKeys(false));
         }
 
+        // Upgrade information
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
+        requiredSpells.addAll(template.getStringList("required_spells"));
+
         matchSpellMana = template.getBoolean("match_spell_mana", matchSpellMana);
 
         // Description information
@@ -333,6 +338,10 @@ public class WandUpgradePath {
         return minLevel;
     }
 
+    public boolean requiresSpell(String spellKey) {
+        return requiredSpells.contains(spellKey);
+    }
+
     public boolean hasSpell(String spellKey) {
         return spells.contains(spellKey);
     }
@@ -415,5 +424,30 @@ public class WandUpgradePath {
 
     public boolean getMatchSpellMana() {
         return matchSpellMana;
+    }
+
+    public boolean checkUpgrade(Mage mage, Wand wand) {
+        if (requiredSpells == null && requiredSpells.isEmpty()) return true;
+
+        Set<String> wandSpells = wand.getSpells();
+        if (wandSpells.containsAll(requiredSpells)) {
+            return true;
+        }
+
+        if (mage != null) {
+            for (String requiredKey : requiredSpells) {
+                if (!wandSpells.contains(requiredKey)) {
+                    SpellTemplate spell = mage.getController().getSpellTemplate(requiredKey);
+                    if (spell == null) {
+                        mage.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
+                        continue;
+                    }
+                    mage.sendMessage(Messages.get("spell.required_spell").replace("$spell", spell.getName()));
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

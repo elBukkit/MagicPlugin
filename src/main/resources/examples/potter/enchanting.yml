@@ -72,11 +72,13 @@ year1:
       flagrate: 100,100,100
       periculum: 50,60,70
       avis: 20,30,40
-      araniaexumai: 40,60,80
       accio: 40,50,60
       flipendo: 10,20,30
       conjunctivitis: 20,30,40
       bombarda: 5,10,20
+      arrow: 50,60,70
+    required_spells:
+    - araniaexumai
 
 year2:
     upgrade: year3
@@ -92,12 +94,13 @@ year2:
     spells:
       lumos: 100,100,100
       fumos: 80,90,100
-      arrow: 50,60,70
       episkey: 20,30,40
       protego: 40,60,80
       flipendoduo: 5,10,20
       locomotomortus: 1,5,10
       arresto: 90,100,100
+    required_spells:
+    - reducto
 
 year3:
     upgrade: year4
@@ -112,14 +115,14 @@ year3:
     - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       stupefy: 100,100,100
-      reducto: 50,60,70
-      colorvaria: 20,30,40
       confundus: 40,60,80
       immobulus: 40,50,60
       duro: 10,20,30
       obscuro: 20,40,50
       levicorpus: 20,40,50
       rennervate: 90,100,100
+    required_spells:
+    - colorvaria
 
 year4:
     upgrade: year5
@@ -133,13 +136,14 @@ year4:
     - manpromote @p yearfive
     - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      reducio: 100,100,100
       aguamenti: 50,60,70
       incendio: 20,30,40
       petrificustotalus: 40,60,80
       protegoduo: 5,20,30
       snowball: 15,50,80
       nox: 20,30,50
+    required_spells:
+    - reducio
 
 year5:
     upgrade: year6
@@ -154,11 +158,13 @@ year5:
       6:  20, 30, 50
     spells:
       expelliarmus: 100,100,100
-      finiteincantatem: 50,60,70
-      sectumsempra: 20,30,40
       silencio: 40,60,80
       ascendio: 40,50,60
       aparecium: 20,40,50
+      deprimo: 5,10,20
+    required_spells:
+    - finiteincantatem
+    - sectumsempra
 
 year6:
     upgrade: year7
@@ -172,13 +178,14 @@ year6:
     - manpromote @p yearseven
     - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      crucio: 100,100,100
       ferula: 50,60,70
       bombardamaxima: 20,30,40
-      apparate: 40,60,80
       flipendotria: 5,10,20
       protegotria: 1,10,20
       vulnera: 5,10,20
+    required_spells:
+    - apparate
+    - crucio
 
 year7:
     upgrade: graduate
@@ -192,9 +199,11 @@ year7:
     - manpromote @p graduate
     - broadcast &6@p §3has graduated from Hogwarts!
     spells:
-      avadakedavra: 100,100,100
       reparifarge: 50,60,70
-      imperio: 20,30,40
+    required_spells:
+    - avadakedavra
+    - imperio
+
 
 graduate:
     inherit: year7
