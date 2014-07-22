@@ -1195,8 +1195,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.GREEN + "(No Description)");
 		}
-		if (owner.length() > 0) {
-			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + owner);
+		if (owner.length() > 0 || ownerId.length() > 0) {
+			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + owner + " (" + ChatColor.GRAY + ownerId + ChatColor.WHITE + ")");
 		} else {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + "(No Owner)");
 		}
