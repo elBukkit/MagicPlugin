@@ -1210,8 +1210,8 @@ episkey:
         allow_max_range: false
         range: 16
         duration: 1000
-        effect_heal: 1,1
         effect_saturation: 4
+        heal: 4
     costs:
         xp: 50
 
@@ -2664,7 +2664,7 @@ vulnera:
         effect_regeneration: 1
         effect_saturation: 1
         effect_slow: 4
-        effect_heal: 1,1
+        heal: 10
     costs:
         xp: 80
 

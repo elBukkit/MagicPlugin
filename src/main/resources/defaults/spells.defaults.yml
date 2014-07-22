@@ -1189,7 +1189,7 @@ disarm:
 cure:
     icon: cookie
     category: light
-    class: HealSpell
+    class: PotionEffectSpell
     worth: 30
     effects:
         cast:
@@ -1212,13 +1212,13 @@ cure:
         range: 16
         feed: false
         cure: true
-        percentage: 0.1
+        heal_percentage: 0.1
     costs:
         xp: 20
 heal:
     icon: bread
     category: light
-    class: HealSpell
+    class: PotionEffectSpell
     worth: 200
     effects:
         cast:
@@ -1239,6 +1239,7 @@ heal:
         allow_max_range: false
         range: 32
         feed: true
+        heal: 10
     costs:
         xp: 100
 music:

@@ -1,12 +1,11 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -18,6 +17,12 @@ import org.bukkit.potion.PotionEffectType;
 
 public class PotionEffectSpell extends UndoableSpell
 {
+    private final static PotionEffectType[] _negativeEffects =
+            {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
+                    PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
+                    PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
+    protected final static Set<PotionEffectType> negativeEffects = new HashSet<PotionEffectType>(Arrays.asList(_negativeEffects));
+
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -77,7 +82,29 @@ public class PotionEffectSpell extends UndoableSpell
                 }
             }
 
-            if (parameters.contains("damage")) {
+            if (targetEntity instanceof Player && parameters.getBoolean("feed", false)) {
+                Player p = (Player)targetEntity;
+                p.setExhaustion(0);
+                p.setFoodLevel(20);
+            }
+            if (parameters.getBoolean("cure", false)) {
+                Collection<PotionEffect> currentEffects = targetEntity.getActivePotionEffects();
+                for (PotionEffect effect : currentEffects) {
+                    if (negativeEffects.contains(effect.getType())) {
+                        targetEntity.removePotionEffect(effect.getType());
+                    }
+                }
+            }
+
+            if (parameters.contains("heal")) {
+                registerModified(targetEntity);
+                double health = targetEntity.getHealth() + parameters.getDouble("heal");
+                targetEntity.setHealth(Math.min(health, targetEntity.getMaxHealth()));
+            } else if (parameters.contains("heal_percentage")) {
+                registerModified(targetEntity);
+                double health = targetEntity.getHealth() + targetEntity.getMaxHealth() * parameters.getDouble("heal_percentage");
+                targetEntity.setHealth(Math.min(health, targetEntity.getMaxHealth()));
+            } else if (parameters.contains("damage")) {
                 registerModified(targetEntity);
                 targetEntity.damage(parameters.getDouble("damage") * mage.getDamageMultiplier());
             } else {
