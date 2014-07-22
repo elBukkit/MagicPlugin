@@ -687,11 +687,14 @@ bombarda:
     parameters:
         target: block
         allow_max_range: true
-        range: 12
+        range: 16
         target_breakables: 1
         break_blocks: false
-        size: 4
+        size: 3
         cooldown: 10000
+        otx: r(-3,3)
+        oty: r(-3,3)
+        otz: r(-3,3)
     costs:
         xp: 50
 
@@ -713,10 +716,13 @@ bombardamaxima:
         target: block
         allow_max_range: true
         range: 24
-        size: 6
+        size: 5
         target_breakables: 1
         break_blocks: false
         cooldown: 20000
+        otx: r(-2,2)
+        oty: r(-2,2)
+        otz: r(-2,2)
     costs:
         xp: 75
 
@@ -1770,6 +1776,7 @@ levicorpus:
     category: charms
     class: GenericSpell
     cast_on_no_target: true
+    pvp_restricted: true
     worth: 20
     effects:
         cast:
