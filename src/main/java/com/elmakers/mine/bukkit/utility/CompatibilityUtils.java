@@ -370,6 +370,10 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void addPotionEffect(LivingEntity entity, int color) {
+        // Hacky safety check
+        if (color == 0) {
+            color = 0x010101;
+        }
         watch(entity, 7, color);
     }
 
