@@ -671,6 +671,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			addToInventory(itemStack);
 			return;
 		}
+        Player player = mage != null ? mage.getPlayer() : null;
+        if (player != null && slot == player.getInventory().getHeldItemSlot()) {
+            addToInventory(itemStack);
+            return;
+        }
 		
 		Inventory inventory = getInventory(slot);
 		slot = getInventorySlot(slot);
@@ -701,6 +706,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (itemStack == null) {
 				// controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
 				itemStack = new ItemStack(item.getType(), 1);
+                CompatibilityUtils.setDisplayName(itemStack, spellKey);
                 CompatibilityUtils.setMetadata(itemStack, metadataProvider, "spell", spellKey);
             }
 			else if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey;
