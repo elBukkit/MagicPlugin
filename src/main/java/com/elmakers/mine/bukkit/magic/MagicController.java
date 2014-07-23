@@ -2737,10 +2737,9 @@ public class MagicController implements Listener, MageController {
                 // Update hotbar names
                 previousWand.updateHotbar();
 			} else if (previousWand.getMode() == WandMode.CHEST) {
-				// First check for chest inventory mode, we may just be closing a display inventory.
+				// Check for chest inventory mode, we may just be closing a display inventory.
 				// In theory you can't re-arrange items in here.
                 previousWand.closeInventory();
-				return;
 			}
 		} else {
             // If we're not in a wand inventory, check for the player
@@ -2752,7 +2751,7 @@ public class MagicController implements Listener, MageController {
             boolean changedWands = false;
             if (previousWand != null && wand == null) changedWands = true;
             if (previousWand == null && wand != null) changedWands = true;
-            if (previousWand != null && wand != null && !previousWand.equals(wand)) changedWands = true;
+            if (previousWand != null && wand != null && !previousWand.getItem().equals(wand.getItem())) changedWands = true;
             if (changedWands) {
                 if (previousWand != null) {
                     previousWand.deactivate();
