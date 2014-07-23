@@ -84,7 +84,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             UndoList checkList = nextList;
             nextList = nextList.getNext();
             if (checkList.isScheduled()) {
-                checkList.undo();
+                checkList.undo(true);
                 undid++;
             }
         }

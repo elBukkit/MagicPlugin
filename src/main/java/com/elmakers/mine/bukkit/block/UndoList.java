@@ -45,7 +45,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected final Mage			owner;
     protected final Plugin		   	plugin;
 
-    protected int                  	passesRemaining  = 1;
+    protected boolean               undone = false;
     protected int                  	timeToLive       = 0;
 
     protected boolean				bypass		 	= false;
@@ -89,7 +89,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.undoQueue = other.undoQueue;
         this.spell = other.spell;
         timeToLive = other.timeToLive;
-        passesRemaining = other.passesRemaining;
+        undone = other.undone;
         createdTime = other.createdTime;
         modifiedTime = other.modifiedTime;
         scheduledTime = other.scheduledTime;
@@ -113,14 +113,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         && 	(runnables == null || runnables.isEmpty()));
     }
 
-    public void setRepetitions(int repeat)
-    {
-        passesRemaining = repeat;
-    }
-
     public boolean isComplete()
     {
-        return passesRemaining <= 0;
+        return undone;
     }
 
     public void setScheduleUndo(int ttl)
@@ -210,8 +205,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void undo()
     {
+        undo(false);
+    }
+
+    public void undo(boolean blocking)
+    {
         unlink();
         if (isComplete()) return;
+        undone = true;
 
         if (spell != null)
         {
@@ -261,11 +262,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         // Block changes will be performed in a batch
         UndoBatch batch = new UndoBatch(this);
-        owner.addUndoBatch(batch);
-        passesRemaining--;
-        if (isComplete()) {
-            blockList = null;
+        if (blocking) {
+            while (!batch.isFinished()) {
+                batch.process(1000);
+            }
+        } else {
+            owner.addUndoBatch(batch);
         }
+        blockList = null;
     }
 
     @Override
@@ -273,7 +277,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         super.load(node);
         timeToLive = node.getInt("time_to_live", timeToLive);
-        passesRemaining = node.getInt("passes_remaining", passesRemaining);
         name = node.getString("name", name);
     }
 
@@ -282,7 +285,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         super.save(node);
         node.set("time_to_live", (Integer)timeToLive);
-        node.set("passes_remaining", (Integer) passesRemaining);
         node.set("name", name);
     }
 
