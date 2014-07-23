@@ -1204,6 +1204,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			sender.sendMessage(ChatColor.ITALIC + "" + ChatColor.WHITE + "(No Owner)");
 		}
+        if (storedInventory != null) {
+            sender.sendMessage(ChatColor.RED + "Has a stored inventory");
+        }
 		
 		for (String key : PROPERTY_KEYS) {
 			String value = InventoryUtils.getMeta(wandNode, key);
@@ -2461,6 +2464,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isInventoryOpen()) {
 			closeInventory();
 		}
+        storedInventory = null;
 		
 		if (usesMana() && player != null) {
             player.setExp(storedXpProgress);
@@ -3046,7 +3050,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public boolean storeInventory() {
         if (storedInventory != null) {
             if (mage != null) {
-                mage.sendMessage("Your wand contains a previously stored inventory and will not activate, please notify an admin!");
+                mage.sendMessage("Your wand contains a previously stored inventory and will not activate, let go of it to clear.");
             }
             controller.getLogger().warning("Tried to store an inventory with one already present: " + (mage == null ? "?" : mage.getName()));
             return false;

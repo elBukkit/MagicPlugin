@@ -153,7 +153,6 @@ public class PushSpell extends UndoableSpell
             }
         }
 
-
         Location to = pull ? targetLocation : sourceLocation;
         Location from = pull ? sourceLocation : targetLocation;
 
