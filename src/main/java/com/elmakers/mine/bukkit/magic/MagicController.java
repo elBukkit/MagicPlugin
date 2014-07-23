@@ -2465,7 +2465,8 @@ public class MagicController implements Listener, MageController {
     }
 
 	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event) {
+	public void onPlayerQuit(PlayerQuitEvent event)
+    {
         playerQuit(event);
     }
 
@@ -2481,12 +2482,21 @@ public class MagicController implements Listener, MageController {
 
         mage.onPlayerQuit(event);
 		UndoQueue undoQueue = mage.getUndoQueue();
-        undoQueue.undoScheduled();
+        if (undoQueue != null) {
+            int undid = undoQueue.undoScheduled();
+            if (undid != 0) {
+                getLogger().info("Player " + mage.getName() + " logged out, auto-undid " + undid + " spells");
+            }
 
-		if (commitOnQuit && undoQueue != null && !undoQueue.isEmpty()) {
-			getLogger().info("Player logged out, committing constructions: " + mage.getName());
-			undoQueue.commit();
-		}
+            if (!undoQueue.isEmpty()) {
+                if (commitOnQuit) {
+                    getLogger().info("Player logged out, committing constructions: " + mage.getName());
+                    undoQueue.commit();
+                } else {
+                    getLogger().info("Player " + mage.getName() + " logged out with " + undoQueue.getSize() + " spells in their undo queue");
+                }
+            }
+        }
 
         final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
         getLogger().info("Player logged out, saving data to " + playerData.getName());
@@ -2509,8 +2519,9 @@ public class MagicController implements Listener, MageController {
 		// Close the wand inventory to make sure the player's normal inventory gets saved
 		Wand wand = mage.getActiveWand();
 		if (wand != null) {
-			wand.closeInventory();
+			wand.deactivate();
 		}
+        mage.deactivateAllSpells(true, true);
 
 		// Let the GC collect the mage, unless they have some pending undo batches
 		// or an undo queue (for rewind)
@@ -2524,19 +2535,15 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event)
 	{
-		for (Mage apiMage : mages.values()) {
-            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) continue;
-            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
+        Collection<Mage> saveMages = new ArrayList<Mage>(mages.values());
+		for (Mage mage : saveMages) {
             Player player = mage.getPlayer();
-			if (player == null) continue;
+            if (player == null) continue;
 
-			Wand wand = mage.getActiveWand();
-			if (wand != null) {
-				wand.deactivate();
-			}
+            playerQuit(new PlayerQuitEvent(player, "Disabling Plugin"));
 			player.updateInventory();
 		}
+        mages.clear();
 	}
 
 	@EventHandler
