@@ -371,7 +371,7 @@ public class WandLevel {
 			wandProperties.set("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
 		}
 
-		// Set properties. This also updates name and lore.
+		// Set properties.
 		wand.loadProperties(wandProperties);
 		return addedMaterials || addedSpells || addedProperties;
 	}
