@@ -196,7 +196,6 @@ year6:
       vulnera: 5,10,20
     required_spells:
       - apparate
-      - crucio
 
 year7:
     upgrade: graduate
@@ -211,7 +210,6 @@ year7:
       - manpromote @p graduate
       - broadcast &6@p §3has graduated from Hogwarts!
     spells:
-      reparifarge: 50,60,70
       atmos: 10,20,30
       meteo: 5,10,20
       disillusion: 5,10,20
@@ -219,8 +217,7 @@ year7:
       firestorm: 5,10,15
       orchideous: 1,5,10
     required_spells:
-      - avadakedavra
-      - imperio
+      - reparifarge
 
 graduate:
     inherit: year7
