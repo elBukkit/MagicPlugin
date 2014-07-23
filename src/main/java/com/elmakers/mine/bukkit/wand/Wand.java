@@ -2241,6 +2241,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void activate(Mage mage, ItemStack wandItem) {
 		if (mage == null || wandItem == null) return;
 
+        if (!canUse(mage.getPlayer())) {
+            mage.sendMessage(Messages.get("wand.bound").replace("$name", getOwner()));
+            mage.setActiveWand(null);
+            return;
+        }
+
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
             return;
@@ -2307,9 +2313,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateLore();
 		
 		updateEffects();
-
-        // This is here just in case the wand had a stored inventory on crash or something
-        restoreInventory();
 	}
 
     protected void randomize() {
@@ -3038,6 +3041,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public boolean storeInventory() {
         if (storedInventory != null) {
+            if (mage != null) {
+                mage.sendMessage("Your wand contains a previously stored inventory and will not activate, please notify an admin!");
+            }
+            controller.getLogger().warning("Tried to store an inventory with one already present: " + (mage == null ? "?" : mage.getName()));
             return false;
         }
 

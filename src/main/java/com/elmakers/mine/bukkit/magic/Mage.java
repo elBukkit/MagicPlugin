@@ -454,6 +454,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Wand wand = Wand.getActiveWand(controller, player);
             if (wand != null) {
                 wand.activate(this);
+                // This is here just in case the wand had a stored inventory on crash or something
+                wand.restoreInventory();
             } else if (isNewPlayer && welcomeWand.length() > 0) {
                 isNewPlayer = false;
                 wand = Wand.createWand(controller, welcomeWand);
