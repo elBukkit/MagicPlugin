@@ -297,7 +297,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void removePotionEffect(LivingEntity entity) {
-        addPotionEffect(entity, 0); // ?
+        watch(entity, 7, 0);
     }
 
     public static Painting spawnPainting(Location location, BlockFace facing, Art art)
