@@ -76,16 +76,20 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         size--;
     }
 
-    public void undoScheduled()
+    public int undoScheduled()
     {
+        int undid = 0;
         UndoList nextList = tail;
         while (nextList != null) {
             UndoList checkList = nextList;
             nextList = nextList.getNext();
             if (checkList.isScheduled()) {
                 checkList.undo();
+                undid++;
             }
         }
+
+        return undid;
     }
 
     public boolean isEmpty()
