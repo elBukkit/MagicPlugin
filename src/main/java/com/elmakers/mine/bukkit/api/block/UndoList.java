@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 public interface UndoList extends BlockList, Comparable<UndoList> {
     public void commit();
     public void undo();
+    public void undo(boolean blocking);
 
     public void setEntityUndo(boolean undoEntityEffects);
 

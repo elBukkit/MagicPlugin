@@ -38,4 +38,11 @@ public interface UndoQueue {
      * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
      */
     public UndoList undoRecent(Block block, int timeout);
+
+    /**
+     * Immediately undo any scheduled undo tasks.
+     *
+     * @return The number of tasks (spells) undone.
+     */
+    public int undoScheduled();
 }
