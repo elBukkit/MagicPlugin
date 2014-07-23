@@ -1113,11 +1113,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 try {
                     YamlConfiguration inventoryConfig = new YamlConfiguration();
                     String serialized = wandConfig.getString("stored");
-                    inventoryConfig.loadFromString(serialized);
-                    Collection<ItemStack> collection = (Collection<ItemStack>)inventoryConfig.get("contents");
-                    ItemStack[] contents = collection.toArray(itemTemplate);
-                    storedInventory = CompatibilityUtils.createInventory(null, contents.length, "Stored Inventory");
-                    storedInventory.setContents(contents);
+                    if (serialized.isEmpty()) {
+                        storedInventory = null;
+                    } else {
+                        inventoryConfig.loadFromString(serialized);
+                        Collection<ItemStack> collection = (Collection<ItemStack>) inventoryConfig.get("contents");
+                        ItemStack[] contents = collection.toArray(itemTemplate);
+                        storedInventory = CompatibilityUtils.createInventory(null, contents.length, "Stored Inventory");
+                        storedInventory.setContents(contents);
+                    }
                 } catch (Exception ex) {
                     controller.getLogger().warning("Error loading stored wand inventory");
                     ex.printStackTrace();
