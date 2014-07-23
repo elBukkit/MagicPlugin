@@ -66,6 +66,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -1597,6 +1598,7 @@ public class MagicController implements Listener, MageController {
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
+        undoOnWorldSave = properties.getBoolean("undo_on_world_save", undoOnWorldSave);
         defaultWandPath = properties.getString("default_wand_path", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
@@ -1806,6 +1808,26 @@ public class MagicController implements Listener, MageController {
 	/*
 	 * Listeners / callbacks
 	 */
+
+    @EventHandler
+    public void onWorldSaveEvent(WorldSaveEvent event) {
+        if (!undoOnWorldSave) return;
+
+        World world = event.getWorld();
+        List<Player> players = world.getPlayers();
+        for (Player player : players) {
+            if (isMage(player)) {
+                com.elmakers.mine.bukkit.api.block.UndoQueue queue = getMage(player).getUndoQueue();
+                if (queue != null) {
+                    int undone = queue.undoScheduled();
+                    if (undone  > 0) {
+                        getLogger().info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
+                    }
+                }
+            }
+        }
+    }
+
 	@EventHandler
 	public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
 		Entity entity = event.getEntity();
@@ -3667,6 +3689,7 @@ public class MagicController implements Listener, MageController {
     private int                                 undoQueueDepth                  = 256;
     private int								    pendingQueueDepth				= 16;
     private int                                 undoMaxPersistSize              = 0;
+    private boolean                             undoOnWorldSave                 = false;
     private boolean                             commitOnQuit             		= false;
     private String                              defaultWandPath                 = "master";
     private WandMode							defaultWandMode				    = WandMode.INVENTORY;

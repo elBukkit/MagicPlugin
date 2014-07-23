@@ -300,6 +300,11 @@ undo_frequency: 10
 # or Rewind a player's constructions after they log out.
 commit_on_quit: false
 
+# Force any pending scheduled undo tasks to run on world save
+# this will ensure the world reverts to normal in the event of
+# a server crash.
+undo_on_world_save: false
+
 # DEPRECATED
 # Nearly all spells undo, so this setting will produce strange behavior.
 # You will need to add "undo" to individual spells in spells.yml if you want auto-undo behavior.
