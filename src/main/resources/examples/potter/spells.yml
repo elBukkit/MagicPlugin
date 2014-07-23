@@ -94,6 +94,7 @@ aguamenti:
     icon: stationary_water
     category: transfiguration
     class: CushionSpell
+    pvp_restricted: true
     worth: 10
     effects:
         cast:
@@ -111,6 +112,7 @@ aguamenti:
         cooldown: 500
         undo: 7000
         disable_physics: 8000
+        bypass_build: true
     costs:
         xp: 110
 
@@ -2497,12 +2499,12 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: instant_spell
+             particle: magic_crit
              lenghtGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: 0000FF
+           color: 00EEFF
            firework: ball
         backfire:
         -  class: EffectSingle
@@ -2513,7 +2515,7 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: instant_spell
+             particle: magic_crit
              lenghtGrow: 0.4
     parameters:
         range: 35

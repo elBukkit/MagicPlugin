@@ -91,7 +91,7 @@ categories:
     charms:
         name: Charms
         description: Buffs, Boons and Boosts
-        color: '888800'
+        color: 'FFFF00'
     herbology:
         name: Herbology
         description: Give your wand a green thumb
@@ -103,11 +103,11 @@ categories:
     transfiguration:
         name: Transfiguration
         description: Alchemy, polymorphing
-        color: 'AA00AA'
+        color: 'FF1111'
     creatures:
         name: Care of Magical Creatures
         description: Keep them under control!
-        color: 'AAAA00'
+        color: 'FF11FF'
 
 spells:
     accio:
