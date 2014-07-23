@@ -3,10 +3,12 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
@@ -42,13 +44,10 @@ public class PushSpell extends UndoableSpell
 			Location playerLocation = getLocation();
 			Location targetLocation = target.getLocation();
 
-			if (playerLocation.distanceSquared(targetLocation) >maxDistanceSquared) continue;
-
-			Location to = pull ? targetLocation : playerLocation;
-			Location from = pull ? playerLocation : targetLocation;
+			if (playerLocation.distanceSquared(targetLocation) > maxDistanceSquared) continue;
 
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
-			forceEntity(target, mutliplier, from, to, magnitude, damage);
+			forceEntity(target, mutliplier, playerLocation, targetLocation, magnitude, damage, pull);
             getCurrentTarget().setEntity(target);
 		}
 	}
@@ -77,6 +76,10 @@ public class PushSpell extends UndoableSpell
 		int maxAllDistance = parameters.getInt("area_range", DEFAULT_MAX_ALL_DISTANCE);
         int fallProtection = parameters.getInt("fall_protection", 0);
         double damage = parameters.getDouble("damage", 0) * mage.getDamageMultiplier();
+
+        if (mage.isSuperPowered()) {
+            allowAll = true;
+        }
 
 		if
 		(
@@ -117,19 +120,17 @@ public class PushSpell extends UndoableSpell
             if (mage != null && fallProtection > 0) {
                 mage.enableFallProtection(fallProtection);
             }
-			Location to = pull ? target.getLocation() : getLocation();
-			Location from = pull ? getLocation() : target.getLocation();
 			int magnitude = (target instanceof LivingEntity) ? entityMagnitude : itemMagnitude;
 
             getCurrentTarget().setEntity(targetEntity);
-			forceEntity(targetEntity, multiplier, from, to, magnitude, damage);
+			forceEntity(targetEntity, multiplier, getLocation(), target.getLocation(), magnitude, damage, pull);
 			pushed++;
 			if (count > 0 && pushed >= count) break;
 		}
 		return SpellResult.CAST;
 	}
 
-	protected void forceEntity(Entity target, double multiplier, Location from, Location to, int magnitude, double damage)
+	protected void forceEntity(Entity target, double multiplier, Location sourceLocation, Location targetLocation, int magnitude, double damage, boolean pull)
 	{
 		// Check for protected Mages
 		if (controller.isMage(target)) {
@@ -140,6 +141,10 @@ public class PushSpell extends UndoableSpell
 			}
 		}
 
+        if (target instanceof Hanging) {
+            return;
+        }
+
         if (target instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)target;
             registerModified(li);
@@ -148,12 +153,22 @@ public class PushSpell extends UndoableSpell
             }
         }
 
+
+        Location to = pull ? targetLocation : sourceLocation;
+        Location from = pull ? sourceLocation : targetLocation;
+
         registerVelocity(target);
 		magnitude = (int)((double)magnitude * multiplier);
 		Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
 		Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
 		Vector forceVector = fromVector;
 		forceVector.subtract(toVector);
+        if (forceVector.lengthSquared() < 1) {
+            forceVector = sourceLocation.getDirection();
+            if (pull) {
+                forceVector.multiply(-1);
+            }
+        }
 		forceVector.normalize();
 		forceVector.multiply(magnitude);
 		target.setVelocity(forceVector);
