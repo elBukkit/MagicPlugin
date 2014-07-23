@@ -99,19 +99,6 @@ public class DynmapController {
 					targetMarker = spellSet.createPolyLineMarker(targetId, label, false, worldName, x, y, z, false);
 				}
 				targetMarker.setLineStyle(width, 0.8, spellColor.asRGB());
-				
-				/*
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
-						marker.deleteMarker();
-						// deleteMarker does not seem to work. :\
-						double[] x = {location.getX(), location.getX()};
-						double[] y = {location.getY(), location.getY()};
-						double[] z = {location.getZ(), location.getZ()};
-						markerSet.createPolyLineMarker(markerId, "(None)", false, location.getWorld().getName(), x, y, z, false);
-					}
-				}, 20 * 5);
-				*/
 			}
 	 }
 	 
