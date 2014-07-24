@@ -30,6 +30,7 @@ public class TorchSpell extends BlockSpell
 				world.setThundering(false);
 			}
 		}
+
 		if (parameters.contains("time"))
 		{
 			long targetTime = 0;
@@ -59,6 +60,15 @@ public class TorchSpell extends BlockSpell
 					targetTime = 0;
 				}
 			}
+            if (parameters.getBoolean("cycle_moon_phase", false))
+            {
+
+                long currentTime = world.getFullTime();
+                currentTime = ((currentTime % 24000) + 1) * 24000 + targetTime;
+                world.setFullTime(currentTime);
+                return SpellResult.AREA;
+            }
+
 			world.setTime(targetTime);
 			return SpellResult.AREA;
 		}

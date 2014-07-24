@@ -258,7 +258,7 @@ araniaexumai:
            sound: fizz
            effectlib:
              class: ConeLocationEffect
-             iterations: 16
+             iterations: 15
              particle: spell
         area:
         -  class: EffectSingle
@@ -510,7 +510,7 @@ avadakedavra:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: happy_villager
              lenghtGrow: 0.4
         -  class: EffectSingle
@@ -552,7 +552,7 @@ avadamaxima:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: slime
              lenghtGrow: 0.4
         -  class: EffectSingle
@@ -618,7 +618,7 @@ beat:
            sound: burp
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: town_aura
         -  class: EffectSingle
            location: target
@@ -740,7 +740,7 @@ bubble:
            sound: orb_pickup
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: bubble
         -  class: EffectSingle
            location: target
@@ -822,7 +822,7 @@ confundus:
            sound: burp
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: town_aura
         -  class: EffectSingle
            location: target
@@ -855,7 +855,7 @@ conjunctivitis:
            sound: burp
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: town_aura
         -  class: EffectSingle
            location: target
@@ -886,7 +886,7 @@ obscuro:
            sound: burp
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: town_aura
         -  class: EffectSingle
            location: target
@@ -921,7 +921,7 @@ crucio:
            sound: wither_idle
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: mob_spell
              lenghtGrow: 0.3
         -  class: EffectSingle
@@ -1123,7 +1123,7 @@ expelliarmus:
            sound: wither_shoot
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: red_dust
              lenghtGrow: 0.5
         -  class: EffectSingle
@@ -1166,7 +1166,7 @@ rennervate:
            sound: orb_pickup
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: happy_villager
     parameters:
         target_type: LivingEntity
@@ -1198,7 +1198,7 @@ episkey:
            sound: orb_pickup
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: heart
         -  class: EffectSingle
            location: target
@@ -1316,7 +1316,7 @@ finiteincantatem:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: enchantment_table
              lenghtGrow: 0.4
         cast:
@@ -1326,7 +1326,7 @@ finiteincantatem:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: enchantment_table
              lenghtGrow: 0.4
         -  class: EffectSingle
@@ -1559,7 +1559,7 @@ immobulus:
            sound: burp
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: town_aura
         -  class: EffectSingle
            particle: town_aura
@@ -1594,7 +1594,7 @@ locomotomortus:
            sound: burp
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: witch_magic
         -  class: EffectSingle
            particle: witch_magic
@@ -1739,7 +1739,7 @@ incendio:
         -  class: EffectSingle
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: flame
     parameters:
         target_type: LivingEntity
@@ -1787,7 +1787,7 @@ levicorpus:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: witch_magic
              lenghtGrow: 0.4
         -  class: EffectSingle
@@ -1966,7 +1966,7 @@ petrificustotalus:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: witch_magic
              lenghtGrow: 0.4
         -  class: EffectSingle
@@ -2138,6 +2138,7 @@ protegotria:
         reflect_chance: 0.5
         bypass_confusion: true
         bypass_backfire: true
+        bypass_build: true
     costs:
         xp: 100
 
@@ -2155,7 +2156,7 @@ reducio:
            particle: angry_villager
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
     parameters:
         target_type: LivingEntity
         target: other_entity
@@ -2352,7 +2353,7 @@ sectumsempra:
            sound: wither_hurt
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: drip_lava
         -  class: EffectTrail
            particle: drip_lava
@@ -2596,7 +2597,7 @@ nox:
            sound: orb_pickup
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: smoke
     parameters:
         target_type: LivingEntity
@@ -2631,6 +2632,7 @@ noxmaxima:
         allow_glowstone: false
         cooldown: 5000
         time: night
+        cycle_moon_phase: true
     costs:
         xp: 200
 
@@ -3311,7 +3313,7 @@ mount:
         -  class: EffectSingle
            effectlib:
              class: ConeLocationEffect
-             iterations: 20
+             iterations: 15
              particle: slime
     parameters:
         target_type: Entity

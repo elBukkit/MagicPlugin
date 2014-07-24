@@ -2058,6 +2058,7 @@ night:
         allow_glowstone: false
         cooldown: 60000
         time: night
+        cycle_moon_phase: true
     costs:
         xp: 40
 time:

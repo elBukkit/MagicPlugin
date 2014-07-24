@@ -121,13 +121,13 @@ year3:
       stupefy: 100,100,100
       confundus: 40,60,80
       immobulus: 40,50,60
-      duro: 10,20,30
       obscuro: 20,40,50
       levicorpus: 20,40,50
       rennervate: 90,100,100
       incarcerous: 20,30,40
     required_spells:
       - colorvaria
+      - duro
 
 year4:
     upgrade: year5
@@ -169,12 +169,11 @@ year5:
       silencio: 40,60,80
       ascendio: 40,50,60
       aparecium: 20,40,50
-      deprimo: 5,10,20
       bubble: 20,30,40
       lacarnum: 5,10,20
     required_spells:
       - finiteincantatem
-      - sectumsempra
+      - deprimo
 
 year6:
     upgrade: year7
@@ -196,6 +195,7 @@ year6:
       vulnera: 5,10,20
     required_spells:
       - apparate
+      - sectumsempra
 
 year7:
     upgrade: graduate
