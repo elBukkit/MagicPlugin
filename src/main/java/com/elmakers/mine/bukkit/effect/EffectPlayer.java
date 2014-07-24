@@ -78,6 +78,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected FireworkEffect fireworkEffect;
 
     protected ParticleEffect particleType = null;
+    protected ParticleEffect particleOverride = null;
+    protected String useParticleOverride = null;
     protected String particleSubType = "";
     protected float particleData = 0f;
     protected float particleXOffset = 0.3f;
@@ -120,6 +122,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             effectLibConfig = null;
         }
 
+        useParticleOverride = configuration.getString("particle_override", null);
         originOffset = ConfigurationUtils.getVector(configuration, "origin_offset");
         targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
         delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
@@ -253,6 +256,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.particleType = particleType;
     }
 
+    public void setParticleOverride(ParticleEffect particleType) {
+        this.particleOverride = particleType;
+    }
+
     public void setParticleSubType(String particleSubType) {
         this.particleSubType = particleSubType;
     }
@@ -317,25 +324,35 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (fireworkEffect != null) {
             EffectUtils.spawnFireworkEffect(location, fireworkEffect, fireworkPower);
         }
+
         if (particleType != null) {
+            ParticleEffect useEffect = overrideParticle(particleType);
             String subType = particleSubType;
-            if ((particleType == ParticleEffect.BLOCK_CRACK || particleType == ParticleEffect.ICON_CRACK || particleType == ParticleEffect.TILE_CRACK) && particleSubType.length() == 0) {
+            if ((useEffect == ParticleEffect.BLOCK_CRACK || useEffect == ParticleEffect.ICON_CRACK || useEffect == ParticleEffect.TILE_CRACK) && particleSubType.length() == 0) {
                 Material material = getWorkingMaterial().getMaterial();
 
                 // Check for potential bad materials, this can get really hairy (client crashes)
-                if (particleType == ParticleEffect.BLOCK_CRACK && !material.isSolid()) {
+                if (useEffect == ParticleEffect.BLOCK_CRACK && !material.isSolid()) {
                     return;
                 }
 
                 // TODO: Check for tools... ?
-                if (particleType == ParticleEffect.TILE_CRACK || particleType == ParticleEffect.ICON_CRACK) {
+                if (useEffect == ParticleEffect.TILE_CRACK || useEffect == ParticleEffect.ICON_CRACK) {
                     material = Material.DIAMOND_AXE;
                 }
                 subType = "" + material.getId() + "_" + getWorkingMaterial().getData();
             }
 
-            particleType.display(subType, location, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+            useEffect.display(subType, location, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
         }
+    }
+
+    public ParticleEffect overrideParticle(ParticleEffect particle) {
+        return useParticleOverride != null && !useParticleOverride.isEmpty() && particleOverride != null ? particleOverride : particle;
+    }
+
+    public String getParticleOverrideName() {
+        return useParticleOverride;
     }
 
     public void setParticleData(float effectData) {

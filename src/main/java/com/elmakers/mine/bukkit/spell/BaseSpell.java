@@ -12,6 +12,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -987,6 +988,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 // Set material and color
                 player.setMaterial(getEffectMaterial());
                 player.setColor(mage.getEffectColor());
+                String overrideParticle = mage.getEffectParticleName();
+                if (overrideParticle != null && !overrideParticle.isEmpty()) {
+                    try {
+                        player.setParticleOverride(ParticleEffect.valueOf(overrideParticle));
+                    } catch (Exception ex) {
+                        controller.getLogger().warning("Error setting particle override: " + ex.getMessage());
+                    }
+                }
                 Entity entity = mage.getEntity();
                 player.start(mageLocation, entity, targetLocation, targetEntity);
             }

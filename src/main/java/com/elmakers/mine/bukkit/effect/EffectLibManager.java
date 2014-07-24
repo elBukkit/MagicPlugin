@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.effect;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -44,6 +45,11 @@ public class EffectLibManager {
 
         Effect[] effects = null;
         String effectClass = configuration.getString("class");
+        ParticleEffect effect = player.overrideParticle(null);
+        String effectOverride = player.getParticleOverrideName();
+        if (effect != null && effectOverride != null && !effectOverride.isEmpty() && configuration.contains(effectOverride)) {
+            configuration.set(effectOverride, effect.name());
+        }
         try {
             effects = effectManager.start(effectClass, configuration, origin, target, sourceEntity, targetEntity, nameMap);
         } catch (Throwable ex) {
