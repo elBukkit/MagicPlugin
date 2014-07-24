@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
+import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
@@ -822,6 +823,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Color getEffectColor() {
         if (activeWand == null) return null;
         return activeWand.getEffectColor();
+    }
+
+    @Override
+    public String getEffectParticleName() {
+        if (activeWand == null) return null;
+        ParticleEffect particle = activeWand.getEffectParticle();
+        return particle == null ? null : particle.name();
     }
 
     @Override

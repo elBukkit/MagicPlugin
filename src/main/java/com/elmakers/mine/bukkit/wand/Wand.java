@@ -1155,9 +1155,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		if (effectParticle == null) {
 			effectParticleInterval = 0;
-		} else {
-			effectParticleInterval = (effectParticleInterval == 0) ? 2 : effectParticleInterval;
-			effectParticleCount = (effectParticleCount == 0) ? 1 : effectParticleCount;
 		}
 		
 		if (xpRegeneration <= 0 || xpMax <= 0 || costReduction >= 1) {
@@ -2421,7 +2418,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		Location location = mage.getLocation();
 		
-		if (effectParticle != null && location != null) {
+		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
 			if ((effectParticleCounter++ % effectParticleInterval) == 0) {
 				if (effectPlayer == null) {
 					effectPlayer = new EffectRing(controller.getPlugin());
@@ -2678,7 +2675,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public Color getEffectColor() {
 		return effectColor == null ? null : effectColor.getColor();
 	}
-	
+
+    public ParticleEffect getEffectParticle() {
+        return effectParticle;
+    }
+
 	public Inventory getHotbar() {
 		return hotbar;
 	}

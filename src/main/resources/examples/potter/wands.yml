@@ -263,9 +263,8 @@ wolf:
     mode: inventory
     active_spell: apparate
     hidden: true
-    effect_particle: enchantment_table
-    effect_particle_count: 1
-    effect_particle_data: 2
+    effect_particle: magic_crit
+    effect_particle_count: 2
     materials:
       - clone
       - replicate

@@ -160,13 +160,15 @@ apparate:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: smoke
                    particleOrbital: large_smoke
-                   iterations: 20
+                   iterations: 8
              - class: EffectSingle
                location: both
+               particle_override: particle
                effectlib:
                    class: LineLocationEffect
                    particle: large_smoke
@@ -174,13 +176,15 @@ apparate:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: instant_spell
                    particleOrbital: spell
-                   iterations: 20
+                   iterations: 8
              - class: EffectSingle
                location: both
+               particle_override: particle
                effectlib:
                    class: LineLocationEffect
                    particle: spell
@@ -208,13 +212,15 @@ apparatemaxima:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: smoke
                    particleOrbital: large_smoke
-                   iterations: 20
+                   iterations: 12
              - class: EffectSingle
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: LineLocationEffect
                    particle: large_smoke
@@ -222,13 +228,15 @@ apparatemaxima:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: instant_spell
                    particleOrbital: spell
-                   iterations: 20
+                   iterations: 12
              - class: EffectSingle
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: LineLocationEffect
                    particle: spell
@@ -393,14 +401,14 @@ atmos:
            sound: ambience_rain
            effectlib:
              class: HelixLocationEffect
-             iterations: 12
+             iterations: 1
              particle: drip_water
         area:
         -  class: EffectSingle
            sound: ambience_thunder
            effectlib:
              class: HelixLocationEffect
-             iterations: 12
+             iterations: 1
              particle: drip_water
     parameters:
         cooldown: 30000
@@ -649,15 +657,15 @@ bogies:
         -  class: EffectSingle
            sound: burp
            effectlib:
-             class: HelixLocationEffect
-             iterations: 2
+             class: ConeLocationEffect
+             iterations: 15
              particle: slime
         -  class: EffectSingle
            location: target
            effectlib:
              class: WarpEntityEffect
              particle: slime
-             iterations: 2
+             iterations: 1
     costs:
         xp: 50
     parameters:
@@ -796,6 +804,7 @@ confringo:
            effectlib:
              class: HelixLocationEffect
              particle: flame
+             iterations: 2
     parameters:
         target_type: Item
         target: other_entity
@@ -1314,21 +1323,31 @@ finiteincantatem:
            sound: shoot_arrow
            sound_volume: 5.0
            location: origin
+           particle_override: particleHelix
            effectlib:
-             class: ConeLocationEffect
+             class: DnaLocationEffect
+             radius: 0.3
              iterations: 15
-             particle: enchantment_table
-             lenghtGrow: 0.4
+             particlesBase: 5
+             particlesHelix: 4
+             particleHelix: witch_magic
+             particleBase1: portal
+             particleBase2: enchantment_table
         cast:
         -  class: EffectSingle
            sound: shoot_arrow
            sound_volume: 5.0
            location: origin
+           particle_override: particleHelix
            effectlib:
-             class: ConeLocationEffect
+             class: DnaLocationEffect
+             radius: 0.3
              iterations: 15
-             particle: enchantment_table
-             lenghtGrow: 0.4
+             particlesBase: 5
+             particlesHelix: 4
+             particleHelix: witch_magic
+             particleBase1: portal
+             particleBase2: enchantment_table
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1621,6 +1640,7 @@ incarcerous:
     category: dark
     class: ConstructSpell
     worth: 45
+    pvp_restricted: true
     effects:
         cast:
         -  class: EffectSingle
@@ -2565,14 +2585,14 @@ meteo:
            sound: blaze_breath
            effectlib:
              class: HelixLocationEffect
-             iterations: 12
+             iterations: 1
              particle: drip_lava
         area:
         -  class: EffectSingle
            sound: blaze_breath
            effectlib:
              class: HelixLocationEffect
-             iterations: 12
+             iterations: 1
              particle: drip_lava
     parameters:
         allow_max_range: false
@@ -2623,7 +2643,7 @@ noxmaxima:
            sound: level_up
            effectlib:
              class: HelixLocationEffect
-             iterations: 24
+             iterations: 2
              particle: large_smoke
     parameters:
         allow_max_range: false
@@ -2796,6 +2816,7 @@ recall:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: smoke
@@ -2805,6 +2826,7 @@ recall:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: instant_spell
@@ -2834,6 +2856,7 @@ gather:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: smoke
@@ -2843,6 +2866,7 @@ gather:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
+               particle_override: particleOrbital
                effectlib:
                    class: AtomLocationEffect
                    particleNucleus: instant_spell
@@ -3436,6 +3460,7 @@ music:
            effectlib:
              class: HelixLocationEffect
              particle: note
+             iterations: 2
     parameters:
         target_type: Player
         target: any

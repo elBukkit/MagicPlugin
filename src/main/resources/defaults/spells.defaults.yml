@@ -3010,12 +3010,21 @@ blink:
     worth: 120
     effects:
         cast:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           location: both
-        -  class: EffectRing
-           particle: portal
-           location: both
+           - class: EffectSingle
+             sound: enderman_teleport
+             location: both
+             particle_override: particleOrbital
+             effectlib:
+                 class: AtomLocationEffect
+                 particleNucleus: portal
+                 particleOrbital: spell
+                 iterations: 8
+           - class: EffectSingle
+             location: both
+             particle_override: particle
+             effectlib:
+                 class: LineLocationEffect
+                 particle: portal
     parameters:
         allow_max_range: false
         allow_ascend: true
@@ -3527,19 +3536,32 @@ missile:
     effects:
         cast:
         -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 5.0
+           sound: enderman_teleport
+           sound_pitch: 0.1
            location: origin
+           particle_override: particle
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: instant_spell
+             particle: magic_crit
              lenghtGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
            color: 0000FF
            firework: ball
+        backfire:
+        -  class: EffectSingle
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           location: origin
+           entity_effect: hurt
+           particle_override: particle
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 15
+             particle: magic_crit
+             lenghtGrow: 0.4
     parameters:
         range: 35
         fov: 0.11
