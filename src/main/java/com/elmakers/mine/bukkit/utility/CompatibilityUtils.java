@@ -471,4 +471,15 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
     }
+
+    public static void magicDamage(LivingEntity target, double amount, Entity source) {
+        try {
+            Object targetHandle = getHandle(target);
+            Object sourceHandle = getHandle(source);
+            Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, sourceHandle, targetHandle);
+            class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

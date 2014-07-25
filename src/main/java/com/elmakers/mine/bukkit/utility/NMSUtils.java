@@ -42,6 +42,7 @@ public class NMSUtils {
     protected static Class<?> class_Entity;
     protected static Class<?> class_EntityLiving;
     protected static Class<?> class_DataWatcher;
+    protected static Class<?> class_DamageSource;
     protected static Class<?> class_World;
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
@@ -56,6 +57,8 @@ public class NMSUtils {
     protected static Method class_DataWatcher_watchMethod;
     protected static Method class_World_getEntitiesMethod;
     protected static Method class_Entity_getBukkitEntityMethod;
+    protected static Method class_EntityLiving_damageEntityMethod;
+    protected static Method class_DamageSource_getMagicSourceMethod;
     protected static Method class_AxisAlignedBB_createBBMethod;
     protected static Method class_World_explodeMethod;
     protected static Method class_NBTTagCompound_setBooleanMethod;
@@ -108,6 +111,7 @@ public class NMSUtils {
             class_EntityItemFrame = fixBukkitClass("net.minecraft.server.EntityItemFrame");
             class_EntityMinecartRideable = fixBukkitClass("net.minecraft.server.EntityMinecartRideable");
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
+            class_DamageSource = fixBukkitClass("net.minecraft.server.DamageSource");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
@@ -125,6 +129,8 @@ public class NMSUtils {
             class_NBTTagCompound_hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
             class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
             class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
+            class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
+            class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
 
@@ -214,6 +220,17 @@ public class NMSUtils {
     }
 
     public static Object getHandle(org.bukkit.entity.Entity entity) {
+        Object handle = null;
+        try {
+            Method handleMethod = entity.getClass().getMethod("getHandle");
+            handle = handleMethod.invoke(entity);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return handle;
+    }
+
+    public static Object getHandle(org.bukkit.entity.LivingEntity entity) {
         Object handle = null;
         try {
             Method handleMethod = entity.getClass().getMethod("getHandle");
