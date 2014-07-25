@@ -53,22 +53,6 @@ DreadKnight:
   Options:
     MovementSpeed: 0.1
     PreventOtherDrops: true
-Sludge:
-  Mobtype: slime
-  Display: Sludge
-  Health: 60
-  Damage: 2
-  Drops:
-  - MinorBoss
-  Options:
-    Size: 10
-    MovementSpeed: 0.1
-    PreventSlimeSplit: true
-    PreventOtherDrops: true
-    MaxCombatDistance: 30
-    KnockbackResistance: 1
-  Skills:
-  - skill SludgePoison >0 0.2
 Deatheater:
   Mobtype: pigzombie
   Display: Deatheater
@@ -103,6 +87,34 @@ Dementor:
     PreventOtherDrops: true
   Skills:
   - skill DementorAttack ~onTimer:5 >0 0.90
+Werewolf:
+  Mobtype: angrywolf
+  Display: '&6Werewolf'
+  Health: 75
+  Drops:
+  - MinorBoss
+  Options:
+    Size: 10
+    MovementSpeed: 0.3
+    PreventOtherDrops: true
+    MaxCombatDistance: 30
+    KnockbackResistance: 1
+Sludge:
+  Mobtype: slime
+  Display: Sludge
+  Health: 60
+  Damage: 2
+  Drops:
+  - MinorBoss
+  Options:
+    Size: 10
+    MovementSpeed: 0.1
+    PreventSlimeSplit: true
+    PreventOtherDrops: true
+    MaxCombatDistance: 30
+    KnockbackResistance: 1
+  Skills:
+  - skill SludgePoison >0 0.2
 Firebender:
   Mobtype: angrypigzombie
   Display: Firebender
