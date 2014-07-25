@@ -75,6 +75,15 @@ public class CommandSpell extends TargetingSpell {
         }
 
         Location location = getLocation();
+        Target target = null;
+        Location targetLocation = null;
+        if (getTargetType() != TargetType.NONE) {
+            target = getTarget();
+            targetLocation = target.getLocation();
+            if (targetLocation == null) {
+                return SpellResult.NO_TARGET;
+            }
+        }
 
         for (String command : commands) {
             command = command
@@ -87,12 +96,7 @@ public class CommandSpell extends TargetingSpell {
                     .replace("@y", Double.toString(location.getY()))
                     .replace("@z", Double.toString(location.getZ()));
 
-            if (getTargetType() != TargetType.NONE) {
-                Target target = getTarget();
-                Location targetLocation = target.getLocation();
-                if (targetLocation == null) {
-                    return SpellResult.NO_TARGET;
-                }
+            if (targetLocation != null) {
                 command = command
                         .replace("@tworld", targetLocation.getWorld().getName())
                         .replace("@tx", Double.toString(targetLocation.getX()))
