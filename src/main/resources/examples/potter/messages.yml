@@ -354,6 +354,9 @@ spells:
     lacarnum:
         name: Lacarnum Inflamari
         description: Launch a fireball
+    legilimens:
+        name: Legilimens
+        description: Peer into your target's soul
     levicorpus:
         name: Levicorpus
         description: Throw your opponent into the air
@@ -398,6 +401,9 @@ spells:
         name: Expecto Patronum
         description: Summon a Patronus to protect you
         cast: Expecto Patronum!
+    piertotum:
+        name: Piertotum Locomotor
+        description: Summon animated armor to protect you
     protego:
         name: Protego
         description: Create a magical shield

@@ -218,6 +218,7 @@ year7:
       orchideous: 1,5,10
     required_spells:
       - reparifarge
+      - piertotum
 
 graduate:
     inherit: year7

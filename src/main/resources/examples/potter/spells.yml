@@ -1793,6 +1793,25 @@ lacarnum:
     costs:
         xp: 180
 
+legilimens:
+    icon: iron_helmet
+    category: staff
+    class: StashSpell
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_hit
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: Player
+        target: other
+        type: inventory
+        range: 32
+    costs:
+        xp: 100
+
 levicorpus:
     icon: ink_sack:5
     category: charms
@@ -2032,6 +2051,27 @@ patronus:
         cooldown: 7000
     costs:
         xp: 50
+
+piertotum:
+    icon: iron_fence
+    category: master
+    class: ConstructSpell
+    worth: 250
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_use
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target: self
+        type: sphere
+        cooldown: 30000
+        undo: 10000
+        brush: schematic|shield
+        transparent: transparent_to_construction
+    costs:
+        xp: 150
 
 protego:
     icon: ink_sack:12
@@ -2543,7 +2583,7 @@ stupefy:
         fov: 0.10
         target_type: LivingEntity
         duration: 1000
-        damage: 2.5
+        damage: 6
         effect_confusion: 40
         cooldown: 5000
         target_breakables: 1
