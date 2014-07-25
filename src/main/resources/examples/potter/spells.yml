@@ -2492,6 +2492,34 @@ silenciomaxima:
     costs:
         xp: 200
 
+expulsion:
+    icon: ink_sack:3
+    category: staff
+    class: CommandSpell
+    hidden: true
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: origin
+           effectlib:
+             class: DnaLocationEffect
+    parameters:
+        commands:
+        - nick @t @t_Expelled
+        - broadcast @t was Expelled from Hogwarts by @p!
+        - spawn @t
+        target_type: Player
+        target: other
+        range: 16
+        target_breakables: 1
+        bypass_backfire: true
+    costs:
+        xp: 200
+
 jail:
     icon: iron_fence
     category: staff

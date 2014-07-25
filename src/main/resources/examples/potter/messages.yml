@@ -270,6 +270,10 @@ spells:
         name: Expelliarmus
         description: Disarm your opponent
         cast: Expelliarmus!
+    expulsion:
+        name: Expulsion
+        description: Kick your target out of school
+        cast: Expelled $target!
     fiendfyre:
         name: Fiendfyre
         description: Summon a dragon of fire
