@@ -2067,6 +2067,7 @@ piertotum:
         target: self
         type: sphere
         cooldown: 30000
+        radius: 4
         undo: 10000
         brush: schematic|shield
         transparent: transparent_to_construction
