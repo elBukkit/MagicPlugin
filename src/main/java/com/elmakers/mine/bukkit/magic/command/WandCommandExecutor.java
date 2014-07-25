@@ -178,9 +178,28 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
 			String subCommand = args[0];
 			String subCommand2 = args[1];
+
+            String commandPNode = "Magic.commands." + commandName + "." + subCommand;
+
+            if (!api.hasPermission(sender, commandPNode)) {
+                return options;
+            }
+
+            if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("upgrade")) {
+                if (subCommand2.equals("effect_sound")) {
+                    Sound[] sounds = Sound.values();
+                    for (Sound sound : sounds) {
+                        options.add(sound.name().toLowerCase());
+                    }
+                } else if (subCommand2.equals("effect_particle")) {
+                    ParticleEffect[] particleTypes = ParticleEffect.values();
+                    for (ParticleEffect particleType : particleTypes) {
+                        options.add(particleType.name().toLowerCase());
+                    }
+                }
+            }
 			
 			String subCommandPNode = "Magic.commands." + commandName + "." + subCommand + "." + subCommand2;
-			
 			if (!api.hasPermission(sender, subCommandPNode)) {
 				return options;
 			}
@@ -201,20 +220,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			
 			if (subCommand.equalsIgnoreCase("add") && subCommand2.equalsIgnoreCase("material")) {
 				options.addAll(api.getBrushes());
-			}
-			
-			if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("upgrade")) {
-				if (subCommand2.equals("effect_sound")) {
-					Sound[] sounds = Sound.values();
-					for (Sound sound : sounds) {
-						options.add(sound.name().toLowerCase());
-					}
-				} else if (subCommand2.equals("effect_particle")) {
-					ParticleEffect[] particleTypes = ParticleEffect.values();
-					for (ParticleEffect particleType : particleTypes) {
-						options.add(particleType.name().toLowerCase());
-					}
-				} 
 			}
 		}
 		
