@@ -2082,7 +2082,7 @@ protegomaxima:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 16
+        max_dimension: 48
         thickness: 1
         target: select
         type: sphere
