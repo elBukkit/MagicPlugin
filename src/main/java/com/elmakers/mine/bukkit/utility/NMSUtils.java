@@ -209,6 +209,7 @@ public class NMSUtils {
     }
 
     public static Object getHandle(org.bukkit.World world) {
+        if (world == null) return null;
         Object handle = null;
         try {
             Method handleMethod = world.getClass().getMethod("getHandle");
@@ -220,6 +221,7 @@ public class NMSUtils {
     }
 
     public static Object getHandle(org.bukkit.entity.Entity entity) {
+        if (entity == null) return null;
         Object handle = null;
         try {
             Method handleMethod = entity.getClass().getMethod("getHandle");
@@ -231,6 +233,7 @@ public class NMSUtils {
     }
 
     public static Object getHandle(org.bukkit.entity.LivingEntity entity) {
+        if (entity == null) return null;
         Object handle = null;
         try {
             Method handleMethod = entity.getClass().getMethod("getHandle");
