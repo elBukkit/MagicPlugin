@@ -1918,8 +1918,10 @@ public class MagicController implements Listener, MageController {
 			undoList.modify(entity);
 		}
 
+        /*
         if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
         {
+            Bukkit.getLogger().info("Damage: " + event.getCause());
             Player player = (Player)damager;
             Mage mage = getMage(player);
             if (mage.getActiveWand() != null)
@@ -1929,6 +1931,7 @@ public class MagicController implements Listener, MageController {
                 player.damage(wandAbuseDamage);
             }
         }
+        */
 	}
 	
 	protected UndoList getEntityUndo(Entity entity) {
