@@ -2065,14 +2065,11 @@ public class MagicController implements Listener, MageController {
 
         final Wand activeWand = mage.getActiveWand();
         ItemStack droppedItem = event.getItemDrop().getItemStack();
-        // TODO: Improve this
-        if (Wand.isWand(droppedItem) && activeWand != null) {
-            if (activeWand.isUndroppable()) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-		if (activeWand != null) {
+
+        boolean cancelEvent = false;
+        if (Wand.isWand(droppedItem) && activeWand != null && activeWand.isUndroppable()) {
+            cancelEvent = true;
+        } else if (activeWand != null) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
 			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
 			if (Wand.isWand(droppedItem) && (inHand == null || inHand.getType() == Material.AIR)) {
@@ -2083,27 +2080,27 @@ public class MagicController implements Listener, MageController {
 				}
 			} else if (activeWand.isInventoryOpen()) {
                 if (!spellDroppingEnabled) {
-                    // This is needed a a work-around for glitches that happen when this
-                    // event is cancelled!
-                    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                        public void run() {
-                            activeWand.closeInventory();
-                        }
-                    }, 1);
-
-
-                    event.setCancelled(true);
-                    return;
+                    cancelEvent = true;
+                } else {
+                    // The item is already removed from the wand's inventory, but that should be ok
+                    removeItemFromWand(activeWand, droppedItem);
                 }
-				// The item is already removed from the wand's inventory, but that should be ok
-				removeItemFromWand(activeWand, droppedItem);
-				
-				// Cancelling the event causes some really strange behavior, including the item
-				// being put back in the inventory.
-				// So instead of cancelling, we'll try and update the returned item in place.
-				
 			}
 		}
+
+        // Cancelling the event causes some really strange behavior, including the item
+        // being put back in the inventory. (This bug's been in CB since 1.6!!!)
+        // Thanks to this thread for a hacky, but effective solution:
+        // https://forums.bukkit.org/threads/cancelling-item-dropping.111676/page-2
+        if (cancelEvent) {
+            PlayerInventory playerInventory = player.getInventory();
+            ItemStack cloneItem = InventoryUtils.getCopy(droppedItem);
+            Item drop = event.getItemDrop();
+            drop.setItemStack(new ItemStack(Material.AIR, 1));
+            drop.remove();
+            // This hopefully only gets called for the held item...
+            playerInventory.setItem(playerInventory.getHeldItemSlot(), cloneItem);
+        }
 	}
 
 	@EventHandler
@@ -2653,30 +2650,36 @@ public class MagicController implements Listener, MageController {
 			event.setCancelled(true);
 			return;
 		}
+
 		Wand activeWand = mage.getActiveWand();
-	
 		InventoryType inventoryType = event.getInventory().getType();
 
 		// Check for dropping items out of a wand's inventory
-		if (event.getAction() == InventoryAction.DROP_ONE_SLOT && activeWand != null && activeWand.isInventoryOpen())
-		{
-            if (!spellDroppingEnabled) {
-                event.setCancelled(true);
-                return;
+        // or dropping undroppable wands
+		if (event.getAction() == InventoryAction.DROP_ONE_SLOT) {
+            if (Wand.isWand(clickedItem)) {
+                Wand wand = new Wand(this, clickedItem);
+                if (wand.isUndroppable()) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
-			ItemStack droppedItem = clickedItem;
-			ItemStack newDrop = removeItemFromWand(activeWand, droppedItem);
-			
-			if (newDrop != null) 
-			{
-				Location location = player.getLocation();
-				Item item = location.getWorld().dropItem(location, newDrop);
-				item.setVelocity(location.getDirection().normalize());
-			}
-			else 
-			{
-				event.setCancelled(true);
-			}
+            if (activeWand != null && activeWand.isInventoryOpen()) {
+                if (!spellDroppingEnabled) {
+                    event.setCancelled(true);
+                    return;
+                }
+                ItemStack droppedItem = clickedItem;
+                ItemStack newDrop = removeItemFromWand(activeWand, droppedItem);
+
+                if (newDrop != null) {
+                    Location location = player.getLocation();
+                    Item item = location.getWorld().dropItem(location, newDrop);
+                    item.setVelocity(location.getDirection().normalize());
+                } else {
+                    event.setCancelled(true);
+                }
+            }
 			return;
 		}
 		
