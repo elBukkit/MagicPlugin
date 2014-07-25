@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -149,7 +150,7 @@ public class PushSpell extends UndoableSpell
             LivingEntity li = (LivingEntity)target;
             registerModified(li);
             if (damage > 0) {
-                li.damage(damage);
+                CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
             }
         }
 

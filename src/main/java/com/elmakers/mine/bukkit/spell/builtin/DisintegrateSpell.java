@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,12 +42,12 @@ public class DisintegrateSpell extends BlockSpell
 				if (targetEntity instanceof Player)
 				{
                     Player player = (Player)targetEntity;
-                    player.damage(mage.getDamageMultiplier() * playerDamage, mage.getEntity());
+                    CompatibilityUtils.magicDamage(player, mage.getDamageMultiplier() * playerDamage, mage.getEntity());
 				}
 				else  if (targetEntity instanceof LivingEntity)
 				{
                     LivingEntity li = (LivingEntity)targetEntity;
-                    li.damage(mage.getDamageMultiplier() * entityDamage, mage.getEntity());
+                    CompatibilityUtils.magicDamage(li, mage.getDamageMultiplier() * entityDamage, mage.getEntity());
 				}
                 else
                 {

@@ -106,7 +106,7 @@ public class PotionEffectSpell extends UndoableSpell
                 targetEntity.setHealth(Math.min(health, targetEntity.getMaxHealth()));
             } else if (parameters.contains("damage")) {
                 registerModified(targetEntity);
-                targetEntity.damage(parameters.getDouble("damage") * mage.getDamageMultiplier());
+                CompatibilityUtils.magicDamage(targetEntity, parameters.getDouble("damage") * mage.getDamageMultiplier(), mage.getEntity());
             } else {
                 registerPotionEffects(targetEntity);
             }
