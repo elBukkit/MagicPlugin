@@ -171,6 +171,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static boolean EnableGlow = true;
 
     private Inventory storedInventory = null;
+    private int playerInventorySlot = 0;
 
     private static final ItemStack[] itemTemplate = new ItemStack[0];
 
@@ -2327,6 +2328,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (needsSave) {
             saveState();
         }
+        playerInventorySlot = player.getInventory().getHeldItemSlot();
 		updateActiveMaterial();
 		updateName();
 		updateLore();
@@ -3056,7 +3058,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (player == null) {
             return false;
         }
-        Inventory inventory = player.getInventory();
+        PlayerInventory inventory = player.getInventory();
+        playerInventorySlot = inventory.getHeldItemSlot();
         storedInventory = CompatibilityUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
 
         // Make sure we don't store any spells or magical materials, just in case
@@ -3082,9 +3085,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (player == null) {
             return false;
         }
-        Inventory inventory = player.getInventory();
+        PlayerInventory inventory = player.getInventory();
         inventory.setContents(storedInventory.getContents());
         storedInventory = null;
+        inventory.setHeldItemSlot(playerInventorySlot);
         player.setItemInHand(item);
         saveState();
         player.updateInventory();
