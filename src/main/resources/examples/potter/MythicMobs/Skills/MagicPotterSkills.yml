@@ -130,6 +130,7 @@ MinorSpellAttack:
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
+  - Wearing DeatheaterWand:0
   Skills:
   - randomskill Arrow,Stupefy,Ascendio,Accio,Flipendo >0 1
 DementorAttack:
