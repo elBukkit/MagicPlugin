@@ -147,30 +147,42 @@ public class MagicController implements Listener, MageController {
             }
 
             // Check for existing data file
+            // For now we only do async loads for Players
             final File playerFile = new File(playerDataFolder, mageId + ".dat");
             if (playerFile.exists()) {
-                mage.setLoading(true);
-                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                       synchronized (saveLock) {
-                           getLogger().info("Loading mage data from file " + playerFile.getName());
-                           try {
-                               final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
-                               Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mage.load(playerData);
-                                    }
-                               }, 1);
-                           } catch (Exception ex) {
-                               getLogger().warning("Failed to load mage data from file " + playerFile.getName());
-                               ex.printStackTrace();
-                           }
-                           mage.setLoading(false);
-                       }
-                   }
-                });
+                if (commandSender instanceof Player) {
+                    mage.setLoading(true);
+                    plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (saveLock) {
+                                getLogger().info("Loading mage data from file " + playerFile.getName());
+                                try {
+                                    final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+                                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mage.load(playerData);
+                                        }
+                                    }, 1);
+                                } catch (Exception ex) {
+                                    getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                                    ex.printStackTrace();
+                                }
+                                mage.setLoading(false);
+                            }
+                        }
+                    });
+                } else {
+                    getLogger().info("Loading mage data from file " + playerFile.getName() + " synchronously");
+                    try {
+                        final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+                        mage.load(playerData);
+                    } catch (Exception ex) {
+                        getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                        ex.printStackTrace();
+                    }
+                }
             } else {
                 mage.load(null);
             }
