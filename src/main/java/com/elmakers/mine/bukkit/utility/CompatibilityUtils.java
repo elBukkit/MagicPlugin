@@ -474,7 +474,16 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void magicDamage(LivingEntity target, double amount, Entity source) {
         try {
+            // UGH! Bukkit won't allow magic damage from anything but a potion..
+            // Sometimes, I swear. :(
+            if (target == null) return;
+            Object targetHandle = getHandle(target);
+            if (targetHandle == null) return;
+            Object magicSource = class_DamageSource_MagicField.get(null);
+            class_EntityLiving_damageEntityMethod.invoke(targetHandle, magicSource, (float)amount);
 
+
+            /*
             Object sourceHandle = getHandle(source);
             if (sourceHandle == null) {
                 target.damage(amount);
@@ -484,6 +493,7 @@ public class CompatibilityUtils extends NMSUtils {
             if (target == null) return;
             Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, sourceHandle, sourceHandle);
             class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
+            */
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -80,6 +80,7 @@ public class NMSUtils {
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_ItemStack_tagField;
+    protected static Field class_DamageSource_MagicField;
 
     static
     {
@@ -137,6 +138,7 @@ public class NMSUtils {
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
             class_Entity_invulnerableField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getField("tag");
+            class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
         }
         catch (Throwable ex) {
             failed = true;
