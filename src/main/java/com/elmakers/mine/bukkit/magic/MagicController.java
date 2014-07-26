@@ -3072,26 +3072,6 @@ public class MagicController implements Listener, MageController {
 							}
 						}
 				}, 5);
-
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-                        new Runnable() {
-                            public void run() {
-                                for (Automaton restoreBlock : restored) {
-                                    Block current = restoreBlock.getBlock();
-                                    current.setType(Material.AIR);
-                                }
-                            }
-                        }, 10);
-
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-                        new Runnable() {
-                            public void run() {
-                                for (Automaton restoreBlock : restored) {
-                                    restoreBlock.restore();
-                                    sendToMages(restoreBlock.getMessage(), restoreBlock.getPosition().toLocation(restoreBlock.getWorld()));
-                                }
-                            }
-                        }, 15);
 			}
 			if (chunkData.size() == 0) {
 				automata.remove(chunkKey);
