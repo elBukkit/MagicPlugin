@@ -373,9 +373,17 @@ spells:
         name: Mayday
         description: Call for Help
         cast: Mayday!
+    maydaymaxima:
+        name: Mayday Maxima
+        description: Call for Help (and get it)
+        cast: Mayday!
     morsmordre:
         name: Morsmordre
         description: Summon the Dark Mark
+        cast: Morsmordre!
+    morsmordremaxima:
+        name: Morsmordre Maxima
+        description: Call for help with the Dark Mark
         cast: Morsmordre!
     nox:
         name: Nox

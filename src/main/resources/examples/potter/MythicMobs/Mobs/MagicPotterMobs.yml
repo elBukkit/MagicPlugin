@@ -1,6 +1,6 @@
 Acromantula:
   Mobtype: cavespider
-  Display: '&6Acromantula'
+  Display: '&7Acromantula'
   Health: 50
   Damage: 5
   Skills:
@@ -13,7 +13,7 @@ Acromantula:
     MaxCombatDistance: 25
 Tarantula:
   Mobtype: spider
-  Display: '&2Tarantula'
+  Display: '&1Tarantula'
   Health: 20
   Damage: 3
   Options:
@@ -22,7 +22,7 @@ Tarantula:
   - Minion
 Inferius:
   Mobtype: zombie
-  Display: '&2Inferius'
+  Display: '&1Inferius'
   Health: 20
   Damage: 3
   Drops:
@@ -54,9 +54,9 @@ DreadKnight:
     MovementSpeed: 0.1
     PreventOtherDrops: true
 Deatheater:
-  Mobtype: pigzombie
-  Display: Deatheater
-  Health: 100
+  Mobtype: zombie
+  Display: "&4Deatheater"
+  Health: 80
   Damage: 4
   Equipment:
   - DeatheaterWand:0
@@ -72,8 +72,47 @@ Deatheater:
     KnockbackResistance: 1
     PreventOtherDrops: true
   Skills:
-  - skill MinorSpellAttack ~onTimer:5 >0 0.90
+  - skill DeatheaterAttack ~onTimer:5 >0 0.90
   - skill Necromancy >0 0.1
+DarkLord:
+  Mobtype: angrypigzombie
+  Display: "&cDark Lord"
+  Health: 100
+  Damage: 5
+  Equipment:
+  - DeatheaterWand:0
+  - Deatheater_Helmet:4
+  - Deatheater_Chestplate:3
+  - Deatheater_Leggings:2
+  - Deatheater_Boots:1
+  Drops:
+  - MidBoss
+  - Deatheater
+  Options:
+    MaxCombatDistance: 32
+    KnockbackResistance: 1
+    PreventOtherDrops: true
+  Skills:
+  - skill DarkLordAttack ~onTimer:5 >0 0.90
+Auror:
+  Mobtype: pigzombie
+  Display: "&bAuror"
+  Health: 100
+  Damage: 5
+  Equipment:
+  - AurorWand:0
+  - Auror_Helmet:4
+  - Auror_Chestplate:3
+  - Auror_Leggings:2
+  - Auror_Boots:1
+  Drops:
+  - MidBoss
+  Options:
+    MaxCombatDistance: 32
+    KnockbackResistance: 1
+    PreventOtherDrops: true
+  Skills:
+  - skill AurorAttack ~onTimer:5 >0 0.90
 Dementor:
   Mobtype: blaze
   Display: Dementor

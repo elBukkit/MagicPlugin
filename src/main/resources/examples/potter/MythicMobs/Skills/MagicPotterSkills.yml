@@ -39,6 +39,13 @@ AccioArea:
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio area true' >0 1
+Avada:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid avadakedavra' >0 1
 Flipendo:
   Cooldown: 10
   Conditions:
@@ -53,6 +60,20 @@ Accio:
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio' >0 1
+Crucio:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid crucio' >0 1
+SectumSempra:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 6
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid sectumsempra' >0 1
 Stupefy:
   Cooldown: 120
   Conditions:
@@ -82,6 +103,15 @@ Incendio:
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid incendio' >0 1
+Morsmordre:
+  Cooldown: 8
+  Conditions:
+  - TargetInLineOfSight
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid morsmordremaxima pdy 1' >0 1
 Aguamenti:
   Cooldown: 30
   Conditions:
@@ -96,7 +126,6 @@ Petrificus:
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid petrificustotalus' >0 1
-
 Firebending:
   Cooldown: 5
   Conditions:
@@ -125,7 +154,7 @@ Earthbending:
   - TargetInLineOfSight true
   Skills:
   - randomskill Arrow >0 1
-MinorSpellAttack:
+DeatheaterAttack:
   Cooldown: 5
   Conditions:
   - TargetWithin 32
@@ -133,6 +162,22 @@ MinorSpellAttack:
   - Wearing DeatheaterWand:0
   Skills:
   - randomskill Arrow,Stupefy,Ascendio,Accio,Flipendo >0 1
+AurorAttack:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  - Wearing AurorWand:0
+  Skills:
+  - randomskill Arrow,Stupefy,Ascendio,Accio,Flipendo,Silencio >0 1
+DarkLordAttack:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  - Wearing DeatheaterWand:0
+  Skills:
+  - randomskill Arrow,Stupefy,Ascendio,Accio,Flipendo,Crucio,Morsmordre,Sectumsempra >0 1
 DementorAttack:
   Cooldown: 4
   Conditions:

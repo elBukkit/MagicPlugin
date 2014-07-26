@@ -16,6 +16,18 @@ Deatheater_Leggings:
 Deatheater_Boots:
   Id: 317
   Data: 0
+Auror_Helmet:
+  Id: 306
+  Data: 0
+Auror_Chestplate:
+  Id: 307
+  Data: 0
+Auror_Leggings:
+  Id: 308
+  Data: 0
+Auror_Boots:
+  Id: 309
+  Data: 0
 Firebender_Helmet:
   Id: 298
   Data: 0
@@ -103,6 +115,12 @@ DeatheaterWand:
   Id: 290
   Data: 0
   Display: '&3Deatheater Wand'
+  Lore:
+  - '&6It has lost its power'
+AurorWand:
+  Id: 290
+  Data: 0
+  Display: '&3Auror Wand'
   Lore:
   - '&6It has lost its power'
 Nothing:

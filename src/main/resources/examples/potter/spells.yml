@@ -1899,10 +1899,40 @@ morsmordre:
         op: true
         commands:
         - broadcast @p cast §aMorsmordre!
-#        - mm mobs spawn Deatheater
-#        - mm mobs spawn Deatheater
     costs:
         xp: 55
+
+morsmordremaxima:
+    icon: skull_item:4
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wither_hurt
+        -  class: EffectTrail
+           particle: flame
+        -  class: EffectRing
+           location: target
+           firework: creeper
+           radius: 12
+           target_offset: 0,16,0
+           color: '00FF00'
+           color2: '88FF88'
+    parameters:
+        target: any
+        allow_max_range: true
+        range: 16
+        cooldown: 60000
+        transparent: apparate
+        op: true
+        commands:
+        - broadcast @p cast §aMorsmordre!
+        - mm mobs spawn Deatheater
+        - mm mobs spawn Deatheater
+    costs:
+        xp: 100
 
 mayday:
     icon: firework
@@ -1929,10 +1959,38 @@ mayday:
         op: true
         commands:
         - broadcast @p cast §aMayday!
-#        - mm mobs spawn Auror
-#        - mm mobs spawn Auror
     costs:
         xp: 55
+
+maydaymaxima:
+    icon: firework
+    category: charms
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_growl
+        -  class: EffectTrail
+           particle: spell
+        -  class: EffectRing
+           location: target
+           firework: ball_large
+           radius: 12
+           target_offset: 0,16,0
+    parameters:
+        target: any
+        allow_max_range: true
+        range: 16
+        cooldown: 60000
+        transparent: apparate
+        op: true
+        commands:
+        - broadcast @p cast §aMayday!
+        - mm mobs spawn Auror
+        - mm mobs spawn Auror
+    costs:
+        xp: 100
 
 orchideous:
     icon: yellow_flower
