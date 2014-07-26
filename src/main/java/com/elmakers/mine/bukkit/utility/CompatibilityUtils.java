@@ -482,7 +482,7 @@ public class CompatibilityUtils extends NMSUtils {
             }
             Object targetHandle = getHandle(target);
             if (target == null) return;
-            Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, sourceHandle, targetHandle);
+            Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, sourceHandle, sourceHandle);
             class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
         } catch (Exception ex) {
             ex.printStackTrace();
