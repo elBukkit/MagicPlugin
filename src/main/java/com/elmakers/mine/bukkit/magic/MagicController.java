@@ -1592,6 +1592,7 @@ public class MagicController implements Listener, MageController {
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
         undoOnWorldSave = properties.getBoolean("undo_on_world_save", undoOnWorldSave);
+        backupInventory = properties.getBoolean("backup_inventory", backupInventory);
         defaultWandPath = properties.getString("default_wand_path", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
 		showMessages = properties.getBoolean("show_messages", showMessages);
@@ -2110,7 +2111,10 @@ public class MagicController implements Listener, MageController {
                 EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent)cause;
                 Entity damager = damageEvent.getDamager();
                 if (damager instanceof Player && Wand.hasActiveWand((Player)damager)) {
-                    playerDeath.setDeathMessage(playerDeath.getDeathMessage() + " ");
+                    Wand wand = Wand.getActiveWand(this, (Player)damager);
+                    if (wand.hasStoredInventory()) {
+                        playerDeath.setDeathMessage(playerDeath.getDeathMessage() + " ");
+                    }
                 }
             }
         }
@@ -3521,6 +3525,10 @@ public class MagicController implements Listener, MageController {
         return activateHoloTextRange;
     }
 
+    public boolean isInventoryBackupEnabled() {
+        return backupInventory;
+    }
+
     public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category, int count) {
         Map<String, List<SpellTemplate>> categories = new HashMap<String, List<SpellTemplate>>();
         Collection<SpellTemplate> spellVariants = spells.values();
@@ -3701,6 +3709,7 @@ public class MagicController implements Listener, MageController {
     private int								    pendingQueueDepth				= 16;
     private int                                 undoMaxPersistSize              = 0;
     private boolean                             undoOnWorldSave                 = false;
+    private boolean                             backupInventory                 = false;
     private boolean                             commitOnQuit             		= false;
     private String                              defaultWandPath                 = "master";
     private WandMode							defaultWandMode				    = WandMode.INVENTORY;

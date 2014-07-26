@@ -11,6 +11,9 @@ load_default_wands: false
 load_default_enchanting: false
 load_default_crafting: false
 
+# Backup Inventory to wand data
+backup_inventory: true
+
 # Make sure the world doesn't change
 undo_on_world_save: true
 

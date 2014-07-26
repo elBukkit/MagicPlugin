@@ -984,7 +984,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             node.set("path", null);
         }
 
-        if (storedInventory != null) {
+        if (storedInventory != null && controller.isInventoryBackupEnabled()) {
             YamlConfiguration inventoryConfig = new YamlConfiguration();
             ItemStack[] contents = storedInventory.getContents();
             inventoryConfig.set("contents", contents);
@@ -998,7 +998,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void setEffectColor(String hexColor) {
-
         // Annoying config conversion issue :\
         if (hexColor.contains(".")) {
             hexColor = hexColor.substring(0, hexColor.indexOf('.'));
@@ -3071,7 +3070,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         storedInventory.setContents(contents);
         inventory.clear();
-        saveState();
+        if (controller.isInventoryBackupEnabled()) {
+            saveState();
+        }
 
         return true;
     }

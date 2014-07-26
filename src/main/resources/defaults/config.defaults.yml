@@ -305,6 +305,10 @@ commit_on_quit: false
 # a server crash.
 undo_on_world_save: false
 
+# Backup Inventory to wand data
+# This can cause some issues with item sizes, and is somewhat experimental
+backup_inventory: false
+
 # DEPRECATED
 # Nearly all spells undo, so this setting will produce strange behavior.
 # You will need to add "undo" to individual spells in spells.yml if you want auto-undo behavior.
