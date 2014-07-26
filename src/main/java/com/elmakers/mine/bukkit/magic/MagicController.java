@@ -47,14 +47,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -2109,6 +2102,19 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
 	{
+        // Work-around for complex death messages
+        if (event instanceof PlayerDeathEvent) {
+            PlayerDeathEvent playerDeath = (PlayerDeathEvent)event;
+            EntityDamageEvent cause = event.getEntity().getLastDamageCause();
+            if (cause instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent)cause;
+                Entity damager = damageEvent.getDamager();
+                if (damager instanceof Player && Wand.hasActiveWand((Player)damager)) {
+                    playerDeath.setDeathMessage(playerDeath.getDeathMessage() + " ");
+                }
+            }
+        }
+
         Entity entity = event.getEntity();
         if (!isMage(entity)) return;
 
