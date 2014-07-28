@@ -2014,7 +2014,7 @@ orchideous:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: splash
            location: both
     parameters:
         allow_max_range: false

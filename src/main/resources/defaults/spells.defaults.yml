@@ -3656,7 +3656,7 @@ pollinate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: breath
+           sound: splash
            location: both
     parameters:
         allow_max_range: false
