@@ -574,7 +574,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected Integer parseSlot(String[] pieces) {
 		Integer slot = null;
-		if (pieces.length > 0) {
+		if (pieces.length > 1) {
 			try {
 				slot = Integer.parseInt(pieces[1]);
 			} catch (Exception ex) {

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 3.5
+
+ - Fix stack overflow error in the welcome wand feature.
+ - Disable inventory backup feature by default. I may end up removing it, it causes issues.
+ - Fix tab-completion of particle and SFX, as in /wand configure effect_particle <tab>
+ - Lots of various bug fixes
+ - Add Wand particle FX overrides
+
 ## 3.4
 
  - Put safety backups in place for server crashes with a wand inventory open

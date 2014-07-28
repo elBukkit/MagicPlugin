@@ -139,6 +139,7 @@ public class MagicController implements Listener, MageController {
         Mage apiMage = null;
         if (!mages.containsKey(mageId)) {
             final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
+            mages.put(mageId, mage);
             mage.setName(mageName);
             mage.setCommandSender(commandSender);
             mage.setEntity(entity);
@@ -187,7 +188,6 @@ public class MagicController implements Listener, MageController {
                 mage.load(null);
             }
 
-            mages.put(mageId, mage);
             apiMage = mage;
         } else {
             apiMage = mages.get(mageId);
