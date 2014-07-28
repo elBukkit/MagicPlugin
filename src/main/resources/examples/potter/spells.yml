@@ -248,7 +248,7 @@ apparatemaxima:
         passthrough_range: 8
         allow_decend: true
         prevent_passthrough: prevent_passthrough
-        range: 64
+        range: 256
         transparent: apparate
     costs:
         xp: 200
@@ -1363,8 +1363,9 @@ finiteincantatem:
         bypass_protection: true
         bypass_confusion: true
         bypass_backfire: true
+        cooldown: 2000
     costs:
-        xp: 130
+        xp: 40
 
 flagrate:
     icon: ink_sack:14
@@ -2181,7 +2182,7 @@ protegomaxima:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 48
+        max_dimension: 64
         thickness: 1
         target: select
         type: sphere
@@ -2372,7 +2373,7 @@ salviohexia:
     parameters:
         allow_max_range: false
         range: 32
-        max_dimension: 32
+        max_dimension: 64
         target: select
         type: cuboid
         transparent: transparent_to_construction
@@ -2445,7 +2446,7 @@ reparomaxima:
     parameters:
         target: select
         allow_max_range: false
-        max_dimension: 32
+        max_dimension: 64
         range: 32
         type: sphere
         check_destructible: false
@@ -2540,6 +2541,7 @@ silenciomaxima:
            location: origin
            effectlib:
              class: DnaLocationEffect
+             iterations: 24
     parameters:
         commands:
         - mute @t 120
@@ -2548,8 +2550,7 @@ silenciomaxima:
         range: 16
         target_breakables: 1
         bypass_backfire: true
-    costs:
-        xp: 200
+        cooldown: 1000
 
 expulsion:
     icon: ink_sack:3
@@ -2566,6 +2567,7 @@ expulsion:
            location: origin
            effectlib:
              class: DnaLocationEffect
+             iterations: 24
     parameters:
         commands:
         - nick @t @t_Expelled
@@ -2576,8 +2578,7 @@ expulsion:
         range: 16
         target_breakables: 1
         bypass_backfire: true
-    costs:
-        xp: 200
+        cooldown: 1000
 
 jail:
     icon: iron_fence
@@ -2594,15 +2595,16 @@ jail:
            location: origin
            effectlib:
              class: DnaLocationEffect
+             iterations: 24
     parameters:
         commands:
+        - broadcast @t was Jailed by @p!
         - warp prison @t
         target_type: Player
         target: other
-        range: 16
+        range: 32
+        cooldown: 1000
         target_breakables: 1
-    costs:
-        xp: 200
 
 silenciototalus:
     icon: ink_sack:3
@@ -2897,7 +2899,7 @@ superblob:
         allow_max_range: false
         check_destructible: false
         range: 32
-        max_dimension: 32
+        max_dimension: 64
         target: select
         type: sphere
         transparent: transparent_to_construction
@@ -2920,7 +2922,7 @@ superconvert:
         allow_max_range: false
         range: 32
         check_destructible: false
-        max_dimension: 32
+        max_dimension: 64
         indestructible: air
         target: select
         type: sphere
@@ -3325,7 +3327,7 @@ vault:
         check_destructibe: true
         range: 16
         radius: 16
-        max_dimension: 32
+        max_dimension: 64
         obz: -10
         oby: -6
         type: sphere
@@ -3721,3 +3723,23 @@ supershell:
         transparent: transparent_to_construction
     costs:
         xp: 200
+
+hat:
+    icon: leather_helmet
+    category: light
+    class: HatSpell
+    worth: 18
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: drink
+        -  class: EffectTrail
+           effect: step_sound
+           reverse: true
+    parameters:
+        allow_max_range: false
+        range: 32
+        cooldown: 3000
+        transparent: transparent_to_construction
+    costs:
+        xp: 30

@@ -59,7 +59,7 @@ year1:
     upgrade_item: year2
     min_enchant_level: 10
     upgrade_commands:
-      - manpromote @p yeartwo
+      - pex user @p suffix "(Year 2) "
       - broadcast &6@p §3has graduated to §b$path§3!
     levels: 1,30,50
     max_mana: 60
@@ -88,7 +88,7 @@ year2:
     min_enchant_level: 15
     max_mana: 90
     upgrade_commands:
-      - manpromote @p yearthree
+      - pex user @p suffix "(Year 3) "
       - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       3: 100, 10,  0
@@ -115,7 +115,7 @@ year3:
       4: 100, 10,  0
       5:  20, 30, 50
     upgrade_commands:
-      - manpromote @p yearfour
+      - pex user @p suffix "(Year 4) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       stupefy: 100,100,100
@@ -139,7 +139,7 @@ year4:
       4: 100, 10,  0
       5:  20, 30, 50
     upgrade_commands:
-      - manpromote @p yearfive
+      - pex user @p suffix "(Year 5) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       aguamenti: 50,60,70
@@ -159,7 +159,7 @@ year5:
     min_enchant_level: 30
     max_mana: 150
     upgrade_commands:
-      - manpromote @p yearsix
+      - pex user @p suffix "(Year 6) "
       - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
       4: 100, 10,  0
@@ -185,8 +185,8 @@ year6:
       5: 100, 10,  0
       8:  20, 30, 50
     upgrade_commands:
-    - manpromote @p yearseven
-    - broadcast &6@p §3has graduated to §b$path§3!
+      - pex user @p suffix "(Year 7) "
+      - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       ferula: 50,60,70
       bombardamaxima: 20,30,40
@@ -207,7 +207,7 @@ year7:
       5: 100, 10,  0
       10:  20, 30, 50
     upgrade_commands:
-      - manpromote @p graduate
+      - pex user @p suffix "(Graduate) "
       - broadcast &6@p §3has graduated from Hogwarts!
     spells:
       atmos: 10,20,30
@@ -217,7 +217,6 @@ year7:
       firestorm: 5,10,15
       orchideous: 1,5,10
     required_spells:
-      - reparifarge
       - piertotum
 
 graduate:

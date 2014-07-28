@@ -18,71 +18,6 @@ default:
     spells:
      - flagrate
 
-staff:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
-    path: graduate
-    force: true
-    bound: true
-    keep: true
-    undroppable: true
-    quiet: 1
-    xp_max: 70
-    xp: 70
-    xp_regeneration: 10
-    effect_color: 'DDDDDD'
-    effect_bubbles: true
-    spells:
-     - flagrate
-     - ascendio
-     - stupefy
-     - flipendo
-     - flipendoduo
-     - accio
-     - disillusion
-     - lumos
-     - silencio
-     - silenciomaxima
-     - bombarda
-     - protego
-     - expelliarmus
-     - immobulus
-     - sectumsempra
-     - apparate
-
-headstaff:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
-    path: graduate
-    force: true
-    bound: true
-    keep: true
-    quiet: 1
-    xp_max: 100
-    xp: 100
-    undroppable: true
-    xp_regeneration: 20
-    effect_color: 'DDDDDD'
-    effect_bubbles: true
-    spells:
-     - flagrate
-     - ascendio
-     - stupefy
-     - flipendo
-     - accio
-     - lumos
-     - silencio
-     - silenciomaxima
-     - silencototalus
-     - jail
-     - bombarda
-     - protego
-     - expelliarmus
-     - meteo
-     - noxmaxima
-     - apparatemaxima
-     - immobulus
-     - sectumsempra
-     - atmos
-
 gryffindor:
     icon: diamond_sword
     undroppable: true
@@ -738,7 +673,7 @@ year2:
     indestructible: false
     icon: arrow
     xp_max: 75
-    xp_regeneration: 7
+    xp_regeneration: 8
 year3:
     upgrade: true
     path: year2
@@ -746,7 +681,7 @@ year3:
     indestructible: false
     icon: arrow
     xp_max: 100
-    xp_regeneration: 9
+    xp_regeneration: 11
 year4:
     upgrade: true
     path: year3
@@ -754,7 +689,7 @@ year4:
     indestructible: false
     icon: arrow
     xp_max: 120
-    xp_regeneration: 10
+    xp_regeneration: 13
 year5:
     upgrade: true
     path: year4
@@ -762,7 +697,7 @@ year5:
     indestructible: false
     icon: arrow
     xp_max: 140
-    xp_regeneration: 11
+    xp_regeneration: 15
 year6:
     upgrade: true
     path: year5
@@ -770,7 +705,7 @@ year6:
     indestructible: false
     icon: arrow
     xp_max: 160
-    xp_regeneration: 12
+    xp_regeneration: 18
 year7:
     upgrade: true
     path: year6
@@ -778,7 +713,7 @@ year7:
     indestructible: false
     icon: arrow
     xp_max: 180
-    xp_regeneration: 13
+    xp_regeneration: 20
 graduate:
     upgrade: true
     path: year7
@@ -786,7 +721,34 @@ graduate:
     indestructible: false
     icon: arrow
     xp_max: 200
-    xp_regeneration: 15
+    xp_regeneration: 22
+
+staff:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: graduate
+    xp_max: 220
+    xp_regeneration: 25
+    effect_color: 'DDDDDD'
+    effect_bubbles: true
+    spells:
+     - silenciomaxima
+     - jail
+
+headstaff:
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    path: graduate
+    xp_max: 250
+    xp_regeneration: 30
+    effect_color: 'DDDDDD'
+    effect_bubbles: true
+    spells:
+     - expulsion
+     - silenciomaxima
+     - jail
+     - silencototalus
+     - meteo
+     - atmos
+     - noxmaxima
 
 # Other upgrades
 
