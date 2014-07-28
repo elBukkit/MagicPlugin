@@ -11,6 +11,9 @@ load_default_wands: false
 load_default_enchanting: false
 load_default_crafting: false
 
+# Stop bashing each other with wands!!
+wand_abuse_damage: 2
+
 # Backup Inventory to wand data
 # .. maybe not for now.
 backup_inventory: false
