@@ -116,6 +116,60 @@ aguamenti:
     costs:
         xp: 110
 
+alohomora:
+    icon: wood_door
+    category: transfiguration
+    class: ConstructSpell
+    worth: 50
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: door_open
+        -  class: EffectTrail
+           effect: step_sound
+           material: wooden_door
+    parameters:
+        allow_max_range: true
+        range: 32
+        check_destructible: true
+        destructible: iron_door_block
+        preserve_data: true
+        brush: wooden_door
+        radius: 3
+        bypass_build: true
+        transparent: transparent_to_construction
+        undo: 20000
+    costs:
+        xp: 110
+
+colloportus:
+    icon: iron_door
+    category: transfiguration
+    class: ConstructSpell
+    worth: 50
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: door_close
+        -  class: EffectTrail
+           effect: step_sound
+           material: iron_door_block
+    parameters:
+        allow_max_range: true
+        range: 32
+        check_destructible: true
+        destructible: wooden_door
+        brush: iron_door_block
+        radius: 3
+        bypass_build: true
+        preserve_data: true
+        transparent: transparent_to_construction
+        undo: 20000
+    costs:
+        xp: 110
+
 aparecium:
     icon: daylight_detector
     category: charms
@@ -695,15 +749,15 @@ bombarda:
            color: 'FF0000'
            color2: 'FF0088'
     parameters:
-        target: block
+        target: other
         allow_max_range: true
         range: 16
         target_breakables: 1
         break_blocks: false
-        size: 3
+        size: 1
         cooldown: 10000
         otx: r(-3,3)
-        oty: r(-3,3)
+        oty: r(2,3)
         otz: r(-3,3)
     costs:
         xp: 50
@@ -726,7 +780,7 @@ bombardamaxima:
         target: block
         allow_max_range: true
         range: 24
-        size: 5
+        size: 3
         target_breakables: 1
         break_blocks: false
         cooldown: 20000
@@ -1742,6 +1796,7 @@ impervius:
         radius: 3
         bypass_build: true
         transparent: transparent_to_construction
+        undo: 10000
     costs:
         xp: 65
 
@@ -1929,7 +1984,7 @@ morsmordremaxima:
         transparent: apparate
         op: true
         commands:
-        - broadcast @p cast §aMorsmordre!
+        - broadcast @p cast §aMorsmordre Maxima, and two Deatheaters appare!
         - mm mobs spawn Deatheater
         - mm mobs spawn Deatheater
     costs:
@@ -1987,7 +2042,7 @@ maydaymaxima:
         transparent: apparate
         op: true
         commands:
-        - broadcast @p cast §aMayday!
+        - broadcast @p cast §aMayday Maxima, and two Aurors appear!
         - mm mobs spawn Auror
         - mm mobs spawn Auror
     costs:
@@ -2321,7 +2376,7 @@ reducto:
         undo: 15000
         bypass_build: true
     costs:
-        xp: 50
+        xp: 60
 
 reductomaxima:
     icon: clay_brick

@@ -121,7 +121,7 @@ spells:
         cast: Aguamenti!
     alohomora:
         name: Alohomora
-        description: Unlock certain locks
+        description: Unlock locked doors
         cast_finish: ""
     aparecium:
         name: Aparecium
@@ -195,6 +195,11 @@ spells:
     colorvaria:
         name: Colorvaria
         description: Changes the color of certain objects
+        cast: Aguamenti!
+    colloportus:
+        name: Colloportus
+        description: Locks doors
+        cast_finish: ""
     confringo:
         name: Confringo
         description: Explode the target item
@@ -655,9 +660,17 @@ wands:
         name: Thestral Bone
         description: Summon a Thestral!
 
+    minister:
+        name: The Minister
+        description: For Magic!
+
+    headmaster:
+        name: The Headmaster
+        description: The Elder Broom
+
     nimbus:
         name: Nimbus 2000
-        description: So shiny!
+        description: Can turn on a dime
 
     crudnimbus:
         name: Knockoff Nimbus 2000
@@ -667,17 +680,21 @@ wands:
         name: Bluebottle
         description: The Family Broom
 
+    comet290:
+        name: Comet 290
+        description: Horton-Keitch Braking Charm
+
     cleansweep1:
         name: Cleansweep One
-        description: Like no other!
+        description: Corners like no other
 
     crudbroom:
         name: Cracked Broomstick
-        description: May have some life left in it.
+        description: May have some life left in it
 
     firebolt:
         name: Firebolt
-        description: Trusty.
+        description: Superb balance and precision
 
     crudfirebolt:
         name: Knockoff Firebolt
