@@ -1526,14 +1526,16 @@ flipendotria:
            effectlib:
              class: FountainLocationEffect
              particle: spell
-             iterations: 20
+             iterations: 2
+             particlesStrand: 10
+             particlesSpout: 30
         area:
         -  class: EffectSingle
            sound: fizz
            effectlib:
              class: FountainLocationEffect
              particle: spell
-             iterations: 10
+             iterations: 2
              particlesStrand: 10
              particlesSpout: 30
     parameters:
