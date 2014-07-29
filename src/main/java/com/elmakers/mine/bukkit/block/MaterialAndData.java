@@ -8,12 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CommandBlock;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.block.Sign;
-import org.bukkit.block.Skull;
+import org.bukkit.block.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -277,13 +272,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 InventoryHolder holder = (InventoryHolder)oldState;
                 Inventory inventory = holder.getInventory();
                 inventory.clear();
+                oldState.update();
             }
 
             if (material != null) {
-                block.setType(material);
-            }
-            if (data != null) {
-                block.setData(data);
+                byte blockData = data != null ? data : block.getData();
+                block.setTypeIdAndData(material.getId(), blockData, false);
             }
 
             BlockState blockState = block.getState();
@@ -325,10 +319,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
-    public byte getData() {
+    @Override
+    public Byte getData() {
         return data;
     }
 
+    @Override
     public Material getMaterial() {
         return material;
     }
@@ -439,18 +435,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @SuppressWarnings("deprecation")
     public static String getMaterialName(String materialKey) {
         if (materialKey == null) return null;
-        String materialName = materialKey;
-        String[] namePieces = splitMaterialKey(materialName);
+        String[] namePieces = splitMaterialKey(materialKey);
         if (namePieces.length == 0) return null;
-
-        materialName = namePieces[0];
 
         MaterialAndData materialAndData = new MaterialAndData(materialKey);
         if (!materialAndData.isValid()) return null;
 
         Material material = materialAndData.getMaterial();
-        byte data = materialAndData.getData();
+        Byte data = materialAndData.getData();
         String customName = materialAndData.getCustomName();
+        String materialName = material.name();
 
         // This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
         /*
@@ -472,21 +466,21 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         // TODO: I don't think these colors are right... is DyeColor correct here?
 
         // if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
-        if (material == Material.CARPET || material.getId() == 95 || material.getId() ==159 || material.getId() == 160 || material == Material.WOOL) {
-            // Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
-            DyeColor color = DyeColor.getByWoolData(data);
-            if (color != null) {
-                materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
+        if (data != null) {
+            if (material == Material.CARPET || material.getId() == 95 || material.getId() == 159 || material.getId() == 160 || material == Material.WOOL) {
+                // Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
+                DyeColor color = DyeColor.getByWoolData(data);
+                if (color != null) {
+                    materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
+                }
+            } else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
+                TreeSpecies treeSpecies = TreeSpecies.getByData(data);
+                if (treeSpecies != null) {
+                    materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
+                }
+            } else if ((material == Material.SKULL || material == Material.MOB_SPAWNER) && customName != null && customName.length() > 0) {
+                materialName = materialName + " (" + customName + ")";
             }
-        } else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
-            TreeSpecies treeSpecies = TreeSpecies.getByData(data);
-            if (treeSpecies != null) {
-                materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
-            }
-        } else if ((material == Material.SKULL || material == Material.MOB_SPAWNER) && customName != null && customName.length() > 0) {
-            materialName = materialName + " (" + customName + ")";
-        } else {
-            materialName = material.name();
         }
 
         materialName = materialName.toLowerCase().replace('_', ' ');
@@ -505,7 +499,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
-    public void setData(byte data) {
+    public void setData(Byte data) {
         this.data = data;
     }
 }

@@ -21,7 +21,7 @@ public abstract class BrushSpell extends BlockSpell {
     private boolean hasBrush = false;
 
     public final static String[] BRUSH_PARAMETERS = {
-        "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor"
+        "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor", "preserve_data"
     };
 
     @Override
@@ -33,6 +33,10 @@ public abstract class BrushSpell extends BlockSpell {
 
         if (materialKey != null) {
             brush = new MaterialBrush(mage, getLocation(), materialKey);
+
+            if (parameters.getBoolean("preserve_data", false)) {
+                brush.setData(null);
+            }
 
             if (parameters.contains("brushmod")) {
                 brush.update(parameters.getString("brushmod"));
