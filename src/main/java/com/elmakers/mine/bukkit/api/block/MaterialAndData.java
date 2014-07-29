@@ -43,8 +43,8 @@ public interface MaterialAndData {
     public void setMaterial(Material material);
     public void updateFrom(Block block);
     public void modify(Block block);
-    public byte getData();
-    public void setData(byte data);
+    public Byte getData();
+    public void setData(Byte data);
     public Material getMaterial();
     public String getKey();
     public String getName();
