@@ -3518,7 +3518,7 @@ wolfhouse:
           wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
           wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0
           wolf_tp_hub: tp @p[r=4] ~-3 ~-2 ~24
-          wolf_tp_booth: tp @p[r=4] ~8.5 ~2 ~-28.5
+          wolf_tp_booth: tp @p[r=4] ~9 ~2 ~-29
           wolf_tp_enchanting: tp @p[r=3] ~-5 ~35 ~-17
           wolf_recall_wand: castp @p[r=2] recall type wand
           wolf_recall_death: castp @p[r=2] recall type death

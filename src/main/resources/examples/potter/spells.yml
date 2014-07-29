@@ -3479,11 +3479,11 @@ wolfhouse:
         cooldown: 600000
         brush: schematic|wolfhouse
         obx: -3
-        oby: -22 
+        oby: -22
         obz: 10
         otx: 1
         oty: 1
-        mm: erase 
+        mm: erase
         transparent: transparent_to_construction
         commands:
           wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
@@ -3500,7 +3500,7 @@ wolfhouse:
           wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
           wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0
           wolf_tp_hub: tp @p[r=4] ~-3 ~-2 ~24
-          wolf_tp_booth: tp @p[r=4] ~8.5 ~2 ~-28.5
+          wolf_tp_booth: tp @p[r=4] ~9 ~2 ~-29
           wolf_tp_enchanting: tp @p[r=3] ~-5 ~35 ~-17
           wolf_recall_wand: castp @p[r=2] recall type wand
           wolf_recall_death: castp @p[r=2] recall type death

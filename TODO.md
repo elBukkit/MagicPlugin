@@ -1,5 +1,7 @@
 # TODO
 
+PsychoFad - could add GriefPrevention checks in a future version
+
 ## Towny!
 
 @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
