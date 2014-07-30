@@ -249,7 +249,7 @@ public class ConstructBatch extends BrushBatch {
 					}
 				}
 
-				if (r > radius || (r > zBounds && r > xBounds))
+				if (r > radius || (bounds != null && r > bounds.getZ() && r > bounds.getX()))
 				{
 					finishedNonAttached = true;
 					break;
