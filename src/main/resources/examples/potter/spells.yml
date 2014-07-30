@@ -2970,6 +2970,31 @@ superblob:
     costs:
         xp: 100
 
+paste:
+    hidden: true
+    icon: grilled_pork
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        check_destructible: false
+        range: 128
+        radius: 32
+        oby: -32
+        y_offset: 32
+        max_dimension: 128
+        target: block
+        type: cuboid
+        transparent: transparent_to_construction
+        brush: schematic:paste
+
 superconvert:
     hidden: true
     icon: magma_cream

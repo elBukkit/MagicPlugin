@@ -532,6 +532,10 @@ spells:
     vault:
         name: Vault
         description: You're rich!
+    paste:
+        name: Paste
+        description: Pastes the "paste" schematic.
+        usage: Use /magic clearcache to update the schematic from WorldEdit
     vulnera:
         name: Vulnera Sanentur
         description: Mends and cleans wounds

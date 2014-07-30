@@ -30,7 +30,7 @@ public class ConstructSpell extends BrushSpell
 	public final static String[] CONSTRUCT_PARAMETERS = {
 		"radius", "falling", "speed", "max_dimension", "replace",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
-		"power", "breakable", "backfire"
+		"power", "breakable", "backfire", "select_self"
 	};
 
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
@@ -43,8 +43,16 @@ public class ConstructSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		Target t = getTarget();
-		Block target = t.getBlock();
+        Block target = null;
+        Entity targetEntity;
+        if (parameters.getBoolean("select_self", true) && isLookingDown()) {
+            targetEntity = mage.getEntity();
+            target = mage.getLocation().getBlock();
+        } else {
+            Target t = getTarget();
+            target = t.getBlock();
+            targetEntity = t.getEntity();
+        }
 		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
@@ -182,7 +190,6 @@ public class ConstructSpell extends BrushSpell
                 String text = signMap.getString(key);
                 Player targetPlayer = null;
                 if (text.equals("$target")) {
-                    Entity targetEntity = t.getEntity();
                     if (targetEntity != null && targetEntity instanceof Player) {
                         targetPlayer = (Player)targetEntity;
                     }

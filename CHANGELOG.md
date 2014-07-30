@@ -7,6 +7,9 @@
  - Fix tab-completion of particle and SFX, as in /wand configure effect_particle <tab>
  - Lots of various bug fixes
  - Add Wand particle FX overrides
+ - Add DoorSpell, to open/close doors
+ - SuperConvert/Convert will now work with material variants
+ - Improved clone/replicate messaging
 
 ## 3.4
 
