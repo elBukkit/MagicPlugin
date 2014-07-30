@@ -388,18 +388,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
 
         if (mode == BrushMode.SCHEMATIC) {
-            if (schematic == null) {
-                if (schematicName.length() == 0) {
-                    isValid = false;
-                    return true;
-                }
-
-                schematic = mage.getController().loadSchematic(schematicName);
-                if (schematic == null) {
-                    schematicName = "";
-                    isValid = false;
-                    return true;
-                }
+            if (!checkSchematic()) {
+                return true;
             }
             if (cloneTarget == null) {
                 isValid = false;
@@ -468,6 +458,24 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
 
         return true;
+    }
+
+    protected boolean checkSchematic() {
+        if (schematic == null) {
+            if (schematicName.length() == 0) {
+                isValid = false;
+                return false;
+            }
+
+            schematic = mage.getController().loadSchematic(schematicName);
+            if (schematic == null) {
+                schematicName = "";
+                isValid = false;
+                return false;
+            }
+        }
+
+        return schematic != null;
     }
 
     public void prepare() {
@@ -687,5 +695,18 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             }
             updateFrom(block, mage.getRestrictedMaterials());
         }
+    }
+
+    @Override
+    public Vector getSize() {
+        if (mode != BrushMode.SCHEMATIC) {
+            return new Vector(0, 0, 0);
+        }
+
+        if (!checkSchematic()) {
+            return new Vector(0, 0, 0);
+        }
+
+        return schematic.getSize();
     }
 }
