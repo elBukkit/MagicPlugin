@@ -459,7 +459,7 @@ minister:
     indestructible: true
     locked: true
     effect_color: '00AAFF'
-    overrides: mount_color creamy mount_boost mount_style white_field 4 mount_boost_ticks 600 mount_health 20 slow_ticks 1 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 1
+    overrides: mount_color creamy mount_style whitefield mount_boost 4 mount_boost_ticks 600 mount_health 20 slow_ticks 1 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.5
     spells:
         - broom
 
@@ -471,7 +471,7 @@ headmaster:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: mount_color creamy mount_boost mount_style white_dots 4 mount_boost_ticks 600 mount_health 20 slow_ticks 5 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.3
+    overrides: mount_color creamy mount_style white_dots mount_boost 4 mount_boost_ticks 600 mount_health 20 slow_ticks 5 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.3
     spells:
         - broom
 

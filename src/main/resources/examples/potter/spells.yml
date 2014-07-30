@@ -125,10 +125,11 @@ alohomora:
     effects:
         cast:
         -  class: EffectSingle
-           sound: door_open
+           sound: fuse
         -  class: EffectTrail
-           effect: step_sound
-           material: wooden_door
+           particle: spell
+           particle_data: 2
+           particle_count: 5
     parameters:
         allow_max_range: true
         range: 32
@@ -139,7 +140,7 @@ alohomora:
         radius: 3
         bypass_build: true
         transparent: transparent_to_construction
-        undo: 20000
+        undo: 8000
     costs:
         xp: 110
 
@@ -152,10 +153,11 @@ colloportus:
     effects:
         cast:
         -  class: EffectSingle
-           sound: door_close
+           sound: fuse
         -  class: EffectTrail
-           effect: step_sound
-           material: iron_door_block
+           particle: smoke
+           particle_data: 1
+           particle_count: 5
     parameters:
         allow_max_range: true
         range: 32
@@ -166,7 +168,7 @@ colloportus:
         bypass_build: true
         preserve_data: true
         transparent: transparent_to_construction
-        undo: 20000
+        undo: 8000
     costs:
         xp: 110
 
@@ -2067,7 +2069,12 @@ orchideous:
     - red_rose:6
     - red_rose:7
     - red_rose:8
-    tall_flowers: []
+    tall_flowers:
+    - double_plant
+    - double_plant:1
+    - double_plant:3
+    - double_plant:4
+    - double_plant:5
     effects:
         cast:
         -  class: EffectSingle
