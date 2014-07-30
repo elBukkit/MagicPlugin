@@ -293,6 +293,8 @@ master:
       cluster: 0,0,0,1,100
       bomb: 0,0,0,1,100
       missile: 5,10,30,50,100
+      pollinate: 0,0,10,20,100
+      paste: 0,0,10,20,100
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0
@@ -499,6 +501,8 @@ engineer:
       place: 0,1,5,10,100
       stalactite: 0,5,10,15,100
       day: 0,5,10,30,100
+      pollinate: 0,0,10,20,100
+      paste: 0,0,10,20,100
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0

@@ -30,7 +30,7 @@ public class ConstructSpell extends BrushSpell
 	public final static String[] CONSTRUCT_PARAMETERS = {
 		"radius", "falling", "speed", "max_dimension", "replace",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
-		"power", "breakable", "backfire", "select_self"
+		"power", "breakable", "backfire", "select_self", "use_brush_size"
 	};
 
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
@@ -67,8 +67,13 @@ public class ConstructSpell extends BrushSpell
 		float force = 0;
 		force = (float)parameters.getDouble("speed", force);
 		Vector orientTo = null;
+        Vector bounds = null;
 
-		if (getTargetType() == TargetType.SELECT) {
+        if (parameters.getBoolean("use_brush_size", false)) {
+            MaterialBrush brush = getBrush();
+            bounds = brush.getSize();
+            radius = (int)Math.max(Math.max(bounds.getX() / 2, bounds.getZ() / 2), bounds.getY());
+        } else if (getTargetType() == TargetType.SELECT) {
 			if (targetLocation2 != null) {
 				this.targetBlock = targetLocation2.getBlock();
 			}
@@ -226,6 +231,10 @@ public class ConstructSpell extends BrushSpell
 		if (parameters.getBoolean("power", false)) {
 			batch.setPower(true);
 		}
+        if (bounds != null) {
+            batch.setBounds(bounds);
+            batch.setOrientDimensionMin(0);
+        }
 		boolean success = mage.addPendingBlockBatch(batch);		
 		deactivate();
 		return success ? SpellResult.CAST : SpellResult.FAIL;

@@ -10,6 +10,7 @@
  - Add DoorSpell, to open/close doors
  - SuperConvert/Convert will now work with material variants
  - Improved clone/replicate messaging
+ - Add Paste spell
 
 ## 3.4
 

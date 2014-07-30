@@ -2358,7 +2358,7 @@ backup:
     costs:
         xp: 900
 repair:
-    icon: iron_pickaxe
+    icon: gold_pickaxe
     category: engineering
     class: ConstructSpell
     worth: 100
@@ -2384,7 +2384,7 @@ repair:
     costs:
         xp: 200
 superrepair:
-    icon: iron_pickaxe
+    icon: gold_pickaxe
     category: engineering
     class: ConstructSpell
     worth: 500
@@ -3745,3 +3745,24 @@ broom:
         mount_invisible: false
         slow_ticks: 120
         steer_speed: 0.6
+
+paste:
+    hidden: true
+    icon: iron_pickaxe
+    category: engineering
+    class: ConstructSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        check_destructible: false
+        use_brush_size: true
+        max_dimension: 256
+        target: block
+        type: cuboid
+        transparent: transparent_to_construction

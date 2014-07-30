@@ -78,6 +78,7 @@ year1:
       conjunctivitis: 20,30,40
       arrow: 50,60,70
       fourpoint: 50,60,70
+      alohomora: 20,30,40
     required_spells:
       - araniaexumai
 

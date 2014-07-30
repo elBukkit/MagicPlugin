@@ -59,6 +59,7 @@ public class ConstructBatch extends BrushBatch {
 	private boolean power = false;
     private int breakable = 0;
     private double backfireChance = 0;
+    private Vector bounds = null;
 
 	private int x = 0;
 	private int y = 0;
@@ -81,6 +82,10 @@ public class ConstructBatch extends BrushBatch {
 		this.delayed = mage.getController().getMaterialSet("delayed");
         this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
 	}
+
+    public void setBounds(Vector bounds) {
+        this.bounds = bounds;
+    }
 
 	public void setPower(boolean power) {
 		this.power = power;
@@ -203,7 +208,10 @@ public class ConstructBatch extends BrushBatch {
 				limitYAxis = true;
 				yBounds = Math.max(minOrientDimension == null ? radius : minOrientDimension, maxOrientDimension == null ? radius : maxOrientDimension);
 			}
-			yBounds = Math.min(yBounds, 255);
+            if (bounds != null) {
+                yBounds = Math.min(yBounds, (int)bounds.getY());
+            }
+			yBounds = Math.min(yBounds, controller.getMaxY());
 
 			while (processedBlocks <= maxBlocks && !finishedNonAttached) {
 				if (!fillBlock(x, y, z)) {
@@ -215,10 +223,9 @@ public class ConstructBatch extends BrushBatch {
 				if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockX() > 0) {
 					xBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
 				}
-
-				if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockZ() > 0) {
-					zBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
-				}
+                if (bounds != null) {
+                    xBounds = Math.min(xBounds, (int) bounds.getX());
+                }
 
 				y++;
 				if (y > yBounds) {
@@ -233,13 +240,16 @@ public class ConstructBatch extends BrushBatch {
 							if ((maxOrientDimension != null || minOrientDimension != null) && orient.getBlockZ() > 0) {
 								zBounds = Math.max(minOrientDimension == null ? r : minOrientDimension, maxOrientDimension == null ? r : maxOrientDimension);
 							}
+                            if (bounds != null) {
+                                zBounds = Math.min(zBounds, (int)bounds.getZ());
+                            }
 							z = zBounds;
 							x = 0;
 						}
 					}
 				}
 
-				if (r > radius)
+				if (r > radius || (r > zBounds && r > xBounds))
 				{
 					finishedNonAttached = true;
 					break;
@@ -311,6 +321,10 @@ public class ConstructBatch extends BrushBatch {
 		// Special-case hackiness..
 		if (limitYAxis && minOrientDimension != null && dy < -minOrientDimension) return true;
 		if (limitYAxis && maxOrientDimension != null && dy > maxOrientDimension) return true;
+        if (bounds != null) {
+            if (dx > bounds.getX() || dy > bounds.getY() || dz > bounds.getZ()) return true;
+            if (dx < -bounds.getX() || dy < -bounds.getY() || dz < -bounds.getZ()) return true;
+        }
 
 		// Initial range checks, we skip everything if this is not sane.
 		int x = center.getBlockX() + dx;

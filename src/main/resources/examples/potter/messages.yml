@@ -532,11 +532,6 @@ spells:
     vault:
         name: Vault
         description: You're rich!
-    paste:
-        name: Paste
-        description: Pastes the "paste" schematic.
-        usage: "Use /wand add material schematic:<name> to select a schematic"
-        cast_finish: Pasted $count blocks
     vulnera:
         name: Vulnera Sanentur
         description: Mends and cleans wounds

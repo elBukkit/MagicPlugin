@@ -127,7 +127,7 @@ alohomora:
         -  class: EffectSingle
            sound: fuse
         -  class: EffectTrail
-           particle: spell
+           particle: red_dust
            particle_data: 2
            particle_count: 5
     parameters:
@@ -142,11 +142,11 @@ alohomora:
         transparent: transparent_to_construction
         undo: 8000
     costs:
-        xp: 110
+        xp: 50
 
 colloportus:
     icon: iron_door
-    category: transfiguration
+    category: staff
     class: ConstructSpell
     worth: 50
     cast_on_no_target: true
@@ -168,7 +168,6 @@ colloportus:
         bypass_build: true
         preserve_data: true
         transparent: transparent_to_construction
-        undo: 8000
     costs:
         xp: 110
 
@@ -2972,7 +2971,7 @@ superblob:
 
 paste:
     hidden: true
-    icon: grilled_pork
+    icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
     worth: 500
@@ -2985,11 +2984,8 @@ paste:
     parameters:
         allow_max_range: false
         check_destructible: false
-        range: 128
-        radius: 32
-        oby: -32
-        y_offset: 32
-        max_dimension: 128
+        use_brush_size: true
+        max_dimension: 256
         target: block
         type: cuboid
         transparent: transparent_to_construction

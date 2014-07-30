@@ -183,4 +183,9 @@ public class WorldEditSchematic implements Schematic{
 		*/
 		return null;
 	}
+
+    @Override
+    public Vector getSize() {
+        return size;
+    }
 }

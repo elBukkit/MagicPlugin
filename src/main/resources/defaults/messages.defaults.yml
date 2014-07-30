@@ -1004,6 +1004,11 @@ spells:
         name: Pollinate
         description: Plant some flowers!
         cast: Pollinate!
+    paste:
+        name: Paste
+        description: Pastes a full schematic
+        usage: For use with schematic brushes
+        cast_finish: Pasted $count blocks
 
 wands:
     master:
