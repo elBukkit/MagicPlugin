@@ -2488,6 +2488,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
+        playerInventorySlot = null;
         saveState();
 		mage.setActiveWand(null);
 		mage = null;

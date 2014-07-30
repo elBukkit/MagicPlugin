@@ -5,7 +5,7 @@
  - Fix stack overflow error in the welcome wand feature.
  - Disable inventory backup feature by default. I may end up removing it, it causes issues.
  - Fix tab-completion of particle and SFX, as in /wand configure effect_particle <tab>
- - Lots of various bug fixes
+ - Lots of various bug fixes, particularly wand duplication/overwriting bugs
  - Add Wand particle FX overrides
  - Add DoorSpell, to open/close doors
  - SuperConvert/Convert will now work with material variants
