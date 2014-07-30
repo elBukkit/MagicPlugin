@@ -10,4 +10,5 @@ public interface Schematic {
     public boolean contains(Vector v);
     public MaterialAndData getBlock(Vector v);
     public Collection<EntityData> getEntities();
+    public Vector getSize();
 }
