@@ -535,7 +535,8 @@ spells:
     paste:
         name: Paste
         description: Pastes the "paste" schematic.
-        usage: Use /magic clearcache to update the schematic from WorldEdit
+        usage: "Use /wand add material schematic:<name> to select a schematic"
+        cast_finish: Pasted $count blocks
     vulnera:
         name: Vulnera Sanentur
         description: Mends and cleans wounds
