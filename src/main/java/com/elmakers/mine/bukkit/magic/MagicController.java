@@ -2048,7 +2048,7 @@ public class MagicController implements Listener, MageController {
 		// If we're switching to a wand, activate it.
 		if (next != null && Wand.isWand(next)) {
 			Wand newWand = new Wand(this, next);
-			newWand.activate(mage, next);
+			newWand.activate(mage, next, event.getNewSlot());
 		}
 		
 		// Check for map selection if no wand is active
