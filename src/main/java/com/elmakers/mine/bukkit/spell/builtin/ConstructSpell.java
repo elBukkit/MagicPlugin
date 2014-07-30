@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -138,26 +139,25 @@ public class ConstructSpell extends BrushSpell
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
 		
 		if (parameters.getBoolean("replace", false)) {
-			List<Material> replaceMaterials = new ArrayList<Material>();
-			Material targetMaterial = target.getType();
-			replaceMaterials.add(targetMaterial);
-			
+			List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<com.elmakers.mine.bukkit.api.block.MaterialAndData>();
+			replaceMaterials.add(new MaterialAndData(target));
+
 			// A bit hacky, but is very handy!
-			if (targetMaterial == Material.STATIONARY_WATER)
+            Material targetMaterial = target.getType();
+			if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
 			{
-				replaceMaterials.add(Material.WATER);
+                for (byte data = 0; data < 16; data++) {
+                    replaceMaterials.add(new MaterialAndData(Material.WATER, data));
+                    replaceMaterials.add(new MaterialAndData(Material.STATIONARY_WATER, data));
+                }
 			}
-			else if (targetMaterial == Material.WATER)
+			else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
 			{
-				replaceMaterials.add(Material.STATIONARY_WATER);
-			}
-			else if (targetMaterial == Material.STATIONARY_LAVA)
-			{
-				replaceMaterials.add(Material.LAVA);
-			}
-			else if (targetMaterial == Material.LAVA)
-			{
-				replaceMaterials.add(Material.STATIONARY_LAVA);
+
+                for (byte data = 0; data < 16; data++) {
+                    replaceMaterials.add(new MaterialAndData(Material.LAVA, data));
+                    replaceMaterials.add(new MaterialAndData(Material.STATIONARY_LAVA, data));
+                }
 			}
 			
 			batch.setReplace(replaceMaterials);

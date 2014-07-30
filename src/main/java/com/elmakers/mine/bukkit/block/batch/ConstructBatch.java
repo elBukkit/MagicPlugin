@@ -46,7 +46,7 @@ public class ConstructBatch extends BrushBatch {
 	private final Set<Material> attachablesWall;
 	private final Set<Material> attachablesDouble;
 	private final Set<Material> delayed;
-	private Set<Material> replace;
+	private Set<String> replace;
 	private Map<String, String> commandMap;
     private Map<String, String> signMap;
 
@@ -332,9 +332,12 @@ public class ConstructBatch extends BrushBatch {
             return true;
         }
 
-        if (replace != null && replace.size() > 0 && !replace.contains(block.getType()))
+        if (replace != null && replace.size() > 0)
         {
-            return true;
+            MaterialAndData check = new com.elmakers.mine.bukkit.block.MaterialAndData(block);
+            if (!replace.contains(check.getKey())) {
+                return true;
+            }
         }
 
         if (!spell.hasBuildPermission(block))
@@ -497,9 +500,11 @@ public class ConstructBatch extends BrushBatch {
         signMap.put(key,  text);
     }
 
-    public void setReplace(Collection<Material> replace) {
-		this.replace = new HashSet<Material>();
-		this.replace.addAll(replace);
+    public void setReplace(Collection<MaterialAndData> replace) {
+		this.replace = new HashSet<String>();
+        for (MaterialAndData material : replace) {
+            this.replace.add(material.getKey());
+        }
 	}
 
 	@Override
