@@ -2213,7 +2213,7 @@ protego:
         range: 4
         radius: 2
         type: sphere
-        brush: stained_glass_pane
+        brush: stained_glass
         orient_dimension_max: 0
         orient_dimension_min: 0
         orient: true
@@ -2277,7 +2277,7 @@ protegoduo:
         range: 4
         radius: 1
         type: sphere
-        brush: stained_glass_pane
+        brush: stained_glass
         orient_dimension_max: 0
         orient_dimension_min: 0
         orient: true
