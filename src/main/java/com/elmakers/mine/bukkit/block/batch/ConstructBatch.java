@@ -89,6 +89,7 @@ public class ConstructBatch extends BrushBatch {
 
 	public void setPower(boolean power) {
 		this.power = power;
+        this.undoList.setApplyPhysics(true);
 	}
 
     public void setBackfireChance(double backfireChance) {
