@@ -279,10 +279,6 @@ public class CompatibilityUtils extends NMSUtils {
         addPotionEffect(entity, color.asRGB());
     }
 
-    public static void clearPotionEffect(LivingEntity entity) {
-        addPotionEffect(entity, 0);
-    }
-
     public static void setInvulnerable(Entity entity) {
         setInvulnerable(entity, true);
     }
