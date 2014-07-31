@@ -184,7 +184,7 @@ public class GotoSpell extends UndoableSpell
 	
 	protected void releaseTarget() {
 		if (targetEntity != null && effectColor != null) {
-			CompatibilityUtils.clearPotionEffect(targetEntity);
+			CompatibilityUtils.removePotionEffect(targetEntity);
 		}
 		targetEntity = null;
 	}
