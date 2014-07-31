@@ -18,4 +18,6 @@ public interface Automaton extends BlockData {
      * @return String name
      */
     public String getName();
+
+    public long getCreatedTime();
 }

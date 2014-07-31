@@ -50,6 +50,7 @@ public interface MageController {
      * @return True if this is an Automata's power source.
      */
     public boolean isAutomata(Block block);
+    public Automaton getAutomaton(Block block);
 
     /**
      * Return a list of all known LostWand records.
