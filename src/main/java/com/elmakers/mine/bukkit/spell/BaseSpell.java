@@ -57,7 +57,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected static final int MAX_Y = 255;
     protected static final int MAX_NETHER_Y = 120;
 
-
     // TODO: Configurable default? this does look cool, though.
     protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
 
@@ -756,7 +755,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         backfired = false;
-        currentEffects = null;
+        cancelEffects();
     }
 
     public boolean cast(String[] extraParameters, Location defaultLocation)
@@ -980,6 +979,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (effects.containsKey(effectName) && mageLocation != null) {
             Location targetLocation = getTargetLocation();
             Entity targetEntity = getTargetEntity();
+            cancelEffects();
             currentEffects = effects.get(effectName);
             for (EffectPlayer player : currentEffects) {
                 // Set scale
@@ -1378,9 +1378,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (!quiet) {
                 sendMessage(getMessage("deactivate"));
             }
+            cancelEffects();
         }
-
-        cancelEffects();
 
         return true;
     }
