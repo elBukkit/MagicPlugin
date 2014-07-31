@@ -3101,6 +3101,15 @@ public class MagicController implements Listener, MageController {
 		forgetMages.put(mage.getId(), System.currentTimeMillis());
 	}
 
+    public Automaton getAutomaton(Block block) {
+        String chunkId = getChunkKey(block.getChunk());
+        Map<Long, Automaton> toReload = automata.get(chunkId);
+        if (toReload != null) {
+            return toReload.get(BlockData.getBlockId(block));
+        }
+        return null;
+    }
+
 	/*
 	 * API Implementation
 	 */

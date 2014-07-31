@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.Automaton;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -396,7 +397,8 @@ public class ConstructBatch extends BrushBatch {
                 // A work-around for double-powering Automata.
                 // It'd be really cool to maybe find the associated command
                 // block and temporarily disable it, or something.
-                if (!controller.isAutomata(block)) {
+                Automaton automaton = controller.getAutomaton(block);
+                if (automaton == null || automaton.getCreatedTime() < System.currentTimeMillis() - 30000) {
                     registerForUndo(block);
                     block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
                     controller.getRedstoneReplacement().modify(block, true);

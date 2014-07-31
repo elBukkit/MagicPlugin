@@ -39,11 +39,13 @@ public class Automaton extends BlockData implements com.elmakers.mine.bukkit.api
 		if (contents == null || contents.length() == 0) return "";
 		return contents.replace("$name", name);
 	}
-	
+
+    @Override
 	public String getName() {
 		return name;
 	}
-	
+
+    @Override
 	public long getCreatedTime() {
 		return createdAt;
 	}
