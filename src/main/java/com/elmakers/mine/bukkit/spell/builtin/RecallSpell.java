@@ -371,11 +371,6 @@ public class RecallSpell extends UndoableSpell
 				return true;
 			}
 		}
-		
-        // Update the marker so they can get back, if there is no marker set.
-        if (location == null) {
-            placeMarker(getLocation().getBlock());
-        }
 
         registerMoved(player);
         Location playerLocation = player.getLocation();
