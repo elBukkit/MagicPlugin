@@ -2574,36 +2574,6 @@ sectumsempra:
 
 silencio:
     icon: ink_sack:3
-    category: dada
-    class: PotionEffectSpell
-    worth: 70
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: cat_purr
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: IconEntityEffect
-             particle: angry_villager
-             iterations: 20
-             period: 10
-             particles: 1
-    parameters:
-        target_type: LivingEntity
-        target: other
-        deactivate_target_mage: true
-        allow_max_range: false
-        range: 16
-        duration: 10000
-        effect_confusion: 100
-        cooldown: 20000
-        target_breakables: 1
-    costs:
-        xp: 140
-
-silenciomaxima:
-    icon: ink_sack:3
     category: staff
     class: CommandSpell
     hidden: true
@@ -2682,7 +2652,7 @@ jail:
         cooldown: 1000
         target_breakables: 1
 
-silenciototalus:
+silenciomaxima:
     icon: ink_sack:3
     category: staff
     class: CommandSpell
@@ -2703,11 +2673,9 @@ silenciototalus:
     parameters:
         commands:
         - mute @a 10
-        - say §dSILENCIO TOTALUS!
+        - say §dSILENCIO MAXIMA!
         target: none
         bypass_backfire: true
-    costs:
-        xp: 500
 
 stupefy:
     icon: ink_sack:4
