@@ -2478,6 +2478,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isInventoryOpen()) {
 			closeInventory();
 		}
+        playerInventorySlot = null;
         storedInventory = null;
 		
 		if (usesMana() && player != null) {
@@ -2490,7 +2491,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
         saveState();
 		mage.setActiveWand(null);
-        playerInventorySlot = null;
 		mage = null;
 	}
 	
