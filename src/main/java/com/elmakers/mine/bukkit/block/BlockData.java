@@ -270,7 +270,12 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
     @Override
     public void restore() {
-        modify(getBlock());
+        restore(false);
+    }
+
+    @Override
+    public void restore(boolean applyPhysics) {
+        modify(getBlock(), applyPhysics);
     }
 
     @Override
