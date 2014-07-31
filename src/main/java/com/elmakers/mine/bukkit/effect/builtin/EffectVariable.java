@@ -6,17 +6,23 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class EffectVariable extends EffectPlayer {
 
     private Map<Double, Collection<EffectPlayer>> brightnessMap = new TreeMap<Double, Collection<EffectPlayer>>();
+    private Collection<EffectPlayer> playing = new ArrayList<EffectPlayer>();
 
     public EffectVariable() {
 
+    }
+
+    @Override
+    public void cancel() {
+        super.cancel();
+        for (EffectPlayer player : playing) {
+            player.cancel();;
+        }
     }
 
     @Override
@@ -51,6 +57,7 @@ public class EffectVariable extends EffectPlayer {
     }
 
     public void play() {
+        playing.clear();
         if (brightnessMap.size() > 0) {
             double brightness = 0;
             Color color = getColor1();
@@ -69,6 +76,8 @@ public class EffectVariable extends EffectPlayer {
                         player.setParticleOverride(particleOverride);
                         player.start(origin, originEntity == null ? null : originEntity.get(),
                                 target, targetEntity == null ? null : targetEntity.get());
+
+                        playing.add(player);
                     }
                     break;
                 }
