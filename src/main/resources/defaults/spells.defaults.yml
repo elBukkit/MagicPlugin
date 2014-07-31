@@ -145,7 +145,6 @@ curse:
            location: target
            effectlib:
              class: BleedEntityEffect
-             particle: town_aura
     costs:
         xp: 50
     parameters:
