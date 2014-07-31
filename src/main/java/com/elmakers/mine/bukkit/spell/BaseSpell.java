@@ -995,6 +995,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     } catch (Exception ex) {
                         controller.getLogger().warning("Error setting particle override: " + ex.getMessage());
                     }
+                } else {
+                    player.setParticleOverride(null);
                 }
                 Entity entity = mage.getEntity();
                 player.start(mageLocation, entity, targetLocation, targetEntity);

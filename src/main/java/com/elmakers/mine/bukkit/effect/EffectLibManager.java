@@ -6,10 +6,12 @@ import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,11 +49,17 @@ public class EffectLibManager {
         String effectClass = configuration.getString("class");
         ParticleEffect effect = player.overrideParticle(null);
         String effectOverride = player.getParticleOverrideName();
+        ConfigurationSection parameters = configuration;
         if (effect != null && effectOverride != null && !effectOverride.isEmpty() && configuration.contains(effectOverride)) {
-            configuration.set(effectOverride, effect.name());
+            parameters = new MemoryConfiguration();
+            Collection<String> keys = configuration.getKeys(false);
+            for (String key : keys) {
+                parameters.set(key, configuration.get(key));
+            }
+            parameters.set(effectOverride, effect.name());
         }
         try {
-            effects = effectManager.start(effectClass, configuration, origin, target, sourceEntity, targetEntity, nameMap);
+            effects = effectManager.start(effectClass, parameters, origin, target, sourceEntity, targetEntity, nameMap);
         } catch (Throwable ex) {
             Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();
