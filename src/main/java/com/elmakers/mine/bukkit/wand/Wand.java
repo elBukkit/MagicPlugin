@@ -2488,9 +2488,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
-        playerInventorySlot = null;
         saveState();
 		mage.setActiveWand(null);
+        playerInventorySlot = null;
 		mage = null;
 	}
 	
@@ -2535,12 +2535,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (uses > 0) {
 			uses--;
 			if (uses <= 0) {
-				Player player = mage.getPlayer();
-				mage.playSound(Sound.ITEM_BREAK, 1.0f, 0.8f);
+                // Safety thing... ?
+                uses = 1;
+
+                Player player = mage.getPlayer();
+                mage.playSound(Sound.ITEM_BREAK, 1.0f, 0.8f);
+
+                deactivate();
+
 				PlayerInventory playerInventory = player.getInventory();
 				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
 				player.updateInventory();
-				deactivate();
 			} else {
                 saveState();
 				updateName();
