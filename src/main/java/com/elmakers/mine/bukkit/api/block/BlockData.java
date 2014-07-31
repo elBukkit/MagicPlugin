@@ -23,6 +23,7 @@ public interface BlockData extends MaterialAndData {
     public void restore();
     public void commit();
     public boolean undo();
+    public boolean undo(boolean applyPhysics);
     public boolean isDifferent();
 
     public void unlink();
