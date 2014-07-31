@@ -20,6 +20,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.block.UndoBatch {
     private int undoIndex = 0;
     private boolean finishedAttachables = false;
     protected boolean finished = false;
+    protected boolean applyPhysics = false;
 
     private final Set<Material> attachables;
     private final Set<Material> attachablesWall;
@@ -37,6 +38,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.block.UndoBatch {
         trackUndoBlocks = new UndoList(mage, blockList.getSpell(), "Undo");
         trackUndoBlocks.setBypass(true);
 
+        this.applyPhysics = blockList.getApplyPhysics();
         this.undoBlocks = blockList.toArray(template);
         ArrayUtils.reverse(this.undoBlocks);
         this.attachables = controller.getMaterialSet("attachable");
@@ -69,7 +71,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.block.UndoBatch {
 
                 trackUndoBlocks.add(blockData);
 
-                if (!UndoList.undo(blockData)) {
+                if (!UndoList.undo(blockData, applyPhysics)) {
                     break;
                 }
             }

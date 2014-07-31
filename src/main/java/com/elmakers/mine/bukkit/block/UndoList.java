@@ -45,10 +45,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected final Mage			owner;
     protected final Plugin		   	plugin;
 
-    protected boolean               undone = false;
-    protected int                  	timeToLive       = 0;
+    protected boolean               undone              = false;
+    protected int                  	timeToLive          = 0;
+    protected boolean               applyPhysics        = false;
 
-    protected boolean				bypass		 	= false;
+    protected boolean				bypass		 	    = false;
     protected final long			createdTime;
     protected long					modifiedTime;
     protected long                  scheduledTime;
@@ -193,9 +194,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
-    public static boolean undo(BlockData undoBlock)
+    public static boolean undo(BlockData undoBlock, boolean applyPhysics)
     {
-        if (undoBlock.undo()) {
+        if (undoBlock.undo(applyPhysics)) {
             removeFromModified(undoBlock);
             return true;
         }
@@ -278,6 +279,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         super.load(node);
         timeToLive = node.getInt("time_to_live", timeToLive);
         name = node.getString("name", name);
+        applyPhysics = node.getBoolean("apply_physics", applyPhysics);
     }
 
     @Override
@@ -286,6 +288,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         super.save(node);
         node.set("time_to_live", (Integer)timeToLive);
         node.set("name", name);
+        node.set("apply_physics", applyPhysics);
     }
 
     public void watch(Entity entity)
@@ -534,5 +537,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public UndoList getPrevious()
     {
         return previous;
+    }
+
+    public void setApplyPhysics(boolean applyPhysics) {
+        this.applyPhysics = applyPhysics;
+    }
+
+    public boolean getApplyPhysics() {
+        return applyPhysics;
     }
 }

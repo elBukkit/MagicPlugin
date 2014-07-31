@@ -168,6 +168,12 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     @Override
     public boolean undo()
     {
+        return undo(false);
+    }
+
+    @Override
+    public boolean undo(boolean applyPhysics)
+    {
         Block block = getBlock();
         if (block == null)
         {
@@ -183,7 +189,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
         if (isDifferent(block))
         {
-            modify(block);
+            modify(block, applyPhysics);
         }
 
         // Pass state up the chain

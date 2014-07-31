@@ -258,8 +258,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void modify(Block block) {
+        modify(block, false);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void modify(Block block, boolean applyPhysics) {
         if (!isValid) return;
 
         try {
@@ -277,7 +281,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
             if (material != null) {
                 byte blockData = data != null ? data : block.getData();
-                block.setTypeIdAndData(material.getId(), blockData, false);
+                block.setTypeIdAndData(material.getId(), blockData, applyPhysics);
             }
 
             BlockState blockState = block.getState();
