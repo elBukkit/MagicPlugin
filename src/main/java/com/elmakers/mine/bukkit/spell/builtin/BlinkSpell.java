@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
-public class BlinkSpell extends TargetingSpell
+public class BlinkSpell extends UndoableSpell
 {
 	private int verticalSearchDistance = 255;
 	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
@@ -203,10 +204,12 @@ public class BlinkSpell extends TargetingSpell
      * @param location
      */
     protected void delayTeleport(final Entity entity, final Location location) {
+        registerMoved(entity);
         Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {
                 entity.teleport(location);
+                registerForUndo();
             }
         }, 1);
     }
