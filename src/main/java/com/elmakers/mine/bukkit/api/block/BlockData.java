@@ -21,6 +21,7 @@ public interface BlockData extends MaterialAndData {
     public Block getBlock();
     public BlockVector getPosition();
     public void restore();
+    public void restore(boolean applyPhysics);
     public void commit();
     public boolean undo();
     public boolean undo(boolean applyPhysics);
