@@ -21,7 +21,7 @@ public class EffectVariable extends EffectPlayer {
     public void cancel() {
         super.cancel();
         for (EffectPlayer player : playing) {
-            player.cancel();;
+            player.cancel();
         }
     }
 
@@ -32,24 +32,26 @@ public class EffectVariable extends EffectPlayer {
         // ... This seems kinda broken. I get a Map here if it's embedded in another section?
         Object testObject = configuration.get("brightness");
         if (testObject != null) {
-            ConfigurationSection brightness = null;
             if (testObject instanceof Map) {
                 Map<String, List<ConfigurationSection>> dataMap = (Map<String, List<ConfigurationSection>>)testObject;
-                brightness = new MemoryConfiguration();
                 for (Map.Entry<String, List<ConfigurationSection>> entry : dataMap.entrySet()) {
-                    brightness.set(entry.getKey(), entry.getValue());
+                    try {
+                        String key = entry.getKey();
+                        double level = Double.parseDouble(key);
+                        MemoryConfiguration brightness = new MemoryConfiguration();
+                        brightness.set(key, entry.getValue());
+                        brightnessMap.put(level, EffectPlayer.loadEffects(plugin, brightness, key));
+                    } catch (Exception ex) {
+                    }
                 }
             } else {
-                brightness = configuration.getConfigurationSection("brightness");
-            }
-            if (brightness != null) {
+                ConfigurationSection brightness = configuration.getConfigurationSection("brightness");
                 Collection<String> keys = brightness.getKeys(false);
                 for (String key : keys) {
                     try {
                         double level = Double.parseDouble(key);
                         brightnessMap.put(level, EffectPlayer.loadEffects(plugin, brightness, key));
                     } catch (Exception ex) {
-
                     }
                 }
             }
