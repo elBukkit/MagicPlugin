@@ -3055,7 +3055,7 @@ public class MagicController implements Listener, MageController {
 					if (current.getType() == toggleBlock.getMaterial()) {
                         getLogger().info("Resuming block at " + toggleBlock.getPosition() + ": " + toggleBlock.getName() + " with " + toggleBlock.getMaterial());
 
-                        redstoneReplacement.modify(current);
+                        redstoneReplacement.modify(current, true);
 						restored.add(toggleBlock);
 					}
 					
@@ -3068,7 +3068,7 @@ public class MagicController implements Listener, MageController {
 					new Runnable() {
 						public void run() {
 							for (Automaton restoreBlock : restored) {
-								restoreBlock.restore();
+								restoreBlock.restore(true);
 							}
 						}
 				}, 5);
@@ -3100,7 +3100,7 @@ public class MagicController implements Listener, MageController {
 	public void forgetMage(Mage mage) {
 		forgetMages.put(mage.getId(), System.currentTimeMillis());
 	}
-	
+
 	/*
 	 * API Implementation
 	 */
