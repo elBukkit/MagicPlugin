@@ -28,7 +28,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
@@ -37,7 +36,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
     public static Plugin metadataProvider;
@@ -2338,16 +2336,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     protected void randomize() {
         boolean modified = randomize;
+        randomize = false;
         if (description.contains("$")) {
             Matcher matcher = Messages.PARAMETER_PATTERN.matcher(description);
-            while(matcher.find()) {
+            while (matcher.find()) {
                 String key = matcher.group(1);
                 if (key != null) {
                     modified = true;
                     description = description.replace("$" + key, Messages.getRandomized(key));
-                    updateLore();
                 }
             }
+
+            updateLore();
+            updateName();
         }
 
         if (template != null && template.length() > 0) {
@@ -2363,8 +2364,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 modified = true;
             }
         }
-
-        randomize = false;
 
         if (modified) {
             saveState();
