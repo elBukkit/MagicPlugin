@@ -2676,9 +2676,18 @@ public class MagicController implements Listener, MageController {
 		InventoryType inventoryType = event.getInventory().getType();
 
         boolean clickedWand = Wand.isWand(clickedItem);
+
         if (activeWand != null && activeWand.isInventoryOpen())
         {
-            if (clickedWand) {
+            if (clickedWand)
+            {
+                event.setCancelled(true);
+                return;
+            }
+
+            // So many ways to try and move the wand around, that we have to watch for!
+            if (event.getAction() == InventoryAction.HOTBAR_SWAP && Wand.isWand(player.getInventory().getItem(event.getHotbarButton())))
+            {
                 event.setCancelled(true);
                 return;
             }
