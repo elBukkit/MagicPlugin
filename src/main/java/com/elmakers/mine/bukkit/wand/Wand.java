@@ -2236,10 +2236,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public boolean fill(Player player) {
 		Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
-
 		for (SpellTemplate spell : allSpells)
 		{
-			if (spell.hasCastPermission(player) && spell.hasIcon())
+			if (spell.hasCastPermission(player) && spell.hasIcon() && !spell.isHidden())
 			{
 				addSpell(spell.getKey());
 			}
@@ -2289,9 +2288,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Check for an empty wand and auto-fill
 		if (!isUpgrade && (controller.fillWands() || autoFill)) {
-			if (getSpells().size() == 0) {
-				fill(mage.getPlayer());
-			}
+            fill(mage.getPlayer());
 		}
 		
 		// Check for auto-organize

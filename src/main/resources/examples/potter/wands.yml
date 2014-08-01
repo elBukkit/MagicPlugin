@@ -165,6 +165,7 @@ elder:
     bound: true
     keep: true
     fill: true
+    organize: true
     cost_reduction: 2
     cooldown_reduction: 2
     protection: 1
@@ -196,18 +197,20 @@ wolf:
     effect_bubbles: false
     organize: true
     mode: inventory
-    active_spell: apparate
+    active_spell: apparatemaxima
     hidden: true
     effect_particle: magic_crit
     effect_particle_count: 2
-    materials:
-      - clone
-      - replicate
-      - copy
-      - erase
-      - stone
-      - stained_glass
-      - glass
+    spells:
+      - apparatemaxima
+      - ascendio
+      - flight
+      - gather
+      - meteo
+      - episkey
+      - stupefy
+      - finiteincantatem
+      - reductomaxima
 
 architect:
     path: engineer
@@ -228,6 +231,7 @@ architect:
     active_spell: fly
     spells:
         - flight
+        - paste
         - paint
         - alter
         - torch
@@ -254,15 +258,20 @@ architect:
         - salviohexia
         - reparomaxima
     materials:
+        - clone
+        - replicate
+        - copy
+        - erase
+        - map
+        - monster_eggs:1
+        - monster_eggs:2
+        - monster_eggs:3
+        - monster_eggs:4
+        - monster_eggs:5
         - stone
         - wood
         - glass
         - dirt
-        - erase
-        - copy
-        - clone
-        - replicate
-        - map
         - glowstone
         - sand
         - cobblestone
