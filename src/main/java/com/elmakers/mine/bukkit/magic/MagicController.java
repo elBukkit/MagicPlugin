@@ -2675,10 +2675,29 @@ public class MagicController implements Listener, MageController {
 		Wand activeWand = mage.getActiveWand();
 		InventoryType inventoryType = event.getInventory().getType();
 
+        boolean clickedWand = Wand.isWand(clickedItem);
+        if (activeWand != null && activeWand.isInventoryOpen())
+        {
+            if (clickedWand) {
+                event.setCancelled(true);
+                return;
+            }
+
+            // Safety check for something that ought not to be possible
+            // but perhaps happens with lag?
+            if (Wand.isWand(event.getCursor()))
+            {
+                activeWand.closeInventory();
+                event.setCursor(null);
+                event.setCancelled(true);
+                return;
+            }
+        }
+
 		// Check for dropping items out of a wand's inventory
         // or dropping undroppable wands
 		if (event.getAction() == InventoryAction.DROP_ONE_SLOT) {
-            if (Wand.isWand(clickedItem)) {
+            if (clickedWand) {
                 Wand wand = new Wand(this, clickedItem);
                 if (wand.isUndroppable()) {
                     event.setCancelled(true);
@@ -2727,11 +2746,6 @@ public class MagicController implements Listener, MageController {
 						player.closeInventory();
 						event.setCancelled(true);
 						return;
-					}
-					
-					// Prevent wand duplication
-					if (Wand.isWand(event.getCursor()) || Wand.isWand(clickedItem)) {
-						event.setCancelled(true);
 					}
 				}
 			}
