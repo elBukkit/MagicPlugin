@@ -140,7 +140,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean bypassDeactivate            = false;
     private boolean quiet                       = false;
 
-    private boolean backfired                 = false;
+    private boolean backfired                   = false;
+    private boolean hidden                      = false;
 
     protected ConfigurationSection parameters = null;
 
@@ -715,6 +716,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
         castOnNoTarget = node.getBoolean("cast_on_no_target", false);
+        hidden = node.getBoolean("hidden", false);
 
         effects.clear();
         if (node.contains("effects")) {
@@ -1468,6 +1470,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (color != null) return color;
         if (category != null) return category.getColor();
         return null;
+    }
+
+    @Override
+    public boolean isHidden()
+    {
+        return hidden;
     }
 
     //
