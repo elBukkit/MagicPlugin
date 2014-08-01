@@ -37,4 +37,5 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public Spell createSpell();
     public void loadTemplate(String key, ConfigurationSection node);
     public String getPermissionNode();
+    public boolean isHidden();
 }
