@@ -3144,7 +3144,7 @@ superdisc:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 16
+        max_dimension: 128
         target: select
         type: sphere
         orient_dimension_max: 0
@@ -3169,7 +3169,7 @@ superring:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 16
+        max_dimension: 128
         target: select
         type: sphere
         orient_dimension_max: 0
@@ -3195,7 +3195,7 @@ superbox:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 16
+        max_dimension: 128
         thickness: 1
         target: select
         type: cuboid
@@ -3218,7 +3218,7 @@ superpyramid:
     parameters:
         allow_max_range: false
         range: 32
-        max_dimension: 16
+        max_dimension: 128
         target: select
         thickness: 1
         type: pyramid
@@ -3241,7 +3241,7 @@ supercube:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 16
+        max_dimension: 128
         target: select
         type: cuboid
         transparent: transparent_to_construction
@@ -3263,7 +3263,7 @@ superdome:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 16
+        max_dimension: 128
         thickness: 1
         target: select
         type: sphere
@@ -3781,7 +3781,7 @@ supershell:
     parameters:
         allow_max_range: false
         range: 64
-        max_dimension: 16
+        max_dimension: 128
         thickness: 1
         target: select
         type: sphere
