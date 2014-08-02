@@ -65,7 +65,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description", "template",
-		"organize", "fill", "stored"
+		"organize", "fill", "stored", "upgrade_icon"
 	};
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
@@ -99,6 +99,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean rename = false;
 	
 	private MaterialAndData icon = null;
+    private MaterialAndData upgradeIcon = null;
 	
 	private float costReduction = 0;
 	private float cooldownReduction = 0;
@@ -972,6 +973,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("icon", null);
 		}
+        if (upgradeIcon != null) {
+            String iconKey = MaterialBrush.getMaterialKey(upgradeIcon);
+            if (iconKey != null && iconKey.length() > 0) {
+                node.set("upgrade_icon", iconKey);
+            } else {
+                node.set("upgrade_icon", null);
+            }
+        } else {
+            node.set("upgrade_icon", null);
+        }
 		if (template != null && template.length() > 0) {
 			node.set("template", template);
 		} else {
@@ -1111,6 +1122,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
 				setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
 			}
+
+            if (wandConfig.contains("upgrade_icon")) {
+                upgradeIcon = ConfigurationUtils.toMaterialAndData(wandConfig.getString("upgrade_icon"));
+            }
 
             if (wandConfig.contains("overrides")) {
                 castParameters = null;
@@ -2006,6 +2021,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			modified = modified | (mode != other.mode);
 			setMode(other.mode);
 		}
+
+        if (other.upgradeIcon != null && (this.icon == null
+               || this.icon.getMaterial() != other.upgradeIcon.getMaterial()
+               || this.icon.getData() != other.upgradeIcon.getData())) {
+            modified = true;
+            this.setIcon(other.upgradeIcon);
+        }
 		
 		// Don't need mana if cost-free
 		if (isCostFree()) {

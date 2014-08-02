@@ -3,8 +3,8 @@
 #
 
 default:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
-    randomize_icon: wood_step:4
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
+    randomize_icon: wood_step:11
     path: year1
     bound: true
     keep: true
@@ -769,7 +769,6 @@ graduate:
     xp_regeneration: 22
 
 staff:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: graduate
     xp_max: 220
     xp_regeneration: 25
@@ -780,7 +779,6 @@ staff:
      - jail
 
 headstaff:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     path: graduate
     xp_max: 250
     xp_regeneration: 30
@@ -847,3 +845,59 @@ silent:
     indestructible: false
     icon: arrow
     quiet: -3
+
+wood_hoe_upgrade:
+    upgrade: true
+    icon: wood_hoe
+    upgrade_icon: wood_hoe
+
+wood_hoe_upgrade:
+    upgrade: true
+    icon: gold_axe
+    upgrade_icon: gold_axe
+
+gold_pickaxe_upgrade:
+    upgrade: true
+    icon: gold_pickaxe
+    upgrade_icon: gold_pickaxe
+
+gold_spade_upgrade:
+    upgrade: true
+    icon: gold_spade
+    upgrade_icon: gold_spade
+
+stone_axe_upgrade:
+    upgrade: true
+    icon: stone_axe
+    upgrade_icon: stone_axe
+
+stone_hoe_upgrade:
+    upgrade: true
+    icon: stone_hoe
+    upgrade_icon: stone_hoe
+
+stone_pickaxe_upgrade:
+    upgrade: true
+    icon: stone_pickaxe
+    upgrade_icon: stone_pickaxe
+
+stone_spade_upgrade:
+    upgrade: true
+    icon: stone_spade
+    upgrade_icon: stone_spade
+
+wood_axe_upgrade:
+    upgrade: true
+    icon: wood_axe
+    upgrade_icon: wood_axe
+
+wood_spade_upgrade:
+    upgrade: true
+    icon: wood_spade
+    upgrade_icon: wood_spade
+
+wood_pickaxe_upgrade:
+    upgrade: true
+    icon: wood_pickaxe
+    upgrade_icon: wood_pickaxe
+
