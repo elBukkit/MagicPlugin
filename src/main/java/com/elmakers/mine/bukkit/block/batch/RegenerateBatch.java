@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.block.batch;
 
+import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,7 +10,6 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class RegenerateBatch extends SpellBatch {
 	private static final BlockData[] template = new BlockData[0];
@@ -17,7 +17,7 @@ public class RegenerateBatch extends SpellBatch {
 	private final UndoList restoredBlocks;
 	private final World world;
 	private final Mage mage;
-	private final BlockSpell spell;
+	private final UndoableSpell spell;
 
 	// These are chunk coords!
 	private final int absx;
@@ -36,7 +36,7 @@ public class RegenerateBatch extends SpellBatch {
 	private BlockData[] restoreBlocks;
 	private int restoringIndex = 0;
 	private boolean expand = false;
-	
+
 	private BoundingBox bounds = new BoundingBox();
 	
 	private enum RegenerateState {
@@ -45,7 +45,7 @@ public class RegenerateBatch extends SpellBatch {
 	
 	private RegenerateState state;
 	
-	public RegenerateBatch(BlockSpell spell, Location p1, Location p2) {
+	public RegenerateBatch(UndoableSpell spell, Location p1, Location p2) {
 		super(spell);
 		this.spell = spell;
 		this.mage = spell.getMage();
@@ -83,6 +83,10 @@ public class RegenerateBatch extends SpellBatch {
 	
 	public int process(int maxBlocks) {
 		int processedBlocks = 0;
+        if (state == RegenerateState.SAVING && expand && !spell.isUndoable())
+        {
+            state = RegenerateState.REGENERATING;
+        }
 		switch (state)
 		{
 		case SAVING:
@@ -157,7 +161,11 @@ public class RegenerateBatch extends SpellBatch {
 			if (ix >= absx) 
 			{
 				restoreBlocks = restoredBlocks.toArray(template);
-				state = RegenerateState.RESTORING;
+                if (expand && !spell.isUndoable()) {
+                    finish();
+                } else {
+                    state = RegenerateState.RESTORING;
+                }
 			}
 			break;
 		case RESTORING:
