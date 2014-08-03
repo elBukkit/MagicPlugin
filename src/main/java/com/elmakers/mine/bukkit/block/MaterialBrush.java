@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.api.block.BrushMode;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -26,16 +26,6 @@ import com.elmakers.mine.bukkit.utility.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
-
-    private enum BrushMode {
-        MATERIAL,
-        ERASE,
-        COPY,
-        CLONE,
-        REPLICATE,
-        MAP,
-        SCHEMATIC
-    };
 
     public static final String ERASE_MATERIAL_KEY = "erase";
     public static final String COPY_MATERIAL_KEY = "copy";
@@ -599,16 +589,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             Location cloneFrom = location.clone();
             cloneFrom.setY(cloneFrom.getY() - 1);
             setCloneLocation(cloneFrom);
-            if (mage != null) {
-                if (materialKey.equals(CLONE_MATERIAL_KEY)) {
-                    mage.sendMessage(Messages.get("wand.clone_material_activated"));
-                } else {
-                    mage.sendMessage(Messages.get("wand.replicate_material_activated"));
-                }
-                if (fillWithAir) {
-                    mage.sendMessage(Messages.get("wand.erase_modifier_activated"));
-                }
-            }
         } else if (materialKey.equals(MAP_MATERIAL_KEY) || materialKey.equals(SCHEMATIC_MATERIAL_KEY)) {
             clearCloneTarget();
         }
@@ -708,5 +688,17 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
 
         return schematic.getSize();
+    }
+
+    @Override
+    public BrushMode getMode()
+    {
+        return mode;
+    }
+
+    @Override
+    public boolean isEraseModifierActive()
+    {
+        return fillWithAir;
     }
 }
