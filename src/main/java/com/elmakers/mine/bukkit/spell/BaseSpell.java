@@ -874,6 +874,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected boolean finalizeCast(ConfigurationSection parameters) {
         SpellResult result = null;
+
+        // Global parameters
+        controller.disablePhysics(parameters.getInt("disable_physics", 0));
+
         if (!mage.isSuperPowered()) {
             if (backfireChance > 0 && random.nextDouble() < backfireChance) {
                 backfire();
