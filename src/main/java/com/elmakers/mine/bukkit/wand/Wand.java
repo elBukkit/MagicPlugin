@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.wand;
 import java.util.*;
 import java.util.regex.Matcher;
 
+import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -300,6 +301,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
 			if (brush != null) {
 				brush.activate(mage.getLocation(), materialKey);
+
+                if (mage != null) {
+                    BrushMode mode = brush.getMode();
+                    if (mode == BrushMode.CLONE) {
+                        mage.sendMessage(Messages.get("wand.clone_material_activated"));
+                    } else if (mode == BrushMode.REPLICATE) {
+                        mage.sendMessage(Messages.get("wand.replicate_material_activated"));
+                    }
+                    if (brush.isEraseModifierActive()) {
+                        mage.sendMessage(Messages.get("wand.erase_modifier_activated"));
+                    }
+                }
+
 			}
 		}
 	}
