@@ -29,8 +29,6 @@ public class CushionSpell extends BlockSpell
 		int cushionWidth = parameters.getInt("width", DEFAULT_CUSHION_WIDTH);
 		int cushionHeight = parameters.getInt("height", DEFAULT_CUSHION_HEIGHT);
 
-		controller.disablePhysics(parameters.getInt("disable_physics", 0));
-
 		int bubbleStart = -cushionWidth  / 2;
 		int bubbleEnd = cushionWidth  / 2;
 
