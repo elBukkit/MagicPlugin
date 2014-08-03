@@ -21,4 +21,6 @@ public interface MaterialBrush extends MaterialAndData {
     public void setTarget(Location target);
     public void setTarget(Location target, Location center);
     public Vector getSize();
+    public BrushMode getMode();
+    public boolean isEraseModifierActive();
 }
