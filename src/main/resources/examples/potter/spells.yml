@@ -2238,7 +2238,7 @@ protego:
         brushcolor: false
         bypass_build: true
         cooldown: 2000
-        reflect_chance: 0.2
+        reflect_chance: 0.1
         bypass_confusion: true
         bypass_backfire: true
     costs:
@@ -2303,7 +2303,7 @@ protegoduo:
         brushcolor: false
         bypass_build: true
         cooldown: 3000
-        reflect_chance: 0.75
+        reflect_chance: 0.90
         bypass_confusion: true
         bypass_backfire: true
     costs:
@@ -2331,7 +2331,7 @@ protegotria:
         check_destructible: true
         destructible: air
         breakable: 3
-        reflect_chance: 0.5
+        reflect_chance: 0.1
         bypass_confusion: true
         bypass_backfire: true
         bypass_build: true
@@ -3791,7 +3791,7 @@ supershell:
 
 hat:
     icon: leather_helmet
-    category: light
+    category: staff
     class: HatSpell
     worth: 18
     effects:
@@ -3808,3 +3808,41 @@ hat:
         transparent: transparent_to_construction
     costs:
         xp: 30
+
+regenerate:
+    hidden: true
+    icon: fence
+    category: engineering
+    class: RegenerateSpell
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+           material: dirt
+    parameters:
+        allow_max_range: false
+        target: select
+        range: 64
+        max_dimension: 64
+        transparent: transparent_to_construction
+
+superregenerate:
+    hidden: true
+    icon: nether_fence
+    category: engineering
+    class: RegenerateSpell
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+           material: dirt
+    parameters:
+        bypass_undo: true
+        allow_max_range: false
+        target: select
+        range: 64
+        max_dimension: 128
+        expand: true
+        transparent: transparent_to_construction

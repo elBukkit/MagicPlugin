@@ -427,7 +427,7 @@ spells:
         cast: Protego!
     protegoduo:
         name: Protego Duo
-        description: Create a large shield
+        description: Create a reflective shield
         cast: Protego Duo!
     protegotria:
         name: Protego Tria
