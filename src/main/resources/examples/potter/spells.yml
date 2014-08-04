@@ -125,7 +125,7 @@ alohomora:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fuse
+           sound: orb_pickup
         -  class: EffectTrail
            particle: red_dust
            particle_data: 2
@@ -179,13 +179,13 @@ aparecium:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fuse
+           sound: orb_pickup
         -  class: EffectTrail
-           particle: red_dust
+           particle: spell
            particle_data: 2
            particle_count: 5
         -  class: EffectRing
-           particle: red_dust
+           particle: wake
            particle_count: 3
            location: target
     parameters:
@@ -318,11 +318,12 @@ araniaexumai:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: wither_shoot
            effectlib:
              class: ConeLocationEffect
-             iterations: 15
-             particle: spell
+             iterations: 10
+             lenghtGrow: 0.1
+             particle: instant_spell
         area:
         -  class: EffectSingle
            sound: fizz
@@ -562,13 +563,7 @@ avadakedavra:
         cast:
         -  class: EffectSingle
            sound: wither_death
-           location: target
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: AtomLocationEffect
-             iterations: 32
-             particleNucleus: slime
+           sound_volume: 5.0
         -  class: EffectSingle
            location: origin
            effectlib:
@@ -577,14 +572,14 @@ avadakedavra:
              particle: happy_villager
              lenghtGrow: 0.4
         -  class: EffectSingle
+           target_offset: 0,1.5,0
            location: target
-           effectlib:
-             class: SmokeEntityEffect
-             iterations: 50
+           color: 00FF00
+           firework: trail
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 16
+        range: 20
         target: other_entity
         damage: 100
         check_destructible: false
@@ -715,6 +710,12 @@ bogies:
              class: ConeLocationEffect
              iterations: 15
              particle: slime
+             lenghtGrow: 0.2
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 088A08
+           firework: ball
         -  class: EffectSingle
            location: target
            effectlib:
@@ -725,7 +726,7 @@ bogies:
         xp: 50
     parameters:
         fov: 2
-        range: 8
+        range: 15
         deactivate_target_mage: true
         target_type: LivingEntity
         target: other
@@ -747,7 +748,7 @@ bombarda:
         -  class: EffectSingle
            location: target
            firework: burst
-           color: 'FF0000'
+           color: 'FF1500'
            color2: 'FF0088'
     parameters:
         target: other
@@ -775,7 +776,7 @@ bombardamaxima:
            sound: explode
         -  class: EffectTrail
            firework: burst
-           color: 'FF0000'
+           color: 'FF1500'
            color2: 'FF0088'
     parameters:
         target: block
@@ -887,7 +888,13 @@ confundus:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: town_aura
+             particle: smoke
+             lenghtGrow: 0.3
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 2E2E2E
+           firework: ball
         -  class: EffectSingle
            location: target
            effectlib:
@@ -920,7 +927,13 @@ conjunctivitis:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: town_aura
+             particle: smoke
+             lenghtGrow: 0.3
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 2E2E2E
+           firework: ball
         -  class: EffectSingle
            location: target
            effectlib:
@@ -951,7 +964,13 @@ obscuro:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: town_aura
+             particle: mob_spell
+             lenghtGrow: 0.3
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 19070B
+           firework: ball
         -  class: EffectSingle
            location: target
            effectlib:
@@ -988,6 +1007,11 @@ crucio:
              iterations: 15
              particle: mob_spell
              lenghtGrow: 0.3
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 19070B
+           firework: ball
         -  class: EffectSingle
            particle: town_aura
            location: target
@@ -1189,7 +1213,7 @@ expelliarmus:
              class: ConeLocationEffect
              iterations: 15
              particle: red_dust
-             lenghtGrow: 0.5
+             lenghtGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1210,14 +1234,14 @@ expelliarmus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 25
+        range: 35
         fov: 0.12
         fizzle_chance: 0
         backfire_chance: 0
         keep_in_inventory: true
         target_breakables: 1
     costs:
-        xp: 130
+        xp: 120
 
 rennervate:
     icon: ink_sack:9
@@ -1290,14 +1314,14 @@ firestorm:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fire_ignite
+           sound: ghast_fireball
            location: origin
            effectlib:
              class: ShieldEntityEffect
              iterations: 10
              period: 2
              particles: 8
-             particle: flame
+             particle: lava
     parameters:
         target: self
         radius: 3
@@ -1459,11 +1483,12 @@ flipendo:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_hit
+           sound: wither_shoot
            effectlib:
              class: ConeLocationEffect
-             iterations: 16
+             iterations: 12
              particle: spell
+             lenghtGrow: 0.1
     parameters:
         target_type: Entity
         range: 16
@@ -1489,14 +1514,14 @@ flipendoduo:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_hit
+           sound: wither_shoot
            effectlib:
              class: VortexLocationEffect
              iterations: 16
              particle: spell
              helixes: 6
              circles: 4
-             grow: 0.07
+             grow: 0.5
     parameters:
         target_type: Entity
         range: 32
@@ -1522,7 +1547,7 @@ flipendotria:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_hit
+           sound: wither_shoot
            location: target
            effectlib:
              class: FountainLocationEffect
@@ -1650,7 +1675,13 @@ immobulus:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: town_aura
+             particle: smoke
+             lenghtGrow: 0.33
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 2F0B3A
+           firework: ball
         -  class: EffectSingle
            particle: town_aura
            location: target
@@ -1686,6 +1717,12 @@ locomotomortus:
              class: ConeLocationEffect
              iterations: 15
              particle: witch_magic
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 5F04B4
+           firework: ball
         -  class: EffectSingle
            particle: witch_magic
            location: target
@@ -1831,7 +1868,13 @@ incendio:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: flame
+             particle: lava
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: FE642E
+           firework: ball
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1901,15 +1944,20 @@ levicorpus:
              particle: witch_magic
              lenghtGrow: 0.4
         -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: BF00FF
+           firework: ball
+        -  class: EffectSingle
            location: target
            effectlib:
              class: SkyRocketEntityEffect
-             power: 1.25
+             power: 1.3
     parameters:
         target_type: LivingEntity
         allow_max_range: false
         range: 35
-        cooldown: 5000
+        cooldown: 4000
         target_breakables: 1
         undo_velocity: true
         undo_damage: true
@@ -2114,7 +2162,7 @@ periculum:
         -  class: EffectSingle
            sound: firework_launch
         cast:
-        -  class: EffectRing
+        -  class: EffectSingle
            firework: ball
            location: target
            radius: 8
@@ -2139,9 +2187,14 @@ petrificustotalus:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 15
-             particle: witch_magic
-             lenghtGrow: 0.4
+             iterations: 11
+             particle: fireworks_spark
+             lenghtGrow: 0.32
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: F5EFFB
+           firework: ball
         -  class: EffectSingle
            location: target
            effectlib:
@@ -2150,7 +2203,7 @@ petrificustotalus:
     costs:
         xp: 120
     parameters:
-        range: 32
+        range: 28
         target_type: LivingEntity
         target: other
         duration: 8000
@@ -2301,12 +2354,12 @@ protegoduo:
         breakable: 1
         brushcolor: false
         bypass_build: true
-        reflect_chance: 1.0
-        bypass_confusion: true
+        reflect_chance: .75
+        bypass_confusion: false
         bypass_backfire: true
         cooldown: 0
     costs:
-        xp: 30
+        xp: 20
 
 protegotria:
     icon: ink_sack:12
@@ -2347,11 +2400,18 @@ reducio:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magmacube_jump
-           particle: angry_villager
+           sound: shoot_arrow
+           location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 15
+             iterations: 11
+             particle: instant_spell
+             lenghtGrow: 0.32
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 81F7D8
+           firework: ball
     parameters:
         target_type: LivingEntity
         target: other_entity
@@ -2689,7 +2749,7 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: magic_crit
+             particle: crit
              lenghtGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2704,8 +2764,13 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: magic_crit
+             particle: crit
              lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: CEF6F5
+           firework: ball
         backfire:
         -  class: EffectSingle
            sound: shoot_arrow
@@ -2715,7 +2780,7 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: magic_crit
+             particle: crit
              lenghtGrow: 0.4
     parameters:
         range: 35
@@ -2725,7 +2790,7 @@ stupefy:
         target_breakables: 1
         bypass_backfire: false
     costs:
-        xp: 40
+        xp: 30
 
 colorvaria:
     icon: ink_sack
@@ -2793,8 +2858,8 @@ nox:
            sound: orb_pickup
            effectlib:
              class: ConeLocationEffect
-             iterations: 15
-             particle: smoke
+             iterations: 10
+             particle: mob_spell
     parameters:
         target_type: LivingEntity
         target: any
