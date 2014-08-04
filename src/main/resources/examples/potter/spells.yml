@@ -1212,7 +1212,7 @@ expelliarmus:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: red_dust
+             particle: crit
              lenghtGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1223,13 +1223,13 @@ expelliarmus:
         -  class: EffectSingle
            sound: hurt_flesh
         -  class: EffectRing
-           particle: red_dust
+           particle: crit
            location: self
         fizzle:
         -  class: EffectSingle
            sound: explode
         -  class: EffectRing
-           particle: red_dust
+           particle: crit
            location: self
     parameters:
         target_type: LivingEntity
@@ -2749,8 +2749,8 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: crit
-             lenghtGrow: 0.4
+             particle: magic_crit
+             lenghtGrow: 1
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2764,7 +2764,7 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: crit
+             particle: magic_crit
              lenghtGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2780,7 +2780,7 @@ stupefy:
            effectlib:
              class: ConeLocationEffect
              iterations: 15
-             particle: crit
+             particle: magic_crit
              lenghtGrow: 0.4
     parameters:
         range: 35
