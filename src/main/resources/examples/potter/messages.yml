@@ -427,7 +427,7 @@ spells:
         cast: Protego!
     protegoduo:
         name: Protego Duo
-        description: Create a reflective shield
+        description: Reflect your opponents' spells back
         cast: Protego Duo!
     protegotria:
         name: Protego Tria
@@ -510,7 +510,7 @@ spells:
         cast: Sectumsempra!
     stupefy:
         name: Stupefy
-        description: Stun and damage your target.
+        description: Damage your target with a magical blast
         cast: Stupefy $target!
     silencio:
         name: Silencio
@@ -533,6 +533,22 @@ spells:
         description: Mends and cleans wounds
         cast_self: Vulnera Sanentur!
         cast: Vulnera Sanentur $target!
+    superregenerate:
+        name: SuperRegenerate
+        description: Regenerate full chunks
+        usage: Cast twice to regenerate
+        fail: Can't regenerate that much!
+        cast: Regenerating chunks
+        target_selected: Cast again to regenerate chunks
+        cast_finish: Regenerate complete
+    regenerate:
+        name: Regenerate
+        description: Regenerate a selected area
+        fail: Can't regenerate that much!
+        usage: Cast twice to regenerate
+        cast: Regenerating area
+        target_selected: Cast again to regenerate area
+        cast_finish: Regenerated $count blocks
 
 randomized:
    wood:

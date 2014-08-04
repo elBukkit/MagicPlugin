@@ -53,6 +53,8 @@ transparent:
 - activator_rail
 - double_plant
 - carpet
+- water
+- stationary_water
 
 # A more extended list for spells like Apparate
 apparate:

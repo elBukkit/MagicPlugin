@@ -114,7 +114,7 @@ aguamenti:
         disable_physics: 8000
         bypass_build: true
     costs:
-        xp: 110
+        xp: 30
 
 alohomora:
     icon: wood_door
@@ -191,11 +191,11 @@ aparecium:
     parameters:
         allow_max_range: true
         range: 8
-        radius: 4
+        radius: 5
         type: sphere
         power: true
-        cooldown: 6000
-        undo: 5000
+        cooldown: 3000
+        undo: 2000
         bypass_build: true
         check_destructible: true
         destructible: powerable
@@ -251,7 +251,7 @@ apparate:
         allow_decend: false
         range: 16
     costs:
-        xp: 170
+        xp: 80
 
 apparatemaxima:
     icon: eye_of_ender
@@ -338,7 +338,7 @@ araniaexumai:
         entity_force: 2
         type: push
         count: 8
-        damage: 6
+        damage: 4
         cooldown: 500
     costs:
         xp: 25
@@ -1034,7 +1034,7 @@ deprimo:
            particle: large_explode
     parameters:
         allow_max_range: false
-        range: 16
+        range: 32
         brush: air
         falling: true
         check_destructible: true
@@ -1792,7 +1792,7 @@ imperiomaxima:
         xp: 200
 
 impervius:
-    icon: gold_spade
+    icon: sponge
     category: transfiguration
     class: ConstructSpell
     worth: 30
@@ -1812,7 +1812,6 @@ impervius:
         radius: 3
         bypass_build: true
         transparent: transparent_to_construction
-        undo: 10000
     costs:
         xp: 65
 
@@ -1909,7 +1908,7 @@ levicorpus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 16
+        range: 35
         cooldown: 5000
         target_breakables: 1
         undo_velocity: true
@@ -2298,16 +2297,16 @@ protegoduo:
         check_destructible: true
         destructible: air
         destructible: air
-        undo: 3000
+        undo: 100
         breakable: 1
         brushcolor: false
         bypass_build: true
-        cooldown: 3000
-        reflect_chance: 0.90
+        reflect_chance: 1.0
         bypass_confusion: true
         bypass_backfire: true
+        cooldown: 0
     costs:
-        xp: 50
+        xp: 30
 
 protegotria:
     icon: ink_sack:12
@@ -2551,14 +2550,11 @@ sectumsempra:
              class: ConeLocationEffect
              iterations: 15
              particle: drip_lava
-        -  class: EffectTrail
-           particle: drip_lava
-           particle_data: 1
         -  class: EffectSingle
            location: target
            effectlib:
              class: BleedEntityEffect
-             duration: 10
+             iterations: 2
              hurt: false
     parameters:
         target_type: LivingEntity
@@ -2567,10 +2563,10 @@ sectumsempra:
         fov: 0.8
         target: other_entity
         damage: 8
-        cooldown: 8000
+        cooldown: 2000
         target_breakables: 1
     costs:
-        xp: 130
+        xp: 80
 
 silencio:
     icon: ink_sack:3
@@ -2700,6 +2696,16 @@ stupefy:
            location: target
            color: 00EEFF
            firework: ball
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 15
+             particle: magic_crit
+             lenghtGrow: 0.4
         backfire:
         -  class: EffectSingle
            sound: shoot_arrow
@@ -2715,14 +2721,11 @@ stupefy:
         range: 35
         fov: 0.10
         target_type: LivingEntity
-        duration: 1000
-        damage: 6
-        effect_confusion: 40
-        cooldown: 5000
+        damage: 2
         target_breakables: 1
         bypass_backfire: false
     costs:
-        xp: 60
+        xp: 40
 
 colorvaria:
     icon: ink_sack
@@ -3123,7 +3126,7 @@ fill:
         allow_max_range: false
         target: select
         range: 64
-        max_dimension: 64
+        max_dimension: 128
         check_destructible: false
         transparent: transparent_to_construction
     costs:

@@ -120,14 +120,14 @@ year3:
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
       stupefy: 100,100,100
-      confundus: 40,60,80
+      colorvaria: 40,60,80
       immobulus: 40,50,60
       obscuro: 20,40,50
       levicorpus: 20,40,50
       rennervate: 90,100,100
       incarcerous: 20,30,40
     required_spells:
-      - colorvaria
+      - confundus
       - duro
 
 year4:
@@ -166,14 +166,14 @@ year5:
       4: 100, 10,  0
       6:  20, 30, 50
     spells:
-      expelliarmus: 100,100,100
+      deprimo: 100,100,100
       ascendio: 40,50,60
       aparecium: 20,40,50
       bubble: 20,30,40
       lacarnum: 5,10,20
     required_spells:
       - finiteincantatem
-      - deprimo
+      - expelliarmus
 
 year6:
     upgrade: year7

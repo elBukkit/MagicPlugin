@@ -1,7 +1,7 @@
 Acromantula:
   Mobtype: cavespider
   Display: '&7Acromantula'
-  Health: 50
+  Health: 20
   Damage: 5
   Skills:
   - skill SummonTarantulas >0 0.3
@@ -14,7 +14,7 @@ Acromantula:
 Tarantula:
   Mobtype: spider
   Display: '&1Tarantula'
-  Health: 20
+  Health: 10
   Damage: 3
   Options:
     MovementSpeed: 0.1
@@ -23,7 +23,7 @@ Tarantula:
 Inferius:
   Mobtype: zombie
   Display: '&1Inferius'
-  Health: 20
+  Health: 15
   Damage: 3
   Drops:
   - Minion
@@ -56,7 +56,7 @@ DreadKnight:
 Deatheater:
   Mobtype: zombie
   Display: "&4Deatheater"
-  Health: 80
+  Health: 25
   Damage: 4
   Equipment:
   - DeatheaterWand:0
@@ -77,7 +77,7 @@ Deatheater:
 DarkLord:
   Mobtype: angrypigzombie
   Display: "&cDark Lord"
-  Health: 100
+  Health: 50
   Damage: 5
   Equipment:
   - DeatheaterWand:0
@@ -97,7 +97,7 @@ DarkLord:
 Auror:
   Mobtype: pigzombie
   Display: "&bAuror"
-  Health: 100
+  Health: 50
   Damage: 5
   Equipment:
   - AurorWand:0
@@ -116,7 +116,7 @@ Auror:
 Dementor:
   Mobtype: blaze
   Display: Dementor
-  Health: 500
+  Health: 100
   Damage: 10
   Drops:
   - Boss
@@ -129,7 +129,7 @@ Dementor:
 Werewolf:
   Mobtype: angrywolf
   Display: '&6Werewolf'
-  Health: 75
+  Health: 30
   Drops:
   - MinorBoss
   Options:
