@@ -110,7 +110,7 @@ aguamenti:
         range: 16
         width: 3
         cooldown: 500
-        undo: 7000
+        undo: 5000
         disable_physics: 8000
         bypass_build: true
     costs:
@@ -2357,9 +2357,9 @@ protegoduo:
         reflect_chance: .75
         bypass_confusion: false
         bypass_backfire: true
-        cooldown: 0
+        cooldown: 400
     costs:
-        xp: 20
+        xp: 10
 
 protegotria:
     icon: ink_sack:12
@@ -2787,6 +2787,7 @@ stupefy:
         fov: 0.10
         target_type: LivingEntity
         damage: 2
+        cooldown: 400
         target_breakables: 1
         bypass_backfire: false
     costs:
