@@ -1904,7 +1904,7 @@ levicorpus:
            location: target
            effectlib:
              class: SkyRocketEntityEffect
-             power: 1.1
+             power: 1.25
     parameters:
         target_type: LivingEntity
         allow_max_range: false
