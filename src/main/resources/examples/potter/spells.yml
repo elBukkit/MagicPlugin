@@ -1219,6 +1219,19 @@ expelliarmus:
            location: target
            color: FF0000
            firework: ball
+        no_target:
+        -  class: EffectSingle
+           sound: wither_shoot
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 15
+             particle: crit
+             lenghtGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: FF8888
+           firework: ball
         backfire:
         -  class: EffectSingle
            sound: hurt_flesh
