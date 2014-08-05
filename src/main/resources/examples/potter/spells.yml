@@ -574,8 +574,8 @@ avadakedavra:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: 00FF00
-           firework: trail
+           color: "00FF00"
+           firework: creeper
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2410,7 +2410,7 @@ reducio:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: 81F7D8
+           color: "81F7D8"
            firework: ball
     parameters:
         target_type: LivingEntity
