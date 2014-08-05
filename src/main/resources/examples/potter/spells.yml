@@ -339,7 +339,7 @@ araniaexumai:
         entity_force: 2
         type: push
         count: 8
-        damage: 4
+        damage: 10
         cooldown: 500
     costs:
         xp: 25
