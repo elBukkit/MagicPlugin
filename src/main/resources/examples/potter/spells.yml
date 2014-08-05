@@ -1286,6 +1286,51 @@ rennervate:
     costs:
         xp: 30
 
+engorgio:
+    icon: brown_mushroom
+    category: transfiguration
+    class: GrowSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 11
+             particle: instant_spell
+             lenghtGrow: 0.32
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: "81F7D8"
+           firework: ball_large
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 11
+             particle: instant_spell
+             lenghtGrow: 0.32
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: "FFFFFF"
+           firework: ball
+    parameters:
+        target_type: LivingEntity
+        target: other_entity
+        allow_max_range: false
+        range: 16
+        target_breakables: 1
+    costs:
+        xp: 110
+
 episkey:
     icon: ink_sack:9
     category: charms
@@ -1917,6 +1962,7 @@ lacarnum:
         size: 2
         range: 16
         cooldown: 5000
+        spread: 3
     costs:
         xp: 180
 
@@ -2405,7 +2451,7 @@ protegotria:
 
 reducio:
     icon: red_mushroom
-    category: dark
+    category: transfiguration
     class: ShrinkSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -2424,6 +2470,20 @@ reducio:
            target_offset: 0,1.5,0
            location: target
            color: "81F7D8"
+           firework: ball
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           location: origin
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 11
+             particle: instant_spell
+             lenghtGrow: 0.32
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: "FFFFFF"
            firework: ball
     parameters:
         target_type: LivingEntity

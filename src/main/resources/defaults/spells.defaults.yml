@@ -3251,6 +3251,26 @@ shrink:
         entity_damage: 10
     costs:
         xp: 20
+grow:
+    icon: skull_item:1
+    category: combat
+    class: GrowSpell
+    pvp_restricted: false
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magmacube_jump
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 20
+             particle: happy_villager
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+    costs:
+        xp: 10
 flare:
     icon: firework
     category: light

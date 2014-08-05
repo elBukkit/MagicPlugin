@@ -171,6 +171,7 @@ year5:
       aparecium: 20,40,50
       bubble: 20,30,40
       lacarnum: 5,10,20
+      engorgio: 1,5,10
     required_spells:
       - finiteincantatem
       - expelliarmus

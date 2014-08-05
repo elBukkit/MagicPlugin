@@ -11,6 +11,7 @@
  - SuperConvert/Convert will now work with material variants
  - Improved clone/replicate messaging
  - Add Paste spell
+ - Add Grow spell (HP: Engorgio)
 
 ## 3.4
 

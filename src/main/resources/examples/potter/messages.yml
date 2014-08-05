@@ -267,6 +267,10 @@ spells:
         description: Heals major wounds
         cast_self: Ferula!
         cast: Ferula $target!
+    engorgio:
+        name: Engorgio
+        description: Grow your target
+        cast: Engorgio $target!
     evanesco:
         name: Evanesco
         description: Disintegrate the target

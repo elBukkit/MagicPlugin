@@ -907,6 +907,12 @@ spells:
         usage: Must kill the target to receive skull
         cast: Shrink!
         cast_entity: You shrink $target
+    grow:
+        name: Grow
+        description: Grows certain entities
+        cast: Grow!
+        cast_entity: You grow $target
+        no_target: You can't grow that!
     flare:
         name: Flare
         description: Fire off flares
