@@ -324,49 +324,24 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
+	public List<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
+        if (!sender.hasPermission("Magic.commands.mgive")) return options;
+
 		if (args.length == 1) {
-			addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "clearcache");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "cancel");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "load");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "save");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "commit");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "give");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "worth");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "sell");
-			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
-		} else if (args.length == 2) {
-			if (args[0].equalsIgnoreCase("list")) {
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
-				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
-			} else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
-				options.add("wand");
-				options.add("material");
-				options.add("upgrade");
-				Collection<SpellTemplate> spellList = api.getSpellTemplates();
-				for (SpellTemplate spell : spellList) {
-					options.add(spell.getKey());
-				}
-				Collection<String> allWands = api.getWandKeys();
-				for (String wandKey : allWands) {
-					options.add(wandKey);
-				}
-				options.addAll(api.getBrushes());
-			}
-		} else if (args.length == 3) {
-			if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("sell")) {
-				if (args[1].equalsIgnoreCase("upgrade") || args[1].equalsIgnoreCase("wand")) {
-					Collection<String> allWands = api.getWandKeys();
-					for (String wandKey : allWands) {
-						options.add(wandKey);
-					}
-				} else if (args[1].equalsIgnoreCase("material")) {
-					options.addAll(api.getBrushes());
-				}
-			}
+            options.addAll(api.getPlayerNames());
+		}
+
+        if (args.length == 1 || args.length == 2) {
+            Collection<SpellTemplate> spellList = api.getSpellTemplates();
+            for (SpellTemplate spell : spellList) {
+                options.add(spell.getKey());
+            }
+            Collection<String> allWands = api.getWandKeys();
+            for (String wandKey : allWands) {
+                options.add(wandKey);
+            }
+            options.addAll(api.getBrushes());
 		}
 		Collections.sort(options);
 		return options;
