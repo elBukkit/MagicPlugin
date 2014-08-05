@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -100,7 +101,7 @@ public class ShrinkSpell extends BlockSpell
 			
 			Location targetLocation = targetEntity.getLocation();
 			if (li instanceof Player) {
-				li.damage(damage, mage.getEntity());
+                CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
 				if (ownerName != null && li.isDead() && !alreadyDead) {
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
@@ -125,7 +126,7 @@ public class ShrinkSpell extends BlockSpell
 				Slime slime = (Slime)li;
 				slime.setSize(slime.getSize() - 1);
 			} else {
-				li.damage(damage, mage.getEntity());
+                CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
 				if ((ownerName != null || data != 3) && (li.isDead() || li.getHealth() == 0) && !alreadyDead) {
 					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
 				}
