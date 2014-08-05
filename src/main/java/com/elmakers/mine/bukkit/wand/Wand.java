@@ -607,8 +607,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		// Set the wand item
 		Integer selectedItem = null;
-        if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null) {
-            selectedItem = mage.getPlayer().getInventory().getHeldItemSlot();
+        if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null && playerInventorySlot != null) {
+            selectedItem = playerInventorySlot;
 
             // Toss the item back into the wand inventory, it'll find a home somewhere.
             // We hope this doesn't recurse too badly! :\
@@ -843,6 +843,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void saveState() {
 		if (suspendSave) return;
 
+        PlayerInventory inventory = mage != null && mage.isPlayer() ? mage.getPlayer().getInventory() : null;
+
+        if (inventory != null && playerInventorySlot != null && !isInventoryOpen()) {
+            item = inventory.getItem(playerInventorySlot);
+        }
+
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
 
@@ -872,8 +878,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         InventoryUtils.saveTagsToNBT(stateNode, magicNode, ALL_PROPERTY_KEYS);
 
-        if (playerInventorySlot != null && mage != null && mage.isPlayer()) {
-            PlayerInventory inventory = mage.getPlayer().getInventory();
+        // Set wand item
+        if (inventory != null && playerInventorySlot != null && isInventoryOpen()) {
             inventory.setItem(playerInventorySlot, item);
         }
 	}
@@ -1837,11 +1843,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
-	public static boolean isActive(Player player) {
-		ItemStack activeItem = player.getInventory().getItemInHand();
-		return isWand(activeItem);
-	}
-
     public int enchant(int totalLevels) {
         return randomize(totalLevels, true);
     }
@@ -2259,7 +2260,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void closeInventory() {
 		if (!isInventoryOpen()) return;
 		saveInventory();
-		inventoryIsOpen = false;
 		if (mage != null) {
 			mage.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
 			if (getMode() == WandMode.INVENTORY) {
@@ -2268,6 +2268,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				mage.getPlayer().closeInventory();
 			}
 		}
+        inventoryIsOpen = false;
 	}
 	
 	public boolean fill(Player player) {
@@ -3128,6 +3129,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         inventory.setContents(storedInventory.getContents());
         storedInventory = null;
         saveState();
+
         player.updateInventory();
 
         return true;
