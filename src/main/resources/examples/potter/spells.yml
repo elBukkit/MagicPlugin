@@ -3984,7 +3984,7 @@ superregenerate:
         bypass_undo: true
         allow_max_range: false
         target: select
-        range: 64
-        max_dimension: 128
+        range: 1024
+        max_dimension: 1024
         expand: true
         transparent: transparent_to_construction
