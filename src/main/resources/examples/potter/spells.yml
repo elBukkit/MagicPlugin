@@ -2774,7 +2774,7 @@ jail:
     parameters:
         commands:
         - broadcast @t was Jailed by @p!
-        - warp prison @t
+        - jail @t hogwartsprison
         target_type: Player
         target: other
         range: 32

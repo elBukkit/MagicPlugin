@@ -769,7 +769,8 @@ graduate:
     xp_regeneration: 22
 
 staff:
-    path: graduate
+    upgrade: true
+    upgrade_path: graduate
     xp_max: 220
     xp_regeneration: 25
     effect_color: 'DDDDDD'
@@ -779,7 +780,8 @@ staff:
      - jail
 
 headstaff:
-    path: graduate
+    upgrade: true
+    upgrade_path: graduate
     xp_max: 250
     xp_regeneration: 30
     effect_color: 'DDDDDD'

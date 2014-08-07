@@ -644,9 +644,14 @@ wands:
         description: Rosewood and Phoenix Feather
 
     staff:
-        name: House Wand
-        description: A powerful Head of House Wand
+        name: Staff Upgrade
+        description: A powerful staff-only upgrade
         upgrade_description: Welcome to the Staff!
+
+    headstaff:
+        name: Head Staff Upgrade
+        description: A super powerful staff-only upgrade
+        upgrade_description: Welcome to the VIP Staff!
 
     elder:
         name: Elder Wand
