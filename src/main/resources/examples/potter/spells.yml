@@ -2696,7 +2696,7 @@ sectumsempra:
         fov: 0.8
         target: other_entity
         damage: 8
-        cooldown: 2000
+        cooldown: 5000
         target_breakables: 1
     costs:
         xp: 80
