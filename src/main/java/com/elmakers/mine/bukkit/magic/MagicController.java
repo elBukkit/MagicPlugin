@@ -2063,7 +2063,7 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent event)
 	{
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
         Mage apiMage = getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2098,13 +2098,21 @@ public class MagicController implements Listener, MageController {
         // Thanks to this thread for a hacky, but effective solution:
         // https://forums.bukkit.org/threads/cancelling-item-dropping.111676/page-2
         if (cancelEvent) {
-            PlayerInventory playerInventory = player.getInventory();
-            ItemStack cloneItem = InventoryUtils.getCopy(droppedItem);
-            Item drop = event.getItemDrop();
-            drop.setItemStack(new ItemStack(Material.AIR, 1));
-            drop.remove();
-            // This hopefully only gets called for the held item...
-            playerInventory.setItem(playerInventory.getHeldItemSlot(), cloneItem);
+            if (activeWand != null && activeWand.getItem().equals(droppedItem)) {
+                PlayerInventory playerInventory = player.getInventory();
+                ItemStack cloneItem = InventoryUtils.getCopy(droppedItem);
+                Item drop = event.getItemDrop();
+                drop.setItemStack(new ItemStack(Material.AIR, 1));
+                drop.remove();
+                playerInventory.setItem(playerInventory.getHeldItemSlot(), cloneItem);
+            } else {
+                event.setCancelled(true);
+            }
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                public void run() {
+                    player.updateInventory();
+                }
+            }, 1);
         }
 	}
 
