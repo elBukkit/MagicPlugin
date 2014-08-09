@@ -107,10 +107,10 @@ aguamenti:
     parameters:
         allow_max_range: false
         height: 3
-        range: 16
+        range: 25
         width: 3
         cooldown: 500
-        undo: 5000
+        undo: 1000
         disable_physics: 8000
         bypass_build: true
     costs:
@@ -781,8 +781,8 @@ bombardamaxima:
     parameters:
         target: block
         allow_max_range: true
-        range: 24
-        size: 3
+        range: 30
+        size: 2
         target_breakables: 1
         break_blocks: false
         cooldown: 20000
@@ -1217,7 +1217,7 @@ expelliarmus:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: FF0000
+           color: DF0101
            firework: ball
         no_target:
         -  class: EffectSingle
@@ -1230,7 +1230,7 @@ expelliarmus:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: FF8888
+           color: DF0101
            firework: ball
         backfire:
         -  class: EffectSingle
@@ -1585,13 +1585,13 @@ flipendoduo:
         range: 32
         allow_area: false
         allow_max_range: true
-        item_force: 2
+        item_force: 4
         area_range: 20
         entity_force: 1.5
         type: push
         count: 8
         damage: 3
-        cooldown: 1500
+        cooldown: 6000
     costs:
         xp: 70
 
@@ -1624,18 +1624,18 @@ flipendotria:
              particlesSpout: 30
     parameters:
         target_type: Entity
-        range: 32
+        range: 35
         allow_area: true
         allow_max_range: true
         area_range: 20
-        item_force: 3
+        item_force: 6
         entity_force: 2
         type: push
         count: 16
-        damage: 6
-        cooldown: 3000
+        damage: 7
+        cooldown: 10000
     costs:
-        xp: 120
+        xp: 100
 
 flight:
     icon: feather
@@ -1745,7 +1745,7 @@ immobulus:
            location: target
            effectlib:
              class: SmokeEntityEffect
-             iterations: 40
+             iterations: 30
     costs:
         xp: 50
     parameters:
@@ -1753,10 +1753,10 @@ immobulus:
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 5000
+        duration: 4000
         effect_slow: 20
         effect_jump: -1
-        cooldown: 6000
+        cooldown: 4000
         fall_protection: 5000
 
 locomotomortus:
@@ -1795,10 +1795,10 @@ locomotomortus:
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 10000
+        duration: 7000
         effect_slow: 3
         effect_jump: -2
-        cooldown: 6000
+        cooldown: 7000
         fall_protection: 5000
 
 incarcerous:
@@ -1911,7 +1911,7 @@ impervius:
         xp: 65
 
 incendio:
-    icon: fireball
+    icon: clay_ball
     category: dark
     class: FireSpell
     pvp_restricted: true
@@ -1944,10 +1944,10 @@ incendio:
         bypass_build: true
         target_breakables: 1
     costs:
-        xp: 120
+        xp: 100
 
 lacarnum:
-    icon: ghast_tear
+    icon: fireball
     category: dark
     class: ProjectileSpell
     pvp_restricted: true
@@ -1959,7 +1959,7 @@ lacarnum:
     parameters:
         projectile: LargeFireball
         fire: false
-        size: 2
+        size: 3
         range: 16
         cooldown: 5000
         spread: 3
@@ -2246,7 +2246,7 @@ petrificustotalus:
            location: origin
            effectlib:
              class: ConeLocationEffect
-             iterations: 11
+             iterations: 5
              particle: fireworks_spark
              lenghtGrow: 0.32
         -  class: EffectSingle
@@ -2258,17 +2258,17 @@ petrificustotalus:
            location: target
            effectlib:
              class: SmokeEntityEffect
-             iterations: 80
+             iterations: 30
     costs:
-        xp: 120
+        xp: 100
     parameters:
-        range: 28
+        range: 30
         target_type: LivingEntity
         target: other
         duration: 8000
         effect_slow: 20
         effect_jump: -20
-        cooldown: 10000
+        cooldown: 8000
         fall_protection: 8000
         deactivate_target_mage: true
         target_breakables: 1
@@ -2334,7 +2334,7 @@ protego:
            effect: step_sound
     parameters:
         allow_max_range: true
-        range: 4
+        range: 3
         radius: 2
         type: sphere
         brush: stained_glass
@@ -2398,7 +2398,7 @@ protegoduo:
            sound: creeper_death
     parameters:
         allow_max_range: true
-        range: 4
+        range: 3
         radius: 1
         type: sphere
         brush: stained_glass
@@ -2409,14 +2409,14 @@ protegoduo:
         check_destructible: true
         destructible: air
         destructible: air
-        undo: 100
+        undo: 1000
         breakable: 1
         brushcolor: false
         bypass_build: true
         reflect_chance: .75
         bypass_confusion: false
         bypass_backfire: true
-        cooldown: 400
+        cooldown: 1000
     costs:
         xp: 10
 
@@ -2695,11 +2695,11 @@ sectumsempra:
         range: 8
         fov: 0.8
         target: other_entity
-        damage: 8
-        cooldown: 5000
+        damage: 7
+        cooldown: 6000
         target_breakables: 1
     costs:
-        xp: 80
+        xp: 100
 
 silencio:
     icon: ink_sack:3
@@ -2842,7 +2842,7 @@ stupefy:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: CEF6F5
+           color: 00EEFF
            firework: ball
         backfire:
         -  class: EffectSingle
@@ -2859,8 +2859,8 @@ stupefy:
         range: 35
         fov: 0.10
         target_type: LivingEntity
-        damage: 2
-        cooldown: 400
+        damage: 3
+        cooldown: 1000
         target_breakables: 1
         bypass_backfire: false
     costs:
