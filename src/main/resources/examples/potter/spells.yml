@@ -765,6 +765,7 @@ bombarda:
         xp: 50
 
 bombardamaxima:
+    alias: bombardamax
     icon: ink_sack:7
     category: dada
     class: BoomSpell
