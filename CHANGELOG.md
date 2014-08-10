@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.5
+
+ - Various API additions.. I haven't been doing a proper job keeping track.
+
 ## 1.3.3
 
  - Add helper methods for dealing with Magic items
