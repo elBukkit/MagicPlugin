@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 1.5
+ 
+  - Brush system improvements
+  - Effects improvements, additional EffectLib effects
+  - Variable FX system (wand color/particle overrides)
+  - Undo system improvements, physics handling
+  - Better schematic pasting
+  - "Magic damage" source (WIP)
+  - Configurable location randomization
+  
+## 1.4
+
+ - Fixes to general "find place to stand" helpers
+ - Entity undo is optional in an undo batch
+ - Breakable/Reflective block system
+ - Undo system improvements/additions
+ - Fix 1.6.4 compatibility
+ - Full Effect lib integration (mainly affects particle names)
+
 ## 1.3
 
  - Add extra forms of entity-based targeting
