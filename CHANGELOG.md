@@ -11,7 +11,9 @@
  - SuperConvert/Convert will now work with material variants
  - Improved clone/replicate messaging
  - Add Paste spell
- - Add Grow spell (HP: Engorgio)
+ - Add Grow spell (the opposite of Shrink, but doesn't deal damage)  (HP: Engorgio)
+ - Fix /mgive, /wand configure particle_effect tab completion
+ - More undoable spells (Blink, Fling)
 
 ## 3.4
 

@@ -1,5 +1,11 @@
 # Migration Notes
 
+## 3.5
+
+ * The configuration option "wand_enchantable_item" is now off by default. This means
+   that wands won't change to a wooden sword when enchanting. If you are using a pre-1.7.9
+   version of Bukkit, you may (or may not) need to put this option back in config.yml
+
 ## 3.4
 
  * The particle effect names have changed to the EffectLib versions is all places:
