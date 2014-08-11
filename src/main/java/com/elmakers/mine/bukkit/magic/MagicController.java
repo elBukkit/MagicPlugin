@@ -3334,9 +3334,12 @@ public class MagicController implements Listener, MageController {
 	public void disablePhysics(int interval)
 	{
 		if (physicsHandler == null && interval > 0) {
-			physicsHandler = new PhysicsHandler(this, interval);
+			physicsHandler = new PhysicsHandler(this);
 			Bukkit.getPluginManager().registerEvents(physicsHandler, plugin);
 		}
+        if (physicsHandler != null) {
+            physicsHandler.setInterval(interval);
+        }
 	}
 	
 	@Override

@@ -9,10 +9,9 @@ public class PhysicsHandler implements Listener {
 	private final MagicController controller;
 	private long timeout = 0;
 
-	public PhysicsHandler(MagicController controller, int interval)
+	public PhysicsHandler(MagicController controller)
 	{
 		this.controller = controller;
-		this.timeout = System.currentTimeMillis() + interval;
 	}
 	
 	@EventHandler
@@ -36,4 +35,9 @@ public class PhysicsHandler implements Listener {
 		}
 		return false;
 	}
+
+    public void setInterval(long interval)
+    {
+        this.timeout = System.currentTimeMillis() + interval;
+    }
 }
