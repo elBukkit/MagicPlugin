@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.6
+
+ - Add "color" and "particle parameters to spells, for one-off FX color overrides.
+
 ## 3.5
 
  - Fix stack overflow error in the welcome wand feature.
