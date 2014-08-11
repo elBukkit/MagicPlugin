@@ -3626,6 +3626,7 @@ deluminate:
     class: ConstructSpell
     worth: 100
     cast_on_no_target: true
+    pvp_restricted: true
     effects:
         cast:
         -  class: EffectSingle

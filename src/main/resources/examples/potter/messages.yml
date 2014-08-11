@@ -220,7 +220,7 @@ spells:
     dementor:
         name: Dementor Attack
         description: Suck their souls!
-        cast_player_message: "&8You feel so cold...."
+        cast_player_message: "&8You feel so cold, and overwhelmed by sadness"
     deluminate:
         name: Deluminate
         description: Snuffs out all light in the area
