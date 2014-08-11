@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.6
+
+ - Per-spell color and particle overrides
+
 ## 1.5
  
   - Brush system improvements

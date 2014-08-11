@@ -126,6 +126,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String usage;
     private long worth;
     private Color color;
+    private String particle;
     private SpellCategory category;
     private BaseSpell template;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
@@ -810,6 +811,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cooldown = parameters.getInt("cooldown", cooldown);
         cooldown = parameters.getInt("cool", cooldown);
 
+        // Color override
+        color = ConfigurationUtils.getColor(parameters, "color", color);
+        particle = parameters.getString("particle", null);
+
         long currentTime = System.currentTimeMillis();
         if (!mage.isCooldownFree()) {
             double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
@@ -994,7 +999,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 // Set material and color
                 player.setMaterial(getEffectMaterial());
                 player.setColor(mage.getEffectColor());
-                String overrideParticle = mage.getEffectParticleName();
+                String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
                 if (overrideParticle != null && !overrideParticle.isEmpty()) {
                     try {
                         player.setParticleOverride(ParticleEffect.valueOf(overrideParticle));
