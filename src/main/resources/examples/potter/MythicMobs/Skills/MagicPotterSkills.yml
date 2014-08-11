@@ -56,7 +56,7 @@ Flipendo:
 Accio:
   Cooldown: 10
   Conditions:
-  - TargetWithin 16
+  - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio' >0 1
@@ -68,23 +68,37 @@ Crucio:
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid crucio' >0 1
 SectumSempra:
-  Cooldown: 10
+  Cooldown: 30
   Conditions:
   - TargetWithin 6
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid sectumsempra' >0 1
 Stupefy:
-  Cooldown: 120
+  Cooldown: 20
   Conditions:
-  - TargetWithin 8
+  - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid stupefy' >0 1
+Dementor:
+  Cooldown: 20
+  Conditions:
+  - TargetWithin 5
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid dementor' >0 1
+DementorApparate:
+  Cooldown: 2
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid apparate range 4 target other' >0 1
 Arrow:
   Cooldown: 50
   Conditions:
-  - TargetWithin 16
+  - TargetWithin 28
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid arrow' >0 1
@@ -184,4 +198,4 @@ DementorAttack:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill Petrificus,Stupefy >0 1
+  - randomskill Petrificus,Stupefy,Dementor,DementorApparate >0 1

@@ -124,6 +124,7 @@ Dementor:
     MaxCombatDistance: 32
     KnockbackResistance: 2
     PreventOtherDrops: true
+    MovementSpeed: 0.4
   Skills:
   - skill DementorAttack ~onTimer:5 >0 0.90
 Werewolf:

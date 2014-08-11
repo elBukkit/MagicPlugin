@@ -217,6 +217,10 @@ spells:
         description: Torture your opponent
         usage: Unforgiveable!
         cast: Crucio $target!
+    dementor:
+        name: Dementor Attack
+        description: Suck their souls!
+        cast_player_message: "&8You feel so cold...."
     deluminate:
         name: Deluminate
         description: Snuffs out all light in the area

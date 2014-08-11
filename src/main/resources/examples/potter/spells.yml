@@ -1030,6 +1030,43 @@ crucio:
         effect_wither: 8
         cooldown: 9000
 
+dementor:
+    icon: quartz
+    category: hidden
+    class: PotionEffectSpell
+    pvp_restricted: true
+    cast_on_no_target: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wither_idle
+           effectlib:
+             class: ConeLocationEffect
+             iterations: 15
+             particle: mob_spell
+             lenghtGrow: 0.3
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 19070B
+           firework: ball
+        -  class: EffectSingle
+           particle: town_aura
+           location: target
+           effectlib:
+             class: BleedEntityEffect
+             duration: 500
+    costs:
+        xp: 150
+    parameters:
+        range: 6
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        duration: 10000
+        effect_wither: 1
+        cooldown: 9000
+
 deletrius:
     icon: enchanted_book
     category: staff
