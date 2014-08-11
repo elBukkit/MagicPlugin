@@ -2337,7 +2337,7 @@ patronus:
              period: 2
     parameters:
         target: other
-        target_type: Blaze
+        target_type: Wither
         range: 32
         allow_area: false
         area_range: 48
