@@ -2327,10 +2327,26 @@ patronus:
              particle: enchantment_table
              iterations: 20
              period: 2
+        horse:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: ShieldEntityEffect
+             particle: enchantment_table
+             iterations: 20
+             period: 2
     parameters:
         target: other
         target_type: Blaze
         range: 32
+        allow_area: false
+        area_range: 48
+        item_force: 0
+        entity_force: 2
+        type: push
+        count: 8
+        damage: 100
+        cooldown: 10000
     costs:
         xp: 150
 
