@@ -2314,8 +2314,8 @@ petrificustotalus:
 patronus:
     icon: ink_sack:12
     category: elective
-    class: PotionEffectSpell
-    worth: 60
+    class: com.elmakers.mine.bukkit.potterspells.spell.PatronusSpell
+    worth: 300
     effects:
         cast:
         -  class: EffectSingle
@@ -2328,13 +2328,11 @@ patronus:
              iterations: 20
              period: 2
     parameters:
-        target: self
-        duration: 3000
-        effect_damage_resistance: 100
-        effect_slow: 1
-        cooldown: 7000
+        target: other
+        target_type: Blaze
+        range: 32
     costs:
-        xp: 50
+        xp: 150
 
 piertotum:
     icon: iron_fence
