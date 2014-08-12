@@ -118,6 +118,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "enchant");
             addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "unenchant");
             addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "duplicate");
+            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "restore");
             addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "unlock");
 
             Collection<String> allWands = api.getWandKeys();
@@ -293,6 +294,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			onWandDuplicate(sender, player);
 			return true;
 		}
+        if (subCommand.equalsIgnoreCase("restore"))
+        {
+            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+            onWandRestore(sender, player);
+            return true;
+        }
         if (subCommand.equalsIgnoreCase("unlock"))
         {
             if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -538,6 +546,24 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		return true;
 	}
+
+    public boolean onWandRestore(CommandSender sender, Player player)
+    {
+        Mage mage = api.getMage(player);
+        if (mage.restoreWand()) {
+            mage.sendMessage(Messages.get("wand.restored"));
+            if (sender != player) {
+                sender.sendMessage(Messages.getParameterized("wand.player_restored", "$name", player.getName()));
+            }
+        } else {
+            mage.sendMessage(Messages.get("wand.not_restored"));
+            if (sender != player) {
+                sender.sendMessage(Messages.getParameterized("wand.player_not_restored", "$name", player.getName()));
+            }
+        }
+
+        return true;
+    }
 
     public boolean onWandUnlock(CommandSender sender, Player player)
     {

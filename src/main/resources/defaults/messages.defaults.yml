@@ -140,6 +140,10 @@ wand:
     level_up: Your wand has been upgraded to $path!
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
+    restored: Your wand has been restored
+    player_restored: $name's wand has been restored
+    not_restored: You have no recorded bound wand
+    player_not_restored: $name's wand has no recorded bound wand
     unlocked: Your wand has been unlocked
     player_unlocked: $name's wand has been unlocked
     unknown_template: Unknown wand name $name

@@ -190,6 +190,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public Wand(MagicController controller) {
 		this(controller, DefaultWandMaterial, (short)0);
 	}
+
+    public Wand(MagicController controller, ConfigurationSection config) {
+        this(controller, DefaultWandMaterial, (short)0);
+        loadProperties(config);
+        updateName();
+        updateLore();
+        saveState();
+    }
 	
 	protected Wand(MagicController controller, String templateName) throws UnknownWandException {
 		this(controller);
@@ -3133,5 +3141,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         player.updateInventory();
 
         return true;
+    }
+
+    public boolean isBound() {
+        return bound;
     }
 }

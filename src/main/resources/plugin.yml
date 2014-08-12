@@ -121,6 +121,10 @@ permissions:
     description: Player may duplicate an existing wand
     type: boolean
     default: op
+  Magic.commands.wand.restore:
+    description: Player may restore their bound wand
+    type: boolean
+    default: op
   Magic.commands.wand.unlock:
     description: Player may unlock a locked wand
     type: boolean
@@ -189,6 +193,10 @@ permissions:
     default: op
   Magic.commands.wandp.duplicate:
     description: Player may duplicate an existing wand held by another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.restore:
+    description: Player may restore another player's bound wand
     type: boolean
     default: op
   Magic.commands.wandp.unlock:

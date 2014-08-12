@@ -4,6 +4,7 @@
 
  - Add "color" and "particle parameters to spells, for one-off FX color overrides.
  - Completely remove Magic.powered and Magic.protected pnodes, for good this time. (Pex!)
+ - Add /wand restore command for re-creating a bound wand
 
 ## 3.5
 

@@ -69,6 +69,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected final MagicController controller;
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
     private Wand activeWand = null;
+    private Wand boundWand = null;
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
     private final Collection<Listener> damageListeners = new HashSet<Listener>();
@@ -301,6 +302,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setActiveWand(Wand activeWand) {
         this.activeWand = activeWand;
+        if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
+            this.boundWand = activeWand;
+        }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
     }
 
@@ -493,6 +497,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return;
             }
 
+            boundWand = null;
+            if (configNode.contains("bound_wand")) {
+                boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
+            }
+
             isNewPlayer = false;
             playerName = configNode.getString("name", playerName);
             lastDeathLocation = ConfigurationUtils.getLocation(configNode, "last_death_location");
@@ -522,7 +531,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         onLoad();
     }
 
-    protected void save(ConfigurationSection configNode) {
+    @Override
+    public void save(ConfigurationSection configNode) {
         try {
             configNode.set("name", playerName);
             configNode.set("last_cast", lastCast);
@@ -540,6 +550,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 ConfigurationSection section = spellNode.createSection(spell.getKey());
                 section.set("active", spell.isActive());
                 spell.save(section);
+            }
+
+            if (boundWand != null) {
+                ConfigurationSection wandConfig = configNode.createSection("bound_wand");
+                boundWand.saveProperties(wandConfig);
             }
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
@@ -1240,6 +1255,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // Automata theoretically handle themselves by sticking around for a while
         // And forcing themselves to be forgotten
         // but maybe some extra safety here would be good?
+        return true;
+    }
+
+    @Override
+    public boolean restoreWand() {
+        if (boundWand == null) return false;
+        Player player = getPlayer();
+        if (player == null) return false;
+        controller.giveItemToPlayer(player, boundWand.duplicate().getItem());
         return true;
     }
 }
