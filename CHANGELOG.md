@@ -3,7 +3,6 @@
 ## 1.6
 
  - Per-spell color and particle overrides
- - Testing github hook
 
 ## 1.5
  
