@@ -351,4 +351,5 @@ public interface Mage extends CostReducer {
 
     public void save(ConfigurationSection configuration);
     public boolean isValid();
+    public boolean restoreWand();
 }

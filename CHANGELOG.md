@@ -7,6 +7,7 @@
 ## 1.5
 
  - Various API additions.. I haven't been doing a proper job keeping track.
+ - Added Mage.restoreWand, and a few other Mage methods
 
 ## 1.3.3
 
