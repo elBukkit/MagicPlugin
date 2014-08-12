@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -347,4 +348,7 @@ public interface Mage extends CostReducer {
 
     public Set<Spell> getActiveSpells();
     public void enableFallProtection(int ms);
+
+    public void save(ConfigurationSection configuration);
+    public boolean isValid();
 }
