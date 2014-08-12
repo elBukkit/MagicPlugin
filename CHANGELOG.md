@@ -2,6 +2,7 @@
 
 ## 1.6
 
+ - Drop support for 1.6
  - Per-spell color and particle overrides
  - Add canTarget helper for Entity filtering
  - Fix bypass_confusion parameter
