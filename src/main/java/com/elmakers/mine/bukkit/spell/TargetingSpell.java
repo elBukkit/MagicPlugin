@@ -462,7 +462,7 @@ public abstract class TargetingSpell extends BaseSpell {
             if (rangeSquared != null && entity.getLocation().distanceSquared(sourceLocation) > rangeSquared) continue;
 
             // Special check for Elementals
-            if (!controller.isElemental(entity) && targetEntityType != null && !targetEntityType.isAssignableFrom(entity.getClass())) continue;
+            if (!controller.isElemental(entity) && !canTarget(entity)) continue;
 
             // check for Superprotected Mages
             if (isSuperProtected(entity)) continue;
@@ -478,6 +478,13 @@ public abstract class TargetingSpell extends BaseSpell {
 
         Collections.sort(scored);
         return scored;
+    }
+
+    protected boolean canTarget(Entity entity) {
+        if (!targetNPCs && controller.isNPC(entity)) return false;
+
+        if (targetEntityType == null) return true;
+        return targetEntityType.isAssignableFrom(entity.getClass());
     }
 
     protected boolean isSuperProtected(Mage mage) {

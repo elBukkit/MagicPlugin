@@ -166,7 +166,7 @@ public abstract class UndoableSpell extends TargetingSpell {
                     continue;
                 }
 
-                if (targetEntityType != null && !(targetEntityType.isAssignableFrom(entity.getClass()))) continue;
+                if (!canTarget(entity)) continue;
 
                 if (entity.getLocation().distanceSquared(location) < radiusSquared) {
                     registerPotionEffects(entity);

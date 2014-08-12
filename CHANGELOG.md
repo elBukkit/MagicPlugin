@@ -3,6 +3,7 @@
 ## 1.6
 
  - Per-spell color and particle overrides
+ - Add canTarget helper for Entity filtering
 
 ## 1.5
  
