@@ -271,10 +271,6 @@ permissions:
     description: A player may modify locked wands with wand commands.
     default: op
     type: boolean
-  Magic.powered:
-    description: A player is always superpowered
-    default: false
-    type: boolean
   Magic.bypass_pvp:
     description: A player always bypasses PVP checks
     default: op

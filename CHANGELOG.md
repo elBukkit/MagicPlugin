@@ -3,6 +3,7 @@
 ## 3.6
 
  - Add "color" and "particle parameters to spells, for one-off FX color overrides.
+ - Completely remove Magic.powered and Magic.protected pnodes, for good this time. (Pex!)
 
 ## 3.5
 
