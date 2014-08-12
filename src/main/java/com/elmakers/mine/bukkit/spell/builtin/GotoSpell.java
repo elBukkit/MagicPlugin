@@ -69,7 +69,7 @@ public class GotoSpell extends UndoableSpell
 			for (Player targetPlayer : players) {
 				if (targetPlayer == player) continue;
 				if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
-                if (controller.isNPC(targetPlayer)) continue;
+                if (!canTarget(targetPlayer)) continue;
 				allTargets.add(new Target(location, targetPlayer, 512, Math.PI));
 			}
 			if (allTargets.size() == 0) return SpellResult.NO_TARGET;

@@ -32,7 +32,8 @@ public class PushSpell extends UndoableSpell
 		for (Entity target : entities)
 		{
 			if (target == sourceEntity) continue;
-			if (controller.isNPC(target)) continue;
+            if (!canTarget(target)) continue;
+
             Mage mage = controller.isMage(target) ? controller.getMage(target) : null;
             if (mage != null && mage.isSuperProtected()) {
                 continue;
