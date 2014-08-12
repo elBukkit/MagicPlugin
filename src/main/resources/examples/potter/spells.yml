@@ -2001,6 +2001,7 @@ lacarnum:
         range: 16
         cooldown: 5000
         spread: 3
+        speed: 1.2
     costs:
         xp: 180
 
@@ -2363,6 +2364,9 @@ patronus:
         float_speed: 0.2
         speed: 0.8
         float_interval: 5
+        patronus_type: chicken
+        float_direction: 0,0.4,0
+        py: ~1.5
     costs:
         xp: 150
 

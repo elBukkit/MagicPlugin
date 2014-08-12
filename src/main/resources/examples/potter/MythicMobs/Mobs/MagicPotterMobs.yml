@@ -75,7 +75,7 @@ Deatheater:
   - skill DeatheaterAttack ~onTimer:5 >0 0.90
   - skill Necromancy >0 0.1
 DarkLord:
-  Mobtype: angrypigzombie
+  Mobtype: enderman
   Display: "&cDark Lord"
   Health: 100
   Damage: 5
