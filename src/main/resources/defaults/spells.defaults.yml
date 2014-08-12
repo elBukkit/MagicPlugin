@@ -144,7 +144,7 @@ curse:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: BleedEntityEffect
+             class: BleedEffect
     costs:
         xp: 50
     parameters:
@@ -167,7 +167,7 @@ blessing:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: VortexLocationEffect
+             class: VortexEffect
              particle: heart
     parameters:
         target_type: Player
@@ -201,7 +201,7 @@ boon:
         -  class: EffectSingle
            location: target
            effectLib:
-             class: TraceEntityEffect
+             class: TraceEffect
              particle: red_dust
     costs:
         xp: 65
@@ -880,7 +880,7 @@ tag:
            location: target
            target_offset: 0,3,0
            effectlib:
-             class: TextLocationEffect
+             class: TextEffect
              text: $name
     parameters:
         target_type: Player
@@ -931,7 +931,7 @@ push:
         cast:
         -  class: EffectSingle
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: spell
            sound: fizz
@@ -939,7 +939,7 @@ push:
         -  class: EffectSingle
            sound: fizz
            effectlib:
-             class: VortexLocationEffect
+             class: VortexEffect
              particle: spell
     parameters:
         target_type: Entity
@@ -968,7 +968,7 @@ pull:
         -  class: EffectSingle
            sound: fizz
            effectlib:
-             class: VortexLocationEffect
+             class: VortexEffect
              particle: spell
     parameters:
         target_type: Entity
@@ -1016,7 +1016,7 @@ kaboom:
            sound: explode
            location: target
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -1042,7 +1042,7 @@ nuke:
            iterations: 5
         -  class: EffectRing
            effect_lib:
-             class: HelixLocationEffect
+             class: HelixEffect
            particle: huge_explosion
            radius: 16
            iterations: 8
@@ -1069,7 +1069,7 @@ frost:
            sound: glass
         -  class: EffectSingle
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: snowball_poof
     parameters:
@@ -1098,7 +1098,7 @@ lightning:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              particle: smoke
     parameters:
         target_type: LivingEntity
@@ -1122,7 +1122,7 @@ storm:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              particle: smoke
     parameters:
         target_type: LivingEntity
@@ -1161,7 +1161,7 @@ disarm:
            sound: cat_hiss
         -  class: EffectSingle
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: mob_spell
         backfire:
@@ -1196,12 +1196,12 @@ cure:
            sound: cat_purr
         -  class: EffectSingle
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: heart
         -  class: EffectSingle
            effectlib:
-             class: LoveEntityEffect
+             class: LoveEffect
              iterations: 20
            location: target
     parameters:
@@ -1224,13 +1224,13 @@ heal:
         -  class: EffectSingle
            sound: cat_purr
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: heart
         -  class: EffectSingle
            location: target
            effectlib:
-             class: LoveEntityEffect
+             class: LoveEffect
              iterations: 30
     parameters:
         target_type: LivingEntity
@@ -1253,7 +1253,7 @@ music:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              particle: note
     parameters:
         target_type: Player
@@ -1278,7 +1278,7 @@ gather:
         -  class: EffectSingle
            location: both
            effectlib:
-             class: WarpEntityEffect
+             class: WarpEffect
              particle: portal
     parameters:
         target_type: LivingEntity
@@ -1297,7 +1297,7 @@ mount:
            sound: irongolem_hit
         -  class: EffectSingle
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: slime
     parameters:
@@ -1334,7 +1334,7 @@ neutron:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              particle: flame
     parameters:
         projectile: Snowball
@@ -1437,7 +1437,7 @@ sniper:
            sound_volume: 0.4
         -  class: EffectSingle
            effectlib:
-             class: LineLocationEffect
+             class: LineEffect
              particle: smoke
     parameters:
       projectile: Arrow
@@ -1457,14 +1457,14 @@ weather:
         -  class: EffectSingle
            sound: ambience_rain
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              iterations: 24
              particle: drip_water
         area:
         -  class: EffectSingle
            sound: ambience_thunder
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              iterations: 24
              particle: drip_water
     parameters:
@@ -1483,7 +1483,7 @@ fling:
            sound_volume: 1.1
         -  class: EffectSingle
            effectlib:
-             class: TraceEntityEffect
+             class: TraceEffect
              iterations: 30
              particle: spell
         land:
@@ -1504,7 +1504,7 @@ leap:
            sound: fall_small
         -  class: EffectSingle
            effectlib:
-             class: TraceEntityEffect
+             class: TraceEffect
              iterations: 20
              particle: spell
         land:
@@ -1557,14 +1557,14 @@ familiar:
         -  class: EffectSingle
            sound: villager_yes
            effectlib:
-             class: DnaLocationEffect
+             class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
              particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomLocationEffect
+             class: AtomEffect
              iterations: 32
              particleNucleus: bubble
     parameters:
@@ -1601,14 +1601,14 @@ monster:
         -  class: EffectSingle
            sound: ghast_moan
            effectlib:
-             class: DnaLocationEffect
+             class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
              particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomLocationEffect
+             class: AtomEffect
              iterations: 32
              particleNucleus: bubble
     parameters:
@@ -1644,14 +1644,14 @@ mob:
         cast:
         -  class: EffectSingle
            effectlib:
-             class: DnaLocationEffect
+             class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
              particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomLocationEffect
+             class: AtomEffect
              iterations: 32
              particleNucleus: bubble
     parameters:
@@ -1678,14 +1678,14 @@ farm:
         -  class: EffectSingle
            sound: sheep_idle
            effectlib:
-             class: DnaLocationEffect
+             class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
              particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomLocationEffect
+             class: AtomEffect
              iterations: 32
              particleNucleus: bubble
     parameters:
@@ -1707,14 +1707,14 @@ wolf:
         -  class: EffectSingle
            sound: wolf_howl
            effectlib:
-             class: DnaLocationEffect
+             class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
              particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomLocationEffect
+             class: AtomEffect
              iterations: 32
              particleNucleus: bubble
     parameters:
@@ -1735,14 +1735,14 @@ cat:
         -  class: EffectSingle
            sound: cat_meow
            effectlib:
-             class: DnaLocationEffect
+             class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
              particleBase1: bubble
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AtomLocationEffect
+             class: AtomEffect
              iterations: 32
              particleNucleus: bubble
     parameters:
@@ -1783,7 +1783,7 @@ phase:
            sound: portal_travel
            location: both
            effectlib:
-             class: WarpEntityEffect
+             class: WarpEffect
              particle: portal
     parameters:
         cooldown: 2000
@@ -2023,7 +2023,7 @@ day:
         -  class: EffectSingle
            sound: ambience_cave
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              iterations: 24
              particle: magic_runes
     parameters:
@@ -2047,7 +2047,7 @@ night:
            sound: ambience_cave
            location: origin
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              iterations: 24
              particle: large_smoke
     parameters:
@@ -2070,7 +2070,7 @@ time:
         -  class: EffectSingle
            location: origin
            effectlib:
-             class: HelixLocationEffect
+             class: HelixEffect
              iterations: 24
              particle: magic_runes
     parameters:
@@ -3014,15 +3014,14 @@ blink:
              location: both
              particle_override: particleOrbital
              effectlib:
-                 class: AtomLocationEffect
+                 class: AtomEffect
                  particleNucleus: portal
                  particleOrbital: spell
                  iterations: 8
            - class: EffectSingle
-             location: both
              particle_override: particle
              effectlib:
-                 class: LineLocationEffect
+                 class: LineEffect
                  particle: portal
     parameters:
         allow_max_range: false
@@ -3191,7 +3190,7 @@ flamethrower:
         -  class: EffectSingle
            sound: fire_ignite
            effectlib:
-             class: DragonLocationEffect
+             class: DragonEffect
              iterations: 20
              length: 16
              stepsPerIteration: 1
@@ -3240,7 +3239,7 @@ shrink:
         -  class: EffectSingle
            sound: magmacube_jump
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: angry_villager
     parameters:
@@ -3262,7 +3261,7 @@ grow:
         -  class: EffectSingle
            sound: magmacube_jump
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: happy_villager
     parameters:
@@ -3297,7 +3296,7 @@ recall:
            sound: portal_travel
            location: both
            effectlib:
-             class: WarpEntityEffect
+             class: WarpEffect
              particle: portal
     parameters:
         allow_spawn: true
@@ -3319,7 +3318,7 @@ respawn:
            sound: portal_travel
            location: both
            effectlib:
-             class: WarpEntityEffect
+             class: WarpEffect
              particle: portal
     parameters:
         command: spawn
@@ -3358,7 +3357,7 @@ fly:
         -  class: EffectSingle
            sound: enderdragon_wings
            effectlib:
-             class: ShieldEntityEffect
+             class: ShieldEffect
              particle: spell
         cost_free:
         -  class: EffectSingle
@@ -3560,7 +3559,7 @@ missile:
            location: origin
            particle_override: particle
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 15
              particle: magic_crit
              lenghtGrow: 0.4
@@ -3577,7 +3576,7 @@ missile:
            entity_effect: hurt
            particle_override: particle
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 15
              particle: magic_crit
              lenghtGrow: 0.4
@@ -3606,7 +3605,7 @@ silence:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: ShieldEntityEffect
+             class: ShieldEffect
              particle: angry_villager
              iterations: 200
              particles: 1
@@ -3634,13 +3633,13 @@ blind:
         -  class: EffectSingle
            sound: burp
            effectlib:
-             class: ConeLocationEffect
+             class: ConeEffect
              iterations: 20
              particle: town_aura
         -  class: EffectSingle
            location: target
            effectlib:
-             class: SmokeEntityEffect
+             class: SmokeEffect
     costs:
         xp: 25
     parameters:
@@ -3701,7 +3700,7 @@ broom:
            sound_volume: 1.1
         -  class: EffectSingle
            effectlib:
-             class: TraceEntityEffect
+             class: TraceEffect
              iterations: 30
              particle: spell
         crash:
@@ -3712,20 +3711,20 @@ broom:
         -  class: EffectSingle
            location: origin
            effectlib:
-             class: SmokeEntityEffect
+             class: SmokeEffect
              iterations: 12
         area:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_volume: 1.1
            effectlib:
-             class: TraceEntityEffect
+             class: TraceEffect
              iterations: 30
              particle: spell
         -  class: EffectSingle
            particle: spell
            effectlib:
-             class: ShieldEntityEffect
+             class: ShieldEffect
              iterations: 30
              particle: spell
         boost:
@@ -3733,13 +3732,13 @@ broom:
            sound: enderdragon_wings
            sound_volume: 1.1
            effectlib:
-             class: TraceEntityEffect
+             class: TraceEffect
              iterations: 30
              particle: spell
         -  class: EffectSingle
            particle: spell
            effectlib:
-             class: ShieldEntityEffect
+             class: ShieldEffect
              iterations: 30
              particle: spell
         land:
