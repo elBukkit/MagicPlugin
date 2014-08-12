@@ -1000,15 +1000,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 player.setMaterial(getEffectMaterial());
                 player.setColor(mage.getEffectColor());
                 String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
-                if (overrideParticle != null && !overrideParticle.isEmpty()) {
-                    try {
-                        player.setParticleOverride(ParticleEffect.valueOf(overrideParticle));
-                    } catch (Exception ex) {
-                        controller.getLogger().warning("Error setting particle override: " + ex.getMessage());
-                    }
-                } else {
-                    player.setParticleOverride(null);
-                }
+                player.setParticleOverride(overrideParticle);
+
                 Entity entity = mage.getEntity();
                 player.start(mageLocation, entity, targetLocation, targetEntity);
             }

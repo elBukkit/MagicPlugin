@@ -256,8 +256,17 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.particleType = particleType;
     }
 
-    public void setParticleOverride(ParticleEffect particleType) {
-        this.particleOverride = particleType;
+    public void setParticleOverride(String particleType) {
+        if (particleType == null || particleType.isEmpty()) {
+            this.particleOverride = null;
+            return;
+        }
+        try {
+            this.particleOverride = ParticleEffect.valueOf(particleType);
+        } catch (Exception ex) {
+            plugin.getLogger().warning("Error setting particle override: " + ex.getMessage());
+            this.particleOverride = null;
+        }
     }
 
     public void setParticleSubType(String particleSubType) {
