@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -33,21 +34,18 @@ public class EffectLibManager {
         return new EffectLibManager();
     }
 
-    public Effect[] play(ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
-        Entity sourcePlayer = player.getOriginEntity();
-        Entity sourceEntity = player.playAtOrigin ? player.getOriginEntity() : null;
-        Entity targetEntity = player.playAtTarget ? player.getTargetEntity() : null;
-        origin = player.playAtOrigin ? origin : null;
-        target = player.playAtTarget ? target : null;
-        if (sourcePlayer != null && sourcePlayer instanceof Player) {
-            nameMap.put("$name", ((Player)sourcePlayer).getName());
+    public Effect playSingle(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity) {
+        if (originEntity != null && originEntity instanceof Player) {
+            nameMap.put("$name", ((Player)originEntity).getName());
+        } if (originEntity != null && originEntity instanceof LivingEntity) {
+            nameMap.put("$name", ((LivingEntity)originEntity).getCustomName());
         } else {
             nameMap.put("$name", "Unknown");
         }
 
-        Effect[] effects = null;
+        Effect effect = null;
         String effectClass = configuration.getString("class");
-        ParticleEffect effect = player.overrideParticle(null);
+        ParticleEffect particleEffect = player.overrideParticle(null);
         String effectOverride = player.getParticleOverrideName();
         ConfigurationSection parameters = configuration;
         if (effect != null && effectOverride != null && !effectOverride.isEmpty() && configuration.contains(effectOverride)) {
@@ -56,15 +54,34 @@ public class EffectLibManager {
             for (String key : keys) {
                 parameters.set(key, configuration.get(key));
             }
-            parameters.set(effectOverride, effect.name());
+            parameters.set(effectOverride, particleEffect.name());
         }
         try {
-            effects = effectManager.start(effectClass, parameters, origin, target, sourceEntity, targetEntity, nameMap);
+            effect = effectManager.start(effectClass, parameters, origin, target, originEntity, targetEntity, nameMap);
         } catch (Throwable ex) {
             Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();
         }
-        return effects;
+        return effect;
+    }
+
+    public Effect[] play(ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
+        Effect sourcePlayer = null;
+        Effect targetPlayer = null;
+        if (player.playAtOrigin) {
+            sourcePlayer = playSingle(configuration, player, origin, player.getOriginEntity(), target, player.getTargetEntity());
+        }
+        if (player.playAtTarget) {
+            targetPlayer = playSingle(configuration, player, target, player.getTargetEntity(), origin, player.getOriginEntity());
+        }
+        if (player.playAtTarget) {
+            return new Effect[]{targetPlayer};
+        }
+        if (player.playAtOrigin) {
+            return new Effect[]{sourcePlayer};
+        }
+
+        return new Effect[0];
     }
 
     public void cancel(Effect[] effects) {
