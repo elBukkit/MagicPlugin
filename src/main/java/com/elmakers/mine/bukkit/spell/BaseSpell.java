@@ -775,6 +775,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Don't allow casting if the player is confused
+        bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !bypassConfusion && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
             processResult(SpellResult.CURSED);
@@ -803,8 +804,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // PVP override settings
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
-
-        bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
         bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
 
         // Check cooldowns

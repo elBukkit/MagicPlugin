@@ -4,6 +4,7 @@
 
  - Per-spell color and particle overrides
  - Add canTarget helper for Entity filtering
+ - Fix bypass_confusion parameter
 
 ## 1.5
  
