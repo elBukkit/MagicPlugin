@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 3.6
+
+ * Drop support for Cratbukkit 1.6 - 1.7.2 is now the minimum required version
+ * Update to EffectLib 2.0 - all effect class names have changed
+
 ## 3.5
 
  * The configuration option "wand_enchantable_item" is now off by default. This means
