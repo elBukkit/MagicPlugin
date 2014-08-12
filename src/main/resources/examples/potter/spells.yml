@@ -2323,18 +2323,31 @@ patronus:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: ShieldEntityEffect
+             class: AnimatedBallEntityEffect
              particle: enchantment_table
              iterations: 20
              period: 2
         horse:
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: ShieldEntityEffect
-             particle: enchantment_table
-             iterations: 20
-             period: 2
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               location: target
+               particle_override: particle
+               effectlib:
+                   class: ShieldEntityEffect
+                   particle: large_smoke
+                   iterations: 100
+                   particlesPerIteration: 30
+             '5':
+             - class: EffectSingle
+               location: target
+               particle_override: particle
+               effectlib:
+                   class: AnimatedBallEntityEffect
+                   particle: spell
+                   iterations: 100
+                   particlesPerIteration: 30
     parameters:
         target: other
         target_type: Wither
@@ -2347,6 +2360,9 @@ patronus:
         count: 8
         damage: 100
         cooldown: 10000
+        float_speed: 0.2
+        speed: 0.8
+        float_interval: 5
     costs:
         xp: 150
 

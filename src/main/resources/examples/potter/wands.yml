@@ -201,6 +201,7 @@ wolf:
     hidden: true
     effect_particle: magic_crit
     effect_particle_count: 2
+    overrides: patronus_type wolf
     spells:
       - apparatemaxima
       - ascendio
