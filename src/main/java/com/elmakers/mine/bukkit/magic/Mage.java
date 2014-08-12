@@ -64,6 +64,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected WeakReference<Player> _player;
     protected WeakReference<Entity> _entity;
     protected WeakReference<CommandSender> _commandSender;
+    protected boolean hasEntity;
     protected String playerName;
     protected final MagicController controller;
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
@@ -100,6 +101,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         _player = new WeakReference<Player>(null);
         _entity = new WeakReference<Entity>(null);
         _commandSender = new WeakReference<CommandSender>(null);
+        hasEntity = false;
     }
 
     // Taken from NMS Player
@@ -398,10 +400,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this._player = new WeakReference<Player>(player);
             this._entity = new WeakReference<Entity>(player);
             this._commandSender = new WeakReference<CommandSender>(player);
+            hasEntity = true;
         } else {
             this._player.clear();
             this._entity.clear();
             this._commandSender.clear();
+            hasEntity = false;
         }
     }
 
@@ -416,8 +420,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             this._entity = new WeakReference<Entity>(entity);
+            hasEntity = true;
         } else {
             this._entity.clear();
+            hasEntity = false;
         }
     }
 
@@ -1212,5 +1218,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setLoading(boolean loading) {
         this.loading = loading;
+    }
+
+    public boolean isValid() {
+        if (!hasEntity) return true;
+        Entity entity = getEntity();
+
+        if (entity == null) return false;
+        if (controller.isNPC(entity)) return true;
+
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            return player.isOnline();
+        }
+
+        if (entity instanceof LivingEntity) {
+            LivingEntity living = (LivingEntity)entity;
+            return !living.isDead();
+        }
+
+        // Automata theoretically handle themselves by sticking around for a while
+        // And forcing themselves to be forgotten
+        // but maybe some extra safety here would be good?
+        return true;
     }
 }

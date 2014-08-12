@@ -1366,19 +1366,11 @@ public class MagicController implements Listener, MageController {
                 File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
                 DataStore playerConfig = new DataStore(getLogger(), playerData);
                 Mage mage = mageEntry.getValue();
-                if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                    ((com.elmakers.mine.bukkit.magic.Mage) mage).save(playerConfig);
-                }
+                mage.save(playerConfig);
                 stores.add(playerConfig);
 
                 // Check for players we can forget
-                Player player = mage.getPlayer();
-                LivingEntity livingEntity = mage.getLivingEntity();
-                boolean isOfflinePlayer = player != null && !player.isOnline() && !isNPC(player);
-                boolean isDeadEntity = livingEntity != null && livingEntity.isDead() && player == null;
-                // Automata theoretically handle themselves by sticking around for a while
-                // but maybe some extra safety here would be good?
-                if (isOfflinePlayer || isDeadEntity) {
+                if (!mage.isValid()) {
                     getLogger().info("Forgetting Offline mage " + mage.getName());
                     forgetMages.put(mageEntry.getKey(), 0l);
                 }
