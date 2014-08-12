@@ -18,6 +18,7 @@ public interface EffectPlayer {
 
     public void setDelayTicks(int ticks);
 
+    public void setParticleOverride(String particleType);
     public void setMaterial(MaterialAndData material);
     public void setMaterial(Block block);
     public void setColor(Color color);

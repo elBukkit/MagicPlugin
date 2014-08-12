@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.6
+
+ - More effect player controls
+
 ## 1.5
 
  - Various API additions.. I haven't been doing a proper job keeping track.
