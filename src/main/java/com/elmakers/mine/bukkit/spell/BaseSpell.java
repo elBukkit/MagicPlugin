@@ -774,14 +774,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        // Don't allow casting if the player is confused
-        bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
-        LivingEntity livingEntity = mage.getLivingEntity();
-        if (livingEntity != null && !bypassConfusion && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
-            processResult(SpellResult.CURSED);
-            return false;
-        }
-
         if (this.parameters == null) {
             this.parameters = new MemoryConfiguration();
         }
@@ -792,6 +784,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         ConfigurationUtils.addConfigurations(parameters, this.parameters);
         ConfigurationUtils.addParameters(extraParameters, parameters);
         processParameters(parameters);
+
+        // Don't allow casting if the player is confused
+        bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
+        LivingEntity livingEntity = mage.getLivingEntity();
+        if (livingEntity != null && !bypassConfusion && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
+            processResult(SpellResult.CURSED);
+            return false;
+        }
 
         // Don't perform permission check until after processing parameters, in case of overrides
         if (!canCast(defaultLocation)) {
