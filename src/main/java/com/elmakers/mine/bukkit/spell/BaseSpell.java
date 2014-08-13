@@ -1255,14 +1255,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
-        String key = result.name().toLowerCase();
-        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effects.get(key));
-        return effectList;
+        return getEffects(result.name().toLowerCase());
     }
     @Override
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
-        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effectList = new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effects.get(key));
-        return effectList;
+        Collection<EffectPlayer> effectList = effects.get(key);
+        if (effectList == null) {
+            return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>();
+        }
+        return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effectList);
     }
 
     @Override
