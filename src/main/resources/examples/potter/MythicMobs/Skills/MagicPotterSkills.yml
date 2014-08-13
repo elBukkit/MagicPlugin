@@ -31,77 +31,77 @@ FlipendoArea:
   - TargetWithin 4
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo area true' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo area true bypass_pvp true ' >0 1
 AccioArea:
-  Cooldown: 100
+  Cooldown: 25
   Conditions:
-  - TargetWithin 16
+  - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio area true' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio area true bypass_pvp true ' >0 1
 Avada:
   Cooldown: 10
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid avadakedavra' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid avadakedavra bypass_pvp true ' >0 1
 Flipendo:
   Cooldown: 10
   Conditions:
   - TargetWithin 5
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo bypass_pvp true ' >0 1
 Accio:
   Cooldown: 10
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio bypass_pvp true ' >0 1
 Crucio:
-  Cooldown: 10
+  Cooldown: 15
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid crucio' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid crucio bypass_pvp true ' >0 1
 SectumSempra:
-  Cooldown: 30
+  Cooldown: 10
   Conditions:
   - TargetWithin 6
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid sectumsempra' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid sectumsempra bypass_pvp true ' >0 1
 Stupefy:
-  Cooldown: 20
+  Cooldown: 5
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid stupefy' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid stupefy bypass_pvp true ' >0 1
 Dementor:
-  Cooldown: 20
+  Cooldown: 10
   Conditions:
-  - TargetWithin 5
+  - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid dementor' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid dementor fov 0 bypass_pvp true' >0 1
 DementorApparate:
   Cooldown: 2
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid apparate range 4 target other' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid apparate range 4 target other fov 0' >0 1
 Arrow:
   Cooldown: 50
   Conditions:
   - TargetWithin 28
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid arrow' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid arrow bypass_pvp true' >0 1
 Ascendio:
   Cooldown: 4
   Conditions:
@@ -125,7 +125,7 @@ Morsmordre:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid morsmordremaxima pdy 1' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid morsmordremaxima bypass_pvp true pdy 1' >0 1
 Aguamenti:
   Cooldown: 30
   Conditions:
@@ -139,7 +139,7 @@ Petrificus:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid petrificustotalus' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid petrificustotalus bypass_pvp true fov 0' >0 1
 Firebending:
   Cooldown: 5
   Conditions:
@@ -153,7 +153,7 @@ Airbending:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill Ascendio,Accio,AccioArea,Flipendo,FlipendoArea >0 1
+  - randomskill Ascendio,Accio,AccioArea,Flipendo,FlipendoArea bypass_pvp true >0 1
 Waterbending:
   Cooldown: 5
   Conditions:
@@ -167,7 +167,7 @@ Earthbending:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill Arrow >0 1
+  - randomskill Arrow bypass_pvp true  >0 1
 DeatheaterAttack:
   Cooldown: 5
   Conditions:
@@ -198,4 +198,4 @@ DementorAttack:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill Petrificus,Stupefy,Dementor,DementorApparate >0 1
+  - randomskill Petrificus,AccioArea,Dementor,DementorApparate >0 1
