@@ -2313,6 +2313,7 @@ patronus:
     category: elective
     class: com.elmakers.mine.bukkit.potterspells.spell.PatronusSpell
     worth: 300
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -2363,6 +2364,7 @@ patronus:
         float_interval: 5
         patronus_type: chicken
         float_direction: 0,0.4,0
+        float_duration: 5000;
         py: ~1.5
     costs:
         xp: 150
