@@ -12,7 +12,6 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
-import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -137,6 +136,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean bypassPvpRestriction    	= false;
     private boolean bypassConfusion             = false;
     private boolean bypassPermissions           = false;
+    private boolean requirePassthrough = false;
     private boolean castOnNoTarget              = false;
     private boolean bypassDeactivate            = false;
     private boolean quiet                       = false;
@@ -805,6 +805,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
         bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
+        requirePassthrough = parameters.getBoolean("require_passthrough", requirePassthrough);
 
         // Check cooldowns
         cooldown = parameters.getInt("cooldown", cooldown);
@@ -862,6 +863,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected boolean canCast(Location location) {
         if (!hasCastPermission(mage.getCommandSender())) return false;
+        if (requirePassthrough && !controller.isPassthrough(location)) return false;
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location) || mage.isSuperPowered();
     }
 
