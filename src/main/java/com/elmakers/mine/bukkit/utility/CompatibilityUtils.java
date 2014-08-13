@@ -459,7 +459,6 @@ public class CompatibilityUtils extends NMSUtils {
                 potion.setShooter((LivingEntity)source);
                 Object potionHandle = getHandle(potion);
                 Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
-                Bukkit.getLogger().info("Magic damage "+ amount);
                 class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
             } else {
                 Object magicSource = class_DamageSource_MagicField.get(null);
