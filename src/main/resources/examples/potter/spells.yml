@@ -384,6 +384,13 @@ snowball:
         -  class: EffectSingle
            sound: step_snow
            location: origin
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: snowball_boof
     parameters:
       projectile: Snowball
       origin_at_target: true
@@ -1996,6 +2003,13 @@ lacarnum:
         cast:
         -  class: EffectSingle
            sound: ghast_fireball
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: lava
     parameters:
         projectile: LargeFireball
         fire: false
@@ -2370,7 +2384,7 @@ patronus:
         float_interval: 6
         patronus_type: chicken
         float_direction: 0,0.5,0
-        float_duration: 2000
+        float_duration: 1000
         bypass_backfire: true
         py: ~1.5
     costs:

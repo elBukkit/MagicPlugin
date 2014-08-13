@@ -8,6 +8,7 @@
  - Completely remove Magic.powered and Magic.protected pnodes, for good this time. (Pex!)
  - Add /wand restore command for re-creating a bound wand
  - Fix bypass_confusion parameter
+ - Improve "magic damage", now with entity source
  
 ## 3.5
 
