@@ -2320,9 +2320,10 @@ patronus:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: AnimatedBallEffect
+             class: WaveEffect
              particle: enchantment_table
-             iterations: 20
+             cloudParticle: drip_water
+             iterations: 5
              period: 2
         horse:
         -  class: EffectVariable
@@ -2332,19 +2333,19 @@ patronus:
                location: target
                particle_override: particle
                effectlib:
-                   class: ShieldEffect
+                   class: WaveEffect
                    particle: large_smoke
-                   iterations: 100
-                   particlesPerIteration: 30
+                   cloudParticle: smoke
+                   iterations: 14
              '5':
              - class: EffectSingle
                location: target
                particle_override: particle
                effectlib:
-                   class: AnimatedBallEffect
+                   class: WaveEffect
                    particle: spell
-                   iterations: 100
-                   particlesPerIteration: 30
+                   cloudParticle: enchantment_table
+                   iterations: 14
     parameters:
         target: other
         target_type: Wither
