@@ -76,8 +76,7 @@ public class EffectVariable extends EffectPlayer {
                         player.setMaterial(getWorkingMaterial());
                         player.setColor(getColor1());
                         player.setParticleOverride(particleOverride == null ? null : particleOverride.name());
-                        player.start(origin, originEntity == null ? null : originEntity.get(),
-                                target, targetEntity == null ? null : targetEntity.get());
+                        player.start(origin, getOriginEntity(), target, getTargetEntity());
 
                         playing.add(player);
                     }

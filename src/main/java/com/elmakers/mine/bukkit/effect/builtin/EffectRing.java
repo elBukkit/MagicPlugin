@@ -48,12 +48,12 @@ public class EffectRing extends EffectRepeating {
             if (playAtOrigin) {
                 Location loc = origin.clone();
                 loc.add(direction);
-                playEffect(loc);
+                playEffect(loc, getOriginEntity(), target, getTargetEntity());
             }
             if (playAtTarget && target != null) {
                 Location loc = target.clone();
                 loc.add(direction);
-                playEffect(loc);
+                playEffect(loc, getTargetEntity(), origin, getOriginEntity());
             }
         }
     }

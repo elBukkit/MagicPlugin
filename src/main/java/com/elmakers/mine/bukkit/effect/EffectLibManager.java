@@ -34,7 +34,7 @@ public class EffectLibManager {
         return new EffectLibManager();
     }
 
-    public Effect playSingle(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity) {
+    public Effect play(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity) {
         if (originEntity != null && originEntity instanceof Player) {
             nameMap.put("$name", ((Player)originEntity).getName());
         } if (originEntity != null && originEntity instanceof LivingEntity) {
@@ -66,26 +66,7 @@ public class EffectLibManager {
         return effect;
     }
 
-    public Effect[] play(ConfigurationSection configuration, EffectPlayer player, Location origin, Location target) {
-        Effect sourcePlayer = null;
-        Effect targetPlayer = null;
-        if (player.playAtOrigin) {
-            sourcePlayer = playSingle(configuration, player, origin, player.getOriginEntity(), target, player.getTargetEntity());
-        }
-        if (player.playAtTarget) {
-            targetPlayer = playSingle(configuration, player, target, player.getTargetEntity(), origin, player.getOriginEntity());
-        }
-        if (player.playAtTarget) {
-            return new Effect[]{targetPlayer};
-        }
-        if (player.playAtOrigin) {
-            return new Effect[]{sourcePlayer};
-        }
-
-        return new Effect[0];
-    }
-
-    public void cancel(Effect[] effects) {
+    public void cancel(Collection<Effect> effects) {
         for (Effect effect : effects) {
             try {
                 effect.cancel();

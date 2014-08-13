@@ -35,7 +35,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;
-    private de.slikey.effectlib.Effect[] currentEffects = null;
+    private List<de.slikey.effectlib.Effect> currentEffects = new ArrayList<de.slikey.effectlib.Effect>();
 
     public static boolean SOUNDS_ENABLED = true;
 
@@ -293,14 +293,20 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     @SuppressWarnings("deprecation")
-    protected void playEffect(Location targetLocation) {
-        if (targetLocation == null) return;
-
-        Location location = targetLocation.clone();
-        location.add(offset);
+    protected void playEffect(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
+        if (offset != null) {
+            if (sourceLocation != null) {
+                sourceLocation = sourceLocation.clone();
+                sourceLocation.add(offset);
+            }
+            if (targetLocation != null) {
+                targetLocation = targetLocation.clone();
+                targetLocation.add(offset);
+            }
+        }
 
         if (effectLib != null && effectLibConfig != null) {
-            currentEffects = effectLib.play(effectLibConfig, this, targetLocation, target);
+            currentEffects.add(effectLib.play(effectLibConfig, this, sourceLocation, sourceEntity, targetLocation, targetEntity));
         }
         if (effect != null) {
             int data = effectData == null ? 0 : effectData;
@@ -313,25 +319,16 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 }
                 data = material.getId();
             }
-            location.getWorld().playEffect(location, effect, data);
+            sourceLocation.getWorld().playEffect(sourceLocation, effect, data);
         }
-        if (entityEffect != null && originEntity != null && playAtOrigin) {
-            Entity entity = originEntity.get();
-            if (entity != null) {
-                entity.playEffect(entityEffect);
-            }
-        }
-        if (entityEffect != null && targetEntity != null && playAtTarget) {
-            Entity entity = targetEntity.get();
-            if (entity != null) {
-                entity.playEffect(entityEffect);
-            }
+        if (entityEffect != null && sourceEntity != null) {
+            sourceEntity.playEffect(entityEffect);
         }
         if (sound != null) {
-            location.getWorld().playSound(location, sound, soundVolume, soundPitch);
+            sourceLocation.getWorld().playSound(sourceLocation, sound, soundVolume, soundPitch);
         }
         if (fireworkEffect != null) {
-            EffectUtils.spawnFireworkEffect(location, fireworkEffect, fireworkPower);
+            EffectUtils.spawnFireworkEffect(sourceLocation, fireworkEffect, fireworkPower);
         }
 
         if (particleType != null) {
@@ -352,7 +349,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 subType = "" + material.getId() + "_" + getWorkingMaterial().getData();
             }
 
-            useEffect.display(subType, location, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+            useEffect.display(subType, sourceLocation, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
         }
     }
 
@@ -413,6 +410,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (origin == null) {
             throw new InvalidParameterException("Origin cannot be null");
         }
+        currentEffects.clear();
 
         // Kinda hacky, but makes cross-world trails (e.g. Repair, Backup) work
         if (target != null && !origin.getWorld().equals(target.getWorld())) {
@@ -497,11 +495,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void cancel() {
-        if (currentEffects != null) {
+        if (currentEffects.size() > 0) {
             if (effectLib != null) {
                 effectLib.cancel(currentEffects);
             }
-            currentEffects = null;
+            currentEffects.clear();
         }
     }
 
