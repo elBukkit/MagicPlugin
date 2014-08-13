@@ -2349,12 +2349,12 @@ patronus:
            sound: wither_hurt
         -  class: EffectSingle
            location: target
+           particle_override: particleOrbital
            effectlib:
-             class: BigBangEffect
-             explosions: 4
-             iterations: 10
-             color: "00AAFF"
-             color2: "FFFFFF"
+             class: AtomEffect
+             particleNucleus: cloud
+             particleOrbital: enchantment_table
+             iterations: 20
         patronus:
         -  class: EffectVariable
            brightness:
@@ -2367,6 +2367,9 @@ patronus:
                    particle: large_smoke
                    cloudParticle: smoke
                    iterations: 8
+                   particlesFront: 5
+                   particlesBack: 5
+                   rows: 10
              '5':
              - class: EffectSingle
                location: target
@@ -2376,6 +2379,9 @@ patronus:
                    particle: spell
                    cloudParticle: enchantment_table
                    iterations: 8
+                   particlesFront: 5
+                   particlesBack: 5
+                   rows: 10
     parameters:
         target: other
         target_type: Wither
@@ -2568,7 +2574,7 @@ reducio:
              class: ConeEffect
              iterations: 11
              particle: instant_spell
-             lenghtGrow: 0.32
+             lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2582,7 +2588,7 @@ reducio:
              class: ConeEffect
              iterations: 11
              particle: instant_spell
-             lenghtGrow: 0.32
+             lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2613,7 +2619,7 @@ reducto:
              class: ConeEffect
              iterations: 10
              particle: explode
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
@@ -2649,7 +2655,7 @@ reductomaxima:
              class: ConeEffect
              iterations: 10
              particle: explode
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
@@ -2926,7 +2932,7 @@ stupefy:
              class: ConeEffect
              iterations: 15
              particle: magic_crit
-             lenghtGrow: 1
+             lengthGrow: 1
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2941,7 +2947,7 @@ stupefy:
              class: ConeEffect
              iterations: 15
              particle: magic_crit
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2957,7 +2963,7 @@ stupefy:
              class: ConeEffect
              iterations: 15
              particle: magic_crit
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
     parameters:
         range: 35
         fov: 0.10
