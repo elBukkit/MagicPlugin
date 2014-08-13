@@ -42,6 +42,13 @@ public class EffectLibManager {
         } else {
             nameMap.put("$name", "Unknown");
         }
+        if (targetEntity != null && targetEntity instanceof Player) {
+            nameMap.put("$target", ((Player)targetEntity).getName());
+        } if (originEntity != null && targetEntity instanceof LivingEntity) {
+            nameMap.put("$target", ((LivingEntity)targetEntity).getCustomName());
+        } else {
+            nameMap.put("$target", "Unknown");
+        }
 
         Effect effect = null;
         String effectClass = configuration.getString("class");
