@@ -364,6 +364,7 @@ arrow:
       fire: false
       tick_increase: 1180
       range: 24
+      require_passthrough: true
     costs:
         xp: 50
 
@@ -749,6 +750,7 @@ bombarda:
     parameters:
         target: other
         allow_max_range: true
+        require_passthrough: true
         range: 16
         target_breakables: 1
         break_blocks: false
@@ -778,6 +780,7 @@ bombardamaxima:
     parameters:
         target: block
         allow_max_range: true
+        require_passthrough: true
         range: 30
         size: 2
         target_breakables: 1
@@ -1991,6 +1994,7 @@ lacarnum:
         -  class: EffectSingle
            sound: ghast_fireball
     parameters:
+        require_passthrough: true
         projectile: LargeFireball
         fire: false
         size: 3
