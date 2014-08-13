@@ -2359,12 +2359,13 @@ patronus:
         count: 8
         damage: 100
         cooldown: 10000
-        float_speed: 0.2
+        float_speed: 0.4
         speed: 0.8
         float_interval: 5
         patronus_type: chicken
-        float_direction: 0,0.4,0
-        float_duration: 5000;
+        float_direction: 0,0.8,0
+        float_duration: 5000
+        bypass_backfire: true
         py: ~1.5
     costs:
         xp: 150

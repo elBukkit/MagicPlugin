@@ -776,3 +776,51 @@ wands:
     undroppable:
         name: Undroppable Upgrade
         description: Makes your wand undroppable
+
+    patronus_wolf:
+        name: Wolf Patronus
+        description: A new patronus finds you.
+
+    patronus_horse:
+        name: Horse Patronus
+        description: A new patronus finds you.
+
+    patronus_ocelot:
+        name: Ocelot Patronus
+        description: A new patronus finds you.
+
+    patronus_spider:
+        name: Spider Patronus
+        description: A new patronus finds you.
+
+    patronus_cow:
+        name: Cow Patronus
+        description: A new patronus finds you.
+
+    patronus_pig:
+        name: Pig Patronus
+        description: A new patronus finds you.
+
+    patronus_sheep:
+        name: Sheep Patronus
+        description: A new patronus finds you.
+
+    patronus_cat_siamese:
+        name: Siamese Cat Patronus
+        description: A new patronus finds you.
+
+    patronus_cat_red:
+        name: Red Cat Patronus
+        description: A new patronus finds you.
+
+    patronus_cat_black:
+        name: Black Cat Patronus
+        description: A new patronus finds you.
+
+    patronus_threstral:
+        name: Thestral Patronus
+        description: A new patronus finds you.
+
+    patronus_slime:
+        name: Slime Patronus
+        description: A new patronus finds you.

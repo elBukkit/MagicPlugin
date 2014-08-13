@@ -595,6 +595,67 @@ beater:
     spells:
         - beat
 
+# Patronus upgrades
+patronus_wolf:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type wolf
+
+patronus_horse:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type horse patronus_variant undead_horse
+
+patronus_chicken:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type chicken
+
+patronus_spider:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type spider
+
+patronus_cow:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type cow
+
+patronus_sheep:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type sheep
+
+patronus_pig:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type pig
+
+patronus_cat_siamese:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type cat patronus_variant siamese_cat
+
+patronus_cat_black:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type cat patronus_variant black_cat
+
+patronus_cat_red:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type cat patronus_variant red_cat
+
+patronus_thestral:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type horse patronus_variant skeleton_horse
+
+patronus_slime:
+    icon: arrow
+    upgrade: true
+    overrides: patronus_type slime
+
 # Broom upgrades
 stabilizer:
     icon: arrow
