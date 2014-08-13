@@ -2337,16 +2337,25 @@ patronus:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_death
+           location: target
+           effectlib:
+             class: CubeEffect
+             particle: enchantment_table
+             iterations: 5
+             period: 2
+        detonate:
+        -  class: EffectSingle
+           location: target
+           sound: wither_hurt
         -  class: EffectSingle
            location: target
            effectlib:
-             class: WaveEffect
-             particle: enchantment_table
-             cloudParticle: drip_water
-             iterations: 5
-             period: 2
-        horse:
+             class: BigBangEffect
+             explosions: 4
+             iterations: 10
+             color: "00AAFF"
+             color2: "FFFFFF"
+        patronus:
         -  class: EffectVariable
            brightness:
              '0.5':
@@ -2357,7 +2366,7 @@ patronus:
                    class: WaveEffect
                    particle: large_smoke
                    cloudParticle: smoke
-                   iterations: 14
+                   iterations: 8
              '5':
              - class: EffectSingle
                location: target
@@ -2366,7 +2375,7 @@ patronus:
                    class: WaveEffect
                    particle: spell
                    cloudParticle: enchantment_table
-                   iterations: 14
+                   iterations: 8
     parameters:
         target: other
         target_type: Wither
@@ -2377,14 +2386,16 @@ patronus:
         entity_force: 2
         type: push
         count: 8
-        damage: 100
-        cooldown: 10000
-        float_speed: 0.5
-        speed: 0.8
-        float_interval: 6
+        cooldown: 5000
+        patronus_damage: 100
+        patronus_damage_range: 4
+        patronus_speed: 0.8
+        patronus_float_speed: 0.6
+        patronus_float_interval: 6
+        patronus_float_direction: 0,0.5,0
+        patronus_damage_interval: 10
         patronus_type: chicken
-        float_direction: 0,0.5,0
-        float_duration: 1000
+        patronus_duration: 1000
         bypass_backfire: true
         py: ~1.5
     costs:
