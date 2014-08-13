@@ -196,7 +196,6 @@ year6:
       vulnera: 5,10,20
     required_spells:
       - apparate
-      - sectumsempra
 
 year7:
     upgrade: graduate
