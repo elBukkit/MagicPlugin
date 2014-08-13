@@ -63,6 +63,9 @@ year1:
       - broadcast &6@p §3has graduated to §b$path§3!
     levels: 1,30,50
     max_mana: 60
+    max_xp_regeneration: 8
+    xp_regeneration:
+      1: 5,10,15,100,100
     xp_max:
       2: 100, 10,  0
       3:  20, 30, 50
@@ -94,6 +97,9 @@ year2:
     xp_max:
       3: 100, 10,  0
       4:  20, 30, 50
+    max_xp_regeneration: 12
+    xp_regeneration:
+      1: 5,10,15,100,100
     spells:
       lumos: 100,100,100
       fumos: 80,90,100
@@ -115,6 +121,9 @@ year3:
     xp_max:
       4: 100, 10,  0
       5:  20, 30, 50
+    max_xp_regeneration: 15
+    xp_regeneration:
+      1: 5,10,15,100,100
     upgrade_commands:
       - pex user @p suffix "(Year 4) "
       - broadcast &6@p §3has graduated to §b$path§3!
@@ -139,6 +148,9 @@ year4:
     xp_max:
       4: 100, 10,  0
       5:  20, 30, 50
+    max_xp_regeneration: 20
+    xp_regeneration:
+      1: 5,10,15,100,100
     upgrade_commands:
       - pex user @p suffix "(Year 5) "
       - broadcast &6@p §3has graduated to §b$path§3!
@@ -165,6 +177,9 @@ year5:
     xp_max:
       4: 100, 10,  0
       6:  20, 30, 50
+    max_xp_regeneration: 28
+    xp_regeneration:
+      1: 5,10,15,100,100
     spells:
       deprimo: 100,100,100
       ascendio: 40,50,60
@@ -185,6 +200,9 @@ year6:
     xp_max:
       5: 100, 10,  0
       8:  20, 30, 50
+    max_xp_regeneration: 34
+    xp_regeneration:
+      1: 5,10,15,100,100
     upgrade_commands:
       - pex user @p suffix "(Year 7) "
       - broadcast &6@p §3has graduated to §b$path§3!
@@ -206,6 +224,9 @@ year7:
     xp_max:
       5: 100, 10,  0
       10:  20, 30, 50
+    max_xp_regeneration: 36
+    xp_regeneration:
+      1: 5,10,15,100,100
     upgrade_commands:
       - pex user @p suffix "(Graduate) "
       - broadcast &6@p §3has graduated from Hogwarts!
@@ -221,6 +242,9 @@ year7:
 
 graduate:
     inherit: year7
+    max_xp_regeneration: 40
+    xp_regeneration:
+      1: 5,10,15,100,100
     max_mana: 200
     xp_max:
       8: 100, 10,  0

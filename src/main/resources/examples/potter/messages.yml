@@ -665,6 +665,10 @@ wands:
         name: The Wolf
         description: Redwood and Werewolf Hair
 
+    unspeakable:
+        name: Unspeakable
+        description: $wood and $core
+
     crudwand:
         name: Cracked Wand
         description: May have some life left in it.
@@ -692,6 +696,10 @@ wands:
     headmaster:
         name: The Headmaster
         description: The Elder Broom
+
+    unbroomable:
+        name: Unspeakable 9000
+        description: Shhhhhhhhhhhhh
 
     nimbus:
         name: Nimbus 2000

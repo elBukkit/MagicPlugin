@@ -159,7 +159,7 @@ allis0n:
       - snowball
 
 elder:
-    icon: iron_hoe
+    icon: diamond_hoe
     undroppable: true
     path: master
     bound: true
@@ -170,12 +170,13 @@ elder:
     cooldown_reduction: 2
     protection: 1
     quiet: 1
-    power: 1
+    power: 0
     haste: 0.1
     effect_color: 'FF00FF'
     effect_particle: enchantment_table
     effect_particle_count: 1
     effect_particle_data: 1
+    effect_particle_interval: 0
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
@@ -191,7 +192,7 @@ wolf:
     cooldown_reduction: 2
     protection: 1
     quiet: 0
-    power: 1
+    power: 0
     haste: 0.1
     effect_color: '00AACC'
     effect_bubbles: false
@@ -201,6 +202,7 @@ wolf:
     hidden: true
     effect_particle: magic_crit
     effect_particle_count: 2
+    effect_particle_interval: 0
     overrides: patronus_type wolf
     spells:
       - apparatemaxima
@@ -212,6 +214,30 @@ wolf:
       - stupefy
       - finiteincantatem
       - reductomaxima
+
+unspeakable:
+    icon: diamond_axe
+    undroppable: true
+    path: master
+    bound: true
+    keep: true
+    fill: true
+    organize: true
+    cost_reduction: 2
+    cooldown_reduction: 2
+    protection: 1
+    quiet: 0
+    power: 0
+    haste: 0.1
+    effect_color: '00FFFF'
+    effect_particle: drip_water
+    effect_particle_interval: 0
+    effect_particle_count: 1
+    effect_particle_data: 1
+    effect_bubbles: false
+    active_spell: ascendio
+    hidden: true
+    overrides: patronus_type sheep patronus_variant blue
 
 architect:
     path: engineer
@@ -470,6 +496,18 @@ minister:
     locked: true
     effect_color: '00AAFF'
     overrides: mount_color creamy mount_style whitefield mount_boost 4 mount_boost_ticks 600 mount_health 20 slow_ticks 1 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.5
+    spells:
+        - broom
+
+unbroomable:
+    mode: cast
+    path: broom
+    active_spell: broom
+    icon: diamond_barding
+    indestructible: true
+    locked: true
+    effect_color: '00FFFF'
+    overrides: mount_color creamy mount_style whitefield mount_boost 4 mount_boost_ticks 600 mount_health 20 slow_ticks 2 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.3
     spells:
         - broom
 
@@ -780,7 +818,7 @@ year2:
     indestructible: false
     icon: arrow
     xp_max: 75
-    xp_regeneration: 8
+    xp_regeneration: 10
 year3:
     upgrade: true
     path: year2
@@ -788,7 +826,7 @@ year3:
     indestructible: false
     icon: arrow
     xp_max: 100
-    xp_regeneration: 11
+    xp_regeneration: 15
 year4:
     upgrade: true
     path: year3
@@ -796,7 +834,7 @@ year4:
     indestructible: false
     icon: arrow
     xp_max: 120
-    xp_regeneration: 13
+    xp_regeneration: 20
 year5:
     upgrade: true
     path: year4
@@ -804,7 +842,7 @@ year5:
     indestructible: false
     icon: arrow
     xp_max: 140
-    xp_regeneration: 15
+    xp_regeneration: 25
 year6:
     upgrade: true
     path: year5
@@ -812,7 +850,7 @@ year6:
     indestructible: false
     icon: arrow
     xp_max: 160
-    xp_regeneration: 18
+    xp_regeneration: 30
 year7:
     upgrade: true
     path: year6
@@ -820,7 +858,7 @@ year7:
     indestructible: false
     icon: arrow
     xp_max: 180
-    xp_regeneration: 20
+    xp_regeneration: 35
 graduate:
     upgrade: true
     path: year7
@@ -828,7 +866,7 @@ graduate:
     indestructible: false
     icon: arrow
     xp_max: 200
-    xp_regeneration: 22
+    xp_regeneration: 38
 
 staff:
     upgrade: true
