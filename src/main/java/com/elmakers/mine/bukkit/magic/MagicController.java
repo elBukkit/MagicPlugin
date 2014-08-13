@@ -429,6 +429,10 @@ public class MagicController implements Listener, MageController {
         return hasBuildPermission(player, location.getBlock());
     }
 
+    public boolean isPassthrough(Location location) {
+        return worldGuardManager.isPassthrough(location);
+    }
+
     public boolean hasBuildPermission(Player player, Block block) {
         // Check the region manager, or Factions
         boolean allowed = true;
