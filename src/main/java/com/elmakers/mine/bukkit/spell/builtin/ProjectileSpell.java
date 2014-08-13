@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -194,10 +195,10 @@ public class ProjectileSpell extends UndoableSpell
 						ex.printStackTrace();
 					}
 				}
-
-                // This is a trick to make effects applied to the projectile work
-                getCurrentTarget().setEntity(projectile);
-
+                Collection<EffectPlayer> projectileEffects = getEffects("projectile");
+                for (EffectPlayer effectPlayer : projectileEffects) {
+                    effectPlayer.start(projectile.getLocation(), projectile, null, null);
+                }
 				registerForUndo(projectile);
 			} catch(Exception ex) {
 				ex.printStackTrace();

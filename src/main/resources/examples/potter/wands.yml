@@ -634,17 +634,17 @@ patronus_pig:
 patronus_cat_siamese:
     icon: arrow
     upgrade: true
-    overrides: patronus_type cat patronus_variant siamese_cat
+    overrides: patronus_type ocelot patronus_variant siamese_cat
 
 patronus_cat_black:
     icon: arrow
     upgrade: true
-    overrides: patronus_type cat patronus_variant black_cat
+    overrides: patronus_type ocelot patronus_variant black_cat
 
 patronus_cat_red:
     icon: arrow
     upgrade: true
-    overrides: patronus_type cat patronus_variant red_cat
+    overrides: patronus_type ocelot patronus_variant red_cat
 
 patronus_thestral:
     icon: arrow
