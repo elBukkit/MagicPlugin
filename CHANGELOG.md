@@ -3,6 +3,7 @@
 ## 1.6
 
  - More effect player controls
+ - Add MageController.isBypass(Location)
 
 ## 1.5
 
