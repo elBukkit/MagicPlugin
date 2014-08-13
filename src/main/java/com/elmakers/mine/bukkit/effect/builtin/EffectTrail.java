@@ -57,7 +57,7 @@ public class EffectTrail extends EffectRepeating {
         Vector delta = direction.clone();
         Location current = null;
         if (playAtOrigin) {
-            origin.clone();
+            current = origin.clone();
             current.add(delta.multiply(scale(size) + 1));
             playEffect(current, getOriginEntity(), target, getTargetEntity());
         }
