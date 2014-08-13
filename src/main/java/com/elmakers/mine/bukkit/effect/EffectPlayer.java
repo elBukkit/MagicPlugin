@@ -262,7 +262,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             return;
         }
         try {
-            this.particleOverride = ParticleEffect.valueOf(particleType);
+            this.particleOverride = ParticleEffect.valueOf(particleType.toUpperCase());
         } catch (Exception ex) {
             plugin.getLogger().warning("Error setting particle override: " + ex.getMessage());
             this.particleOverride = null;
