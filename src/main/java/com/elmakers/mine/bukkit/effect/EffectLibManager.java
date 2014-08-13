@@ -47,8 +47,9 @@ public class EffectLibManager {
         String effectClass = configuration.getString("class");
         ParticleEffect particleEffect = player.overrideParticle(null);
         String effectOverride = player.getParticleOverrideName();
+
         ConfigurationSection parameters = configuration;
-        if (effect != null && effectOverride != null && !effectOverride.isEmpty() && configuration.contains(effectOverride)) {
+        if (particleEffect != null && effectOverride != null && !effectOverride.isEmpty() && configuration.contains(effectOverride)) {
             parameters = new MemoryConfiguration();
             Collection<String> keys = configuration.getKeys(false);
             for (String key : keys) {
