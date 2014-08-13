@@ -7,10 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import org.bukkit.Art;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -443,28 +440,31 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    private static ThrownPotion potion = null;
+
     public static void magicDamage(LivingEntity target, double amount, Entity source) {
         try {
-            // UGH! Bukkit won't allow magic damage from anything but a potion..
-            // Sometimes, I swear. :(
             if (target == null) return;
             Object targetHandle = getHandle(target);
             if (targetHandle == null) return;
-            Object magicSource = class_DamageSource_MagicField.get(null);
-            class_EntityLiving_damageEntityMethod.invoke(targetHandle, magicSource, (float)amount);
 
-
-            /*
+            // Bukkit won't allow magic damage from anything but a potion..
             Object sourceHandle = getHandle(source);
-            if (sourceHandle == null) {
-                target.damage(amount);
-                return;
+            if (sourceHandle != null && source instanceof LivingEntity) {
+                if (potion == null) {
+                    Location location = target.getLocation();
+                    potion = (ThrownPotion) location.getWorld().spawnEntity(location, EntityType.SPLASH_POTION);
+                    potion.remove();
+                }
+                potion.setShooter((LivingEntity)source);
+                Object potionHandle = getHandle(potion);
+                Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
+                Bukkit.getLogger().info("Magic damage "+ amount);
+                class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
+            } else {
+                Object magicSource = class_DamageSource_MagicField.get(null);
+                class_EntityLiving_damageEntityMethod.invoke(targetHandle, magicSource, (float) amount);
             }
-            Object targetHandle = getHandle(target);
-            if (target == null) return;
-            Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, sourceHandle, sourceHandle);
-            class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
-            */
         } catch (Exception ex) {
             ex.printStackTrace();
         }
