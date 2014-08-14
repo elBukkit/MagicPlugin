@@ -297,7 +297,7 @@ public class ConstructBatch extends BrushBatch {
 				}
 				break;
 			default:
-				fillBlock = thickness == 0 ? true : (x >= radius - thickness || y >= radius - thickness || z >= radius - thickness);
+				fillBlock = thickness == 0 ? true : (x > radius - thickness || y > radius - thickness || z > radius - thickness);
 				break;
 		}
 		boolean success = true;
