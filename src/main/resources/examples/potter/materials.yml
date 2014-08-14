@@ -135,11 +135,14 @@ powerable:
 destructible:
 - air
 - monster_eggs
+- quartz_block
+- quartz_stairs
 
 hardenable:
 - monster_eggs
 - lava
 - stationary_lava
+- quartz_block
 
 floatable:
 - quartz_ore
