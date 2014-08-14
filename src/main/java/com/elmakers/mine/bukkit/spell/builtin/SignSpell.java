@@ -81,7 +81,7 @@ public class SignSpell extends BlockSpell
 			if (targetBlock.getState() instanceof Sign)
 			{
 				Sign sign = (Sign)targetBlock.getState();
-				String playerName = controller.getEntityName(sourceEntity);
+				String playerName = controller.getEntityDisplayName(sourceEntity);
 				playerName = mage.getController().getMessagePrefix() + playerName;
 				sign.setLine(0, playerName);
 				sign.setLine(1, getMessage("sign_message"));

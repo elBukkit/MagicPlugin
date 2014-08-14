@@ -1567,7 +1567,7 @@ flagrate:
            target_offset: 0,3,0
            effectlib:
              class: TextEffect
-             text: $name
+             text: $target
              iterations: 2
              particle: flame
     parameters:
@@ -2131,7 +2131,7 @@ morsmordre:
         transparent: apparate
         op: true
         commands:
-        - broadcast @p cast §aMorsmordre!
+        - broadcast @pd cast §aMorsmordre!
     costs:
         xp: 55
 
@@ -2161,7 +2161,7 @@ morsmordremaxima:
         transparent: apparate
         op: true
         commands:
-        - broadcast @p cast §aMorsmordre Maxima, and two Deatheaters appare!
+        - broadcast @pd cast §aMorsmordre Maxima, and two Deatheaters appare!
         - mm mobs spawn Deatheater
         - mm mobs spawn Deatheater
     costs:
@@ -2191,7 +2191,7 @@ mayday:
         transparent: apparate
         op: true
         commands:
-        - broadcast @p cast §aMayday!
+        - broadcast @pd cast §aMayday!
     costs:
         xp: 55
 
@@ -2219,7 +2219,7 @@ maydaymaxima:
         transparent: apparate
         op: true
         commands:
-        - broadcast @p cast §aMayday Maxima, and two Aurors appear!
+        - broadcast @pd cast §aMayday Maxima, and two Aurors appear!
         - mm mobs spawn Auror
         - mm mobs spawn Auror
     costs:
@@ -2855,7 +2855,7 @@ expulsion:
     parameters:
         commands:
         - nick @t @t_Expelled
-        - broadcast @t was Expelled from Hogwarts by @p!
+        - broadcast @td was Expelled from Hogwarts by @pd!
         - spawn @t
         target_type: Player
         target: other
@@ -2882,7 +2882,7 @@ jail:
              iterations: 24
     parameters:
         commands:
-        - broadcast @t was Jailed by @p!
+        - broadcast @td was Jailed by @pd!
         - jail @t hogwartsprison
         target_type: Player
         target: other

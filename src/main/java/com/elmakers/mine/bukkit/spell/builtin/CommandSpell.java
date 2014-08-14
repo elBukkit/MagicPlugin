@@ -89,6 +89,7 @@ public class CommandSpell extends TargetingSpell {
             command = command
                     .replace("@_", " ")
                     .replace("@spell", getName())
+                    .replace("@pd", mage.getDisplayName())
                     .replace("@p", mage.getName())
                     .replace("@uuid", mage.getId())
                     .replace("@world", location.getWorld().getName())
@@ -108,10 +109,12 @@ public class CommandSpell extends TargetingSpell {
                     if (controller.isMage(targetEntity)) {
                         Mage targetMage = controller.getMage(targetEntity);
                         command = command
+                                .replace("@td", targetMage.getDisplayName())
                                 .replace("@t", targetMage.getName())
                                 .replace("@tuuid", targetMage.getId());
                     } else {
                         command = command
+                                .replace("@td", controller.getEntityDisplayName(targetEntity))
                                 .replace("@t", controller.getEntityName(targetEntity))
                                 .replace("@tuuid", targetEntity.getUniqueId().toString());
                     }

@@ -651,6 +651,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return playerName == null || playerName.length() == 0 ? defaultMageName : playerName;
     }
 
+    public String getDisplayName() {
+        Entity entity = getEntity();
+        if (entity == null) {
+            return getName();
+        }
+
+        if (entity instanceof Player) {
+            return ((Player)entity).getDisplayName();
+        }
+
+        return controller.getEntityDisplayName(entity);
+    }
+
     public void setName(String name) {
         playerName = name;
     }

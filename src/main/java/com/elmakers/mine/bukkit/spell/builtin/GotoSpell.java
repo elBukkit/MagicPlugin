@@ -82,7 +82,7 @@ public class GotoSpell extends UndoableSpell
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
 			teleportTo(player, targetEntity);
-			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityName(targetEntity)));
+			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityDisplayName(targetEntity)));
 			
 			return SpellResult.CAST;
 		}
@@ -117,7 +117,7 @@ public class GotoSpell extends UndoableSpell
 			getCurrentTarget().setEntity(targetEntity);
 			registerModified(player);
 			teleportTo(player, targetEntity);
-			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityName(targetEntity)));
+			castMessage(getMessage("cast_to_player").replace("$target", controller.getEntityDisplayName(targetEntity)));
 			releaseTarget();
 			registerForUndo();
 			return SpellResult.CAST;

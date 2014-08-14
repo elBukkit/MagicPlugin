@@ -3047,7 +3047,7 @@ public class MagicController implements Listener, MageController {
 		if (sender != entity && sender != null) {
 			String castMessage = "Cast " + spellName;
 			if (entity != null) {
-				castMessage += " on " + getEntityName(entity);
+				castMessage += " on " + getEntityDisplayName(entity);
 			}
 			sender.sendMessage(castMessage);
 		}
@@ -3496,15 +3496,23 @@ public class MagicController implements Listener, MageController {
 	}
 
     @Override
-    public String getEntityName(Entity target)
-    {
+    public String getEntityName(Entity target) {
+        return getEntityName(target, false);
+    }
+
+    @Override
+    public String getEntityDisplayName(Entity target) {
+        return getEntityName(target, true);
+    }
+
+    protected String getEntityName(Entity target, boolean display) {
         if (target == null)
         {
             return "Unknown";
         }
         if (target instanceof Player)
         {
-            return ((Player)target).getName();
+            return display ? ((Player)target).getDisplayName() : ((Player)target).getName();
         }
 
         if (isElemental(target))
@@ -3512,25 +3520,26 @@ public class MagicController implements Listener, MageController {
             return "Elemental";
         }
 
-        if (target instanceof LivingEntity)
-        {
-            LivingEntity li = (LivingEntity)target;
-            String customName = li.getCustomName();
-            if (customName != null && customName.length() > 0) {
-                return customName;
-            }
-        } else if (target instanceof Item) {
-            Item item = (Item)target;
-            ItemStack itemStack = item.getItemStack();
-            if (itemStack.hasItemMeta()) {
-                ItemMeta meta = itemStack.getItemMeta();
-                if (meta.hasDisplayName()) {
-                    return meta.getDisplayName();
+        if (display) {
+            if (target instanceof LivingEntity) {
+                LivingEntity li = (LivingEntity) target;
+                String customName = li.getCustomName();
+                if (customName != null && customName.length() > 0) {
+                    return customName;
                 }
-            }
+            } else if (target instanceof Item) {
+                Item item = (Item) target;
+                ItemStack itemStack = item.getItemStack();
+                if (itemStack.hasItemMeta()) {
+                    ItemMeta meta = itemStack.getItemMeta();
+                    if (meta.hasDisplayName()) {
+                        return meta.getDisplayName();
+                    }
+                }
 
-            MaterialAndData material = new MaterialAndData(itemStack);
-            return material.getName();
+                MaterialAndData material = new MaterialAndData(itemStack);
+                return material.getName();
+            }
         }
 
         return target.getType().name().toLowerCase().replace('_', ' ');
