@@ -637,7 +637,7 @@ beater:
 patronus_wolf:
     icon: arrow
     upgrade: true
-    overrides: patronus.type wolf
+    overrides: patronus.type wolf,patronus.sound wolf_howl,patronus.name Wolfie
 
 patronus_horse:
     icon: arrow

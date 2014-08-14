@@ -3562,7 +3562,7 @@ missile:
              class: ConeEffect
              iterations: 15
              particle: magic_crit
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -3579,7 +3579,7 @@ missile:
              class: ConeEffect
              iterations: 15
              particle: magic_crit
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
     parameters:
         range: 35
         fov: 0.11
