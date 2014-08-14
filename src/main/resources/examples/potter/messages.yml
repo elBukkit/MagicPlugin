@@ -332,6 +332,16 @@ spells:
         description: Points you North
         extended_description: Believed to be invented by Hermionie Granger
         cast: Point Me!
+    glacius:
+        name: Glacius
+        description: The Freezing Charm
+        extended_description: Freezes an area
+        cast: Glacius $target!
+    glaciusduo:
+        name: Glacius Duo
+        description: The Freezier Charm
+        extended_description: Freezes a large area
+        cast: Glacius Duo $target!
     superfly:
         name: SuperFly
         description: For videographers

@@ -1786,6 +1786,68 @@ fumos:
     costs:
         xp: 35
 
+glacius:
+    icon: snow_ball
+    category: transfiguration
+    class: FrostSpell
+    pvp_restricted: true
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: glass
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 12
+             particle: snowball_poof
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 24
+        radius: 2
+        vertical_search_distance: 8
+        transparent: transparent_to_construction
+        player_damage: 4
+        entity_damage: 2
+        slowness: 1
+        ice: ice
+        undo: 5000
+        entity_undo: false
+    costs:
+        xp: 75
+
+glaciusduo:
+    icon: snow_ball
+    category: transfiguration
+    class: FrostSpell
+    pvp_restricted: true
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: glass
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 12
+             particle: snowball_poof
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 24
+        radius: 4
+        vertical_search_distance: 8
+        transparent: transparent_to_construction
+        player_damage: 6
+        entity_damage: 3
+        slowness: 2
+        ice: ice
+        undo: 8000
+        entity_undo: false
+    costs:
+        xp: 125
+
 immobulus:
     icon: gold_ingot
     category: dada
@@ -1886,7 +1948,7 @@ incarcerous:
         allow_max_range: true
         range: 16
         radius: 1
-        type: sphere
+        type: cuboid
         brush: nether_fence
         thickness: 1
         orient_dimension_max: 0
@@ -2310,7 +2372,7 @@ petrificustotalus:
     alias: petrificus
     icon: nether_brick_item
     category: dada
-    class: PotionEffectSpell
+    class: ConstructSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 50
@@ -2337,16 +2399,22 @@ petrificustotalus:
     costs:
         xp: 100
     parameters:
-        range: 30
-        target_type: LivingEntity
         target: other
-        duration: 8000
-        effect_slow: 20
-        effect_jump: -20
-        cooldown: 8000
-        fall_protection: 8000
-        deactivate_target_mage: true
-        target_breakables: 1
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+        radius: 3
+        type: cuboid
+        brush: schematic|petrify
+        orient: false
+        transparent: transparent_to_construction
+        check_destructible: true
+        destructible: air
+        undo: 20000
+        breakable: 2
+        y_offset: 0
+        bypass_build: true
+        cooldown: 7000
 
 patronus:
     icon: ink_sack:12
