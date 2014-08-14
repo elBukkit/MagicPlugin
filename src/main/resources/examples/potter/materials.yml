@@ -136,5 +136,10 @@ destructible:
 - air
 - monster_eggs
 
+hardenable:
+- monster_eggs
+- lava
+- stationary_lava
+
 floatable:
 - quartz_ore

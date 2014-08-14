@@ -1199,6 +1199,7 @@ duro:
         range: 16
         size: 2
         check_destructible: true
+        destructible: hardenable
         brush: obsidian
         transparent: transparent_to_construction
         undo: 5000
@@ -3200,7 +3201,7 @@ wingardium:
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFF00
+           color: FF8888
            firework: burst
     parameters:
         allow_max_range: false
