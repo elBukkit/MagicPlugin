@@ -318,7 +318,7 @@ araniaexumai:
            effectlib:
              class: ConeEffect
              iterations: 10
-             lenghtGrow: 0.1
+             lengthGrow: 0.1
              particle: instant_spell
         area:
         -  class: EffectSingle
@@ -579,7 +579,7 @@ avadakedavra:
              class: ConeEffect
              iterations: 15
              particle: happy_villager
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -621,7 +621,7 @@ avadamaxima:
              class: ConeEffect
              iterations: 15
              particle: slime
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            location: target
            effectlib:
@@ -719,7 +719,7 @@ bogies:
              class: ConeEffect
              iterations: 15
              particle: slime
-             lenghtGrow: 0.2
+             lengthGrow: 0.2
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -899,7 +899,7 @@ confundus:
              class: ConeEffect
              iterations: 15
              particle: smoke
-             lenghtGrow: 0.3
+             lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -938,7 +938,7 @@ conjunctivitis:
              class: ConeEffect
              iterations: 15
              particle: smoke
-             lenghtGrow: 0.3
+             lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -975,7 +975,7 @@ obscuro:
              class: ConeEffect
              iterations: 15
              particle: mob_spell
-             lenghtGrow: 0.3
+             lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1016,7 +1016,7 @@ crucio:
              class: ConeEffect
              iterations: 15
              particle: mob_spell
-             lenghtGrow: 0.3
+             lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1053,7 +1053,7 @@ dementor:
              class: ConeEffect
              iterations: 15
              particle: mob_spell
-             lenghtGrow: 0.3
+             lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1260,7 +1260,7 @@ expelliarmus:
              class: ConeEffect
              iterations: 15
              particle: crit
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1273,7 +1273,7 @@ expelliarmus:
              class: ConeEffect
              iterations: 15
              particle: crit
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1349,7 +1349,7 @@ engorgio:
              class: ConeEffect
              iterations: 11
              particle: instant_spell
-             lenghtGrow: 0.32
+             lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1363,7 +1363,7 @@ engorgio:
              class: ConeEffect
              iterations: 11
              particle: instant_spell
-             lenghtGrow: 0.32
+             lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1593,7 +1593,7 @@ flipendo:
              class: ConeEffect
              iterations: 12
              particle: spell
-             lenghtGrow: 0.1
+             lengthGrow: 0.1
     parameters:
         target_type: Entity
         range: 16
@@ -1781,7 +1781,7 @@ immobulus:
              class: ConeEffect
              iterations: 15
              particle: smoke
-             lenghtGrow: 0.33
+             lengthGrow: 0.33
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1822,7 +1822,7 @@ locomotomortus:
              class: ConeEffect
              iterations: 15
              particle: witch_magic
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -1974,7 +1974,7 @@ incendio:
              class: ConeEffect
              iterations: 15
              particle: lava
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2056,7 +2056,7 @@ levicorpus:
              class: ConeEffect
              iterations: 15
              particle: witch_magic
-             lenghtGrow: 0.4
+             lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2303,7 +2303,7 @@ petrificustotalus:
              class: ConeEffect
              iterations: 5
              particle: fireworks_spark
-             lenghtGrow: 0.32
+             lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
@@ -2386,22 +2386,17 @@ patronus:
         target: other
         target_type: Wither
         range: 32
-        allow_area: false
-        area_range: 48
-        item_force: 0
-        entity_force: 2
-        type: push
-        count: 8
+        type: chicken
         cooldown: 5000
-        patronus_damage: 100
-        patronus_damage_range: 4
-        patronus_speed: 0.8
-        patronus_float_speed: 0.6
-        patronus_float_interval: 6
-        patronus_float_direction: 0,0.5,0
-        patronus_damage_interval: 10
-        patronus_type: chicken
-        patronus_duration: 1000
+        damage: 100
+        damage_range: 4
+        speed: 0.8
+        float_speed: 0.6
+        float_interval: 6
+        float_direction: 0,0.5,0
+        damage_interval: 10
+        type: chicken
+        duration: 1000
         bypass_backfire: true
         py: ~1.5
     costs:

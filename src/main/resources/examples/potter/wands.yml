@@ -203,7 +203,7 @@ wolf:
     effect_particle: magic_crit
     effect_particle_count: 2
     effect_particle_interval: 0
-    overrides: patronus_type wolf
+    overrides: patronus.type wolf
     spells:
       - apparatemaxima
       - ascendio
@@ -237,7 +237,7 @@ unspeakable:
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
-    overrides: patronus_type sheep patronus_variant blue
+    overrides: patronus.type sheep, patronus.variant blue
 
 architect:
     path: engineer
@@ -495,7 +495,7 @@ minister:
     indestructible: true
     locked: true
     effect_color: '00AAFF'
-    overrides: mount_color creamy mount_style whitefield mount_boost 4 mount_boost_ticks 600 mount_health 20 slow_ticks 1 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.5
+    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 1, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.5
     spells:
         - broom
 
@@ -507,7 +507,7 @@ unbroomable:
     indestructible: true
     locked: true
     effect_color: '00FFFF'
-    overrides: mount_color creamy mount_style whitefield mount_boost 4 mount_boost_ticks 600 mount_health 20 slow_ticks 2 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.3
+    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 2, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3
     spells:
         - broom
 
@@ -519,7 +519,7 @@ headmaster:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: mount_color creamy mount_style white_dots mount_boost 4 mount_boost_ticks 600 mount_health 20 slow_ticks 5 steer_speed 0 slow_steer_speed 0.05 mount_boost_per_jump 0.3
+    overrides: broom.mount_color creamy, broom.mount_style white_dots, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3
     spells:
         - broom
 
@@ -531,7 +531,7 @@ firebolt:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: mount_color dark_brown mount_boost 3 mount_boost_ticks 1200 mount_health 20 slow_ticks 3 steer_speed 0.8 slow_steer_speed 0.8 mount_boost_per_jump 0.25
+    overrides: broom.mount_color dark_brown, broom.mount_boost 3, broom.mount_boost_ticks 1200, broom.mount_health 20, broom.slow_ticks 3, broom.steer_speed 0.8, broom.slow_steer_speed 0.8, broom.mount_boost_per_jump 0.25
     spells:
         - broom
 
@@ -543,7 +543,7 @@ crudfirebolt:
     locked: true
     effect_color: 'FF00FF'
     uses: 20
-    overrides: mount_color dark_brown mount_boost 2.5 mount_boost_ticks 1200 mount_health 20 slow_ticks 5 steer_speed 0.8 slow_steer_speed 0.2 mount_boost_per_jump 0.25
+    overrides: broom.mount_color dark_brown, broom.mount_boost 2.5, broom.mount_boost_ticks 1200, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0.8, broom.slow_steer_speed 0.2, broom.mount_boost_per_jump 0.25
     spells:
         - broom
 
@@ -555,7 +555,7 @@ nimbus:
     indestructible: true
     locked: true
     effect_color: '880088'
-    overrides: mount_color gray mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 3 steer_speed 0.6 slow_steer_speed 0 mount_boost_per_jump 0.4
+    overrides: broom.mount_color gray, broom.mount_boost_ticks 600, broom.mount_health 16, broom.mount_boost 2, broom.slow_ticks 3, broom.steer_speed 0.6, broom.slow_steer_speed 0, broom.mount_boost_per_jump 0.4
     spells:
         - broom
 
@@ -567,7 +567,7 @@ crudnimbus:
     locked: true
     effect_color: '880088'
     uses: 20
-    overrides: mount_color gray mount_boost_ticks 600 mount_health 16 mount_boost 2 slow_ticks 3 steer_speed 0.6 slow_steer_speed 0 mount_boost_per_jump 0.4
+    overrides: broom.mount_color gray, broom.mount_boost_ticks 600, broom.mount_health 16, broom.mount_boost 2, broom.slow_ticks 3, broom.steer_speed 0.6, broom.slow_steer_speed 0, broom.mount_boost_per_jump 0.4
     spells:
         - broom
 
@@ -579,7 +579,7 @@ comet290:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: mount_color chestnut mount_boost 2.5 mount_boost_ticks 80 mount_health 14 slow_ticks 6 steer_speed 0.6 slow_steer_speed 0.5 mount_boost_per_jump 1
+    overrides: broom.mount_color chestnut, broom.mount_boost 2.5, broom.mount_boost_ticks 80, broom.mount_health 14, broom.slow_ticks 6, broom.steer_speed 0.6, broom.slow_steer_speed 0.5, broom.mount_boost_per_jump 1
     spells:
         - broom
 
@@ -591,7 +591,7 @@ cleansweep1:
     indestructible: false
     locked: true
     effect_color: 'FFFF00'
-    overrides: mount_color black mount_boost 1 mount_boost_ticks 300 mount_health 12 steer_speed 0 slow_steer_speed 0.8
+    overrides: broom.mount_color black, broom.mount_boost 1, broom.mount_boost_ticks 300, broom.mount_health 12, broom.steer_speed 0, broom.slow_steer_speed 0.8
     spells:
         - broom
 
@@ -603,7 +603,7 @@ bluebottle:
     indestructible: false
     locked: true
     effect_color: '0000FF'
-    overrides: mount_color brown mount_boost 0.5 mount_boost_ticks 120 mount_health 8 steer_speed 0.2 slow_ticks 5 slow_steer_speed 0.1
+    overrides: broom.mount_color brown, broom.mount_boost 0.5, broom.mount_boost_ticks 120, broom.mount_health 8, broom.steer_speed 0.2, broom.slow_ticks 5, broom.slow_steer_speed 0.1
     spells:
         - broom
 
@@ -616,7 +616,7 @@ crudbroom:
     locked: true
     uses: 10
     effect_color: '000088'
-    overrides: mount_color brown mount_boost 0.5 mount_boost_ticks 120 mount_health 8 steer_speed 0.2 slow_ticks 5 slow_steer_speed 0.1
+    overrides: broom.mount_color brown, broom.mount_boost 0.5, broom.mount_boost_ticks 120, broom.mount_health 8, broom.steer_speed 0.2, broom.slow_ticks 5, broom.slow_steer_speed 0.1
     spells:
         - broom
 
@@ -637,87 +637,87 @@ beater:
 patronus_wolf:
     icon: arrow
     upgrade: true
-    overrides: patronus_type wolf
+    overrides: patronus.type wolf
 
 patronus_horse:
     icon: arrow
     upgrade: true
-    overrides: patronus_type horse patronus_variant undead_horse
+    overrides: patronus.type horse, patronus.variant undead_horse
 
 patronus_chicken:
     icon: arrow
     upgrade: true
-    overrides: patronus_type chicken
+    overrides: patronus.type chicken
 
 patronus_spider:
     icon: arrow
     upgrade: true
-    overrides: patronus_type spider
+    overrides: patronus.type spider
 
 patronus_cow:
     icon: arrow
     upgrade: true
-    overrides: patronus_type cow
+    overrides: patronus.type cow
 
 patronus_sheep:
     icon: arrow
     upgrade: true
-    overrides: patronus_type sheep
+    overrides: patronus.type sheep
 
 patronus_pig:
     icon: arrow
     upgrade: true
-    overrides: patronus_type pig
+    overrides: patronus.type pig
 
 patronus_cat_siamese:
     icon: arrow
     upgrade: true
-    overrides: patronus_type ocelot patronus_variant siamese_cat
+    overrides: patronus.type ocelot, patronus.variant siamese_cat
 
 patronus_cat_black:
     icon: arrow
     upgrade: true
-    overrides: patronus_type ocelot patronus_variant black_cat
+    overrides: patronus.type ocelot, patronus.variant black_cat
 
 patronus_cat_red:
     icon: arrow
     upgrade: true
-    overrides: patronus_type ocelot patronus_variant red_cat
+    overrides: patronus.type ocelot, patronus.variant red_cat
 
 patronus_thestral:
     icon: arrow
     upgrade: true
-    overrides: patronus_type horse patronus_variant skeleton_horse
+    overrides: patronus.type horse, patronus.variant skeleton_horse
 
 patronus_slime:
     icon: arrow
     upgrade: true
-    overrides: patronus_type slime
+    overrides: patronus.type slime
 
 # Broom upgrades
 stabilizer:
     icon: arrow
     path: broom
     upgrade: true
-    overrides: steer_speed 3 mount_item iron_barding
+    overrides: broom.steer_speed 3, broom.mount_item iron_barding
 
 booster:
     icon: arrow
     path: broom
     upgrade: true
-    overrides: boost 1 mount_item gold_barding
+    overrides: broom.mount_boost 2, broom.mount_item gold_barding
 
 brakes:
     icon: arrow
     path: broom
     upgrade: true
-    overrides: slow_ticks 10 mount_item diamond_barding
+    overrides: broom.slow_ticks 10, mount_item diamond_barding
 
 cleanbroom:
     icon: arrow
     path: broom
     upgrade: true
-    overrides: mount_item
+    overrides: broom.mount_item
 
 # Upgrades
 
