@@ -40,6 +40,7 @@ lignumvitae:
     path: graduate
     bound: true
     keep: true
+    fill: true
     quiet: 1
     xp_max: 100
     xp_regeneration: 20
@@ -50,68 +51,7 @@ lignumvitae:
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
-    spells:
-      - accio
-      - aguamenti
-      - apparatemaxima
-      - araniaexumai
-      - arresto
-      - arrow
-      - ascendio
-      - avadakedavra
-      - avis
-      - bogies
-      - bombarda
-      - bombardamaxima
-      - colorvaria
-      - confringo
-      - confundus
-      - conjunctivitis
-      - crucio
-      - meteo
-      - deletrius
-      - deprimo
-      - disillusion
-      - duro
-      - episkey
-      - evanesco
-      - expelliarmus
-      - vulnera
-      - finiteincantatem
-      - flagrate
-      - flipendo
-      - flight
-      - fiendfyre
-      - immobulus
-      - imperio
-      - impervius
-      - incendio
-      - jail
-      - lumos
-      - morsmordre
-      - nox
-      - petrificustotalus
-      - periculum
-      - protego
-      - reducio
-      - reducto
-      - rennervate
-      - reparifarge
-      - reparo
-      - reparomaxima
-      - salviohexia
-      - sectumsempra
-      - silencio
-      - silenciomaxima
-      - silenciototalus
-      - stupefy
-      - phase
-      - stash
-      - recall
-      - gather
-      - atmos
-      - snowball
-      - locomotomortus
+
 
 allis0n:
     icon: wood_hoe
