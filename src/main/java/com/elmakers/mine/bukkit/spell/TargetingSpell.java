@@ -96,7 +96,7 @@ public abstract class TargetingSpell extends BaseSpell {
         if (useTargetName == null) {
             if (target != null) {
                 if (target.hasEntity() && getTargetType() != TargetType.BLOCK) {
-                    useTargetName = controller.getEntityName(target.getEntity());
+                    useTargetName = controller.getEntityDisplayName(target.getEntity());
                 } else if (target.isValid() && getTargetType() != TargetType.OTHER_ENTITY && getTargetType() != TargetType.ANY_ENTITY) {
                     MaterialAndData material = new MaterialAndData(target.getBlock());
                     useTargetName = material.getName();
