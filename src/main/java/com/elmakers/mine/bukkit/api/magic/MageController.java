@@ -134,6 +134,7 @@ public interface MageController {
     public void scheduleUndo(UndoList undoList);
 
     public String getEntityName(Entity entity);
+    public String getEntityDisplayName(Entity entity);
 
     /**
      * Check to see if the Elementals plugin is present an enabled.
