@@ -69,6 +69,7 @@ public interface Mage extends CostReducer {
      * @return String the display name of this mage
      */
     public String getName();
+    public String getDisplayName();
 
     /**
      * Get the unique id of this mage. May be a UUID for a player, or

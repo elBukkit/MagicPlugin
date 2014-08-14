@@ -4,6 +4,7 @@
 
  - More effect player controls
  - Add MageController.isPassthrough(Location)
+ - Add Mage.getDisplayName
 
 ## 1.5
 
