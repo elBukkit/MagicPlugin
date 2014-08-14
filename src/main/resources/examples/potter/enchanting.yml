@@ -36,7 +36,7 @@ default:
       -  class: EffectSingle
          sound: level_up
          effectlib:
-           class: SphereEntityEffect
+           class: SphereEffect
            iterations: 10
            period: 2
            particle: enchantment_table

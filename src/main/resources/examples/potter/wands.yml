@@ -634,6 +634,11 @@ patronus_slime:
     upgrade: true
     overrides: patronus.type slime
 
+patronus_bat:
+    icon: arrow
+    upgrade: true
+    overrides: patronus.type bat
+
 # Broom upgrades
 stabilizer:
     icon: arrow

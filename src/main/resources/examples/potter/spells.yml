@@ -428,7 +428,7 @@ ascendio:
            period: 2
     parameters:
     costs:
-        xp: 140
+        xp: 30
 
 arresto:
     icon: ink_sack:8
@@ -700,9 +700,10 @@ beat:
         deactivate_target_mage: true
         target_type: LivingEntity
         target: other
-        duration: 5000
+        duration: 3000
         damage: 1
         effect_confusion: 5
+        cooldown: 5000
 
 bogies:
     icon: ink_sack:15
@@ -1100,9 +1101,18 @@ deprimo:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
-        -  class: EffectTrail
-           particle: large_explode
+           sound: dig_sand
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: witch_magic
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
     parameters:
         allow_max_range: false
         range: 32
@@ -1127,9 +1137,18 @@ deprimomaxima:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
-        -  class: EffectTrail
-           particle: large_explode
+           sound: dig_gravel
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: witch_magic
+             lengthGrow: 0.5
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
     parameters:
         allow_max_range: false
         range: 16
@@ -2013,13 +2032,13 @@ lacarnum:
     parameters:
         projectile: LargeFireball
         fire: false
-        size: 3
+        size: 2
         range: 16
-        cooldown: 5000
-        spread: 3
-        speed: 1.2
+        cooldown: 1000
+        spread: 2
+        speed: 1.3
     costs:
-        xp: 180
+        xp: 100
 
 legilimens:
     icon: iron_helmet
@@ -2344,17 +2363,34 @@ patronus:
              iterations: 5
              period: 2
         detonate:
-        -  class: EffectSingle
-           location: target
-           sound: wither_hurt
-        -  class: EffectSingle
-           location: target
-           particle_override: particleOrbital
-           effectlib:
-             class: AtomEffect
-             particleNucleus: cloud
-             particleOrbital: enchantment_table
-             iterations: 20
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               location: target
+               particle_override: particle
+               effectlib:
+                   class: BigBangEffect
+                   explosions: 1
+                   sound: wither_hurt
+                   color: 010101
+                   color2: 111111
+                   color3: 222222
+                   fadeColor: 888888
+                   iterations: 1
+             '5':
+             - class: EffectSingle
+               location: target
+               particle_override: particle
+               effectlib:
+                   class: BigBangEffect
+                   explosions: 1
+                   sound: wither_hurt
+                   color: FFFFFF
+                   color2: DDDDDD
+                   color3: 888888
+                   fadeColor: 222222
+                   iterations: 1
         patronus:
         -  class: EffectVariable
            brightness:
@@ -2620,6 +2656,7 @@ reducto:
            location: target
            color: FFFF00
            firework: burst
+           particle: large_explode
     parameters:
         allow_max_range: false
         range: 32
@@ -2656,6 +2693,7 @@ reductomaxima:
            location: target
            color: FFFF00
            firework: burst
+           particle: huge_explosion
     parameters:
         allow_max_range: false
         range: 32
@@ -3142,6 +3180,41 @@ ferula:
         effect_saturation: 1
     costs:
         xp: 160
+
+wingardium:
+    icon: ink_sack:8
+    category: charms
+    class: RaiseSpell
+    worth: 15
+    effects:
+        cast:
+        -  class: EffectSingle
+           location: origin
+           sound: enderdragon_wings
+           sound_pitch: 2
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
+    parameters:
+        allow_max_range: false
+        range: 32
+        radius: 1
+        type: sphere
+        destructible: floatable
+        check_destructible: true
+        undo: 5000
+        bypass_build: true
+        target_breakables: 2
+        bypass_backfire: false
+    costs:
+        xp: 80
 
 # These are currently what I would classify as admin-only utility spells
 # But could be added in some form as canon spells eventually.

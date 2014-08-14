@@ -557,6 +557,10 @@ spells:
         cast: Regenerating area
         target_selected: Cast again to regenerate area
         cast_finish: Regenerated $count blocks
+    wingardium:
+        name: Wingardium Leviosa
+        description: Levitate lightweight objects
+        cast: Wingardium Leviosa!
 
 randomized:
    wood:

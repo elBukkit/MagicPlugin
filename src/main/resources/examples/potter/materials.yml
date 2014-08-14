@@ -135,3 +135,6 @@ powerable:
 destructible:
 - air
 - monster_eggs
+
+floatable:
+- quartz_ore
