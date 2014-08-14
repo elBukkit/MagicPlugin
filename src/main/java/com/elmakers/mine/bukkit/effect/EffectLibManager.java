@@ -37,14 +37,14 @@ public class EffectLibManager {
     public Effect play(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity) {
         if (originEntity != null && originEntity instanceof Player) {
             nameMap.put("$name", ((Player)originEntity).getName());
-        } if (originEntity != null && originEntity instanceof LivingEntity) {
+        } else if (originEntity != null && originEntity instanceof LivingEntity) {
             nameMap.put("$name", ((LivingEntity)originEntity).getCustomName());
         } else {
             nameMap.put("$name", "Unknown");
         }
         if (targetEntity != null && targetEntity instanceof Player) {
             nameMap.put("$target", ((Player)targetEntity).getName());
-        } if (originEntity != null && targetEntity instanceof LivingEntity) {
+        } else if (originEntity != null && targetEntity instanceof LivingEntity) {
             nameMap.put("$target", ((LivingEntity)targetEntity).getCustomName());
         } else {
             nameMap.put("$target", "Unknown");
