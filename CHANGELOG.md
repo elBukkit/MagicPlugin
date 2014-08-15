@@ -11,6 +11,7 @@
  - Improve "magic damage", now with entity source
  - Familiars don't drop loot when killed
  - Projectiles and explosions will add hanging entities to the undo queue when broken
+ - Fix shrunken heads (UUIDs.. checking for lag)
  
 ## 3.5
 

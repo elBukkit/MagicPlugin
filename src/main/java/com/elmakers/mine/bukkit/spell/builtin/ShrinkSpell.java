@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.inventory.meta.SkullMeta;
 
 public class ShrinkSpell extends BlockSpell
 {
@@ -92,12 +93,12 @@ public class ShrinkSpell extends BlockSpell
 					break;
 					default:
 						ownerName = getMobSkin(li.getType());
-						if (ownerName != null) {
-							itemName = li.getType().getName() + " Head";
-						}
 				}
-				
 			}
+
+            if (ownerName != null) {
+                itemName = li.getType().getName() + "'s Head";
+            }
 			
 			Location targetLocation = targetEntity.getLocation();
 			if (li instanceof Player) {
@@ -160,16 +161,16 @@ public class ShrinkSpell extends BlockSpell
 	
 	@SuppressWarnings("deprecation")
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
-		ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)data);
-		if (ownerName != null) {
-			shrunkenHead = InventoryUtils.getCopy(shrunkenHead);
-			ItemMeta itemMeta = shrunkenHead.getItemMeta();
-			if (itemName != null) {
-				itemMeta.setDisplayName(itemName);
-			}
-			shrunkenHead.setItemMeta(itemMeta);
-			InventoryUtils.setMeta(shrunkenHead, "SkullOwner", ownerName);
-		}
-		location.getWorld().dropItemNaturally(location, shrunkenHead);
+        ItemStack shrunkenHead = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)data);
+        ItemMeta meta = shrunkenHead.getItemMeta();
+        if (itemName != null) {
+            meta.setDisplayName(itemName);
+        }
+        if (meta instanceof SkullMeta) {
+            SkullMeta skullData = (SkullMeta)meta;
+            skullData.setOwner(ownerName);
+        }
+        shrunkenHead.setItemMeta(meta);
+        location.getWorld().dropItemNaturally(location, shrunkenHead);
 	}
 }
