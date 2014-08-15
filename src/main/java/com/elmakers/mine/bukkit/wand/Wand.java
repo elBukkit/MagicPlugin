@@ -856,7 +856,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         PlayerInventory inventory = mage != null && mage.isPlayer() ? mage.getPlayer().getInventory() : null;
 
         if (inventory != null && playerInventorySlot != null && !isInventoryOpen()) {
-            item = inventory.getItem(playerInventorySlot);
+            ItemStack newItem = inventory.getItem(playerInventorySlot);
+            if (newItem != null && isWand(newItem)) {
+                item = newItem;
+            }
         }
 
         ConfigurationSection stateNode = new MemoryConfiguration();
