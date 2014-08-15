@@ -49,6 +49,7 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -67,6 +68,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -1849,26 +1851,34 @@ public class MagicController implements Listener, MageController {
 			}
 		}
 	}
+
+    protected UndoList getPendingUndo(Location location)
+    {
+        long now = System.currentTimeMillis();
+        Collection<String> keys = new ArrayList<String>(pendingUndo);
+
+        for (String key : keys) {
+            if (mages.containsKey(key)) {
+                Mage mage = mages.get(key);
+                UndoList lastUndo = mage.getLastUndoList();
+                if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
+                    pendingUndo.remove(key);
+                } else if (lastUndo.contains(location, undoBlockBorderSize)) {
+                    return lastUndo;
+                }
+            } else {
+                pendingUndo.remove(key);
+            }
+        }
+
+        return null;
+    }
 	
 	protected void registerFallingBlock(Entity fallingBlock, Block block) {
-		long now = System.currentTimeMillis();
-		Collection<String> keys = new ArrayList<String>(pendingUndo);
-		
-		for (String key : keys) {
-			if (mages.containsKey(key)) {
-				Mage mage = mages.get(key);
-                if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                    UndoList lastUndo = ((com.elmakers.mine.bukkit.magic.Mage)mage).getLastUndoList();
-                    if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
-                        pendingUndo.remove(key);
-                    } else if (lastUndo.contains(fallingBlock.getLocation(), undoBlockBorderSize)) {
-                        lastUndo.fall(fallingBlock, block);
-                    }
-                }
-			} else {
-				pendingUndo.remove(key);
-			}
-		}
+        UndoList undoList = getPendingUndo(fallingBlock.getLocation());
+        if (undoList != null) {
+            undoList.fall(fallingBlock, block);
+        }
 	}
 	
 	@EventHandler
@@ -1957,12 +1967,29 @@ public class MagicController implements Listener, MageController {
 	}
 
     @EventHandler
+    public void onHangingBreak(HangingBreakEvent event) {
+        Entity entity = event.getEntity();
+        Location location = entity.getLocation();
+        // Early-out for performance, if we already detected the Entity
+        if (entity.hasMetadata("broken")) return;
+
+        UndoList undoList = getPendingUndo(location);
+        if (undoList != null) {
+            undoList.modify(event.getEntity());
+        }
+    }
+
+    @EventHandler
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
         Entity breakingEntity = event.getRemover();
         if (breakingEntity == null) return;
 
-        UndoList blockList = getEntityUndo(breakingEntity);
-        blockList.add(event.getEntity());
+        UndoList undoList = getEntityUndo(breakingEntity);
+        if (undoList != null) {
+            Entity entity = event.getEntity();
+            entity.setMetadata("broken", new FixedMetadataValue(plugin, true));
+            undoList.modify(entity);
+        }
     }
 	
 	@EventHandler(priority = EventPriority.LOW)

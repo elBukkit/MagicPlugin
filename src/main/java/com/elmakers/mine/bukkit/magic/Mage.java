@@ -372,6 +372,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return undoQueue;
     }
 
+    @Override
     public UndoList getLastUndoList() {
         if (undoQueue == null || undoQueue.isEmpty()) return null;
         return undoQueue.getLast();
