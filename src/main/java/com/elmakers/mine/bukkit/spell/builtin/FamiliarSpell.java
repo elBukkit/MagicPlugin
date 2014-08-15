@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.metadata.FixedMetadataValue;
 
 public class FamiliarSpell extends UndoableSpell implements Listener
 {
@@ -116,7 +117,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 		boolean hasFamiliar = familiars.hasFamiliar();
         boolean track = parameters.getBoolean("track", true);
-        boolean orient = parameters.getBoolean("orient", false);
+        boolean loot = parameters.getBoolean("loot", false);
 
 		if (hasFamiliar && track)
 		{   // Dispel familiars if you target them and cast
@@ -204,19 +205,13 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 final LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetEntity);
 				if (entity != null)
 				{
+                    if (!loot)
+                    {
+                        entity.setMetadata("nodrops", new FixedMetadataValue(mage.getController().getPlugin(), true));
+                    }
                     if (spawnBaby && entity instanceof Ageable) {
                         Ageable ageable = (Ageable)entity;
                         ageable.setBaby();
-                    }
-                    // To force orientation
-                    if (orient) {
-                        Bukkit.getScheduler().runTaskLater(mage.getController().getPlugin(), new Runnable() {
-                           @Override
-                            public void run() {
-                               Bukkit.getLogger().info("Teleporting to: " + targetLoc);
-                               entity.teleport(targetLoc);
-                           }
-                        }, 1);
                     }
                     entity.teleport(targetLoc);
 					newFamiliars.add(entity);

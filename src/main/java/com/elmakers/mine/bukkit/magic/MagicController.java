@@ -2115,23 +2115,13 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
 	{
-        // Work-around for complex death messages
-        if (event instanceof PlayerDeathEvent) {
-            PlayerDeathEvent playerDeath = (PlayerDeathEvent)event;
-            EntityDamageEvent cause = event.getEntity().getLastDamageCause();
-            if (cause instanceof EntityDamageByEntityEvent) {
-                EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent)cause;
-                Entity damager = damageEvent.getDamager();
-                if (damager instanceof Player && Wand.hasActiveWand((Player)damager)) {
-                    Wand wand = Wand.getActiveWand(this, (Player)damager);
-                    if (wand.hasStoredInventory()) {
-                        playerDeath.setDeathMessage(playerDeath.getDeathMessage() + " ");
-                    }
-                }
-            }
+        Entity entity = event.getEntity();
+
+        if (entity.hasMetadata("nodrops")) {
+            event.setDroppedExp(0);
+            event.getDrops().clear();
         }
 
-        Entity entity = event.getEntity();
         if (!isMage(entity)) return;
 
         Mage apiMage = getMage(entity);
