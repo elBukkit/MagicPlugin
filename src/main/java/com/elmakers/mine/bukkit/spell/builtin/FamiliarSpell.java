@@ -156,6 +156,14 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             if (spawnRange * spawnRange < distanceSquared) {
                 Vector direction = caster.getDirection().normalize().multiply(spawnRange);
                 centerLoc = caster.clone().add(direction);
+                for (int i = 0; i < spawnRange; i++) {
+                    Material blockType = centerLoc.getBlock().getType();
+                    if (blockType == Material.AIR || blockType == Material.WATER || blockType != Material.STATIONARY_WATER)
+                    {
+                        break;
+                    }
+                    centerLoc = centerLoc.add(0, 1, 0);
+                }
             }
         }
 
