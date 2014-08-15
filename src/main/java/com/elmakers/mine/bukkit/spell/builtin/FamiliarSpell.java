@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,7 +16,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -120,6 +119,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		boolean hasFamiliar = familiars.hasFamiliar();
         boolean track = parameters.getBoolean("track", true);
         boolean loot = parameters.getBoolean("loot", false);
+        boolean setTarget = parameters.getBoolean("set_target", true);
         double spawnRange = parameters.getInt("spawn_range", 0);
         String entityName = parameters.getString("name", "");
 
@@ -214,7 +214,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             targetLoc.setPitch(caster.getPitch());
             targetLoc.setYaw(caster.getYaw());
 			if (entityType != null) {
-                final LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetEntity);
+                final LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetBlock.getLocation(), targetEntity, setTarget);
 				if (entity != null)
 				{
                     if (entityName != null && !entityName.isEmpty())
@@ -247,7 +247,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 	}
 
-	protected LivingEntity spawnFamiliar(Location target, EntityType famType, LivingEntity targetEntity)
+	protected LivingEntity spawnFamiliar(Location target, EntityType famType, Location targetLocation, LivingEntity targetEntity, boolean setTarget)
 	{
         LivingEntity familiar = null;
 		try {
@@ -267,11 +267,9 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 				Skeleton skellie = (Skeleton)familiar;
 				skellie.getEquipment().setItemInHand(new ItemStack(Material.BOW));
 			}
-			if (targetEntity != null)
+			if (targetLocation != null && setTarget)
 			{
-                if (familiar instanceof Creature) {
-                    ((Creature)familiar).setTarget(targetEntity);
-                }
+                CompatibilityUtils.setTarget(familiar, targetLocation);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
