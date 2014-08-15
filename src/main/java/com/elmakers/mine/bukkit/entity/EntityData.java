@@ -7,20 +7,8 @@ import org.bukkit.Art;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Ageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Hanging;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Painting;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.*;
 import org.bukkit.entity.Skeleton.SkeletonType;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
@@ -52,12 +40,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasPotionEffects = false;
     protected Vector velocity = null;
     protected boolean hasVelocity = false;
+    protected boolean isHanging = false;
+    protected boolean isLiving = false;
+    protected boolean isProjectile = false;
 
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
     }
 
     public EntityData(Location location, Entity entity) {
+        this.isLiving = entity instanceof LivingEntity;
+        this.isHanging = entity instanceof Hanging;
+        this.isProjectile = entity instanceof Projectile;
         this.type = entity.getType();
         this.location = location;
         this.fireTicks = entity.getFireTicks();
@@ -285,5 +279,17 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setHasVelocity(boolean hasVelocity) {
         this.hasVelocity = hasVelocity;
+    }
+
+    public boolean isHanging() {
+        return isHanging;
+    }
+
+    public boolean isLiving() {
+        return isLiving;
+    }
+
+    public boolean isProjectile() {
+        return isProjectile;
     }
 }
