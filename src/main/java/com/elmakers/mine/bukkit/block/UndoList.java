@@ -209,17 +209,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         undo(false);
     }
 
-    public void undo(boolean blocking)
+    public void undoEntityEffects()
     {
-        unlink();
-        if (isComplete()) return;
-        undone = true;
-
-        if (spell != null)
-        {
-            spell.cancelEffects();
-        }
-
         // This part doesn't happen in a batch, and may lag on large lists
         if (entities != null || modifiedEntities != null) {
             Map<UUID, Entity> currentEntities = new HashMap<UUID, Entity>();
@@ -253,6 +244,18 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 }
                 modifiedEntities = null;
             }
+        }
+    }
+
+    public void undo(boolean blocking)
+    {
+        unlink();
+        if (isComplete()) return;
+        undone = true;
+
+        if (spell != null)
+        {
+            spell.cancelEffects();
         }
 
         if (runnables != null) {
