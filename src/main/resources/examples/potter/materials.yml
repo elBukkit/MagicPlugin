@@ -115,7 +115,8 @@ apparate:
 # No spell will ever modify a block of this type.
 # (The exception being accidental destruction via explosion or
 # removal of attached block)
-indestructible: []
+indestructible:
+- chest
 
 prevent_passthrough:
 - bedrock
