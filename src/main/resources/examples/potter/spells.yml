@@ -392,7 +392,7 @@ snowball:
            effectlib:
              class: SmokeEffect
              iterations: 8
-             particle: snowball_boof
+             particle: snowball_poof
     parameters:
       projectile: Snowball
       origin_at_target: true
