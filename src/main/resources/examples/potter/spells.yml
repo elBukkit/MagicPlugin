@@ -1196,6 +1196,7 @@ duro:
     category: transfiguration
     class: RecurseSpell
     worth: 150
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectTrail
@@ -2722,6 +2723,7 @@ reducto:
     category: charms
     class: ConstructSpell
     worth: 12
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -2759,6 +2761,7 @@ reductomaxima:
     class: ConstructSpell
     hidden: true
     worth: 12
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
