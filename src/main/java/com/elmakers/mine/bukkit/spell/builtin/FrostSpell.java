@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -111,12 +112,14 @@ public class FrostSpell extends BlockSpell
 				}
 				if (li instanceof Player)
 				{
+                    CompatibilityUtils.magicDamage(li, playerDamage, mage.getEntity());
 					li.damage(playerDamage, mage.getEntity());
 				}
 				else
 				{
-					li.damage(entityDamage, mage.getEntity());
+                    CompatibilityUtils.magicDamage(li, entityDamage, mage.getEntity());
 				}
+                li.setFireTicks(0);
 			} 
 			else if (controller.isElemental(targetEntity)) {
 				controller.damageElemental(targetEntity, 
