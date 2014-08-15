@@ -10,6 +10,7 @@
  - Fix bypass_confusion parameter
  - Improve "magic damage", now with entity source
  - Familiars don't drop loot when killed
+ - Projectiles and explosions will add hanging entities to the undo queue when broken
  
 ## 3.5
 

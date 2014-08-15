@@ -369,6 +369,8 @@ arrow:
       spread: 6
       fire: false
       tick_increase: 1180
+      entity_undo: false
+      undo: 5000
       range: 24
     costs:
         xp: 50
@@ -768,6 +770,8 @@ bombarda:
         break_blocks: false
         size: 1
         cooldown: 10000
+        undo: 8000
+        entity_undo: false
         otx: r(-3,3)
         oty: r(2,3)
         otz: r(-3,3)
@@ -797,6 +801,8 @@ bombardamaxima:
         target_breakables: 1
         break_blocks: false
         cooldown: 20000
+        entity_undo: false
+        undo: 10000
         otx: r(-2,2)
         oty: r(-2,2)
         otz: r(-2,2)
@@ -2100,6 +2106,8 @@ lacarnum:
         cooldown: 1000
         spread: 2
         speed: 1.3
+        entity_undo: false
+        undo: 8000
     costs:
         xp: 100
 

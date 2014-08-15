@@ -48,6 +48,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -1954,6 +1955,15 @@ public class MagicController implements Listener, MageController {
 		
 		return blockList;
 	}
+
+    @EventHandler
+    public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
+        Entity breakingEntity = event.getRemover();
+        if (breakingEntity == null) return;
+
+        UndoList blockList = getEntityUndo(breakingEntity);
+        blockList.add(event.getEntity());
+    }
 	
 	@EventHandler(priority = EventPriority.LOW)
 	public void onEntityExplode(EntityExplodeEvent event) {
