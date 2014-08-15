@@ -1676,8 +1676,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			lore.add(ChatColor.YELLOW + Messages.get("wand.spell_item_description"));
 		}
         CompatibilityUtils.setLore(itemStack, lore);
-        CompatibilityUtils.addGlow(itemStack);
 		CompatibilityUtils.setMetadata(itemStack, metadataProvider, "spell", spell.getKey());
+        CompatibilityUtils.addGlow(itemStack);
 	}
 	
 	public static void updateBrushItem(ItemStack itemStack, String materialKey, Wand wand) {
@@ -2110,6 +2110,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         // Add cast overrides
         if (other.castOverrides != null && other.castOverrides.size() > 0) {
+            if (castOverrides == null) {
+                castOverrides = new HashMap<String, String>();
+            }
             for (Map.Entry<String, String> entry : other.castOverrides.entrySet()) {
                 String currentValue = castOverrides.get(entry.getKey());
                 String value = entry.getValue();
@@ -3033,24 +3036,33 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public Map<String, String> getOverrides()
     {
-        return new HashMap<String, String>(castOverrides);
+        return castOverrides == null ? new HashMap<String, String>() : new HashMap<String, String>(castOverrides);
     }
 
     @Override
     public void setOverrides(Map<String, String> overrides)
     {
-        this.castOverrides = new HashMap<String, String>(overrides);
+        if (overrides == null) {
+            this.castOverrides = null;
+        } else {
+            this.castOverrides = new HashMap<String, String>(overrides);
+        }
     }
 
     @Override
     public void removeOverride(String key)
     {
-        castOverrides.remove(key);
+        if (castOverrides != null) {
+            castOverrides.remove(key);
+        }
     }
 
     @Override
     public void setOverride(String key, String value)
     {
+        if (castOverrides == null) {
+            castOverrides = new HashMap<String, String>();
+        }
         if (value == null || value.length() == 0) {
             castOverrides.remove(key);
         } else {
