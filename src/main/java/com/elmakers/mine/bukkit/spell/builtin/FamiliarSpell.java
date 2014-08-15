@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.utility.AscendingPair;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -115,6 +116,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 		boolean hasFamiliar = familiars.hasFamiliar();
         boolean track = parameters.getBoolean("track", true);
+        boolean orient = parameters.getBoolean("orient", false);
 
 		if (hasFamiliar && track)
 		{   // Dispel familiars if you target them and cast
@@ -148,7 +150,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		String famTypeName = parameters.getString("type", "");
         if (famTypeName != null) {
             try {
-                famType = EntityType.fromName(famTypeName);
+                famType = EntityType.valueOf(famTypeName.toUpperCase());
             } catch (Throwable ex) {
                 mage.sendMessage("Unknown entity type: " + famTypeName);
                 return SpellResult.FAIL;
@@ -188,20 +190,35 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 }
             }
 
-			Location targetLoc = centerLoc.clone();
+			final Location targetLoc = centerLoc.clone();
 			if (famCount > 1)
 			{
 				targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * famCount) - famCount);
 				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * famCount) - famCount);
 			}
+
+            Location caster = getLocation();
+            targetLoc.setPitch(caster.getPitch());
+            targetLoc.setYaw(caster.getYaw());
 			if (entityType != null) {
-                LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetEntity);
+                final LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetEntity);
 				if (entity != null)
 				{
                     if (spawnBaby && entity instanceof Ageable) {
                         Ageable ageable = (Ageable)entity;
                         ageable.setBaby();
                     }
+                    // To force orientation
+                    if (orient) {
+                        Bukkit.getScheduler().runTaskLater(mage.getController().getPlugin(), new Runnable() {
+                           @Override
+                            public void run() {
+                               Bukkit.getLogger().info("Teleporting to: " + targetLoc);
+                               entity.teleport(targetLoc);
+                           }
+                        }, 1);
+                    }
+                    entity.teleport(targetLoc);
 					newFamiliars.add(entity);
 					spawnCount++;
 					registerForUndo(entity);

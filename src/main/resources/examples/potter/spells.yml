@@ -2399,7 +2399,7 @@ petrificustotalus:
     costs:
         xp: 100
     parameters:
-        target: other
+        target: other_entity
         target_type: LivingEntity
         allow_max_range: false
         range: 16
@@ -2414,7 +2414,7 @@ petrificustotalus:
         breakable: 2
         y_offset: 0
         bypass_build: true
-        cooldown: 7000
+        cooldown: 4000
 
 patronus:
     icon: ink_sack:12
@@ -2510,7 +2510,7 @@ patronus:
 piertotum:
     icon: iron_fence
     category: master
-    class: ConstructSpell
+    class: FamiliarSpell
     worth: 250
     effects:
         cast:
@@ -2519,13 +2519,16 @@ piertotum:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        target: self
-        type: sphere
-        cooldown: 30000
-        radius: 4
+        allow_max_range: true
+        range: 2
+        cooldown: 8000
+        type: iron_golem
+        count: 1
+        reason: custom
         undo: 10000
-        brush: schematic|shield
-        transparent: transparent_to_construction
+        orient: true
+    costs:
+        xp: 15
     costs:
         xp: 150
 
