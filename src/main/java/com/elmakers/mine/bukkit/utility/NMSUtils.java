@@ -40,6 +40,7 @@ public class NMSUtils {
     protected static Class<?> class_CraftItemStack;
     protected static Class<?> class_CraftLivingEntity;
     protected static Class<?> class_Entity;
+    protected static Class<?> class_EntityCreature;
     protected static Class<?> class_EntityLiving;
     protected static Class<?> class_DataWatcher;
     protected static Class<?> class_DamageSource;
@@ -51,6 +52,8 @@ public class NMSUtils {
     protected static Class<?> class_EntityItemFrame;
     protected static Class<?> class_EntityMinecartRideable;
     protected static Class<?> class_AxisAlignedBB;
+    protected static Class<?> class_PathPoint;
+    protected static Class<?> class_PathEntity;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagCompound_setMethod;
@@ -109,10 +112,13 @@ public class NMSUtils {
             class_World = fixBukkitClass("net.minecraft.server.World");
             class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");
             class_EntityPainting = fixBukkitClass("net.minecraft.server.EntityPainting");
+            class_EntityCreature = fixBukkitClass("net.minecraft.server.EntityCreature");
             class_EntityItemFrame = fixBukkitClass("net.minecraft.server.EntityItemFrame");
             class_EntityMinecartRideable = fixBukkitClass("net.minecraft.server.EntityMinecartRideable");
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
             class_DamageSource = fixBukkitClass("net.minecraft.server.DamageSource");
+            class_PathEntity = fixBukkitClass("net.minecraft.server.PathEntity");
+            class_PathPoint = fixBukkitClass("net.minecraft.server.PathPoint");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -464,6 +465,23 @@ public class CompatibilityUtils extends NMSUtils {
                 Object magicSource = class_DamageSource_MagicField.get(null);
                 class_EntityLiving_damageEntityMethod.invoke(targetHandle, magicSource, (float) amount);
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setTarget(LivingEntity entity, Location target)
+    {
+        Object sourceHandle = getHandle(entity);
+        try {
+            Method setPathMethod = class_EntityCreature.getMethod("setPathEntity", class_PathEntity);
+            Constructor pointConstructor = class_PathPoint.getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE);
+            Object targetPoint = pointConstructor.newInstance(target.getBlockX(), target.getBlockY(), target.getBlockZ());
+            Object pathArray = Array.newInstance(class_PathPoint, 1);
+            Array.set(pathArray, 0, targetPoint);
+            Constructor pathConstructor = class_PathEntity.getConstructor(pathArray.getClass());
+            Object pathEntity = pathConstructor.newInstance(pathArray);
+            setPathMethod.invoke(sourceHandle, pathEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
