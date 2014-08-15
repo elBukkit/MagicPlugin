@@ -318,7 +318,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		if (subCommand.equalsIgnoreCase("combine"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-			if (args.length > 0 && !api.hasPermission(sender,"Magic.commands." + command + ".combine." + args[0], true)) return true;
+			if (args2.length > 0 && !api.hasPermission(sender,"Magic.commands." + command + ".combine." + args2[0], true)) return true;
 			
 			onWandCombine(sender, player, args2);
 			return true;
@@ -327,7 +327,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
-			onWandDescribe(sender, player);
+			onWandDescribe(sender, player, args2.length > 0);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("upgrade"))
@@ -404,8 +404,18 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
-	public boolean onWandDescribe(CommandSender sender, Player player) {
-		if (!checkWand(sender, player, true, true, sender != player)) {
+	public boolean onWandDescribe(CommandSender sender, Player player, boolean details) {
+        if (details) {
+            ItemStack itemInHand = player.getItemInHand();
+            if (itemInHand == null) {
+                sender.sendMessage("No item in hand");
+                return true;
+            }
+            String itemString = itemInHand.toString();
+            sender.sendMessage(itemString);
+        }
+
+        if (!checkWand(sender, player, true, true, sender != player)) {
 			return true;
 		}
 		Mage mage = api.getMage(player);
