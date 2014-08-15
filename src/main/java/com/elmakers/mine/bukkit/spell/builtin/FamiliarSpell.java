@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
-import com.elmakers.mine.bukkit.utility.AscendingPair;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +32,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 
 public class FamiliarSpell extends UndoableSpell implements Listener
 {
@@ -118,6 +120,8 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		boolean hasFamiliar = familiars.hasFamiliar();
         boolean track = parameters.getBoolean("track", true);
         boolean loot = parameters.getBoolean("loot", false);
+        double spawnRange = parameters.getInt("spawn_range", 0);
+        String entityName = parameters.getString("name", "");
 
 		if (hasFamiliar && track)
 		{   // Dispel familiars if you target them and cast
@@ -144,8 +148,18 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		}
 
 		targetBlock = targetBlock.getRelative(BlockFace.UP);
+        Location centerLoc = targetBlock.getLocation();
 
-		EntityType famType = null;
+        Location caster = getLocation();
+        if (spawnRange > 0) {
+            double distanceSquared = targetBlock.getLocation().distanceSquared(caster);
+            if (spawnRange * spawnRange < distanceSquared) {
+                Vector direction = caster.getDirection().normalize().multiply(spawnRange);
+                centerLoc = caster.clone().add(direction);
+            }
+        }
+
+        EntityType famType = null;
 		int famCount = parameters.getInt("count", 1);
 
 		String famTypeName = parameters.getString("type", "");
@@ -166,7 +180,6 @@ public class FamiliarSpell extends UndoableSpell implements Listener
         boolean spawnBaby = parameters.getBoolean("baby", false);
 
 		List<LivingEntity> newFamiliars = new ArrayList<LivingEntity>();
-		Location centerLoc = targetBlock.getLocation();
 		for (int i = 0; i < famCount; i++)
 		{
             EntityType entityType = famType;
@@ -198,13 +211,16 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * famCount) - famCount);
 			}
 
-            Location caster = getLocation();
             targetLoc.setPitch(caster.getPitch());
             targetLoc.setYaw(caster.getYaw());
 			if (entityType != null) {
                 final LivingEntity entity = spawnFamiliar(targetLoc, entityType, targetEntity);
 				if (entity != null)
 				{
+                    if (entityName != null && !entityName.isEmpty())
+                    {
+                        entity.setCustomName(entityName);
+                    }
                     if (!loot)
                     {
                         entity.setMetadata("nodrops", new FixedMetadataValue(mage.getController().getPlugin(), true));

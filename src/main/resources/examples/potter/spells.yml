@@ -2520,13 +2520,14 @@ piertotum:
            effect: step_sound
     parameters:
         allow_max_range: true
-        range: 2
+        range: 32
+        spawn_range: 2
         cooldown: 8000
         type: iron_golem
         count: 1
         reason: custom
         undo: 10000
-        orient: true
+        name: Animated Statue
     costs:
         xp: 15
     costs:
