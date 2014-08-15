@@ -32,15 +32,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -1928,7 +1920,13 @@ public class MagicController implements Listener, MageController {
 		Entity damager = event.getDamager();
 		UndoList undoList = getEntityUndo(damager);
 		if (undoList != null) {
-			undoList.modify(entity);
+            // Prevent dropping items from frames,
+            // or breaking frames in general
+            if (entity instanceof Hanging) {
+                event.setCancelled(true);
+                return;
+            }
+            undoList.modify(entity);
 		}
         if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
         {
@@ -1975,7 +1973,11 @@ public class MagicController implements Listener, MageController {
 
         UndoList undoList = getPendingUndo(location);
         if (undoList != null) {
-            undoList.modify(event.getEntity());
+            // Prevent item drops, but still remove it
+            // Else it'll probably just break again.
+            event.setCancelled(true);
+            undoList.modify(entity);
+            entity.remove();
         }
     }
 
@@ -1989,6 +1991,12 @@ public class MagicController implements Listener, MageController {
             Entity entity = event.getEntity();
             entity.setMetadata("broken", new FixedMetadataValue(plugin, true));
             undoList.modify(entity);
+
+            // Prevent item drops, but still remove it
+            // Else it'll probably just break again.
+            event.setCancelled(true);
+            undoList.modify(entity);
+            entity.remove();
         }
     }
 	
