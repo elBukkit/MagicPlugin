@@ -265,7 +265,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             runnables = null;
         }
 
-        if (blockList == null) return;
+        if (blockList == null) {
+            undoEntityEffects();
+            return;
+        }
 
         // Block changes will be performed in a batch
         UndoBatch batch = new UndoBatch(this);
