@@ -262,6 +262,15 @@ public class Target implements Comparable<Target>
         {
             location = location.add(offset);
         }
+
+    }
+    
+    public void setDirection(Vector direction)
+    {
+        if (location != null)
+        {
+            location = location.setDirection(direction);
+        }
     }
 
     public void setWorld(World world)

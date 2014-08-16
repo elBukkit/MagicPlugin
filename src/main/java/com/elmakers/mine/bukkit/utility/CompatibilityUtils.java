@@ -207,7 +207,8 @@ public class CompatibilityUtils extends NMSUtils {
             }
             return class_NBTTagList_consructor.newInstance(value);
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
+
         }
         return null;
     }

@@ -295,6 +295,9 @@ public abstract class TargetingSpell extends BaseSpell {
         if (targetLocationOffset != null) {
             target.add(targetLocationOffset);
         }
+        if (targetDirectionOverride != null) {
+            target.setDirection(targetDirectionOverride);
+        }
         if (targetLocationWorldName != null && targetLocationWorldName.length() > 0) {
             Location location = target.getLocation();
             if (location != null) {
@@ -308,9 +311,7 @@ public abstract class TargetingSpell extends BaseSpell {
                 previous = mage.getLocation();
             }
             location = target.getLocation().clone();
-            if (targetDirectionOverride != null) {
-                location = CompatibilityUtils.setDirection(location, targetDirectionOverride);
-            } else if (previous != null) {
+            if (previous != null) {
                 location.setPitch(previous.getPitch());
                 location.setYaw(previous.getYaw());
             }
