@@ -562,6 +562,7 @@ broom:
         slow_steer_speed: 0.1
         effect_sound: portal_travel
         effect_sound_interval: 120
+        effect_sound_volume: 32
 
 avadakedavra:
     icon: ink_sack:10
@@ -2474,6 +2475,8 @@ patronus:
                    class: BigBangEffect
                    explosions: 1
                    sound: wither_hurt
+                   sound_volume: 2
+                   sound_pitch: 0.8
                    color: 010101
                    color2: 111111
                    color3: 222222
