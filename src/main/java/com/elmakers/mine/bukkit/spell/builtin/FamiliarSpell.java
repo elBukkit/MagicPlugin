@@ -38,64 +38,60 @@ public class FamiliarSpell extends UndoableSpell implements Listener
     private final LinkedList<WeightedPair<String>> entityTypeProbability = new LinkedList<WeightedPair<String>>();
 
 	private final Random rand = new Random();
-	private PlayerFamiliar familiars = new PlayerFamiliar();
 	private int spawnCount = 0;
     private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
 
-	public class PlayerFamiliar
-	{
-		public List<LivingEntity> familiars = null;
+    private List<LivingEntity> familiars = null;
 
-		public boolean hasFamiliar()
-		{
-			return familiars != null;
-		}
+    public boolean hasFamiliar()
+    {
+        return familiars != null;
+    }
 
-		public void setFamiliars(List<LivingEntity> f)
-		{
-			familiars = f;
-		}
+    public void setFamiliars(List<LivingEntity> f)
+    {
+        familiars = f;
+    }
 
-		public void releaseFamiliar()
-		{
-			if (familiars != null)
-			{
-				for (LivingEntity familiar : familiars)
-				{
-					familiar.setHealth(0);
-				}
-				familiars = null;
-			}
-		}
+    public void releaseFamiliars()
+    {
+        if (familiars != null)
+        {
+            for (LivingEntity familiar : familiars)
+            {
+                familiar.remove();
+            }
+            familiars = null;
+        }
+    }
 
-		public void releaseFamiliar(Entity entity)
-		{
-			if (familiars != null)
-			{
-				List<LivingEntity> iterate = new ArrayList<LivingEntity>(familiars);
-				for (LivingEntity familiar : iterate)
-				{
-					if (familiar.getUniqueId() == entity.getUniqueId()) {
-						familiar.setHealth(0);
-						familiars.remove(familiar);
-					}
-				}
-				familiars = null;
-			}
-		}
+    public void releaseFamiliar(Entity entity)
+    {
+        if (familiars != null)
+        {
+            List<LivingEntity> iterate = new ArrayList<LivingEntity>(familiars);
+            for (LivingEntity familiar : iterate)
+            {
+                if (familiar.getUniqueId() == entity.getUniqueId()) {
+                    familiar.remove();
+                    familiars.remove(familiar);
+                }
+            }
+            familiars = null;
+        }
+}
 
-		public boolean isFamiliar(Entity e)
-		{
-			if (familiars == null) return false;
+    public boolean isFamiliar(Entity e)
+    {
+        if (familiars == null) return false;
 
-			for (LivingEntity c : familiars)
-			{
-				if (c.getEntityId() == e.getEntityId()) return true;
-			}
+        for (LivingEntity c : familiars)
+        {
+            if (c.getEntityId() == e.getEntityId()) return true;
+        }
 
-			return false;
-		}
-	}
+        return false;
+    }
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -116,29 +112,27 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		Block targetBlock = originalTarget;
 		LivingEntity targetEntity = null;
 
-		boolean hasFamiliar = familiars.hasFamiliar();
         boolean track = parameters.getBoolean("track", true);
         boolean loot = parameters.getBoolean("loot", false);
         boolean setTarget = parameters.getBoolean("set_target", true);
         double spawnRange = parameters.getInt("spawn_range", 0);
         String entityName = parameters.getString("name", "");
 
-		if (hasFamiliar && track)
+		if (hasFamiliar() && track)
 		{   // Dispel familiars if you target them and cast
-			boolean isFamiliar = target.hasEntity() && familiars.isFamiliar(target.getEntity());
+			boolean isFamiliar = target.hasEntity() && isFamiliar(target.getEntity());
 			if (isFamiliar)
 			{
 				checkListener();
-				familiars.releaseFamiliar(target.getEntity());
+				releaseFamiliar(target.getEntity());
 				return SpellResult.COST_FREE;
 			}
 
-			familiars.releaseFamiliar();
+			releaseFamiliars();
 		}
 
 		if (target.hasEntity())
 		{
-
 			targetBlock = targetBlock.getRelative(BlockFace.SOUTH);
 			Entity e = target.getEntity();
 			if (e instanceof LivingEntity)
@@ -248,7 +242,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 		}
 
         if (track) {
-            familiars.setFamiliars(newFamiliars);
+            setFamiliars(newFamiliars);
             checkListener();
         }
 		return SpellResult.CAST;
@@ -287,7 +281,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 
 	protected void checkListener()
 	{
-		if (familiars.hasFamiliar())
+		if (hasFamiliar())
 		{
 			mage.registerEvent(SpellEventType.PLAYER_QUIT, this);
 		}
@@ -300,9 +294,9 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 	@EventHandler
 	public void onPlayerQuit(PlayerEvent event)
 	{
-		if (familiars.hasFamiliar())
+		if (hasFamiliar())
 		{
-			familiars.releaseFamiliar();
+			releaseFamiliars();
 			checkListener();
 		}
 	}
