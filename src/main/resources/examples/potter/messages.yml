@@ -775,6 +775,10 @@ wands:
         name: Beaded Handbag
         description: It's quite large on the inside
 
+    key:
+        name: Key
+        description: Used to unlock a door
+
     deluminator:
         name: Deluminator
         description: Snuff out all light in the area

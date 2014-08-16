@@ -1832,6 +1832,7 @@ glacius:
         ice: ice
         undo: 5000
         entity_undo: false
+        bypass_build: true
     costs:
         xp: 75
 
@@ -1873,6 +1874,7 @@ glaciusduo:
         ice: ice
         undo: 8000
         entity_undo: false
+        bypass_build: true
     costs:
         xp: 125
 
@@ -3327,6 +3329,17 @@ wingardium:
              iterations: 8
              particle: spell
              orient: false
+        no_target:
+        -  class: EffectSingle
+           location: origin
+           sound: enderdragon_wings
+           sound_pitch: 2
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particles: 2
+             particle: spell
+             lengthGrow: 0.4
     parameters:
         allow_max_range: false
         range: 32
