@@ -12,6 +12,7 @@
  - Familiars don't drop loot when killed
  - Projectiles and explosions will add hanging entities to the undo queue when broken
  - Fix shrunken heads (UUIDs.. checking for lag)
+ - Fix target direction ovveride parameters, useful for FX
  
 ## 3.5
 

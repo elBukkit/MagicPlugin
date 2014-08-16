@@ -1126,7 +1126,7 @@ deprimo:
         falling: true
         check_destructible: true
         destructible: destructible
-        radius: 2
+        radius: 3
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
@@ -1261,11 +1261,12 @@ evanesco:
         target_type: LivingEntity
         allow_max_range: false
         range: 8
-        entity_damage: 16
+        entity_damage: 10
+        player_damage: 8
         check_destructible: true
         target_breakables: 2
         undo: 10000
-        cooldown: 5000
+        cooldown: 3000
         bypass_build: true
         entity_undo: false
     costs:
@@ -1803,11 +1804,21 @@ glacius:
         cast:
         -  class: EffectSingle
            sound: glass
-        -  class: EffectSingle
            effectlib:
              class: ConeEffect
              iterations: 12
              particle: snowball_poof
+             particles: 3
+             lengthGrow: 0.3
+        - class: EffectSingle
+          location: target
+          target_offset: 0,2,0
+          effectlib:
+             class: SphereEffect
+             iterations: 10
+             period: 4
+             particle: snowball_poof
+             radius: 5
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1815,7 +1826,7 @@ glacius:
         radius: 2
         vertical_search_distance: 8
         transparent: transparent_to_construction
-        player_damage: 4
+        player_damage: 1
         entity_damage: 2
         slowness: 1
         ice: ice
@@ -1834,11 +1845,21 @@ glaciusduo:
         cast:
         -  class: EffectSingle
            sound: glass
-        -  class: EffectSingle
            effectlib:
              class: ConeEffect
              iterations: 12
              particle: snowball_poof
+             particles: 5
+             lengthGrow: 0.2
+        - class: EffectSingle
+          location: target
+          target_offset: 0,2,0
+          effectlib:
+             class: SphereEffect
+             iterations: 15
+             period: 3
+             particle: snowball_poof
+             radius: 8
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1846,8 +1867,8 @@ glaciusduo:
         radius: 4
         vertical_search_distance: 8
         transparent: transparent_to_construction
-        player_damage: 6
-        entity_damage: 3
+        player_damage: 3
+        entity_damage: 6
         slowness: 2
         ice: ice
         undo: 8000
@@ -2524,9 +2545,16 @@ piertotum:
     effects:
         cast:
         -  class: EffectSingle
-           sound: anvil_use
-        -  class: EffectTrail
-           effect: step_sound
+           sound: irongolem_walk
+           sound_pitch: 0.2
+           effectlib:
+             class: VortexEffect
+             iterations: 4
+             particle: smoke
+             helixes: 16
+             circles: 7
+             grow: 0.1
+             radius: 1
     parameters:
         allow_max_range: true
         range: 32
@@ -2712,7 +2740,7 @@ reducio:
         target: other_entity
         allow_max_range: false
         range: 16
-        player_damage: 1
+        player_damage: 6
         entity_damage: 10
         target_breakables: 1
     costs:
@@ -3270,6 +3298,7 @@ wingardium:
     category: charms
     class: RaiseSpell
     worth: 15
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -3278,14 +3307,26 @@ wingardium:
            sound_pitch: 2
            effectlib:
              class: ConeEffect
-             iterations: 10
+             iterations: 8
+             particles: 2
              particle: spell
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,0.5,0
+           target_offset: 0.5,5.5,0.5
            location: target
-           color: FF8888
-           firework: burst
+           effectlib:
+             class: SphereEffect
+             iterations: 48
+             period: 2
+             particle: spell
+             radius: 0.8
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particle: spell
+             orient: false
     parameters:
         allow_max_range: false
         range: 32
@@ -3297,6 +3338,10 @@ wingardium:
         bypass_build: true
         target_breakables: 2
         bypass_backfire: false
+        cooldown: 1000
+        otdy: 10
+        otdx: 0
+        otdz: 0
     costs:
         xp: 80
 
