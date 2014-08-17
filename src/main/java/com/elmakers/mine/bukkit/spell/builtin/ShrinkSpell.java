@@ -76,7 +76,8 @@ public class ShrinkSpell extends BlockSpell
 				ownerName = ((Player)li).getName();
 			}
 			else
-			{	
+			{
+                itemName = li.getType().getName() + " Head";
 				switch (li.getType()) {
 					case CREEPER:
 						data = 4;
@@ -96,8 +97,8 @@ public class ShrinkSpell extends BlockSpell
 				}
 			}
 
-            if (ownerName != null) {
-                itemName = li.getType().getName() + "'s Head";
+            if (itemName == null && ownerName != null) {
+                itemName = ownerName + "'s Head";
             }
 			
 			Location targetLocation = targetEntity.getLocation();
@@ -171,6 +172,13 @@ public class ShrinkSpell extends BlockSpell
             skullData.setOwner(ownerName);
         }
         shrunkenHead.setItemMeta(meta);
+        if (ownerName != null) {
+            shrunkenHead = InventoryUtils.getCopy(shrunkenHead);
+            ItemMeta itemMeta = shrunkenHead.getItemMeta();
+
+            shrunkenHead.setItemMeta(itemMeta);
+            InventoryUtils.setMeta(shrunkenHead, "SkullOwner", ownerName);
+        }
         location.getWorld().dropItemNaturally(location, shrunkenHead);
 	}
 }
