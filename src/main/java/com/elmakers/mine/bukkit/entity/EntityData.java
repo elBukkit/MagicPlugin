@@ -3,9 +3,7 @@ package com.elmakers.mine.bukkit.entity;
 import java.util.Collection;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import org.bukkit.Art;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Skeleton.SkeletonType;
@@ -25,6 +23,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected EntityType type;
     protected Art art;
     protected BlockFace facing;
+    protected Rotation rotation;
     protected ItemStack item;
     protected double health = 1;
     protected boolean isBaby;
@@ -60,9 +59,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity instanceof Hanging) {
             Hanging hanging = (Hanging)entity;
             facing = hanging.getFacing();
-
-            // Bukkit gives us a one-off location, it's the attached block)
-            this.location = location.getBlock().getRelative(facing.getOppositeFace()).getLocation();
+            this.location = location.getBlock().getLocation();
+        }
+        if (entity instanceof ItemFrame) {
+            this.rotation = ((ItemFrame)entity).getRotation();
         }
 
         if (entity instanceof LivingEntity) {
@@ -109,6 +109,76 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     /**
+     * Thanks you, Chilinot!
+     * @param loc
+     * @param art
+     * @param facing
+     * @return
+     */
+    private Location getPaintingOffset(Location loc, Art art, BlockFace facing) {
+        switch(art) {
+
+            // 1x1
+            case ALBAN:
+            case AZTEC:
+            case AZTEC2:
+            case BOMB:
+            case KEBAB:
+            case PLANT:
+            case WASTELAND:
+                return loc; // No calculation needed.
+
+            // 1x2
+            case GRAHAM:
+            case WANDERER:
+                return loc.getBlock().getLocation().add(0, -1, 0);
+
+            // 2x1
+            case CREEBET:
+            case COURBET:
+            case POOL:
+            case SEA:
+            case SUNSET:	// Use same as 4x3
+
+                // 4x3
+            case DONKEYKONG:
+            case SKELETON:
+                if(facing == BlockFace.WEST)
+                    return loc.getBlock().getLocation().add(0, 0, -1);
+                else if(facing == BlockFace.SOUTH)
+                    return loc.getBlock().getLocation().add(-1, 0, 0);
+                else
+                    return loc;
+
+                // 2x2
+            case BUST:
+            case MATCH:
+            case SKULL_AND_ROSES:
+            case STAGE:
+            case VOID:
+            case WITHER:	// Use same as 4x2
+
+                // 4x2
+            case FIGHTERS:  // Use same as 4x4
+
+                // 4x4
+            case BURNINGSKULL:
+            case PIGSCENE:
+            case POINTER:
+                if(facing == BlockFace.WEST)
+                    return loc.getBlock().getLocation().add(0, -1, -1);
+                else if(facing == BlockFace.SOUTH)
+                    return loc.getBlock().getLocation().add(-1, -1, 0);
+                else
+                    return loc.add(0, -1, 0);
+
+                // Unsupported artwork
+            default:
+                return loc;
+        }
+    }
+
+    /**
      * API Implementation
      */
 
@@ -150,10 +220,20 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 // Nope!
             break;
             case PAINTING:
-                spawned = CompatibilityUtils.spawnPainting(location, facing, art);
+                Location attach = location.getBlock().getRelative(facing.getOppositeFace()).getLocation();
+                spawned = location.getWorld().spawn(attach, Painting.class);
+                Painting painting = (Painting)spawned;
+
+                // Not sure why the double-offset is needed here.. but it seems to work! :P
+                Location offset = getPaintingOffset(getPaintingOffset(location, art, facing), art, facing);
+
+                painting.teleport(offset);
+                painting.setFacingDirection(facing, true);
+                painting.setArt(art, true);
             break;
             case ITEM_FRAME:
-                spawned = CompatibilityUtils.spawnItemFrame(location, facing, item);
+                Location frameAttach = location.getBlock().getRelative(facing.getOppositeFace()).getLocation();
+                spawned = CompatibilityUtils.spawnItemFrame(frameAttach, facing, rotation, item);
                 break;
             case DROPPED_ITEM:
                 // TODO: Handle this, would need to store item data.
