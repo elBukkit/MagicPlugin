@@ -117,7 +117,7 @@ aguamenti:
         xp: 30
 
 alohomora:
-    icon: wood_door
+    icon: shears
     category: transfiguration
     class: ConstructSpell
     worth: 50
