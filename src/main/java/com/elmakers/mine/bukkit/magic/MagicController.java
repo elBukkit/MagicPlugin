@@ -1947,8 +1947,8 @@ public class MagicController implements Listener, MageController {
         if (isMage(entity)) {
 			Mage mage = getMage(entity);
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                Object lastUndo = ((com.elmakers.mine.bukkit.magic.Mage)mage).getLastUndoList();
-                if (lastUndo instanceof UndoList) {
+                Object lastUndo = mage.getLastUndoList();
+                if (lastUndo != null && lastUndo instanceof UndoList) {
                     blockList = (UndoList) lastUndo;
                 }
             }

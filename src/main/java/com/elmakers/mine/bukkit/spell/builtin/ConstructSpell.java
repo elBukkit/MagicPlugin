@@ -77,8 +77,8 @@ public class ConstructSpell extends BrushSpell
 			if (targetLocation2 != null) {
 				this.targetBlock = targetLocation2.getBlock();
 			}
-			
-			if (targetBlock == null) {
+
+			if (targetBlock == null || !targetBlock.getWorld().equals(target.getWorld())) {
 				targetBlock = target;
 				activate();
 				return SpellResult.TARGET_SELECTED;
