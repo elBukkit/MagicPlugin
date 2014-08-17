@@ -281,13 +281,13 @@ public class CompatibilityUtils extends NMSUtils {
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = paintingConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
             if (newEntity != null) {
-                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
 
                 newPainting = (Painting)bukkitEntity;
-                newPainting.setArt(art, true);
                 newPainting.setFacingDirection(facing, true);
+                newPainting.setArt(art, true);
+                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -295,7 +295,7 @@ public class CompatibilityUtils extends NMSUtils {
         return newPainting;
     }
 
-    public static ItemFrame spawnItemFrame(Location location, BlockFace facing, ItemStack item)
+    public static ItemFrame spawnItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item)
     {
         ItemFrame newItemFrame = null;
         try {
@@ -306,13 +306,14 @@ public class CompatibilityUtils extends NMSUtils {
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = itemFrameConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
             if (newEntity != null) {
-                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
 
                 newItemFrame = (ItemFrame)bukkitEntity;
                 newItemFrame.setItem(getCopy(item));
                 newItemFrame.setFacingDirection(facing, true);
+                newItemFrame.setRotation(rotation);
+                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
