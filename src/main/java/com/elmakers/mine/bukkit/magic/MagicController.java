@@ -806,7 +806,6 @@ public class MagicController implements Listener, MageController {
                         break;
                     }
                     scheduledUndo.poll();
-                    undo.setEntityUndo(false);
                     undo.undo();
                 }
             }

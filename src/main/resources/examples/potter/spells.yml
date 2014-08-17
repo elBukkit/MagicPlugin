@@ -113,6 +113,7 @@ aguamenti:
         undo: 1000
         disable_physics: 8000
         bypass_build: true
+        entity_undo: false
     costs:
         xp: 30
 
@@ -2106,6 +2107,7 @@ incendio:
         cooldown: 3000
         bypass_build: true
         target_breakables: 1
+        entity_undo: false
     costs:
         xp: 100
 

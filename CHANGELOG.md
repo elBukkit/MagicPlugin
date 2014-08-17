@@ -13,6 +13,7 @@
  - Projectiles and explosions will add hanging entities to the undo queue when broken
  - Fix shrunken heads (UUIDs.. checking for lag)
  - Fix target direction ovveride parameters, useful for FX
+ - Fix painting copy/undo (Thanks, Chilinot!)
  
 ## 3.5
 
