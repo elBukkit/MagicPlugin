@@ -248,6 +248,7 @@ apparate:
         allow_passthrough: false
         allow_decend: false
         range: 16
+        transparent: apparate
     costs:
         xp: 80
 
@@ -300,7 +301,7 @@ apparatemaxima:
         allow_decend: true
         prevent_passthrough: prevent_passthrough
         range: 256
-        transparent: apparate
+        transparent: apparatemaxima
     costs:
         xp: 200
 
