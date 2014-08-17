@@ -30,12 +30,18 @@ public class FrostSpell extends BlockSpell
 
 	public class FrostAction extends SimpleBlockAction
 	{
-		private Material iceMaterial;
+		private final Material iceMaterial;
+        private final boolean freezeWater;
+        private final boolean freezeLava;
+        private final boolean freezeFire;
 		
-		public FrostAction(MageController controller, UndoList undoList, Material iceMaterial)
+		public FrostAction(MageController controller, UndoList undoList, Material iceMaterial, boolean freezeWater, boolean freezeLava, boolean freezeFire)
 		{
 			super(controller, undoList);
 			this.iceMaterial = iceMaterial;
+            this.freezeLava = freezeLava;
+            this.freezeWater = freezeWater;
+            this.freezeFire = freezeFire;
 		}
 		
 		@SuppressWarnings("deprecation")
@@ -46,19 +52,19 @@ public class FrostSpell extends BlockSpell
 				return SpellResult.NO_TARGET;
 			}
 			Material material = Material.SNOW;
-			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+			if ((block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) && freezeWater)
 			{
 				material = iceMaterial;
 			}
-			else if (block.getType() == Material.LAVA)
+			else if (block.getType() == Material.LAVA && freezeLava)
 			{
 				material = Material.COBBLESTONE;
 			}
-			else if (block.getType() == Material.STATIONARY_LAVA)
+			else if (block.getType() == Material.STATIONARY_LAVA && freezeLava)
 			{
 				material = Material.OBSIDIAN;
 			}
-			else if (block.getType() == Material.FIRE)
+			else if (block.getType() == Material.FIRE && freezeFire)
 			{
 				material = Material.AIR;
 			}
@@ -99,6 +105,10 @@ public class FrostSpell extends BlockSpell
 		int slownessDuration = parameters.getInt("slowness_duration", DEFAULT_SLOWNESS_DURATION);
 		Material iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
 
+        boolean freezeWater = parameters.getBoolean("freeze_water", true);
+        boolean freezeLava = parameters.getBoolean("freeze_lava", true);
+        boolean freezeFire = parameters.getBoolean("freeze_fire", true);
+
 		if (target.hasEntity())
 		{
 			Entity targetEntity = target.getEntity();
@@ -134,7 +144,7 @@ public class FrostSpell extends BlockSpell
 
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = (int)(mage.getRadiusMultiplier() * radius);		
-		FrostAction action = new FrostAction(controller, getUndoList(), iceMaterial);
+		FrostAction action = new FrostAction(controller, getUndoList(), iceMaterial, freezeWater, freezeLava, freezeFire);
 
 		if (radius <= 1)
 		{

@@ -1834,6 +1834,7 @@ glacius:
         undo: 5000
         entity_undo: false
         bypass_build: true
+        freeze_lava: false
     costs:
         xp: 75
 
@@ -1876,6 +1877,7 @@ glaciusduo:
         undo: 8000
         entity_undo: false
         bypass_build: true
+        freeze_lava: true
     costs:
         xp: 125
 
