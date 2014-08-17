@@ -313,7 +313,13 @@ public class CompatibilityUtils extends NMSUtils {
                 newItemFrame.setItem(getCopy(item));
                 newItemFrame.setFacingDirection(facing, true);
                 newItemFrame.setRotation(rotation);
-                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+
+                // This will fail sometimes ... the entity is already tracked?
+                try {
+                    addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                } catch (Exception ex) {
+
+                }
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
