@@ -1963,8 +1963,10 @@ public class MagicController implements Listener, MageController {
 		return blockList;
 	}
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onHangingBreak(HangingBreakEvent event) {
+        if (event.isCancelled()) return;
+
         Entity entity = event.getEntity();
         Location location = entity.getLocation();
         // Early-out for performance, if we already detected the Entity
@@ -1980,8 +1982,10 @@ public class MagicController implements Listener, MageController {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
+        if (event.isCancelled()) return;
+
         Entity breakingEntity = event.getRemover();
         if (breakingEntity == null) return;
 
