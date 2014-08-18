@@ -1918,10 +1918,8 @@ public class MagicController implements Listener, MageController {
 
 		Entity damager = event.getDamager();
 		UndoList undoList = getEntityUndo(damager);
-        long now = System.currentTimeMillis();
-		if (undoList != null && undoList.getModifiedTime() > now - undoTimeWindow) {
+		if (undoList != null) {
             // Prevent dropping items from frames,
-            // or breaking frames in general
             undoList.modify(entity);
             if (entity instanceof ItemFrame) {
                 ItemFrame frame = (ItemFrame)entity;
@@ -1949,7 +1947,11 @@ public class MagicController implements Listener, MageController {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 Object lastUndo = mage.getLastUndoList();
                 if (lastUndo != null && lastUndo instanceof UndoList) {
-                    blockList = (UndoList) lastUndo;
+                    UndoList undoList = (UndoList)lastUndo;
+                    long now = System.currentTimeMillis();
+                    if (undoList.getModifiedTime() > now - undoTimeWindow) {
+                        blockList = (UndoList)lastUndo;
+                    }
                 }
             }
 		} else if (entity.hasMetadata("MagicBlockList")) {
