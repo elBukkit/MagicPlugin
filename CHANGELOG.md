@@ -5,6 +5,7 @@
  - More effect player controls
  - Add MageController.isPassthrough(Location)
  - Add Mage.getDisplayName
+ - Drop support for 1.6
 
 ## 1.5
 
