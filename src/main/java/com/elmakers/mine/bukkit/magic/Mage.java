@@ -20,6 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -619,11 +620,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void loadSpells(ConfigurationSection config) {
         if (config == null) return;
 
-        // TODO: Handle disabled/removed spells?
-        for (Spell spell : spells.values()) {
+        Collection<MageSpell> currentSpells = new ArrayList<MageSpell>(spells.values());
+        for (MageSpell spell : currentSpells) {
             String key = spell.getKey();
             if (config.contains(key)) {
-                spell.loadTemplate(key, config.getConfigurationSection(key));
+                ConfigurationSection template = config.getConfigurationSection(key);
+                String className = template.getString("class");
+                // Check for spells that have changed class
+                if (!spell.getClass().getName().contains(className)) {
+                    ConfigurationSection spellData = new MemoryConfiguration();
+                    spell.save(spellData);
+                    spells.remove(key);
+                    Spell newSpell = getSpell(key);
+                    if (newSpell != null && newSpell instanceof MageSpell) {
+                        ((MageSpell)newSpell).load(spellData);
+                    }
+                } else {
+                    spell.loadTemplate(key, template);
+                }
+            } else {
+                spells.remove(key);
             }
         }
     }

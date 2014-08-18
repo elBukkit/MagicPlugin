@@ -14,6 +14,8 @@
  - Fix shrunken heads (UUIDs.. checking for lag)
  - Fix target direction ovveride parameters, useful for FX
  - Fix painting copy/undo (Thanks, Chilinot!)
+ - Fix /magic load working with spells that have changed class
+ - Fix enchantment path/level scaling (all levels were maxed)
  
 ## 3.5
 
