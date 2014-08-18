@@ -1963,9 +1963,10 @@ public class MagicController implements Listener, MageController {
 		return blockList;
 	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
-        if (event.isCancelled()) return;
+
+        Bukkit.getLogger().info("Hanging break: " + event.getCause());
 
         Entity entity = event.getEntity();
         Location location = entity.getLocation();
@@ -1982,9 +1983,10 @@ public class MagicController implements Listener, MageController {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-        if (event.isCancelled()) return;
+
+        Bukkit.getLogger().info("Hanging break: " + event.getCause());
 
         Entity breakingEntity = event.getRemover();
         if (breakingEntity == null) return;
@@ -2003,7 +2005,7 @@ public class MagicController implements Listener, MageController {
         }
     }
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		Entity explodingEntity = event.getEntity();
 		if (explodingEntity == null) return;
