@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class FlingSpell extends UndoableSpell implements Listener
 {
-	private final long safetyLength = 20000;
+	private long safetyLength = 20000;
 	private long lastFling = 0;
 
 	protected int defaultMaxSpeedAtElevation = 64;
@@ -48,6 +48,7 @@ public class FlingSpell extends UndoableSpell implements Listener
 		int maxSpeedAtElevation = parameters.getInt("cruising_altitude", defaultMaxSpeedAtElevation);
 		double minMagnitude = parameters.getDouble("min_speed", defaultMinMagnitude);
 		double maxMagnitude = parameters.getDouble("max_speed", defaultMaxMagnitude);
+        safetyLength = parameters.getLong("safety", safetyLength);
 		
 		while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
 		{
@@ -64,13 +65,14 @@ public class FlingSpell extends UndoableSpell implements Listener
 			velocity.setY(0);
 		}
 
-
 		velocity.multiply(magnitude);
 
         registerVelocity(entity);
 		entity.setVelocity(velocity);
 
-		mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+        if (safetyLength > 0) {
+            mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
+        }
 		lastFling = System.currentTimeMillis();
         registerForUndo();
 		return SpellResult.CAST;
@@ -105,6 +107,7 @@ public class FlingSpell extends UndoableSpell implements Listener
 		parameters.add("cruising_altitude");
 		parameters.add("min_speed");
 		parameters.add("max_speed");
+        parameters.add("safety");
 	}
 
     @Override
