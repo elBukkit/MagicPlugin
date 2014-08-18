@@ -1968,10 +1968,12 @@ public class MagicController implements Listener, MageController {
 
         Bukkit.getLogger().info("Hanging break: " + event.getCause());
 
-        Entity entity = event.getEntity();
-        Location location = entity.getLocation();
+        Hanging entity = event.getEntity();
         // Early-out for performance, if we already detected the Entity
         if (entity.hasMetadata("broken")) return;
+
+        Location location = entity.getLocation();
+        location = location.getBlock().getRelative(entity.getAttachedFace()).getLocation();
 
         UndoList undoList = getPendingUndo(location);
         if (undoList != null) {
@@ -1991,9 +1993,11 @@ public class MagicController implements Listener, MageController {
         Entity breakingEntity = event.getRemover();
         if (breakingEntity == null) return;
 
-        UndoList undoList = getEntityUndo(breakingEntity);
+        Hanging entity = event.getEntity();
+        Location location = entity.getLocation();
+        location = location.getBlock().getRelative(entity.getAttachedFace()).getLocation();
+        UndoList undoList = getPendingUndo(location);
         if (undoList != null) {
-            Entity entity = event.getEntity();
             entity.setMetadata("broken", new FixedMetadataValue(plugin, true));
             undoList.modify(entity);
 

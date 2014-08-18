@@ -3335,7 +3335,7 @@ wingardium:
              class: ConeEffect
              iterations: 8
              particle: spell
-             orient: false
+             autoOrient: false
         no_target:
         -  class: EffectSingle
            location: origin
