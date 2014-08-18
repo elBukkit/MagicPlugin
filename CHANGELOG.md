@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## 3.7
+
+ - Need to fix item frame / painting breakage.
+
 ## 3.6
 
- - Drop support for 1.6
+ - Drop support for Bukkit 1.6
  - Update to EffectLib 2.0 - all effect class names have changed!
  - Add "color" and "particle parameters to spells, for one-off FX color overrides.
  - Completely remove Magic.powered and Magic.protected pnodes, for good this time. (Pex!)
