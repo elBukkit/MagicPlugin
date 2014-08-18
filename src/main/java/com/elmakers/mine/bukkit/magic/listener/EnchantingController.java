@@ -38,7 +38,7 @@ public class EnchantingController implements Listener {
 			event.getEnchantsToAdd().clear();
 			int level = event.getExpLevelCost();
 			Wand wand = new Wand(controller, event.getItem());
-			if (wand.enchant(level) <= 0) {
+			if (wand.enchant(level, controller.getMage(event.getEnchanter())) <= 0) {
                 event.setCancelled(true);
 			} else {
                 event.setCancelled(false);

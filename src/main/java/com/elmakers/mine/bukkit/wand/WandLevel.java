@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.utility.Messages;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -118,9 +118,11 @@ public class WandLevel {
         mage.sendMessage(message);
     }
 	
-	public boolean randomizeWand(Wand wand, boolean additive) {
+	public boolean randomizeWand(Mage mage, Wand wand, boolean additive) {
 		// Add random spells to the wand
-        Mage mage = wand.getActivePlayer();
+        if (mage == null) {
+            mage = wand.getActivePlayer();
+        }
 		boolean addedSpells = false;
 		Set<String> wandSpells = wand.getSpells();
 		LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();

@@ -246,7 +246,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 // Account for randomized locked wands
                 boolean wasLocked = locked;
                 locked = false;
-                randomize(level, false);
+                randomize(level, false, null);
                 locked = wasLocked;
             }
 		}
@@ -1868,25 +1868,32 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
-    public int enchant(int totalLevels) {
-        return randomize(totalLevels, true);
+    public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+        return randomize(totalLevels, true, mage);
     }
 
-	protected int randomize(int totalLevels, boolean additive) {
+    public int enchant(int totalLevels) {
+        return randomize(totalLevels, true, null);
+    }
+
+	protected int randomize(int totalLevels, boolean additive, com.elmakers.mine.bukkit.api.magic.Mage enchanter) {
+        if (enchanter == null && mage != null) {
+            enchanter = mage;
+        }
         WandUpgradePath path = getPath();
 		if (path == null) {
-            if (mage != null) {
-                mage.sendMessage(Messages.get("wand.no_path"));
+            if (enchanter != null) {
+                enchanter.sendMessage(Messages.get("wand.no_path"));
             }
             return 0;
         }
 
         int minLevel = path.getMinLevel();
         if (totalLevels < minLevel) {
-            if (mage != null) {
+            if (enchanter != null) {
                 String levelMessage = Messages.get("wand.need_more_levels");
                 levelMessage = levelMessage.replace("$levels", Integer.toString(minLevel));
-                mage.sendMessage(levelMessage);
+                enchanter.sendMessage(levelMessage);
             }
             return 0;
         }
@@ -1900,28 +1907,28 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         boolean modified = true;
 		while (addLevels >= minLevel && modified) {
             WandLevel level = path.getLevel(addLevels);
-            modified = level.randomizeWand(this, additive);
+            modified = level.randomizeWand(enchanter, this, additive);
 			totalLevels -= maxLevel;
             if (modified) {
-                if (mage != null) {
-                    path.enchanted(mage);
+                if (enchanter != null) {
+                    path.enchanted(enchanter);
                 }
                 levels += addLevels;
             } else if (path.hasUpgrade()) {
-                if (path.checkUpgrade(mage, this)) {
+                if (path.checkUpgrade(enchanter, this)) {
                     WandUpgradePath newPath = path.getUpgrade();
                     if (newPath == null) {
-                        mage.sendMessage("Configuration issue, please check logs");
+                        enchanter.sendMessage("Configuration issue, please check logs");
                         controller.getLogger().warning("Invalid upgrade path: " + path.getUpgrade());
                     } else {
-                        mage.sendMessage(Messages.get("wand.level_up").replace("$path", newPath.getName()));
-                        path.upgraded(this, mage);
+                        enchanter.sendMessage(Messages.get("wand.level_up").replace("$path", newPath.getName()));
+                        path.upgraded(this, enchanter);
                         this.path = newPath.getKey();
                         levels += addLevels;
                     }
                 }
-            } else if (mage != null) {
-                mage.sendMessage(Messages.get("wand.fully_enchanted"));
+            } else if (enchanter != null) {
+                enchanter.sendMessage(Messages.get("wand.fully_enchanted"));
             }
 			addLevels = Math.min(totalLevels, maxLevel);
 			additive = true;

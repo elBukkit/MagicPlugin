@@ -2,8 +2,8 @@ package com.elmakers.mine.bukkit.wand;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.magic.Mage;
-import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.Messages;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -56,7 +56,7 @@ public class WandUpgradePath {
     private int minLevel = 10;
     private int maxLevel = 50;
 
-    public WandUpgradePath(MagicController controller, String key, WandUpgradePath inherit, ConfigurationSection template)
+    public WandUpgradePath(MageController controller, String key, WandUpgradePath inherit, ConfigurationSection template)
     {
         this.parent = inherit;
         this.key = key;
@@ -82,13 +82,13 @@ public class WandUpgradePath {
         load(controller, key, template);
     }
 
-    public WandUpgradePath(MagicController controller, String key, ConfigurationSection template) {
+    public WandUpgradePath(MageController controller, String key, ConfigurationSection template) {
         this.key = key;
         this.parent = null;
         load(controller, key, template);
     }
 
-    protected void load(MagicController controller, String key, ConfigurationSection template) {
+    protected void load(MageController controller, String key, ConfigurationSection template) {
         // Cache spells, mainly used for spellbooks
         ConfigurationSection spellSection = template.getConfigurationSection("spells");
         if (spellSection != null) {
@@ -214,7 +214,7 @@ public class WandUpgradePath {
         return levelMap.get(level);
     }
 
-    protected static WandUpgradePath getPath(MagicController controller, String key, ConfigurationSection configuration)
+    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration)
     {
         WandUpgradePath path = paths.get(key);
         if (path == null) {
@@ -240,7 +240,7 @@ public class WandUpgradePath {
         return path;
     }
 
-    public static void loadPaths(MagicController controller, ConfigurationSection configuration) {
+    public static void loadPaths(MageController controller, ConfigurationSection configuration) {
         paths.clear();
         Set<String> pathKeys = configuration.getKeys(false);
         for (String key : pathKeys)
