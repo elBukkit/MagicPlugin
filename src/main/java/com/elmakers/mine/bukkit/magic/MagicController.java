@@ -1915,18 +1915,18 @@ public class MagicController implements Listener, MageController {
 		if (event.isCancelled()) return;
 		Entity entity = event.getEntity();
 		if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
-		
+
 		Entity damager = event.getDamager();
 		UndoList undoList = getEntityUndo(damager);
         long now = System.currentTimeMillis();
 		if (undoList != null && undoList.getModifiedTime() > now - undoTimeWindow) {
             // Prevent dropping items from frames,
             // or breaking frames in general
-            if (entity instanceof Hanging) {
-                event.setCancelled(true);
-                return;
-            }
             undoList.modify(entity);
+            if (entity instanceof ItemFrame) {
+                ItemFrame frame = (ItemFrame)entity;
+                frame.setItem(null);
+            }
 		}
         if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
         {
