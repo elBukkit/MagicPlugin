@@ -86,6 +86,9 @@ public class AlterSpell extends BlockSpell
 		if (mage.isIndestructible(targetBlock)) {
 			return SpellResult.NO_TARGET;
 		}
+        if (!isDestructible(targetBlock)) {
+            return SpellResult.NO_TARGET;
+        }
 
 		int originalData = targetBlock.getData();
 

@@ -1910,7 +1910,7 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.isCancelled()) return;
 		Entity entity = event.getEntity();

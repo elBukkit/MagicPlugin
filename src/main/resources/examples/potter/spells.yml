@@ -3150,6 +3150,8 @@ colorvaria:
         undo: 5000
         bypass_build: true
         bypass_backfire: true
+        check_destructible: true
+        destructible: colorable
     costs:
         xp: 90
 
