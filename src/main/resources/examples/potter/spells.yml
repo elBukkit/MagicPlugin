@@ -2747,7 +2747,7 @@ reducio:
         target: other_entity
         allow_max_range: false
         range: 16
-        player_damage: 6
+        player_damage: 1
         entity_damage: 10
         target_breakables: 1
     costs:
