@@ -1247,11 +1247,10 @@ erecto:
 
 evanesco:
     icon: bone
-    category: charms
-    pvp_restricted: true
+    category: transfiguration
+    class: ConstructSpell
+    worth: 30
     cast_on_no_target: true
-    class: DisintegrateSpell
-    worth: 25
     effects:
         cast:
         -  class: EffectSingle
@@ -1260,20 +1259,17 @@ evanesco:
            particle: drip_lava
            particle_data: 1
     parameters:
-        target: other
-        target_type: LivingEntity
         allow_max_range: false
-        range: 8
-        entity_damage: 10
-        player_damage: 8
+        range: 32
         check_destructible: true
-        target_breakables: 2
-        undo: 10000
-        cooldown: 3000
+        destructible: iron_ore
+        brush: erase
+        radius: 3
         bypass_build: true
-        entity_undo: false
+        transparent: transparent_to_construction
+        undo: 10000
     costs:
-        xp: 120
+        xp: 65
 
 expelliarmus:
     alias: expel
@@ -2071,6 +2067,7 @@ impervius:
         radius: 3
         bypass_build: true
         transparent: transparent_to_construction
+        undo: 10000
     costs:
         xp: 65
 
