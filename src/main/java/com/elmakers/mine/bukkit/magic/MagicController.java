@@ -1918,7 +1918,8 @@ public class MagicController implements Listener, MageController {
 		
 		Entity damager = event.getDamager();
 		UndoList undoList = getEntityUndo(damager);
-		if (undoList != null) {
+        long now = System.currentTimeMillis();
+		if (undoList != null && undoList.getModifiedTime() > now - undoTimeWindow) {
             // Prevent dropping items from frames,
             // or breaking frames in general
             if (entity instanceof Hanging) {
