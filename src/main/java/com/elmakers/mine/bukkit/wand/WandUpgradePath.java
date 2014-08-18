@@ -181,6 +181,7 @@ public class WandUpgradePath {
                     int previousLevel = levels[levelIndex];
                     int nextLevel = levels[nextLevelIndex];
                     distance = (float)(level - previousLevel) / (float)(nextLevel - previousLevel);
+                    break;
                 }
             }
 
