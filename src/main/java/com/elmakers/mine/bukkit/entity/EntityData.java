@@ -233,7 +233,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             break;
             case ITEM_FRAME:
                 Location frameAttach = location.getBlock().getRelative(facing.getOppositeFace()).getLocation();
-                spawned = CompatibilityUtils.spawnItemFrame(frameAttach, facing, rotation, item);
+                spawned = location.getWorld().spawn(frameAttach, ItemFrame.class);
+                ItemFrame frame = (ItemFrame)spawned;
+
+                frame.teleport(location);
+                frame.setRotation(rotation);
+                frame.setFacingDirection(facing, true);
+                frame.setItem(item);
                 break;
             case DROPPED_ITEM:
                 // TODO: Handle this, would need to store item data.

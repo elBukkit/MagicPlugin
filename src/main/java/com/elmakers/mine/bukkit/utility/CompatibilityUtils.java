@@ -270,6 +270,7 @@ public class CompatibilityUtils extends NMSUtils {
         watch(entity, 7, 0);
     }
 
+    @Deprecated
     public static Painting spawnPainting(Location location, BlockFace facing, Art art)
     {
         Painting newPainting = null;
@@ -295,6 +296,7 @@ public class CompatibilityUtils extends NMSUtils {
         return newPainting;
     }
 
+    @Deprecated
     public static ItemFrame spawnItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item)
     {
         ItemFrame newItemFrame = null;
