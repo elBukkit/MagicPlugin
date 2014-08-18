@@ -52,20 +52,32 @@ public class FrostSpell extends BlockSpell
 				return SpellResult.NO_TARGET;
 			}
 			Material material = Material.SNOW;
-			if ((block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) && freezeWater)
+			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
 			{
+                if (!freezeWater) {
+                    return SpellResult.NO_TARGET;
+                }
 				material = iceMaterial;
 			}
-			else if (block.getType() == Material.LAVA && freezeLava)
+			else if (block.getType() == Material.LAVA)
 			{
+                if (!freezeLava) {
+                    return SpellResult.NO_TARGET;
+                }
 				material = Material.COBBLESTONE;
 			}
-			else if (block.getType() == Material.STATIONARY_LAVA && freezeLava)
+			else if (block.getType() == Material.STATIONARY_LAVA)
 			{
+                if (!freezeLava) {
+                    return SpellResult.NO_TARGET;
+                }
 				material = Material.OBSIDIAN;
 			}
-			else if (block.getType() == Material.FIRE && freezeFire)
+			else if (block.getType() == Material.FIRE)
 			{
+                if (!freezeFire) {
+                    return SpellResult.NO_TARGET;
+                }
 				material = Material.AIR;
 			}
 			else if (block.getType() == Material.SNOW)
