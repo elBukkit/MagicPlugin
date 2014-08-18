@@ -1965,9 +1965,6 @@ public class MagicController implements Listener, MageController {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
-
-        Bukkit.getLogger().info("Hanging break: " + event.getCause());
-
         Hanging entity = event.getEntity();
         // Early-out for performance, if we already detected the Entity
         if (entity.hasMetadata("broken")) return;
@@ -1987,9 +1984,6 @@ public class MagicController implements Listener, MageController {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-
-        Bukkit.getLogger().info("Hanging break: " + event.getCause());
-
         Entity breakingEntity = event.getRemover();
         if (breakingEntity == null) return;
 
