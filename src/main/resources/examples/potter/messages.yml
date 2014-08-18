@@ -452,7 +452,7 @@ spells:
         description: Create a magical sphere of protection
         cast: Protego Tria!
     protegomaxima:
-        name: Protego Maximima
+        name: Protego Maxima
         description: Create a large hollow sphere
         usage: Cast twice to construct
         cancel: Protego cancelled
