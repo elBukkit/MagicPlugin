@@ -45,4 +45,11 @@ public interface UndoQueue {
      * @return The number of tasks (spells) undone.
      */
     public int undoScheduled();
+
+    /**
+     * Get the current size of the queue.
+     *
+     * @return The queue depth.
+     */
+    public int getSize();
 }
