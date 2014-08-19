@@ -2154,6 +2154,7 @@ legilimens:
         target: other
         type: inventory
         range: 32
+        bypass_backfire: true
     costs:
         xp: 100
 

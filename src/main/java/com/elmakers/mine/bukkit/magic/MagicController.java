@@ -1921,7 +1921,7 @@ public class MagicController implements Listener, MageController {
 		if (undoList != null) {
             // Prevent dropping items from frames,
             undoList.modify(entity);
-            if (entity instanceof ItemFrame) {
+            if (entity instanceof ItemFrame && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
                 ItemFrame frame = (ItemFrame)entity;
                 frame.setItem(null);
             }
