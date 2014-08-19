@@ -49,7 +49,7 @@ allow_spell_dropping: false
 enable_custom_item_hacks: false
 
 # Change the upgrade item
-wand_upgrade_item: arrow
+wand_upgrade_item: fireworks_charge
 
 # Magic items don't work quite right if they have an enchanting path
 default_wand_path:

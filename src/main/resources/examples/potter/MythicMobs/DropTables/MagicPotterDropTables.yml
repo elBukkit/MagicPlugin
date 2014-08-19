@@ -1,14 +1,14 @@
 Minion:
   Drops:
-  - gold_nugget 2
+  - iron_ingot 2
   - exp 5
 MinorBoss:
   Drops:
-  - gold_nugget 4
+  - iron_ingot 4
   - exp 20
 MidBoss:
   Drops:
-  - gold_nugget 8
+  - iron_ingot 8
   - exp 30
 Boss:
   Drops:

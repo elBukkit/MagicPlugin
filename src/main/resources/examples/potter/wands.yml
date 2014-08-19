@@ -588,91 +588,91 @@ beater:
 
 # Patronus upgrades
 patronus_wolf:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type wolf,patronus.sound wolf_howl,patronus.name Wolfie
 
 patronus_horse:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type horse, patronus.variant undead_horse
 
 patronus_chicken:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type chicken
 
 patronus_spider:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type spider
 
 patronus_cow:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type cow
 
 patronus_sheep:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type sheep
 
 patronus_pig:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type pig
 
 patronus_cat_siamese:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type ocelot, patronus.variant siamese_cat
 
 patronus_cat_black:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type ocelot, patronus.variant black_cat
 
 patronus_cat_red:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type ocelot, patronus.variant red_cat
 
 patronus_thestral:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type horse, patronus.variant skeleton_horse
 
 patronus_slime:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type slime
 
 patronus_bat:
-    icon: arrow
+    icon: firework_charge
     upgrade: true
     overrides: patronus.type bat
 
 # Broom upgrades
 stabilizer:
-    icon: arrow
+    icon: firework_charge
     path: broom
     upgrade: true
     overrides: broom.steer_speed 3, broom.mount_item iron_barding
 
 booster:
-    icon: arrow
+    icon: firework_charge
     path: broom
     upgrade: true
     overrides: broom.mount_boost 2, broom.mount_item gold_barding
 
 brakes:
-    icon: arrow
+    icon: firework_charge
     path: broom
     upgrade: true
     overrides: broom.slow_ticks 10, mount_item diamond_barding
 
 cleanbroom:
-    icon: arrow
+    icon: firework_charge
     path: broom
     upgrade: true
     overrides: broom.mount_item
@@ -680,7 +680,7 @@ cleanbroom:
 # Upgrades
 
 auror:
-    icon: arrow
+    icon: firework_charge
     rename: true
     upgrade: true
     effect_color: 'FFFFFF'
@@ -766,7 +766,7 @@ year1:
     path: master
     upgrade_path: year1
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 50
     xp_regeneration: 6
 year2:
@@ -774,7 +774,7 @@ year2:
     path: year1
     upgrade_path: year2
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 75
     xp_regeneration: 10
 year3:
@@ -782,7 +782,7 @@ year3:
     path: year2
     upgrade_path: year3
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 100
     xp_regeneration: 15
 year4:
@@ -790,7 +790,7 @@ year4:
     path: year3
     upgrade_path: year4
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 120
     xp_regeneration: 20
 year5:
@@ -798,7 +798,7 @@ year5:
     path: year4
     upgrade_path: year5
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 140
     xp_regeneration: 25
 year6:
@@ -806,7 +806,7 @@ year6:
     path: year5
     upgrade_path: year6
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 160
     xp_regeneration: 30
 year7:
@@ -814,7 +814,7 @@ year7:
     path: year6
     upgrade_path: year7
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 180
     xp_regeneration: 35
 graduate:
@@ -822,7 +822,7 @@ graduate:
     path: year7
     upgrade_path: graduate
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     xp_max: 200
     xp_regeneration: 38
 
@@ -863,47 +863,47 @@ manaboost:
 antihunger:
     upgrade: true
     hunger_regeneration: 0.5
-    icon: arrow
+    icon: firework_charge
 chestmode:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     mode: chest
 undroppable:
     upgrade: true
     indestructible: false
     undroppable: true
-    icon: arrow
+    icon: firework_charge
 inventorymode:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     mode: inventory
 cyclemode:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     mode: cycle
 organizer:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     organize: true
 loud:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     organize: true
     quiet: -1
 quiet:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     quiet: -2
 silent:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: firework_charge
     quiet: -3
 
 wood_hoe_upgrade:

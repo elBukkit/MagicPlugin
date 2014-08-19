@@ -431,6 +431,7 @@ ascendio:
            particle: spell
            period: 2
     parameters:
+      safety: 0
     costs:
         xp: 30
 
@@ -1195,7 +1196,7 @@ disillusion:
         effect_invisibility: 5
 
 duro:
-    icon: iron_ingot
+    icon: coal
     category: transfiguration
     class: RecurseSpell
     worth: 150
@@ -1656,7 +1657,7 @@ flipendoduo:
              grow: 0.5
     parameters:
         target_type: Entity
-        range: 32
+        range: 20
         allow_area: false
         allow_max_range: true
         item_force: 4
@@ -1702,11 +1703,11 @@ flipendotria:
         allow_area: true
         allow_max_range: true
         area_range: 20
-        item_force: 6
-        entity_force: 2
+        item_force: 5
+        entity_force: 1.8
         type: push
         count: 16
-        damage: 7
+        damage: 4
         cooldown: 10000
     costs:
         xp: 100
@@ -3020,28 +3021,26 @@ expulsion:
 jail:
     icon: iron_fence
     category: staff
-    class: CommandSpell
-    hidden: true
-    worth: 500
+    class: ConstructSpell
+    worth: 250
     effects:
         cast:
         -  class: EffectSingle
-           sound: wither_spawn
-           sound_volume: 0.4
-           sound_pitch: 0.1
-           location: origin
-           effectlib:
-             class: DnaEffect
-             iterations: 24
+           sound: anvil_use
+        -  class: EffectTrail
+           effect: step_sound
     parameters:
-        commands:
-        - broadcast @td was Jailed by @pd!
-        - jail @t hogwartsprison
+        target: other_entity
         target_type: Player
-        target: other
-        range: 32
-        cooldown: 1000
-        target_breakables: 1
+        allow_max_range: false
+        check_destructible: true
+        range: 48
+        radius: 8
+        type: sphere
+        cooldown: 5000
+        undo: 120000
+        brush: schematic|cage
+        transparent: transparent_to_construction
 
 silenciomaxima:
     icon: ink_sack:3
