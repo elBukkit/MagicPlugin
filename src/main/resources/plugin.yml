@@ -294,3 +294,6 @@ permissions:
   Magic.cast:
     description: The spells a player may cast
     type: list
+  Magic.protected:
+    description: The spells a player is immune to
+    type: list
