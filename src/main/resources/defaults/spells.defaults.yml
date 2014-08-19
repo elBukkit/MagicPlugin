@@ -3765,7 +3765,6 @@ broom:
         steer_speed: 0.6
 
 paste:
-    hidden: true
     icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
