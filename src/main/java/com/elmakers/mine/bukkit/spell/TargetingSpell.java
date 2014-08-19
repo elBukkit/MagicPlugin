@@ -483,6 +483,10 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected boolean canTarget(Entity entity) {
         if (!targetNPCs && controller.isNPC(entity)) return false;
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            if (player.isPermissionSet("Magic.protected." + this.getKey()) && player.hasPermission("Magic.protected." + this.getKey())) return false;
+        }
 
         if (targetEntityType == null) return true;
         return targetEntityType.isAssignableFrom(entity.getClass());
