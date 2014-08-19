@@ -94,9 +94,10 @@ public class NMSUtils {
         if (packages.length == 5) {
             versionPrefix = packages[3] + ".";
         }
+
         try {
-            class_EntityLiving = fixBukkitClass("net.minecraft.server.EntityLiving");
             class_Entity = fixBukkitClass("net.minecraft.server.Entity");
+            class_EntityLiving = fixBukkitClass("net.minecraft.server.EntityLiving");
             class_ItemStack = fixBukkitClass("net.minecraft.server.ItemStack");
             class_DataWatcher = fixBukkitClass("net.minecraft.server.DataWatcher");
             class_NBTBase = fixBukkitClass("net.minecraft.server.NBTBase");
@@ -145,28 +146,22 @@ public class NMSUtils {
             class_Entity_invulnerableField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getField("tag");
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
+
+            try {
+                class_NBTTagList_legacy_consructor = class_NBTTagString.getConstructor(String.class, String.class);
+                class_NBTTagByte_legacy_constructor = class_NBTTagByte.getConstructor(String.class, Byte.TYPE);
+            }
+            catch (Throwable legacy) {
+                class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
+                class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
+            }
+
+            class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
         }
         catch (Throwable ex) {
             failed = true;
             ex.printStackTrace();
         }
-
-        try {
-            class_NBTTagList_legacy_consructor = class_NBTTagString.getConstructor(String.class, String.class);
-            class_NBTTagByte_legacy_constructor = class_NBTTagByte.getConstructor(String.class, Byte.TYPE);
-        }
-        catch (Throwable legacy) {
-            try {
-                class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
-                class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
-            }
-            catch (Throwable ex) {
-                failed = true;
-                ex.printStackTrace();
-            }
-        }
-
-        class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
     }
 
     public static boolean getFailed() {
@@ -174,34 +169,37 @@ public class NMSUtils {
     }
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
-        Class<?> c = getBukkitClass(newVersion);
+        Class<?> c = fixBukkitClass(newVersion, true);
         if (c == null) {
-            c = getBukkitClass(oldVersion);
+            c = fixBukkitClass(oldVersion, true);
             if (c == null) {
-                System.err.println("Could not bind to " + newVersion + " or " + oldVersion);
+                Bukkit.getLogger().warning("Could not bind to " + newVersion + " or " + oldVersion);
             }
         }
         return c;
     }
 
-    public static Class<?> getBukkitClass(String className) {
-        Class<?> ret = null;
-        try {
-            ret = fixBukkitClass(className);
-        }
-        catch (Throwable ex) {
-        }
-        return ret;
+    public static Class<?> fixBukkitClass(String className) {
+        return fixBukkitClass(className, false);
     }
 
-    public static Class<?> fixBukkitClass(String className) {
-        className = className.replace("org.bukkit.craftbukkit.", "org.bukkit.craftbukkit." + versionPrefix);
-        className = className.replace("net.minecraft.server.", "net.minecraft.server." + versionPrefix);
-        try {
-            return Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            return null;
+    public static Class<?> fixBukkitClass(String className, boolean quiet) {
+        if (!versionPrefix.isEmpty()) {
+            className = className.replace("org.bukkit.craftbukkit.", "org.bukkit.craftbukkit." + versionPrefix);
+            className = className.replace("net.minecraft.server.", "net.minecraft.server." + versionPrefix);
         }
+        Class<?> result = null;
+        try {
+            result = NMSUtils.class.getClassLoader().loadClass(className);
+        } catch (ClassNotFoundException e) {
+            result = null;
+        }
+
+        if (!quiet && result == null) {
+            Bukkit.getLogger().warning("Failed to bind to class " + className);
+        }
+
+        return result;
     }
 
     public static Object getHandle(org.bukkit.inventory.ItemStack stack) {
