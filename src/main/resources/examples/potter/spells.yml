@@ -1576,6 +1576,7 @@ finiteincantatem:
         bypass_confusion: true
         bypass_backfire: true
         cooldown: 2000
+        transparent: apparatemaxima
     costs:
         xp: 40
 
@@ -2194,6 +2195,7 @@ levicorpus:
         target_breakables: 1
         undo_velocity: true
         undo_damage: true
+        undo_movement: true
     costs:
         xp: 40
 
