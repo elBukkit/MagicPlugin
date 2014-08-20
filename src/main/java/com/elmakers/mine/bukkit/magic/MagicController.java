@@ -1643,6 +1643,7 @@ public class MagicController implements Listener, MageController {
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
+        dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
@@ -3098,6 +3099,9 @@ public class MagicController implements Listener, MageController {
 	
 	public void onCast(Mage mage, com.elmakers.mine.bukkit.api.spell.Spell spell, SpellResult result) {
 		if (dynmapShowSpells && dynmap != null) {
+            if (dynmapOnlyPlayerSpells && (mage == null || !mage.isPlayer())) {
+                return;
+            }
 			dynmap.showCastMarker(mage, spell, result);
 		}
 	}
@@ -3807,6 +3811,7 @@ public class MagicController implements Listener, MageController {
     private boolean							    essentialsSignsEnabled			= false;
     private boolean							    dynmapUpdate					= true;
     private boolean							    dynmapShowWands				    = true;
+    private boolean							    dynmapOnlyPlayerSpells	        = false;
     private boolean							    dynmapShowSpells				= true;
     private boolean							    createWorldsEnabled			    = true;
     private float							    maxDamagePowerMultiplier	    = 2.0f;
