@@ -643,6 +643,7 @@ avadamaxima:
         range: 16
         cooldown: 30000
         bypass_backfire: true
+        check_protection: true
     costs:
         xp: 300
 
@@ -2045,6 +2046,7 @@ imperiomaxima:
         entity_force: 1
         target_breakables: 1
         bypass_backfire: true
+        check_protection: true
     costs:
         xp: 200
 
@@ -2157,6 +2159,7 @@ legilimens:
         type: inventory
         range: 32
         bypass_backfire: true
+        check_protection: true
     costs:
         xp: 100
 
@@ -2991,6 +2994,7 @@ silencio:
         target_breakables: 1
         bypass_backfire: true
         cooldown: 1000
+        check_protection: true
 
 expulsion:
     icon: ink_sack:3
@@ -3019,6 +3023,7 @@ expulsion:
         target_breakables: 1
         bypass_backfire: true
         cooldown: 1000
+        check_protection: true
 
 jail:
     icon: iron_fence
@@ -3068,6 +3073,7 @@ silenciomaxima:
         - say §dSILENCIO MAXIMA!
         target: none
         bypass_backfire: true
+        check_protection: true
 
 stupefy:
     icon: ink_sack:4
