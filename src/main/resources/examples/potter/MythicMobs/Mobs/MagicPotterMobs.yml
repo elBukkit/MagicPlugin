@@ -7,10 +7,12 @@ Acromantula:
   - skill SummonTarantulas >0 0.3
   Drops:
   - MinorBoss
+  - Acromantula
   Options:
     AlwaysShowName: true
     MovementSpeed: 0.2
     MaxCombatDistance: 25
+    PreventOtherDrops: true
 Tarantula:
   Mobtype: spider
   Display: '&1Tarantula'
@@ -18,8 +20,10 @@ Tarantula:
   Damage: 3
   Options:
     MovementSpeed: 0.1
+    PreventOtherDrops: true
   Drops:
   - Minion
+  - Tarantula
 Inferius:
   Mobtype: zombie
   Display: '&1Inferius'
@@ -27,6 +31,7 @@ Inferius:
   Damage: 3
   Drops:
   - Minion
+  - Inferius
   Equipment:
   - Deatheater_Helmet:4
   - Deatheater_Chestplate:3
@@ -86,7 +91,7 @@ DarkLord:
   - Deatheater_Leggings:2
   - Deatheater_Boots:1
   Drops:
-  - MidBoss
+  - Boss
   - Deatheater
   Options:
     MaxCombatDistance: 32
@@ -108,6 +113,7 @@ Auror:
   - Auror_Boots:1
   Drops:
   - MidBoss
+  - Auror
   Options:
     MaxCombatDistance: 32
     KnockbackResistance: 1
@@ -136,6 +142,7 @@ Werewolf:
   Health: 75
   Drops:
   - MinorBoss
+  - Werewolf
   Options:
     Size: 10
     MovementSpeed: 0.3
