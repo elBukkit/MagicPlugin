@@ -441,7 +441,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static void ageItem(Item item, int ticksToAge)
     {
         try {
-            Class<?> itemClass = getBukkitClass("net.minecraft.server.EntityItem");
+            Class<?> itemClass = fixBukkitClass("net.minecraft.server.EntityItem");
             Object handle = getHandle(item);
             Field ageField = itemClass.getDeclaredField("age");
             ageField.setAccessible(true);
