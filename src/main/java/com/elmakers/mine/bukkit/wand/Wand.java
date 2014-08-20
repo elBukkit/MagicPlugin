@@ -2244,14 +2244,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void cycleInventory() {
+	public void cycleInventory(int direction) {
 		if (!hasInventory) {
 			return;
 		}
 		if (isInventoryOpen()) {
 			saveInventory();
 			int inventoryCount = inventories.size();
-			openInventoryPage = inventoryCount == 0 ? 0 : (openInventoryPage + 1) % inventoryCount;
+			openInventoryPage = inventoryCount == 0 ? 0 : (openInventoryPage + inventoryCount + direction) % inventoryCount;
 			updateInventory();
 			if (mage != null && inventories.size() > 1) {
 				mage.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
@@ -2259,6 +2259,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 	}
+
+    public void cycleInventory() {
+        cycleInventory(1);
+    }
 	
 	@SuppressWarnings("deprecation")
 	private void openInventory() {

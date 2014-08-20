@@ -42,12 +42,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -2694,7 +2689,7 @@ public class MagicController implements Listener, MageController {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		// getLogger().info("CLICK: " + event.getAction() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+		// getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
@@ -2784,19 +2779,20 @@ public class MagicController implements Listener, MageController {
 			if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
 			    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
 				if (activeWand != null && activeWand.isInventoryOpen()) {
-					if (event.getAction() == InventoryAction.PICKUP_HALF || event.getAction() == InventoryAction.NOTHING) {
-						activeWand.cycleInventory();
+					if (event.getAction() == InventoryAction.NOTHING) {
+						int direction = event.getClick() == ClickType.LEFT ? 1 : -1;
+                        activeWand.cycleInventory(direction);
 						event.setCancelled(true);
 						return;
 					}
-					
+
 					if (event.getSlotType() == SlotType.ARMOR) {
 						event.setCancelled(true);
 						return;
 					}
 					
 					// Chest mode falls back to selection from here.
-					if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || wandMode == WandMode.CHEST) {
+					if (event.getAction() == InventoryAction.PICKUP_HALF || wandMode == WandMode.CHEST) {
 						onPlayerActivateIcon(mage, activeWand, clickedItem);
 						player.closeInventory();
 						event.setCancelled(true);

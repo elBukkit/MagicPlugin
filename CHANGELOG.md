@@ -2,7 +2,9 @@
 
 ## 3.7
 
- - Need to fix item frame / painting breakage.
+ - Fixed several bugs with tracking hanging items
+ - Changed wand inventory navigation mechanics (left/right click outside inv to change pages)
+ - Add per-spell protection (must be enabled per-spell)
 
 ## 3.6
 
