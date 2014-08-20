@@ -48,6 +48,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private Entity								targetEntity = null;
     private boolean								bypassBuildRestriction  = false;
     private boolean                             bypassProtection        = false;
+    private boolean                             checkProtection         = false;
 
     private boolean                             allowMaxRange           = false;
     private boolean                             bypassBackfire          = false;
@@ -483,9 +484,9 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected boolean canTarget(Entity entity) {
         if (!targetNPCs && controller.isNPC(entity)) return false;
-        if (entity instanceof Player) {
+        if (checkProtection && entity instanceof Player) {
             Player player = (Player)entity;
-            if (player.isPermissionSet("Magic.protected." + this.getKey()) && player.hasPermission("Magic.protected." + this.getKey())) return false;
+            if (player.hasPermission("Magic.protected." + this.getKey())) return false;
         }
 
         if (targetEntityType == null) return true;
@@ -650,6 +651,7 @@ public abstract class TargetingSpell extends BaseSpell {
         bypassBackfire = parameters.getBoolean("bypass_backfire", bypassBackfire);
         bypassProtection = parameters.getBoolean(("bypass_protection"));
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
+        checkProtection = parameters.getBoolean("check_protection", checkProtection);
 
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
