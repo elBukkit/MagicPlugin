@@ -169,9 +169,9 @@ public class NMSUtils {
     }
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
-        Class<?> c = fixBukkitClass(newVersion, true);
+        Class<?> c = getBukkitClass(newVersion);
         if (c == null) {
-            c = fixBukkitClass(oldVersion, true);
+            c = getBukkitClass(oldVersion);
             if (c == null) {
                 Bukkit.getLogger().warning("Could not bind to " + newVersion + " or " + oldVersion);
             }
@@ -179,27 +179,24 @@ public class NMSUtils {
         return c;
     }
 
-    public static Class<?> fixBukkitClass(String className) {
-        return fixBukkitClass(className, false);
+    public static Class<?> getBukkitClass(String className) {
+        Class<?> result = null;
+        try {
+            result = fixBukkitClass(className);
+        } catch (Exception ex) {
+            result = null;
+        }
+
+        return result;
     }
 
-    public static Class<?> fixBukkitClass(String className, boolean quiet) {
+    public static Class<?> fixBukkitClass(String className) throws ClassNotFoundException {
         if (!versionPrefix.isEmpty()) {
             className = className.replace("org.bukkit.craftbukkit.", "org.bukkit.craftbukkit." + versionPrefix);
             className = className.replace("net.minecraft.server.", "net.minecraft.server." + versionPrefix);
         }
-        Class<?> result = null;
-        try {
-            result = NMSUtils.class.getClassLoader().loadClass(className);
-        } catch (ClassNotFoundException e) {
-            result = null;
-        }
 
-        if (!quiet && result == null) {
-            Bukkit.getLogger().warning("Failed to bind to class " + className);
-        }
-
-        return result;
+        return NMSUtils.class.getClassLoader().loadClass(className);
     }
 
     public static Object getHandle(org.bukkit.inventory.ItemStack stack) {
