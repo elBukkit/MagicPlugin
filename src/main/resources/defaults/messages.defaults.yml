@@ -125,9 +125,13 @@ wand:
     upgraded_property: Your wand has been upgraded to &r&b$name
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
+    no_item: You are not holding an item
+    player_no_item: $name is not holding an item
     no_wand: You must be holding a wand
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item
+    player_no_magic_item: $name is not holding a magic item
+    no_magic_item: That is not a magic item
     player_no_item: $name is not holding an item
     reorganized: Wand reorganized
     player_reorganized: $name's wand reorganized

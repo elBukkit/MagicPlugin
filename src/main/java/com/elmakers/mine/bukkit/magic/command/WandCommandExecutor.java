@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -405,24 +406,55 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandDescribe(CommandSender sender, Player player, boolean details) {
-        if (details) {
-            ItemStack itemInHand = player.getItemInHand();
-            if (itemInHand == null) {
-                sender.sendMessage("No item in hand");
-                return true;
+        ItemStack itemInHand = player.getItemInHand();
+        if (itemInHand == null) {
+            if (sender != player) {
+                sender.sendMessage(Messages.getParameterized("wand.player_no_item", "$name", player.getName()));
+            } else {
+                player.sendMessage(Messages.get("wand.no_item"));
             }
+            return true;
+        }
+
+        if (api.isSpell(itemInHand)) {
+            String spellKey = api.getSpell(itemInHand);
+            sender.sendMessage(ChatColor.GOLD + "Spell: " + spellKey);
+            SpellTemplate spell = api.getSpellTemplate(spellKey);
+            if (spell != null) {
+                sender.sendMessage(" " + ChatColor.GOLD + spell.getName());
+            } else {
+                sender.sendMessage(ChatColor.RED + " (Unknown Spell)");
+            }
+        }
+        if (api.isBrush(itemInHand)) {
+            String brushKey = api.getBrush(itemInHand);
+            sender.sendMessage(ChatColor.GRAY + "Brush: " + brushKey);
+            MaterialAndData brush = new MaterialAndData(brushKey);
+            if (brush != null) {
+                sender.sendMessage(" " + ChatColor.GRAY + brush.getName());
+            } else {
+                sender.sendMessage(ChatColor.RED + " (Unknown Brush)");
+            }
+        }
+        if (api.isWand(itemInHand)) {
+            Wand wand = api.getWand(itemInHand);
+            wand.describe(sender);
+        }
+
+        if (details) {
             String itemString = itemInHand.toString();
             sender.sendMessage(itemString);
         }
 
-        if (!checkWand(sender, player, true, true, sender != player)) {
-			return true;
-		}
-		Mage mage = api.getMage(player);
-		Wand wand = mage.getActiveWand();
-		wand.describe(sender);
+        if (!api.isBrush(itemInHand) && !api.isSpell(itemInHand) && !api.isBrush(itemInHand)) {
+            if (sender != player) {
+                sender.sendMessage(Messages.getParameterized("wand.player_no_magic_item", "$name", player.getName()));
+            } else {
+                player.sendMessage(Messages.get("wand.no_magic_item"));
+            }
+        }
 
-		return true;
+        return true;
 	}
 	
 	public boolean onWandOrganize(CommandSender sender, Player player)
