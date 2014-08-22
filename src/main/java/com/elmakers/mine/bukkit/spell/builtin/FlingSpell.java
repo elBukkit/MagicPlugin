@@ -68,6 +68,7 @@ public class FlingSpell extends UndoableSpell implements Listener
 		velocity.multiply(magnitude);
 
         registerVelocity(entity);
+        registerMoved(entity);
 		entity.setVelocity(velocity);
 
         if (safetyLength > 0) {
