@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 3.7
+
+ * Some magic items (spells, upgrades) may need to be updated. Sorry!
+
 ## 3.6
 
  * Drop support for Cratbukkit 1.6 - 1.7.2 is now the minimum required version

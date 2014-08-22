@@ -44,7 +44,10 @@ public class TradersController {
 		ItemAttr.registerAttr(WandManaRegenerationAttr.class);
 		ItemAttr.registerAttr(WandModeAttr.class);
 		ItemAttr.registerAttr(WandNameAttr.class);
-		ItemAttr.registerAttr(WandOwnerAttr.class);
+        ItemAttr.registerAttr(WandOverridesAttr.class);
+        ItemAttr.registerAttr(WandOwnerAttr.class);
+        ItemAttr.registerAttr(WandOwnerIdAttr.class);
+        ItemAttr.registerAttr(WandPathAttr.class);
 		ItemAttr.registerAttr(WandPowerAttr.class);
 		ItemAttr.registerAttr(WandProtectionAttr.class);
 		ItemAttr.registerAttr(WandProtectionPhysicalAttr.class);
@@ -55,20 +58,25 @@ public class TradersController {
 		ItemAttr.registerAttr(WandSpellListAttr.class);
 		ItemAttr.registerAttr(WandTemplateAttr.class);
 		ItemAttr.registerAttr(WandUsesAttr.class);
+        ItemAttr.registerAttr(WandUpgradeIconAttr.class);
 
 		ItemAttr.registerAttr(BrushKeyAttr.class);
 		ItemAttr.registerAttr(SpellKeyAttr.class);
 
 		ItemFlag.registerFlag(WandBoundFlag.class);
-		ItemFlag.registerFlag(WandKeepFlag.class);
 		ItemFlag.registerFlag(WandEffectBubblesFlag.class);
-		ItemFlag.registerFlag(WandOrganizeFlag.class);
 		ItemFlag.registerFlag(WandFillFlag.class);
-		ItemFlag.registerFlag(WandLockedFlag.class);
-		
-		ItemFlag.registerFlag(WandFlag.class);
+        ItemFlag.registerFlag(WandForceFlag.class);
+        ItemFlag.registerFlag(WandIndestructibleFlag.class);
+        ItemFlag.registerFlag(WandKeepFlag.class);
+        ItemFlag.registerFlag(WandLockedFlag.class);
+        ItemFlag.registerFlag(WandOrganizeFlag.class);
+        ItemFlag.registerFlag(WandRandomizeFlag.class);
+        ItemFlag.registerFlag(WandRenameFlag.class);
+        ItemFlag.registerFlag(WandUpgradeFlag.class);
+        ItemFlag.registerFlag(WandUndroppableFlag.class);
+
 		ItemFlag.registerFlag(GlowFlag.class);
-		ItemFlag.registerFlag(WandUpgradeFlag.class);
 
 		TradersController.controller = controller;
 	}

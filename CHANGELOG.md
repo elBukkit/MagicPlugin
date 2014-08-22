@@ -6,6 +6,11 @@
  - Changed wand inventory navigation mechanics (left/right click outside inv to change pages)
  - Add per-spell protection (must be enabled per-spell)
 
+## 3.7
+
+ - Bailed on the Bukkit Metadata API PR, simplifying/optimizing data storage instead.
+ - Fix dtlTraders support.
+
 ## 3.6
 
  - Drop support for Bukkit 1.6
