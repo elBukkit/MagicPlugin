@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
@@ -566,6 +567,30 @@ public class NMSUtils {
         }
     }
 
+    public static void removeGlow(ItemStack stack) {
+        if (stack == null) return;
+
+        Collection<Enchantment> enchants = stack.getEnchantments().keySet();
+        for (Enchantment enchant : enchants) {
+            stack.removeEnchantment(enchant);
+        }
+
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return;
+
+            // Testing Glow API based on ItemMetadata storage
+            Object bukkitData = getNode(stack, "bukkit");
+            if (bukkitData != null) {
+                class_NBTTagCompound_setBooleanMethod.invoke(bukkitData, "glow", false);
+            }
+        } catch (Throwable ex) {
+
+        }
+    }
+
     public static void makeUnbreakable(ItemStack stack) {
         if (stack == null) return;
 
@@ -585,6 +610,10 @@ public class NMSUtils {
         } catch (Throwable ex) {
 
         }
+    }
+
+    public static void removeUnbreakable(ItemStack stack) {
+        removeMeta(stack, "Unbreakable");
     }
 
     public static void hideFlags(ItemStack stack) {
