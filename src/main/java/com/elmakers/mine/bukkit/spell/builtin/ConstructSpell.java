@@ -48,7 +48,7 @@ public class ConstructSpell extends BrushSpell
         Entity targetEntity;
         if (parameters.getBoolean("select_self", true) && isLookingDown()) {
             targetEntity = mage.getEntity();
-            target = mage.getLocation().getBlock();
+            target = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
         } else {
             Target t = getTarget();
             target = t.getBlock();
