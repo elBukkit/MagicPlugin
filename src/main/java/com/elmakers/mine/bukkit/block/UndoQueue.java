@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
-import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -32,6 +31,12 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
     {
         if (!(blocks instanceof UndoList)) return;
         UndoList addList = (UndoList)blocks;
+        if (addList.hasUndoQueue()) {
+            owner.getController().getLogger().warning("UndoList is already in a queue!");
+            Thread.dumpStack();
+            return;
+        }
+
         if (maxSize > 0 && size > maxSize)
         {
             UndoList expired = tail;
@@ -84,7 +89,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             UndoList checkList = nextList;
             nextList = nextList.getNext();
             if (checkList.isScheduled()) {
-                checkList.undo(true);
+                checkList.undoScheduled(true);
                 undid++;
             }
         }

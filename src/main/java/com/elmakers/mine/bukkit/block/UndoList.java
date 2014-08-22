@@ -72,28 +72,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public UndoList(Mage mage, UndoableSpell spell)
     {
-        setUndoQueue(mage.getUndoQueue());
         this.owner = mage;
         this.spell = spell;
         this.plugin = owner.getController().getPlugin();
         createdTime = System.currentTimeMillis();
         modifiedTime = createdTime;
-    }
-
-    public UndoList(UndoList other)
-    {
-        super(other);
-        this.worldName = other.worldName;
-        this.owner = other.owner;
-        this.name = other.name;
-        this.plugin = other.plugin;
-        this.undoQueue = other.undoQueue;
-        this.spell = other.spell;
-        timeToLive = other.timeToLive;
-        undone = other.undone;
-        createdTime = other.createdTime;
-        modifiedTime = other.modifiedTime;
-        scheduledTime = other.scheduledTime;
     }
 
     @Override
@@ -204,11 +187,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return false;
     }
 
-    public void undo()
-    {
-        undo(false);
-    }
-
     public void undoEntityEffects()
     {
         // This part doesn't happen in a batch, and may lag on large lists
@@ -247,8 +225,29 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    public void undo()
+    {
+        undo(false);
+    }
+
     public void undo(boolean blocking)
     {
+        undo(blocking, true);
+    }
+
+    public void undoScheduled(boolean blocking)
+    {
+        undo(blocking, false);
+    }
+
+    public void undoScheduled()
+    {
+        undoScheduled(false);
+    }
+
+    public void undo(boolean blocking, boolean undoEntities)
+    {
+        undoEntityEffects = undoEntityEffects || undoEntities;
         unlink();
         if (isComplete()) return;
         undone = true;
@@ -520,6 +519,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (undoQueue != null && undoQueue instanceof UndoQueue) {
             this.undoQueue = (UndoQueue)undoQueue;
         }
+    }
+
+    public boolean hasUndoQueue() {
+        return this.undoQueue != null;
     }
 
     public void unlink() {
