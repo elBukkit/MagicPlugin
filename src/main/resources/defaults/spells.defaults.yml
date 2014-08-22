@@ -2685,10 +2685,16 @@ undo:
         -  class: EffectSingle
            sound: anvil_break
     parameters:
-        target: self
+        target: block
+        target_down_block: true
+        target_up_self: true
+        allow_max_range: false
+        range: 64
+        transparent: transparent_to_construction
         bypass_backfire: true
     costs:
         xp: 100
+
 commit:
     icon: enchanted_book
     category: engineering
@@ -2703,22 +2709,6 @@ commit:
         bypass_backfire: true
     costs:
         xp: 200
-rewind:
-    icon: written_book
-    category: engineering
-    class: UndoSpell
-    worth: 250
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: anvil_break
-    parameters:
-        allow_max_range: false
-        range: 128
-        transparent: transparent_to_construction
-        bypass_backfire: true
-    costs:
-        xp: 250
 
 counterspell:
     icon: diamond

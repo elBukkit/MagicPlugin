@@ -2920,9 +2920,14 @@ reparifarge:
         -  class: EffectSingle
            sound: anvil_break
     parameters:
-        target: any
+        target: block
+        target_down_block: true
+        target_up_self: true
         target_blocks: true
+        range: 64
+        transparent: transparent_to_construction
         bypass_backfire: true
+        allow_max_range: false
     costs:
         xp: 180
 

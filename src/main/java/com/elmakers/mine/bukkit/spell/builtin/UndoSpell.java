@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.block.BlockBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -23,9 +22,15 @@ public class UndoSpell extends TargetingSpell
 	{
 		Target target = getTarget();
         int timeout = parameters.getInt("target_timeout", 0);
-		if (target.hasEntity() && controller.isMage(target.getEntity()))
+        boolean targetSelf = parameters.getBoolean("target_up_self", false);
+        boolean targetDown = parameters.getBoolean("target_down_block", false);
+        Entity targetEntity = target.getEntity();
+        if (targetSelf && isLookingUp()) {
+            targetEntity = mage.getEntity();
+        }
+		if (targetEntity != null && controller.isMage(targetEntity))
 		{
-			Mage targetMage = controller.getMage(target.getEntity());
+			Mage targetMage = controller.getMage(targetEntity);
 
             BlockBatch batch = targetMage.cancelPending();
             if (batch != null) {
@@ -45,7 +50,10 @@ public class UndoSpell extends TargetingSpell
             return SpellResult.NO_TARGET;
         }
 		
-		Block targetBlock = isLookingDown() ? getLocation().getBlock() : target.getBlock();
+		Block targetBlock = target.getBlock();
+        if (targetDown && isLookingDown()) {
+            targetBlock = getLocation().getBlock();
+        }
 		if (targetBlock != null)
 		{
 			boolean targetAll = mage.isSuperPowered();
