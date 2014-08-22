@@ -2261,17 +2261,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Check for spell or other special icons in the player's inventory
 		Player player = mage.getPlayer();
-		boolean modified = false;
-		ItemStack[] items = player.getInventory().getContents();
+        Inventory inventory = player.getInventory();
+		ItemStack[] items = inventory.getContents();
+        boolean forceUpdate = false;
 		for (int i = 0; i < items.length; i++) {
 			ItemStack item = items[i];
 			if (addItem(item)) {
-				modified = true;
-				items[i] = null;
+                inventory.setItem(i, null);
+                forceUpdate = true;
 			}
-		}
-		if (modified) {
-			player.getInventory().setContents(items);
 		}
 		
 		// Check for an empty wand and auto-fill
@@ -2299,6 +2297,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Check for randomized wands
         if (randomize) {
             randomize();
+            forceUpdate = true;
         }
 		
 		checkActiveMaterial();
@@ -2317,6 +2316,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateLore();
 		
 		updateEffects();
+        if (forceUpdate) {
+            player.updateInventory();
+        }
 	}
 
     protected void randomize() {
