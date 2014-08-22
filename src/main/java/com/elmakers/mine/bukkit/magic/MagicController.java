@@ -95,11 +95,6 @@ public class MagicController implements Listener, MageController {
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
 
-        // This is a bit hacky, but lets us continue to call
-        // Wand.isWand() statically, which now requires a Plugin
-        // reference due to the Metadata system ownership.
-        Wand.metadataProvider = plugin;
-
         configFolder = plugin.getDataFolder();
         configFolder.mkdirs();
 
