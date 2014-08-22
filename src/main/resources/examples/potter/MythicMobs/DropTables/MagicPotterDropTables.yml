@@ -25,7 +25,7 @@ Deatheater:
   - ghast_tear 1 0.3
   - blaze_powder 1 0.2
   - redstone 1 0.1
-  - glowstone 1 0.2
+  - glowstone_dust 1 0.2
 Tarantula:
   Drops:
   - spider_eye 1 0.3
@@ -37,7 +37,7 @@ Acromantula:
 Auror:
   Drops:
   - sugar 1-2 0.2
-  - glowstone 1-2 0.1
+  - glowstone_dust 1-2 0.1
   - redstone 1-2 0.2
 Inferius:
   Drops:

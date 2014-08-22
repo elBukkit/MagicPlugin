@@ -1564,16 +1564,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public static String getSpell(ItemStack item) {
-        if (!isSpell(item)) return null;
-
         Object spellNode = InventoryUtils.getNode(item, "spell");
+        if (spellNode == null) return null;
         return InventoryUtils.getMeta(spellNode, "key");
 	}
 
     public static String getBrush(ItemStack item) {
-        if (!isBrush(item)) return null;
-
         Object brushNode = InventoryUtils.getNode(item, "brush");
+        if (brushNode == null) return null;
         return InventoryUtils.getMeta(brushNode, "key");
     }
 
