@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -442,11 +443,22 @@ public class WandCommandExecutor extends MagicTabExecutor {
         }
 
         if (details) {
+            long wandId = System.identityHashCode(NMSUtils.getHandle(itemInHand));
+            sender.sendMessage(ChatColor.AQUA + "id: " + ChatColor.DARK_AQUA + Long.toHexString(wandId));
+            Wand activeWand = api.getMage(player).getActiveWand();
+            if (activeWand == null) {
+                sender.sendMessage(ChatColor.RED + "Mis-match - player has no active wand!");
+            } else {
+                long activeWandId = System.identityHashCode(NMSUtils.getHandle(activeWand.getItem()));
+                if (activeWandId != wandId) {
+                    sender.sendMessage(ChatColor.RED + " Mis-match - Active wand id: " + ChatColor.DARK_RED + Long.toHexString(activeWandId));
+                }
+            }
             String itemString = itemInHand.toString();
             sender.sendMessage(itemString);
         }
 
-        if (!api.isBrush(itemInHand) && !api.isSpell(itemInHand) && !api.isBrush(itemInHand)) {
+        if (!api.isBrush(itemInHand) && !api.isSpell(itemInHand) && !api.isWand(itemInHand)) {
             if (sender != player) {
                 sender.sendMessage(Messages.getParameterized("wand.player_no_magic_item", "$name", player.getName()));
             } else {
