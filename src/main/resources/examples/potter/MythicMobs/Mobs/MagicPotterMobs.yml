@@ -5,6 +5,7 @@ Acromantula:
   Damage: 5
   Skills:
   - skill SummonTarantulas >0 0.3
+  - skill AcromantulaAttack >0 0.9
   Drops:
   - MinorBoss
   - Acromantula

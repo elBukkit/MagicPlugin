@@ -108,7 +108,7 @@ elder:
     organize: true
     cost_reduction: 2
     cooldown_reduction: 2
-    protection: 1
+    protection_falling: 2
     quiet: 1
     power: 0
     haste: 0.1
@@ -130,7 +130,7 @@ wolf:
     fill: true
     cost_reduction: 2
     cooldown_reduction: 2
-    protection: 1
+    protection_falling: 2
     quiet: 0
     power: 0
     haste: 0.1
@@ -143,7 +143,7 @@ wolf:
     effect_particle: magic_crit
     effect_particle_count: 2
     effect_particle_interval: 0
-    overrides: patronus.type wolf
+    overrides: patronus.type wolf,max_dimension 1024
     spells:
       - apparatemaxima
       - ascendio

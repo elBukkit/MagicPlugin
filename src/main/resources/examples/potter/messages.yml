@@ -571,6 +571,10 @@ spells:
         name: Wingardium Leviosa
         description: Levitate lightweight objects
         cast: Wingardium Leviosa!
+    webbing:
+        name: Arachnid Attack
+        description: Encase your target in webbing
+        cast: Webs!
 
 randomized:
    wood:

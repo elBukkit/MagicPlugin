@@ -2458,6 +2458,53 @@ petrificustotalus:
         bypass_build: true
         cooldown: 4000
 
+webbing:
+    icon: web
+    category: hidden
+    class: ConstructSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 5
+             particle: fireworks_spark
+             lengthGrow: 0.32
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: F5EFFB
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 30
+    costs:
+        xp: 100
+    parameters:
+        target: other_entity
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+        radius: 2
+        type: sphere
+        brush: web
+        orient: false
+        transparent: transparent_to_construction
+        check_destructible: true
+        destructible: air
+        undo: 10000
+        breakable: 2
+        y_offset: 0
+        bypass_build: true
+        cooldown: 5000
+
 patronus:
     icon: ink_sack:12
     category: elective

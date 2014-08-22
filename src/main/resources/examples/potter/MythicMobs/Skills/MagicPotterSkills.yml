@@ -140,6 +140,20 @@ Petrificus:
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid petrificustotalus bypass_pvp true fov 0' >0 1
+Locomoto:
+  Cooldown: 20
+  Conditions:
+  - TargetWithin 24
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid locomotomortus bypass_pvp true fov 0' >0 1
+Webbing:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid webbing bypass_pvp true fov 0' >0 1
 Firebending:
   Cooldown: 5
   Conditions:
@@ -198,4 +212,11 @@ DementorAttack:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill Petrificus,AccioArea,Dementor,DementorApparate >0 1
+  - randomskill Locomoto,AccioArea,Dementor,DementorApparate >0 1
+AcromantulaAttack:
+  Cooldown: 4
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - randomskill SludgePoison,Webbing >0 1
