@@ -2500,6 +2500,31 @@ blast:
         destructible: destructible_mining
     costs:
         xp: 45
+earthquake:
+    icon: iron_spade
+    category: mining
+    class: ConstructSpell
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+        -  class: EffectTrail
+           particle: large_explode
+    parameters:
+        allow_max_range: false
+        range: 16
+        speed: 0.5
+        falling: true
+        brush: air
+        falling_direction: 0,1,0
+        orient_dimension_max: 1
+        orient_dimension_min: 1
+        radius: 5
+        type: sphere
+        destructible: destructible_mining
+    costs:
+        xp: 150
 tunnel:
     icon: iron_pickaxe
     category: earthbending

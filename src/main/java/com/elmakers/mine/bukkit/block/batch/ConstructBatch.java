@@ -504,7 +504,8 @@ public class ConstructBatch extends BrushBatch {
                 falling.setDropItem(false);
                 if (fallingBlockSpeed != 0) {
                     Vector direction = this.fallingDirection != null ? this.fallingDirection :
-                            falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
+                            falling.getLocation().subtract(center).toVector();
+                    direction = direction.normalize().multiply(fallingBlockSpeed);
                     falling.setVelocity(direction);
                 }
                 registerForUndo(falling);

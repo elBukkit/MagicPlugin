@@ -251,6 +251,7 @@ master:
       repair: 1,10,30,50,100
       supershell: 0,0,1,10,100
       superblast: 0,0,1,5,100
+      earthquake: 0,0,1,5,100
       superbox: 0,0,1,10,100
       superpyramid: 0,0,1,10,100
       superblob: 0,0,1,10,100
@@ -486,6 +487,7 @@ engineer:
       repair: 1,10,30,50,100
       supershell: 0,0,1,10,100
       superblast: 0,0,1,5,100
+      earthquake: 0,0,1,1,100
       superbox: 0,0,1,10,100
       superpyramid: 0,0,1,10,100
       superblob: 0,0,1,10,100

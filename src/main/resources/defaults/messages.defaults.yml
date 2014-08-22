@@ -681,6 +681,10 @@ spells:
         name: Blast
         description: Mine out a large area
         cast_finish: Blasted $count blocks
+    earthquake:
+        name: Earthquake
+        description: Create an earthquake
+        cast_finish: Quaked $count blocks
     cloak:
         name: Cloak
         description: Make yourself invisible

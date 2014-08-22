@@ -10,6 +10,7 @@
 
  - Bailed on the Bukkit Metadata API PR, simplifying/optimizing data storage instead.
  - Fix dtlTraders support.
+ - Added "Earthquake" spell (and directional vector parameter for ConstructSpell)
 
 ## 3.6
 
