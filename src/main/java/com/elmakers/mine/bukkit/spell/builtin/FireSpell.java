@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -32,8 +33,7 @@ public class FireSpell extends BlockSpell
 			{
 				return SpellResult.NO_TARGET;
 			}
-			Material material = Material.FIRE;
-
+            Material material = Material.FIRE;
 			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER || block.getType() == Material.ICE || block.getType() == Material.SNOW)
 			{
 				material = Material.AIR;
@@ -43,7 +43,8 @@ public class FireSpell extends BlockSpell
 				block = block.getRelative(BlockFace.UP);
 			}
 			super.perform(block);
-			block.setType(material);
+            MaterialAndData applyMaterial = new MaterialAndData(Material.FIRE);
+            applyMaterial.modify(block);
 
 			return SpellResult.CAST;
 		}

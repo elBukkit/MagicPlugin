@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -89,13 +90,13 @@ public class FrostSpell extends BlockSpell
 				block = block.getRelative(BlockFace.UP);
 			}
 			super.perform(block);
+            MaterialAndData applyMaterial = new MaterialAndData(material);
 			if (block.getType() == Material.SNOW && material == Material.SNOW) {
 				if (block.getData() < 7) {
-					block.setData((byte)(block.getData() + 1));
+                    applyMaterial.setData((byte)(block.getData() + 1));
 				}
-			} else {
-				block.setType(material);
 			}
+            applyMaterial.modify(block);
 			return SpellResult.CAST;
 		}
 	}
