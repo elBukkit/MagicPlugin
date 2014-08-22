@@ -236,10 +236,10 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 					spawnCount++;
 					registerForUndo(entity);
 				}
-				
-				registerForUndo();
 			}
 		}
+
+        registerForUndo();
 
         if (track) {
             setFamiliars(newFamiliars);
