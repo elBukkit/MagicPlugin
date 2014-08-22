@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,7 +31,7 @@ public class ConstructSpell extends BrushSpell
 	public final static String[] CONSTRUCT_PARAMETERS = {
 		"radius", "falling", "speed", "max_dimension", "replace",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
-		"power", "breakable", "backfire", "select_self", "use_brush_size"
+		"power", "breakable", "backfire", "select_self", "use_brush_size", "falling_direction"
 	};
 
 	private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
@@ -64,8 +65,6 @@ public class ConstructSpell extends BrushSpell
 		boolean falling = parameters.getBoolean("falling", false);
         int breakable = parameters.getInt("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
-		float force = 0;
-		force = (float)parameters.getDouble("speed", force);
 		Vector orientTo = null;
         Vector bounds = null;
 
@@ -209,7 +208,9 @@ public class ConstructSpell extends BrushSpell
         }
 
         if (falling) {
-			batch.setFallingBlockSpeed(force);
+            float force = (float)parameters.getDouble("speed", 0);
+            batch.setFallingDirection(ConfigurationUtils.getVector(parameters, "falling_direction"));
+            batch.setFallingBlockSpeed(force);
 		}
         if (breakable > 0) {
             batch.setBreakable(breakable);

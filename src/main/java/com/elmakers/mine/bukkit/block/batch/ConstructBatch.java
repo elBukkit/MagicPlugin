@@ -40,6 +40,7 @@ public class ConstructBatch extends BrushBatch {
 	private final int thickness;
 	private final boolean spawnFallingBlocks;
 	private float fallingBlockSpeed = 0;
+    private Vector fallingDirection = null;
 	private final Map<Long, BlockData> attachedBlockMap = new HashMap<Long, BlockData>();
 	private final List<BlockData> attachedBlockList = new ArrayList<BlockData>();
 	private final List<BlockData> delayedBlocks = new ArrayList<BlockData>();
@@ -104,6 +105,10 @@ public class ConstructBatch extends BrushBatch {
 	public void setFallingBlockSpeed(float speed) {
 		fallingBlockSpeed = speed;
 	}
+
+    public void setFallingDirection(Vector direction) {
+        fallingDirection = direction;
+    }
 
 	public void setOrientDimensionMax(int maxDim) {
 		this.maxOrientDimension = maxDim;
@@ -498,7 +503,8 @@ public class ConstructBatch extends BrushBatch {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                 falling.setDropItem(false);
                 if (fallingBlockSpeed != 0) {
-                    Vector direction = falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
+                    Vector direction = this.fallingDirection != null ? this.fallingDirection :
+                            falling.getLocation().subtract(center).toVector().normalize().multiply(fallingBlockSpeed);
                     falling.setVelocity(direction);
                 }
                 registerForUndo(falling);
