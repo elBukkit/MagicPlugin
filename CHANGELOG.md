@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.7
+
+ - Removed compatibility layer for Bukkit Metadata API (a PR of mine). Don't think that's gonna happen at this point.
+
 ## 1.6
 
  - Drop support for 1.6
