@@ -444,7 +444,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
         if (details) {
             long wandId = System.identityHashCode(NMSUtils.getHandle(itemInHand));
-            sender.sendMessage(ChatColor.AQUA + "id: " + ChatColor.DARK_AQUA + Long.toHexString(wandId));
+            sender.sendMessage(ChatColor.AQUA + "Id: " + ChatColor.DARK_AQUA + Long.toHexString(wandId));
             Wand activeWand = api.getMage(player).getActiveWand();
             if (activeWand == null) {
                 sender.sendMessage(ChatColor.RED + "Mis-match - player has no active wand!");

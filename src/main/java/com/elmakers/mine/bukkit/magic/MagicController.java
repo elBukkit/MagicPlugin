@@ -796,7 +796,7 @@ public class MagicController implements Listener, MageController {
                         break;
                     }
                     scheduledUndo.poll();
-                    undo.undo();
+                    undo.undoScheduled();
                 }
             }
         }, 0, undoFrequency);
@@ -1659,6 +1659,8 @@ public class MagicController implements Listener, MageController {
 		if (properties.contains("mana_display")) {
 			Wand.retainLevelDisplay = properties.getString("mana_display").equals("hybrid");
 			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
+            Wand.displayManaAsDurability = properties.getString("mana_display").equals("durability");
+            Wand.displayManaAsGlow = properties.getString("mana_display").equals("glow");
 		}
 		
 		// Parse wand settings
@@ -2037,14 +2039,8 @@ public class MagicController implements Listener, MageController {
 			com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(Wand.getSpell(icon));
 			if (spell != null) {
 				activeWand.setActiveSpell(spell.getKey());
-
-                // Reset the held item, Bukkit may have replaced it (?)
-				mage.getPlayer().setItemInHand(activeWand.getItem());
             } else if (Wand.isBrush(icon)){
 				activeWand.activateBrush(icon);
-				
-				// Reset the held item, Bukkit may have replaced it (?)
-				mage.getPlayer().setItemInHand(activeWand.getItem());
 			}
 		} else {
 			activeWand.setActiveSpell("");
@@ -2462,12 +2458,12 @@ public class MagicController implements Listener, MageController {
 							cycleMaterials = activeSpell.hasBrushOverride() && wand.getBrushes().size() > 0;
 						}
 						if (cycleMaterials) {
-							wand.cycleMaterials(player.getItemInHand());
+							wand.cycleMaterials();
 						} else {
-							wand.cycleSpells(player.getItemInHand());
+							wand.cycleSpells();
 						}
 					} else {
-						wand.cycleSpells(player.getItemInHand());
+						wand.cycleSpells();
 					}
 				} else if (wandMode == WandMode.CAST) {
                     wand.cast();

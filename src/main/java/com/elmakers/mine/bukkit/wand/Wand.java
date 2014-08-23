@@ -15,11 +15,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.ColorHD;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.*;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -164,6 +160,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected static Map<String, ConfigurationSection> wandTemplates = new HashMap<String, ConfigurationSection>();
 	
 	public static boolean displayManaAsBar = true;
+    public static boolean displayManaAsDurability = true;
+    public static boolean displayManaAsGlow = true;
 	public static boolean retainLevelDisplay = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
@@ -180,7 +178,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		hotbar = CompatibilityUtils.createInventory(null, 9, "Wand");
 		this.icon = new MaterialAndData(itemStack.getType(), (byte)itemStack.getDurability());
 		inventories = new ArrayList<Inventory>();
-		item = itemStack;
+        item = itemStack;
 		indestructible = controller.getIndestructibleWands();
 		loadState();
         updateName();
@@ -616,23 +614,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Set the wand item
 		Integer selectedItem = null;
         if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null && playerInventorySlot != null) {
+            if (item == null || !isWand(item))
+            {
+                controller.getLogger().warning("Wand item isn't a wand");
+                return;
+            }
             selectedItem = playerInventorySlot;
 
             // Toss the item back into the wand inventory, it'll find a home somewhere.
             // We hope this doesn't recurse too badly! :\
             ItemStack existingHotbar = hotbar.getItem(selectedItem);
-            if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
-                if (item == null || !isWand(item))
-                {
-                    Bukkit.getLogger().warning("Wand item isn't a wand");
-                    return;
-                }
 
-                hotbar.setItem(selectedItem, item);
+            // Set the wand item to occupy this spot
+            hotbar.setItem(selectedItem, item);
+
+            if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
                 addToInventory(existingHotbar);
             }
-
-            hotbar.setItem(selectedItem, item);
         }
 		List<Inventory> checkInventories = getAllInventories();
 		boolean added = false;
@@ -850,13 +848,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	protected void saveState() {
 		if (suspendSave) return;
-
-        PlayerInventory inventory = mage != null && mage.isPlayer() ? mage.getPlayer().getInventory() : null;
-
-        if (inventory != null && playerInventorySlot != null && !isInventoryOpen()) {
-            ItemStack newItem = inventory.getItem(playerInventorySlot);
-            if (newItem != null && isWand(newItem)) {
-                item = newItem;
+        if (checkWandItem()) {
+            updateName();
+            updateLore();
+            if (displayManaAsDurability && xpMax > 0 && xpRegeneration > 0) {
+                updateDurability();
             }
         }
 
@@ -869,11 +865,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getLogger().warning("Failed to save wand state for wand id " + id + " to : " + item + " of class " + item.getClass());
 		} else {
             InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
-        }
-
-        // Set wand item
-        if (inventory != null && playerInventorySlot != null && isInventoryOpen()) {
-            inventory.setItem(playerInventorySlot, item);
         }
 	}
 	
@@ -1315,7 +1306,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 
         // Make indestructible
-        CompatibilityUtils.makeUnbreakable(item);
+        if (indestructible && !displayManaAsDurability) {
+            CompatibilityUtils.makeUnbreakable(item);
+        } else {
+            CompatibilityUtils.removeUnbreakable(item);
+        }
         CompatibilityUtils.hideFlags(item);
 	}
 	
@@ -1643,7 +1638,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (wandMode == WandMode.INVENTORY) {
 			if (!hasStoredInventory()) return;
 			PlayerInventory inventory = player.getInventory();
-			inventory.clear();
+            inventory.clear();
 			updateHotbar(inventory);
 			updateInventory(inventory, HOTBAR_SIZE, false);
 			updateName();
@@ -1662,17 +1657,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		int currentSlot = playerInventory.getHeldItemSlot();
 		ItemStack existingHotbar = hotbar.getItem(currentSlot);
 
-		if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
+        if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
 			// Toss the item back into the wand inventory, it'll find a home somewhere.
             hotbar.setItem(currentSlot, item);
 			addToInventory(existingHotbar);
             hotbar.setItem(currentSlot, null);
 		}
 
-		// Put the wand in the player's active slot.
-		playerInventory.setItem(currentSlot, item);
-
-		// Set hotbar items from remaining list
+        // Set hotbar items from remaining list
 		for (int hotbarSlot = 0; hotbarSlot < HOTBAR_SIZE; hotbarSlot++) {
 			if (hotbarSlot != currentSlot) {
 				ItemStack hotbarItem = hotbar.getItem(hotbarSlot);
@@ -1680,7 +1672,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				playerInventory.setItem(hotbarSlot, hotbarItem);
 			}
 		}
-	}
+
+        // Put the wand in the player's active slot.
+        playerInventory.setItem(currentSlot, item);
+        item = playerInventory.getItem(currentSlot);
+    }
 	
 	private void updateInventory(Inventory targetInventory, int startOffset, boolean addHotbar) {
 		// Set inventory from current page
@@ -2199,7 +2195,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			mage.getPlayer().openInventory(getDisplayInventory());
 		} else if (wandMode == WandMode.INVENTORY) {
 			if (hasStoredInventory()) return;
-			if (storeInventory()) {
+            ItemStack debugStack = mage.getPlayer().getInventory().getItem(mage.getPlayer().getInventory().getHeldItemSlot());
+
+            if (storeInventory()) {
 				inventoryIsOpen = true;
 				mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
 				updateInventory();
@@ -2238,6 +2236,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return true;
 	}
 
+    protected boolean checkWandItem() {
+        if (playerInventorySlot != null && mage != null && mage.isPlayer()) {
+            Player player = mage.getPlayer();
+            ItemStack currentItem = player.getItemInHand();
+            if (NMSUtils.getHandle(currentItem) != NMSUtils.getHandle(item)) {
+                item = currentItem;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 	public void activate(Mage mage, ItemStack wandItem, int slot) {
 		if (mage == null || wandItem == null) return;
         id = null;
@@ -2255,7 +2266,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         playerInventorySlot = slot;
 		
 		// Update held item, it may have been copied since this wand was created.
-        boolean needsSave = this.item != wandItem;
+        boolean needsSave = NMSUtils.getHandle(this.item) != NMSUtils.getHandle(wandItem);
 		this.item = wandItem;
 		this.mage = mage;
 		
@@ -2429,19 +2440,45 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 	}
-	
+
+    protected void updateDurability() {
+        int maxDurability = item.getType().getMaxDurability();
+        if (maxDurability > 0) {
+            int durability = (short)(xp * maxDurability / xpMax);
+            durability = maxDurability - durability;
+            if (durability >= maxDurability) {
+                durability = maxDurability - 1;
+            } else if (durability < 0) {
+                durability = 0;
+            }
+            item.setDurability((short)durability);
+        }
+    }
+
 	protected void updateMana() {
 		if (mage != null && xpMax > 0 && xpRegeneration > 0) {
 			Player player = mage.getPlayer();
-			if (displayManaAsBar) {
-				if (!retainLevelDisplay) {
-					player.setLevel(0);
-				}
-				player.setExp((float)xp / (float)xpMax);
-            } else {
-				player.setLevel(xp);
-				player.setExp(0);
-			}
+            if (displayManaAsGlow) {
+                if (xp == xpMax) {
+                    CompatibilityUtils.addGlow(item);
+                } else {
+                    CompatibilityUtils.removeGlow(item);
+                }
+            }
+            if (displayManaAsDurability) {
+                updateDurability();
+            }
+			else {
+                if (displayManaAsBar) {
+                    if (!retainLevelDisplay) {
+                        player.setLevel(0);
+                    }
+                    player.setExp((float)xp / (float)xpMax);
+                } else {
+                    player.setLevel(xp);
+                    player.setExp(0);
+                }
+            }
 		}
 	}
 	
@@ -2584,7 +2621,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		Player player = mage.getPlayer();
 		if (player == null) return;
-		
+
+        boolean modified = checkWandItem();
+        int maxDurability = item.getType().getMaxDurability();
+
+        // Auto-repair wands
+        if (!displayManaAsDurability && maxDurability > 0) {
+            item.setDurability((short)0);
+        }
+
 		if (speedIncrease > 0) {
 			int hasteLevel = (int)(speedIncrease * controller.getMaxHaste());
 			if (hasteEffect == null || hasteEffect.getAmplifier() != hasteLevel) {
@@ -2618,15 +2663,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		updateEffects();
+        if (modified) {
+            saveState();
+        }
 	}
 	
 	public MagicController getMaster() {
 		return controller;
 	}
 	
-	public void cycleSpells(ItemStack newItem) {
-		if (isWand(newItem)) item = newItem;
-		
+	public void cycleSpells() {
 		Set<String> spellsSet = getSpells();
 		ArrayList<String> spells = new ArrayList<String>(spellsSet);
 		if (spells.size() == 0) return;
@@ -2647,9 +2693,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		setActiveSpell(spells.get(spellIndex).split("@")[0]);
 	}
 	
-	public void cycleMaterials(ItemStack newItem) {
-		if (isWand(newItem)) item = newItem;
-		
+	public void cycleMaterials() {
 		Set<String> materialsSet = getBrushes();
 		ArrayList<String> materials = new ArrayList<String>(materialsSet);
 		if (materials.size() == 0) return;
@@ -3024,7 +3068,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public Inventory getStoredInventory() {
         return storedInventory;
     }
-
 
     public boolean addToStoredInventory(ItemStack item) {
         if (storedInventory == null) {

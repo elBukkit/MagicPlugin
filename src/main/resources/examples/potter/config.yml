@@ -11,6 +11,9 @@ load_default_wands: false
 load_default_enchanting: false
 load_default_crafting: false
 
+# Display mana as item durability
+# mana_display: durability
+
 # Stop bashing each other with wands!!
 wand_abuse_damage: 2
 
@@ -56,6 +59,9 @@ default_wand_path:
 
 # Only show spell casts from players
 dynmap_only_player_spells: true
+
+# Don't live-update dynmap on spell casts .. too much auto-undo!
+dynmap_update: false
 
 max_health_regeneration: 5
 max_hunger_regeneration: 5
