@@ -122,6 +122,7 @@ wand:
     bound: That wand is bound to $name
     spell_added: "The &r&6$name &d&ospell has been added to your wand"
     brush_added: "The &r&7$name &d&obrush has been added to your wand"
+    spell_upgraded: "&r&6$name &d&o has upgraded"
     upgraded_property: Your wand has been upgraded to &r&b$name
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded

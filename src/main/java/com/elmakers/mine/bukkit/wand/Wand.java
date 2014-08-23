@@ -2042,8 +2042,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (castOverrides == null) {
                 castOverrides = new HashMap<String, String>();
             }
+            HashSet<String> upgradedSpells = new HashSet<String>();
             for (Map.Entry<String, String> entry : other.castOverrides.entrySet()) {
-                String currentValue = castOverrides.get(entry.getKey());
+                String overrideKey = entry.getKey();
+                String currentValue = castOverrides.get(overrideKey);
                 String value = entry.getValue();
                 if (currentValue != null && !other.isForcedUpgrade()) {
                     try {
@@ -2056,7 +2058,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     }
                 }
 
-                modified = modified || currentValue == null || !value.equals(currentValue);
+                boolean addOverride = currentValue == null || !value.equals(currentValue);
+                modified = modified || addOverride;
+                if (addOverride && mage != null && overrideKey.contains(".")) {
+                    String[] pieces = StringUtils.split(overrideKey, '.');
+                    String spellKey = pieces[0];
+                    String spellName = spellKey;
+                    if (!upgradedSpells.contains(spellKey)) {
+                        SpellTemplate spell = controller.getSpellTemplate(spellKey);
+                        if (spell != null) spellName = spell.getName();
+                        mage.sendMessage(Messages.get("wand.spell_upgraded").replace("$name", spellName));
+                        upgradedSpells.add(spellKey);
+                    }
+                }
                 castOverrides.put(entry.getKey(), entry.getValue());
             }
         }
