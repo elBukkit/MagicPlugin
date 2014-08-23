@@ -3148,7 +3148,7 @@ stupefy:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: 00EEFF
+           color: 5FD2FF
            firework: ball
         no_target:
         -  class: EffectSingle
@@ -3163,7 +3163,7 @@ stupefy:
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: 00EEFF
+           color: 5FD2FF
            firework: ball
         backfire:
         -  class: EffectSingle
