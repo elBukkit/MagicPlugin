@@ -1807,6 +1807,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return 0;
         }
 
+        path.catchup(this, enchanter);
+
         int minLevel = path.getMinLevel();
         if (totalLevels < minLevel) {
             if (enchanter != null) {

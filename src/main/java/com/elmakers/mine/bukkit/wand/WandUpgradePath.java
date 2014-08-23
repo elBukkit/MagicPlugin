@@ -372,6 +372,27 @@ public class WandUpgradePath {
         playEffects(mage, "enchant");
     }
 
+    private void applyUpgradeItem(Wand wand, Mage mage) {
+        if (upgradeItemKey != null && !upgradeItemKey.isEmpty()) {
+            com.elmakers.mine.bukkit.api.wand.Wand upgradeWand = mage.getController().createWand(upgradeItemKey);
+            if (upgradeWand != null) {
+                wand.add(upgradeWand);
+            }
+        }
+    }
+    private void applyUpgradeItems(Wand wand, Mage mage) {
+        applyUpgradeItem(wand, mage);
+        if (parent != null) {
+            parent.applyUpgradeItems(wand, mage);
+        }
+    }
+
+    public void catchup(Wand wand, Mage mage) {
+        if (parent != null) {
+            parent.applyUpgradeItems(wand, mage);
+        }
+    }
+
     public void upgraded(Wand wand, Mage mage) {
         playEffects(mage, "upgrade");
         CommandSender sender = Bukkit.getConsoleSender();
