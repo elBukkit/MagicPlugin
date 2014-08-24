@@ -2256,7 +2256,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (playerInventorySlot != null && mage != null && mage.isPlayer()) {
             Player player = mage.getPlayer();
             ItemStack currentItem = player.getInventory().getItem(playerInventorySlot);
-            if (NMSUtils.getHandle(currentItem) != NMSUtils.getHandle(item)) {
+            if (isWand(currentItem) &&
+                NMSUtils.getHandle(currentItem) != NMSUtils.getHandle(item)) {
                 item = currentItem;
                 return true;
             }
@@ -2633,7 +2634,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 	
 	public void tick() {
-		if (mage == null) return;
+		if (mage == null || item == null) return;
 		
 		Player player = mage.getPlayer();
 		if (player == null) return;
