@@ -862,7 +862,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Save legacy data as well until migration is settled
 		Object wandNode = InventoryUtils.createNode(item, "wand");
 		if (wandNode == null) {
-			controller.getLogger().warning("Failed to save wand state for wand id " + id + " to : " + item + " of class " + item.getClass());
+			controller.getLogger().warning("Failed to save wand state for wand to : " + item + " in slot " + playerInventorySlot);
 		} else {
             InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
         }
@@ -2255,7 +2255,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     protected boolean checkWandItem() {
         if (playerInventorySlot != null && mage != null && mage.isPlayer()) {
             Player player = mage.getPlayer();
-            ItemStack currentItem = player.getItemInHand();
+            ItemStack currentItem = player.getInventory().getItem(playerInventorySlot);
             if (NMSUtils.getHandle(currentItem) != NMSUtils.getHandle(item)) {
                 item = currentItem;
                 return true;
