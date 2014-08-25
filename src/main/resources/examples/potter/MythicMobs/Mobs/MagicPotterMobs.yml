@@ -82,7 +82,7 @@ Deatheater:
   - skill Necromancy >0 0.1
 DarkLord:
   Mobtype: enderman
-  Display: "&cDark Lord"
+  Display: "&8_The_Dark_L0rd_"
   Health: 100
   Damage: 5
   Equipment:
