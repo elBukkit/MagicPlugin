@@ -520,6 +520,20 @@ public class NMSUtils {
         }
     }
 
+    public static void removeMeta(ItemStack stack, String tag) {
+        if (stack == null) return;
+
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return;
+            removeMeta(tagObject, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static String getMeta(ItemStack stack, String tag) {
         if (stack == null) return null;
         String meta = null;
