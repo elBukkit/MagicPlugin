@@ -1171,10 +1171,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleInterval = 0;
 		}
 		
-		if (xpRegeneration <= 0 || xpMax <= 0 || costReduction >= 1) {
-			xpMax = 0;
-			xpRegeneration = 0;
-			xp = 0;
+		if (xp > xpMax) {
+			xp = xpMax;
 		}
 
 		checkActiveMaterial();
