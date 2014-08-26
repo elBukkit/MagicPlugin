@@ -13,6 +13,7 @@ import java.util.Set;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -122,6 +123,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String alias;
     private String description;
     private String extendedDescription;
+    private String levelDescription;
+    private int level;
+    private String baseSpellKey;
     private String usage;
     private long worth;
     private Color color;
@@ -706,6 +710,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         extendedDescription = node.getString("extended_description", "");
         extendedDescription = Messages.get("spells." + key + ".extended_description", extendedDescription);
         usage = Messages.get("spells." + key + ".usage", usage);
+        if (baseSpellKey != null) {
+            name = Messages.get("spells." + baseSpellKey + ".name", name);
+            description = Messages.get("spells." + baseSpellKey + ".description", description);
+            extendedDescription = Messages.get("spells." + baseSpellKey + ".extended_description", extendedDescription);
+            usage = Messages.get("spells." + baseSpellKey + ".usage", usage);
+            levelDescription = Messages.get("spell.level_description").replace("$level", Integer.toString(level));
+        }
+        levelDescription = Messages.get("spells." + key + ".level_description", levelDescription);
 
         // Load basic properties
         icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
@@ -729,7 +741,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     if (effects.containsKey(referenceKey)) {
                         effects.put(effectKey, new ArrayList(effects.get(referenceKey)));
                     }
-                } else {
+                }
+                else
+                {
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
                 }
             }
@@ -1236,6 +1250,24 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public final String getLevelDescription()
+    {
+        return levelDescription;
+    }
+
+    @Override
+    public final String getBaseSpellKey()
+    {
+        return baseSpellKey;
+    }
+
+    @Override
+    public final int getLevel()
+    {
+        return level;
+    }
+
+    @Override
     public final String getUsage()
     {
         return usage;
@@ -1438,6 +1470,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public void loadTemplate(String key, ConfigurationSection node)
     {
         this.key = key;
+        this.baseSpellKey = null;
+        if (key.contains("|")) {
+            try {
+                String[] pieces = StringUtils.split(key, "|");
+                baseSpellKey = pieces[0];
+                level = Integer.parseInt(pieces[1]);
+            } catch (Exception ex) {
+
+            }
+        }
         this.loadTemplate(node);
     }
 
