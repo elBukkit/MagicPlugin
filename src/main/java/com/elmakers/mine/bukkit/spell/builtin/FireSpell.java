@@ -82,7 +82,7 @@ public class FireSpell extends BlockSpell
 		
 		FireAction action = new FireAction(controller, getUndoList());
 
-		if (radius <= 1)
+		if (radius < 1)
 		{
 			action.perform(targetBlock);
 		}

@@ -159,7 +159,7 @@ public class FrostSpell extends BlockSpell
 		radius = (int)(mage.getRadiusMultiplier() * radius);		
 		FrostAction action = new FrostAction(controller, getUndoList(), iceMaterial, freezeWater, freezeLava, freezeFire);
 
-		if (radius <= 1)
+		if (radius < 1)
 		{
 			action.perform(target.getBlock());
 		}
