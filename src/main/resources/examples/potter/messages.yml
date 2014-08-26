@@ -310,14 +310,6 @@ spells:
         description: Push your target backwards
         cast: Flipendo $target!
         cast_player_message: ""
-    flipendoduo:
-        name: Flipendo Duo
-        description: A powerful push
-        cast: Flipendo Duo!
-    flipendotria:
-        name: Flipendo Tria
-        description: Summon a tornado
-        cast: Flipendo Tria!
     fumos:
         name: Fumos
         description: Produce a defensive cloud of dark grey smoke
@@ -337,11 +329,6 @@ spells:
         description: The Freezing Charm
         extended_description: Freezes an area
         cast: Glacius $target!
-    glaciusduo:
-        name: Glacius Duo
-        description: The Freezier Charm
-        extended_description: Freezes a large area
-        cast: Glacius Duo $target!
     superfly:
         name: SuperFly
         description: For videographers
@@ -443,14 +430,6 @@ spells:
         name: Protego
         description: Create a magical shield
         cast: Protego!
-    protegoduo:
-        name: Protego Duo
-        description: Reflect your opponents' spells back
-        cast: Protego Duo!
-    protegotria:
-        name: Protego Tria
-        description: Create a magical sphere of protection
-        cast: Protego Tria!
     protegomaxima:
         name: Protego Maxima
         description: Create a large hollow sphere

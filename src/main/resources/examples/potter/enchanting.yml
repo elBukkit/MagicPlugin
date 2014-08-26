@@ -74,16 +74,18 @@ year1:
       2:   0,   0,    5
     spells:
       flagrate: 100,100,100
-      periculum: 50,60,70
-      avis: 20,30,40
-      accio: 40,50,60
       flipendo: 10,20,30
-      conjunctivitis: 20,30,40
+      periculum: 50,60,70
       arrow: 50,60,70
+      lumos: 100,100,100
+      incendio: 20,30,40
+      conjunctivitis: 20,30,40
       fourpoint: 50,60,70
-      alohomora: 20,30,40
+      arresto: 90,100,100
+      avis: 20,30,40
     required_spells:
-      - araniaexumai
+      - alohomora
+      - wingardium
 
 year2:
     upgrade: year3
@@ -101,16 +103,18 @@ year2:
     xp_regeneration:
       1: 5,10,15,100,100
     spells:
-      lumos: 100,100,100
+      flipendo|2: 5,10,20
+      immobulus: 40,50,60
       fumos: 80,90,100
-      episkey: 20,30,40
-      protego: 40,60,80
-      flipendoduo: 5,10,20
-      locomotomortus: 1,5,10
-      arresto: 90,100,100
-      bombarda: 5,10,20
+      finiteincantatem: 1,1,2
+      nox: 20,30,50
+      bogies: 10,20,30
+      incendio|2: 5,10,20
     required_spells:
-      - reducto
+      - expelliarmus
+      - araniaexumai
+      - glacius
+      - aparecium
 
 year3:
     upgrade: year4
@@ -128,16 +132,18 @@ year3:
       - pex user @p suffix "(Year 4) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      stupefy: 100,100,100
+      flipendo|3: 5,10,20
+      bombarda: 5,10,20
+      snowball: 15,50,80
       colorvaria: 40,60,80
-      immobulus: 40,50,60
-      obscuro: 20,40,50
-      levicorpus: 20,40,50
-      rennervate: 90,100,100
-      incarcerous: 20,30,40
+      expelliarmus|2: 5,10,20
+      lumos|2: 15,50,80
+      glacius|2: 15,50,80
+      incendio|2: 15,50,80
+      finiteincantatem|2: 1,2,5
     required_spells:
-      - confundus
-      - duro
+      - deprimo
+      - bubble
 
 year4:
     upgrade: year5
@@ -155,15 +161,18 @@ year4:
       - pex user @p suffix "(Year 5) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      aguamenti: 50,60,70
-      incendio: 20,30,40
-      petrificustotalus: 40,60,80
-      protegoduo: 5,20,30
-      snowball: 15,50,80
-      nox: 20,30,50
-      bogies: 10,20,30
+      protego: 40,60,80
+      rennervate: 90,100,100
+      episkey: 20,30,40
+      obscuro: 20,40,50
+      accio: 40,50,60
+      locomotomortus: 1,5,10
+      orchideous: 1,5,10
+      glacius|3: 15,50,80
     required_spells:
-      - reducio
+      - aguamenti
+      - duro
+      - ascendio
 
 year5:
     upgrade: year6
@@ -181,15 +190,17 @@ year5:
     xp_regeneration:
       1: 5,10,15,100,100
     spells:
-      deprimo: 100,100,100
-      ascendio: 40,50,60
-      aparecium: 20,40,50
-      bubble: 20,30,40
+      stupefy: 100,100,100
+      reducio: 5,10,20
+      petrificustotalus: 40,60,80
+      levicorpus: 20,40,50
+      ferula: 50,60,70
       lacarnum: 5,10,20
-      engorgio: 1,5,10
+      protego|2: 15,50,80
+      expelliarmus|3: 5,10,20
     required_spells:
-      - finiteincantatem
-      - expelliarmus
+      - evanesco
+      - reducto
 
 year6:
     upgrade: year7
@@ -207,11 +218,8 @@ year6:
       - pex user @p suffix "(Year 7) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      ferula: 50,60,70
-      bombardamaxima: 20,30,40
-      flipendotria: 5,10,20
-      protegotria: 1,10,20
-      vulnera: 5,10,20
+      firestorm: 5,10,15
+      engorgio: 1,5,10
     required_spells:
       - apparate
 
@@ -234,9 +242,8 @@ year7:
       atmos: 10,20,30
       meteo: 5,10,20
       disillusion: 5,10,20
-      evanesco: 5,10,20
-      firestorm: 5,10,15
-      orchideous: 1,5,10
+      vulnera: 5,10,20
+      protego|3: 15,50,80
     required_spells:
       - piertotum
 

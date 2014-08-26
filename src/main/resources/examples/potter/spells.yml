@@ -105,6 +105,7 @@ aguamenti:
            particle: drip_water
            particle_count: 8
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         height: 3
         range: 25
@@ -1325,12 +1326,22 @@ expelliarmus:
         allow_max_range: false
         range: 35
         fov: 0.12
-        fizzle_chance: 0
-        backfire_chance: 0
+        fizzle_chance: 0.4
+        backfire_chance: 0.2
         keep_in_inventory: true
         target_breakables: 1
     costs:
         xp: 120
+
+expelliarmus|2:
+    parameters:
+        fizzle_chance: 0.2
+        backfire_chance: 0.05
+
+expelliarmus|3:
+    parameters:
+        fizzle_chance: 0.05
+        backfire_chance: 0
 
 rennervate:
     icon: ink_sack:9
@@ -1576,10 +1587,19 @@ finiteincantatem:
         bypass_protection: true
         bypass_confusion: true
         bypass_backfire: true
-        cooldown: 2000
+        cooldown: 1000
         transparent: apparatemaxima
+        fizzle_chance: 0.6
     costs:
-        xp: 40
+        xp: 20
+
+finiteincantatem|2:
+    parameters:
+        fizzle_chance: 0.3
+
+finiteincantatem|3:
+    parameters:
+        fizzle_chance: 0
 
 flagrate:
     icon: ink_sack:14
@@ -1624,6 +1644,15 @@ flipendo:
              iterations: 12
              particle: spell
              lengthGrow: 0.1
+        area:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: FountainEffect
+             particle: spell
+             iterations: 2
+             particlesStrand: 10
+             particlesSpout: 30
     parameters:
         target_type: Entity
         range: 16
@@ -1639,12 +1668,7 @@ flipendo:
     costs:
         xp: 40
 
-flipendoduo:
-    icon: ink_sack:5
-    category: dada
-    class: PushSpell
-    pvp_restricted: true
-    cast_on_no_target: true
+flipendo|2:
     worth: 30
     effects:
         cast:
@@ -1658,38 +1682,19 @@ flipendoduo:
              circles: 4
              grow: 0.5
     parameters:
-        target_type: Entity
         range: 20
-        allow_area: false
-        allow_max_range: true
         item_force: 4
         area_range: 20
         entity_force: 1.5
         type: push
-        count: 8
-        damage: 3
+        count: 3
         cooldown: 6000
     costs:
         xp: 70
 
-flipendotria:
-    icon: ink_sack:5
-    category: dada
-    class: PushSpell
-    pvp_restricted: true
-    cast_on_no_target: true
+flipendo|3:
     worth: 50
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_shoot
-           location: target
-           effectlib:
-             class: FountainEffect
-             particle: spell
-             iterations: 2
-             particlesStrand: 10
-             particlesSpout: 30
         area:
         -  class: EffectSingle
            sound: fizz
@@ -1700,15 +1705,12 @@ flipendotria:
              particlesStrand: 10
              particlesSpout: 30
     parameters:
-        target_type: Entity
-        range: 35
+        range: 32
         allow_area: true
-        allow_max_range: true
         area_range: 20
         item_force: 5
         entity_force: 1.8
-        type: push
-        count: 16
+        count: 8
         damage: 4
         cooldown: 10000
     costs:
@@ -1825,7 +1827,7 @@ glacius:
         target_type: LivingEntity
         allow_max_range: false
         range: 24
-        radius: 2
+        radius: 1
         vertical_search_distance: 8
         transparent: transparent_to_construction
         player_damage: 1
@@ -1833,17 +1835,14 @@ glacius:
         slowness: 1
         ice: ice
         undo: 5000
+        duration: 5000
         entity_undo: false
         bypass_build: true
         freeze_lava: false
     costs:
         xp: 75
 
-glaciusduo:
-    icon: snow_ball
-    category: transfiguration
-    class: FrostSpell
-    pvp_restricted: true
+glacius|2:
     worth: 80
     effects:
         cast:
@@ -1865,19 +1864,24 @@ glaciusduo:
              particle: snowball_poof
              radius: 8
     parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 24
-        radius: 4
-        vertical_search_distance: 8
-        transparent: transparent_to_construction
+        radius: 2
         player_damage: 3
         entity_damage: 6
         slowness: 2
-        ice: ice
         undo: 8000
-        entity_undo: false
-        bypass_build: true
+        duration: 8000
+    costs:
+        xp: 90
+
+glacius|3:
+    worth: 120
+    parameters:
+        radius: 3
+        player_damage: 4
+        entity_damage: 8
+        slowness: 2
+        undo: 10000
+        undo: 20000
         freeze_lava: true
     costs:
         xp: 125
@@ -2102,15 +2106,27 @@ incendio:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
-        radius: 2
+        radius: 0
         vertical_search_distance: 8
-        undo: 3000
-        cooldown: 3000
+        undo: 2000
+        cooldown: 1000
         bypass_build: true
         target_breakables: 1
         entity_undo: false
     costs:
-        xp: 100
+        xp: 50
+
+incendio|2:
+    parameters:
+        radius: 1
+        cooldown: 2000
+        undo: 3000
+
+incendio|3:
+    parameters:
+        radius: 2
+        cooldown: 3000
+        undo: 4000
 
 lacarnum:
     icon: fireball
@@ -2226,8 +2242,16 @@ lumos:
         target: any
         range: 32
         target_type: LivingEntity
-        duration: 90000
+        duration: 10000
         effect_night_vision: 5
+
+lumos|2:
+    parameters:
+        duration: 30000
+
+lumos|3:
+    parameters:
+        duration: 90000
 
 morsmordre:
     icon: skull_item:4
@@ -2646,6 +2670,28 @@ protego:
     parameters:
         allow_max_range: true
         range: 3
+        radius: 1
+        type: sphere
+        brush: stained_glass
+        orient_dimension_max: 0
+        orient_dimension_min: 0
+        orient: true
+        transparent: transparent_to_construction
+        check_destructible: true
+        destructible: air
+        undo: 1000
+        breakable: 2
+        brushcolor: false
+        bypass_build: true
+        cooldown: 1000
+        reflect_chance: 0.1
+        bypass_confusion: true
+        bypass_backfire: true
+    costs:
+        xp: 20
+
+protego|2:
+    parameters:
         radius: 2
         type: sphere
         brush: stained_glass
@@ -2655,16 +2701,33 @@ protego:
         transparent: transparent_to_construction
         check_destructible: true
         destructible: air
+        destructible: air
         undo: 2000
-        breakable: 2
+        breakable: 1
         brushcolor: false
         bypass_build: true
-        cooldown: 2000
+        reflect_chance: .75
+        cooldown: 1000
+
+protego|3:
+    parameters:
+        target: self
+        thickness: 1
+        radius: 3
+        type: sphere
+        brush: stained_glass
+        undo: 5000
+        cooldown: 6000
+        transparent: transparent_to_construction
+        check_destructible: true
+        destructible: air
+        breakable: 3
         reflect_chance: 0.1
         bypass_confusion: true
         bypass_backfire: true
+        bypass_build: true
     costs:
-        xp: 20
+        xp: 100
 
 protegomaxima:
     icon: ink_sack:12
@@ -2694,69 +2757,6 @@ protegomaxima:
         bypass_backfire: true
         bypass_confusion: true
         bypass_backfire: true
-    costs:
-        xp: 100
-
-protegoduo:
-    icon: ink_sack:12
-    category: dada
-    class: ConstructSpell
-    pvp_restricted: true
-    worth: 50
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: creeper_death
-    parameters:
-        allow_max_range: true
-        range: 3
-        radius: 1
-        type: sphere
-        brush: stained_glass
-        orient_dimension_max: 0
-        orient_dimension_min: 0
-        orient: true
-        transparent: transparent_to_construction
-        check_destructible: true
-        destructible: air
-        destructible: air
-        undo: 1000
-        breakable: 1
-        brushcolor: false
-        bypass_build: true
-        reflect_chance: .75
-        bypass_confusion: false
-        bypass_backfire: true
-        cooldown: 1000
-    costs:
-        xp: 10
-
-protegotria:
-    icon: ink_sack:12
-    category: dada
-    class: ConstructSpell
-    pvp_restricted: true
-    worth: 50
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-    parameters:
-        target: self
-        thickness: 1
-        radius: 3
-        type: sphere
-        brush: stained_glass
-        undo: 5000
-        cooldown: 6000
-        transparent: transparent_to_construction
-        check_destructible: true
-        destructible: air
-        breakable: 3
-        reflect_chance: 0.1
-        bypass_confusion: true
-        bypass_backfire: true
-        bypass_build: true
     costs:
         xp: 100
 
@@ -3100,6 +3100,7 @@ jail:
         undo: 120000
         brush: schematic|cage
         transparent: transparent_to_construction
+        bypass_backfire: true
 
 silenciomaxima:
     icon: ink_sack:3
