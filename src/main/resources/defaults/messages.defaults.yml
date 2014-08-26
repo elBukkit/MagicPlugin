@@ -125,7 +125,7 @@ wand:
     player_spell_upgraded: "$players's &r&6$name &d&ohas been upgraded to &3$level"
     spell_upgraded: "&r&6$name &d&ohas been upgraded to &3$level"
     spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
-    upgraded_property: Your wand has been upgraded to &r&b$name
+    upgraded_property: "Your wand has been upgraded to &r&b$name"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
     no_item: You are not holding an item
@@ -163,7 +163,7 @@ wand:
     self_destruct: Your wands did not survive the dimensional shift!
     single_spell: Wand of $spell
     fully_enchanted: This wand is fully enchanted (for now)
-    need_more_levels: You need at least $levels levels to enchant
+    need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
     randomized_lore: What kind of wand will you get?
     randomized_name: Wand Box
     upgrade_name: $name Upgrade
@@ -173,7 +173,7 @@ spell:
     reactivate: Reactivating $name
     available_path: Available on the $path path
     required_path: Required to complete the $path path
-    required_spell: You must learn $spell to advance
+    required_spell: "You must learn &r&4$spell &d&oto advance"
     level_description: Level $level
 worlds:
     world:

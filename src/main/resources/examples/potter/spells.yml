@@ -3288,9 +3288,19 @@ stupefy:
         target_breakables: 1
         bypass_backfire: false
         effect_confusion: 5
-        duration: 1000
+        duration: 500
     costs:
         xp: 50
+
+stupefy|2:
+    parameters:
+        damage: 3
+        duration: 1000
+
+stupefy|3:
+    parameters:
+        damage: 4
+        duration: 2000
 
 vermillious:
     icon: ink_sack:1
