@@ -18,9 +18,8 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public String getDescription();
     public String getExtendedDescription();
     public String getLevelDescription();
-    public int getLevel();
     public String getKey();
-    public String getBaseSpellKey();
+    public SpellKey getSpellKey();
     public Color getColor();
     public long getWorth();
     public SpellCategory getCategory();
