@@ -546,6 +546,10 @@ spells:
         cast: Regenerating area
         target_selected: Cast again to regenerate area
         cast_finish: Regenerated $count blocks
+    vermillious:
+        name: Vermillious
+        description: Shoots burning red sparks from your wand
+        cast: Vermillious!
     wingardium:
         name: Wingardium Leviosa
         description: Levitate lightweight objects
