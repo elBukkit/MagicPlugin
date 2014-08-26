@@ -200,7 +200,6 @@ year5:
       ferula: 50,60,70
       lacarnum: 5,10,20
       protego|2: 15,50,80
-      incendio|4: 10,30,40
       expelliarmus|3: 5,10,20
       accio|2: 30,40,50
     required_spells:
@@ -257,7 +256,6 @@ year7:
       stupefy|3: 10,20,30
       levicorpus|3: 30,40,50
       expelliarmus|5: 30,40,50
-      incendio|5: 20,30,40
       glacius|3: 40,50,60
     required_spells:
       - piertotum

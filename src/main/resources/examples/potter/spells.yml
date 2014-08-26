@@ -2194,18 +2194,6 @@ incendio|3:
         cooldown: 3000
         undo: 4000
 
-incendio|4:
-    parameters:
-        radius: 3
-        cooldown: 4000
-        undo: 5000
-
-incendio|5:
-    parameters:
-        radius: 4
-        cooldown: 5000
-        undo: 6000
-
 lacarnum:
     icon: fireball
     category: dark
@@ -2792,7 +2780,7 @@ protego:
     parameters:
         allow_max_range: true
         range: 3
-        radius: 1
+        radius: 0
         type: sphere
         brush: stained_glass
         orient_dimension_max: 0
@@ -2814,7 +2802,7 @@ protego:
 
 protego|2:
     parameters:
-        radius: 2
+        radius: 1
         undo: 2000
         reflect_chance: .75
         cooldown: 1000
@@ -2822,10 +2810,9 @@ protego|2:
 
 protego|3:
     parameters:
-        radius: 3
+        radius: 2
         undo: 5000
         cooldown: 6000
-        transparent: trans
         reflect_chance: 0.1
         breakable: 1
     costs:
