@@ -1435,15 +1435,11 @@ public class MagicController implements Listener, MageController {
 				continue;
 			}
 
-            if (defaults != null) {
-                spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
-            }
-
             SpellKey spellKey = new SpellKey(key);
             if (spellKey.isVariant()) {
                 int level = spellKey.getLevel();
                 String baseKey = spellKey.getBaseKey();
-                for (int i = 1; i < level; i++) {
+                for (int i = level - 1; i > 0; i--) {
                     String parentKey = baseKey;
                     if (i > 1) {
                         parentKey += "|" + i;
@@ -1452,6 +1448,10 @@ public class MagicController implements Listener, MageController {
                         spellNode = ConfigurationUtils.addConfigurations(spellNode, config.getConfigurationSection(parentKey), false);
                     }
                 }
+            }
+
+            if (defaults != null) {
+                spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
             }
 
             // Kind of a hacky way to do this, and only works with BaseSpell spells.
