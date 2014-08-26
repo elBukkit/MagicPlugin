@@ -2,16 +2,20 @@
 
 ## 3.7
 
- - Fixed several bugs with tracking hanging items
- - Changed wand inventory navigation mechanics (left/right click outside inv to change pages)
- - Add per-spell protection (must be enabled per-spell)
-
-## 3.7
-
- - Bailed on the Bukkit Metadata API PR, simplifying/optimizing data storage instead.
- - Fix dtlTraders support.
- - Added "Earthquake" spell (and directional vector parameter for ConstructSpell)
  - Add spell levelling system (spell progression via level variants)
+ - Changed wand inventory navigation mechanics (left/right click outside inv to change pages)
+ - Add per-spell protection pnodes (must be enabled per-spell)
+ - Fixed several bugs with tracking hanging items
+ - Fix dtlTraders support.
+ - Fix a bad bug with the "chest" inventory mode
+ - More wand data saving / duplication fixes
+ - Add some new mana display modes (durability, glow) - experimental
+ - Some undo fixes and improvements
+ - Add dynmap option to only show spells from players (not mobs or automata)
+ - Some fixes to Familiar spell (long-standing bug re: multiple players)
+ - Bailed on the Bukkit Metadata API PR, simplifying/optimizing data storage instead.
+ - Added "Earthquake" spell (and directional vector parameter for ConstructSpell)
+ - Some fixes related to mana-based casting costs (separate "mana" vs "xp" costs now)
 
 ## 3.6
 

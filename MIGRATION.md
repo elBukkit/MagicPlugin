@@ -3,6 +3,7 @@
 ## 3.7
 
  * Some magic items (spells, upgrades) may need to be updated. Sorry!
+ * The "xp" casting cost has changed to "mana" ("xp" is still valid, but consumes player XP)
 
 ## 3.6
 

@@ -2847,11 +2847,11 @@ protego:
         transparent: transparent_to_construction
         check_destructible: true
         destructible: air
-        undo: 1000
+        undo: 250
         breakable: 3
         brushcolor: false
         bypass_build: true
-        cooldown: 1000
+        cooldown: 250
         reflect_chance: 0.1
         bypass_confusion: true
         bypass_backfire: true
@@ -2861,20 +2861,18 @@ protego:
 protego|2:
     parameters:
         radius: 1
-        undo: 2000
-        reflect_chance: .75
-        cooldown: 1000
+        undo: 500
+        reflect_chance: 0.75
+        cooldown: 600
         breakable: 2
 
 protego|3:
     parameters:
         radius: 2
-        undo: 5000
-        cooldown: 6000
-        reflect_chance: 0.1
+        undo: 1000
+        cooldown: 800
+        reflect_chance: 0.99
         breakable: 1
-    costs:
-        mana: 100
 
 protegomaxima:
     icon: ink_sack:12
