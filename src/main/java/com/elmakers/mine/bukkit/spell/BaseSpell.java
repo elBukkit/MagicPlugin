@@ -12,8 +12,11 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -39,10 +42,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -118,14 +118,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     /*
      * Variant properties
      */
-    private String key;
+    private SpellKey spellKey;
     private String name;
     private String alias;
     private String description;
     private String extendedDescription;
     private String levelDescription;
-    private int level;
-    private String baseSpellKey;
     private String usage;
     private long worth;
     private Color color;
@@ -701,23 +699,45 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected void loadTemplate(ConfigurationSection node)
     {
         // Get localizations
-        name = this.key;
-        name = node.getString("name", name);
-        name = Messages.get("spells." + key + ".name", name);
-        alias = node.getString("alias", "");
-        description = node.getString("description", "");
-        description = Messages.get("spells." + key + ".description", description);
-        extendedDescription = node.getString("extended_description", "");
-        extendedDescription = Messages.get("spells." + key + ".extended_description", extendedDescription);
-        usage = Messages.get("spells." + key + ".usage", usage);
-        if (baseSpellKey != null) {
-            name = Messages.get("spells." + baseSpellKey + ".name", name);
-            description = Messages.get("spells." + baseSpellKey + ".description", description);
-            extendedDescription = Messages.get("spells." + baseSpellKey + ".extended_description", extendedDescription);
-            usage = Messages.get("spells." + baseSpellKey + ".usage", usage);
-            levelDescription = Messages.get("spell.level_description").replace("$level", Integer.toString(level));
+        String baseKey = spellKey.getBaseKey();
+
+        // Message defaults come from the messages.yml file
+        name = Messages.get("spells." + baseKey + ".name", baseKey);
+        description = Messages.get("spells." + baseKey + ".description", "");
+        extendedDescription = Messages.get("spells." + baseKey + ".extended_description", "");
+        usage = Messages.get("spells." + baseKey + ".usage", "");
+
+        // Can be overridden by the base spell, or the variant spell
+        levelDescription = Messages.get("spells." + baseKey + ".level_description", levelDescription);
+
+        // Spell level variatns can override
+        if (spellKey.isVariant()) {
+            String variantKey = spellKey.getKey();
+            name = Messages.get("spells." + variantKey + ".name", name);
+            description = Messages.get("spells." + variantKey + ".description", description);
+            extendedDescription = Messages.get("spells." + variantKey + ".extended_description", extendedDescription);
+            usage = Messages.get("spells." + variantKey + ".usage", usage);
+
+            // Level description defaults to pre-formatted text
+            levelDescription = Messages.get("spell.level_description", levelDescription);
+
+            // Any spell may have a level description, including base spells if chosen.
+            // Base spells must specify their own level in each spell config though,
+            // they don't get an auto-generated one.
+            levelDescription = Messages.get("spells." + variantKey + ".level_description", levelDescription);
         }
-        levelDescription = Messages.get("spells." + key + ".level_description", levelDescription);
+
+        // Individual spell configuration overrides all
+        name = node.getString("name", name);
+        alias = node.getString("alias", "");
+        extendedDescription = node.getString("extended_description", extendedDescription);
+        description = node.getString("description", description);
+        levelDescription = node.getString("level_description", levelDescription);
+
+        // Parameterize level description
+        if (levelDescription != null && !levelDescription.isEmpty()) {
+            levelDescription = levelDescription.replace("$level", Integer.toString(spellKey.getLevel()));
+        }
 
         // Load basic properties
         icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
@@ -748,12 +768,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
-    }
-
-    public boolean isMatch(String spell, String[] params)
-    {
-        if (params == null) params = new String[0];
-        return (key.equalsIgnoreCase(spell) && parameters.equals(params));
     }
 
     protected void preCast()
@@ -938,7 +952,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public String getMessage(String messageKey, String def) {
         String message = Messages.get("spells.default." + messageKey, def);
-        message = Messages.get("spells." + key + "." + messageKey, message);
+        message = Messages.get("spells." + spellKey.getBaseKey() + "." + messageKey, message);
+        if (spellKey.isVariant()) {
+            message = Messages.get("spells." + spellKey.getKey() + "." + messageKey, message);
+        }
         if (message == null) message = "";
 
         // Escape some common parameters
@@ -1074,7 +1091,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public String getPermissionNode()
     {
-        return "Magic.cast." + key;
+        return "Magic.cast." + spellKey.getBaseKey();
     }
 
     /**
@@ -1211,7 +1228,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public final String getKey()
     {
-        return key;
+        return spellKey.getKey();
     }
 
     @Override
@@ -1256,15 +1273,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public final String getBaseSpellKey()
+    public final SpellKey getSpellKey()
     {
-        return baseSpellKey;
-    }
-
-    @Override
-    public final int getLevel()
-    {
-        return level;
+        return spellKey;
     }
 
     @Override
@@ -1469,17 +1480,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void loadTemplate(String key, ConfigurationSection node)
     {
-        this.key = key;
-        this.baseSpellKey = null;
-        if (key.contains("|")) {
-            try {
-                String[] pieces = StringUtils.split(key, "|");
-                baseSpellKey = pieces[0];
-                level = Integer.parseInt(pieces[1]);
-            } catch (Exception ex) {
-
-            }
-        }
+        spellKey = new SpellKey(key);
         this.loadTemplate(node);
     }
 
