@@ -1296,4 +1296,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         controller.giveItemToPlayer(player, boundWand.duplicate().getItem());
         return true;
     }
+
+    @Override
+    public boolean isStealth() {
+        Player player = getPlayer();
+        if (player != null && player.isSneaking()) return true;
+        if (activeWand != null && activeWand.isStealth()) return true;
+        return false;
+    }
 }

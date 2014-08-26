@@ -2798,7 +2798,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean showMessages() {
 		return quietLevel < 2;
 	}
-    
+
+    public boolean isStealth() {
+        return quietLevel > 2;
+    }
+
 	/*
 	 * Public API Implementation
 	 */
