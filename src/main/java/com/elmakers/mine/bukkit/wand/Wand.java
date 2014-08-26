@@ -715,9 +715,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         spellLevels.clear();
         brushes.clear();
 
-		// Support YML-List-As-String format and |-delimited format
+		// Support YML-List-As-String formar
 		spellString = spellString.replaceAll("[\\]\\[]", "");
-		String[] spellNames = StringUtils.split(spellString, "|,");
+		String[] spellNames = StringUtils.split(spellString, ",");
 		for (String spellName : spellNames) {		
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
@@ -738,7 +738,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			addToInventory(itemStack, slot);
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
-		String[] materialNames = StringUtils.split(materialString, "|,");
+		String[] materialNames = StringUtils.split(materialString, ",");
 		for (String materialName : materialNames) {
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
@@ -2933,7 +2933,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
             List<Inventory> allInventories = getAllInventories();
-            boolean found = false;
             int currentSlot = 0;
             for (Inventory inventory : allInventories) {
                 ItemStack[] items = inventory.getContents();
