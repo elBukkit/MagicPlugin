@@ -112,6 +112,7 @@ year2:
       nox: 20,30,50
       bogies: 10,20,30
       incendio|2: 5,10,20
+      arrow|2: 50,60,70
     required_spells:
       - expelliarmus
       - araniaexumai
@@ -136,13 +137,13 @@ year3:
       flipendo|3: 5,10,20
       bombarda: 5,10,20
       snowball: 15,50,80
-
       colorvaria: 40,60,80
       expelliarmus|2: 5,10,20
       lumos|2: 15,50,80
       glacius|2: 15,50,80
       incendio|3: 15,50,80
       finiteincantatem|2: 1,2,5
+      conjunctivitis|2: 20,30,40
     required_spells:
       - deprimo
       - duro
@@ -171,7 +172,10 @@ year4:
       accio: 40,50,60
       locomotomortus: 1,5,10
       orchideous: 1,5,10
+      deprimo|2: 10,25,40
       glacius|3: 15,50,80
+      arrow|3: 50,60,70
+      diffindo|2: 20,30,40
     required_spells:
       - aguamenti
       - bubble
@@ -202,6 +206,8 @@ year5:
       protego|2: 15,50,80
       expelliarmus|3: 5,10,20
       accio|2: 30,40,50
+      episkey|2: 20,30,40
+      diffindo|3: 20,30,40
     required_spells:
       - evanesco
       - reducto
@@ -229,7 +235,10 @@ year6:
       expelliarmus|4: 5,10,20
       levicorpus|2: 20,30,40
       aguamenti|2: 10,20,30
+      reducto|2: 10,20,30
       finiteincantatem|3: 1,2,5
+      deprimo|3: 10,25,40
+      duro|2: 20,30,40
     required_spells:
       - apparate
       - aparecium
@@ -258,6 +267,9 @@ year7:
       stupefy|3: 10,20,30
       levicorpus|3: 30,40,50
       glacius|3: 40,50,60
+      bombarda|2: 15,50,80
+      ferula|2: 50,60,70
+      ascendio|2: 10,20,30
     required_spells:
       - piertotum
 
@@ -273,6 +285,12 @@ graduate:
     spells:
       expelliarmus|5: 30,40,50
       finiteincantatem|4: 1,2,5
+      reducio|2: 10,20,30
+      episkey|3: 20,30,40
+      ferula|3: 50,60,70
+      ascendio|3: 10,20,30
+      arrow|4: 50,60,70
+      duro|3: 20,30,40
 
 broom:
     hidden: true

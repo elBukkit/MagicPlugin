@@ -28,8 +28,6 @@ public class FlingSpell extends UndoableSpell implements Listener
 	protected double defaultMinMagnitude = 1.5;
 	protected double defaultMaxMagnitude = 4; 
 
-    private final static int effectSpeed = 1;
-    private final static int effectPeriod = 3;
     private final static int minRingEffectRange = 2;
     private final static int maxRingEffectRange = 15;
     private final static int maxDamageAmount = 200;

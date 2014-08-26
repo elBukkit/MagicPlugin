@@ -382,7 +382,7 @@ arrow:
     parameters:
       projectile: Arrow
       damage: 1.5
-      speed: 3
+      speed: 2
       spread: 6
       fire: false
       tick_increase: 1180
@@ -391,6 +391,24 @@ arrow:
       range: 24
     costs:
         xp: 50
+
+arrow|2:
+    parameters:
+      damage: 1.8
+      speed: 3
+      spread: 2
+
+arrow|3:
+    parameters:
+      damage: 2
+      speed: 5
+      spread: 1
+
+arrow|4:
+    parameters:
+      damage: 2
+      speed: 6
+      spread: 0
 
 snowball:
     icon: snow_ball
@@ -446,9 +464,23 @@ ascendio:
            particle: spell
            period: 2
     parameters:
-      safety: 0
+        safety: 0
+        min_speed: 1.0
+        max_speed: 1.5
     costs:
         xp: 30
+
+ascendio|2:
+    parameters:
+        safety: 0
+        min_speed: 1.5
+        max_speed: 3
+
+ascendio|3:
+    parameters:
+        safety: 20000
+        min_speed: 2
+        max_speed: 5
 
 arresto:
     icon: ink_sack:8
@@ -799,12 +831,7 @@ bombarda:
     costs:
         xp: 50
 
-bombardamaxima:
-    alias: bombardamax
-    icon: ink_sack:7
-    category: dada
-    class: BoomSpell
-    pvp_restricted: true
+bombarda|2:
     worth: 100
     effects:
         cast:
@@ -815,20 +842,8 @@ bombardamaxima:
            color: 'FF1500'
            color2: 'FF0088'
     parameters:
-        target: block
-        allow_max_range: true
         range: 30
         size: 2
-        target_breakables: 1
-        break_blocks: false
-        cooldown: 20000
-        entity_undo: false
-        undo: 10000
-        otx: r(-2,2)
-        oty: r(-2,2)
-        otz: r(-2,2)
-    costs:
-        xp: 75
 
 bubble:
     icon: ender_pearl
@@ -986,6 +1001,10 @@ conjunctivitis:
         target: other
         duration: 5000
         effect_blindness: 5
+
+conjunctivitis|2:
+    parameters:
+        duration: 10000
 
 obscuro:
     alias: blind
@@ -1147,12 +1166,20 @@ deprimo:
         falling: true
         check_destructible: true
         destructible: destructible
-        radius: 3
+        radius: 1
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
     costs:
-        xp: 100
+        xp: 80
+
+deprimo|2:
+    parameters:
+    radius: 2
+
+deprimo|3:
+    parameters:
+    radius: 3
 
 deprimomaxima:
     icon: flint
@@ -1221,12 +1248,20 @@ diffindo:
         falling: true
         check_destructible: true
         destructible: wool
-        radius: 4
+        radius: 2
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
     costs:
         xp: 70
+
+diffindo|2:
+    parameters:
+        radius: 3
+
+diffindo|3:
+    parameters:
+        radius: 4
 
 disillusion:
     icon: coal:1
@@ -1263,17 +1298,27 @@ duro:
     parameters:
         allow_max_range: false
         range: 16
-        size: 2
+        size: 1
         check_destructible: true
         destructible: hardenable
         brush: obsidian
         transparent: transparent_to_construction
-        undo: 5000
-        cooldown: 10000
+        undo: 4000
+        cooldown: 8000
         bypass_build: true
         bypass_backfire: true
     costs:
         xp: 80
+
+duro|2:
+    parameters:
+        size: 2
+        undo: 6000
+
+duro|3:
+    parameters:
+        size: 3
+        undo: 8000
 
 erecto:
     icon: sapling:4
@@ -1513,9 +1558,17 @@ episkey:
         range: 16
         duration: 1000
         effect_saturation: 4
-        heal: 4
+        heal: 2
     costs:
         xp: 50
+
+episkey|2:
+    parameters:
+    heal: 4
+
+episkey|3:
+    parameters:
+    heal: 10
 
 firestorm:
     icon: fire
@@ -2896,10 +2949,16 @@ reducio:
         allow_max_range: false
         range: 16
         player_damage: 1
-        entity_damage: 10
+        entity_damage: 4
         target_breakables: 1
     costs:
         xp: 110
+
+reducio|2:
+    parameters:
+        player_damage: 4
+        entity_damage: 10
+        target_breakables: 3
 
 reducto:
     icon: clay_brick
@@ -2926,7 +2985,7 @@ reducto:
     parameters:
         allow_max_range: false
         range: 32
-        speed: 1.0
+        speed: 0.9
         falling: true
         brush: air
         radius: 1
@@ -2937,6 +2996,11 @@ reducto:
         bypass_build: true
     costs:
         xp: 60
+
+reducto|2:
+    parameters:
+    radius: 2
+    speed: 1.2
 
 reductomaxima:
     icon: clay_brick
@@ -3288,11 +3352,13 @@ stupefy|2:
     parameters:
         damage: 3
         duration: 1000
+        target_breakables: 2
 
 stupefy|3:
     parameters:
         damage: 4
         duration: 2000
+        target_breakables: 3
 
 vermillious:
     icon: ink_sack:1
@@ -3360,11 +3426,13 @@ vermillious|2:
     parameters:
         range: 24
         damage: 4
+        target_breakables: 3
 
 vermillious|3:
     parameters:
         range: 35
         damage: 5
+        target_breakables: 4
 
 colorvaria:
     icon: ink_sack
@@ -3540,6 +3608,14 @@ ferula:
         effect_saturation: 1
     costs:
         xp: 160
+
+ferula|2:
+    parameters:
+        effect_absorption: 4
+
+ferula|3:
+    parameters:
+        effect_absorption: 8
 
 wingardium:
     icon: ink_sack:8

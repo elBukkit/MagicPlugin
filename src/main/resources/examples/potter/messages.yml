@@ -179,10 +179,6 @@ spells:
         name: Bombarda
         description: Create a small explosion
         cast: Bombarda!
-    bombardamaxima:
-        name: Bombarda Maxima
-        description: Create a large destructive explosion
-        cast: Bombarda Maxima!
     broom:
         name: Broom
         description: Powers magic brooms
