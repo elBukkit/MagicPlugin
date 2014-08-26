@@ -4,10 +4,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
-import com.elmakers.mine.bukkit.api.spell.CostReducer;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
@@ -75,6 +72,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private Inventory hotbar;
 	private List<Inventory> inventories;
     private Set<String> spells = new HashSet<String>();
+    private Map<String, Integer> spellLevels = new HashMap<String, Integer>();
     private Set<String> brushes = new HashSet<String>();
 	
 	private String activeSpell = "";
@@ -714,6 +712,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		hotbar.clear();
 		inventories.clear();
         spells.clear();
+        spellLevels.clear();
         brushes.clear();
 
 		// Support YML-List-As-String format and |-delimited format
@@ -722,16 +721,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		for (String spellName : spellNames) {		
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
-			String spellKey = pieces[0].trim();
-            spells.add(spellKey);
-			ItemStack itemStack = createSpellIcon(spellKey);
+            SpellKey spellKey = new SpellKey(pieces[0].trim());
+            spells.add(spellKey.getKey());
+            Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+            if (currentLevel == null || currentLevel < spellKey.getLevel()) {
+                spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
+            }
+			ItemStack itemStack = createSpellIcon(spellKey.getKey());
 			if (itemStack == null) {
 				// controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
 				itemStack = new ItemStack(item.getType(), 1);
-                CompatibilityUtils.setDisplayName(itemStack, spellKey);
-                CompatibilityUtils.setMeta(itemStack, "spell", spellKey);
+                CompatibilityUtils.setDisplayName(itemStack, spellKey.getKey());
+                CompatibilityUtils.setMeta(itemStack, "spell", spellKey.getKey());
             }
-			else if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey;
+			else if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey.getKey();
 			addToInventory(itemStack, slot);
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
@@ -2072,7 +2075,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     if (!upgradedSpells.contains(spellKey)) {
                         SpellTemplate spell = controller.getSpellTemplate(spellKey);
                         if (spell != null) spellName = spell.getName();
-                        mage.sendMessage(Messages.get("wand.spell_upgraded").replace("$name", spellName));
+                        mage.sendMessage(Messages.get("wand.spell_override_upgraded").replace("$name", spellName));
                         upgradedSpells.add(spellKey);
                     }
                 }
@@ -2402,20 +2405,33 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		if (isSpell(item)) {
 			String spellKey = getSpell(item);
+            Spell currentSpell = getBaseSpell(spellKey);
 			Set<String> spells = getSpells();
 			if (!spells.contains(spellKey) && addSpell(spellKey)) {
 				SpellTemplate spell = controller.getSpellTemplate(spellKey);
 				if (spell != null) {
-					mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spell.getName()));
-					return true;
+                    if (mage != null) {
+                        if (currentSpell != null) {
+                            String levelDescription = spell.getLevelDescription();
+                            if (levelDescription == null || levelDescription.isEmpty()) {
+                                levelDescription = spell.getName();
+                            }
+                            mage.sendMessage(Messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                        } else {
+                            mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spell.getName()));
+                        }
+                    }
+                    return true;
 				}
 			}
 		} else if (isBrush(item)) {
 			String materialKey = getBrush(item);
 			Set<String> materials = getBrushes();
 			if (!materials.contains(materialKey) && addBrush(materialKey)) {
-				mage.sendMessage(Messages.get("wand.brush_added").replace("$name", MaterialBrush.getMaterialName(materialKey)));
-				return true;
+                if (mage != null) {
+                    mage.sendMessage(Messages.get("wand.brush_added").replace("$name", MaterialBrush.getMaterialName(materialKey)));
+                }
+                return true;
 			}
 		} else if (isUpgrade(item)) {
 			Wand wand = new Wand(controller, item);
@@ -2541,6 +2557,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage == null || activeSpell == null || activeSpell.length() == 0) return null;
 		return mage.getSpell(activeSpell);
 	}
+
+    public Spell getBaseSpell(String spellName) {
+        SpellKey key = new SpellKey(spellName);
+        Integer spellLevel = spellLevels.get(key.getBaseKey());
+        if (spellLevel == null) return null;
+
+        String spellKey = key.getBaseKey();
+        if (key.isVariant()) {
+            spellKey += "|" + key.getLevel();
+        }
+        return mage.getSpell(spellKey);
+    }
 
     public String getActiveSpellKey() {
         return activeSpell;
@@ -2871,9 +2899,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public boolean addSpell(String spellName) {
 		if (!isModifiable()) return false;
-		if (hasSpell(spellName)) return false;
-		
-		if (isInventoryOpen()) {
+
+        SpellKey spellKey = new SpellKey(spellName);
+        if (hasSpell(spellKey)) return false;
+
+        if (isInventoryOpen()) {
 			saveInventory();
 		}
         SpellTemplate template = controller.getSpellTemplate(spellName);
@@ -2881,14 +2911,49 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             controller.getLogger().warning("Tried to add unknown spell to wand: " + spellName);
             return false;
         }
+
+        // This handles adding via an alias
         if (hasSpell(template.getKey())) return false;
 
 		ItemStack spellItem = createSpellIcon(template);
 		if (spellItem == null) {
 			return false;
 		}
+        spellKey = template.getSpellKey();
+        int level = spellKey.getLevel();
+
+        // Special handling for spell upgrades
+        Integer inventorySlot = null;
+        Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+        if (currentLevel != null) {
+            if (activeSpell != null && !activeSpell.isEmpty()) {
+                SpellKey currentKey = new SpellKey(activeSpell);
+                if (currentKey.getBaseKey().equals(spellKey.getBaseKey())) {
+                    activeSpell = spellKey.getKey();
+                }
+            }
+            List<Inventory> allInventories = getAllInventories();
+            boolean found = false;
+            int currentSlot = 0;
+            for (Inventory inventory : allInventories) {
+                ItemStack[] items = inventory.getContents();
+                for (int index = 0; index < items.length; index++) {
+                    ItemStack itemStack = items[index];
+                    if (isSpell(itemStack)) {
+                        SpellKey checkKey = new SpellKey(getSpell(itemStack));
+                        if (checkKey.getBaseKey().equals(spellKey.getBaseKey())) {
+                            inventorySlot = currentSlot;
+                            inventory.setItem(index, null);
+                            spells.remove(checkKey.getKey());
+                        }
+                    }
+                    currentSlot++;
+                }
+            }
+        }
+        spellLevels.put(spellKey.getBaseKey(), level);
         spells.add(template.getKey());
-		addToInventory(spellItem);
+		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		hasInventory = getSpells().size() + getBrushes().size() > 1;
         saveState();
@@ -2913,8 +2978,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	@Override
 	public boolean hasSpell(String spellName) {
-		return getSpells().contains(spellName);
+		return hasSpell(new SpellKey(spellName));
 	}
+
+    public boolean hasSpell(SpellKey spellKey) {
+        Integer level = spellLevels.get(spellKey.getBaseKey());
+        return (level != null && level >= spellKey.getLevel());
+    }
 	
 	@Override
 	public boolean addBrush(String materialKey) {
@@ -3008,6 +3078,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			activeSpell = null;
 		}
         spells.remove(spellName);
+        SpellKey spellKey = new SpellKey(spellName);
+        spellLevels.remove(spellKey.getBaseKey());
 		
 		List<Inventory> allInventories = getAllInventories();
 		boolean found = false;
@@ -3030,9 +3102,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
         updateInventory();
         saveState();
-		updateName();
-		updateLore();
-		
+        updateName();
+        updateLore();
+
 		return found;
 	}
 
@@ -3151,5 +3223,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public boolean isBound() {
         return bound;
+    }
+
+    public int getSpellLevel(String spellKey) {
+        SpellKey key = new SpellKey(spellKey);
+        Integer level = spellLevels.get(key.getBaseKey());
+        return level == null ? 0 : level;
     }
 }

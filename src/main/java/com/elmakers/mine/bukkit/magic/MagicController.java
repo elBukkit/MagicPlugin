@@ -1439,25 +1439,18 @@ public class MagicController implements Listener, MageController {
                 spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
             }
 
-            if (key.contains("|")) {
-                try {
-                    String[] pieces = StringUtils.split(key, "|");
-                    String baseKey = pieces[0];
-                    if (pieces.length > 0) {
-                        int level = Integer.parseInt(pieces[1]);
-                        for (int i = 1; i < level; i++) {
-                            String parentKey = baseKey;
-                            if (i > 1) {
-                                parentKey += "|" + i;
-                            }
-                            if (config.contains(parentKey)) {
-                                spellNode = ConfigurationUtils.addConfigurations(spellNode, config.getConfigurationSection(parentKey), false);
-                            }
-                        }
+            SpellKey spellKey = new SpellKey(key);
+            if (spellKey.isVariant()) {
+                int level = spellKey.getLevel();
+                String baseKey = spellKey.getBaseKey();
+                for (int i = 1; i < level; i++) {
+                    String parentKey = baseKey;
+                    if (i > 1) {
+                        parentKey += "|" + i;
                     }
-                } catch (Exception ex) {
-                    getLogger().warning("Error loading inheritance path for " + key);
-                    continue;
+                    if (config.contains(parentKey)) {
+                        spellNode = ConfigurationUtils.addConfigurations(spellNode, config.getConfigurationSection(parentKey), false);
+                    }
                 }
             }
 
@@ -1479,7 +1472,6 @@ public class MagicController implements Listener, MageController {
 				getLogger().warning("Magic: Error loading spell " + key);
 				continue;
 			}
-
 
             if (!newSpell.hasIcon())
             {

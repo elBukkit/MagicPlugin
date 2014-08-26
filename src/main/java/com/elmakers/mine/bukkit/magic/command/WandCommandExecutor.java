@@ -864,12 +864,24 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
+        Spell currentSpell = wand.getBaseSpell(spellName);
 		if (wand.addSpell(spellName)) {
 			wand.setActiveSpell(spellName);
-			mage.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
-			if (sender != player) {
-				sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
-			}
+            if (currentSpell != null) {
+                String levelDescription = spell.getLevelDescription();
+                if (levelDescription == null || levelDescription.isEmpty()) {
+                    levelDescription = spell.getName();
+                }
+                mage.sendMessage(Messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                if (sender != player) {
+                    sender.sendMessage(Messages.get("wand.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                }
+            } else {
+                mage.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
+                if (sender != player) {
+                    sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
+                }
+            }
 		} else {
 			wand.setActiveSpell(spellName);
 			mage.sendMessage(spell.getName() + " activated");
@@ -918,6 +930,10 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		
 		if (wand.removeSpell(spellName)) {
+            SpellTemplate template = api.getSpellTemplate(spellName);
+            if (template != null) {
+                spellName = template.getName();
+            }
 			mage.sendMessage("Spell '" + spellName + "' has been removed from your wand");
 			if (sender != player) {
 				sender.sendMessage("Removed '" + spellName + "' from " + player.getName() + "'s wand");

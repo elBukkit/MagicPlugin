@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -124,33 +125,36 @@ public class WandLevel {
             mage = wand.getActivePlayer();
         }
 		boolean addedSpells = false;
-		Set<String> wandSpells = wand.getSpells();
 		LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();
         for (WeightedPair<String> spell : spellProbability) {
-            if (!wandSpells.contains(spell.getValue())) {
+            if (!wand.hasSpell(spell.getValue())) {
                 remainingSpells.add(spell);
             }
         }
 
-		SpellTemplate firstSpell = null;		
+		SpellTemplate firstSpell = null;
 		if (remainingSpells.size() > 0) {
 			Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
-			int retries = 10;
 			for (int i = 0; spellCount != null && i < spellCount; i++) {
 				String spellKey = RandomUtils.weightedRandom(remainingSpells);
-				
+                Spell currentSpell = wand.getBaseSpell(spellKey);
 				if (wand.addSpell(spellKey)) {
                     SpellTemplate spell = wand.getMaster().getSpellTemplate(spellKey);
                     if (mage != null && spell != null) {
-                        mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spell.getName()));
+                        if (currentSpell != null) {
+                            String levelDescription = spell.getLevelDescription();
+                            if (levelDescription == null || levelDescription.isEmpty()) {
+                                levelDescription = spell.getName();
+                            }
+                            mage.sendMessage(Messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                        } else {
+                            mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spell.getName()));
+                        }
                     }
 					if (firstSpell == null) {
 						firstSpell = spell;
 					}
 					addedSpells = true;
-				} else {
-					// Try again up to a certain number if we picked one the wand already had.
-					if (retries-- > 0) i--;
 				}
 			}
 		}
