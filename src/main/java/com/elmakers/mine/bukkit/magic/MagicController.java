@@ -1439,6 +1439,28 @@ public class MagicController implements Listener, MageController {
                 spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
             }
 
+            if (key.contains("|")) {
+                try {
+                    String[] pieces = StringUtils.split(key, "|");
+                    String baseKey = pieces[0];
+                    if (pieces.length > 0) {
+                        int level = Integer.parseInt(pieces[1]);
+                        for (int i = 1; i < level; i++) {
+                            String parentKey = baseKey;
+                            if (i > 1) {
+                                parentKey += "|" + i;
+                            }
+                            if (config.contains(parentKey)) {
+                                spellNode = ConfigurationUtils.addConfigurations(spellNode, config.getConfigurationSection(parentKey), false);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    getLogger().warning("Error loading inheritance path for " + key);
+                    continue;
+                }
+            }
+
             // Kind of a hacky way to do this, and only works with BaseSpell spells.
             if (allPvpRestricted) {
                 spellNode.set("pvp_restricted", true);

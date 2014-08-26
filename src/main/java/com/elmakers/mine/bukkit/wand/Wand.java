@@ -1702,6 +1702,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected static void addSpellLore(SpellTemplate spell, List<String> lore, CostReducer reducer) {
 		String description = spell.getDescription();
 		String usage = spell.getUsage();
+        String levelString = spell.getLevelDescription();
+
+        if (levelString != null && levelString.length() > 0) {
+            lore.add(ChatColor.GOLD + levelString);
+        }
 		if (description != null && description.length() > 0) {
 			lore.add(description);
 		}

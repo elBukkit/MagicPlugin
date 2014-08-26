@@ -172,6 +172,7 @@ spell:
     available_path: Available on the $path path
     required_path: Required to complete the $path path
     required_spell: You must learn $spell to advance
+    level_description: Level $level
 worlds:
     world:
         name: The Overworld
