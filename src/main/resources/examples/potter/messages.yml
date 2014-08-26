@@ -241,6 +241,10 @@ spells:
         name: Deprimo Maxima
         description: Collapse the target with immense pressure
         cast: Deprimo Maxima!
+    diffindo:
+        name: Diffindo
+        description: Severs fabrics
+        cast: Diffindo!
     disillusion:
         name: Disillusionment Charm
         description: Cause the target to become nearly invisible

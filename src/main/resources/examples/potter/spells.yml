@@ -1189,6 +1189,44 @@ deprimomaxima:
     costs:
         xp: 200
 
+diffindo:
+    icon: flint
+    category: transfiguration
+    class: ConstructSpell
+    cast_on_no_target: true
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: dig_sand
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: drip_lava
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,0.5,0
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 4
+             particle: drip_lava
+    parameters:
+        allow_max_range: false
+        range: 16
+        brush: air
+        falling: true
+        check_destructible: true
+        destructible: wool
+        radius: 4
+        bypass_build: true
+        transparent: transparent_to_construction
+        undo: 15000
+    costs:
+        xp: 70
+
 disillusion:
     icon: coal:1
     category: charms
@@ -3270,13 +3308,14 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: instant_spell
+             particle: smoke
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
            color: FF8800
-           firework: ball
+           color2: FF0000
+           firework: burst
         no_target:
         -  class: EffectSingle
            sound: shoot_arrow
@@ -3285,13 +3324,14 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: instant_spell
+             particle: smoke
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: 884400
-           firework: ball
+           color: "#884400"
+           color2: "#880000"
+           firework: burst
         backfire:
         -  class: EffectSingle
            sound: shoot_arrow
@@ -3301,7 +3341,7 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: instant_spell
+             particle: smoke
              lengthGrow: 0.3
     parameters:
         range: 16
