@@ -689,7 +689,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Set<String> costKeys = node.getKeys(false);
         for (String key : costKeys)
         {
-            castingCosts.add(new CastingCost(key, node.getDouble(key, 1)));
+            castingCosts.add(new CastingCost(key, node.getInt(key, 1)));
         }
 
         return castingCosts;
