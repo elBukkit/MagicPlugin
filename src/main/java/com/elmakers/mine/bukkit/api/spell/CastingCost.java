@@ -56,6 +56,13 @@ public interface CastingCost {
     public int getXP();
 
     /**
+     * Returns the raw mana cost.
+     *
+     * @return The raw mana cost, without reduction.
+     */
+    public int getMana();
+
+    /**
      * Returns the raw item amount cost.
      *
      * @return The raw item amount cost, without reduction.
@@ -63,12 +70,20 @@ public interface CastingCost {
     public int getAmount();
 
     /**
-     * Returns the XP/Mana amount to deduct
+     * Returns the XP amount to deduct
      *
      * @param reducer The CostReducer to use to calculate costs
-     * @return The XP/Mana amount cost
+     * @return The XP amount cost
      */
     public int getXP(CostReducer reducer);
+
+    /**
+     * Returns the Mana amount to deduct
+     *
+     * @param reducer The CostReducer to use to calculate costs
+     * @return The Mana amount cost
+     */
+    public int getMana(CostReducer reducer);
 
     /**
      * Returns the item amount to deduct
