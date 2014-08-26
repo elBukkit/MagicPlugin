@@ -343,11 +343,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return xpMax;
 	}
 	
-	public int getExperience() {
+	public int getMana() {
 		return xp;
 	}
 	
-	public void removeExperience(int amount) {
+	public void removeMana(int amount) {
 		xp = Math.max(0,  xp - amount);
 		updateMana();
 	}
@@ -2338,8 +2338,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		mage.setActiveWand(this);
 		if (usesMana()) {
-			storedXpLevel = player.getLevel();
-			storedXpProgress = player.getExp();
+            if (displayManaAsXp()) {
+                storedXpLevel = player.getLevel();
+                storedXpProgress = player.getExp();
+            }
 			updateMana();
 		}
         if (needsSave) {
@@ -2491,6 +2493,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
     }
 
+    public boolean displayManaAsXp()
+    {
+        return !displayManaAsGlow && !displayManaAsDurability;
+    }
+
 	protected void updateMana() {
 		if (mage != null && xpMax > 0 && xpRegeneration > 0) {
 			Player player = mage.getPlayer();
@@ -2540,7 +2547,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         playerInventorySlot = null;
         storedInventory = null;
 		
-		if (usesMana() && player != null) {
+		if (usesMana() && displayManaAsXp() && player != null) {
             player.setExp(storedXpProgress);
             if (!retainLevelDisplay) {
                 player.setLevel(storedXpLevel);
@@ -2637,7 +2644,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 	}
-	
+
 	public void onPlayerExpChange(PlayerExpChangeEvent event) {
 		if (mage == null) return;
 
@@ -2647,7 +2654,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public boolean addExperience(int xp) {
-        if (usesMana()) {
+        if (usesMana() && displayManaAsXp()) {
             Player player = mage == null ? null : mage.getPlayer();
             if (player != null) {
                 player.setExp(storedXpProgress);
@@ -2662,6 +2669,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         return false;
+    }
+
+    public void updateExperience() {
+        if (mage != null && mage.isPlayer() && usesMana() && displayManaAsXp()) {
+            Player player = mage.getPlayer();
+            storedXpProgress = player.getExp();
+            storedXpLevel = player.getLevel();
+        }
     }
 	
 	public void tick() {

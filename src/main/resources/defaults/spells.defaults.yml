@@ -45,7 +45,7 @@
 #           sound: orb_pickup 
 #           location: origin
 #       costs:
-#           xp: <xp/mana amount>
+#           mana: <xp/mana amount>
 #           <material_name>: <reagent amount>#      
 #       parameters:
 #           <specific spell parameters- TODO: list common ones>
@@ -146,7 +146,7 @@ curse:
            effectlib:
              class: BleedEffect
     costs:
-        xp: 50
+        mana: 50
     parameters:
         range: 32
         deactivate_target_mage: true
@@ -184,7 +184,7 @@ blessing:
         effect_saturation: 600,5
         radius: 32  
     costs:
-        xp: 200
+        mana: 200
 boon:
     icon: red_rose:2
     category: light
@@ -204,7 +204,7 @@ boon:
              class: TraceEffect
              particle: red_dust
     costs:
-        xp: 65
+        mana: 65
     parameters:
         target: any
         range: 32
@@ -235,7 +235,7 @@ perk:
            location: target
            particle_data: 2
     costs:
-        xp: 30
+        mana: 30
     parameters:
         target: any
         range: 32
@@ -261,7 +261,7 @@ bounce:
            location: target
            particle_data: 1
     costs:
-        xp: 10
+        mana: 10
     parameters:
         target: any
         target_type: LivingEntity
@@ -279,7 +279,7 @@ simulate:
            sound_pitch: 0.5
            sound_volume: 0.7
     costs:
-        xp: 100
+        mana: 100
     parameters:
         range: 32
         radius: 8
@@ -299,7 +299,7 @@ simulate3:
            sound_pitch: 1.5
            sound_volume: 0.8
     costs:
-        xp: 500
+        mana: 500
     parameters:
         range: 32
         radius: 4
@@ -332,12 +332,12 @@ glider:
         cooldown: 60000
         brush: schematic|glider
         transparent: transparent_to_construction
-        drop_xp: 400
+        drop_mana: 400
         cast: flare target self
         commands:
           glider_simulate: cast simulate target self material obsidian animate true delay 500 radius 3
     costs:
-        xp: 500
+        mana: 500
 virus:
     icon: fermented_spider_eye
     category: automata
@@ -359,7 +359,7 @@ virus:
     live_range: 20,24,28
     move: 8,10,16
     delay: 3500,3000,2500
-    drop_xp: 800,900,1000
+    drop_mana: 800,900,1000
     cast:
         "boom transparent air,$birth,command,redstone_block range 48": 100,100,100
         "arrowrain transparent air,$birth,command,redstone_block range 48": 50,70,90
@@ -386,7 +386,7 @@ virus:
         drop: virusheart
         restricted: restricted_animate
         message_type: evil
-        drop_xp: 900
+        drop_mana: 900
         concurrent: false
         target_types: any
         target_mode: hunt
@@ -396,7 +396,7 @@ virus:
         live_rules: 1,2,3
         diagonal_live_rules: 0,1
     costs:
-        xp: 1000
+        mana: 1000
 worm:
     icon: string
     category: automata
@@ -418,7 +418,7 @@ worm:
     birth_range: 6,8,10
     live_range: 16,20,28
     delay: 1800,1500,1200
-    drop_xp: 600,700,900
+    drop_mana: 600,700,900
     death_cast:
         "blast target self radius 12 speed -0^2 destructible $birth check_destructible true": 100,100,100
         "blast target self radius 12 speed -0^5 destructible $birth check_destructible true": 20,50,200
@@ -451,12 +451,12 @@ worm:
         diagonal_live_rules: 0,1,2,3
         concurrent: true
         drop: wormheart
-        drop_xp: 700
+        drop_mana: 700
         move: 4
         restricted: restricted_animate
         message_type: evil
     costs:
-        xp: 800
+        mana: 800
 hunter:
     icon: spider_eye
     category: automata
@@ -478,7 +478,7 @@ hunter:
     birth_range: 3,4,5
     live_range: 3,4,5
     delay: 1200,800,500
-    drop_xp: 300,500,700
+    drop_mana: 300,500,700
     death_cast:
         "blast target self radius 7 speed 0^1 destructible $birth check_destructible true": 500,300,50
         "blast target self radius 7 speed 0^5 destructible $birth check_destructible true": 300,200,100
@@ -512,7 +512,7 @@ hunter:
         restricted: restricted_animate
         message_type: evil
     costs:
-        xp: 600
+        mana: 600
 defender:
     icon: quartz
     category: automata
@@ -552,11 +552,11 @@ defender:
         birth_rules: 4,5
         move: 4
         drop: defenderheart
-        drop_xp: 400
+        drop_mana: 400
         restricted: restricted_animate
         message_type: good
     costs:
-        xp: 400
+        mana: 400
 animate:
     icon: iron_ingot
     category: automata
@@ -591,14 +591,14 @@ animate:
         target_types: mage
         target_min_range: 0
         target_max_range: 16
-        drop_xp: 200
+        drop_mana: 200
         drop: golemheart
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         restricted: restricted_animate
         message_type: good
     costs:
-        xp: 300
+        mana: 300
 life:
     icon: sapling:1
     category: automata
@@ -629,7 +629,7 @@ life:
           life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 obz 68
           life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 brush copy cd 10000 obx -15 oby 16 obz 36
     costs:
-        xp: 1500
+        mana: 1500
 life3:
     icon: sapling:1
     category: automata
@@ -660,7 +660,7 @@ life3:
           life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-20 radius 16 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 dmz 20
           life_line: castp @p fill tx ~-8 tz ~-16 t2x ~8 brush copy cd 10000 obx -7 oby 2 obz 20
     costs:
-        xp: 1500
+        mana: 1500
 shell:
     icon: ender_pearl
     category: earthbending
@@ -681,7 +681,7 @@ shell:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 50
+        mana: 50
 shields:
     icon: iron_helmet
     category: light
@@ -705,7 +705,7 @@ shields:
         undo: 10000
         breakable: 2
     costs:
-        xp: 20
+        mana: 20
 reflect:
     icon: iron_helmet
     category: light
@@ -734,7 +734,7 @@ reflect:
         breakable: 2
         reflect_chance: 1
     costs:
-        xp: 40
+        mana: 40
 dome:
     icon: bowl
     category: earthbending
@@ -755,7 +755,7 @@ dome:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 60
+        mana: 60
 disc:
     icon: ink_sack:8
     category: earthbending
@@ -776,7 +776,7 @@ disc:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 45
+        mana: 45
 superdisc:
     icon: ink_sack:13
     category: engineering
@@ -798,7 +798,7 @@ superdisc:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 150
+        mana: 150
 superring:
     icon: ink_sack:9
     category: engineering
@@ -821,7 +821,7 @@ superring:
         thickness: 1
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        mana: 100
 supershell:
     icon: magma_cream
     category: engineering
@@ -842,7 +842,7 @@ supershell:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 200
+        mana: 200
 superdome:
     icon: mushroom_soup
     category: engineering
@@ -864,7 +864,7 @@ superdome:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        xp: 150
+        mana: 150
 tag:
     icon: sign
     category: dark
@@ -889,7 +889,7 @@ tag:
         cooldown: 10000
         transparent: transparent_to_construction
     costs:
-        xp: 20
+        mana: 20
 toss:
     icon: wood_button
     category: earthbending
@@ -904,7 +904,7 @@ toss:
     parameters:
       speed: 2
     costs:
-        xp: 20
+        mana: 20
 volley:
     icon: stone_button
     category: earthbending
@@ -920,7 +920,7 @@ volley:
       speed: 1.5
       count: 8
     costs:
-        xp: 40   
+        mana: 40   
 push:
     icon: rails
     category: airbending
@@ -950,7 +950,7 @@ push:
         entity_force: 3
         type: push
     costs:
-        xp: 5
+        mana: 5
 pull:
     icon: fishing_rod
     category: airbending
@@ -980,7 +980,7 @@ pull:
         type: pull
         count: 1
     costs:
-        xp: 25
+        mana: 25
 boom:
     icon: melon_seeds
     category: firebending
@@ -1003,7 +1003,7 @@ boom:
         size: 2
         cooldown: 2000
     costs:
-        xp: 20
+        mana: 20
 kaboom:
     icon: fireball
     category: dark
@@ -1024,7 +1024,7 @@ kaboom:
         size: 4
         break_blocks: true
     costs:
-        xp: 60
+        mana: 60
 nuke:
     icon: skull_item:4
     category: master
@@ -1056,7 +1056,7 @@ nuke:
         size: 10
         break_blocks: true
     costs:
-        xp: 500
+        mana: 500
 frost:
     icon: snow_ball
     category: waterbending
@@ -1081,7 +1081,7 @@ frost:
         transparent: transparent_to_construction
         ice: ice
     costs:
-        xp: 75
+        mana: 75
 lightning:
     icon: raw_fish:2
     category: firebending
@@ -1105,7 +1105,7 @@ lightning:
         allow_max_range: true
         range: 32
     costs:
-        xp: 80
+        mana: 80
 storm:
     icon: raw_fish:3
     category: firebending
@@ -1130,7 +1130,7 @@ storm:
         range: 64
         radius: 6
     costs:
-        xp: 200
+        mana: 200
 tree:
     icon: sapling
     category: elemental
@@ -1148,7 +1148,7 @@ tree:
         range: 64
         require_sapling: false
     costs:
-        xp: 20
+        mana: 20
 disarm:
     icon: tripwire_hook
     category: light
@@ -1184,7 +1184,7 @@ disarm:
         backfire_chance: 0.05
         keep_in_inventory: true
     costs:
-        xp: 75
+        mana: 75
 cure:
     icon: cookie
     category: light
@@ -1213,7 +1213,7 @@ cure:
         cure: true
         heal_percentage: 0.1
     costs:
-        xp: 20
+        mana: 20
 heal:
     icon: bread
     category: light
@@ -1240,7 +1240,7 @@ heal:
         feed: true
         heal: 10
     costs:
-        xp: 100
+        mana: 100
 music:
     icon: gold_record
     category: light
@@ -1262,7 +1262,7 @@ music:
         range: 16
         cooldown: 120000
     costs:
-        xp: 20
+        mana: 20
 gather:
     icon: glowstone_dust
     category: master
@@ -1285,7 +1285,7 @@ gather:
         allow_max_range: false
         range: 64
     costs:
-        xp: 150
+        mana: 150
 mount:
     icon: saddle
     category: master
@@ -1305,7 +1305,7 @@ mount:
         allow_max_range: false
         range: 16
     costs:
-        xp: 60
+        mana: 60
 icbm:
     icon: golden_carrot
     category: dark
@@ -1320,7 +1320,7 @@ icbm:
         size: 5
         projectile: LargeFireball
     costs:
-        xp: 100
+        mana: 100
 neutron:
     icon: poisonous_potato
     category: dark
@@ -1342,7 +1342,7 @@ neutron:
         effect_heal: 20,6
         radius: 32  
     costs:
-        xp: 80
+        mana: 80
 wither:
     icon: skull_item:1
     category: dark
@@ -1359,7 +1359,7 @@ wither:
         radius: 8
         count: 3
     costs:
-        xp: 60
+        mana: 60
 arrowrain:
     icon: bow
     category: combat
@@ -1379,7 +1379,7 @@ arrowrain:
         dpy: 4
         ddy: -0.2
     costs:
-        xp: 30
+        mana: 30
 meteor:
     icon: double_plant:4
     category: dark
@@ -1404,7 +1404,7 @@ meteor:
         range: 64
         allow_max_range: true
     costs:
-        xp: 80
+        mana: 80
 arrow:
     icon: arrow
     category: combat
@@ -1422,7 +1422,7 @@ arrow:
       spread: 6
       fire: false
     costs:
-        xp: 25
+        mana: 25
 sniper:
     icon: gold_nugget
     category: combat
@@ -1446,7 +1446,7 @@ sniper:
       spread: 0
       damage: 2
     costs:
-        xp: 50
+        mana: 50
 weather:
     icon: water
     category: elemental
@@ -1470,7 +1470,7 @@ weather:
     parameters:
         cooldown: 30000
     costs:
-        xp: 80
+        mana: 80
 fling:
     icon: feather
     category: airbending
@@ -1492,7 +1492,7 @@ fling:
            period: 2
     parameters:
     costs:
-        xp: 45
+        mana: 45
 leap:
     icon: leather_boots
     category: airbending
@@ -1517,7 +1517,7 @@ leap:
         min_speed: 3
         max_speed: 3
     costs:
-        xp: 5
+        mana: 5
 torch:
     icon: torch
     category: engineering
@@ -1537,7 +1537,7 @@ torch:
         allow_day: false
         allow_glowstone: true
     costs:
-        xp: 15
+        mana: 15
 familiar:
     icon: monster_egg
     category: elemental
@@ -1573,7 +1573,7 @@ familiar:
         cooldown: 5000
         range: 32
     costs:
-        xp: 20
+        mana: 20
 monster:
     icon: pumpkin
     category: dark
@@ -1617,7 +1617,7 @@ monster:
         cooldown: 5000
         range: 32
     costs:
-        xp: 40
+        mana: 40
 mob:
     icon: jack_o_lantern
     category: dark
@@ -1661,7 +1661,7 @@ mob:
         cooldown: 45000
         count: 20
     costs:
-        xp: 100
+        mana: 100
 farm:
     icon: wheat
     category: elemental
@@ -1695,7 +1695,7 @@ farm:
         count: 10
         cooldown: 30000
     costs:
-        xp: 50
+        mana: 50
 wolf:
     icon: raw_beef
     category: elemental
@@ -1724,7 +1724,7 @@ wolf:
         cooldown: 5000
         range: 32
     costs:
-        xp: 50
+        mana: 50
 cat:
     icon: raw_fish
     category: elemental
@@ -1752,7 +1752,7 @@ cat:
         range: 32
         cooldown: 5000
     costs:
-        xp: 30
+        mana: 30
 portal:
     icon: portal
     category: master
@@ -1771,7 +1771,7 @@ portal:
         cooldown: 5000
         undo: 10000
     costs:
-        xp: 20
+        mana: 20
 phase:
     icon: ender_portal
     category: master
@@ -1789,7 +1789,7 @@ phase:
         cooldown: 2000
         target: self
     costs:
-        xp: 50
+        mana: 50
 invincible:
     icon: golden_apple
     category: master
@@ -1806,9 +1806,9 @@ invincible:
     parameters:
         duration: 5000
     costs:
-        xp: 100
+        mana: 100
     active_costs:
-        xp: 50
+        mana: 50
 fire:
     icon: flint_and_steel
     category: firebending
@@ -1830,7 +1830,7 @@ fire:
         radius: 1
         vertical_search_distance: 8
     costs:
-        xp: 35
+        mana: 35
 inferno:
     icon: blaze_powder
     category: firebending
@@ -1852,7 +1852,7 @@ inferno:
         radius: 4
         vertical_search_distance: 8
     costs:
-        xp: 80
+        mana: 80
 cushion:
     icon: bed
     category: waterbending
@@ -1875,7 +1875,7 @@ cushion:
         undo: 7000
         disable_physics: 8000
     costs:
-        xp: 10
+        mana: 10
 gasp:
     icon: glass_bottle
     category: waterbending
@@ -1898,7 +1898,7 @@ gasp:
         check_destructible: true
         undo: 2000
     costs:
-        xp: 20
+        mana: 20
 regenerate:
     icon: gold_hoe
     category: engineering
@@ -1916,7 +1916,7 @@ regenerate:
         max_dimension: 32
         transparent: transparent_to_construction
     costs:
-        xp: 500
+        mana: 500
 superregenerate:
     icon: diamond_hoe
     category: engineering
@@ -1935,7 +1935,7 @@ superregenerate:
         expand: true
         transparent: transparent_to_construction
     costs:
-        xp: 1000
+        mana: 1000
 paint:
     icon: painting
     category: engineering
@@ -1952,7 +1952,7 @@ paint:
         check_destructible: false
         transparent: transparent_to_construction
     costs:
-        xp: 5
+        mana: 5
 fill:
     icon: iron_hoe
     category: engineering
@@ -1970,7 +1970,7 @@ fill:
         check_destructible: false
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        mana: 100
 recurse:
     icon: wood_spade
     category: engineering
@@ -1988,7 +1988,7 @@ recurse:
         check_destructible: false
         transparent: transparent_to_construction
     costs:
-        xp: 30
+        mana: 30
 gills:
     icon: cooked_fish
     category: light
@@ -2005,7 +2005,7 @@ gills:
            location: target
            particle_count: 4
     costs:
-        xp: 5
+        mana: 5
     parameters:
         range: 32
         target_type: LivingEntity
@@ -2035,7 +2035,7 @@ day:
         time: day
         weather: clear
     costs:
-        xp: 40
+        mana: 40
 night:
     icon: coal
     category: master
@@ -2059,7 +2059,7 @@ night:
         time: night
         cycle_moon_phase: true
     costs:
-        xp: 40
+        mana: 40
 time:
     icon: watch
     category: master
@@ -2081,7 +2081,7 @@ time:
         cooldown: 120000
         time: toggle
     costs:
-        xp: 40        
+        mana: 40        
 bridge:
     icon: stone_hoe
     category: engineering
@@ -2095,7 +2095,7 @@ bridge:
     parameters:
         transparent: transparent_to_construction
     costs:
-        xp: 5
+        mana: 5
 pillar:
     icon: gold_axe
     category: engineering
@@ -2111,7 +2111,7 @@ pillar:
         range: 64
         transparent: transparent_to_construction
     costs:
-        xp: 5
+        mana: 5
 place:
     icon: diamond_axe
     category: engineering
@@ -2127,7 +2127,7 @@ place:
         range: 64
         transparent: transparent_to_construction
     costs:
-        xp: 10
+        mana: 10
 stalactite:
     icon: iron_axe
     category: engineering
@@ -2144,7 +2144,7 @@ stalactite:
         type: down
         transparent: transparent_to_construction
     costs:
-        xp: 5
+        mana: 5
 grenade:
     icon: tnt
     category: firebending
@@ -2161,7 +2161,7 @@ grenade:
         size: 3
         fuse: 60
     costs:
-        xp: 40
+        mana: 40
 frag:
     icon: apple
     category: dark
@@ -2179,7 +2179,7 @@ frag:
         fuse: 60
         fire: true
     costs:
-        xp: 120
+        mana: 120
 cluster:
     icon: red_rose:3
     category: dark
@@ -2198,7 +2198,7 @@ cluster:
         fire: false
         count: 5
     costs:
-        xp: 150
+        mana: 150
 bomb:
     icon: double_plant:1
     category: dark
@@ -2223,7 +2223,7 @@ bomb:
         py: ~20
         pdy: -0.75
     costs:
-        xp: 250
+        mana: 250
 superblob:
     icon: slime_ball
     category: engineering
@@ -2244,7 +2244,7 @@ superblob:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 500
+        mana: 500
 superpyramid:
     icon: speckled_melon
     category: engineering
@@ -2265,7 +2265,7 @@ superpyramid:
         type: pyramid
         transparent: transparent_to_construction
     costs:
-        xp: 500
+        mana: 500
 box:
     icon: gold_helmet
     category: earthbending
@@ -2287,7 +2287,7 @@ box:
         transparent: transparent_to_construction
         y_offset: 4
     costs:
-        xp: 60
+        mana: 60
 superbox:
     icon: diamond_helmet
     category: engineering
@@ -2308,7 +2308,7 @@ superbox:
         type: cuboid
         transparent: transparent_to_construction
     costs:
-        xp: 400
+        mana: 400
 supercube:
     icon: nether_brick_item
     category: engineering
@@ -2328,7 +2328,7 @@ supercube:
         type: cuboid
         transparent: transparent_to_construction
     costs:
-        xp: 500
+        mana: 500
 backup:
     icon: diamond_pickaxe
     category: engineering
@@ -2355,7 +2355,7 @@ backup:
         brushtarget: true
         bypass_undo: true
     costs:
-        xp: 900
+        mana: 900
 repair:
     icon: gold_pickaxe
     category: engineering
@@ -2381,7 +2381,7 @@ repair:
         obworld: ~_backup
         brushtarget: true
     costs:
-        xp: 200
+        mana: 200
 superrepair:
     icon: gold_pickaxe
     category: engineering
@@ -2407,7 +2407,7 @@ superrepair:
         obworld: ~_backup
         brushtarget: true
     costs:
-        xp: 500
+        mana: 500
 workbench:
     icon: workbench
     category: engineering
@@ -2427,7 +2427,7 @@ workbench:
         undo: 60000
         brush: workbench
     costs:
-        xp: 30
+        mana: 30
 stash:
     icon: ender_chest
     category: master
@@ -2443,7 +2443,7 @@ stash:
         target_type: Player
         target: self
     costs:
-        xp: 50
+        mana: 50
 pickpocket:
     icon: shears
     category: dark
@@ -2461,7 +2461,7 @@ pickpocket:
         type: inventory
         range: 4
     costs:
-        xp: 75
+        mana: 75
 kamikazee:
     icon: skull_item:4
     category: dark
@@ -2477,7 +2477,7 @@ kamikazee:
         target: self
         break_blocks: false
     costs:
-        xp: 5
+        mana: 5
 blast:
     icon: iron_spade
     category: mining
@@ -2499,7 +2499,7 @@ blast:
         type: sphere
         destructible: destructible_mining
     costs:
-        xp: 45
+        mana: 45
 earthquake:
     icon: iron_spade
     category: mining
@@ -2524,7 +2524,7 @@ earthquake:
         type: sphere
         destructible: destructible_mining
     costs:
-        xp: 150
+        mana: 150
 tunnel:
     icon: iron_pickaxe
     category: earthbending
@@ -2540,7 +2540,7 @@ tunnel:
         allow_max_range: false
         range: 32
     costs:
-        xp: 30
+        mana: 30
 superblast:
     icon: red_mushroom
     category: mining
@@ -2563,7 +2563,7 @@ superblast:
         transparent: transparent_to_construction
         destructible: destructible_mining
     costs:
-        xp: 100
+        mana: 100
 convert:
     icon: gold_spade
     category: earthbending
@@ -2584,7 +2584,7 @@ convert:
         replace: true
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        mana: 100
 superconvert:
     icon: diamond_spade
     category: engineering
@@ -2607,7 +2607,7 @@ superconvert:
         replace: true
         transparent: transparent_to_construction
     costs:
-        xp: 300
+        mana: 300
 collapse:
     icon: iron_plate
     category: earthbending
@@ -2629,7 +2629,7 @@ collapse:
         radius: 2
         transparent: transparent_to_construction
     costs:
-        xp: 50
+        mana: 50
 supercollapse:
     icon: gold_plate
     category: master
@@ -2654,7 +2654,7 @@ supercollapse:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 250
+        mana: 250
 cloak:
     icon: chainmail_chestplate
     category: master
@@ -2670,7 +2670,7 @@ cloak:
            particle: smoke
            location: target
     costs:
-        xp: 10
+        mana: 10
     parameters:
         target: any
         particle: red_dust
@@ -2693,7 +2693,7 @@ undo:
         transparent: transparent_to_construction
         bypass_backfire: true
     costs:
-        xp: 100
+        mana: 100
 
 commit:
     icon: enchanted_book
@@ -2708,7 +2708,7 @@ commit:
         target: self
         bypass_backfire: true
     costs:
-        xp: 200
+        mana: 200
 
 counterspell:
     icon: diamond
@@ -2732,7 +2732,7 @@ counterspell:
         bypass_confusion: true
         bypass_backfire: true
     costs:
-        xp: 150
+        mana: 150
 breach:
     icon: seeds
     category: earthbending
@@ -2755,7 +2755,7 @@ breach:
         radius: 4
         type: sphere
     costs:
-        xp: 20
+        mana: 20
 peek:
     icon: sugar_cane
     category: mining
@@ -2779,7 +2779,7 @@ peek:
         radius: 3
         type: sphere
     costs:
-        xp: 5
+        mana: 5
 sandblast:
     icon: sandstone
     category: earthbending
@@ -2800,7 +2800,7 @@ sandblast:
         type: cuboid
         y_offset: 32
     costs:
-        xp: 50
+        mana: 50
 mine:
     icon: wood_pickaxe
     category: mining
@@ -2819,7 +2819,7 @@ mine:
         recursion_depth: 16
         drop: ores
     costs:
-        xp: 10
+        mana: 10
 chop:
     icon: stone_axe
     category: elemental
@@ -2839,7 +2839,7 @@ chop:
         recursion_depth: 32
         drop: trees
     costs:
-        xp: 10
+        mana: 10
 alter:
     icon: ink_sack
     category: engineering
@@ -2858,7 +2858,7 @@ alter:
         depth: 0
         transparent: transparent_to_construction
     costs:
-        xp: 3
+        mana: 3
 superalter:
     icon: ink_sack:1
     category: engineering
@@ -2876,7 +2876,7 @@ superalter:
         depth: 32
         transparent: transparent_to_construction
     costs:
-        xp: 40
+        mana: 40
 sphere:
     icon: snow_ball
     category: master
@@ -2899,7 +2899,7 @@ sphere:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 100
+        mana: 100
 blob:
     icon: clay_ball
     category: earthbending
@@ -2919,7 +2919,7 @@ blob:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        xp: 50
+        mana: 50
 pyramid:
     icon: melon
     category: earthbending
@@ -2939,7 +2939,7 @@ pyramid:
         type: pyramid
         transparent: transparent_to_construction
     costs:
-        xp: 50
+        mana: 50
 emp:
     icon: daylight_detector
     category: automata
@@ -2967,7 +2967,7 @@ emp:
         check_destructible: false
         undo: 200
     costs:
-        xp: 45
+        mana: 45
 superemp:
     icon: diode
     category: automata
@@ -2993,7 +2993,7 @@ superemp:
         cooldown: 5000
         undo: 3000
     costs:
-        xp: 200
+        mana: 200
 disintegrate:
     icon: bone
     category: combat
@@ -3016,7 +3016,7 @@ disintegrate:
         entity_damage: 50
         check_destructible: false
     costs:
-        xp: 50
+        mana: 50
 blink:
     icon: eye_of_ender
     category: master
@@ -3047,7 +3047,7 @@ blink:
         passthrough_range: 4
         allow_decend: true
     costs:
-        xp: 75
+        mana: 75
 tesseract:
     icon: web
     category: airbending
@@ -3067,7 +3067,7 @@ tesseract:
         transparent: transparent_to_construction
         range: 14
     costs:
-        xp: 25
+        mana: 25
 absorb:
     icon: bucket
     category: engineering
@@ -3085,7 +3085,7 @@ absorb:
         range: 64
         transparent: transparent_to_construction
     costs:
-        xp: 30     
+        mana: 30     
 hat:
     icon: leather_helmet
     category: light
@@ -3104,7 +3104,7 @@ hat:
         cooldown: 3000
         transparent: transparent_to_construction
     costs:
-        xp: 30
+        mana: 30
 lava:
     icon: ink_sack:14
     category: firebending
@@ -3125,7 +3125,7 @@ lava:
         increment_data: true
         undo: 200
     costs:
-        xp: 65
+        mana: 65
 stream:
     icon: ink_sack:6
     category: waterbending
@@ -3146,7 +3146,7 @@ stream:
         increment_data: true
         undo: 2000
     costs:
-        xp: 30
+        mana: 30
 earth:
     icon: ink_sack:3
     category: earthbending
@@ -3166,7 +3166,7 @@ earth:
         increment_data: false
         undo: 2000
     costs:
-        xp: 20
+        mana: 20
 iterate:
     icon: ink_sack:2
     category: engineering
@@ -3179,7 +3179,7 @@ iterate:
         size: 32
         increment_data: false
     costs:
-        xp: 50
+        mana: 50
 superiterate:
     icon: ink_sack:4
     category: engineering
@@ -3194,7 +3194,7 @@ superiterate:
         reverse: true
         increment_data: false
     costs:
-        xp: 200
+        mana: 200
 flamethrower:
     icon: fire
     category: firebending
@@ -3221,7 +3221,7 @@ flamethrower:
         require_blocks: true
         brush: fire
     costs:
-        xp: 100
+        mana: 100
 laser:
     icon: ink_sack:11
     category: dark
@@ -3242,7 +3242,7 @@ laser:
         brush: air
         radius: 3
     costs:
-        xp: 120
+        mana: 120
 shrink:
     icon: skull_item
     category: combat
@@ -3264,7 +3264,7 @@ shrink:
         player_damage: 4
         entity_damage: 10
     costs:
-        xp: 20
+        mana: 20
 grow:
     icon: skull_item:1
     category: combat
@@ -3284,7 +3284,7 @@ grow:
         allow_max_range: false
         range: 16
     costs:
-        xp: 10
+        mana: 10
 flare:
     icon: firework
     category: light
@@ -3299,7 +3299,7 @@ flare:
         allow_max_range: true
         range: 16
     costs:
-        xp: 10
+        mana: 10
 recall:
     icon: redstone
     category: master
@@ -3321,7 +3321,7 @@ recall:
         allow_home: true
         allow_cross_world: true
     costs:
-        xp: 50
+        mana: 50
 respawn:
     icon: compass
     category: master
@@ -3340,7 +3340,7 @@ respawn:
         op: true
         target: none
     costs:
-        xp: 20
+        mana: 20
 levitate:
     icon: gold_boots
     category: master
@@ -3359,9 +3359,9 @@ levitate:
            period: 2
     parameters:
     costs:
-        xp: 45
+        mana: 45
     active_costs:
-        xp: 20
+        mana: 20
 fly:
     icon: diamond_boots
     category: master
@@ -3394,9 +3394,9 @@ fly:
         crash_distance: 0.5
         effect_confusion: 120,2
     costs:
-        xp: 100
+        mana: 100
     active_costs:
-        xp: 50
+        mana: 50
 force:
     icon: leash
     category: airbending
@@ -3416,7 +3416,7 @@ force:
         item_force: 1
         entity_force: 3
     costs:
-        xp: 10
+        mana: 10
 fireball:
     icon: ghast_tear
     category: firebending
@@ -3431,7 +3431,7 @@ fireball:
         projectile: SmallFireball
         size: 2
     costs:
-        xp: 15
+        mana: 15
 map:
     icon: map
     worth: 45
@@ -3440,7 +3440,7 @@ map:
     parameters:
         cooldown: 5000
     costs:
-        xp: 15
+        mana: 15
 camera:
     icon: double_plant
     category: light
@@ -3459,7 +3459,7 @@ camera:
         allow_max_range: false
         range: 32
     costs:
-        xp: 5
+        mana: 5
 tent:
     icon: sapling:4
     category: master
@@ -3483,7 +3483,7 @@ tent:
         brush: schematic|tent
         transparent: transparent_to_construction
     costs:
-        xp: 150
+        mana: 150
 cage:
     icon: iron_fence
     category: master
@@ -3507,7 +3507,7 @@ cage:
         brush: schematic|cage
         transparent: transparent_to_construction
     costs:
-        xp: 50
+        mana: 50
 wolfhouse:
     icon: sapling:5
     category: master
@@ -3557,7 +3557,7 @@ wolfhouse:
           wolf_recall_death: castp @p[r=2] recall type death
           wolf_recall_spawn: castp @p[r=2] recall type spawn
     costs:
-        xp: 1000
+        mana: 1000
 
 missile:
     icon: ink_sack:4
@@ -3606,7 +3606,7 @@ missile:
         target_breakables: 2
         transparent: transparent_to_construction
     costs:
-        xp: 50
+        mana: 50
 
 silence:
     icon: ink_sack
@@ -3634,7 +3634,7 @@ silence:
         effect_confusion: 100
         cooldown: 20000
     costs:
-        xp: 40
+        mana: 40
 
 blind:
     icon: ender_pearl
@@ -3656,7 +3656,7 @@ blind:
            effectlib:
              class: SmokeEffect
     costs:
-        xp: 25
+        mana: 25
     parameters:
         range: 32
         target_type: LivingEntity
@@ -3699,7 +3699,7 @@ pollinate:
         cooldown: 5000
         item_speed: 0
     costs:
-        xp: 40
+        mana: 40
 
 broom:
     hidden: true
