@@ -456,6 +456,9 @@ public class ConfigurationUtils {
             try {
                 String s = (String)o;
                 if (s.length() == 0) return null;
+                if (s.charAt(0) == '#') {
+                    s = s.substring(1, s.length());
+                }
                 Integer rgb = Integer.parseInt(s, 16);
                 return Color.fromRGB(rgb);
             } catch (NumberFormatException ex) {
