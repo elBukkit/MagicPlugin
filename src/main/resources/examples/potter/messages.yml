@@ -789,6 +789,9 @@ wands:
     energy5:
         name: Energy Upgrade Level 5
         description: Upgrade to 250 Energy
+    restartyear:
+        name: Go back to Year 1
+        description: Must be year 7!
 
     undroppable:
         name: Undroppable Upgrade

@@ -826,6 +826,13 @@ graduate:
     xp_max: 200
     xp_regeneration: 38
 
+restartyear:
+    upgrade: true
+    path: year7
+    upgrade_path: year1
+    indestructible: false
+    icon: firework_charge
+
 staff:
     upgrade: true
     upgrade_path: graduate

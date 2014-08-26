@@ -472,8 +472,9 @@ arresto:
     parameters:
         min_speed: 0
         max_speed: 0
+        cooldown: 1000
     costs:
-        xp: 20
+        xp: 5
 
 atmos:
     icon: water
@@ -1664,6 +1665,10 @@ finiteincantatem|2:
         fizzle_chance: 0.3
 
 finiteincantatem|3:
+    parameters:
+        fizzle_chance: 0.1
+
+finiteincantatem|4:
     parameters:
         fizzle_chance: 0
 

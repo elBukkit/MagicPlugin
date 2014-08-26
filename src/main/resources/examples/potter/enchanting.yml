@@ -92,7 +92,7 @@ year2:
     upgrade: year3
     upgrade_item: year3
     inherit: year1
-    min_enchant_level: 15
+    min_enchant_level: 12
     max_mana: 90
     upgrade_commands:
       - pex user @p suffix "(Year 3) "
@@ -121,7 +121,7 @@ year3:
     upgrade: year4
     upgrade_item: year4
     inherit: year2
-    min_enchant_level: 20
+    min_enchant_level: 15
     max_mana: 110
     xp_max:
       4: 100, 10,  0
@@ -152,7 +152,7 @@ year4:
     upgrade: year5
     upgrade_item: year5
     inherit: year3
-    min_enchant_level: 25
+    min_enchant_level: 18
     max_mana: 130
     xp_max:
       4: 100, 10,  0
@@ -181,7 +181,7 @@ year5:
     upgrade: year6
     upgrade_item: year6
     inherit: year4
-    min_enchant_level: 30
+    min_enchant_level: 20
     max_mana: 150
     upgrade_commands:
       - pex user @p suffix "(Year 6) "
@@ -211,7 +211,7 @@ year6:
     upgrade_item: year7
     inherit: year5
     max_mana: 170
-    min_enchant_level: 35
+    min_enchant_level: 22
     xp_max:
       5: 100, 10,  0
       8:  20, 30, 50
@@ -229,6 +229,7 @@ year6:
       expelliarmus|4: 5,10,20
       levicorpus|2: 20,30,40
       aguamenti|2: 10,20,30
+      finiteincantatem|3: 1,2,5
     required_spells:
       - apparate
       - aparecium
@@ -237,7 +238,7 @@ year7:
     upgrade: graduate
     upgrade_item: graduate
     inherit: year6
-    min_enchant_level: 40
+    min_enchant_level: 25
     max_mana: 190
     xp_max:
       5: 100, 10,  0
@@ -256,20 +257,22 @@ year7:
       protego|3: 15,50,80
       stupefy|3: 10,20,30
       levicorpus|3: 30,40,50
-      expelliarmus|5: 30,40,50
       glacius|3: 40,50,60
     required_spells:
       - piertotum
 
 graduate:
     inherit: year7
-    max_xp_regeneration: 40
+    max_xp_regeneration: 30
     xp_regeneration:
       1: 5,10,15,100,100
     max_mana: 200
     xp_max:
       8: 100, 10,  0
       10:  20, 30, 50
+    spells:
+      expelliarmus|5: 30,40,50
+      finiteincantatem|4: 1,2,5
 
 broom:
     hidden: true
