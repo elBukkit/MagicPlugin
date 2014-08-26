@@ -116,7 +116,6 @@ year2:
       - expelliarmus
       - araniaexumai
       - glacius
-      - aparecium
 
 year3:
     upgrade: year4
@@ -137,7 +136,7 @@ year3:
       flipendo|3: 5,10,20
       bombarda: 5,10,20
       snowball: 15,50,80
-      diffindo: 20,30,40
+
       colorvaria: 40,60,80
       expelliarmus|2: 5,10,20
       lumos|2: 15,50,80
@@ -146,7 +145,8 @@ year3:
       finiteincantatem|2: 1,2,5
     required_spells:
       - deprimo
-      - bubble
+      - duro
+      - diffindo
 
 year4:
     upgrade: year5
@@ -174,7 +174,7 @@ year4:
       glacius|3: 15,50,80
     required_spells:
       - aguamenti
-      - duro
+      - bubble
       - ascendio
 
 year5:
@@ -231,6 +231,7 @@ year6:
       aguamenti|2: 10,20,30
     required_spells:
       - apparate
+      - aparecium
 
 year7:
     upgrade: graduate
