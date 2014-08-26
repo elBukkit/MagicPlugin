@@ -3617,6 +3617,7 @@ public class MagicController implements Listener, MageController {
         String categoryKey = category == null ? null : category.getKey();
         for (SpellTemplate spell : spellVariants)
         {
+            if (spell.isHidden() || spell.getSpellKey().isVariant()) continue;
             com.elmakers.mine.bukkit.api.spell.SpellCategory spellCategory = spell.getCategory();
             if (spellCategory == null) continue;
 
