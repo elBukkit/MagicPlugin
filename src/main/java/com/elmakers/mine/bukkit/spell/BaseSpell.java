@@ -710,7 +710,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Can be overridden by the base spell, or the variant spell
         levelDescription = Messages.get("spells." + baseKey + ".level_description", levelDescription);
 
-        // Spell level variatns can override
+        // Spell level variants can override
         if (spellKey.isVariant()) {
             String variantKey = spellKey.getKey();
             name = Messages.get("spells." + variantKey + ".name", name);
@@ -996,7 +996,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             } else if (targetEntity instanceof Player) {
                 message = getMessage("cast_player", message);
                 String playerMessage = getMessage("cast_player_message");
-                if (playerMessage.length() > 0) {
+                if (!mage.isStealth() && playerMessage.length() > 0) {
                     playerMessage = playerMessage.replace("$spell", getName());
                     Player targetPlayer = (Player)targetEntity;
                     Mage targetMage = controller.getMage(targetPlayer);
