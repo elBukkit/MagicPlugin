@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -70,5 +71,5 @@ public interface Wand extends CostReducer {
     public void setOverrides(Map<String, String> overrides);
     public void removeOverride(String key);
     public void setOverride(String key, String value);
-    public Spell getBaseSpell(String spellKey);
+    public SpellTemplate getBaseSpell(String spellKey);
 }
