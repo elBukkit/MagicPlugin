@@ -165,6 +165,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = null;
 	public static boolean EnableGlow = true;
+    public static boolean SpellGlow = true;
 
     private Inventory storedInventory = null;
     private Integer playerInventorySlot = null;
@@ -1598,7 +1599,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         CompatibilityUtils.setLore(itemStack, lore);
         Object spellNode = CompatibilityUtils.createNode(itemStack, "spell");
 		CompatibilityUtils.setMeta(spellNode, "key", spell.getKey());
-        CompatibilityUtils.addGlow(itemStack);
+        if (SpellGlow) {
+            CompatibilityUtils.addGlow(itemStack);
+        }
 	}
 	
 	public static void updateBrushItem(ItemStack itemStack, String materialKey, Wand wand) {
@@ -2628,6 +2631,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					// casts get lost.
 				}
 
+                updateHotbarGlow();
 				return true;
 			}
 		}
@@ -2693,6 +2697,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             storedXpLevel = player.getLevel();
         }
     }
+
+    protected void updateHotbarGlow() {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player != null && SpellGlow && getMode() == WandMode.INVENTORY && isInventoryOpen()) {
+            Location location = mage.getLocation();
+            for (int i = 0; i < HOTBAR_SIZE; i++) {
+                ItemStack spellItem = player.getInventory().getItem(i);
+                String spellKey = getSpell(spellItem);
+                if (spellKey != null) {
+                    Spell spell = mage.getSpell(spellKey);
+                    if (spell != null) {
+                        if (spell.canCast(location) && spell.getRemainingCooldown() == 0 && spell.getRequiredCost() == null) {
+                            CompatibilityUtils.addGlow(spellItem);
+                        } else {
+                            CompatibilityUtils.removeGlow(spellItem);
+                        }
+                    }
+                }
+            }
+        }
+    }
 	
 	public void tick() {
 		if (mage == null || item == null) return;
@@ -2707,6 +2732,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (!displayManaAsDurability && maxDurability > 0) {
             item.setDurability((short)0);
         }
+
+        // Update hotbar glow
+        updateHotbarGlow();
 
 		if (speedIncrease > 0) {
 			int hasteLevel = (int)(speedIncrease * controller.getMaxHaste());
