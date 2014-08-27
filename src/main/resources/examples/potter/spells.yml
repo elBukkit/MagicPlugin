@@ -3444,7 +3444,7 @@ vermillious:
         range: 16
         fov: 0.12
         target_type: LivingEntity
-        damage: 3
+        damage: 2
         cooldown: 1000
         target_breakables: 1
         bypass_backfire: false
@@ -3454,13 +3454,13 @@ vermillious:
 vermillious|2:
     parameters:
         range: 24
-        damage: 4
+        damage: 3
         target_breakables: 3
 
 vermillious|3:
     parameters:
         range: 35
-        damage: 5
+        damage: 4
         target_breakables: 4
 
 colorvaria:
