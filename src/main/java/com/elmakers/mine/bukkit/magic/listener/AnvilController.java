@@ -110,7 +110,7 @@ public class AnvilController implements Listener {
 					}
 					
 					if (!firstWand.add(secondWand)) {
-						mage.sendMessage("This won't add anything to your wand");
+						mage.sendMessage("These wands can not be combined with each other");
 						return;
 					}
 					anvilInventory.setItem(0,  null);

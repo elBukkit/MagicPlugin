@@ -137,7 +137,7 @@ public class WandLevel {
 			Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
 			for (int i = 0; spellCount != null && i < spellCount; i++) {
 				String spellKey = RandomUtils.weightedRandom(remainingSpells);
-                Spell currentSpell = wand.getBaseSpell(spellKey);
+                SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
 				if (wand.addSpell(spellKey)) {
                     SpellTemplate spell = wand.getMaster().getSpellTemplate(spellKey);
                     if (mage != null && spell != null) {

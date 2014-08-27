@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.8
+
+ - Fix combining two wands of different paths on an anvil
+
 ## 3.7
 
  - Add spell levelling system (spell progression via level variants)

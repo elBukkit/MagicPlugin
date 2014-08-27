@@ -865,7 +865,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
-        Spell currentSpell = wand.getBaseSpell(spellName);
+        SpellTemplate currentSpell = wand.getBaseSpell(spellName);
 		if (wand.addSpell(spellName)) {
 			wand.setActiveSpell(spellName);
             if (currentSpell != null) {

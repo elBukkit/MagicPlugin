@@ -1905,12 +1905,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public boolean add(Wand other) {
 		if (!isModifiable()) {
-            if (other.path == null || path == null || !other.path.equals(path)) {
+            // Only allow upgrading a modifiable wand via an upgrade item
+            // and only if the paths match.
+            if (!other.isUpgrade() || other.path == null || path == null || !other.path.equals(path)) {
                 return false;
             }
         }
 
-        if (other.path != null && !other.path.isEmpty() && (this.path == null || !this.path.equals(other.path))) {
+        // Don't allow upgrades from an item on a different path
+        if (other.isUpgrade() && other.path != null && !other.path.isEmpty() && (this.path == null || !this.path.equals(other.path))) {
             return false;
         }
 		
@@ -2419,7 +2422,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		if (isSpell(item)) {
 			String spellKey = getSpell(item);
-            Spell currentSpell = getBaseSpell(spellKey);
+            SpellTemplate currentSpell = getBaseSpell(spellKey);
 			Set<String> spells = getSpells();
 			if (!spells.contains(spellKey) && addSpell(spellKey)) {
 				SpellTemplate spell = controller.getSpellTemplate(spellKey);
@@ -2577,7 +2580,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return mage.getSpell(activeSpell);
 	}
 
-    public Spell getBaseSpell(String spellName) {
+    public SpellTemplate getBaseSpell(String spellName) {
         SpellKey key = new SpellKey(spellName);
         Integer spellLevel = spellLevels.get(key.getBaseKey());
         if (spellLevel == null) return null;
@@ -2586,7 +2589,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (key.isVariant()) {
             spellKey += "|" + key.getLevel();
         }
-        return mage.getSpell(spellKey);
+        return controller.getSpellTemplate(spellKey);
     }
 
     public String getActiveSpellKey() {
