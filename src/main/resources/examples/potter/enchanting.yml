@@ -270,6 +270,7 @@ year7:
       bombarda|2: 15,50,80
       ferula|2: 50,60,70
       ascendio|2: 10,20,30
+      reducio|2: 10,20,30
     required_spells:
       - piertotum
 
@@ -285,7 +286,7 @@ graduate:
     spells:
       expelliarmus|5: 30,40,50
       finiteincantatem|4: 1,2,5
-      reducio|2: 10,20,30
+      reducio|3: 10,20,30
       episkey|3: 20,30,40
       ferula|3: 50,60,70
       ascendio|3: 10,20,30

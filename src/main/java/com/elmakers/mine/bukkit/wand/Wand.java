@@ -346,7 +346,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public int getMana() {
 		return xp;
 	}
-	
+
 	public void removeMana(int amount) {
 		xp = Math.max(0,  xp - amount);
 		updateMana();
@@ -2027,12 +2027,24 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Add spells
 		Set<String> spells = other.getSpells();
 		for (String spellKey : spells) {
+            SpellTemplate currentSpell = getBaseSpell(spellKey);
 			if (addSpell(spellKey)) {
 				modified = true;
 				String spellName = spellKey;
 				SpellTemplate spell = controller.getSpellTemplate(spellKey);
 				if (spell != null) spellName = spell.getName();
-				if (mage != null) mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spellName));
+
+                if (mage != null) {
+                    if (currentSpell != null) {
+                        String levelDescription = spell.getLevelDescription();
+                        if (levelDescription == null || levelDescription.isEmpty()) {
+                            levelDescription = spell.getName();
+                        }
+                        mage.sendMessage(Messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                    } else {
+                        mage.sendMessage(Messages.get("wand.spell_added").replace("$name", spell.getName()));
+                    }
+                }
 			}
 		}
 
