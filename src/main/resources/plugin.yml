@@ -7,14 +7,17 @@ description : Mmmmmmaaaaagic!
 softdepend: [WorldGuard,WorldEdit,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags]
 commands:
   cast:
+    aliases: [mcast]
     description: Cast a spell directly
     usage: cast <spellname> [parameters]
     permission: Magic.commands.cast
   castp:
+    aliases: [mcastp]
     description: Cast a spell directly on another player
     usage: castp <player> <spellname> [parameters]
     permission: Magic.commands.cast
   spells:
+    aliases: [mspells]
     description: List all the spells you know
     usage: spells [category]
     permission: Magic.commands.spells

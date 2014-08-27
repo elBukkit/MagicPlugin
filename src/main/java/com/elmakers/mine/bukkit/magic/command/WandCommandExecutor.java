@@ -42,7 +42,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		if (commandLabel.equalsIgnoreCase("wandp"))
+		String commandName = command.getName();
+        if (commandName.equalsIgnoreCase("wandp"))
 		{
 			if (args.length == 0) {
 				sender.sendMessage("Usage: /wandp [player] [wand name/command]");
@@ -61,7 +62,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return processWandCommand("wandp", sender, player, args2);
 		}
 
-		if (commandLabel.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("list"))
+		if (commandName.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("list"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands.wand.list")) {
 				sendNoPermission(sender);
@@ -78,7 +79,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		
 		Player player = (Player)sender;
-		if (commandLabel.equalsIgnoreCase("wand"))
+		if (commandName.equalsIgnoreCase("wand"))
 		{
 			return processWandCommand("wand", sender, player, args);
 		}

@@ -32,7 +32,8 @@ public class CastCommandExecutor extends MagicTabExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		if (commandLabel.equalsIgnoreCase("castp"))
+		String commandName = command.getName();
+        if (commandName.equalsIgnoreCase("castp"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands.castp")) {
 				sendNoPermission(sender);
@@ -142,7 +143,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 			return processCastCommand(sender, player, args2);
 		}
 
-		if (commandLabel.equalsIgnoreCase("cast"))
+		if (commandName.equalsIgnoreCase("cast"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands.cast")) {
 				sendNoPermission(sender);
