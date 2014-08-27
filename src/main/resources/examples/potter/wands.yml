@@ -825,6 +825,25 @@ graduate:
     icon: firework_charge
     xp_max: 200
     xp_regeneration: 38
+    spells:
+     - protego|3
+     - stupefy|3
+     - levicorpus|3
+     - glacius|3
+     - bombarda|2
+     - ferula|2
+     - ascendio|2
+     - vermillious|3
+     - expelliarmus|4
+     - aguamenti|2
+     - reducto|2
+     - finiteincantatem|3
+     - deprimo|3
+     - duro|2
+     - incendio|3
+     - arrow|3
+     - episkey|2
+     - reducio|2
 
 restartyear:
     upgrade: true
@@ -833,12 +852,35 @@ restartyear:
     indestructible: false
     icon: firework_charge
 
+prefect:
+    icon: firework_charge
+    upgrade: true
+    spells:
+     - protego|3
+     - stupefy|3
+     - levicorpus|3
+     - glacius|3
+     - bombarda|2
+     - ferula|2
+     - ascendio|2
+     - vermillious|3
+     - expelliarmus|4
+     - aguamenti|2
+     - reducto|2
+     - finiteincantatem|3
+     - deprimo|3
+     - duro|2
+     - incendio|3
+     - arrow|3
+     - episkey|2
+     - reducio|2
+
 staff:
     icon: firework_charge
     upgrade: true
     upgrade_path: graduate
-    effect_color: 'DDDDDD'
-    effect_bubbles: true
+    xp_max: 200
+    xp_regeneration: 40
     spells:
      - silencio
      - jail
@@ -859,15 +901,14 @@ staff:
      - incendio|3
      - arrow|3
      - episkey|2
+     - reducio|2
 
 headstaff:
     icon: firework_charge
     upgrade: true
     upgrade_path: graduate
-    xp_max: 250
-    xp_regeneration: 30
-    effect_color: 'DDDDDD'
-    effect_bubbles: true
+    xp_max: 200
+    xp_regeneration: 40
     spells:
      - expulsion
      - silencio
@@ -878,7 +919,7 @@ headstaff:
      - noxmaxima
      - expelliarmus|5
      - finiteincantatem|4
-     - reducio|2
+     - reducio|3
      - episkey|3
      - ferula|3
      - ascendio|3

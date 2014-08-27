@@ -388,7 +388,7 @@ arrow:
       tick_increase: 1180
       entity_undo: false
       undo: 5000
-      range: 24
+      range: 32
     costs:
         mana: 50
 
@@ -791,13 +791,25 @@ bogies:
         mana: 50
     parameters:
         fov: 2
-        range: 15
+        range: 8
         deactivate_target_mage: true
         target_type: LivingEntity
         target: other
         target_breakables: 1
-        duration: 5000
+        duration: 3000
         effect_poison: 1
+
+bogies|2:
+    parameters:
+        range: 16
+        duration: 6000
+        effect_poison: 2
+
+bogies|3:
+    parameters:
+        range: 24
+        duration: 8000
+        effect_poison: 3
 
 bombarda:
     icon: ink_sack:7
@@ -2272,15 +2284,27 @@ lacarnum:
     parameters:
         projectile: LargeFireball
         fire: false
-        size: 2
-        range: 16
+        size: 1
+        range: 32
         cooldown: 1000
-        spread: 2
-        speed: 1.3
+        spread: 8
+        speed: 1.1
         entity_undo: false
         undo: 8000
     costs:
         mana: 100
+
+lacarnum|2:
+    parameters:
+        size: 2
+        spread: 5
+        speed: 1.3
+
+lacarnum|3:
+    parameters:
+        size: 3
+        spread: 2
+        speed: 1.5
 
 legilimens:
     icon: iron_helmet
@@ -3179,7 +3203,7 @@ sectumsempra:
         target: other_entity
         damage: 7
         cooldown: 6000
-        target_breakables: 1
+        target_breakables: 3
     costs:
         mana: 100
 

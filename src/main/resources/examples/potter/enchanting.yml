@@ -239,6 +239,7 @@ year6:
       finiteincantatem|3: 1,2,5
       deprimo|3: 10,25,40
       duro|2: 20,30,40
+      bogies|2: 20,30,40
     required_spells:
       - apparate
       - aparecium
@@ -271,6 +272,7 @@ year7:
       ferula|2: 50,60,70
       ascendio|2: 10,20,30
       reducio|2: 10,20,30
+      lacarnum|2: 5,10,20
     required_spells:
       - piertotum
 
@@ -292,6 +294,8 @@ graduate:
       ascendio|3: 10,20,30
       arrow|4: 50,60,70
       duro|3: 20,30,40
+      bogies|3: 20,30,40
+      lacarnum|3: 20,30,40
 
 broom:
     hidden: true
