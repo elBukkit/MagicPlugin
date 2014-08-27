@@ -123,7 +123,7 @@ Auror:
   - skill AurorAttack ~onTimer:5 >0 0.90
 Dementor:
   Mobtype: wither
-  Display: Dementor
+  Display: "&8Dementor"
   Health: 500
   Damage: 10
   Drops:
@@ -150,13 +150,29 @@ Werewolf:
     PreventOtherDrops: true
     MaxCombatDistance: 30
     KnockbackResistance: 1
-Sludge:
+PoisonToad:
   Mobtype: slime
-  Display: Sludge
-  Health: 60
+  Display: "&aPoison Toad"
+  Health: 30
   Damage: 2
   Drops:
   - MinorBoss
+  Options:
+    Size: 2
+    MovementSpeed: 0.2
+    PreventSlimeSplit: true
+    PreventOtherDrops: true
+    MaxCombatDistance: 30
+    KnockbackResistance: 1
+  Skills:
+  - skill ToadPoison >0 0.2
+GiantToad:
+  Mobtype: slime
+  Display: "&aGiant Toad"
+  Health: 100
+  Damage: 4
+  Drops:
+  - MidBoss
   Options:
     Size: 10
     MovementSpeed: 0.1
@@ -165,7 +181,7 @@ Sludge:
     MaxCombatDistance: 30
     KnockbackResistance: 1
   Skills:
-  - skill SludgePoison >0 0.2
+  - skill ToadPoison >0 0.2
 Firebender:
   Mobtype: angrypigzombie
   Display: Firebender

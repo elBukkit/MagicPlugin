@@ -836,13 +836,25 @@ restartyear:
 staff:
     upgrade: true
     upgrade_path: graduate
-    xp_max: 220
-    xp_regeneration: 25
     effect_color: 'DDDDDD'
     effect_bubbles: true
     spells:
-     - silenciomaxima
+     - silencio
      - jail
+     - protego|3
+     - stupefy|3
+     - levicorpus|3
+     - glacius|3
+     - bombarda|2
+     - ferula|2
+     - ascendio|2
+     - vermillious|3
+     - expelliarmus|4
+     - aguamenti|2
+     - reducto|2
+     - finiteincantatem|3
+     - deprimo|3
+     - duro|2
 
 headstaff:
     upgrade: true
@@ -853,12 +865,29 @@ headstaff:
     effect_bubbles: true
     spells:
      - expulsion
+     - silencio
      - silenciomaxima
      - jail
-     - silencototalus
      - meteo
      - atmos
      - noxmaxima
+     - expelliarmus|5
+     - finiteincantatem|4
+     - reducio|2
+     - episkey|3
+     - ferula|3
+     - ascendio|3
+     - arrow|4
+     - duro|3
+     - bombarda|2
+     - glacius|3
+     - protego|3
+     - stupefy|3
+     - levicorpus|3
+     - vermillious|3
+     - aguamenti|2
+     - reducto|2
+     - deprimo|3
 
 # Other upgrades
 

@@ -17,7 +17,7 @@ Necromancy:
   Skills:
   - msg 40:'$boss &4performs Necromancy' >0 1
   - summon $Inferius:1:2 >0 1
-SludgePoison:
+Poison:
   Cooldown: 10
   Conditions:
   - TargetWithin 16
@@ -219,4 +219,4 @@ AcromantulaAttack:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill SludgePoison,Webbing >0 1
+  - randomskill Poison,Webbing >0 1
