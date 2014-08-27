@@ -193,6 +193,15 @@ cooldown:
     wait_minutes: You must wait another $minutes minutes.
     wait_hours: You must wait another $hours hours.
     wait_moment: You must wait a moment.
+    wait_minute: You must wait a minute.
+    wait_hour: You must wait another hour.
+    description_seconds: $seconds seconds
+    description_minutes: $minutes minutes
+    description_hours: $hours hours
+    description_minute: One minute
+    description_hour: One hour
+    description_moment: A Moment
+    description: "&eCooldown: &6$time"
 duration:
     lasts_seconds: Lasts for $seconds seconds
     lasts_minutes: Lasts for $minutes minutes

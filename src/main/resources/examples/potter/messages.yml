@@ -4,10 +4,17 @@
 
 
 cooldown:
-    wait_seconds: Spell is on cooldown for $seconds seconds.
-    wait_minutes: Spell is on cooldown for $minutes minutes.
-    wait_hours: Spell is on recharging for $hours hours.
-    wait_moment: Spell is recharging.
+    wait_seconds: Spell is recharging for $seconds seconds.
+    wait_minutes: Spell is recharging for $minutes minutes.
+    wait_hours: Spell is recharging for $hours hours.
+    wait_moment: ""
+    description_seconds: $seconds seconds
+    description_minutes: $minutes minutes
+    description_hours: $hours hours
+    description_minute: One minute
+    description_hour: One hour
+    description_moment: A Moment
+    description: "&eCooldown: &6$time"
 
 worlds:
     Hogwarts:

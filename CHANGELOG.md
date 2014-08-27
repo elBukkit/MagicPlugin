@@ -4,6 +4,7 @@
 
  - Fix combining two wands of different paths on an anvil
  - Toggle hotbar spell glow to show cooldowns/casting ability
+ - Add cooldowns to spell lore
 
 ## 3.7
 

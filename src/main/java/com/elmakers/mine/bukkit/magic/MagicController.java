@@ -3673,6 +3673,12 @@ public class MagicController implements Listener, MageController {
                     lines.add("");
                 }
 
+                String spellCooldownDescription = spell.getCooldownDescription();
+                if (spellCooldownDescription != null && spellCooldownDescription.length() > 0) {
+                    spellCooldownDescription = Messages.get("cooldown.description").replace("$time", spellCooldownDescription);
+                    lines.add("" + ChatColor.DARK_PURPLE + spellCooldownDescription);
+                }
+
                 Collection<CastingCost> costs = spell.getCosts();
                 if (costs != null) {
                     for (CastingCost cost : costs) {

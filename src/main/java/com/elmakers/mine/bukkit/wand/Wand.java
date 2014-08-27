@@ -1719,6 +1719,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (usage != null && usage.length() > 0) {
 			lore.add(usage);
 		}
+        String cooldownDescription = spell.getCooldownDescription();
+        if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
+            lore.add(Messages.get("cooldown.description").replace("$time", cooldownDescription));
+        }
 		Collection<CastingCost> costs = spell.getCosts();
 		if (costs != null) {
 			for (CastingCost cost : costs) {
