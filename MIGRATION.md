@@ -4,6 +4,7 @@
 
  * Some magic items (spells, upgrades) may need to be updated. Sorry!
  * The "xp" casting cost has changed to "mana" ("xp" is still valid, but consumes player XP)
+   * If you have a completely custom spells.yml, search are replace "xp:" for "mana:" to fix.
 
 ## 3.6
 

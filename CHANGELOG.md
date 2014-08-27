@@ -10,12 +10,13 @@
  - Fix a bad bug with the "chest" inventory mode
  - More wand data saving / duplication fixes
  - Add some new mana display modes (durability, glow) - experimental
- - Some undo fixes and improvements
+ - Some undo fixes and improvements, always completely undo on logout (blocking undo)
  - Add dynmap option to only show spells from players (not mobs or automata)
  - Some fixes to Familiar spell (long-standing bug re: multiple players)
  - Bailed on the Bukkit Metadata API PR, simplifying/optimizing data storage instead.
  - Added "Earthquake" spell (and directional vector parameter for ConstructSpell)
  - Some fixes related to mana-based casting costs (separate "mana" vs "xp" costs now)
+ - Add "stealthy" casting while crouching (or via wand property)
 
 ## 3.6
 
